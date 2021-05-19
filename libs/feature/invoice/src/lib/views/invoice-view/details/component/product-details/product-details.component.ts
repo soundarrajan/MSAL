@@ -429,6 +429,8 @@ implements OnInit {
   expandAddTransactionListPopUp: boolean =  false;
   displayedColumns: string[] = ['product', 'delivery'];
   @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() costDetailsChanged: EventEmitter<any> = new EventEmitter<any>();
+
   deliveriesToBeInvoicedList: any = [];
   selectedProductLine: any;
   productSearch: any;
@@ -560,6 +562,9 @@ implements OnInit {
   }
 
   quantityFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -575,7 +580,7 @@ implements OnInit {
   }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined' || value == null) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -971,13 +976,16 @@ implements OnInit {
         pricingDate: rowData.pricingDate,
         isDeleted: rowData.isDeleted,
         invoiceAmount: rowData.invoiceAmount,
+        invoiceQuantity: rowData.deliveryQuantity,
         invoiceTotalAmount: rowData.invoiceTotalAmount,
         estimatedTotalAmount: rowData.estimatedTotalAmount,
+        // new on 30.08.2018
         invoiceQuantityUom: rowData.invoiceQuantityUom,
         invoiceRateUom: rowData.invoiceRateUom,
         estimatedExtras: rowData.estimatedExtra,
+        // invoiceExtras: rowData.estimatedExtra,
         estimatedExtrasAmount: rowData.estimatedExtraAmount
-      };
+    };
     }
 
     if (rowData.delivery) {
@@ -1032,6 +1040,7 @@ implements OnInit {
       });
       if (!alreadyExists) {
         this.formValues.costDetails.push(transactionstobeinvoiced_dtRow);
+        this.costDetailsChanged.emit(true);
       } else {
         this.toastr.error('Selected cost already exists');
       }

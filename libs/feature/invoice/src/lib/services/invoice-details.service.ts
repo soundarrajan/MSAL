@@ -112,6 +112,15 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.calculateProductRecon(payload);
   }
 
+      /**
+ * @param payload
+ */
+  @ObservableException()
+  calculateCostRecon(payload: any): Observable<unknown> {
+    return this.api.calculateCostRecon(payload);
+  }
+
+
      /**
  * @param payload
  */
@@ -140,6 +149,17 @@ export class InvoiceDetailsService extends BaseStoreService
   getFinalInvoiceDueDates(payload: any): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getFinalInvoiceDueDates(payload);
   }
+
+    /**
+ * @param payload
+ */
+  @ObservableException()
+  getApplyForList(payload: any): Observable<unknown> {
+    return this.api.getApplyForList(payload);
+  }
+   
+
+
   @ObservableException()
   getBankAccountNumber(counterPartyId: number): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getBankAccountNumber(counterPartyId);

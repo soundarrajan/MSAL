@@ -198,6 +198,16 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   type: string;
   eventsSubject5: Subject<any> = new Subject<any>();
   costTypeList: any;
+  eventsSubject: Subject<any> = new Subject<any>();
+  cost: any;
+  costType: any;
+  product: any;
+  old_cost: any;
+  old_product: any;
+  old_costType: any;
+  applyForList: any;
+
+
   bankAccountNumbers: any;
   visibilityConfigs:any;
 
@@ -225,6 +235,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setTitle();
     if (!this.entityId) {
       this.summaryCalculationsForProductDetails();
+      this.summaryCalculationsForCostDetails();
     }
   }
 }
@@ -283,6 +294,214 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  summaryCalculationsForCostDetails() {
+    if (this.formValues.costDetails) {
+      for (let i = 0; i < this.formValues.costDetails.length; i++) {
+        this.invoiceConvertUomCost('cost', i);
+      }
+    }
+  }
+
+  invoiceConvertUomCost(type, rowIndex) {
+    console.log(type);
+    console.log(rowIndex);
+    let currentRowIndex = rowIndex;
+    this.calculateGrand(this.formValues);
+    this.type = type;
+    if (this.type == 'cost') {
+      this.old_cost = this.formValues.costDetails[currentRowIndex];
+      if (this.formValues.costDetails[currentRowIndex].product) {
+        if (this.formValues.costDetails[currentRowIndex].product.id == -1) {
+          this.old_product = this.formValues.costDetails[currentRowIndex].product.id;
+        } else {
+          this.old_product = this.formValues.costDetails[currentRowIndex].product.productId;
+        }
+      }
+
+      this.old_costType = this.formValues.costDetails[currentRowIndex].costType;
+      if (this.old_product == -1) {
+        this.formValues.costDetails[currentRowIndex].isAllProductsCost = true;
+        if (typeof this.applyForList == 'undefined') {
+          this.invoiceService
+          .getApplyForList(this.formValues?.orderDetails?.order.id)
+          .pipe(
+            finalize(() => {
+              //this.spinner.hide();
+            })
+          )
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else {
+              console.log(response);
+              this.calculate(this.old_cost, response[1].id, this.old_costType, rowIndex);
+            }
+          });
+        } else {
+          if (this.formValues.productDetails[0]) {
+            if (!this.formValues.productDetails[0].invoicedProduct) {
+              return;
+            }
+          }
+          this.calculate(this.old_cost, this.formValues.productDetails[0] ? this.formValues.productDetails[0].invoicedProduct.id : null, this.old_costType, rowIndex);
+        }
+      } else {
+        this.calculate(this.old_cost, this.old_product, this.old_costType, rowIndex);
+      }
+
+    }
+  }
+
+
+  calculate(cost, product, costType, rowIndex) {
+    this.cost = cost;
+    this.product = product;
+    this.costType = costType;
+    // calculate extra
+    if (!this.formValues.costDetails[rowIndex].invoiceExtras) {
+      this.formValues.costDetails[rowIndex].invoiceExtras = 0;
+    }
+    let rateUom, quantityUom;
+    if (this.cost.invoiceRateUom) {
+      rateUom = this.cost.invoiceRateUom.id;
+    } else {
+      rateUom = null;
+    }
+    if (this.cost.invoiceQuantityUom) {
+      quantityUom = this.cost.invoiceQuantityUom.id;
+    } else {
+      quantityUom = null;
+    }
+    if (this.costType) {
+      if (this.costType.name == 'Percent' || this.costType.name == 'Flat') {
+        rateUom = quantityUom;
+      }
+    }
+
+    if (this.costType && this.costType.name == 'Flat') {
+      this.formValues.costDetails[rowIndex].invoiceAmount = this.cost.invoiceRate;
+      this.formValues.costDetails[rowIndex].invoiceExtrasAmount = this.formValues.costDetails[rowIndex].invoiceExtras / 100 * this.formValues.costDetails[rowIndex].invoiceAmount;
+      this.formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+      this.calculateGrand(this.formValues);
+      return;
+    }
+    this.getUomConversionFactorCost(this.product, 1, quantityUom, rateUom, null, 1, rowIndex);
+  }
+
+  getUomConversionFactorCost(ProductId, Quantity, FromUomId, ToUomId, contractProductId, orderProductId, rowIndex) {
+    let productId = ProductId;
+    let quantity = Quantity;
+    let fromUomId = FromUomId;
+    let toUomId = ToUomId;
+    let data = {
+      Payload: {
+        ProductId: productId,
+        OrderProductId: orderProductId,
+        Quantity: quantity,
+        FromUomId: fromUomId,
+        ToUomId: toUomId,
+        ContractProductId: contractProductId ? contractProductId : null
+
+      }
+    };
+    if (!productId || !toUomId || !fromUomId) {
+      return;
+    }
+    if (toUomId == fromUomId) {
+      let result = 1;
+      if (this.costType) {
+        if (this.costType.name == 'Unit') {
+          this.formValues.costDetails[rowIndex].invoiceAmount = result * this.cost.invoiceRate * this.cost.invoiceQuantity;
+        }
+
+        this.formValues.costDetails[rowIndex].invoiceExtrasAmount = this.formValues.costDetails[rowIndex].invoiceExtras / 100 * this.formValues.costDetails[rowIndex].invoiceAmount;
+        this.formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+        this.formValues.costDetails[rowIndex].difference = parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) - parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
+
+        this.formValues.costDetails[rowIndex].deliveryProductId = this.formValues.costDetails[rowIndex].product.deliveryProductId ? this.formValues.costDetails[rowIndex].product.deliveryProductId : this.formValues.costDetails[rowIndex].deliveryProductId;
+        console.log('-----------------------', this.formValues.costDetails[rowIndex].deliveryProductId);
+        // calculate grandTotal
+        if (this.cost) {
+          this.calculateCostRecon(rowIndex);
+        }
+        this.calculateGrand(this.formValues);
+        this.changeDetectorRef.detectChanges();
+
+    }
+    }
+    this.invoiceService
+    .getUomConversionFactor(data)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          console.log(result);
+          if (this.costType) {
+            if (this.costType.name == 'Unit') {
+              this.formValues.costDetails[rowIndex].invoiceAmount = result * this.cost.invoiceRate * this.cost.invoiceQuantity;
+            }
+
+            this.formValues.costDetails[rowIndex].invoiceExtrasAmount = this.formValues.costDetails[rowIndex].invoiceExtras / 100 * this.formValues.costDetails[rowIndex].invoiceAmount;
+            this.formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+            this.formValues.costDetails[rowIndex].difference = parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) - parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
+
+            this.formValues.costDetails[rowIndex].deliveryProductId = this.formValues.costDetails[rowIndex].product.deliveryProductId ? this.formValues.costDetails[rowIndex].product.deliveryProductId : this.formValues.costDetails[rowIndex].deliveryProductId;
+            console.log('-----------------------', this.formValues.costDetails[rowIndex].deliveryProductId);
+            // calculate grandTotal
+            if (this.cost) {
+              this.calculateCostRecon(rowIndex);
+            }
+            this.calculateGrand(this.formValues);
+            this.changeDetectorRef.detectChanges();
+
+        }
+
+
+        }
+    });
+  };
+
+  calculateCostRecon(rowIndex) {
+    if (!this.cost.estimatedRate || !this.cost.invoiceAmount) {
+      return;
+    }
+    this.invoiceService
+    .calculateCostRecon(this.cost)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          var obj;
+          if (result.data == 1) {
+            obj = {
+              id: 1,
+              name: 'Matched'
+            };
+          } else {
+            obj = {
+              id: 2,
+              name: 'Unmatched'
+            };
+          }
+          this.formValues.costDetails[rowIndex].reconStatus = obj;
+          this.changeDetectorRef.detectChanges();
+        }
+    });
+
+
+  }
+
   tenantConfiguration(){
     this.invoiceService
     .getTenantConfiguration(false)
@@ -865,7 +1084,7 @@ getBankAccountNumber(){
       this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
       this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
       this.chipData[4].Data = ivs?.totalDifference? this.amountFormatValue(ivs?.totalDifference?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal;
-      this.chipData[5].Data = ivs?.provisionalInvoiceNo? this.amountFormatValue(ivs?.provisionalInvoiceNo?.toString()): this.emptyNumberVal;
+      this.chipData[5].Data = ivs?.provisionalInvoiceNo? ivs?.provisionalInvoiceNo?.toString(): this.emptyNumberVal;
       this.chipData[6].Data = ivs?.provisionalInvoiceAmount? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code  : this.emptyNumberVal;
       this.chipData[7].Data = ivs?.deductions? this.amountFormatValue(ivs?.deductions?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code  : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code ;
       this.chipData[8].Data = ivs?.netPayable? this.amountFormatValue(ivs?.netPayable?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code  : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code ;
@@ -911,6 +1130,8 @@ getBankAccountNumber(){
         return;
     }
 
+    this.setAdditionalCostLine();
+
     if (!parseFloat(this.formValues?.id?.toString()) || this.formValues.id == 0) {
       this.spinner.show();
       this.invoiceService.saveInvoice(this.formValues).subscribe((result: any) => {
@@ -924,6 +1145,39 @@ getBankAccountNumber(){
           this.handleServiceResponse(result, 'Invoice updated successfully.')
       });
     }
+  }
+
+  setAdditionalCostLine() {
+    let validCostDetails = [];
+    if (this.formValues.costDetails.length > 0) {
+      this.formValues.costDetails.forEach((v,k ) => {
+        if (typeof v.product != 'undefined' && v.product != null) {
+          if (v.product.id == -1) {
+            v.product = null;
+            v.deliveryProductId = null;
+          } else {
+            if (v.product.productId) {
+              v.product.id = v.product.productId;
+            } 
+            if (v.product.deliveryProductId) {
+              v.deliveryProductId = v.product.deliveryProductId;
+            }
+            if (!v.product.productId) {
+              v.product = null;
+            }
+            v.isAllProductsCost = false;
+          }
+        }
+        if (Boolean(v.id) && !(v.id == 0 && v.isDeleted) || !v.Id && !v.isDeleted) {
+          // v.isDeleted = false;
+          validCostDetails.push(v);
+        }
+      });
+    }
+    console.log(validCostDetails);
+    this.formValues.costDetails = _.cloneDeep(validCostDetails);
+
+    this.changeDetectorRef.detectChanges();
   }
 
   public openRequest(){
@@ -991,6 +1245,7 @@ getBankAccountNumber(){
     }
     this.spinner.show();
     this.formSubmitted = true;
+    this.setAdditionalCostLine();
     if(option == 'submitreview'){
       this.invoiceService.submitForReview(this.formValues.id).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice submitted for review successfully.');
@@ -1032,7 +1287,7 @@ getBankAccountNumber(){
         this.formSubmitted = false;
         if(result && result != 'close'){
           let createinvoice = this.invoiceTypeList.filter(x=>{return x.id === result});
-          this.formValues.id = this.entityId = 0;
+          this.entityId = 0;
           this.formValues.documentType.id = createinvoice[0].id;
           this.formValues.documentType.name = createinvoice[0].name;
 
@@ -1208,6 +1463,20 @@ getBankAccountNumber(){
       numberToReturn = 0;
     }
     return parseFloat(numberToReturn);
+  }
+
+  updateCostDetails(data) {
+    console.log(data);
+    this.eventsSubject.next(this.formValues);
+  }
+
+  additionalCostRemovedLine(data) {
+    console.log(data);
+    this.saveInvoiceDetails();
+  }
+
+  compareUomObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
   }
 }
 
