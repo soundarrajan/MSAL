@@ -62,30 +62,11 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
   }
   update(item: IDeliveryNotesDetailsResponse, newNoteDetails: string): void {
-    if(this.DeliveryId != undefined && this.DeliveryId != null && item.id != 0){
+    if(this.DeliveryId != undefined && this.DeliveryId != null){
       item.note = newNoteDetails;
-      // let payload = {
-      //   // "deliveryId":234735,
-      //   "DeliveryId":234735,
-      //   "DeliveryNotes":{
-      //     "DeliveryId":234735,
-      //     "Note":"ok test sure",
-      //     "CreatedBy":{"id":165,"name":"suresh.r@inatech.com","internalName":"",
-      //     "displayName":"Suresh","code":"","collectionName":null,"customNonMandatoryAttribute1":"","isDeleted":false,"modulePathUrl":null,
-      //     "clientIpAddress":null,"userAction":null},
-      //     "CreatedAt":"2021-05-17T18:17:44.947Z",
-      //     "LastModifiedAt":"2021-05-17T18:17:44.947Z",
-      //     "id":11,
-      //     "isDeleted":false,
-      //     "modulePathUrl":null,
-      //     "clientIpAddress":null,"userAction":null
-
-      //   },
-      //   }
-
       let payload = {
         "DeliveryId":this.DeliveryId,
-        "DeliveryNotes":item
+        "DeliveryNotes":[item]
         }
       this.detailsService
       .saveDeliveryInfo(payload)
@@ -110,6 +91,7 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
       this.MainobjNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
     }else
     {
+      debugger;
       this.objNotes = [];
       this.objNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
       this.MainobjNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
@@ -119,9 +101,6 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
    
   }
   remove(item, index):void {
-    debugger;
-    
-
     if(item.id != 0){
       this.MainobjNotes[index].isDeleted = true;
       this.objNotes.splice(index,1);
@@ -134,6 +113,12 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
+    this.MainobjNotes.forEach((key,index) => {
+      if(key.id == 0){
+        this.MainobjNotes[index] = this.objNotes[index];
+      }
+     
+    });
     this.ChangedValue.emit(this.MainobjNotes);
   }
 

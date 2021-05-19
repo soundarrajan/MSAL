@@ -19,10 +19,11 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
-
   getInvoicDetails(invoiceId: number): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getInvoicDetails(invoiceId);
   }
+
+  @ObservableException()
   getNewInvoicDetails(invoiceFromDelivery : any): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getNewInvoicDetails(invoiceFromDelivery);
   }
@@ -56,8 +57,8 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
-  submitapproval(invoiceId: number): Observable<any> {
-    return this.api.submitapproval(invoiceId);
+  submitapproval(payload: any): Observable<any> {
+    return this.api.submitapproval(payload);
   }
 
   @ObservableException()
@@ -112,7 +113,7 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
      /**
- * @param payload  
+ * @param payload
  */
   @ObservableException()
   addTransaction(payload: any): Observable<unknown> {
@@ -120,27 +121,36 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
       /**
- * @param payload  
+ * @param payload
  */
   @ObservableException()
   computeInvoiceTotalConversion(payload: any): Observable<unknown> {
     return this.api.computeInvoiceTotalConversion(payload);
   }
 
-       /**
- * @param payload  
+  /**
+ * @param payload
  */
   @ObservableException()
   getAdditionalCostsComponentTypes(payload: any): Observable<unknown> {
     return this.api.getAdditionalCostsComponentTypes(payload);
   }
 
-
-  
-  
-
-
-
+  @ObservableException()
+  getFinalInvoiceDueDates(payload: any): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getFinalInvoiceDueDates(payload);
+  }
+  @ObservableException()
+  getBankAccountNumber(counterPartyId: number): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getBankAccountNumber(counterPartyId);
+  }
+  /**
+ * @param payload = False 
+ */
+  @ObservableException()
+  getTenantConfiguration(payload: boolean): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getTenantConfiguration(payload);
+  }
   ngOnDestroy(): void {
     super.onDestroy();
   }

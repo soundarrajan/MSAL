@@ -8,12 +8,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class NoDataComponent implements OnInit {
   public message : string;
-  public ship_id : any;
+  public id : any;
   constructor(public dialogRef: MatDialogRef<NoDataComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     //dialogRef.disableClose = true;
     this.message = data?.message;
-    if(this.data?.ship_id)
-    this.ship_id = data?.ship_id;
+    if(this.data?.id)
+    this.id = data?.id;
   }
 
   ngOnInit() { 
