@@ -325,8 +325,10 @@
                                 <div id="custom-form-field" class="lightTheme" *ngIf="visibilityConfigs && !visibilityConfigs.isBankAccountNumberHidden">
                                     <mat-form-field class="without-search" appearance="legacy">
                                         <mat-label>Bank account no.</mat-label>
-                                        <mat-select disableOptionCentering name="bankaccountnumber" [(ngModel)]="formValues.counterpartyDetails.counterpartyBankAccount.id">
-                                            <mat-option *ngFor="let bank of bankAccountNumbers;" [value]="bank.id">{{bank.accountnumber}}</mat-option>
+                                        <mat-select disableOptionCentering name="bankaccountnumber" 
+                                            [(ngModel)]="formValues.counterpartyDetails.counterpartyBankAccount"
+                                            [compareWith]="compareUomObjects">
+                                            <mat-option *ngFor="let bank of bankAccountNumbers;" [value]="bank">{{bank.accountnumber}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
