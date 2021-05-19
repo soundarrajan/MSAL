@@ -1,13 +1,7 @@
-﻿commit 2dce503e99e563b885de6eaba8429771d5f89fe3
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue May 18 22:48:14 2021 +0000
+﻿commit 658fc161ff2d985e5ac171b4678c1f27b005b4fd
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Wed May 19 11:58:31 2021 +0530
 
-    Merged PR 10780: Bug Fixes
-    
-    Bug Fixes
-    
-    Cherry picked from !10779
-    
-    Related work items: #32194, #32196, #32206, #32229, #32235, #32270, #32382
+    32294 - Delivery Notes
 
 branch: master
