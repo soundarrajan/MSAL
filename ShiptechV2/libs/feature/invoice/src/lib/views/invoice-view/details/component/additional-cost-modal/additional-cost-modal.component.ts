@@ -6,6 +6,7 @@ import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
+import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -48,6 +49,7 @@ export class AdditionalCostModalComponent implements OnInit {
   selectedProductLine: any;
   costType: any;
   costDetailsComponentTypes: any;
+  filterCostNames: any[];
   @Input('formValues') set _formValues(val){
     this.formValues = val;
     this.formatAdditionalCosts();
@@ -81,6 +83,7 @@ export class AdditionalCostModalComponent implements OnInit {
   costNames:any;
   uomNames:any;
   currencyNames:any;
+  additionalSearch: any;
   public searchText:string;
   selectedRow;
   selectedAdditionalLine: any;
@@ -148,6 +151,7 @@ export class AdditionalCostModalComponent implements OnInit {
   ngOnInit(): void {
     this.legacyLookupsDatabase.getAdditionalCost().then(list=>{
       this.costNames = list;
+      this.filterCostNames = _.cloneDeep(list);
       this.changeDetectorRef.detectChanges();
     })
     this.legacyLookupsDatabase.getUomTable().then(list=>{
@@ -718,6 +722,12 @@ export class AdditionalCostModalComponent implements OnInit {
         };
       }
     }
+  }
+
+  searchCostName(value: string): void {
+    let filterCostList = this.filterCostNames.filter((option) => option.name.toLowerCase().includes(value));
+    this.costNames = [ ... filterCostList];
+    this.changeDetectorRef.detectChanges();
   }
 
 
