@@ -322,15 +322,15 @@
                         <div class="col-md-6 pd-0">
                             <readonly-details [options]="counterpartyDetails"></readonly-details>
                             <div class="form-fields" style="margin: 0px -15px;">
-                                <div id="custom-form-field" class="lightTheme">
+                                <div id="custom-form-field" class="lightTheme" *ngIf="visibilityConfigs && !visibilityConfigs.isBankAccountNumberHidden">
                                     <mat-form-field class="without-search" appearance="legacy">
                                         <mat-label>Bank account no.</mat-label>
-                                        <mat-select disableOptionCentering [disabled]="true">
-                                            <mat-option value="YS Marine">YS Marine</mat-option>
+                                        <mat-select disableOptionCentering name="bankaccountnumber" [(ngModel)]="formValues.counterpartyDetails.counterpartyBankAccount.id">
+                                            <mat-option *ngFor="let bank of bankAccountNumbers;" [value]="bank.id">{{bank.accountnumber}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
-                                <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
+                                <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;" *ngIf="visibilityConfigs && !visibilityConfigs.isInvoiceCustomerHidden">
                                     <div class="d-flex">
                                         <shiptech-st-autosearch-selector [placeholder]="'customer'" [disabled]="true" [name]="'Customer'" [masterType]="'company'" (onChanged)="AC_valueChanges('customer',$event)"></shiptech-st-autosearch-selector>
                                     </div>
