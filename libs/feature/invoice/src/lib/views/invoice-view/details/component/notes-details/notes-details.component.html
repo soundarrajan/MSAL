@@ -24,7 +24,7 @@
         <ng-container  *ngFor="let noteLine of formValues.invoiceNotes | keyvalue : originalOrder">
           <tr *ngIf="!noteLine.value.isDeleted">
             <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-              <a class="remove-icon" style="margin-left: 10px;"></a>
+              <a class="remove-icon" style="margin-left: 10px;" (click)="!detectCurrentUser(noteLine.value) ? deleteNotesLine(noteLine.key) : ''"></a>
             </td>
             <td style="width:30%">
               <div class="custom-form-field-invoice-notes" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -33,6 +33,7 @@
                   <input  
                     [(ngModel)]="noteLine.value.note"
                     (blur)="updateNotes(noteLine.key)"
+                    [disabled]="detectCurrentUser(noteLine.value)"
                     matInput 
                     amountFormat
                     autocomplete="off">
