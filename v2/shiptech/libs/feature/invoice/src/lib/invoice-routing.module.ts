@@ -8,6 +8,7 @@ import { InvoiceListComponent } from './views/invoice-list/invoice-list.componen
 import { KnownInvoiceRoutes } from './known-invoice.routes';
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
 import { StaticListsRouteResolver } from './views/invoice-view/details/static-lists-route.resolver';
+import { GeneralSettingsRouteResolver } from './views/invoice-view/details/general-settings-route.resolver';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
             component: InvoiceViewComponent,
             resolve:{
               navBar: NavBarResolver,
+              tenantConfiguration: GeneralSettingsRouteResolver,
               staticLists: StaticListsRouteResolver
             },
             data: { title: 'View Invoice', breadcrumb: 'View Invoice' }

@@ -1,9 +1,7 @@
-﻿commit f812212e3560e8b00c5b178fd4ef9bd63b8cec10
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 20 11:02:29 2021 +0000
+﻿commit 744da6b0e516952c0484fa3f8a28f0ade2ada2a0
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Thu May 20 13:00:25 2021 +0000
 
-    Merged PR 10820: Added notes section in invoice screen
-    
-    Added notes section in invoice screen
+    Merged PR 10818: Fix conflicts in invoice_product_details_ro
 
 branch: master
