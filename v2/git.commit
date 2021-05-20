@@ -1,9 +1,7 @@
-﻿commit 29e3f28ec8bac3b76f9ee212c3adc2bffe0d01e1
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Thu May 20 14:54:13 2021 +0530
+﻿commit 81b132466457c2a7004c0ceb44b973b07b60461d
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Thu May 20 16:16:35 2021 +0530
 
-    contract screen changes
-    
-    contract screen changes
+    Invoice additional cost component mandatory symbol and invoice type popup design fix. #31648
 
 branch: master
