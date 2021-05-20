@@ -30,8 +30,8 @@ export class BunkeringPlanComponent implements OnInit {
   public rowData ;
   public bPlanData: any;
   public selectedPort: any = [];
-  vesselData: any;
-  latestPlanId: any;
+  public vesselData: any;
+  public latestPlanId: any;
   public editableCell : boolean;
   public type : any;
   public dialogRef: MatDialogRef<NoDataComponent>;

@@ -1,4 +1,4 @@
-
+import { ISaveVesselData } from './../shared-model/vessel-data-model';
 import { SaveBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
 
   
@@ -19,6 +19,13 @@ export class UpdateBunkeringPlanAction{
   }
 }
 
+export class saveVesselDataAction{
+  static readonly type = '[VesselData] Save' ;
+
+  constructor(public payload: ISaveVesselData){
+
+  }
+}
 export class SaveCurrentROBAction{
   static readonly type = '[Current ROB] Save';
   

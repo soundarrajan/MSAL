@@ -27,11 +27,31 @@
   </mat-form-field> 
 </div>
 
+<div class="plan-id-search right-border" style="display: flex;align-items: center; flex: 0 0 2%;justify-content: center;">
+  <div id="dark-filter-search" class="d-flex justify-content-between align-items-center">
+    <button mat-icon-button style="width:24px;outline: none;">
+        <mat-icon id="searchIcon" matPrefix>search</mat-icon>
+    </button>
+    <div style="display: flex;align-items: center;justify-content:space-between;width: 125px;">
+        <input id="vesselSearch" 
+        type="text" 
+        placeholder="Search Bunker Plan Id" 
+        aria-label="Number"
+        [(ngModel)]="inputModel" >
+        <div id="clear" *ngIf="inputModel?.length">
+            <div class="clear-icon" (click)="inputModel=''"></div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
 </div>
 <!-- BUNKERING PLANS -->
 <div *ngIf="bunkerPlanLogDetail.length > 0" id="accordion-container-dark">  
   <mat-accordion multi="false">
-    <mat-expansion-panel #panel *ngFor="let item of bunkerPlanLogDetail" hideToggle="true" id="bunker-plan"
+    <mat-expansion-panel #panel *ngFor="let item of bunkerPlanLogDetail | filter: inputModel" hideToggle="true" id="bunker-plan"
       [ngClass]="{'fullheight':item.expanded}" [expanded]="false" (opened)="item.expanded = true"
       (closed)="item.expanded = false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
