@@ -287,3 +287,20 @@ border-radius: 4px;
 .custom-form-field-invoice-notes .mat-form-field-disabled {
   background-color: #EEEEEE !important;
 }
+
+.expand-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/expand.svg);
+}
+
+.collapse-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/collapse.svg);
+}
+
+.notes-section {
+  display: inline-flex;
+}
+
+.title {
+  position: relative;
+  left: 10px !important;
+}

@@ -1,7 +1,17 @@
-<div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
-  Notes
+<div class="header-product-details col-md-12 no-padding notes-section" style="margin-top: 10px;">
+  <span *ngIf="expandInvoiceNotes" (click)="expandInvoiceNotes = !expandInvoiceNotes">
+    <a class="expand-icon">
+    </a>
+  </span>
+  <span  *ngIf="!expandInvoiceNotes" (click)="expandInvoiceNotes = !expandInvoiceNotes">
+    <a class="collapse-icon">
+    </a>
+  </span>
+  <div class="title">
+    Notes
+  </div>
 </div>
-<div class="col-md-12 d-flex no-padding">
+<div class="col-md-12 d-flex no-padding" *ngIf="expandInvoiceNotes">
   <table class="notes-details-table table table-stripped table-hover" style="width:100%">
     <thead>
       <tr>
@@ -35,7 +45,6 @@
                     (blur)="updateNotes(noteLine.key)"
                     [disabled]="detectCurrentUser(noteLine.value)"
                     matInput 
-                    amountFormat
                     autocomplete="off">
                 </mat-form-field>
               </div>
@@ -44,7 +53,7 @@
               {{noteLine.value.createdBy ? noteLine.value.createdBy.name : ''}}
             </td>
             <td style="width:30%">
-              {{noteLine.value.lastModifiedAt ? formatDate(noteLine.value.lastModifiedAt) : ''}}
+              {{noteLine.value.createdAt ? formatDate(noteLine.value.createdAt) : ''}}
             </td>
            
         </ng-container>
