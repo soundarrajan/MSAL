@@ -1,7 +1,11 @@
-﻿commit 744da6b0e516952c0484fa3f8a28f0ade2ada2a0
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Thu May 20 13:00:25 2021 +0000
+﻿commit fa29266247b29582e3dadbe3d6c1302e95bb6242
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu May 20 13:30:54 2021 +0000
 
-    Merged PR 10818: Fix conflicts in invoice_product_details_ro
+    Merged PR 10824: Current ROB error
+    
+    Current ROB error
+    
+    Related work items: #32447
 
 branch: master
