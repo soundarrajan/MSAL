@@ -27,10 +27,10 @@ import { catchError, map } from 'rxjs/operators';
     </div>
     <mat-dialog-content>
         <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 193px);"
-            [gridOptions]="dialog_gridOptions"  
+            [gridOptions]="dialog_gridOptions"
             class="ag-theme-material">
-        </ag-grid-angular> 
-        <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>  
+        </ag-grid-angular>
+        <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>
     </mat-dialog-content>
   </div>
     `,
@@ -41,7 +41,7 @@ export class MasterSelectionDialog {
     public searchedValue: string = '';
     _apiUrl;
     constructor(private http: HttpClient, private appConfig: AppConfig, public dialogRef: MatDialogRef<MasterSelectionDialog>, @Optional() @Inject(MAT_DIALOG_DATA) public data: ImasterSelectionPopData) {
-        this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS; 
+        this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
         // this.loadSelectedTypes(data.selectionType);
         if(data.selectionType == EstAutoSearchType.company || data.selectionType == EstAutoSearchType.carrier){
             this.loadCompanyGridOption();
@@ -53,7 +53,7 @@ export class MasterSelectionDialog {
     }
 
     ngOnInit() {
-        
+
     }
 
     public companyColumnDefs = [];
@@ -98,6 +98,7 @@ export class MasterSelectionDialog {
             });
         }
     }
+
     loadCompanyGridOption(){
         this.companyColumnDefs = [
             { headerName: "ID", headerTooltip: "ID", field: "id", width: 50,cellClass: ["aggridtextalign-left"] },
@@ -265,7 +266,7 @@ export class MasterSelectionDialog {
             console.log(this.rowData);
         });
     }
-  
+
   @ObservableException()
   getCompanyList(request: any): Observable<any> {
     const requestUrl = `${this._apiUrl}/${masterURLenums.companyListURL}`;
@@ -300,7 +301,7 @@ export class MasterSelectionDialog {
     }else{
         this.dialogRef.close('close')
     }
-    
+
   }
 
 }
@@ -317,7 +318,7 @@ export interface ImasterSelectionPopData{
     selectionType?: EstAutoSearchType;
     dialog_gridOptions?:GridOptions;
     dialog_header?:string
-} 
+}
 
 function isFirstColumn(params) {
     var displayedColumns = params.columnApi.getAllDisplayedColumns();
