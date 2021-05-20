@@ -11,8 +11,8 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
-        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1) || !(bunkerPlanHeaderDetail?.scrubberDate)">N/A</td>
+        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('2050-01-01')==-1) && (bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
+        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('2050-01-01')>-1) || ((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1) || !(bunkerPlanHeaderDetail?.scrubberDate)">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
         <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
@@ -173,12 +173,12 @@
         </div>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel #commentpanel *ngIf="!expandComments"
+    <mat-expansion-panel #commentpanel
       [ngClass]="{'fullheight':expandComments}" hideToggle="true" (closed)="expandComments = false">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
-          <div style="flex: 0 0 17%;">Comments(5)</div>
+          <div style="flex: 0 0 17%;">Comments</div>
           <div style="flex:0 0 80%;display: flex;align-items: center;justify-content: flex-end;">
             <ng-container *ngIf="commentpanel.expanded">
               <div style="text-align: center;">

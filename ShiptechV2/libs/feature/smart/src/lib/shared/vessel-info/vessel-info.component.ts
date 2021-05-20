@@ -1,14 +1,15 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
+import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
 import { CommentsComponent } from '../comments/comments.component';
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { Store } from '@ngxs/store';
-import { SaveCurrentROBAction, UpdateCurrentROBAction } from '../../store/bunker-plan/bunkering-plan.action';
+import { SaveCurrentROBAction, UpdateCurrentROBAction } from './../../store/bunker-plan/bunkering-plan.action';
 import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
@@ -65,8 +66,7 @@ export class VesselInfoComponent implements OnInit {
   public scrubberReady : any;
  
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService,
-              private store: Store) {
+  constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
@@ -116,7 +116,7 @@ export class VesselInfoComponent implements OnInit {
     currentROBObj.ULSFO = ROBArbitrageData?.ulsfoCurrentStock;
     currentROBObj.LSDIS = ROBArbitrageData?.lsdisCurrentStock;
     currentROBObj.HSDIS = ROBArbitrageData?.hsdisCurrentStock;
-    this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
+    //this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
     
   }
   ROBOnChange(event,value, column) {
@@ -149,8 +149,6 @@ export class VesselInfoComponent implements OnInit {
     this.store.dispatch(new UpdateCurrentROBAction(value,column));
     console.log('Current ROB',this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB))
     event.stopPropagation();
-    this.agGridCellData.updateSOA(value);
-    this.bunkerPlanService.setchangeCurrentROBObj(true);
     /* This service only for Test purpose only. 
     need to build request payload by using column, value based on BE update*/
     // this.localService.updateROBArbitrageChanges({id:this.vesselData?.vesselId}).subscribe((data)=> {
@@ -178,6 +176,8 @@ export class VesselInfoComponent implements OnInit {
       this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
       this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
       this.loadBplan = true;
+      // store vesselid and planid for shared ref
+      this.store.dispatch(new saveVesselDataAction({'vesselId': request.shipId, 'planId': this.planId}));
       this.scrubberReady = this.currPlanIdDetails?.isScrubberReady === 'Y' ? 'HSFO':'VLSFO';
     })
   }

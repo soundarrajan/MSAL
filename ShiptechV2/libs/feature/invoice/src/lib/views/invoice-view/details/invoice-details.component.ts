@@ -33,18 +33,19 @@ import _ from 'lodash';
 import { DecimalPipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
+const isEmpty = (object) => !Object.values(object).some(x => (x !== null && x !== ''));
 
-  export const MY_FORMATS = {
-    parse: {
-      dateInput: 'LL',
-    },
-    display: {
-      dateInput: 'ddd DD/MM/yyyy HH:mm',
-      monthYearLabel: 'YYYY',
-      dateA11yLabel: 'LL',
-      monthYearA11yLabel: 'YYYY',
-    },
-  };
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'ddd DD/MM/yyyy HH:mm',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -208,6 +209,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   applyForList: any;
   bankAccountNumbers: any;
   visibilityConfigs:any;
+  formErrors: any = {};
+  generalConfiguration: any;
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -257,12 +260,14 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.entityName = 'Invoice';  
+    this.formErrors = {};
+    this.entityName = 'Invoice';
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.invoiceId);
     });
     this.route.data.subscribe(data => {
       this.staticLists = data.staticLists;
+      this.generalConfiguration = data.tenantConfiguration;
       this.uomList = this.setListFromStaticLists('Uom');
       this.productList = this.setListFromStaticLists('Product');
       this.currencyList = this.setListFromStaticLists('Currency');
@@ -270,7 +275,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
-    
+
     this.tenantConfiguration();
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
@@ -285,6 +290,182 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     })
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
+  }
+
+
+  getDebunkerCheckboxConfig() {
+    const isVisible =
+      this.manualtab[0].displayName === 'Credit' &&
+      this.generalConfiguration?.invoiceConfiguration?.isDebunker;
+
+    const isMandatory = false;
+    const isChecked = this.formValues.invoiceClaimDetails.length > 0 && this.formValues.invoiceClaimDetails[0].claimType.name === "Debunker";
+    // Mandatory only if mandatory is true and visible is true;
+
+    return { isVisible, isMandatory: isMandatory && isVisible, value: isChecked };
+  }
+
+  getInvoiceDateConfig() {
+    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isInvoiceDateHidden;
+
+      const isMandatory = this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isInvoiceDateMandatory;
+
+    return { isVisible, isMandatory: isMandatory && isVisible };
+  }
+
+  getSupplierInvoiceNumberDateConfig() {
+    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isSupplierInvoiceNumberHidden;
+    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isSupplierInvoiceNumberMandatory;
+    return { isVisible, isMandatory: isMandatory && isVisible };
+  }
+
+  getReceivedDateConfig() {
+    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isReceivedDateHidden;
+    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isReceivedDateMandatory;
+    return { isVisible, isMandatory: isMandatory && isVisible };
+  }
+
+  getCustomerDateConfig() {
+    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isInvoiceCustomerHidden;
+    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isInvoiceCustomerMandatory;
+    return { isVisible, isMandatory: isMandatory && isVisible };
+  }
+
+  getBankAccountNumberDateConfig() {
+    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isBankAccountNumberHidden;
+    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isBankAccountNumberMandatory;
+    return { isVisible, isMandatory: isMandatory && isVisible };
+  }
+
+  isFormValid(configObject): any {
+    let useToaster = configObject?.useToaster || false;
+    let error = false;
+    let errorMessage = '';
+    this.formErrors = {};
+
+    if (!this.formSubmitted) {
+      return null;
+    }
+
+    // Bank Accound
+    if (
+      isEmpty(this.formValues.counterpartyDetails?.counterpartyBankAccount) &&
+      this.getBankAccountNumberDateConfig().isMandatory
+    ) {
+      error = true;
+      errorMessage += 'Bank account number is required. \n';
+      this.formErrors.counterpartyDetails= {};
+      this.formErrors.counterpartyDetails.counterpartyBankAccount = errorMessage;
+    }
+
+    // Delivery date
+    if (
+      !this.formValues.deliveryDate
+    ) {
+      error = true;
+      errorMessage += 'Delivery date is required. \n';
+      this.formErrors.deliveryDate = errorMessage;
+    }
+
+    // Customer
+    if (
+      !this.formValues.counterpartyDetails?.customer &&
+      this.getCustomerDateConfig().isMandatory
+    ) {
+      error = true;
+      errorMessage += 'Customer is required. \n';
+      if(!this.formErrors.counterpartyDetails) {
+        this.formErrors.counterpartyDetails = {};
+      }
+
+      this.formErrors.counterpartyDetails.customer = errorMessage;
+    }
+
+    // Supplier Invoice number
+    if (
+      !this.formValues.sellerInvoiceNo &&
+      this.getSupplierInvoiceNumberDateConfig().isMandatory
+    ) {
+      error = true;
+      errorMessage += 'Supplier invoice number is required. \n';
+      this.formErrors.sellerInvoiceNo = errorMessage;
+    }
+
+    // Invoice date
+    if (
+      !this.formValues.invoiceDate &&
+      this.getInvoiceDateConfig().isMandatory
+    ) {
+      error = true;
+      errorMessage += 'Invoice date is required. \n';
+      this.formErrors.invoiceDate = errorMessage;
+    }
+
+    // Recived date
+    if (
+      !this.formValues.receivedDate &&
+      this.getReceivedDateConfig().isMandatory
+    ) {
+      error = true;
+      errorMessage += 'Recived date is required. \n';
+      this.formErrors.receivedDate = errorMessage;
+    }
+
+    // Due date
+    if (!this.formValues.dueDate) {
+      error = true;
+      errorMessage += 'Due date is required. \n';
+      this.formErrors.dueDate = errorMessage;
+    }
+
+    // Working due date
+    if (!this.formValues.workingDueDate) {
+      error = true;
+      errorMessage += 'Working due date is required. \n';
+      this.formErrors.workingDueDate = errorMessage;
+    }
+
+    if (!this.formValues.paymentDetails.paidAmount) {
+      error = true;
+      errorMessage += 'Paid amount is required. \n';
+      this.formErrors.paymentDetails = {};
+      this.formErrors.paymentDetails.paidAmount = errorMessage;
+    }
+
+    // Payment term
+    if (!this.formValues.counterpartyDetails.paymentTerm.name) {
+      error = true;
+      errorMessage += 'Payment term is required. \n';
+      this.formErrors.counterpartyDetails = {};
+      this.formErrors.counterpartyDetails.paymentTerm = {};
+      this.formErrors.counterpartyDetails.paymentTerm.name = errorMessage;
+    }
+
+    // Payment company
+    if (!this.formValues.orderDetails?.paymentCompany?.name) {
+      error = true;
+      errorMessage += 'Payment company is required. \n';
+      this.formErrors.orderDetails = {};
+      this.formErrors.orderDetails.paymentCompany = {};
+      this.formErrors.orderDetails.paymentCompany.name = errorMessage;
+    }
+
+    if (useToaster && errorMessage) {
+      this.toastrService.error(errorMessage);
+    }
+
+    this.changeDetectorRef.detectChanges();
+    return !error; // Is form valid?
   }
 
   summaryCalculationsForProductDetails() {
@@ -500,14 +681,14 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
 
   }
-  tenantConfiguration(){
-    this.invoiceService
-    .getTenantConfiguration(false)
-    .subscribe((result: any) => {
-      this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;           
-      // console.log('tenenatConfigs',this.visibilityConfigs);  
-    });
-  }
+tenantConfiguration(){
+  this.invoiceService
+  .getTenantConfiguration(false)
+  .subscribe((result: any) => {
+    this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;
+    // console.log('tenenatConfigs',this.visibilityConfigs);
+  });
+}
 getBankAccountNumber(){
   let counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
   this.invoiceService
@@ -515,7 +696,7 @@ getBankAccountNumber(){
     .subscribe((result: any) => {
         // console.log(result);
         this.bankAccountNumbers = result;
-        this.changeDetectorRef.detectChanges();      
+        this.changeDetectorRef.detectChanges();
     });
 }
 
@@ -617,7 +798,7 @@ getBankAccountNumber(){
 
         })
     )
-    .subscribe((result: any) => {      
+    .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
@@ -910,7 +1091,9 @@ getBankAccountNumber(){
 	  relatedInvoicesSummary: [],
     orderDetails: <IInvoiceDetailsItemOrderDetails>{},
     counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{
-      paymentTerm:<IInvoiceDetailsItemBaseInfo>{name:''}
+      counterpartyBankAccount: <any>{},
+      customer: <any>{},
+      paymentTerm: <IInvoiceDetailsItemBaseInfo>{ name: '' }
     },
     paymentDetails: <IInvoiceDetailsItemPaymentDetails>{},
     productDetails: <IInvoiceDetailsItemProductDetails[]>[],
@@ -1104,28 +1287,16 @@ getBankAccountNumber(){
   }
 
   public saveInvoiceDetails(){
-    this.spinner.show();
-    if(this.formSubmitted){
+    if (this.formSubmitted) {
       return;
     }
+    this.spinner.show();
     this.formSubmitted = true;
-    if(!this.formValues.dueDate || !this.formValues.workingDueDate || !this.formValues.counterpartyDetails.paymentTerm.name
-       || !this.formValues.orderDetails.paymentCompany.name){
-        if(!this.formValues.dueDate){
-          this.toastrService.error("Due date is required.");
-        }
-        if(!this.formValues.workingDueDate){
-          this.toastrService.error("Working due date is required.");
-        }
-        if(!this.formValues.counterpartyDetails.paymentTerm.name){
-          this.toastrService.error("Payment term is required.");
-        }
-        if(!this.formValues.orderDetails.paymentCompany.name){
-          this.toastrService.error("Payment company is required.");
-        }
-        this.formSubmitted = false;
-        this.spinner.hide();
-        return;
+
+    if (!this.isFormValid({ useToaster: true })) {
+      this.formSubmitted = false;
+      this.spinner.hide();
+      return;
     }
     this.setAdditionalCostLine();
     let valuesForm = _.cloneDeep(this.formValues);//avoid error on ngModel of bankAccount
@@ -1158,7 +1329,7 @@ getBankAccountNumber(){
           } else {
             if (v.product.productId) {
               v.product.id = v.product.productId;
-            } 
+            }
             if (v.product.deliveryProductId) {
               v.deliveryProductId = v.product.deliveryProductId;
             }
@@ -1223,7 +1394,8 @@ getBankAccountNumber(){
       // this.formValues.orderDetails.carrierCompany.displayName = event.displayName ? event.displayName : '';
       // this.formValues.orderDetails.carrierCompany.code = event.code ? event.code : '';
     }else if(type === 'customer'){
-
+      let res = isEmpty(eventValueObject) ? null : eventValueObject;
+      this.formValues.counterpartyDetails.customer = res;
     }else if(type === 'payableto'){
       this.formValues.counterpartyDetails.payableTo = eventValueObject;
       this.formValues.counterpartyDetails.counterpartyBankAccount.id = 0;
@@ -1241,12 +1413,16 @@ getBankAccountNumber(){
     this.spinner.show();
     this.formSubmitted = true;
     this.setAdditionalCostLine();
+    let valuesForm = _.cloneDeep(this.formValues);//avoid error on ngModel of bankAccount
+    if(this.formValues.counterpartyDetails.counterpartyBankAccount.id == undefined || this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0){
+      valuesForm.counterpartyDetails.counterpartyBankAccount = null;
+    }
     if(option == 'submitreview'){
       this.invoiceService.submitForReview(this.formValues.id).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice submitted for review successfully.');
       });
     } else if(option == 'submitapprove'){
-      this.invoiceService.submitapproval(this.formValues).subscribe((result: any) => {
+      this.invoiceService.submitapproval(valuesForm).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice submitted for approval successfully.');
       });
     } else if(option == 'cancel'){
@@ -1266,14 +1442,14 @@ getBankAccountNumber(){
         this.handleServiceResponse(result, 'Invoice rejected successfully.')
       });
     } else if(option == 'approve'){
-      this.invoiceService.approveInvoiceItem(this.formValues).subscribe((result: any) => {
+      this.invoiceService.approveInvoiceItem(valuesForm).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice approved successfully.')
       });
     } else if(option == 'create'){
       this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
-        height: '400px',
+        height: '300px',
         panelClass: 'popup-grid',
         data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });
