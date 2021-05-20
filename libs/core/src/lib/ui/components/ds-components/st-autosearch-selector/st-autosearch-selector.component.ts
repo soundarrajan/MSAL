@@ -112,6 +112,16 @@ export class StAutosearchSelectorComponent implements OnInit {
     }else if(this.masterType == EstAutoSearchType.payableTo){
       requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":"2,11"}]}}; 
       URL = 'api/masters/counterparties/listByTypesAutocomplete';
+    } else if(this.masterType === EstAutoSearchType.customer){
+      requestParam = {
+        Order: null,
+        PageFilters: { Filters: [] },
+        SortList: { SortList: [] },
+        Filters: [{ ColumnName: 'CounterpartyTypes', Value: '4' }],
+        SearchText: null,
+        Pagination: { Skip: 0, Take: 25 }
+      };
+      URL = 'api/masters/counterparties/listByTypes'
     }
     
 

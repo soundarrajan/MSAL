@@ -357,13 +357,36 @@
                 </div>
                 <div class="row pt-3">
                     <div class="col-md-3">
-                        <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Paid Amount</mat-label>
-                                <input matInput
-                                name="paidAmount"
-                                [(ngModel)]="formValues.paymentDetails.paidAmount" [readonly]="formValues.status.name !== 'Approved'">
-                            </mat-form-field>
+                        <div
+                          id="custom-form-field"
+                          class="custom-form-field"
+                          class="lightTheme"
+                        >
+                          <mat-form-field
+                            class="without-search"
+                            appearance="legacy"
+                            [ngClass]="{
+                              'invalid-field': formErrors.paymentDetails?.paidAmount
+                            }"
+                          >
+                            <mat-label>Paid Amount</mat-label>
+                            <input
+                              matInput
+                              (blur)="isFormValid({ useToaster: false })"
+                              required
+                              name="paidAmount"
+                              [(ngModel)]="formValues.paymentDetails.paidAmount"
+                            />
+                          </mat-form-field>
+                        </div>
+                    </div>
+                    <div *ngIf="getDebunkerCheckboxConfig().isVisible" class="col-md-3">
+                        <div class="checkbox">
+                          <mat-checkbox
+                            disabled
+                            [checked]="getDebunkerCheckboxConfig().value"
+                            >Debunker</mat-checkbox
+                          >
                         </div>
                     </div>
                 </div>
@@ -466,7 +489,7 @@
                                         formErrors.counterpartyDetails?.customer &&
                                         getCustomerDateConfig().isMandatory
                                     }"
-                                    [masterType]="'company'"
+                                    [masterType]="'customer'"
                                     (onChanged)="
                                     AC_valueChanges('customer', $event);
                                     isFormValid({ useToaster: false })
