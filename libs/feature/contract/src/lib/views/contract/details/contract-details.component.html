@@ -4,11 +4,12 @@
 [contractConfiguration]="contractConfiguration">
 <div style="width: 220px;">
   <div style="float:right;">
-    <button  class="cust-btn small"
+    <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
       *ngIf="!formValues.status || (formValues.status && formValues.status.name != 'Confirmed' && formValues.status.name != 'Delivered')"
+      pButton
       type="button"
       (click)="saveContract()"
-        ><span class="btn-text">Save</span></button>
+        ></button>
     <button  class="ui-button-info mr-1 btn-i-blue-color" label="Confirm"
       *ngIf="formValues.status &&  formValues.status.name != 'Cancelled' && formValues.status.name != 'Confirmed' && formValues.status.name != 'Delivered' "
       pButton
