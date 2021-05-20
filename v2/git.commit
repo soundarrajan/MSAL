@@ -1,7 +1,11 @@
-﻿commit d304757aeccb2f560ad44742f4be7c7e3f6d7a9c
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Thu May 20 23:08:34 2021 +0530
+﻿commit 62ea9b47914c59146bcf304fba583f210448de77
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu May 20 21:48:31 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10831: #32430 Min SOA fix
+    
+    #32430 Min SOA fix
+    
+    Related work items: #32430
 
 branch: master
