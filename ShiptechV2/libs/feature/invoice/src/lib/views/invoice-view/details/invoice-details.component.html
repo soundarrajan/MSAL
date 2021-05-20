@@ -35,7 +35,7 @@
                 <div class="row pt-3">
                     <div class="col-md-3">
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
-                            <mat-form-field class="without-search" 
+                            <mat-form-field class="without-search"
                                 appearance="legacy"
                                 [ngClass]="{
                                     'invalid-field':
@@ -385,7 +385,7 @@
                               <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [disabled]="formValues.status.name === 'Approved' ? true : false" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
                         </div>
                         <div id="custom-form-field" class="lightTheme">
-                            <mat-form-field class="without-search" appearance="legacy">
+                            <mat-form-field class="without-search" appearance="legacy" [ngClass]="{'invalid-field': formErrors.deliveryDate}">
                                 <mat-label>Delivery Date</mat-label>
                                 <input [(ngModel)]="formValues.deliveryDate" name="deliveryDate" #validToDateField="ngModel"
                                 matInput [matDatepicker]="deliveryDate" (focus)="deliveryDate.open()" autocomplete="off" placeholder="Delivery Date" [disabled]="formValues.status.name === 'Approved'" required>
