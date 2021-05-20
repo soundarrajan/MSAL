@@ -98,9 +98,10 @@ export interface IInvoiceDetailsItemOrderDetails {
 }
 
 export interface IInvoiceDetailsItemCounterpartyDetails {
+    customer: any;
+    counterpartyBankAccount:any;
     sellerName?: string;
     payableTo?: IInvoiceDetailsItemBaseInfo;
-    counterpartyBankAccount?: IInvoiceDetailsItemBaseInfo;
     brokerName?: string;
     paymentTerm?: IInvoiceDetailsItemBaseInfo;
     orderPaymentTerm?: IInvoiceDetailsItemBaseInfo;
