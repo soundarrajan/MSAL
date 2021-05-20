@@ -3,6 +3,7 @@
 }
 
 .add-contract-product-icon {
+  cursor: pointer;
   width: 25px;
   height: 25px;
   position: relative;
@@ -779,6 +780,14 @@ td.mat-cell {
 .custom-form-field-location .mat-form-field .mat-select-arrow-wrapper {
   position: relative;
   top: 2px;
+}
+
+.custom-form-field-location .mat-form-field .mat-form-field-label {
+  margin: 0px !important;
+}
+
+.custom-form-field-location .mat-form-field .mat-form-field-label .mat-label {
+  color: #C3C6CC !important; 
 }
 
 
