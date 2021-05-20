@@ -33,18 +33,19 @@ import _ from 'lodash';
 import { DecimalPipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
+const isEmpty = (object) => !Object.values(object).some(x => (x !== null && x !== ''));
 
-  export const MY_FORMATS = {
-    parse: {
-      dateInput: 'LL',
-    },
-    display: {
-      dateInput: 'ddd DD/MM/yyyy HH:mm',
-      monthYearLabel: 'YYYY',
-      dateA11yLabel: 'LL',
-      monthYearA11yLabel: 'YYYY',
-    },
-  };
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'ddd DD/MM/yyyy HH:mm',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -1277,28 +1278,16 @@ getBankAccountNumber(){
   }
 
   public saveInvoiceDetails(){
-    this.spinner.show();
-    if(this.formSubmitted){
+    if (this.formSubmitted) {
       return;
     }
+    this.spinner.show();
     this.formSubmitted = true;
-    if(!this.formValues.dueDate || !this.formValues.workingDueDate || !this.formValues.counterpartyDetails.paymentTerm.name
-       || !this.formValues.orderDetails.paymentCompany.name){
-        if(!this.formValues.dueDate){
-          this.toastrService.error("Due date is required.");
-        }
-        if(!this.formValues.workingDueDate){
-          this.toastrService.error("Working due date is required.");
-        }
-        if(!this.formValues.counterpartyDetails.paymentTerm.name){
-          this.toastrService.error("Payment term is required.");
-        }
-        if(!this.formValues.orderDetails.paymentCompany.name){
-          this.toastrService.error("Payment company is required.");
-        }
-        this.formSubmitted = false;
-        this.spinner.hide();
-        return;
+
+    if (!this.isFormValid({ useToaster: true })) {
+      this.formSubmitted = false;
+      this.spinner.hide();
+      return;
     }
     this.setAdditionalCostLine();
     let valuesForm = _.cloneDeep(this.formValues);//avoid error on ngModel of bankAccount
@@ -1396,7 +1385,8 @@ getBankAccountNumber(){
       // this.formValues.orderDetails.carrierCompany.displayName = event.displayName ? event.displayName : '';
       // this.formValues.orderDetails.carrierCompany.code = event.code ? event.code : '';
     }else if(type === 'customer'){
-
+      let res = isEmpty(eventValueObject) ? null : eventValueObject;
+      this.formValues.counterpartyDetails.customer = res;
     }else if(type === 'payableto'){
       this.formValues.counterpartyDetails.payableTo = eventValueObject;
       this.formValues.counterpartyDetails.counterpartyBankAccount.id = 0;
