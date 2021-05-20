@@ -295,7 +295,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   getDebunkerCheckboxConfig() {
     const isVisible =
-      this.manualtab[0].value === 'CreditNote' &&
+      this.manualtab[0].displayName === 'Credit' &&
       this.generalConfiguration?.invoiceConfiguration?.isDebunker;
 
     const isMandatory = false;
