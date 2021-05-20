@@ -44,6 +44,8 @@ export namespace InvoiceApiPaths {
   export const calculateCostRecon = () =>  `/api/recon/invoicecost`;
   export const getBankAccountNumber = () =>  `/api/invoice/getAccountNumberCounterpartylist`;
   export const getTenantConfiguration = () => `api/admin/tenantConfiguration/get`;
+  export const notesAutoSave = () => `api/invoice/autosave`;
+
 }
 
 @Injectable({
@@ -398,6 +400,21 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
+
+  @ObservableException()
+  notesAutoSave(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${InvoiceApiPaths.notesAutoSave()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  
 }
 
 export const INVOICE_COMPLETE_API_SERVICE = new InjectionToken<
