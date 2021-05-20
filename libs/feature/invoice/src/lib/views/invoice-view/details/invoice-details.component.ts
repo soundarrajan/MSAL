@@ -359,7 +359,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     // Bank Accound
     if (
-      !this.formValues.counterpartyDetails?.counterpartyBankAccount &&
+      isEmpty(this.formValues.counterpartyDetails?.counterpartyBankAccount) &&
       this.getBankAccountNumberDateConfig().isMandatory
     ) {
       error = true;
