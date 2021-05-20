@@ -526,6 +526,17 @@ export class NotesDetailsComponent implements OnInit {
     }
   }
 
+  detectCurrentUser(noteLine) {
+    if (noteLine && noteLine.createdBy && this.user) {
+        return this.user.name != noteLine.createdBy.name ? true : false;
+    }
+    return false;
+}
+
+deleteNotesLine(key) {
+
+}
+
 
 
 
