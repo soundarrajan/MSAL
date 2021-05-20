@@ -411,6 +411,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 export class NotesDetailsComponent implements OnInit {
   baseOrigin: string;
   switchTheme: any;
+  expandInvoiceNotes: boolean = false;
   formValues: any;
   @Select(UserProfileState.displayName) displayName$;
   @Select(UserProfileState.username) username$;
@@ -487,8 +488,10 @@ export class NotesDetailsComponent implements OnInit {
       'id': 0,
       'note': '',
       'createdBy': createdBy,
-      'createdAt': this.formatDateForBe(new Date())
+      'createdAt': this.formatDateForBe(new Date()),
+      'lastModifiedAt': ''
     }
+
 
     this.formValues.invoiceNotes.push(notesLine);
 
@@ -501,8 +504,14 @@ export class NotesDetailsComponent implements OnInit {
 
   updateNotes(key) {
     this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(this.formatDateForBe(new Date()));
+    this.changeDetectorRef.detectChanges();
     console.log(this.formValues.invoiceNotes);
     console.log(this._entityId);
+    this.autoSave();
+  
+  }
+
+  autoSave() {
     if (parseFloat(this._entityId)) {
       let payload = {
         "InvoiceId": parseFloat(this._entityId),
@@ -521,6 +530,7 @@ export class NotesDetailsComponent implements OnInit {
           this.toastr.error(result);
         } else {
           console.log(result);
+          this.formValues.invoiceNotes = _.cloneDeep(result);
         }
      });
     }
@@ -531,11 +541,16 @@ export class NotesDetailsComponent implements OnInit {
         return this.user.name != noteLine.createdBy.name ? true : false;
     }
     return false;
-}
+  }
 
-deleteNotesLine(key) {
-
-}
+  deleteNotesLine(key) {
+    if (this.formValues.invoiceNotes[key].id) {
+      this.formValues.invoiceNotes[key].isDeleted = true;
+      this.autoSave();
+    } else {
+      this.formValues.invoiceNotes.splice(key, 1);
+    }
+  }
 
 
 
