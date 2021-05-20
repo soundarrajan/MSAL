@@ -1,9 +1,9 @@
-﻿commit 5b2f00682341964bb996f3223ecc96e803871070
+﻿commit 29e3f28ec8bac3b76f9ee212c3adc2bffe0d01e1
 Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Thu May 20 14:28:42 2021 +0530
+Date:   Thu May 20 14:54:13 2021 +0530
 
-    Revert "Revert "Contract screen defects fix""
+    contract screen changes
     
-    This reverts commit 421a3d726375ec16c1f027b615f0294747b23324.
+    contract screen changes
 
 branch: master
