@@ -1,9 +1,7 @@
-﻿commit 14694af2c8a4b0871d582abecc5bfd19ead09e5b
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Thu May 20 12:34:42 2021 +0530
+﻿commit 0b815c74ba14b080ebb325ef0c280598e34a1eb9
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Thu May 20 13:33:28 2021 +0530
 
-    Contract screen defects fix
-    
-    Contract screen defects fix
+    Create invoice from edit page. Fix invoiceChecks gets edited issue.
 
 branch: master
