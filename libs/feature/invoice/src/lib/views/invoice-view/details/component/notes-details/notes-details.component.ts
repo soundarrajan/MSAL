@@ -415,12 +415,22 @@ export class NotesDetailsComponent implements OnInit {
   @Select(UserProfileState.displayName) displayName$;
   @Select(UserProfileState.username) username$;
   user: IDisplayLookupDto<number, string>;
+  _entityId: string;
 
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
     } 
     this.formValues = formValues;
+  }
+
+  
+  get entityId(): string {
+    return this._entityId;
+  }
+
+  @Input() set entityId(value: string) {
+    this._entityId = value;
   }
  
 
@@ -477,7 +487,7 @@ export class NotesDetailsComponent implements OnInit {
       'id': 0,
       'note': '',
       'createdBy': createdBy,
-      'lastModifiedAt': new Date()
+      'createdAt': this.formatDateForBe(new Date())
     }
 
     this.formValues.invoiceNotes.push(notesLine);
@@ -487,6 +497,36 @@ export class NotesDetailsComponent implements OnInit {
     
 
   }
+
+
+  updateNotes(key) {
+    this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(this.formatDateForBe(new Date()));
+    console.log(this.formValues.invoiceNotes);
+    console.log(this._entityId);
+    if (parseFloat(this._entityId)) {
+      let payload = {
+        "InvoiceId": parseFloat(this._entityId),
+        "InvoiceNotes": this.formValues.invoiceNotes
+      }
+      this.invoiceService
+      .notesAutoSave(payload)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          console.log(result);
+        }
+     });
+    }
+  }
+
+
 
 
   formatDate(date?: any) {
@@ -499,7 +539,6 @@ export class NotesDetailsComponent implements OnInit {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      currentFormat = currentFormat.replace(/HH:mm/g, '');
       let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
@@ -508,6 +547,17 @@ export class NotesDetailsComponent implements OnInit {
       return formattedDate;
     }
   }
+
+  formatDateForBe(value) {
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
+  }
+
+
 
 
 
