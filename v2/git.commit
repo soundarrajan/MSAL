@@ -1,7 +1,9 @@
-﻿commit 0b815c74ba14b080ebb325ef0c280598e34a1eb9
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Thu May 20 13:33:28 2021 +0530
+﻿commit 5b2f00682341964bb996f3223ecc96e803871070
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Thu May 20 14:28:42 2021 +0530
 
-    Create invoice from edit page. Fix invoiceChecks gets edited issue.
+    Revert "Revert "Contract screen defects fix""
+    
+    This reverts commit 421a3d726375ec16c1f027b615f0294747b23324.
 
 branch: master
