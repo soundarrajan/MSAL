@@ -1,11 +1,9 @@
-﻿commit 3b6b87b3928f3803afeb50b701c3693b51b43ae1
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed May 19 22:06:15 2021 +0000
+﻿commit 14694af2c8a4b0871d582abecc5bfd19ead09e5b
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Thu May 20 12:34:42 2021 +0530
 
-    Merged PR 10810: Min SOA checkbox bug
+    Contract screen defects fix
     
-    Min SOA checkbox bug
-    
-    Related work items: #32409
+    Contract screen defects fix
 
 branch: master

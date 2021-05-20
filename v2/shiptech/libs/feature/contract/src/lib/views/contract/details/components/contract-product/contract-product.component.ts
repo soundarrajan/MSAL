@@ -801,6 +801,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   @Input() eventsSelectedTabIndex: Observable<void>;
   @Input() eventsEntityCopied: Observable<void>;
   expandProductPopUp: any =  false;
+  displayProdContainer: boolean = false;
 
   eventsSubject2: Subject<any> = new Subject<any>();
   eventsSubject3: Subject<any> = new Subject<any>();
@@ -839,6 +840,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   ngOnInit(){
     this.entityName = 'Contract';
     this.getContractFormulaList1();
+    this.addProductToContract();
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
     this.eventsSelectedTabIndexSubscription = this.eventsSelectedTabIndex.subscribe((data) => this.setSelectedTab(data));
     this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe((data) => this.setEntityCopied(data));
