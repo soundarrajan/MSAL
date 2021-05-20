@@ -1,9 +1,11 @@
-﻿commit 978bd436dad56c667c21b0d828c56b04af3388c5
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Thu May 20 21:27:24 2021 +0530
+﻿commit 9f734478672cae8f1506d87be1d01a4742f592e0
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Thu May 20 17:19:11 2021 +0000
 
-    Contract screen changes
+    Merged PR 10830: BankAccountNumber values is changed for actions also
     
-    Contract screen changes
+    BankAccountNumber values is changed for actions also
+    
+    Related work items: #26715
 
 branch: master

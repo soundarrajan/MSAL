@@ -1413,12 +1413,16 @@ getBankAccountNumber(){
     this.spinner.show();
     this.formSubmitted = true;
     this.setAdditionalCostLine();
+    let valuesForm = _.cloneDeep(this.formValues);//avoid error on ngModel of bankAccount
+    if(this.formValues.counterpartyDetails.counterpartyBankAccount.id == undefined || this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0){
+      valuesForm.counterpartyDetails.counterpartyBankAccount = null;
+    }
     if(option == 'submitreview'){
       this.invoiceService.submitForReview(this.formValues.id).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice submitted for review successfully.');
       });
     } else if(option == 'submitapprove'){
-      this.invoiceService.submitapproval(this.formValues).subscribe((result: any) => {
+      this.invoiceService.submitapproval(valuesForm).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice submitted for approval successfully.');
       });
     } else if(option == 'cancel'){
@@ -1438,7 +1442,7 @@ getBankAccountNumber(){
         this.handleServiceResponse(result, 'Invoice rejected successfully.')
       });
     } else if(option == 'approve'){
-      this.invoiceService.approveInvoiceItem(this.formValues).subscribe((result: any) => {
+      this.invoiceService.approveInvoiceItem(valuesForm).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice approved successfully.')
       });
     } else if(option == 'create'){
