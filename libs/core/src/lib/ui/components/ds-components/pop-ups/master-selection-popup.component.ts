@@ -27,10 +27,10 @@ import { catchError, map } from 'rxjs/operators';
     </div>
     <mat-dialog-content>
         <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 193px);"
-            [gridOptions]="dialog_gridOptions"  
+            [gridOptions]="dialog_gridOptions"
             class="ag-theme-material">
-        </ag-grid-angular> 
-        <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>  
+        </ag-grid-angular>
+        <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>
     </mat-dialog-content>
   </div>
     `,
@@ -41,7 +41,7 @@ export class MasterSelectionDialog {
     public searchedValue: string = '';
     _apiUrl;
     constructor(private http: HttpClient, private appConfig: AppConfig, public dialogRef: MatDialogRef<MasterSelectionDialog>, @Optional() @Inject(MAT_DIALOG_DATA) public data: ImasterSelectionPopData) {
-        this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS; 
+        this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
         // this.loadSelectedTypes(data.selectionType);
         if(data.selectionType == EstAutoSearchType.company || data.selectionType == EstAutoSearchType.carrier){
             this.loadCompanyGridOption();
@@ -49,11 +49,13 @@ export class MasterSelectionDialog {
             this.loadPaymentTermsGridOption();
         }else if(data.selectionType == EstAutoSearchType.payableTo){
             this.loadPayableToGridOption();
+        } else if (data.selectionType == EstAutoSearchType.customer){
+            this.loadCustomerGridOption();
         }
     }
 
     ngOnInit() {
-        
+
     }
 
     public companyColumnDefs = [];
@@ -98,6 +100,120 @@ export class MasterSelectionDialog {
             });
         }
     }
+
+    loadCustomerGridOption(){
+        this.companyColumnDefs = [
+            {
+              headerName: 'ID',
+              headerTooltip: 'ID',
+              field: 'id',
+              width: 50,
+              cellClass: ['aggridtextalign-left']
+            },
+            {
+              headerName: 'Name',
+              headerTooltip: 'Customer name',
+              field: 'name',
+              width: 150,
+              cellClass: ['aggridtextalign-left']
+            },
+            {
+              headerName: 'Parent',
+              headerTooltip: 'Parent',
+              field: 'parent.name',
+              width: 150,
+              cellClass: ['aggridtextalign-left']
+            },
+            {
+              headerName: 'Created By',
+              headerTooltip: 'Created By',
+              field: 'createdBy.name',
+              width: 150,
+              // cellClass: ["aggridtextalign-right aggridlink"],
+              cellClass: ['hoverdisable hover-cell-menu-icon']
+            },
+            {
+              headerName: 'Created On',
+              headerTooltip: 'Created On',
+              field: 'createdOn',
+              width: 150,
+              cellClass: ['aggridtextalign-right']
+            },
+            {
+              headerName: 'Last Modified by',
+              headerTooltip: 'Last Modified by',
+              field: 'lastModifiedBy.name',
+              width: 150,
+              cellClass: ['aggridtextalign-left']
+            },
+            {
+              headerName: 'LastModified on',
+              headerTooltip: 'LastModified on',
+              field: 'lastModifiedOn',
+              width: 150,
+              cellClass: ['aggridtextalign-left']
+            },
+            {
+              headerName: 'Status',
+              headerTooltip: 'Status',
+              field: 'isDeleted',
+              width: 150,
+              cellClass: ['aggridtextalign-left']
+            }
+          ];
+          this.dialog_gridOptions = <GridOptions>{
+            defaultColDef: {
+              filter: true,
+              sortable: true,
+              resizable: true,
+              headerCheckboxSelection: false,
+              checkboxSelection: isFirstColumn
+            },
+            columnDefs: this.companyColumnDefs,
+            suppressRowClickSelection: true,
+            headerHeight: 30,
+            rowHeight: 30,
+            rowSelection: 'single',
+            // groupIncludeTotalFooter: true,
+            onGridReady: params => {
+              this.dialog_gridOptions.api = params.api;
+              this.dialog_gridOptions.columnApi = params.columnApi;
+              this.dialog_gridOptions.api.sizeColumnsToFit();
+              this.dialog_gridOptions.api.setRowData(this.rowData);
+              this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+            },
+            getRowStyle: function(params) {
+              if (params.node.rowPinned) {
+                return { 'font-weight': '500', 'font-size': '20px' };
+              }
+            },
+            onColumnResized: function(params) {
+              if (
+                params.columnApi.getAllDisplayedColumns().length <= 5 &&
+                params.type === 'columnResized' &&
+                params.finished === true &&
+                params.source === 'uiColumnDragged'
+              ) {
+                params.api.sizeColumnsToFit();
+              }
+            }
+          };
+
+        // Load Data
+        let payload = {
+            Order: null,
+            PageFilters: { Filters: [] },
+            SortList: { SortList: [] },
+            Filters: [{ ColumnName: 'CounterpartyTypes', Value: '4' }],
+            SearchText: null,
+            Pagination: { Skip: 0, Take: 25 }
+          };
+          this.getCustomerList(payload).subscribe((data: any) => {
+            this.rowData = data.payload;
+            if (data.payload) this.dialog_gridOptions.api.setRowData(this.rowData);
+          });
+    }
+
     loadCompanyGridOption(){
         this.companyColumnDefs = [
             { headerName: "ID", headerTooltip: "ID", field: "id", width: 50,cellClass: ["aggridtextalign-left"] },
@@ -265,7 +381,7 @@ export class MasterSelectionDialog {
             console.log(this.rowData);
         });
     }
-  
+
   @ObservableException()
   getCompanyList(request: any): Observable<any> {
     const requestUrl = `${this._apiUrl}/${masterURLenums.companyListURL}`;
@@ -293,6 +409,16 @@ export class MasterSelectionDialog {
     );
   }
 
+  @ObservableException()
+  getCustomerList(request: any): Observable<any> {
+    const requestUrl = `${this._apiUrl}/${masterURLenums.customerListURL}`;
+    return this.http.post(requestUrl, { Payload: request }).pipe(
+      map((body: any) => body),
+      catchError((e) => of('Error, could not load the customer list'))
+    );
+  }
+
+
   selectItem(){
     let selectedNodes = this.dialog_gridOptions.api.getSelectedNodes();
     if(selectedNodes.length){
@@ -300,7 +426,7 @@ export class MasterSelectionDialog {
     }else{
         this.dialogRef.close('close')
     }
-    
+
   }
 
 }
@@ -308,6 +434,7 @@ export class MasterSelectionDialog {
 export enum masterURLenums {
     companyListURL = 'api/masters/companies/list',
     paymentTermListURL = 'api/masters/paymentterm/list',
+    customerListURL = 'api/masters/counterparties/listByTypes',
     payableToURL = 'api/masters/counterparties/listByTypes',
     mock = 'Mock',
     mixed = 'Mixed'
@@ -317,7 +444,7 @@ export interface ImasterSelectionPopData{
     selectionType?: EstAutoSearchType;
     dialog_gridOptions?:GridOptions;
     dialog_header?:string
-} 
+}
 
 function isFirstColumn(params) {
     var displayedColumns = params.columnApi.getAllDisplayedColumns();

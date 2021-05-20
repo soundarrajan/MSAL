@@ -129,7 +129,7 @@ export class MastersListApiService
     const requestUrl = `${this._apiUrl}/${URL}`;
     return this.http.post(requestUrl, {'payload': request}).pipe(
       map((body: any) => body),
-      catchError(() => of('Error, could not load the formula list'))
+      catchError(() => of('Error, could not load the formula list 2'))
     );
   }
 
