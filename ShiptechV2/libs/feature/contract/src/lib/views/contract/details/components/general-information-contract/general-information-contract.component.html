@@ -322,10 +322,10 @@
         <div class="allowed-list-modal-container">
             Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
         </div>
-        <div *ngIf="formValues.company && !(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menu1" class="edit-allow-companies">
+        <div [matMenuTriggerFor]="menu1" class="edit-allow-companies">
         </div>
-        <div *ngIf="!formValues.company || (formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
-        </div>
+        <!-- <div *ngIf="!formValues.company || (formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
+        </div> -->
         <mat-menu #menu1="matMenu" class="allowed-company-modal">
           <div [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
             <div class="col-md-12 header-allowed-company">

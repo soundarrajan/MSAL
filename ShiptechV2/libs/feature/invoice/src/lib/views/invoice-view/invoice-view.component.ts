@@ -171,10 +171,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     let deliveryProductIds = [];
     data.productDetails.forEach((v, k) => {
         v.id = 0;
-        // v.invoiceQuantity = null;
         v.invoiceRate = 0;
         v.description = null;
-        // v.invoiceRateCurrency = null;
         v.pricingDate = null;
         v.invoiceAmount = null;
         v.reconStatus = null;
@@ -208,6 +206,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     data.deliveryDate = data.orderDeliveryDate;
     data.orderDetails.carrierCompany = data.orderDetails.orderCarrierCompany;
     data.orderDetails.paymentCompany = data.orderDetails.orderPaymentCompany;
+    data.invoiceChecks = null;
 
     this.displayDetailFormvalues = false;
     this.spinner.show();
