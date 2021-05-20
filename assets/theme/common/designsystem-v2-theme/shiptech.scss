@@ -723,6 +723,21 @@
 
 
   .inventory-report-popup{
+    .goButton {
+      width: 49px;
+      height: 23px;
+      background: #74cdea;
+      border-radius: 5px;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      color: #fff;
+      float: right;
+      text-align: center;
+      position: relative;
+      bottom: 5px;
+      cursor: pointer;
+    }
     ag-grid-angular{
       .ag-body-viewport{
         margin-top: 2px;
