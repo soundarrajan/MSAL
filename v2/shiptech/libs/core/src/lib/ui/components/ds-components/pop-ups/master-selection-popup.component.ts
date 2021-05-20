@@ -7,6 +7,9 @@ import { ObservableException } from '@shiptech/core/utils/decorators/observable-
 import { GridOptions, Optional } from "ag-grid-community";
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import moment from 'moment';
+
 @Component({
     selector: 'master-search-popup',
     template:
@@ -70,7 +73,8 @@ export class MasterSelectionDialog implements OnInit{
   columnFilterModelArr = [];
     _apiUrl;
     constructor(private http: HttpClient, private appConfig: AppConfig, public dialogRef: MatDialogRef<MasterSelectionDialog>, 
-        @Optional() @Inject(MAT_DIALOG_DATA) public data: ImasterSelectionPopData,private changeDetectorRef: ChangeDetectorRef) {
+        @Optional() @Inject(MAT_DIALOG_DATA) public data: ImasterSelectionPopData,private changeDetectorRef: ChangeDetectorRef,
+        private format: TenantFormattingService) {
         this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS; 
         // this.loadSelectedTypes(data.selectionType);
         if(data.selectionType == EstAutoSearchType.company || data.selectionType == EstAutoSearchType.carrier){
@@ -211,7 +215,8 @@ export class MasterSelectionDialog implements OnInit{
               headerTooltip: 'Created On',
               field: 'createdOn',
               width: 150,
-              cellClass: ['aggridtextalign-right']
+              cellClass: ['aggridtextalign-right'],
+              valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''
             },
             {
               headerName: 'Last Modified by',
@@ -225,7 +230,8 @@ export class MasterSelectionDialog implements OnInit{
               headerTooltip: 'LastModified on',
               field: 'lastModifiedOn',
               width: 150,
-              cellClass: ['aggridtextalign-left']
+              cellClass: ['aggridtextalign-left'],
+              valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''
             },
             {
               headerName: 'Status',
@@ -248,9 +254,9 @@ export class MasterSelectionDialog implements OnInit{
             { headerName: "Created By", headerTooltip: "Created By", field: "createdBy.name", width: 150,
                 // cellClass: ["aggridtextalign-right aggridlink"],
                 cellClass: ["hoverdisable hover-cell-menu-icon"] },
-            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"] },
+            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"],valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''  },
             { headerName: "Last Modified by", headerTooltip: "Last Modified by", field: "lastModifiedBy.name", width: 150, cellClass: ["aggridtextalign-left"] },
-            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"],valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''  },
             { headerName: "Status", headerTooltip: "Status", field: "isDeleted", width: 150, cellClass: ["aggridtextalign-left"] },
             { headerName: "Company Code", headerTooltip: "Company Code", field: "code", width: 150, cellClass: ["aggridtextalign-left"] }
         ];
@@ -265,9 +271,9 @@ export class MasterSelectionDialog implements OnInit{
              { headerName: "Created By", headerTooltip: "Created By", field: "createdBy.name", width: 150,
                 // cellClass: ["aggridtextalign-right aggridlink"],
                 cellClass: ["hoverdisable hover-cell-menu-icon"] },
-            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"] },
+            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"],valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''  },
             { headerName: "Last Modified by", headerTooltip: "Last Modified by", field: "lastModifiedBy.name", width: 150, cellClass: ["aggridtextalign-left"] },
-            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"] }
+            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"],valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''  }
         ];
         this.gridOptionAll();
     }
@@ -278,9 +284,9 @@ export class MasterSelectionDialog implements OnInit{
             { headerName: "Created By", headerTooltip: "Created By", field: "createdBy.name", width: 150,
                 // cellClass: ["aggridtextalign-right aggridlink"],
                 cellClass: ["hoverdisable hover-cell-menu-icon"] },
-            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"] },
+            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"],valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''  },
             { headerName: "Last Modified by", headerTooltip: "Last Modified by", field: "lastModifiedBy.name", width: 150, cellClass: ["aggridtextalign-left"] },
-            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"],valueFormatter: params => params.value ? moment(params.value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')): ''  },
             { headerName: "Status", headerTooltip: "Status", field: "isDeleted", width: 150, cellClass: ["aggridtextalign-left"] }
         ];
          this.gridOptionAll();

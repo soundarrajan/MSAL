@@ -1,11 +1,7 @@
-﻿commit 88bf4d0667ded16c63501ae6c94014e2960b0265
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Thu May 20 13:54:24 2021 +0000
+﻿commit c71d3828cccec08c0bf0d637dcf1833eee2cc9dd
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu May 20 14:12:16 2021 +0000
 
-    Merged PR 10826: Filter and footer pagination
-    
-    Filter and footer pagination
-    
-    Related work items: #26715
+    Merged PR 10828: Replace name with displayName of user for invoice notes section
 
 branch: master
