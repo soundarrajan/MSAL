@@ -9948,10 +9948,14 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
         $scope.deleteVesselProduct = function(key) {
             //Delete childs
-            angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
-                $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
-            });
-            $scope.formValues.vesselProducts[key].isDeleted = true;
+            if($scope.formValues.vesselProducts[key].product!=null){
+                angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
+                    $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
+                });
+                $scope.formValues.vesselProducts[key].isDeleted = true;
+            }else{
+                $scope.formValues.vesselProducts.splice(key,1);
+            }
         }
 
         $scope.deleteVesselProductTank = function(vpKey, vptKey) {

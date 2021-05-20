@@ -1180,7 +1180,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 		            });
         		}
         	}
-            debugger;
             newProduct.product = product;
             newProduct.defaultProduct = angular.copy(product);
             newProduct.screenActions = [];
@@ -1761,6 +1760,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     location.etb = etb;
                     location.etd = etd;
                     location.recentEta = recentEta;
+                    location.optionId=ctrl.request.locations.length;
                     if (eta && etb && etd) {
                         if (!ctrl.etaDefaultedCount) {
                             ctrl.etaDefaultedCount = {};
@@ -1803,7 +1803,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 });
             });
         };
-
         function setDefaultLocationFields(locationId, vesselVoyageId, data) {
             let location;
             for (let i = 0; i < ctrl.request.locations.length; i++) {
