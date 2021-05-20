@@ -1,11 +1,9 @@
-﻿commit fa29266247b29582e3dadbe3d6c1302e95bb6242
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu May 20 13:30:54 2021 +0000
+﻿commit 7dd462bcb1ba98c46e97ef7f5c05f6286c900580
+Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
+Date:   Thu May 20 13:41:52 2021 +0000
 
-    Merged PR 10824: Current ROB error
+    Merged PR 10825: Updated UI for Notes DisplayName
     
-    Current ROB error
-    
-    Related work items: #32447
+    Related work items: #31000
 
 branch: master
