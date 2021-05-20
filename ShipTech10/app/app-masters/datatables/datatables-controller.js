@@ -1391,7 +1391,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         
                     },
                     {
-                        name: 'createdBy.name',
+                        name: 'createdBy.displayName',
                         displayName: 'Added By',
                         enableCellEdit: false,
                         enableSorting: false
