@@ -116,7 +116,7 @@ export class VesselInfoComponent implements OnInit {
     currentROBObj.ULSFO = ROBArbitrageData?.ulsfoCurrentStock;
     currentROBObj.LSDIS = ROBArbitrageData?.lsdisCurrentStock;
     currentROBObj.HSDIS = ROBArbitrageData?.hsdisCurrentStock;
-    this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
+    //this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
     
   }
   ROBOnChange(event,value, column) {
@@ -149,8 +149,6 @@ export class VesselInfoComponent implements OnInit {
     this.store.dispatch(new UpdateCurrentROBAction(value,column));
     console.log('Current ROB',this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB))
     event.stopPropagation();
-    this.agGridCellData.updateSOA(value);
-    this.bunkerPlanService.setchangeCurrentROBObj(true);
     /* This service only for Test purpose only. 
     need to build request payload by using column, value based on BE update*/
     // this.localService.updateROBArbitrageChanges({id:this.vesselData?.vesselId}).subscribe((data)=> {

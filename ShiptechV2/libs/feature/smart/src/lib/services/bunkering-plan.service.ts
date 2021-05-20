@@ -21,9 +21,6 @@ export namespace BunkeringPlanApiPaths{
 })
 export class BunkeringPlanService{
 
-  private changeCurrentROBObj$ = new BehaviorSubject<boolean>(false);
-  _changeCurrentROBObj$ = this.changeCurrentROBObj$.asObservable();
-
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
 
@@ -52,10 +49,6 @@ getBunkerPlanIdAndStatus(request: any): Observable<any> {
       { payload: request }
     );
   }
-
-  setchangeCurrentROBObj(data) {
-    this.changeCurrentROBObj$.next(data);
-}
 }
 
 
