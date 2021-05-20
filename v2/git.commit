@@ -1,7 +1,9 @@
-﻿commit 81b132466457c2a7004c0ceb44b973b07b60461d
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Thu May 20 16:16:35 2021 +0530
+﻿commit f812212e3560e8b00c5b178fd4ef9bd63b8cec10
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu May 20 11:02:29 2021 +0000
 
-    Invoice additional cost component mandatory symbol and invoice type popup design fix. #31648
+    Merged PR 10820: Added notes section in invoice screen
+    
+    Added notes section in invoice screen
 
 branch: master
