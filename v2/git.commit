@@ -1,7 +1,9 @@
-﻿commit c71d3828cccec08c0bf0d637dcf1833eee2cc9dd
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 20 14:12:16 2021 +0000
+﻿commit 978bd436dad56c667c21b0d828c56b04af3388c5
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Thu May 20 21:27:24 2021 +0530
 
-    Merged PR 10828: Replace name with displayName of user for invoice notes section
+    Contract screen changes
+    
+    Contract screen changes
 
 branch: master
