@@ -1,9 +1,11 @@
-﻿commit 7dd462bcb1ba98c46e97ef7f5c05f6286c900580
-Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
-Date:   Thu May 20 13:41:52 2021 +0000
+﻿commit 88bf4d0667ded16c63501ae6c94014e2960b0265
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Thu May 20 13:54:24 2021 +0000
 
-    Merged PR 10825: Updated UI for Notes DisplayName
+    Merged PR 10826: Filter and footer pagination
     
-    Related work items: #31000
+    Filter and footer pagination
+    
+    Related work items: #26715
 
 branch: master
