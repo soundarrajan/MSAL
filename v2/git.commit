@@ -1,11 +1,7 @@
-﻿commit 9f734478672cae8f1506d87be1d01a4742f592e0
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Thu May 20 17:19:11 2021 +0000
+﻿commit d304757aeccb2f560ad44742f4be7c7e3f6d7a9c
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Thu May 20 23:08:34 2021 +0530
 
-    Merged PR 10830: BankAccountNumber values is changed for actions also
-    
-    BankAccountNumber values is changed for actions also
-    
-    Related work items: #26715
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
