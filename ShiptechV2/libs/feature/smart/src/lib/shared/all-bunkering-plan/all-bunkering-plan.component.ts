@@ -24,6 +24,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   planStatus = 'all';
   bunkerPlanLogDetail: any = [];
   requestPayload : any = {};
+  inputModel = '';
 
   public dialogRef: MatDialogRef<NoDataComponent>;
   public countArray = [];//Temp Variable to store the count of accordions to be displayed
@@ -74,26 +75,4 @@ export class AllBunkeringPlanComponent implements OnInit {
     })
   }
 
-
-}
-import {
-  Injector,
-  Pipe,
-  PipeTransform
-} from '@angular/core';
-@Pipe({
-  name: 'filter',
-  pure: false
-})
-export class FilterPipe implements PipeTransform {
-
-  public constructor(private readonly injector: Injector) {
-  }
-
-  transform(value: Array<any>): any {
-    if ((value.filter(e => e.expanded == true)).length == 0)
-      return value.filter(e => e.expanded == false);
-    else
-      return value.filter(e => e.expanded == true);
-  }
 }
