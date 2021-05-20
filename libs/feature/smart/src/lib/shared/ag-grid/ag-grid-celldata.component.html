@@ -209,7 +209,7 @@
     <div  style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuCheckbox($event,params);"
     (click)="toggleMenu3Checkbox($event)"
     (mouseleave)="!menuClick  && toggleMenu2Checkbox();">
-    <mat-checkbox style="z-index: 1050;pointer-events:none;" [(ngModel)]="isChecked" 
+    <mat-checkbox style="z-index: 1050;pointer-events:none;" [(ngModel)]="params.value" 
     [matMenuTriggerFor]="checkboxEditMenu"
   [matMenuTriggerData]="params.value" #inputMenuTrigger="matMenuTrigger" >
     </mat-checkbox>
