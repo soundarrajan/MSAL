@@ -1445,7 +1445,7 @@ getBankAccountNumber(){
       this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
-        height: '400px',
+        height: '300px',
         panelClass: 'popup-grid',
         data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });

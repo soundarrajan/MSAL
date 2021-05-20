@@ -12,7 +12,7 @@
                   <div class="search-product-container col-md-10">
                     <span class="search-product-lookup" (click)="$event.stopPropagation();$event.preventDefault()">
                     </span>
-                    <input matInput 
+                    <input matInput
                       (click)="$event.stopPropagation();$event.preventDefault();"
                       [(ngModel)]="additionalSearch"
                       (input)="searchCostName($event.target.value)"
@@ -27,15 +27,15 @@
                   <!-- Product Column -->
                   <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Select Additional Cost </th>
-                    <td mat-cell *matCellDef="let element"> 
+                    <td mat-cell *matCellDef="let element">
                       <mat-radio-group  [(ngModel)]="selectedAdditionalLine" (ngModelChange)="addCostDetail(selectedAdditionalLine); selectedAdditionalLine = null;">
-                        <mat-radio-button [value]="element">   
-                          {{element.name}} 
+                        <mat-radio-button [value]="element">
+                          {{element.name}}
                         </mat-radio-button>
                       </mat-radio-group>
                     </td>
                   </ng-container>
-        
+
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
@@ -47,6 +47,7 @@
           </td>
           <td class="padding" style="max-width: initial;min-width: 150px" >
             <b>Cost Type</b>
+            <span style="color: orange;font-size: 9px;margin-left: 2px;">*</span>
           </td>
           <td class="padding" style="max-width: initial;min-width: 200px" >
             <b>% of</b>
@@ -94,20 +95,20 @@
       </thead>
       <tbody>
           <ng-container  *ngFor="let additionalCost of formValues.costDetails | keyvalue : originalOrder">
-            <tr *ngIf="!additionalCost.value.isDeleted">              
+            <tr *ngIf="!additionalCost.value.isDeleted">
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
                 <a class="remove-icon" style="margin-left: 10px;"  (click)="removeAdditionalCostLine(additionalCost.key)"></a>
-              </td>              
+              </td>
               <td class="padding" style="max-width: initial;min-width: 200px">
                 <div class="delivery-number-container">
                   {{additionalCost.value.costName.name}}
                 </div>
-              </td> 
+              </td>
               <td  style="max-width: initial;min-width: 150px" class="padding-line" >
                 <div  class="custom-form-field-additional-cost"
                   [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                     <mat-form-field class="without-search dotted-form-field product-field" appearance="legacy">
-                      <mat-select 
+                      <mat-select
                           [(ngModel)]="additionalCost.value.costType"
                           (ngModelChange)="triggerChangeFieldsAppSpecific('costType', additionalCost.key);invoiceConvertUom('cost', additionalCost.key)"
                           [compareWith]="compareUomObjects"
@@ -125,7 +126,7 @@
                 <div  class="custom-form-field-additional-cost"
                   [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                     <mat-form-field class="without-search dotted-form-field product-field" appearance="legacy">
-                      <mat-select 
+                      <mat-select
                           [(ngModel)]="additionalCost.value.product"
                           [compareWith]="compareProductObjects"
                           [disableOptionCentering]="true"
@@ -140,7 +141,7 @@
               </td>
               <td class="padding-left-column" style="max-width: initial;min-width: 200px" >
                 <div  class="non-editable-container">
-                  <div style="float: left;"> 
+                  <div style="float: left;">
                     {{quantityFormatValue(additionalCost.value.deliveryQuantity)}}
                   </div>
                   <div style="float: right;">
@@ -150,7 +151,7 @@
               </td>
               <td class="padding" style="max-width: initial;min-width: 200px" >
                 <div  class="non-editable-container">
-                  <div style="float: left;"> 
+                  <div style="float: left;">
                     {{quantityFormatValue(additionalCost.value.estimatedRate)}}
                   </div>
                   <div style="float: right;">
@@ -160,7 +161,7 @@
               </td>
               <td class="padding" style="max-width: initial;min-width: 200px" >
                 <div  class="non-editable-container">
-                  <div style="float: left;"> 
+                  <div style="float: left;">
                     {{amountFormatValue(additionalCost.value.estimatedAmount)}}
                   </div>
                   <div style="float: right;">
@@ -188,10 +189,10 @@
                   <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
                     <div class="split-field">
                       <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
-                        <input matInput 
+                        <input matInput
                           [(ngModel)]="additionalCost.value.invoiceQuantity"
                           autocomplete="off"
-                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           quantityFormat
                           >
                       </mat-form-field>
@@ -199,7 +200,7 @@
                           appearance="legacy">
                           <mat-select disableRipple
                             [(ngModel)]="additionalCost.value.invoiceQuantityUom"
-                            (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                            (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container">
@@ -227,11 +228,11 @@
                         </mat-select>
                       </mat-form-field>
                       <mat-form-field [ngClass]="{'unit-field': additionalCost.value.costType && additionalCost.value.costType.name == 'Unit', 'other-field': !additionalCost.value.costType || (additionalCost.value.costType && additionalCost.value.costType.name != 'Unit')}" class="without-search long-label-field" style="border: none;" appearance="legacy">
-                        <input matInput 
+                        <input matInput
                           autocomplete="off"
                           [(ngModel)]="additionalCost.value.invoiceRate"
                           quantityFormat
-                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           >
                       </mat-form-field>
                       <mat-form-field *ngIf="additionalCost.value.costType && additionalCost.value.costType.name == 'Unit'" style="width: 33%"
@@ -262,10 +263,10 @@
                   <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 300px;">
                     <div class="split-field">
                       <mat-form-field class="without-search long-label-field" style="width: 100%;border: none;" appearance="legacy">
-                        <input matInput 
+                        <input matInput
                           [(ngModel)]="additionalCost.value.invoiceAmount"
                           autocomplete="off"
-                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           quantityFormat
                           >
                       </mat-form-field>
@@ -278,10 +279,10 @@
                   <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
                     <div class="split-field">
                       <mat-form-field class="without-search long-label-field" style="width: 100%;border: none;" appearance="legacy">
-                        <input matInput 
+                        <input matInput
                           [(ngModel)]="additionalCost.value.invoiceExtras"
                           autocomplete="off"
-                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           quantityFormat
                           >
                       </mat-form-field>
@@ -319,7 +320,7 @@
                   </div>
                 </div>
               </td>
-              
+
             </tr>
           </ng-container>
       </tbody>
