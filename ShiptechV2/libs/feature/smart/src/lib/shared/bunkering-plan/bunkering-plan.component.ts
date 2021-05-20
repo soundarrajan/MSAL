@@ -146,7 +146,7 @@ export class BunkeringPlanComponent implements OnInit {
           headerName: BunkeringPlanColumnsLabels.PortCode, headerTooltip: BunkeringPlanColumnsLabels.PortCode, field: 'port_id', width: 96, cellRendererFramework: AGGridCellDataComponent,
          cellClassRules: {
             'light-cell': function (params) {
-              return params.rowIndex == params.api?.rowModel?.rowsToDisplay?.length -1 ;
+              return params?.data?.is_last_port == 'Y';
             }
           },cellRendererParams: (params) =>{
            return { type: this.type == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
@@ -425,11 +425,11 @@ export class BunkeringPlanComponent implements OnInit {
         let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
         titleEle.click();
         if(this.type == 'C')
-        this.addBplanToStore(this.bPlanData);
+        this.addBplanToStoreForSaveFunction(this.bPlanData);
       })
       
   }
-  addBplanToStore(params){
+  addBplanToStoreForSaveFunction(params){
     let data = [];
     params.forEach(bPlan =>{  
       data.push({
