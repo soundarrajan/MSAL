@@ -108,6 +108,9 @@ import { PriceTenantFormatDirective } from './views/invoice-view/details/compone
 import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
 import { ClaimDetailsComponent } from './views/invoice-view/details/component/claim-details/claim-details.component';
 import { CurrencyConvertorModalComponent } from './views/invoice-view/details/component/currency-convertor-modal/currency-convertor-modal.component';
+import { GeneralSettingsRouteResolver } from './views/invoice-view/details/general-settings-route.resolver';
+import { ContractService } from '../../../contract/src/lib/services/contract.service';
+
 
 @NgModule({
   imports: [
@@ -246,7 +249,9 @@ import { CurrencyConvertorModalComponent } from './views/invoice-view/details/co
     InvoiceDetailsService,
     DialogService,
     DecimalPipe,
-    StaticListsRouteResolver
+    StaticListsRouteResolver,
+    GeneralSettingsRouteResolver,
+    ContractService,
   ],
   entryComponents:[
     InvoiceTypeSelectionComponent,
