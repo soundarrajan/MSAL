@@ -1152,7 +1152,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             additionalCost.extrasAmount = parseFloat(additionalCost.extras) / 100 * parseFloat(additionalCost.amount) || 0;
             additionalCost.totalAmount = parseFloat(additionalCost.amount) + parseFloat(additionalCost.extrasAmount);
             additionalCost.rate = parseFloat(additionalCost.totalAmount) / parseFloat(additionalCost.confirmedQuantity);
-            additionalCost.locationAdditionalCostId = additionalCost.additionalCost.locationid;
+            additionalCost.locationAdditionalCostId = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
             return additionalCost;
         }
 
@@ -3343,7 +3343,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                                 },
                                 {
                                     ColumnName: 'AdditionalCostId',
-                                    Value: additionalCost?.additionalCost?.locationid ?? additionalCost?.locationAdditionalCostId // 25 // additionalCost.additionalCostLocationId
+                                    Value: additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid // 25
                                 },
                                 {
                                     ColumnName: 'Qty',
