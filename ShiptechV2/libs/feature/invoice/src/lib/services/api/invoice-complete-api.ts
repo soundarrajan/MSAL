@@ -407,7 +407,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   ): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.notesAutoSave()}`,
-      {Payload: request}
+      {payload: request}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
