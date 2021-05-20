@@ -211,6 +211,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   visibilityConfigs:any;
   formErrors: any = {};
   generalConfiguration: any;
+  customerList: any;
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -273,6 +274,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.currencyList = this.setListFromStaticLists('Currency');
       this.physicalSupplierList = this.setListFromStaticLists('Supplier');
       this.costTypeList = this.setListFromStaticLists('CostType');
+      this.customerList = this.setListFromStaticLists('Customer');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
     
