@@ -257,7 +257,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.entityName = 'Invoice';  
+    this.entityName = 'Invoice';
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.invoiceId);
     });
@@ -270,7 +270,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
-    
+
     this.tenantConfiguration();
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
@@ -504,8 +504,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.invoiceService
     .getTenantConfiguration(false)
     .subscribe((result: any) => {
-      this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;           
-      // console.log('tenenatConfigs',this.visibilityConfigs);  
+      this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;
+      // console.log('tenenatConfigs',this.visibilityConfigs);
     });
   }
 getBankAccountNumber(){
@@ -515,7 +515,7 @@ getBankAccountNumber(){
     .subscribe((result: any) => {
         // console.log(result);
         this.bankAccountNumbers = result;
-        this.changeDetectorRef.detectChanges();      
+        this.changeDetectorRef.detectChanges();
     });
 }
 
@@ -617,7 +617,7 @@ getBankAccountNumber(){
 
         })
     )
-    .subscribe((result: any) => {      
+    .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
@@ -1158,7 +1158,7 @@ getBankAccountNumber(){
           } else {
             if (v.product.productId) {
               v.product.id = v.product.productId;
-            } 
+            }
             if (v.product.deliveryProductId) {
               v.deliveryProductId = v.product.deliveryProductId;
             }
@@ -1273,7 +1273,7 @@ getBankAccountNumber(){
       this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
-        height: '400px',
+        height: '300px',
         panelClass: 'popup-grid',
         data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });
