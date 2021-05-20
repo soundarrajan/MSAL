@@ -111,6 +111,7 @@ import { CurrencyConvertorModalComponent } from './views/invoice-view/details/co
 import { GeneralSettingsRouteResolver } from './views/invoice-view/details/general-settings-route.resolver';
 import { ContractService } from '../../../contract/src/lib/services/contract.service';
 
+import { NotesDetailsComponent } from './views/invoice-view/details/component/notes-details/notes-details.component';
 
 @NgModule({
   imports: [
@@ -225,7 +226,8 @@ import { ContractService } from '../../../contract/src/lib/services/contract.ser
     NumberOnlyDirective,
     AdditionalCostModalComponent,
     ClaimDetailsComponent,
-    CurrencyConvertorModalComponent
+    CurrencyConvertorModalComponent,
+    NotesDetailsComponent
   ],
   exports: [
     QuantityTenantFormatDirective,

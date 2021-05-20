@@ -1,13 +1,18 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
+import { ISaveVesselData } from './../shared-model/vessel-data-model';
 import { SaveBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
-import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction } from './bunkering-plan.action';
+import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction, saveVesselDataAction } from './bunkering-plan.action';
 import { values } from 'lodash';
 
 
 
 export class SaveBunkeringPlanStateModel{
   BPlanData : SaveBunkeringPlanModel[];
+}
+
+export class SaveVessleDataStateModel{
+  vesselData : ISaveVesselData;
 }
 
 @State <SaveBunkeringPlanStateModel>({
@@ -138,6 +143,36 @@ export class SaveBunkeringPlanState{
       
     })
   }
+
+  @Selector()
+  static getVesselData(state: SaveVessleDataStateModel):any{
+    return state?.vesselData;
+  }
+
+  @Action(saveVesselDataAction)
+  saveVesselData({getState, patchState}: StateContext<SaveVessleDataStateModel>, {payload}:saveVesselDataAction){
+    const state = getState();
+    let vesselRef;
+    if(payload?.vesselId) {
+      vesselRef = {
+        vesselId: payload.vesselId,
+        planId: payload.planId,
+        userRole: state.vesselData?.userRole
+      }
+    } else if(payload?.userRole) {
+      vesselRef = {
+        vesselId: state.vesselData?.vesselId,
+        planId: state.vesselData?.planId,
+        userRole: payload?.userRole
+      }
+    }
+    
+    patchState({
+      ...state,
+      vesselData : vesselRef
+    })
+  }
+
 }
 
 

@@ -171,6 +171,16 @@ export class InvoiceDetailsService extends BaseStoreService
   getTenantConfiguration(payload: boolean): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getTenantConfiguration(payload);
   }
+
+
+      /**
+ * @param payload
+ */
+  @ObservableException()
+  notesAutoSave(payload: any): Observable<unknown> {
+    return this.api.notesAutoSave(payload);
+  }
+        
   ngOnDestroy(): void {
     super.onDestroy();
   }
