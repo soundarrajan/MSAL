@@ -589,8 +589,29 @@
             (amountChanged)="updateAmountValues($event)"
             (additionalCostRemoved)="additionalCostRemovedLine($event)"
             [events]="eventsSubject.asObservable()"></shiptech-additional-cost-modal>
-          </div>
+        </div>
     </div>
+
+
+    <!-- Notes -->
+    <div class="container-fluid-invoice" style="padding-left: 10px;padding-right: 10px;">
+        <div class="row m-b-4">
+        <div class="col-12">
+            <p-panel [showHeader]="false">
+            <div fxLayout="row">
+                <shiptech-invoice-notes-details
+                    [model]="formValues"
+                    [entityId]="entityId"
+                    class="col-12"
+                    style="padding-left: 0px; padding-right: 0px;">
+                </shiptech-invoice-notes-details>
+            </div>
+            </p-panel>
+        </div>
+        </div>
+    </div>
+
+    
     </form>
 </div>
 
