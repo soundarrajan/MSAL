@@ -24,6 +24,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   planStatus = 'all';
   bunkerPlanLogDetail: any = [];
   requestPayload : any = {};
+  inputModel = '';
 
   public dialogRef: MatDialogRef<NoDataComponent>;
   public countArray = [];//Temp Variable to store the count of accordions to be displayed

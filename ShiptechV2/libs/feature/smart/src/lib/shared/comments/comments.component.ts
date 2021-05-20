@@ -22,6 +22,7 @@ export class CommentsComponent implements OnInit {
   public searchParticipant: '';
   // selectedCommentTab: number = 0;
   public newComment = "";
+  public searchText = '';
   // public newAttachment = [];
   public bunkerPlanData = [
     {
