@@ -9,7 +9,7 @@ import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { SaveCurrentROBAction, UpdateCurrentROBAction } from './../../store/bunker-plan/bunkering-plan.action';
+import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction } from './../../store/bunker-plan/bunkering-plan.action';
 import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
@@ -110,13 +110,17 @@ export class VesselInfoComponent implements OnInit {
   }
 
   saveCurrentROB(ROBArbitrageData){
-    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null };
+    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null };
     currentROBObj['3.5 QTY'] = ROBArbitrageData?.hsfoCurrentStock;
     currentROBObj['0.5 QTY'] = ROBArbitrageData?.hsfO05CurrentStock;
     currentROBObj.ULSFO = ROBArbitrageData?.ulsfoCurrentStock;
     currentROBObj.LSDIS = ROBArbitrageData?.lsdisCurrentStock;
     currentROBObj.HSDIS = ROBArbitrageData?.hsdisCurrentStock;
-    //this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
+    currentROBObj.hsfoTankCapacity = ROBArbitrageData?.hsfoTankCapacity;
+    currentROBObj.ulsfoTankCapacity = ROBArbitrageData?.ulsfoTankCapacity;
+    currentROBObj.lsdisTankCapacity = ROBArbitrageData?.lsdisTankCapacity;
+    currentROBObj.hsdisTankCapacity = ROBArbitrageData?.hsdisTankCapacity;
+    this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
     
   }
   ROBOnChange(event,value, column) {
@@ -294,7 +298,7 @@ export class VesselInfoComponent implements OnInit {
       import_gsis:this.import_gsis,
     }
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
-      if(data?.payload[0]?.import_in_progress == 1){
+      if(data.payload && data?.payload[0]?.import_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',
           panelClass: 'confirmation-popup',
@@ -322,7 +326,7 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'confirmation-popup',
           data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
-        
+        this.store.dispatch(new GeneratePlanAction(data.payload[0].gen_in_progress));
       }
       else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
@@ -330,6 +334,7 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'gsis-popup',
           data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
+        this.store.dispatch(new GeneratePlanAction(data.payload[0].gen_in_progress));
       }
     })
   }
