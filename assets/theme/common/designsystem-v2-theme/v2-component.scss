@@ -92,6 +92,14 @@ div .mat-list-base {
   padding-top: 0;
 }
 
+.related-invoice-red-text {
+
+    div { &[aria-colindex="5"] {
+      color: red !important;
+    }
+  }
+}
+
 div.component-viewer-nav-content
   .mat-nav-list
   .mat-list-item

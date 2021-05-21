@@ -261,8 +261,7 @@
         <app-bunkering-plan *ngIf="panel.expanded && loadBplan" [isExpanded]="expandBplan"
           (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData"
-          (voyage_detail)="getVoyageDetail($event)"
-          [scrubberReady]="scrubberReady">
+          (voyage_detail)="getVoyageDetail($event)">
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
@@ -307,7 +306,6 @@
           [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
           [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData">
-          [scrubberReady]="scrubberReady"
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>

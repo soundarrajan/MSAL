@@ -139,7 +139,7 @@
                             [required]="'true'"
                             [masterType]="'paymentTerms'"
                             [bindValue]="
-                            formValues.counterpartyDetails.paymentTerm.name
+                            formValues.counterpartyDetails?.paymentTerm?.name
                             "
                             (onChanged)="
                             AC_valueChanges('paymentterms', $event);
@@ -389,6 +389,15 @@
                           >
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="checkbox">
+                          <mat-checkbox
+                            disabled
+                            [checked]="formValues.invoiceClaimDetails ? formValues.invoiceClaimDetails[0]?.isPreclaimCN :false"
+                            >Withheld Amount</mat-checkbox
+                          >
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -468,7 +477,7 @@
                                       formValues.counterpartyDetails.counterpartyBankAccount
                                     "
                                   >
-                                    <mat-option value="YS Marine">YS Marine</mat-option>
+                                  <mat-option *ngFor="let bank of bankAccountNumbers;" [value]="bank.id">{{bank.accountnumber}}</mat-option>
                                   </mat-select>
                                 </mat-form-field>
                             </div>
@@ -490,11 +499,8 @@
                                         getCustomerDateConfig().isMandatory
                                     }"
                                     [masterType]="'customer'"
-                                    (onChanged)="
-                                    AC_valueChanges('customer', $event);
-                                    isFormValid({ useToaster: false })
-                                    "
-                                ></shiptech-st-autosearch-selector>
+                                    (onChanged)="AC_valueChanges('customer', $event);isFormValid({ useToaster: false })"
+                                    [bindValue]="formValues.counterpartyDetails.customer?.name"></shiptech-st-autosearch-selector>
                                 </div>
                             </div>
                             </div>
@@ -611,7 +617,7 @@
         </div>
     </div>
 
-    
+
     </form>
 </div>
 

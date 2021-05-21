@@ -57,15 +57,6 @@ export class BunkeringPlanComponent implements OnInit {
     this.store.dispatch(new UpdateBplanTypeAction(this.type));
   };
   @Input('selectedUserRole')selectedUserRole;
-  @Input('scrubberReady') 
-  public set scrubberReady(v : any){
-    if(v == 'Y')
-      this.hsfoHeader = 'HSFO';
-    else 
-      this.hsfoHeader = 'VLSFO';
-  }
-  public hsfoHeader : any;
-  public headerNames : BunkeringPlanColmGroupLabels;
   // @Select(UserProfileState.username) username$: Observable<string>;
   // private _username$: BehaviorSubject<string>;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store,
@@ -74,7 +65,6 @@ export class BunkeringPlanComponent implements OnInit {
       
     // this._username$ = new BehaviorSubject<string>('');
     // this.username$.subscribe(onchange:{this._username$ in })
-    this.headerNames = this.hsfoHeader ;
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       enableColResize: false,
@@ -93,7 +83,8 @@ export class BunkeringPlanComponent implements OnInit {
       rowSelection: 'single',
       overlayLoadingTemplate:
     '<span class="ag-overlay-loading-center">Rows are loading...</span>',
-    
+      overlayNoRowsTemplate:
+      `<span>Plan details not available</span>`,
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
@@ -154,11 +145,10 @@ export class BunkeringPlanComponent implements OnInit {
           cellClass: ['dark-cell aggrid-content-center'], headerClass: [' aggrid-colum-splitter-left aggrid-text-align-c']
         },
         {
-          headerName:  BunkeringPlanColmGroupLabels.Hsfo,
+          headerName:  this.store.selectSnapshot(SaveBunkeringPlanState.getHsfoHeaderData),
           headerTooltip: BunkeringPlanColmGroupLabels.Hsfo,
           marryChildren: true,
           resizable: false,
-          valueFormatter : (params) =>{ return this.hsfoHeader},
           headerClass: ['aggrid-columgroup-splitter-left aggrid-text-align-c '],
           children: [
             {
@@ -412,13 +402,6 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
-        if(this.rowData.length == 0){
-          const dialogRef = this.dialog.open(NoDataComponent, {
-            width: '350px',
-            panelClass: 'confirmation-popup',
-            data: {message : 'Plan details not available'}
-          });
-        }
         this.bPlanData = this.rowData;   
         this.latestPlanId = '';
         this.loadBplan.emit(false);
@@ -780,11 +763,6 @@ export class BunkeringPlanComponent implements OnInit {
     this.gridChanged = true;
     this.localService.setBunkerPlanState(this.gridChanged);
   }
-  // setHeaderNames(params) {
-  //   var columnDefs = this.gridOptions.api.getColumnDef(params.colDef);
-  //   columnDefs.headerName = this.hsfoHeader;
-  //   this.columnDefs = columnDefs;
-  // }
   consUpdatedEvent(params,value){
     let hsfoSoaElement = document.getElementsByClassName('soa');
     let data = params.data;
