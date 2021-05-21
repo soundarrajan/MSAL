@@ -1,11 +1,11 @@
-﻿commit 9baf1f257aeb506b6a020b907890f5b5c37ea31f
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri May 21 10:09:36 2021 +0000
+﻿commit 3f2bbe391f5749e05e24f1b0e84d0bb9d5cb6330
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Fri May 21 10:55:55 2021 +0000
 
-    Merged PR 10842: Plan details popup
+    Merged PR 10843: To fix the #31898 and bankAccountNumber
     
-    Plan details popup
+    To fix the #31898 and bankAccountNumber
     
-    Related work items: #32384
+    Related work items: #26715, #31898
 
 branch: master
