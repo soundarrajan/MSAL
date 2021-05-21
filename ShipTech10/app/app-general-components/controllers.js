@@ -4051,9 +4051,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     if (url.indexOf('v2/delivery/delivery/:entity_id/details') != -1) {
                         url = 'v2/delivery/delivery/:entity_id/details';
                         url = url.replace(/:entity_id/g, $state.params.entity_id);
-                        $location.path = 
-                        $location.$$absUrl = $location.$$absUrl.replace($location.$$path, url);
-                        console.log($location);
+                        $location.path = $location.$$absUrl = $location.$$absUrl.replace($location.$$path, url);
+                        break;
+                    }
+
+                    if (url.indexOf('v2/invoices/edit/:entity_id') != -1) {
+                        url = 'v2/invoices/edit/:entity_id';
+                        url = url.replace(/:entity_id/g, $state.params.entity_id);
+                        $location.path = $location.$$absUrl = $location.$$absUrl.replace($location.$$path, url);
                         break;
                     }
 
@@ -4656,6 +4661,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 
         vm.checkIfIsContract = function() {
             if (window.location.href.indexOf('contracts/contract') != -1) {
+                return true;
+            }
+            return false;
+        }
+
+        vm.checkIfIsInvoice = function() {
+            if (window.location.href.indexOf('invoices/invoice') != -1) {
                 return true;
             }
             return false;
