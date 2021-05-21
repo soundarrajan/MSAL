@@ -50,8 +50,8 @@ export class AdditionalCostModalComponent implements OnInit {
   costType: any;
   costDetailsComponentTypes: any;
   filterCostNames: any[];
-  additionalCostForLocation: any;
-  additionalCostForLocationFilter: any;
+  additionalCostForLocation: any = [];
+  additionalCostForLocationFilter: any = [];
   @Input('formValues') set _formValues(val){
     this.formValues = val;
     this.getApplyForList();
@@ -61,7 +61,7 @@ export class AdditionalCostModalComponent implements OnInit {
       'id': 135,
       'name': 'Hamburg'
     }
-    this.getAdditionalCostsPerPort(this.formValues.orderDetails.location.id);
+    this.getAdditionalCostsPerPort(this.formValues.orderDetails?.portId);
 
   }
 
@@ -749,6 +749,9 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   searchCostName(value: string, locationId): void {
+    if (!this.additionalCostForLocationFilter[locationId]) {
+      return;
+    }
     let filterCostList = this.additionalCostForLocationFilter[locationId].filter((option) => option.name.toLowerCase().includes(value));
     this.additionalCostForLocation[locationId] = _.cloneDeep(filterCostList);
     this.changeDetectorRef.detectChanges();
@@ -756,6 +759,9 @@ export class AdditionalCostModalComponent implements OnInit {
 
   
   getAdditionalCostsPerPort(locationId) {
+    if (!locationId) {
+      return;
+    } 
     if (typeof this.additionalCostForLocation == 'undefined') {
       this.additionalCostForLocation = [];
     }

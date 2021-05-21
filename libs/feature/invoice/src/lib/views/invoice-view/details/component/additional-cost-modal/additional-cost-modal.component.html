@@ -15,7 +15,7 @@
                     <input matInput
                       (click)="$event.stopPropagation();$event.preventDefault();"
                       [(ngModel)]="additionalSearch"
-                      (input)="searchCostName($event.target.value, this.formValues.orderDetails.location?.id)"
+                      (input)="searchCostName($event.target.value, this.formValues.orderDetails?.portId)"
                       placeholder="Type Additional Cost"
                       class="search-product-input">
                   </div>
@@ -23,7 +23,7 @@
                       <img [ngClass]="{'expand-img': expandAddTransactionListPopUp}" (click)="expandAddTransactionListPopUp = !expandAddTransactionListPopUp; $event.stopPropagation();$event.preventDefault();" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
                   </div>
                 </div>
-                <table *ngIf="additionalCostForLocation && additionalCostForLocation[this.formValues.orderDetails.location.id] && additionalCostForLocation[this.formValues.orderDetails.location.id].length" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="additionalCostForLocation[this.formValues.orderDetails.location.id]">
+                <table *ngIf="additionalCostForLocation && additionalCostForLocation[this.formValues.orderDetails?.portId] && additionalCostForLocation[this.formValues.orderDetails?.portId].length" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="additionalCostForLocation[this.formValues.orderDetails?.portId]">
                   <!-- Product Column -->
                   <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Select Additional Cost </th>
