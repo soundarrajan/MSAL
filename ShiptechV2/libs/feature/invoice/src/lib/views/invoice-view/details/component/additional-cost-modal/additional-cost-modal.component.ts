@@ -51,6 +51,7 @@ export class AdditionalCostModalComponent implements OnInit {
   costDetailsComponentTypes: any;
   filterCostNames: any[];
   additionalCostForLocation: any;
+  additionalCostForLocationFilter: any;
   @Input('formValues') set _formValues(val){
     this.formValues = val;
     this.getApplyForList();
@@ -747,9 +748,9 @@ export class AdditionalCostModalComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  searchCostName(value: string): void {
-    let filterCostList = this.filterCostNames.filter((option) => option.name.toLowerCase().includes(value));
-    this.costNames = [ ... filterCostList];
+  searchCostName(value: string, locationId): void {
+    let filterCostList = this.additionalCostForLocationFilter[locationId].filter((option) => option.name.toLowerCase().includes(value));
+    this.additionalCostForLocation[locationId] = _.cloneDeep(filterCostList);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -758,8 +759,8 @@ export class AdditionalCostModalComponent implements OnInit {
     if (typeof this.additionalCostForLocation == 'undefined') {
       this.additionalCostForLocation = [];
     }
-    if (typeof this.additionalCostForLocation == 'undefined') {
-      this.additionalCostForLocation = [];
+    if (typeof this.additionalCostForLocationFilter == 'undefined') {
+      this.additionalCostForLocationFilter = [];
     }
 
     let payload = {"Payload":
@@ -781,7 +782,8 @@ export class AdditionalCostModalComponent implements OnInit {
         this.toastr.error(response);
       } else {
         console.log(response);
-        this.additionalCostForLocation[locationId] = response;
+        this.additionalCostForLocation[locationId] = _.cloneDeep(response);
+        this.additionalCostForLocationFilter[locationId] =  _.cloneDeep(response);
         console.log(this.getAdditionalCostsPerPort);
         this.changeDetectorRef.detectChanges();
       }
