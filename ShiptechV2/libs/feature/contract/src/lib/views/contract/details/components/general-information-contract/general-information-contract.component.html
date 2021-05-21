@@ -537,10 +537,10 @@
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list">
           <ng-container  *ngFor="let customer of formValues.customers"> 
-            <span class="allow-company">
+            <span class="allow-company" title="{{customer.name}}" >
               <span class="dot-allow-company">
               </span>
-              {{customer.name}}
+              {{customer.name}} 
             </span>
           </ng-container>
         </div>
