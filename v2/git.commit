@@ -1,9 +1,7 @@
-﻿commit 8ad2591d8fc403b91ac65e6dc9f0647f6874f815
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri May 21 14:37:36 2021 +0000
+﻿commit ef140228a9ed82494dfae980b15c48a008b11b18
+Author: Pavithra M <pavithra.m@inatech.com>
+Date:   Fri May 21 21:38:55 2021 +0530
 
-    Merged PR 10855: Bug 32417: Display message for a new plan from the Vessel has done
-    
-    Related work items: #32417
+    VSTS BUGS 32178, 32214, 32213, 32174, 32177
 
 branch: master
