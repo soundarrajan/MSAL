@@ -810,6 +810,7 @@
     justify-content: space-around;
     margin-right: 20px;
     width: 100%;
+    padding-right: 10px;
     .value {
       font-family: Roboto;
       font-style: normal;
@@ -1125,4 +1126,8 @@
 
 .mat-select-search-inner {
   height: 38px !important;
+}
+
+.mininputFocussed,.tolinputFocussed,.maxinputFocussed{
+  border: 1px solid #00AAE2;
 }
