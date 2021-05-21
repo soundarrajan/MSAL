@@ -9,7 +9,7 @@ import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction } from './../../store/bunker-plan/bunkering-plan.action';
+import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveScrubberReadyAction } from './../../store/bunker-plan/bunkering-plan.action';
 import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
@@ -183,7 +183,9 @@ export class VesselInfoComponent implements OnInit {
       this.loadBplan = true;
       // store vesselid and planid for shared ref
       this.store.dispatch(new saveVesselDataAction({'vesselId': request.shipId, 'planId': this.planId}));
+      //to store HSFO header value
       this.scrubberReady = this.currPlanIdDetails?.isScrubberReady === 'Y' ? 'HSFO':'VLSFO';
+      this.store.dispatch(new SaveScrubberReadyAction(this.scrubberReady));
     })
   }
 
