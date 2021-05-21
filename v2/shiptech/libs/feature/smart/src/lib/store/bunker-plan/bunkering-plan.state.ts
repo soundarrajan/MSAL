@@ -164,14 +164,23 @@ export class SaveBunkeringPlanState{
     if(payload?.vesselId) {
       vesselRef = {
         vesselId: payload.vesselId,
+        vesselRef: state.vesselData?.vesselRef,
         planId: payload.planId,
         userRole: state.vesselData?.userRole
       }
     } else if(payload?.userRole) {
       vesselRef = {
         vesselId: state.vesselData?.vesselId,
+        vesselRef: state.vesselData?.vesselRef,
         planId: state.vesselData?.planId,
         userRole: payload?.userRole
+      }
+    } else if(payload?.vesselRef) {
+      vesselRef = {
+        vesselId: state.vesselData?.vesselId,
+        vesselRef: payload.vesselRef,
+        planId: state.vesselData?.planId,
+        userRole: state.vesselData?.userRole
       }
     }
     

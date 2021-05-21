@@ -1,7 +1,9 @@
-﻿commit 8a847bf627e6a890db41379476f5e9881dbbc553
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Fri May 21 19:47:41 2021 +0530
+﻿commit 8ad2591d8fc403b91ac65e6dc9f0647f6874f815
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri May 21 14:37:36 2021 +0000
 
-    Merged changes.
+    Merged PR 10855: Bug 32417: Display message for a new plan from the Vessel has done
+    
+    Related work items: #32417
 
 branch: master
