@@ -1,9 +1,11 @@
-﻿commit 713a9e57bc28eae0db923bfd8cc1e94312d0a85c
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Fri May 21 16:46:26 2021 +0530
+﻿commit d5ec2ff68b82b7daaa0358014e5056f8abe79214
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri May 21 11:53:12 2021 +0000
 
-    Contract screen defects fix
+    Merged PR 10845: Hsfo header with scrubber ready date
     
-    Contract screen defects fix
+    Hsfo header with scrubber ready date
+    
+    Related work items: #32384
 
 branch: master
