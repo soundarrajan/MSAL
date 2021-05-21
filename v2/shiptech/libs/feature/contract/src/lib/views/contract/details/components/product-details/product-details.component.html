@@ -29,33 +29,36 @@
         <div *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"  [matMenuTriggerFor]="menuAllowedLocations" class="edit-allow-locations">
         </div>
         <mat-menu #menuAllowedLocations="matMenu" class="allowed-locations-modal ">
-          <div class="col-md-12 header-container-company">
-            <div class="select-company-container col-md-10">
-              <span class="search-company-lookup">
-              </span>
-              <input matInput 
-                    placeholder="Type allowed location"
-                    class="search-company-input"
-                    autocomplete="off"
-                    [formControl]="allowedLocationSearch"
-                    (click)="$event.stopPropagation();$event.preventDefault();">
+          <div style="height: 265px;">
+            <div class="col-md-12 header-container-company">
+              <div class="select-company-container col-md-10">
+                <span class="search-company-lookup">
+                </span>
+                <input matInput 
+                      placeholder="Type allowed location"
+                      class="search-company-input"
+                      autocomplete="off"
+                      [formControl]="allowedLocationSearch"
+                      (click)="$event.stopPropagation();$event.preventDefault();">
+              </div>
             </div>
-          </div>
-          <div class="col-md-12 row company-container-header header-allowed">
-            <div class="header-allowed-name">
-              Allowed locations
+            <div class="col-md-12 row company-container-header header-allowed">
+              <div class="header-allowed-name">
+                Allowed locations
+              </div>
             </div>
-            <div class="header-button-name">
-              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-              pButton
-              (click)="saveAllowedLocations(selectedTabIndex)"
-              type="button"></button>
+            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let location of filteredAllowedLocationOptions | async">
+              <mat-checkbox [(ngModel)]="location.isSelected">
+                {{location.name}}
+              </mat-checkbox>
             </div>
-          </div>
-          <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let location of filteredAllowedLocationOptions | async">
-            <mat-checkbox [(ngModel)]="location.isSelected">
-              {{location.name}}
-            </mat-checkbox>
+          </div>     
+          <div class="saveBtn">
+            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+            style="float: right;"
+            pButton
+            (click)="saveAllowedLocations(selectedTabIndex)"
+            type="button"></button>
           </div>
         </mat-menu>
       </div>
@@ -86,33 +89,36 @@
         <div  *ngIf="formValues.status && formValues.status.name == 'Confirmed'" class="edit-allow-locations">
         </div>
         <mat-menu #menuAllowedProducts="matMenu" class="allowed-locations-modal ">
-          <div class="col-md-12 header-container-company">
-            <div class="select-company-container col-md-10">
-              <span class="search-company-lookup">
-              </span>
-              <input matInput 
-                    placeholder="Type allowed product"
-                    class="search-company-input"
-                    autocomplete="off"
-                    [formControl]="allowedProductSearch"
-                    (click)="$event.stopPropagation();$event.preventDefault();">
+          <div style="height: 265px;">
+            <div class="col-md-12 header-container-company">
+              <div class="select-company-container col-md-10">
+                <span class="search-company-lookup">
+                </span>
+                <input matInput 
+                      placeholder="Type allowed product"
+                      class="search-company-input"
+                      autocomplete="off"
+                      [formControl]="allowedProductSearch"
+                      (click)="$event.stopPropagation();$event.preventDefault();">
+              </div>
+            </div>
+            <div class="col-md-12 row company-container-header header-allowed">
+              <div class="header-allowed-name">
+                Allowed products
+              </div>
+            </div>
+            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let product of filteredAllowedProductOptions | async">
+              <mat-checkbox [(ngModel)]="product.isSelected">
+                {{product.name}}
+              </mat-checkbox>
             </div>
           </div>
-          <div class="col-md-12 row company-container-header header-allowed">
-            <div class="header-allowed-name">
-              Allowed products
-            </div>
-            <div class="header-button-name">
-              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-              pButton
-              (click)="saveAllowedProducts(selectedTabIndex)"
-              type="button"></button>
-            </div>
-          </div>
-          <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let product of filteredAllowedProductOptions | async">
-            <mat-checkbox [(ngModel)]="product.isSelected">
-              {{product.name}}
-            </mat-checkbox>
+          <div class="saveBtn">
+            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+            style="float: right;"
+            pButton
+            (click)="saveAllowedProducts(selectedTabIndex)"
+            type="button"></button>
           </div>
         </mat-menu>
       </div>
@@ -141,7 +147,7 @@
               [(ngModel)]="formValues.products[selectedTabIndex].specGroup"
               placeholder="Spec Group"
               [disableOptionCentering]="true"
-              panelClass="general-information-select-container"
+              panelClass="general-info-select-container"
               [compareWith]="compareUomObjects"
               [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
             <ng-container *ngIf="formValues.products[selectedTabIndex].product">
@@ -257,7 +263,7 @@
                     class="without-search conversion-factor-dropdown-component" appearance="legacy">
                     <mat-select
                         [disableOptionCentering]="true"
-                        panelClass="general-information-select-container"
+                        panelClass="general-info-select-container"
                         [disabled]="true">
                         <mat-option *ngFor="let option of []" [value]="option">
                             {{option.name}}
@@ -269,7 +275,7 @@
                     <mat-select
                         [(ngModel)]="conversionFactor.massUom"
                         [disableOptionCentering]="true"
-                        panelClass="general-information-select-container"
+                        panelClass="general-info-select-container"
                         [compareWith]="compareUomObjects"
                         (selectionChange)="saveConversionFactors(conversionFactor, false)"
                         [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || conversionFactor.contractConversionFactorOptions.id == 4 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
@@ -286,7 +292,7 @@
                     class="without-search conversion-factor-dropdown-component" appearance="legacy">
                     <mat-select
                           [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
+                          panelClass="general-info-select-container"
                           [disabled]="true">
                         <mat-option *ngFor="let option of []" [value]="option">
                             {{option.name}}
@@ -298,7 +304,7 @@
                     <mat-select
                           [(ngModel)]="conversionFactor.volumeUom"
                           [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
+                          panelClass="general-info-select-container"
                           [compareWith]="compareUomObjects"
                           (selectionChange)="saveConversionFactors(conversionFactor, false)"
                           [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || conversionFactor.contractConversionFactorOptions.id == 4 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
@@ -315,7 +321,7 @@
                     <mat-select
                           [(ngModel)]="conversionFactor.contractConversionFactorOptions"
                           [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
+                          panelClass="general-info-select-container"
                           [compareWith]="compareUomObjects"
                           (selectionChange)="saveConversionFactors(conversionFactor, true)"
                           [disabled]="formValues.hasInvoicedOrder">
