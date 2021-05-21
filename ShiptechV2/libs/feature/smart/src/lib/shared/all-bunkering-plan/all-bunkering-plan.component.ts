@@ -33,7 +33,6 @@ export class AllBunkeringPlanComponent implements OnInit {
   public bPlanType : any = 'A';
   public planIdDetails : any ={ planId : '777888', status: 'INP'};
   public allBunkerPlanIds : any;
-  public scrubberReady : any;
   constructor(private localService: LocalService, private bunkerPlanService : BunkeringPlanService, public dialog: MatDialog) { }
 
   ngOnInit() {//Temp Variable to store the count of accordions to be displayed
