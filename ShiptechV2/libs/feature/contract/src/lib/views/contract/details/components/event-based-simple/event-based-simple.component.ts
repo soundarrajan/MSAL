@@ -385,35 +385,7 @@ export class EventBasedSimple extends DeliveryAutocompleteComponent
         this.formValues.formulaHolidayRules.saturdayHolidayRule =  null;
       }
     }
-  }
-
-
- 
-
-  defaultHolidayRuleDays(event) {
-    console.log(event);
-    if (this.formValues.pricingScheduleOptionEventBasedContinuous.period.id != 4) {
-      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = this.holidayRuleList[2];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = this.holidayRuleList[2];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = this.holidayRuleList[2];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = this.holidayRuleList[2];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = this.holidayRuleList[2];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = this.holidayRuleList[2];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = this.holidayRuleList[2];
-    } else {
-      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = this.holidayRuleList[0];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = this.holidayRuleList[0];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = this.holidayRuleList[0];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = this.holidayRuleList[0];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = this.holidayRuleList[0];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = this.holidayRuleList[0];
-      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = this.holidayRuleList[0];
-    }
-  }
-
-
- 
-
+  } 
 
 
 

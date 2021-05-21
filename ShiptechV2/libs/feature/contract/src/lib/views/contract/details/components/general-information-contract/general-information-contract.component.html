@@ -327,7 +327,7 @@
         <div *ngIf="!formValues.company || (formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
         </div>
         <mat-menu #menu1="matMenu" class="allowed-company-modal">
-          <div [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
+          <div style="height: 293px;" [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
             <div class="col-md-12 header-allowed-company">
               <div class="allowed-company-header col-md-10 contract-no-padding" >
                 Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
@@ -341,13 +341,13 @@
                 {{company.name}}
               </mat-checkbox>
             </div>
-            <div class="col-md-12">
-              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-                pButton
-                (click)="saveAllowedCompanies()"
-                style="float:right"
-                type="button"></button>
-            </div>
+          </div>
+          <div class="saveBtn" [ngClass]="{'expand-save-button': expandAllowedCompanylistPopUp}">
+            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+              pButton
+              (click)="saveAllowedCompanies()"
+              style="float:right"
+              type="button"></button>
           </div>
         </mat-menu>
       </div>
@@ -361,9 +361,9 @@
             </span>
           </ng-container>
         </div>
-        <div class="more-button" (click)="expandAllowCompanies = !expandAllowCompanies" >
+        <!-- <div class="more-button" (click)="expandAllowCompanies = !expandAllowCompanies" >
           ...more
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -380,7 +380,7 @@
             [(ngModel)]="formValues.agreementType"
             (selectionChange)="changeAgreementType()"
             [disableOptionCentering]="true"
-            panelClass="general-information-select-container"
+            panelClass="general-info-select-container"
             [compareWith]="compareUomObjects"
             placeholder="Agreement Type"
             required
@@ -397,7 +397,7 @@
         <mat-select 
             [(ngModel)]="formValues.paymentTerm"
             [disableOptionCentering]="true"
-            panelClass="general-information-select-container"
+            panelClass="general-info-select-container"
             [compareWith]="compareUomObjects"
             [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
             placeholder="Payment Term">
@@ -415,7 +415,7 @@
         <mat-select 
             [(ngModel)]="formValues.incoterm"
             [disableOptionCentering]="true"
-            panelClass="general-information-select-container"
+            panelClass="general-info-select-container"
             [compareWith]="compareUomObjects"
             placeholder="Delivery Term"
             [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
@@ -483,7 +483,7 @@
         <mat-select 
             [(ngModel)]="formValues.applyTo"
             [disableOptionCentering]="true"
-            panelClass="general-information-select-container"
+            panelClass="general-info-select-container"
             [compareWith]="compareUomObjects"
             placeholder="Date apply on"
             [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
@@ -510,7 +510,7 @@
         <div *ngIf="(formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
         </div>
         <mat-menu #menu3="matMenu" class="allowed-company-modal">
-          <div [ngClass]="{'expand-allowed-company-container': expandCustomerListPopUp}">
+          <div style="height: 280px;" [ngClass]="{'expand-allowed-company-container': expandCustomerListPopUp}">
             <div class="col-md-12 header-allowed-company">
               <div class="allowed-company-header col-md-10 contract-no-padding" >
                 Customer
@@ -523,14 +523,14 @@
               <mat-checkbox [(ngModel)]="customer.isSelected">
                 {{customer.name}}
               </mat-checkbox>
-            </div>
-            <div class="col-md-12">
-              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-                pButton
-                (click)="saveCustomer()"
-                style="float:right"
-                type="button"></button>
-            </div>
+            </div>           
+          </div>
+          <div class="saveBtn2" [ngClass]="{'expand-save-button': expandCustomerListPopUp}">
+            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+              pButton
+              (click)="saveCustomer()"
+              style="float:right"
+              type="button"></button>
           </div>
         </mat-menu>
       </div>
@@ -544,9 +544,9 @@
             </span>
           </ng-container>
         </div>
-        <div class="more-button" (click)="expandAllowCustomer = !expandAllowCustomer" >
+        <!-- <div class="more-button" (click)="expandAllowCustomer = !expandAllowCustomer" >
           ...more
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
