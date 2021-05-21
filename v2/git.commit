@@ -1,11 +1,7 @@
-﻿commit d5ec2ff68b82b7daaa0358014e5056f8abe79214
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri May 21 11:53:12 2021 +0000
+﻿commit 3b68b9c4161e1d4401ec6fe2d830fbf6ca5d0cd6
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Fri May 21 15:06:26 2021 +0300
 
-    Merged PR 10845: Hsfo header with scrubber ready date
-    
-    Hsfo header with scrubber ready date
-    
-    Related work items: #32384
+    Fixed build error
 
 branch: master
