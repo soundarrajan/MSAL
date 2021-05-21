@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } from '@angular/core';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
@@ -9,7 +9,8 @@ import moment from 'moment';
 @Component({
   selector: 'app-all-bunkering-plan',
   templateUrl: './all-bunkering-plan.component.html',
-  styleUrls: ['./all-bunkering-plan.component.scss']
+  styleUrls: ['./all-bunkering-plan.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AllBunkeringPlanComponent implements OnInit {
 
