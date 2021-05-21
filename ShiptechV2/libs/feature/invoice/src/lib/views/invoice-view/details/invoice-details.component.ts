@@ -690,6 +690,9 @@ tenantConfiguration(){
   });
 }
 getBankAccountNumber(){
+  if(!this.formValues.counterpartyDetails.payableTo){
+    return;
+  }
   let counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
   this.invoiceService
     .getBankAccountNumber(counterPartyId)
@@ -1442,6 +1445,20 @@ getBankAccountNumber(){
         this.handleServiceResponse(result, 'Invoice rejected successfully.')
       });
     } else if(option == 'approve'){
+      if(this.formValues.invoiceClaimDetails && this.formValues.invoiceClaimDetails[0]['isPreclaimCN']){        
+        let claimsCN = false;
+        this.formValues.relatedInvoices.forEach(element => {
+          if(element.invoiceType.name == 'Pre-claim Credit Note'){
+            claimsCN = true;
+            return;
+          }
+        });
+        if(!claimsCN){
+          this.spinner.hide();
+          this.formSubmitted = false;
+          this.toastr.error("Invoice can't be approved when PreClaimCreditNote is not available.");return;
+        }
+      }
       this.invoiceService.approveInvoiceItem(valuesForm).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice approved successfully.')
       });
