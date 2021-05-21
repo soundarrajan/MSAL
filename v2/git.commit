@@ -1,7 +1,7 @@
-﻿commit 1bc3d62c70dae30e1e4e382bd29304196d53fbc1
-Author: Soundar <soundarrajan.s@inatech.com>
-Date:   Fri May 21 19:17:55 2021 +0530
+﻿commit 12ccb2e9f9c29abed674babb6a04643c130acff7
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri May 21 14:07:45 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10852: Added logic for barge cost in invoice screen
 
 branch: master

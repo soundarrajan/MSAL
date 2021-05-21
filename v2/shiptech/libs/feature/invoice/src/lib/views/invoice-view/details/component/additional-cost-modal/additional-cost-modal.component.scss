@@ -938,6 +938,10 @@ th, td {
   width: 66% !important;
 }
 
+.black-container .mat-input-element:disabled{
+  color: white !important;
+}
+
 .product-field .mat-input-element:disabled {
   color: #252A32 !important;
 }
