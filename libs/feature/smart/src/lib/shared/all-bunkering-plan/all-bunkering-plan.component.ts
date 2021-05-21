@@ -16,7 +16,6 @@ export class AllBunkeringPlanComponent implements OnInit {
   @Output() changeVessel = new EventEmitter();
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
-  @Input('currentROBObj') currentROBObj;
   currentDate = new Date();
   defaultFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
   selectedToDate: Date = new Date();
@@ -33,22 +32,16 @@ export class AllBunkeringPlanComponent implements OnInit {
   public bPlanType : any = 'A';
   public planIdDetails : any ={ planId : '777888', status: 'INP'};
   public allBunkerPlanIds : any;
-
+  public scrubberReady : any;
   constructor(private localService: LocalService, private bunkerPlanService : BunkeringPlanService, public dialog: MatDialog) { }
 
   ngOnInit() {//Temp Variable to store the count of accordions to be displayed
     for (let i = 0; i < 20; i++) {
       this.countArray.push({ expanded: false });
     }
-  // this.loadBunkeringPlanDetails();
    this.loadBunkerPlanHistory(this.vesselData);
   }
   
-  public loadBunkeringPlanDetails(){
-    let Id = this.vesselData?.vesselId? this.vesselData.vesselId :348;
-    let req = { shipId : Id ,  planStatus : 'A' }
-    this.loadAllBunkeringPlan(req);
-  }
 
   onFromToDateChange(event) {
     console.log('selected date', event);
@@ -71,7 +64,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   }
  
   public loadBunkerPlanHistory(event) {
-    let vesselId = event.id? event.id: 348;
+    let vesselId = event.id? event.id: this.vesselData.vesselId;
     this.requestPayload = {'FromLogDate': this.defaultFromDate,'ToLogDate': this.selectedToDate,'VesselId': vesselId,'IsDefaultDate':false, 'PlanStatus': this.planStatus};
     this.localService.getBunkerPlanLog(this.requestPayload).subscribe((data)=> {
       console.log('bunker plan Log',data);
@@ -81,25 +74,6 @@ export class AllBunkeringPlanComponent implements OnInit {
     })
   }
 
-  loadAllBunkeringPlan(request){
-    this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
-      console.log('bunker plan Id and status details', data);
-      this.allBunkerPlanIds = (data.payload && data.payload.length)? data.payload : '';
-      if(this.allBunkerPlanIds == '' ){
-        const dialogRef = this.dialog.open(NoDataComponent, {
-          panelClass: ['confirmation-popup']
-        });
-      }
-      else{
-        this.allBunkerPlanIds.forEach(bplan => {
-          bplan.planDate = moment(bplan?.planDate).format('DD/MM/YYYY');
-          bplan.isPlanInvalid = bplan?.isPlanInvalid ==='N'? 'VALID' : 'INVALID';
-        });
-      }
-     
-    })
-   
-  }
 
 }
 import {

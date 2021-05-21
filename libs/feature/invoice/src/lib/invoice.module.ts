@@ -1,5 +1,5 @@
 import { AgGridModule } from '@ag-grid-community/angular';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
@@ -29,8 +29,9 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { environment } from '@shiptech/environment';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { ModuleLoggerFactory } from '../../../quantity-control/src/lib/core/logging/module-logger-factory';
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
@@ -48,18 +49,74 @@ import { InvoiceViewComponent } from './views/invoice-view/invoice-view.componen
 import { InvoiceSplitviewComponent } from './views/split-view/invoice-splitview.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
-import { ProductDetailsModalComponent } from './views/invoice-view/details/component/product-details-modal/product-details-modal.component';
+import { AddProductDetailsComponent} from './views/invoice-view/details/component/add-product/add-product.component';
 import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolver';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
 import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AdditionalCostModalComponent } from './views/invoice-view/details/component/additional-cost-modal/additional-cost-modal.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { ProductDetailsComponent } from './views/invoice-view/details/component/product-details/product-details.component';
+import { PanelModule } from 'primeng/panel';
+import { PortalModule } from '@angular/cdk/portal';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTableModule } from '@angular/material/table/public-api';
+import { PaginatorModule } from 'primeng/paginator';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { SpinnerModule } from 'primeng/spinner';
+import { CheckboxModule } from 'primeng/checkbox';
+import { AccordionModule } from 'primeng/accordion';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { A11yModule } from '@angular/cdk/a11y';
+import { CdkTableModule } from '@angular/cdk/table';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
+import { StaticListsRouteResolver } from './views/invoice-view/details/static-lists-route.resolver';
+import { QuantityTenantFormatDirective } from './views/invoice-view/details/component/directives/quantity-tenant-format.directive';
+import { AmountTenantFormatDirective } from './views/invoice-view/details/component/directives/amount-tenant-format.directive';
+import { PriceTenantFormatDirective } from './views/invoice-view/details/component/directives/price-tenant-format.directive';
+import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
+import { ClaimDetailsComponent } from './views/invoice-view/details/component/claim-details/claim-details.component';
+import { CurrencyConvertorModalComponent } from './views/invoice-view/details/component/currency-convertor-modal/currency-convertor-modal.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    DynamicDialogModule,
     MaterialModule,
     DSComponentsModule,
     InvoiceRoutingModule,
@@ -92,7 +149,64 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     ExportModule,
     MasterSelectorModule,
     BreadcrumbsModule,
-    PdfViewerModule
+    PdfViewerModule,
+    MatMenuModule,
+    PanelModule,
+    MatTooltipModule,
+    UIModule,
+    MasterSelectorModule,
+    ButtonModule,
+    PortalModule,
+    ButtonModule,
+    PaginatorModule,
+    TabMenuModule,
+    AutoCompleteModule,
+    PanelModule,
+    SpinnerModule,
+    CheckboxModule,
+    InputTextareaModule,
+    AccordionModule,
+    DropdownModule,
+    MessagesModule,
+    A11yModule,
+    CdkStepperModule,
+    CdkTableModule,
+    CdkTableModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    OverlayModule,
+    PortalModule,
+    ScrollingModule,
+    NgxSpinnerModule
   ],
   declarations: [
     MainInvoiceComponent,
@@ -102,9 +216,25 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     InvoiceSplitviewComponent,
     InvoiceDetailComponent,
     RelatedInvoiceComponent,
-    ProductDetailsModalComponent,
+    AddProductDetailsComponent,
     InvoiceDetailsToolbarComponent,
     InvoiceTypeSelectionComponent,
+    ProductDetailsComponent,
+    QuantityTenantFormatDirective,
+    AmountTenantFormatDirective,
+    PriceTenantFormatDirective,
+    NumberOnlyDirective,
+    AdditionalCostModalComponent,
+    ClaimDetailsComponent,
+    CurrencyConvertorModalComponent
+  ],
+  exports: [
+    QuantityTenantFormatDirective,
+    NumberOnlyDirective,
+    AmountTenantFormatDirective,
+    PriceTenantFormatDirective
+   // PSpinnerDisableKeysSpinDirective,
+    //PSpinnerTenantFormatDirective
   ],
   providers: [
     ModuleLoggerFactory,
@@ -118,10 +248,13 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     },
     InvoiceCompleteService,
     InvoiceDetailsService,
-    DialogService
+    DialogService,
+    DecimalPipe,
+    StaticListsRouteResolver
   ],
   entryComponents:[
-    ProductDetailsModalComponent,InvoiceTypeSelectionComponent
+    InvoiceTypeSelectionComponent,
+    CurrencyConvertorModalComponent
   ]
 })
 export class InvoiceModule {}

@@ -5,6 +5,7 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 import { IBunkeringPlanApiService } from './api/bunkering-plan.api.service.interface';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -12,12 +13,16 @@ import { IBunkeringPlanApiService } from './api/bunkering-plan.api.service.inter
 export namespace BunkeringPlanApiPaths{
     export const getBunkeringPlanDetails = () => `api/BOPS/bunkerplan/getBunkerPlanDetail`;
     export const getBunkeringPlanIdAndStatus = () => `api/BOPS/bunkerplan/getBunkerPlanInitial` ;
+    export const saveBunkeringPlanDetails = () => `api/BOPS/bunkerplan/updateBunkerPlan`;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class BunkeringPlanService{
+
+  private changeCurrentROBObj$ = new BehaviorSubject<boolean>(false);
+  _changeCurrentROBObj$ = this.changeCurrentROBObj$.asObservable();
 
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
@@ -38,6 +43,18 @@ getBunkerPlanIdAndStatus(request: any): Observable<any> {
     `${this._apiUrl}/${BunkeringPlanApiPaths.getBunkeringPlanIdAndStatus()}`,
     { payload: request }
   )
+}
+
+@ObservableException()
+  saveBunkeringPlanDetails(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${BunkeringPlanApiPaths.saveBunkeringPlanDetails()}`,
+      { payload: request }
+    );
+  }
+
+  setchangeCurrentROBObj(data) {
+    this.changeCurrentROBObj$.next(data);
 }
 }
 

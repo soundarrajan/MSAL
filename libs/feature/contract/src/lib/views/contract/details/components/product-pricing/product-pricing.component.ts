@@ -541,6 +541,15 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.uomList = uomList;
   }
 
+  
+  @Input('entityCopied') set _setEntityCopied(entityCopied) {
+    if (!entityCopied) {
+      return;
+    }
+    this.entityCopied = entityCopied;
+  }
+
+
   @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) { 
     if (!formulaTypeList) {
       return;
@@ -748,6 +757,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   isMenuOpen = true;
   @Input() events: Observable<void>;
   @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsEntityCopied: Observable<void>;
+
   priceFormat: any;
 
 
@@ -791,7 +802,14 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.entityName = 'Contract';
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
+    this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe((data) => this.setEntityCopied(data));
+
   }
+
+  setEntityCopied(data) {
+    this.entityCopied = data;
+
+ }
 
   setContractForm(form) {
     this.formValues = form;
@@ -898,7 +916,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.products[this.selectedTabIndex].formula.name ? this.formValues.products[this.selectedTabIndex].formula.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].formula.toLowerCase();
       console.log(filterValue);
       if (this.contractFormulaList) {
-        return this.contractFormulaList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.contractFormulaList.filter(option => option.name.toLowerCase().includes(filterValue))
           .slice(0, 10);
       } else {
         return [];
@@ -934,6 +952,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       if (typeof response == 'string') {
         this.toastr.error(response);
       } else {
+        if (this.entityCopied) {
+          response.isEditable = false;
+        }
         const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
           width: '80%',
           data:  {
@@ -1117,6 +1138,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       this.formValues.products[key1].additionalCosts[key2].currency = this.generalTenantSettings.tenantFormats.currency;
     }
     this.formValues.products[key1].additionalCosts[key2].comments = additionalCostLine.costDescription;
+
+     this.formValues.products[key1].additionalCosts[key2].locationAdditionalCostId = additionalCostLine.locationid;
+
     console.log(additionalCostLine);
   }
 
@@ -1149,7 +1173,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   formatPrice() {
-    if (!this.formValues.products[this.selectedTabIndex].pricePrecision) {
+    if (this.formValues.products[this.selectedTabIndex].pricePrecision == null) {
       this.formValues.products[this.selectedTabIndex].pricePrecision = this.tenantService.pricePrecision;
     }
   }

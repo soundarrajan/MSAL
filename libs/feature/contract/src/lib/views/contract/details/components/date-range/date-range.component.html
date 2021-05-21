@@ -116,22 +116,22 @@
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.sundayHolidayRule, 1, 'Ignore', 'Sunday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.sundayHolidayRule && formValues.pricingScheduleOptionDateRange.sundayHolidayRule.id == 1">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.sundayHolidayRule, 1, 'Ignore', 'Sunday')"
+              [checked]="formValues.formulaHolidayRules.sundayHolidayRule && formValues.formulaHolidayRules.sundayHolidayRule.id == 1">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.sundayHolidayRule, 3, 'Next', 'Sunday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.sundayHolidayRule && formValues.pricingScheduleOptionDateRange.sundayHolidayRule.id == 3">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.sundayHolidayRule, 3, 'Next', 'Sunday')"
+              [checked]="formValues.formulaHolidayRules.sundayHolidayRule && formValues.formulaHolidayRules.sundayHolidayRule.id == 3">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.sundayHolidayRule, 2, 'Previous', 'Sunday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.sundayHolidayRule && formValues.pricingScheduleOptionDateRange.sundayHolidayRule.id == 2">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.sundayHolidayRule, 2, 'Previous', 'Sunday')"
+              [checked]="formValues.formulaHolidayRules.sundayHolidayRule && formValues.formulaHolidayRules.sundayHolidayRule.id == 2">
             </mat-checkbox>
           </td>
         </tr>
@@ -142,22 +142,22 @@
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.mondayHolidayRule, 1, 'Ignore', 'Monday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.mondayHolidayRule && formValues.pricingScheduleOptionDateRange.mondayHolidayRule.id == 1">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.mondayHolidayRule, 1, 'Ignore', 'Monday')"
+              [checked]="formValues.formulaHolidayRules.mondayHolidayRule && formValues.formulaHolidayRules.mondayHolidayRule.id == 1">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.mondayHolidayRule, 3, 'Next', 'Monday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.mondayHolidayRule && formValues.pricingScheduleOptionDateRange.mondayHolidayRule.id == 3">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.mondayHolidayRule, 3, 'Next', 'Monday')"
+              [checked]="formValues.formulaHolidayRules.mondayHolidayRule && formValues.formulaHolidayRules.mondayHolidayRule.id == 3">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.mondayHolidayRule, 2, 'Previous', 'Monday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.mondayHolidayRule && formValues.pricingScheduleOptionDateRange.mondayHolidayRule.id == 2">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.mondayHolidayRule, 2, 'Previous', 'Monday')"
+              [checked]="formValues.formulaHolidayRules.mondayHolidayRule && formValues.formulaHolidayRules.mondayHolidayRule.id == 2">
             </mat-checkbox>
           </td>
         </tr>
@@ -168,22 +168,22 @@
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule, 1, 'Ignore', 'Tuesday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule && formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule.id == 1">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.tuesdayHolidayRule, 1, 'Ignore', 'Tuesday')"
+              [checked]="formValues.formulaHolidayRules.tuesdayHolidayRule && formValues.formulaHolidayRules.tuesdayHolidayRule.id == 1">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule, 3, 'Next', 'Tuesday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule && formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule.id == 3">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.tuesdayHolidayRule, 3, 'Next', 'Tuesday')"
+              [checked]="formValues.formulaHolidayRules.tuesdayHolidayRule && formValues.formulaHolidayRules.tuesdayHolidayRule.id == 3">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule, 2, 'Previous', 'Tuesday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule && formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule.id == 2">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.tuesdayHolidayRule, 2, 'Previous', 'Tuesday')"
+              [checked]="formValues.formulaHolidayRules.tuesdayHolidayRule && formValues.formulaHolidayRules.tuesdayHolidayRule.id == 2">
             </mat-checkbox>
           </td>
         </tr>
@@ -194,22 +194,22 @@
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule, 1, 'Ignore', 'Wednesday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule && formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule.id == 1">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.wednesdayHolidayRule, 1, 'Ignore', 'Wednesday')"
+              [checked]="formValues.formulaHolidayRules.wednesdayHolidayRule && formValues.formulaHolidayRules.wednesdayHolidayRule.id == 1">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule, 3, 'Next', 'Wednesday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule && formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule.id == 3">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.wednesdayHolidayRule, 3, 'Next', 'Wednesday')"
+              [checked]="formValues.formulaHolidayRules.wednesdayHolidayRule && formValues.formulaHolidayRules.wednesdayHolidayRule.id == 3">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule, 2, 'Previous', 'Wednesday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule && formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule.id == 2">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.wednesdayHolidayRule, 2, 'Previous', 'Wednesday')"
+              [checked]="formValues.formulaHolidayRules.wednesdayHolidayRule && formValues.formulaHolidayRules.wednesdayHolidayRule.id == 2">
             </mat-checkbox>
           </td>
         </tr>
@@ -220,22 +220,22 @@
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.thursdayHolidayRule, 1, 'Ignore', 'Thursday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.thursdayHolidayRule && formValues.pricingScheduleOptionDateRange.thursdayHolidayRule.id == 1">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.thursdayHolidayRule, 1, 'Ignore', 'Thursday')"
+              [checked]="formValues.formulaHolidayRules.thursdayHolidayRule && formValues.formulaHolidayRules.thursdayHolidayRule.id == 1">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.thursdayHolidayRule, 3, 'Next', 'Thursday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.thursdayHolidayRule && formValues.pricingScheduleOptionDateRange.thursdayHolidayRule.id == 3">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.thursdayHolidayRule, 3, 'Next', 'Thursday')"
+              [checked]="formValues.formulaHolidayRules.thursdayHolidayRule && formValues.formulaHolidayRules.thursdayHolidayRule.id == 3">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.thursdayHolidayRule, 2, 'Previous', 'Thursday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.thursdayHolidayRule && formValues.pricingScheduleOptionDateRange.thursdayHolidayRule.id == 2">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.thursdayHolidayRule, 2, 'Previous', 'Thursday')"
+              [checked]="formValues.formulaHolidayRules.thursdayHolidayRule && formValues.formulaHolidayRules.thursdayHolidayRule.id == 2">
             </mat-checkbox>
           </td>
         </tr>
@@ -246,22 +246,22 @@
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.fridayHolidayRule, 1, 'Ignore', 'Friday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.fridayHolidayRule && formValues.pricingScheduleOptionDateRange.fridayHolidayRule.id == 1">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.fridayHolidayRule, 1, 'Ignore', 'Friday')"
+              [checked]="formValues.formulaHolidayRules.fridayHolidayRule && formValues.formulaHolidayRules.fridayHolidayRule.id == 1">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.fridayHolidayRule, 3, 'Next', 'Friday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.fridayHolidayRule && formValues.pricingScheduleOptionDateRange.fridayHolidayRule.id == 3">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.fridayHolidayRule, 3, 'Next', 'Friday')"
+              [checked]="formValues.formulaHolidayRules.fridayHolidayRule && formValues.formulaHolidayRules.fridayHolidayRule.id == 3">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.fridayHolidayRule, 2, 'Previous', 'Friday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.fridayHolidayRule && formValues.pricingScheduleOptionDateRange.fridayHolidayRule.id == 2">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.fridayHolidayRule, 2, 'Previous', 'Friday')"
+              [checked]="formValues.formulaHolidayRules.fridayHolidayRule && formValues.formulaHolidayRules.fridayHolidayRule.id == 2">
             </mat-checkbox>
           </td>
         </tr>
@@ -272,22 +272,22 @@
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.saturdayHolidayRule, 1, 'Ignore', 'Saturday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.saturdayHolidayRule && formValues.pricingScheduleOptionDateRange.saturdayHolidayRule.id == 1">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.saturdayHolidayRule, 1, 'Ignore', 'Saturday')"
+              [checked]="formValues.formulaHolidayRules.saturdayHolidayRule && formValues.formulaHolidayRules.saturdayHolidayRule.id == 1">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.saturdayHolidayRule, 3, 'Next', 'Saturday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.saturdayHolidayRule && formValues.pricingScheduleOptionDateRange.saturdayHolidayRule.id == 3">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.saturdayHolidayRule, 3, 'Next', 'Saturday')"
+              [checked]="formValues.formulaHolidayRules.saturdayHolidayRule && formValues.formulaHolidayRules.saturdayHolidayRule.id == 3">
             </mat-checkbox>
           </td>
           <td class="padding-left"  style="width:25%">
             <mat-checkbox
               [disabled]="!formValues.isEditable"
-              (change)="calendarOptionChange($event, formValues.pricingScheduleOptionDateRange.saturdayHolidayRule, 2, 'Previous', 'Saturday')"
-              [checked]="formValues.pricingScheduleOptionDateRange.saturdayHolidayRule && formValues.pricingScheduleOptionDateRange.saturdayHolidayRule.id == 2">
+              (change)="calendarOptionHolidayRuleChange($event, formValues.formulaHolidayRules.saturdayHolidayRule, 2, 'Previous', 'Saturday')"
+              [checked]="formValues.formulaHolidayRules.saturdayHolidayRule && formValues.formulaHolidayRules.saturdayHolidayRule.id == 2">
             </mat-checkbox>
           </td>
         </tr>

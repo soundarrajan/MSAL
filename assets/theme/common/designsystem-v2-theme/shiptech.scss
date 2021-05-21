@@ -12,10 +12,16 @@
     padding: 0px !important;
   }
 .invoice-main-container{
-    background-color: red;
+    //background-color: red;
+    .mat-tab-body{
+      height:auto;
+      .mat-tab-body-content{
+        overflow: visible;
+      }
+    }
     .details{
         .section1{
-            padding-top: 15px;
+            padding-top: 10px;
             margin: 0px 15px;
             border-top: solid 2px #dce3eb;
         }
@@ -399,7 +405,7 @@
   }
 
   .custom-form-field-with-search {
-    margin: 15px 0px;
+    //margin: 15px 0px;
     border-radius: 4px;
     &.lightTheme {
       .mat-form-field {
@@ -579,6 +585,7 @@
     }
     .right-data{
       float: right;
+      display: contents;
       color: #364150;
     }
   }
@@ -1362,8 +1369,8 @@
     width: 150px;
     line-height: 3px;
     height: 30px;
-    border-radius: 1px;
-    border: 0px solid #364150;
+    border-radius: 0px;
+    border: 1px solid #364150;
     cursor: pointer;
   }
 }
@@ -1410,3 +1417,72 @@
 }
 
 /*** Mat Label disabled - end ***/
+
+
+.grid-add-btn{
+  width: 17px !important;
+  height: 17px !important;
+  position: absolute;
+  top: 9px;
+  left: 6px;
+  border: none;
+  padding: 0px;
+  .add-btn {
+    cursor: pointer;
+    content: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.99998 0C3.58001 0 0 3.58001 0 7.99998C0 12.42 3.58001 16 7.99998 16C12.42 16 16 12.42 16 7.99998C16 3.57997 12.42 0 7.99998 0ZM12 8.80001H8.80001V12H7.19999V8.80001H4.00001V7.19999H7.19999V4.00001H8.80001V7.19999H12V8.80001Z' fill='%23364150'/%3E%3C/svg%3E%0A");
+  }
+}
+.add-menu-container{
+  background-color: #364150 !important;
+  color: white;
+  .mat-menu-panel{
+    border-radius: 5px !important;
+    max-width: none !important;
+    max-width: none !important;
+  }
+  ::ng-deep .mat-menu-panel {
+    max-width: none !important;
+    max-width: none !important;
+  }
+}
+
+.more-dots{
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+  top: 18px;
+  width: 20px;
+  height: 5px;
+  content:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDIxIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxlbGxpcHNlIGN4PSIyLjM4NTQxIiBjeT0iMi43ODg5NyIgcng9IjIuMzg1NDEiIHJ5PSIyLjQyNjY2IiBmaWxsPSIjODQ4QjlFIi8+CjxlbGxpcHNlIGN4PSIxMC4wMDY1IiBjeT0iMi43ODg5NyIgcng9IjIuMzg1NDEiIHJ5PSIyLjQyNjY2IiBmaWxsPSIjODQ4QjlFIi8+CjxlbGxpcHNlIGN4PSIxNy42Mjc2IiBjeT0iMi43ODg5NyIgcng9IjIuMzg1NDEiIHJ5PSIyLjQyNjY2IiBmaWxsPSIjODQ4QjlFIi8+Cjwvc3ZnPgo=");
+}
+
+.more-button-options{
+    position: absolute;
+    z-index: 1;
+    margin: 0px 253px;
+    border: 1px solid #364150;
+    background: #364150;
+    color: #ffffff;
+    border-radius: 4px;
+    width: 165px;
+    line-height: 20px;
+    padding: 12px 40px 12px 10px;
+    height: 203px;
+    float: right;
+
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+      border-color: #ffffff;
+  }
+  
+  .mat-radio-button.mat-accent .mat-radio-inner-circle {
+      background-color: #ffffff;
+  }
+
+  .inv-radio-group{
+    line-height: 30px;
+  }
+}
+
+.mat-tab-body-content {
+  overflow: hidden;
+}

@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
+import { LocalService } from '../../services/local-service.service';
+import {
+  IAuditLogRequest,
+  IAuditLogResponse
+} from '@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto';
+import moment from 'moment';
 
 @Component({
   selector: 'app-audit-log',
@@ -15,7 +21,11 @@ export class AuditLogComponent implements OnInit {
   public rowCount: Number;
   public date = new FormControl(new Date());
 
-  constructor() {
+  currentDate = new Date();
+  defaultFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
+  selectedToDate: Date = new Date();
+
+  constructor(private localService: LocalService) {
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       //enableColResize: true,
@@ -53,32 +63,43 @@ export class AuditLogComponent implements OnInit {
 
   ngOnInit() {
     
+    this.loadAuditLog();   
   }
 
-  private columnDefs = [
-    { headerName: 'Entity Name', headerTooltip: 'Entity Name', field: 'entityname',width:160 ,cellClass:['font-bold aggrid-content-c']},
-    { headerName: 'Event Type', field: 'eventtype', headerTooltip: 'Event Type',width:160,cellClass:['aggrid-content-c']  },
-    { headerName: 'Field Name', field: 'fieldname', headerTooltip: 'Field Name',width:160,cellClass:['aggrid-content-c']   },
-    { headerName: 'New Value', headerTooltip: 'New Value', field: 'newvalue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
-    { headerName: 'Old Value', headerTooltip: 'Old Value', field: 'oldvalue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
-    { headerName: 'User Name', headerTooltip: 'User Name', field: 'username',cellClass:['aggrid-content-c'],width:160  },
-    { headerName: 'Date', headerTooltip: 'Date', field: 'date',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] }
+  public loadAuditLog(){
+    let businessId = "1102"; //smart module or screen ID
+    let planID = "02M2100023";
+      
+    let requestPayload = {"Filters":[{ColumnName: "BusinessId", Value: businessId}, {ColumnName: "Transaction", Value: planID}],"Pagination":{"Take":25,"Skip":0},"PageFilters":{"Filters":[{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":">=","Values":[this.defaultFromDate],dateType: "server","FilterOperator":0},{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":"<=","Values":[this.selectedToDate],dateType: "server","FilterOperator":1}]},"SortList":{"SortList":[]}};
+     this.localService.getAuditLog(requestPayload).subscribe((data: any) => {
+     this.rowData = data.payload;
+     console.log(this.rowData);
+     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+     titleEle.click();
+    });
+  }
+
+  onFromToDateChange(event) {
+    console.log('selected date', event);
+    this.defaultFromDate = event.fromDate;
+    this.selectedToDate = event.toDate;  
+    this.loadAuditLog();
+  }
+
+  dateFormatter(params) {
+    return moment(params.value).format('MM/DD/YYYY HH:mm');
+  }
+
+  public columnDefs = [
+    { headerName: 'Entity Name', headerTooltip: 'Entity Name', field:'static', valueFormatter: params => { return'Bunker Plan'; }, width:160 ,cellClass:['font-bold aggrid-content-c']},
+    { headerName: 'Event Type', field: 'transactionType', headerTooltip: 'Event Type',width:160,cellClass:['aggrid-content-c']  },
+    { headerName: 'Field Name', field: 'fieldName', headerTooltip: 'Field Name',width:160,cellClass:['aggrid-content-c']   },
+    { headerName: 'New Value', headerTooltip: 'New Value', field: 'newValue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
+    { headerName: 'Old Value', headerTooltip: 'Old Value', field: 'oldValue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
+    { headerName: 'User Name', headerTooltip: 'User Name', field: 'modifiedBy.name',cellClass:['aggrid-content-c'],width:160  },
+    { headerName: 'Date', headerTooltip: 'Date', field: 'date',valueFormatter: params => {return moment(params.value).format('MM/DD/YYYY HH:mm');}, width:160,cellClass:['aggrid-content-c']  }
   ];
 
-  private rowData = [
-    {
-      entityname: 'Current ROB', eventtype: 'Add', newvalue: '3000', fieldname: 'LSDIS', oldvalue: 'NA', username: 'Rowena@inatech.com', date: '10/10/2019 11:27'
-    },
-    {
-      entityname: 'Unpumpable', eventtype: 'Add', newvalue: '40', fieldname: 'HSFO', oldvalue: 'NA', username: 'Yusus@inatech.com', date: '10/10/2019 11:27'
-    },
-    {
-      entityname: 'Unpumpable', eventtype: 'Delete', newvalue: 'NA', fieldname: 'HSDIS', oldvalue: '32l', username: 'Pooja@inatech.com', date: '10/10/2019 11:27'
-    },
-    {
-      entityname: 'Unpumpable', eventtype: 'Edit', newvalue: '20', fieldname: 'ULSFO', oldvalue: '25', username: 'Yusus@inatech.com', date: '10/10/2019 11:27'
-    }
+  public rowData = [];
 
-
-  ];
-}
+  }

@@ -81,11 +81,11 @@
                           </tr>
                           <tr>
                             <th scope="row">Current ROB</th>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock  | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock  | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
                           </tr>
                           <tr>
                             <th scope="row">MSPS</th>
@@ -119,7 +119,7 @@
                       <div class="dark-table-body">
                         <div class="row">
                           <div class="col-5 p-0">
-                            <div>Arbitrage Volume : {{ROBArbitrageData?.arbitrageVolume}}</div>
+                            <div>Arbitrage Volume : {{ROBArbitrageData?.arbitrageVolume}} MT</div>
                             <div>Contango Volume : {{ROBArbitrageData?.contangoVolume}}</div>
                             <div>Arbitrage Bunker port : {{ROBArbitrageData?.arbitrageBunkerPort}}</div>
                           </div>
@@ -219,7 +219,7 @@
                 </span><span [ngClass]="this.statusCurr == undefined?'content': (this.statusCurr =='INVALID'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{this.statusCurr}}</span></div>
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
-                  style="display: flex;flex: 0 0 44%;justify-content: space-between;padding: 0px 5px;">
+                  style="display: flex;flex: 0 0 40%;justify-content: space-between;padding: 0px 5px;">
                   <!-- <button [disabled]="!enableCreateReq" matTooltip="Create Request" [matTooltipShowDelay]="500"
                     class="create-btn">
                     <img class="disablePlus" src="./assets/customicons/plus-noborder.svg" alt="create">
@@ -231,16 +231,16 @@
                     (click)="$event.stopPropagation()"> 
                     <a (click)="createRequest()">Create Request </a>
                   </div>
-                  <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn">Import
+                  <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
                     GSIS</button>
                 </div>
-                <div style="flex:0 0 33%;display: flex;align-items: center;justify-content: space-around;"
+                <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
                   class="border-rightside">
-                  <button mat-button disabled matTooltip="Generate" [matTooltipShowDelay]="500"
-                    class="btn">Generate</button>
-                  <button mat-button disabled matTooltip="Send" [matTooltipShowDelay]="500" class="btn">Send</button>
+                  <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
+                    class="btn" (click)="generateCurrentBPlan($event)">Generate</button>
+                  <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
                   <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
-                    (click)="SaveCurrntROB();saveCurrentBPlan($event)">Save</button>
+                    (click)="saveCurrentBPlan($event)" >Save</button>
                 </div>
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>
@@ -260,9 +260,9 @@
       <div class="panel-body">
         <app-bunkering-plan *ngIf="panel.expanded && loadBplan" [isExpanded]="expandBplan"
           (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
-          [currentROBObj]="currentROBObj"
           [vesselRef]="vesselData"
-          (voyage_detail)="getVoyageDetail($event)">
+          (voyage_detail)="getVoyageDetail($event)"
+          [scrubberReady]="scrubberReady">
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
@@ -306,8 +306,8 @@
         <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
           [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
           [selectedUserRole]="selectedUserRole"
-          [currentROBObj]="currentROBObj"
           [vesselRef]="vesselData">
+          [scrubberReady]="scrubberReady"
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>

@@ -61,6 +61,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   eventsSubject2: Subject<any> = new Subject<any>();
   eventsSubject3: Subject<any> = new Subject<any>();
   eventsSubject4: Subject<any> = new Subject<any>();
+  eventsSubject5: Subject<any> = new Subject<any>();
   anyChanges: boolean;
   deliverySettings: IDeliveryTenantSettings;
   finalQuantityRules: any[];
@@ -139,6 +140,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   selectedTabIndex: number;
   contractConfiguration: any;
   generalConfiguration: any;
+  customerList: any;
+  entityCopied: boolean =  false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -269,6 +272,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.locationList = this.setListFromStaticLists('Location');
       this.additionalCostList = this.setListFromStaticLists('AdditionalCost');
       this.costTypeList = this.setListFromStaticLists('CostType');
+      this.customerList = this.setListFromStaticLists('Customer');
 
       var defaultUom = this.generalTenantSettings.tenantFormats.uom;
       var defaultQuantityType = this.contractualQuantityOptionList[0];
@@ -380,8 +384,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
                 v1.contractProductId = 0;
               }
             });
-            v.formula = null;
             v.mtmFormula = null;
+            v.isMtmFormula = false;
             v.price = null;
             v.mtmPrice = null;
           });
@@ -391,9 +395,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.formValues.summary.copiedContract = true;
           this.formValues.createdBy = null;
           this.formValues.hasInvoicedOrder = false;
+          this.entityCopied = true;
+          this.eventsSubject5.next(true);
           console.log(this.formValues);
           this.changeDetectorRef.detectChanges();
-          this.toastr.info('Formula and MTM Formula was reset for all products');
           this.toastr.success('Entity copied');
         }
      });
@@ -460,7 +465,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         var keyno = key + 1;
         this.toastr.error(`Please select a valid location for product ${ keyno }.`);
         notValidLocation = true;
-      } else if (val.isFormula == true && typeof val.formula != 'object') {
+      } else if (val.isFormula == true && (typeof val.formula != 'object' || !val.formula)) {
         var keyno = key + 1;
         this.toastr.error(`Please select a valid Formula for Product ${ keyno }.`);
         notValidLocation = true;
@@ -602,6 +607,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     }
 
     let id = this.entityId;
+    this.entityCopied = false;
+    this.eventsSubject5.next(false);
     if (!id) {
       this.spinner.show();
       this.contractService

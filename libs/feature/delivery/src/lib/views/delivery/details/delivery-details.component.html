@@ -109,13 +109,15 @@
 <div class="container-fluid-delivery">
   <div class="row m-b-4">
     <div class="col-12">
-      <p-accordion multiple="true" styleClass="shiptech-blue-accordion">
-        <p-accordionTab cache="true">
-          <p-header Class="accordionheader-blue">Notes</p-header>
-          <ng-template pTemplate="content">
-            <hr class="line m-t-7">
-            <shiptech-notes-log [DeliveryNotes]="this.formValues.deliveryNotes" (ChangedValue)="ChangedValueFun($event)"></shiptech-notes-log>
-          </ng-template>
+      <p-accordion 
+      [multiple]="true"
+      styleClass="shiptech-blue-accordion">
+        <p-accordionTab cache="true" [(selected)]="activeNotesState">
+          <p-header  Class="accordionheader-blue">Notes</p-header>
+          <!-- <ng-template pTemplate="content">
+            <hr class="line m-t-7"> -->
+            <shiptech-notes-log [id]="this.formValues.id" [DeliveryNotes]="this.formValues.deliveryNotes" (ChangedValue)="ChangedValueFun($event)"></shiptech-notes-log>
+          <!-- </ng-template> -->
         </p-accordionTab>
       </p-accordion>
     </div>

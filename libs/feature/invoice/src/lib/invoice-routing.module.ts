@@ -8,6 +8,7 @@ import { InvoiceListComponent } from './views/invoice-list/invoice-list.componen
 import { KnownInvoiceRoutes } from './known-invoice.routes';
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
 import { InvoiceSplitviewComponent } from './views/split-view/invoice-splitview.component';
+import { StaticListsRouteResolver } from './views/invoice-view/details/static-lists-route.resolver';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
       {
         path: KnownInvoiceRoutes.InvoiceSplitView+`/:invoiceIds`,
         component: InvoiceSplitviewComponent,
+        resolve:{
+            navBar: NavBarResolver,
+            staticLists: StaticListsRouteResolver
+        },
         data: { title: 'Invoice Review', breadcrumb: 'Invoices Review' }
       },
       {
@@ -42,18 +47,12 @@ const routes: Routes = [
             path: `:${KnownInvoiceRoutes.InvoiceIdParam}`,
             component: InvoiceViewComponent,
             resolve:{
-              // Note: ReportId is expected in child routes in the data.
-              //invoice: InvoiceDetailsRouteResolver,
-              navBar: NavBarResolver
+              navBar: NavBarResolver,
+              staticLists: StaticListsRouteResolver
             },
             data: { title: 'View Invoice', breadcrumb: 'View Invoice' }
           },
-          {
-            path: `:${KnownInvoiceRoutes.InvoiceIdParam}/`+KnownInvoiceRoutes.InvoiceDetails,
-            component: InvoiceViewComponent,
-            data: { title: 'View Invoice', breadcrumb: 'View Invoice' }
-          }
-        ],
+        ]
       }
     ]
   }

@@ -212,18 +212,18 @@ div.component-viewer-nav-content
 /************************************************* COMPONENTS *************************************************/
 // <!-- Form Field start-->
 #custom-form-field {
-  margin: 0px 20px;
+  //margin: 0px 20px;
   border-radius: 4px;
   &.darkTheme {
     .mat-form-field {
       background: #434f60;
       &.without-search {
-        width: 181px;
+        //width: 181px;
         border-radius: 4px;
         border: 1px solid #f1f1f2;
       }
       &.with-search {
-        width: 152px;
+        //width: 152px;
         border-radius: 4px 0px 0px 4px;
         border: 1px solid #f1f1f2;
         border-right: none;
@@ -244,7 +244,7 @@ div.component-viewer-nav-content
         }
       }
       box-sizing: border-box;
-      height: 40px;
+      height: 45px;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -307,12 +307,12 @@ div.component-viewer-nav-content
     .mat-form-field {
       background: #ffffff;
       &.without-search {
-        width: 181px;
+        //width: 181px;
         border-radius: 4px;
         border: 1px solid #a5a5a5;
       }
       &.with-search {
-        width: 152px;
+        //width: 152px;
         border-radius: 4px 0px 0px 4px;
         border: 1px solid #a5a5a5;
         border-right: none;
@@ -333,7 +333,7 @@ div.component-viewer-nav-content
         }
       }
       box-sizing: border-box;
-      height: 40px;
+      height: 45px;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -403,7 +403,7 @@ div.component-viewer-nav-content
 // <!-- Button Toggle Start-->
 #custom-btn-toggle-v2 {
   background: #ffffff;
-  margin: 0px 20px;
+  //margin: 0px 20px;
   .mat-button-toggle-group-appearance-standard {
     border: none;
   }
@@ -421,11 +421,12 @@ div.component-viewer-nav-content
     font-size: 14px;
     line-height: 16px;
     color: #848b9e;
-    width: 164px;
+    width: auto;
     height: 40px;
     display: flex;
     align-items: center;
     border: none;
+    padding: 0px 10px 0px 25px;
     &.mat-button-toggle-checked {
       border-radius: 4px !important;
       background: #364150;
@@ -434,9 +435,11 @@ div.component-viewer-nav-content
       font-size: 14px;
       line-height: 16px;
       color: #ffffff;
-      width: 164px;
       z-index: 1;
     }
+  }
+  .mat-button-toggle-disabled .mat-button-toggle-button {
+    cursor: pointer;
   }
 }
 // <!-- Button Toggle End-->
@@ -785,18 +788,23 @@ div.component-viewer-nav-content
 
 // <!--  Movement Id with different status Start-->
 .badge-header-v2 {
-  width: 198px !important;
+  width: auto !important;
   height: 40px;
   background: #f1f1f2;
   border-radius: 4px;
   font-style: normal;
   font-weight: normal;
-  font-size: 10px;
+  font-size: 13px;
   line-height: 12px;
   color: #252a32;
-  padding: 6px;
+  padding: 14px;
   display: flex;
   justify-content: space-around;
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  white-space: nowrap;
+  overflow: hidden;
   .readonly-split-fields {
     width: 45%;
   }
@@ -819,7 +827,9 @@ div.component-viewer-nav-content
     color: #96cf55;
   }
   .border_line {
-    padding-right: 10px;
+    padding-right: 5px;
+    height: 30px;
+    margin: -10px 10px;
     border-right: 1px solid #252a32;
   }
 }
@@ -2089,21 +2099,21 @@ div.component-viewer-nav-content
 /****  Button-V2 - END ****/
 
 /* Scrollbar */
- 
+
 ::-webkit-scrollbar {
    width: 10px;
    height: 10px;
    background-color: transparent;
 }
- 
+
 ::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: transparent;
 }
- 
+
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #8d8d8d;
 }
- 
+
 /* Scrollbar */
