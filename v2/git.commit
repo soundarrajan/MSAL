@@ -1,7 +1,7 @@
-﻿commit 3b68b9c4161e1d4401ec6fe2d830fbf6ca5d0cd6
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri May 21 15:06:26 2021 +0300
+﻿commit d5da224244d580a26688e2b1f041fc9eff8189c8
+Author: oliu radu <oliuradu@gmail.com>
+Date:   Fri May 21 15:37:47 2021 +0300
 
-    Fixed build error
+    fix error with verify invoiceClaimDetails isPreClaim
 
 branch: master
