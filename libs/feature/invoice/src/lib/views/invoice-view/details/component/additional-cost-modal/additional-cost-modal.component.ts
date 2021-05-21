@@ -56,7 +56,11 @@ export class AdditionalCostModalComponent implements OnInit {
     this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
     this.formatAdditionalCosts();
-    this.getAdditionalCostsPerPort(135);
+    this.formValues.orderDetails.location = {
+      'id': 135,
+      'name': 'Hamburg'
+    }
+    this.getAdditionalCostsPerPort(this.formValues.orderDetails.location.id);
 
   }
 
@@ -335,13 +339,13 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
 
-  addCostDetail(selected){
+  addCostDetail(additionalCost){
     if (!this.formValues.costDetails) {
       this.formValues.costDetails = [];
     }
     let isTaxComponent = false;
     this.costDetailsComponentTypes.forEach((v, k) => {
-      if (v.id == selected.id) {
+      if (v.id == additionalCost.additionalCostid) {
         if (v.componentType) {
             if (v.componentType.id == 1) {
                 isTaxComponent = true;
@@ -351,22 +355,26 @@ export class AdditionalCostModalComponent implements OnInit {
     });
     let newLine = {
       costName: {
-        id: selected.id,
-        name: selected.name,
-        code: selected.code,
+        id: additionalCost.additionalCostid,
+        name: additionalCost.name,
+        code: additionalCost.code,
         collectionName: null,
       },
+      costType: additionalCost.costType,
+      invoiceAmount:  additionalCost.amount ? this.amountFormatValue(additionalCost.amount) : '',
+      invoiceExtras: additionalCost.extrasPercentage,
       invoiceQuantity: null,
-      invoiceQuantityUom: this.generalTenantSettings.tenantFormats.uom,
+      invoiceQuantityUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
       invoiceRate: null,
-      invoiceRateUom: this.generalTenantSettings.tenantFormats.uom,
-      invoiceRateCurrency: this.formValues.invoiceRateCurrency,
+      invoiceRateUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+      invoiceRateCurrency: additionalCost.currency ? additionalCost.currency : this.formValues.invoiceRateCurrency,
       product: {
         id: -1,
         name: 'All',
         deliveryProductId: null
       },
-      isTaxComponent: isTaxComponent
+      isTaxComponent: isTaxComponent,
+      locationAdditionalCostId: additionalCost.locationid
     }
     this.formValues.costDetails.push(newLine);
     this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
