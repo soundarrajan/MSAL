@@ -31,6 +31,7 @@ export class VesselDetailsComponent implements OnInit {
   public theme:boolean=true;
   selectedRole: any;
   changeUserRole: Subject<void> = new Subject<void>();
+  IsVesselhasNewPlan: boolean = false;
   constructor(private store: Store, private localService: LocalService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -194,6 +195,7 @@ export class VesselDetailsComponent implements OnInit {
     }
   }
   vesselChange(event) {
+    this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
     this.vesselName = event.displayName;
     // this.vesselView = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
     //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
