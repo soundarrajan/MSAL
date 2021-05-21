@@ -1,7 +1,7 @@
-﻿commit d5da224244d580a26688e2b1f041fc9eff8189c8
-Author: oliu radu <oliuradu@gmail.com>
-Date:   Fri May 21 15:37:47 2021 +0300
+﻿commit 525962158760650264079422dc3226e7154092f1
+Author: Soundar <soundarrajan.s@inatech.com>
+Date:   Fri May 21 19:00:20 2021 +0530
 
-    fix error with verify invoiceClaimDetails isPreClaim
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
