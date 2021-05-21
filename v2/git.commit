@@ -1,11 +1,11 @@
-﻿commit 62ea9b47914c59146bcf304fba583f210448de77
+﻿commit a2a1674a53ad9f8e9c560ed235631f5f9ea61c8c
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu May 20 21:48:31 2021 +0000
+Date:   Fri May 21 00:00:23 2021 +0000
 
-    Merged PR 10831: #32430 Min SOA fix
+    Merged PR 10832: Save Bplan
     
-    #32430 Min SOA fix
+    Save Bplan
     
-    Related work items: #32430
+    Related work items: #32432
 
 branch: master
