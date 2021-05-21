@@ -1,7 +1,7 @@
-﻿commit 12ccb2e9f9c29abed674babb6a04643c130acff7
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 21 14:07:45 2021 +0000
+﻿commit 8a847bf627e6a890db41379476f5e9881dbbc553
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Fri May 21 19:47:41 2021 +0530
 
-    Merged PR 10852: Added logic for barge cost in invoice screen
+    Merged changes.
 
 branch: master

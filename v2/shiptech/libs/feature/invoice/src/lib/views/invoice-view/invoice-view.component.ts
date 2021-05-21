@@ -42,7 +42,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   currencyList: any;
   private _destroy$ = new Subject();
 
-  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,
+  constructor(private route: ActivatedRoute,
+    private invoiceService: InvoiceDetailsService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private spinner: NgxSpinnerService,
     public dialog: MatDialog,
     private toastr: ToastrService){
       this.getTabDataLinks();
@@ -63,6 +66,21 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       else if (localStorage.getItem('createInvoice')) {
         this.getTabDataLinks();
         this.createNewInvoiceType();
+      }
+      else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
+        this.createCreditNoteFromInvoiceClaims('createCreditNoteFromInvoiceClaims');
+      }
+      else if (localStorage.getItem('createDebunkerCreditNoteFromInvoiceClaims'))
+      {
+        this.createCreditNoteFromInvoiceClaims('createDebunkerCreditNoteFromInvoiceClaims');
+      }
+      else if (localStorage.getItem('createResaleCreditNoteFromInvoiceClaims'))
+      {
+        this.createCreditNoteFromInvoiceClaims('createResaleCreditNoteFromInvoiceClaims');
+      }
+      else if (localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims'))
+      {
+        this.createPreClaimCreditNote();
       }
       else{
         // edit an existing invoice
@@ -131,6 +149,34 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.setScreenActions(response);
       });
+  }
+
+  createCreditNoteFromInvoiceClaims(storageKey: string)
+  {
+    this.invoiceService.createCreditNoteFromInvoiceClaims(JSON.parse(localStorage.getItem(storageKey))).subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.toastr.error('Could not create credit/debit note!', result);
+      } else {
+        this.toastr.success('Credit/Debit note is Created!');
+        this.setScreenActions(result);
+      }
+    });
+    localStorage.removeItem(storageKey);
+  }
+
+  createPreClaimCreditNote()
+  {
+    this.invoiceService.createPreClaimCreditNote(JSON.parse(localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')))
+    .subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.toastr.error(result);
+      } else {
+        this.toastr.success('Pre Claim Credit note is Created!');
+        this.setScreenActions(result);
+      }
+    });
+
+    localStorage.removeItem('createPreclaimCreditNoteFromInvoiceClaims');
   }
 
   createNewInvoiceType(){

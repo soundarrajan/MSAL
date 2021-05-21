@@ -45,6 +45,8 @@ export namespace InvoiceApiPaths {
   export const getBankAccountNumber = () =>  `/api/invoice/getAccountNumberCounterpartylist`;
   export const getTenantConfiguration = () => `api/admin/tenantConfiguration/get`;
   export const notesAutoSave = () => `api/invoice/autosave`;
+  export const createCreditNoteInvoiceFromClaim = () => `api/invoice/newFromClaim`;
+  export const createPreClaimCreditNote = () => `api/invoice/newPreclaimCN`;
   export const getAdditionalCostsPerPort = () =>  `api/masters/additionalcosts/listforlocation`;
 
 
@@ -102,9 +104,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   getInvoicDetails(
     request: any
-  ): Observable<IInvoiceDetailsItemResponse> {
+  ): Observable<any> {
 
-    return this.http.post<IInvoiceDetailsItemResponse>(
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.getInvoiceItem()}`,
       { payload: request }
     ).pipe(
@@ -116,9 +118,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   getNewInvoicDetails(
     request: any
-  ): Observable<IInvoiceDetailsItemResponse> {
+  ): Observable<any> {
 
-    return this.http.post<IInvoiceDetailsItemResponse>(
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.getNewInvoiceItem()}`,
       { payload: request }
     ).pipe(
@@ -130,8 +132,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   createInvoice(
     request: any
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.createInvoiceItem()}`,
       { payload: request }
     ).pipe(
@@ -143,8 +145,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   updateInvoice(
     request: any
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.updateInvoiceItem()}`,
       { payload: request }
     ).pipe(
@@ -169,8 +171,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   approveInvoiceItem(
     request: any
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.approveInvoiceItem()}`,
       { payload: request }
     ).pipe(
@@ -182,8 +184,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   submitapproval(
     request: any
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.submitapproval()}`,
       { payload: request }
     ).pipe(
@@ -195,8 +197,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   cancelInvoiceItem(
     request: number
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.cancelInvoiceItem()}`,
       { payload: { id: request }}
     ).pipe(
@@ -208,8 +210,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   acceptInvoiceItem(
     request: number
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.acceptInvoiceItem()}`,
       { payload: { id: request }}
     ).pipe(
@@ -221,8 +223,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   revertInvoiceItem(
     request: number
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.revertInvoiceItem()}`,
       { payload: { id: request }}
     ).pipe(
@@ -234,8 +236,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   rejectInvoiceItem(
     request: number
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.rejectInvoiceItem()}`,
       { payload: { id: request }}
     ).pipe(
@@ -247,8 +249,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   submitForReview(
     request: number
-  ): Observable<IInvoiceDetailsItemResponse> {
-    return this.http.post<IInvoiceDetailsItemResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.submitForReview()}`,
       { payload: { id: request }}
     ).pipe(
@@ -376,7 +378,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
-  
+
   @ObservableException()
   getTenantConfiguration(
     request: any
@@ -417,6 +419,15 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   }
 
   @ObservableException()
+  createCreditNoteFromInvoiceClaims(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${InvoiceApiPaths.createCreditNoteInvoiceFromClaim()}`,
+      { payload: request }
+    ).pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
   getAdditionalCostsPerPort(
     request: any
   ): Observable<any> {
@@ -429,10 +440,16 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     );
   }
 
-
-  
+  @ObservableException()
+  createPreClaimCreditNote(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${InvoiceApiPaths.createPreClaimCreditNote()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
 }
 
-export const INVOICE_COMPLETE_API_SERVICE = new InjectionToken<
-  IInvoiceCompleteApiService
->('INVOICE_COMPLETE_API_SERVICE');
+export const INVOICE_COMPLETE_API_SERVICE = new InjectionToken<IInvoiceCompleteApiService>('INVOICE_COMPLETE_API_SERVICE');
