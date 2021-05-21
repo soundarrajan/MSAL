@@ -55,7 +55,7 @@
     color: #252a32;
     padding: 10px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     min-height: 40px;
     .value {
       font-style: normal;
@@ -777,4 +777,12 @@
   margin: 23px -16px;
   width: 378px;
   padding: 10px;
+}
+
+.m-w-110{
+  min-width:110px;
+  max-width: 110px;
+}
+.m-w-150{
+  min-width: 150px;
 }
