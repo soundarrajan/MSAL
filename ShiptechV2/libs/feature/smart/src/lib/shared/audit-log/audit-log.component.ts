@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { GridOptions } from '@ag-grid-community/core';
+import { Select, Selector } from "@ngxs/store";
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
+import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
+import { Observable } from 'rxjs';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { LocalService } from '../../services/local-service.service';
 import {
@@ -16,6 +20,8 @@ import moment from 'moment';
 })
 export class AuditLogComponent implements OnInit {
 
+  @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
+  vesselRef: ISaveVesselData;
   public gridOptions: GridOptions;
   public colResizeDefault;
   public rowCount: Number;
@@ -26,6 +32,9 @@ export class AuditLogComponent implements OnInit {
   selectedToDate: Date = new Date();
 
   constructor(private localService: LocalService) {
+    this.vesselData$.subscribe(data=> {
+      this.vesselRef = data;
+    });
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       //enableColResize: true,
@@ -68,7 +77,7 @@ export class AuditLogComponent implements OnInit {
 
   public loadAuditLog(){
     let businessId = "1102"; //smart module or screen ID
-    let planID = "02M2100023";
+    let planID = this.vesselRef?.planId;
       
     let requestPayload = {"Filters":[{ColumnName: "BusinessId", Value: businessId}, {ColumnName: "Transaction", Value: planID}],"Pagination":{"Take":25,"Skip":0},"PageFilters":{"Filters":[{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":">=","Values":[this.defaultFromDate],dateType: "server","FilterOperator":0},{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":"<=","Values":[this.selectedToDate],dateType: "server","FilterOperator":1}]},"SortList":{"SortList":[]}};
      this.localService.getAuditLog(requestPayload).subscribe((data: any) => {

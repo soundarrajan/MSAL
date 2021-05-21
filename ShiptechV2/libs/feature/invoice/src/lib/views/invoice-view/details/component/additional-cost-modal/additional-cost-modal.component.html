@@ -111,11 +111,11 @@
                       <mat-select
                           [(ngModel)]="additionalCost.value.costType"
                           (ngModelChange)="triggerChangeFieldsAppSpecific('costType', additionalCost.key);invoiceConvertUom('cost', additionalCost.key)"
-                          [compareWith]="compareUomObjects"
+                          [compareWith]="compareCostTypeObjects"
                           [disableOptionCentering]="true"
                           [disabled]="additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
                           panelClass="general-information-select-container">
-                          <mat-option *ngFor="let option of  filterCostTypesByAdditionalCost(additionalCost.value.costName ? additionalCost.value.costName.id : 0, 0)" [value]="option">
+                          <mat-option *ngFor="let option of  filterCostTypesByAdditionalCost(additionalCost.value.costName ? additionalCost.value.costName.id : 0)" [value]="option">
                             {{option.name}}
                           </mat-option>
                       </mat-select>
