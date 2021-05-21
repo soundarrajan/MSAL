@@ -178,7 +178,7 @@ export class CommentsComponent implements OnInit {
     else
       data = this.requests;
 
-    this.filterParticipants(data);
+    // this.filterParticipants(data);
 
   }
   filterParticipants(data) {
