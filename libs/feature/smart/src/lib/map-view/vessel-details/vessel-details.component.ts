@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
 import { Subject } from 'rxjs';
 import { LocalService } from '../../services/local-service.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -29,7 +31,8 @@ export class VesselDetailsComponent implements OnInit {
   public theme:boolean=true;
   selectedRole: any;
   changeUserRole: Subject<void> = new Subject<void>();
-  constructor(private localService: LocalService, public dialog: MatDialog) { }
+  IsVesselhasNewPlan: boolean = false;
+  constructor(private store: Store, private localService: LocalService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getBunkerUserMode();
@@ -55,6 +58,8 @@ export class VesselDetailsComponent implements OnInit {
       this.bunkerUserRole = data.payload;
       this.selectedUserRole = this.bunkerUserRole.find((role)=> (role.default==true) );
       // this.LoadBunkerPlanByRole();
+      // store user role for shared ref
+      this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
     })
   }
   getVesselList() {
@@ -90,9 +95,10 @@ export class VesselDetailsComponent implements OnInit {
     this.previousUserRole = this.selectedUserRole;
     this.selectedUserRole = event.value;
     console.log(this.selectedRole);
+    
     this.LoadBunkerPlanByRole();
   }
-
+  
   LoadBunkerPlanByRole() {
     var _this = this;
     const confirmMessage = this.selectedUserRole?.name == 'Vessel'? 'Are you sure to switch your role to Vessel?' : 'Are you sure to switch your role to Operator?'
@@ -102,10 +108,12 @@ export class VesselDetailsComponent implements OnInit {
       panelClass: 'bunkerplan-role-confirm',
       data:  { message: confirmMessage }
     });
-
+    
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if(result) {
+        // store user role for shared ref
+        this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
         if(this.selectedUserRole?.name=='Vessel') {
           this.checkVesselHasNewPlan();
         }
@@ -113,6 +121,8 @@ export class VesselDetailsComponent implements OnInit {
         setTimeout(() => {
           _this.selectedRole = _this.bunkerUserRole.find((role)=> (role.name==_this.previousUserRole?.name) );
           _this.selectedUserRole = _this.selectedRole;
+          // store user role for shared ref
+          this.store.dispatch(new saveVesselDataAction({'userRole': _this.selectedUserRole?.name}));
           let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
         }, 500);
@@ -185,6 +195,7 @@ export class VesselDetailsComponent implements OnInit {
     }
   }
   vesselChange(event) {
+    this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
     this.vesselName = event.displayName;
     // this.vesselView = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
     //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';

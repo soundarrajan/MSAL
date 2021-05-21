@@ -171,10 +171,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     let deliveryProductIds = [];
     data.productDetails.forEach((v, k) => {
         v.id = 0;
-        // v.invoiceQuantity = null;
         v.invoiceRate = 0;
         v.description = null;
-        // v.invoiceRateCurrency = null;
         v.pricingDate = null;
         v.invoiceAmount = null;
         v.reconStatus = null;
@@ -190,24 +188,25 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         v.invoiceExtras = null;
         v.description = null;
         v.invoiceAmount = null;
-        if (v.product) {
-          if (v.product.id != -1) {
-            if (v.product.id != v.deliveryProductId) {
-              v.product.productId = v.product.id;
-              v.product.id = v.deliveryProductId;
-            }
-          }
-        } else {
-          v.product = {
-            id : -1,
-          };
-        }
+        // if (v.product) {
+        //   if (v.product.id != -1) {
+        //     if (v.product.id != v.deliveryProductId) {
+        //       v.product.productId = v.product.id;
+        //       v.product.id = v.deliveryProductId;
+        //     }
+        //   }
+        // } else {
+        //   v.product = {
+        //     id : -1,
+        //   };
+        // }
       });
     }
     data.counterpartyDetails.paymentTerm = data.counterpartyDetails.orderPaymentTerm;
     data.deliveryDate = data.orderDeliveryDate;
     data.orderDetails.carrierCompany = data.orderDetails.orderCarrierCompany;
     data.orderDetails.paymentCompany = data.orderDetails.orderPaymentCompany;
+    data.invoiceChecks = null;
 
     this.displayDetailFormvalues = false;
     this.spinner.show();

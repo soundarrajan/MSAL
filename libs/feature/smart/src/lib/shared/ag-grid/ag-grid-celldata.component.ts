@@ -36,7 +36,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public etdInTime: any;
   public shiptechPortUrl: string;
   public shiptechUrl: string ;
-  public _changeCurrentROBObj$: any;
   public bplanType: any;
   @Input('selectedUserRole') 
   public set selectedUserRole(v : any) {
@@ -53,7 +52,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   ngOnInit() {
     this.localService.themeChange.subscribe(value => this.theme = value);
-    this.bunkerPlanService._changeCurrentROBObj$.subscribe(res => this._changeCurrentROBObj$ = res)
   }
 
   agInit(params: any): void {
@@ -397,12 +395,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     event.stopPropagation();
   }
   onEditCheckboxComment(value,comment,event) {
-    if(value == true && comment!="")
-      this.enableSave = true;
-    else if (value == false && comment =="") //check for checkbox value
+    if(comment!="")
       this.enableSave = true;
     else
       this.enableSave = false;
+      
       event.stopPropagation();
   }
   onEditCell(value,comment) {
@@ -556,9 +553,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.params.context.componentParent.consUpdatedEvent(params,value);
   }
 
-  updateSOA(value){
-    this.params.data.hsfo_soa = 4444;
-  }
 }
 @Component({
   selector: 'hover-menu',

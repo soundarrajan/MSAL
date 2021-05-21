@@ -29,13 +29,13 @@
             <span  *ngIf="this.User.id != item.createdBy.id" >{{item.note}}</span>
             <span  *ngIf="this.User.id == item.createdBy.id" >
             <textarea fxFlexFill [rows]="2" [cols]="30" 
-            (ngModelChange)="update(item, $event)"
+            (ngModelChange)="update(item, $event, i)"
             [ngModelOptions]="{updateOn: 'blur'}"
             [(ngModel)] ="item.note" class="editable-textarea"></textarea>
           </span>
           </td>
           <td class="padding" style="text-align: center; border: 1px solid #E0E1E4; box-sizing: border-box;">
-             {{item.createdBy.name}}
+             {{item.createdBy.displayName}}
           </td>
           <td class=" padding" style="text-align: center; border: 1px solid #E0E1E4; box-sizing: border-box;">
             {{item.createdAt | date:'medium'}}

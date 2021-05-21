@@ -66,7 +66,7 @@
   </div>
 
   <div *ngIf="params.type=='soa-hsfo'">
-    <div [matTooltip]="params.value" [ngClass]="params.cellClass" (_changeCurrentROBObj$)="updateSOA(params.value)">{{params.value}}</div>
+    <div [matTooltip]="params.value" [ngClass]="params.cellClass">{{params.value}}</div>
   </div>
 
   
@@ -209,7 +209,7 @@
     <div  style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuCheckbox($event,params);"
     (click)="toggleMenu3Checkbox($event)"
     (mouseleave)="!menuClick  && toggleMenu2Checkbox();">
-    <mat-checkbox style="z-index: 1050;pointer-events:none;" [(ngModel)]="isChecked" 
+    <mat-checkbox style="z-index: 1050;pointer-events:none;" [(ngModel)]="params.value" 
     [matMenuTriggerFor]="checkboxEditMenu"
   [matMenuTriggerData]="params.value" #inputMenuTrigger="matMenuTrigger" >
     </mat-checkbox>
