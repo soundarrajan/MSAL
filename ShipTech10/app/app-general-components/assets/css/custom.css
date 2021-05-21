@@ -4769,3 +4769,25 @@ select option {
 .input-group-flex div:first-child{
     width: calc(100% - 37px);
 }
+
+#flat_invoices_app_invoice_list_cb #selectAllInvoices {
+	font-size: 25px !important;
+	color: #d9d9d9;
+	background: #fff;
+	content: none;
+	width: 19px;
+	height: 19px;
+	border: 1px solid #d5d5d5;
+	position: relative;
+	margin: 0 auto;
+	display: block;
+} 
+#flat_invoices_app_invoice_list_cb #selectAllInvoices.selected:before {
+	content: '\f00c';
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	font-family: 'FontAwesome';
+	font-size: 11px;
+	color: #757575;
+} 

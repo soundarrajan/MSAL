@@ -3283,6 +3283,7 @@
                     ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"  ng-mouseover="evaluateChangedContracts()"></i>');
                 $('#jqgh_flat_contract_planning_actions-0').css('display', 'inherit');
 
+                $('#flat_invoices_app_invoice_list_cb').html('<span id="selectAllInvoices" style="font-size: 25px !important; color: #d9d9d9;" ng-click="selectAllInvoices()"></span>');
            }
 
         });
@@ -3394,6 +3395,33 @@
                 return;
             }
                 
+        }
+
+        $scope.selectAllInvoices = () => {
+        	var el = $('#selectAllInvoices');
+            if (el.hasClass('selected')) {
+            	$(el).removeClass("selected");
+                $("#gbox_flat_invoices_app_invoice_list .cbox:checked").trigger("click");
+                // for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                //     var rowId = i+1;
+                //     var disabledOrder = $('#' + rowId + '>td > label >input').attr('disabled');
+                //     if (!$scope.selectOrders[i + 1] && disabledOrder != "disabled") {
+                //         enabledNumber +=1;
+                //         $scope.selectOrders[i + 1] = true;
+                //         $scope.selectOrderListRow(i + 1, i + 1, true);
+                //     }
+                // }
+            } else  {
+            	$(el).addClass("selected");
+                $("#gbox_flat_invoices_app_invoice_list .cbox:not(:checked)").trigger("click");
+                // for (var i = 0; i < theCLC.jqGrid.Ascensys.gridObject.rows.length; i++) {
+                //     if ($scope.selectOrders[i + 1] && disabledOrder != "disabled") {
+                //         enabledNumber +=1;
+                //         $scope.selectOrders[i + 1] = false;
+                //         $scope.selectOrderListRow(i + 1, i + 1, true);
+                //     }
+                // }
+            }
         }
 
         $rootScope.$on("selectedContractFromModal", function(data,res){
@@ -4124,7 +4152,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 	                        console.log($rootScope.selectedInvoices);
 	                        var selectedInvoicesIds = []; 
 	                        $.each($rootScope.selectedInvoices, (k,v) => {
-	                        	selectedInvoicesIds.push(v.id);
+	                        	selectedInvoicesIds.push(v.invoice.id);
 	                        })
 	                        if (selectedInvoicesIds.length == 0 ) {
 	                        	toastr.error("Please select at least one invoice");
