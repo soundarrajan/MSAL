@@ -1,7 +1,7 @@
-﻿commit 51fed8d8c9701902ee969a556ec4115733a275bd
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 21 06:20:36 2021 +0000
+﻿commit 03325f636c41fe4447b94a20be7c4f32d59ae975
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Fri May 21 13:04:02 2021 +0530
 
-    Merged PR 10834: Fixed additional cost when create an invoice from deliveries list
+    Customer lookup bind value in invoice screen. #30095
 
 branch: master
