@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
+import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
@@ -26,6 +28,8 @@ import { Subject, Subscription, Observable } from 'rxjs';
 })
 export class VesselInfoComponent implements OnInit {
 
+  @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
+  vesselRef: ISaveVesselData;
   @ViewChild(CommentsComponent) child;
   @ViewChild(BunkeringPlanComponent) currentBplan;
   @ViewChild(AGGridCellDataComponent) agGridCellData:AGGridCellDataComponent;
@@ -71,6 +75,10 @@ export class VesselInfoComponent implements OnInit {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
+
+      this.vesselData$.subscribe(data=> {
+        this.vesselRef = data;
+      });
    }
 
   ngOnInit() {
@@ -337,6 +345,7 @@ export class VesselInfoComponent implements OnInit {
     }
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
+      this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0){
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',

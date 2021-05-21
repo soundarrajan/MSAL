@@ -6,7 +6,7 @@
     <div class="tab-wrapper">
       <div [ngClass]="vesselView">
         <mat-tab-group>
-          <mat-tab>
+          <mat-tab #bunkerplan>
             <ng-template mat-tab-label>
               <ng-container [ngSwitch]="vesselView">
                 <img *ngSwitchCase="'higher-warning-view'" id=""  src="./assets/customicons/vessel_red.svg"
@@ -18,7 +18,7 @@
               </ng-container>
               {{vesselName}}
             </ng-template>
-            <app-vessel-info 
+            <app-vessel-info *ngIf="bunkerplan.isActive"
             [vesselList]="vesselList" 
             [vesselData]="vesselData" 
             [selectedUserRole]="selectedUserRole"
