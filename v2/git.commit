@@ -1,11 +1,7 @@
-﻿commit a2a1674a53ad9f8e9c560ed235631f5f9ea61c8c
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri May 21 00:00:23 2021 +0000
+﻿commit 51fed8d8c9701902ee969a556ec4115733a275bd
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri May 21 06:20:36 2021 +0000
 
-    Merged PR 10832: Save Bplan
-    
-    Save Bplan
-    
-    Related work items: #32432
+    Merged PR 10834: Fixed additional cost when create an invoice from deliveries list
 
 branch: master

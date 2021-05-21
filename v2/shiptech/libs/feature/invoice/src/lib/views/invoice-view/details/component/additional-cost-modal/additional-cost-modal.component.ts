@@ -52,11 +52,9 @@ export class AdditionalCostModalComponent implements OnInit {
   filterCostNames: any[];
   @Input('formValues') set _formValues(val){
     this.formValues = val;
-    if (this.formValues.id) {
-      this.formatAdditionalCosts();
-    }
     this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
+    this.formatAdditionalCosts();
 
   }
 
@@ -258,9 +256,12 @@ export class AdditionalCostModalComponent implements OnInit {
     return object1 && object2 && object1.id == object2.id;
   }
 
+  compareCostTypeObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
   compareProductObjects(object1: any, object2: any) {
     return object1 && object2 && object1.productId == object2.productId;
-   
 
   }
 
@@ -318,7 +319,7 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
 
-  filterCostTypesByAdditionalCost(cost, rowRenderIndex) {
+  filterCostTypesByAdditionalCost(cost) {
        
     var currentCost = cost;
     // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
@@ -716,14 +717,24 @@ export class AdditionalCostModalComponent implements OnInit {
 
   formatAdditionalCosts() {
     for (let i = 0; i < this.formValues.costDetails.length; i++) {
-      if (this.formValues.costDetails[i].product && this.formValues.costDetails[i].product.id) {
-        this.formValues.costDetails[i].product.productId = this.formValues.costDetails[i].product.id;
+      if (this.formValues.costDetails[i].product) {
+        if (this.formValues.costDetails[i].product.id != -1) {
+          if (this.formValues.costDetails[i].product.id != this.formValues.costDetails[i].deliveryProductId) {
+            this.formValues.costDetails[i].product.productId = this.formValues.costDetails[i].product.id;
+            this.formValues.costDetails[i].product.id = this.formValues.costDetails[i].deliveryProductId;
+          }
+        }
       } else {
         this.formValues.costDetails[i].product = {
-          'productId': null
+          id: -1,
+          name: 'All',
+          deliveryProductId: null
         };
       }
     }
+
+    console.log(this.formValues.costDetails);
+    this.changeDetectorRef.detectChanges();
   }
 
   searchCostName(value: string): void {
