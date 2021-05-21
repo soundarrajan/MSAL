@@ -605,7 +605,8 @@
                         ClaimId: claimId
                     };
                     localStorage.setItem('createCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                    window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                    //window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                    window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
 
                     /*
 	                Factory_Master.create_credit_note(data, function(response) {
@@ -644,7 +645,8 @@
 		                IsDebunker: 1
 		            };
                     localStorage.setItem('createDebunkerCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                    window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                    // window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                    window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
 
                     /*
 		            Factory_Master.create_credit_note(data, function(response) {
@@ -682,7 +684,8 @@
                         IsResale: 1
                     };
                     localStorage.setItem('createResaleCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                    window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                    //window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                    window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
 
                     /*
                     Factory_Master.create_credit_note(data, function(response) {
@@ -715,8 +718,8 @@
                     IsPreclaimCN: 1
                 };
                 localStorage.setItem('createPreclaimCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
-
+                //window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
             } else {
                 toastr.error('Please select one claim');
             }

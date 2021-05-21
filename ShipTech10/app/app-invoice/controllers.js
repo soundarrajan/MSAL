@@ -2273,7 +2273,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     ClaimId: claimId
                 };
                 localStorage.setItem('createCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                // window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
 
                 /*
                 Factory_Master.create_credit_note(data, function(response) {
@@ -2336,7 +2337,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     IsDebunker: 1
                 };
                 localStorage.setItem('createDebunkerCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                // window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
 
                 /*
                 Factory_Master.create_credit_note(data, function(response) {
@@ -2374,7 +2376,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     IsResale: 1
                 };
                 localStorage.setItem('createResaleCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                // window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
 
                 /*
                 Factory_Master.create_credit_note(data, function(response) {
