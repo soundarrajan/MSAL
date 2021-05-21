@@ -490,11 +490,8 @@
                                         getCustomerDateConfig().isMandatory
                                     }"
                                     [masterType]="'customer'"
-                                    (onChanged)="
-                                    AC_valueChanges('customer', $event);
-                                    isFormValid({ useToaster: false })
-                                    "
-                                ></shiptech-st-autosearch-selector>
+                                    (onChanged)="AC_valueChanges('customer', $event);isFormValid({ useToaster: false })"
+                                    [bindValue]="formValues.counterpartyDetails.customer?.name"></shiptech-st-autosearch-selector>
                                 </div>
                             </div>
                             </div>
@@ -611,7 +608,7 @@
         </div>
     </div>
 
-    
+
     </form>
 </div>
 
