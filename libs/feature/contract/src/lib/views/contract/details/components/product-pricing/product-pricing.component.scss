@@ -456,7 +456,7 @@
 }
 
 .cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing  {
-  opacity: 0.5;
+  //opacity: 0.5;
   background-color: black;
 }
 
@@ -593,7 +593,7 @@
   }
 }
 
-.price-precision-select-container.mat-select-panel {
+/* .price-precision-select-container.mat-select-panel {
   min-width: calc(100% + 12px) !important;
   transform: translateX(10px) !important
 }
@@ -606,6 +606,28 @@
 .price-precision-select-container .mat-option {
   height: 20px  !important;
   padding: 15px;
+} */
+
+.price-precision-select-container.mat-select-panel {
+  background-color: #364150 !important;
+  min-width: 100% !important;
+  transform: translateX(12px) !important;
+  width: 100% !important;
+}
+
+.price-precision-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+  padding: 10px 0px;
+}
+
+.price-precision-select-container .mat-option {
+  height: 20px  !important;
+}
+
+.price-precision-select-container .mat-option-text  {
+  font-size: 14px  !important;
+  color: white !important;
 }
 
 
@@ -642,7 +664,7 @@
   }
 }
 
-.general-information-select-container.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+/* .general-information-select-container.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
   color: white !important;
   background-color: #37414f !important;;
 }
@@ -651,6 +673,28 @@
 .general-information-select-container.mat-select-panel .mat-option.mat-active {
   color: #37414f !important;
   background: #fff !important;
+} */
+
+.general-info-select-container.mat-select-panel {
+  background-color: #364150 !important;
+  min-width: 100% !important;
+  transform: translateX(12px) !important;
+  width: 100% !important;
+}
+
+.general-info-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+  padding: 10px 0px;
+}
+
+.general-info-select-container .mat-option {
+  height: 20px  !important;
+}
+
+.general-info-select-container .mat-option-text  {
+  font-size: 14px  !important;
+  color: white !important;
 }
 
 .no-padding-left {
