@@ -191,6 +191,16 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.createPreClaimCreditNote(payload);
   }
 
+        /**
+ * @param payload
+ */
+  @ObservableException()
+  getAdditionalCostsPerPort(payload: any): Observable<unknown> {
+    return this.api.getAdditionalCostsPerPort(payload);
+  }
+
+
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
