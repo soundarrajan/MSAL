@@ -28,26 +28,26 @@ export class RelatedInvoiceComponent implements OnInit {
             "order-number":element.orderId,
             "type":element.invoiceType.name,
             "date":element.invoiceDate ? moment(element.invoiceDate).format(this.dateFormat):'',
-            "amount":element.invoiceAmount,
-            "deductions":element.deductions,
-            "paid":element.paidAmount,
+            "amount":this.format.amount(element.invoiceAmount),
+            "deductions":this.format.amount(element.deductions),
+            "paid":this.format.amount(element.paidAmount),
             "status":element.invoiceStatus.name
           });
         });
         this.formValues.relatedInvoicesSummary.forEach(total => {
           this.totalrowData.push({
             "id": "Net Payable",
-            "order-number":total.netPayable,
+            "order-number":this.format.amount(total.netPayable),
             "type":"",
             "date":"Total",
-            "amount":total.invoiceAmountTotal,
-            "deductions":total.deductionsTotal,
-            "paid":total.paidAmount,
+            "amount":this.format.amount(total.invoiceAmountTotal),
+            "deductions":this.format.amount(total.deductionsTotal),
+            "paid":this.format.amount(total.paidAmount),
             "status":""
           });
         });
         if(this.gridOptions_data.api){
-          this.gridOptions_data.api.sizeColumnsToFit(); 
+          this.gridOptions_data.api.sizeColumnsToFit();
         }
       }
     }
@@ -58,7 +58,7 @@ export class RelatedInvoiceComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    
+
   }
 
   setupGrid(){
@@ -74,16 +74,20 @@ export class RelatedInvoiceComponent implements OnInit {
       suppressCellSelection: true,
       headerHeight: 35,
       rowHeight: 35,
+      getRowClass:(params) => {
+        // Make invoice amount text red if the type is Credit Note or Pre-Claim Credit Note
+        if(params.node.data.type === "Credit Note" || params.node.data.type === "Pre-claim Credit Note"){
+          return ["related-invoice-red-text"]
+        }
+      },
       animateRows: false,
-
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.setPinnedBottomRowData(this.totalrowData);
         this.gridOptions_data.api.setRowData(this.rowData_aggrid);
-        this.gridOptions_data.api.sizeColumnsToFit();  
-        // params.api.sizeColumnsToFit();     
-
+        this.gridOptions_data.api.sizeColumnsToFit();
+        // params.api.sizeColumnsToFit();
       },
       onFirstDataRendered(params) {
         params.api.sizeColumnsToFit();
@@ -97,7 +101,6 @@ export class RelatedInvoiceComponent implements OnInit {
       onColumnVisible: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8) {
           params.api.sizeColumnsToFit();
-
         }
       }
     }
@@ -110,13 +113,13 @@ export class RelatedInvoiceComponent implements OnInit {
       headerName: 'Invoice Type', headerTooltip: 'Invoice Type', field: 'type'
     },
     {
-      headerName: 'Invoice Date', headerTooltip: 'Invoice Date', field: 'date', width: 150, 
+      headerName: 'Invoice Date', headerTooltip: 'Invoice Date', field: 'date', width: 150,
     },
     {
-      headerName: 'Invoice Amt', headerTooltip: 'Invoice Amt', field: 'amount', width: 150, 
+      headerName: 'Invoice Amt', headerTooltip: 'Invoice Amt', field: 'amount', width: 150,
     },
     {
-      headerName: 'Deductions', headerTooltip: 'Deductions', field: 'deductions', width: 150, 
+      headerName: 'Deductions', headerTooltip: 'Deductions', field: 'deductions', width: 150,
     },
     {
       headerName: 'Paid Amount', headerTooltip: 'Paid Amount', field: 'paid',  width: 150,
