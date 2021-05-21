@@ -476,7 +476,7 @@
                             [compareWith]="compareUomObjects"
                             [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [disableOptionCentering]="true"
-                            panelClass="delivery-product-select-container">
+                            panelClass="delivery-product-select-container cust-select">
                         <mat-option *ngFor="let uom of deliveredQuantityUoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -522,7 +522,7 @@
                     placeholder="Fuel Manifold Temperature"
                     (keypress)="keyPressNumber($event)">
                 <div matSuffix class="d-flex" style="display:flex;align-items: center;">
-                    <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperatureUom}}</div>
+                    <div class="label" style="background: none;">{{formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperatureUom}}</div>
                 </div>
             </mat-form-field>
         </div>

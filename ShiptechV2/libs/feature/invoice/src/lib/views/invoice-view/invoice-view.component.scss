@@ -1,0 +1,44 @@
+.label-for-invoice {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    position: relative;
+    top: -8px;
+    left: 5px;
+}
+
+.label-for-invoice-revert {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    position: relative;
+    top: -8px;
+}
+
+.accept-invoice {
+    position: relative;
+    top: -4px;
+}
+
+.revert-invoice {
+    position: relative;
+    left: -3px;
+}
+
+.reject-invoice {
+    position: relative;
+    top: -5px;
+    width: 15px;
+}
+
+button{
+  &:disabled{
+    color: grey !important;
+  }
+}

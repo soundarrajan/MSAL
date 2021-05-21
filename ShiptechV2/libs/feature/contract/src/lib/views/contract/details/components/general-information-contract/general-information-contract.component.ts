@@ -419,6 +419,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   searchCompanyModel: any;
   expandCompanyPopUp: boolean = false;
   expandAllowCompanies: boolean = false;
+  expandAllowCustomer: boolean = false;
   expandCompanylistPopUp: boolean = false;
   agreementTypeList: any;
   paymentTermList: any;
@@ -434,6 +435,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   contractConfiguration: any;
   initialCompanyList: any;
   generalConfiguration: any;
+  customerList: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -532,9 +534,20 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.generalConfiguration = generalConfiguration;
   }
 
+  @Input('customerList') set _setCustomerList(customerList) { 
+    if (!customerList) {
+      return;
+    } 
+    this.customerList = customerList;
+  }
+
+
+
   @Input() eventsSaveButton: Observable<void>;
   eventsSubject2: Subject<any> = new Subject<any>();
   expandAllowedCompanylistPopUp: any = false;
+  expandCustomerListPopUp: any = false;
+  expandCustomer: any = false;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -579,6 +592,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     //this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
     //this.eventsSubject.next();
+    if (this.formValues.customers) {
+      this.selectedCustomers();
+    }
   }
 
   setRequiredFields(data) {
@@ -611,6 +627,18 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     console.log(this.companyList);
 
     
+  }
+  selectedCustomers() {
+    this.formValues.customers.forEach((customer, k) => {
+      let findCustomerIndex = _.findIndex(this.customerList, function(object: any) {
+        return object.id == customer.id;
+      });
+      if (findCustomerIndex != -1 && this.customerList) {
+        this.customerList[findCustomerIndex].isSelected = true;
+      }
+    });
+    this.changeDetectorRef.detectChanges();
+    console.log(this.customerList);    
   }
 
   formatDate(date?: any) {
@@ -819,6 +847,30 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       }
     }
     this.formValues.allowedCompanies = _.cloneDeep(allowedCompanyList);
+  }
+
+  saveCustomer() {
+    let customersList = [];
+    let customerList = this.customerList;
+    for (let i = 0; i <  customerList.length; i++) {
+      if ( customerList[i].isSelected) {
+        let customer = {
+          'id':  customerList[i].id,
+          'name':  customerList[i].name,
+          'internalName':  customerList[i].internalName,
+          'displayName':  customerList[i].displayName,
+          'code':  customerList[i].code,
+          'collectionName':  customerList[i].collectionName,
+          'customNonMandatoryAttribute1':  customerList[i].customNonMandatoryAttribute1,
+          'isDeleted':  customerList[i].isDeleted,
+          'modulePathUrl':  customerList[i].modulePathUrl,
+          'clientIpAddress':  customerList[i].clientIpAddress,
+          'userAction':  customerList[i].userAction
+        }
+        customersList.push(customer);
+      }
+    }
+    this.formValues.customers = _.cloneDeep(customersList);
   }
 
 

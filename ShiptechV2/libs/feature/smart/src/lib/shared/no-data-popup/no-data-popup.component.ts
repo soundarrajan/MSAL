@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -7,12 +7,16 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./no-data-popup.component.scss']
 })
 export class NoDataComponent implements OnInit {
-
-  constructor(public dialogRef: MatDialogRef<NoDataComponent>) {
+  public message : string;
+  public id : any;
+  constructor(public dialogRef: MatDialogRef<NoDataComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     //dialogRef.disableClose = true;
+    this.message = data?.message;
+    if(this.data?.id)
+    this.id = data?.id;
   }
 
-  ngOnInit() {
+  ngOnInit() { 
   }
 
   close() {

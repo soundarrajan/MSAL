@@ -493,6 +493,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   expandProduct: any = false;
   bankFilterCtrl: any = new FormControl();
   additionalCostForLocation: any = [];
+  entityCopied: any;
+  eventsEntityCopiedSubscription: any;
   get entityId(): number {
     return this._entityId;
   }
@@ -559,6 +561,15 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     }
     this.uomList = uomList;
   }
+
+  @Input('entityCopied') set _setEntityCopied(entityCopied) {
+    if (!entityCopied) {
+      return;
+    }
+    this.entityCopied = entityCopied;
+  }
+
+
 
   @Input('currencyList') set _setCurrencyList(currencyList) {
     if (!currencyList) {
@@ -788,9 +799,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   isMenuOpen = true;
   @Input() eventsSaveButton: Observable<void>;
   @Input() eventsSelectedTabIndex: Observable<void>;
+  @Input() eventsEntityCopied: Observable<void>;
   expandProductPopUp: any =  false;
 
   eventsSubject2: Subject<any> = new Subject<any>();
+  eventsSubject3: Subject<any> = new Subject<any>();
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -828,7 +841,16 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.getContractFormulaList1();
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
     this.eventsSelectedTabIndexSubscription = this.eventsSelectedTabIndex.subscribe((data) => this.setSelectedTab(data));
+    this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe((data) => this.setEntityCopied(data));
+
   }
+
+  setEntityCopied(data) {
+    this.entityCopied = data;
+    this.eventsSubject3.next(this.entityCopied);
+
+ }
+
 
   setSelectedTab(index) {
     this.selectedTabIndex = index;
@@ -861,18 +883,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     console.log(this.formValues);
     let emptyProductObj = {
       id: 0,
-      details: [
-        {
-          contractualQuantityOption: {
-              id: 1,
-              name: 'TotalContractualQuantity',
-              code: '',
-              collectionName: null
-          },
-          id: 0,
-          uom : this.generalTenantSettings.tenantFormats.uom
-        }
-      ],
+      details: null,
       additionalCosts: [],
       fixedPrice: true,
       mtmFixed: false,
@@ -1231,28 +1242,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       } else {
         console.log(response);
         this.additionalCostForLocation[locationId] = response;
-        for (let i = 0; i < this.additionalCostForLocation[locationId].length; i++) {
-          if (this.additionalCostForLocation[locationId][i].locationid) {
-            if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
-              this.formValues.products[this.selectedTabIndex].additionalCosts = [];
-            }
-            let additionalCostLine = {
-              additionalCost: {
-                id: this.additionalCostForLocation[locationId][i].additionalCostid,
-                name: this.additionalCostForLocation[locationId][i].name
-              },
-              costType: this.additionalCostForLocation[locationId][i].costType,
-              amount: this.additionalCostForLocation[locationId][i].amount,
-              uom: this.additionalCostForLocation[locationId][i].priceUom,
-              extras: this.additionalCostForLocation[locationId][i].extrasPercentage,
-              currency: this.additionalCostForLocation[locationId][i].currency,
-              comments: this.additionalCostForLocation[locationId][i].costDescription,
-              locationAdditionalCostId: this.additionalCostForLocation[locationId][i].locationid
-            }
-            this.formValues.products[this.selectedTabIndex].additionalCosts.push(additionalCostLine);
-
-          }
-        }
         this.changeDetectorRef.detectChanges();
       }
     });

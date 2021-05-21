@@ -1,9 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { LocalService } from '../../services/local-service.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { WarningComponent } from '../../shared/warning/warning.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { VesselInfoComponent} from '../../shared/vessel-info/vessel-info.component';
 
 @Component({
   selector: 'app-vessel-details',
@@ -12,6 +14,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 })
 export class VesselDetailsComponent implements OnInit {
 
+  @ViewChild(VesselInfoComponent) vesselInfo;
   @Output() closeBPlan = new EventEmitter();
   @Output() changeVessel = new EventEmitter();
   public bunkerUserRole = [];
@@ -25,6 +28,7 @@ export class VesselDetailsComponent implements OnInit {
   public enableSelection: boolean;
   public theme:boolean=true;
   selectedRole: any;
+  changeUserRole: Subject<void> = new Subject<void>();
   constructor(private localService: LocalService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -113,9 +117,10 @@ export class VesselDetailsComponent implements OnInit {
           titleEle.click();
         }, 500);
       }
+      this.changeUserRole.next(this.selectedUserRole);
     });
 
-
+    
 
   }
 

@@ -18,6 +18,7 @@ import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
 import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { StAutosearchSelectorComponent } from './st-autosearch-selector/st-autosearch-selector.component';
+import { AmountTenantFormatDirective } from './directives/amount-tenant-format.directive';
 @NgModule({ 
   imports: [
     CommonModule,
@@ -52,7 +53,8 @@ import { StAutosearchSelectorComponent } from './st-autosearch-selector/st-autos
     SearchPopupDialog,
     MasterSelectionDialog,
     FooterV2Component,
-    StAutosearchSelectorComponent
+    StAutosearchSelectorComponent,
+    AmountTenantFormatDirective
   ],
   entryComponents:[
     MasterSelectionDialog

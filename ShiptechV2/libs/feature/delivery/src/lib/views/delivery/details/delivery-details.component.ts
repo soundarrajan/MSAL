@@ -109,6 +109,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   satisfactionLevel: any;
   bargeList: any;
   navBar: any;
+  activeNotesState: boolean = false;
   email: string;
   selectedProductIndex: any = 0;
   raiseClaimInfo: any;
@@ -234,15 +235,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       if (data.delivery) {
 
         this.formValues = data.delivery;
+       if(this.formValues.deliveryNotes != undefined && this.formValues.deliveryNotes != null && this.formValues.deliveryNotes.length > 0){
+         this.activeNotesState = true;
+       }
         if (this.formValues.info.request) {
           this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
         } else {
           this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
         }
 
-        if(this.formValues.deliveryNotes != undefined && this.formValues.deliveryNotes.length != 0){
-
-        }
+       
         this.setQuantityFormatValues();
         this.decodeFields();
 
@@ -412,7 +414,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   ChangedValueFun(event){
-  this.formValues.DeliveryNotes = event;
+  this.formValues.deliveryNotes = event;
   }
 
     /* END SELCTIONS FOR RAISE CLAIM IN DELIVERY*/

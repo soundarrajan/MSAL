@@ -302,12 +302,16 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const filters: ServerQueryFilter[] = [
-      {
-        columnName: 'productTypeId',
-        value: this.producTypeId.toString(),
-      }
-    ];
+    let filters: ServerQueryFilter[] = [];
+    if (this.producTypeId) {
+      filters =  [
+        {
+          columnName: 'productTypeId',
+          value: this.producTypeId.toString(),
+        }
+      ];
+    }
+
     this.mastersListApiService
       .getProductList({
         ...transformLocalToServeGridInfo(

@@ -13,24 +13,30 @@
         </div>
     </div>
     <div class="screen-actions">
-        <a class="ui-custom-button approve">
+        <a class="ui-custom-button approve" *ngIf="canApprove" (click)="approveInvoiceItem()">
             Approve
         </a>   
-        <a class="ui-custom-button reject ml-2">
+        <a class="ui-custom-button reject ml-2" *ngIf="canReject" (click)="rejectInvoiceItem()">
             Reject
         </a>   
     </div>
 </div>
 <div class="row split-view-wrapper">
-    <div class="col-sm-6">
+    <div class="col-sm-12 p-4 text-center bg-white font-bold" *ngIf="noMoreInvoices">
+        No more invoices left
+    </div>
+
+    <div class="col-sm-6" *ngIf="!noMoreInvoices">
         <div class="inner-content d-flex">
             <div class="section-header">
                 <div class="section-title ml-2 p-2 mb-2">Details</div>
-                {{invoiceIds}}
             </div>
+            <shiptech-invoice-detail *ngIf="detailFormvalues" #invoiceDetails
+            [detailFormvalues]='detailFormvalues'
+            (onInvoiceDetailsChanged)="getInvoiceDetailsChanged()"></shiptech-invoice-detail>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6" *ngIf="!noMoreInvoices">
         <div class="inner-content d-flex">
             <div class="section-header">
                 <div class="section-title ml-2 p-2 mb-2">Physical Invoice</div>

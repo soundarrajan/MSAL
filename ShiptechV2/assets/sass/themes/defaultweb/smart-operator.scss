@@ -1112,6 +1112,8 @@ mat-datepicker-toggle .mat-icon-button {
 	font-size: 14px;
 	line-height: 16px;
 	opacity: 0.5;
+	pointer-events: none;
+  	cursor: none;
 }
 
 .mat-expansion-panel-header {

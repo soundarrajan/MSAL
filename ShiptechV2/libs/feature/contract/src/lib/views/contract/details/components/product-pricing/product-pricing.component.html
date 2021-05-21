@@ -21,36 +21,32 @@
         </mat-button-toggle-group>
       </div>
     </div>
-    <div  class="contract-details-info" [ngClass]="{'col-md-6 no-padding': !formValues.products[selectedTabIndex].isFormula, 'col-md-3': formValues.products[selectedTabIndex].isFormula}" style="text-align: right;">
-      <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme, 'price-fixed': !formValues.products[selectedTabIndex].isFormula, 'formula-description': formValues.products[selectedTabIndex].isFormula}">
-        <mat-form-field class="without-search" appearance="legacy">
-          <mat-label>Price Precision</mat-label>
-          <mat-select 
-              [(ngModel)]="formValues.products[selectedTabIndex].pricePrecision"
-              placeholder="Price Precision"
-              [disableOptionCentering]="true"
-              panelClass="price-precision-select-container"
-              [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-              (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)">
-              <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
-                {{option}}
-            </mat-option>
-        </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-3" style="padding-right: 0px !important;">
-      <span>
+    <div class="col-md-6" style="display: flex;align-items: center;justify-content: flex-end;">
+    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info" style="float:left;padding-right: 0px !important;display: flex;
+    align-items: center;">
+      <span style="display: flex;align-items: center;">
         <a *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="create-new-formula-icon" (click)="createNewFormulaPopup(selectedTabIndex)"></a>
       </span>
-      <span *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="location-contract-info">
+      <span *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="location-contract-info" style="margin-right:0 !important">
         Create new formula
       </span>
       <span *ngIf="formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name" class="disabled-formula">
       </span>
     </div>
+    <div class="divider" *ngIf="formValues.products[selectedTabIndex].isFormula"></div>
+    <div class="" style="display: flex;align-items: center;">
+      <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="formula-history">
+        <div class="formula-icon"></div>
+        <div style="float: right;" >
+          <a class="formula-history-name" (click)="openFormulaHistory(formValues.products[selectedTabIndex].id)">
+            Formula History
+          </a>
+        </div>
+      </div>
+    </div>
+    </div>
   </div>
-  <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
+  <!-- <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
     <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="formula-history col-md-12">
       <div style="float: right;" >
         <a class="formula-history-name" (click)="openFormulaHistory(formValues.products[selectedTabIndex].id)">
@@ -58,8 +54,25 @@
         </a>
       </div>
     </div>
-  </div>
-  <div *ngIf="formValues.products[selectedTabIndex].fixedPrice" class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
+  </div> -->
+  <div *ngIf="formValues.products[selectedTabIndex].fixedPrice" class="col-md-12 no-padding d-flex" style="flex-wrap: wrap;margin-top: 10px;">
+    
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme, 'price-fixed': !formValues.products[selectedTabIndex].isFormula, 'formula-description': formValues.products[selectedTabIndex].isFormula}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Price Precision</mat-label>
+        <mat-select 
+            [(ngModel)]="formValues.products[selectedTabIndex].pricePrecision"
+            placeholder="Price Precision"
+            [disableOptionCentering]="true"
+            panelClass="price-precision-select-container"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+            (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)">
+            <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
+              {{option}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+    </div>
     <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Price</mat-label>
@@ -214,6 +227,7 @@
         </tr>
       </thead>
       <tbody>
+
           <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
             <tr *ngIf="!additionalCost.value.isDeleted">
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
@@ -228,9 +242,7 @@
                     <mat-select 
                             [(ngModel)]="additionalCost.value.additionalCost"
                             (selectionChange)="setAdditionalCost($event.value, selectedTabIndex, additionalCost.key);
-                              setAdditionalCostLine(additionalCost.value.additionalCost, selectedTabIndex, additionalCost.key); 
-                              resetUom(selectedTabIndex, additionalCost.key);
-                              setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
+                            setAdditionalCostLine(additionalCost.value.additionalCost, selectedTabIndex, additionalCost.key);                             setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareAdditionalCostObjects"

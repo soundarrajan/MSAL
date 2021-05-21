@@ -8,14 +8,45 @@
   <div *ngIf="params.type=='multiple-values'">
     <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">
       <div *ngFor="let item of params.value" class="aggrid-content-center multiple-text w-auto">
-        <span [matTooltip]="item" class="aggrid-text-resizable">{{item}}</span>
+        <!-- <ng-container *ngIf="toggleTooltip==true"> -->
+          <!-- <ng-container *ngTemplateOutlet="hoverPopup"></ng-container> -->
+        <!-- </ng-container> -->
+        <span class="aggrid-text-resizable" *ngIf="(params?.gridTable)=='future-request'" [matMenuTriggerFor]="popoverTooltip" [matMenuTriggerData]="item" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()" (mouseleave)="trigger.closeMenu()">{{item}}</span> <!-- (mouseleave)="trigger.closeMenu()"-->
+        <span [matTooltip]="item" class="aggrid-text-resizable" *ngIf="!(params?.gridTable)">{{item}}</span>
       </div>
     </div>
   </div>
+  <mat-menu #popoverTooltip="matMenu" backdropClass="request-popover" [hasBackdrop]="false">
+    <ng-template matMenuContent let-data="menuData">
+        <div class="custom-popover" mat-menu-item>
+          <div style="color: #5780A6;font-weight: 500;">{{menuData}}</div>
+          <hr>
+          <div class="row">
+            <div class="col-6" style="color: #f4f7fa;">Request Qty</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.maxQuantity}} {{params?.data?.uomName}}</div>
+          </div>
+          <div class="row">
+            <div class="col-6" style="color: #f4f7fa;">Request Date</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.requestDate | date: 'dd/MM/yyyy'}}</div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-6" style="color: #f4f7fa;">suggested Qty</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.suggestedQuantity}} {{params?.data?.uomName}}</div>
+          </div>
+        </div>
+    </ng-template>
+    
+  </mat-menu>
   
   <div *ngIf="params.type=='link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
-      <a href="{{shiptechOrderUrl}}/{{params.data?.order_id_vlsfo}}">{{params.value}}</a>
+      <a (click)="redirectionUrl(params)" style="color: white;">{{params.value}}</a>
+    </div>
+  </div>
+  <div *ngIf="params.type=='request-link'">
+    <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
+      <a href="{{params.redirectUrl}}/{{params?.data?.requestId}}">{{params.value}}</a>
     </div>
   </div>
   
@@ -25,39 +56,32 @@
   
   
   <div *ngIf="params.type=='edit'">
-    <div [matTooltip]="inp.value"><input #inp [ngClass]="params.cellClass" [value]=params.value
-        (keydown)="triggerChangeEvent()"></div>
+    <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.value></div>
   </div>
-  <div *ngIf="params.type=='edit-safe-port'">
-    <div [matTooltip]="inp.value"><input #inp [ngClass]="params.cellClass" [value]=params.valueFormatted
-        (keydown)="triggerChangeEvent()"></div>
-  </div>
+
 
   <div class="cons" *ngIf="params.type=='edit-cons'">
     <div [matTooltip]="inp.value"><input #inp  [ngClass]="params.cellClass" [value]=params.value (change)="consUpdatedEvent(params,inp.value)"
         (keydown)="triggerChangeEvent()"></div>
   </div>
 
-  <div class= "soa"*ngIf="params.type=='edit-soa'">
-    <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
-      {{params.value}}</div>
+  <div *ngIf="params.type=='soa-hsfo'">
+    <div [matTooltip]="params.value" [ngClass]="params.cellClass" (_changeCurrentROBObj$)="updateSOA(params.value)">{{params.value}}</div>
   </div>
+
   
   <div *ngIf="params.type=='edit-disabled'">
     <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.value></div>
   </div>
-  <div *ngIf="params.type=='edit-disabled-safe-port'">
-    <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.valueFormatted></div>
-  </div>
   
   <div *ngIf="params.type=='disable-with-popup'">
-    <div (mouseenter)="!menuClick  && toggleMenuInput($event,params.value);" (click)="toggleMenu3Input($event)"
+    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event);restrictionForPrevBplan($event)"
       (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);">
-      <input disabled style="z-index: 1050;" [matMenuTriggerFor]="inputDisabledMenu" [matMenuTriggerData]="menuData"
-        #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="menuData.value">
-      <!-- <span *ngIf="menuData.comments && menuData.comments!=''">
-        <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
-      </span> -->
+      <input disabled style="z-index: 1050;" [matMenuTriggerFor]="inputDisabledMenu" [matMenuTriggerData]="params.value"
+        #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
+        <span *ngIf="getComments(params.colDef?.field) != '' && getComments(params.colDef?.field) != undefined">
+          <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
+        </span>
     </div>
   </div>
   <mat-menu #inputDisabledMenu="matMenu" class="common" xPosition="after">
@@ -65,7 +89,7 @@
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -75,13 +99,13 @@
       <div class="input">
         <div>{{params.column.colDef.headerName}}</div>
         <mat-form-field appearance="fill">
-          <input matInput disabled style="color:white;" [value]="menuData.value">
+          <input matInput disabled style="color:white;" [value]="params.value">
         </mat-form-field>
       </div>
       <div class="comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
-          <textarea matInput disabled [value]="menuData.comments"></textarea>
+          <textarea matInput disabled [value]="getComments(params.colDef?.field)"></textarea>
         </mat-form-field>
       </div>
       </div>
@@ -89,21 +113,21 @@
   </mat-menu>
   
   <div *ngIf="params.type=='edit-with-popup'">
-    <div (mouseenter)="!menuClick  && toggleMenuInput($event,params.value);" (click)="toggleMenu3Input($event)"
+    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event)"
       (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);">
-      <input disabled style="z-index: 1050;" #inp [matMenuTriggerFor]="inputEditMenu" [matMenuTriggerData]="menuData"
+      <input disabled style="z-index: 1050;" #inp [matMenuTriggerFor]="inputEditMenu" [matMenuTriggerData]="params.value"
         #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
-      <!-- <span *ngIf="params.value && params.value!=''">
-        <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
-      </span> -->
+        <span *ngIf="getComments(params.colDef?.field) != '' && getComments(params.colDef?.field) != undefined">
+          <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
+        </span>
     </div>
   </div>
   <mat-menu #inputEditMenu="matMenu" class="common" xPosition="after">
-    <ng-template matMenuContent let-data="menuData">
+    <ng-template matMenuContent >
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -113,37 +137,37 @@
       <div class="input">
         <div>{{params.column.colDef.headerName}}</div>
         <mat-form-field appearance="fill">
-          <input matInput #inpt id="inputValue" [value]="menuData.value" (keyup)="onEditCell()"
+          <input matInput #inpt id="inputValue" [value]="params.value" (keyup)="onEditCell(inpt.value,cmnt.value)"
             (click)="$event.stopPropagation();">
         </mat-form-field>
       </div>
       <div class="comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
-          <textarea matInput #cmnt [(ngModel)]="usercomments" (keyup)="onEditCell()"
+          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell(inpt.value,cmnt.value)"
             (click)="$event.stopPropagation();"></textarea>
         </mat-form-field>
       </div>
       <div class="actions">
         <button mat-button class="cancel" (click)="cancel()">CANCEL</button>
         <button mat-raised-button [disabled]="!enableSave" [ngClass]="{'active':enableSave}" class="save"
-          (click)="saveInput(inpt.value)">Proceed</button>
+          (click)="saveUserComment(cmnt.value);saveInput(inpt.value,params,params.colDef?.field)">Save</button>
       </div>
       </div>
     </ng-template>
   </mat-menu>
   
   <div *ngIf="params.type=='checkbox-disabled'" [ngClass]="params.cellClass">
-    <div style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuInput($event,params.value);" (click)="toggleMenu3Input($event)"
+    <div style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event)"
       (mouseleave)="!menuClick  && toggleMenu2Input();">
-      <div style="z-index: 1050;pointer-events:none;" [matMenuTriggerFor]="checkboxDisabledMenu" [matMenuTriggerData]="menuData"
+      <div style="z-index: 1050;pointer-events:none;" [matMenuTriggerFor]="checkboxDisabledMenu" [matMenuTriggerData]="params.value"
       #inputMenuTrigger="matMenuTrigger">
-      <mat-checkbox disabled   style="cursor:pointer;" [ngClass]="params.cellClass" [checked]="menuData.value">
+      <mat-checkbox disabled   style="cursor:pointer;" [ngClass]="params.cellClass" [checked]="params.value">
       </mat-checkbox>
       </div>
-      <!-- <span *ngIf="menuData.comments && menuData.comments!=''">
+      <span *ngIf="getComments(params.colDef?.field) != '' && getComments(params.colDef?.field) != undefined">
         <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
-      </span> -->
+      </span>
     </div>
   
   </div>
@@ -152,7 +176,7 @@
     <div id="edit-checkbox-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -162,14 +186,14 @@
       <div class="input">
         <div>
           <span class="checkbox-title">Min SOA</span>
-          <mat-checkbox disabled class="checkbox" [checked]="menuData.value">
+          <mat-checkbox disabled class="checkbox" [checked]="params.value">
           </mat-checkbox>
         </div>
       </div>
       <div class="comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
-          <textarea matInput disabled [value]="menuData.comments"></textarea>
+          <textarea matInput disabled [value]="getComments(params.colDef?.field)"></textarea>
         </mat-form-field>
       </div>
       </div>
@@ -182,16 +206,17 @@
   
   <div *ngIf="params.type=='checkbox-with-popup'" [ngClass]="params.cellClass">
   
-    <div  style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuCheckbox($event);"
+    <div  style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuCheckbox($event,params);"
     (click)="toggleMenu3Checkbox($event)"
     (mouseleave)="!menuClick  && toggleMenu2Checkbox();">
-    <mat-checkbox style="z-index: 1050;pointer-events:none;" disabled 
+    <mat-checkbox style="z-index: 1050;pointer-events:none;" [(ngModel)]="isChecked" 
     [matMenuTriggerFor]="checkboxEditMenu"
-  [matMenuTriggerData]="menuData" #inputMenuTrigger="matMenuTrigger" >
+  [matMenuTriggerData]="params.value" #inputMenuTrigger="matMenuTrigger" >
     </mat-checkbox>
-    <!-- <span *ngIf="menuData.comments && menuData.comments!=''">
-      <img class="infoIcon" src="../assets/customicons/info_amber.svg" alt="info">
-    </span> -->
+    <span *ngIf="getComments(params.colDef?.field) != '' && getComments(params.colDef?.field) != undefined">
+      <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
+    </span>
+    
   </div>
   </div>
   <mat-menu #checkboxEditMenu="matMenu" class="common edit-checkbox-menu" xPosition="after" yPosition="below">
@@ -199,7 +224,7 @@
     <div id="edit-checkbox-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -209,21 +234,21 @@
       <div class="input">
         <div>
           <span class="checkbox-title">Min SOA</span>
-          <mat-checkbox #chk class="checkbox" [(ngModel)]="isChecked" (click)="onCheckboxClick($event)">
+          <mat-checkbox #chk class="checkbox" [(ngModel)]="isChecked"  (click)="onCheckboxClick(chk.value,cmnt.value)">
           </mat-checkbox>
         </div>
       </div>
       <div class="comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
-          <textarea matInput #cmnt [(ngModel)]="usercomments" (keyup)="onEditCell()"
+          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell(chk.value,cmnt.value)"
             (click)="$event.stopPropagation();"></textarea>
         </mat-form-field>
       </div>
       <div class="actions">
         <button mat-button class="cancel" (click)="cancel()">CANCEL</button>
         <button mat-raised-button [disabled]="!enableSave" [ngClass]="{'active':enableSave}" class="save"
-          (click)="saveCheckbox()">Proceed</button>
+          (click)="saveUserComment(cmnt.value);saveCheckbox(params)">Save</button>
       </div>
       </div>
     </ng-template>
@@ -262,7 +287,7 @@
       <div class="info_popup" [ngClass]="{'light-theme':!theme}">
         <div class="row info-header">
           <div>
-            Port of {{params.data.port_id}} ({{params.data.port_id}})
+            Port of {{params.data.location_name}} ({{params.data.port_id}})
           </div>
           <div *ngIf="params.data?.redelivery_port">
             <ul style="padding-right:65px;padding-left:10px; margin: 3px 4px 6px;">
@@ -347,7 +372,7 @@
         </div>
         <div class="line"></div>
         <div class="row info-footer">
-          <a href="{{shiptechPortUrl}}/#/masters/locations/{{params.data?.location_id}}" target="_blank" rel="noopener"> Link to Port Master </a>
+          <a href="{{shiptechPortUrl}}{{params.data?.location_id}}" target="_blank" rel="noopener"> Link to Port Master </a>
         </div>
       </div>
     </ng-template>

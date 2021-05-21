@@ -13,7 +13,7 @@ export class AGGridCellRendererComponent implements ICellRendererAngularComp  {
 	
     agInit(params: any): void {
         this.params = params;
-        this.params.value = this.params.value.toString().toLowerCase();
+        this.params.value = this.params?.value?.toString().toLowerCase();
     }
 
     refresh(): boolean {
