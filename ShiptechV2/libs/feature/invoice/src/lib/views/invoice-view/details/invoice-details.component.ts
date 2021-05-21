@@ -1445,7 +1445,7 @@ getBankAccountNumber(){
         this.handleServiceResponse(result, 'Invoice rejected successfully.')
       });
     } else if(option == 'approve'){
-      if(this.formValues.invoiceClaimDetails && this.formValues.invoiceClaimDetails[0]['isPreclaimCN']){        
+      if(this.formValues.invoiceClaimDetails && this.formValues.invoiceClaimDetails.length && this.formValues.invoiceClaimDetails[0]['isPreclaimCN']){        
         let claimsCN = false;
         this.formValues.relatedInvoices.forEach(element => {
           if(element.invoiceType.name == 'Pre-claim Credit Note'){

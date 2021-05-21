@@ -393,7 +393,7 @@
                         <div class="checkbox">
                           <mat-checkbox
                             disabled
-                            [checked]="formValues.invoiceClaimDetails ? formValues.invoiceClaimDetails[0]?.isPreclaimCN :false"
+                            [checked]="formValues.invoiceClaimDetails && formValues.invoiceClaimDetails.length ? formValues.invoiceClaimDetails[0]?.isPreclaimCN :false"
                             >Withheld Amount</mat-checkbox
                           >
                         </div>
