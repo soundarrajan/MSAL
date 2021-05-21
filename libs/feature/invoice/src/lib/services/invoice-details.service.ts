@@ -19,12 +19,12 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
-  getInvoicDetails(invoiceId: number): Observable<IInvoiceDetailsItemResponse> {
+  getInvoicDetails(invoiceId: number): Observable<unknown> {
     return this.api.getInvoicDetails(invoiceId);
   }
 
   @ObservableException()
-  getNewInvoicDetails(invoiceFromDelivery : any): Observable<IInvoiceDetailsItemResponse> {
+  getNewInvoicDetails(invoiceFromDelivery : any): Observable<unknown> {
     return this.api.getNewInvoicDetails(invoiceFromDelivery);
   }
 
@@ -42,47 +42,47 @@ export class InvoiceDetailsService extends BaseStoreService
    *  @param formValues
    */
   @ObservableException()
-  updateInvoice(formValues: any): Observable<IInvoiceDetailsItemResponse> {
+  updateInvoice(formValues: any): Observable<unknown> {
     return this.api.updateInvoice(formValues);
   }
 
   @ObservableException()
-  approveInvoiceItem(formValues: any): Observable<IInvoiceDetailsItemResponse> {
+  approveInvoiceItem(formValues: any): Observable<unknown> {
     return this.api.approveInvoiceItem(formValues);
   }
 
   @ObservableException()
-  productListOnInvoice(pageFilters: any): Observable<any> {
+  productListOnInvoice(pageFilters: any): Observable<unknown> {
     return this.api.productListOnInvoice(pageFilters);
   }
 
   @ObservableException()
-  submitapproval(payload: any): Observable<any> {
+  submitapproval(payload: any): Observable<unknown> {
     return this.api.submitapproval(payload);
   }
 
   @ObservableException()
-  cancelInvoiceItem(invoiceId: number): Observable<any> {
+  cancelInvoiceItem(invoiceId: number): Observable<unknown> {
     return this.api.cancelInvoiceItem(invoiceId);
   }
 
   @ObservableException()
-  acceptInvoiceItem(invoiceId: number): Observable<any> {
+  acceptInvoiceItem(invoiceId: number): Observable<unknown> {
     return this.api.acceptInvoiceItem(invoiceId);
   }
 
   @ObservableException()
-  revertInvoiceItem(invoiceId: number): Observable<any> {
+  revertInvoiceItem(invoiceId: number): Observable<unknown> {
     return this.api.revertInvoiceItem(invoiceId);
   }
 
   @ObservableException()
-  rejectInvoiceItem(invoiceId: number): Observable<any> {
+  rejectInvoiceItem(invoiceId: number): Observable<unknown> {
     return this.api.rejectInvoiceItem(invoiceId);
   }
 
   @ObservableException()
-  submitForReview(invoiceId: number): Observable<any> {
+  submitForReview(invoiceId: number): Observable<unknown> {
     return this.api.submitForReview(invoiceId);
   }
 
@@ -146,7 +146,7 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
-  getFinalInvoiceDueDates(payload: any): Observable<IInvoiceDetailsItemResponse> {
+  getFinalInvoiceDueDates(payload: any): Observable<unknown> {
     return this.api.getFinalInvoiceDueDates(payload);
   }
 
@@ -157,7 +157,7 @@ export class InvoiceDetailsService extends BaseStoreService
   getApplyForList(payload: any): Observable<unknown> {
     return this.api.getApplyForList(payload);
   }
-   
+
 
 
   @ObservableException()
@@ -165,7 +165,7 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.getBankAccountNumber(counterPartyId);
   }
   /**
- * @param payload = False 
+ * @param payload = False
  */
   @ObservableException()
   getTenantConfiguration(payload: boolean): Observable<IInvoiceDetailsItemResponse> {
@@ -180,7 +180,17 @@ export class InvoiceDetailsService extends BaseStoreService
   notesAutoSave(payload: any): Observable<unknown> {
     return this.api.notesAutoSave(payload);
   }
-        
+
+  @ObservableException()
+  createCreditNoteFromInvoiceClaims(payload : any): Observable<unknown> {
+    return this.api.createCreditNoteFromInvoiceClaims(payload);
+  }
+
+  @ObservableException()
+  createPreClaimCreditNote(payload : any): Observable<unknown> {
+    return this.api.createPreClaimCreditNote(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

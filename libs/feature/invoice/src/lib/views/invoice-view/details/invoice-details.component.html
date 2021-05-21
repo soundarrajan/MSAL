@@ -157,7 +157,7 @@
                                     <!-- <input matInput
                                     name="invoiceRateCurrencyCode"
                                     [(ngModel)]="formValues.invoiceRateCurrency.code"> -->
-                                    <mat-select disableOptionCentering [(ngModel)]="formValues.invoiceRateCurrency.code" name="invoiceRateCurrencyCode" required [disabled]="formValues.status.name === 'Approved'">
+                                    <mat-select disableOptionCentering [(ngModel)]="formValues.invoiceRateCurrency.code" name="invoiceRateCurrencyCode" required [disabled]="formValues.status?.name === 'Approved'">
                                         <mat-option *ngFor="let list of currencyList" [value]="list.code"> {{list.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -294,7 +294,7 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Payment Status</mat-label>
-                                <mat-select disableOptionCentering [(ngModel)]="formValues.paymentDetails.paymentStatus" name="paymentStatus" [disabled]="formValues.status.name !== 'Approved'">
+                                <mat-select disableOptionCentering [(ngModel)]="formValues.paymentDetails.paymentStatus" name="paymentStatus" [disabled]="formValues.status?.name !== 'Approved'">
                                     <mat-option *ngFor="let list of paymentStatusList" [value]="list">{{list.name}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -414,13 +414,13 @@
                     <readonly-details [options]="orderDetails"></readonly-details>
                     <div class="form-fields">
                         <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
-                              <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [disabled]="formValues.status.name === 'Approved' ? true : false" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
+                              <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [disabled]="formValues.status?.name === 'Approved' ? true : false" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
                         </div>
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy" [ngClass]="{'invalid-field': formErrors.deliveryDate}">
                                 <mat-label>Delivery Date</mat-label>
                                 <input [(ngModel)]="formValues.deliveryDate" name="deliveryDate" #validToDateField="ngModel"
-                                matInput [matDatepicker]="deliveryDate" (focus)="deliveryDate.open()" autocomplete="off" placeholder="Delivery Date" [disabled]="formValues.status.name === 'Approved'" required>
+                                matInput [matDatepicker]="deliveryDate" (focus)="deliveryDate.open()" autocomplete="off" placeholder="Delivery Date" [disabled]="formValues.status?.name === 'Approved'" required>
                                 <mat-datepicker-toggle matSuffix [for]="deliveryDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
