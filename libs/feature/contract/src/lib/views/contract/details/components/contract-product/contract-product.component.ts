@@ -659,7 +659,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
       if (this.formValues.products[i].location) {
         this.getAdditionalCostsPerPort(this.formValues.products[i].location.id);
-
       }
     }
     this.getAdditionalCostsComponentTypes();
