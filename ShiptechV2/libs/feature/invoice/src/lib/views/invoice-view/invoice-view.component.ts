@@ -125,7 +125,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   createNewInvoiceFromDelivery(){
     let data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
-    localStorage.removeItem('invoiceFromDelivery');
+    //localStorage.removeItem('invoiceFromDelivery');
 
     this.invoiceService.getNewInvoicDetails(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
@@ -188,18 +188,18 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         v.invoiceExtras = null;
         v.description = null;
         v.invoiceAmount = null;
-        if (v.product) {
-          if (v.product.id != -1) {
-            if (v.product.id != v.deliveryProductId) {
-              v.product.productId = v.product.id;
-              v.product.id = v.deliveryProductId;
-            }
-          }
-        } else {
-          v.product = {
-            id : -1,
-          };
-        }
+        // if (v.product) {
+        //   if (v.product.id != -1) {
+        //     if (v.product.id != v.deliveryProductId) {
+        //       v.product.productId = v.product.id;
+        //       v.product.id = v.deliveryProductId;
+        //     }
+        //   }
+        // } else {
+        //   v.product = {
+        //     id : -1,
+        //   };
+        // }
       });
     }
     data.counterpartyDetails.paymentTerm = data.counterpartyDetails.orderPaymentTerm;
