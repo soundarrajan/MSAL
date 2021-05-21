@@ -443,7 +443,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
     // Payment term
-    if (!this.formValues.counterpartyDetails.paymentTerm.name) {
+    if (!this.formValues.counterpartyDetails?.paymentTerm?.name) {
       error = true;
       errorMessage += 'Payment term is required. \n';
       this.formErrors.counterpartyDetails = {};
