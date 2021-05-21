@@ -139,7 +139,7 @@
                             [required]="'true'"
                             [masterType]="'paymentTerms'"
                             [bindValue]="
-                            formValues.counterpartyDetails.paymentTerm.name
+                            formValues.counterpartyDetails?.paymentTerm?.name
                             "
                             (onChanged)="
                             AC_valueChanges('paymentterms', $event);
