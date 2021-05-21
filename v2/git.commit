@@ -1,9 +1,9 @@
-﻿commit bc9faba1ae570c627679596bac1a8f4f76a6452c
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Fri May 21 08:30:20 2021 +0000
+﻿commit 9be031e178331d20f16d8bdbcde1ab1941da023c
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri May 21 09:47:46 2021 +0000
 
-    Merged PR 10839: add property verification
+    Merged PR 10841: Added "previous" as default for  Pricing Day Calendar and Holiday Rule in con...
     
-    add property verification
+    Added "previous" as default for  Pricing Day Calendar and Holiday Rule in contract screen
 
 branch: master
