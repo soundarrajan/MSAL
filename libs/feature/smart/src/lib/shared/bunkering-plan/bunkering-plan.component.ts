@@ -7,8 +7,8 @@ import { Store } from '@ngxs/store';
 import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view-model/bunkering-plan.column';
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
-import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction,UpdateBplanTypeAction } from '../../store/bunker-plan/bunkering-plan.action';
-import { SaveBunkeringPlanState,SaveCurrentROBState} from '../../store/bunker-plan/bunkering-plan.state';
+import { SaveBunkeringPlanAction,AddCurrentBunkeringPlanAction,UpdateCurrentROBAction,UpdateBplanTypeAction } from '../../store/bunker-plan/bunkering-plan.action';
+import { SaveBunkeringPlanState,AddCurrentBunkeringPlanState,SaveCurrentROBState} from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
@@ -30,8 +30,8 @@ export class BunkeringPlanComponent implements OnInit {
   public rowData ;
   public bPlanData: any;
   public selectedPort: any = [];
-  vesselData: any;
-  latestPlanId: any;
+  public vesselData: any;
+  public latestPlanId: any;
   public editableCell : boolean;
   public type : any;
   public dialogRef: MatDialogRef<NoDataComponent>;
@@ -93,7 +93,8 @@ export class BunkeringPlanComponent implements OnInit {
       rowSelection: 'single',
       overlayLoadingTemplate:
     '<span class="ag-overlay-loading-center">Rows are loading...</span>',
-    
+      overlayNoRowsTemplate:
+      `<span>Plan details not available</span>`,
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
@@ -146,7 +147,7 @@ export class BunkeringPlanComponent implements OnInit {
           headerName: BunkeringPlanColumnsLabels.PortCode, headerTooltip: BunkeringPlanColumnsLabels.PortCode, field: 'port_id', width: 96, cellRendererFramework: AGGridCellDataComponent,
          cellClassRules: {
             'light-cell': function (params) {
-              return params.rowIndex == params.api?.rowModel?.rowsToDisplay?.length -1 ;
+              return params?.data?.is_last_port == 'Y';
             }
           },cellRendererParams: (params) =>{
            return { type: this.type == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
@@ -412,24 +413,95 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
-        if(this.rowData.length == 0){
-          const dialogRef = this.dialog.open(NoDataComponent, {
-            width: '350px',
-            panelClass: 'confirmation-popup',
-            data: {message : 'Plan details not available'}
-          });
-        }
         this.bPlanData = this.rowData;   
         this.latestPlanId = '';
         this.loadBplan.emit(false);
         let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
         titleEle.click();
-        if(this.type == 'C')
-        this.addBplanToStore(this.bPlanData);
+        if(this.type == 'C'){
+          this.addBplanToStoreForCalculations(this.bPlanData);
+          this.addBplanToStoreForSaveFunction(this.bPlanData);
+        }
+        
       })
       
   }
-  addBplanToStore(params){
+
+  addBplanToStoreForCalculations(params){
+    let data = [];
+    params.forEach(bPlan =>{  
+      data.push({
+        // business_address: bPlan.business_address,
+        // clientIpAddress: bPlan.clientIpAddress,
+        detail_no: bPlan.detail_no,
+        // eca_estimated_consumption: bPlan.eca_estimated_consumption,
+        // eca_min_sod: bPlan.eca_min_sod,
+        // eca_reserve: bPlan.eca_reserve,
+        // eca_safe_port: bPlan.eca_safe_port,
+        // eca_sod_comment: bPlan.eca_sod_comment,
+        // gsis_id: bPlan.gsis_id,
+        // hsdis_estimated_lift: bPlan.hsdis_estimated_lift,
+        hsfo05_stock: bPlan.hsfo05_stock,
+        // hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
+        // hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
+        // hsfo_estimated_lift: bPlan.hsfo_estimated_lift,
+        // hsfo_max_lift: bPlan.hsfo_max_lift,
+        // hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
+        // hsfo_min_sod: bPlan.hsfo_min_sod,
+        // hsfo_reserve: bPlan.hsfo_reserve,
+        // hsfo_safe_port: bPlan.hsfo_safe_port,
+        // hsfo_soa: bPlan.hsfo_soa,
+        // hsfo_sod_comment: bPlan.hsfo_sod_comment,
+        // is_end_of_service: bPlan.is_end_of_service,
+        // is_min_soa: bPlan.is_min_soa,
+        // is_new_port: bPlan.is_new_port,
+        // location_id: bPlan.location_id,
+        // location_name: bPlan.location_name,
+        // lsdis_as_eca: bPlan.lsdis_as_eca,
+        // lsdis_est_consumption_color: bPlan.lsdis_est_consumption_color,
+        // lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
+        // lsdis_estimated_lift: bPlan.lsdis_estimated_lift,
+        // lsdis_max_lift: bPlan.lsdis_max_lift,
+        // lsdis_max_lift_color: bPlan.lsdis_max_lift_color,
+        // lsdis_reserve: bPlan.lsdis_reserve,
+        // lsdis_safe_port: bPlan.lsdis_safe_port,
+        // lsdis_soa: bPlan.lsdis_soa,
+        // max_sod: bPlan.max_sod,
+        // max_sod_comment: bPlan.max_sod_comment,
+        // min_soa_comment: bPlan.min_soa_comment,
+        // min_sod: bPlan.min_sod,
+        // min_sod_comment: bPlan.min_sod_comment,
+        // modulePathUrl: bPlan.modulePathUrl,
+        // mpo_ulsfo_estimated_lift: bPlan.mpo_ulsfo_estimated_lift,
+        // mpo_ulsfo_soa: bPlan.mpo_ulsfo_soa,
+        // op_updated_columns: bPlan.op_updated_columns,
+        // operator_ack: bPlan.operator_ack,
+        // order_id_hsdis: bPlan.order_id_hsdis,
+        // order_id_hsfo: bPlan.order_id_hsfo,
+        // order_id_lsdis: bPlan.order_id_lsdis,
+        // order_id_ulsfo: bPlan.order_id_ulsfo,
+        // plan_id: bPlan.plan_id,
+        // port_id: bPlan.port_id,
+        // redelivery_port: bPlan.redelivery_port,
+        // request_id_hsdis: bPlan.request_id_hsdis,
+        // request_id_hsfo: bPlan.request_id_hsfo,
+        // request_id_lsdis: bPlan.request_id_lsdis,
+        // request_id_ulsfo: bPlan.request_id_ulsfo,
+        // service_code: bPlan.service_code,
+        // ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
+        // ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
+        // ulsfo_max_lift: bPlan.ulsfo_max_lift,
+        // ulsfo_max_lift_color: bPlan.ulsfo_max_lift_color,
+        // ulsfo_soa: bPlan.ulsfo_soa,
+        // userAction: bPlan.userAction,
+        // vessel_ack: bPlan.vessel_ack,
+        // voyage_detail_id: bPlan.voyage_detail_id
+      }) ;
+
+    })
+    this.store.dispatch(new AddCurrentBunkeringPlanAction(data));
+  }
+  addBplanToStoreForSaveFunction(params){
     let data = [];
     params.forEach(bPlan =>{  
       data.push({
@@ -492,10 +564,9 @@ export class BunkeringPlanComponent implements OnInit {
   toggleSave() {
     this.gridSaved = true;
     this.gridChanged = false;
-    // let idFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getUpdateBunkeringPlanData)
-    // console.log('id from store', idFromStore);
-    let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData);
+    this.getRecalculatedHsfoCurrentStock();
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
+    let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData);
     console.log('data from store', dataFromStore);
 
     
@@ -532,8 +603,33 @@ export class BunkeringPlanComponent implements OnInit {
     
   }
 
+  getRecalculatedHsfoCurrentStock(){
+    let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB)
+    let hsfo05_stock = this.store.selectSnapshot(AddCurrentBunkeringPlanState.getCBPhsfo05_stock);
+    if(currentROBObj['3.5 QTY'] > hsfo05_stock){
+      let hsfo = currentROBObj['3.5 QTY'];
+      let newHsfo = hsfo - hsfo05_stock;
+      this.store.dispatch(new UpdateCurrentROBAction(newHsfo,'3.5 QTY'));
+    }  
+    else if(currentROBObj['3.5 QTY'] == null){
+      let newHsfo = 0;
+      this.store.dispatch(new UpdateCurrentROBAction(newHsfo,'3.5 QTY'));
+    }
+        
+    if(currentROBObj['0.5 QTY'] > hsfo05_stock){
+      let vlsfo = currentROBObj['0.5 QTY'];
+      let newVlsfo = vlsfo - hsfo05_stock;
+      this.store.dispatch(new UpdateCurrentROBAction(newVlsfo,'0.5 QTY'));
+    }
+    else if(currentROBObj['0.5 QTY'] == null){
+      let newVlsfo = 0;
+      this.store.dispatch(new UpdateCurrentROBAction(newVlsfo,'0.5 QTY'));
+    }    
+  }
+
   checkBunkerPlanValidations(data){
     let isHardValidation = 0;
+    let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB)
     //business address validation
     let isValidBusinessAddress = data.findIndex(data => data?.business_address=='' && data?.operator_ack == 1) == -1? 'Y':'N'
     if(isValidBusinessAddress == 'N'){
@@ -547,23 +643,10 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
-    // max SOD validation : Total max SOD< Total min SOD 
-    let isValidMaxSod = data.findIndex(data => data?.max_sod < data?.min_sod) == -1 ? 'Y':'N';
-    if(isValidMaxSod == 'N'){
-      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
-      let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(NoDataComponent, {
-        width: '350px',
-        panelClass: 'confirmation-popup',
-        data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    // // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
-    // let isValidMinEcaSod = data.findIndex(data => (data?.eca_min_sod + data?.hsfo_min_sod) > data?.max_sod) == -1 ? 'Y':'N';
+    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
+    // let isValidMinEcaSod = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod) == -1 ? 'Y':'N';
     // if(isValidMinEcaSod == 'N'){
-    //   let id = data.findIndex(data => (data?.eca_min_sod + data?.hsfo_min_sod) > data?.max_sod);
+    //   let id = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod);
     //   let port_id = data[id].port_id;
     //   const dialogRef = this.dialog.open(NoDataComponent, {
     //     width: '350px',
@@ -586,33 +669,91 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
+    // max SOD validation : Total max SOD< Total min SOD 
+    let isValidMaxSod = data.findIndex(data => data?.max_sod < data?.min_sod) == -1 ? 'Y':'N';
+    if(isValidMaxSod == 'N'){
+      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
     // HSFO SOD validation : HSFO SOD > HSFO tank capacity
-    // let isValidHsfoSod = data.findIndex(data => data?.hsfo_min_sod > data?.hsfo_max_lift) == -1 ? 'Y':'N'; //clarify
-    // if(isValidHsfoSod =='N'){
-    //   let id = data.findIndex(data => data?.hsfo_min_sod > data?.hsfo_max_lift) //clarify
-    //   let port_id = data[id].port_id;
-    //   const dialogRef = this.dialog.open(NoDataComponent, {
-    //     width: '350px',
-    //     panelClass: 'confirmation-popup',
-    //     data : {message: 'The minimum HSFO SOD cannot exceed the Total HSFO tank capacity for port ', id: port_id}
-    //   });
-    //   isHardValidation = 1;
-    //   return isHardValidation;
-    // }
-    //ECA min SOD validation : ECA Min SOD > Vessel ECA tank capacity
-    // let isValidEcaMinSod = data.findIndex(data => data?.eca_min_sod > data?.hsfo_max_lift) == -1 ? 'Y':'N'; //clarify
-    // if(isValidEcaMinSod == 'N'){
-    //   let id = data.findIndex(data => data?.eca_min_sod > data?.hsfo_max_lift)//clarify
-    //   let port_id = data[id].port_id;
-    //   const dialogRef = this.dialog.open(NoDataComponent, {
-    //     width: '350px',
-    //     panelClass: 'confirmation-popup',
-    //     data : {message: 'The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity for port ', id: port_id}
-    //   });
-    //   isHardValidation = 1;
-    //   return isHardValidation;
-    // }
-    //Stock validation : Stock > Tank Capacity
+    let isValidHsfoSod = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity) == -1 ? 'Y':'N';
+    if(isValidHsfoSod =='N'){
+      let id = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: `The minimum HSFO SOD cannot exceed the Total HSFO tank capacity (${currentROBObj.hsfoTankCapacity}) for port `, id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    //ECA min SOD validation : ECA Min SOD > Vessel ECA tank capacity(ULSFO Tank Capacity + LSDIS Tank Capacity)
+    let isValidEcaMinSod = data.findIndex(data => (data?.eca_min_sod > (currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity))) == -1 ? 'Y':'N';
+    if(isValidEcaMinSod == 'N'){
+      let id = data.findIndex(data => data?.eca_min_sod > (currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity))
+      let port_id = data[id].port_id;
+      let capacity = currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity;
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: `The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity of ${capacity} for port `, id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    //Stock validation : When Stock > Tank Capacity
+    //1. Current HSFO Qty > HSFO Tank Capacity
+    let isValidHsfoStock = (currentROBObj['3.5 QTY'] + currentROBObj['0.5 QTY']) > currentROBObj?.hsfoTankCapacity ? 'N':'Y';
+    if(isValidHsfoStock == 'N'){
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    //2. Current ULSFO Qty > ULSFO Tank Capacity
+    let isValidUlsfoStock = currentROBObj.ULSFO > currentROBObj?.ulsfoTankCapacity ? 'N':'Y';
+    if(isValidUlsfoStock == 'N'){
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: `Current ULSFO Qty should be less than ULSFO Tank Capacity ${currentROBObj.ulsfoTankCapacity} `}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    //3. Current LSDIS Qty > LSDIS Tank Capacity
+    let isValidLsdisStock = currentROBObj.LSDIS > currentROBObj?.lsdisTankCapacity ? 'N':'Y';
+    if(isValidLsdisStock == 'N'){
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: `Current LSDIS Qty should be less than LSDIS Tank Capacity ${currentROBObj.lsdisTankCapacity} `}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    //4. Current HSDIS Qty > HSDIS Tank Capacity
+    let isValidHsdisStock = currentROBObj.HSDIS > currentROBObj?.hsdisTankCapacity ? 'N':'Y';
+    if(isValidHsdisStock == 'N'){
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: `Current HSDIS Qty should be less than HSDIS Tank Capacity ${currentROBObj.hsdisTankCapacity} `}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
 
     return isHardValidation;
   }

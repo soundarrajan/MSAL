@@ -5,7 +5,7 @@
   </div>
   <ng-container *ngFor="let contractProduct of formValues.products | keyvalue: originalOrder">
     <ng-container *ngIf="!contractProduct.value.isDeleted">
-      <div (click)="displayProdContainer = !displayProdContainer; !selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
+      <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
         <div class="contract-location-with-product-container d-flex">
           <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
             'lightTheme':!switchTheme,
@@ -13,7 +13,7 @@
             <mat-form-field 
               class="without-search"
               appearance="legacy">
-              <mat-label style="color: #C3C6CC !important;" *ngIf="!contractProduct.value.location">Add location</mat-label>
+              <mat-label *ngIf="!contractProduct.value.location">Add location</mat-label>
               <mat-select [(ngModel)]="contractProduct.value.location"
                 #singleSelect
                 disableOptionCentering 
@@ -76,7 +76,7 @@
             'lightTheme':!switchTheme, 'container-product-with-value without-search': contractProduct.value.product  && selectedTabIndex == contractProduct.key}">
             <mat-form-field   class="without-search" 
               appearance="legacy">
-              <mat-label style="color: #C3C6CC !important;" *ngIf="!contractProduct.value.product">Add product</mat-label>
+              <mat-label *ngIf="!contractProduct.value.product">Add product</mat-label>
               <mat-select [(ngModel)]="contractProduct.value.product"
                 #singleSelect
                 disableOptionCentering 
@@ -226,65 +226,66 @@
     </div>
   </mat-menu>
 </div>
+<div *ngIf="formValues.products && formValues.products.length"> 
   <div  *ngFor="let contractProduct of formValues.products | keyvalue : originalOrder">
-    <div *ngIf="displayProdContainer && contractProduct.value.location || contractProduct.value.product"> 
-      <ng-container *ngIf="!contractProduct.value.isDeleted">
-        <div *ngIf="contractProduct.key == selectedTabIndex" class="row col-md-12">
+    <ng-container *ngIf="!contractProduct.value.isDeleted">
+      <div *ngIf="contractProduct.key == selectedTabIndex" class="row col-md-12">
           <shiptech-product-details  [generalTenantSettings]="generalTenantSettings"
-                          [contractConfiguration]="contractConfiguration"
-                          [model]="formValues"
-                          [contractProductIndex]="contractProduct.key"
-                          [locationMasterList]="locationMasterList"
-                          [productMasterList]="productMasterList"
-                          [uomMassList]="uomMassList"
-                          [uomVolumeList]="uomVolumeList"
-                          [contractConversionFactorOptions]="contractConversionFactorOptions"
-                          [specParameterList]="specParameterList"
-                          [uomList]="uomList"
-                          [productSpecGroup]="productSpecGroup"
-                          [events]="contractFormSubject.asObservable()"
-                          [events1]="productSpecGroupSubject.asObservable()"
-                          class="col-md-6">
+            [contractConfiguration]="contractConfiguration"
+            [model]="formValues"
+            [contractProductIndex]="contractProduct.key"
+            [locationMasterList]="locationMasterList"
+            [productMasterList]="productMasterList"
+            [uomMassList]="uomMassList"
+            [uomVolumeList]="uomVolumeList"
+            [contractConversionFactorOptions]="contractConversionFactorOptions"
+            [specParameterList]="specParameterList"
+            [uomList]="uomList"
+            [productSpecGroup]="productSpecGroup"
+            [events]="contractFormSubject.asObservable()"
+            [events1]="productSpecGroupSubject.asObservable()"
+            class="col-md-6">
           </shiptech-product-details>
-          <shiptech-product-pricing  [generalTenantSettings]="generalTenantSettings"
-                        [model]="formValues"
-                        [entityId]="_entityId"
-                        [contractProductIndex]="contractProduct.key"
-                        [uomList]="uomList"
-                        [formulaTypeList]="formulaTypeList"
-                        [systemInstumentList]="systemInstumentList"
-                        [marketPriceList]="marketPriceList"
-                        [formulaPlusMinusList]="formulaPlusMinusList"
-                        [formulaFlatPercentageList]="formulaFlatPercentageList"
-                        [currencyList]="currencyList"
-                        [formulaOperationList]="formulaOperationList"
-                        [formulaFunctionList]="formulaFunctionList"
-                        [marketPriceTypeList]="marketPriceTypeList"
-                        [pricingScheduleList]="pricingScheduleList"
-                        [holidayRuleList]="holidayRuleList"
-                        [pricingSchedulePeriodList]="pricingSchedulePeriodList"
-                        [eventList]="eventList"
-                        [dayOfWeekList]="dayOfWeekList"
-                        [businessCalendarList]="businessCalendarList"
-                        [formulaEventIncludeList]="formulaEventIncludeList"
-                        [quantityTypeList]="quantityTypeList"
-                        [productList]="productList"
-                        [locationList]="locationList"
-                        [contractFormulaList]="contractFormulaList"
-                        [additionalCostList]="additionalCostList"
-                        [costTypeList]="costTypeList"
-                        [entityCopied]="entityCopied"
-                        [additionalCostsComponentTypes]="additionalCostsComponentTypes"
-                        [additionalCostForLocation]="additionalCostForLocation"
-                        [eventsSaveButton]="eventsSubject2.asObservable()"
-                        [eventsEntityCopied]="eventsSubject3.asObservable()"
-                        [events]="contractFormSubject.asObservable()"
-                        class="col-md-6">
-          </shiptech-product-pricing>
-        </div>
-      </ng-container>
-    </div>
+        <shiptech-product-pricing  [generalTenantSettings]="generalTenantSettings"
+              [model]="formValues"
+              [entityId]="_entityId"
+              [contractProductIndex]="contractProduct.key"
+              [uomList]="uomList"
+              [formulaTypeList]="formulaTypeList"
+              [systemInstumentList]="systemInstumentList"
+              [marketPriceList]="marketPriceList"
+              [formulaPlusMinusList]="formulaPlusMinusList"
+              [formulaFlatPercentageList]="formulaFlatPercentageList"
+              [currencyList]="currencyList"
+              [formulaOperationList]="formulaOperationList"
+              [formulaFunctionList]="formulaFunctionList"
+              [marketPriceTypeList]="marketPriceTypeList"
+              [pricingScheduleList]="pricingScheduleList"
+              [holidayRuleList]="holidayRuleList"
+              [pricingSchedulePeriodList]="pricingSchedulePeriodList"
+              [eventList]="eventList"
+              [dayOfWeekList]="dayOfWeekList"
+              [businessCalendarList]="businessCalendarList"
+              [formulaEventIncludeList]="formulaEventIncludeList"
+              [quantityTypeList]="quantityTypeList"
+              [productList]="productList"
+              [locationList]="locationList"
+              [contractFormulaList]="contractFormulaList"
+              [additionalCostList]="additionalCostList"
+              [costTypeList]="costTypeList"
+              [entityCopied]="entityCopied"
+              [additionalCostsComponentTypes]="additionalCostsComponentTypes"
+              [additionalCostForLocation]="additionalCostForLocation"
+              [eventsSaveButton]="eventsSubject2.asObservable()"
+              [eventsEntityCopied]="eventsSubject3.asObservable()"
+              [events]="contractFormSubject.asObservable()"
+              class="col-md-6">
+        </shiptech-product-pricing>
+      </div>
+    </ng-container>
+  
   </div>
+</div>
  
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
@@ -292,3 +293,5 @@
   color="#fff"
   type="ball-spin-clockwise-fade">
 </ngx-spinner>
+
+

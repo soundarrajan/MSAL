@@ -40,7 +40,7 @@ export class StaticListsRouteResolver implements Resolve<any> {
         KnownInvoiceRoutes.InvoiceIdParam
       ]);
     }
-    return  this.invoiceService.getStaticLists(['Product', 'Uom', 'Currency', 'Supplier', 'CostType']);;
+    return  this.invoiceService.getStaticLists(['Product', 'Uom', 'Currency', 'Supplier', 'CostType', 'Customer']);;
 
   }
 

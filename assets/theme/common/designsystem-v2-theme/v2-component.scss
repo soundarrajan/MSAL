@@ -406,6 +406,14 @@ div.component-viewer-nav-content
     cursor: pointer;
   }
 }
+
+.invalid-field {
+  border-color: #e73d4a!important;
+  .mat-form-field { color: #e73d4a!important; border-color: #e73d4a!important; }
+  .mat-form-field-label mat-label { color: #e73d4a!important; }
+}
+
+
 // <!-- Form Field End-->
 
 // <!-- Button Toggle Start-->

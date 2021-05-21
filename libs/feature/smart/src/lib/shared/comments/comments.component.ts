@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
+import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
+import { BunkeringPlanComponent } from "./../bunkering-plan/bunkering-plan.component";
+import { Select, Selector } from "@ngxs/store";
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
+import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
@@ -7,11 +12,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommentsComponent implements OnInit {
 
+  @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
+  vesselRef: ISaveVesselData;
   public expanded: boolean = false;
   public loginUser = "YH";
   public participants = [];
+  public BunkerPlanCommentList = [];
+  public RequestCommentList = [];
+  public searchParticipant: '';
+  // selectedCommentTab: number = 0;
   public newComment = "";
-  public newAttachment = [];
+  public searchText = '';
+  // public newAttachment = [];
   public bunkerPlanData = [
     {
       placeholder: 'AJ',
@@ -56,20 +68,117 @@ export class CommentsComponent implements OnInit {
       attachment: []
     },
   ]
-  constructor() { }
+  
+  constructor(private BPService: BunkeringPlanCommentsService, private BunkeringPlanCompRef: BunkeringPlanComponent) {
+    this.vesselData$.subscribe(data=> {
+      this.vesselRef = data;
+      this.loadBunkerPlanComments();
+      this.loadRequestComments();
+    });
+  }
 
   ngOnInit() {
     this.participants = this.bunkerPlanData
+    this.loadBunkerPlanComments();
+    this.loadRequestComments();
+  }
+
+  loadBunkerPlanComments() {
+    let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
+    
+    this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
+      console.log('Bunker Plan Comments...', response?.payload);
+      this.BunkerPlanCommentList = response?.payload;
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
+    })
+      // this.BunkerPlanCommentList = [
+      //   {
+      //     "ship_id": "AGAR",
+      //     "plan_id": "Y702100027",
+      //     "notes_id": "2",
+      //     "request_id": null,
+      //     "notes": "test 2",
+      //     "created_date": "0001-01-01T00:00:00Z",
+      //     "modified_date": null,
+      //     "notes_from": "Operator",
+      //     "copytoRFQ": false,
+      //     "createdBy": {
+      //       "id": 169,
+      //       "name": "subhashini.k@inatech.com",
+      //       "internalName": null,
+      //       "displayName": "Subhashini",
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "modifiedBy": null,
+      //     "id": 169,
+      //     "isDeleted": false,
+      //     "modulePathUrl": null,
+      //     "clientIpAddress": null,
+      //     "userAction": null
+      //   },
+      //   {
+      //     "ship_id": "IGUAC",
+      //     "plan_id": "Y702100037",
+      //     "notes_id": "3",
+      //     "request_id": null,
+      //     "notes": "test 2",
+      //     "created_date": "0001-01-01T00:00:00Z",
+      //     "modified_date": null,
+      //     "notes_from": "Operator",
+      //     "copytoRFQ": false,
+      //     "createdBy": {
+      //       "id": 169,
+      //       "name": "subhashini.k@inatech.com",
+      //       "internalName": null,
+      //       "displayName": "Subhashini",
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "modifiedBy": null,
+      //     "id": 169,
+      //     "isDeleted": false,
+      //     "modulePathUrl": null,
+      //     "clientIpAddress": null,
+      //     "userAction": null
+      //   }
+      // ]
+      
+  }
+  loadRequestComments() {
+    let payload = this.vesselRef?.vesselId; //3524
+    this.BPService.getRequestComments(payload).subscribe((response)=> {
+      console.log('Request Comments...', response?.payload);
+      this.RequestCommentList = response?.payload;
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
+    })
+  }
+
+  searchParticipantComment(participant) {
+    this.searchParticipant = participant;
   }
 
   onTabChange(event) {
     let data;
+    // this.selectedCommentTab = event?.index;
     if (event.index == 0)
-      data = this.bunkerPlanData;
+      data = this.BunkerPlanCommentList;
     else
       data = this.requests;
 
-    this.filterParticipants(data);
+    // this.filterParticipants(data);
 
   }
   filterParticipants(data) {
@@ -85,45 +194,74 @@ export class CommentsComponent implements OnInit {
   toggleExpanded() {
     this.expanded = !this.expanded;
   }
-  addNewComment(tabGroup) {
-    if (this.newComment.trim() != '' || this.newAttachment.length > 0) {
-      if (tabGroup.selectedIndex == 0) {
-        this.bunkerPlanData.push(
-          {
-            placeholder: 'RT',
-            name: 'Reshma Thomas',
-            time: '09:00',
-            date: '13 Dec 2019',
-            comment: this.newComment,
-            attachment: this.newAttachment
+  postNewComment(tabGroup) {
+    console.log(this.vesselRef);
+    // let HighNoteIdObj = {notes_id: '0'};
+    // if(this.BunkerPlanCommentList.length) {
+    //   HighNoteIdObj = this.BunkerPlanCommentList.reduce(function(prev, cur) { return prev.notes_id > cur.notes_id? prev: cur; })
+    // }
+    if ( this.newComment.trim() != '' && tabGroup.selectedIndex == 0) {
+      let payload = { 
+        "shipId": this.vesselRef?.vesselId,
+        "BunkerPlanNotes": [ 
+          { 
+            "ship_id": this.vesselRef?.vesselId,
+            "plan_id": this.vesselRef?.planId, 
+            "notes": this.newComment, 
+            "notes_from": this.vesselRef?.userRole, 
+            // "notes_id": (Number(HighNoteIdObj?.notes_id)+1).toString()
           }
-        )
-        this.filterParticipants(this.bunkerPlanData);
-      }
-      else {
-        this.requests.push(
-          {
-            placeholder: 'RT',
-            name: 'Reshma Thomas',
-            time: '09:00',
-            date: '13 Dec 2019',
-            comment: this.newComment,
-            attachment: this.newAttachment
-          }
-        )
-        this.filterParticipants(this.requests);
-      }
+        ]
+      };
 
-      this.newComment = "";
-      this.newAttachment = [];
+      this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
+        console.log('Post Bunker Plan Comments...', response?.payload);
+        this.BunkerPlanCommentList = response?.payload;
+      });
+
+
     }
-
   }
 
-  upload(attachment: File[]) {
-    this.newAttachment.push(attachment[0].name);
-  }
-  removeFile(attachment) {
-    this.newAttachment = this.newAttachment.filter(file => file != attachment)
-  }
+  // addNewComment(tabGroup) {
+  //   if (this.newComment.trim() != '' || this.newAttachment.length > 0) {
+  //     if (tabGroup.selectedIndex == 0) {
+  //       this.bunkerPlanData.push(
+  //         {
+  //           placeholder: 'RT',
+  //           name: 'Reshma Thomas',
+  //           time: '09:00',
+  //           date: '13 Dec 2019',
+  //           comment: this.newComment,
+  //           attachment: this.newAttachment
+  //         }
+  //       )
+  //       this.filterParticipants(this.bunkerPlanData);
+  //     }
+  //     else {
+  //       this.requests.push(
+  //         {
+  //           placeholder: 'RT',
+  //           name: 'Reshma Thomas',
+  //           time: '09:00',
+  //           date: '13 Dec 2019',
+  //           comment: this.newComment,
+  //           attachment: this.newAttachment
+  //         }
+  //       )
+  //       this.filterParticipants(this.requests);
+  //     }
+
+  //     this.newComment = "";
+  //     this.newAttachment = [];
+  //   }
+
+  // }
+
+  // upload(attachment: File[]) {
+  //   this.newAttachment.push(attachment[0].name);
+  // }
+  // removeFile(attachment) {
+  //   this.newAttachment = this.newAttachment.filter(file => file != attachment)
+  // }
 }
