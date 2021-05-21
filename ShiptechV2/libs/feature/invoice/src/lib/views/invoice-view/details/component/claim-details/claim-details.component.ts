@@ -64,6 +64,11 @@ export class ClaimDetailsComponent implements OnInit {
   }
 
   quantityFormatValue(value) {
+
+    if(typeof value !== "string"){
+      return null;
+    }
+
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
     if (isNaN(number)) {
