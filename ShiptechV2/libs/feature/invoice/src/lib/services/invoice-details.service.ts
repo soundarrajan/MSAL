@@ -180,6 +180,16 @@ export class InvoiceDetailsService extends BaseStoreService
   notesAutoSave(payload: any): Observable<unknown> {
     return this.api.notesAutoSave(payload);
   }
+
+        /**
+ * @param payload
+ */
+  @ObservableException()
+  getAdditionalCostsPerPort(payload: any): Observable<unknown> {
+    return this.api.getAdditionalCostsPerPort(payload);
+  }
+
+
         
   ngOnDestroy(): void {
     super.onDestroy();

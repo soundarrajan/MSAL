@@ -50,11 +50,13 @@ export class AdditionalCostModalComponent implements OnInit {
   costType: any;
   costDetailsComponentTypes: any;
   filterCostNames: any[];
+  additionalCostForLocation: any;
   @Input('formValues') set _formValues(val){
     this.formValues = val;
     this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
     this.formatAdditionalCosts();
+    this.getAdditionalCostsPerPort(135);
 
   }
 
@@ -741,6 +743,41 @@ export class AdditionalCostModalComponent implements OnInit {
     let filterCostList = this.filterCostNames.filter((option) => option.name.toLowerCase().includes(value));
     this.costNames = [ ... filterCostList];
     this.changeDetectorRef.detectChanges();
+  }
+
+  
+  getAdditionalCostsPerPort(locationId) {
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+
+    let payload = {"Payload":
+      {"Order":null,
+      "PageFilters":{"Filters":[]},
+      "SortList":{"SortList":[]},
+      "Filters":[{ColumnName:"LocationId", value: locationId}],
+      "SearchText":null,
+      "Pagination":{"Skip":0,"Take":25}}};
+
+    this.invoiceService
+    .getAdditionalCostsPerPort(payload)
+    .pipe(
+      finalize(() => {
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        this.additionalCostForLocation[locationId] = response;
+        console.log(this.getAdditionalCostsPerPort);
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
 
