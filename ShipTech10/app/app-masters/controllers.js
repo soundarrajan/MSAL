@@ -743,9 +743,9 @@
 	            OrderAdditionalCostIds: orderAdditionalCostId,
 	            InvoiceTypeName: invoiceType,
 	        };
-	        localStorage.setItem('invoiceFromDelivery', angular.toJson(data));
-	        // window.open(`/#/${ vm.app_id }/` + 'invoice' + '/edit/', '_blank');
-            window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
+            localStorage.setItem('invoiceFromDelivery', angular.toJson(data));
+            // window.open(`/#/${ vm.app_id }/` + 'invoice' + '/edit/', '_blank');
+            window.open(`/v2/${vm.app_id}/` + 'edit/0', "_blank");
 	    };
 
         vm.checkLabelsHeight = function() {
@@ -1154,7 +1154,7 @@
                     if($scope.formValues.sellers){
                         angular.forEach($scope.formValues.sellers, (sellerContact) => {
                             let savedContacts = $filter('filter')(sellerContact.sellerContacts, function(value){ return (value.id > 0);},true );
-                            if(savedContacts.length > 0){
+                            if(savedContacts && savedContacts.length > 0){
                                 angular.forEach(savedContacts, (contact) => {
                                     let isDeleted = $filter('filter')(sellerContact.locationContacts, { id: contact.id}).length == 0;
                                     if(isDeleted){
@@ -1183,7 +1183,7 @@
                     if($scope.formValues.counterpartyLocations){
                         angular.forEach($scope.formValues.counterpartyLocations, (counterpartyLocation, locIndex) => {
                             let savedContacts = $filter('filter')($scope.preferredContacts[locIndex], { isNewContact : false} )
-                            if(savedContacts.length > 0){
+                            if(savedContacts  && savedContacts.length > 0){
                                 angular.forEach(savedContacts, (contact) => {
                                     let isDeleted = $filter('filter')(counterpartyLocation.locationContacts, { id: contact.id}).length == 0;
                                     if(isDeleted){
