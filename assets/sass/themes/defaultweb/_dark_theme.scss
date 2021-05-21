@@ -1163,6 +1163,7 @@ $denim: #5780A6;
 	}
 	#plan-id,
 	#plan-date {
+		
 		.title {
 			color: $darkl4;
 		}
@@ -1179,7 +1180,7 @@ $denim: #5780A6;
 			line-height: 13px;
 		}
 		.content {
-			color: $text_title;
+			color: $white;
 			font-style: normal;
 			font-weight: normal;
 			font-size: 11px;
@@ -1187,6 +1188,7 @@ $denim: #5780A6;
 			
 			
 		}
+		
 		.content_invalid{
 			background: rgb(170, 63, 63) !important; 
 		}
