@@ -64,6 +64,10 @@ export class ClaimDetailsComponent implements OnInit {
   }
 
   quantityFormatValue(value) {
+<<<<<<< HEAD
+
+=======
+>>>>>>> 713a9e57bc28eae0db923bfd8cc1e94312d0a85c
     if(typeof value !== "string"){
       return null;
     }
