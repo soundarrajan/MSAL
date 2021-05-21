@@ -47,6 +47,9 @@ export namespace InvoiceApiPaths {
   export const notesAutoSave = () => `api/invoice/autosave`;
   export const createCreditNoteInvoiceFromClaim = () => `api/invoice/newFromClaim`;
   export const createPreClaimCreditNote = () => `api/invoice/newPreclaimCN`;
+  export const getAdditionalCostsPerPort = () =>  `api/masters/additionalcosts/listforlocation`;
+
+
 }
 
 @Injectable({
@@ -420,6 +423,17 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.createCreditNoteInvoiceFromClaim()}`,
       { payload: request }
+    ).pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+  getAdditionalCostsPerPort(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterUrl}/${InvoiceApiPaths.getAdditionalCostsPerPort()}`,
+     request
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
