@@ -23,7 +23,7 @@
                       <img [ngClass]="{'expand-img': expandAddTransactionListPopUp}" (click)="expandAddTransactionListPopUp = !expandAddTransactionListPopUp; $event.stopPropagation();$event.preventDefault();" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
                   </div>
                 </div>
-                <table *ngIf="costNames && costNames.length" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="costNames">
+                <table *ngIf="additionalCostForLocation && additionalCostForLocation[this.formValues.orderDetails.location.id] && additionalCostForLocation[this.formValues.orderDetails.location.id].length" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="additionalCostForLocation[this.formValues.orderDetails.location.id]">
                   <!-- Product Column -->
                   <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Select Additional Cost </th>
@@ -113,7 +113,7 @@
                           (ngModelChange)="triggerChangeFieldsAppSpecific('costType', additionalCost.key);invoiceConvertUom('cost', additionalCost.key)"
                           [compareWith]="compareCostTypeObjects"
                           [disableOptionCentering]="true"
-                          [disabled]="additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
+                          [disabled]="additionalCost.value.locationAdditionalCostId || additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
                           panelClass="general-information-select-container">
                           <mat-option *ngFor="let option of  filterCostTypesByAdditionalCost(additionalCost.value.costName ? additionalCost.value.costName.id : 0)" [value]="option">
                             {{option.name}}
@@ -130,7 +130,7 @@
                           [(ngModel)]="additionalCost.value.product"
                           [compareWith]="compareProductObjects"
                           [disableOptionCentering]="true"
-                          [disabled]="additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
+                          [disabled]="additionalCost.value.locationAdditionalCostId || additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
                           panelClass="general-information-select-container">
                           <mat-option *ngFor="let option of  applyForList" [value]="option">
                             {{option.name}}
@@ -194,6 +194,7 @@
                           autocomplete="off"
                           (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           quantityFormat
+                          [disabled]="additionalCost.value.locationAdditionalCostId"
                           >
                       </mat-form-field>
                       <mat-form-field style="width: 36%"
@@ -203,6 +204,7 @@
                             (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
+                            [disabled]="additionalCost.value.locationAdditionalCostId"
                             panelClass="general-information-select-container">
                             <mat-option *ngFor="let uom of uomList" [value]="uom">{{uom.name}}</mat-option>
                           </mat-select>
@@ -232,6 +234,7 @@
                           autocomplete="off"
                           [(ngModel)]="additionalCost.value.invoiceRate"
                           quantityFormat
+                          [disabled]="additionalCost.value.locationAdditionalCostId"
                           (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           >
                       </mat-form-field>
@@ -242,6 +245,7 @@
                             (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
+                            [disabled]="additionalCost.value.locationAdditionalCostId"
                             panelClass="general-information-select-container">
                             <mat-option *ngFor="let option of uomList" [value]="option">{{option.name}}</mat-option>
                           </mat-select>
@@ -268,6 +272,7 @@
                           autocomplete="off"
                           (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           quantityFormat
+                          [disabled]="additionalCost.value.locationAdditionalCostId"
                           >
                       </mat-form-field>
                     </div>
@@ -276,12 +281,13 @@
               </td>
               <td  style="max-width: initial;min-width: 200px" class="select-container">
                 <div class="dotted-container black-container">
-                  <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
+                  <div class="custom-form-field-invoice black-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
                     <div class="split-field">
                       <mat-form-field class="without-search long-label-field" style="width: 100%;border: none;" appearance="legacy">
                         <input matInput
                           [(ngModel)]="additionalCost.value.invoiceExtras"
                           autocomplete="off"
+                          [disabled]="additionalCost.value.locationAdditionalCostId"
                           (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           quantityFormat
                           >
@@ -320,7 +326,6 @@
                   </div>
                 </div>
               </td>
-
             </tr>
           </ng-container>
       </tbody>
