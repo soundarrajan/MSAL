@@ -10,6 +10,14 @@ export class SaveBunkeringPlanAction{
   }
 }
 
+export class SaveScrubberReadyAction{
+  static readonly type = '[ScrubberReady] Save';
+
+  constructor(public payload: string){
+
+  }
+}
+
 
 export class UpdateBunkeringPlanAction{
   static readonly type = '[BplanData] Update' ;

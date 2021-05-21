@@ -457,27 +457,11 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
         this.formValues = {
           formulaType: {},
           isEditable: true,
-          formulaHolidayRules: {
-            sundayHolidayRule: null,
-            mondayHolidayRule: null,
-            tuesdayHolidayRule: null,
-            wednesdayHolidayRule: null,
-            thursdayHolidayRule: null,
-            fridayHolidayRule: null,
-            saturdayHolidayRule: null
-          }
+          formulaHolidayRules: null
         };
       }
       if (this.formValues && !this.formValues.formulaHolidayRules) {
-        this.formValues.formulaHolidayRules =  {
-          sundayHolidayRule: null,
-          mondayHolidayRule: null,
-          tuesdayHolidayRule: null,
-          wednesdayHolidayRule: null,
-          thursdayHolidayRule: null,
-          fridayHolidayRule: null,
-          saturdayHolidayRule: null
-        };
+        this.formValues.formulaHolidayRules =  null;
       }
       this.formulaTypeList = data.formulaTypeList;
       this.systemInstumentList = data.systemInstumentList;
@@ -577,6 +561,19 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
       this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     }
+
+    if (!this.formValues.formulaHolidayRules) {
+      this.formValues.formulaHolidayRules = {};
+      this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+      this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+      this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+      this.formValues.formulaHolidayRules.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+      this.formValues.formulaHolidayRules.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+      this.formValues.formulaHolidayRules.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+      this.formValues.formulaHolidayRules.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+    }
+
+    console.log(this.formValues.formulaHolidayRules);
 
   }
 

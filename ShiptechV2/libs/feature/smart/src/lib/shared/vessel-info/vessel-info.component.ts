@@ -9,7 +9,7 @@ import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction } from './../../store/bunker-plan/bunkering-plan.action';
+import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveScrubberReadyAction } from './../../store/bunker-plan/bunkering-plan.action';
 import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
@@ -64,6 +64,7 @@ export class VesselInfoComponent implements OnInit {
   public changeCurrentROBObj$  = new Subject();
   public import_gsis : number = 0;
   public scrubberReady : any;
+  public IsVesselhasNewPlan: boolean = false;
  
 
   constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
@@ -182,7 +183,9 @@ export class VesselInfoComponent implements OnInit {
       this.loadBplan = true;
       // store vesselid and planid for shared ref
       this.store.dispatch(new saveVesselDataAction({'vesselId': request.shipId, 'planId': this.planId}));
+      //to store HSFO header value
       this.scrubberReady = this.currPlanIdDetails?.isScrubberReady === 'Y' ? 'HSFO':'VLSFO';
+      this.store.dispatch(new SaveScrubberReadyAction(this.scrubberReady));
     })
   }
 
@@ -207,7 +210,21 @@ export class VesselInfoComponent implements OnInit {
   changeVesselTrigger(event) {
     this.loadBunkerPlanHeader(event);
     this.loadBunkerPlanDetails(event);
-    this.changeVessel.emit(event);
+    this.checkVesselHasNewPlan(event);
+  }
+  
+  checkVesselHasNewPlan(event) {
+    let vesselId = event?.id;
+    this.localService.checkVesselHasNewPlan(vesselId).subscribe((data)=> {
+      console.log('vessel has new plan',data);
+      data = (data.payload?.length)? (data.payload)[0]: data.payload; 
+      if(data.planCount>0) {
+        this.IsVesselhasNewPlan = true;
+      } else {
+        this.IsVesselhasNewPlan = false;
+      }
+      this.changeVessel.emit({...event, IsVesselhasNewPlan: this.IsVesselhasNewPlan});
+    })
   }
 
   saveDefaultView(event) {

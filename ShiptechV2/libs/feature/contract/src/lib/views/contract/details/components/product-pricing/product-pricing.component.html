@@ -96,7 +96,7 @@
             [(ngModel)]="formValues.products[selectedTabIndex].currency"
             placeholder="Currency"
             [disableOptionCentering]="true"
-            panelClass="general-information-select-container"
+            panelClass="general-info-select-container"
             [compareWith]="compareUomObjects"
             [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
             <mat-option *ngFor="let option of currencyList" [value]="option">
@@ -112,7 +112,7 @@
             [(ngModel)]="formValues.products[selectedTabIndex].priceUom"
             placeholder="Uom"
             [disableOptionCentering]="true"
-            panelClass="general-information-select-container"
+            panelClass="general-info-select-container"
             [compareWith]="compareUomObjects"
             [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
             <mat-option *ngFor="let option of uomList" [value]="option">
@@ -244,7 +244,7 @@
                             (selectionChange)="setAdditionalCost($event.value, selectedTabIndex, additionalCost.key);
                             setAdditionalCostLine(additionalCost.value.additionalCost, selectedTabIndex, additionalCost.key);                             setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
-                            panelClass="general-information-select-container"
+                            panelClass="general-info-select-container"
                             [compareWith]="compareAdditionalCostObjects"
                             [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')">
                         <mat-option *ngFor="let option of  additionalCostForLocation[formValues.products[selectedTabIndex].location.id]" [value]="option">
@@ -263,7 +263,7 @@
                             [(ngModel)]="additionalCost.value.costType"
                             (selectionChange)="resetUom(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
-                            panelClass="general-information-select-container"
+                            panelClass="general-info-select-container"
                             [compareWith]="compareUomObjects"
                             [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')">
                         <mat-option *ngFor="let option of filterCostTypesByAdditionalCost(additionalCost.value.additionalCost ? additionalCost.value.additionalCost.id : 0, 0)" [value]="option">
@@ -295,7 +295,7 @@
                     <mat-select 
                             [(ngModel)]="additionalCost.value.uom"
                             [disableOptionCentering]="true"
-                            panelClass="general-information-select-container"
+                            panelClass="general-info-select-container"
                             [compareWith]="compareUomObjects"
                             [disabled]="additionalCost.value.locationAdditionalCostId || (additionalCost.value.costType && additionalCost.value.costType.name != 'Unit')
                               || (formValues.status && formValues.status.name == 'Confirmed')">
@@ -323,7 +323,7 @@
                     <mat-select 
                             [(ngModel)]="additionalCost.value.currency"
                             [disableOptionCentering]="true"
-                            panelClass="general-information-select-container"
+                            panelClass="general-info-select-container"
                             [compareWith]="compareUomObjects"
                             [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')">
                         <mat-option *ngFor="let option of currencyList" [value]="option">

@@ -44,7 +44,10 @@
           </mat-tab>
         </mat-tab-group>
         <div id="currentuser">
-
+          <div class="newplan-text" *ngIf="IsVesselhasNewPlan">
+            <img style="vertical-align:middle; height: 15px;" class="expand-icon" src="./assets/customicons/warning_r.svg" alt="warning-icon">
+            <span style="vertical-align:middle;">&nbsp;New plan has been recieved from the vessel</span>
+          </div>
           <div class="label">Currently using as:</div>
           <mat-select #currentuser panelClass="currentuser" [compareWith]="selectedUserRoleFn" [(ngModel)]="selectedRole" (selectionChange)="loadBunkerPlan($event)" [disabled]="!enableSelection" class="user" disableOptionCentering
             (openedChange)="enableSelection && currentuser.disabled=true;enableSelection=false;" [panelClass]="{'dark-theme':theme,'light-theme':!theme}">
@@ -55,7 +58,6 @@
             <mat-icon style="cursor: pointer;"
               (click)="enableSelection=true;currentuser.disabled=false;currentuser.open()">more_vert</mat-icon>
           </div>
-
         </div>
       </div>
     </div>
