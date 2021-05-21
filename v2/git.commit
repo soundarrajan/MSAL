@@ -1,7 +1,9 @@
-﻿commit 827c0436a902c3af8d179f7a5e3fc46acf178056
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 21 07:48:48 2021 +0000
+﻿commit bc9faba1ae570c627679596bac1a8f4f76a6452c
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Fri May 21 08:30:20 2021 +0000
 
-    Merged PR 10837: Fixed contract error
+    Merged PR 10839: add property verification
+    
+    add property verification
 
 branch: master
