@@ -3,13 +3,16 @@ import { Injectable } from '@angular/core';
 import { ISaveVesselData } from './../shared-model/vessel-data-model';
 import { SaveBunkeringPlanModel,AddCurrentBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
 import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, AddCurrentBunkeringPlanAction, UpdateCurrentBunkeringPlanAction,SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction,saveVesselDataAction,
-         GeneratePlanAction } from './bunkering-plan.action';
-import { values } from 'lodash';
+         GeneratePlanAction, SaveScrubberReadyAction } from './bunkering-plan.action';
 
 
 
 export class SaveBunkeringPlanStateModel{
   BPlanData : SaveBunkeringPlanModel[];
+}
+
+export class SaveScrubberReadyStateModel{
+  hsfoHeader : string;
 }
 
 export class SaveVessleDataStateModel{
@@ -175,6 +178,20 @@ export class SaveBunkeringPlanState{
     patchState({
       ...state,
       vesselData : vesselRef
+    })
+  }
+
+  @Selector()
+  static getHsfoHeaderData(state: SaveScrubberReadyStateModel):any{
+    return state?.hsfoHeader;
+  }
+
+  @Action(SaveScrubberReadyAction)
+  saveHsfoHeader({getState, patchState}: StateContext<SaveScrubberReadyStateModel>,{payload}:SaveScrubberReadyAction){
+    const state = getState();
+    patchState({
+      ...state,
+      hsfoHeader : payload
     })
   }
 
