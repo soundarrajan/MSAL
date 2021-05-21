@@ -33,7 +33,8 @@
             </div>
           </div>
           <div class="border_line"></div>
-          <div  class="col-md-2">
+          <div  class="col-md-2 p-lr-5">
+            <div class="minInputFocus" style="width:100%;padding: 0px 10px 0;">
             <span class="label">Min
               <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
             </span>
@@ -41,18 +42,23 @@
               <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                 <mat-form-field class="without-search" appearance="legacy">
                   <input 
-                      [(ngModel)]="contractDetail.value.minContractQuantity"
+                      [ngModel]="0.00"
+                      (ngModelChange)="contractDetail.value.minContractQuantity"
                       matInput
                       autocomplete="off"
                       quantityFormat
+                      (focus)="focus($event,'min')"
+                      (focusout)="focusOut($event,'min')"
                       (keypress)="keyPressNumber($event)"
                       [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                   </mat-form-field>
               </div>
             </div>
           </div>
+          </div>
           <div class="border_line"></div>
-          <div  class="col-md-2">
+          <div  class="col-md-2 p-lr-5">
+            <div class="maxInputFocus" style="width:100%;padding: 0px 10px 0;">
             <span class="label">Max
               <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
             </span>
@@ -61,8 +67,11 @@
                 <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search" appearance="legacy">
                     <input 
-                        [(ngModel)]="contractDetail.value.maxContractQuantity"
+                        [ngModel]="0.00"
+                        (ngModelChange)="contractDetail.value.maxContractQuantity"
                         matInput
+                        (focus)="focus($event,'max')"
+                        (focusout)="focusOut($event,'max')"
                         (keypress)="keyPressNumber($event)"
                         [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                         autocomplete="off"
@@ -71,6 +80,7 @@
                 </div>
               </div>
             </div>
+          </div>
           </div>
           <div class="border_line"></div>
           <div  class="col-md-2">
@@ -93,15 +103,19 @@
             </div>
           </div>
           <div class="border_line"></div>
-          <div  class="col-md-2">
+          <div  class="col-md-2 p-lr-5">
+            <div class="tolInputFocus" style="width:100%;padding: 0px 10px 0;">
             <span class="label">Tolerance %</span>
             <div class="value">
               <div class="value">
                 <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search" appearance="legacy">
                     <input 
-                        [(ngModel)]="contractDetail.value.tolerance"
+                        [ngModel]="0.0"
+                        (ngModelChange)="contractDetail.value.tolerance"
                         matInput
+                        (focus)="focus($event,'tol')"
+                        (focusout)="focusOut($event,'tol')"
                         autocomplete="off"
                         required
                         [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
@@ -109,6 +123,7 @@
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

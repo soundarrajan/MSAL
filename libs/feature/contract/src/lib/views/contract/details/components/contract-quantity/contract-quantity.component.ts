@@ -15,7 +15,9 @@ import {
   ChangeDetectorRef,
   Injectable,
   InjectionToken,
-  Optional
+  Optional,
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -504,7 +506,34 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
       this.formValues.details = [];
     }
     console.log('Add');
-    this.formValues.details.push({'id':0});
+    //console.log( this.formValues.details);
+    this.formValues.details.push({
+      'id':0,
+      'contractualQuantityOption':{
+      'code': null,
+      'databaseValue': 0,
+      'description': null,
+      'displayName': null,
+      'id': 1,
+      'internalName': null,
+      'name': "TotalContractualQuantity",
+      'productTypeId': 0,
+      'transactionTypeId': 0
+      },
+      uom:{
+        clientIpAddress: null,
+        code: "",
+        collectionName: null, 
+        customNonMandatoryAttribute1: "TON",
+        displayName: "",
+        id: 5,
+        internalName: "",
+        isDeleted: false,
+        modulePathUrl: null,
+        name: "MT",
+        userAction: null
+      }
+    });
     this.changeDetectorRef.detectChanges();
   }
 
@@ -568,5 +597,28 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
   ngAfterViewInit(): void {
   
   }
+
+  focus(e,type){
+    //console.log(type)
+    if(type == 'min')
+    e.target.parentElement.closest(".minInputFocus").classList.add('mininputFocussed');
+
+    if(type == 'max')
+    e.target.parentElement.closest(".maxInputFocus").classList.add('maxinputFocussed');
+
+    if(type == 'tol')
+    e.target.parentElement.closest(".tolInputFocus").classList.add('tolinputFocussed');
+  }
+  focusOut(e,type){
+    if(type == 'min')
+    e.target.parentElement.closest(".minInputFocus").classList.remove('mininputFocussed');
+
+    if(type == 'max')
+    e.target.parentElement.closest(".maxInputFocus").classList.remove('maxinputFocussed');
+
+    if(type == 'tol')
+    e.target.parentElement.closest(".tolInputFocus").classList.remove('tolinputFocussed');
+  }
+
 }
 

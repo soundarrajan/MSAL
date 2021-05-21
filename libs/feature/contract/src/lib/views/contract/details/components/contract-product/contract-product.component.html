@@ -1,11 +1,15 @@
 <div class="row col-md-12 contract-section" style="margin-left: 0px;" id="container-contract">
   <div class="add-contract-product-section" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : addProductToContract()" style="position: relative;
-  top: 5px;">
+  top: 0px;">
     <a class="add-contract-product-icon"></a>
   </div>
-  <ng-container *ngFor="let contractProduct of formValues.products | keyvalue: originalOrder">
+  <ng-container *ngFor="let contractProduct of formValues.products | keyvalue: originalOrder; let i = index">
     <ng-container *ngIf="!contractProduct.value.isDeleted">
       <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
+        <div class="contract-addProduct-separator" 
+        *ngIf="formValues.products && formValues.products.length >1 && i > 0"></div>
+        <div class="hoveraddedProduct">
+        <div class="hover-remove-icon" *ngIf="formValues.products && formValues.products.length >1" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : removeProductFromContract(contractProduct.key)" ></div>
         <div class="contract-location-with-product-container d-flex">
           <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
             'lightTheme':!switchTheme,
@@ -69,7 +73,7 @@
           </div>
           <div [ngClass]="{'container-product-with-value': contractProduct.value.product  && selectedTabIndex == contractProduct.key,
               'mat-form-field-disabled': formValues.status && formValues.status.name == 'Confirmed' && selectedTabIndex != contractProduct.key}">
-            <a class="remove-product-black-icon remove-product-icon" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : removeProductFromContract(contractProduct.key)" >
+            <a class="remove-product-black-icon remove-product-icon">
             </a>
           </div>
           <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
@@ -130,8 +134,8 @@
             </mat-form-field>
           </div>
         </div>
-       
         </div>
+       </div>
     </ng-container>
   </ng-container>
   <mat-menu #locationMenu="matMenu" class="select-location-container"  overlapTrigger="false">
@@ -226,7 +230,8 @@
     </div>
   </mat-menu>
 </div>
-<div *ngIf="formValues.products && formValues.products.length"> 
+<div *ngIf="formValues.products && formValues.products.length" style="position:relative;">
+  <div class="custom-border"></div> 
   <div  *ngFor="let contractProduct of formValues.products | keyvalue : originalOrder">
     <ng-container *ngIf="!contractProduct.value.isDeleted">
       <div *ngIf="contractProduct.key == selectedTabIndex" class="row col-md-12">
