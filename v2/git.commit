@@ -1,9 +1,11 @@
-﻿commit 9be031e178331d20f16d8bdbcde1ab1941da023c
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 21 09:47:46 2021 +0000
+﻿commit 9baf1f257aeb506b6a020b907890f5b5c37ea31f
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri May 21 10:09:36 2021 +0000
 
-    Merged PR 10841: Added "previous" as default for  Pricing Day Calendar and Holiday Rule in con...
+    Merged PR 10842: Plan details popup
     
-    Added "previous" as default for  Pricing Day Calendar and Holiday Rule in contract screen
+    Plan details popup
+    
+    Related work items: #32384
 
 branch: master
