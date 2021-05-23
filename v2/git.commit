@@ -1,7 +1,11 @@
-﻿commit 0870b49c1873d9db2ee6d7dcf675c02f0e879f7d
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Sat May 22 21:26:39 2021 +0530
+﻿commit 9223bda6997b5e2dc5b98b65c34e08c20f5e6378
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Sun May 23 22:17:59 2021 +0000
 
-    Delivery Notes
+    Merged PR 10858: SOA calculation for Current Bunkering plan
+    
+    SOA calculation for Current Bunkering plan
+    
+    Related work items: #29780
 
 branch: master
