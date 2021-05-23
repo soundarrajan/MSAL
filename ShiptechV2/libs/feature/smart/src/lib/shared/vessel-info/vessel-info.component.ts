@@ -15,8 +15,6 @@ import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveS
 import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
-import { RootLogger } from '@shiptech/core/logging/logger-factory.service';
-import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { Subject, Subscription, Observable } from 'rxjs';
 
 
@@ -32,7 +30,6 @@ export class VesselInfoComponent implements OnInit {
   vesselRef: ISaveVesselData;
   @ViewChild(CommentsComponent) child;
   @ViewChild(BunkeringPlanComponent) currentBplan;
-  @ViewChild(AGGridCellDataComponent) agGridCellData:AGGridCellDataComponent;
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
   @Input('selectedUserRole') selectedUserRole ;
@@ -69,6 +66,7 @@ export class VesselInfoComponent implements OnInit {
   public import_gsis : number = 0;
   public scrubberReady : any;
   public IsVesselhasNewPlan: boolean = false;
+  currentROBChange: Subject<void> = new Subject<void>();
  
 
   constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
@@ -161,6 +159,7 @@ export class VesselInfoComponent implements OnInit {
     }
     this.store.dispatch(new UpdateCurrentROBAction(value,column));
     console.log('Current ROB',this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB))
+    this.currentROBChange.next(column);
     event.stopPropagation();
     /* This service only for Test purpose only. 
     need to build request payload by using column, value based on BE update*/

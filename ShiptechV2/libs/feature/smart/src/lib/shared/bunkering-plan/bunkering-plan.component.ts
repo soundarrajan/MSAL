@@ -7,13 +7,13 @@ import { Store } from '@ngxs/store';
 import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view-model/bunkering-plan.column';
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
-import { SaveBunkeringPlanAction,AddCurrentBunkeringPlanAction,UpdateCurrentROBAction,UpdateBplanTypeAction } from '../../store/bunker-plan/bunkering-plan.action';
-import { SaveBunkeringPlanState,AddCurrentBunkeringPlanState,SaveCurrentROBState} from '../../store/bunker-plan/bunkering-plan.state';
+import { SaveBunkeringPlanAction,AddCurrentBunkeringPlanAction,UpdateCurrentROBAction,UpdateBplanTypeAction, UpdateCurrentBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
+import { SaveBunkeringPlanState,AddCurrentBunkeringPlanState,SaveCurrentROBState, UpdateBplanTypeState} from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { Observable,BehaviorSubject } from 'rxjs';
+import { Observable,Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bunkering-plan',
@@ -57,6 +57,8 @@ export class BunkeringPlanComponent implements OnInit {
     this.store.dispatch(new UpdateBplanTypeAction(this.type));
   };
   @Input('selectedUserRole')selectedUserRole;
+  @Input() changeROB : Observable<void>;
+  private eventSub : Subscription;
   // @Select(UserProfileState.username) username$: Observable<string>;
   // private _username$: BehaviorSubject<string>;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store,
@@ -110,6 +112,7 @@ export class BunkeringPlanComponent implements OnInit {
   
   ngOnInit() {
     this.editableCell = (this.type == 'C'&& this.selectedUserRole?.id === 1) ? true : false;
+    this.eventSub = this.changeROB.subscribe((column)=> this.calculateSOA(column));
   }
   
   columnDefs = [
@@ -423,7 +426,7 @@ export class BunkeringPlanComponent implements OnInit {
         // business_address: bPlan.business_address,
         // clientIpAddress: bPlan.clientIpAddress,
         detail_no: bPlan.detail_no,
-        // eca_estimated_consumption: bPlan.eca_estimated_consumption,
+        eca_estimated_consumption: bPlan.eca_estimated_consumption,
         // eca_min_sod: bPlan.eca_min_sod,
         // eca_reserve: bPlan.eca_reserve,
         // eca_safe_port: bPlan.eca_safe_port,
@@ -432,29 +435,29 @@ export class BunkeringPlanComponent implements OnInit {
         // hsdis_estimated_lift: bPlan.hsdis_estimated_lift,
         hsfo05_stock: bPlan.hsfo05_stock,
         // hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
-        // hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
+        hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
         // hsfo_estimated_lift: bPlan.hsfo_estimated_lift,
         // hsfo_max_lift: bPlan.hsfo_max_lift,
         // hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
         // hsfo_min_sod: bPlan.hsfo_min_sod,
         // hsfo_reserve: bPlan.hsfo_reserve,
         // hsfo_safe_port: bPlan.hsfo_safe_port,
-        // hsfo_soa: bPlan.hsfo_soa,
+        hsfo_soa: bPlan.hsfo_soa,
         // hsfo_sod_comment: bPlan.hsfo_sod_comment,
         // is_end_of_service: bPlan.is_end_of_service,
         // is_min_soa: bPlan.is_min_soa,
         // is_new_port: bPlan.is_new_port,
         // location_id: bPlan.location_id,
         // location_name: bPlan.location_name,
-        // lsdis_as_eca: bPlan.lsdis_as_eca,
+        lsdis_as_eca: bPlan.lsdis_as_eca,
         // lsdis_est_consumption_color: bPlan.lsdis_est_consumption_color,
-        // lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
+        lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
         // lsdis_estimated_lift: bPlan.lsdis_estimated_lift,
         // lsdis_max_lift: bPlan.lsdis_max_lift,
         // lsdis_max_lift_color: bPlan.lsdis_max_lift_color,
         // lsdis_reserve: bPlan.lsdis_reserve,
         // lsdis_safe_port: bPlan.lsdis_safe_port,
-        // lsdis_soa: bPlan.lsdis_soa,
+        lsdis_soa: bPlan.lsdis_soa,
         // max_sod: bPlan.max_sod,
         // max_sod_comment: bPlan.max_sod_comment,
         // min_soa_comment: bPlan.min_soa_comment,
@@ -478,10 +481,10 @@ export class BunkeringPlanComponent implements OnInit {
         // request_id_ulsfo: bPlan.request_id_ulsfo,
         // service_code: bPlan.service_code,
         // ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
-        // ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
+        ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
         // ulsfo_max_lift: bPlan.ulsfo_max_lift,
         // ulsfo_max_lift_color: bPlan.ulsfo_max_lift_color,
-        // ulsfo_soa: bPlan.ulsfo_soa,
+        ulsfo_soa: bPlan.ulsfo_soa,
         // userAction: bPlan.userAction,
         // vessel_ack: bPlan.vessel_ack,
         // voyage_detail_id: bPlan.voyage_detail_id
@@ -773,4 +776,75 @@ export class BunkeringPlanComponent implements OnInit {
     //   update: [data]
     // })
   }
+
+  calculateSOA(column){
+    if(this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C'){
+      let currentROB = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
+      let rowData2 = this.rowData;
+      let robValue = currentROB[column];
+      switch(column){
+        case 'LSDIS' :{
+                        let currentRobLsdis = currentROB.LSDIS == null? 0 : currentROB.LSDIS;
+                        for( let i = 0; i < rowData2.length ; i++){
+                          //For Port 0
+                          if(i==0){
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].lsdis_soa = currentRobLsdis - rowData2[i].lsdis_estimated_consumption - lsdisAsEca;
+                          }
+                          //For Port 1 to N 
+                          else{
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].lsdis_soa = rowData2[i-1].lsdis_soa - rowData2[i].lsdis_estimated_consumption - lsdisAsEca + rowData2[i-1].lsdis_estimated_lift;
+
+                          }
+                          // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no));
+                        }
+                        if(rowData2!= null)
+                          this.gridOptions.api.setRowData(rowData2);
+                        break;
+                      }
+        case 'ULSFO' :{
+                        let currentRobUslfo = currentROB.ULSFO == null ? 0 :currentROB.ULSFO;
+                        for( let i = 0; i < rowData2.length ; i++){
+                          //For Port 0
+                          if(i==0){
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].ulsfo_soa = currentRobUslfo - (rowData2[i].eca_estimated_consumption - rowData2[i].lsdis_estimated_consumption) + lsdisAsEca 
+                          }
+                          //For Port 1 to N 
+                          else{
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].ulsfo_soa = rowData2[i-1].ulsfo_soa - (rowData2[i-1].eca_estimated_consumption - rowData2[i].lsdis_estimated_consumption) + lsdisAsEca + rowData2[i-1].ulsfo_estimated_lift ;
+                          }
+                          // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
+                        }
+                        if(rowData2!= null)
+                          this.gridOptions.api.setRowData(rowData2);
+                        break;
+                      }
+        case '0.5 QTY':
+        case '3.5 QTY': { 
+                          let currentRobHsfo = currentROB['3.5 QTY'] == null ? 0 :currentROB['3.5 QTY'];
+                          let currentRobVlsfo = currentROB['0.5 QTY'] == null ? 0 :currentROB['0.5 QTY'];                       
+                          for (let i = 0 ; i < rowData2.length ; i++ ){
+                            //For Port 0
+                            if(i == 0){
+                              let estdConsHsfoPort_0 = rowData2[i].hsfo_estimated_consumption == null ? 0 : rowData2[i].hsfo_estimated_consumption;
+                              let soaHsfoPort_0 = currentRobHsfo + currentRobVlsfo - estdConsHsfoPort_0;
+                              rowData2[i].hsfo_soa = soaHsfoPort_0;
+                            }
+                            //For Port 1 to N 
+                            else{
+                              rowData2[i].hsfo_soa = rowData2[i-1].hsfo_estimated_lift + rowData2[i-1].hsfo_soa - rowData2[i].hsfo_estimated_consumption;
+                            } 
+                            // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no))
+                          }
+                          if(rowData2!= null)
+                            this.gridOptions.api.setRowData(rowData2);
+                          break;
+                        }
+      }
+    }
+  }
+    
 }
