@@ -1467,6 +1467,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let product, requestActions;
             // Iterate Requests and their respective locations and products to extract actions.
             for (let j = 0; j < ctrl.request.locations.length; j++) {
+                if(j==ctrl.request.locations.length-1){
+                    ctrl.request.locations[j].optionId=ctrl.request.locations.length;
+                }
                 for (let k = 0; k < ctrl.request.locations[j].products.length; k++) {
                     product = ctrl.request.locations[j].products[k];
                     if (
@@ -1755,12 +1758,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let location;
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 location = ctrl.request.locations[i];
+                if(i==ctrl.request.locations.length-1){
+                    location.optionId=ctrl.request.locations.length;
+                }
                 if (location.location.id === locationId && location.vesselVoyageId == vesselVoyageId && !location.eta && !location.etb && !location.etd) {
                     location.eta = eta;
                     location.etb = etb;
                     location.etd = etd;
                     location.recentEta = recentEta;
-                    location.optionId=ctrl.request.locations.length;
                     if (eta && etb && etd) {
                         if (!ctrl.etaDefaultedCount) {
                             ctrl.etaDefaultedCount = {};
