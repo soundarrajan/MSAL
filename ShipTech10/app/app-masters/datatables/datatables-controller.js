@@ -3237,7 +3237,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplate: $scope.dataTableTemplates.text
                     },
                     {
-                        name: 'createdBy.name',
+                        name: 'createdBy.displayName',
                         width: 200,
                         displayName: 'Added By',
                         enableCellEdit: false
