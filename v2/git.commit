@@ -1,7 +1,9 @@
-﻿commit 27fc0315d8c9bc39556532de8013f270d065f287
+﻿commit 4ed7b3f3aebfe7285abbf424986faaef379e6f33
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 24 12:42:16 2021 +0000
+Date:   Mon May 24 13:00:38 2021 +0000
 
-    Merged PR 10890: Added api/procurement/order/getRangeTotalAdditionalCosts endpoint to  get Total/Range Additional costs amount
+    Merged PR 10892: Fixed payload for api/procurement/order/getRangeTotalAdditionalCosts
+    
+    Fixed payload for api/procurement/order/getRangeTotalAdditionalCosts
 
 branch: master
