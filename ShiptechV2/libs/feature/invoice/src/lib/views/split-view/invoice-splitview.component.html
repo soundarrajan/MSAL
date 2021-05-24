@@ -32,8 +32,7 @@
                 <div class="section-title ml-2 p-2 mb-2">Details</div>
             </div>
             <shiptech-invoice-detail *ngIf="detailFormvalues" #invoiceDetails
-            [detailFormvalues]='detailFormvalues'
-            (onInvoiceDetailsChanged)="getInvoiceDetailsChanged()"></shiptech-invoice-detail>
+            [detailFormvalues]='detailFormvalues'></shiptech-invoice-detail>
         </div>
     </div>
     <div class="col-sm-6" *ngIf="!noMoreInvoices">
