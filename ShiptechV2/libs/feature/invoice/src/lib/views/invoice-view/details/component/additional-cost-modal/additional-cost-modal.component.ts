@@ -378,7 +378,7 @@ export class AdditionalCostModalComponent implements OnInit {
             },
             {
               "ColumnName": "QtyUomId",
-              "Value": additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom
+              "Value": additionalCost.priceUom ? additionalCost.priceUom.id : this.generalTenantSettings.tenantFormats.uom.id
             }
           ],
           "Pagination": {
