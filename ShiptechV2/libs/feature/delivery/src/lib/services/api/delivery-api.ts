@@ -205,7 +205,7 @@ export class DeliveryApi implements IDeliveryApiService {
     );
   }
   
-//Update / Remove Delivery Notes
+//Update / Remove Delivery Notes api
   @ObservableException()
   saveNotesDelivery(
     request: any
