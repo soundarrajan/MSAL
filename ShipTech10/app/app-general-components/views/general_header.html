@@ -306,7 +306,7 @@
                                         {{ action.label }}
                                     </span>
                                 </a>
-                                <a ng-if="GH.app_id == 'claims' && GH.screen_id == 'claim' && action.label.split(' ').join('').toLowerCase() == 'createpre-claimcn'" id="header_action_createpre-claimcn" type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button" data-compiled="1" ng-click="claims_create_preclaim_cn(3)" ng-show="adminConfiguration.claim.isPreclaimCNFeatureAvailable && formValues.claimsPossibleActions.canCreatePreClaimCreditNote" ng-class="action.main ?  'orange' : ''; action.orangeButton ? 'bg-yellow-gold-opacity font-white specialOrangeButton' : '' " data-group="extern" data-style="expand-left" ng-disabled="submitedAction">
+                                <a ng-if="GH.app_id == 'claims' && GH.screen_id == 'claim' && action.label.split(' ').join('').toLowerCase() == 'createpre-claimcn'" id="header_action_createpre-claimcn" type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button" data-compiled="1" ng-click="claims_create_preclaim_cn(3)" ng-show="adminConfiguration.claim.isPreclaimCNFeatureAvailable && formValues.claimsPossibleActions.canCreatePreClaimCreditNote" ng-class="action.main ?  'orange' : ''; action.orangeButton ? 'bg-yellow-gold-opacity font-white specialOrangeButton' : '' " data-group="extern" data-style="expand-left" ng-disabled="submitedAction || !formValues.hasPreclaimCNAccess">
                                     <span class="ladda-label">
                                         {{ action.label }}
                                     </span>
