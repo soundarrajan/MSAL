@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation, ViewChildren } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
 import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
@@ -6,6 +6,9 @@ import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
 import { CommentsComponent } from '../comments/comments.component';
+
+import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
+
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -25,10 +28,11 @@ import { Subject, Subscription, Observable } from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class VesselInfoComponent implements OnInit {
-
+  
   @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
   vesselRef: ISaveVesselData;
-  @ViewChild(CommentsComponent) child;
+  @ViewChild(CommentsComponent) child: CommentsComponent;
+  // @ViewChildren(CommentsComponent) children: CommentsComponent;
   @ViewChild(BunkeringPlanComponent) currentBplan;
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
@@ -66,16 +70,21 @@ export class VesselInfoComponent implements OnInit {
   public import_gsis : number = 0;
   public scrubberReady : any;
   public IsVesselhasNewPlan: boolean = false;
+  public totalCommentCount: any = 0;
+  BunkerPlanCommentList: any = [];
+  RequestCommentList: any = [];
   currentROBChange: Subject<void> = new Subject<void>();
  
 
-  constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
+  constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
 
       this.vesselData$.subscribe(data=> {
         this.vesselRef = data;
+        // loadBunkerPlanComments fn callback to get BP comment count 
+        this.loadBunkerPlanComments();
       });
    }
 
@@ -84,9 +93,27 @@ export class VesselInfoComponent implements OnInit {
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan.triggerRefreshGrid(this.selectedUserRole));
     this.loadBunkerPlanHeader(this.vesselData);  
     this.loadBunkerPlanDetails(this.vesselData);
-     
   }
-  
+    
+  loadBunkerPlanComments() {
+    let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
+    
+    this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
+      this.BunkerPlanCommentList = response?.payload;
+      this.loadRequestComments();
+    })   
+  }
+  loadRequestComments() {
+    let payload = this.vesselRef?.vesselId;
+    this.BPService.getRequestComments(payload).subscribe((response)=> {
+      console.log('Request Comments count...', response?.payload);
+      this.RequestCommentList = response?.payload;
+      this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
+      +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
+     
+      
+    })
+  }
   public loadBunkerPlanHeader(event) {
     let vesselId = event.id? event.id: 348;
     this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
@@ -218,6 +245,9 @@ export class VesselInfoComponent implements OnInit {
     this.loadBunkerPlanHeader(event);
     this.loadBunkerPlanDetails(event);
     this.checkVesselHasNewPlan(event);
+  }
+  TotalCommentCount(count: any) {
+    this.totalCommentCount = count;
   }
   
   checkVesselHasNewPlan(event) {
