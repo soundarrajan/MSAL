@@ -61,8 +61,9 @@ export class NotesLogComponent implements OnInit, OnDestroy {
       this.detailsService
         .saveDeliveryInfo(payload)
         .subscribe((result: any) => {
+          console.log("Payload", result)
           this.objNotes = result;
-          this.ChangedValue.emit(this.objNotes);
+          console.log("Payload this.objNotes", this.objNotes)
         });
     }
   }
@@ -78,8 +79,9 @@ export class NotesLogComponent implements OnInit, OnDestroy {
       this.detailsService
         .saveDeliveryInfo(payload)
         .subscribe((result: any) => {
+          console.log("Payload", result)
           this.objNotes = result;
-          this.ChangedValue.emit(this.objNotes);
+          console.log("Payload this.objNotes", this.objNotes)
         });
     }
     else{
