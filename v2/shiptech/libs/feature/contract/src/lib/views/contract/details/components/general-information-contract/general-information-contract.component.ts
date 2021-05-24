@@ -515,7 +515,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
 
   @Input('statusColorCode') set _setsStatusColorCode(statusColorCode) { 
     if (!statusColorCode) {
-      return;
+      statusColorCode = '#9E9E9E';
     } 
     this.statusColorCode = statusColorCode;
   }

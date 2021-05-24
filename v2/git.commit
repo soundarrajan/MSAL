@@ -1,9 +1,11 @@
-﻿commit 4ed7b3f3aebfe7285abbf424986faaef379e6f33
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 24 13:00:38 2021 +0000
+﻿commit 54a80b723f9196380bc9b9ba44fa1a5feea18a4e
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon May 24 13:26:39 2021 +0000
 
-    Merged PR 10892: Fixed payload for api/procurement/order/getRangeTotalAdditionalCosts
+    Merged PR 10897: create req voyage_detail_id
     
-    Fixed payload for api/procurement/order/getRangeTotalAdditionalCosts
+    create req voyage_detail_id
+    
+    Related work items: #32236
 
 branch: master
