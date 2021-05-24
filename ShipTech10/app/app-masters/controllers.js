@@ -1239,6 +1239,12 @@
             	if ($scope.formValues.latestRedelivery == '0000-00-00T00:00+00:00') {
                     $scope.formValues.latestRedelivery = null;
                 };
+               	if ($scope.formValues.customNonMandatoryAttribute1) {
+                	if (!$scope.validateEmailPattern($scope.formValues.customNonMandatoryAttribute1, true)) {
+	                    toastr.error('Invalid email address for "Vessel Owner"');
+	                    return; 
+                	}
+                }; 
                 if ($scope.formValues.earliestRedelivery >= $scope.formValues.latestRedelivery && $scope.formValues.earliestRedelivery != null && $scope.formValues.latestRedelivery != null) {
                     toastr.error('Latest Redelivery Date can\'t be lower than Earliest redelivery date');
                     setTimeout(() => {
@@ -7184,13 +7190,15 @@
                 vm.plusClickedMultilookup = false;
             }, 300);
         };
-        $scope.validateEmailPattern = function(modelData) {
+        $scope.validateEmailPattern = function(modelData, hideErrorMessage) {
             var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             var resultOk = pattern.test(modelData);
             if (resultOk) {
                 return modelData;
             }
+            if (!hideErrorMessage) {
             	toastr.error('Invalid email address');
+            }
             return null;
         };
 

@@ -560,6 +560,7 @@
   },
   "masters": {
     "LOCATION_PRODUCT_TYPES" : "Bunkerable Port",
+    "VESSEL_OWNER_EMAIL" : "Vessel Owner Email",
     "LOCATION_HSFO_05_GRADES" : "HSFO 0.5 Grades",
     "LOCATION_DISTILLATE_GRADES" : "Distillate Fuel Grade",
     "LOCATION_HSFO_35_GRADES" : "HSFO 3.5 Grade",  	
