@@ -22,7 +22,7 @@ import moment from 'moment';
             <button class="searchButton" type="submit" (click)="onSearch()">
             <i class="fa fa-search"></i>
             </button>
-            <button class="blue-button h-25" style="cursor:pointer;" (click)="searchedValue = ''">Clear</button>
+            <button class="blue-button h-25" style="cursor:pointer;" (click)="clearSearch()">Clear</button>
             <button class="blue-button h-25" style="cursor:pointer;" (click)="selectItem();">Select</button>
             <span class="seperator-line"></span>
             <span class="close" style="cursor:pointer;" (click)="closeDialog()"></span>
@@ -105,6 +105,10 @@ export class MasterSelectionDialog implements OnInit{
 
     closeDialog() {
         this.dialogRef.close('close');
+    }
+    clearSearch(){
+        this.searchedValue = '';
+        this.onSearch();
     }
     onSearch(){
         this.loadSelectedTypes(this.data.selectionType)
