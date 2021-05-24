@@ -378,7 +378,8 @@ export class VesselInfoComponent implements OnInit {
     });
     }
     else if(this.selectedPort.length == 1){
-      let url = `${baseOrigin}/#/new-request/${this.selectedPort.voyage_detail_id}` ;
+      let voyage_id = this.selectedPort[0].voyage_detail_id;
+      let url = `${baseOrigin}/#/new-request/${voyage_id}` ;
       window.open(url, "_blank");
     }      
   }
