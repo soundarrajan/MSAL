@@ -1,7 +1,9 @@
-﻿commit 6a5c15ba4097261ffab4d87daef916e82f96ad18
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Mon May 24 12:53:14 2021 +0530
+﻿commit ef9622706cfef45c9eecf5c0fd87bf27decadbc3
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon May 24 08:15:15 2021 +0000
 
-    Delivery Notes
+    Merged PR 10879: Fixed bugs related to navigation in invoice screen
+    
+    Fixed bugs related to navigation in invoice screen
 
 branch: master
