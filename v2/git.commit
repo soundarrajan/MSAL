@@ -1,9 +1,11 @@
-﻿commit f7e67c1cbc4f38ba2621fbe282e3fad7d48e4f78
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon May 24 14:06:37 2021 +0000
+﻿commit 37a34d9efb5922bb955dc7951444492df61923db
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon May 24 17:29:20 2021 +0000
 
-    Merged PR 10899: Bug 32517: Comment section-Comment count is not available has done
+    Merged PR 10905: Fix Build 2
     
-    Related work items: #32517
+    Fix Build 2
+    
+    Related work items: #27540
 
 branch: master

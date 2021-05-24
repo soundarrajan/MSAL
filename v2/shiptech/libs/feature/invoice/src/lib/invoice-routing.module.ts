@@ -7,6 +7,7 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { KnownInvoiceRoutes } from './known-invoice.routes';
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
+import { InvoiceSplitviewComponent } from './views/split-view/invoice-splitview.component';
 import { StaticListsRouteResolver } from './views/invoice-view/details/static-lists-route.resolver';
 import { GeneralSettingsRouteResolver } from './views/invoice-view/details/general-settings-route.resolver';
 
@@ -30,6 +31,15 @@ const routes: Routes = [
         path: KnownInvoiceRoutes.InvoiceList,
         component: InvoiceListComponent,
         data: { title: 'Invoice List', breadcrumb: 'Invoices List' }
+      },
+      {
+        path: KnownInvoiceRoutes.InvoiceSplitView+`/:invoiceIds`,
+        component: InvoiceSplitviewComponent,
+        resolve:{
+            navBar: NavBarResolver,
+            staticLists: StaticListsRouteResolver
+        },
+        data: { title: 'Invoice Review', breadcrumb: 'Invoices Review' }
       },
       {
         path: KnownInvoiceRoutes.InvoiceView,

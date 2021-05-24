@@ -4,4 +4,5 @@ export enum KnownInvoiceRoutes {
   InvoiceView = 'edit',
   InvoiceIdParam = 'invoiceid',
   InvoiceDetails = 'details',
+  InvoiceSplitView = 'split-view',
 }

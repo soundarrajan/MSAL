@@ -19,14 +19,20 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
-  getInvoicDetails(invoiceId: number): Observable<unknown> {
-    return this.api.getInvoicDetails(invoiceId);
-  }
+  getInvoicDetails(invoiceId: number): Observable<IInvoiceDetailsItemResponse> {
+      return this.api.getInvoicDetails(invoiceId);
+    }
+    
+    @ObservableException()
+    getPhysicalInvoice(invoiceId: number) {
+        return this.api.getPhysicalInvoice(invoiceId);
+    }
 
   @ObservableException()
   getNewInvoicDetails(invoiceFromDelivery : any): Observable<unknown> {
     return this.api.getNewInvoicDetails(invoiceFromDelivery);
   }
+
 
      /**
    * Save invoice

@@ -22,6 +22,7 @@ export namespace InvoiceApiPaths {
   export const getCompletesListExport = () => 'api/invoice/exportCompleteView';
   export const getInvoicesListExport = () => `api/invoice/export`;
   export const getInvoiceItem = () => `api/invoice/get`;
+  export const getPhysicalInvoice = () => `api/invoice/getPhysicalDocument`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
   export const getFinalInvoiceDueDates = () => `/api/invoice/finalInvoiceDueDates`;
   export const createInvoiceItem = () => `api/invoice/create`;
@@ -117,6 +118,17 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
+
+  getPhysicalInvoice(
+    request: any
+  ) {
+    return this.http.post(
+      `${this._apiUrl}/${InvoiceApiPaths.getPhysicalInvoice()}`,
+      { Payload: request },
+      {responseType: 'arraybuffer'}
+    );
+  }
+
 
   @ObservableException()
   getNewInvoicDetails(
