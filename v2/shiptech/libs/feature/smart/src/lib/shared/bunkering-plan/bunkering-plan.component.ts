@@ -112,6 +112,7 @@ export class BunkeringPlanComponent implements OnInit {
   
   ngOnInit() {
     this.editableCell = (this.type == 'C'&& this.selectedUserRole?.id === 1) ? true : false;
+    if(this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C')
     this.eventSub = this.changeROB.subscribe((column)=> this.calculateSOA(column));
   }
   
@@ -799,7 +800,7 @@ export class BunkeringPlanComponent implements OnInit {
                           }
                           // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no));
                         }
-                        if(rowData2!= null)
+                        if(this.gridOptions.api)
                           this.gridOptions.api.setRowData(rowData2);
                         break;
                       }
@@ -818,7 +819,7 @@ export class BunkeringPlanComponent implements OnInit {
                           }
                           // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
                         }
-                        if(rowData2!= null)
+                        if(this.gridOptions.api)
                           this.gridOptions.api.setRowData(rowData2);
                         break;
                       }
@@ -839,7 +840,7 @@ export class BunkeringPlanComponent implements OnInit {
                             } 
                             // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no))
                           }
-                          if(rowData2!= null)
+                          if(this.gridOptions.api)
                             this.gridOptions.api.setRowData(rowData2);
                           break;
                         }

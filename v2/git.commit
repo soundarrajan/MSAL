@@ -1,11 +1,11 @@
-﻿commit 9223bda6997b5e2dc5b98b65c34e08c20f5e6378
+﻿commit 1a8bc1b6d56f7b6f44916bfe4f279c296f97e4bb
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sun May 23 22:17:59 2021 +0000
+Date:   Mon May 24 06:05:04 2021 +0000
 
-    Merged PR 10858: SOA calculation for Current Bunkering plan
+    Merged PR 10876: Merge conflict solved. build error fix.
     
-    SOA calculation for Current Bunkering plan
+    Merge conflict solved. build error fix.
     
-    Related work items: #29780
+    Related work items: #32447
 
 branch: master
