@@ -1,9 +1,9 @@
-﻿commit ef9622706cfef45c9eecf5c0fd87bf27decadbc3
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 24 08:15:15 2021 +0000
+﻿commit 75bdfdb7f0b00d86399be21ea38e86e5b3a789fb
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Mon May 24 14:26:27 2021 +0530
 
-    Merged PR 10879: Fixed bugs related to navigation in invoice screen
+    Contract screen - UI fix
     
-    Fixed bugs related to navigation in invoice screen
+    Contract screen - UI fix
 
 branch: master

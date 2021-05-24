@@ -518,10 +518,13 @@
   color: white !important;
 }
 
-.saveBtn{
+.saveProducts{
   position: fixed;
   background: #364150;
   margin: 23px -16px;
   width: 354px;
   padding: 10px;
+  &.prod{
+    width: 352px !important;
+  }
 }
