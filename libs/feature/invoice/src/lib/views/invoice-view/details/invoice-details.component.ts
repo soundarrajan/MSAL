@@ -287,7 +287,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.paymentStatusList = list;
     })
     this.legacyLookupsDatabase.getsInvoiceType().then(list=>{
-      this.invoiceTypeList = list;
+      // avoid preclaim credit/debit note invoice type selection
+      this.invoiceTypeList = list.filter(x=> x.id !== 6 && x.id !== 7);
     })
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
@@ -1449,7 +1450,7 @@ getBankAccountNumber(){
         this.handleServiceResponse(result, 'Invoice rejected successfully.')
       });
     } else if(option == 'approve'){
-      if(this.formValues.invoiceClaimDetails && this.formValues.invoiceClaimDetails.length && this.formValues.invoiceClaimDetails[0]['isPreclaimCN']){        
+      if(this.formValues.invoiceClaimDetails && this.formValues.invoiceClaimDetails.length && this.formValues.invoiceClaimDetails[0]['isPreclaimCN']){
         let claimsCN = false;
         this.formValues.relatedInvoices.forEach(element => {
           if(element.invoiceType.name == 'Pre-claim Credit Note'){
@@ -1470,7 +1471,7 @@ getBankAccountNumber(){
       this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
-        height: '300px',
+        height: '230px',
         panelClass: 'popup-grid',
         data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });
