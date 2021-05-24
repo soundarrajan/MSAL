@@ -130,11 +130,17 @@
                           [(ngModel)]="additionalCost.value.product"
                           [compareWith]="compareProductObjects"
                           [disableOptionCentering]="true"
-                          [disabled]="additionalCost.value.locationAdditionalCostId || additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
+                          [disabled]="(additionalCost.value.locationAdditionalCostId && !(additionalCost.value.costType.name == 'Range' || additionalCost.value.costType.name == 'Total') )|| 
+                                    additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
                           panelClass="general-information-select-container">
-                          <mat-option *ngFor="let option of  applyForList" [value]="option">
-                            {{option.name}}
-                          </mat-option>
+                          <ng-container  *ngFor="let option of  applyForList">
+                            <mat-option *ngIf="option.name != 'All'" [value]="option">
+                              {{option.name}}
+                            </mat-option>
+                            <mat-option *ngIf="!(additionalCost.value.costType.name == 'Range' || additionalCost.value.costType.name == 'Total') && option.name == 'All'" [value]="option">
+                              {{option.name}}
+                            </mat-option>
+                          </ng-container>
                       </mat-select>
                     </mat-form-field>
                 </div>
