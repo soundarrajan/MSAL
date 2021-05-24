@@ -4651,7 +4651,7 @@
                     if (val.id == 0) {
                         if (typeof val.createdBy == 'undefined') {
                             val.createdBy = $rootScope.user;
-                            val.createdBy.displayName = null;
+                            // val.createdBy.displayName = null;
                             val.createdBy.code = null;
                             val.createdBy.collectionName = null;
                         }
@@ -4666,7 +4666,7 @@
                     if (val.id == 0) {
                         if (typeof val.createdBy == 'undefined') {
                             val.createdBy = $rootScope.user;
-                            val.createdBy.displayName = null;
+                            // val.createdBy.displayName = null;
                             val.createdBy.code = null;
                             val.createdBy.collectionName = null;
                         }
@@ -4681,7 +4681,7 @@
                     if (val.id == 0) {
                         if (typeof val.createdBy == 'undefined') {
                             val.createdBy = $rootScope.user;
-                            val.createdBy.displayName = null;
+                            // val.createdBy.displayName = null;
                             val.createdBy.code = null;
                             val.createdBy.collectionName = null;
                         }

@@ -11,7 +11,8 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
                 $scope.userProfile = `${response.payload.username } | ${ response.payload.displayName}`;
                 $rootScope.user = {
                     id: response.payload.id,
-                    name: response.payload.username
+                    name: response.payload.username,
+                    displayName: response.payload.displayName
                 };
             }else{
                 $scope.userProfile = '';
