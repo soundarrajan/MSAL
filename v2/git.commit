@@ -1,9 +1,9 @@
-﻿commit c295f63e9229f5d562e28e7e6203ca362e4c0447
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 24 09:32:16 2021 +0000
+﻿commit eac75353c852e61d33e4aaf5338aab93d0abbe81
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon May 24 10:52:07 2021 +0000
 
-    Merged PR 10880: Fixed blocker related to minContractQuantity and maxContractQuantity mapping
+    Merged PR 10885: Bug 32428: Bunker plan future request: ETA & ETD format issue has fixed
     
-    Fixed blocker related to minContractQuantity and maxContractQuantity mapping
+    Related work items: #32428
 
 branch: master
