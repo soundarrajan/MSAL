@@ -200,6 +200,16 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
 
+        /**
+ * @param payload
+ */
+  @ObservableException()
+  getRangeTotalAdditionalCosts(payload: any): Observable<unknown> {
+    return this.api.getRangeTotalAdditionalCosts(payload);
+  }
+       
+
+
 
   ngOnDestroy(): void {
     super.onDestroy();
