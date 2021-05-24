@@ -1099,9 +1099,10 @@ getBankAccountNumber(){
 	  relatedInvoicesSummary: [],
     orderDetails: <IInvoiceDetailsItemOrderDetails>{},
     counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{
+      paymentTerm:<IInvoiceDetailsItemBaseInfo>{name:''},
+      payableTo:<IInvoiceDetailsItemBaseInfo>{name:''},
       counterpartyBankAccount: <any>{},
-      customer: <any>{},
-      paymentTerm: <IInvoiceDetailsItemBaseInfo>{ name: '' }
+      customer: <any>{}
     },
     paymentDetails: <IInvoiceDetailsItemPaymentDetails>{},
     productDetails: <IInvoiceDetailsItemProductDetails[]>[],
