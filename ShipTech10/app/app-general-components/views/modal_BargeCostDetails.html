@@ -44,7 +44,7 @@
 				<tbody>
 				
 					<tr ng-repeat="(key, value) in formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails" ng-if="!value.isDeleted">   
-						<td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.splice(key,1) : deleteBargeCostDetails(key)"></span></td>
+						<td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.splice(key,1) : value.isDeleted = true"></span></td>
 						<td  style="max-width: initial; min-width: 50px;"><span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:0})"></span></td>
 						<td style="max-width: initial; min-width: 200px;">
 							<input class="form-control" type="text" decode-input-format ng-model="value.category">

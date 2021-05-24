@@ -9776,13 +9776,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             });
         };
 
-        $scope.deleteBargeCostDetails = function(key) {
-            if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length >0){
-                $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.splice(key, 1);
-            }
-        }
-
-
         $scope.deleteCouterpartyaccountno = function(key) {
 
             if($scope.formValues.counterpartyBankAccounts.length >0){
