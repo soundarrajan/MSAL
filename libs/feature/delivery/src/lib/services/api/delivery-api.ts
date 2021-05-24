@@ -215,9 +215,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     )
     .pipe(
-      map((body: any) => body.payload
-       
-      ),
+      map((body: any) => body.payload),
       
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
