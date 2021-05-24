@@ -22,7 +22,7 @@ export namespace InvoiceApiPaths {
   export const getCompletesListExport = () => 'api/invoice/exportCompleteView';
   export const getInvoicesListExport = () => `api/invoice/export`;
   export const getInvoiceItem = () => `api/invoice/get`;
-  export const getPhysicalInvoice = () => `api/masters/documentupload/download`;
+  export const getPhysicalInvoice = () => `api/invoice/getPhysicalDocument`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
   export const getFinalInvoiceDueDates = () => `/api/invoice/finalInvoiceDueDates`;
   export const createInvoiceItem = () => `api/invoice/create`;
@@ -114,8 +114,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     request: any
   ) {
     return this.http.post(
-      `${this._masterUrl}/${InvoiceApiPaths.getPhysicalInvoice()}`,
-      { Payload: {id: 39079, name: "OIP-converted.pdf"} },
+      `${this._apiUrl}/${InvoiceApiPaths.getPhysicalInvoice()}`,
+      { Payload: request },
       {responseType: 'arraybuffer'}
     );
   }

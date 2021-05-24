@@ -42,10 +42,14 @@
                 <div class="section-title ml-2 p-2 mb-2">Physical Invoice</div>
             </div>
             <div class="pdf-viewer-wrapper">
-                <pdf-viewer [src]="pdfSrc"
-                            [render-text]="true"
-                            style="display: block;"
+                <pdf-viewer *ngIf="!noPdfAvailable" [src]="pdfSrc"
+                [render-text]="true"
+                style="display: block;"
                 ></pdf-viewer>
+
+                <div *ngIf="noPdfAvailable" class="p-4 text-center">
+                    No Document to display
+                </div>
             </div>
         </div>
     </div>
