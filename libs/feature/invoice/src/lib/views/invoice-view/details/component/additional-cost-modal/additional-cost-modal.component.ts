@@ -378,7 +378,7 @@ export class AdditionalCostModalComponent implements OnInit {
             },
             {
               "ColumnName": "QtyUomId",
-              "Value": this.generalTenantSettings.tenantFormats.uom.id
+              "Value": additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom
             }
           ],
           "Pagination": {
@@ -411,10 +411,10 @@ export class AdditionalCostModalComponent implements OnInit {
             invoiceAmount: response.price,
             invoiceExtras: additionalCost.extrasPercentage,
             invoiceQuantity: null,
-            invoiceQuantityUom: this.generalTenantSettings.tenantFormats.uom,
+            invoiceQuantityUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
             invoiceRate: null,
-            invoiceRateUom:  this.generalTenantSettings.tenantFormats.uom,
-            invoiceRateCurrency: this.formValues.invoiceRateCurrency,
+            invoiceRateUom:  additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+            invoiceRateCurrency: additionalCost.currency ? additionalCost.currency : this.formValues.invoiceRateCurrency,
             product: {
               id: this.applyForList[1].productId,
               productId: this.applyForList[1].productId,
