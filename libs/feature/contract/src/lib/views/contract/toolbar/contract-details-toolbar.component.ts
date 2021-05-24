@@ -307,7 +307,7 @@ export class ContractDetailsToolbarComponent
           {
               id: 'invoices',
               displayName : 'Invoices',
-              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/#/invoices/claims/edit/${ payload.invoiceId}` : '',
+              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/v2/invoices/edit/${ payload.invoiceId}` : '',
               entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
               indexStatus : null,
               hidden : false
@@ -357,7 +357,7 @@ export class ContractDetailsToolbarComponent
           {
               id: 'invoices',
               displayName : 'Invoices',
-              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/#/invoices/invoice/edit/${ payload.invoiceId}` : '',
+              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/v2/invoices/edit/${ payload.invoiceId}` : '',
               entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
               indexStatus : null,
               hidden : false
