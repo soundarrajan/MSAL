@@ -1,11 +1,7 @@
-﻿commit 54a80b723f9196380bc9b9ba44fa1a5feea18a4e
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon May 24 13:26:39 2021 +0000
+﻿commit dc44014e2ff4502b360e95de2732226bb24d932a
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Mon May 24 19:24:36 2021 +0530
 
-    Merged PR 10897: create req voyage_detail_id
-    
-    create req voyage_detail_id
-    
-    Related work items: #32236
+    Delivery Notes
 
 branch: master
