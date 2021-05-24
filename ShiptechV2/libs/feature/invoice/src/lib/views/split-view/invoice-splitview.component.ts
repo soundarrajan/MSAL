@@ -40,7 +40,6 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute, 
         private invoiceService: InvoiceDetailsService, 
         private changeDetectorRef: ChangeDetectorRef, 
-        private PdfViewerModule: PdfViewerModule, 
         private activatedRoute: ActivatedRoute,
         private toastr: ToastrService) {
     }
