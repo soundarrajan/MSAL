@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } from '@angular/core';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
@@ -9,7 +9,8 @@ import moment from 'moment';
 @Component({
   selector: 'app-all-bunkering-plan',
   templateUrl: './all-bunkering-plan.component.html',
-  styleUrls: ['./all-bunkering-plan.component.scss']
+  styleUrls: ['./all-bunkering-plan.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AllBunkeringPlanComponent implements OnInit {
 
@@ -24,6 +25,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   planStatus = 'all';
   bunkerPlanLogDetail: any = [];
   requestPayload : any = {};
+  inputModel = '';
 
   public dialogRef: MatDialogRef<NoDataComponent>;
   public countArray = [];//Temp Variable to store the count of accordions to be displayed
@@ -32,7 +34,6 @@ export class AllBunkeringPlanComponent implements OnInit {
   public bPlanType : any = 'A';
   public planIdDetails : any ={ planId : '777888', status: 'INP'};
   public allBunkerPlanIds : any;
-  public scrubberReady : any;
   constructor(private localService: LocalService, private bunkerPlanService : BunkeringPlanService, public dialog: MatDialog) { }
 
   ngOnInit() {//Temp Variable to store the count of accordions to be displayed
@@ -74,26 +75,4 @@ export class AllBunkeringPlanComponent implements OnInit {
     })
   }
 
-
-}
-import {
-  Injector,
-  Pipe,
-  PipeTransform
-} from '@angular/core';
-@Pipe({
-  name: 'filter',
-  pure: false
-})
-export class FilterPipe implements PipeTransform {
-
-  public constructor(private readonly injector: Injector) {
-  }
-
-  transform(value: Array<any>): any {
-    if ((value.filter(e => e.expanded == true)).length == 0)
-      return value.filter(e => e.expanded == false);
-    else
-      return value.filter(e => e.expanded == true);
-  }
 }

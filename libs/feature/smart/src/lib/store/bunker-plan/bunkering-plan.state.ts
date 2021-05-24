@@ -1,13 +1,26 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { SaveBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
-import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction } from './bunkering-plan.action';
-import { values } from 'lodash';
+import { ISaveVesselData } from './../shared-model/vessel-data-model';
+import { SaveBunkeringPlanModel,AddCurrentBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
+import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, AddCurrentBunkeringPlanAction, UpdateCurrentBunkeringPlanAction,SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction,saveVesselDataAction,
+         GeneratePlanAction, SaveScrubberReadyAction } from './bunkering-plan.action';
 
 
 
 export class SaveBunkeringPlanStateModel{
   BPlanData : SaveBunkeringPlanModel[];
+}
+
+export class SaveScrubberReadyStateModel{
+  hsfoHeader : string;
+}
+
+export class SaveVessleDataStateModel{
+  vesselData : ISaveVesselData;
+}
+
+export class AddCurrentBunkeringPlanStateModel{
+  CurrentBplanData : AddCurrentBunkeringPlanModel[];
 }
 
 @State <SaveBunkeringPlanStateModel>({
@@ -16,7 +29,7 @@ export class SaveBunkeringPlanStateModel{
     BPlanData: []
   }
 })
-
+//This state is meant to store values required to SAVE Current bunkering plan
 @Injectable()
 export class SaveBunkeringPlanState{
 
@@ -138,8 +151,143 @@ export class SaveBunkeringPlanState{
       
     })
   }
+
+  @Selector()
+  static getVesselData(state: SaveVessleDataStateModel):any{
+    return state?.vesselData;
+  }
+
+  @Action(saveVesselDataAction)
+  saveVesselData({getState, patchState}: StateContext<SaveVessleDataStateModel>, {payload}:saveVesselDataAction){
+    const state = getState();
+    let vesselRef;
+    if(payload?.vesselId) {
+      vesselRef = {
+        vesselId: payload.vesselId,
+        vesselRef: state.vesselData?.vesselRef,
+        planId: payload.planId,
+        userRole: state.vesselData?.userRole
+      }
+    } else if(payload?.userRole) {
+      vesselRef = {
+        vesselId: state.vesselData?.vesselId,
+        vesselRef: state.vesselData?.vesselRef,
+        planId: state.vesselData?.planId,
+        userRole: payload?.userRole
+      }
+    } else if(payload?.vesselRef) {
+      vesselRef = {
+        vesselId: state.vesselData?.vesselId,
+        vesselRef: payload.vesselRef,
+        planId: state.vesselData?.planId,
+        userRole: state.vesselData?.userRole
+      }
+    }
+    
+    patchState({
+      ...state,
+      vesselData : vesselRef
+    })
+  }
+
+  @Selector()
+  static getHsfoHeaderData(state: SaveScrubberReadyStateModel):any{
+    return state?.hsfoHeader;
+  }
+
+  @Action(SaveScrubberReadyAction)
+  saveHsfoHeader({getState, patchState}: StateContext<SaveScrubberReadyStateModel>,{payload}:SaveScrubberReadyAction){
+    const state = getState();
+    patchState({
+      ...state,
+      hsfoHeader : payload
+    })
+  }
+
 }
 
+
+@State <AddCurrentBunkeringPlanStateModel>({
+  name : 'AddCurrentBunkeringPlan',
+  defaults : {
+    CurrentBplanData: []
+  }
+})
+//This state is meant to store values required for SOA Calculation in Current Bunkering Plan
+@Injectable()
+export class AddCurrentBunkeringPlanState{
+
+  @Selector([AddCurrentBunkeringPlanState])
+  static getCurrentBunkeringPlanData(state: AddCurrentBunkeringPlanStateModel):AddCurrentBunkeringPlanModel[]{
+    return state?.CurrentBplanData
+  }
+
+
+  @Selector([AddCurrentBunkeringPlanState])
+  static getCBPhsfo05_stock(state: AddCurrentBunkeringPlanStateModel):any{
+    return state?.CurrentBplanData[0]?.hsfo05_stock;
+  }
+
+  @Action(AddCurrentBunkeringPlanAction)
+  save({getState, patchState}: StateContext<AddCurrentBunkeringPlanStateModel>, {payload}:AddCurrentBunkeringPlanAction){
+    const state = getState();
+    patchState({
+      ...state,
+      CurrentBplanData : [...payload]
+    })
+  }
+
+  @Action(UpdateCurrentBunkeringPlanAction)
+  update({getState, patchState}: StateContext<AddCurrentBunkeringPlanStateModel>, {payload, type, detail_no}:UpdateCurrentBunkeringPlanAction){
+    const state = getState();
+    let BPlanData = JSON.parse(JSON.stringify(state.CurrentBplanData));
+    let BPlanDataIndex = BPlanData.findIndex(data => data.detail_no == detail_no)
+    switch(type){
+      case 'hsfo_estimated_consumption':{
+                                          BPlanData[BPlanDataIndex].hsfo_estimated_consumption = payload;
+                                          break;
+                                        }
+      case 'hsfo05_stock':{
+                            BPlanData[BPlanDataIndex].hsfo05_stock = payload;
+                            break;
+                          }
+      case 'hsfo_soa':{
+                            BPlanData[BPlanDataIndex].hsfo_soa = payload;
+                            break;
+                          }                    
+      case 'eca_estimated_consumption':{
+                                          BPlanData[BPlanDataIndex].eca_estimated_consumption = payload;
+                                          break;
+                                        }
+      case 'ulsfo_estimated_lift':{
+                              BPlanData[BPlanDataIndex].ulsfo_estimated_lift = payload;
+                              break;
+                            }
+      case 'ulsfo_soa':{
+                              BPlanData[BPlanDataIndex].ulsfo_soa = payload;
+                              break;
+                            }
+      case 'lsdis_estimated_consumption':{
+                                          BPlanData[BPlanDataIndex].lsdis_estimated_consumption = payload;
+                                          break;
+                                        }
+      case 'lsdis_as_eca':{
+                                BPlanData[BPlanDataIndex].lsdis_as_eca = payload;
+                                break;
+                              }
+      case 'lsdis_soa':{
+                                BPlanData[BPlanDataIndex].lsdis_soa = payload;
+                                break;
+                              }
+    }
+    
+    patchState({
+      ...state,
+      CurrentBplanData: BPlanData
+      
+    })
+  }
+}
 
 export class SaveCurrentROBStateModel{
   CurrentROBObj : CurrentROBModel;
@@ -148,7 +296,7 @@ export class SaveCurrentROBStateModel{
 @State <SaveCurrentROBStateModel>({
   name : 'SaveCurrentROBObj',
   defaults : {
-    CurrentROBObj: {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null}
+    CurrentROBObj: {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null}
   }
 })
 
@@ -201,11 +349,39 @@ export class UpdateBplanTypeState{
   }
 
   @Action(UpdateBplanTypeAction)
-  saveCurrentROB({getState, patchState}: StateContext<UpdateBplanTypeStateModel>, {value}:UpdateBplanTypeAction){
+  saveBplanType({getState, patchState}: StateContext<UpdateBplanTypeStateModel>, {value}:UpdateBplanTypeAction){
     const state = getState();
     patchState({
       ...state,
       BplanType : value
+    })
+  }
+}
+
+export class GeneratePlanStateModel{
+  value : any;
+}
+
+@State <GeneratePlanStateModel>({
+  name : 'GeneratePlan',
+  defaults : {
+    value: 0
+  }
+})
+@Injectable()
+export class GeneratePlanState{
+
+  @Selector([GeneratePlanState])
+  static getBplanType(state: GeneratePlanStateModel ):any{
+    return state?.value;
+  }
+
+  @Action(GeneratePlanAction)
+  saveBplanType({getState, patchState}: StateContext<GeneratePlanStateModel>, {value}:GeneratePlanAction){
+    const state = getState();
+    patchState({
+      ...state,
+      value : value
     })
   }
 }

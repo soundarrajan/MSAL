@@ -378,9 +378,22 @@
                 <tbody>			
                   <tr >
                     <td style="max-width: initial; min-width: 250px;" class="padding-line">
-                      <div class="dotted-container-pricing-date">
-                        {{productDetail.value.pricingDate ? formatDate(productDetail.value.pricingDate) : ''}}
-                      </div>
+                      <!-- <div class="dotted-container-pricing-date"> -->
+                        <mat-form-field
+                                class="without-search"
+                                appearance="legacy"
+                                [ngClass]="{ 'invalid-field': productDetail.value.pricingDate }"
+                              >
+                              <input matInput 
+                                  [(ngModel)]="productDetail.value.pricingDate"
+                                  [disabled]="!isPricingDateEditable"
+                                  (dateChange)="formatDate(productDetail.value.pricingDate)"
+                                  name="pricingDate" [matDatepicker]="picker">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <!-- {{productDetail.value.pricingDate ? formatDate(productDetail.value.pricingDate) : ''}} -->
+                      <!-- </div> -->
                     </td>
                     <td style="max-width: initial; min-width: 300px;" class="padding-line">
                       <span>

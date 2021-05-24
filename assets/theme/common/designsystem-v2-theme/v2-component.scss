@@ -92,6 +92,14 @@ div .mat-list-base {
   padding-top: 0;
 }
 
+.related-invoice-red-text {
+
+    div { &[aria-colindex="5"] {
+      color: red !important;
+    }
+  }
+}
+
 div.component-viewer-nav-content
   .mat-nav-list
   .mat-list-item
@@ -398,6 +406,14 @@ div.component-viewer-nav-content
     cursor: pointer;
   }
 }
+
+.invalid-field {
+  border-color: #e73d4a!important;
+  .mat-form-field { color: #e73d4a!important; border-color: #e73d4a!important; }
+  .mat-form-field-label mat-label { color: #e73d4a!important; }
+}
+
+
 // <!-- Form Field End-->
 
 // <!-- Button Toggle Start-->

@@ -42,7 +42,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   currencyList: any;
   private _destroy$ = new Subject();
 
-  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,
+  constructor(private route: ActivatedRoute,
+    private invoiceService: InvoiceDetailsService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private spinner: NgxSpinnerService,
     public dialog: MatDialog,
     private toastr: ToastrService){
       this.getTabDataLinks();
@@ -63,6 +66,21 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       else if (localStorage.getItem('createInvoice')) {
         this.getTabDataLinks();
         this.createNewInvoiceType();
+      }
+      else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
+        this.createCreditNoteFromInvoiceClaims('createCreditNoteFromInvoiceClaims');
+      }
+      else if (localStorage.getItem('createDebunkerCreditNoteFromInvoiceClaims'))
+      {
+        this.createCreditNoteFromInvoiceClaims('createDebunkerCreditNoteFromInvoiceClaims');
+      }
+      else if (localStorage.getItem('createResaleCreditNoteFromInvoiceClaims'))
+      {
+        this.createCreditNoteFromInvoiceClaims('createResaleCreditNoteFromInvoiceClaims');
+      }
+      else if (localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims'))
+      {
+        this.createPreClaimCreditNote();
       }
       else{
         // edit an existing invoice
@@ -134,6 +152,34 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       });
   }
 
+  createCreditNoteFromInvoiceClaims(storageKey: string)
+  {
+    this.invoiceService.createCreditNoteFromInvoiceClaims(JSON.parse(localStorage.getItem(storageKey))).subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.toastr.error('Could not create credit/debit note!', result);
+      } else {
+        this.toastr.success('Credit/Debit note is Created!');
+        this.setScreenActions(result);
+      }
+    });
+    localStorage.removeItem(storageKey);
+  }
+
+  createPreClaimCreditNote()
+  {
+    this.invoiceService.createPreClaimCreditNote(JSON.parse(localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')))
+    .subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.toastr.error(result);
+      } else {
+        this.toastr.success('Pre Claim Credit note is Created!');
+        this.setScreenActions(result);
+      }
+    });
+
+    localStorage.removeItem('createPreclaimCreditNoteFromInvoiceClaims');
+  }
+
   createNewInvoiceType(){
     let data = JSON.parse(localStorage.getItem('createInvoice'));
     localStorage.removeItem('createInvoice');
@@ -172,10 +218,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     let deliveryProductIds = [];
     data.productDetails.forEach((v, k) => {
         v.id = 0;
-        // v.invoiceQuantity = null;
         v.invoiceRate = 0;
         v.description = null;
-        // v.invoiceRateCurrency = null;
         v.pricingDate = null;
         v.invoiceAmount = null;
         v.reconStatus = null;
@@ -191,24 +235,25 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         v.invoiceExtras = null;
         v.description = null;
         v.invoiceAmount = null;
-        if (v.product) {
-          if (v.product.id != -1) {
-            if (v.product.id != v.deliveryProductId) {
-              v.product.productId = v.product.id;
-              v.product.id = v.deliveryProductId;
-            }
-          }
-        } else {
-          v.product = {
-            id : -1,
-          };
-        }
+        // if (v.product) {
+        //   if (v.product.id != -1) {
+        //     if (v.product.id != v.deliveryProductId) {
+        //       v.product.productId = v.product.id;
+        //       v.product.id = v.deliveryProductId;
+        //     }
+        //   }
+        // } else {
+        //   v.product = {
+        //     id : -1,
+        //   };
+        // }
       });
     }
     data.counterpartyDetails.paymentTerm = data.counterpartyDetails.orderPaymentTerm;
     data.deliveryDate = data.orderDeliveryDate;
     data.orderDetails.carrierCompany = data.orderDetails.orderCarrierCompany;
     data.orderDetails.paymentCompany = data.orderDetails.orderPaymentCompany;
+    data.invoiceChecks = null;
 
     this.displayDetailFormvalues = false;
     this.spinner.show();

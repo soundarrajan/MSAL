@@ -33,7 +33,8 @@
             </div>
           </div>
           <div class="border_line"></div>
-          <div  class="col-md-2">
+          <div  class="col-md-2 p-lr-5">
+            <div class="minInputFocus" style="width:100%;padding: 0px 10px 0;">
             <span class="label">Min
               <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
             </span>
@@ -45,14 +46,18 @@
                       matInput
                       autocomplete="off"
                       quantityFormat
+                      (focus)="focus($event,'min')"
+                      (focusout)="focusOut($event,'min')"
                       (keypress)="keyPressNumber($event)"
                       [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                   </mat-form-field>
               </div>
             </div>
           </div>
+          </div>
           <div class="border_line"></div>
-          <div  class="col-md-2">
+          <div  class="col-md-2 p-lr-5">
+            <div class="maxInputFocus" style="width:100%;padding: 0px 10px 0;">
             <span class="label">Max
               <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
             </span>
@@ -63,6 +68,8 @@
                     <input 
                         [(ngModel)]="contractDetail.value.maxContractQuantity"
                         matInput
+                        (focus)="focus($event,'max')"
+                        (focusout)="focusOut($event,'max')"
                         (keypress)="keyPressNumber($event)"
                         [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                         autocomplete="off"
@@ -71,6 +78,7 @@
                 </div>
               </div>
             </div>
+          </div>
           </div>
           <div class="border_line"></div>
           <div  class="col-md-2">
@@ -81,7 +89,7 @@
                   <mat-select 
                         [(ngModel)]="contractDetail.value.uom"
                         [disableOptionCentering]="true"
-                        panelClass="general-information-select-container"
+                        panelClass="general-info-select-container"
                         [compareWith]="compareUomObjects"
                         [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                       <mat-option *ngFor="let option of uomList" [value]="option">
@@ -93,7 +101,8 @@
             </div>
           </div>
           <div class="border_line"></div>
-          <div  class="col-md-2">
+          <div  class="col-md-2 p-lr-5">
+            <div class="tolInputFocus" style="width:100%;padding: 0px 10px 0;">
             <span class="label">Tolerance %</span>
             <div class="value">
               <div class="value">
@@ -102,6 +111,8 @@
                     <input 
                         [(ngModel)]="contractDetail.value.tolerance"
                         matInput
+                        (focus)="focus($event,'tol')"
+                        (focusout)="focusOut($event,'tol')"
                         autocomplete="off"
                         required
                         [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
@@ -109,6 +120,7 @@
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

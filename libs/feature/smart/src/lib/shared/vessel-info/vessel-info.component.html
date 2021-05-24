@@ -11,8 +11,8 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
-        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1) || !(bunkerPlanHeaderDetail?.scrubberDate)">N/A</td>
+        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('2050-01-01')==-1) && (bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
+        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('2050-01-01')>-1) || ((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1) || !(bunkerPlanHeaderDetail?.scrubberDate)">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
         <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
@@ -31,7 +31,7 @@
   </div>
   <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
-      <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan recieved</div><span class="label-text">:</span>
+      <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan received</div><span class="label-text">:</span>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
         ID:{{bunkerPlanHeaderDetail?.lastPlanReceivedId}}</div>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
@@ -173,12 +173,12 @@
         </div>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel #commentpanel *ngIf="!expandComments"
+    <mat-expansion-panel #commentpanel
       [ngClass]="{'fullheight':expandComments}" hideToggle="true" (closed)="expandComments = false">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
-          <div style="flex: 0 0 17%;">Comments(5)</div>
+          <div style="flex: 0 0 17%;">Comments({{totalCommentCount}})</div>
           <div style="flex:0 0 80%;display: flex;align-items: center;justify-content: flex-end;">
             <ng-container *ngIf="commentpanel.expanded">
               <div style="text-align: center;">
@@ -196,7 +196,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-comments *ngIf="commentpanel.expanded"></app-comments>
+        <app-comments *ngIf="commentpanel.expanded" (ShowCommentCount)="TotalCommentCount($event)"></app-comments>
       </div>
 
     </mat-expansion-panel>
@@ -261,8 +261,8 @@
         <app-bunkering-plan *ngIf="panel.expanded && loadBplan" [isExpanded]="expandBplan"
           (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData"
-          (voyage_detail)="getVoyageDetail($event)"
-          [scrubberReady]="scrubberReady">
+          [changeROB]="this.currentROBChange.asObservable()"
+          (voyage_detail)="getVoyageDetail($event)">
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
@@ -307,7 +307,6 @@
           [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
           [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData">
-          [scrubberReady]="scrubberReady"
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>

@@ -66,7 +66,7 @@
   </div>
 
   <div *ngIf="params.type=='soa-hsfo'">
-    <div [matTooltip]="params.value" [ngClass]="params.cellClass" (_changeCurrentROBObj$)="updateSOA(params.value)">{{params.value}}</div>
+    <div [matTooltip]="params.value" [ngClass]="params.cellClass">{{params.value}}</div>
   </div>
 
   
@@ -158,8 +158,8 @@
   </mat-menu>
   
   <div *ngIf="params.type=='checkbox-disabled'" [ngClass]="params.cellClass">
-    <div style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event)"
-      (mouseleave)="!menuClick  && toggleMenu2Input();">
+    <div style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuCheckbox($event,params)"
+      (mouseleave)="!menuClick  && toggleMenu2Checkbox();">
       <div style="z-index: 1050;pointer-events:none;" [matMenuTriggerFor]="checkboxDisabledMenu" [matMenuTriggerData]="params.value"
       #inputMenuTrigger="matMenuTrigger">
       <mat-checkbox disabled   style="cursor:pointer;" [ngClass]="params.cellClass" [checked]="params.value">
@@ -209,7 +209,7 @@
     <div  style="cursor:pointer;" (mouseenter)="!menuClick  && toggleMenuCheckbox($event,params);"
     (click)="toggleMenu3Checkbox($event)"
     (mouseleave)="!menuClick  && toggleMenu2Checkbox();">
-    <mat-checkbox style="z-index: 1050;pointer-events:none;" [(ngModel)]="isChecked" 
+    <mat-checkbox style="z-index: 1050;pointer-events:none;" [(ngModel)]="params.value" 
     [matMenuTriggerFor]="checkboxEditMenu"
   [matMenuTriggerData]="params.value" #inputMenuTrigger="matMenuTrigger" >
     </mat-checkbox>
@@ -234,14 +234,14 @@
       <div class="input">
         <div>
           <span class="checkbox-title">Min SOA</span>
-          <mat-checkbox #chk class="checkbox" [(ngModel)]="isChecked"  (click)="onCheckboxClick(chk.value,cmnt.value)">
+          <mat-checkbox #chk class="checkbox" [(ngModel)]="isChecked" (click)="onCheckboxClick($event)">
           </mat-checkbox>
         </div>
       </div>
       <div class="comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
-          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell(chk.value,cmnt.value)"
+          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCheckboxComment(isChecked,cmnt.value,$event)"
             (click)="$event.stopPropagation();"></textarea>
         </mat-form-field>
       </div>

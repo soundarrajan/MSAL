@@ -32,7 +32,8 @@ import { CustomStepperComponent } from './custom-stepper/custom-stepper.componen
 import { SmartMessengerComponent } from './smart-messenger/smart-messenger.component';
 import { SearchVesselComponent } from './search-vessel/search-vessel.component';
 import { BunkeringPlanComponent } from './bunkering-plan/bunkering-plan.component';
-import { AllBunkeringPlanComponent, FilterPipe } from './all-bunkering-plan/all-bunkering-plan.component';
+import { AllBunkeringPlanComponent } from './all-bunkering-plan/all-bunkering-plan.component';
+import { FilterPipe } from "./pipes/filterPipe/filter.pipe";
 import { WarningComponent } from './warning/warning.component';
 import { VesselArrivalsComponent } from './vessel-arrivals/vessel-arrivals.component';
 import { PortInfoComponent } from './port-info/port-info.component';
@@ -41,7 +42,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePickerFromToComponent } from './date-picker-from-to/date-picker-from-to.component';
-import { NoDataComponent } from './no-data-popup/no-data-popup.component'
+import { NoDataComponent } from './no-data-popup/no-data-popup.component';
+import { CommentDPFormatPipe } from './pipes/CommentDPPipe/comment-dpformat.pipe';
+import { GroupByPipe } from './pipes/groupByPipe/group-by.pipe'
+import { groupBy } from 'lodash';
+import { FilterCommentByParticipantPipe } from './pipes/filterCommentPipe/filter-comment-by-participant.pipe';
+import { GroupByParticipantPipe } from './pipes/groupByParticipantPipe/group-by-participant.pipe';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
@@ -50,7 +56,7 @@ import { NoDataComponent } from './no-data-popup/no-data-popup.component'
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
     DatePickerFromToComponent,
-    FilterPipe, AllBunkeringPlanComponent,NoDataComponent],
+    FilterPipe, AllBunkeringPlanComponent,NoDataComponent, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -67,8 +73,8 @@ import { NoDataComponent } from './no-data-popup/no-data-popup.component'
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
     CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent,
-    FilterPipe,AllBunkeringPlanComponent,NoDataComponent],
-  providers: [LocalService, LoggerService, AuthGaurdService],
+    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, AllBunkeringPlanComponent,NoDataComponent],
+  providers: [LocalService, LoggerService, AuthGaurdService, BunkeringPlanComponent],
   entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent]
 })
 export class SharedModule { }
