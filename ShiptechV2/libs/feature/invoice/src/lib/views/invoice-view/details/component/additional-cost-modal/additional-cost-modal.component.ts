@@ -374,7 +374,7 @@ export class AdditionalCostModalComponent implements OnInit {
             },
             {
               "ColumnName": "Qty",
-              "Value": 1
+              "Value": 0
             },
             {
               "ColumnName": "QtyUomId",
