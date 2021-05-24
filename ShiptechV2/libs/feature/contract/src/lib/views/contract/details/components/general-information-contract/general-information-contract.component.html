@@ -56,6 +56,9 @@
             <div *ngIf="formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
               {{formValues.status.displayName}}
             </div>
+            <div *ngIf="!formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
+              Draft
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
@@ -342,7 +345,7 @@
               </mat-checkbox>
             </div>
           </div>
-          <div class="saveBtn" [ngClass]="{'expand-save-button': expandAllowedCompanylistPopUp}">
+          <div class="saveAllowedCompanies" [ngClass]="{'expand-save-button': expandAllowedCompanylistPopUp}">
             <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
               pButton
               (click)="saveAllowedCompanies()"
@@ -525,7 +528,7 @@
               </mat-checkbox>
             </div>           
           </div>
-          <div class="saveBtn2" [ngClass]="{'expand-save-button': expandCustomerListPopUp}">
+          <div class="saveCustomer" [ngClass]="{'expand-save-button': expandCustomerListPopUp}">
             <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
               pButton
               (click)="saveCustomer()"
