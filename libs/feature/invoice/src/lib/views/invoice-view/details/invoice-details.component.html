@@ -415,11 +415,7 @@
                     <readonly-details [options]="orderDetails"></readonly-details>
                     <div class="form-fields">
                         <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
-<<<<<<< HEAD
-                              <!-- <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [disabled]="formValues.status.name === 'Approved' ? true : false" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector> -->
-=======
                               <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [disabled]="formValues.status?.name === 'Approved' ? true : false" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
->>>>>>> master
                         </div>
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy" [ngClass]="{'invalid-field': formErrors.deliveryDate}">
