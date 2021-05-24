@@ -56,6 +56,9 @@
             <div *ngIf="formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
               {{formValues.status.displayName}}
             </div>
+            <div *ngIf="!formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
+              Draft
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
