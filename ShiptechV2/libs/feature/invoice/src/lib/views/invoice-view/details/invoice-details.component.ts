@@ -209,6 +209,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   applyForList: any;
   bankAccountNumbers: any;
   visibilityConfigs:any;
+  isPricingDateEditable:boolean=false;
   formErrors: any = {};
   generalConfiguration: any;
 
@@ -257,6 +258,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
     this.setupGrid();
     this.setClaimsDetailsGrid();
+    this.tenantConfiguration();
   }
 
   ngOnInit(): void {
@@ -275,8 +277,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
-
-    this.tenantConfiguration();
+    
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -686,7 +687,10 @@ tenantConfiguration(){
   .getTenantConfiguration(false)
   .subscribe((result: any) => {
     this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;
-    // console.log('tenenatConfigs',this.visibilityConfigs);
+    if(result.procurementConfiguration.price.pricingDateStopOption?.name == "Invoice" && result.procurementConfiguration.price.pricingEventDateManualOverrride?.name == "Yes"){
+      this.isPricingDateEditable = true;      
+    }
+    // console.log('tenenatConfigs',this.isPricingDateEditable);
   });
 }
 getBankAccountNumber(){
