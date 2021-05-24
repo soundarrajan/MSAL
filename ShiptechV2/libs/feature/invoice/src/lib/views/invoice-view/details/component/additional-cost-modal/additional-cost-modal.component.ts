@@ -50,13 +50,18 @@ export class AdditionalCostModalComponent implements OnInit {
   costType: any;
   costDetailsComponentTypes: any;
   filterCostNames: any[];
+  additionalCostForLocation: any = [];
+  additionalCostForLocationFilter: any = [];
   @Input('formValues') set _formValues(val){
     this.formValues = val;
-    if (this.formValues.id) {
-      this.formatAdditionalCosts();
-    }
     this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
+    this.formatAdditionalCosts();
+    this.formValues.orderDetails.location = {
+      'id': 135,
+      'name': 'Hamburg'
+    }
+    this.getAdditionalCostsPerPort(this.formValues.orderDetails?.portId);
 
   }
 
@@ -258,9 +263,12 @@ export class AdditionalCostModalComponent implements OnInit {
     return object1 && object2 && object1.id == object2.id;
   }
 
+  compareCostTypeObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
   compareProductObjects(object1: any, object2: any) {
     return object1 && object2 && object1.productId == object2.productId;
-   
 
   }
 
@@ -318,7 +326,7 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
 
-  filterCostTypesByAdditionalCost(cost, rowRenderIndex) {
+  filterCostTypesByAdditionalCost(cost) {
        
     var currentCost = cost;
     // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
@@ -332,13 +340,13 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
 
-  addCostDetail(selected){
+  addCostDetail(additionalCost){
     if (!this.formValues.costDetails) {
       this.formValues.costDetails = [];
     }
     let isTaxComponent = false;
     this.costDetailsComponentTypes.forEach((v, k) => {
-      if (v.id == selected.id) {
+      if (v.id == additionalCost.additionalCostid) {
         if (v.componentType) {
             if (v.componentType.id == 1) {
                 isTaxComponent = true;
@@ -346,29 +354,120 @@ export class AdditionalCostModalComponent implements OnInit {
         }
       }
     });
-    let newLine = {
-      costName: {
-        id: selected.id,
-        name: selected.name,
-        code: selected.code,
-        collectionName: null,
-      },
-      invoiceQuantity: null,
-      invoiceQuantityUom: this.generalTenantSettings.tenantFormats.uom,
-      invoiceRate: null,
-      invoiceRateUom: this.generalTenantSettings.tenantFormats.uom,
-      invoiceRateCurrency: this.formValues.invoiceRateCurrency,
-      product: {
+    
+    if (additionalCost.locationid && (additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total')) {
+      let payload = {
+        "Payload": {
+          "Order": null,
+          "Filters": [
+            {
+              "ColumnName": "ProductId",
+              "Value": this.applyForList[1] ? this.applyForList[1].productId : null
+            },
+            {
+              "ColumnName": "LocationId",
+              "Value": this.formValues.orderDetails.portId ? this.formValues.orderDetails.portId : null
+            },
+            {
+              "ColumnName": "AdditionalCostId",
+              "Value": additionalCost.locationid ? additionalCost.locationid : null
+            },
+            {
+              "ColumnName": "Qty",
+              "Value": 0
+            },
+            {
+              "ColumnName": "QtyUomId",
+              "Value": additionalCost.priceUom ? additionalCost.priceUom.id : this.generalTenantSettings.tenantFormats.uom.id
+            }
+          ],
+          "Pagination": {
+            "Skip": 0,
+            "Take": 25
+          },
+          "SearchText": null
+        }
+      }
+      this.invoiceService
+      .getRangeTotalAdditionalCosts(payload)
+      .pipe(
+        finalize(() => {
+          //this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          let newLine1 = {
+            costName: {
+              id: additionalCost.additionalCostid,
+              name: additionalCost.name,
+              code: additionalCost.code,
+              collectionName: null,
+            },
+            costType: additionalCost.costType,
+            invoiceAmount: response.price,
+            invoiceExtras: additionalCost.extrasPercentage,
+            invoiceQuantity: null,
+            invoiceQuantityUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+            invoiceRate: null,
+            invoiceRateUom:  additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+            invoiceRateCurrency: additionalCost.currency ? additionalCost.currency : this.formValues.invoiceRateCurrency,
+            product: {
+              id: this.applyForList[1].productId,
+              productId: this.applyForList[1].productId,
+              name: this.applyForList[1].name,
+              deliveryProductId:  this.applyForList[1].deliveryProductId
+            },
+            isTaxComponent: isTaxComponent,
+            locationAdditionalCostId: additionalCost.locationid
+          }
+          this.formValues.costDetails.push(newLine1);
+          this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+    } else {
+      let productLine =  {
         id: -1,
         name: 'All',
-        deliveryProductId: null
-      },
-      isTaxComponent: isTaxComponent
+        deliveryProductId: null,
+        productId: null
+      };
+      if ((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total'))  {
+        productLine =  {
+          id: this.applyForList[1].productId,
+          productId: this.applyForList[1].productId,
+          name: this.applyForList[1].name,
+          deliveryProductId:  this.applyForList[1].deliveryProductId
+        }
+      } 
+      let newLine = {
+        costName: {
+          id: additionalCost.additionalCostid,
+          name: additionalCost.name,
+          code: additionalCost.code,
+          collectionName: null,
+        },
+        costType: additionalCost.costType,
+        invoiceAmount:  additionalCost.amount ? this.amountFormatValue(additionalCost.amount) : '',
+        invoiceExtras: additionalCost.extrasPercentage,
+        invoiceQuantity: null,
+        invoiceQuantityUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+        invoiceRate: null,
+        invoiceRateUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+        invoiceRateCurrency: additionalCost.currency ? additionalCost.currency : this.formValues.invoiceRateCurrency,
+        product: productLine,
+        isTaxComponent: isTaxComponent,
+        locationAdditionalCostId: additionalCost.locationid
+      }
+      this.formValues.costDetails.push(newLine);
+      this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
+      this.changeDetectorRef.detectChanges();
     }
-    this.formValues.costDetails.push(newLine);
-    this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
-    this.changeDetectorRef.detectChanges();
-    console.log()
+  
   }
 
   removeAdditionalCostLine(key) {
@@ -716,20 +815,71 @@ export class AdditionalCostModalComponent implements OnInit {
 
   formatAdditionalCosts() {
     for (let i = 0; i < this.formValues.costDetails.length; i++) {
-      if (this.formValues.costDetails[i].product && this.formValues.costDetails[i].product.id) {
-        this.formValues.costDetails[i].product.productId = this.formValues.costDetails[i].product.id;
+      if (this.formValues.costDetails[i].product) {
+        if (this.formValues.costDetails[i].product.id != -1) {
+          if (this.formValues.costDetails[i].product.id != this.formValues.costDetails[i].deliveryProductId) {
+            this.formValues.costDetails[i].product.productId = this.formValues.costDetails[i].product.id;
+            this.formValues.costDetails[i].product.id = this.formValues.costDetails[i].deliveryProductId;
+          }
+        }
       } else {
         this.formValues.costDetails[i].product = {
-          'productId': null
+          id: -1,
+          name: 'All',
+          deliveryProductId: null
         };
       }
     }
+
+    console.log(this.formValues.costDetails);
+    this.changeDetectorRef.detectChanges();
   }
 
-  searchCostName(value: string): void {
-    let filterCostList = this.filterCostNames.filter((option) => option.name.toLowerCase().includes(value));
-    this.costNames = [ ... filterCostList];
+  searchCostName(value: string, locationId): void {
+    if (!this.additionalCostForLocationFilter[locationId]) {
+      return;
+    }
+    let filterCostList = this.additionalCostForLocationFilter[locationId].filter((option) => option.name.toLowerCase().includes(value));
+    this.additionalCostForLocation[locationId] = _.cloneDeep(filterCostList);
     this.changeDetectorRef.detectChanges();
+  }
+
+  
+  getAdditionalCostsPerPort(locationId) {
+    if (!locationId) {
+      return;
+    } 
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+    if (typeof this.additionalCostForLocationFilter == 'undefined') {
+      this.additionalCostForLocationFilter = [];
+    }
+
+    let payload = {"Payload":
+      {"Order":null,
+      "PageFilters":{"Filters":[]},
+      "SortList":{"SortList":[]},
+      "Filters":[{ColumnName:"LocationId", value: locationId}],
+      "SearchText":null,
+      "Pagination":{"Skip":0,"Take":25}}};
+
+    this.invoiceService
+    .getAdditionalCostsPerPort(payload)
+    .pipe(
+      finalize(() => {
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        this.additionalCostForLocation[locationId] = _.cloneDeep(response);
+        this.additionalCostForLocationFilter[locationId] =  _.cloneDeep(response);
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
 

@@ -423,6 +423,7 @@ implements OnInit {
   _entityId: number;
   autocompleteInvoiceProduct: knownMastersAutocomplete;
   uomList: any;
+  isPricingDateEditable: boolean;
   currencyList: any;
   physicalSupplierList: any;
   type: any;
@@ -463,6 +464,9 @@ implements OnInit {
       return;
     } 
     this.formValues = formValues;
+  }
+  @Input('isPricingDateEditable') set _setisPricingDateEditable(isPricingDateEditable) {     
+    this.isPricingDateEditable = isPricingDateEditable;
   }
 
   @Input('productList') set _setProductList(productList) { 

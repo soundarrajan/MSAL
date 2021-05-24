@@ -255,6 +255,7 @@
 }
 
 .edit-allow-locations::before {
+  cursor: pointer;
   content: url(../../../../../../../../../../assets/layout/images/pages/edit-allow-companies.svg);
   float: right  !important;
 }
@@ -364,7 +365,7 @@
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
   border-radius: 4px;
-  margin-top: 15px;
+  margin-top: 0px !important;
 }
 
 .product-details-table thead tr {
@@ -483,7 +484,8 @@
   }
 }
 
-.general-information-select-container.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+
+/* .general-information-select-container.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
   color: white !important;
   background-color: #37414f !important;;
 }
@@ -492,4 +494,37 @@
 .general-information-select-container.mat-select-panel .mat-option.mat-active {
   color: #37414f !important;
   background: #fff !important;
+} */
+
+.general-info-select-container.mat-select-panel {
+  background-color: #364150 !important;
+  min-width: 100% !important;
+  transform: translateX(12px) !important;
+  width: 100% !important;
+}
+
+.general-info-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+  padding: 10px 0px;
+}
+
+.general-info-select-container .mat-option {
+  height: 20px  !important;
+}
+
+.general-info-select-container .mat-option-text  {
+  font-size: 14px  !important;
+  color: white !important;
+}
+
+.saveProducts{
+  position: fixed;
+  background: #364150;
+  margin: 23px -16px;
+  width: 354px;
+  padding: 10px;
+  &.prod{
+    width: 352px !important;
+  }
 }

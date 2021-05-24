@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from '@ag-grid-community/angular';
 @Component({
     selector: 'ag-grid-cell-renderer',
-    template: `<div [ngClass]="params.cellClass" matTooltip="{{params.value}}" style="margin:0px">{{params.value}}</div> `
+    template: `
+    <div *ngIf="this?.params?.colDef?.filter!=='date'" [ngClass]="params.cellClass" matTooltip="{{params.value}}" style="margin:0px">{{params.value}}</div>
+    <div *ngIf="this?.params?.colDef?.filter=='date'" [ngClass]="params.cellClass" matTooltip="{{params.value | date: 'dd/MM/yyyy'}}" style="margin:0px">{{params.value | date: 'dd/MM/yyyy'}}</div>
+     `
 })
 
 export class AGGridCellRendererComponent implements ICellRendererAngularComp  {

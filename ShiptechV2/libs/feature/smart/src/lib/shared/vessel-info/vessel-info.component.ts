@@ -1,19 +1,23 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation, ViewChildren } from '@angular/core';
+import { Store, Select } from '@ngxs/store';
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
+import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
+import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
 import { CommentsComponent } from '../comments/comments.component';
+
+import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
+
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { Store } from '@ngxs/store';
-import { SaveCurrentROBAction, UpdateCurrentROBAction } from '../../store/bunker-plan/bunkering-plan.action';
+import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveScrubberReadyAction } from './../../store/bunker-plan/bunkering-plan.action';
 import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
-import { RootLogger } from '@shiptech/core/logging/logger-factory.service';
-import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { Subject, Subscription, Observable } from 'rxjs';
 
 
@@ -24,10 +28,12 @@ import { Subject, Subscription, Observable } from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class VesselInfoComponent implements OnInit {
-
-  @ViewChild(CommentsComponent) child;
+  
+  @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
+  vesselRef: ISaveVesselData;
+  @ViewChild(CommentsComponent) child: CommentsComponent;
+  // @ViewChildren(CommentsComponent) children: CommentsComponent;
   @ViewChild(BunkeringPlanComponent) currentBplan;
-  @ViewChild(AGGridCellDataComponent) agGridCellData:AGGridCellDataComponent;
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
   @Input('selectedUserRole') selectedUserRole ;
@@ -63,13 +69,23 @@ export class VesselInfoComponent implements OnInit {
   public changeCurrentROBObj$  = new Subject();
   public import_gsis : number = 0;
   public scrubberReady : any;
+  public IsVesselhasNewPlan: boolean = false;
+  public totalCommentCount: any = 0;
+  BunkerPlanCommentList: any = [];
+  RequestCommentList: any = [];
+  currentROBChange: Subject<void> = new Subject<void>();
  
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService,
-              private store: Store) {
+  constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
+
+      this.vesselData$.subscribe(data=> {
+        this.vesselRef = data;
+        // loadBunkerPlanComments fn callback to get BP comment count 
+        this.loadBunkerPlanComments();
+      });
    }
 
   ngOnInit() {
@@ -77,9 +93,27 @@ export class VesselInfoComponent implements OnInit {
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan.triggerRefreshGrid(this.selectedUserRole));
     this.loadBunkerPlanHeader(this.vesselData);  
     this.loadBunkerPlanDetails(this.vesselData);
-     
   }
-  
+    
+  loadBunkerPlanComments() {
+    let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
+    
+    this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
+      this.BunkerPlanCommentList = response?.payload;
+      this.loadRequestComments();
+    })   
+  }
+  loadRequestComments() {
+    let payload = this.vesselRef?.vesselId;
+    this.BPService.getRequestComments(payload).subscribe((response)=> {
+      console.log('Request Comments count...', response?.payload);
+      this.RequestCommentList = response?.payload;
+      this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
+      +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
+     
+      
+    })
+  }
   public loadBunkerPlanHeader(event) {
     let vesselId = event.id? event.id: 348;
     this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
@@ -110,12 +144,16 @@ export class VesselInfoComponent implements OnInit {
   }
 
   saveCurrentROB(ROBArbitrageData){
-    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null };
+    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null };
     currentROBObj['3.5 QTY'] = ROBArbitrageData?.hsfoCurrentStock;
     currentROBObj['0.5 QTY'] = ROBArbitrageData?.hsfO05CurrentStock;
     currentROBObj.ULSFO = ROBArbitrageData?.ulsfoCurrentStock;
     currentROBObj.LSDIS = ROBArbitrageData?.lsdisCurrentStock;
     currentROBObj.HSDIS = ROBArbitrageData?.hsdisCurrentStock;
+    currentROBObj.hsfoTankCapacity = ROBArbitrageData?.hsfoTankCapacity;
+    currentROBObj.ulsfoTankCapacity = ROBArbitrageData?.ulsfoTankCapacity;
+    currentROBObj.lsdisTankCapacity = ROBArbitrageData?.lsdisTankCapacity;
+    currentROBObj.hsdisTankCapacity = ROBArbitrageData?.hsdisTankCapacity;
     this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
     
   }
@@ -148,9 +186,8 @@ export class VesselInfoComponent implements OnInit {
     }
     this.store.dispatch(new UpdateCurrentROBAction(value,column));
     console.log('Current ROB',this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB))
+    this.currentROBChange.next(column);
     event.stopPropagation();
-    this.agGridCellData.updateSOA(value);
-    this.bunkerPlanService.setchangeCurrentROBObj(true);
     /* This service only for Test purpose only. 
     need to build request payload by using column, value based on BE update*/
     // this.localService.updateROBArbitrageChanges({id:this.vesselData?.vesselId}).subscribe((data)=> {
@@ -178,7 +215,11 @@ export class VesselInfoComponent implements OnInit {
       this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
       this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
       this.loadBplan = true;
+      // store vesselid and planid for shared ref
+      this.store.dispatch(new saveVesselDataAction({'vesselId': request.shipId, 'planId': this.planId}));
+      //to store HSFO header value
       this.scrubberReady = this.currPlanIdDetails?.isScrubberReady === 'Y' ? 'HSFO':'VLSFO';
+      this.store.dispatch(new SaveScrubberReadyAction(this.scrubberReady));
     })
   }
 
@@ -203,7 +244,24 @@ export class VesselInfoComponent implements OnInit {
   changeVesselTrigger(event) {
     this.loadBunkerPlanHeader(event);
     this.loadBunkerPlanDetails(event);
-    this.changeVessel.emit(event);
+    this.checkVesselHasNewPlan(event);
+  }
+  TotalCommentCount(count: any) {
+    this.totalCommentCount = count;
+  }
+  
+  checkVesselHasNewPlan(event) {
+    let vesselId = event?.id;
+    this.localService.checkVesselHasNewPlan(vesselId).subscribe((data)=> {
+      console.log('vessel has new plan',data);
+      data = (data.payload?.length)? (data.payload)[0]: data.payload; 
+      if(data.planCount>0) {
+        this.IsVesselhasNewPlan = true;
+      } else {
+        this.IsVesselhasNewPlan = false;
+      }
+      this.changeVessel.emit({...event, IsVesselhasNewPlan: this.IsVesselhasNewPlan});
+    })
   }
 
   saveDefaultView(event) {
@@ -294,7 +352,7 @@ export class VesselInfoComponent implements OnInit {
       import_gsis:this.import_gsis,
     }
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
-      if(data?.payload[0]?.import_in_progress == 1){
+      if(data.payload && data?.payload[0]?.import_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',
           panelClass: 'confirmation-popup',
@@ -316,13 +374,14 @@ export class VesselInfoComponent implements OnInit {
     }
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
+      this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0){
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',
           panelClass: 'confirmation-popup',
           data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
-        
+        this.store.dispatch(new GeneratePlanAction(data.payload[0].gen_in_progress));
       }
       else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
@@ -330,6 +389,7 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'gsis-popup',
           data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
+        this.store.dispatch(new GeneratePlanAction(data.payload[0].gen_in_progress));
       }
     })
   }
@@ -348,7 +408,8 @@ export class VesselInfoComponent implements OnInit {
     });
     }
     else if(this.selectedPort.length == 1){
-      let url = `${baseOrigin}/#/new-request/${this.selectedPort.voyage_detail_id}` ;
+      let voyage_id = this.selectedPort[0].voyage_detail_id;
+      let url = `${baseOrigin}/#/new-request/${voyage_id}` ;
       window.open(url, "_blank");
     }      
   }

@@ -7,7 +7,6 @@ import { MatInput } from '@angular/material/input';
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs'
 import moment  from 'moment';
 import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from "../../store/bunker-plan/bunkering-plan.action";
 import { UpdateBplanTypeState } from "../../store/bunker-plan/bunkering-plan.state";
@@ -36,7 +35,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public etdInTime: any;
   public shiptechPortUrl: string;
   public shiptechUrl: string ;
-  public _changeCurrentROBObj$: any;
   public bplanType: any;
   @Input('selectedUserRole') 
   public set selectedUserRole(v : any) {
@@ -53,7 +51,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   ngOnInit() {
     this.localService.themeChange.subscribe(value => this.theme = value);
-    this.bunkerPlanService._changeCurrentROBObj$.subscribe(res => this._changeCurrentROBObj$ = res)
   }
 
   agInit(params: any): void {
@@ -393,18 +390,23 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   triggerChangeEvent() {
     this.params.context.componentParent.triggerChangeEvent();
   }
-  onCheckboxClick(check,comment) {
-    if (comment != "")
-      this.enableSave = true;
-    if(check == false && comment =="")
+  onCheckboxClick(event){
+    event.stopPropagation();
+  }
+  onEditCheckboxComment(value,comment,event) {
+    if(comment!="")
       this.enableSave = true;
     else
       this.enableSave = false;
+      
+      event.stopPropagation();
   }
   onEditCell(value,comment) {
-    if (comment!= "")
+    if (comment!= "" && value !="")
       this.enableSave = true;
-    else if(value == "" || value == false && comment =="")
+    else if(value == ""&& comment =="")
+      this.enableSave = true;
+    else if(value == 0 && comment =="")
       this.enableSave = true;
     else
       this.enableSave = false;
@@ -550,9 +552,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.params.context.componentParent.consUpdatedEvent(params,value);
   }
 
-  updateSOA(value){
-    this.params.data.hsfo_soa = 4444;
-  }
 }
 @Component({
   selector: 'hover-menu',
