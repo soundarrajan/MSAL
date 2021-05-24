@@ -1,9 +1,9 @@
-﻿commit 75bdfdb7f0b00d86399be21ea38e86e5b3a789fb
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Mon May 24 14:26:27 2021 +0530
+﻿commit c295f63e9229f5d562e28e7e6203ca362e4c0447
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon May 24 09:32:16 2021 +0000
 
-    Contract screen - UI fix
+    Merged PR 10880: Fixed blocker related to minContractQuantity and maxContractQuantity mapping
     
-    Contract screen - UI fix
+    Fixed blocker related to minContractQuantity and maxContractQuantity mapping
 
 branch: master

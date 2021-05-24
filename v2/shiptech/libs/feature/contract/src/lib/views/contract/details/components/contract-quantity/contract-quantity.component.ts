@@ -447,7 +447,7 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     } 
     this.formValues = formValues;
     if (this.formValues.details) {
-      //this.formatDetailsQuantity();
+      this.formatDetailsQuantity();
     }
   }
 
@@ -547,11 +547,14 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
 
   formatDetailsQuantity() {
     for (let i = 0; i < this.formValues.details.length; i++) {
-      if (this.formValues.details[i].minContractQuantity) {
-        this.formValues.details[i].minContractQuantity = this.quantityFormatValue(this.formValues.details[i].minContractQuantity);
+      if (!this.formValues.details[i].minContractQuantity) {
+        this.formValues.details[i].minContractQuantity = this.quantityFormatValue(0);
       }
-      if (this.formValues.details[i].maxContractQuantity) {
-        this.formValues.details[i].maxContractQuantity = this.quantityFormatValue(this.formValues.details[i].maxContractQuantity);
+      if (!this.formValues.details[i].maxContractQuantity) {
+        this.formValues.details[i].maxContractQuantity = this.quantityFormatValue(0);
+      }
+      if (!this.formValues.details[i].tolerance) {
+        this.formValues.details[i].tolerance = this.quantityFormatValue(0);
       }
     }
   }
