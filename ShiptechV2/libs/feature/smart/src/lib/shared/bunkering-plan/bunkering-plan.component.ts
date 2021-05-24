@@ -800,11 +800,7 @@ export class BunkeringPlanComponent implements OnInit {
                           }
                           // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no));
                         }
-<<<<<<< HEAD
                         if(this.gridOptions.api)
-=======
-                        if(rowData2!= null)
->>>>>>> master
                           this.gridOptions.api.setRowData(rowData2);
                         break;
                       }
@@ -823,11 +819,7 @@ export class BunkeringPlanComponent implements OnInit {
                           }
                           // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
                         }
-<<<<<<< HEAD
                         if(this.gridOptions.api)
-=======
-                        if(rowData2!= null)
->>>>>>> master
                           this.gridOptions.api.setRowData(rowData2);
                         break;
                       }
@@ -848,11 +840,7 @@ export class BunkeringPlanComponent implements OnInit {
                             } 
                             // this.store.dispatch(new UpdateCurrentBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no))
                           }
-<<<<<<< HEAD
                           if(this.gridOptions.api)
-=======
-                          if(rowData2!= null)
->>>>>>> master
                             this.gridOptions.api.setRowData(rowData2);
                           break;
                         }
