@@ -838,6 +838,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   ngOnInit(){
     this.entityName = 'Contract';
     this.getContractFormulaList1();
+    if (this.formValues.products && !this.formValues.products.length) {
+      this.addEmptyProductLine();
+    }
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
     this.eventsSelectedTabIndexSubscription = this.eventsSelectedTabIndex.subscribe((data) => this.setSelectedTab(data));
     this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe((data) => this.setEntityCopied(data));
@@ -876,6 +879,36 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.changeDetectorRef.detectChanges();
   }
 
+
+  addEmptyProductLine() {
+    console.log(this.formValues);
+    let emptyProductObj = {
+      id: 0,
+      details: null,
+      additionalCosts: [],
+      fixedPrice: true,
+      mtmFixed: false,
+      specGroup: null,
+      dealDate: null,
+      physicalSuppliers: [],
+      allowedProducts: [],
+      allowedLocations: [],
+      priceUom: this.generalTenantSettings.tenantFormats.uom,
+      currency: this.generalTenantSettings.tenantFormats.currency
+    };
+
+    if (this.formValues.products && !this.formValues.products.length) {
+      this.formValues.products.push(emptyProductObj);
+    }
+  
+    //this.selectedTabIndex =  0;
+    this.setAllowedLocations(this.selectedTabIndex);
+    this.setAllowedProducts(this.selectedTabIndex);
+    if (!this.contractFormulaList.length) {
+      this.getContractFormulaList();
+    }
+    this.changeDetectorRef.detectChanges();
+  }
 
 
   addProductToContract() {
