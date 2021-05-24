@@ -1408,12 +1408,12 @@ Number(function() {
                                                 }
                                                 if (table_id == 'flat_invoices_app_invoice_list') {
                                                     if (rowObject.isClaimSybtype) {
-                                                        actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
+                                                        actions = `<a href="/v2/invoices/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
                                                         return actions;
                                                     }
                                                     if (typeof rowObject.invoiceType != 'undefined' && rowObject.invoiceType) {
                                                         if (rowObject.invoiceType.name == 'CreditNote' || rowObject.invoiceType.name == 'DebitNote') {
-                                                            actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
+                                                            actions = `<a href="/v2/invoices/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
                                                             return actions;
                                                         }
                                                         actions = `<a href="/v2/invoices/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
