@@ -439,7 +439,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.formValues.products.length; i++) {
       console.log(this.formValues.products[i]);
       let conversionFactorForProduct = this.formValues.products[i].conversionFactors;
-      if (conversionFactorForProduct.length) {
+      if (conversionFactorForProduct && conversionFactorForProduct.length) {
         let findSystemInstrumentOption = _.find(conversionFactorForProduct, function(object) {
           return object.contractConversionFactorOptions.id == 4;
         });
