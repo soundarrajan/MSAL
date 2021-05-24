@@ -25,6 +25,7 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
     tabData: any;
     canApprove: boolean = false;
     canReject: boolean = false;
+    noPdfAvailable: boolean = false;
     detailFormvalues: any;
     PdfViewerModule: any;
     navBar: any;
@@ -42,7 +43,6 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
         private PdfViewerModule: PdfViewerModule, 
         private activatedRoute: ActivatedRoute,
         private toastr: ToastrService) {
-        // this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     }
     
     
@@ -74,9 +74,16 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
             this.changeDetectorRef.detectChanges();
         });
         
+        this.noPdfAvailable = false;
+        
         this.invoiceService.getPhysicalInvoice(invoiceId)
         .subscribe((response: any) => {
-            this.pdfSrc = response;
+            if(response.byteLength == 0) {
+                this.noPdfAvailable = true;
+                this.toastr.warning("No Document to display");
+            } else {
+                this.pdfSrc = response;
+            }
             this.changeDetectorRef.detectChanges();
         });
     }
@@ -84,7 +91,7 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
     }
     
-    setCurrentInvoice(invoiceId=false, callback) {
+    setCurrentInvoice(invoiceId=false) {
         if(invoiceId) {
             this.currentInvoice = invoiceId;
             var indexOfCurrentInvoice = this.invoiceIds.indexOf(invoiceId);
@@ -99,9 +106,6 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
         } 
         if (indexOfCurrentInvoice == this.invoiceIds.length - 1) {
             this.nextInvoice = false;
-        }
-        if (callback) {
-            callback(this.currentInvoice);
         }
         this.getInvoiceItem(this.currentInvoice);
     }     
