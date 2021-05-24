@@ -1,7 +1,7 @@
-﻿commit 7b489e9d810aa416e39a6c9f947419ff9b100328
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Mon May 24 17:16:40 2021 +0530
+﻿commit 27fc0315d8c9bc39556532de8013f270d065f287
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon May 24 12:42:16 2021 +0000
 
-    Remove preclaim credit/debit from create invoice action. #32152
+    Merged PR 10890: Added api/procurement/order/getRangeTotalAdditionalCosts endpoint to  get Total/Range Additional costs amount
 
 branch: master
