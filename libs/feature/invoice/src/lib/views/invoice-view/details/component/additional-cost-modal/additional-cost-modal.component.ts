@@ -354,33 +354,120 @@ export class AdditionalCostModalComponent implements OnInit {
         }
       }
     });
-    let newLine = {
-      costName: {
-        id: additionalCost.additionalCostid,
-        name: additionalCost.name,
-        code: additionalCost.code,
-        collectionName: null,
-      },
-      costType: additionalCost.costType,
-      invoiceAmount:  additionalCost.amount ? this.amountFormatValue(additionalCost.amount) : '',
-      invoiceExtras: additionalCost.extrasPercentage,
-      invoiceQuantity: null,
-      invoiceQuantityUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
-      invoiceRate: null,
-      invoiceRateUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
-      invoiceRateCurrency: additionalCost.currency ? additionalCost.currency : this.formValues.invoiceRateCurrency,
-      product: {
+    
+    if (additionalCost.locationid && (additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total')) {
+      let payload = {
+        "Payload": {
+          "Order": null,
+          "Filters": [
+            {
+              "ColumnName": "ProductId",
+              "Value": this.applyForList[1] ? this.applyForList[1].productId : null
+            },
+            {
+              "ColumnName": "LocationId",
+              "Value": this.formValues.orderDetails.portId ? this.formValues.orderDetails.portId : null
+            },
+            {
+              "ColumnName": "AdditionalCostId",
+              "Value": additionalCost.locationid ? additionalCost.locationid : null
+            },
+            {
+              "ColumnName": "Qty",
+              "Value": 1
+            },
+            {
+              "ColumnName": "QtyUomId",
+              "Value": this.generalTenantSettings.tenantFormats.uom.id
+            }
+          ],
+          "Pagination": {
+            "Skip": 0,
+            "Take": 25
+          },
+          "SearchText": null
+        }
+      }
+      this.invoiceService
+      .getRangeTotalAdditionalCosts(payload)
+      .pipe(
+        finalize(() => {
+          //this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          let newLine1 = {
+            costName: {
+              id: additionalCost.additionalCostid,
+              name: additionalCost.name,
+              code: additionalCost.code,
+              collectionName: null,
+            },
+            costType: additionalCost.costType,
+            invoiceAmount: response.price,
+            invoiceExtras: additionalCost.extrasPercentage,
+            invoiceQuantity: null,
+            invoiceQuantityUom: this.generalTenantSettings.tenantFormats.uom,
+            invoiceRate: null,
+            invoiceRateUom:  this.generalTenantSettings.tenantFormats.uom,
+            invoiceRateCurrency: this.formValues.invoiceRateCurrency,
+            product: {
+              id: this.applyForList[1].productId,
+              productId: this.applyForList[1].productId,
+              name: this.applyForList[1].name,
+              deliveryProductId:  this.applyForList[1].deliveryProductId
+            },
+            isTaxComponent: isTaxComponent,
+            locationAdditionalCostId: additionalCost.locationid
+          }
+          this.formValues.costDetails.push(newLine1);
+          this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+    } else {
+      let productLine =  {
         id: -1,
         name: 'All',
-        deliveryProductId: null
-      },
-      isTaxComponent: isTaxComponent,
-      locationAdditionalCostId: additionalCost.locationid
+        deliveryProductId: null,
+        productId: null
+      };
+      if ((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total'))  {
+        productLine =  {
+          id: this.applyForList[1].productId,
+          productId: this.applyForList[1].productId,
+          name: this.applyForList[1].name,
+          deliveryProductId:  this.applyForList[1].deliveryProductId
+        }
+      } 
+      let newLine = {
+        costName: {
+          id: additionalCost.additionalCostid,
+          name: additionalCost.name,
+          code: additionalCost.code,
+          collectionName: null,
+        },
+        costType: additionalCost.costType,
+        invoiceAmount:  additionalCost.amount ? this.amountFormatValue(additionalCost.amount) : '',
+        invoiceExtras: additionalCost.extrasPercentage,
+        invoiceQuantity: null,
+        invoiceQuantityUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+        invoiceRate: null,
+        invoiceRateUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
+        invoiceRateCurrency: additionalCost.currency ? additionalCost.currency : this.formValues.invoiceRateCurrency,
+        product: productLine,
+        isTaxComponent: isTaxComponent,
+        locationAdditionalCostId: additionalCost.locationid
+      }
+      this.formValues.costDetails.push(newLine);
+      this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
+      this.changeDetectorRef.detectChanges();
     }
-    this.formValues.costDetails.push(newLine);
-    this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
-    this.changeDetectorRef.detectChanges();
-    console.log()
+  
   }
 
   removeAdditionalCostLine(key) {
@@ -790,7 +877,6 @@ export class AdditionalCostModalComponent implements OnInit {
         console.log(response);
         this.additionalCostForLocation[locationId] = _.cloneDeep(response);
         this.additionalCostForLocationFilter[locationId] =  _.cloneDeep(response);
-        console.log(this.getAdditionalCostsPerPort);
         this.changeDetectorRef.detectChanges();
       }
     });
