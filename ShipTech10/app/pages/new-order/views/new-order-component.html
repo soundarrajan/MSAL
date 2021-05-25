@@ -1768,16 +1768,18 @@
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost); $ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); additionalCost.costLineChanged = true"
                                             ng-disabled="(additionalCost.disabled && additionalCost.id > 0) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.additionalCost"
-                                            ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by addCost.id"></select>
+                                            ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by $ctrl.trackAddCostId(addCost, additionalCost)"></select>
                                     </td>
                                     <td>
                                         <!--  cost type -->
                                         <select class="select2 form-control" id="additional_cost_type_{{ $index }}"
                                             name="{{ $ctrl.additionalCostColumns.type.name }}"
                                             ng-change="$ctrl.costTypeChanged(additionalCost, true); additionalCost.costLineChanged = true"
-                                            ng-disabled="(additionalCost.disabled && additionalCost.id > 0) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.costType"
                                             ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) | decodeReadOnly track by costType.id"
+                                            ng-disabled="((additionalCost.disabled && additionalCost.id > 0) ||
+                                                ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))) ||
+                                                (additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0))"
                                             ng-required="additionalCost.additionalCost"></select>
                                     </td>
                                     <td>
@@ -1841,7 +1843,8 @@
                                                 <select class="bs-select pull-right uomWidth" id=""
                                                     id="additional_cost_priceUom_{{ $index }}" name=""
                                                     ng-change="$ctrl.addPriceUomChanged(additionalCost); $ctrl.setAdditionalCosts();"
-                                                    ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
+                                                    ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))
+                                                        || (additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0))"
                                                     ng-model="additionalCost.priceUom"
                                                     ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
 

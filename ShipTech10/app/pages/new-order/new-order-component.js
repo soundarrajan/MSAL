@@ -349,16 +349,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 var newArr = [];
                 $.each(response.data.payload, (key0, value0) => {
-                    for(let i = 0; i < ctrl.lists.AdditionalCost.length; i++) {
-                        if(ctrl.lists.AdditionalCost[i].id == value0.additionalCostid) {
-                            let obj = ctrl.lists.AdditionalCost[i];
-                            obj.allowNegative = value0.isAllowingNegativeAmmount;
-                            obj.locationid = value0.locationid;
-                            obj.extras = value0.extrasPercentage;
-                            newArr.push(obj);
-                            break;
-                        }
-                    }
+                    let obj = {};
+                    obj.id = value0.additionalCostid;
+                    obj.name = value0.name;
+                    obj.allowNegative = value0.isAllowingNegativeAmmount;
+                    obj.locationid = value0.locationid;
+                    obj.price = value0.amount;
+                    obj.costType = value0.costType;
+                    obj.priceUom = value0.priceUom;
+                    obj.extras = value0.extrasPercentage;
+                    newArr.push(obj);
                 });
                 if(newArr.length > 0) {
                     ctrl.lists.AdditionalCost = newArr;
@@ -1948,14 +1948,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // On location change fetch additional costs by location-wise order and save to additionalcosts master
             ctrl.setAdditionalCostsForLocation(isEditMode);
             // if location is changed then set Additional cost for Range, Total
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
-            let additionalCosts = ctrl.additionalCostList;
-            if(additionalCosts) {
-                $.each(additionalCosts, (_, additionalCost) => {
-                    ctrl.setRangeTotalAdditionalCost(additionalCost);
-                });
-                // ctrl.additionalCostList = ctrl.getAdditionalCosts();
-            }
+            // if(!isEditMode) {
+                ctrl.additionalCostList = ctrl.getAdditionalCosts();
+                let additionalCosts = ctrl.additionalCostList;
+                if(additionalCosts) {
+                    $.each(additionalCosts, (_, additionalCost) => {
+                        ctrl.setRangeTotalAdditionalCost(additionalCost);
+                    });
+                }
+            // }
         };
 
         ctrl.selectProduct = function(productId, index) {
@@ -3250,6 +3251,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.costTypeChanged = function(additionalCost, isAdditionalCostNameChanged) {
             if (!additionalCost.costType) {
                 return;
+            }
+
+            if((additionalCost.costType.name == 'Flat' || additionalCost.costType.name == 'Unit') && (additionalCost.locationAdditionalCostId || (additionalCost.additionalCost && additionalCost.additionalCost.locationid))) {
+                additionalCost.extras = additionalCost.additionalCost.extras || 0;
+                additionalCost.price = additionalCost.additionalCost.price || 0;
+                additionalCost.priceUom = additionalCost.additionalCost.priceUom || additionalCost.priceUom || 0;
+                additionalCost.costType = additionalCost.additionalCost.costType || additionalCost.costType || 0;
+                if (!additionalCost.costType) {
+                    return;
+                }
             }
 
             if (additionalCost.costType.name == 'Percent') {
@@ -4610,6 +4621,17 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	        }
 	        return input;
 	    };
+
+        ctrl.trackAddCostId = function(addCost, additionalCostRowItem) {
+            if(addCost) {
+                if(addCost.locationid) {
+                    return addCost.id+addCost.locationid;
+                }
+                else {
+                    return addCost.id+(additionalCostRowItem?.locationAdditionalCostId || 0);
+                }
+            }
+        }
     }
 ]);
 angular.module('shiptech.pages').component('newOrder', {
