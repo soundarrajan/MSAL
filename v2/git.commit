@@ -1,9 +1,9 @@
-﻿commit 511e6de7d1c7c3cc45d83efd8bef05d5ddab14d1
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Tue May 25 10:36:28 2021 +0530
+﻿commit 3d39f9d7fc4567b14ca3dbd9b7a7abbde9c8aadd
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue May 25 08:48:06 2021 +0000
 
-    Contract - UI fix
+    Merged PR 10918: Added changes for total and range cost type in invoice screen
     
-    Contract - UI fix
+    Added changes for total and range cost type
 
 branch: master

@@ -3,7 +3,7 @@
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
-            <div  #menuTrigger="matMenuTrigger"  [matMenuTriggerFor]="additionalCostMenu" (click)="additionalSearch = null; searchCostName('', this.formValues.orderDetails.location?.id)">
+            <div  #menuTrigger="matMenuTrigger"  [matMenuTriggerFor]="additionalCostMenu" (click)="additionalSearch = null; searchCostName('', this.formValues.orderDetails?.portId)">
               <a class="add-icon"></a>
             </div>
             <mat-menu #additionalCostMenu="matMenu" class="select-product-container">
@@ -110,7 +110,8 @@
                     <mat-form-field class="without-search dotted-form-field product-field" appearance="legacy">
                       <mat-select
                           [(ngModel)]="additionalCost.value.costType"
-                          (ngModelChange)="triggerChangeFieldsAppSpecific('costType', additionalCost.key);invoiceConvertUom('cost', additionalCost.key)"
+                          (ngModelChange)="triggerChangeFieldsAppSpecific('costType', additionalCost.key);
+                                          invoiceConvertUom('cost', additionalCost.key)"
                           [compareWith]="compareCostTypeObjects"
                           [disableOptionCentering]="true"
                           [disabled]="additionalCost.value.locationAdditionalCostId || additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
@@ -128,6 +129,8 @@
                     <mat-form-field class="without-search dotted-form-field product-field" appearance="legacy">
                       <mat-select
                           [(ngModel)]="additionalCost.value.product"
+                          (ngModelChange)="getRangeTotalAmount(additionalCost.value, additionalCost.key);
+                                        invoiceConvertUom('cost', additionalCost.key);"
                           [compareWith]="compareProductObjects"
                           [disableOptionCentering]="true"
                           [disabled]="(additionalCost.value.locationAdditionalCostId && !(additionalCost.value.costType.name == 'Range' || additionalCost.value.costType.name == 'Total') )|| 
@@ -198,19 +201,21 @@
                         <input matInput
                           [(ngModel)]="additionalCost.value.invoiceQuantity"
                           autocomplete="off"
-                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
+                          (ngModelChange)="getRangeTotalAmount(additionalCost.value, additionalCost.key);
+                                      invoiceConvertUom('cost', additionalCost.key);"
                           quantityFormat
-                          [disabled]="additionalCost.value.locationAdditionalCostId"
+                          [disabled]="(additionalCost.value.locationAdditionalCostId && !(additionalCost.value.costType.name == 'Range' || additionalCost.value.costType.name == 'Total') )"
                           >
                       </mat-form-field>
                       <mat-form-field style="width: 36%"
                           appearance="legacy">
                           <mat-select disableRipple
                             [(ngModel)]="additionalCost.value.invoiceQuantityUom"
-                            (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
+                            (ngModelChange)="getRangeTotalAmount(additionalCost.value, additionalCost.key);
+                                        invoiceConvertUom('cost', additionalCost.key);"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
-                            [disabled]="additionalCost.value.locationAdditionalCostId"
+                            [disabled]="(additionalCost.value.locationAdditionalCostId && !(additionalCost.value.costType.name == 'Range' || additionalCost.value.costType.name == 'Total') )"
                             panelClass="general-information-select-container">
                             <mat-option *ngFor="let uom of uomList" [value]="uom">{{uom.name}}</mat-option>
                           </mat-select>
