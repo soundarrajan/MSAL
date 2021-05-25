@@ -160,7 +160,7 @@ export class InvoiceDetailsToolbarComponent
           {
               id: 'invoices',
               displayName : 'Invoices',
-              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/#/invoices/claims/edit/${ payload.invoiceId}` : '',
+              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/v2/invoices/edit/${ payload.invoiceId}` : '',
               entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
               indexStatus : null,
               hidden : false
@@ -210,7 +210,7 @@ export class InvoiceDetailsToolbarComponent
           {
               id: 'invoices',
               displayName : 'Invoices',
-              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/v2/invoices/invoice/${ payload.invoiceId}/details` : '',
+              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/v2/invoices/edit/${ payload.invoiceId}` : '',
               entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
               indexStatus : null,
               hidden : false
