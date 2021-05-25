@@ -48,6 +48,18 @@ export class MastersListApiService
 
   
   @ObservableException()
+  getProducts(
+    request: any
+  ): Observable<IProductListRequest> {
+    return this.http.post<IProductListResponse>(
+      `${this._apiUrl}/${MastersApiPaths.getProductList()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body),
+      catchError((body: any) => of('Error, could not load the product list'))
+    );
+  }
+  @ObservableException()
   getProductList(
     request: IProductListRequest
   ): Observable<IProductListResponse> {

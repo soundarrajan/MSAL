@@ -27,6 +27,7 @@ export interface IDeliveryNotesDetailsDto {
   note: string;
   id: number;
   DeliveryId: number;
+  isDeleted: boolean;
 }
 
 

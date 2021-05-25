@@ -42,8 +42,7 @@
               <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                 <mat-form-field class="without-search" appearance="legacy">
                   <input 
-                      [ngModel]="0.00"
-                      (ngModelChange)="contractDetail.value.minContractQuantity"
+                      [(ngModel)]="contractDetail.value.minContractQuantity"
                       matInput
                       autocomplete="off"
                       quantityFormat
@@ -67,8 +66,7 @@
                 <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search" appearance="legacy">
                     <input 
-                        [ngModel]="0.00"
-                        (ngModelChange)="contractDetail.value.maxContractQuantity"
+                        [(ngModel)]="contractDetail.value.maxContractQuantity"
                         matInput
                         (focus)="focus($event,'max')"
                         (focusout)="focusOut($event,'max')"
@@ -111,8 +109,7 @@
                 <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search" appearance="legacy">
                     <input 
-                        [ngModel]="0.0"
-                        (ngModelChange)="contractDetail.value.tolerance"
+                        [(ngModel)]="contractDetail.value.tolerance"
                         matInput
                         (focus)="focus($event,'tol')"
                         (focusout)="focusOut($event,'tol')"
