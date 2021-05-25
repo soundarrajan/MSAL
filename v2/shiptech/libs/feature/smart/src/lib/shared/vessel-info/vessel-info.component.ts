@@ -14,8 +14,8 @@ import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveScrubberReadyAction } from './../../store/bunker-plan/bunkering-plan.action';
-import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
+import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveScrubberReadyAction, ImportGsisAction, GeneratePlanProgressAction, SendPlanAction } from './../../store/bunker-plan/bunkering-plan.action';
+import { SaveCurrentROBState,GeneratePlanState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
 import { Subject, Subscription, Observable } from 'rxjs';
@@ -73,6 +73,7 @@ export class VesselInfoComponent implements OnInit {
   public totalCommentCount: any = 0;
   BunkerPlanCommentList: any = [];
   RequestCommentList: any = [];
+  public isChecked : boolean = true;
   currentROBChange: Subject<void> = new Subject<void>();
  
 
@@ -334,6 +335,7 @@ export class VesselInfoComponent implements OnInit {
       ship_id: this.vesselData?.vesselId,
       send_plan: 1
     }
+    this.store.dispatch(new SendPlanAction(req.send_plan) )
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
       if(data?.isSuccess == true){
@@ -346,13 +348,14 @@ export class VesselInfoComponent implements OnInit {
     })
   }
   setImportGSIS(){
-    this.import_gsis = this.import_gsis == 0? 1:0 ;
+    this.import_gsis = this.isChecked == true ? 1:0 ;
     let req = {
       action:"",
       ship_id: this.vesselData?.vesselId,
-      generate_new_plan:1,
+      generate_new_plan:this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
       import_gsis:this.import_gsis,
     }
+    this.store.dispatch(new ImportGsisAction(this.import_gsis))
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       if(data.payload && data?.payload[0]?.import_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
@@ -360,12 +363,9 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'confirmation-popup',
           data: {message : 'Please wait, GSIS import is under process'}
         })
-        this.import_gsis= 1;
       }
-      else
-      this.import_gsis = this.import_gsis == 0? 1:0 ;
     })
-    
+    this.isChecked = !this.isChecked;
   }
   generateCurrentBPlan(event){
     let req = {
@@ -374,6 +374,7 @@ export class VesselInfoComponent implements OnInit {
       generate_new_plan:1,
       import_gsis:this.import_gsis,
     }
+    this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
@@ -383,7 +384,6 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'confirmation-popup',
           data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
-        this.store.dispatch(new GeneratePlanAction(data.payload[0].gen_in_progress));
       }
       else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
@@ -391,8 +391,9 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'gsis-popup',
           data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
-        this.store.dispatch(new GeneratePlanAction(data.payload[0].gen_in_progress));
+        this.store.dispatch(new GeneratePlanAction(0));
       }
+      this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
     })
   }
   getVoyageDetail(selectedPort) {

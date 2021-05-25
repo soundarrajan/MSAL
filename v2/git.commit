@@ -1,7 +1,11 @@
-﻿commit 43a5940c13749ff74df3cde35b35638461098c7e
-Author: Soundar <soundarrajan.s@inatech.com>
-Date:   Tue May 25 18:52:51 2021 +0530
+﻿commit fe383663ac5195969d9580275fb7a92bbac4649f
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue May 25 13:28:50 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10930: PlanID in save and Import GSIS checkbox
+    
+    PlanID in save and Import GSIS checkbox
+    
+    Related work items: #32198
 
 branch: master
