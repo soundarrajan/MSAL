@@ -467,18 +467,21 @@ export class ExtendContractModalComponent implements OnInit{
           this.toastr.error(result);
         } else {
           this.toastr.success('Contract extended!');
-          this.contractService
-            .loadContractDetails(this.formValues.id)
-            .pipe(
-              finalize(() => {
-                this.spinner.hide();
-              })
-            )
-            .subscribe((data: any) => {
-              this.formValues = _.merge(this.formValues, data);
-              console.log(this.formValues);
-              this.dialogRef.close(this.formValues);
-            });
+          this.formValues.status = {
+            "transactionTypeId": 9,
+            "id": 9,
+            "name": "AmendExtended",
+            "internalName": "",
+            "displayName": "Extended",
+            "code": "",
+            "collectionName": null,
+            "customNonMandatoryAttribute1": "",
+            "isDeleted": false,
+            "modulePathUrl": null,
+            "clientIpAddress": null,
+            "userAction": null
+          };
+          this.dialogRef.close(this.formValues);
         }
      });
   }
