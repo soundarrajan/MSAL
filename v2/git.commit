@@ -1,7 +1,7 @@
-﻿commit aee10a69c38688f57d991686025f553617cecac5
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue May 25 16:13:07 2021 +0530
+﻿commit 4b1d9c8eac4bf638fb08e1957f2cdce529e5f922
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue May 25 11:10:31 2021 +0000
 
-    Corrected new invoice screen navigation top bar. # 25553.
+    Merged PR 10922: Fixed defaulting additional cost type line in contract screen
 
 branch: master

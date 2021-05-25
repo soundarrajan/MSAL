@@ -242,7 +242,8 @@
                     <mat-select 
                             [(ngModel)]="additionalCost.value.additionalCost"
                             (selectionChange)="setAdditionalCost($event.value, selectedTabIndex, additionalCost.key);
-                            setAdditionalCostLine(additionalCost.value.additionalCost, selectedTabIndex, additionalCost.key);                             setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
+                            setAdditionalCostLine($event.value, selectedTabIndex, additionalCost.key);                             
+                            setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-info-select-container"
                             [compareWith]="compareAdditionalCostObjects"
