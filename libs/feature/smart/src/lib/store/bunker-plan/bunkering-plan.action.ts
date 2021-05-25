@@ -1,5 +1,5 @@
 import { ISaveVesselData } from './../shared-model/vessel-data-model';
-import { SaveBunkeringPlanModel, AddCurrentBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
+import { SaveBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
 
   
 export class SaveBunkeringPlanAction{
@@ -21,22 +21,6 @@ export class SaveScrubberReadyAction{
 
 export class UpdateBunkeringPlanAction{
   static readonly type = '[BplanData] Update' ;
-
-  constructor(public payload: any, public type: string, public detail_no: number){
-
-  }
-}
-
-export class AddCurrentBunkeringPlanAction{
-  static readonly type = '[CurrentBplanData] Add';
-
-  constructor(public payload: AddCurrentBunkeringPlanModel[]){
-
-  }
-}
-
-export class UpdateCurrentBunkeringPlanAction{
-  static readonly type = '[CurrentBplanData] Update' ;
 
   constructor(public payload: any, public type: string, public detail_no: number){
 

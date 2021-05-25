@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
-import { SaveBunkeringPlanState, AddCurrentBunkeringPlanState, SaveCurrentROBState, UpdateBplanTypeState, GeneratePlanState} from '../lib/store/bunker-plan/bunkering-plan.state'
+import { SaveBunkeringPlanState, SaveCurrentROBState, UpdateBplanTypeState, GeneratePlanState} from '../lib/store/bunker-plan/bunkering-plan.state'
 
 @NgModule({
   declarations: [
@@ -33,7 +33,6 @@ import { SaveBunkeringPlanState, AddCurrentBunkeringPlanState, SaveCurrentROBSta
     CommonModule,
     NgxsModule.forFeature([
       SaveBunkeringPlanState,
-      AddCurrentBunkeringPlanState,
       SaveCurrentROBState,
       UpdateBplanTypeState,
       GeneratePlanState
