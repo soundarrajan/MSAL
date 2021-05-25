@@ -847,6 +847,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       if (result) {
         console.log("close extend pop-up");
         this.formValues = result;
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
