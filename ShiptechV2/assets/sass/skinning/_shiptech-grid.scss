@@ -304,7 +304,26 @@
 
   /*Main Grid */
   .ag-shiptech-theme {
-
+    .ag-cell{
+      &.checkboxCenter{
+        .ag-cell-wrapper{
+          justify-content: center;
+        
+        .ag-selection-checkbox{
+          .ag-icon-checkbox-checked,.ag-icon-checkbox-unchecked{
+            margin: 0 !important;
+          }
+        }
+      }
+      }
+    }
+    .ag-row-selected{
+      background-color: #e3e6ea !important;
+      border-color: #e3e6ea !important;
+    }
+    .ag-icon-checkbox-checked {
+      color: #7F8C8D !important;
+    }
     .ag-header {
       font-weight: 500;
       font-size: 14px !important;
