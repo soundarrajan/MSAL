@@ -123,7 +123,9 @@
                         if ($scope.selectedOptions) {
                             $scope.selectedOptions = [];
                         }
-                        $scope.unselectedOptions = $scope.resolvedOptions.slice(); // Take a copy
+                        if ($scope.resolvedOptions) {
+                            $scope.unselectedOptions = $scope.resolvedOptions.slice(); // Take a copy
+                        }
                     } else {
                         $scope.selectedOptions = $scope.resolvedOptions.filter((el) => {
                             let id = $scope.getId(el);
