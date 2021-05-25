@@ -1109,14 +1109,19 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     return defaultCostType;
   }
 
-  setAdditionalCostLine(additionalCost, key1, key2) {
+  setAdditionalCostLine(line, key1, key2) {
+    let additionalCost  = {
+      'id': line.additionalCostid,
+      'name': line.name
+    };
+
     let locationId = 0, additionalCostLine;
     if (this.formValues.products[key1].location) {
       locationId = this.formValues.products[key1].location.id;
     }
     
     this.additionalCostForLocation[locationId].forEach((v, k) => {
-      if (v.additionalCostid == additionalCost.id) {
+      if (v.additionalCostid == additionalCost.id && v.id == line.id) {
         additionalCostLine = v;
       }
     });
