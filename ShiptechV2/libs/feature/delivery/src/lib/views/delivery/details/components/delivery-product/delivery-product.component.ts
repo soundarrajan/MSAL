@@ -62,6 +62,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { throws } from 'assert';
 
+import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service'
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -321,6 +322,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private tenantService: TenantFormattingService,
+    private mastersListApiService: MastersListApiService,
     @Inject(DecimalPipe) private _decimalPipe,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
@@ -393,8 +395,13 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.uomList$ =  this.legacyLookupsDatabase.getUomTable();
   }
 
-  async getProductList() {
-    this.productList = await this.legacyLookupsDatabase.getProductList();
+  getProductList(){
+    let data : any = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"productTypeId","Value": this.formValues.deliveryProducts[this.deliveryProductIndex].productTypeId}],"SearchText":null,"Pagination":{}}
+    this.mastersListApiService.getProducts(data).subscribe((response: any) => {
+      if(response){
+          this.productList=response.payload;
+      }
+    });
   }
 
   async getPhysicalSupplierList() {
