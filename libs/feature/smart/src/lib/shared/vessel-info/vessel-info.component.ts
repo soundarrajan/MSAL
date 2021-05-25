@@ -84,7 +84,9 @@ export class VesselInfoComponent implements OnInit {
       this.vesselData$.subscribe(data=> {
         this.vesselRef = data;
         // loadBunkerPlanComments fn callback to get BP comment count 
-        this.loadBunkerPlanComments();
+        if(this.vesselRef?.vesselId) {
+          this.loadBunkerPlanComments();
+        }
       });
    }
 
