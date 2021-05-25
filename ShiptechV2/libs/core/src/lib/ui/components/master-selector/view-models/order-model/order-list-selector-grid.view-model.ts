@@ -112,7 +112,7 @@ export class OrderListSelectorGridViewModel extends BaseGridViewModel {
     suppressPaste: true,
     lockPosition: true,
     lockVisible: true,
-    cellClass: 'cell-border-green'
+    cellClass: 'cell-border-green checkboxCenter'
   };
 
   orderNumberCol: ITypedColDef<IOrderListDto, IDisplayLookupDto> = {
