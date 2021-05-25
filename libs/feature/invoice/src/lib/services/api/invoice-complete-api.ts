@@ -22,6 +22,7 @@ export namespace InvoiceApiPaths {
   export const getCompletesListExport = () => 'api/invoice/exportCompleteView';
   export const getInvoicesListExport = () => `api/invoice/export`;
   export const getInvoiceItem = () => `api/invoice/get`;
+  export const getPhysicalInvoice = () => `api/invoice/getPhysicalDocument`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
   export const getFinalInvoiceDueDates = () => `/api/invoice/finalInvoiceDueDates`;
   export const createInvoiceItem = () => `api/invoice/create`;
@@ -48,7 +49,7 @@ export namespace InvoiceApiPaths {
   export const createCreditNoteInvoiceFromClaim = () => `api/invoice/newFromClaim`;
   export const createPreClaimCreditNote = () => `api/invoice/newPreclaimCN`;
   export const getAdditionalCostsPerPort = () =>  `api/masters/additionalcosts/listforlocation`;
-
+  export const getRangeTotalAdditionalCosts = () =>  `api/procurement/order/getRangeTotalAdditionalCosts`;
 
 }
 
@@ -70,6 +71,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ApiCallUrl()
   private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
+
+  @ApiCallUrl()
+  private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -114,6 +118,17 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
+
+  getPhysicalInvoice(
+    request: any
+  ) {
+    return this.http.post(
+      `${this._apiUrl}/${InvoiceApiPaths.getPhysicalInvoice()}`,
+      { Payload: request },
+      {responseType: 'arraybuffer'}
+    );
+  }
+
 
   @ObservableException()
   getNewInvoicDetails(
@@ -428,6 +443,8 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
+
+  @ObservableException()
   getAdditionalCostsPerPort(
     request: any
   ): Observable<any> {
@@ -445,6 +462,20 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.createPreClaimCreditNote()}`,
       { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+
+  @ObservableException()
+  getRangeTotalAdditionalCosts(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._procurementApiUrl}/${InvoiceApiPaths.getRangeTotalAdditionalCosts()}`,
+     request
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))

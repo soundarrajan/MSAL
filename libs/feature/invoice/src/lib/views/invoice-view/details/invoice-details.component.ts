@@ -209,6 +209,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   applyForList: any;
   bankAccountNumbers: any;
   visibilityConfigs:any;
+  isPricingDateEditable:boolean=false;
   formErrors: any = {};
   generalConfiguration: any;
 
@@ -257,6 +258,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
     this.setupGrid();
     this.setClaimsDetailsGrid();
+    this.tenantConfiguration();
   }
 
   ngOnInit(): void {
@@ -275,8 +277,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
-
-    this.tenantConfiguration();
+    
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -286,7 +287,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.paymentStatusList = list;
     })
     this.legacyLookupsDatabase.getsInvoiceType().then(list=>{
-      this.invoiceTypeList = list;
+      // avoid preclaim credit/debit note invoice type selection
+      this.invoiceTypeList = list.filter(x=> x.id !== 6 && x.id !== 7);
     })
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
@@ -686,7 +688,10 @@ tenantConfiguration(){
   .getTenantConfiguration(false)
   .subscribe((result: any) => {
     this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;
-    // console.log('tenenatConfigs',this.visibilityConfigs);
+    if(result.procurementConfiguration.price.pricingDateStopOption?.name == "Invoice" && result.procurementConfiguration.price.pricingEventDateManualOverrride?.name == "Yes"){
+      this.isPricingDateEditable = true;      
+    }
+    // console.log('tenenatConfigs',this.isPricingDateEditable);
   });
 }
 getBankAccountNumber(){
@@ -1094,9 +1099,10 @@ getBankAccountNumber(){
 	  relatedInvoicesSummary: [],
     orderDetails: <IInvoiceDetailsItemOrderDetails>{},
     counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{
+      paymentTerm:<IInvoiceDetailsItemBaseInfo>{name:''},
+      payableTo:<IInvoiceDetailsItemBaseInfo>{name:''},
       counterpartyBankAccount: <any>{},
-      customer: <any>{},
-      paymentTerm: <IInvoiceDetailsItemBaseInfo>{ name: '' }
+      customer: <any>{}
     },
     paymentDetails: <IInvoiceDetailsItemPaymentDetails>{},
     productDetails: <IInvoiceDetailsItemProductDetails[]>[],
@@ -1445,7 +1451,7 @@ getBankAccountNumber(){
         this.handleServiceResponse(result, 'Invoice rejected successfully.')
       });
     } else if(option == 'approve'){
-      if(this.formValues.invoiceClaimDetails && this.formValues.invoiceClaimDetails.length && this.formValues.invoiceClaimDetails[0]['isPreclaimCN']){        
+      if(this.formValues.invoiceClaimDetails && this.formValues.invoiceClaimDetails.length && this.formValues.invoiceClaimDetails[0]['isPreclaimCN']){
         let claimsCN = false;
         this.formValues.relatedInvoices.forEach(element => {
           if(element.invoiceType.name == 'Pre-claim Credit Note'){
@@ -1466,7 +1472,7 @@ getBankAccountNumber(){
       this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
-        height: '300px',
+        height: '230px',
         panelClass: 'popup-grid',
         data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });

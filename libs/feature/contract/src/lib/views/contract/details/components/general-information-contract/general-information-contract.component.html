@@ -19,7 +19,7 @@
     <div class="contract-created-container">
       <div class="contract-created-information">
         <div>
-          <div class="value">Created by: 
+          <div class="value m-w-150">Created by: 
             <span class="created-by-field">
               {{formValues.createdBy ? formValues.createdBy.displayName : ''}}
             </span>
@@ -27,7 +27,7 @@
         </div>
         <div class="border_line"></div>
         <div> 
-          <div class="value">Created On: 
+          <div class="value m-w-110">On: 
             <span class="created-on-field">
               {{formValues.createdOn ? formatDate(formValues.createdOn) : ''}}
             </span>
@@ -55,6 +55,9 @@
             </span>
             <div *ngIf="formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
               {{formValues.status.displayName}}
+            </div>
+            <div *ngIf="!formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
+              Draft
             </div>
           </div>
         </div>
@@ -326,7 +329,7 @@
         </div>
         <div *ngIf="!formValues.company || (formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
         </div>
-        <mat-menu #menu1="matMenu" class="allowed-company-modal">
+        <mat-menu #menu1="matMenu" class="general-allowed-company-modal">
           <div style="height: 293px;" [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
             <div class="col-md-12 header-allowed-company">
               <div class="allowed-company-header col-md-10 contract-no-padding" >
@@ -342,7 +345,7 @@
               </mat-checkbox>
             </div>
           </div>
-          <div class="saveBtn" [ngClass]="{'expand-save-button': expandAllowedCompanylistPopUp}">
+          <div class="saveAllowedCompanies" [ngClass]="{'expand-save-button': expandAllowedCompanylistPopUp}">
             <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
               pButton
               (click)="saveAllowedCompanies()"
@@ -509,7 +512,7 @@
         </div>
         <div *ngIf="(formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
         </div>
-        <mat-menu #menu3="matMenu" class="allowed-company-modal">
+        <mat-menu #menu3="matMenu" class="general-allowed-company-modal">
           <div style="height: 280px;" [ngClass]="{'expand-allowed-company-container': expandCustomerListPopUp}">
             <div class="col-md-12 header-allowed-company">
               <div class="allowed-company-header col-md-10 contract-no-padding" >
@@ -525,7 +528,7 @@
               </mat-checkbox>
             </div>           
           </div>
-          <div class="saveBtn2" [ngClass]="{'expand-save-button': expandCustomerListPopUp}">
+          <div class="saveCustomer" [ngClass]="{'expand-save-button': expandCustomerListPopUp}">
             <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
               pButton
               (click)="saveCustomer()"

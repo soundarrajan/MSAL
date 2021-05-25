@@ -209,6 +209,7 @@
                                   [matDatepicker]="workingDueDate"
                                   autocomplete="off"
                                   placeholder="Working Due Date"
+                                  disabled="true"
                                   (dateChange)="
                                     formatDateForBe(formValues.workingDueDate);
                                     isFormValid({ useToaster: false })
@@ -553,6 +554,7 @@
                     [model]="formValues"
                     [productList]="productList"
                     [uomList]="uomList"
+                    [isPricingDateEditable]="isPricingDateEditable"
                     [currencyList]="currencyList"
                     [physicalSupplierList]="physicalSupplierList"
                     [entityId]="entityId"

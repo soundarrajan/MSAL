@@ -57,10 +57,6 @@ export class AdditionalCostModalComponent implements OnInit {
     this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
     this.formatAdditionalCosts();
-    this.formValues.orderDetails.location = {
-      'id': 135,
-      'name': 'Hamburg'
-    }
     this.getAdditionalCostsPerPort(this.formValues.orderDetails?.portId);
 
   }
@@ -339,6 +335,70 @@ export class AdditionalCostModalComponent implements OnInit {
     }
   }
 
+  getRangeTotalAmount(additionalCost, rowIndex) {
+    if (!additionalCost.locationAdditionalCostId) {
+      return;
+    }
+
+    if (!(additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total')) {
+      return;
+    }
+
+    if (!additionalCost.invoiceQuantity) {
+      return;
+    }
+
+    let payload = {
+      "Payload": {
+        "Order": null,
+        "Filters": [
+          {
+            "ColumnName": "ProductId",
+            "Value": additionalCost.product ? additionalCost.product.productId : null
+          },
+          {
+            "ColumnName": "LocationId",
+            "Value": this.formValues.orderDetails.portId ? this.formValues.orderDetails.portId : null
+          },
+          {
+            "ColumnName": "AdditionalCostId",
+            "Value": additionalCost.locationAdditionalCostId ? additionalCost.locationAdditionalCostId : null
+          },
+          {
+            "ColumnName": "Qty",
+            "Value": additionalCost.invoiceQuantity
+          },
+          {
+            "ColumnName": "QtyUomId",
+            "Value": additionalCost.invoiceQuantityUom ? additionalCost.invoiceQuantityUom.id : null
+          }
+        ],
+        "Pagination": {
+          "Skip": 0,
+          "Take": 25
+        },
+        "SearchText": null
+      }
+    }
+
+    this.invoiceService
+    .getRangeTotalAdditionalCosts(payload)
+    .pipe(
+      finalize(() => {
+        //this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        additionalCost.invoiceRate = this.quantityFormatValue(response.price);
+        this.invoiceConvertUom('cost', rowIndex);
+      }
+    });
+  }
+
 
   addCostDetail(additionalCost){
     if (!this.formValues.costDetails) {
@@ -354,6 +414,21 @@ export class AdditionalCostModalComponent implements OnInit {
         }
       }
     });
+    
+    let productLine =  {
+      id: -1,
+      name: 'All',
+      deliveryProductId: null,
+      productId: null
+    };
+    if (additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total')  {
+      productLine =  {
+        id: this.applyForList[1].productId,
+        productId: this.applyForList[1].productId,
+        name: this.applyForList[1].name,
+        deliveryProductId:  this.applyForList[1].deliveryProductId
+      }
+    } 
     let newLine = {
       costName: {
         id: additionalCost.additionalCostid,
@@ -369,18 +444,15 @@ export class AdditionalCostModalComponent implements OnInit {
       invoiceRate: null,
       invoiceRateUom: additionalCost.priceUom ? additionalCost.priceUom : this.generalTenantSettings.tenantFormats.uom,
       invoiceRateCurrency: additionalCost.currency ? additionalCost.currency : this.formValues.invoiceRateCurrency,
-      product: {
-        id: -1,
-        name: 'All',
-        deliveryProductId: null
-      },
+      product: productLine,
       isTaxComponent: isTaxComponent,
       locationAdditionalCostId: additionalCost.locationid
     }
     this.formValues.costDetails.push(newLine);
     this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
     this.changeDetectorRef.detectChanges();
-    console.log()
+    
+  
   }
 
   removeAdditionalCostLine(key) {
@@ -478,6 +550,14 @@ export class AdditionalCostModalComponent implements OnInit {
     }
 
     if (this.costType && this.costType.name == 'Flat') {
+      this.formValues.costDetails[rowIndex].invoiceAmount = this.cost.invoiceRate;
+      this.formValues.costDetails[rowIndex].invoiceExtrasAmount = this.formValues.costDetails[rowIndex].invoiceExtras / 100 * this.formValues.costDetails[rowIndex].invoiceAmount;
+      this.formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+      this.calculateGrand(this.formValues);
+      return;
+    }
+
+    if (this.cost.locationAdditionalCostId && this.costType && (this.costType.name == 'Range' || this.costType.name == 'Total')) {
       this.formValues.costDetails[rowIndex].invoiceAmount = this.cost.invoiceRate;
       this.formValues.costDetails[rowIndex].invoiceExtrasAmount = this.formValues.costDetails[rowIndex].invoiceExtras / 100 * this.formValues.costDetails[rowIndex].invoiceAmount;
       this.formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
@@ -790,7 +870,6 @@ export class AdditionalCostModalComponent implements OnInit {
         console.log(response);
         this.additionalCostForLocation[locationId] = _.cloneDeep(response);
         this.additionalCostForLocationFilter[locationId] =  _.cloneDeep(response);
-        console.log(this.getAdditionalCostsPerPort);
         this.changeDetectorRef.detectChanges();
       }
     });

@@ -1,9 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation, ViewChildren } from '@angular/core';
+import { Store, Select } from '@ngxs/store';
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
+import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
 import { CommentsComponent } from '../comments/comments.component';
+
+import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
+
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -13,8 +18,6 @@ import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveS
 import { SaveCurrentROBState } from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
-import { RootLogger } from '@shiptech/core/logging/logger-factory.service';
-import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { Subject, Subscription, Observable } from 'rxjs';
 
 
@@ -25,10 +28,12 @@ import { Subject, Subscription, Observable } from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class VesselInfoComponent implements OnInit {
-
-  @ViewChild(CommentsComponent) child;
+  
+  @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
+  vesselRef: ISaveVesselData;
+  @ViewChild(CommentsComponent) child: CommentsComponent;
+  // @ViewChildren(CommentsComponent) children: CommentsComponent;
   @ViewChild(BunkeringPlanComponent) currentBplan;
-  @ViewChild(AGGridCellDataComponent) agGridCellData:AGGridCellDataComponent;
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
   @Input('selectedUserRole') selectedUserRole ;
@@ -65,12 +70,22 @@ export class VesselInfoComponent implements OnInit {
   public import_gsis : number = 0;
   public scrubberReady : any;
   public IsVesselhasNewPlan: boolean = false;
+  public totalCommentCount: any = 0;
+  BunkerPlanCommentList: any = [];
+  RequestCommentList: any = [];
+  currentROBChange: Subject<void> = new Subject<void>();
  
 
-  constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
+  constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
+
+      this.vesselData$.subscribe(data=> {
+        this.vesselRef = data;
+        // loadBunkerPlanComments fn callback to get BP comment count 
+        this.loadBunkerPlanComments();
+      });
    }
 
   ngOnInit() {
@@ -78,9 +93,27 @@ export class VesselInfoComponent implements OnInit {
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan.triggerRefreshGrid(this.selectedUserRole));
     this.loadBunkerPlanHeader(this.vesselData);  
     this.loadBunkerPlanDetails(this.vesselData);
-     
   }
-  
+    
+  loadBunkerPlanComments() {
+    let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
+    
+    this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
+      this.BunkerPlanCommentList = response?.payload;
+      this.loadRequestComments();
+    })   
+  }
+  loadRequestComments() {
+    let payload = this.vesselRef?.vesselId;
+    this.BPService.getRequestComments(payload).subscribe((response)=> {
+      console.log('Request Comments count...', response?.payload);
+      this.RequestCommentList = response?.payload;
+      this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
+      +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
+     
+      
+    })
+  }
   public loadBunkerPlanHeader(event) {
     let vesselId = event.id? event.id: 348;
     this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
@@ -153,6 +186,7 @@ export class VesselInfoComponent implements OnInit {
     }
     this.store.dispatch(new UpdateCurrentROBAction(value,column));
     console.log('Current ROB',this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB))
+    this.currentROBChange.next(column);
     event.stopPropagation();
     /* This service only for Test purpose only. 
     need to build request payload by using column, value based on BE update*/
@@ -211,6 +245,9 @@ export class VesselInfoComponent implements OnInit {
     this.loadBunkerPlanHeader(event);
     this.loadBunkerPlanDetails(event);
     this.checkVesselHasNewPlan(event);
+  }
+  TotalCommentCount(count: any) {
+    this.totalCommentCount = count;
   }
   
   checkVesselHasNewPlan(event) {
@@ -337,6 +374,7 @@ export class VesselInfoComponent implements OnInit {
     }
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
+      this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0){
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',
@@ -370,7 +408,8 @@ export class VesselInfoComponent implements OnInit {
     });
     }
     else if(this.selectedPort.length == 1){
-      let url = `${baseOrigin}/#/new-request/${this.selectedPort.voyage_detail_id}` ;
+      let voyage_id = this.selectedPort[0].voyage_detail_id;
+      let url = `${baseOrigin}/#/new-request/${voyage_id}` ;
       window.open(url, "_blank");
     }      
   }

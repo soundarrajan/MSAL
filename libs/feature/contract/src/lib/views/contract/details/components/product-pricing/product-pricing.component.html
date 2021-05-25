@@ -1,4 +1,4 @@
-<div class="col-md-12 contract-section selected-product-container" style="margin-left: 0px;">
+<div class="col-md-12 contract-section selected-product-container" style="margin-left: 0px; min-height:515px">
   <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
     <div class="header-product-details col-md-2 no-padding">
       Product pricing
@@ -193,11 +193,11 @@
       </div>
     </div>
   </div>
-  <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
+  <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px; margin-bottom:15px;">
     Product additional costs
   </div>
-  <div class="col-md-12 d-flex no-padding">
-    <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%">
+  <div class="col-md-12 d-flex no-padding table-fix-head">
+    <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%; margin-top:0px">
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
@@ -242,7 +242,8 @@
                     <mat-select 
                             [(ngModel)]="additionalCost.value.additionalCost"
                             (selectionChange)="setAdditionalCost($event.value, selectedTabIndex, additionalCost.key);
-                            setAdditionalCostLine(additionalCost.value.additionalCost, selectedTabIndex, additionalCost.key);                             setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
+                            setAdditionalCostLine($event.value, selectedTabIndex, additionalCost.key);                             
+                            setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-info-select-container"
                             [compareWith]="compareAdditionalCostObjects"

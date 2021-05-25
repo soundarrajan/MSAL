@@ -110,7 +110,8 @@ export class DeliveryApi implements IDeliveryApiService {
       `${this._apiUrl}/${DeliveryApiPaths.getDeliveryDetails()}`,
       { payload: request }
     ).pipe(
-      map((body: any) => body.payload),
+      map((body: any) => body.payload
+      ),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
@@ -203,7 +204,8 @@ export class DeliveryApi implements IDeliveryApiService {
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
-
+  
+//Update / Remove Delivery Notes api
   @ObservableException()
   saveNotesDelivery(
     request: any
@@ -211,8 +213,10 @@ export class DeliveryApi implements IDeliveryApiService {
     return this.http.post<IDeliveryNotesDetailsResponse>(
       `${this._apiUrl}/${DeliveryApiPaths.saveNotesDelivery()}`,
       { payload: request }
-    ).pipe(
-      map((body: any) => body.upsertedId),
+    )
+    .pipe(
+      map((body: any) => body.payload), 
+      
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }

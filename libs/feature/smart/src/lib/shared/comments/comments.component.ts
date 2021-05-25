@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
 import { BunkeringPlanComponent } from "./../bunkering-plan/bunkering-plan.component";
 import { Select, Selector } from "@ngxs/store";
@@ -14,62 +14,64 @@ export class CommentsComponent implements OnInit {
 
   @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
   vesselRef: ISaveVesselData;
+  @Output() ShowCommentCount = new EventEmitter<any>();
   public expanded: boolean = false;
   public loginUser = "YH";
   public participants = [];
   public BunkerPlanCommentList = [];
   public RequestCommentList = [];
-  public searchParticipant: '';
+  public searchParticipant: string = '';
+  public totalCommentCount: any = 0;
   // selectedCommentTab: number = 0;
   public newComment = "";
   public searchText = '';
   // public newAttachment = [];
-  public bunkerPlanData = [
-    {
-      placeholder: 'AJ',
-      name: 'Alexander James',
-      time: '09:00',
-      date: '13 Dec 2019',
-      comment: 'Status remains the same. See the link to get further details.',
-      attachment: ['Screenshot1_2018-06-21', 'Screenshot2_2018-06-21']
-    },
-    {
-      placeholder: 'PB',
-      name: 'Pooja Bhattiprolu',
-      time: '09:00',
-      date: '13 Dec 2019',
-      comment: 'Catania will be closed from tomorrow.',
-      attachment: []
-    },
-    {
-      placeholder: 'YH',
-      name: 'Yusuf Hassan',
-      time: '09:00',
-      date: '13 Dec 2019',
-      comment: 'Status remains the same. See the link to get further details.',
-      attachment: []
-    }
-  ]
-  public requests = [
-    {
-      placeholder: 'AJ',
-      name: 'Alexander James',
-      time: '09:00',
-      date: '13 Dec 2019',
-      comment: 'Status remains the same. See the link to get further details.',
-      attachment: []
-    },
-    {
-      placeholder: 'GS',
-      name: 'Gokul Simsons',
-      time: '09:00',
-      date: '13 Dec 2019',
-      comment: 'Status remains the same. See the link to get further details so as to decide on future changes to be incorporated into the design system.Link given below.',
-      attachment: []
-    },
-  ]
+  // public bunkerPlanData = [
+  //   {
+  //     placeholder: 'AJ',
+  //     name: 'Alexander James',
+  //     time: '09:00',
+  //     date: '13 Dec 2019',
+  //     comment: 'Status remains the same. See the link to get further details.',
+  //     attachment: ['Screenshot1_2018-06-21', 'Screenshot2_2018-06-21']
+  //   },
+  //   {
+  //     placeholder: 'PB',
+  //     name: 'Pooja Bhattiprolu',
+  //     time: '09:00',
+  //     date: '13 Dec 2019',
+  //     comment: 'Catania will be closed from tomorrow.',
+  //     attachment: []
+  //   },
+  //   {
+  //     placeholder: 'YH',
+  //     name: 'Yusuf Hassan',
+  //     time: '09:00',
+  //     date: '13 Dec 2019',
+  //     comment: 'Status remains the same. See the link to get further details.',
+  //     attachment: []
+  //   }
+  // ]
+  // public requests = [
+  //   {
+  //     placeholder: 'AJ',
+  //     name: 'Alexander James',
+  //     time: '09:00',
+  //     date: '13 Dec 2019',
+  //     comment: 'Status remains the same. See the link to get further details.',
+  //     attachment: []
+  //   },
+  //   {
+  //     placeholder: 'GS',
+  //     name: 'Gokul Simsons',
+  //     time: '09:00',
+  //     date: '13 Dec 2019',
+  //     comment: 'Status remains the same. See the link to get further details so as to decide on future changes to be incorporated into the design system.Link given below.',
+  //     attachment: []
+  //   },
+  // ]
   
-  constructor(private BPService: BunkeringPlanCommentsService, private BunkeringPlanCompRef: BunkeringPlanComponent) {
+  constructor(private BPService: BunkeringPlanCommentsService) {
     this.vesselData$.subscribe(data=> {
       this.vesselRef = data;
       this.loadBunkerPlanComments();
@@ -78,11 +80,14 @@ export class CommentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.participants = this.bunkerPlanData
+    // this.participants = this.bunkerPlanData
+    this.loadComments();
+  }
+
+  public loadComments() {
     this.loadBunkerPlanComments();
     this.loadRequestComments();
   }
-
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
     
@@ -91,76 +96,16 @@ export class CommentsComponent implements OnInit {
       this.BunkerPlanCommentList = response?.payload;
       let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
-    })
-      // this.BunkerPlanCommentList = [
-      //   {
-      //     "ship_id": "AGAR",
-      //     "plan_id": "Y702100027",
-      //     "notes_id": "2",
-      //     "request_id": null,
-      //     "notes": "test 2",
-      //     "created_date": "0001-01-01T00:00:00Z",
-      //     "modified_date": null,
-      //     "notes_from": "Operator",
-      //     "copytoRFQ": false,
-      //     "createdBy": {
-      //       "id": 169,
-      //       "name": "subhashini.k@inatech.com",
-      //       "internalName": null,
-      //       "displayName": "Subhashini",
-      //       "code": null,
-      //       "collectionName": null,
-      //       "customNonMandatoryAttribute1": null,
-      //       "isDeleted": false,
-      //       "modulePathUrl": null,
-      //       "clientIpAddress": null,
-      //       "userAction": null
-      //     },
-      //     "modifiedBy": null,
-      //     "id": 169,
-      //     "isDeleted": false,
-      //     "modulePathUrl": null,
-      //     "clientIpAddress": null,
-      //     "userAction": null
-      //   },
-      //   {
-      //     "ship_id": "IGUAC",
-      //     "plan_id": "Y702100037",
-      //     "notes_id": "3",
-      //     "request_id": null,
-      //     "notes": "test 2",
-      //     "created_date": "0001-01-01T00:00:00Z",
-      //     "modified_date": null,
-      //     "notes_from": "Operator",
-      //     "copytoRFQ": false,
-      //     "createdBy": {
-      //       "id": 169,
-      //       "name": "subhashini.k@inatech.com",
-      //       "internalName": null,
-      //       "displayName": "Subhashini",
-      //       "code": null,
-      //       "collectionName": null,
-      //       "customNonMandatoryAttribute1": null,
-      //       "isDeleted": false,
-      //       "modulePathUrl": null,
-      //       "clientIpAddress": null,
-      //       "userAction": null
-      //     },
-      //     "modifiedBy": null,
-      //     "id": 169,
-      //     "isDeleted": false,
-      //     "modulePathUrl": null,
-      //     "clientIpAddress": null,
-      //     "userAction": null
-      //   }
-      // ]
-      
+    })   
   }
   loadRequestComments() {
     let payload = this.vesselRef?.vesselId; //3524
     this.BPService.getRequestComments(payload).subscribe((response)=> {
       console.log('Request Comments...', response?.payload);
       this.RequestCommentList = response?.payload;
+      this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
+      +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
+      this.ShowCommentCount.emit(this.totalCommentCount);
       let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
     })
@@ -176,7 +121,7 @@ export class CommentsComponent implements OnInit {
     if (event.index == 0)
       data = this.BunkerPlanCommentList;
     else
-      data = this.requests;
+      data = this.RequestCommentList;
 
     // this.filterParticipants(data);
 
