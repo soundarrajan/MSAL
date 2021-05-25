@@ -1,7 +1,9 @@
-﻿commit 06e1fbf5e47b1fdfa5262d82021636b009fe4ec5
-Author: Prabaharan P <prabaharan.p@Inatech.com>
-Date:   Tue May 25 16:58:08 2021 +0530
+﻿commit 4b8bbe5321f84a2bfa453618d17f7c0052c6050d
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue May 25 12:06:03 2021 +0000
 
-    32301: Delivery - Different Product type items can be selected in the delivery screen.In UI changes updated
+    Merged PR 10923: Removed contract/get after user extend contract
+    
+    Removed contract/get after user extend contract
 
 branch: master
