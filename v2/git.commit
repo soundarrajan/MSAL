@@ -1,11 +1,7 @@
-﻿commit 756cf38a1ce19b55ff1e3ce2cb18a9f67d04e29e
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Tue May 25 12:43:33 2021 +0000
+﻿commit 43a5940c13749ff74df3cde35b35638461098c7e
+Author: Soundar <soundarrajan.s@inatech.com>
+Date:   Tue May 25 18:52:51 2021 +0530
 
-    Merged PR 10926: fix button
-    
-    fix button
-    
-    Related work items: #32573
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master

@@ -306,12 +306,24 @@
   .ag-shiptech-theme {
     .ag-cell{
       &.checkboxCenter{
+        justify-content: center;
         .ag-cell-wrapper{
           justify-content: center;
-        
-        .ag-selection-checkbox{
+          .ag-selection-checkbox{
+            margin: 0 !important;
+            .ag-checkbox-input-wrapper:active,.ag-checkbox-input-wrapper:focus-within{
+              box-shadow:none !important;
+            }
+            .ag-checkbox-input-wrapper.ag-checked::after{
+              color: #7F8C8D !important;
+            }
+          }
+         .ag-selection-checkbox{
           .ag-icon-checkbox-checked,.ag-icon-checkbox-unchecked{
             margin: 0 !important;
+          }
+          .ag-icon-checkbox-checked {
+            color: #7F8C8D !important;
           }
         }
       }
