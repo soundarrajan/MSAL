@@ -269,6 +269,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   setScreenActions(formValues: any){
+    this.saveDisabled = true;
     this.displayDetailFormvalues = true;
     this.spinner.hide();
     this.detailFormvalues = <IInvoiceDetailsItemDto>formValues;
