@@ -1,11 +1,9 @@
-﻿commit 37a34d9efb5922bb955dc7951444492df61923db
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon May 24 17:29:20 2021 +0000
+﻿commit 511e6de7d1c7c3cc45d83efd8bef05d5ddab14d1
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Tue May 25 10:36:28 2021 +0530
 
-    Merged PR 10905: Fix Build 2
+    Contract - UI fix
     
-    Fix Build 2
-    
-    Related work items: #27540
+    Contract - UI fix
 
 branch: master
