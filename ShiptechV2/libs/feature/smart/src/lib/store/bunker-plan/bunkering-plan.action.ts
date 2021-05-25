@@ -81,3 +81,28 @@ export class GeneratePlanAction{
 
   }
 }
+
+export class GeneratePlanProgressAction{
+  static readonly type = '[Plan] GenerateProgress';
+
+  constructor(public value: any){
+
+  }
+}
+
+export class ImportGsisAction{
+  static readonly type = '[Plan] Import GSIS';
+
+  constructor(public value:any){
+
+  }
+}
+
+export class SendPlanAction{
+  static readonly type = '[Plan] Import GSIS';
+
+  constructor(public value:any){
+
+  }
+}
+

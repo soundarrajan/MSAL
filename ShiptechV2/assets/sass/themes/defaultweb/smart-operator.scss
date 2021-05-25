@@ -7465,3 +7465,22 @@ label {
 		border-color: $grey2;
 	}
 }
+
+.dark-checkbox-v2 {
+	margin-left: 5px;
+	.mat-checkbox-checkmark-path {
+		 stroke: #66B0D6 !important
+	}
+	.mat-checkbox-inner-container {
+		background: #2F3845!important;
+		border-radius: 4px;
+	}
+	.mat-checkbox-background {
+		 background-color: #2F3845!important;
+	}
+}
+.import-gsis{
+	color:#8F9BAB;
+	font-size: 14px;
+
+}
