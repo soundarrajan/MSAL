@@ -73,7 +73,7 @@ export class VesselInfoComponent implements OnInit {
   public totalCommentCount: any = 0;
   BunkerPlanCommentList: any = [];
   RequestCommentList: any = [];
-  public isChecked : boolean = true;
+  public isChecked : boolean = false;
   currentROBChange: Subject<void> = new Subject<void>();
  
 
@@ -248,6 +248,9 @@ export class VesselInfoComponent implements OnInit {
     this.loadBunkerPlanHeader(event);
     this.loadBunkerPlanDetails(event);
     this.checkVesselHasNewPlan(event);
+    this.store.dispatch(new GeneratePlanAction(0));
+    this.store.dispatch(new ImportGsisAction(0));
+    this.store.dispatch(new SendPlanAction(0));
   }
   TotalCommentCount(count: any) {
     this.totalCommentCount = count;
@@ -346,9 +349,10 @@ export class VesselInfoComponent implements OnInit {
         });
       }
     })
+    event.stopPropagation();
   }
-  setImportGSIS(){
-    this.import_gsis = this.isChecked == true ? 1:0 ;
+  setImportGSIS(event){
+    this.import_gsis = this.isChecked == false ? 1:0 ;
     let req = {
       action:"",
       ship_id: this.vesselData?.vesselId,
@@ -365,7 +369,7 @@ export class VesselInfoComponent implements OnInit {
         })
       }
     })
-    this.isChecked = !this.isChecked;
+    event.stopPropagation();
   }
   generateCurrentBPlan(event){
     let req = {
@@ -384,6 +388,7 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'confirmation-popup',
           data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
+        this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
       }
       else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
@@ -392,9 +397,10 @@ export class VesselInfoComponent implements OnInit {
           data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
         this.store.dispatch(new GeneratePlanAction(0));
+        this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
       }
-      this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
     })
+    event.stopPropagation();
   }
   getVoyageDetail(selectedPort) {
     this.selectedPort = selectedPort;

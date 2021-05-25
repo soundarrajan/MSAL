@@ -1,8 +1,8 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { ISaveVesselData } from './../shared-model/vessel-data-model';
-import { SaveBunkeringPlanModel,AddCurrentBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
-import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, AddCurrentBunkeringPlanAction, UpdateCurrentBunkeringPlanAction,SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction,saveVesselDataAction,
+import { SaveBunkeringPlanModel,CurrentROBModel } from './bunkering-plan.model';
+import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction,saveVesselDataAction,
          GeneratePlanAction, SaveScrubberReadyAction, ImportGsisAction, GeneratePlanProgressAction, SendPlanAction } from './bunkering-plan.action';
 
 
@@ -19,10 +19,6 @@ export class SaveVessleDataStateModel{
   vesselData : ISaveVesselData;
 }
 
-export class AddCurrentBunkeringPlanStateModel{
-  CurrentBplanData : AddCurrentBunkeringPlanModel[];
-}
-
 @State <SaveBunkeringPlanStateModel>({
   name : 'SaveBunkeringPlan',
   defaults : {
@@ -34,8 +30,51 @@ export class AddCurrentBunkeringPlanStateModel{
 export class SaveBunkeringPlanState{
 
   @Selector([SaveBunkeringPlanState])
-  static getSaveBunkeringPlanData(state: SaveBunkeringPlanStateModel):SaveBunkeringPlanModel[]{
+  static getBunkeringPlanData(state: SaveBunkeringPlanStateModel):SaveBunkeringPlanModel[]{
     return state?.BPlanData
+  }
+
+  @Selector([SaveBunkeringPlanState])
+  static getCBPhsfo05_stock(state: SaveBunkeringPlanStateModel):any{
+    return state?.BPlanData[0]?.hsfo05_stock;
+  }
+
+  @Selector([SaveBunkeringPlanState])
+  static getSaveBunkeringPlanData(state: SaveBunkeringPlanStateModel):SaveBunkeringPlanModel[]{
+    let data = [];
+    let params = state?.BPlanData;
+    params.forEach(bPlan =>{  
+      data.push({
+          plan_id: bPlan.plan_id,
+          detail_no: bPlan.detail_no,
+          port_id: bPlan.port_id,
+          service_code: bPlan.service_code,
+          operator_ack: bPlan.operator_ack,
+          hsfo_max_lift: bPlan.hsfo_max_lift,
+          hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
+          hsfo_safe_port: bPlan.hsfo_safe_port,
+          eca_estimated_consumption: bPlan.eca_estimated_consumption,
+          eca_safe_port: bPlan.eca_safe_port,
+          ulsfo_max_lift: bPlan.ulsfo_max_lift,
+          lsdis_max_lift: bPlan.lsdis_max_lift,
+          lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
+          lsdis_safe_port: bPlan.lsdis_safe_port,
+          hsfo_min_sod: bPlan.hsfo_min_sod,
+          eca_min_sod: bPlan.eca_min_sod,
+          min_sod: bPlan.min_sod,
+          max_sod: bPlan.max_sod,
+          hsdis_estimated_lift: bPlan.hsdis_estimated_lift,
+          business_address: bPlan.business_address,
+          is_min_soa: bPlan.is_min_soa,
+          min_soa_comment: bPlan.min_soa_comment,
+          min_sod_comment: bPlan.min_sod_comment,
+          hsfo_sod_comment: bPlan.hsfo_sod_comment,
+          eca_sod_comment: bPlan.eca_sod_comment,
+          max_sod_comment: bPlan.max_sod_comment
+      }) ;
+
+    })
+    return data;
   }
 
   @Action(SaveBunkeringPlanAction)
@@ -59,6 +98,8 @@ export class SaveBunkeringPlanState{
     let BPlanData = JSON.parse(JSON.stringify(state.BPlanData));
     let BPlanDataIndex = BPlanData.findIndex(data => data.detail_no == detail_no)
     switch(type){
+
+
       case 'hsfo_max_lift':{
                               BPlanData[BPlanDataIndex].hsfo_max_lift = payload;
                               break;
@@ -71,6 +112,14 @@ export class SaveBunkeringPlanState{
                               BPlanData[BPlanDataIndex].hsfo_safe_port = payload;
                               break;
                             }
+      case 'hsfo_soa':{
+                        BPlanData[BPlanDataIndex].hsfo_soa = payload;
+                        break;
+                      }
+      case 'hsfo05_stock':{
+                              BPlanData[BPlanDataIndex].hsfo05_stock = payload;
+                              break;
+                          }
       case 'eca_estimated_consumption':{
                                           BPlanData[BPlanDataIndex].eca_estimated_consumption = payload;
                                           break;
@@ -83,6 +132,15 @@ export class SaveBunkeringPlanState{
                               BPlanData[BPlanDataIndex].ulsfo_max_lift = payload;
                               break;
                             }
+      case 'ulsfo_estimated_lift':{
+                                    BPlanData[BPlanDataIndex].ulsfo_estimated_lift = payload;
+                                    break;
+                                  }
+      case 'ulsfo_soa':{
+                          BPlanData[BPlanDataIndex].ulsfo_soa = payload;
+                          break;
+                        }
+
       case 'lsdis_max_lift':{
                               BPlanData[BPlanDataIndex].lsdis_max_lift = payload;
                               break;
@@ -95,6 +153,15 @@ export class SaveBunkeringPlanState{
                                 BPlanData[BPlanDataIndex].lsdis_safe_port = payload;
                                 break;
                               }
+      case 'lsdis_as_eca':{
+                            BPlanData[BPlanDataIndex].lsdis_as_eca = payload;
+                            break;
+                          }
+                          
+      case 'lsdis_soa':{
+                          BPlanData[BPlanDataIndex].lsdis_soa = payload;
+                          break;
+                        }
       case 'hsfo_min_sod':{
                             BPlanData[BPlanDataIndex].hsfo_min_sod = payload;
                             break;
@@ -204,89 +271,6 @@ export class SaveBunkeringPlanState{
     })
   }
 
-}
-
-
-@State <AddCurrentBunkeringPlanStateModel>({
-  name : 'AddCurrentBunkeringPlan',
-  defaults : {
-    CurrentBplanData: []
-  }
-})
-//This state is meant to store values required for SOA Calculation in Current Bunkering Plan
-@Injectable()
-export class AddCurrentBunkeringPlanState{
-
-  @Selector([AddCurrentBunkeringPlanState])
-  static getCurrentBunkeringPlanData(state: AddCurrentBunkeringPlanStateModel):AddCurrentBunkeringPlanModel[]{
-    return state?.CurrentBplanData
-  }
-
-
-  @Selector([AddCurrentBunkeringPlanState])
-  static getCBPhsfo05_stock(state: AddCurrentBunkeringPlanStateModel):any{
-    return state?.CurrentBplanData[0]?.hsfo05_stock;
-  }
-
-  @Action(AddCurrentBunkeringPlanAction)
-  save({getState, patchState}: StateContext<AddCurrentBunkeringPlanStateModel>, {payload}:AddCurrentBunkeringPlanAction){
-    const state = getState();
-    patchState({
-      ...state,
-      CurrentBplanData : [...payload]
-    })
-  }
-
-  @Action(UpdateCurrentBunkeringPlanAction)
-  update({getState, patchState}: StateContext<AddCurrentBunkeringPlanStateModel>, {payload, type, detail_no}:UpdateCurrentBunkeringPlanAction){
-    const state = getState();
-    let BPlanData = JSON.parse(JSON.stringify(state.CurrentBplanData));
-    let BPlanDataIndex = BPlanData.findIndex(data => data.detail_no == detail_no)
-    switch(type){
-      case 'hsfo_estimated_consumption':{
-                                          BPlanData[BPlanDataIndex].hsfo_estimated_consumption = payload;
-                                          break;
-                                        }
-      case 'hsfo05_stock':{
-                            BPlanData[BPlanDataIndex].hsfo05_stock = payload;
-                            break;
-                          }
-      case 'hsfo_soa':{
-                            BPlanData[BPlanDataIndex].hsfo_soa = payload;
-                            break;
-                          }                    
-      case 'eca_estimated_consumption':{
-                                          BPlanData[BPlanDataIndex].eca_estimated_consumption = payload;
-                                          break;
-                                        }
-      case 'ulsfo_estimated_lift':{
-                              BPlanData[BPlanDataIndex].ulsfo_estimated_lift = payload;
-                              break;
-                            }
-      case 'ulsfo_soa':{
-                              BPlanData[BPlanDataIndex].ulsfo_soa = payload;
-                              break;
-                            }
-      case 'lsdis_estimated_consumption':{
-                                          BPlanData[BPlanDataIndex].lsdis_estimated_consumption = payload;
-                                          break;
-                                        }
-      case 'lsdis_as_eca':{
-                                BPlanData[BPlanDataIndex].lsdis_as_eca = payload;
-                                break;
-                              }
-      case 'lsdis_soa':{
-                                BPlanData[BPlanDataIndex].lsdis_soa = payload;
-                                break;
-                              }
-    }
-    
-    patchState({
-      ...state,
-      CurrentBplanData: BPlanData
-      
-    })
-  }
 }
 
 export class SaveCurrentROBStateModel{

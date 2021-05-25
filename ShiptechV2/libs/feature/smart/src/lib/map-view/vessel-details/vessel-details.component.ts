@@ -8,6 +8,7 @@ import { WarningComponent } from '../../shared/warning/warning.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { VesselInfoComponent} from '../../shared/vessel-info/vessel-info.component';
+import { GeneratePlanAction, ImportGsisAction, SendPlanAction} from './../../store/bunker-plan/bunkering-plan.action';
 
 @Component({
   selector: 'app-vessel-details',
@@ -193,6 +194,9 @@ export class VesselDetailsComponent implements OnInit {
 
       })
     }
+    this.store.dispatch(new GeneratePlanAction(0));
+    this.store.dispatch(new ImportGsisAction(0));
+    this.store.dispatch(new SendPlanAction(0));
   }
   vesselChange(event) {
     this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
