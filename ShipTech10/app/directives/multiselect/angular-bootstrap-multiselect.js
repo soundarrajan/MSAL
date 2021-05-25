@@ -127,19 +127,21 @@
                             $scope.unselectedOptions = $scope.resolvedOptions.slice(); // Take a copy
                         }
                     } else {
-                        $scope.selectedOptions = $scope.resolvedOptions.filter((el) => {
-                            let id = $scope.getId(el);
-                            for (let i = 0; i < $ngModelCtrl.$viewValue.length; i++) {
-                                let selectedId = $scope.getId($ngModelCtrl.$viewValue[i]);
-                                if (id === selectedId) {
-                                    return true;
+                        if($scope.resolvedOptions) {
+                            $scope.selectedOptions = $scope.resolvedOptions.filter((el) => {
+                                let id = $scope.getId(el);
+                                for (let i = 0; i < $ngModelCtrl.$viewValue.length; i++) {
+                                    let selectedId = $scope.getId($ngModelCtrl.$viewValue[i]);
+                                    if (id === selectedId) {
+                                        return true;
+                                    }
                                 }
-                            }
-                            return false;
-                        });
-                        $scope.unselectedOptions = $scope.resolvedOptions.filter((el) => {
-                            return $scope.selectedOptions.indexOf(el) < 0;
-                        });
+                                return false;
+                            });
+                            $scope.unselectedOptions = $scope.resolvedOptions.filter((el) => {
+                                return $scope.selectedOptions.indexOf(el) < 0;
+                            });
+                        }  
                     }
                 };
 
