@@ -1,9 +1,7 @@
-﻿commit 3d39f9d7fc4567b14ca3dbd9b7a7abbde9c8aadd
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 25 08:48:06 2021 +0000
+﻿commit aee10a69c38688f57d991686025f553617cecac5
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Tue May 25 16:13:07 2021 +0530
 
-    Merged PR 10918: Added changes for total and range cost type in invoice screen
-    
-    Added changes for total and range cost type
+    Corrected new invoice screen navigation top bar. # 25553.
 
 branch: master
