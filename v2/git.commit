@@ -1,7 +1,9 @@
-﻿commit ff528e07e4ea38265184bb2cf913c1eb9d57b825
-Author: Soundar <soundarrajan.s@inatech.com>
-Date:   Tue May 25 17:38:46 2021 +0530
+﻿commit d57fcd6269db79563f991b756ee6db8d14dde038
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue May 25 12:23:35 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10925: Added expand mode by default for notes from invoice screen
+    
+    Added expand mode by default for notes from invoice screen
 
 branch: master
