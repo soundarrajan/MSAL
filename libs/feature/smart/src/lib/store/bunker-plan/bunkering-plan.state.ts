@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ISaveVesselData } from './../shared-model/vessel-data-model';
 import { SaveBunkeringPlanModel,AddCurrentBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
 import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, AddCurrentBunkeringPlanAction, UpdateCurrentBunkeringPlanAction,SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction,saveVesselDataAction,
-         GeneratePlanAction, SaveScrubberReadyAction } from './bunkering-plan.action';
+         GeneratePlanAction, SaveScrubberReadyAction, ImportGsisAction, GeneratePlanProgressAction, SendPlanAction } from './bunkering-plan.action';
 
 
 
@@ -359,29 +359,77 @@ export class UpdateBplanTypeState{
 }
 
 export class GeneratePlanStateModel{
-  value : any;
+  generatePlan : any;
+  genInProgress : any;
+  importGsis : any;
+  sendPlan : any;
 }
 
 @State <GeneratePlanStateModel>({
   name : 'GeneratePlan',
   defaults : {
-    value: 0
+    generatePlan : 0,
+    genInProgress : 0,
+    importGsis : 0,
+    sendPlan : 0
   }
 })
 @Injectable()
 export class GeneratePlanState{
 
   @Selector([GeneratePlanState])
-  static getBplanType(state: GeneratePlanStateModel ):any{
-    return state?.value;
+  static getGeneratePlan(state: GeneratePlanStateModel ):any{
+    return state?.generatePlan;
+  }
+
+  @Selector([GeneratePlanState])
+  static getProgressOfGeneratePlan(state: GeneratePlanStateModel ):any{
+    return state?.genInProgress;
+  }
+
+  @Selector([GeneratePlanState])
+  static getImportGsis(state: GeneratePlanStateModel ):any{
+    return state?.importGsis;
+  }
+
+  @Selector([GeneratePlanState])
+  static getSendPlan(state: GeneratePlanStateModel ):any{
+    return state?.sendPlan;
   }
 
   @Action(GeneratePlanAction)
-  saveBplanType({getState, patchState}: StateContext<GeneratePlanStateModel>, {value}:GeneratePlanAction){
+  saveGeneratePlan({getState, patchState}: StateContext<GeneratePlanStateModel>, {value}:GeneratePlanAction){
     const state = getState();
     patchState({
       ...state,
-      value : value
+      generatePlan : value
+    })
+  }
+
+  @Action(GeneratePlanProgressAction)
+  saveProgressGeneratePlan({getState, patchState}: StateContext<GeneratePlanStateModel>, {value}:GeneratePlanProgressAction){
+    const state = getState();
+    patchState({
+      ...state,
+      genInProgress : value
+    })
+  }
+
+  @Action(ImportGsisAction)
+  saveImportGsis({getState, patchState}: StateContext<GeneratePlanStateModel>, {value}:ImportGsisAction){
+    const state = getState();
+    patchState({
+      ...state,
+      importGsis : value
+    })
+  }
+
+  @Action(SendPlanAction)
+  saveSendPlan({getState, patchState}: StateContext<GeneratePlanStateModel>, {value}:SendPlanAction){
+    const state = getState();
+    patchState({
+      ...state,
+      sendPlan : value
     })
   }
 }

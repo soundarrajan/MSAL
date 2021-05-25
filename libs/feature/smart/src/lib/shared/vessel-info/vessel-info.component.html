@@ -231,8 +231,10 @@
                     (click)="$event.stopPropagation()"> 
                     <a (click)="createRequest()">Create Request </a>
                   </div>
-                  <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
-                    GSIS</button>
+                  <!-- <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
+                    GSIS</button> -->
+                    <div style="position: relative; right:-120px;"> <mat-checkbox [checked]="!isChecked" (click)="setImportGSIS()" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div class="import-gsis"> Import GSIS</div>
                 </div>
                 <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
                   class="border-rightside">

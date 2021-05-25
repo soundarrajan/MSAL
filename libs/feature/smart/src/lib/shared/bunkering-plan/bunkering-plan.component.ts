@@ -8,7 +8,7 @@ import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { SaveBunkeringPlanAction,AddCurrentBunkeringPlanAction,UpdateCurrentROBAction,UpdateBplanTypeAction, UpdateCurrentBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
-import { SaveBunkeringPlanState,AddCurrentBunkeringPlanState,SaveCurrentROBState, UpdateBplanTypeState} from '../../store/bunker-plan/bunkering-plan.state';
+import { SaveBunkeringPlanState,AddCurrentBunkeringPlanState,SaveCurrentROBState, UpdateBplanTypeState, GeneratePlanState} from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
@@ -560,14 +560,15 @@ export class BunkeringPlanComponent implements OnInit {
     this.getRecalculatedHsfoCurrentStock();
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
     let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData);
+    let storeVesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
     console.log('data from store', dataFromStore);
 
     
     let req = {
        action : "save",
        user_id : "default@inatech.com",//this.username$ ,
-       ship_id: this.vesselData?.vesselId,
-       plan_id: this.latestPlanId,
+       ship_id: storeVesselData.vesselId,
+       plan_id: storeVesselData.planId,
        hsfo_current_stock: currentROBObj['3.5 QTY'] ? currentROBObj['3.5 QTY']: 0,
        vlsfo_current_stock: currentROBObj['0.5 QTY']? currentROBObj['0.5 QTY']: 0,
        ulsfo_current_stock: currentROBObj?.ULSFO,
@@ -575,9 +576,9 @@ export class BunkeringPlanComponent implements OnInit {
        hsdis_current_stock: currentROBObj?.HSDIS,
        plan_details: dataFromStore,
        is_vessel_role_played: this.selectedUserRole == 1 ? 1 : 0, 
-       generate_new_plan: 1,
-       import_gsis: 1,
-       send_plan: 1, 
+       generate_new_plan: this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
+       import_gsis: this.store.selectSnapshot(GeneratePlanState.getImportGsis),
+       send_plan: this.store.selectSnapshot(GeneratePlanState.getSendPlan), 
     }
     console.log('Request', req);
     let isHardValidated = this.checkBunkerPlanValidations(dataFromStore);
