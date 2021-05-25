@@ -140,7 +140,7 @@
             <div [ngStyle]="{'flex':!expanded?'0 0 95%':'0 0 94%'}">
               <div class="new-comment">
                 <textarea class="new-comment-field" matInput [(ngModel)]="newComment"
-                  placeholder="Type your messages here" (keyup.enter)="postNewComment(tabGroup)"></textarea>
+                  placeholder="Type your messages here" (keyup.enter)="$event.preventDefault();postNewComment(tabGroup)"></textarea>
                 <!-- <div class="image-upload">
                   <label for="file-input">
                     <img class="hand" src="./assets/customicons/image-search.svg" alt="search-icon">
