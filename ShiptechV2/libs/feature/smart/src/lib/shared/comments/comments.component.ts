@@ -162,6 +162,7 @@ export class CommentsComponent implements OnInit {
       this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
         console.log('Post Bunker Plan Comments...', response?.payload);
         this.BunkerPlanCommentList = response?.payload;
+        this.newComment = "";
       });
 
 
