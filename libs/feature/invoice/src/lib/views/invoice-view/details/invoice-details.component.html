@@ -360,8 +360,7 @@
                     <div class="col-md-3">
                         <div
                           id="custom-form-field"
-                          class="custom-form-field"
-                          class="lightTheme"
+                          class="custom-form-field lightTheme paid-ammount"
                         >
                           <mat-form-field
                             class="without-search"
@@ -373,8 +372,9 @@
                             <mat-label>Paid Amount</mat-label>
                             <input
                               matInput
+                              type="number"
+                              [disabled]="paidAmmoutDisabled"
                               (blur)="isFormValid({ useToaster: false })"
-                              required
                               name="paidAmount"
                               [(ngModel)]="formValues.paymentDetails.paidAmount"
                             />
