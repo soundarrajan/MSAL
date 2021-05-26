@@ -113,7 +113,8 @@ export class VesselInfoComponent implements OnInit {
       this.RequestCommentList = response?.payload;
       this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
       +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
-     
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+      titleEle.click();
       
     })
   }
