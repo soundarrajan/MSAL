@@ -4,15 +4,28 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     template: `
       <div class="mchip-container">
       <div [ngClass]="{'dashed-border-chip': info.Title === 'Deductions'}" >
-          <div class="title">
+          <div class="cip-container title-chip" *ngIf="info.Title !== 'Status'">
             <span class="chip-circle"></span>
             <span>{{info.Title}}</span>
           </div>
-          <div *ngIf="info.Title !== 'Deductions'" class="data" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+          <div class="cip-container title-chip" *ngIf="info.Title === 'Status'">
+            <span style="margin-right: 10px;">
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E" [ngStyle]="{'fill': info.statusColorCode }"/>
+              </svg>
+            </span>
+            <span>{{info.Title}}</span>
+          </div>
+          <div *ngIf="info.Title === 'Status'" class="data cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+              [matTooltip]="info.Data"
+              [matTooltipPosition]="'above'"
+              matTooltipClass="custom-tooltip"
+              [ngStyle]="{'color': info.statusColorCode}">{{info.Data}}</div>
+          <div *ngIf="info.Title !== 'Deductions' && info.Title != 'Status'" class="data cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
               [matTooltip]="info.Data"
               [matTooltipPosition]="'above'"
               matTooltipClass="custom-tooltip">{{info.Data}}</div>
-          <div *ngIf="info.Title === 'Deductions'" class="data deduction-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+          <div *ngIf="info.Title === 'Deductions'" class="data deduction-container cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
               [matTooltip]="'Deductions'"
               [matTooltipPosition]="'above'"
               matTooltipClass="custom-tooltip"> 
@@ -41,7 +54,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
                 color:#fff;
                 line-height: 20px;
               }
-              .mchip-container .title{
+              .mchip-container .title-chip{
                   font-size: 12px;
                   font-weight: 100;
               }
@@ -87,6 +100,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
               }
               .deduction-container {
                 display: inline-flex;
+              }
+
+              .cip-container {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
               }
             `]
   })
