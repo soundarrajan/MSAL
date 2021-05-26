@@ -230,7 +230,7 @@
   <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px; margin-bottom:15px;">
     Product conversion factors
   </div>
-  <div class="col-md-12 no-padding table-ftix-head">
+  <div class="col-md-12 no-padding ">
     <table class="product-details-table table table-stripped table-hover" style="width:100%">
       <thead>
         <tr>
@@ -251,6 +251,9 @@
             </td>
         </tr>
       </thead>
+      </table>
+      <div class="table-ftix-head">
+      <table class="product-details-table table table-stripped table-hover " style="width:100%">
       <tbody>
           <ng-container  *ngFor="let conversionFactor of formValues.products[selectedTabIndex].conversionFactors">
             <tr *ngIf="!conversionFactor.isDeleted">
@@ -357,6 +360,7 @@
           </ng-container>
       </tbody>
     </table>
+    </div>
   </div>
 <div>
 <ngx-spinner
