@@ -362,6 +362,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   ngOnInit(): void {
     this.formErrors = {};
+    // Set deductions to 0 if null
+    if (!this.formValues.invoiceSummary.deductions) {
+      this.formValues.invoiceSummary.deductions = this.amountFormatValue(0);
+    }
+
     this.entityName = 'Invoice';
     this.route.params.pipe().subscribe(params => {
       this.entityId = parseFloat(params.invoiceId);
@@ -1614,48 +1619,51 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       ? counterpartyDetails?.brokerName
       : this.emptyStringVal;
   }
-
   setChipDatas() {
+    var currencyCode = this.formValues.invoiceRateCurrency.code; // USD
+    var emptyValue = `${this.amountFormatValue(0)} ${currencyCode}`; // 0.00 USD
+
     var ivs = this.formValues.invoiceSummary;
     this.chipData[0].Data = this.formValues.id?.toString();
     this.chipData[1].Data = this.formValues.status?.displayName
       ? this.formValues.status.displayName
       : this.emptyStringVal;
     this.chipData[1].statusColorCode = this.statusColorCode;
+
     if (ivs) {
       this.chipData[2].Data = ivs.invoiceAmountGrandTotal
-        ? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) +
-          ' ' +
-          this.formValues.invoiceRateCurrency.code
-        : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
+        ? `${this.amountFormatValue(
+            ivs.invoiceAmountGrandTotal?.toString()
+          )} ${currencyCode}`
+        : emptyValue;
       this.chipData[3].Data = ivs?.estimatedAmountGrandTotal
-        ? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) +
-          ' ' +
-          this.formValues.invoiceRateCurrency.code
-        : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
+        ? `${this.amountFormatValue(
+            ivs?.estimatedAmountGrandTotal.toString()
+          )} ${currencyCode}`
+        : emptyValue;
       this.chipData[4].Data = ivs?.totalDifference
         ? this.amountFormatValue(ivs?.totalDifference?.toString()) +
           ' ' +
-          this.formValues.invoiceRateCurrency.code
-        : this.emptyNumberVal;
+          currencyCode
+        : emptyValue;
       this.chipData[5].Data = ivs?.provisionalInvoiceNo
         ? ivs?.provisionalInvoiceNo?.toString()
-        : this.emptyNumberVal;
+        : '';
       this.chipData[6].Data = ivs?.provisionalInvoiceAmount
         ? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) +
           ' ' +
-          this.formValues.invoiceRateCurrency.code
-        : this.emptyNumberVal;
+          currencyCode
+        : emptyValue;
       this.chipData[7].Data = ivs?.deductions
         ? this.amountFormatValue(ivs?.deductions?.toString()) +
           ' ' +
-          this.formValues.invoiceRateCurrency.code
-        : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
+          currencyCode
+        : emptyValue;
       this.chipData[8].Data = ivs?.netPayable
         ? this.amountFormatValue(ivs?.netPayable?.toString()) +
           ' ' +
-          this.formValues.invoiceRateCurrency.code
-        : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
+          currencyCode
+        : emptyValue;
     } else {
       this.formValues.invoiceSummary = <IInvoiceDetailsItemInvoiceSummary>{};
     }

@@ -1,9 +1,7 @@
-﻿commit eab90162a88e4708cd3e11da4430250984c9674b
+﻿commit 68c9473cface3c72231b2a6b8617134b9d9dfe61
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 26 13:35:05 2021 +0000
+Date:   Wed May 26 14:49:26 2021 +0000
 
-    Merged PR 10981: Fixed custom invoice status field
-    
-    Fixed custom invoice status field
+    Merged PR 10982: Fixed 32580
 
 branch: master
