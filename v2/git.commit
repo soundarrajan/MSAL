@@ -1,9 +1,7 @@
-﻿commit 1f4fa93e79f5eb86bb44970feff7e20620409920
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 26 07:23:19 2021 +0000
+﻿commit 35f8ee83d69964f34adc14595fa14b51edfe4c98
+Author: Pavithra M <pavithra.m@inatech.com>
+Date:   Wed May 26 15:18:39 2021 +0530
 
-    Merged PR 10945: Added indication for the user to see which page is in display in contract page
-    
-    Added indication for the user to see which page is in display in contract page
+    VSTS ID 32213, 32214, 32177
 
 branch: master

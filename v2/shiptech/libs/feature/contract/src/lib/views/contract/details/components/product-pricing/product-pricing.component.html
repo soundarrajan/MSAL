@@ -196,7 +196,7 @@
   <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px; margin-bottom:15px;">
     Product additional costs
   </div>
-  <div class="col-md-12 d-flex no-padding table-fix-head">
+  <div class="col-md-12  no-padding ">
     <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%; margin-top:0px">
       <thead>
         <tr>
@@ -226,6 +226,9 @@
           </td>
         </tr>
       </thead>
+      </table>
+      <div class="table-fix-head col-md-12 no-padding ">
+      <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%; margin-top:0px">
       <tbody>
 
           <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
@@ -349,6 +352,7 @@
           </ng-container>
       </tbody>
     </table>
+    </div>
   </div>
 <div>
 <ngx-spinner
