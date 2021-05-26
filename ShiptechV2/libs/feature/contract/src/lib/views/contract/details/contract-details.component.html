@@ -52,104 +52,104 @@
   </div>
 </div>
 </shiptech-contract-details-toolbar>
-<div class="container-fluid-contract">
-<div class="row m-b-4">
-  <div class="col-12">
-    <p-panel [showHeader]="false">
-      <div fxLayout="row">
-        <shiptech-general-information-contract
-              [model]="formValues"
-              [generalConfiguration]="generalConfiguration"
-              [contractConfiguration]="contractConfiguration"
-              [sellerList]="sellerList"
-              [companyList]="companyList"
-              [agreementTypeList]="agreementTypeList"
-              [paymentTermList]="paymentTermList"
-              [incotermList]="incotermList"
-              [applyToList]="applyToList"
-              [entityId]="entityId"
-              [statusColorCode]="statusColorCode"
-              [customerList]="customerList"
-              [eventsSaveButton]="eventsSubject2.asObservable()"
-              class="col-12"
-              style="padding-left: 0px; padding-right: 0px;">
-        </shiptech-general-information-contract>  
-      </div>
-    </p-panel>
-  </div>
-</div>
-</div>
-
-<div class="container-fluid-contract">
+<div class="container-fluid-contract contract-container">
   <div class="row m-b-4">
     <div class="col-12">
       <p-panel [showHeader]="false">
         <div fxLayout="row">
-          <shiptech-contract-quantity
+          <shiptech-general-information-contract
                 [model]="formValues"
+                [generalConfiguration]="generalConfiguration"
+                [contractConfiguration]="contractConfiguration"
+                [sellerList]="sellerList"
+                [companyList]="companyList"
+                [agreementTypeList]="agreementTypeList"
+                [paymentTermList]="paymentTermList"
+                [incotermList]="incotermList"
+                [applyToList]="applyToList"
                 [entityId]="entityId"
-                [contractualQuantityOptionList]="contractualQuantityOptionList"
-                [uomList]="uomList"
+                [statusColorCode]="statusColorCode"
+                [customerList]="customerList"
+                [eventsSaveButton]="eventsSubject2.asObservable()"
                 class="col-12"
                 style="padding-left: 0px; padding-right: 0px;">
-          </shiptech-contract-quantity>  
+          </shiptech-general-information-contract>  
         </div>
       </p-panel>
     </div>
   </div>
-</div>
-
-
-
-<div class="container-fluid-contract">
-<div class="row m-b-4">
-  <div class="col-12">
-    <p-panel [showHeader]="false">
-      <div fxLayout="row">
-        <shiptech-contract-product
-              [generalTenantSettings]="generalTenantSettings"
-              [model]="formValues"
-              [contractConfiguration]="contractConfiguration"
-              [locationMasterList]="locationMasterList"
-              [productMasterList]="productMasterList"
-              [uomMassList]="uomMassList"
-              [uomVolumeList]="uomVolumeList"
-              [contractConversionFactorOptions]="contractConversionFactorOptions"
-              [specParameterList]="specParameterList"
-              [entityId]="entityId"
-              [uomList]="uomList"
-              [formulaTypeList]="formulaTypeList"
-              [systemInstumentList]="systemInstumentList"
-              [marketPriceList]="marketPriceList"
-              [formulaPlusMinusList]="formulaPlusMinusList"
-              [formulaFlatPercentageList]="formulaFlatPercentageList"
-              [currencyList]="currencyList"
-              [formulaOperationList]="formulaOperationList"
-              [formulaFunctionList]="formulaFunctionList"
-              [marketPriceTypeList]="marketPriceTypeList"
-              [pricingScheduleList]="pricingScheduleList"
-              [holidayRuleList]="holidayRuleList"
-              [pricingSchedulePeriodList]="pricingSchedulePeriodList"
-              [eventList]="eventList"
-              [dayOfWeekList]="dayOfWeekList"
-              [businessCalendarList]="businessCalendarList"
-              [formulaEventIncludeList]="formulaEventIncludeList"
-              [quantityTypeList]="quantityTypeList"
-              [productList]="productList"
-              [locationList]="locationList"
-              [additionalCostList]="additionalCostList"
-              [costTypeList]="costTypeList"
-              [buttonClicked1]="buttonClicked"
-              [eventsSaveButton]="eventsSubject2.asObservable()"  
-              [eventsSelectedTabIndex]="eventsSubject3.asObservable()"
-              [eventsEntityCopied]="eventsSubject5.asObservable()"
-              class="col-12"
-              style="padding-left: 0px; padding-right: 0px;">
-        </shiptech-contract-product>  
-      </div>
-    </p-panel>
   </div>
-</div>
+
+  <div class="container-fluid-contract">
+    <div class="row m-b-4">
+      <div class="col-12">
+        <p-panel [showHeader]="false">
+          <div fxLayout="row">
+            <shiptech-contract-quantity
+                  [model]="formValues"
+                  [entityId]="entityId"
+                  [contractualQuantityOptionList]="contractualQuantityOptionList"
+                  [uomList]="uomList"
+                  class="col-12"
+                  style="padding-left: 0px; padding-right: 0px;">
+            </shiptech-contract-quantity>  
+          </div>
+        </p-panel>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container-fluid-contract">
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-panel [showHeader]="false">
+        <div fxLayout="row">
+          <shiptech-contract-product
+                [generalTenantSettings]="generalTenantSettings"
+                [model]="formValues"
+                [contractConfiguration]="contractConfiguration"
+                [locationMasterList]="locationMasterList"
+                [productMasterList]="productMasterList"
+                [uomMassList]="uomMassList"
+                [uomVolumeList]="uomVolumeList"
+                [contractConversionFactorOptions]="contractConversionFactorOptions"
+                [specParameterList]="specParameterList"
+                [entityId]="entityId"
+                [uomList]="uomList"
+                [formulaTypeList]="formulaTypeList"
+                [systemInstumentList]="systemInstumentList"
+                [marketPriceList]="marketPriceList"
+                [formulaPlusMinusList]="formulaPlusMinusList"
+                [formulaFlatPercentageList]="formulaFlatPercentageList"
+                [currencyList]="currencyList"
+                [formulaOperationList]="formulaOperationList"
+                [formulaFunctionList]="formulaFunctionList"
+                [marketPriceTypeList]="marketPriceTypeList"
+                [pricingScheduleList]="pricingScheduleList"
+                [holidayRuleList]="holidayRuleList"
+                [pricingSchedulePeriodList]="pricingSchedulePeriodList"
+                [eventList]="eventList"
+                [dayOfWeekList]="dayOfWeekList"
+                [businessCalendarList]="businessCalendarList"
+                [formulaEventIncludeList]="formulaEventIncludeList"
+                [quantityTypeList]="quantityTypeList"
+                [productList]="productList"
+                [locationList]="locationList"
+                [additionalCostList]="additionalCostList"
+                [costTypeList]="costTypeList"
+                [buttonClicked1]="buttonClicked"
+                [eventsSaveButton]="eventsSubject2.asObservable()"  
+                [eventsSelectedTabIndex]="eventsSubject3.asObservable()"
+                [eventsEntityCopied]="eventsSubject5.asObservable()"
+                class="col-12"
+                style="padding-left: 0px; padding-right: 0px;">
+          </shiptech-contract-product>  
+        </div>
+      </p-panel>
+    </div>
+  </div>
 
 </div>
 
