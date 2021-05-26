@@ -1209,9 +1209,11 @@
                                     style="vertical-align: middle;"></th>
                                 <th id="generatedThId195" ng-if="column.visible && column.caption != 'PAGES.NEW_ORDER.CONTRACT_ID' &&  column.caption != 'PAGES.NEW_ORDER.FORMULA_DESCRIPTION' && column.caption != 'PAGES.NEW_ORDER.FORMULA_DETAILS' && column.caption != 'PAGES.NEW_ORDER.PRICING_DATE' && column.caption != 'PAGES.NEW_ORDER.MANUAL_PRICING_DATE_OVERRIDE' && $ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
                                     {{ column.caption | translate }}
+                                    <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY' || column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.CONFIRMED_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.PRICE' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
                                 </th>
                                 <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
-                                    {{ column.caption | translate }}                              
+                                    {{ column.caption | translate }}
+                                    <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY' || column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.CONFIRMED_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.PRICE' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
                                 </th>
                                 <th>
                                     Conversion Factor
@@ -1731,6 +1733,7 @@
                                 <th id="generatedThId197"></th>
                                 <th id="generatedThId198" ng-repeat="column in $ctrl.additionalCostColumns">
                                     {{ column.caption | translate }}
+                                    <span ng-show="column.caption=='PAGES.NEW_ORDER.NAME' || column.caption=='PAGES.NEW_ORDER.PRICE'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
                                 </th>
                             </tr>
                             </thead>
