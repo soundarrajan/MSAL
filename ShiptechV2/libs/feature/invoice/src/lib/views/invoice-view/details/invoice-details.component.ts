@@ -1717,48 +1717,25 @@ tenantConfiguration(){
 
 
   getHeaderNameSelector(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.payableTo:
-        return knowMastersAutocompleteHeaderName.payableTo;
-      default:
-        return knowMastersAutocompleteHeaderName.payableTo;
-    }
+    return knowMastersAutocompleteHeaderName.payableTo;
+    
   }
 
   getHeaderNameSelector1(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.company:
-        return knowMastersAutocompleteHeaderName.company;
-      default:
-        return knowMastersAutocompleteHeaderName.company;
-    }
+    return knowMastersAutocompleteHeaderName.company;
   }
 
   getHeaderNameSelector2(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.company:
-        return knowMastersAutocompleteHeaderName.company;
-      default:
-        return knowMastersAutocompleteHeaderName.company;
-    }
+    return knowMastersAutocompleteHeaderName.company;
   }
 
   getHeaderNameSelector3(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.customer:
-        return knowMastersAutocompleteHeaderName.customer;
-      default:
-        return knowMastersAutocompleteHeaderName.customer;
-    }
+    return knowMastersAutocompleteHeaderName.customer;
+    
   }
 
   getHeaderNameSelector4(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.paymentTerm:
-        return knowMastersAutocompleteHeaderName.paymentTerm;
-      default:
-        return knowMastersAutocompleteHeaderName.paymentTerm;
-    }
+    return knowMastersAutocompleteHeaderName.paymentTerm;
   }
 
 
