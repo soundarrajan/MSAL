@@ -1,7 +1,9 @@
-﻿commit ecff474bc77abaece3d9c06f4182738410dcf032
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Wed May 26 16:22:57 2021 +0530
+﻿commit e0efc052d5bd8036e32f32840cf0877b27ba276b
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 26 11:02:37 2021 +0000
 
-    Allow user to create credit/debit after provisional or final invoice. #32589
+    Merged PR 10961: Worked on Payment Terms, Customer, Carrier, Payable To, Lookups
+    
+    Worked on Payment Terms, Customer, Carrier, Payable To, Lookups
 
 branch: master

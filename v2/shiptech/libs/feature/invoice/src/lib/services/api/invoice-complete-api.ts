@@ -50,6 +50,14 @@ export namespace InvoiceApiPaths {
   export const createPreClaimCreditNote = () => `api/invoice/newPreclaimCN`;
   export const getAdditionalCostsPerPort = () =>  `api/masters/additionalcosts/listforlocation`;
   export const getRangeTotalAdditionalCosts = () =>  `api/procurement/order/getRangeTotalAdditionalCosts`;
+  export const getPaymentTermList = () => `api/masters/paymentterm/list`;
+  export const getCompanyList = () => `api/masters/companies/list`;
+  export const getCustomerList = () => `api/masters/counterparties/listByTypes`;
+  export const getPaybleToList = () => `api/masters/counterparties/listByTypes`;
+
+
+
+
 
 }
 
@@ -481,6 +489,56 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
+
+  
+  @ObservableException()
+  getPaymentTermList
+  (
+    request: any
+  ): Observable<any> {
+    const requestUrl = `${this._masterUrl}/${InvoiceApiPaths.getPaymentTermList()}`;
+    return this.http.post(requestUrl, request).pipe(
+      map((body: any) => body.payload),
+      catchError(() => of('Error, could not load the payment list'))
+    );
+  }
+
+  @ObservableException()
+  getCompanyList
+  (
+    request: any
+  ): Observable<any> {
+    const requestUrl = `${this._masterUrl}/${InvoiceApiPaths.getCompanyList()}`;
+    return this.http.post(requestUrl, request).pipe(
+      map((body: any) => body.payload),
+      catchError(() => of('Error, could not load the company list'))
+    );
+  }
+
+  @ObservableException()
+  getCustomerList
+  (
+    request: any
+  ): Observable<any> {
+    const requestUrl = `${this._masterUrl}/${InvoiceApiPaths.getCustomerList()}`;
+    return this.http.post(requestUrl, request).pipe(
+      map((body: any) => body.payload),
+      catchError(() => of('Error, could not load the customer list'))
+    );
+  }
+
+  @ObservableException()
+  getPaybleToList
+  (
+    request: any
+  ): Observable<any> {
+    const requestUrl = `${this._masterUrl}/${InvoiceApiPaths.getPaybleToList()}`;
+    return this.http.post(requestUrl, request).pipe(
+      map((body: any) => body.payload),
+      catchError(() => of('Error, could not load the payble to list'))
+    );
+  }
+
 }
 
 export const INVOICE_COMPLETE_API_SERVICE = new InjectionToken<IInvoiceCompleteApiService>('INVOICE_COMPLETE_API_SERVICE');
