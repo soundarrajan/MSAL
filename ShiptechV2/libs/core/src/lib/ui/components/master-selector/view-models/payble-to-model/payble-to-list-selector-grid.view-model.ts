@@ -32,10 +32,15 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { IPaybleToListDto, IProductListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-import { PaybleToListColumns, PaybleToListColumnServerKeys, PaybleToListColumnsLabels } from './payble-to-list.columns';
-
-
+import {
+  IPaybleToListDto,
+  IProductListDto
+} from '@shiptech/core/delivery-api/masters-list/masters-list-response';
+import {
+  PaybleToListColumns,
+  PaybleToListColumnServerKeys,
+  PaybleToListColumnsLabels
+} from './payble-to-list.columns';
 
 function model(prop: keyof IPaybleToListDto): keyof IPaybleToListDto {
   return prop;
@@ -132,8 +137,6 @@ export class PaybleToListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
-
   parentCol: ITypedColDef<IPaybleToListDto, IDisplayLookupDto> = {
     headerName: PaybleToListColumnsLabels.parent,
     colId: PaybleToListColumns.parent,
@@ -195,11 +198,6 @@ export class PaybleToListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
-
-
-
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -221,13 +219,13 @@ export class PaybleToListSelectorGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): ITypedColDef[] {
     return [
       this.selectCol,
-      this.idCol,
+      // this.idCol,
       this.physicalSupplierNameCol,
       this.isDeletedCol,
       this.createdByCol,
       this.createdOnCol,
       this.lastModifiedByCol,
-      this.lastModifiedOnCol,
+      this.lastModifiedOnCol
     ];
   }
 
@@ -237,11 +235,12 @@ export class PaybleToListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-      const filters: ServerQueryFilter[] = [
-        {
-          columnName: 'CounterpartyTypes',
-          value: '2, 11'
-        }];
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: 'CounterpartyTypes',
+        value: '2, 11'
+      }
+    ];
     this.mastersListApiService
       .getPhysicalSupplierList({
         ...transformLocalToServeGridInfo(

@@ -33,9 +33,11 @@ import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-inform
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
 import { ICustomerListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-import { CustomerListColumns, CustomerListColumnServerKeys, CustomerListColumnsLabels } from './customer-list.columns';
-
-
+import {
+  CustomerListColumns,
+  CustomerListColumnServerKeys,
+  CustomerListColumnsLabels
+} from './customer-list.columns';
 
 function model(prop: keyof ICustomerListDto): keyof ICustomerListDto {
   return prop;
@@ -132,8 +134,6 @@ export class CustomerListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
-
   parentCol: ITypedColDef<ICustomerListDto, IDisplayLookupDto> = {
     headerName: CustomerListColumnsLabels.parent,
     colId: CustomerListColumns.parent,
@@ -195,11 +195,6 @@ export class CustomerListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
-
-
-
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -221,13 +216,13 @@ export class CustomerListSelectorGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): ITypedColDef[] {
     return [
       this.selectCol,
-      this.idCol,
+      // this.idCol,
       this.physicalSupplierNameCol,
       this.isDeletedCol,
       this.createdByCol,
       this.createdOnCol,
       this.lastModifiedByCol,
-      this.lastModifiedOnCol,
+      this.lastModifiedOnCol
     ];
   }
 
@@ -237,11 +232,12 @@ export class CustomerListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-      const filters: ServerQueryFilter[] = [
-        {
-          columnName: 'CounterpartyTypes',
-          value: '4'
-        }];
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: 'CounterpartyTypes',
+        value: '4'
+      }
+    ];
     this.mastersListApiService
       .getPhysicalSupplierList({
         ...transformLocalToServeGridInfo(
