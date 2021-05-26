@@ -69,6 +69,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   private rowData_aggrid_pd = [];
   private rowData_aggrid_ac = [];
   public productData:any = [];
+  paidAmmoutDisabled = false;
   paymentStatus:number=0;
   customInvoice:number=0;
   dateFormat;
@@ -216,7 +217,15 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
+
+
     this.formValues = val;
+
+    // Set paid ammount disabled;
+    if(this.formValues.status.name === "New" || this.formValues.status.name === "Cancelled") {
+      this.paidAmmoutDisabled =true;
+    }
+
     if (this.formValues.invoiceRateCurrency) {
       this.conversionTo = this.formValues.invoiceRateCurrency;
     }
@@ -277,7 +286,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
-    
+
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -437,12 +446,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.formErrors.workingDueDate = errorMessage;
     }
 
-    if (!this.formValues.paymentDetails.paidAmount) {
-      error = true;
-      errorMessage += 'Paid amount is required. \n';
-      this.formErrors.paymentDetails = {};
-      this.formErrors.paymentDetails.paidAmount = errorMessage;
-    }
 
     // Payment term
     if (!this.formValues.counterpartyDetails?.paymentTerm?.name) {
@@ -689,7 +692,7 @@ tenantConfiguration(){
   .subscribe((result: any) => {
     this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;
     if(result.procurementConfiguration.price.pricingDateStopOption?.name == "Invoice" && result.procurementConfiguration.price.pricingEventDateManualOverrride?.name == "Yes"){
-      this.isPricingDateEditable = true;      
+      this.isPricingDateEditable = true;
     }
     // console.log('tenenatConfigs',this.isPricingDateEditable);
   });
