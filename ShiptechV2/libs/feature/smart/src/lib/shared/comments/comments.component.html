@@ -14,7 +14,7 @@
         <div class="grey-box">
           <div class="section-title">Filter by Participants</div>
           <div class="available-comments">
-            <ng-container *ngFor="let item of BunkerPlanCommentList | groupByParticipant: searchText: 'createdBy.displayName': 'notes">
+            <ng-container *ngFor="let item of BunkerPlanCommentList | groupByParticipant: searchText: 'createdBy.displayName': 'notes'">
               <!-- Single Comment Start -->
               <div class="comments-box" (click)="searchParticipantComment(item?.createdBy?.displayName)">
                 <div style="display: flex;">
