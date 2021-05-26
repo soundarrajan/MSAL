@@ -1455,7 +1455,7 @@
                                         </div>
                                     </td>
                                     <td style="min-width:75px"
-                                        ng-init="!product.pricePrecision ? product.pricePrecision = $ctrl.pricePrecision : '' ; $ctrl.recomputeProductPricePrecision(key) ">
+                                        ng-init="product.pricePrecision == null ? product.pricePrecision = $ctrl.pricePrecision : '' ; $ctrl.recomputeProductPricePrecision(key) ">
                                         <select name="pricePrecision" class="form-control bs-select"
                                             id="product_pricePrecision_{{ $index }}"
                                             ng-options="item as item for item in createRange(0,4) track by item"

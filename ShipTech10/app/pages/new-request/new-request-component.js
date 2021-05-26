@@ -1177,7 +1177,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 }
                             });
                         }
-		            });
+		            }); 
         		}
         	}
             newProduct.product = product;

@@ -2206,7 +2206,7 @@
                         if(rowObject.currency != null){
 
                             var currency = rowObject.currency.name;
-                            pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
+                            pricePrecision = rowObject.pricePrecision != null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                             var price =  $filter('number')(rowObject.fixedPrice, pricePrecision);
 
                             tpl = '<span class="">' + currency + ' ' + price + '</span>';
