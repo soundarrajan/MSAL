@@ -1,7 +1,9 @@
-﻿commit 322d99d7077ae0dd284f85d5b9856e9e5f5ac3f9
+﻿commit eab90162a88e4708cd3e11da4430250984c9674b
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 26 13:07:11 2021 +0000
+Date:   Wed May 26 13:35:05 2021 +0000
 
-    Merged PR 10976: Fixed invoice Status color change and Recon status updating in invoice screen
+    Merged PR 10981: Fixed custom invoice status field
+    
+    Fixed custom invoice status field
 
 branch: master
