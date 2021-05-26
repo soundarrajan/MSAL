@@ -78,8 +78,8 @@ APP_MASTERS.controller('Controller_Datatables', [
             multiselect: $templateCache.get('app-general-components/views/data-table-formatters/multiselect.html'),
             readonlyNumber: $templateCache.get('app-general-components/views/data-table-formatters/readonlyNumber.html'),
             customRemRow: $templateCache.get('app-general-components/views/data-table-formatters/customRemRow.html'),
-            decodeText: $templateCache.get('app-general-components/views/data-table-formatters/decodeText.html')
-
+            decodeText: $templateCache.get('app-general-components/views/data-table-formatters/decodeText.html'),
+            headerWithAsterisk: $templateCache.get('app-general-components/views/data-table-formatters/headerWithAsterisk.html')
         };
         $scope.gridScope = $scope;
         $scope.initGridDropdowns = function(id) {
@@ -1221,9 +1221,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             clc_id: 'masters_forrmulalist',
                             required: 'grid.appScope.fVal().formValues.mtmType.id == 1',
                             customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
-
-
                         },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'product',
@@ -1236,8 +1235,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             clc_id: 'masters_productlist',
                             required: 'grid.appScope.fVal().formValues.mtmType.id == 1',
                             customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
-
                         },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     }
                 ],
                 onRegisterApi: function(api) {
@@ -2115,7 +2114,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'dropdown',
                             masterSource: 'FormulaOperation',
                             Disabled: 'grid.appScope.fVal().formValues.isMean'
-                        }
+                        },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'weight',
@@ -2132,7 +2132,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'FormulaFunction',
                             Type: 'dropdown',
                             masterSource: 'FormulaFunction'
-                        }
+                        },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'systemInstruments[0].systemInstrument',
@@ -2145,7 +2146,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'SystemInstrument',
                             clc_id: 'masters_systeminstrument'
-                        }
+                        },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'systemInstruments[0].marketPriceTypeId',
@@ -2155,7 +2157,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'MarketPriceType',
                             Type: 'dropdown',
                             masterSource: 'MarketPriceType'
-                        }
+                        },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'systemInstruments[1].systemInstrument',
@@ -2211,7 +2214,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'FormulaPlusMinus',
                             Type: 'dropdown',
                             masterSource: 'FormulaPlusMinus'
-                        }
+                        },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'amount',
@@ -2220,6 +2224,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplate: $scope.dataTableTemplates.text,
                         cellCondition: 'grid.appScope.fVal().formValues.complexFormulaQuoteLines[grid.appScope.rowIdx(row)].formulaPlusMinus.id == 3',
                         cellConditionType: 'ng-disabled',
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'formulaFlatPercentage',
@@ -2232,7 +2237,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'dropdown',
                             masterSource: 'FormulaFlatPercentage',
                             Disabled: 'grid.appScope.fVal().formValues.complexFormulaQuoteLines[grid.appScope.rowIdx(row)].formulaPlusMinus.id == 3'
-                        }
+                        },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     },
                     {
                         name: 'uom',
@@ -2245,7 +2251,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'dropdown',
                             masterSource: 'Uom',
                             Disabled: 'grid.appScope.fVal().formValues.complexFormulaQuoteLines[grid.appScope.rowIdx(row)].formulaFlatPercentage.id == 2 || grid.appScope.fVal().formValues.complexFormulaQuoteLines[grid.appScope.rowIdx(row)].formulaPlusMinus.id == 3'
-                        }
+                        },
+                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     }
                 ],
                 appScopeProvider: {
