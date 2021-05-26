@@ -73,6 +73,7 @@ implements  OnInit, OnDestroy {
   private rowData_aggrid_pd = [];
   private rowData_aggrid_ac = [];
   public productData:any = [];
+  paidAmmoutDisabled = false;
   paymentStatus:number=0;
   customInvoice:number=0;
   dateFormat;
@@ -232,7 +233,15 @@ implements  OnInit, OnDestroy {
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
+
+
     this.formValues = val;
+
+    // Set paid ammount disabled;
+    if(this.formValues.status.name === "New" || this.formValues.status.name === "Cancelled") {
+      this.paidAmmoutDisabled =true;
+    }
+
     if (this.formValues.invoiceRateCurrency) {
       this.conversionTo = this.formValues.invoiceRateCurrency;
     }
@@ -305,7 +314,7 @@ implements  OnInit, OnDestroy {
     this.getCustomerList();
     this.getPaybleToList();
 
-    
+
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -467,12 +476,6 @@ implements  OnInit, OnDestroy {
       this.formErrors.workingDueDate = errorMessage;
     }
 
-    if (!this.formValues.paymentDetails.paidAmount) {
-      error = true;
-      errorMessage += 'Paid amount is required. \n';
-      this.formErrors.paymentDetails = {};
-      this.formErrors.paymentDetails.paidAmount = errorMessage;
-    }
 
     // Payment term
     if (!this.formValues.counterpartyDetails?.paymentTerm?.name) {
@@ -719,7 +722,7 @@ tenantConfiguration(){
   .subscribe((result: any) => {
     this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;
     if(result.procurementConfiguration.price.pricingDateStopOption?.name == "Invoice" && result.procurementConfiguration.price.pricingEventDateManualOverrride?.name == "Yes"){
-      this.isPricingDateEditable = true;      
+      this.isPricingDateEditable = true;
     }
     // console.log('tenenatConfigs',this.isPricingDateEditable);
   });
@@ -737,7 +740,7 @@ tenantConfiguration(){
           this.bankAccountNumbers = result;
           this.changeDetectorRef.detectChanges();
       });
-  } 
+  }
 
   invoiceConvertUom(type, rowIndex) {
     console.log(type);
@@ -1704,15 +1707,15 @@ tenantConfiguration(){
   }
 
   ngAfterViewInit(): void {
-  
+
   }
 
-  
+
   displayFn(value): string {
     return value && value.name ? value.name : '';
   }
 
-  
+
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
       case knownMastersAutocomplete.payableTo:
@@ -1770,12 +1773,12 @@ tenantConfiguration(){
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.counterpartyDetails.paymentTerm = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.counterpartyDetails.paymentTerm = obj;
+      this.changeDetectorRef.detectChanges();
     }
   }
 
-    
+
   getPaymentTermList() {
     let payload = {
       "Payload": {
@@ -1821,7 +1824,7 @@ tenantConfiguration(){
     } else {
       return [];
     }
- 
+
   }
 
   setPaymentTerm(data) {
@@ -1877,7 +1880,7 @@ tenantConfiguration(){
     } else {
       return [];
     }
- 
+
   }
 
   setPaymentCompany(data) {
@@ -1900,8 +1903,8 @@ tenantConfiguration(){
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.orderDetails.paymentCompany = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.orderDetails.paymentCompany = obj;
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -1922,7 +1925,7 @@ tenantConfiguration(){
     } else {
       return [];
     }
- 
+
   }
 
 
@@ -1935,7 +1938,7 @@ tenantConfiguration(){
     this.changeDetectorRef.detectChanges();
   }
 
-  
+
 
   selectorCarrierSelectionChange(
     selection: IOrderLookupDto
@@ -1947,8 +1950,8 @@ tenantConfiguration(){
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.orderDetails.carrierCompany = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.orderDetails.carrierCompany = obj;
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -1985,7 +1988,7 @@ tenantConfiguration(){
     });
   }
 
-  
+
 
   public filterCustomerList() {
     if (this.formValues.counterpartyDetails.customer) {
@@ -2003,7 +2006,7 @@ tenantConfiguration(){
     } else {
       return [];
     }
- 
+
   }
 
 
@@ -2017,8 +2020,8 @@ tenantConfiguration(){
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.counterpartyDetails.customer = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.counterpartyDetails.customer = obj;
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -2065,7 +2068,7 @@ tenantConfiguration(){
     });
   }
 
-    
+
 
   public filterPaybleToList() {
     if (this.formValues.counterpartyDetails.payableTo) {
@@ -2083,7 +2086,7 @@ tenantConfiguration(){
     } else {
       return [];
     }
- 
+
   }
 
   selectorPaybleToSelectionChange(
@@ -2096,8 +2099,8 @@ tenantConfiguration(){
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.counterpartyDetails.payableTo = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.counterpartyDetails.payableTo = obj;
+      this.changeDetectorRef.detectChanges();
     }
   }
 
