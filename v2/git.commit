@@ -1,9 +1,9 @@
-﻿commit f5d14f608ff81bcda2da0bc522a46a87216e76f8
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Wed May 26 11:14:56 2021 +0000
+﻿commit 416a75667702fce49bf368ab7d397ebc13519c7d
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed May 26 11:55:22 2021 +0000
 
-    Merged PR 10964: Removed paid amount
+    Merged PR 10971: #32519: Comment section-Participants names are displaying incorrectly issue has fixed
     
-    Related work items: #32596
+    Related work items: #32519
 
 branch: master
