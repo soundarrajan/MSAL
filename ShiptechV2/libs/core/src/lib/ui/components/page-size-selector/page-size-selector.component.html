@@ -1,5 +1,5 @@
 <div class="rowsNumberWrapper" fxLayout="row">
-  <span class="widget-title">Show</span>
+  <span class="widget-title">Display</span>
 <!--    <p-dropdown-->
 <!--      [options]="formattedOptions"-->
 <!--      [ngModel]="selectedOption"-->
@@ -10,5 +10,6 @@
   <select [ngModel]="selectedOption" [ngModelOptions]="{updateOn: 'change'}" (ngModelChange)="emitSelectionChange($event)" class="select-option">
     <option *ngFor="let option of formattedOptions" [value]="option.value">{{option.label}}</option>
   </select>
-<span class="widget-title" style="margin-left:5px">Rows</span>
+
+  <span class="widget-title" style="margin-left:5px">Entries</span>
 </div>

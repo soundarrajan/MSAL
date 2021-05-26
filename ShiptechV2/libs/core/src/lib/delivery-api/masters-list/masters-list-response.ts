@@ -59,6 +59,100 @@ export interface IPhysicalSupplierListDto extends IDisplayLookupDto {
   hasNoMoreChildren: boolean;
 }
 
+export interface IPaybleToListDto extends IDisplayLookupDto {
+  id: number;
+  name: string;
+  displayName: string;
+  defaultPaymentTerm: IDisplayLookupDto;
+  parent: IDisplayLookupDto;
+  isDeleted: boolean;
+  reason: string;
+  status: IDisplayLookupDto;
+  comments: string;
+  defaultIncoterm: IDisplayLookupDto;
+  supplier: boolean;
+  seller: boolean;
+  broker: boolean;
+  customer: boolean;
+  agent: boolean;
+  surveyor: boolean;
+  barge: boolean;
+  lab: boolean;
+  planner: boolean;
+  internal: boolean;
+  sludge: boolean;
+  country: string;
+  createdBy: IDisplayLookupDto;
+  createdOn: string;
+  lastModifiedBy: IDisplayLookupDto;
+  lastModifiedOn: string;
+  hasNoMoreChildren: boolean;
+}
+
+export interface ICustomerListDto extends IDisplayLookupDto {
+  id: number;
+  name: string;
+  displayName: string;
+  defaultPaymentTerm: IDisplayLookupDto;
+  parent: IDisplayLookupDto;
+  isDeleted: boolean;
+  reason: string;
+  status: IDisplayLookupDto;
+  comments: string;
+  defaultIncoterm: IDisplayLookupDto;
+  supplier: boolean;
+  seller: boolean;
+  broker: boolean;
+  customer: boolean;
+  agent: boolean;
+  surveyor: boolean;
+  barge: boolean;
+  lab: boolean;
+  planner: boolean;
+  internal: boolean;
+  sludge: boolean;
+  country: string;
+  createdBy: IDisplayLookupDto;
+  createdOn: string;
+  lastModifiedBy: IDisplayLookupDto;
+  lastModifiedOn: string;
+  hasNoMoreChildren: boolean;
+}
+
+
+export interface IPaymentTermListDto extends IDisplayLookupDto {
+  id: number;
+  name: string;
+  displayName: string;
+  defaultPaymentTerm: IDisplayLookupDto;
+  parent: IDisplayLookupDto;
+  isDeleted: boolean;
+  reason: string;
+  status: IDisplayLookupDto;
+  comments: string;
+  defaultIncoterm: IDisplayLookupDto;
+  supplier: boolean;
+  seller: boolean;
+  broker: boolean;
+  customer: boolean;
+  agent: boolean;
+  surveyor: boolean;
+  barge: boolean;
+  lab: boolean;
+  planner: boolean;
+  internal: boolean;
+  sludge: boolean;
+  country: string;
+  createdBy: IDisplayLookupDto;
+  createdOn: string;
+  lastModifiedBy: IDisplayLookupDto;
+  lastModifiedOn: string;
+  hasNoMoreChildren: boolean;
+}
+
+
+
+
 export interface IPhysicalSupplierListRequest extends IServerGridInfo {}
 
 export interface IPhysicalSupplierListResponse {
