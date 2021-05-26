@@ -1,11 +1,9 @@
-﻿commit 05c8314a1d10885c7f144c0c55ca00ed8f12becc
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue May 25 21:47:02 2021 +0000
+﻿commit 4083393a112d8ebc772305dfceb5a632b14c0c3e
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed May 26 06:01:29 2021 +0000
 
-    Merged PR 10936: Import GSIS toggle issue in current bplan.
+    Merged PR 10940: #32519: Comment section-Participants names are displaying incorrectly issue has fixed
     
-    Import GSIS toggle issue in current bplan.
-    
-    Related work items: #32198
+    Related work items: #32519
 
 branch: master
