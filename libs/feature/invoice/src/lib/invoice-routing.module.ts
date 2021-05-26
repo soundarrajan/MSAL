@@ -10,6 +10,7 @@ import { InvoiceViewComponent } from './views/invoice-view/invoice-view.componen
 import { InvoiceSplitviewComponent } from './views/split-view/invoice-splitview.component';
 import { StaticListsRouteResolver } from './views/invoice-view/details/static-lists-route.resolver';
 import { GeneralSettingsRouteResolver } from './views/invoice-view/details/general-settings-route.resolver';
+import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/details/schedule-dashboard-labels-route.resolver';
 
 const routes: Routes = [
   {
@@ -50,7 +51,8 @@ const routes: Routes = [
             resolve:{
               navBar: NavBarResolver,
               tenantConfiguration: GeneralSettingsRouteResolver,
-              staticLists: StaticListsRouteResolver
+              staticLists: StaticListsRouteResolver,
+              scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver
             },
             data: { title: 'View Invoice', breadcrumb: 'View Invoice' }
           },
