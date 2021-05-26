@@ -376,6 +376,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.scheduleDashboardLabelConfiguration =
         data.scheduleDashboardLabelConfiguration;
+      this.invoiceStatusList = this.setListFromStaticLists(
+        'InvoiceCustomStatus'
+      );
       if (typeof this.formValues.status != 'undefined') {
         if (this.formValues.status.name) {
           this.statusColorCode = this.getColorCodeFromLabels(
@@ -398,9 +401,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
-    this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list => {
-      this.invoiceStatusList = list;
-    });
+
     this.legacyLookupsDatabase.getPaymentStatus().then(list => {
       this.paymentStatusList = list;
     });
@@ -2526,5 +2527,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       }
     }
+  }
+
+  compareObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
   }
 }
