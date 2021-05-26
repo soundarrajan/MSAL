@@ -12,6 +12,9 @@ import { CompanyListSelectorGridViewModel } from './company-model/company-list-s
 import { SystemInstrumentListSelectorGridViewModel } from './system-instrument-model/system-instrument-list-selector-grid.view-model';
 import { CurrencyListSelectorGridViewModel } from './currency-model/currency-list-selector-grid.view-model';
 import { FormulaListSelectorGridViewModel } from './formula-model/formula-list-selector-grid.view-model';
+import { PaybleToListSelectorGridViewModel } from './payble-to-model/payble-to-list-selector-grid.view-model';
+import { CustomerListSelectorGridViewModel } from './customer-model/customer-list-selector-grid.view-model';
+import { PaymentTermListSelectorGridViewModel } from './payment-term-model/payment-term-list-selector-grid.view-model';
 
 export interface IMasterModelInterface {
   entityId?: number;
@@ -34,6 +37,9 @@ export interface IMasterModelInterface {
   OrderListSelectorGridViewModel?: OrderListSelectorGridViewModel;
   ProductListSelectorGridViewModel?: ProductListSelectorGridViewModel;
   PhysicalSupplierListSelectorGridViewModel?: PhysicalSupplierListSelectorGridViewModel;
+  PaymentTermListSelectorGridViewModel?: PaymentTermListSelectorGridViewModel;
+  CustomerListSelectorGridViewModel?: CustomerListSelectorGridViewModel;
+  PaybleToListSelectorGridViewModel?: PaybleToListSelectorGridViewModel;
   SellerListSelectorGridViewModel?: SellerListSelectorGridViewModel;
   CompanyListSelectorGridViewModel?: CompanyListSelectorGridViewModel;
   VesselPortCallsMasterSelectorGridViewModel?: VesselPortCallsMasterSelectorGridViewModel;

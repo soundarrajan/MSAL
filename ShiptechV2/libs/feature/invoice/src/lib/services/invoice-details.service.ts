@@ -215,6 +215,45 @@ export class InvoiceDetailsService extends BaseStoreService
   }
        
 
+         /**
+ * @param payload
+ */
+  @ObservableException()
+  getPaymentTermList(payload: any): Observable<unknown> {
+    return this.api.getPaymentTermList(payload);
+  }
+
+
+           /**
+ * @param payload
+ */
+  @ObservableException()
+  getCompanyList(payload: any): Observable<unknown> {
+    return this.api.getCompanyList(payload);
+  }
+
+  
+           /**
+ * @param payload
+ */
+  @ObservableException()
+  getCustomerList(payload: any): Observable<unknown> {
+    return this.api.getCustomerList(payload);
+  }
+
+
+    
+           /**
+ * @param payload
+  */
+  @ObservableException()
+  getPaybleToList(payload: any): Observable<unknown> {
+    return this.api.getPaybleToList(payload);
+  }
+
+
+               
+
 
 
   ngOnDestroy(): void {

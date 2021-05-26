@@ -31,6 +31,9 @@ import { CompanyListSelectorGridViewModel } from '../view-models/company-model/c
 import { SystemInstrumentListSelectorGridViewModel } from '../view-models/system-instrument-model/system-instrument-list-selector-grid.view-model';
 import { CurrencyListSelectorGridViewModel } from '../view-models/currency-model/currency-list-selector-grid.view-model';
 import { FormulaListSelectorGridViewModel } from '../view-models/formula-model/formula-list-selector-grid.view-model';
+import { PaybleToListSelectorGridViewModel } from '../view-models/payble-to-model/payble-to-list-selector-grid.view-model';
+import { CustomerListSelectorGridViewModel } from '../view-models/customer-model/customer-list-selector-grid.view-model';
+import { PaymentTermListSelectorGridViewModel } from '../view-models/payment-term-model/payment-term-list-selector-grid.view-model';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -49,6 +52,9 @@ import { FormulaListSelectorGridViewModel } from '../view-models/formula-model/f
     OrderListSelectorGridViewModel,
     ProductListSelectorGridViewModel,
     PhysicalSupplierListSelectorGridViewModel,
+    PaybleToListSelectorGridViewModel,
+    PaymentTermListSelectorGridViewModel,
+    CustomerListSelectorGridViewModel,
     SellerListSelectorGridViewModel,
     CompanyListSelectorGridViewModel,
     SystemInstrumentListSelectorGridViewModel,
@@ -164,6 +170,30 @@ export class SelectorComponent
       case knownMastersAutocomplete.physicalSupplier: {
         this.gridViewModel = this.injector.get(
           PhysicalSupplierListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.paymentTerm: {
+        this.gridViewModel = this.injector.get(
+          PaymentTermListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.customer: {
+        this.gridViewModel = this.injector.get(
+          CustomerListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.payableTo: {
+        this.gridViewModel = this.injector.get(
+          PaybleToListSelectorGridViewModel
         );
         this.gridViewModel.entityId = this.entityId;
         this.gridViewModel.entityName = this.entityName;
