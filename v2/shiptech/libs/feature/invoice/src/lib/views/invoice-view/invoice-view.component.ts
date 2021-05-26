@@ -183,8 +183,15 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   createNewInvoiceType(){
     let data = JSON.parse(localStorage.getItem('createInvoice'));
     localStorage.removeItem('createInvoice');
-    data.invoiceSummary.provisionalInvoiceNo = data.id;
-    data.invoiceSummary.provisionalInvoiceAmount = data.invoiceSummary.invoiceAmountGrandTotal;
+
+    // 2 - Final Invoice - Get provisional invoice data, if final invoice is created from provisional
+    if(data.documentType.id == 2){
+      data.invoiceSummary.provisionalInvoiceNo = data.id;
+      data.invoiceSummary.provisionalInvoiceAmount = data.invoiceSummary.invoiceAmountGrandTotal;
+    }else{
+      data.invoiceSummary.provisionalInvoiceNo = '';
+      data.invoiceSummary.provisionalInvoiceAmount = null;
+    }
     data.id = 0;
     data.invoiceDetails = null;
     data.documentNo = null;

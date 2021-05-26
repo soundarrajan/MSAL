@@ -1,9 +1,7 @@
-﻿commit 99e189fac0622a2011ff25ae353bdee7bcbcec17
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Wed May 26 15:44:45 2021 +0530
+﻿commit ecff474bc77abaece3d9c06f4182738410dcf032
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Wed May 26 16:22:57 2021 +0530
 
-    Delivery,Contract- Form fields and button fixes
-    
-    Delivery,Contract- Form fields& button fixes
+    Allow user to create credit/debit after provisional or final invoice. #32589
 
 branch: master
