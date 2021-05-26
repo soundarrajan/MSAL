@@ -3254,8 +3254,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
 
             if((additionalCost.costType.name == 'Flat' || additionalCost.costType.name == 'Unit') && (additionalCost.locationAdditionalCostId || (additionalCost.additionalCost && additionalCost.additionalCost.locationid))) {
-                additionalCost.extras = additionalCost.additionalCost.extras || 0;
-                additionalCost.price = additionalCost.additionalCost.price || 0;
+                additionalCost.extras = additionalCost.additionalCost.extras || additionalCost.extras ||0;
+                additionalCost.price = additionalCost.additionalCost.price || additionalCost.price || 0;
                 additionalCost.priceUom = additionalCost.additionalCost.priceUom || additionalCost.priceUom || 0;
                 additionalCost.costType = additionalCost.additionalCost.costType || additionalCost.costType || 0;
                 if (!additionalCost.costType) {
