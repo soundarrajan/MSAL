@@ -50,8 +50,8 @@
                                     [required]="
                                     getSupplierInvoiceNumberDateConfig().isMandatory
                                     "
+                                    (ngModelChange)="formValues.sellerInvoiceNo = $event.toUpperCase()"
                                     placeholder="000"
-                                    type="number"
                                     (blur)="isFormValid({ useToaster: false })"
                                 />                                <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                             </mat-form-field>
