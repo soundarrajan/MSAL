@@ -57,6 +57,7 @@
     display: flex;
     justify-content: space-between;
     min-height: 40px;
+    align-items: center;
     .value {
       font-style: normal;
       font-weight: 500;
@@ -73,6 +74,7 @@
       border-right: 1px solid #252a32;
       margin-left: 10px;
       margin-right: 10px;
+      font-size: 0;
     }
   }
 }

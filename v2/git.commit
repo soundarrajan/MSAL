@@ -1,10 +1,10 @@
-﻿commit fe383663ac5195969d9580275fb7a92bbac4649f
+﻿commit 05c8314a1d10885c7f144c0c55ca00ed8f12becc
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue May 25 13:28:50 2021 +0000
+Date:   Tue May 25 21:47:02 2021 +0000
 
-    Merged PR 10930: PlanID in save and Import GSIS checkbox
+    Merged PR 10936: Import GSIS toggle issue in current bplan.
     
-    PlanID in save and Import GSIS checkbox
+    Import GSIS toggle issue in current bplan.
     
     Related work items: #32198
 
