@@ -33,6 +33,9 @@ import _ from 'lodash';
 import { DecimalPipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
+import { DeliveryAutocompleteComponent } from './component/delivery-autocomplete/delivery-autocomplete.component';
+import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import { IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 const isEmpty = (object) => !Object.values(object).some(x => (x !== null && x !== ''));
 
 export const MY_FORMATS = {
@@ -59,7 +62,8 @@ export const MY_FORMATS = {
   ],
 
 })
-export class InvoiceDetailComponent implements OnInit, OnDestroy {
+export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
+implements  OnInit, OnDestroy {
 
   //Default Values - strats
   orderId: number;
@@ -185,7 +189,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   manualtab:any;
   entityName: string;
   entityId: number;
-  private _destroy$ = new Subject();
   uomList: any;
   staticLists: any;
   currencyList: any;
@@ -212,6 +215,19 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   isPricingDateEditable:boolean=false;
   formErrors: any = {};
   generalConfiguration: any;
+  _autocompleteType: any;
+  @Input() vesselId: number;
+  autocompleteSellers: knownMastersAutocomplete;
+  autocompletePaybleTo: knownMastersAutocomplete;
+  autocompleteCompany: knownMastersAutocomplete;
+  autocompleteCarrier: knownMastersAutocomplete;
+  autocompleteCustomer: knownMastersAutocomplete;
+  autocompletePaymentTerm: knownMastersAutocomplete;
+  paymentTermList: any;
+  companyList: any;
+  customerList: any;
+  paybleToList: any;
+
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -250,12 +266,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   //Default Values - strats
   constructor(private router: Router,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
     private toastrService: ToastrService,private format: TenantFormattingService, private tenantSetting:TenantSettingsService, private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private route: ActivatedRoute,private spinner: NgxSpinnerService,private changeDetectorRef: ChangeDetectorRef,
+    private route: ActivatedRoute,private spinner: NgxSpinnerService, changeDetectorRef: ChangeDetectorRef,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     private titleService: Title,
     private toastr: ToastrService) {
+      super(changeDetectorRef);
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
+    this.autocompletePaybleTo = knownMastersAutocomplete.payableTo;
+    this.autocompleteCompany = knownMastersAutocomplete.company;
+    this.autocompleteCarrier = knownMastersAutocomplete.company;
+    this.autocompleteCustomer = knownMastersAutocomplete.customer;
+    this.autocompletePaymentTerm = knownMastersAutocomplete.paymentTerm;
     this.setupGrid();
     this.setClaimsDetailsGrid();
     this.tenantConfiguration();
@@ -264,7 +286,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.formErrors = {};
     this.entityName = 'Invoice';
-    this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
+    this.route.params.pipe().subscribe(params => {
       this.entityId = parseFloat(params.invoiceId);
     });
     this.route.data.subscribe(data => {
@@ -277,6 +299,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
+
+    this.getPaymentTermList();
+    this.getCompanyList();
+    this.getCustomerList();
+    this.getPaybleToList();
+
     
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
@@ -293,6 +321,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
   }
+
+
 
 
   getDebunkerCheckboxConfig() {
@@ -693,20 +723,21 @@ tenantConfiguration(){
     }
     // console.log('tenenatConfigs',this.isPricingDateEditable);
   });
-}
-getBankAccountNumber(){
-  if(!this.formValues.counterpartyDetails.payableTo){
-    return;
   }
-  let counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
-  this.invoiceService
-    .getBankAccountNumber(counterPartyId)
-    .subscribe((result: any) => {
-        // console.log(result);
-        this.bankAccountNumbers = result;
-        this.changeDetectorRef.detectChanges();
-    });
-}
+
+  getBankAccountNumber(){
+    if(!this.formValues.counterpartyDetails.payableTo){
+      return;
+    }
+    let counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
+    this.invoiceService
+      .getBankAccountNumber(counterPartyId)
+      .subscribe((result: any) => {
+          // console.log(result);
+          this.bankAccountNumbers = result;
+          this.changeDetectorRef.detectChanges();
+      });
+  } 
 
   invoiceConvertUom(type, rowIndex) {
     console.log(type);
@@ -1671,5 +1702,415 @@ getBankAccountNumber(){
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
   }
+
+  ngAfterViewInit(): void {
+  
+  }
+
+  
+  displayFn(value): string {
+    return value && value.name ? value.name : '';
+  }
+
+  
+  getHeaderNameSelector(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.payableTo:
+        return knowMastersAutocompleteHeaderName.payableTo;
+      default:
+        return knowMastersAutocompleteHeaderName.payableTo;
+    }
+  }
+
+  getHeaderNameSelector1(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.company:
+        return knowMastersAutocompleteHeaderName.company;
+      default:
+        return knowMastersAutocompleteHeaderName.company;
+    }
+  }
+
+  getHeaderNameSelector2(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.company:
+        return knowMastersAutocompleteHeaderName.company;
+      default:
+        return knowMastersAutocompleteHeaderName.company;
+    }
+  }
+
+  getHeaderNameSelector3(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.customer:
+        return knowMastersAutocompleteHeaderName.customer;
+      default:
+        return knowMastersAutocompleteHeaderName.customer;
+    }
+  }
+
+  getHeaderNameSelector4(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.paymentTerm:
+        return knowMastersAutocompleteHeaderName.paymentTerm;
+      default:
+        return knowMastersAutocompleteHeaderName.paymentTerm;
+    }
+  }
+
+
+
+  selectorPaymentTermSelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.counterpartyDetails.paymentTerm = null;
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.counterpartyDetails.paymentTerm = obj; 
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+    
+  getPaymentTermList() {
+    let payload = {
+      "Payload": {
+        "Order": null,
+        "PageFilters": {
+          "Filters": []
+        },
+        "SortList": {
+          "SortList": []
+        },
+        "Filters": [],
+        "SearchText": "",
+        "Pagination": {
+          "Skip": 0,
+          "Take": 25
+        }
+      }
+    };
+
+    this.invoiceService
+    .getPaymentTermList(payload)
+    .subscribe((result: any) => {
+        // console.log(result);
+        this.paymentTermList = result;
+        this.changeDetectorRef.detectChanges();
+    });
+  }
+
+
+  public filterPaymentTermList() {
+    if (this.formValues.counterpartyDetails.paymentTerm) {
+      let filterValue = '';
+      filterValue = this.formValues.counterpartyDetails.paymentTerm.name ? this.formValues.counterpartyDetails.paymentTerm.name.toLowerCase() : this.formValues.counterpartyDetails.paymentTerm.toLowerCase();
+      if (this.paymentTermList) {
+        const list =  this.paymentTermList.filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        }).splice(0,10);
+        console.log(list);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+ 
+  }
+
+  setPaymentTerm(data) {
+    this.formValues.counterpartyDetails.paymentTerm = {
+      'id': data.id,
+      'name': data.name
+    }
+    console.log(this.formValues.counterpartyDetails.paymentTerm);
+    this.changeDetectorRef.detectChanges();
+  }
+
+  getCompanyList() {
+    let payload = {
+      "Payload": {
+        "Order": null,
+        "PageFilters": {
+          "Filters": []
+        },
+        "SortList": {
+          "SortList": []
+        },
+        "Filters": [],
+        "SearchText": "",
+        "Pagination": {
+          "Skip": 0,
+          "Take": 25
+        }
+      }
+    };
+
+    this.invoiceService
+    .getCompanyList(payload)
+    .subscribe((result: any) => {
+        // console.log(result);
+        this.companyList = result;
+        this.changeDetectorRef.detectChanges();
+    });
+  }
+
+  public filterCompanyList() {
+    if (this.formValues.orderDetails.paymentCompany) {
+      let filterValue = '';
+      filterValue = this.formValues.orderDetails.paymentCompany.name ? this.formValues.orderDetails.paymentCompany.name.toLowerCase() : this.formValues.orderDetails.paymentCompany.toLowerCase();
+      if (this.companyList) {
+        const list =  this.companyList.filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        }).splice(0,10);
+        console.log(list);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+ 
+  }
+
+  setPaymentCompany(data) {
+    this.formValues.orderDetails.paymentCompany =  {
+      'id': data.id,
+      'name': data.name
+    }
+    console.log(this.formValues.orderDetails.paymentCompany);
+    this.changeDetectorRef.detectChanges();
+
+  }
+
+  selectorCompanySelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.counterpartyDetails.paymentTerm = null;
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.orderDetails.paymentCompany = obj; 
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+
+  public filterCarrierList() {
+    if (this.formValues.orderDetails.carrierCompany) {
+      let filterValue = '';
+      filterValue = this.formValues.orderDetails.carrierCompany.name ? this.formValues.orderDetails.carrierCompany.name.toLowerCase() : this.formValues.orderDetails.carrierCompany.toLowerCase();
+      if (this.companyList) {
+        const list =  this.companyList.filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        }).splice(0,10);
+        console.log(list);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+ 
+  }
+
+
+  setCarrierCompany(data) {
+    this.formValues.orderDetails.carrierCompany =  {
+      'id': data.id,
+      'name': data.name
+    }
+    console.log(this.formValues.orderDetails.carrierCompany);
+    this.changeDetectorRef.detectChanges();
+  }
+
+  
+
+  selectorCarrierSelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.orderDetails.carrierCompany = null;
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.orderDetails.carrierCompany = obj; 
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+  getCustomerList() {
+    let payload = {
+      "Payload": {
+        "Order": null,
+        "PageFilters": {
+          "Filters": []
+        },
+        "SortList": {
+          "SortList": []
+        },
+        "Filters": [
+          {
+            "ColumnName": "CounterpartyTypes",
+            "Value": "4"
+          }
+        ],
+        "SearchText": "",
+        "Pagination": {
+          "Skip": 0,
+          "Take": 25
+        }
+      }
+    };
+
+    this.invoiceService
+    .getCustomerList(payload)
+    .subscribe((result: any) => {
+        // console.log(result);
+        this.customerList = result;
+        this.changeDetectorRef.detectChanges();
+    });
+  }
+
+  
+
+  public filterCustomerList() {
+    if (this.formValues.counterpartyDetails.customer) {
+      let filterValue = '';
+      filterValue = this.formValues.counterpartyDetails.customer.name ? this.formValues.counterpartyDetails.customer.name.toLowerCase() : this.formValues.counterpartyDetails.customer.toLowerCase();
+      if (this.customerList) {
+        const list =  this.customerList.filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        }).splice(0,10);
+        console.log(list);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+ 
+  }
+
+
+  selectorCustomerSelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.counterpartyDetails.customer = null;
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.counterpartyDetails.customer = obj; 
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+  setCustomer(data) {
+    this.formValues.counterpartyDetails.customer =  {
+      'id': data.id,
+      'name': data.name
+    }
+    console.log(this.formValues.counterpartyDetails.customer);
+    this.changeDetectorRef.detectChanges();
+  }
+
+
+  getPaybleToList() {
+    let payload = {
+      "Payload": {
+        "Order": null,
+        "PageFilters": {
+          "Filters": []
+        },
+        "SortList": {
+          "SortList": []
+        },
+        "Filters": [
+          {
+            "ColumnName": "CounterpartyTypes",
+            "Value": "2, 11"
+          }
+        ],
+        "SearchText": "",
+        "Pagination": {
+          "Skip": 0,
+          "Take": 25
+        }
+      }
+    };
+
+    this.invoiceService
+    .getPaybleToList(payload)
+    .subscribe((result: any) => {
+        // console.log(result);
+        this.paybleToList = result;
+        this.changeDetectorRef.detectChanges();
+    });
+  }
+
+    
+
+  public filterPaybleToList() {
+    if (this.formValues.counterpartyDetails.payableTo) {
+      let filterValue = '';
+      filterValue = this.formValues.counterpartyDetails.payableTo.name ? this.formValues.counterpartyDetails.payableTo.name.toLowerCase() : this.formValues.counterpartyDetails.payableTo.toLowerCase();
+      if (this.paybleToList) {
+        const list =  this.paybleToList.filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        }).splice(0,10);
+        console.log(list);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+ 
+  }
+
+  selectorPaybleToSelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.counterpartyDetails.payableTo = null;
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.counterpartyDetails.payableTo = obj; 
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+  setPaybleTo(data) {
+    this.formValues.counterpartyDetails.payableTo =  {
+      'id': data.id,
+      'name': data.name
+    }
+    console.log(this.formValues.counterpartyDetails.payableTo);
+    this.changeDetectorRef.detectChanges();
+  }
+
+
+
 }
 
