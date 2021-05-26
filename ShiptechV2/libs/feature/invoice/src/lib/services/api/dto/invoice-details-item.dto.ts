@@ -79,9 +79,9 @@ export interface IInvoiceDetailsItemOrderDetails {
   products: any;
   order: IInvoiceDetailsItemBaseInfo;
   orderDate: Date | string;
-  carrierCompany: IInvoiceDetailsItemBaseInfo;
+  carrierCompany: any;
   orderCarrierCompany: IInvoiceDetailsItemBaseInfo;
-  paymentCompany: IInvoiceDetailsItemBaseInfo;
+  paymentCompany: any;
   orderPaymentCompany: IInvoiceDetailsItemBaseInfo;
   vesselName: string;
 	vesselId: number;
@@ -101,9 +101,9 @@ export interface IInvoiceDetailsItemCounterpartyDetails {
     customer: any;
     counterpartyBankAccount:any;
     sellerName?: string;
-    payableTo?: IInvoiceDetailsItemBaseInfo;
+    payableTo?: any;
     brokerName?: string;
-    paymentTerm?: IInvoiceDetailsItemBaseInfo;
+    paymentTerm?: any;
     orderPaymentTerm?: IInvoiceDetailsItemBaseInfo;
 	modulePathUrl?: string;
     clientIpAddress?: string;
