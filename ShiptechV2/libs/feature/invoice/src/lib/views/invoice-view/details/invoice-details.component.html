@@ -453,7 +453,8 @@
                                           [matAutocomplete]="auto1"
                                           autocomplete="off"
                                           placeholder="Company"
-                                          required>
+                                          required
+                                          [disabled]="formValues.status?.name === 'Approved' ? true : false" >
                                   <mat-autocomplete #auto1="matAutocomplete" 
                                                     class="darkPanelAuto"
                                                     [displayWith]="displayFn"
