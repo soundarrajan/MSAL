@@ -827,23 +827,6 @@
 
                                                     </div>
                                                 </div>     
-                                                
-                                                <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isCustomerHidden">
-                                                    <div class="form-group row">
-                                                        <label class="deliveryDate_label" for="deliveryDate">
-                                                            {{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}
-                                                        </label>
-														<div class="form_input form_input_pretestlabs input-group">
-                                                            <input class="form-control"
-                                                                   id="id_customer"
-                                                                   name="{{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}"
-                                                                   ng-model="$ctrl.data.customer.name"
-                                                                   ng-required="$ctrl.procurementSettings.fieldVisibility.isCustomerMandatory"
-                                                                   disabled="true" 
-                                                                   decode-input-format />
-                                                        </div>
-                                                    </div>
-                                                </div>                                                                                                    
 
                                             </div>
 
@@ -1057,6 +1040,22 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isCustomerHidden">
+                                                    <div class="form-group row">
+                                                        <label class="deliveryDate_label" for="deliveryDate">
+                                                            {{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}
+                                                        </label>
+														<div class="form_input form_input_pretestlabs input-group">
+                                                            <input class="form-control"
+                                                                   id="id_customer"
+                                                                   name="{{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}"
+                                                                   ng-model="$ctrl.data.customer.name"
+                                                                   ng-required="$ctrl.procurementSettings.fieldVisibility.isCustomerMandatory"
+                                                                   disabled="true" 
+                                                                   decode-input-format />
+                                                        </div>
+                                                    </div>
+                                                </div>                                                  
                                                 <div
                                                     ng-if="$ctrl.isDeliveryWindow && ($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
                                                     <div class="form-group row">
