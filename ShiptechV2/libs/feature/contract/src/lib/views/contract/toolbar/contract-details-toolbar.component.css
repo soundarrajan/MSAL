@@ -302,3 +302,12 @@ a.breadcrumb-a:active, a.breadcrumb-a:focus, a.breadcrumb-a:hover {
 .h-40{
 height: 40px;
 }
+
+.current-page {
+    background-color: #EEEEEE !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-bottom: 3px solid #1FBBE6 !important;
+    padding-top: 5px !important;
+}
