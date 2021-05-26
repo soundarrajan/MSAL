@@ -1,9 +1,11 @@
-﻿commit 416a75667702fce49bf368ab7d397ebc13519c7d
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed May 26 11:55:22 2021 +0000
+﻿commit abcf46e02bb4c88efd06061a030e773568a9fb86
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed May 26 12:30:58 2021 +0000
 
-    Merged PR 10971: #32519: Comment section-Participants names are displaying incorrectly issue has fixed
+    Merged PR 10973: fix product price precision in contract
     
-    Related work items: #32519
+    fix product price precision in contract
+    
+    Related work items: #32433
 
 branch: master
