@@ -1,11 +1,7 @@
-﻿commit abcf46e02bb4c88efd06061a030e773568a9fb86
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed May 26 12:30:58 2021 +0000
+﻿commit 322d99d7077ae0dd284f85d5b9856e9e5f5ac3f9
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 26 13:07:11 2021 +0000
 
-    Merged PR 10973: fix product price precision in contract
-    
-    fix product price precision in contract
-    
-    Related work items: #32433
+    Merged PR 10976: Fixed invoice Status color change and Recon status updating in invoice screen
 
 branch: master
