@@ -10,7 +10,10 @@ export enum knownMastersAutocomplete {
   systemInstrument = 'systemInstrument',
   currency = 'currency',
   formula = 'formula',
-  invoiceProduct = 'formula'
+  invoiceProduct = 'formula',
+  payableTo = 'payableTo',
+  customer = 'customer',
+  paymentTerm = 'paymentTerm'
 }
 
 export enum knowMastersAutocompleteHeaderName {
@@ -25,5 +28,8 @@ export enum knowMastersAutocompleteHeaderName {
   systemInstrument = 'SELECT SYSTEM INSTRUMENT',
   currency = 'SELECT CURRENCY',
   formula = 'SELECT FORMULA',
-  invoiceProduct = 'SELECT INV. PRODUCT'
+  invoiceProduct = 'SELECT INV. PRODUCT',
+  payableTo = 'SELECT PAYBLE TO',
+  customer = 'SELECT CUSTOMER',
+  paymentTerm = 'SELECT PAYMENT TERM'
 }
