@@ -1,9 +1,9 @@
-﻿commit 4083393a112d8ebc772305dfceb5a632b14c0c3e
+﻿commit 2b51e75797815680e647f14415a7daa50f9cc909
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed May 26 06:01:29 2021 +0000
+Date:   Wed May 26 06:14:37 2021 +0000
 
-    Merged PR 10940: #32519: Comment section-Participants names are displaying incorrectly issue has fixed
+    Merged PR 10941: #comment section total count update issue has fixed
     
-    Related work items: #32519
+    Related work items: #32517
 
 branch: master
