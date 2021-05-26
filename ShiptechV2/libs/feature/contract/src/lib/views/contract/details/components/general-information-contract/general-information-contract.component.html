@@ -19,15 +19,15 @@
     <div class="contract-created-container">
       <div class="contract-created-information">
         <div>
-          <div class="value m-w-150">Created by: 
-            <span class="created-by-field">
+          <div class="value m-w-135">Created by: 
+            <span class="created-by-field" matTooltip="{{formValues.createdBy ? formValues.createdBy.displayName : ''}}">
               {{formValues.createdBy ? formValues.createdBy.displayName : ''}}
             </span>
           </div>
         </div>
         <div class="border_line">|</div>
         <div> 
-          <div class="value m-w-150">On: 
+          <div class="value m-w-135">On: 
             <span class="created-on-field">
               {{formValues.createdOn ? formatDate(formValues.createdOn) : ''}}
             </span>
