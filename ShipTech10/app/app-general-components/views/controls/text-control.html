@@ -1,6 +1,9 @@
 <div class="form-group  row" dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
-    <label ng-if="field.Label && !field.isCustomField" for="{{ field.Name }}" class="{{ field.Name }}_label">
-        {{ CM.app_id + '.'+ field.Label | translate }}
+    <label ng-if="field.Label && !field.isCustomField" for="{{ field.Name }}" class="{{ field.Name }}_label">     
+        <span>
+            <span> {{ CM.app_id + '.'+ field.Label | translate }} </span> 
+            <span ng-show="field.Label=='SUBJECT'" class="orange-txt">*</span>
+        </span> 
         <span ng-if="$eval(field.Required)> 0 || field.Required == true ? true : false" class="orange-txt">
             *
         </span>
