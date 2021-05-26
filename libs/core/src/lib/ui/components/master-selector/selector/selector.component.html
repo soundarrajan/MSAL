@@ -45,13 +45,6 @@
   [size]="gridViewModel.pageSize"
   [count]="gridViewModel.totalItems"
   (pageChange)="onPageChange($event.page)">
-  <div>
-    <div class="filter-name">
-      <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)"
-                              [options]="gridViewModel?.pageSizeOptions" [selectedOption]="gridViewModel?.pageSize">
-      </app-page-size-selector>
-    </div>
-  </div>
 </app-ag-footer>
 <div class="controlButons">
   <button type="button" class="grey-button ui-button-warn btn-select" (click)="closeModal()" pButton label="Cancel" [disabled]="disabled || readonly"></button>
