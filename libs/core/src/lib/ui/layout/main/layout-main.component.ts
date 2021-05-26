@@ -56,9 +56,8 @@ export class LayoutMainComponent implements AfterViewInit {
     if (this.router.url.includes('delivery') || this.router.url.includes('contract') || this.router.url.includes('invoices/edit')) {
         this.isDelivery = true;
     }
-    this.isInvoicesplitview = false;
     if (this.router.url.includes('split-view')) {
-        this.isInvoicesplitview = true;
+      this.isDelivery = true;
     }
   }
 
