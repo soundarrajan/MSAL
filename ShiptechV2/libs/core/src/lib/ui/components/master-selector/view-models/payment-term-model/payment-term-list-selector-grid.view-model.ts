@@ -33,9 +33,11 @@ import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-inform
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
 import { IPaymentTermListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-import { PaymentTermListColumns, PaymentTermListColumnServerKeys, PaymentTermListColumnsLabels } from './payment-term-list.columns';
-
-
+import {
+  PaymentTermListColumns,
+  PaymentTermListColumnServerKeys,
+  PaymentTermListColumnsLabels
+} from './payment-term-list.columns';
 
 function model(prop: keyof IPaymentTermListDto): keyof IPaymentTermListDto {
   return prop;
@@ -132,8 +134,6 @@ export class PaymentTermListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
-
   isDeletedCol: ITypedColDef<IPaymentTermListDto, boolean> = {
     headerName: PaymentTermListColumnsLabels.isDeleted,
     colId: PaymentTermListColumns.isDeleted,
@@ -186,11 +186,6 @@ export class PaymentTermListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
-
-
-
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -212,13 +207,13 @@ export class PaymentTermListSelectorGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): ITypedColDef[] {
     return [
       this.selectCol,
-      this.idCol,
+      // this.idCol,
       this.physicalSupplierNameCol,
       this.isDeletedCol,
       this.createdByCol,
       this.createdOnCol,
       this.lastModifiedByCol,
-      this.lastModifiedOnCol,
+      this.lastModifiedOnCol
     ];
   }
 
@@ -228,7 +223,7 @@ export class PaymentTermListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-      const filters: ServerQueryFilter[] = [];
+    const filters: ServerQueryFilter[] = [];
     this.mastersListApiService
       .getPaymentTermList({
         ...transformLocalToServeGridInfo(

@@ -238,6 +238,9 @@
                       type="text"
                       matInput
                       [(ngModel)]="productDetail.value.invoicedProduct"
+                      [matTooltip]="productDetail.value?.invoicedProduct?.name"
+                      [matTooltipPosition]="'above'"
+                      matTooltipClass="custom-tooltip"
                       [matAutocomplete]="auto"
                       autocomplete="off"
                       required
@@ -494,6 +497,11 @@
                       [(ngModel)]="
                         productDetail.value.physicalSupplierCounterparty
                       "
+                      [matTooltip]="
+                        productDetail.value?.physicalSupplierCounterparty?.name
+                      "
+                      [matTooltipPosition]="'above'"
+                      matTooltipClass="custom-tooltip"
                       [matAutocomplete]="auto1"
                       autocomplete="off"
                       required
