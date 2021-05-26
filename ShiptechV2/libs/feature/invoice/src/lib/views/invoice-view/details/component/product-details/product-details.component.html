@@ -1,449 +1,772 @@
-<div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
+<div
+  class="header-product-details col-md-12 no-padding"
+  style="margin-top: 10px;"
+>
   Product details
 </div>
 <div class="custom-hardcoded-table admin" style="min-height: 250px;">
   <table class="table-body invoice-product-details-table">
-      <thead>
-        <tr>
-          <td class="padding" style="max-width: initial;min-width: 30px;">
-            <div  #menuTrigger="matMenuTrigger"  [matMenuTriggerFor]="productMenu"
-            #productMenuTrigger="matMenuTrigger" (click)="addTransaction()">
-              <a class="add-icon"></a>
-            </div>
-            <mat-menu #productMenu="matMenu" class="select-product-container">
-              <div [ngClass]="{'expand-allowed-company-container': expandAddTransactionListPopUp}">
-                <div class="col-md-12 header-container-product">
-                  <div class="search-product-container col-md-10">
-                    <span class="search-product-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchProducts(productSearch)">
-                    </span>
-                    <input matInput 
-                      (click)="$event.stopPropagation();$event.preventDefault();"
-                      [(ngModel)]="productSearch"
-                      (input)="searchProducts($event.target.value)"
-                      placeholder="Search all and select a product"
-                      class="search-product-input">
-                  </div>
-                  <div class="col-md-2">
-                      <img [ngClass]="{'expand-img': expandAddTransactionListPopUp}" (click)="expandAddTransactionListPopUp = !expandAddTransactionListPopUp; $event.stopPropagation();$event.preventDefault();" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                  </div>
+    <thead>
+      <tr>
+        <td class="padding" style="max-width: initial;min-width: 30px;">
+          <div
+            #menuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="productMenu"
+            #productMenuTrigger="matMenuTrigger"
+            (click)="addTransaction()"
+          >
+            <a class="add-icon"></a>
+          </div>
+          <mat-menu #productMenu="matMenu" class="select-product-container">
+            <div
+              [ngClass]="{
+                'expand-allowed-company-container': expandAddTransactionListPopUp
+              }"
+            >
+              <div class="col-md-12 header-container-product">
+                <div class="search-product-container col-md-10">
+                  <span
+                    class="search-product-lookup"
+                    (click)="
+                      $event.stopPropagation();
+                      $event.preventDefault();
+                      searchProducts(productSearch)
+                    "
+                  >
+                  </span>
+                  <input
+                    matInput
+                    (click)="$event.stopPropagation(); $event.preventDefault()"
+                    [(ngModel)]="productSearch"
+                    (input)="searchProducts($event.target.value)"
+                    placeholder="Search all and select a product"
+                    class="search-product-input"
+                  />
                 </div>
-                {{selectedProductLine}}
-                <table *ngIf="deliveriesToBeInvoicedList && deliveriesToBeInvoicedList.length" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="deliveriesToBeInvoicedList">
-                  <!-- Product Column -->
-                  <ng-container matColumnDef="product">
-                    <th mat-header-cell *matHeaderCellDef> Product </th>
-                    <td mat-cell *matCellDef="let element"> 
-                      <mat-radio-group  [(ngModel)]="selectedProductLine" (ngModelChange)="addTransactionsInInvoice(selectedProductLine)">
-                        <mat-radio-button [value]="element">   
-                          {{element.product.name}} 
-                        </mat-radio-button>
-                      </mat-radio-group>
-                    </td>
-                  </ng-container>
-        
-                  <!-- Product type Column -->
-                  <ng-container matColumnDef="delivery">
-                    <th mat-header-cell *matHeaderCellDef> Related deliveries </th>
-                    <td mat-cell *matCellDef="let element"> 
-                      {{element.delivery ? element.delivery.id : ''}} 
-                    </td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
+                <div class="col-md-2">
+                  <img
+                    [ngClass]="{ 'expand-img': expandAddTransactionListPopUp }"
+                    (click)="
+                      expandAddTransactionListPopUp = !expandAddTransactionListPopUp;
+                      $event.stopPropagation();
+                      $event.preventDefault()
+                    "
+                    alt="Shiptech"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                  />
+                </div>
               </div>
-            </mat-menu>
+              {{ selectedProductLine }}
+              <table
+                *ngIf="
+                  deliveriesToBeInvoicedList &&
+                  deliveriesToBeInvoicedList.length
+                "
+                class="delivery-products-pop-up col-md-12 no-padding"
+                mat-table
+                [dataSource]="deliveriesToBeInvoicedList"
+              >
+                <!-- Product Column -->
+                <ng-container matColumnDef="product">
+                  <th mat-header-cell *matHeaderCellDef>Product</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-radio-group
+                      [(ngModel)]="selectedProductLine"
+                      (ngModelChange)="
+                        addTransactionsInInvoice(selectedProductLine)
+                      "
+                    >
+                      <mat-radio-button [value]="element">
+                        {{ element.product.name }}
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </td>
+                </ng-container>
+
+                <!-- Product type Column -->
+                <ng-container matColumnDef="delivery">
+                  <th mat-header-cell *matHeaderCellDef>Related deliveries</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.delivery ? element.delivery.id : '' }}
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+              </table>
+            </div>
+          </mat-menu>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 250px">
+          <b>Delivery No. / Ordered Product</b>
+        </td>
+        <td
+          class="padding"
+          style="max-width: initial;min-width: 200px"
+          class="delivery-product-header"
+        >
+          <b>Deliv. Product</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 200px">
+          <b>Deliv. Qty</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 200px;">
+          <b>Estd. Rate</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 200px;">
+          <b>Amount</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 200px;">
+          <b>Invoice Product</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 200px;">
+          <b>Invoice Qty</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 300px;">
+          <b>Invoice Rate</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 200px;">
+          <b>Amount</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 150px;">
+          <b>Recon Status</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 150px;">
+          <b>Sulpher Content</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 200px;">
+          <b>Phy. Supplier</b>
+        </td>
+        <td class="padding" style="max-width: initial;min-width: 30px;">
+          <b></b>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container
+        *ngFor="
+          let productDetail of formValues.productDetails
+            | keyvalue: originalOrder
+        "
+      >
+        <tr *ngIf="!productDetail.value.isDeleted">
+          <td
+            class="padding"
+            style="padding-left: 0px  !important; padding-right: 0px  !important;"
+          >
+            <a
+              class="remove-icon"
+              style="margin-left: 10px;"
+              (click)="removeProductDetailLine(productDetail.key)"
+            ></a>
           </td>
           <td class="padding" style="max-width: initial;min-width: 250px">
-            <b>Delivery No. / Ordered Product</b>
+            <div class="delivery-number-container">
+              <div class="delivery-number-link-container">
+                <a
+                  *ngIf="productDetail.value.deliveryId"
+                  class="delivery-number-link"
+                  href="{{ openDeliveryLink(productDetail.value.deliveryId) }}"
+                  target="_blank"
+                >
+                  {{ productDetail.value.deliveryId }}
+                </a>
+              </div>
+              <div
+                class="ordered-product"
+                [matTooltip]="productDetail.value.orderedProduct.name"
+                [matTooltipPosition]="'above'"
+                matTooltipClass="custom-tooltip"
+              >
+                {{ productDetail.value.orderedProduct.name }}
+              </div>
+            </div>
           </td>
-          <td class="padding" style="max-width: initial;min-width: 200px" class="delivery-product-header"> 
-            <b>Deliv. Product</b>
+          <td
+            class="padding-left-column"
+            style="max-width: initial;min-width: 200px"
+          >
+            <div class="non-editable-container">
+              {{ productDetail.value.product.name }}
+            </div>
           </td>
-          <td class="padding" style="max-width: initial;min-width: 200px">
-            <b>Deliv. Qty</b>
+          <td style="max-width: initial;min-width: 200px">
+            <div class="non-editable-container">
+              <div style="float: left;">
+                {{ quantityFormatValue(productDetail.value.deliveryQuantity) }}
+              </div>
+              <div style="float: right;">
+                {{ productDetail.value.deliveryQuantityUom.name }}
+              </div>
+            </div>
+          </td>
+          <td style="max-width: initial;min-width: 200px">
+            <div class="non-editable-container">
+              <div style="float: left;">
+                {{ quantityFormatValue(productDetail.value.estimatedRate) }}
+              </div>
+              <div style="float: right;">
+                {{ productDetail.value.estimatedRateCurrency.code }}
+              </div>
+            </div>
+          </td>
+          <td style="max-width: initial;min-width: 200px">
+            <div class="non-editable-container">
+              <div style="float: left;">
+                {{ amountFormatValue(productDetail.value.estimatedAmount) }}
+              </div>
+              <div style="float: right;">
+                {{ productDetail.value.estimatedRateCurrency.code }}
+              </div>
+            </div>
+          </td>
+          <td
+            style="max-width: initial;min-width: 200px"
+            class="padding-left-column"
+          >
+            <div class="dotted-container black-container">
+              <div
+                class="custom-form-field-invoice invoice-product-details-product"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+              >
+                <div class="d-flex">
+                  <mat-form-field class="with-search" appearance="legacy">
+                    <input
+                      class="free-text-field"
+                      type="text"
+                      matInput
+                      [(ngModel)]="productDetail.value.invoicedProduct"
+                      [matAutocomplete]="auto"
+                      autocomplete="off"
+                      required
+                    />
+                    <mat-autocomplete
+                      #auto="matAutocomplete"
+                      class="darkPanelAuto"
+                      [displayWith]="displayFn"
+                      (optionSelected)="
+                        selectInvoiceProductLine(
+                          $event.option.value,
+                          productDetail.key
+                        )
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let option of filterInvoiceProductLine(
+                            productDetail.value.invoicedProduct &&
+                              productDetail.value.invoicedProduct.name
+                              ? productDetail.value.invoicedProduct.name
+                              : productDetail.value.invoicedProduct
+                          )
+                        "
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button
+                    class="search-icon btn-invoice"
+                    appMasterSelectorTrigger
+                    [masterSelector]="masterSelector1"
+                    #masterSelectorTrigger1="masterSelectorTrigger"
+                    [header]="getHeaderNameSelector1()"
+                  >
+                    <div class="img">
+                      <ng-template cdkPortal #masterSelector1="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorInvoicedProductSelectionChange(
+                              $event,
+                              productDetail.key
+                            );
+                            masterSelectorTrigger1.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger1.close()"
+                          [selectorType]="autocompleteInvoiceProduct"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="_entityId"
+                          [vesselId]="vesselId"
+                          [headerName]="getHeaderNameSelector1()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td
+            style="max-width: initial;min-width: 200px"
+            class="select-container"
+          >
+            <div class="dotted-container black-container">
+              <div
+                class="custom-form-field-invoice"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+                style="width: 200px;"
+              >
+                <div class="split-field">
+                  <mat-form-field
+                    class="without-search long-label-field"
+                    style="width: 64%;border: none;"
+                    appearance="legacy"
+                  >
+                    <input
+                      matInput
+                      [(ngModel)]="productDetail.value.invoiceQuantity"
+                      autocomplete="off"
+                      (ngModelChange)="
+                        invoiceConvertUom('product', productDetail.key)
+                      "
+                      quantityFormat
+                    />
+                  </mat-form-field>
+                  <mat-form-field style="width: 36%" appearance="legacy">
+                    <mat-select
+                      disableRipple
+                      [(ngModel)]="productDetail.value.invoiceQuantityUom"
+                      (ngModelChange)="
+                        invoiceConvertUom('product', productDetail.key)
+                      "
+                      [compareWith]="compareUomObjects"
+                      [disableOptionCentering]="true"
+                      panelClass="general-information-select-container"
+                    >
+                      <mat-option *ngFor="let uom of uomList" [value]="uom">{{
+                        uom.name
+                      }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td
+            style="max-width: initial;min-width: 300px"
+            class="select-container"
+          >
+            <div class="dotted-container">
+              <div
+                class="custom-form-field-invoice black-container"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+                style="width: 300px;"
+              >
+                <div class="split-field">
+                  <mat-form-field style="width: 33%" appearance="legacy">
+                    <mat-select
+                      disableRipple
+                      [(ngModel)]="productDetail.value.invoiceRateCurrency"
+                      (ngModelChange)="
+                        invoiceConvertUom('product', productDetail.key)
+                      "
+                      [compareWith]="compareUomObjects"
+                      [disableOptionCentering]="true"
+                      [disabled]="true"
+                      panelClass="general-information-select-container"
+                    >
+                      <mat-option
+                        *ngFor="let option of currencyList"
+                        [value]="option"
+                        >{{ option.code }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field
+                    class="without-search long-label-field"
+                    style="width: 33%;border: none;"
+                    appearance="legacy"
+                  >
+                    <input
+                      matInput
+                      autocomplete="off"
+                      [(ngModel)]="productDetail.value.invoiceRate"
+                      quantityFormat
+                      (ngModelChange)="
+                        invoiceConvertUom('product', productDetail.key)
+                      "
+                    />
+                  </mat-form-field>
+                  <mat-form-field style="width: 33%" appearance="legacy">
+                    <mat-select
+                      disableRipple
+                      [(ngModel)]="productDetail.value.invoiceRateUom"
+                      (ngModelChange)="
+                        invoiceConvertUom('product', productDetail.key)
+                      "
+                      [compareWith]="compareUomObjects"
+                      [disableOptionCentering]="true"
+                      panelClass="general-information-select-container"
+                    >
+                      <mat-option
+                        *ngFor="let option of uomList"
+                        [value]="option"
+                        >{{ option.name }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
           </td>
           <td class="padding" style="max-width: initial;min-width: 200px;">
-            <b>Estd. Rate</b>
+            <div class="dotted-container black-container amount-container">
+              <div style="float: left;">
+                {{ amountFormatValue(productDetail.value.invoiceAmount) }}
+              </div>
+              <div style="float: right;">
+                {{ productDetail.value.invoiceRateCurrency.code }}
+              </div>
+            </div>
           </td>
-          <td class="padding" style="max-width: initial;min-width: 200px;">
-            <b>Amount</b>
+          <td
+            style="max-width: initial;min-width: 150px;"
+            class="padding-left-column"
+          >
+            <span
+              *ngIf="
+                productDetail.value.reconStatus &&
+                productDetail.value.reconStatus.id == '2'
+              "
+              class="product-details-table-data-false"
+            >
+              <b>
+                {{ productDetail.value.reconStatus.name }}
+              </b>
+            </span>
+            <span
+              *ngIf="
+                productDetail.value.reconStatus &&
+                productDetail.value.reconStatus.id == '1'
+              "
+              class="product-details-table-data-true"
+            >
+              <b>
+                {{ productDetail.value.reconStatus.name }}
+              </b>
+            </span>
           </td>
-          <td class="padding" style="max-width: initial;min-width: 200px;">
-            <b>Invoice Product</b>
+          <td
+            style="max-width: initial;min-width: 150px;"
+            class="padding-left-column"
+          >
+            <div class="dotted-container-sulpher">
+              <div
+                class="custom-form-field-invoice"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+                style="width: 200px;"
+              >
+                <div class="split-field">
+                  <mat-form-field
+                    class="without-search long-label-field"
+                    style="width: 100%;border: none;"
+                    appearance="legacy"
+                  >
+                    <input
+                      matInput
+                      [(ngModel)]="productDetail.value.sulphurContent"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
           </td>
-          <td class="padding" style="max-width: initial;min-width: 200px;">
-            <b>Invoice Qty</b>
+          <td
+            style="max-width: initial;min-width: 200px"
+            class="padding-left-column"
+          >
+            <div class="dotted-container-supplier">
+              <div
+                class="custom-form-field-invoice invoice-product-details-product physical-supplier"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+              >
+                <div class="d-flex">
+                  <mat-form-field class="with-search" appearance="legacy">
+                    <input
+                      class="free-text-field"
+                      type="text"
+                      matInput
+                      [(ngModel)]="
+                        productDetail.value.physicalSupplierCounterparty
+                      "
+                      [matAutocomplete]="auto1"
+                      autocomplete="off"
+                      required
+                    />
+                    <mat-autocomplete
+                      #auto1="matAutocomplete"
+                      class="darkPanelAuto"
+                      [displayWith]="displayFn"
+                      (optionSelected)="
+                        selectPhysicalSupplierLine(
+                          $event.option.value,
+                          productDetail.key
+                        )
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let option of filterPhysicalSupplierLine(
+                            productDetail.value.physicalSupplierCounterparty &&
+                              productDetail.value.physicalSupplierCounterparty
+                                .name
+                              ? productDetail.value.physicalSupplierCounterparty
+                                  .name
+                              : productDetail.value.physicalSupplierCounterparty
+                          )
+                        "
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button
+                    class="search-icon-supplier"
+                    appMasterSelectorTrigger
+                    [masterSelector]="masterSelector2"
+                    #masterSelectorTrigger2="masterSelectorTrigger"
+                    [header]="getHeaderNameSelector1()"
+                  >
+                    <div class="img">
+                      <ng-template cdkPortal #masterSelector2="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorPhysicalSupplierSelectionChange(
+                              $event,
+                              productDetail.key
+                            );
+                            masterSelectorTrigger2.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger2.close()"
+                          [selectorType]="autocompletePhysicalSupplier"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="_entityId"
+                          [vesselId]="vesselId"
+                          [headerName]="getHeaderNameSelector()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
           </td>
-          <td class="padding" style="max-width: initial;min-width: 300px;">
-            <b>Invoice Rate</b>
-          </td>
-          <td class="padding" style="max-width: initial;min-width: 200px;">
-            <b>Amount</b>
-          </td>
-          <td class="padding" style="max-width: initial;min-width: 150px;">
-            <b>Recon Status</b>
-          </td>
-          <td class="padding" style="max-width: initial;min-width: 150px;">
-            <b>Sulpher Content</b>
-          </td>
-          <td class="padding" style="max-width: initial;min-width: 200px;">
-            <b>Phy. Supplier</b>
-          </td>
-          <td class="padding" style="max-width: initial;min-width: 30px;">
-            <b></b>
+          <td
+            class="padding"
+            style="max-width: initial;min-width: 30px; padding-left: 0px  !important; padding-right: 0px  !important;"
+          >
+            <span
+              *ngIf="productDetailsExpandArray[productDetail.key]"
+              (click)="
+                productDetailsExpandArray[
+                  productDetail.key
+                ] = !productDetailsExpandArray[productDetail.key]
+              "
+            >
+              <a class="expand-icon-for-product-details"> </a>
+            </span>
+            <span
+              *ngIf="!productDetailsExpandArray[productDetail.key]"
+              (click)="
+                productDetailsExpandArray[
+                  productDetail.key
+                ] = !productDetailsExpandArray[productDetail.key]
+              "
+            >
+              <a class="collapse-icon-for-product-details"> </a>
+            </span>
           </td>
         </tr>
-      </thead>
-      <tbody>
-        <ng-container  *ngFor="let productDetail of formValues.productDetails | keyvalue : originalOrder">
-          <tr *ngIf="!productDetail.value.isDeleted">
-            <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-              <a class="remove-icon" style="margin-left: 10px;" (click)="removeProductDetailLine(productDetail.key)"></a>
-            </td>
-            <td class="padding" style="max-width: initial;min-width: 250px">
-              <div class="delivery-number-container">
-                <div class="delivery-number-link-container">
-                    <a *ngIf="productDetail.value.deliveryId" class="delivery-number-link" href="{{openDeliveryLink(productDetail.value.deliveryId)}}" target="_blank">
-                      {{productDetail.value.deliveryId}}
-                    </a>
-                </div>
-                <div class="ordered-product" 
-                  [matTooltip]="productDetail.value.orderedProduct.name"
-                  [matTooltipPosition]="'above'"
-                  matTooltipClass="custom-tooltip">
-                  {{productDetail.value.orderedProduct.name}}
-                </div>
-              </div>
-            </td> 
-            <td class="padding-left-column" style="max-width: initial;min-width: 200px" > 
-              <div  class="non-editable-container">
-                {{productDetail.value.product.name}}
-              </div>
-            </td>
-            <td  style="max-width: initial;min-width: 200px">
-              <div  class="non-editable-container">
-                <div style="float: left;"> 
-                  {{quantityFormatValue(productDetail.value.deliveryQuantity)}}
-                </div>
-                <div style="float: right;">
-                  {{productDetail.value.deliveryQuantityUom.name}}
-                </div>
-              </div>
-            </td>
-            <td  style="max-width: initial;min-width: 200px">
-              <div  class="non-editable-container">
-                <div style="float: left;"> 
-                  {{quantityFormatValue(productDetail.value.estimatedRate)}}
-                </div>
-                <div style="float: right;">
-                  {{productDetail.value.estimatedRateCurrency.code}}
-                </div>
-              </div>
-            </td>
-            <td  style="max-width: initial;min-width: 200px">
-              <div  class="non-editable-container">
-                <div style="float: left;"> 
-                  {{amountFormatValue(productDetail.value.estimatedAmount)}}
-                </div>
-                <div style="float: right;">
-                  {{productDetail.value.estimatedRateCurrency.code}}
-                </div>
-              </div>
-            </td>
-            <td  style="max-width: initial;min-width: 200px" class="padding-left-column">
-              <div class="dotted-container black-container">
-                <div class="custom-form-field-invoice invoice-product-details-product" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <div class="d-flex">
-                    <mat-form-field class="with-search" 
-                      appearance="legacy">
-                      <input class="free-text-field" 
-                              type="text"
-                              matInput 
-                              [(ngModel)]="productDetail.value.invoicedProduct"
-                              [matAutocomplete]="auto"
-                              autocomplete="off"
-                              required>
-                      <mat-autocomplete #auto="matAutocomplete" 
-                              class="darkPanelAuto"
-                              [displayWith]="displayFn"
-                              (optionSelected)="selectInvoiceProductLine($event.option.value, productDetail.key)">
-                      <mat-option *ngFor="let option of filterInvoiceProductLine(productDetail.value.invoicedProduct && productDetail.value.invoicedProduct.name ? productDetail.value.invoicedProduct.name : productDetail.value.invoicedProduct)" 
-                              [value]="option">
-                            {{option.name}}
-                        </mat-option>
-                      </mat-autocomplete>
+        <tr
+          *ngIf="
+            !productDetail.value.isDeleted &&
+            productDetailsExpandArray[productDetail.key]
+          "
+        >
+          <td colspan="12">
+            <table
+              class="table-body invoice-product-details-table"
+              style="position: relative; left: 40px !important;"
+            >
+              <thead>
+                <tr>
+                  <td
+                    style="max-width: initial; min-width: 250px;"
+                    class="padding"
+                  >
+                    <b>Pricing event Date</b>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 300px;"
+                    class="padding"
+                  >
+                    <b>Pricing schedule</b>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 200px;"
+                    class="padding"
+                  >
+                    <b>Confirm Qty</b>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 100px;"
+                    class="padding"
+                  >
+                    <b>Agreement</b>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 100px;"
+                    class="padding"
+                  >
+                    <b>Contract</b>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 200px;"
+                    class="padding"
+                  >
+                    <b>Inv Amt in order cur.</b>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 200px;"
+                    class="padding"
+                  >
+                    <b>Invoice Description</b>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    style="max-width: initial; min-width: 250px;"
+                    class="padding-line"
+                  >
+                    <!-- <div class="dotted-container-pricing-date"> -->
+                    <mat-form-field
+                      class="without-search"
+                      appearance="legacy"
+                      [ngClass]="{
+                        'invalid-field': productDetail.value.pricingDate
+                      }"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="productDetail.value.pricingDate"
+                        [disabled]="!isPricingDateEditable"
+                        (dateChange)="
+                          formatDate(productDetail.value.pricingDate)
+                        "
+                        name="pricingDate"
+                        [matDatepicker]="picker"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
-                    <button class="search-icon btn-invoice"
-                      appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
-                      <div class="img">
-                          <ng-template cdkPortal #masterSelector1="cdkPortal" >
-                              <shiptech-shared-master-selector (selectedChange)="selectorInvoicedProductSelectionChange($event,  productDetail.key); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompleteInvoiceProduct"
-                                                              [disabled]="disabled"
-                                                              [readonly]="readonly"
-                                                              [entityName]="entityName"
-                                                              [entityId]="_entityId"
-                                                              [vesselId]="vesselId"
-                                                              [headerName]="getHeaderNameSelector1()"
-                              ></shiptech-shared-master-selector>
-                          </ng-template> 
-                      </div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td  style="max-width: initial;min-width: 200px" class="select-container">
-              <div class="dotted-container black-container">
-                <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
-                  <div class="split-field">
-                    <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
-                      <input matInput 
-                        [(ngModel)]="productDetail.value.invoiceQuantity"
-                        autocomplete="off"
-                        (ngModelChange)="invoiceConvertUom('product', productDetail.key)" 
-                        quantityFormat
-                        >
-                    </mat-form-field>
-                    <mat-form-field style="width: 36%"
-                        appearance="legacy">
-                        <mat-select disableRipple
-                          [(ngModel)]="productDetail.value.invoiceQuantityUom"
-                          (ngModelChange)="invoiceConvertUom('product', productDetail.key)" 
-                          [compareWith]="compareUomObjects"
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container">
-                          <mat-option *ngFor="let uom of uomList" [value]="uom">{{uom.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td  style="max-width: initial;min-width: 300px" class="select-container">
-              <div class="dotted-container">
-                <div class="custom-form-field-invoice black-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 300px;">
-                  <div class="split-field">
-                    <mat-form-field style="width: 33%"
-                      appearance="legacy">
-                      <mat-select disableRipple
-                        [(ngModel)]="productDetail.value.invoiceRateCurrency"
-                        (ngModelChange)="invoiceConvertUom('product', productDetail.key)"
-                        [compareWith]="compareUomObjects"
-                        [disableOptionCentering]="true"
-                        [disabled]="true"
-                        panelClass="general-information-select-container">
-                        <mat-option *ngFor="let option of currencyList" [value]="option">{{option.code}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="without-search long-label-field" style="width: 33%;border: none;" appearance="legacy">
-                      <input matInput 
-                        autocomplete="off"
-                        [(ngModel)]="productDetail.value.invoiceRate"
-                        quantityFormat
-                        (ngModelChange)="invoiceConvertUom('product', productDetail.key)" 
-                        >
-                    </mat-form-field>
-                    <mat-form-field style="width: 33%"
-                        appearance="legacy">
-                        <mat-select disableRipple
-                          [(ngModel)]="productDetail.value.invoiceRateUom"
-                          (ngModelChange)="invoiceConvertUom('product', productDetail.key)"
-                          [compareWith]="compareUomObjects"
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container">
-                          <mat-option *ngFor="let option of uomList" [value]="option">{{option.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td class="padding" style="max-width: initial;min-width: 200px;">
-              <div class="dotted-container black-container amount-container">
-                <div style="float: left;">
-                  {{amountFormatValue(productDetail.value.invoiceAmount)}}
-                </div>
-                <div style="float: right;">
-                  {{productDetail.value.invoiceRateCurrency.code}}
-                </div>
-              </div>
-            </td>
-            <td style="max-width: initial;min-width: 150px;" class="padding-left-column">
-              <span  *ngIf="productDetail.value.reconStatus && productDetail.value.reconStatus.id == '2'"  class="product-details-table-data-false">
-                <b>
-                  {{productDetail.value.reconStatus.name}}
-                </b>
-              </span>
-              <span *ngIf="productDetail.value.reconStatus && productDetail.value.reconStatus.id == '1'" class="product-details-table-data-true">
-                  <b>
-                    {{productDetail.value.reconStatus.name}}
-                  </b>
-              </span>
-            </td>
-            <td style="max-width: initial;min-width: 150px;" class="padding-left-column">
-              <div class="dotted-container-sulpher">
-                <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
-                  <div class="split-field">
-                    <mat-form-field class="without-search long-label-field" style="width: 100%;border: none;" appearance="legacy">
-                      <input matInput 
-                        [(ngModel)]="productDetail.value.sulphurContent"
-                        >
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td  style="max-width: initial;min-width: 200px" class="padding-left-column">
-              <div class="dotted-container-supplier">
-                <div class="custom-form-field-invoice invoice-product-details-product physical-supplier" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <div class="d-flex">
-                    <mat-form-field class="with-search" 
-                      appearance="legacy">
-                      <input class="free-text-field" 
-                              type="text"
-                              matInput 
-                              [(ngModel)]="productDetail.value.physicalSupplierCounterparty"
-                              [matAutocomplete]="auto1"
-                              autocomplete="off"
-                              required>
-                      <mat-autocomplete #auto1="matAutocomplete" 
-                              class="darkPanelAuto"
-                              [displayWith]="displayFn"
-                              (optionSelected)="selectPhysicalSupplierLine($event.option.value, productDetail.key)">
-                      <mat-option *ngFor="let option of filterPhysicalSupplierLine(productDetail.value.physicalSupplierCounterparty && productDetail.value.physicalSupplierCounterparty.name ? productDetail.value.physicalSupplierCounterparty.name : productDetail.value.physicalSupplierCounterparty)" 
-                              [value]="option">
-                            {{option.name}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                    <button class="search-icon-supplier"
-                      appMasterSelectorTrigger [masterSelector]="masterSelector2" #masterSelectorTrigger2="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
-                      <div class="img">
-                          <ng-template cdkPortal #masterSelector2="cdkPortal" >
-                              <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event,  productDetail.key); masterSelectorTrigger2.close()" (shouldCloseModal)="masterSelectorTrigger2.close()" [selectorType]="autocompletePhysicalSupplier"
-                                                              [disabled]="disabled"
-                                                              [readonly]="readonly"
-                                                              [entityName]="entityName"
-                                                              [entityId]="_entityId"
-                                                              [vesselId]="vesselId"
-                                                              [headerName]="getHeaderNameSelector()"
-                              ></shiptech-shared-master-selector>
-                          </ng-template> 
-                      </div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td class="padding" style="max-width: initial;min-width: 30px; padding-left: 0px  !important; padding-right: 0px  !important;">
-              <span *ngIf="productDetailsExpandArray[productDetail.key]" (click)="productDetailsExpandArray[productDetail.key] = !productDetailsExpandArray[productDetail.key]">
-                <a class="expand-icon-for-product-details">
-                </a>
-              </span>
-              <span  *ngIf="!productDetailsExpandArray[productDetail.key]" (click)="productDetailsExpandArray[productDetail.key] = !productDetailsExpandArray[productDetail.key]">
-                <a class="collapse-icon-for-product-details">
-                </a>
-              </span>
-            </td>
-          </tr>
-          <tr *ngIf="!productDetail.value.isDeleted && productDetailsExpandArray[productDetail.key]">
-            <td colspan="12"> 
-              <table class="table-body invoice-product-details-table" style="position: relative; left: 40px !important;">
-                <thead>
-                  <tr>
-                    <td style="max-width: initial; min-width: 250px;" class="padding">
-                      <b>Pricing event Date</b>
-                    </td>
-                    <td style="max-width: initial; min-width: 300px;" class="padding">
-                      <b>Pricing schedule</b>
-                    </td>
-                    <td style="max-width: initial; min-width: 200px;" class="padding">
-                      <b>Confirm Qty</b>
-                    </td>
-                    <td style="max-width: initial; min-width: 100px;" class="padding">
-                      <b>Agreement</b>
-                    </td>
-                    <td style="max-width: initial; min-width: 100px;" class="padding">
-                      <b>Contract</b>
-                    </td>
-                    <td style="max-width: initial; min-width: 200px;" class="padding">
-                      <b>Inv Amt in order cur.</b>
-                    </td>
-                    <td style="max-width: initial; min-width: 200px;" class="padding">
-                      <b>Invoice Description</b>
-                    </td>
-                  </tr>
-                </thead>
-                <tbody>			
-                  <tr >
-                    <td style="max-width: initial; min-width: 250px;" class="padding-line">
-                      <!-- <div class="dotted-container-pricing-date"> -->
-                        <mat-form-field
-                                class="without-search"
-                                appearance="legacy"
-                                [ngClass]="{ 'invalid-field': productDetail.value.pricingDate }"
-                              >
-                              <input matInput 
-                                  [(ngModel)]="productDetail.value.pricingDate"
-                                  [disabled]="!isPricingDateEditable"
-                                  (dateChange)="formatDate(productDetail.value.pricingDate)"
-                                  name="pricingDate" [matDatepicker]="picker">
-                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                          <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                        <!-- {{productDetail.value.pricingDate ? formatDate(productDetail.value.pricingDate) : ''}} -->
-                      <!-- </div> -->
-                    </td>
-                    <td style="max-width: initial; min-width: 300px;" class="padding-line">
-                      <span>
-                        {{productDetail.value.pricingScheduleName ? productDetail.value.pricingScheduleName : ''}}
-                      </span>
-                    </td>
-                    <td  style="max-width: initial; min-width: 200px;" class="padding-line">
-                      <span>
-                        {{quantityFormatValue(productDetail.value.confirmedQuantity)}}
-                        {{productDetail.value.confirmedQuantityUom.name}}
-                      </span>
-                    </td>
-                    <td style="max-width: initial; min-width: 100px;" class="padding-line">
-                      <span>{{productDetail.value.agreementType.name}}</span>
-                    </td>
-                    <td style="max-width: initial; min-width: 100px;" class="padding-line">
-                        <div class="contract-link-container">
-                            <a *ngIf="productDetail.value.contract" class="contract-link" href="{{openContractLink(productDetail.value.contract.id)}}" target="_blank">
-                              {{productDetail.value.contract.id}}
-                            </a>
-                        </div>
-                    </td>
-                    <td style="max-width: initial; min-width: 200px;" class="padding-line">
-                      <span>
-                        {{amountFormatValue(productDetail.value.amountInOrder)}}
-                        {{productDetail.value.estimatedRateCurrency.code}}
-                      </span>
-                    </td>
-                    <td style="max-width: initial; min-width: 200px;" class="padding">
-                      <div class="dotted-container-sulpher">
-                        <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
-                          <div class="split-field">
-                            <mat-form-field class="without-search long-label-field" style="width: 100%;border: none;" appearance="legacy">
-                              <input matInput 
-                                [(ngModel)]="productDetail.value.description"
-                                >
-                            </mat-form-field>
-                          </div>
+                    <!-- {{productDetail.value.pricingDate ? formatDate(productDetail.value.pricingDate) : ''}} -->
+                    <!-- </div> -->
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 300px;"
+                    class="padding-line"
+                  >
+                    <span>
+                      {{
+                        productDetail.value.pricingScheduleName
+                          ? productDetail.value.pricingScheduleName
+                          : ''
+                      }}
+                    </span>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 200px;"
+                    class="padding-line"
+                  >
+                    <span>
+                      {{
+                        quantityFormatValue(
+                          productDetail.value.confirmedQuantity
+                        )
+                      }}
+                      {{ productDetail.value.confirmedQuantityUom.name }}
+                    </span>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 100px;"
+                    class="padding-line"
+                  >
+                    <span>{{ productDetail.value.agreementType.name }}</span>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 100px;"
+                    class="padding-line"
+                  >
+                    <div class="contract-link-container">
+                      <a
+                        *ngIf="productDetail.value.contract"
+                        class="contract-link"
+                        href="{{
+                          openContractLink(productDetail.value.contract.id)
+                        }}"
+                        target="_blank"
+                      >
+                        {{ productDetail.value.contract.id }}
+                      </a>
+                    </div>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 200px;"
+                    class="padding-line"
+                  >
+                    <span>
+                      {{ amountFormatValue(productDetail.value.amountInOrder) }}
+                      {{ productDetail.value.estimatedRateCurrency.code }}
+                    </span>
+                  </td>
+                  <td
+                    style="max-width: initial; min-width: 200px;"
+                    class="padding"
+                  >
+                    <div class="dotted-container-sulpher">
+                      <div
+                        class="custom-form-field-invoice"
+                        [ngClass]="{
+                          darkTheme: switchTheme,
+                          lightTheme: !switchTheme
+                        }"
+                        style="width: 200px;"
+                      >
+                        <div class="split-field">
+                          <mat-form-field
+                            class="without-search long-label-field"
+                            style="width: 100%;border: none;"
+                            appearance="legacy"
+                          >
+                            <input
+                              matInput
+                              [(ngModel)]="productDetail.value.description"
+                            />
+                          </mat-form-field>
                         </div>
                       </div>
-                    </td>
-                    
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-        </ng-container>
-
-      </tbody>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
   </table>
 </div>
 
@@ -451,6 +774,6 @@
   bdColor="rgba(51,51,51,0.8)"
   size="medium"
   color="#fff"
-  type="ball-spin-clockwise-fade">
+  type="ball-spin-clockwise-fade"
+>
 </ngx-spinner>
-
