@@ -260,7 +260,7 @@
       {{params.value}}</div>
   </div>
   
-  <div class="port-cell" *ngIf="params.type=='port'" style="display:flex;">
+  <div class="port-cell" *ngIf="params.type=='port'" style="display:flex;" [ngClass]="{'highlight': params?.data?.is_end_of_service =='Y','end-of-voyage':params?.data?.is_last_port == 'Y'}">
     <div style="width:15px;">
       <mat-checkbox #check [ngClass]="{'cell-checkbox':!check.checked}" [(ngModel)]="params.data.createReqFlag"
         (change)="portClicked({event:$event, param: params})">
@@ -269,7 +269,8 @@
     <div matTooltip="{{params.value}}" style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 45px;">
       {{params.value}}
     </div>
-    <div >
+    <div class="red-indication" *ngIf="params.data?.redelivery_port">.</div>
+    <div style="width:15px;">
       <div class="info-i" (click)="toggleMenu3Info($event)" 
         (mouseenter)="!menuClick  && toggleMenuInfo($event,params.value);"
         (mouseleave)="!menuClick  && toggleMenu2Info();">
@@ -281,38 +282,33 @@
   
     </div>
   </div>
-  <li *ngIf="params.data?.redelivery_port" style="width:15px;" style="color:red;margin-bottom:11px;"> </li>
-  <mat-menu  #infoPopup="matMenu" xPosition="after" class="common">
+  <mat-menu  #infoPopup="matMenu" xPosition="after" class="common port-deptails-popup">
     <ng-template matMenuContent let-data="data">
       <div class="info_popup" [ngClass]="{'light-theme':!theme}">
         <div class="row info-header">
           <div>
             Port of {{params.data.location_name}} ({{params.data.port_id}})
           </div>
-          <div *ngIf="params.data?.redelivery_port">
-            <ul style="padding-right:65px;padding-left:10px; margin: 3px 4px 6px;">
-            <li><span class="sub-content-title">Port for Redelivery</span></li>
-            </ul>
-          </div>  
-          <div class="line"></div>
           <div (click)="cancelMenu()">
             <mat-icon class="close">close</mat-icon>
           </div>
         </div>
+        <div  *ngIf="params.data?.redelivery_port"><i class="fa fa-circle redelivery-indication" aria-hidden="true"></i> <span class="redelivery-info">Port for Redelivery</span></div>
+      <div class="line"></div>
         <div class="row info-content">
-          <div>
+          <div  class="sub-header" >
             Vessel arrival details
           </div>
           <div>
             <ul style="padding-left: 14px;vertical-align: middle; margin: 6px 0px 0px;">
-              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value">{{params.data.eta_date}} | {{etaDays}} days</span></li>
-              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value">{{params.data.etd_date}} | {{etdDays}} days</span></li>
+              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value">{{params.data.eta_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{etaDays}} Days</span></li>
+              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value">{{params.data.etd_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{etdDays}} Days</span></li>
             </ul>
           </div>
         </div>
         <div class="line"></div>
         <div class="row info-content">
-          <div>
+          <div class="sub-header">
             Reserve Rule - excluding unpumpables
           </div>
           <div class="chip">
@@ -349,7 +345,7 @@
         </div>
         <div class="line"></div>
         <div class="row info-content">
-          <div >
+          <div class="sub-header">
             Service details
           </div>
           <div>
@@ -361,7 +357,7 @@
         </div>
         <div class="line"></div>
         <div class="row info-content">
-          <div>
+          <div class="sub-header">
             Voyage details
           </div>
           <div>
