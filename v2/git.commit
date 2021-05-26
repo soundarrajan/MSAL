@@ -1,9 +1,9 @@
-﻿commit e0efc052d5bd8036e32f32840cf0877b27ba276b
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 26 11:02:37 2021 +0000
+﻿commit f5d14f608ff81bcda2da0bc522a46a87216e76f8
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Wed May 26 11:14:56 2021 +0000
 
-    Merged PR 10961: Worked on Payment Terms, Customer, Carrier, Payable To, Lookups
+    Merged PR 10964: Removed paid amount
     
-    Worked on Payment Terms, Customer, Carrier, Payable To, Lookups
+    Related work items: #32596
 
 branch: master
