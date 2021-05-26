@@ -1,9 +1,9 @@
-﻿commit 2b51e75797815680e647f14415a7daa50f9cc909
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed May 26 06:14:37 2021 +0000
+﻿commit 1f4fa93e79f5eb86bb44970feff7e20620409920
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 26 07:23:19 2021 +0000
 
-    Merged PR 10941: #comment section total count update issue has fixed
+    Merged PR 10945: Added indication for the user to see which page is in display in contract page
     
-    Related work items: #32517
+    Added indication for the user to see which page is in display in contract page
 
 branch: master
