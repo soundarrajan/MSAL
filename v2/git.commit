@@ -1,7 +1,11 @@
-﻿commit 68c9473cface3c72231b2a6b8617134b9d9dfe61
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 26 14:49:26 2021 +0000
+﻿commit f95c7d585c59385edf7b600ed7435c698b83895c
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed May 26 21:59:34 2021 +0000
 
-    Merged PR 10982: Fixed 32580
+    Merged PR 10986: UI changes in Current Bplan
+    
+    UI changes in Current Bplan
+    
+    Related work items: #32650
 
 branch: master
