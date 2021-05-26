@@ -5177,7 +5177,7 @@ label {
 		box-sizing: border-box;
 		//border-radius: 5px;
 		width: 212px;
-		height: 350px;
+		//height: 233px;
 		padding-top: 10px;
 		.close {
 			font-style: normal;
@@ -5187,8 +5187,22 @@ label {
 			color: #999999;
 			cursor: pointer;
 		}
+		.sub-header{
+			color:#ffffff;
+		}
+		.redelivery-indication{
+			color: #EB5757;
+   		    font-size: 6px;
+            padding: 11px;
+
+		}
+		.redelivery-info{
+			font-size: 11px;
+    color: #c4c4c4;
+		}
 		.row {
 			margin: 0px;
+			align-items: center;
 		}
 		.line {
 			border-bottom: 2px solid rgba(61, 71, 88, 0.5);
@@ -5203,13 +5217,6 @@ label {
 			color: #66B0D6;
 			height: 25px;
 			justify-content: space-between;
-			.sub-content-title {
-				font-weight: 300;
-				font-size: 10px;
-				line-height: 16px;
-				color: $text_color_title;
-				transform: rotate(0.08deg);
-			}
 		}
 		.info-content {
 			padding: 10px 10px;
@@ -5278,7 +5285,6 @@ label {
 		}
 		.info-footer {
 			padding: 0px 20px;
-			margin-top: 10px;
 			height: 30px;
 			font-style: normal;
 			font-weight: normal;
@@ -7483,4 +7489,32 @@ label {
 	color:#8F9BAB;
 	font-size: 14px;
 
+}
+.end-of-voyage{
+	background-color: #ffffff;
+	color:#333333;
+
+}
+.highlight{
+	color: white;
+	background: repeating-linear-gradient(
+	  
+	  -55deg,
+	  #66B0D6,
+	  #66B0D6 1px,
+	  #3E5467 1px,
+	  #3E5467 2px
+	);
+	
+}
+.red-indication{
+	color: #EB5757;
+    font-size: 31px;
+    position: relative;
+    top: -18px;
+    left: 18px;
+	display: inline-block;
+}
+.port-deptails-popup{
+	overflow: hidden !important;
 }

@@ -139,11 +139,7 @@ export class BunkeringPlanComponent implements OnInit {
         },
         {
           headerName: BunkeringPlanColumnsLabels.PortCode, headerTooltip: BunkeringPlanColumnsLabels.PortCode, field: 'port_id', width: 96, cellRendererFramework: AGGridCellDataComponent,
-         cellClassRules: {
-            'light-cell': function (params) {
-              return params?.data?.is_last_port == 'Y';
-            }
-          },cellRendererParams: (params) =>{
+         cellRendererParams: (params) =>{
            return { type: this.type == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
           },
           cellClass: ['dark-cell aggrid-content-center'], headerClass: [' aggrid-colum-splitter-left aggrid-text-align-c']
