@@ -129,7 +129,7 @@ implements  OnInit, OnDestroy {
 
   public chipData = [
     {Title:'Invoice No', Data:this.emptyStringVal},
-    {Title:'Status', Data:this.emptyStringVal},
+    {Title:'Status', Data:this.emptyStringVal, statusColorCode: ''},
     {Title:'Invoice Total', Data:this.emptyStringVal},
     {Title:'Estimated Total', Data:this.emptyStringVal},
     {Title:'Total Difference', Data:this.emptyStringVal},
@@ -228,6 +228,8 @@ implements  OnInit, OnDestroy {
   companyList: any;
   customerList: any;
   paybleToList: any;
+  scheduleDashboardLabelConfiguration: any;
+  statusColorCode: string = '#9E9E9E';
 
 
 // detailFormvalues:any;
@@ -306,6 +308,14 @@ implements  OnInit, OnDestroy {
       this.currencyList = this.setListFromStaticLists('Currency');
       this.physicalSupplierList = this.setListFromStaticLists('Supplier');
       this.costTypeList = this.setListFromStaticLists('CostType');
+      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+      if (typeof this.formValues.status != 'undefined') {
+        if (this.formValues.status.name) {
+          this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+        }
+        console.log(this.statusColorCode);
+      }
+      this.setChipDatas();
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
 
@@ -1304,6 +1314,7 @@ tenantConfiguration(){
     var ivs =  this.formValues.invoiceSummary;
     this.chipData[0].Data = this.formValues.id?.toString();
     this.chipData[1].Data = this.formValues.status?.displayName? this.formValues.status.displayName : this.emptyStringVal;
+    this.chipData[1].statusColorCode = this.statusColorCode;
     if(ivs){
       this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
       this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
@@ -2088,6 +2099,16 @@ tenantConfiguration(){
     }
     console.log(this.formValues.counterpartyDetails.payableTo);
     this.changeDetectorRef.detectChanges();
+  }
+
+  getColorCodeFromLabels(statusObj, labels) {
+    for(let i = 0; i < labels.length; i++) {
+      if (statusObj) {
+        if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
+            return labels[i].code;
+        }
+      }
+    }
   }
 
 
