@@ -8,6 +8,7 @@ import {
   SimpleChanges,
   HostListener,
   ViewChild,
+  ChangeDetectorRef,
   ElementRef,
   Output,
   EventEmitter,
@@ -20,6 +21,8 @@ import { Observable, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { TenantFormattingService } from '../../../../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
+import moment from 'moment';
 
 @Component({
   selector: 'shiptech-notes-log',
@@ -33,7 +36,6 @@ export class NotesLogComponent implements OnInit, OnDestroy {
   @Input('DeliveryNotes') DeliveryNotes: any;
   @Input('id') DeliveryId: any;
   @Input() test: string;
-  @Output() ChangedValue = new EventEmitter<any>();
 
   private _destroy$ = new Subject();
   objNotes: any = [];
@@ -42,73 +44,112 @@ export class NotesLogComponent implements OnInit, OnDestroy {
     private store: Store,
     private detailsService: NotesService,
     private toastr: ToastrService,
-    private eRef: ElementRef
-  ) {
-  }
+    private eRef: ElementRef,
+    private ref: ChangeDetectorRef,
+    private format: TenantFormattingService
+  ) {}
 
   ngOnInit(): void {
     this.User = this.store.selectSnapshot(UserProfileState.user);
     this.objNotes = this.DeliveryNotes;
   }
-  update(item: IDeliveryNotesDetailsResponse, newNoteDetails: string, index: number): void {
-    debugger;
+  update(
+    item: IDeliveryNotesDetailsResponse,
+    newNoteDetails: string,
+    index: number
+  ): void {
     if (this.DeliveryId != undefined && this.DeliveryId != null) {
       item.note = newNoteDetails;
+      item.createdAt = this.formatDateForBe(new Date());
       let payload = {
-        "DeliveryId": this.DeliveryId,
-        "DeliveryNotes": [item]
-      }
-      this.detailsService
-        .saveDeliveryInfo(payload)
-        .subscribe((result: any) => {
-          console.log("Payload", result)
-          this.objNotes = result;
-          console.log("Payload this.objNotes", this.objNotes)
-        });
+        DeliveryId: this.DeliveryId,
+        DeliveryNotes: [item]
+      };
+      this.detailsService.saveDeliveryInfo(payload).subscribe((result: any) => {
+        this.objNotes = result;
+        // Detect changes
+        this.ref.markForCheck();
+      });
     }
   }
 
-  RemoveItem(item: IDeliveryNotesDetailsResponse, index: number): void {
-    debugger;
+  removeItem(item: IDeliveryNotesDetailsResponse, index: number): void {
     if (this.DeliveryId != undefined && this.DeliveryId != null) {
       item.isDeleted = true;
       let payload = {
-        "DeliveryId": this.DeliveryId,
-        "DeliveryNotes": [item]
-      }
-      this.detailsService
-        .saveDeliveryInfo(payload)
-        .subscribe((result: any) => {
-          console.log("Payload", result)
-          this.objNotes = result;
-          console.log("Payload this.objNotes", this.objNotes)
-        });
-    }
-    else{
+        DeliveryId: this.DeliveryId,
+        DeliveryNotes: [item]
+      };
+      this.detailsService.saveDeliveryInfo(payload).subscribe((result: any) => {
+        this.objNotes = result;
+
+        // Detect changes
+        this.ref.markForCheck();
+      });
+    } else {
       this.objNotes.splice(index, 1);
+      // Detect changes
+      this.ref.markForCheck();
     }
   }
 
+  formatDate(date?: any) {
+    if (date) {
+      let currentFormat = this.format.dateFormat;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      let formattedDate = moment(elem).format(currentFormat);
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
+  }
+
+  formatDateForBe(value) {
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
+  }
 
   add(): void {
     var Createon = {
-      "id": this.User.id,
-      "name": this.User.name,
-      "displayName": this.User.displayName,
-      "code": null,
-      "collectionName": null
-    }
+      id: this.User.id,
+      name: this.User.name,
+      displayName: this.User.displayName,
+      code: null,
+      collectionName: null
+    };
     if (this.objNotes != undefined) {
-      this.objNotes.push({ id: 0, note: '', createdBy: Createon, createdAt: new Date() });
-    }
-    else {
+      this.objNotes.push({
+        id: 0,
+        note: '',
+        createdBy: Createon,
+        createdAt: this.formatDateForBe(new Date())
+      });
+
+      // Detect changes
+      this.ref.markForCheck();
+    } else {
       this.objNotes = [];
-      this.objNotes.push({ id: 0, note: '', createdBy: Createon, createdAt: new Date() });
+      this.objNotes.push({
+        id: 0,
+        note: '',
+        createdBy: Createon,
+        createdAt: this.formatDateForBe(new Date())
+      });
+      // Detect changes
+      this.ref.markForCheck();
     }
-  }
-  @HostListener('document:click', ['$event'])
-  clickout(event) {
-    this.ChangedValue.emit(this.objNotes);
   }
 
   ngOnDestroy(): void {
