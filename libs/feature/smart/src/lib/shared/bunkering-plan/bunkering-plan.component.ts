@@ -625,7 +625,10 @@ export class BunkeringPlanComponent implements OnInit {
       return isHardValidation;
     }
     // max SOD validation : Total max SOD< Total min SOD 
-    let isValidMaxSod = data.findIndex(data => data?.max_sod < data?.min_sod) == -1 ? 'Y':'N';
+    let isValidMaxSod = data.findIndex(data => {
+        return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+      });
+      isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
     if(isValidMaxSod == 'N'){
       let id = data.findIndex(data => data?.max_sod < data?.min_sod)
       let port_id = data[id].port_id;
