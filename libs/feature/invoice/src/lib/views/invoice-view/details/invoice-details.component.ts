@@ -1,6 +1,5 @@
 import { KnownInvoiceRoutes } from './../../../known-invoice.routes';
 import { KnownPrimaryRoutes } from './../../../../../../../core/src/lib/enums/known-modules-routes.enum';
-import { IInvoiceDetailsItemRequest } from './../../../services/api/dto/invoice-details-item.dto';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,7 +10,9 @@ import {
   ViewChildren,
   ChangeDetectorRef,
   Output,
-  EventEmitter
+  EventEmitter,
+  Injectable,
+  InjectionToken
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -42,7 +43,7 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-comp
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, Optional } from 'ag-grid-community';
 import moment from 'moment';
 import {
   IInvoiceDetailsItemBaseInfo,
@@ -80,20 +81,352 @@ import {
   knownMastersAutocomplete
 } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+
+import { NativeDateAdapter } from '@angular/material/core';
+import { Moment, MomentFormatSpecification, MomentInput } from 'moment';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NgxMatNativeDateAdapter,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
+import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatRadioChange } from '@angular/material/radio';
+
 const isEmpty = object =>
   !Object.values(object).some(x => x !== null && x !== '');
 
-export const MY_FORMATS = {
+const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
-    dateInput: 'LL'
+    dateInput: 'YYYY-MM-DD HH:mm'
   },
   display: {
-    dateInput: 'ddd DD/MM/yyyy HH:mm',
-    monthYearLabel: 'YYYY',
+    dateInput: 'YYYY-MM-DD HH:mm',
+    monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'YYYY'
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
+
+export const PICK_FORMATS = {
+  display: {
+    dateInput: 'DD MMM YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+  parse: {
+    dateInput: 'DD MMM YYYY'
+  }
+};
+
+export class PickDateAdapter extends NativeDateAdapter {
+  format(value: Date, displayFormat: string): string {
+    if (value === null || value === undefined) return '';
+    let currentFormat = displayFormat;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    currentFormat = currentFormat.split(' HH:mm')[0];
+    let formattedDate = moment(value).format(currentFormat);
+    if (hasDayOfWeek) {
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
+    }
+    return formattedDate;
+  }
+
+  parse(value) {
+    // We have no way using the native JS Date to set the parse format or locale, so we ignore these
+    // parameters.
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    currentFormat = currentFormat.split(' HH:mm')[0];
+    let elem = moment(value, currentFormat);
+    let date = elem.toDate();
+    return value ? date : null;
+  }
+}
+
+export interface NgxMatMomentDateAdapterOptions {
+  strict?: boolean;
+
+  useUtc?: boolean;
+}
+
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+  NgxMatMomentDateAdapterOptions
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+  providedIn: 'root',
+  factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+});
+
+export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
+  return {
+    useUtc: false
+  };
+}
+
+function range<T>(length: number, valueFunction: (index: number) => T): T[] {
+  const valuesArray = Array(length);
+  for (let i = 0; i < length; i++) {
+    valuesArray[i] = valueFunction(i);
+  }
+  return valuesArray;
+}
+
+@Injectable()
+export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
+  private _localeData: {
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
+  };
+
+  constructor(
+    @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+    @Optional()
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    private _options?: NgxMatMomentDateAdapterOptions
+  ) {
+    super();
+    this.setLocale(dateLocale || moment.locale());
+  }
+
+  setLocale(locale: string) {
+    super.setLocale(locale);
+
+    const momentLocaleData = moment.localeData(locale);
+    this._localeData = {
+      firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
+      longMonths: momentLocaleData.months(),
+      shortMonths: momentLocaleData.monthsShort(),
+      dates: range(31, i => this.createDate(2017, 0, i + 1).format('D')),
+      longDaysOfWeek: momentLocaleData.weekdays(),
+      shortDaysOfWeek: momentLocaleData.weekdaysShort(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin()
+    };
+  }
+
+  getYear(date: Moment): number {
+    return this.clone(date).year();
+  }
+
+  getMonth(date: Moment): number {
+    return this.clone(date).month();
+  }
+
+  getDate(date: Moment): number {
+    return this.clone(date).date();
+  }
+
+  getDayOfWeek(date: Moment): number {
+    return this.clone(date).day();
+  }
+
+  getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
+    // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
+    return style === 'long'
+      ? this._localeData.longMonths
+      : this._localeData.shortMonths;
+  }
+
+  getDateNames(): string[] {
+    return this._localeData.dates;
+  }
+
+  getDayOfWeekNames(style: 'long' | 'short' | 'narrow'): string[] {
+    if (style === 'long') {
+      return this._localeData.longDaysOfWeek;
+    }
+    if (style === 'short') {
+      return this._localeData.shortDaysOfWeek;
+    }
+    return this._localeData.narrowDaysOfWeek;
+  }
+
+  getYearName(date: Moment): string {
+    return this.clone(date).format('YYYY');
+  }
+
+  getFirstDayOfWeek(): number {
+    return this._localeData.firstDayOfWeek;
+  }
+
+  getNumDaysInMonth(date: Moment): number {
+    return this.clone(date).daysInMonth();
+  }
+
+  clone(date: Moment): Moment {
+    return date.clone().locale(this.locale);
+  }
+
+  createDate(year: number, month: number, date: number): Moment {
+    if (month < 0 || month > 11) {
+      throw Error(
+        `Invalid month index "${month}". Month index has to be between 0 and 11.`
+      );
+    }
+
+    if (date < 1) {
+      throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
+    }
+
+    const result = this._createMoment({ year, month, date }).locale(
+      this.locale
+    );
+    if (!result.isValid()) {
+      throw Error(`Invalid date "${date}" for month with index "${month}".`);
+    }
+
+    return result;
+  }
+
+  today(): Moment {
+    // @ts-ignore
+    return this._createMoment().locale(this.locale);
+  }
+
+  parse(value: any, parseFormat: string | string[]): Moment | null {
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    let elem = moment(value, currentFormat);
+    const isValid = this.isValid(elem);
+    return this.isValid(elem) ? elem : null;
+  }
+
+  format(date: Moment, displayFormat: string): string {
+    date = this.clone(date);
+    if (!this.isValid(date)) {
+      throw Error('MomentDateAdapter: Cannot format invalid date.');
+    }
+    let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    let formattedDate = moment(date).format(currentFormat);
+    if (hasDayOfWeek) {
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+    }
+    return formattedDate;
+  }
+
+  addCalendarYears(date: Moment, years: number): Moment {
+    return this.clone(date).add({ years });
+  }
+
+  addCalendarMonths(date: Moment, months: number): Moment {
+    return this.clone(date).add({ months });
+  }
+
+  addCalendarDays(date: Moment, days: number): Moment {
+    return this.clone(date).add({ days });
+  }
+
+  toIso8601(date: Moment): string {
+    return this.clone(date).format();
+  }
+
+  deserialize(value: any): Moment | null {
+    let date;
+    if (value instanceof Date) {
+      date = this._createMoment(value);
+    } else if (this.isDateInstance(value)) {
+      return this.clone(value);
+    }
+    if (typeof value === 'string') {
+      if (!value) {
+        return null;
+      }
+      let currentFormat = PICK_FORMATS.display.dateInput;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      let newVal = moment(elem).format(currentFormat);
+      console.log(newVal);
+      if (elem && this.isValid(elem)) {
+        return elem;
+      }
+    }
+    return super.deserialize(value);
+  }
+
+  isDateInstance(obj: any): boolean {
+    return moment.isMoment(obj);
+  }
+
+  isValid(date: Moment): boolean {
+    return this.clone(date).isValid();
+  }
+
+  invalid(): Moment {
+    return moment.invalid();
+  }
+
+  getHour(date: Moment): number {
+    const el = date.hours();
+    const elem = moment(date).utcOffset(0);
+    return date.hours();
+  }
+  getMinute(date: Moment): number {
+    return date.minutes();
+  }
+  getSecond(date: Moment): number {
+    return date.seconds();
+  }
+  setHour(date: Moment, value: number): void {
+    date.hours(value);
+  }
+  setMinute(date: Moment, value: number): void {
+    date.minutes(value);
+  }
+  setSecond(date: Moment, value: number): void {
+    date.seconds(value);
+  }
+
+  private _createMoment(
+    date: MomentInput,
+    format?: MomentFormatSpecification,
+    locale?: string
+  ): Moment {
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions =
+      this._options || {};
+
+    return useUtc
+      ? moment.utc(date, format, locale, strict)
+      : moment(date, format, locale, strict);
+  }
+}
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -107,7 +440,14 @@ export const MY_FORMATS = {
       deps: [MAT_DATE_LOCALE]
     },
 
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    {
+      provide: NgxMatDateAdapter,
+      useClass: CustomNgxDatetimeAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
   ]
 })
 export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
@@ -345,9 +685,16 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     private titleService: Title,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    @Inject(MAT_DATE_FORMATS) private dateFormats,
+    @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats
   ) {
     super(changeDetectorRef);
+    this.dateFormats.display.dateInput = this.format.dateFormat;
+    this.dateFormats.parse.dateInput = this.format.dateFormat;
+    this.dateTimeFormats.display.dateInput = this.format.dateFormat;
+    CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
+    PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.amountFormat =
       '1.' +
       this.tenantService.amountPrecision +
@@ -843,7 +1190,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.calculateGrand(this.formValues);
       return;
     }
-    
+
     this.getUomConversionFactorCost(
       this.product,
       1,
