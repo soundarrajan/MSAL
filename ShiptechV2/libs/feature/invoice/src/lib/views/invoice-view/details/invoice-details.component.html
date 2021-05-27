@@ -971,7 +971,7 @@
                   <mat-checkbox
                     class="example-margin"
                     name="paymentProofReceived"
-                    [disabled]="true"
+                    [disabled]="!invoiceId"
                     [(ngModel)]="formValues.paymentDetails.paymentProofReceived"
                     >Payment proof received</mat-checkbox
                   >
@@ -982,7 +982,7 @@
                     cols="50"
                     placeholder="Payment Proof comments"
                     name="paymentDetailscomments"
-                    [disabled]="true"
+                    [disabled]="!formValues.paymentDetails.paymentProofReceived"
                     [(ngModel)]="formValues.paymentDetails.comments"
                   ></textarea>
                 </div>
