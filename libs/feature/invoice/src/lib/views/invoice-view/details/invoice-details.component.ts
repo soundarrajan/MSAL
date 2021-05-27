@@ -1305,7 +1305,7 @@ tenantConfiguration(){
     this.chipData[0].Data = this.formValues.id?.toString();
     this.chipData[1].Data = this.formValues.status?.displayName? this.formValues.status.displayName : this.emptyStringVal;
     if(ivs){
-      this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
+        this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
       this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
       this.chipData[4].Data = ivs?.totalDifference? this.amountFormatValue(ivs?.totalDifference?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal;
       this.chipData[5].Data = ivs?.provisionalInvoiceNo? ivs?.provisionalInvoiceNo?.toString(): this.emptyNumberVal;
@@ -1314,7 +1314,10 @@ tenantConfiguration(){
       this.chipData[8].Data = ivs?.netPayable? this.amountFormatValue(ivs?.netPayable?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code  : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code ;
     }
     else{ this.formValues.invoiceSummary = <IInvoiceDetailsItemInvoiceSummary>{}; }
-  }
+    setTimeout(() => {
+        this.calculateGrand(this.formValues);
+    });
+}
 
   formatDateForBe(value) {
     if (value) {
