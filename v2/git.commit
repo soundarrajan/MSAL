@@ -1,7 +1,7 @@
-﻿commit 07468dd7bcbdd42671c6869825fc12a8ac3ad53d
-Author: Pavithra M <pavithra.m@inatech.com>
-Date:   Thu May 27 12:20:16 2021 +0530
+﻿commit 1801034227eb01045a8af3fa4d10e5234155d734
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu May 27 07:59:48 2021 +0000
 
-    VSTS BUG 32177
+    Merged PR 11007: Fixed Invoice rate displaying for the following cost types -"Flat" , "Unit" and "Percent" from the location
 
 branch: master

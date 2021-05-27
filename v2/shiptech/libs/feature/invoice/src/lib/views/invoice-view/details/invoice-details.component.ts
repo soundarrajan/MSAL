@@ -277,6 +277,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   paybleToList: any;
   scheduleDashboardLabelConfiguration: any;
   statusColorCode: string = '#9E9E9E';
+  invoiceId: number;
+  quantityFormat: string;
 
   // detailFormvalues:any;
   @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -284,7 +286,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues = val;
 
       // Set paid ammount disabled;
-      if (!this.formValues.status || this.formValues.status.name === 'New' || this.formValues.status.name === 'Cancelled') {
+      if (
+        !this.formValues.status ||
+        this.formValues.status.name === 'New' ||
+        this.formValues.status.name === 'Cancelled'
+      ) {
         this.paidAmmoutDisabled = true;
       }
 
@@ -347,6 +353,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.tenantService.amountPrecision +
       '-' +
       this.tenantService.amountPrecision;
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
     this.autocompletePaybleTo = knownMastersAutocomplete.payableTo;
     this.autocompleteCompany = knownMastersAutocomplete.company;
     this.autocompleteCarrier = knownMastersAutocomplete.company;
@@ -366,7 +377,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
     this.entityName = 'Invoice';
     this.route.params.pipe().subscribe(params => {
-      this.entityId = parseFloat(params.invoiceId);
+      this.entityId = parseFloat(params.invoiceid);
+      this.invoiceId = parseFloat(params.invoiceid);
     });
     this.route.data.subscribe(data => {
       this.staticLists = data.staticLists;
@@ -594,14 +606,117 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       }
     }
   }
+
   summaryCalculationsForCostDetails() {
     if (this.formValues.costDetails) {
       for (let i = 0; i < this.formValues.costDetails.length; i++) {
-        this.invoiceConvertUomCost('cost', i);
+        if (
+          this.formValues.costDetails[i] &&
+          (this.formValues.costDetails[i].costType.name == 'Range' ||
+            this.formValues.costDetails[i].costType.name == 'Total')
+        ) {
+          this.getRangeTotalAmount(this.formValues.costDetails[i], i);
+        } else {
+          this.invoiceConvertUomCost('cost', i);
+        }
       }
     }
   }
 
+  getRangeTotalAmount(additionalCost, rowIndex) {
+    if (!additionalCost.locationAdditionalCostId) {
+      return;
+    }
+
+    if (
+      !(
+        additionalCost.costType.name == 'Range' ||
+        additionalCost.costType.name == 'Total'
+      )
+    ) {
+      return;
+    }
+
+    if (!additionalCost.invoiceQuantity) {
+      return;
+    }
+
+    let payload = {
+      Payload: {
+        Order: null,
+        Filters: [
+          {
+            ColumnName: 'ProductId',
+            Value: additionalCost.product
+              ? additionalCost.product.productId
+              : null
+          },
+          {
+            ColumnName: 'LocationId',
+            Value: this.formValues.orderDetails.portId
+              ? this.formValues.orderDetails.portId
+              : null
+          },
+          {
+            ColumnName: 'AdditionalCostId',
+            Value: additionalCost.locationAdditionalCostId
+              ? additionalCost.locationAdditionalCostId
+              : null
+          },
+          {
+            ColumnName: 'Qty',
+            Value: additionalCost.invoiceQuantity
+          },
+          {
+            ColumnName: 'QtyUomId',
+            Value: additionalCost.invoiceQuantityUom
+              ? additionalCost.invoiceQuantityUom.id
+              : null
+          }
+        ],
+        Pagination: {
+          Skip: 0,
+          Take: 25
+        },
+        SearchText: null
+      }
+    };
+
+    this.invoiceService
+      .getRangeTotalAdditionalCosts(payload)
+      .pipe(
+        finalize(() => {
+          //this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          additionalCost.invoiceRate = this.quantityFormatValue(response.price);
+          this.invoiceConvertUomCost('cost', rowIndex);
+        }
+      });
+  }
+
+  quantityFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if (this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
+  }
   invoiceConvertUomCost(type, rowIndex) {
     console.log(type);
     console.log(rowIndex);
@@ -710,6 +825,25 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.calculateGrand(this.formValues);
       return;
     }
+
+    if (
+      this.cost.locationAdditionalCostId &&
+      this.costType &&
+      (this.costType.name == 'Range' || this.costType.name == 'Total')
+    ) {
+      this.formValues.costDetails[
+        rowIndex
+      ].invoiceAmount = this.cost.invoiceRate;
+      this.formValues.costDetails[rowIndex].invoiceExtrasAmount =
+        (this.formValues.costDetails[rowIndex].invoiceExtras / 100) *
+        this.formValues.costDetails[rowIndex].invoiceAmount;
+      this.formValues.costDetails[rowIndex].invoiceTotalAmount =
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) +
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+      this.calculateGrand(this.formValues);
+      return;
+    }
+    
     this.getUomConversionFactorCost(
       this.product,
       1,
