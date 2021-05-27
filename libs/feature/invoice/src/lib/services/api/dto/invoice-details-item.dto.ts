@@ -96,6 +96,7 @@ export interface IInvoiceDetailsItemOrderDetails {
   modulePathUrl: string;
   clientIpAddress: string;
   userAction: any;
+  hasWithheldAmount: boolean;
 }
 
 export interface IInvoiceDetailsItemCounterpartyDetails {
