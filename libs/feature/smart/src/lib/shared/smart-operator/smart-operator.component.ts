@@ -209,7 +209,7 @@ export class SmartOperatorComponent implements OnInit {
         return classArray.length > 0 ? classArray : null
     
       } ,
-      cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { type: 'vesselName' }
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
     },
 
     { headerName: 'Service ID', headerTooltip: 'Service ID', field: 'serviceId', width: 100, cellClass: 'aggrid-vertical-center' },
