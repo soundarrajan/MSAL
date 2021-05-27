@@ -200,6 +200,7 @@ export class VesselDetailsComponent implements OnInit {
   }
   vesselChange(event) {
     this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
+    if(event.displayName)
     this.vesselName = event?.displayName;
     // this.vesselView = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
     //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
