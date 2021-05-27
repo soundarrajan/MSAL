@@ -1,11 +1,7 @@
-﻿commit f95c7d585c59385edf7b600ed7435c698b83895c
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed May 26 21:59:34 2021 +0000
+﻿commit 2bd37f98135e4dade0eeee6f0747c88b41ede0fe
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Thu May 27 11:47:06 2021 +0530
 
-    Merged PR 10986: UI changes in Current Bplan
-    
-    UI changes in Current Bplan
-    
-    Related work items: #32650
+    Claim & Pre Claim Credit Note creation from Claim detail screen. #32640
 
 branch: master

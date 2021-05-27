@@ -284,10 +284,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues = val;
 
       // Set paid ammount disabled;
-      if (
-        this.formValues.status.name === 'New' ||
-        this.formValues.status.name === 'Cancelled'
-      ) {
+      if (!this.formValues.status || this.formValues.status.name === 'New' || this.formValues.status.name === 'Cancelled') {
         this.paidAmmoutDisabled = true;
       }
 
@@ -385,7 +382,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         'InvoiceCustomStatus'
       );
       if (typeof this.formValues.status != 'undefined') {
-        if (this.formValues.status.name) {
+        if (this.formValues.status && this.formValues.status.name) {
           this.statusColorCode = this.getColorCodeFromLabels(
             this.formValues.status,
             this.scheduleDashboardLabelConfiguration
