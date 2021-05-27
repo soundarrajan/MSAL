@@ -1178,7 +1178,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                         $scope.loaded = true;
                         toastr.success(response.message);
                         $rootScope.transportData = response.data;
-                        $location.path('invoices/claims/edit/');
+                        // $location.path('invoices/claims/edit/');
+                        localStorage.setItem('createCreditNote', JSON.stringify(response.data));
+                        window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_self');
                     } else {
                         $scope.loaded = true;
                         toastr.error(response.message);
@@ -1200,7 +1202,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                         $scope.loaded = true;
                         toastr.success(response.message);
                         $rootScope.transportData = response.data;
-                        $location.path('invoices/claims/edit/');
+                        // $location.path('invoices/claims/edit/');
+                        localStorage.setItem('createCreditNote', JSON.stringify(response.data));
+                        window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_self');
                     } else {
                         $scope.loaded = true;
                         toastr.error(response.message);

@@ -2316,7 +2316,10 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     $scope.loaded = true;
                     toastr.success(response.message);
                     $rootScope.transportData = response.data;
-                    $location.path('invoices/claims/edit/');
+                    // $location.path('invoices/claims/edit/');
+                    
+                    localStorage.setItem('createCreditNote', JSON.stringify(response.data));
+                    window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_self');
                 } else {
                     $scope.loaded = true;
                     toastr.error(response.message);
