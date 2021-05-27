@@ -5,14 +5,14 @@ export interface IInvoiceDetailsItemDto {
   documentType?: IInvoiceDetailsItemBaseInfo;
   canCreateFinalInvoice: boolean;
   receivedDate: Date | string;
-  dueDate: Date | string;
+  dueDate: string;
   manualDueDate: Date | string;
   accountNumber: number;
   workingDueDate: Date | string;
   sellerInvoiceDate: Date | string;
   sellerDueDate: Date | string;
   approvedDate: Date | string;
-  paymentDate: Date | string;
+  paymentDate: any;
   accountancyDate: Date | string;
   invoiceRateCurrency?: IInvoiceDetailsItemBaseInfo;
   backOfficeComments: any;
