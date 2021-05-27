@@ -4,6 +4,12 @@
       <span class="content"> New Request </span>
     </div>
   </div>
+
+  <div  *ngIf="params.type =='vesselName'">
+    <div [ngClass]="params.cellClass" matTooltip="{{params.value}}">
+    <a href="{{shiptechUrl}}/#/masters/vessel/edit/{{params?.data?.vesselId}}"  target="_blank" rel="noopener">{{params.value}}</a>
+  </div>
+</div>
   
   <div *ngIf="params.type=='multiple-values'">
     <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">

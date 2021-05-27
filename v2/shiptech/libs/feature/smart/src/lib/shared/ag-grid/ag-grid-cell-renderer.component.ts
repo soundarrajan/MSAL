@@ -8,11 +8,7 @@ import { LocalService } from '../../services/local-service.service';
     template: `
     <div *ngIf="this?.params?.colDef?.filter!=='date'" [ngClass]="params.cellClass" matTooltip="{{params.value}}" style="margin:0px">{{params.value}}</div>
     <div *ngIf="this?.params?.colDef?.filter=='date'" [ngClass]="params.cellClass" matTooltip="{{params.value | date: 'dd/MM/yyyy'}}" style="margin:0px">{{params.value | date: 'dd/MM/yyyy'}}</div>
-    <div [ngClass]="params.cellClass" matTooltip="{{params.value}}" style="margin:0px">{{params.value}}</div> 
-    <div *ngIf="params.type =='vesselName'">
-        <a href="{{shiptechUrl}}/#/masters/vessel/edit/{{params.vesselId}}"  target="_blank" rel="noopener"></a>
-    </div>
-   `
+    <div [ngClass]="params.cellClass" matTooltip="{{params.value}}" style="margin:0px">{{params.value}}</div>`
 })
 export class AGGridCellRendererComponent implements ICellRendererAngularComp  {
     public params: any;

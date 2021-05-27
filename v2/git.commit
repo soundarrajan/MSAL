@@ -1,7 +1,11 @@
-﻿commit af44188d0daf97d687c06353cff22820e0a647dd
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 27 08:53:33 2021 +0000
+﻿commit adc02c43a76b74a3443805e18dddc37eef6ba720
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu May 27 09:26:58 2021 +0000
 
-    Merged PR 11014: Added format date based on the configuration for all date fields in invoice screen(32587)
+    Merged PR 11015: Unmanageable Vessel hyperlink
+    
+    Unmanageable Vessel hyperlink
+    
+    Related work items: #29749
 
 branch: master
