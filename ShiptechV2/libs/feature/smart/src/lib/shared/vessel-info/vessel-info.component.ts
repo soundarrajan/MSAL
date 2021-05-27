@@ -354,22 +354,18 @@ export class VesselInfoComponent implements OnInit {
   }
   setImportGSIS(event){
     this.import_gsis = this.isChecked == false ? 1:0 ;
-    let req = {
-      action:"",
-      ship_id: this.vesselData?.vesselId,
-      generate_new_plan:this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
-      import_gsis:this.import_gsis,
-    }
     this.store.dispatch(new ImportGsisAction(this.import_gsis))
-    this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
-      if(data.payload && data?.payload[0]?.import_in_progress == 1){
-        const dialogRef = this.dialog.open(NoDataComponent, {
-          width: '350px',
-          panelClass: 'confirmation-popup',
-          data: {message : 'Please wait, GSIS import is under process'}
-        })
-      }
-    })
+    if(this.import_gsis == 1){
+      let req = {
+        action:"",
+        ship_id: this.vesselData?.vesselId,
+        generate_new_plan:this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
+        import_gsis:this.import_gsis,
+      } 
+      this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
+        console.log('Import GSIS status',data);
+      })
+    }
     event.stopPropagation();
   }
   generateCurrentBPlan(event){
@@ -400,6 +396,13 @@ export class VesselInfoComponent implements OnInit {
         this.store.dispatch(new GeneratePlanAction(0));
         this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
       }
+      // if(data.payload && data?.payload[0]?.import_in_progress == 1){
+      //   const dialogRef = this.dialog.open(NoDataComponent, {
+      //     width: '350px',
+      //     panelClass: 'confirmation-popup',
+      //     data: {message : 'Please wait, GSIS import is under process'}
+      //   })
+      // }
     })
     event.stopPropagation();
   }
