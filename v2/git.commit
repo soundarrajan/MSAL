@@ -1,10 +1,10 @@
-﻿commit a4d044f84e537be2f3f6f56c338235f9ea028c3e
+﻿commit a4f529f60184d4ea41c21e3cc413f8fa738e42aa
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu May 27 20:16:16 2021 +0000
+Date:   Thu May 27 22:21:37 2021 +0000
 
-    Merged PR 11034: Generate button Vessel Name removal bug fix.
+    Merged PR 11035: Generate button validation
     
-    Generate button Vessel Name removal bug fix.
+    Generate button validation
     
     Related work items: #32688
 
