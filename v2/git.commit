@@ -1,7 +1,11 @@
-﻿commit b750d94634b25ccfcf6181a54f400bdac6d3c3dd
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu May 27 16:48:13 2021 +0300
+﻿commit 5040291720efd6daee377beeeeb65ac5e09a29a3
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu May 27 15:08:21 2021 +0000
 
-    Fixed build error
+    Merged PR 11031: fix invoice amount total
+    
+    fix invoice amount total
+    
+    Related work items: #30681
 
 branch: master
