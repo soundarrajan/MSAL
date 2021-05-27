@@ -139,11 +139,7 @@ export class BunkeringPlanComponent implements OnInit {
         },
         {
           headerName: BunkeringPlanColumnsLabels.PortCode, headerTooltip: BunkeringPlanColumnsLabels.PortCode, field: 'port_id', width: 96, cellRendererFramework: AGGridCellDataComponent,
-         cellClassRules: {
-            'light-cell': function (params) {
-              return params?.data?.is_last_port == 'Y';
-            }
-          },cellRendererParams: (params) =>{
+         cellRendererParams: (params) =>{
            return { type: this.type == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
           },
           cellClass: ['dark-cell aggrid-content-center'], headerClass: [' aggrid-colum-splitter-left aggrid-text-align-c']
@@ -629,7 +625,10 @@ export class BunkeringPlanComponent implements OnInit {
       return isHardValidation;
     }
     // max SOD validation : Total max SOD< Total min SOD 
-    let isValidMaxSod = data.findIndex(data => data?.max_sod < data?.min_sod) == -1 ? 'Y':'N';
+    let isValidMaxSod = data.findIndex(data => {
+        return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+      });
+      isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
     if(isValidMaxSod == 'N'){
       let id = data.findIndex(data => data?.max_sod < data?.min_sod)
       let port_id = data[id].port_id;

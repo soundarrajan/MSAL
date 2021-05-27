@@ -114,6 +114,7 @@ import { GeneralSettingsRouteResolver } from './views/invoice-view/details/gener
 import { ContractService } from '../../../contract/src/lib/services/contract.service';
 
 import { NotesDetailsComponent } from './views/invoice-view/details/component/notes-details/notes-details.component';
+import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/details/schedule-dashboard-labels-route.resolver';
 
 @NgModule({
   imports: [
@@ -257,6 +258,7 @@ import { NotesDetailsComponent } from './views/invoice-view/details/component/no
     DecimalPipe,
     StaticListsRouteResolver,
     GeneralSettingsRouteResolver,
+    ScheduleDashboardLabelsRouteResolver,
     ContractService,
   ],
   entryComponents:[
