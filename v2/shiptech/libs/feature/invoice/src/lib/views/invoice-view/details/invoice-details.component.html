@@ -274,8 +274,7 @@
                 <mat-form-field
                   [ngClass]="{ 'invalid-field': formErrors.dueDate }"
                   class="without-search"
-                  appearance="legacy"
-                >
+                  appearance="legacy">
                   <mat-label>Due Date</mat-label>
                   <input
                     [(ngModel)]="formValues.dueDate"
@@ -304,8 +303,7 @@
                 <mat-form-field
                   class="without-search"
                   appearance="legacy"
-                  [ngClass]="{ 'invalid-field': formErrors.workingDueDate }"
-                >
+                  [ngClass]="{ 'invalid-field': formErrors.workingDueDate }">
                   <mat-label>Working due date</mat-label>
                   <input
                     [(ngModel)]="formValues.workingDueDate"
@@ -315,13 +313,8 @@
                     [matDatepicker]="workingDueDate"
                     autocomplete="off"
                     placeholder="Working Due Date"
-                    disabled="true"
-                    (dateChange)="
-                      formatDateForBe(formValues.workingDueDate);
-                      isFormValid({ useToaster: false })
-                    "
-                    required
-                  />
+                    (dateChange)="formatDateForBe(formValues.workingDueDate);isFormValid({ useToaster: false })"
+                    required disabled/>
                   <mat-datepicker-toggle matSuffix [for]="workingDueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
                     </mat-icon>
@@ -553,12 +546,7 @@
               <div class="checkbox">
                 <mat-checkbox
                   disabled
-                  [checked]="
-                    formValues.invoiceClaimDetails &&
-                    formValues.invoiceClaimDetails.length
-                      ? formValues.invoiceClaimDetails[0]?.isPreclaimCN
-                      : false
-                  "
+                  [checked]="formValues.orderDetails.hasWithheldAmount"
                   >Withheld Amount</mat-checkbox
                 >
               </div>
