@@ -1,11 +1,9 @@
-﻿commit adc02c43a76b74a3443805e18dddc37eef6ba720
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu May 27 09:26:58 2021 +0000
+﻿commit 9400e441ae2b548654abd8b02df33843417e3d42
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu May 27 11:31:17 2021 +0000
 
-    Merged PR 11015: Unmanageable Vessel hyperlink
+    Merged PR 11021: Fixed navigation topbar from invoice screen
     
-    Unmanageable Vessel hyperlink
-    
-    Related work items: #29749
+    Fixed navigation topbar from invoice screen
 
 branch: master
