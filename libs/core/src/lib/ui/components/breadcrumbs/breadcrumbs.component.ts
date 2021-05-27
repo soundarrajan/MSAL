@@ -22,10 +22,10 @@ import { MenuItem } from 'primeng/api';
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   delivery: any = false;
-  @Input('delivery') set _setDelivery(delivery) { 
+  @Input('delivery') set _setDelivery(delivery) {
     if (!delivery) {
       return;
-    } 
+    }
     this.delivery = delivery;
   }
   // All the breadcrumbs
@@ -104,6 +104,10 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
     if (this.router.url.includes('contracts/contract')) {
       breadcrumbs[0].url = '/#/contracts/contract';
+    }
+
+    if (this.router.url.includes('invoices/edit')) {
+      breadcrumbs[0].url = '/#/invoices/invoice';
     }
 
     return this.createBreadcrumbs(child, url, breadcrumbs);

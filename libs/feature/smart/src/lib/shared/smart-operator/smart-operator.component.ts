@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
@@ -6,7 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SearchVesselComponent } from '../search-vessel/search-vessel.component';
-
+import { LocalService } from '../../services/local-service.service';
 @Component({
   selector: 'app-smart-operator',
   templateUrl: './smart-operator.component.html',
@@ -20,11 +20,14 @@ export class SmartOperatorComponent implements OnInit {
   public rowCount: Number;
   public date = new FormControl(new Date());
   public vesselList = [];
+  @Input('vesselData') vesselData;
+ //@Input('VesselList') vesselList;
   @Output() showTableViewEmit = new EventEmitter();
   @Output() clickEvent = new EventEmitter();
   @ViewChild(SearchVesselComponent) searchComponent;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(private localService: LocalService,
+    iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
       'data-picker',
       sanitizer.bypassSecurityTrustResourceUrl('../assets/customicons/datepicker.svg'));
@@ -68,6 +71,7 @@ export class SmartOperatorComponent implements OnInit {
 
   ngOnInit() {
 
+    this.loadUnmanageableVessels();
   }
 
   private columnDefs_outstandingrequest = [
@@ -153,7 +157,7 @@ export class SmartOperatorComponent implements OnInit {
         classArray.push(newClass);
         return { cellClass: classArray.length > 0 ? classArray : null }
       }
-    },
+    }, 
     {
       headerName: 'DOGO', headerTooltip: 'DOGO', field: 'dogo', width: 100,
       headerClass: ['aggrid-text-align-c'],
@@ -199,24 +203,26 @@ export class SmartOperatorComponent implements OnInit {
   ];
   private columnDefs_unmanageablevessels = [
     {
-      headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'VesselName', width: 100,
+      headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'vesselName', width: 100, filter: 'text',//cellRendererFramework: AGGridCellRendererComponent,
       cellClass: function (params) {
         var classArray: string[] = ['aggridlink aggrid-vertical-center aggrid-left-ribbon mediumred1'];
         return classArray.length > 0 ? classArray : null
-      }
+    
+      } ,
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
     },
 
-    { headerName: 'Service ID', headerTooltip: 'Service ID', field: 'serviceid', width: 100, cellClass: 'aggrid-vertical-center' },
-    { headerName: 'Dept ID', headerTooltip: 'Dept ID', field: 'deptid', width: 100, cellClass: 'aggrid-vertical-center' },
+    { headerName: 'Service ID', headerTooltip: 'Service ID', field: 'serviceId', width: 100, cellClass: 'aggrid-vertical-center' },
+    { headerName: 'Dept ID', headerTooltip: 'Dept ID', field: 'deptId', width: 100, cellClass: 'aggrid-vertical-center' },
     { headerName: 'Ownership', headerTooltip: 'Ownership', field: 'ownership', width: 100, cellClass: 'aggrid-columgroup-splitter-right aggrid-vertical-center' },
-    { headerName: 'Data Source', headerTooltip: 'Data Source', field: 'datasource', cellClass: 'aggrid-vertical-center', width: 120, },
+    { headerName: 'Data Source', headerTooltip: 'Data Source', field: 'dataSource', cellClass: 'aggrid-vertical-center', width: 120, },
     {
-      headerName: 'Data Date', headerTooltip: 'Data Date', field: 'eta',
+      headerName: 'Data Date', headerTooltip: 'Data Date', field: 'datadate',
       cellClass: 'aggrid-columgroup-splitter-right aggrid-content-center',
       cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space aggrid-columgroup-splitter-right'] }, headerClass: ['aggrid-text-align-c '],
     },
-    { headerName: 'Details', headerTooltip: 'Details', field: 'details', width: 350, cellClass: 'aggrid-vertical-center' },
-    { headerName: 'No of Days Unmanageable', headerTooltip: 'No of Days Unmanageable', field: 'noofdays', width: 150, cellClass: 'aggrid-vertical-center' },
+    { headerName: 'Details', headerTooltip: 'Details', field: 'detail', width: 350, cellClass: 'aggrid-vertical-center' },
+    { headerName: 'No of Days Unmanageable', headerTooltip: 'No of Days Unmanageable', field: 'unmanagedDays', width: 150, cellClass: 'aggrid-vertical-center' },
   ];
 
   public rowData1 = [
@@ -257,45 +263,14 @@ export class SmartOperatorComponent implements OnInit {
       requestid: '126678ED', severity: '1', service: '17T', VesselName: 'Sloman Themis', VesselIMONO: '78978978', newrequest: 'New Request', newreq: 'Physical', port: 'Houston', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['DMA01'], trader: 'New York City', operator: 'Steve Thomas', status: '', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', retype: 'Trader'
     }
 
-
+ 
   ];
   public rowData2 = [
-    {
-      requestid: '12819ED', service: 'IA4', VesselName: 'Maersk Borneo', VesselIMONO: '90284727', newrequest: 'New Request', newreq: 'Physical', port: 'Seattle', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850'], trader: 'Europe Trader', operator: 'Macheal Chris', status: 'Stemmed', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '120 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
-    },
-    {
-      requestid: '13587ED', service: '22D', VesselName: 'Maersk Beaufort', VesselIMONO: '9466013', newrequest: 'New Request', newreq: 'Physical', port: 'Ningbo', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850', 'RMK5005'], trader: 'New York City', operator: 'No Operator', status: 'Inquired', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '120 MT', dogo: '120 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
-    },
-    {
-      requestid: '56900GA', service: '34R', VesselName: 'Maersk Brigit', VesselIMONO: '9465966', newrequest: 'New Request', newreq: 'Physical', port: 'Shanghai', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850', 'RMK5005', 'RMK850', 'RMK850'], trader: 'East of Suez', operator: 'No Operator', status: 'New', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'BOPS'
-    },
-    {
-      requestid: '12819ED', service: '1XT', VesselName: 'Maersk Belfast', VesselIMONO: '9465992', newrequest: 'New Request', newreq: 'Physical', port: 'Seattle', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850'], trader: 'Europe Trader', operator: 'Macheal Chris', status: 'Stemmed', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 120 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'BOPS'
-    },
-    {
-      requestid: '13587ED', service: '22D', VesselName: 'Maersk Barry', VesselIMONO: '23424', newrequest: 'New Request', newreq: 'Physical', port: 'Ningbo', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850', 'RMK5005'], trader: 'New York City', operator: 'No Operator', status: 'Inquired', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '120 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
-    },
-    {
-      requestid: '56900GA', service: '90P', VesselName: 'Maersk Bristol', VesselIMONO: '546546', newrequest: 'New Request', newreq: 'Physical', port: 'Shanghai', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850', 'RMK5005', 'RMK850'], trader: 'East of Suez', operator: 'No Operator', status: 'New', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 120 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'BOPS'
-    },
-    {
-      requestid: '126678ED', service: '17T', VesselName: 'Maersk Bering', VesselIMONO: '7700777', newrequest: 'New Request', newreq: 'Physical', port: 'Houston', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['DMA01'], trader: 'New York City', operator: 'Steve Thomas', status: '', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
-    },
-    {
-      requestid: '12819ED', service: 'IA4', VesselName: 'Bull Sumbawa', VesselIMONO: '5677', newrequest: 'New Request', newreq: 'Physical', port: 'Seattle', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850'], trader: 'Europe Trader', operator: 'Macheal Chris', status: 'Stemmed', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '450 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'BOPS'
-    },
-    {
-      requestid: '13587ED', service: '22D', VesselName: 'VS Remlin', VesselIMONO: '4354355', newrequest: 'New Request', newreq: 'Physical', port: 'Ningbo', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850', 'RMK5005'], trader: 'New York City', operator: 'No Operator', status: 'Inquired', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
-    },
-    {
-      requestid: '56900GA', service: '90P', VesselName: 'VS Riesa', VesselIMONO: '23423423', newrequest: 'New Request', newreq: 'Physical', port: 'Shanghai', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850', 'RMK5005', 'RMK850', 'RMK850',], trader: 'East of Suez', operator: 'No Operator', status: 'New', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'BOPS'
-    },
-    {
-      requestid: '126678ED', service: '17T', VesselName: 'Sloman Themis', VesselIMONO: '78978978', newrequest: 'New Request', newreq: 'Physical', port: 'Houston', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['DMA01'], trader: 'New York City', operator: 'Steve Thomas', status: '', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '468 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', retype: 'Trader'
-    }
+    //{
+    //  requestid: '12819ED', service: 'IA4', VesselName: 'Maersk Borneo', VesselIMONO: '90284727', newrequest: 'New Request', newreq: 'Physical', port: 'Seattle', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850'], trader: 'Europe Trader', operator: 'Macheal Chris', status: 'Stemmed', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '120 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
+    //}
 
-
-  ];
+    ];
   public rowData3 = [
     {
       requestid: '12819ED', service: 'IA4', VesselName: 'Maersk Borneo', VesselIMONO: '90284727', newrequest: 'New Request', newreq: 'Physical', port: 'Seattle', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850'], trader: 'Europe Trader', operator: 'Macheal Chris', status: 'Stemmed', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '120 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
@@ -373,4 +348,28 @@ export class SmartOperatorComponent implements OnInit {
     // })
 
   }
+
+  public loadUnmanageableVessels(){
+    let requestPayload = ""
+    this.localService.getUnmanagedVessels(requestPayload).subscribe((data: any)=>
+    {
+      this.rowData2 = data.payload;
+      console.log(this.rowData2);
+      this.vesselList=[];
+      this.rowData2.forEach(rowData=>{
+      this.vesselList.push(data =>{
+        data.id = rowData.vesselId,
+        data.imono = rowData.VesselIMONO,
+        data.name = rowData.vesselName,
+        data.displayName = rowData.VesselName
+      })
+    })
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+      titleEle.click();
+    }
+    );
+    
+  }
+  
+
 }

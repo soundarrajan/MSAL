@@ -45,6 +45,9 @@ export namespace GetProcurementApiPaths {
 export namespace AuditLogApiPaths {
     export const getAuditLog = () => `api/admin/audit/get`;
   }
+export namespace GetUnmanagedVesselsApiPath{
+    export const getUnmanagedVessels = ()=> 'api/BOPS/bunkerplan/getUnmanageableVessels';
+} 
 
 @Injectable({
     providedIn: 'root'
@@ -623,6 +626,15 @@ export class LocalService {
         request
       );
     }
+
+
+ @ObservableException()
+getUnmanagedVessels(request: any): Observable<any> {
+  return this.http.post<any>(
+    `${this._apiUrl}/${GetUnmanagedVesselsApiPath.getUnmanagedVessels()}`,
+    { payload: request }
+  )
+}
 
     // public getVesselByName(vesselName): Observable<any> {
     //     console.log(vesselName)

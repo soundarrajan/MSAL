@@ -1224,9 +1224,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       return null;
     }
     if (number) {
-      if (pricePrecision == 0) {
-        return number;
-      }
       return this._decimalPipe.transform(number, '1.' + pricePrecision +  '-' + pricePrecision);
     }
   }

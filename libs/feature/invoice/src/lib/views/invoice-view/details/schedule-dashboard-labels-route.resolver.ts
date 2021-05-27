@@ -12,37 +12,27 @@ import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.en
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
-import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 
 @Injectable()
-export class StaticListsRouteResolver implements Resolve<any> {
+export class ScheduleDashboardLabelsRouteResolver implements Resolve<any> {
   isLoading: boolean;
   options: any;
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private invoiceService: InvoiceDetailsService
+
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    const ContractIdParam = route.params[KnownInvoiceRoutes.InvoiceIdParam];
-    const contractId = Number(ContractIdParam ?? 0);
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): any{
+    const invoiceIdParam =
+      route.params[KnownInvoiceRoutes.InvoiceIdParam];
+    const invoiceId = Number(invoiceIdParam ?? 0);
+    return  this.legacyLookupsDatabase.getScheduleDashboardLabelConfiguration();
 
-    if (!Number.isInteger(contractId)) {
-      return this.router.navigate([
-        KnownPrimaryRoutes.Contract,
-        KnownInvoiceRoutes.InvoiceIdParam
-      ]);
-    }
-    return this.invoiceService.getStaticLists([
-      'Product',
-      'Uom',
-      'Currency',
-      'Supplier',
-      'CostType',
-      'Customer',
-      'InvoiceCustomStatus'
-    ]);
   }
+
 }

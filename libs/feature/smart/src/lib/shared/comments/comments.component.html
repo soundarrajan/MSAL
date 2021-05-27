@@ -96,12 +96,12 @@
                     <div class="dark-comment" [ngClass]="{'blue-comment':item.placeholder == loginUser}">
                       <div class="row">
                         <div style="flex:0 0 5%">
-                          <div class="comment-user">{{item.createdBy | commentDPFormat}}</div>
+                          <div class="comment-user">{{item.createdBy_DisplayName | commentDPFormat}}</div>
                         </div>
                         <div>
                           <div class="row pl5">
-                            <div class="name float-left" [matTooltip]="item.createdBy" matTooltipShowDelay="700">
-                              <div class="truncate-180">{{item.createdBy}}</div>
+                            <div class="name float-left" [matTooltip]="item.createdBy_DisplayName" matTooltipShowDelay="700">
+                              <div class="truncate-180">{{item.createdBy_DisplayName}}</div>
                             </div>
                             <div class="date ml-auto">{{item.requestId}}
                             </div> | 
