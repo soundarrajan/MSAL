@@ -2155,6 +2155,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     } else {
       this.formValues.invoiceSummary = <IInvoiceDetailsItemInvoiceSummary>{};
     }
+    setTimeout(() => {
+        this.calculateGrand(this.formValues);
+    });    
   }
 
   formatDateForBe(value) {
