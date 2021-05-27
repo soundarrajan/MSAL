@@ -58,14 +58,20 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       this.staticLists = data.staticLists;
       this.currencyList = this.setListFromStaticLists('Currency');
       this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+      this.getTabDataLinks();
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
         // Create new invoice from delivery list // http://localhost:9016/#/invoices/invoice/edit/0
         this.createNewInvoiceFromDelivery();
       }
       else if (localStorage.getItem('createInvoice')) {
-        this.getTabDataLinks();
         this.createNewInvoiceType();
+      }
+      else if (localStorage.getItem('createCreditNote')) {
+        let data = JSON.parse(localStorage.getItem('createCreditNote'));
+        this.toastr.success('Credit note is Created!');
+        localStorage.removeItem('createCreditNote');
+        this.setScreenActions(data);
       }
       else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
         this.createCreditNoteFromInvoiceClaims('createCreditNoteFromInvoiceClaims');
@@ -84,7 +90,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       }
       else{
         // edit an existing invoice
-        this.getTabDataLinks();
         this.getInvoiceItem();
       }
     });
