@@ -274,7 +274,8 @@
                 <mat-form-field
                   [ngClass]="{ 'invalid-field': formErrors.dueDate }"
                   class="without-search"
-                  appearance="legacy">
+                  appearance="legacy"
+                >
                   <mat-label>Due Date</mat-label>
                   <input
                     [(ngModel)]="formValues.dueDate"
@@ -285,7 +286,8 @@
                     autocomplete="off"
                     placeholder="Due Date"
                     (dateChange)="
-                      formatDateForBe(formValues.dueDate);
+                      formValues.dueDate = formatDateForBe(formValues.dueDate);
+                      triggerChangeFieldsAppSpecific('DueDate');
                       isFormValid({ useToaster: false })
                     "
                     required
@@ -303,7 +305,8 @@
                 <mat-form-field
                   class="without-search"
                   appearance="legacy"
-                  [ngClass]="{ 'invalid-field': formErrors.workingDueDate }">
+                  [ngClass]="{ 'invalid-field': formErrors.workingDueDate }"
+                >
                   <mat-label>Working due date</mat-label>
                   <input
                     [(ngModel)]="formValues.workingDueDate"
@@ -313,8 +316,13 @@
                     [matDatepicker]="workingDueDate"
                     autocomplete="off"
                     placeholder="Working Due Date"
-                    (dateChange)="formatDateForBe(formValues.workingDueDate);isFormValid({ useToaster: false })"
-                    required disabled/>
+                    (dateChange)="
+                      formatDateForBe(formValues.workingDueDate);
+                      isFormValid({ useToaster: false })
+                    "
+                    required
+                    disabled
+                  />
                   <mat-datepicker-toggle matSuffix [for]="workingDueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
                     </mat-icon>
@@ -376,7 +384,12 @@
                     (focus)="paymentDate.open()"
                     autocomplete="off"
                     placeholder="Payment Date"
-                    (dateChange)="formatDateForBe(formValues.paymentDate)"
+                    (dateChange)="
+                      formValues.paymentDate = formatDateForBe(
+                        formValues.paymentDate
+                      );
+                      triggerChangeFieldsAppSpecific('PaymentDate')
+                    "
                   />
                   <mat-datepicker-toggle matSuffix [for]="paymentDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -600,7 +613,9 @@
                     <mat-autocomplete
                       #auto1="matAutocomplete"
                       class="darkPanelAuto"
-                      [ngClass]="{ 'disabled': formValues.status?.name === 'Approved' }"
+                      [ngClass]="{
+                        disabled: formValues.status?.name === 'Approved'
+                      }"
                       [displayWith]="displayFn"
                       (optionSelected)="setPaymentCompany($event.option.value)"
                     >
