@@ -1,9 +1,11 @@
-﻿commit f76e9249d21b6a925dd7cea1ec9e92b3b7bfe82f
+﻿commit 439ff5a427271a9a9d0f19cc19b65137bc9de677
 Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Thu May 27 08:21:36 2021 +0000
+Date:   Thu May 27 08:39:16 2021 +0000
 
-    Merged PR 11009: Disable fields and css fix
+    Merged PR 11012: add new link
     
-    Related work items: #32619
+    add new link
+    
+    Related work items: #32637
 
 branch: master
