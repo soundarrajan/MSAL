@@ -20,7 +20,7 @@
 					<span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.vesselProducts.splice(key,1) : deleteVesselProduct(key)"></span>
 				</td>
 				<td>
-					 <select name="productType_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" class="form-control" ng-model="formValues.vesselProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType track by item.id"></td>
+					 <select name="productType_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" class="form-control" ng-model="formValues.vesselProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.MOTProductType track by item.id"></td>
 				<td>
 					<div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.vesselProducts[$index].product.id) }}">
 						<input decode-input-format ng-model="formValues.vesselProducts[$index].product"
