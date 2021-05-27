@@ -277,6 +277,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   paybleToList: any;
   scheduleDashboardLabelConfiguration: any;
   statusColorCode: string = '#9E9E9E';
+  invoiceId: number;
 
   // detailFormvalues:any;
   @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -284,7 +285,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues = val;
 
       // Set paid ammount disabled;
-      if (!this.formValues.status || this.formValues.status.name === 'New' || this.formValues.status.name === 'Cancelled') {
+      if (
+        !this.formValues.status ||
+        this.formValues.status.name === 'New' ||
+        this.formValues.status.name === 'Cancelled'
+      ) {
         this.paidAmmoutDisabled = true;
       }
 
@@ -366,7 +371,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
     this.entityName = 'Invoice';
     this.route.params.pipe().subscribe(params => {
-      this.entityId = parseFloat(params.invoiceId);
+      this.entityId = parseFloat(params.invoiceid);
+      this.invoiceId = parseFloat(params.invoiceid);
     });
     this.route.data.subscribe(data => {
       this.staticLists = data.staticLists;
