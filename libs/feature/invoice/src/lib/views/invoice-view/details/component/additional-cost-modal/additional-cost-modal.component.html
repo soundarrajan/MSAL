@@ -361,13 +361,6 @@
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       quantityFormat
-                      [disabled]="
-                        additionalCost.value.locationAdditionalCostId &&
-                        !(
-                          additionalCost.value.costType.name == 'Range' ||
-                          additionalCost.value.costType.name == 'Total'
-                        )
-                      "
                     />
                   </mat-form-field>
                   <mat-form-field style="width: 36%" appearance="legacy">
@@ -383,13 +376,6 @@
                       "
                       [compareWith]="compareUomObjects"
                       [disableOptionCentering]="true"
-                      [disabled]="
-                        additionalCost.value.locationAdditionalCostId &&
-                        !(
-                          additionalCost.value.costType.name == 'Range' ||
-                          additionalCost.value.costType.name == 'Total'
-                        )
-                      "
                       panelClass="general-information-select-container"
                     >
                       <mat-option *ngFor="let uom of uomList" [value]="uom">{{
@@ -450,7 +436,11 @@
                       autocomplete="off"
                       [(ngModel)]="additionalCost.value.invoiceRate"
                       quantityFormat
-                      [disabled]="additionalCost.value.locationAdditionalCostId"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId &&
+                        (additionalCost.value.costType.name == 'Range' ||
+                          additionalCost.value.costType.name == 'Total')
+                      "
                       (ngModelChange)="
                         invoiceConvertUom('cost', additionalCost.key)
                       "
@@ -472,7 +462,11 @@
                       "
                       [compareWith]="compareUomObjects"
                       [disableOptionCentering]="true"
-                      [disabled]="additionalCost.value.locationAdditionalCostId"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId &&
+                        (additionalCost.value.costType.name == 'Range' ||
+                          additionalCost.value.costType.name == 'Total')
+                      "
                       panelClass="general-information-select-container"
                     >
                       <mat-option
