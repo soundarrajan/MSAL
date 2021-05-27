@@ -784,3 +784,10 @@
   text-overflow: ellipsis;
   width:135px;
 }
+.m-w-150{
+  min-width: 150px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width:150px;
+}
