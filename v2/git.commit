@@ -1,7 +1,7 @@
-﻿commit 2bd37f98135e4dade0eeee6f0747c88b41ede0fe
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Thu May 27 11:47:06 2021 +0530
+﻿commit 07468dd7bcbdd42671c6869825fc12a8ac3ad53d
+Author: Pavithra M <pavithra.m@inatech.com>
+Date:   Thu May 27 12:20:16 2021 +0530
 
-    Claim & Pre Claim Credit Note creation from Claim detail screen. #32640
+    VSTS BUG 32177
 
 branch: master
