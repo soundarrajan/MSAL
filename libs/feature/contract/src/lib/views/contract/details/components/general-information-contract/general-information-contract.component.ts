@@ -17,12 +17,19 @@ import {
   InjectionToken,
   Optional
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { finalize } from 'rxjs/operators';
+import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/bdn-information/bdn-information-api.service';
+import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
-import { IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
 import {
   knowMastersAutocompleteHeaderName,
   knownMastersAutocomplete
@@ -38,13 +45,23 @@ import {
   VESSEL_MASTERS_API_SERVICE
 } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import {
+  DeliveryInfoForOrder,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
   DateAdapter,
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
   NativeDateAdapter
 } from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
+import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import _ from 'lodash';
 import {
   NgxMatDateAdapter,
@@ -52,6 +69,7 @@ import {
   NgxMatNativeDateAdapter,
   NGX_MAT_DATE_FORMATS
 } from '@angular-material-components/datetime-picker';
+import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
