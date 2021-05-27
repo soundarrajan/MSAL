@@ -18,7 +18,7 @@ APP_MASTERS.controller('Controller_Datatables', [
     '$filter',
     '$uibModal',
     function($scope, $rootScope, $Api_Service, Factory_Labs, $state, $location, $q, $compile, $timeout, $templateCache, Factory_Master, $tenantSettings, $listsCache, $filter, $uibModal) {
-        let vm = this;
+        let vm = this;    
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split('.')[0];
         }
@@ -2223,8 +2223,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'Amount',
                         cellTemplate: $scope.dataTableTemplates.text,
                         cellCondition: 'grid.appScope.fVal().formValues.complexFormulaQuoteLines[grid.appScope.rowIdx(row)].formulaPlusMinus.id == 3',
-                        cellConditionType: 'ng-disabled',
-                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
+                        cellConditionType: 'ng-disabled'
                     },
                     {
                         name: 'formulaFlatPercentage',
@@ -2252,7 +2251,6 @@ APP_MASTERS.controller('Controller_Datatables', [
                             masterSource: 'Uom',
                             Disabled: 'grid.appScope.fVal().formValues.complexFormulaQuoteLines[grid.appScope.rowIdx(row)].formulaFlatPercentage.id == 2 || grid.appScope.fVal().formValues.complexFormulaQuoteLines[grid.appScope.rowIdx(row)].formulaPlusMinus.id == 3'
                         },
-                        headerCellTemplate: $scope.dataTableTemplates.headerWithAsterisk
                     }
                 ],
                 appScopeProvider: {
