@@ -245,8 +245,7 @@
             <div class="col-md-3">
               <div
                 id="custom-form-field"
-                class="custom-form-field"
-                class="lightTheme"
+                class="custom-form-field lightTheme can-be-disabled"
               >
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Invoice rate currency</mat-label>
@@ -520,7 +519,7 @@
             <div class="col-md-3">
               <div
                 id="custom-form-field"
-                class="custom-form-field lightTheme paid-ammount"
+                class="custom-form-field lightTheme can-be-disabled"
               >
                 <mat-form-field
                   class="without-search"
@@ -588,7 +587,7 @@
                 class="custom-form-field-with-search lightTheme"
                 style="margin: 15px 0px;"
               >
-                <div class="d-flex">
+                <div class="d-flex can-be-disabled">
                   <mat-form-field class="with-search" appearance="legacy">
                     <mat-label>Company</mat-label>
                     <input
@@ -613,6 +612,7 @@
                     <mat-autocomplete
                       #auto1="matAutocomplete"
                       class="darkPanelAuto"
+                      [ngClass]="{ 'disabled': formValues.status?.name === 'Approved' }"
                       [displayWith]="displayFn"
                       (optionSelected)="setPaymentCompany($event.option.value)"
                     >
@@ -653,7 +653,7 @@
                   </button>
                 </div>
               </div>
-              <div id="custom-form-field" class="lightTheme">
+              <div id="custom-form-field" class="lightTheme can-be-disabled">
                 <mat-form-field
                   class="without-search"
                   appearance="legacy"

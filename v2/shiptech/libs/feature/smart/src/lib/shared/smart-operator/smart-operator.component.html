@@ -4,7 +4,7 @@
     <div class="section1 ">
       <!-- #region Search Box -->
       <div class="search-vessel">
-        <app-search-vessel (changeVessel)="changeVessel($event)" (clearVessel)="changeVessel($event)" [vesselData]="" [vesselList]="vesselList"></app-search-vessel>
+        <app-search-vessel (changeVessel)="changeVessel($event)" (clearVessel)="changeVessel($event)" [vesselData]="vesselData" [vesselList]="vesselList"></app-search-vessel>
       </div>
       <!-- <div id="dark-search-box" class="align-items-center">
         <button mat-icon-button style="margin: -5px;">

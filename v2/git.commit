@@ -1,7 +1,9 @@
-﻿commit 1801034227eb01045a8af3fa4d10e5234155d734
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 27 07:59:48 2021 +0000
+﻿commit f76e9249d21b6a925dd7cea1ec9e92b3b7bfe82f
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Thu May 27 08:21:36 2021 +0000
 
-    Merged PR 11007: Fixed Invoice rate displaying for the following cost types -"Flat" , "Unit" and "Percent" from the location
+    Merged PR 11009: Disable fields and css fix
+    
+    Related work items: #32619
 
 branch: master
