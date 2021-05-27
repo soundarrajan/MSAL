@@ -67,36 +67,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
     this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
   }
-
-  if(params?.sourceField) {
-    switch (params.sourceField) {
-      case 'productName':
-        params['popoverSource'] = {
-          displayName: params?.data?.productName,
-          sourceField: params?.sourceField,
-          rowData: [
-            { key: 'Request Qty', value: params?.data?.maxQuantity, type: 'text' },
-            { key: 'Request Date', value: params?.data?.requestDate, type:'date' },
-            { key: 'Suggested qty', value: params?.data?.suggestedQuantity+params?.data?.uomName, type: 'text' }
-          ]
-        }
-        break;
-      case 'locationName':
-        params['popoverSource'] = {
-          displayName: params?.data?.locationName,
-          sourceField: params?.sourceField,
-          rowData: [
-            { key: 'ETA', value: params?.data?.eta, type: 'date' }
-          ]
-        }
-        break;
+    this.setCellClass(params);
     
-      default:
-        break;
-    }
-  }
-  this.setCellClass(params);
-  
   }
 
   refresh(): boolean {
@@ -586,16 +558,19 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   template: `
   <div *ngIf="items" style="display:flex;flex-wrap:wrap;" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverTitle"
   (mouseenter)="toggleMenu($event);" (mouseleave)="toggleMenu2();">
-  <div class="aggrid-content-center" [ngClass]="{'dark-multiple-text': (items?.sourceField!=='locationName')}">
-  <div class=" aggrid-text-resizable"  >{{items?.displayName}}</div>
+  <div *ngFor="let item of items" class="aggrid-content-center dark-multiple-text" >
+  <div class=" aggrid-text-resizable"  >{{item}}</div>
           </div>
           <mat-menu class="outstanding-req-menu" #hoverTitle="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
-          <div class="hover-tooltip" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
+          <div class="hover-tooltip" *ngFor="let item of items" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
               <table>
-                <tr class="hover-title" *ngFor="let item of items.rowData">
-                  <td>{{item.key}}</td>
-                  <td class="hover-value" *ngIf="item.type!='date'">{{item.value}}</td>
-                  <td class="hover-value" *ngIf="item.type=='date'">{{item.value | date: 'dd/MM/yyyy'}}</td>
+                <tr class="hover-title">
+                  <td>{{item}}</td>
+                  <td class="hover-value">350 BBLS</td>
+                </tr>
+                <tr class="hover-title">
+                  <td>Request Date</td>
+                  <td class="hover-value">12/09/2020</td>
                 </tr>
               </table>
           </div>

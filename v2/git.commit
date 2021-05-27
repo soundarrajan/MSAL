@@ -1,11 +1,11 @@
-﻿commit 5040291720efd6daee377beeeeb65ac5e09a29a3
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu May 27 15:08:21 2021 +0000
+﻿commit a4d044f84e537be2f3f6f56c338235f9ea028c3e
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu May 27 20:16:16 2021 +0000
 
-    Merged PR 11031: fix invoice amount total
+    Merged PR 11034: Generate button Vessel Name removal bug fix.
     
-    fix invoice amount total
+    Generate button Vessel Name removal bug fix.
     
-    Related work items: #30681
+    Related work items: #32688
 
 branch: master

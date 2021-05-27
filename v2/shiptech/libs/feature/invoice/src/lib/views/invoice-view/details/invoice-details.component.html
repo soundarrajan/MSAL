@@ -286,8 +286,7 @@
                     autocomplete="off"
                     placeholder="Due Date"
                     (dateChange)="
-                      formValues.dueDate = formatDateForBe(formValues.dueDate);
-                      triggerChangeFieldsAppSpecific('DueDate');
+                      formatDateForBe(formValues.dueDate);
                       isFormValid({ useToaster: false })
                     "
                     required
@@ -316,12 +315,12 @@
                     [matDatepicker]="workingDueDate"
                     autocomplete="off"
                     placeholder="Working Due Date"
+                    disabled="true"
                     (dateChange)="
                       formatDateForBe(formValues.workingDueDate);
                       isFormValid({ useToaster: false })
                     "
                     required
-                    disabled
                   />
                   <mat-datepicker-toggle matSuffix [for]="workingDueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -384,12 +383,7 @@
                     (focus)="paymentDate.open()"
                     autocomplete="off"
                     placeholder="Payment Date"
-                    (dateChange)="
-                      formValues.paymentDate = formatDateForBe(
-                        formValues.paymentDate
-                      );
-                      triggerChangeFieldsAppSpecific('PaymentDate')
-                    "
+                    (dateChange)="formatDateForBe(formValues.paymentDate)"
                   />
                   <mat-datepicker-toggle matSuffix [for]="paymentDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -559,7 +553,12 @@
               <div class="checkbox">
                 <mat-checkbox
                   disabled
-                  [checked]="formValues.orderDetails.hasWithheldAmount"
+                  [checked]="
+                    formValues.invoiceClaimDetails &&
+                    formValues.invoiceClaimDetails.length
+                      ? formValues.invoiceClaimDetails[0]?.isPreclaimCN
+                      : false
+                  "
                   >Withheld Amount</mat-checkbox
                 >
               </div>
@@ -613,9 +612,7 @@
                     <mat-autocomplete
                       #auto1="matAutocomplete"
                       class="darkPanelAuto"
-                      [ngClass]="{
-                        disabled: formValues.status?.name === 'Approved'
-                      }"
+                      [ngClass]="{ 'disabled': formValues.status?.name === 'Approved' }"
                       [displayWith]="displayFn"
                       (optionSelected)="setPaymentCompany($event.option.value)"
                     >
