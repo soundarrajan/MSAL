@@ -1,7 +1,7 @@
-﻿commit f96e35860a662716f61c96b7c8511a8f678dd414
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Thu May 27 17:35:21 2021 +0530
+﻿commit b750d94634b25ccfcf6181a54f400bdac6d3c3dd
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Thu May 27 16:48:13 2021 +0300
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Fixed build error
 
 branch: master
