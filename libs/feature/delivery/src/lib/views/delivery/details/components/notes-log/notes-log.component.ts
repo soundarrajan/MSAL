@@ -53,11 +53,7 @@ export class NotesLogComponent implements OnInit, OnDestroy {
     this.User = this.store.selectSnapshot(UserProfileState.user);
     this.objNotes = this.DeliveryNotes;
   }
-  update(
-    item: IDeliveryNotesDetailsResponse,
-    newNoteDetails: string,
-    index: number
-  ): void {
+  update(item: any, newNoteDetails: string, index: number): void {
     if (this.DeliveryId != undefined && this.DeliveryId != null) {
       item.note = newNoteDetails;
       item.createdAt = this.formatDateForBe(new Date());
@@ -114,8 +110,8 @@ export class NotesLogComponent implements OnInit, OnDestroy {
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
     }
