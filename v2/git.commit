@@ -1,7 +1,9 @@
-﻿commit c74c61fadbe0ecd25f489386cda0153c21f1398b
+﻿commit 46d1f7ed07b895d7e45f2140acf3ad7241073160
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 28 12:00:29 2021 +0000
+Date:   Fri May 28 12:39:04 2021 +0000
 
-    Merged PR 11055:  Displayed the cost name pop up on the top of the screen and made amount  for Percent cost to  be editable when added from location
+    Merged PR 11058: Fixed logic for contract additional costs
+    
+    Fixed logic for contract additional costs
 
 branch: master

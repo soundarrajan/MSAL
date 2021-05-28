@@ -1659,101 +1659,26 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   changeAdditionalCostList(locationId) {
     console.log(this.additionalCostList);
     console.log(this.additionalCostForLocation[locationId]);
-    let newAdditionalCostList = [];
-    for (
-      let i = 0;
-      i < this.additionalCostForLocation[locationId].length;
-      i++
-    ) {
-      if (this.additionalCostForLocation[locationId][i].locationid) {
-        if (
-          this.additionalCostForLocation[locationId][i].costType &&
-          (this.additionalCostForLocation[locationId][i].costType.name ==
-            'Range' ||
-            this.additionalCostForLocation[locationId][i].costType.name ==
-              'Total')
-        ) {
-          let additionalCostLine = {
-            additionalCostid: this.additionalCostForLocation[locationId][i]
-              .additionalCostid,
-            name: this.additionalCostForLocation[locationId][i].name,
-            id: this.additionalCostForLocation[locationId][i].id,
-            costType: this.additionalCostForLocation[locationId][i].costType,
-            currency: this.additionalCostForLocation[locationId][i].currency,
-            extrasPercentage: this.additionalCostForLocation[locationId][i]
-              .extrasPercentage,
-            costDescription: this.additionalCostForLocation[locationId][i]
-              .costDescription,
-            locationid: this.additionalCostForLocation[locationId][i].locationid
-          };
-          newAdditionalCostList.push(additionalCostLine);
-        } else {
-          let additionalCostOtherThanTotalOrRange = this
-            .additionalCostForLocation[locationId][i];
-          let findAdditionalCostOtherThanTotalOrRangeIndex = _.findIndex(
-            newAdditionalCostList,
-            function(object) {
-              return (
-                additionalCostOtherThanTotalOrRange.additionalCostid ==
-                object.additionalCostid
-              );
-            }
-          );
-          let additionalCostLine = {
-            additionalCostid: this.additionalCostForLocation[locationId][i]
-              .additionalCostid,
-            name: this.additionalCostForLocation[locationId][i].name,
-            id: this.additionalCostForLocation[locationId][i].id
-          };
-
-          if (findAdditionalCostOtherThanTotalOrRangeIndex == -1) {
-            newAdditionalCostList.push(additionalCostLine);
-          }
-        }
-      }
-    }
-
-    console.log(newAdditionalCostList);
-
+    let newAdditionalCostList = _.cloneDeep(
+      this.additionalCostForLocation[locationId]
+    );
     for (let j = 0; j < this.additionalCostList.length; j++) {
       let additionalCostFromCache = this.additionalCostList[j];
       let findAdditionalCostLineIndex = _.findIndex(
         newAdditionalCostList,
-        function(object) {
+        function(object: any) {
           return additionalCostFromCache.id == object.additionalCostid;
         }
       );
-
       if (findAdditionalCostLineIndex == -1) {
-        let findIndexInListForLocation = _.findIndex(
-          this.additionalCostForLocation[locationId],
-          function(object: any) {
-            return additionalCostFromCache.id == object.additionalCostid;
-          }
-        );
-        if (findIndexInListForLocation != -1) {
-          newAdditionalCostList.push(
-            this.additionalCostForLocation[locationId][
-              findIndexInListForLocation
-            ]
-          );
-        } else {
-          newAdditionalCostList.push(additionalCostFromCache);
-        }
+        newAdditionalCostList.push(additionalCostFromCache);
       }
     }
 
     console.log(newAdditionalCostList);
-    //newAdditionalCostList = _.uniqBy(newAdditionalCostList, 'id');
-    if (newAdditionalCostList && newAdditionalCostList.length) {
-      this.additionalCostForLocation[locationId] = _.cloneDeep(
-        newAdditionalCostList
-      );
-    } else {
-      this.additionalCostForLocation[locationId] = _.cloneDeep(
-        this.additionalCostList
-      );
-    }
+    this.additionalCostForLocation[locationId] = _.cloneDeep(
+      newAdditionalCostList
+    );
     this.changeDetectorRef.detectChanges();
   }
 
