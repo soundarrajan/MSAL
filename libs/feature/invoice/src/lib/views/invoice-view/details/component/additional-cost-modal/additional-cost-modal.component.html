@@ -8,14 +8,16 @@
             [matMenuTriggerFor]="additionalCostMenu"
             (click)="
               additionalSearch = null;
-              searchCostName('', this.formValues.orderDetails?.portId)
+              getAdditionalCostsPerPort(this.formValues.orderDetails?.portId)
             "
           >
             <a class="add-icon"></a>
           </div>
           <mat-menu
             #additionalCostMenu="matMenu"
-            class="select-product-container"
+            class="select-product-container additional-cost-pop-up"
+            yPosition="above"
+            style="max-height: 400px !important;"
           >
             <div
               [ngClass]="{
@@ -521,7 +523,6 @@
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       quantityFormat
-                      [disabled]="additionalCost.value.locationAdditionalCostId"
                     />
                   </mat-form-field>
                 </div>
