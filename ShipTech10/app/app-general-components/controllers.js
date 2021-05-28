@@ -4157,9 +4157,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 	                        if (selectedInvoicesIds.length == 0 ) {
 	                        	toastr.error("Please select at least one invoice");
 	                        	return;
-	                        }
+	                        } 
 	                        selectedInvoicesIds = selectedInvoicesIds.join(',');
-	                        window.open(`/v2/invoice/split-view/${selectedInvoicesIds}`, "_blank");
+	                        window.open(`/v2/invoices/split-view/${selectedInvoicesIds}`, "_blank");
                             break;
                     }
                     //eval('Factory_General_Components.' + ajax_method + '(function(callback){if(callback) {$location.path($state.$current.url.prefix + $state.params.screen_id);}})');
