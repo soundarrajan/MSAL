@@ -1,11 +1,11 @@
-﻿commit a4f529f60184d4ea41c21e3cc413f8fa738e42aa
+﻿commit 8811f5b7726c9e4d9b94eeed34613705f7374f63
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu May 27 22:21:37 2021 +0000
+Date:   Fri May 28 07:01:00 2021 +0000
 
-    Merged PR 11035: Generate button validation
+    Merged PR 11041: ScrubberDate format bug fix.
     
-    Generate button validation
+    ScrubberDate format bug fix.
     
-    Related work items: #32688
+    Related work items: #29829
 
 branch: master
