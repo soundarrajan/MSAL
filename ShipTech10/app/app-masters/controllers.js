@@ -1201,6 +1201,12 @@
                     if($rootScope.TempcounterpartyBankAccounts != undefined && $rootScope.TempcounterpartyBankAccounts.length !=0){
                         $scope.formValues.counterpartyBankAccounts = angular.merge($scope.formValues.counterpartyBankAccounts, $rootScope.TempcounterpartyBankAccounts);
                     }
+                    if ($scope.formValues.invoiceReminderEmail) {
+	                	if (!$scope.validateEmailPattern($scope.formValues.invoiceReminderEmail, true)) {
+		                    toastr.error('Invalid email address for "Invoice Reminder Email"');
+		                    return; 
+	                	}
+                    }
                 }
                 if ($scope.isCustomerCounterparty()) {
                 	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = false;

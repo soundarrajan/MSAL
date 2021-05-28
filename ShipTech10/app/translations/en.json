@@ -551,6 +551,8 @@
   },
     "masters": {
 		"LOCATION_PRODUCT_TYPES" : "Bunkerable Port",
+		"INVOICE_REMINDER_EMAIL" : "Invoice reminder email",
+		"CONTRACT_TERMS_AND_CONDITIONS" : "Contract terms and conditions",
 		"VESSEL_OWNER_EMAIL" : "Vessel Owner Email",
 		"LOCATION_HSFO_05_GRADES" : "HSFO 0.5 Grades",
 		"LOCATION_DISTILLATE_GRADES" : "Distillate Fuel Grade",
