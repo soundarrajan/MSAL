@@ -1198,6 +1198,12 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   setAdditionalCostLine(line, key1, key2) {
+    if (
+      line.costType &&
+      !(line.costType.name == 'Range' || line.costType.name == 'Total')
+    ) {
+      return;
+    }
     if (!line.additionalCostid) {
       return;
     }
