@@ -57,7 +57,7 @@
   </div>
   
   <div *ngIf="params.type=='popup-multiple-values'">
-  <hover-menu #menu [items]="params.value"></hover-menu>
+  <hover-menu #menu [items]="params?.popoverSource"></hover-menu>
   </div>
   
   
