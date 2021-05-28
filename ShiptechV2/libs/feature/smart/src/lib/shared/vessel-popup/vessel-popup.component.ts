@@ -22,6 +22,8 @@ export class VesselPopupComponent implements OnInit {
   public changeLog;
   public menuData;
   public theme:boolean = true;
+  FutureRequest: any = [];
+  public baseOrigin: string = '';
   constructor(private elem: ElementRef, private localService: LocalService, private logger: LoggerService) { }
   @Input() status: string = "standard-view";
   @Input('vesselData') popup_data;
@@ -32,10 +34,11 @@ export class VesselPopupComponent implements OnInit {
   @ViewChild('third') third: MatExpansionPanel;
   @ViewChild('fourth') fourth: MatExpansionPanel;
   @ViewChild('fifth') fifth: MatExpansionPanel;
-
-  ngOnInit() {
-    this.localService.themeChange.subscribe(value => this.theme = value);
   
+  ngOnInit() {
+    this.loadFutureRequestData();
+    this.baseOrigin = new URL(window.location.href).origin;
+    this.localService.themeChange.subscribe(value => this.theme = value);
     this.alerts = [
       {
         alert: 'ULSFO stock is Low',
@@ -106,13 +109,70 @@ export class VesselPopupComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
-        this.gridOptions.api.setRowData(this.rowData);
-
+        if(this.FutureRequest?.payload) {
+          let futureRequestData = (this.FutureRequest.payload.length)? this.FutureRequest.payload: [];
+          this.gridOptions.api.setRowData(futureRequestData);
+          this.triggerClickEvent();
+        }
       },
     };
   }
   ngAfterViewInit() {
     this.logger.logInfo('VesselPopupComponent-ngAfterViewInit()', new Date());
+  }
+
+  loadFutureRequestData() {
+    let requestPayload = {
+      "Payload": {
+        "Order": null,
+        "PageFilters": {
+          "Filters": [
+            {
+              "columnValue": "RequestStatus_DisplayName",
+              "ColumnType": "Text",
+              "isComputedColumn": false,
+              "ConditionValue": "!=",
+              "Values": [
+                  "cancelled"
+              ],
+              "FilterOperator": 0
+            }
+          ]
+        },
+        "SortList": {
+          "SortList": [
+            {
+              "columnValue": "eta",
+              "sortIndex": 0,
+              "sortParameter": 2
+            }
+          ]
+        },
+        "Filters": [],
+        "SearchText": null,
+        "Pagination": {
+          "Skip": 0,
+          "Take": 5
+        }
+      }
+    }
+    this.localService.getOutstandRequestData(requestPayload).subscribe(response => {
+      console.log(response.payload);
+      this.FutureRequest = [];
+      if(response.payload) {
+        this.FutureRequest = response;
+        if(this.gridOptions?.api) {
+          let futureRequestData = (this.FutureRequest?.payload?.length)? this.FutureRequest.payload: [];
+          this.gridOptions.api.setRowData(futureRequestData);
+        }
+        this.triggerClickEvent();
+      }
+    })
+  }
+
+  triggerClickEvent() {
+    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+      titleEle.click();
   }
 
   public changeDefault() {
@@ -195,27 +255,42 @@ export class VesselPopupComponent implements OnInit {
   }
   private columnDefs = [
     {
-      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestid', width: 60, cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-columgroup-dark-splitter'], cellClass: ['aggrid-content-center aggrid-link fs-11'],
+      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 60, 
+      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererParams: { type: 'request-link', redirectUrl: `${this.baseOrigin}/#/edit-request` },
+      headerClass: ['aggrid-columgroup-dark-splitter'], 
+      cellClass: ['aggrid-content-center aggrid-link fs-11'],
+    },
+    { 
+      // headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 70, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c fs-12'] 
+      headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 70,
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'popup-multiple-values', sourceField: 'locationName' }, cellClass: ['aggrid-content-center fs-10'],
 
     },
-    { headerName: 'Port', headerTooltip: 'Port', field: 'port', width: 70, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c fs-12'] },
     {
-      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelgrade', width: 65,
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'popup-multiple-values' }, cellClass: ['aggrid-content-center fs-10'],
+      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 65,
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'popup-multiple-values', sourceField: 'productName' }, cellClass: ['aggrid-content-center fs-10'],
       valueGetter: function (params) {
-        return params.data.fuelgrade;
+        if(params?.data?.productName) {
+          return [params.data.productName];
+        } else {
+          return []
+        }
       }
     },
-    { headerName: 'Trader', field: 'trader', headerTooltip: 'Trader', width: 60, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-center fs-10'] },
+    { 
+      headerName: 'Created By', headerTooltip: 'Created By', field: 'createdByName', width: 70, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c fs-12'] 
+    },
     {
-      headerName: 'Status', field: 'status', headerTooltip: 'Status', width: 55,
+      headerName: 'Status', field: 'requestStatus.displayName', headerTooltip: 'Status', width: 55,
       cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center fs-8'],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
+        let status = params?.data?.requestStatus?.displayName;
         classArray.push('aggrid-content-center');
-        let newClass = params.value === 'Stemmed' ? 'custom-chip small-chip darkgreen' :
-          params.value === 'New' ? 'custom-chip small-chip amber' :
-            params.value === 'Inquired' ? 'custom-chip small-chip purple' :
+        let newClass = status === 'Stemmed' ? 'custom-chip small-chip darkgreen' :
+        status === 'New' ? 'custom-chip small-chip amber' :
+        status === 'Inquired' ? 'custom-chip small-chip purple' :
               '';
         classArray.push(newClass);
         return { cellClass: classArray.length > 0 ? classArray : null }
@@ -223,21 +298,21 @@ export class VesselPopupComponent implements OnInit {
     }
   ];
 
-  private rowData = [
-    {
-      requestid: '12819ED', port: 'Marseille', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'Stemmed'
-    },
-    {
-      requestid: '13587ED', port: 'Catania', fuelgrade: ['RMK850', 'RMK5005'], trader: 'Operator', status: 'Inquired'
-    },
-    {
-      requestid: '13587ED', port: 'Aden', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'New'
-    },
-    {
-      requestid: '56900GA', port: 'Kish', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'New'
-    }
+  // private rowData = [
+  //   {
+  //     requestid: '12819ED', port: 'Marseille', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'Stemmed'
+  //   },
+  //   {
+  //     requestid: '13587ED', port: 'Catania', fuelgrade: ['RMK850', 'RMK5005'], trader: 'Operator', status: 'Inquired'
+  //   },
+  //   {
+  //     requestid: '13587ED', port: 'Aden', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'New'
+  //   },
+  //   {
+  //     requestid: '56900GA', port: 'Kish', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'New'
+  //   }
 
-  ];
+  // ];
 }
 
 @Component({
