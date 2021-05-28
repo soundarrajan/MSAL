@@ -1076,7 +1076,11 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   compareAdditionalCostObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
+    if (object1 && object2 && object1.additionalCostid) {
+      return object1 && object2 && object1.additionalCostid == object2.id;
+    } else if (object1 && object2 && !object1.additionalCostid) {
+      return object1 && object2 && object1.id == object2.id;
+    }
   }
 
   doFiltering(addCostCompTypes, cost, currentCost) {
@@ -1194,6 +1198,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   setAdditionalCostLine(line, key1, key2) {
+    if (!line.additionalCostid) {
+      return;
+    }
     let additionalCost = {
       id: line.additionalCostid,
       name: line.name
@@ -1247,10 +1254,17 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   setAdditionalCost(value, key1, key2) {
     console.log(value);
-    this.formValues.products[key1].additionalCosts[key2].additionalCost = {
-      id: value.additionalCostid,
-      name: value.name
-    };
+    if (value.additionalCostid) {
+      this.formValues.products[key1].additionalCosts[key2].additionalCost = {
+        id: value.additionalCostid,
+        name: value.name
+      };
+    } else {
+      this.formValues.products[key1].additionalCosts[key2].additionalCost = {
+        id: value.id,
+        name: value.name
+      };
+    }
   }
 
   setIsAllowingNegativeAmmount(key1, key2) {
