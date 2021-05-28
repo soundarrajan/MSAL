@@ -5,14 +5,14 @@ export interface IInvoiceDetailsItemDto {
   documentType?: IInvoiceDetailsItemBaseInfo;
   canCreateFinalInvoice: boolean;
   receivedDate: Date | string;
-  dueDate: string;
+  dueDate: Date | string;
   manualDueDate: Date | string;
   accountNumber: number;
   workingDueDate: Date | string;
   sellerInvoiceDate: Date | string;
   sellerDueDate: Date | string;
   approvedDate: Date | string;
-  paymentDate: any;
+  paymentDate: Date | string;
   accountancyDate: Date | string;
   invoiceRateCurrency?: IInvoiceDetailsItemBaseInfo;
   backOfficeComments: any;
@@ -96,7 +96,6 @@ export interface IInvoiceDetailsItemOrderDetails {
   modulePathUrl: string;
   clientIpAddress: string;
   userAction: any;
-  hasWithheldAmount: boolean;
 }
 
 export interface IInvoiceDetailsItemCounterpartyDetails {
