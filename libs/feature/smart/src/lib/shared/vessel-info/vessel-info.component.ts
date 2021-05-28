@@ -28,7 +28,7 @@ import { Subject, Subscription, Observable } from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class VesselInfoComponent implements OnInit {
-  
+
   @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
   vesselRef: ISaveVesselData;
   @ViewChild(CommentsComponent) child: CommentsComponent;
@@ -362,7 +362,7 @@ export class VesselInfoComponent implements OnInit {
     this.store.dispatch(new SendPlanAction(req.send_plan) )
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
-      if(data?.isSuccess == true){
+      if(data){
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',
           panelClass: 'confirmation-popup',
