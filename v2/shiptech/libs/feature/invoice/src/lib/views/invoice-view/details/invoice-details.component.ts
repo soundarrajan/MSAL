@@ -619,6 +619,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   statusColorCode: string = '#9E9E9E';
   invoiceId: number;
   quantityFormat: string;
+  initialHasManualPaymentDate: boolean;
+  manualPaymentDateReference: string;
+  initialDueDate: string;
 
   // detailFormvalues:any;
   @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -663,6 +666,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.summaryCalculationsForProductDetails();
         this.summaryCalculationsForCostDetails();
       }
+
+      //For Due Date
+      this.initialDueDate = this.formValues.dueDate;
+
+      //For Payment Date Field
+      this.manualPaymentDateReference = this.formValues.paymentDate;
+      this.initialHasManualPaymentDate = this.formValues.hasManualPaymentDate;
     }
   }
 
@@ -2145,14 +2155,15 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     } else {
       this.formValues.invoiceSummary = <IInvoiceDetailsItemInvoiceSummary>{};
     }
+    setTimeout(() => {
+        this.calculateGrand(this.formValues);
+    });    
   }
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = moment(value).format(
-        this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')
-      );
-      return new Date(beValue);
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
     }
@@ -3017,5 +3028,51 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   compareObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
+  }
+
+  triggerChangeFieldsAppSpecific(name) {
+    let dueDate = this.formValues.dueDate;
+    if (name == 'DueDate') {
+      if (this.initialDueDate) {
+        if (this.initialDueDate.split('T')[0] != this.formValues.dueDate) {
+          this.formValues.manualDueDate = this.formValues.dueDate;
+        } else {
+          this.formValues.manualDueDate = null;
+        }
+      } else {
+        this.formValues.manualDueDate = this.formValues.dueDate;
+      }
+      if (parseFloat(dueDate.split('-')[0]) < 1753) {
+        return;
+      }
+      this.invoiceService
+        .getWorkingDueDate(dueDate)
+        .pipe(finalize(() => {}))
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.formValues.workingDueDate = response;
+            if (!this.initialHasManualPaymentDate) {
+              this.formValues.hasManualPaymentDate = false;
+              this.formValues.paymentDate = response;
+              this.manualPaymentDateReference = this.formValues.paymentDate;
+            }
+            this.changeDetectorRef.detectChanges();
+          }
+        });
+    }
+
+    if (name == 'PaymentDate') {
+      if (!this.initialHasManualPaymentDate) {
+        this.formValues.hasManualPaymentDate = false;
+        if (this.manualPaymentDateReference) {
+          if (
+            this.manualPaymentDateReference.split('T')[0] !=
+            this.formValues.paymentDate.split('T')[0]
+          ) {
+            this.formValues.hasManualPaymentDate = true;
+          }
+        }
+      }
+    }
   }
 }
