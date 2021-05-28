@@ -74,6 +74,7 @@ export class VesselInfoComponent implements OnInit {
   BunkerPlanCommentList: any = [];
   RequestCommentList: any = [];
   public isChecked : boolean = false;
+  public scrubberDate : any;
   currentROBChange: Subject<void> = new Subject<void>();
  
 
@@ -124,6 +125,25 @@ export class VesselInfoComponent implements OnInit {
       console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
+      this.scrubberDate = this.bunkerPlanHeaderDetail?.scrubberDate;
+      //handle scrubberDate formate : Convert "MMM D YYYY hh:mm" to "dd/mm/yyyy"
+      var arr = this.scrubberDate.split(' ');
+      var month = "";
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var i = 0;
+      for (i; i < months.length; i++) {
+          if (months[i] == arr[0]) {
+              break;
+          }
+      }
+      i++;
+      if (i >= 10) month = months[arr[0]]+1;
+      else month = "0" + i;
+      if(arr[2] < 10)
+      arr[2] = "0" + arr[2];
+      var formatddate = arr[2] + '/' + month + '/' + arr[3];
+      this.scrubberDate = formatddate;
+
       this.loadROBArbitrage();
       let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
@@ -379,13 +399,13 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
-      if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0){
+      if(data){
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',
           panelClass: 'confirmation-popup',
           data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
-        this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
+        //this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
       }
       else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1){
         const dialogRef = this.dialog.open(NoDataComponent, {
