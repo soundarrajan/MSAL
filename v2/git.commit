@@ -1,7 +1,7 @@
-﻿commit 2f5220d8aad4c127109a63ec72a7f9e6ddb3452f
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Fri May 28 13:56:24 2021 +0530
+﻿commit b5594a1377c86c6b53853498a563d5a494632583
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri May 28 10:54:26 2021 +0000
 
-    Generate button Vessel Name removal bug fix - DP
+    Merged PR 11051: Changed logic for additional cost in contract screen
 
 branch: master
