@@ -1,11 +1,11 @@
-﻿commit 8811f5b7726c9e4d9b94eeed34613705f7374f63
+﻿commit 464346c3231ce7c9c575ea13efc7872398a1408c
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri May 28 07:01:00 2021 +0000
+Date:   Fri May 28 07:44:54 2021 +0000
 
-    Merged PR 11041: ScrubberDate format bug fix.
+    Merged PR 11043: Validations fix
     
-    ScrubberDate format bug fix.
+    Validations fix
     
-    Related work items: #29829
+    Related work items: #32688
 
 branch: master
