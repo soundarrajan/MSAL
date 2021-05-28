@@ -1720,20 +1720,40 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       let findAdditionalCostLineIndex = _.findIndex(
         newAdditionalCostList,
         function(object) {
-          return additionalCostFromCache.id == object.id;
+          return additionalCostFromCache.id == object.additionalCostid;
         }
       );
 
       if (findAdditionalCostLineIndex == -1) {
-        newAdditionalCostList.push(additionalCostFromCache);
+        let findIndexInListForLocation = _.findIndex(
+          this.additionalCostForLocation[locationId],
+          function(object: any) {
+            return additionalCostFromCache.id == object.additionalCostid;
+          }
+        );
+        if (findIndexInListForLocation != -1) {
+          newAdditionalCostList.push(
+            this.additionalCostForLocation[locationId][
+              findIndexInListForLocation
+            ]
+          );
+        } else {
+          newAdditionalCostList.push(additionalCostFromCache);
+        }
       }
     }
 
     console.log(newAdditionalCostList);
     //newAdditionalCostList = _.uniqBy(newAdditionalCostList, 'id');
-    this.additionalCostForLocation[locationId] = _.cloneDeep(
-      newAdditionalCostList
-    );
+    if (newAdditionalCostList && newAdditionalCostList.length) {
+      this.additionalCostForLocation[locationId] = _.cloneDeep(
+        newAdditionalCostList
+      );
+    } else {
+      this.additionalCostForLocation[locationId] = _.cloneDeep(
+        this.additionalCostList
+      );
+    }
     this.changeDetectorRef.detectChanges();
   }
 
