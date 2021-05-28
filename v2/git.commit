@@ -1,11 +1,7 @@
-﻿commit 464346c3231ce7c9c575ea13efc7872398a1408c
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri May 28 07:44:54 2021 +0000
+﻿commit 263f6b0f8dda9a3f68887af43d3591c8e0a1ace4
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Fri May 28 13:25:59 2021 +0530
 
-    Merged PR 11043: Validations fix
-    
-    Validations fix
-    
-    Related work items: #32688
+    Fix preclaim credit note creation issue - script error. #32640
 
 branch: master
