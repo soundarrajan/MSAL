@@ -651,11 +651,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
       this.setChipDatas();
-      this.manualtab = this.invoice_types.filter(x => {
+      this.manualtab = this.more_invoice_types.filter(x => {
         return x.value === this.formValues.documentType?.id;
       });
       if (this.manualtab.length == 0) {
-        this.invoice_types.pop();
+        this.more_invoice_types.pop();
       }
       this.setInvoiceAmount();
       this.setTitle();
