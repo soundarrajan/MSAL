@@ -77,13 +77,13 @@ export class VesselDetailsComponent implements OnInit {
           return {...vesselItem, imono:obj.name }
         })
         console.log(this.vesselList);
-        
+
       })
 
     })
-   
+
   }
-  
+
   selectedUserRoleFn(role1: any, role2: any) {
     if(!role2) {
       return role1.default;
@@ -91,15 +91,15 @@ export class VesselDetailsComponent implements OnInit {
       return (role2.name == role1.name)
     }
   }
-  
+
   loadBunkerPlan(event) {
     this.previousUserRole = this.selectedUserRole;
     this.selectedUserRole = event.value;
     console.log(this.selectedRole);
-    
+
     this.LoadBunkerPlanByRole();
   }
-  
+
   LoadBunkerPlanByRole() {
     var _this = this;
     const confirmMessage = this.selectedUserRole?.name == 'Vessel'? 'Are you sure to switch your role to Vessel?' : 'Are you sure to switch your role to Operator?'
@@ -109,7 +109,7 @@ export class VesselDetailsComponent implements OnInit {
       panelClass: 'bunkerplan-role-confirm',
       data:  { message: confirmMessage }
     });
-    
+
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if(result) {
@@ -131,7 +131,7 @@ export class VesselDetailsComponent implements OnInit {
       this.changeUserRole.next(this.selectedUserRole);
     });
 
-    
+
 
   }
 
@@ -139,7 +139,7 @@ export class VesselDetailsComponent implements OnInit {
     let vesselId = this.vesselData?.vesselId
     this.localService.checkVesselHasNewPlan(vesselId).subscribe((data)=> {
       console.log('vessel has new plan',data);
-      data = (data.payload?.length)? (data.payload)[0]: data.payload; 
+      data = (data.payload?.length)? (data.payload)[0]: data.payload;
       if(data.planCount>0)
       this.vesselWarningConfirmation();
     })
@@ -162,15 +162,15 @@ export class VesselDetailsComponent implements OnInit {
       }
     });
   }
-  
+
   onDefaultViewChange(event:MatCheckboxChange) {
     console.log(event.checked);
-    
+
   }
 
   dontSendPlanReminder(event:MatCheckboxChange) {
     console.log(event.checked);
-    
+
   }
 
   closePanel() {
@@ -200,7 +200,9 @@ export class VesselDetailsComponent implements OnInit {
   }
   vesselChange(event) {
     this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
-    this.vesselName = event?.displayName;
+    if(event.displayName){
+      this.vesselName = event?.displayName;
+    }
     // this.vesselView = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
     //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
     // this.changeVessel.emit(event);
