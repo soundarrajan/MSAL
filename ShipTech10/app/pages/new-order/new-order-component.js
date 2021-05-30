@@ -29,6 +29,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.listsCache = $listsCache;
 
         ctrl.lists = $listsCache;
+        ctrl.DefaultAdditionalCosts = $listsCache.AdditionalCost;
 
         ctrl.orderConfirmationEmailToLabs = { id: 0, name: '' };
         ctrl.orderConfirmationEmailToSurveyor = { id: 0, name: '' };
@@ -191,7 +192,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                        {
                         ctrl.productColumns[k].visible = true;
                        }
-                    }                    
+                    }
                 });
 
                 // Get general-purpose data to be used in lookups etc.
@@ -320,7 +321,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // })
         }
 
-        ctrl.setAdditionalCostsForLocation = function(isEditMode) {
+        ctrl.setAdditionalCostsForLocation = function() {
             let apiJSON = {
                 Payload: {
                     Order: null,
@@ -338,15 +339,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             };
             Factory_Master.getAdditionalCostsForLocation(apiJSON, function(response) {
-                // After retrieving location-wise ordered additional costs
-                // 1. Delete the old additionalCostLocationId mapped items from existing additional costs
-                // 2. Assign ordered additional cost master list to existing master
-                if(!isEditMode) {
-                    $.each(ctrl.additionalCostList, function (key, additionalCost) {
-                        ctrl.deleteAdditionalCost(additionalCost);
-                    });
-                    addFirstAdditionalCost();
+                // After retrieving location-wise additional costs
+                // 1. Save it to separate list & sort them on top in additional cost list
+                if(!response.data || !response.data.payload || !response.data.payload.length > 0) {
+                    return;
                 }
+                // Reset add.cost master list and add afresh based on location
+                ctrl.lists.AdditionalCost = ctrl.DefaultAdditionalCosts;
                 var newArr = [];
                 $.each(response.data.payload, (key0, value0) => {
                     let obj = {};
@@ -358,20 +357,40 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     obj.costType = value0.costType;
                     obj.priceUom = value0.priceUom;
                     obj.extras = value0.extrasPercentage;
-                    newArr.push(obj);
+                    obj.trackId = value0.id;
+                    let canPushAddCost = true;
+                    if($state.current.name == STATE.NEW_ORDER && value0.isDeleted == true) { // for new order, push only if active
+                        canPushAddCost = false;
+                    }
+                    else if($state.current.name == STATE.EDIT_ORDER && value0.isDeleted == true) { // for edit order, push inactive entries if already used in current order
+                        canPushAddCost = false;
+                        for(let j = 0; j < ctrl.data.products.length; j++) {
+                            let v = ctrl.data.products[j];
+                            if(v.additionalCosts && v.additionalCosts.length > 0) {
+                                if(value0.locationid) {
+                                    if(v.additionalCosts.some(x => (x.locationAdditionalCostId && x.locationAdditionalCostId == value0.locationid))) {
+                                        canPushAddCost = true;
+                                        break;
+                                    }
+                                } else {
+                                    if(v.additionalCosts.some(x => (x.additionalCost && x.additionalCost.id == value0.additionalCostid))) {
+                                        canPushAddCost = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if(canPushAddCost) {
+                                break;
+                            }
+                        }
+                    }
+                    if(canPushAddCost) {
+                        newArr.push(obj);
+                    }
                 });
                 if(newArr.length > 0) {
                     ctrl.lists.AdditionalCost = newArr;
-                    if(isEditMode) {
-                        // if location is changed then set Additional cost for Range, Total
-                        ctrl.additionalCostList = ctrl.getAdditionalCosts();
-                        let additionalCosts = ctrl.additionalCostList;
-                        if(additionalCosts) {
-                            $.each(additionalCosts, (_, additionalCost) => {
-                                ctrl.setRangeTotalAdditionalCost(additionalCost);
-                            });
-                        }
-                    }
+                    ctrl.locationAdditionalCosts = newArr.filter(x => (x.locationid && x.locationid > 0));
                 }
             });
         }
@@ -414,7 +433,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 return true;
             }
-            return true;
+            	return true;
 
 
             if (typeof ctrl.allowNegativeAdditionalCost == 'undefined') {
@@ -450,15 +469,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	        	}
         	}
         });
-        // $scope.$watch("$ctrl.data.deliveryDate", function() {
-        // 	if (typeof(ctrl.data) != "undefined") {
-	       //  	if (typeof(ctrl.data.products) != "undefined") {
-	       //  		setTimeout(function(){
-		      //   		ctrl.getAllOrderContractOptions();
-	       //  		},500)
-	       //  	}
-        // 	}
-        // });
         ctrl.getAllOrderContractOptions = function(onlyBuildPayload) {
         	var shouldOnlyBuildPayload = onlyBuildPayload;
         	setTimeout(() => {
@@ -746,32 +756,30 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToSeller') != -1) {
                     ctrl.data.emailToSellerSent = true;
                 }
-                
-                if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToVessel') != -1 
-                	|| ctrl.data.mailSent[i].emailTemplate.name.indexOf('OrderConfirmationSingleEmail') != -1 
-                	|| ctrl.data.mailSent[i].emailTemplate.name.indexOf('MaerskLineOrderSpotConfirmationToVesselEmail') != -1
-            	) {
+
+                if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToVessel') != -1
+                    || ctrl.data.mailSent[i].emailTemplate.name.indexOf('OrderConfirmationSingleEmail') != -1
+                    || ctrl.data.mailSent[i].emailTemplate.name.indexOf('MaerskLineOrderSpotConfirmationToVesselEmail') != -1
+                ) {
                     ctrl.data.emailToVesselSent = true;
                 }
-                
-                if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToLab') != -1 
-                	|| ctrl.data.mailSent[i].emailTemplate.name.indexOf('OrderConfirmationSingleEmail') != -1
-                	|| ctrl.data.mailSent[i].emailTemplate.name.indexOf('MaerskLineOrderSpotConfirmationToLabEmail') != -1
+
+                if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToLab') != -1
+                    || ctrl.data.mailSent[i].emailTemplate.name.indexOf('OrderConfirmationSingleEmail') != -1
+                    || ctrl.data.mailSent[i].emailTemplate.name.indexOf('MaerskLineOrderSpotConfirmationToLabEmail') != -1
                 ) {
                     ctrl.data.emailToLabsSent = true;
                 }
-                
-                if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToSurveyor') != -1 
-                	|| ctrl.data.mailSent[i].emailTemplate.name.indexOf('OrderConfirmationSingleEmail') != -1
-                	|| ctrl.data.mailSent[i].emailTemplate.name.indexOf('MaerskLineOrderSpotConfirmationToSurveyorEmail') != -1
-            	) {
+
+                if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToSurveyor') != -1
+                    || ctrl.data.mailSent[i].emailTemplate.name.indexOf('OrderConfirmationSingleEmail') != -1
+                    || ctrl.data.mailSent[i].emailTemplate.name.indexOf('MaerskLineOrderSpotConfirmationToSurveyorEmail') != -1
+                ) {
                     ctrl.data.emailToSurvSent = true;
                 }
             }
 
-
             ctrl.getCustomerConfiguration();
-            
 
             addFirstAdditionalCost();
             updatePageTitle(); // this is for page title
@@ -792,70 +800,69 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.getCustomerConfiguration = () => {
             orderModel.getCustomerConfiguration(ctrl.data.id)
-            .then((response) => {
-            	ctrl.customerConfiguration = response.payload;
-				if (ctrl.emailConfiguration) {
-					if (ctrl.customerConfiguration) {
-						if (ctrl.customerConfiguration.sendSingleEmail || ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-				            $.each(ctrl.emailConfiguration, (k, v) => {
-				                if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-					                if (v.process == 'Maersk Line Order Spot Confirmation To Seller Email') {
-					            		ctrl.confirmToSellerManual = false;
-					                	if (v.emailType.name == 'Manual') {
-					                		ctrl.confirmToSellerManual = true;
-					                		ctrl.confirmToSellerTemplate = v.template;
-					                	}
-					                }	
-					                if (v.process == 'Maersk Line Order Contract Confirmation To Seller Email') {
-					            		ctrl.confirmToSellerContractManual = false;
-					                	if (v.emailType.name == 'Manual') {
-					                		ctrl.confirmToSellerContractManual = true;
-					                		ctrl.confirmToSellerContractTemplate = v.template;
-					                	}
-					                }			                	                	
-					                if (v.process == 'Maersk Line Spot Order Confirmation to Vessel Email') {
-					                	if (ctrl.confirmToVesselTemplate.name != "OrderConfirmationSingleEmail") {
-						            		ctrl.confirmToVesselManual = false;
-						                	if (v.emailType.name == 'Manual') {
-						                		ctrl.confirmToVesselManual = true;
-						                		ctrl.confirmToVesselTemplate = v.template;
-						                	}
-					                	}
-					                }
-					                if (v.process == 'Maersk Line Spot Order Confirmation to Lab Email') {
-					                	if (ctrl.orderConfirmationEmailToLabs.name != "OrderConfirmationSingleEmail") {
-					                		ctrl.orderConfirmationEmailToLabs = v.template;
-					                	}
-					                }
-					                if (v.process == 'Maersk Line Spot Order Confirmation to Surveyor Email') {
-					                	if (ctrl.emailToSurveyorTemplate.name != "OrderConfirmationSingleEmail") {
-					                		ctrl.emailToSurveyorTemplate = v.template;
-					                	}
-					        		} 
-				                }
-				                if (ctrl.customerConfiguration.sendSingleEmail) {
-					                if (v.process == 'Order Confirmation Single Email') {
-					            		ctrl.confirmToVesselManual = false;
-					                	if (v.emailType.name == 'Manual') {
-					                		// to vessel
-					                		ctrl.confirmToVesselManual = true;
-					                		ctrl.confirmToVesselTemplate = v.template;
-					                		// to labs
-											ctrl.orderConfirmationEmailToLabs = v.emailType;
-											ctrl.emailToLabsTemplate = v.template;
-					                		// to surveyor
-						                    ctrl.orderConfirmationEmailToSurveyor = v.emailType;
-						            		ctrl.emailToSurveyorTemplate = v.template;	
-					                	}
-					                }                	
-				                }
-				            })
-						}                	
-					}                	
-				}            	
-            });
+                .then((response) => {
+                    ctrl.customerConfiguration = response.payload;
+                    if (ctrl.emailConfiguration) {
+                        if (ctrl.customerConfiguration) {
+                            if (ctrl.customerConfiguration.sendSingleEmail || ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+                                $.each(ctrl.emailConfiguration, (k, v) => {
+                                    if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+                                        if (v.process == 'Maersk Line Order Spot Confirmation To Seller Email') {
+                                            ctrl.confirmToSellerManual = false;
+                                            if (v.emailType.name == 'Manual') {
+                                                ctrl.confirmToSellerManual = true;
+                                                ctrl.confirmToSellerTemplate = v.template;
+                                            }
+                                        }
+                                        if (v.process == 'Maersk Line Order Contract Confirmation To Seller Email') {
+                                            ctrl.confirmToSellerContractManual = false;
+                                            if (v.emailType.name == 'Manual') {
+                                                ctrl.confirmToSellerContractManual = true;
+                                                ctrl.confirmToSellerContractTemplate = v.template;
+                                            }
+                                        }
+                                        if (v.process == 'Maersk Line Spot Order Confirmation to Vessel Email') {
+                                            if (ctrl.confirmToVesselTemplate.name != "OrderConfirmationSingleEmail") {
+                                                ctrl.confirmToVesselManual = false;
+                                                if (v.emailType.name == 'Manual') {
+                                                    ctrl.confirmToVesselManual = true;
+                                                    ctrl.confirmToVesselTemplate = v.template;
+                                                }
+                                            }
+                                        }
+                                        if (v.process == 'Maersk Line Spot Order Confirmation to Lab Email') {
+                                            if (ctrl.orderConfirmationEmailToLabs.name != "OrderConfirmationSingleEmail") {
+                                                ctrl.orderConfirmationEmailToLabs = v.template;
+                                            }
+                                        }
+                                        if (v.process == 'Maersk Line Spot Order Confirmation to Surveyor Email') {
+                                            if (ctrl.emailToSurveyorTemplate.name != "OrderConfirmationSingleEmail") {
+                                                ctrl.emailToSurveyorTemplate = v.template;
+                                            }
+                                        }
+                                    }
+                                    if (ctrl.customerConfiguration.sendSingleEmail) {
+                                        if (v.process == 'Order Confirmation Single Email') {
+                                            ctrl.confirmToVesselManual = false;
+                                            if (v.emailType.name == 'Manual') {
+                                                // to vessel
+                                                ctrl.confirmToVesselManual = true;
+                                                ctrl.confirmToVesselTemplate = v.template;
+                                                // to labs
+                                                ctrl.orderConfirmationEmailToLabs = v.emailType;
+                                                ctrl.emailToLabsTemplate = v.template;
+                                                // to surveyor
+                                                ctrl.orderConfirmationEmailToSurveyor = v.emailType;
+                                                ctrl.emailToSurveyorTemplate = v.template;
+                                            }
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
         }
-
 
         /**
          * Initializes the products and additional costs datatable.
@@ -956,15 +963,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             console.log("Suresh R", ctrl.data)
            
             ctrl.selectPort(ctrl.data.location.id, true);
-            $.each(ctrl.data.products, (k, v) => {
-                // v.price =null;
-                v.contract = null;
-                v.formula = null;
-                v.formulaDescription = null;
-                v.contractId = null;
+           $.each(ctrl.data.products, (k, v) => {
+           // v.price =null;
+            v.contract = null;
+            v.formula = null;
+            v.formulaDescription = null;
+            v.contractId = null;
 
-                ctrl.productPriceChanged(v);
-                ctrl.changedProductContract();
+            ctrl.productPriceChanged(v);
+            ctrl.changedProductContract();
             });
         }
 
@@ -1032,7 +1039,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!additionalCost.additionalCost) {
                 return false;
             }
-            return ctrl.additionalCostTypes[additionalCost.additionalCost.id].costType;
+            var costType = {};
+            if(additionalCost.locationAdditionalCostId || additionalCost.additionalCost.locationid) {
+                costType = additionalCost.costType || additionalCost.additionalCost.costType ||
+                    ctrl.additionalCostTypes[additionalCost.additionalCost.id].costType;
+            }
+            else {
+                costType = ctrl.additionalCostTypes[additionalCost.additionalCost.id].costType;
+            }
+            return costType;
         }
 
         /**
@@ -1094,11 +1109,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         let prod = ctrl.data.products[i];
                         if (!prod.status || prod.status.id != ctrl.STATUS.Cancelled.id) {
                             var confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
-	                            if (additionalCost.isAllProductsCost) {
-                                additionalCost.amount = additionalCost.amount + confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
-                            } else
-	                                if (product === prod) {
-                                additionalCost.amount = confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
+                            confirmedQuantityOrMaxQuantity = convertDecimalSeparatorStringToNumber(confirmedQuantityOrMaxQuantity);
+                            if (additionalCost.isAllProductsCost) {
+                                additionalCost.amount = convertDecimalSeparatorStringToNumber(additionalCost.amount) + 
+                                    confirmedQuantityOrMaxQuantity * convertDecimalSeparatorStringToNumber(additionalCost.prodConv[i]) *
+                                    convertDecimalSeparatorStringToNumber(additionalCost.price);
+                            } else if (product === prod) {
+                                additionalCost.amount = confirmedQuantityOrMaxQuantity * convertDecimalSeparatorStringToNumber(additionalCost.prodConv[i]) *
+                                    convertDecimalSeparatorStringToNumber(additionalCost.price);
                             }
                         }
                     }
@@ -1109,43 +1127,39 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 // }
                 break;
             case COST_TYPE_IDS.FLAT:
-                additionalCost.amount = additionalCost.price || 0;
+                additionalCost.amount = convertDecimalSeparatorStringToNumber(additionalCost.price) || 0;
+                additionalCost.priceUom = null;
+                additionalCost.locationAdditionalCostId = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
+                if(additionalCost.additionalCost){
+                    additionalCost.additionalCost.locationid = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
+                }
                 break;
             case COST_TYPE_IDS.PERCENT:
                 productComponent = isProductComponent(additionalCost);
                 if (additionalCost.isAllProductsCost || !productComponent) {
                     totalAmount = sumProductAmounts();
                 } else {
-                    totalAmount = product.amount;
+                    totalAmount = convertDecimalSeparatorStringToNumber(product.amount);
                 }
                 if (productComponent) {
-                    additionalCost.amount = totalAmount * additionalCost.price / 100 || 0;
+                    additionalCost.amount = convertDecimalSeparatorStringToNumber(totalAmount) *
+                        convertDecimalSeparatorStringToNumber(additionalCost.price) / 100 || 0;
                 } else {
-                    totalAmount = totalAmount + sumProductComponentAdditionalCostAmounts();
-                    additionalCost.amount = totalAmount * additionalCost.price / 100 || 0;
+                    totalAmount = convertDecimalSeparatorStringToNumber(totalAmount) + sumProductComponentAdditionalCostAmounts();
+                    additionalCost.amount = totalAmount * convertDecimalSeparatorStringToNumber(additionalCost.price) / 100 || 0;
                 }
+                additionalCost.priceUom = null;
                 break;
-            case COST_TYPE_IDS.RANGE:
-                if($scope.fetchedAdditionalCost && $scope.fetchedAdditionalCost.fakeId == additionalCost.fakeId) {
-                    additionalCost.extras = $scope.fetchedAdditionalCost?.extras || 0;
-                    additionalCost.amount = $scope.fetchedAdditionalCost?.amount || 0;
-                    additionalCost.price = additionalCost.amount;
-                }
-                break;
-            case COST_TYPE_IDS.TOTAL:
-                if($scope.fetchedAdditionalCost && $scope.fetchedAdditionalCost.fakeId == additionalCost.fakeId) {
-                    additionalCost.extras = $scope.fetchedAdditionalCost?.extras || 0;
-                    additionalCost.amount = $scope.fetchedAdditionalCost?.amount || 0;
-                    additionalCost.price = additionalCost.amount;
-                }
-                break;
+            // case COST_TYPE_IDS.RANGE : case COST_TYPE_IDS.TOTAL :
+            //     additionalCost.priceUom = null;
+            //     break;
             }
             if (!product) {
                 product = ctrl.data.products[0];
             }
-            if (ctrl.defaultValueUom && !additionalCost.priceUom) {
-                additionalCost.priceUom = ctrl.defaultValueUom;
-            }
+            // if (ctrl.defaultValueUom && !additionalCost.priceUom) {
+            //     additionalCost.priceUom = ctrl.defaultValueUom;
+            // }
          
             additionalCost.quantityUom = product.quantityUom;
             additionalCost.confirmedQuantity = parseFloat(additionalCost.confirmedQuantity) ? parseFloat(additionalCost.confirmedQuantity) : parseFloat(product.maxQuantity);
@@ -1153,6 +1167,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             additionalCost.totalAmount = parseFloat(additionalCost.amount) + parseFloat(additionalCost.extrasAmount);
             additionalCost.rate = parseFloat(additionalCost.totalAmount) / parseFloat(additionalCost.confirmedQuantity);
             additionalCost.locationAdditionalCostId = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
+            if(additionalCost.additionalCost){
+                additionalCost.additionalCost.locationid = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
+            }
             return additionalCost;
         }
 
@@ -1244,7 +1261,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 		                	}
                 		}
                 	});
-                    if (!ctrl.additionalCosts[i].isDeleted && parentProductStatus != 'Cancelled') {
+                    if (!ctrl.additionalCosts[i].isDeleted && parentProductStatus != 'Cancelled') { // temp_test ctrl.additionalCosts[i].isDeleted check to be revisited
                         result = result + (parseFloat(ctrl.additionalCosts[i].totalAmount) || 0);
                     }
                 }
@@ -1293,8 +1310,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         function orderHasAdditionalCosts() {
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
-            return ctrl.additionalCostList.length;
+            return ctrl.additionalCosts?.length;
         }
 
         /**
@@ -1345,7 +1361,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             	ctrl.data.products[0].additionalCosts = [];
             }
             ctrl.data.products[0].additionalCosts.push(newAdditionalCost);
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
+            ctrl.getAdditionalCosts();
+            // ctrl.evaluateAdditionalCostList();
         };
         ctrl.deleteAdditionalCost = function(additionalCost) {
             if (additionalCost.fakeId < 0) {
@@ -1357,6 +1374,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             // Add a new blank additional cost if there aren't any left.
             addFirstAdditionalCost();
+            ctrl.evaluateAdditionalCostList();
         };
 
         /**
@@ -1365,7 +1383,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * @param {Object} additionalCost - An additional cost object.
          * @param {Object} product - A product object, which is the target parent product.
          */
-        ctrl.applicableForChange = function(additionalCost, product) {
+        ctrl.applicableForChange = function(additionalCost, product, initiatorName) {
             let products = []; // An array of products, needed to preserve code consistency between a product selection and "All".
             // If "All" is selected, product will be undefined.
             // See: http://stackoverflow.com/questions/30604938/add-two-extra-options-to-a-select-list-with-ngoptions-on-it/30606388#30606388
@@ -1383,9 +1401,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 product.additionalCosts.push(additionalCost);
             }
-            // if product is changed then set Additional cost for Range, Total
-            ctrl.setRangeTotalAdditionalCost(additionalCost);
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
+            if(initiatorName == 'input') {
+                ctrl.setLocationBasedAdditionalCosts(additionalCost, product, 'applicableForChange');
+                calculateAdditionalCostAmounts(additionalCost, product);
+                ctrl.evaluateAdditionalCostList();
+            }
         };
 
         /**
@@ -1398,6 +1418,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             let parentData = findAdditionalCost(additionalCost);
             if (parentData) {
                 parentData.container.splice(parentData.index, 1);
+                // Also delete from addCostList binding
+                if(ctrl.additionalCosts && ctrl.additionalCosts.length > 0) {
+                    var idx = ctrl.additionalCosts.indexOf(additionalCost);
+                    if(idx > -1) {
+                        ctrl.additionalCosts.splice(idx, 1);
+                    }
+                }
             } else {
                 throw `Attempting deletion of a non-existent additional cost: ${ JSON.stringify(additionalCost)}`;
             }
@@ -1426,7 +1453,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * Get the additional costs associated with a given location.
          * @returns {Array} - An array of additionalCosts objects.
          */
-        ctrl.getAdditionalCosts = function() {
+        ctrl.getAdditionalCosts = function(initiatorName) {
             let additionalCost,
                 result = [];
             if (!ctrl.data) {
@@ -1451,10 +1478,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     // console.log(2)
                     // additionalCost.quantityUom = null;
                     additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
-                    if(!($scope.pendingAdditionalCostRequestIds && $scope.pendingAdditionalCostRequestIds.includes(additionalCost.fakeId))) {
-                        // if quantity/quantityUom is changed then set Additional cost for Range, Total
-                        ctrl.setRangeTotalAdditionalCost(additionalCost, true);
-                    }
                     additionalCost = calculateAdditionalCostAmounts(additionalCost, null);
                 }
             }  
@@ -1479,10 +1502,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                             additionalCost.confirmedQuantity = convertDecimalSeparatorStringToNumber(ctrl.data.products[i].confirmedQuantity);
                             // console.log(1)
                             additionalCost.quantityUom = ctrl.data.products[i].quantityUom;
-                            if(!($scope.pendingAdditionalCostRequestIds && $scope.pendingAdditionalCostRequestIds.includes(additionalCost.fakeId))) {
-                                // if quantity/quantityUom is changed then set Additional cost for Range, Total
-                                ctrl.setRangeTotalAdditionalCost(additionalCost, true);
-                            }
                             additionalCost = calculateAdditionalCostAmounts(additionalCost, ctrl.data.products[i]);
                         }
                         if (result) {
@@ -1514,6 +1533,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             return result;
         };
 
+
+        
+
         /**
          * Performs certain actions when the users changes the payment company:
          *   - changes the default currency for the entire view, IF ctrl.fixedCurrency is false
@@ -1535,8 +1557,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ctrl.data.products[i].amount = calculateProductAmount(ctrl.data.products[i]);
                     }
                     // Update amount and currency in additional costs.
-                    ctrl.additionalCostList = ctrl.getAdditionalCosts();
-                    additionalCosts = ctrl.additionalCostList;
+                    additionalCosts = ctrl.getAdditionalCosts();
                     for (i = 0; i < additionalCosts.length; i++) {
                         additionalCosts[i].currency = ctrl.currency;
                         additionalCosts[i].price = Number(additionalCosts[i].price) * Number(exchangeRate);
@@ -1926,7 +1947,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
 
-        ctrl.selectPort = function(locationId, isEditMode) {
+        ctrl.selectPort = function(locationId, isManualChange) {
             let location,
                 productList,
                 agent = {};
@@ -1945,18 +1966,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.setDefaultValues('location', 'lab', location.defaultLab);
                 ctrl.getAllOrderContractOptions();
             });
-            // On location change fetch additional costs by location-wise order and save to additionalcosts master
-            ctrl.setAdditionalCostsForLocation(isEditMode);
-            // if location is changed then set Additional cost for Range, Total
-            // if(!isEditMode) {
-                ctrl.additionalCostList = ctrl.getAdditionalCosts();
-                let additionalCosts = ctrl.additionalCostList;
-                if(additionalCosts) {
-                    $.each(additionalCosts, (_, additionalCost) => {
-                        ctrl.setRangeTotalAdditionalCost(additionalCost);
-                    });
+            // When Location is changed in the Order, cost associated with the location has to be removed with a
+            // validation message as "Cost associated with location also would be removed"
+            // temp_test // validation yet to be added
+            
+            if (isManualChange) {
+                if(ctrl.additionalCosts.some(x => (x.locationAdditionalCostId && x.locationAdditionalCostId > 0))) {
+                    toastr.error("Cost associated with location also would be removed.");
                 }
-            // }
+                $.each(ctrl.additionalCosts.filter(ac => (ac.locationAdditionalCostId && ac.locationAdditionalCostId > 0)), function (key, additionalCost) {
+                    ctrl.deleteAdditionalCost(additionalCost);
+                });
+            }
+            // On location change get location-wise additional costs master
+            ctrl.setAdditionalCostsForLocation();
+            ctrl.evaluateAdditionalCostList();
         };
 
         ctrl.selectProduct = function(productId, index) {
@@ -2058,8 +2082,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }, 10);
                 }
             });
-            ctrl.setRangeTotalAdditionalCost(additionalCost);
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
         };
 
         ctrl.defaultMaxQtyFromConfirmed = function(source, data) {
@@ -2089,10 +2111,26 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             default:
                 console.log('Error: Confirmed quantity could not be defaulted from defined sources.');
             }
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
+            
 
             function defaultFromInput(data) {
+                // evaluate ctrl.additionalCosts for product qty change
+                let quantityModified = false;
+                if(data.maxQuantity != data.confirmedQuantity) {
+                    quantityModified = true;
+                }
                 data.confirmedQuantity = data.maxQuantity;
+                if(quantityModified) {
+                    for (let j = 0; j < data.additionalCosts.length; j++) {
+                        let additionalCost = data.additionalCosts[j];
+                        additionalCost.confirmedQuantity = convertDecimalSeparatorStringToNumber(data.confirmedQuantity);
+                        additionalCost.quantityUom = data.quantityUom;
+                        ctrl.setLocationBasedAdditionalCosts(additionalCost, data, 'quantityChange');
+                        additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
+                        data.additionalCosts[j] = additionalCost;
+                    }
+                    ctrl.evaluateAdditionalCostList();
+                }
                 // data.quantityUom = data.minMaxQuantityUom;
                 // ctrl.productUomChanged(data);
             }
@@ -2114,6 +2152,76 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 });
             }
         };
+
+        ctrl.confirmQuantityChanged = function(source, data) {
+            // evaluate ctrl.additionalCosts for product qty change
+            let prodQuantity = convertDecimalSeparatorStringToNumber(data.confirmedQuantity)
+            let quantityModified = false;
+            for (let j = 0; j < data.additionalCosts.length; j++) {
+                if (data.additionalCosts[j].confirmedQuantity && data.additionalCosts[j].confirmedQuantity != prodQuantity) {
+                    quantityModified = true;
+                    break;
+                }
+            }
+            if(quantityModified) {
+                for (let j = 0; j < data.additionalCosts.length; j++) {
+                    let additionalCost = data.additionalCosts[j];
+                    additionalCost.confirmedQuantity = prodQuantity;
+                    additionalCost.quantityUom = data.quantityUom;
+                    ctrl.setLocationBasedAdditionalCosts(additionalCost, data, 'quantityChange');
+                    additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
+                    data.additionalCosts[j] = additionalCost;
+                }
+                ctrl.evaluateAdditionalCostList();
+            }
+        };
+
+        ctrl.prodPriceChanged = function(source, data) {
+            // evaluate ctrl.additionalCosts for product price change
+            let prodQuantity = convertDecimalSeparatorStringToNumber(data.price)
+            let priceModified = false;
+            for (let j = 0; j < data.additionalCosts.length; j++) {
+                if (data.additionalCosts[j].price && data.additionalCosts[j].price != prodQuantity) {
+                    priceModified = true;
+                    break;
+                }
+            }
+            if(priceModified) {
+                for (let j = 0; j < data.additionalCosts.length; j++) {
+                    let additionalCost = data.additionalCosts[j];
+                    if(additionalCost.costType && additionalCost.costType.name == 'Percent') {
+                        additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
+                        // ctrl.setLocationBasedAdditionalCosts(additionalCost, data, 'quantityChange');
+                        // additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
+                        // data.additionalCosts[j] = additionalCost;
+                    }
+                }
+                ctrl.evaluateAdditionalCostList();
+            }
+        };
+
+        ctrl.additionalCostRowPriceChanged = function(additionalCost, initiatorName) {
+            if(initiatorName == 'input') {
+                let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
+                let acIdx = product.additionalCosts.indexOf(additionalCost);
+                // product.additionalCosts[acIdx].price = additionalCost.price;
+                additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
+                // product.additionalCosts[acIdx] = additionalCost;
+                ctrl.evaluateAdditionalCostList();
+            }
+        };
+
+        ctrl.additionalCostRowExtrasChanged = function(additionalCost, initiatorName) {
+            if(initiatorName == 'input') {
+                let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
+                let acIdx = product.additionalCosts.indexOf(additionalCost);
+                // product.additionalCosts[acIdx].price = additionalCost.price;
+                additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
+                // product.additionalCosts[acIdx] = additionalCost;
+                ctrl.evaluateAdditionalCostList();
+            }
+        };
+
         ctrl.selectPaymntTerm = function(term) {
             if (ctrl.data.paymentTerm === null) {
                 ctrl.data.paymentTerm = {};
@@ -2209,7 +2317,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             productUomChg(product, isPriceUom);
             ctrl.getAllOrderContractOptions();
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
         };
 
 
@@ -2441,18 +2548,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 					    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf('Confirmation to Lab') != -1;
         			}
                 });
-        		if (ctrl.customerConfiguration) {
-	        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-	        			foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
-						    return email.process.indexOf('Maersk') != -1;
-		                });		        		
-	        		}
-	        		if (ctrl.customerConfiguration.sendSingleEmail) {
-	        			foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
-						    return email.process.indexOf('Order Confirmation Single Email') != -1;
-		                });
-	        		}
-        		}                
+                if (ctrl.customerConfiguration) {
+                    if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+                        foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
+                            return email.process.indexOf('Maersk') != -1;
+                        });
+                    }
+                    if (ctrl.customerConfiguration.sendSingleEmail) {
+                        foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
+                            return email.process.indexOf('Order Confirmation Single Email') != -1;
+                        });
+                    }
+                }
             	if (foundEmailTemplates[0].emailType.name == 'Manual') {
 	             //    ctrl.orderConfirmationEmailToLabs = v.emailType;
             		// ctrl.emailToLabsTemplate = v.template;
@@ -2485,18 +2592,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         			}
                 });
                 console.log(foundEmailTemplates);
-        		if (ctrl.customerConfiguration) {
-	        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-	        			foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
-						    return email.process.indexOf('Maersk') != -1;
-		                });		        		
-	        		}
-	        		if (ctrl.customerConfiguration.sendSingleEmail) {
-	        			foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
-						    return email.process.indexOf('Order Confirmation Single Email') != -1;
-		                });
-	        		}
-        		}
+                if (ctrl.customerConfiguration) {
+                    if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+                        foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
+                            return email.process.indexOf('Maersk') != -1;
+                        });
+                    }
+                    if (ctrl.customerConfiguration.sendSingleEmail) {
+                        foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
+                            return email.process.indexOf('Order Confirmation Single Email') != -1;
+                        });
+                    }
+                }
             	if (foundEmailTemplates[0].emailType.name == 'Manual') {
 	                var data = {
 	                    orderId: ctrl.orderId,
@@ -2522,8 +2629,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             		});
 
             		minProductType = _.minBy(ctrl.data.products, (o) => {
-	                    return o.productType.productTypeGroup.id;
-	                });
+                    return o.productType.productTypeGroup.id;
+                });
             		if (minProductType) {
             			minProductTypeId = minProductType.productType.productTypeGroup.id;
             		}
@@ -2531,20 +2638,20 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             			if (email.productTypeGroup) {
 						    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf('Confirmation to Seller') != -1;
             			}
-	                });
+                });
             		console.log(foundEmailTemplates);
                     window.orderDetails = ctrl;
-	        		if (ctrl.customerConfiguration) {
-		        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-		        			foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
-							    return email.process.indexOf('Maersk') != -1;
-			                });		        		
-		        		}
-	        		}
+                    if (ctrl.customerConfiguration) {
+                        if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+                            foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
+                                return email.process.indexOf('Maersk') != -1;
+                            });
+                        }
+                    }
             		if (!isContractOrder) {
             			var defaultTemplate = _.filter(foundEmailTemplates, (email) => {
 						    return email.process.indexOf('Contract') == -1;
-	                    });
+                    });
 		            	if (ctrl.confirmToSellerManual) {
 			                var data = {
 			                    orderId: ctrl.orderId,
@@ -2563,7 +2670,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             		} else {
             			defaultTemplate = _.filter(foundEmailTemplates, (email) => {
 						    return email.process.indexOf('Contract') != -1;
-	                    });
+                    });
 		            	if (ctrl.confirmToSellerContractManual) {
 			                var data = {
 			                    orderId: ctrl.orderId,
@@ -2611,19 +2718,19 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         			defaultTemplate = _.filter(foundEmailTemplates, (email) => {
 					    return email.process.indexOf('Contract') == -1;
                     });
-        		}
-        		if (ctrl.customerConfiguration) {
-	        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-	        			defaultTemplate = _.filter(ctrl.emailConfiguration, (email) => {
-						    return email.process.indexOf('Maersk Line Spot Order Confirmation to Vessel Email') != -1;
-		                });		        		
-	        		}
-	        		if (ctrl.customerConfiguration.sendSingleEmail) {
-	        			defaultTemplate = _.filter(ctrl.emailConfiguration, (email) => {
-						    return email.process.indexOf('Order Confirmation Single Email') != -1;
-		                });
-	        		}
-        		}
+                }
+                if (ctrl.customerConfiguration) {
+                    if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+                        defaultTemplate = _.filter(ctrl.emailConfiguration, (email) => {
+                            return email.process.indexOf('Maersk Line Spot Order Confirmation to Vessel Email') != -1;
+                        });
+                    }
+                    if (ctrl.customerConfiguration.sendSingleEmail) {
+                        defaultTemplate = _.filter(ctrl.emailConfiguration, (email) => {
+                            return email.process.indexOf('Order Confirmation Single Email') != -1;
+                        });
+                    }
+                }
 
             	if (defaultTemplate[0].emailType.name == 'Manual' /* && ctrl.procurementSettings.order.needConfirmationVesselEmail.name == 'HardStop'*/) {
 	                var data = {
@@ -3186,8 +3293,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * Validates Additional Cost non-inputs, (i.e. button dropdowns) and returns array of invalid fields.
          */
         function validateAdditionalCostsNonInputs() {
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
-            let additionalCosts = ctrl.additionalCostList,
+            let additionalCosts = ctrl.getAdditionalCosts(),
                 compare,
                 product,
                 additionalCost,
@@ -3202,7 +3308,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                                 if (!compare || angular.equals({}, compare)) {
                                     // Special cases:
                                     // Omit priceUom check if the cost type isn't "Unit".
-                                    if (nonFields[j] === 'priceUom' && additionalCost.costType && (additionalCost.costType.id !== ctrl.COST_TYPE_UNIT_ID)) {
+                                    if (nonFields[j] === 'priceUom' && additionalCost.costType && additionalCost.costType.id !== ctrl.COST_TYPE_UNIT_ID) {
                                         continue;
                                     }
                                     return [ nonFields[j] ];
@@ -3242,29 +3348,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // Must do this manually, since a programatic change of the
             // cost type property DOES NOT trigger the event - only actual
             // user interaction does.
-            ctrl.costTypeChanged(additionalCost, true);
+            ctrl.costTypeChanged(additionalCost, 'additionalCostNameChanged');
         };
 
         /**
          * Empty the priceUom if Cost Type for the Additional Cost is not Unit.
          */
-        ctrl.costTypeChanged = function(additionalCost, isAdditionalCostNameChanged) {
+        ctrl.costTypeChanged = function(additionalCost, initiatorName) {
             if (!additionalCost.costType) {
                 return;
             }
 
-            if((additionalCost.costType.name == 'Flat' || additionalCost.costType.name == 'Unit') && (additionalCost.locationAdditionalCostId || (additionalCost.additionalCost && additionalCost.additionalCost.locationid))) {
-                additionalCost.extras = additionalCost.additionalCost.extras || additionalCost.extras ||0;
-                additionalCost.price = additionalCost.additionalCost.price || additionalCost.price || 0;
-                additionalCost.priceUom = additionalCost.additionalCost.priceUom || additionalCost.priceUom || 0;
-                additionalCost.costType = additionalCost.additionalCost.costType || additionalCost.costType || 0;
-                if (!additionalCost.costType) {
-                    return;
-                }
-            }
-
             if (additionalCost.costType.name == 'Percent') {
+                // if(!(additionalCost.locationAdditionalCostId || (additionalCost.additionalCost && additionalCost.additionalCost.locationid))) {
                 additionalCost.priceUom = null;
+                // }
 
                 if (additionalCost.isTaxComponent) {
                     // ctrl.additionalCostApplicableFor[additionalCost.fakeId] = "";
@@ -3277,7 +3375,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if (additionalCost.isTaxComponent) {
                     additionalCost.disabledApplicableFor = true;
                     ctrl.applicableForChange(additionalCost, null);
-                }else{
+                } else {
                     additionalCost.disabledApplicableFor = false;
                 }
             }
@@ -3292,203 +3390,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 additionalCost.disabledApplicableFor = false;
             }
 
-            // Do not show 'All' type in ApplicableFor dropdown for Range, Total.
-            if (additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total') {
-                additionalCost.priceUom = null;
-                additionalCost.isAllProductsCost = false;
-                
-            // if cost type is changed then set Additional cost for Range, Total
-                if(isAdditionalCostNameChanged) {
-                    ctrl.setRangeTotalAdditionalCost(additionalCost);
-                    // ctrl.additionalCostList = ctrl.getAdditionalCosts();
-                }
+            let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
+            if(initiatorName == 'additionalCostNameChanged') {
+                let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
+                ctrl.setLocationBasedAdditionalCosts(additionalCost, product, initiatorName);
             }
-            else {
-                ctrl.additionalCostList = ctrl.getAdditionalCostsForConfQty();
-            }
-
+            calculateAdditionalCostAmounts(additionalCost, product);
+            ctrl.evaluateAdditionalCostList();
             // additionalCost = calculateAdditionalCostAmounts(additionalCost, getProductById(additionalCost.parentProductId));
             // console.log(additionalCost);
 
             // trigger change function
             // addPriceUomChg(additionalCost);
-        };
-
-        ctrl.setAdditionalCosts = function() {
-            ctrl.additionalCostList = ctrl.getAdditionalCosts();
-        }
-
-        /**
-         * 
-         * @param {any} additionalCost - The manipulated additional cost row item object
-         */
-        ctrl.setRangeTotalAdditionalCost = function(additionalCost, isFromGetAdditionalCosts) {
-            let additionalCostContainer = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
-            // Do not fetch rangeTotalAdditionalCosts if
-            // 1. product is not selected, 2. location is not selected
-            // 3. additional cost name is not selected
-            // 4. quantity and quantityUom not selected
-            if(!(additionalCostContainer && additionalCost
-                    && additionalCostContainer.product && additionalCostContainer.product.id > 0
-                    && ctrl.data && ctrl.data.location && ctrl.data.location.id > 0
-                    && ((additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0)
-                    || additionalCost.locationAdditionalCostId > 0)
-                    // && additionalCost.additionalCost.id > 0
-                    && additionalCost.costType && additionalCost.costType.id > 0
-                    && additionalCost.confirmedQuantity > 0 && additionalCost.quantityUom && additionalCost.quantityUom.id > 0)) {
-                return;
-            }
-            switch (additionalCost.costType.id) {
-                case  COST_TYPE_IDS.TOTAL : case  COST_TYPE_IDS.RANGE :
-                    let apiJSON = {
-                        Payload: {
-                            Order: null,
-                            Filters: [
-                                {
-                                    ColumnName: 'ProductId',
-                                    Value: additionalCostContainer.product.id // 161
-                                },
-                                {
-                                    ColumnName: 'LocationId',
-                                    Value: ctrl.data.location.id // 31
-                                },
-                                {
-                                    ColumnName: 'AdditionalCostId',
-                                    Value: additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid // 25
-                                },
-                                {
-                                    ColumnName: 'Qty',
-                                    Value: additionalCost.confirmedQuantity // 20000000
-                                },
-                                {
-                                    ColumnName: 'QtyUomId',
-                                    Value: additionalCost.quantityUom.id // 1
-                                }
-                            ],
-                            Pagination: {
-                                Skip: 0,
-                                Take: 25
-                            },
-                            SearchText: null
-                        }
-                    };
-                    if(!$scope.pendingAdditionalCostRequestIds) {
-                        $scope.pendingAdditionalCostRequestIds = [];
-                    }
-                    if(!$scope.pendingAdditionalCostRequestIds.includes(additionalCost.fakeId)) {
-                        $scope.pendingAdditionalCostRequestIds.push(additionalCost.fakeId);
-                    }
-                    Factory_Master.getRangeTotalAdditionalCosts(apiJSON, function(response) {
-                        // Once any response comes delete the Id from pending list so that it can be called
-                        if($scope.pendingAdditionalCostRequestIds) {
-                            for(let i = 0; i < $scope.pendingAdditionalCostRequestIds.length; i++) {
-                                if($scope.pendingAdditionalCostRequestIds[i] == additionalCost.fakeId) {
-                                    $scope.pendingAdditionalCostRequestIds.splice(i, 1);
-                                }
-                            }
-                        }
-                        if(response && response.data && response.data.payload) {
-                            if(!$scope.fetchedAdditionalCost) {
-                                $scope.fetchedAdditionalCost = {};
-                            }
-                            $scope.fetchedAdditionalCost.fakeId = additionalCost.fakeId;
-                            $scope.fetchedAdditionalCost.amount = response.data.payload.price || 0;
-                            $scope.fetchedAdditionalCost.extras = additionalCost.extras;
-                            
-                            if(!isFromGetAdditionalCosts) {
-                                ctrl.additionalCostList = ctrl.getAdditionalCosts();
-                            }
-                            else {
-                                ctrl.additionalCostList = ctrl.getAdditionalCostsForConfQty();
-                            }
-                        }
-                    });
-                    break;
-            }
-        }
-        
-        /**
-         * Get the additional costs - special function for confirmed Qty change.
-         * @returns {Array} - An array of additionalCosts objects.
-         */
-         ctrl.getAdditionalCostsForConfQty = function() {
-            let additionalCost,
-                result = [];
-            if (!ctrl.data) {
-                return result;
-            }
-            // Set result to the global additional costs array in the DTO,
-            // which contains the "All Products" additional costs.
-            result = ctrl.globalAdditionalCosts;
-            ctrl.additionalCostApplicableFor = {};
-            if (result) {
-                for (let k = 0; k < result.length; k++) {
-                    additionalCost = result[k];
-
-                    if (!additionalCost.fakeId) {
-                        additionalCost.fakeId = -Date.now();
-                    }
-                    // Save product model for "Applicable for", and calculate the confirmedQuantity
-                    // based on it:
-                    ctrl.additionalCostApplicableFor[additionalCost.fakeId] = null;
-                    additionalCost.confirmedQuantity = sumProductConfirmedQuantities(ctrl.data.products);
-                    // TODO: Get the quantityUom of the first product? Or is there a different business logic for this?
-                    // console.log(2)
-                    // additionalCost.quantityUom = null;
-                    additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
-                    additionalCost = calculateAdditionalCostAmounts(additionalCost, null);
-                }
-            }  
-            if (ctrl.data.products) {
-                for (let i = 0; i < ctrl.data.products.length; i++) {
-                    if (ctrl.data.products[i].additionalCosts) {
-                        for (let j = 0; j < ctrl.data.products[i].additionalCosts.length; j++) {
-                            additionalCost = ctrl.data.products[i].additionalCosts[j];
-                            // We need to manage the newly created additionalCost objects in the front-end,
-                            // before they are saved to the server, therefore we need a way to reference
-                            // them before the server gives them an UID.
-                            // We'll use a fakeId field that acts as a temporary UID.
-                            // For objects already existing on the server, it will be equal to their ID field.
-                            // For new objects, we'll make one using a negative timestamp.
-                            if (!additionalCost.fakeId) {
-                                additionalCost.fakeId = -Date.now();
-                            }
-                            additionalCost.parentProductId = ctrl.data.products[i].id;
-                            // Save product model for "Applicable for", and calculate the confirmedQuantity
-                            // based on it.
-                            ctrl.additionalCostApplicableFor[additionalCost.fakeId] = ctrl.data.products[i];
-                            additionalCost.confirmedQuantity = convertDecimalSeparatorStringToNumber(ctrl.data.products[i].confirmedQuantity);
-                            // console.log(1)
-                            additionalCost.quantityUom = ctrl.data.products[i].quantityUom;
-                            additionalCost = calculateAdditionalCostAmounts(additionalCost, ctrl.data.products[i]);
-                        }
-                        if (result) {
-	                        result = result.concat(ctrl.data.products[i].additionalCosts);
-                        }
-                    }
-                }
-            }
-
-            result = $filter('filter')(result, {
-                isDeleted: false
-            });
-
-            ctrl.additionalCosts = result;
-
-            // $.each(result, (addCostKey, additionalCost) => {
-            //     if (ctrl.data.status && (
-            //         // ctrl.data.status.name == 'Confirmed' ||
-            //         ctrl.data.status.name == 'PartiallyDelivered' ||
-            //         ctrl.data.status.name == 'Delivered' ||
-            //         ctrl.data.status.name == 'PartiallyInvoiced' ||
-            //         ctrl.data.status.name == 'Invoiced')) {
-            //        additionalCost.disabled = true;
-            //     }
-            //     ctrl.costTypeChanged(additionalCost);
-            // });
-
-            updateOrderSummary();
-            return result;
         };
 
         function convertDecimalSeparatorStringToNumber(number) {
@@ -4186,7 +4099,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
                 if ((changeContract || changeContractAutocomplete) && !isQuantityUom) { 
                     ctrl.data.products[idx].price = angular.copy(selection.price);
-                }  
+                }
                 ctrl.recomputeProductPricePrecision(idx);
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
@@ -4327,12 +4240,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1)
                     }
                 }
-                $.each(response.payload, function(k,v){
+                $.each(response.payload, function(k,v) {
                     v.isFromContract = true;
                     v.id = 0;
-                    ctrl.data.products[currentProductIndex].additionalCosts.push(v)
-                })
-                ctrl.additionalCostList = ctrl.getAdditionalCosts();
+                    ctrl.data.products[currentProductIndex].additionalCosts.push(v);
+                });
+                ctrl.getAdditionalCosts();
             }).catch(function (error) {
             });
         };
@@ -4621,15 +4534,147 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	        }
 	        return input;
 	    };
+        
+        /**
+         * Evaluates the additional cost list based on already added additional costs.
+         * Just a setter/getter for ctrl.additionalCosts, which will be bound to UI.
+         * @returns The evaluated additionalCostList
+         */
+        ctrl.evaluateAdditionalCostList = function() {
+            let additionalCost, result = [];
+            if (!ctrl.data) {
+                return result;
+            }
+            result = ctrl.globalAdditionalCosts;
+            if (ctrl.data.products) {
+                for (let i = 0; i < ctrl.data.products.length; i++) {
+                    if (ctrl.data.products[i].additionalCosts) {
+                        if (result) {
+	                        result = result.concat(ctrl.data.products[i].additionalCosts);
+                        }
+                    }
+                }
+            }
 
-        ctrl.trackAddCostId = function(addCost, additionalCostRowItem) {
-            if(addCost) {
-                if(addCost.locationid) {
-                    return addCost.id+addCost.locationid;
+            result = $filter('filter')(result, {
+                isDeleted: false
+            });
+            ctrl.additionalCosts = result;
+            updateOrderSummary();
+            return ctrl.additionalCosts;
+        }
+        
+        /**
+         * Evaluates all the location based additional costs & updates ctrl.additionalCosts
+         * @param {*} additionalCost 
+         * @param {*} product 
+         * @param {*} initiatorName 
+         * @returns 
+         */
+        ctrl.setLocationBasedAdditionalCosts = function(additionalCost, product, initiatorName) {
+            if(initiatorName != 'additionalCostNameChanged' && initiatorName != 'quantityChange' &&
+                initiatorName != 'applicableForChange' || (!additionalCost.costType ||
+                !((additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0) ||
+                additionalCost.locationAdditionalCostId > 0))) {
+                return;
+            }
+            
+            if(!product) {
+                product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
+            }
+            if (initiatorName != 'applicableForChange' &&
+                (additionalCost.costType.id == COST_TYPE_IDS.FLAT || additionalCost.costType.id == COST_TYPE_IDS.UNIT ||
+                additionalCost.costType.id == COST_TYPE_IDS.PERCENT)) {
+                let locAddCost = ctrl.locationAdditionalCosts.find(x => {
+                    if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                let addCostIdx = product.additionalCosts.indexOf(additionalCost);
+                additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
+                additionalCost.price = locAddCost.price || additionalCost.price || 0;
+                additionalCost.amount = locAddCost.amount || additionalCost.amount || 0;
+                additionalCost.priceUom = locAddCost.priceUom || additionalCost.priceUom || null;
+                additionalCost.costType = locAddCost.costType || additionalCost.costType || 0;
+                additionalCost.locationAdditionalCostId = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
+                if (!additionalCost.costType) {
+                    return;
                 }
-                else {
-                    return addCost.id+(additionalCostRowItem?.locationAdditionalCostId || 0);
-                }
+                additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
+                product.additionalCosts[addCostIdx] = additionalCost;
+                // ctrl.evaluateAdditionalCostList();
+                return;
+            }
+            
+            // Do not fetch rangeTotalAdditionalCosts if
+            // 1. product is not selected, 2. location is not selected
+            // 3. additional cost name is not selected, 4. quantity and quantityUom not selected
+            if(!(additionalCost && product && product.product && product.product.id > 0
+                    && ctrl.data && ctrl.data.location && ctrl.data.location.id > 0
+                    && ((additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0)
+                    || additionalCost.locationAdditionalCostId > 0)
+                    && additionalCost.costType && additionalCost.costType.id > 0
+                    && additionalCost.confirmedQuantity > 0 && additionalCost.quantityUom && additionalCost.quantityUom.id > 0)) {
+                return;
+            }
+            if (additionalCost.costType.id == COST_TYPE_IDS.RANGE || additionalCost.costType.id == COST_TYPE_IDS.TOTAL) {
+                let locAddCost = ctrl.locationAdditionalCosts.find(x => {
+                    if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
+                additionalCost.price = locAddCost.price || additionalCost.price || 0;
+                additionalCost.amount = locAddCost.amount || additionalCost.amount || 0;
+                additionalCost.locationAdditionalCostId = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
+
+                let apiJSON = {
+                    Payload: {
+                        Order: null,
+                        Filters: [
+                            {
+                                ColumnName: 'ProductId',
+                                Value: product.product.id
+                            },
+                            {
+                                ColumnName: 'LocationId',
+                                Value: ctrl.data.location.id
+                            },
+                            {
+                                ColumnName: 'AdditionalCostId',
+                                Value: additionalCost.locationAdditionalCostId
+                            },
+                            {
+                                ColumnName: 'Qty',
+                                Value: additionalCost.confirmedQuantity
+                            },
+                            {
+                                ColumnName: 'QtyUomId',
+                                Value: additionalCost.quantityUom.id
+                            }
+                        ],
+                        Pagination: {
+                            Skip: 0,
+                            Take: 25
+                        },
+                        SearchText: null
+                    }
+                };
+                Factory_Master.getRangeTotalAdditionalCosts(apiJSON, function(response) {
+                    if(response && response.data && response.data.payload) {
+                        additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
+                        let addCostIdx = product.additionalCosts.indexOf(additionalCost);
+                        product.additionalCosts[addCostIdx].amount = response.data.payload.price || 0;
+                        product.additionalCosts[addCostIdx].price = response.data.payload.price || 0;
+                        product.additionalCosts[addCostIdx].extras = additionalCost.extras;
+                        product.additionalCosts[addCostIdx].locationAdditionalCostId = additionalCost.locationAdditionalCostId;
+                        ctrl.evaluateAdditionalCostList();
+                    }
+                });
             }
         }
     }

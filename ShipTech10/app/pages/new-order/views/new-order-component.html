@@ -622,7 +622,7 @@
                                                         <div
                                                             class="form_input form_input_{{ $ctrl.portFields.locationName.name }} input-group">
                                                             {{ $ctrl.data.location.name | decodeReadOnly}}
-                                                            <span ng-if="$ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location.id, true)"></span>
+                                                            <span ng-if="$ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location.id)"></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -647,34 +647,34 @@
                                                         </label>
                                                         <div class="input-group form_input">
                                                             <input ng-if="!$ctrl.isEnabledVessel" class="typeahead form-control"
-                                                                id="id_{{ $ctrl.portFields.locationName.name }}"
-                                                                name="{{ $ctrl.portFields.locationName.caption | translate }}"
-                                                                ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
-                                                                ng-model="$ctrl.data.location" decode-input-format
-                                                                required typeahead-append-to-body="true"
-                                                                typeahead-editable="false"
-                                                                typeahead-on-select="$ctrl.selectPort($item.id)"
-                                                                uib-typeahead="location as location.name for location in $ctrl.lists.Location | typeaheadCustomFilter:$viewValue:'name'" />
+                                                                   id="id_{{ $ctrl.portFields.locationName.name }}"
+                                                                   name="{{ $ctrl.portFields.locationName.caption | translate }}"
+                                                                   ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
+                                                                   ng-model="$ctrl.data.location" decode-input-format
+                                                                   required typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.selectPort($item.id, true)"
+                                                                   uib-typeahead="location as location.name for location in $ctrl.lists.Location | typeaheadCustomFilter:$viewValue:'name'" />
                                                             <input ng-if="$ctrl.isEnabledVessel" class="typeahead form-control"
-                                                                id="id_{{ $ctrl.portFields.locationName.name }}"
-                                                                name="{{ $ctrl.portFields.locationName.caption | translate }}"
-                                                                ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
-                                                                ng-model="$ctrl.data.location.name" decode-input-format
-                                                                required />
-                                                            <span ng-if="$ctrl.isEnabledVessel && $ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location.id, true)"></span>
+                                                                   id="id_{{ $ctrl.portFields.locationName.name }}"
+                                                                   name="{{ $ctrl.portFields.locationName.caption | translate }}"
+                                                                   ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
+                                                                   ng-model="$ctrl.data.location.name" decode-input-format
+                                                                   required />
+                                                            <span ng-if="$ctrl.isEnabledVessel && $ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location.id)"></span>
                                                             <span ng-if="!$ctrl.isEnabledVessel"
-                                                                class="input-group-addon ng-scope"
-                                                                ng-click="triggerModal('general', 'masters_locationlist', 'Location' ,'location',null,null,null,null);"
-                                                                ng-controller="Controller_Master as CM">
+                                                                  class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'masters_locationlist', 'Location' ,'location',null,null,null,null);"
+                                                                  ng-controller="Controller_Master as CM">
                                                                 <a class=" btn default" href="">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
                                                             </span>
                                                             <span ng-if="$ctrl.isEnabledVessel"
-                                                                class="input-group-addon" data-toggle="modal"
-                                                                ng-click="$ctrl.getVesselSchedules()"
-                                                                href="#route_schedule_mintoreach" data-html="true"
-                                                                tooltip data-original-title="View Vessel Voyage">
+                                                                  class="input-group-addon" data-toggle="modal"
+                                                                  ng-click="$ctrl.getVesselSchedules()"
+                                                                  href="#route_schedule_mintoreach" data-html="true"
+                                                                  tooltip data-original-title="View Vessel Voyage">
 
                                                                 <a class=" btn default">
                                                                     <i class="fa fa-anchor"></i>
@@ -826,7 +826,7 @@
                                                     </div>
 
                                                     </div>
-                                                </div>     
+                                                </div>
 
                                             </div>
 
@@ -834,29 +834,29 @@
                                                 <div>
                                                     <div class="form-group  row">
                                                         <label class="{{ $ctrl.sellerDetails.Seller.name }}_label"
-                                                            for="{{ $ctrl.sellerDetails.Seller.name }}">
+                                                               for="{{ $ctrl.sellerDetails.Seller.name }}">
                                                             {{ $ctrl.sellerDetails.Seller.caption | translate }}
                                                             <span class="orange-txt">
                                                                 *
                                                             </span>
                                                         </label>
                                                         <div
-                                                            class="form_input form_input_{{ $ctrl.sellerDetails.Seller.name }} input-group">
+                                                             class="form_input form_input_{{ $ctrl.sellerDetails.Seller.name }} input-group">
                                                             <input autocomplete="off" class="typeahead form-control"
-                                                                id="id_{{ $ctrl.sellerDetails.Seller.name }}"
-                                                                name="{{ $ctrl.sellerDetails.Seller.caption | translate }}"
-                                                                ng-blur="!$ctrl.data.seller.name ? $ctrl.clearPhysicalSupplier() : null"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.seller.name" decode-input-format
-                                                                ng-required="true" typeahead-append-to-body="true"
-                                                                typeahead-editable="false" typeahead-min-length="1"
-                                                                typeahead-on-select="$ctrl.selectSeller($item)"
-                                                                typeahead-show-hint="true" typeahead-wait-ms="100"
-                                                                uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | typeaheadCustomFilter:$viewValue:'name'" />
+                                                                   id="id_{{ $ctrl.sellerDetails.Seller.name }}"
+                                                                   name="{{ $ctrl.sellerDetails.Seller.caption | translate }}"
+                                                                   ng-blur="!$ctrl.data.seller.name ? $ctrl.clearPhysicalSupplier() : null"
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                                   ng-model="$ctrl.data.seller.name" decode-input-format
+                                                                   ng-required="true" typeahead-append-to-body="true"
+                                                                   typeahead-editable="false" typeahead-min-length="1"
+                                                                   typeahead-on-select="$ctrl.selectSeller($item)"
+                                                                   typeahead-show-hint="true" typeahead-wait-ms="100"
+                                                                   uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | typeaheadCustomFilter:$viewValue:'name'" />
                                                             <span class="input-group-addon ng-scope"
-                                                                ng-click="triggerModal('general', 'masters_counterpartylist', 'Seller' ,'seller',null,null,null,'sellerList');"
-                                                                ng-controller="Controller_Master as CM"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                  ng-click="triggerModal('general', 'masters_counterpartylist', 'Seller' ,'seller',null,null,null,'sellerList');"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                 <a class=" btn default" href="">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
@@ -867,27 +867,27 @@
                                                 <div ng-if="$ctrl.nominationFields.broker.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.broker.name }}_label"
-                                                            for="id_{{ $ctrl.nominationFields.broker.name }}">
+                                                               for="id_{{ $ctrl.nominationFields.broker.name }}">
                                                             {{ $ctrl.nominationFields.broker.caption | translate }}
                                                         </label>
                                                         <div
-                                                            class="input-group form_input form_input_{{ $ctrl.nominationFields.broker.name }}">
+                                                             class="input-group form_input form_input_{{ $ctrl.nominationFields.broker.name }}">
                                                             <input class="typeahead form-control"
-                                                                id="id_{{ $ctrl.nominationFields.broker.name }}"
-                                                                name="{{ $ctrl.nominationFields.broker.caption | translate }}"
-                                                                ng-blur="!$ctrl.data.broker.name ? $ctrl.data.broker = null : '' "
-                                                                ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.broker.name, $ctrl.data.broker)"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.broker.name" decode-input-format
-                                                                typeahead-append-to-body="true"
-                                                                typeahead-editable="true"
-                                                                typeahead-on-select="$ctrl.data.broker = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
-                                                                uib-typeahead="broker as broker.name for broker in $ctrl.lists.Broker | typeaheadCustomFilter:$viewValue:'name'" />
+                                                                   id="id_{{ $ctrl.nominationFields.broker.name }}"
+                                                                   name="{{ $ctrl.nominationFields.broker.caption | translate }}"
+                                                                   ng-blur="!$ctrl.data.broker.name ? $ctrl.data.broker = null : '' "
+                                                                   ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.broker.name, $ctrl.data.broker)"
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                                   ng-model="$ctrl.data.broker.name" decode-input-format
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="true"
+                                                                   typeahead-on-select="$ctrl.data.broker = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
+                                                                   uib-typeahead="broker as broker.name for broker in $ctrl.lists.Broker | typeaheadCustomFilter:$viewValue:'name'" />
 
                                                             <span class="input-group-addon ng-scope"
-                                                                ng-click="triggerModal('general', 'masters_counterpartylist_broker', 'Broker' ,'broker',null,null,null,'brokerlist');"
-                                                                ng-controller="Controller_Master as CM"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                  ng-click="triggerModal('general', 'masters_counterpartylist_broker', 'Broker' ,'broker',null,null,null,'brokerlist');"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                 <a class=" btn default" href="">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
@@ -898,8 +898,8 @@
                                                 <div ng-if="$ctrl.nominationFields.surveyorCounterparty.visible">
                                                     <div class="form-group row">
                                                         <label
-                                                            class="{{ $ctrl.nominationFields.surveyorCounterparty.name }}_label"
-                                                            for="{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
+                                                               class="{{ $ctrl.nominationFields.surveyorCounterparty.name }}_label"
+                                                               for="{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
                                                             {{ $ctrl.nominationFields.surveyorCounterparty.caption |
                                                             translate }}
                                                             <span class="orange-txt" ng-if="$ctrl.isSurveyorMandatory">
@@ -907,25 +907,25 @@
                                                             </span>
                                                         </label>
                                                         <div
-                                                            class="input-group form_input form_input_{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
+                                                             class="input-group form_input form_input_{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
                                                             <input class="typeahead form-control"
-                                                                id="id_{{ $ctrl.nominationFields.surveyorCounterparty.name }}"
-                                                                name="{{ $ctrl.nominationFields.surveyorCounterparty.caption | translate }}"
-                                                                ng-blur="!$ctrl.data.surveyorCounterparty.name ? $ctrl.data.surveyorCounterparty = null : '' "
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.surveyorCounterparty.name"
-                                                                decode-input-format
-                                                                ng-required="$ctrl.isSurveyorMandatory"
-                                                                typeahead-append-to-body="true"
-                                                                typeahead-editable="false"
-                                                                typeahead-on-select="$ctrl.data.surveyorCounterparty = $ctrl.setTypeahedVal($ctrl.data.surveyorCounterparty, $item, false)"
-                                                                uib-typeahead="surveyorCounterparty as surveyorCounterparty.name for surveyorCounterparty in $ctrl.lists.Surveyor | typeaheadCustomFilter:$viewValue:'name'" />
+                                                                   id="id_{{ $ctrl.nominationFields.surveyorCounterparty.name }}"
+                                                                   name="{{ $ctrl.nominationFields.surveyorCounterparty.caption | translate }}"
+                                                                   ng-blur="!$ctrl.data.surveyorCounterparty.name ? $ctrl.data.surveyorCounterparty = null : '' "
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                                   ng-model="$ctrl.data.surveyorCounterparty.name"
+                                                                   decode-input-format
+                                                                   ng-required="$ctrl.isSurveyorMandatory"
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.data.surveyorCounterparty = $ctrl.setTypeahedVal($ctrl.data.surveyorCounterparty, $item, false)"
+                                                                   uib-typeahead="surveyorCounterparty as surveyorCounterparty.name for surveyorCounterparty in $ctrl.lists.Surveyor | typeaheadCustomFilter:$viewValue:'name'" />
                                                             <span class="input-group-addon ng-scope"
-                                                                ng-click="triggerModal('general', 'masters_counterpartylist_surveyors', 'Surveyor' ,'surveyorCounterparty',null,null,null,null)"
-                                                                ng-controller="Controller_Master as CM"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                  ng-click="triggerModal('general', 'masters_counterpartylist_surveyors', 'Surveyor' ,'surveyorCounterparty',null,null,null,null)"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                 <a class=" btn default" href=""
-                                                                    ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
                                                             </span>
@@ -935,74 +935,74 @@
                                                 <div ng-if="$ctrl.portFields.agentCounterparty.visible">
                                                     <div class="form-group row">
                                                         <label
-                                                            class="{{ $ctrl.sellerDetails.agentCounterparty.name }}_label"
-                                                            for="{{ $ctrl.sellerDetails.agentCounterparty.name }}">
+                                                               class="{{ $ctrl.sellerDetails.agentCounterparty.name }}_label"
+                                                               for="{{ $ctrl.sellerDetails.agentCounterparty.name }}">
                                                             {{ $ctrl.portFields.agentCounterparty.caption | translate }}
                                                             <span class="orange-txt" ng-if="$ctrl.isAgentMandatory">
                                                                 *
                                                             </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group"
-                                                            ng-if="!$ctrl.isAgentFreeText">
+                                                             ng-if="!$ctrl.isAgentFreeText">
                                                             <input class="typeahead form-control"
-                                                                id="id_{{ $ctrl.portFields.agentCounterparty.name }}"
-                                                                name="Agent"
-                                                                ng-click="$ctrl.setSellerDialogType($ctrl.portFields.agentCounterparty.name, $ctrl.data.agentCounterparty)"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.agentCounterparty.name"
-                                                                decode-input-format ng-required="$ctrl.isAgentMandatory"
-                                                                typeahead-append-to-body="true"
-                                                                typeahead-editable="false"
-                                                                typeahead-on-select="$ctrl.data.agentCounterparty = $ctrl.setTypeahedVal($ctrl.data.agentCounterparty, $item, false)"
-                                                                uib-typeahead="agentCounterparty as agentCounterparty.name for agentCounterparty in $ctrl.lists.Agent | typeaheadCustomFilter:$viewValue:'name'" />
+                                                                   id="id_{{ $ctrl.portFields.agentCounterparty.name }}"
+                                                                   name="Agent"
+                                                                   ng-click="$ctrl.setSellerDialogType($ctrl.portFields.agentCounterparty.name, $ctrl.data.agentCounterparty)"
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                                   ng-model="$ctrl.data.agentCounterparty.name"
+                                                                   decode-input-format ng-required="$ctrl.isAgentMandatory"
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.data.agentCounterparty = $ctrl.setTypeahedVal($ctrl.data.agentCounterparty, $item, false)"
+                                                                   uib-typeahead="agentCounterparty as agentCounterparty.name for agentCounterparty in $ctrl.lists.Agent | typeaheadCustomFilter:$viewValue:'name'" />
                                                             <span class="input-group-addon ng-scope"
-                                                                ng-click="triggerModal('general', 'procurement_agentlist', 'agentCounterparty','agentCounterparty',null,null,null,null);"
-                                                                ng-controller="Controller_Master as CM"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                  ng-click="triggerModal('general', 'procurement_agentlist', 'agentCounterparty','agentCounterparty',null,null,null,null);"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                 <a class=" btn default" href=""
-                                                                    ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
                                                             </span>
 
                                                         </div>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.agentCounterparty.name }} input-group"
-                                                            ng-if="$ctrl.isAgentFreeText">
+                                                             ng-if="$ctrl.isAgentFreeText">
                                                             <input class="typeahead form-control"
-                                                                id="id_{{ $ctrl.portFields.agentCounterparty.name }}"
-                                                                name="Agent"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.agentCounterpartyFreeText"
-                                                                ng-required="$ctrl.isAgentMandatory" />
+                                                                   id="id_{{ $ctrl.portFields.agentCounterparty.name }}"
+                                                                   name="Agent"
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                                   ng-model="$ctrl.data.agentCounterpartyFreeText"
+                                                                   ng-required="$ctrl.isAgentMandatory" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div ng-if="$ctrl.nominationFields.lab.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.lab.name }}_label"
-                                                            for="{{ $ctrl.nominationFields.lab.name }}">
+                                                               for="{{ $ctrl.nominationFields.lab.name }}">
                                                             {{ $ctrl.nominationFields.lab.caption | translate }}
                                                         </label>
 
                                                         <div
-                                                            class="input-group input_group input_group_{{ $ctrl.nominationFields.lab.name }}">
+                                                             class="input-group input_group input_group_{{ $ctrl.nominationFields.lab.name }}">
                                                             <input class="typeahead form-control"
-                                                                id="id_{{ $ctrl.nominationFields.lab.name }}"
-                                                                name="{{ $ctrl.nominationFields.lab.name }}"
-                                                                ng-blur="!$ctrl.data.lab.name ? $ctrl.data.lab = null : '' "
-                                                                ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.lab.name, $ctrl.data.lab)"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.lab.name" decode-input-format
-                                                                typeahead-append-to-body="true"
-                                                                typeahead-editable="false"
-                                                                typeahead-on-select="$ctrl.data.lab = $ctrl.setTypeahedVal($ctrl.data.lab, $item, false)"
-                                                                uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | typeaheadCustomFilter:$viewValue:'name'" />
+                                                                   id="id_{{ $ctrl.nominationFields.lab.name }}"
+                                                                   name="{{ $ctrl.nominationFields.lab.name }}"
+                                                                   ng-blur="!$ctrl.data.lab.name ? $ctrl.data.lab = null : '' "
+                                                                   ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.lab.name, $ctrl.data.lab)"
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                                   ng-model="$ctrl.data.lab.name" decode-input-format
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.data.lab = $ctrl.setTypeahedVal($ctrl.data.lab, $item, false)"
+                                                                   uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | typeaheadCustomFilter:$viewValue:'name'" />
                                                             <span class="input-group-addon ng-scope"
-                                                                ng-click="triggerModal('general', 'masters_counterpartylist_labs', 'Lab' ,'lab',null,null,null,null)"
-                                                                ng-controller="Controller_Master as CM"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                  ng-click="triggerModal('general', 'masters_counterpartylist_labs', 'Lab' ,'lab',null,null,null,null)"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                 <a class=" btn default" href=""
-                                                                    ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
                                                             </span>
@@ -1010,29 +1010,29 @@
                                                     </div>
                                                 </div>
                                                 <div ng-if="$ctrl.nominationFields.barge.visible"
-                                                    style="margin-bottom: 5px">
+                                                     style="margin-bottom: 5px">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.nominationFields.barge.name }}_label"
-                                                            for="{{ $ctrl.nominationFields.barge.name }}">
+                                                               for="{{ $ctrl.nominationFields.barge.name }}">
                                                             {{ $ctrl.nominationFields.barge.caption | translate }}
                                                         </label>
                                                         <div
-                                                            class="input-group input_group input_group_{{ $ctrl.nominationFields.barge.name }}">
+                                                             class="input-group input_group input_group_{{ $ctrl.nominationFields.barge.name }}">
                                                             <input class="typeahead form-control"
-                                                                id="id_{{ $ctrl.nominationFields.barge.name }}"
-                                                                name="{{ $ctrl.nominationFields.barge.name }}"
-                                                                ng-blur="!$ctrl.data.barge.name ? $ctrl.data.barge = null : '' "
-                                                                ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.barge.name, $ctrl.data.barge)"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.barge.name" decode-input-format
-                                                                typeahead-append-to-body="true"
-                                                                typeahead-editable="false"
-                                                                typeahead-on-select="$ctrl.data.barge = $ctrl.setTypeahedVal($ctrl.data.barge, $item, false)"
-                                                                uib-typeahead="barge as barge.name for barge in $ctrl.lists.bargeCounterparties | typeaheadCustomFilter:$viewValue:'name'" />
+                                                                   id="id_{{ $ctrl.nominationFields.barge.name }}"
+                                                                   name="{{ $ctrl.nominationFields.barge.name }}"
+                                                                   ng-blur="!$ctrl.data.barge.name ? $ctrl.data.barge = null : '' "
+                                                                   ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.barge.name, $ctrl.data.barge)"
+                                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                                   ng-model="$ctrl.data.barge.name" decode-input-format
+                                                                   typeahead-append-to-body="true"
+                                                                   typeahead-editable="false"
+                                                                   typeahead-on-select="$ctrl.data.barge = $ctrl.setTypeahedVal($ctrl.data.barge, $item, false)"
+                                                                   uib-typeahead="barge as barge.name for barge in $ctrl.lists.bargeCounterparties | typeaheadCustomFilter:$viewValue:'name'" />
                                                             <span class="input-group-addon ng-scope"
-                                                                ng-click="triggerModal('general', 'masters_counterpartylist_barge', 'Barge' ,'barge',null,null,null,'bargeList');"
-                                                                ng-controller="Controller_Master as CM"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
+                                                                  ng-click="triggerModal('general', 'masters_counterpartylist_barge', 'Barge' ,'barge',null,null,null,'bargeList');"
+                                                                  ng-controller="Controller_Master as CM"
+                                                                  ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)">
                                                                 <a class=" btn default" href="">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
@@ -1045,19 +1045,19 @@
                                                         <label class="deliveryDate_label" for="deliveryDate">
                                                             {{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}
                                                         </label>
-														<div class="form_input form_input_pretestlabs input-group">
+                                                        <div class="form_input form_input_pretestlabs input-group">
                                                             <input class="form-control"
                                                                    id="id_customer"
                                                                    name="{{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}"
                                                                    ng-model="$ctrl.data.customer.name"
                                                                    ng-required="$ctrl.procurementSettings.fieldVisibility.isCustomerMandatory"
-                                                                   disabled="true" 
+                                                                   disabled="true"
                                                                    decode-input-format />
                                                         </div>
                                                     </div>
-                                                </div>                                                  
+                                                </div>
                                                 <div
-                                                    ng-if="$ctrl.isDeliveryWindow && ($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
+                                                     ng-if="$ctrl.isDeliveryWindow && ($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
                                                     <div class="form-group row">
                                                         <label class="deliveryDate_label" for="deliveryDate">
                                                             {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
@@ -1065,12 +1065,12 @@
                                                         <div class="input-group form_input form_input_deliveryDate">
                                                             <div class="input-group w100">
                                                                 <input class="form-control date-mask new-date-picker"
-                                                                    id="deliveryTo"
-                                                                    ng-disabled="$ctrl.data.status != null && $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                                    name="deliveryTo" new-date-picker
-                                                                    ng-class="{'etb_invalid': $ctrl.data.deliveryTo > $ctrl.data.deliveryTo}"
-                                                                    ng-model="$ctrl.data.deliveryTo"
-                                                                    picker-type="dynamic">
+                                                                       id="deliveryTo"
+                                                                       ng-disabled="$ctrl.data.status != null && $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
+                                                                       name="deliveryTo" new-date-picker
+                                                                       ng-class="{'etb_invalid': $ctrl.data.deliveryTo > $ctrl.data.deliveryTo}"
+                                                                       ng-model="$ctrl.data.deliveryTo"
+                                                                       picker-type="dynamic">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1201,27 +1201,27 @@
                                         ng-if="!$ctrl.data.id || $ctrl.data.status.id == $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id == $ctrl.STATUS['Amended'].id || $ctrl.data.status.id == $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id == $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id == $ctrl.STATUS['Approved'].id || $ctrl.data.status.id == $ctrl.STATUS['Rejected'].id"
                                         style="vertical-align: middle;">
                                         <span class="clickable" id="product_addRow_header"
-                                            ng-click="$ctrl.addNewProduct()">
+                                              ng-click="$ctrl.addNewProduct()">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
-                                </th>
-                                <th id="generatedThId194" ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id && $ctrl.data.status.id != $ctrl.STATUS['Closed'].id"
-                                    style="vertical-align: middle;"></th>
-                                <th id="generatedThId195" ng-if="column.visible && column.caption != 'PAGES.NEW_ORDER.CONTRACT_ID' &&  column.caption != 'PAGES.NEW_ORDER.FORMULA_DESCRIPTION' && column.caption != 'PAGES.NEW_ORDER.FORMULA_DETAILS' && column.caption != 'PAGES.NEW_ORDER.PRICING_DATE' && column.caption != 'PAGES.NEW_ORDER.MANUAL_PRICING_DATE_OVERRIDE' && $ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
-                                    {{ column.caption | translate }}
-                                    <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY' || column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.CONFIRMED_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.PRICE' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
-                                </th>
-                                <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
-                                    {{ column.caption | translate }}
-                                    <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY' || column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.CONFIRMED_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.PRICE' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
-                                </th>
-                                <th>
-                                    Conversion Factor
-                                </th>
-                                 <th>
-                                    Overwrite Conversion Factor
-                                </th>
-                            </tr>
+                                    </th>
+                                    <th id="generatedThId194" ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id && $ctrl.data.status.id != $ctrl.STATUS['Closed'].id"
+                                        style="vertical-align: middle;"></th>
+                                    <th id="generatedThId195" ng-if="column.visible && column.caption != 'PAGES.NEW_ORDER.CONTRACT_ID' &&  column.caption != 'PAGES.NEW_ORDER.FORMULA_DESCRIPTION' && column.caption != 'PAGES.NEW_ORDER.FORMULA_DETAILS' && column.caption != 'PAGES.NEW_ORDER.PRICING_DATE' && column.caption != 'PAGES.NEW_ORDER.MANUAL_PRICING_DATE_OVERRIDE' && $ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
+                                        {{ column.caption | translate }}
+                                        <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY' || column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.CONFIRMED_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.PRICE' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
+                                    </th>
+                                    <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
+                                        {{ column.caption | translate }}
+                                        <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY' || column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.CONFIRMED_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.PRICE' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
+                                    </th>
+                                    <th>
+                                        Conversion Factor
+                                    </th>
+                                    <th>
+                                        Overwrite Conversion Factor
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
 
@@ -1231,42 +1231,42 @@
                                         style="vertical-align: middle;">
 
                                         <span class="clickable" id="product_addRow_{{ $index }}"
-                                            ng-click="$ctrl.addNewProduct()">
+                                              ng-click="$ctrl.addNewProduct()">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                     </td>
                                     <td ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id && $ctrl.data.status.id != $ctrl.STATUS['Closed'].id"
                                         style="vertical-align: middle;">
                                         <span class="clickable" id="product_remRow_{{ $index }}"
-                                            ng-click="$ctrl.deleteProduct(product)"
-                                            ng-if="product.status.id != $ctrl.STATUS['Cancelled'].id">
+                                              ng-click="$ctrl.deleteProduct(product)"
+                                              ng-if="product.status.id != $ctrl.STATUS['Cancelled'].id">
                                             <i class="fa fa-minus st-btn-icon"></i>
                                         </span>
-                                </td>
-                                <td style="max-width: initial; min-width: 220px;">
-                                    <div class="input-group"
-                                         data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) | decodeReadOnly }}"
-                                         ng-init="product.tempProduct = $ctrl.setDefaultTempProduct(product.product)"
-                                         tooltip
-                                         tooltiptrigger="hover">
-                                        <input class="typeahead form-control "
-                                               id="product_{{ $index }}"
-                                               name="Product {{$index}}"
-                                               ng-disabled="$ctrl.disabledProduct[product.id]"
-                                               ng-focus="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
-                                               ng-if="!$ctrl.refreshProduct" ng-model="product.tempProduct"
-                                               decode-input-format
-                                               ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"
-                                               typeahead-append-to-body="true"
-                                               typeahead-append-to-body="true"
-                                               typeahead-editable="false"
-                                               typeahead-on-select="$ctrl.selectProduct($item.id, $index)"
-                                               uib-typeahead="prod as prod.name for prod in $ctrl.lists.Product | typeaheadCustomFilter:$viewValue:'name'"/>
-                                        <span class="input-group-addon" data-toggle="modal" href="#lookup"
-                                              ng-click="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
-                                              ng-disabled="$ctrl.disabledProduct[product.id]">
+                                    </td>
+                                    <td style="max-width: initial; min-width: 220px;">
+                                        <div class="input-group"
+                                             data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) | decodeReadOnly }}"
+                                             ng-init="product.tempProduct = $ctrl.setDefaultTempProduct(product.product)"
+                                             tooltip
+                                             tooltiptrigger="hover">
+                                            <input class="typeahead form-control "
+                                                   id="product_{{ $index }}"
+                                                   name="Product {{$index}}"
+                                                   ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                   ng-focus="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
+                                                   ng-if="!$ctrl.refreshProduct" ng-model="product.tempProduct"
+                                                   decode-input-format
+                                                   ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"
+                                                   typeahead-append-to-body="true"
+                                                   typeahead-append-to-body="true"
+                                                   typeahead-editable="false"
+                                                   typeahead-on-select="$ctrl.selectProduct($item.id, $index)"
+                                                   uib-typeahead="prod as prod.name for prod in $ctrl.lists.Product | typeaheadCustomFilter:$viewValue:'name'"/>
+                                            <span class="input-group-addon" data-toggle="modal" href="#lookup"
+                                                  ng-click="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
+                                                  ng-disabled="$ctrl.disabledProduct[product.id]">
                                                 <a class=" btn default" href=""
-                                                    ng-disabled="$ctrl.disabledProduct[product.id]">
+                                                   ng-disabled="$ctrl.disabledProduct[product.id]">
                                                     <i class="fa fa-search"></i>
                                                 </a>
                                             </span>
@@ -1275,55 +1275,55 @@
                                     <td style="max-width: initial; min-width: 100px;">
                                         <div class="input-group">
                                             <input class="form-control" id="product_type_{{ $index }}"
-                                                name="Product Type {{$index}}" ng-disabled="true"
-                                                ng-model="product.productType.name" decode-input-format
-                                                ng-required="false" />
+                                                   name="Product Type {{$index}}" ng-disabled="true"
+                                                   ng-model="product.productType.name" decode-input-format
+                                                   ng-required="false" />
                                         </div>
                                     </td>
                                     <td  ng-if="!$ctrl.procurementSettings.request.isRequestProductCategoryHidden" style="max-width: 250px;min-width: 150px">
                                         <select class="form-control" id="product_productCategory_{{ $index }}"
-                                            ng-disabled="$ctrl.disabledProduct[product.id]"
-                                            ng-model="product.productCategory"
-                                            ng-options="productCategory as productCategory.name for productCategory in $ctrl.lists.ProductCategory track by productCategory.id"></select>
-                                    </td>                                   
+                                                ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                ng-model="product.productCategory"
+                                                ng-options="productCategory as productCategory.name for productCategory in $ctrl.lists.ProductCategory track by productCategory.id"></select>
+                                    </td>
                                     <td style="max-width: initial; min-width: 200px;">
                                         <select class="form-control pull-left" id="product_specGroup_{{ $index }}"
-                                            ng-class="{'border-red-thunderbird' : ($ctrl.hasMissingSpecGroup && product.status.name != 'Cancelled' && !product.specGroup)}"
-                                            ng-disabled="$ctrl.disabledProduct[product.id]" ng-model="product.specGroup"
-                                            ng-options="specGroup as specGroup.name for specGroup in product.specGroups | decodeReadOnly track by specGroup.id"
-                                            style="width: calc(100% - 20px);"></select>
+                                                ng-class="{'border-red-thunderbird' : ($ctrl.hasMissingSpecGroup && product.status.name != 'Cancelled' && !product.specGroup)}"
+                                                ng-disabled="$ctrl.disabledProduct[product.id]" ng-model="product.specGroup"
+                                                ng-options="specGroup as specGroup.name for specGroup in product.specGroups | decodeReadOnly track by specGroup.id"
+                                                style="width: calc(100% - 20px);"></select>
                                         <a class="pull-left"
-                                            ng-click="modalSpecGroupEdit(product, NAV.orderId, 'order', $ctrl.data)"
-                                            ng-controller="Controller_Master"
-                                            ng-disabled="$ctrl.disabledProduct[product.id]"
-                                            style="line-height: 34px;margin-left: 5px;">
+                                           ng-click="modalSpecGroupEdit(product, NAV.orderId, 'order', $ctrl.data)"
+                                           ng-controller="Controller_Master"
+                                           ng-disabled="$ctrl.disabledProduct[product.id]"
+                                           style="line-height: 34px;margin-left: 5px;">
                                             <i class="fa fa-file-text font-grey-cascade"></i>
                                         </a>
                                     </td>
                                     <td style="max-width: 250px;min-width: 150px">
                                         <select class="form-control" id="product_delOption_{{ $index }}"
-                                            ng-disabled="$ctrl.disabledProduct[product.id]"
-                                            ng-model="product.deliveryOption"
-                                            ng-options="delOption as delOption.name for delOption in $ctrl.lists.DeliveryOption | decodeReadOnly track by delOption.id"></select>
+                                                ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                ng-model="product.deliveryOption"
+                                                ng-options="delOption as delOption.name for delOption in $ctrl.lists.DeliveryOption | decodeReadOnly track by delOption.id"></select>
                                     </td>
                                     <td style="max-width: 300px;min-width: 300px">
                                         <div class="input-group" style="width: 100%">
                                             <input class="typeahead form-control" id="product_supplier_{{ $index }}"
-                                                name="Product {{$index+1}} ({{product.tempProduct.name}}) Physical Supplier"
-                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id])"
-                                                ng-model="product.physicalSupplier" decode-input-format
-                                                ng-mouseover="$ctrl.setSellerDialogType($ctrl.productColumns.physicalSupplier.name, product.physicalSupplier)"
-                                                ng-required="product.status.id != $ctrl.STATUS['Cancelled'].id"
-                                                typeahead-append-to-body="true" typeahead-editable="false"
-                                                typeahead-on-select="product.physicalSupplier = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
-                                                uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | typeaheadCustomFilter:$viewValue:'name'" />
+                                                   name="Product {{$index+1}} ({{product.tempProduct.name}}) Physical Supplier"
+                                                   ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id])"
+                                                   ng-model="product.physicalSupplier" decode-input-format
+                                                   ng-mouseover="$ctrl.setSellerDialogType($ctrl.productColumns.physicalSupplier.name, product.physicalSupplier)"
+                                                   ng-required="product.status.id != $ctrl.STATUS['Cancelled'].id"
+                                                   typeahead-append-to-body="true" typeahead-editable="false"
+                                                   typeahead-on-select="product.physicalSupplier = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
+                                                   uib-typeahead="supplier as supplier.name for supplier in $ctrl.lists.Supplier | typeaheadCustomFilter:$viewValue:'name'" />
                                             <!-- THIS WAS ON SUPPLIER REQUIRED: $ctrl.data.status.id != $ctrl.STATUS['Confirmed'].id &&  -->
                                             <span class="input-group-addon ng-scope"
-                                                ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' ,'productSupplier',null,null,null,null); $ctrl.physicalSupplierRowUniqueIdUI = product.uniqueIdUI"
-                                                ng-controller="Controller_Master as CM"
-                                                ng-disabled="$ctrl.disabledProduct[product.id]">
+                                                  ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' ,'productSupplier',null,null,null,null); $ctrl.physicalSupplierRowUniqueIdUI = product.uniqueIdUI"
+                                                  ng-controller="Controller_Master as CM"
+                                                  ng-disabled="$ctrl.disabledProduct[product.id]">
                                                 <a class=" btn default" href=""
-                                                    ng-disabled="$ctrl.disabledProduct[product.id]">
+                                                   ng-disabled="$ctrl.disabledProduct[product.id]">
                                                     <i class="fa fa-search"></i>
                                                 </a>
                                             </span>
@@ -1332,87 +1332,87 @@
                                     <td ng-if="$ctrl.productColumns.minQuantity.visible"
                                         style="max-width: 250px;min-width: 150px">
                                         <span class="hide"
-                                            ng-if="$ctrl.captureConfirmedQuantity.name == 'Offer' && !product.id">
+                                              ng-if="$ctrl.captureConfirmedQuantity.name == 'Offer' && !product.id">
                                             {{ product.minQuantity = product.confirmedQuantity }}
                                         </span>
                                         <div class="input-group">
                                             <input class="form-control"
-                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
-                                                id="product_minQuantity_{{ $index }}"
-                                                name="{{ $ctrl.productColumns.minQuantity.name }}"
-                                                ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']"
-                                                ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
-                                                ng-model="product.minQuantity"
-                                                ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && product.status && product.status.id != $ctrl.STATUS['Cancelled'].id "
-                                                type="text" />
+                                                   format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                                   id="product_minQuantity_{{ $index }}"
+                                                   name="{{ $ctrl.productColumns.minQuantity.name }}"
+                                                   ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']"
+                                                   ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                   ng-model="product.minQuantity"
+                                                   ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && product.status && product.status.id != $ctrl.STATUS['Cancelled'].id "
+                                                   type="text" />
                                             <div class="input-group-btn"
-                                                ng-init="!product.minMaxQuantityUom.id ? product.minMaxQuantityUom = $ctrl.tenantUom : '' ">
+                                                 ng-init="!product.minMaxQuantityUom.id ? product.minMaxQuantityUom = $ctrl.tenantUom : '' ">
 
                                                 <select class="bs-select pull-right" id=""
-                                                    id="product_minQuantityUom_{{ $index }}" name="minQuantityUom"
-                                                    ng-change="$ctrl.productUomChanged(product, false)"
-                                                    ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
-                                                    ng-model="product.minMaxQuantityUom"
-                                                    ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
-                                                    ng-required="product.minQuantity != null && !($ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id)"
-                                                    style="max-width: 50px;"></select>
+                                                        id="product_minQuantityUom_{{ $index }}" name="minQuantityUom"
+                                                        ng-change="$ctrl.productUomChanged(product, false)"
+                                                        ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                        ng-model="product.minMaxQuantityUom"
+                                                        ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
+                                                        ng-required="product.minQuantity != null && !($ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id)"
+                                                        style="max-width: 50px;"></select>
                                             </div>
                                         </div>
                                     </td>
                                     <td ng-if="$ctrl.productColumns.maxQuantity.visible"
                                         style="max-width: 250px;min-width: 150px">
                                         <span class="hide"
-                                            ng-if="$ctrl.captureConfirmedQuantity.name == 'Offer' && !product.id">
+                                              ng-if="$ctrl.captureConfirmedQuantity.name == 'Offer' && !product.id">
                                             {{ product.maxQuantity = product.confirmedQuantity }}
                                         </span>
                                         <div class="input-group">
                                             <input class="form-control"
-                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
-                                                id="product_maxQuantity_{{ $index }}"
-                                                name="{{ $ctrl.productColumns.maxQuantity.name }}"
-                                                ng-blur="$ctrl.productUomChanged(product, false); product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity']; $ctrl.defaultMaxQtyFromConfirmed('input', product)"
-                                                ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
-                                                ng-model="product.maxQuantity"
-                                                ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && ( product.status ? product.status.id != $ctrl.STATUS['Cancelled'].id : false) "
-                                                type="text" />
+                                                   format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                                   id="product_maxQuantity_{{ $index }}"
+                                                   name="{{ $ctrl.productColumns.maxQuantity.name }}"
+                                                   ng-blur="$ctrl.productUomChanged(product, false); product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity']; $ctrl.defaultMaxQtyFromConfirmed('input', product)"
+                                                   ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                   ng-model="product.maxQuantity"
+                                                   ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && ( product.status ? product.status.id != $ctrl.STATUS['Cancelled'].id : false) "
+                                                   type="text" />
                                             <div class="input-group-btn" ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                ng-init="!product.minMaxQuantityUom.id ? product.minMaxQuantityUom = $ctrl.tenantUom : '' "
-                                                style="max-width: 50px;">
+                                                 ng-init="!product.minMaxQuantityUom.id ? product.minMaxQuantityUom = $ctrl.tenantUom : '' "
+                                                 style="max-width: 50px;">
                                                 <select class="bs-select pull-right"
-                                                    id="product_maxQuantityUom_{{ $index }}" name="maxQuantityUom"
-                                                    ng-change="$ctrl.productUomChanged(product, false)"
-                                                    ng-disabled="$ctrl.captureConfirmedQuantity.name =='Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
-                                                    ng-model="product.minMaxQuantityUom"
-                                                    ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
-                                                    ng-required="product.maxQuantity != null && !($ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id)"
-                                                    style="max-width: 50px;"></select>
+                                                        id="product_maxQuantityUom_{{ $index }}" name="maxQuantityUom"
+                                                        ng-change="$ctrl.productUomChanged(product, false)"
+                                                        ng-disabled="$ctrl.captureConfirmedQuantity.name =='Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                        ng-model="product.minMaxQuantityUom"
+                                                        ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
+                                                        ng-required="product.maxQuantity != null && !($ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id)"
+                                                        style="max-width: 50px;"></select>
                                             </div>
                                         </div>
                                     </td>
                                     <td style="max-width: initial; min-width: 150px;">
                                         <div class="input-group">
                                             <input class="form-control"
-                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
-                                                id="product_confirmedQuantity_{{ $index }}"
-                                                name="{{ $ctrl.productColumns.confirmedQuantity.name }}"
-                                                ng-blur="$ctrl.productUomChanged(product, false)"
-                                                ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
-                                                ng-model="product.confirmedQuantity"
-                                                ng-required="$ctrl.requiredAndDisabledRules('required', 'confirmedQty', product.status.id)"
-                                                type="text" />
+                                                   format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                                   id="product_confirmedQuantity_{{ $index }}"
+                                                   name="{{ $ctrl.productColumns.confirmedQuantity.name }}"
+                                                   ng-blur="$ctrl.productUomChanged(product, false); $ctrl.confirmQuantityChanged('input', product)"
+                                                   ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                   ng-model="product.confirmedQuantity"
+                                                   ng-required="$ctrl.requiredAndDisabledRules('required', 'confirmedQty', product.status.id)"
+                                                   type="text" />
 
                                             <div class="input-group-btn" ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                ng-init="!product.quantityUom.id ? product.quantityUom = $ctrl.tenantUom : '' "
-                                                style="max-width: 50px;">
+                                                 ng-init="!product.quantityUom.id ? product.quantityUom = $ctrl.tenantUom : '' "
+                                                 style="max-width: 50px;">
 
                                                 <select class="bs-select pull-right" id=""
-                                                    id="product_quantityUom_{{ $index }}" name=""
-                                                    ng-change="$ctrl.resetContractData($index, true, true)"
-                                                    ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
-                                                    ng-model="product.quantityUom"
-                                                    ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
-                                                    ng-required="$ctrl.requiredAndDisabledRules('required', 'confirmedQty', product.status.id)"
-                                                    style="max-width: 50px;"></select>
+                                                        id="product_quantityUom_{{ $index }}" name=""
+                                                        ng-change="$ctrl.resetContractData($index, true, true)"
+                                                        ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
+                                                        ng-model="product.quantityUom"
+                                                        ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
+                                                        ng-required="$ctrl.requiredAndDisabledRules('required', 'confirmedQty', product.status.id)"
+                                                        style="max-width: 50px;"></select>
                                             </div>
                                         </div>
                                     </td>
@@ -1421,46 +1421,47 @@
                                         <div class="input-group">
                                             <!-- price -->
                                             <input class="form-control" format="number:{{ product.pricePrecision }}"
-                                                id="product_price_{{ $index }}"
-                                                name="{{ $ctrl.productColumns.price.name }}"
-                                                ng-change="$ctrl.productPriceChanged(product)"
-                                                ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id]"
-                                                ng-model="product.price"
-                                                ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
-                                                style="min-width:80px" type="text" />
+                                                   id="product_price_{{ $index }}"
+                                                   name="{{ $ctrl.productColumns.price.name }}"
+                                                   ng-change="$ctrl.productPriceChanged(product)"
+                                                   ng-blur="$ctrl.prodPriceChanged('input', product)"
+                                                   ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id]"
+                                                   ng-model="product.price"
+                                                   ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
+                                                   style="min-width:80px" type="text" />
 
 
                                             <!-- price uom -->
                                             <div class="input-group-btn" ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                ng-init="!product.priceUom.id ? product.priceUom = $ctrl.tenantUom : '' ">
+                                                 ng-init="!product.priceUom.id ? product.priceUom = $ctrl.tenantUom : '' ">
                                                 <select class="bs-select pull-right uomWidth" id=""
-                                                    id="product_priceUom_{{ $index }}" name=""
-                                                    ng-change="$ctrl.productUomChanged(product, true)"
-                                                    ng-disabled="product.contractProductId != null  || $ctrl.disabledProduct[product.id]"
-                                                    ng-model="product.priceUom"
-                                                    ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
+                                                        id="product_priceUom_{{ $index }}" name=""
+                                                        ng-change="$ctrl.productUomChanged(product, true)"
+                                                        ng-disabled="product.contractProductId != null  || $ctrl.disabledProduct[product.id]"
+                                                        ng-model="product.priceUom"
+                                                        ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
                                             </div>
 
                                             <!-- currency -->
                                             <span ng-if="!product.currency"
-                                                ng-init="product.currency = $ctrl.currency"></span>
+                                                  ng-init="product.currency = $ctrl.currency"></span>
                                             <div class="input-group-btn">
                                                 <select class="bs-select pull-right" id="product_currency_{{ $index }}"
-                                                    name="product_currency_{{ $index }}"
-                                                    ng-change="$ctrl.changeAllCurrencyInOrder(product.currency)"
-                                                    ng-disabled="key != 0 || $ctrl.disabledProduct[product.id]"
-                                                    ng-model="product.currency"
-                                                    ng-options="item as item.code for item in $ctrl.lists.Currency | decodeReadOnly track by item.id"></select>
+                                                        name="product_currency_{{ $index }}"
+                                                        ng-change="$ctrl.changeAllCurrencyInOrder(product.currency)"
+                                                        ng-disabled="key != 0 || $ctrl.disabledProduct[product.id]"
+                                                        ng-model="product.currency"
+                                                        ng-options="item as item.code for item in $ctrl.lists.Currency | decodeReadOnly track by item.id"></select>
                                             </div>
                                         </div>
                                     </td>
                                     <td style="min-width:75px"
                                         ng-init="product.pricePrecision == null ? product.pricePrecision = $ctrl.pricePrecision : '' ; $ctrl.recomputeProductPricePrecision(key) ">
                                         <select name="pricePrecision" class="form-control bs-select"
-                                            id="product_pricePrecision_{{ $index }}"
-                                            ng-options="item as item for item in createRange(0,4) track by item"
-                                            ng-model="product.pricePrecision"
-                                            ng-change="$ctrl.recomputeProductPricePrecision(key)">
+                                                id="product_pricePrecision_{{ $index }}"
+                                                ng-options="item as item for item in createRange(0,4) track by item"
+                                                ng-model="product.pricePrecision"
+                                                ng-change="$ctrl.recomputeProductPricePrecision(key)">
                                         </select>
                                     </td>
                                     <td ng-if="!$ctrl.procurementSettings.fieldVisibility.isPreTestHidden">
@@ -1468,7 +1469,7 @@
                                             <div class="input-group">
                                                 <label class="mt-checkbox">
                                                     <input id="product_preTest_{{ $index }}" name="product_{{ $index }}_preTest" ng-model="product.preTest"
-                                                        type="checkbox">
+                                                           type="checkbox">
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -1479,7 +1480,7 @@
                                             <div class="input-group">
                                                 <label class="mt-checkbox">
                                                     <input id="product_bargeMFM_{{ $index }}"
-                                                        ng-model="product.bargeMFM" type="checkbox">
+                                                           ng-model="product.bargeMFM" type="checkbox">
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -1489,8 +1490,8 @@
                                     <td style="max-width: 180px;min-width: 140px"
                                         ng-if="!$ctrl.tenantSettings.shiptechLite">
                                         <span class="form-control disabled"
-                                            data-original-title="{{product.formulaDescription ? (product.formulaDescription | decodeReadOnly) : (product.formula.name | decodeReadOnly)}}"
-                                            style="background: #e6eaec;overflow: hidden;" tooltip>
+                                              data-original-title="{{product.formulaDescription ? (product.formulaDescription | decodeReadOnly) : (product.formula.name | decodeReadOnly)}}"
+                                              style="background: #e6eaec;overflow: hidden;" tooltip>
                                             {{product.formulaDescription ? (product.formulaDescription | decodeReadOnly)
                                             : (product.formula.name | decodeReadOnly)}}
                                         </span>
@@ -1502,26 +1503,26 @@
                                     <td style="max-width: 180px;min-width: 140px"
                                         ng-if="!$ctrl.tenantSettings.shiptechLite">
                                         <a ng-click="$ctrl.triggerFormulaDetailsModal(product)"
-                                            ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId && !product.changedOnConfirmedOrder">Pricing
+                                           ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId && !product.changedOnConfirmedOrder">Pricing
                                             Details</a>
 
                                     </td>
                                     <td style="max-width: 120px;min-width: 120px">
                                         {{$ctrl.formatAmount(product.amount)}}
                                         <!-- {{product.totalAmount ? (product.totalAmount |
-                                    number:$ctrl.numberPrecision.amountPrecision) : (product.amount |
-                                    number:$ctrl.numberPrecision.amountPrecision)
-                                    }} -->
+        number:$ctrl.numberPrecision.amountPrecision) : (product.amount |
+        number:$ctrl.numberPrecision.amountPrecision)
+        }} -->
                                     </td>
                                     <td style="max-width: 180px;min-width: 140px">
 
                                         <select class="form-control" id="product_agreementType_{{ $index }}"
-                                            name="{{ $ctrl.productColumns.agreementType.name }}"
-                                            ng-disabled="$ctrl.disabledProduct[product.id]"
-                                            ng-init="!product.id ? (product.contractId ? product.agreementType = $ctrl.defaultContractAgreementType : product.agreementType = $ctrl.defaultSpotAgreementType) : '';"
-                                            ng-model="product.agreementType"
-                                            ng-options="agreementType as agreementType.name for agreementType in (product.contract.id ? $ctrl.contractAgreementTypesList : $ctrl.spotAgreementTypesList) | decodeReadOnly track by agreementType.id"
-                                            ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"></select>
+                                                name="{{ $ctrl.productColumns.agreementType.name }}"
+                                                ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                ng-init="!product.id ? (product.contractId ? product.agreementType = $ctrl.defaultContractAgreementType : product.agreementType = $ctrl.defaultSpotAgreementType) : '';"
+                                                ng-model="product.agreementType"
+                                                ng-options="agreementType as agreementType.name for agreementType in (product.contract.id ? $ctrl.contractAgreementTypesList : $ctrl.spotAgreementTypesList) | decodeReadOnly track by agreementType.id"
+                                                ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"></select>
 
                                     </td>
                                     <td style="max-width: 180px;min-width: 140px">
@@ -1537,45 +1538,45 @@
                                             {{!product.contract.id ? (product.pricingType.id = 1) : '' }}
                                         </span>
                                         <select class="form-control" disabled id="product_pricingType_{{ $index }}"
-                                            name="{{ $ctrl.productColumns.pricingType.name }}"
-                                            ng-change=" product.contract = null; product.contractProductId = null"
-                                            ng-disabled="$ctrl.disabledProduct[product.id] || disabledPricingType[product.id]"
-                                            ng-model="product.pricingType"
-                                            ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType | decodeReadOnly track by pricingType.id"></select>
+                                                name="{{ $ctrl.productColumns.pricingType.name }}"
+                                                ng-change=" product.contract = null; product.contractProductId = null"
+                                                ng-disabled="$ctrl.disabledProduct[product.id] || disabledPricingType[product.id]"
+                                                ng-model="product.pricingType"
+                                                ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType | decodeReadOnly track by pricingType.id"></select>
 
                                     </td>
                                     <td style="max-width: 180px;min-width: 140px; overflow: hidden;">
                                         <span class="orderProductTable"
-                                            data-original-title="{{ product.comments | decodeReadOnly }}"
-                                            ng-disabled="$ctrl.disabledProduct[product.id]"
-                                            style="text-overflow: ellipsis;" tooltip> {{ product.comments |
+                                              data-original-title="{{ product.comments | decodeReadOnly }}"
+                                              ng-disabled="$ctrl.disabledProduct[product.id]"
+                                              style="text-overflow: ellipsis;" tooltip> {{ product.comments |
                                             decodeReadOnly}} </span>
                                     </td>
                                     <td style="max-width: 250px;min-width: 230px"
                                         ng-if="!$ctrl.tenantSettings.shiptechLite">
                                         <a href="v2/contracts/contract/{{ product.contract.id }}/details"
-                                            ng-disabled="!product.contract.id || product.requestOfferId"
-                                            style="display: block; float: left;margin-top: 10px; margin-right: 10px;">
+                                           ng-disabled="!product.contract.id || product.requestOfferId"
+                                           style="display: block; float: left;margin-top: 10px; margin-right: 10px;">
                                             show
                                         </a>
                                         <div class="input-group"
-                                            ng-init="$ctrl.getOrderContractOptions(product, false, false, key)">
+                                             ng-init="$ctrl.getOrderContractOptions(product, false, false, key)">
                                             <input class="typeahead form-control" id="product_contract_{{ $index }}"
-                                                name="{{ $ctrl.productColumns.contract.name }}"
-                                                ng-change="$ctrl.changedProductContract(); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
-                                                ng-click="$ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
-                                                ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId"
-                                                ng-model="product.contract.name" decode-input-format
-                                                typeahead-append-to-body="true" typeahead-editable="false"
-                                                typeahead-on-select="selectProductContract($ctrl.productContractSelecting, $item)"
-                                                uib-typeahead="contract.contract.name for contract in $ctrl.orderContractOptions[product.product.id] | typeaheadCustomFilter:$viewValue:'name'" />
+                                                   name="{{ $ctrl.productColumns.contract.name }}"
+                                                   ng-change="$ctrl.changedProductContract(); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
+                                                   ng-click="$ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
+                                                   ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId"
+                                                   ng-model="product.contract.name" decode-input-format
+                                                   typeahead-append-to-body="true" typeahead-editable="false"
+                                                   typeahead-on-select="selectProductContract($ctrl.productContractSelecting, $item)"
+                                                   uib-typeahead="contract.contract.name for contract in $ctrl.orderContractOptions[product.product.id] | typeaheadCustomFilter:$viewValue:'name'" />
 
                                             <span class="input-group-addon ng-scope"
-                                                ng-click="$ctrl.getOrderContractOptions(product, true); triggerModal('general', 'procurement_productcontractlist', 'Contract' ,'contract',null,null,null, $ctrl.productContractFilters[product.product.id]); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
-                                                ng-controller="Controller_Master as CM"
-                                                ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId">
+                                                  ng-click="$ctrl.getOrderContractOptions(product, true); triggerModal('general', 'procurement_productcontractlist', 'Contract' ,'contract',null,null,null, $ctrl.productContractFilters[product.product.id]); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
+                                                  ng-controller="Controller_Master as CM"
+                                                  ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId">
                                                 <a class=" btn default" href=""
-                                                    ng-disabled="$ctrl.disabledProduct[product.id]">
+                                                   ng-disabled="$ctrl.disabledProduct[product.id]">
                                                     <i class="fa fa-search"></i>
                                                 </a>
                                             </span>
@@ -1584,13 +1585,13 @@
                                     <td ng-if="$ctrl.enableManualPricingDateOverride && !$ctrl.tenantSettings.shiptechLite"
                                         style="max-width: 180px;min-width: 140px">
                                         <span ng-if="!$ctrl.data.id && $ctrl.data.products"
-                                            ng-init="$ctrl.manualPricingDateOverride.id ? ($ctrl.manualPricingDateOverride.id == 1 ? product.manualPricingDateOverride = true : product.manualPricingDateOverride = false) : ''"></span>
+                                              ng-init="$ctrl.manualPricingDateOverride.id ? ($ctrl.manualPricingDateOverride.id == 1 ? product.manualPricingDateOverride = true : product.manualPricingDateOverride = false) : ''"></span>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <label class="mt-checkbox">
                                                     <input id="product_manualPricingDateOverride_{{ $index }}"
-                                                        ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                        ng-model="product.manualPricingDateOverride" type="checkbox">
+                                                           ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                           ng-model="product.manualPricingDateOverride" type="checkbox">
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -1602,106 +1603,106 @@
                                             <div class="input-group form-input table-formatted-input">
 
                                                 <input class="form-control date-mask new-date-picker"
-                                                    id="product_pricingDate_{{ $index }}"
-                                                    name="product_pricingDate_{{ $index }}" new-date-picker
-                                                    ng-disabled="$ctrl.disabledProduct[product.id] || !product.manualPricingDateOverride"
-                                                    ng-model="$ctrl.data.products[key].pricingDate" picker-type="date">
+                                                       id="product_pricingDate_{{ $index }}"
+                                                       name="product_pricingDate_{{ $index }}" new-date-picker
+                                                       ng-disabled="$ctrl.disabledProduct[product.id] || !product.manualPricingDateOverride"
+                                                       ng-model="$ctrl.data.products[key].pricingDate" picker-type="date">
                                             </div>
                                         </div>
                                     </td>
                                     <td style="max-width: 180px;min-width: 140px">
                                         <div class="form-group">
                                             <span ng-if="!product.nominationDate"
-                                                ng-init="product.nominationDate = $ctrl.data.orderDate;"></span>
+                                                  ng-init="product.nominationDate = $ctrl.data.orderDate;"></span>
                                             <div class="input-group form-input table-formatted-input">
 
                                                 <input class="form-control date-mask new-date-picker"
-                                                    id="nominationDate_{{ $index }}" name="nominationDate_{{ $index }}"
-                                                    new-date-picker ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                    ng-model="$ctrl.data.products[key].nominationDate"
-                                                    picker-type="date">
+                                                       id="nominationDate_{{ $index }}" name="nominationDate_{{ $index }}"
+                                                       new-date-picker ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                       ng-model="$ctrl.data.products[key].nominationDate"
+                                                       picker-type="date">
                                             </div>
                                         </div>
                                     </td>
                                     <td style="max-width: 250px; min-width: 200px">
                                         <div class="input-group">
                                             <input class="form-control input-md"
-                                                data-original-title="{{ product.robOnArrival }}"
-                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
-                                                id="product_RobOnArrival_{{ $index }}" name="RobOnArrival"
-                                                ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed' ||  product.status.name == 'Cancelled'"
-                                                ng-model="$ctrl.data.products[key].robOnArrival" type="text">
+                                                   data-original-title="{{ product.robOnArrival }}"
+                                                   format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                                   id="product_RobOnArrival_{{ $index }}" name="RobOnArrival"
+                                                   ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed' ||  product.status.name == 'Cancelled'"
+                                                   ng-model="$ctrl.data.products[key].robOnArrival" type="text">
                                             <div class="input-group-btn"
-                                                ng-init="!product.robOnArrivalUom.id ? product.robOnArrivalUom = $ctrl.tenantUom : '' ">
+                                                 ng-init="!product.robOnArrivalUom.id ? product.robOnArrivalUom = $ctrl.tenantUom : '' ">
                                                 <select class="form-control bs-select pull-right"
-                                                    data-original-title="{{ product.robOnArrivalUom.name }}"
-                                                    id="product_robOnArrivalUom_{{ $index }}"
-                                                    ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'|| product.status.name == 'Cancelled'"
-                                                    ng-model="$ctrl.data.products[key].robOnArrivalUom"
-                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id"
-                                                    ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
-                                                    style="min-width: 75px; max-width: 75px;"></select>
+                                                        data-original-title="{{ product.robOnArrivalUom.name }}"
+                                                        id="product_robOnArrivalUom_{{ $index }}"
+                                                        ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'|| product.status.name == 'Cancelled'"
+                                                        ng-model="$ctrl.data.products[key].robOnArrivalUom"
+                                                        ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id"
+                                                        ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
+                                                        style="min-width: 75px; max-width: 75px;"></select>
                                             </div>
                                         </div>
                                     </td>
                                     <td style="max-width: 250px; min-width: 200px">
                                         <div class="input-group">
                                             <input class="form-control input-md"
-                                                data-original-title="{{ product.roundVoyageConsumption }}"
-                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
-                                                id="product_roundVoyageConsumption_{{ $index }}"
-                                                name="roundVoyageConsumption"
-                                                ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'|| product.status.name == 'Cancelled'"
-                                                ng-model="product.roundVoyageConsumption" type="text">
+                                                   data-original-title="{{ product.roundVoyageConsumption }}"
+                                                   format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
+                                                   id="product_roundVoyageConsumption_{{ $index }}"
+                                                   name="roundVoyageConsumption"
+                                                   ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'|| product.status.name == 'Cancelled'"
+                                                   ng-model="product.roundVoyageConsumption" type="text">
                                             <div class="input-group-btn"
-                                                ng-init="!product.roundVoyageConsumptionUom.id ? product.roundVoyageConsumptionUom = $ctrl.tenantUom : '' ">
+                                                 ng-init="!product.roundVoyageConsumptionUom.id ? product.roundVoyageConsumptionUom = $ctrl.tenantUom : '' ">
                                                 <select class="form-control bs-select pull-right"
-                                                    data-original-title="{{ product.roundVoyageConsumptionUom.name }}"
-                                                    id="product_roundVoyageConsumptionUom_{{ $index }}"
-                                                    ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed' || product.status.name == 'Cancelled'"
-                                                    ng-model="product.roundVoyageConsumptionUom"
-                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id"
-                                                    ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
-                                                    style="min-width: 75px; max-width: 75px;"></select>
+                                                        data-original-title="{{ product.roundVoyageConsumptionUom.name }}"
+                                                        id="product_roundVoyageConsumptionUom_{{ $index }}"
+                                                        ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed' || product.status.name == 'Cancelled'"
+                                                        ng-model="product.roundVoyageConsumptionUom"
+                                                        ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id"
+                                                        ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
+                                                        style="min-width: 75px; max-width: 75px;"></select>
                                             </div>
                                         </div>
                                     </td>
                                     <td ng-if="product.overrideConversionFactor && !$ctrl.disabledProduct[product.id]"
                                         style="max-width: 250px;min-width: 250px;  display: flex; padding: 1px 0px !important">
                                         <select style="width: 30%;" name="Product {{$index}} mass UOM"
-                                            ng-model="product.convFactorMassUom"
-                                            ng-options="item as item.name for item in  $ctrl.listsCache.UomMass | decodeReadOnly track by item.id"
-                                            class="form-control"></select>
+                                                ng-model="product.convFactorMassUom"
+                                                ng-options="item as item.name for item in  $ctrl.listsCache.UomMass | decodeReadOnly track by item.id"
+                                                class="form-control"></select>
                                         <input style="width: 40%;" type="text" class="form-control"
-                                            ng-model="product.convFactorValue" name="Conversion Factor Value"
-                                            ng-required="true" />
+                                               ng-model="product.convFactorValue" name="Conversion Factor Value"
+                                               ng-required="true" />
                                         <select style="width: 30%;" name="Product {{$index}} mass UOM"
-                                            ng-model="product.convFactorVolumeUom"
-                                            ng-options="item as item.name for item in $ctrl.listsCache.UomVolume | decodeReadOnly track by item.id"
-                                            class="form-control"></select>
+                                                ng-model="product.convFactorVolumeUom"
+                                                ng-options="item as item.name for item in $ctrl.listsCache.UomVolume | decodeReadOnly track by item.id"
+                                                class="form-control"></select>
                                     </td>
                                     <td ng-if="!product.overrideConversionFactor || $ctrl.disabledProduct[product.id]"
                                         style="max-width: 250px;min-width: 250px; display: flex; padding: 1px 0px !important">
                                         <input class="form-control" style="width: 30%;"
-                                            id="conversion_mass_{{ $index }}" name="Conversion Mass {{$index}}"
-                                            ng-disabled="true" ng-model="product.convFactorMassUom.name"
-                                            decode-input-format ng-required="false" />
+                                               id="conversion_mass_{{ $index }}" name="Conversion Mass {{$index}}"
+                                               ng-disabled="true" ng-model="product.convFactorMassUom.name"
+                                               decode-input-format ng-required="false" />
                                         <input class="form-control" style="width: 40%;"
-                                            id="conversion_value_{{ $index }}" name="Conversion Factor {{$index}}"
-                                            ng-disabled="true" ng-model="product.convFactorValue" ng-required="false" />
+                                               id="conversion_value_{{ $index }}" name="Conversion Factor {{$index}}"
+                                               ng-disabled="true" ng-model="product.convFactorValue" ng-required="false" />
                                         <input class="form-control" style="width: 30%;"
-                                            id="conversion_volume_{{ $index }}" name="Conversion Volume {{$index}}"
-                                            decode-input-format ng-disabled="true"
-                                            ng-model="product.convFactorVolumeUom.name" ng-required="false" />
+                                               id="conversion_volume_{{ $index }}" name="Conversion Volume {{$index}}"
+                                               decode-input-format ng-disabled="true"
+                                               ng-model="product.convFactorVolumeUom.name" ng-required="false" />
                                     </td>
                                     <td style="max-width: 180px;min-width: 140px">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <label class="mt-checkbox">
                                                     <input id="product_overrideConversionFactor_{{ $index }}"
-                                                        ng-model="product.overrideConversionFactor" type="checkbox"
-                                                        ng-disabled="$ctrl.disabledProduct[product.id]"
-                                                        ng-change="$ctrl.overrideConversion(product, $index)">
+                                                           ng-model="product.overrideConversionFactor" type="checkbox"
+                                                           ng-disabled="$ctrl.disabledProduct[product.id]"
+                                                           ng-change="$ctrl.overrideConversion(product, $index)">
                                                     <span></span>
                                                 </label>
                                             </div>
@@ -1738,10 +1739,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <!-- <tr ng-if="!additionalCost.isDeleted"
-                                    ng-repeat="additionalCost in $ctrl.getAdditionalCosts() | orderBy: '-fakeId' track by $index"> -->
                                 <tr ng-if="!additionalCost.isDeleted"
-                                    ng-repeat="additionalCost in $ctrl.additionalCostList | orderBy: '-fakeId' track by $index">
+                                    ng-repeat="additionalCost in $ctrl.additionalCosts | orderBy: '-fakeId' track by $index">
 
                                     <td>
 
@@ -1770,19 +1769,19 @@
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost); $ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); additionalCost.costLineChanged = true"
                                             ng-disabled="(additionalCost.disabled && additionalCost.id > 0) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.additionalCost"
-                                            ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by $ctrl.trackAddCostId(addCost, additionalCost)"></select>
+                                            ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by (addCost.id + addCost.locationid)"></select>
                                     </td>
                                     <td>
                                         <!--  cost type -->
                                         <select class="select2 form-control" id="additional_cost_type_{{ $index }}"
-                                            name="{{ $ctrl.additionalCostColumns.type.name }}"
-                                            ng-change="$ctrl.costTypeChanged(additionalCost, true); additionalCost.costLineChanged = true"
-                                            ng-model="additionalCost.costType"
-                                            ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) | decodeReadOnly track by costType.id"
-                                            ng-disabled="((additionalCost.disabled && additionalCost.id > 0) ||
-                                                ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))) ||
-                                                (additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0))"
-                                            ng-required="additionalCost.additionalCost"></select>
+                                                name="{{ $ctrl.additionalCostColumns.type.name }}"
+                                                ng-change="$ctrl.costTypeChanged(additionalCost, 'input'); additionalCost.costLineChanged = true"
+                                                ng-model="additionalCost.costType"
+                                                ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) | decodeReadOnly track by costType.id"
+                                                ng-disabled="((additionalCost.disabled && additionalCost.id > 0) ||
+                                                    ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))) ||
+                                                    (additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0))"
+                                                ng-required="additionalCost.additionalCost"></select>
                                     </td>
                                     <td>
                                         <!--  quantity -->
@@ -1820,10 +1819,10 @@
                                                 format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
                                                 id="additional_cost_price_{{ $index }}"
                                                 name="{{ $ctrl.additionalCostColumns.Price.name }}_{{ $index }}"
-                                                ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); $ctrl.setAdditionalCosts();"
+                                                ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); $ctrl.additionalCostRowPriceChanged(additionalCost, 'input');"
                                                 ng-change="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost)"
                                                 ng-class="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost) ? 'ng-valid' : 'additional_cost_invalid'"
-                                                ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0) ||
+                                                ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0)) ||
                                                     $ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id))"
                                                 ng-model="additionalCost.price"
                                                 ng-required="additionalCost.additionalCost && !(additionalCost.costType.name == 'Range' && additionalCost.costType.name == 'Total')" type="text" />
@@ -1844,7 +1843,7 @@
 
                                                 <select class="bs-select pull-right uomWidth" id=""
                                                     id="additional_cost_priceUom_{{ $index }}" name=""
-                                                    ng-change="$ctrl.addPriceUomChanged(additionalCost); $ctrl.setAdditionalCosts();"
+                                                    ng-change="$ctrl.addPriceUomChanged(additionalCost)"
                                                     ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))
                                                         || (additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0))"
                                                     ng-model="additionalCost.priceUom"
@@ -1887,7 +1886,7 @@
                                         <select class="form-control"
                                             id="{{ $ctrl.additionalCostColumns.ApplicableFor.name + '_' + $index }}"
                                             name="{{ $ctrl.additionalCostColumns.ApplicableFor.name }}"
-                                            ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId])"
+                                            ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], 'input')"
                                             ng-disabled="!additionalCost.additionalCost || ($ctrl.data.status != null && ( $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || additionalCost.disabledApplicableFor || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
                                             ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id' ">
@@ -1926,7 +1925,7 @@
                                             id="additional_cost_extras_{{ $index }}" max="100"
                                             ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0) ||
                                                 $ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id))"
-                                            ng-blur="$ctrl.setAdditionalCosts();"
+                                            ng-blur="$ctrl.additionalCostRowExtrasChanged(additionalCost, 'input');"
                                             ng-model="additionalCost.extras" type="text" />
                                     </td>
                                     <td>
