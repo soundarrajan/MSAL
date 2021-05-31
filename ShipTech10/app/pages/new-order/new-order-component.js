@@ -1398,12 +1398,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // Add the copy to the new parent, be it a product or the "global" Additional Costs array.
             if (additionalCost.isAllProductsCost) {
                 additionalCost.parentProductId = -1;
+                additionalCost.confirmedQuantity = sumProductConfirmedQuantities(ctrl.data.products);
+                additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
                 ctrl.globalAdditionalCosts.push(additionalCost);
             } else {
                 additionalCost.parentProductId = product.id;
                 if (typeof product.additionalCosts == 'undefined') {
 	                product.additionalCosts = [];
                 }
+                additionalCost.confirmedQuantity = convertDecimalSeparatorStringToNumber(product.confirmedQuantity);
+                additionalCost.quantityUom = product.quantityUom;
                 product.additionalCosts.push(additionalCost);
             }
             if(initiatorName == 'input') {
@@ -2203,9 +2207,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if(initiatorName == 'input') {
                 let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
                 let acIdx = product.additionalCosts.indexOf(additionalCost);
-                // product.additionalCosts[acIdx].price = additionalCost.price;
                 additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
-                // product.additionalCosts[acIdx] = additionalCost;
                 ctrl.evaluateAdditionalCostList();
             }
         };
@@ -2214,9 +2216,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if(initiatorName == 'input') {
                 let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
                 let acIdx = product.additionalCosts.indexOf(additionalCost);
-                // product.additionalCosts[acIdx].price = additionalCost.price;
                 additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
-                // product.additionalCosts[acIdx] = additionalCost;
                 ctrl.evaluateAdditionalCostList();
             }
         };
@@ -3402,8 +3402,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             calculateAdditionalCostAmounts(additionalCost, product);
             ctrl.evaluateAdditionalCostList();
-            // additionalCost = calculateAdditionalCostAmounts(additionalCost, getProductById(additionalCost.parentProductId));
-            // console.log(additionalCost);
 
             // trigger change function
             // addPriceUomChg(additionalCost);
@@ -4587,8 +4585,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if(!product) {
                 product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
             }
-            if (initiatorName != 'applicableForChange' &&
-                (additionalCost.costType.id == COST_TYPE_IDS.FLAT || additionalCost.costType.id == COST_TYPE_IDS.UNIT ||
+            if ((additionalCost.costType.id == COST_TYPE_IDS.FLAT || additionalCost.costType.id == COST_TYPE_IDS.UNIT ||
                 additionalCost.costType.id == COST_TYPE_IDS.PERCENT)) {
                 let locAddCost = ctrl.locationAdditionalCosts.find(x => {
                     if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
@@ -4612,7 +4609,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                 product.additionalCosts[addCostIdx] = additionalCost;
-                // ctrl.evaluateAdditionalCostList();
                 return;
             }
             
@@ -4677,12 +4673,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 };
                 Factory_Master.getRangeTotalAdditionalCosts(apiJSON, function(response) {
                     if(response && response.data && response.data.payload) {
-                        additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                         let addCostIdx = product.additionalCosts.indexOf(additionalCost);
-                        product.additionalCosts[addCostIdx].amount = response.data.payload.price || 0;
-                        product.additionalCosts[addCostIdx].price = response.data.payload.price || 0;
-                        product.additionalCosts[addCostIdx].extras = additionalCost.extras;
-                        product.additionalCosts[addCostIdx].locationAdditionalCostId = additionalCost.locationAdditionalCostId;
+                        additionalCost.price = response.data.payload.price || 0;
+                        additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
+                        product.additionalCosts[addCostIdx] = additionalCost;
                         ctrl.evaluateAdditionalCostList();
                     }
                 });
