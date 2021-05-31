@@ -5475,13 +5475,17 @@
             else
                 $scope.formValues.vesselProducts[index]['vesselProductTanks']=([newItem]);
         }
-
-        $scope.addVesselProductType=function(index,productTypeId){
+        ///shouldn't be allowed to select the same product type twice  
+        $scope.addVesselProductType=function(key,productTypeId){
             for(var i=0; $scope.formValues.vesselProducts.length>i;i++){
-                if ($scope.formValues.vesselProducts[i].productType.id == productTypeId.id) {
-                    $scope.formValues.vesselProducts[index].productType=null;
-                    return toastr.error('Selected productType already exists');;
-                }
+                if(!$scope.formValues.vesselProducts[i].isDeleted && key!=i)
+                {
+                    var vesselProduct=$scope.formValues.vesselProducts[i];
+                    if (vesselProduct.productType.id == productTypeId.id && vesselProduct.density !=undefined  ) {
+                        $scope.formValues.vesselProducts[key].productType=null;
+                        return toastr.error('Selected productType already exists');;
+                    }
+                }               
             }
         }
         $scope.addnewTankProduct = function(index){
@@ -7553,33 +7557,66 @@
         };
 
      /* Location Master - Barge cost details table*/
-$scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
-    var objMapping;
-     $scope.CurrentadditionalCostsdetails  = formvalues;
-     if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
-     {
-       console.log("1111111111", $scope.formValues.additionalCosts);
-       console.log("1111111111", $rootScope.RootTempadditionalCosts)
-           if($rootScope.RootTempadditionalCosts == undefined){
-            $rootScope.RootTempadditionalCosts = angular.copy($scope.formValues.additionalCosts);
-           }
-     }
-     if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails == undefined ){
-        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
-        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
+        $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
+            var objMapping;
+            $scope.CurrentadditionalCostsdetails  = formvalues;
+            if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
+            {
+            console.log("1111111111", $scope.formValues.additionalCosts);
+            console.log("1111111111", $rootScope.RootTempadditionalCosts)
+                if($rootScope.RootTempadditionalCosts == undefined){
+                    $rootScope.RootTempadditionalCosts = angular.copy($scope.formValues.additionalCosts);
+                }
+            }
+            if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails == undefined ){
+                $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
+                $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
 
-     }
+            }
 
-    tpl = $templateCache.get('app-general-components/views/modal_BargeCostDetails.html');
-    $scope.modalInstance = $uibModal.open({
-        template: tpl,
-        size: 'full',
-        appendTo: angular.element(document.getElementsByClassName('page-container')),
-        windowTopClass: 'fullWidthModal',
-        scope: $scope // passed current scope to the modal
-    });
-};
+            tpl = $templateCache.get('app-general-components/views/modal_BargeCostDetails.html');
+            $scope.modalInstance = $uibModal.open({
+                template: tpl,
+                size: 'full',
+                appendTo: angular.element(document.getElementsByClassName('page-container')),
+                windowTopClass: 'fullWidthModal',
+                scope: $scope // passed current scope to the modal
+            });
+        };
 
+        /* Request.Product - Min Qty to Reach */
+        $scope.openMinQtyToReach = function(productIdx, currProd,  prodIdx) {
+            debugger;
+            // console.log('temp_test currProd, prodIdx');
+            // console.log(currProd);
+            // console.log(prodIdx);
+            // console.log(productIdx);
+            // //return;
+            // // Following are to be changed. In prog item.
+            // $scope.CurrentProductKey = prodIdx;
+            // currProd.minQtyToReach.push({});
+            // if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
+            // {
+            //     // console.log("1111111111", $scope.formValues.additionalCosts);
+            //     // console.log("1111111111", $rootScope.RootTempadditionalCosts);
+            //     if($rootScope.RootTempadditionalCosts == undefined) {
+            //         $rootScope.RootTempadditionalCosts = angular.copy($scope.formValues.additionalCosts);
+            //     }
+            // }
+            // if(currProd.minQtyToReach == undefined ) {
+            //     currProd.minQtyToReach = [];
+            //     currProd.minQtyToReach.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency}); // temp_test
+            // }
+            
+            tpl = $templateCache.get('app-general-components/views/modal_RequestMinimumQuantityToReach.html');
+            $scope.modalInstance = $uibModal.open({
+                template: tpl,
+                size: 'full',
+                appendTo: angular.element(document.getElementsByClassName('page-container')),
+                windowTopClass: 'fullWidthModal',
+                scope: $scope // passed current scope to the modal
+            });
+        };
 
         $scope.createLocationPreferredSellerProductsPayload = function(reloadTable) {
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.currentPage) {
