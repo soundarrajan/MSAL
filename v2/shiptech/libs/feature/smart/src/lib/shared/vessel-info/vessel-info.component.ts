@@ -308,7 +308,7 @@ export class VesselInfoComponent implements OnInit {
     this.child.toggleExpanded();
   }
   toggleBPlan(event) {
-    //event.stopPropagation();
+    event.stopPropagation();
     this.expandBplan = !this.expandBplan;
     
   }

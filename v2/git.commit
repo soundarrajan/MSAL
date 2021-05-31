@@ -1,9 +1,11 @@
-﻿commit 079cf67bb7028c08a91901bb45f9b494c5c30932
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Mon May 31 19:44:15 2021 +0530
+﻿commit f004247dfc910fdf60b525c21d6ed365f2750690
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon May 31 19:28:54 2021 +0000
 
-    Invoice-order details&related inv changes
+    Merged PR 11092: current bplan exapnd panel fix.
     
-    Invoice-order details&related inv changes
+    current bplan exapnd panel fix.
+    
+    Related work items: #29780
 
 branch: master
