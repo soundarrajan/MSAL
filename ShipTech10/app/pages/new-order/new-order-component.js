@@ -1041,7 +1041,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             var costType = {};
             if(additionalCost.locationAdditionalCostId || additionalCost.additionalCost.locationid) {
-                costType = additionalCost.costType || additionalCost.additionalCost.costType ||
+                costType = additionalCost.additionalCost.costType || additionalCost.costType ||
                     ctrl.additionalCostTypes[additionalCost.additionalCost.id].costType;
             }
             else {
@@ -1129,10 +1129,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             case COST_TYPE_IDS.FLAT:
                 additionalCost.amount = convertDecimalSeparatorStringToNumber(additionalCost.price) || 0;
                 additionalCost.priceUom = null;
-                additionalCost.locationAdditionalCostId = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
-                if(additionalCost.additionalCost){
-                    additionalCost.additionalCost.locationid = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
-                }
                 break;
             case COST_TYPE_IDS.PERCENT:
                 productComponent = isProductComponent(additionalCost);
@@ -1150,9 +1146,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 additionalCost.priceUom = null;
                 break;
-            // case COST_TYPE_IDS.RANGE : case COST_TYPE_IDS.TOTAL :
-            //     additionalCost.priceUom = null;
-            //     break;
+            case COST_TYPE_IDS.RANGE : case COST_TYPE_IDS.TOTAL :
+                // let locAddCost = ctrl.locationAdditionalCosts.find(x => {
+                //     if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
+                //         return true;
+                //     } else {
+                //         return false;
+                //     }
+                // });
+                // additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
+                // additionalCost.amount = locAddCost.amount || additionalCost.amount || 0;
+                additionalCost.amount = additionalCost.price || 0;
+                break;
             }
             if (!product) {
                 product = ctrl.data.products[0];
@@ -2191,9 +2196,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     let additionalCost = data.additionalCosts[j];
                     if(additionalCost.costType && additionalCost.costType.name == 'Percent') {
                         additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
-                        // ctrl.setLocationBasedAdditionalCosts(additionalCost, data, 'quantityChange');
-                        // additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
-                        // data.additionalCosts[j] = additionalCost;
                     }
                 }
                 ctrl.evaluateAdditionalCostList();
@@ -3343,7 +3345,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         /**
          * Change the cost type to the default for the respective additional cost.
          */
-        ctrl.additionalCostNameChanged = function(additionalCost) {
+        ctrl.additionalCostNameChanged = function(additionalCost, initiatorName) {
+            if(initiatorName == 'input' && additionalCost.locationAdditionalCostId) {
+                additionalCost.locationAdditionalCostId = null;
+                additionalCost.amount = null;
+                additionalCost.price = null;
+                additionalCost.extras = null;
+                additionalCost.extrasAmount = null;
+                additionalCost.priceUom = null;
+                additionalCost.costType = null;
+            }
             additionalCost.costType = getAdditionalCostDefaultCostType(additionalCost);
             // Must do this manually, since a programatic change of the
             // cost type property DOES NOT trigger the event - only actual
@@ -3360,9 +3371,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
 
             if (additionalCost.costType.name == 'Percent') {
-                // if(!(additionalCost.locationAdditionalCostId || (additionalCost.additionalCost && additionalCost.additionalCost.locationid))) {
                 additionalCost.priceUom = null;
-                // }
 
                 if (additionalCost.isTaxComponent) {
                     // ctrl.additionalCostApplicableFor[additionalCost.fakeId] = "";
@@ -3392,7 +3401,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
             let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
             if(initiatorName == 'additionalCostNameChanged') {
-                let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
                 ctrl.setLocationBasedAdditionalCosts(additionalCost, product, initiatorName);
             }
             calculateAdditionalCostAmounts(additionalCost, product);
@@ -4592,6 +4600,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         return false;
                     }
                 });
+                if(!locAddCost) {
+                    return;
+                }
                 let addCostIdx = product.additionalCosts.indexOf(additionalCost);
                 additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
                 additionalCost.price = locAddCost.price || additionalCost.price || 0;
@@ -4627,6 +4638,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         return false;
                     }
                 });
+                if(!locAddCost) {
+                    return;
+                }
                 additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
                 additionalCost.price = locAddCost.price || additionalCost.price || 0;
                 additionalCost.amount = locAddCost.amount || additionalCost.amount || 0;
