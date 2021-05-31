@@ -591,8 +591,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
           </div>
           <mat-menu class="outstanding-req-menu" #hoverTitle="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
           <div class="hover-tooltip" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
-              <table>
-                <tr class="hover-title" *ngFor="let item of items.rowData">
+              <table style="border-collapse: collapse; min-width: 100%;">
+                <tr class="hover-title" style="border-bottom:1px solid #253c01; text-align: left; padding-top: 5px; padding-bottom: 5px;">
+                  <th colspan="2" style="color: #0f97c7">{{items?.displayName}}</th>
+                </tr>
+                <tr class="hover-title hover-body-wrapper" *ngFor="let item of items.rowData">
                   <td>{{item.key}}</td>
                   <td class="hover-value" *ngIf="item.type!='date'">{{item.value}}</td>
                   <td class="hover-value" *ngIf="item.type=='date'">{{item.value | date: 'dd/MM/yyyy'}}</td>
@@ -602,7 +605,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         </mat-menu>
 </div>
   
-  `
+  `,
+  styles: ['tr.hover-body-wrapper:last-child {border-top:1px solid #253c01; padding-top: 5px; padding-bottom: 5px;}']
 })
 export class HoverMenuComponent {
   @Input('items') items;
