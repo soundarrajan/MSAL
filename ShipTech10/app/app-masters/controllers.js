@@ -5476,6 +5476,14 @@
                 $scope.formValues.vesselProducts[index]['vesselProductTanks']=([newItem]);
         }
 
+        $scope.addVesselProductType=function(index,productTypeId){
+            for(var i=0; $scope.formValues.vesselProducts.length>i;i++){
+                if ($scope.formValues.vesselProducts[i].productType.id == productTypeId.id) {
+                    $scope.formValues.vesselProducts[index].productType=null;
+                    return toastr.error('Selected productType already exists');;
+                }
+            }
+        }
         $scope.addnewTankProduct = function(index){
             var newItem ={
                 'clientIpAddress': null,
@@ -7544,7 +7552,7 @@
             });
         };
 
-/* Location Master Preffered Seller Product Table*/
+     /* Location Master - Barge cost details table*/
 $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
     var objMapping;
      $scope.CurrentadditionalCostsdetails  = formvalues;
