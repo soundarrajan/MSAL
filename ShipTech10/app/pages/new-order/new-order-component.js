@@ -1266,7 +1266,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 		                	}
                 		}
                 	});
-                    if (!ctrl.additionalCosts[i].isDeleted && parentProductStatus != 'Cancelled') { // temp_test ctrl.additionalCosts[i].isDeleted check to be revisited
+                    if (!ctrl.additionalCosts[i].isDeleted && parentProductStatus != 'Cancelled') {
                         result = result + (parseFloat(ctrl.additionalCosts[i].totalAmount) || 0);
                     }
                 }
@@ -1971,9 +1971,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.setDefaultValues('location', 'lab', location.defaultLab);
                 ctrl.getAllOrderContractOptions();
             });
-            // When Location is changed in the Order, cost associated with the location has to be removed with a
-            // validation message as "Cost associated with location also would be removed"
-            // temp_test // validation yet to be added
             
             if (isManualChange) {
                 if(ctrl.additionalCosts.some(x => (x.locationAdditionalCostId && x.locationAdditionalCostId > 0))) {
