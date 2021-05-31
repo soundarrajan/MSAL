@@ -1,9 +1,9 @@
-﻿commit 254dfb3077e63d0e85e866e1dd5e0b74851499bc
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon May 31 13:24:53 2021 +0000
+﻿commit 079cf67bb7028c08a91901bb45f9b494c5c30932
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Mon May 31 19:44:15 2021 +0530
 
-    Merged PR 11090: #29675: Vessel details: View Future Requests for the Vessel style issue has fixed
+    Invoice-order details&related inv changes
     
-    Related work items: #29675
+    Invoice-order details&related inv changes
 
 branch: master

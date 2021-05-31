@@ -94,6 +94,8 @@ import {
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
+import { UrlService } from '@shiptech/core/services/url/url.service';
+import { AppConfig } from '@shiptech/core/config/app-config';
 
 const isEmpty = object =>
   !Object.values(object).some(x => x !== null && x !== '');
@@ -457,6 +459,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public gridOptions_claims: GridOptions;
+  public gridOptions_rel_invoice: GridOptions;
   private rowData_aggrid_pd = [];
   private rowData_aggrid_ac = [];
   public productData: any = [];
@@ -466,6 +469,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   dateFormat;
   formSubmitted: boolean = false;
   showMoreButtons: boolean = false;
+  expandRelatedInvoice: boolean = true;
   emptyStringVal = '--';
   emptyNumberVal = '';
   @ViewChildren('addProductMenu') addproductMenu;
@@ -554,6 +558,23 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     ],
     hasSeparator: false
   };
+  public orderDetails2 = {
+    contents: [
+      {
+        label: 'Buyer',
+        value: 'Tom Kelly',
+        customLabelClass: [],
+        customValueClass: []
+      },
+      {
+        label: 'Trader',
+        value: 'Tim Bernard',
+        customLabelClass: [],
+        customValueClass: []
+      }
+    ],
+    hasSeparator: true
+  };
   public counterpartyDetails = {
     contents: [
       {
@@ -622,12 +643,45 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   initialHasManualPaymentDate: boolean;
   manualPaymentDateReference: string;
   initialDueDate: string;
+  rowData_aggrid_rel_invoice: any = [];
+  totalrowData = [];
+  dateFormat_rel_invoice:any;
+  //formValues:any;
 
   // detailFormvalues:any;
   @Input('detailFormvalues') set _detailFormvalues(val) {
     if (val) {
       this.formValues = val;
 
+      if(this.formValues.relatedInvoices){
+        this.formValues.relatedInvoices.forEach(element => {
+          this.rowData_aggrid_rel_invoice.push({
+            "id": element.id,
+            "order-number":element.orderId,
+            "type":element.invoiceType.name,
+            "date":element.invoiceDate ? moment(element.invoiceDate).format(this.dateFormat_rel_invoice):'',
+            "amount":this.format.amount(element.invoiceAmount),
+            "deductions":this.format.amount(element.deductions),
+            "paid":this.format.amount(element.paidAmount),
+            "status":element.invoiceStatus.name
+          });
+        });
+        this.formValues.relatedInvoicesSummary.forEach(total => {
+          this.totalrowData.push({
+            "id": "Net Payable",
+            "order-number":this.format.amount(total.netPayable),
+            "type":"",
+            "date":"Total",
+            "amount":this.format.amount(total.invoiceAmountTotal),
+            "deductions":this.format.amount(total.deductionsTotal),
+            "paid":this.format.amount(total.paidAmount),
+            "status":""
+          });
+        });
+        if(this.gridOptions_rel_invoice.api){
+          this.gridOptions_rel_invoice.api.sizeColumnsToFit();
+        }
+      }
       // Set paid ammount disabled;
       if (
         !this.formValues.status ||
@@ -674,6 +728,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.manualPaymentDateReference = this.formValues.paymentDate;
       this.initialHasManualPaymentDate = this.formValues.hasManualPaymentDate;
     }
+
+
   }
 
   @Output() onInvoiceDetailsChanged = new EventEmitter<any>();
@@ -696,6 +752,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     private tenantService: TenantFormattingService,
     private titleService: Title,
     private toastr: ToastrService,
+    public urlService:UrlService,
+    public appConfig: AppConfig,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats
   ) {
@@ -720,7 +778,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.autocompleteCarrier = knownMastersAutocomplete.company;
     this.autocompleteCustomer = knownMastersAutocomplete.customer;
     this.autocompletePaymentTerm = knownMastersAutocomplete.paymentTerm;
+    this.dateFormat_rel_invoice = this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/');
     this.setupGrid();
+    this.setupGrid_related_invoice();
     this.setClaimsDetailsGrid();
     this.tenantConfiguration();
   }
@@ -3075,4 +3135,93 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       }
     }
   }
+
+  setupGrid_related_invoice(){
+    this.gridOptions_rel_invoice = <GridOptions>{
+      enableColResize: true,
+      defaultColDef: {
+        resizable: true,
+        filtering: false,
+        sortable: false
+      },
+      columnDefs: this.columnDef_aggrid_rel_invoice,
+      suppressRowClickSelection: true,
+      suppressCellSelection: true,
+      headerHeight: 35,
+      rowHeight: 35,
+      getRowClass:(params) => {
+        // Make invoice amount text red if the type is Credit Note or Pre-Claim Credit Note
+        if(params.node.data.type === "Credit Note" || params.node.data.type === "Pre-claim Credit Note"){
+          return ["related-invoice-red-text"]
+        }
+      },
+      animateRows: false,
+      onGridReady: (params) => {
+        this.gridOptions_rel_invoice.api = params.api;
+        this.gridOptions_rel_invoice.columnApi = params.columnApi;
+        this.gridOptions_rel_invoice.api.setPinnedBottomRowData(this.totalrowData);
+        this.gridOptions_rel_invoice.api.setRowData(this.rowData_aggrid_rel_invoice);
+        this.gridOptions_rel_invoice.api.sizeColumnsToFit();
+        // params.api.sizeColumnsToFit();
+      },
+      onFirstDataRendered(params) {
+        params.api.sizeColumnsToFit();
+      },
+
+      onColumnResized: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+          params.api.sizeColumnsToFit();
+        }
+      },
+      onColumnVisible: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 8) {
+          params.api.sizeColumnsToFit();
+        }
+      }
+    }
+  }
+
+  private columnDef_aggrid_rel_invoice = [
+    { headerName: 'Invoice ID', headerTooltip: 'Invoice ID', field: 'id', width: 100, cellClass: ['aggridlink aggridtextalign-center'], headerClass: ['aggrid-text-align-c'] },
+    { headerName: 'Order number', headerTooltip: 'Order number', field: 'order-number', cellClass: ['aggridtextalign-left'] },
+    {
+      headerName: 'Invoice Type', headerTooltip: 'Invoice Type', field: 'type'
+    },
+    {
+      headerName: 'Invoice Date', headerTooltip: 'Invoice Date', field: 'date', width: 150,
+    },
+    {
+      headerName: 'Invoice Amt', headerTooltip: 'Invoice Amt', field: 'amount', width: 150,
+    },
+    {
+      headerName: 'Deductions', headerTooltip: 'Deductions', field: 'deductions', width: 150,
+    },
+    {
+      headerName: 'Paid Amount', headerTooltip: 'Paid Amount', field: 'paid',  width: 150,
+    },
+    { headerName: 'Invoice status', headerTooltip: 'Invoice status', field: 'status',
+        cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) {
+          var classArray:string[] =[];
+            classArray.push('aggridtextalign-center');
+            let newClass= params.value==='Reverted' || params.value==='Discrepancy' ?'custom-chip-type1 red-chip':
+                          params.value==='Approved'?'custom-chip-type1 mediumgreen':
+                          params.value==='New'?'custom-chip-type1 dark':
+                          'custom-chip-type1';
+                          classArray.push(newClass);
+            return {cellClass: classArray.length>0?classArray:null} }}
+  ];
+
+  onCellClicked(params){
+    if(params.colDef.field === 'id' && !params.rowPinned){
+      this.openEditInvoice(params.data.id)
+    }
+  }
+
+  openEditInvoice(invoiceId: number): void {
+    window.open(
+      this.urlService.editInvoice(invoiceId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
+  }
+
 }
