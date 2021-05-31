@@ -6,3 +6,31 @@
     background-color: #EEEEEE !important;
     pointer-events: none;
 }
+
+.expand-icon::before {
+    cursor: pointer;
+    content: url(./../../../../../../../../assets/layout/images/pages/expand.svg);
+  }
+  
+.collapse-icon::before {
+    cursor: pointer;
+    content: url(./../../../../../../../../assets/layout/images/pages/collapse.svg);
+}
+
+.header-details {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #252A32;
+  }
+
+  .no-padding {
+    padding-left: unset !important;
+    padding-right: unset !important;
+  }  
+
+  .related-inv-section {
+    display: inline-flex;
+  }
