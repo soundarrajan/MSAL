@@ -1,9 +1,9 @@
-﻿commit 46d1f7ed07b895d7e45f2140acf3ad7241073160
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 28 12:39:04 2021 +0000
+﻿commit 254dfb3077e63d0e85e866e1dd5e0b74851499bc
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon May 31 13:24:53 2021 +0000
 
-    Merged PR 11058: Fixed logic for contract additional costs
+    Merged PR 11090: #29675: Vessel details: View Future Requests for the Vessel style issue has fixed
     
-    Fixed logic for contract additional costs
+    Related work items: #29675
 
 branch: master
