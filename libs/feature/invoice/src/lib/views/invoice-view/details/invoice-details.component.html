@@ -571,18 +571,19 @@
     <!-- Order and Counterparty Details -->
     <div class="section1 mt-4">
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6">
           <div class="section-header">
-            <div class="header-label">Order Details</div>
+            <div class="header-label">Order Details: <span class="order-id">7823</span></div>
             <div class="header-data">
-              Request ID:
-              <span class="request-id">{{
-                formValues.requestInfo?.request?.id
-              }}</span>
+              Order Date: 
+              <span>12/12/2021</span>
             </div>
           </div>
           <div class="section-content order-details">
-            <readonly-details [options]="orderDetails"></readonly-details>
+            <div style="display: flex;">
+              <readonly-details [options]="orderDetails"></readonly-details>
+              <readonly-details [options]="orderDetails2" style="margin: 0px 15px;"></readonly-details>
+            </div>
             <div class="form-fields">
               <div
                 class="custom-form-field-with-search lightTheme"
@@ -761,7 +762,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-6">
           <div class="section-header">
             <div class="header-label">Counterparty Details</div>
           </div>
@@ -1065,7 +1066,7 @@
     <!-- Notes -->
     <div
       class="container-fluid-invoice"
-      style="padding-left: 10px;padding-right: 10px;"
+      style="padding-left: 10px;padding-right: 10px; border-bottom: 4px solid #e5e5e5;"
     >
       <div class="row m-b-4">
         <div class="col-12">
@@ -1083,6 +1084,34 @@
         </div>
       </div>
     </div>
+
+    <!-- Related Invoice Details -->
+    <div class="container-fluid-invoice" style="padding-left: 10px;padding-right: 10px;">
+      <div class="row m-b-4">
+        <div class="col-12">
+            <div class="match-grid">
+              <div class="header-details col-md-12 no-padding related-inv-section" style="margin-top: 10px;">
+                <span *ngIf="expandRelatedInvoice" (click)="expandRelatedInvoice = !expandRelatedInvoice">
+                  <a class="expand-icon">
+                  </a>
+                </span>
+                <span  *ngIf="!expandRelatedInvoice" (click)="expandRelatedInvoice = !expandRelatedInvoice">
+                  <a class="collapse-icon">
+                  </a>
+                </span>
+                <div class="title">Related Invoice Details</div>
+              </div>
+              <div class="agGrid-v2" style="margin: 0" *ngIf="expandRelatedInvoice">
+                  <div style="width:100%;height: 250px;">
+                      <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_rel_invoice"
+                          class="ag-theme-material ag-grid-v2 angular-v9 prod-details" (cellClicked)="onCellClicked($event)"></ag-grid-angular>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
   </form>
 </div>
 

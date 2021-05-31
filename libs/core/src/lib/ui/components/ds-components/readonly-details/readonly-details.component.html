@@ -2,7 +2,7 @@
     <div class="details-content-holder" *ngFor="let item of data?.contents">
         <div>
             <div class="label" Class="customLabelClass">{{item.label}}</div>
-            <div class="value" [ngClass]="{'label_text' : data?.hasSeparator}" Class="customValueClass" matTooltip={{item.value}}>{{item.value}}</div>
+            <div class="value label_text" Class="customValueClass" matTooltip={{item.value}}>{{item.value}}</div>
         </div>
         <div *ngIf="data?.hasSeparator" class="border_line"></div>
     </div>
