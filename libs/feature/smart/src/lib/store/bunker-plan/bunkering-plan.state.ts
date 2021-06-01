@@ -244,7 +244,7 @@ export class SaveBunkeringPlanState{
       }
     } else if(payload?.vesselRef) {
       vesselRef = {
-        vesselId: state.vesselData?.vesselId,
+        vesselId: payload.vesselRef?.id,
         vesselRef: payload.vesselRef,
         planId: state.vesselData?.planId,
         userRole: state.vesselData?.userRole
