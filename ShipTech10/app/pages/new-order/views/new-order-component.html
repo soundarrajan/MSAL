@@ -1769,7 +1769,8 @@
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost, 'input'); $ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); additionalCost.costLineChanged = true"
                                             ng-disabled="(additionalCost.disabled && additionalCost.id > 0) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.additionalCost"
-                                            ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by (addCost.id + '-' + (addCost.locationid || 0))"></select>
+                                            ng-options="addCost as addCost.name for addCost in additionalCost.additionalCostList | decodeReadOnly track by (addCost.id + '-' + (addCost.locationid || 0))">
+                                        </select>
                                     </td>
                                     <td>
                                         <!--  cost type -->
@@ -1819,9 +1820,9 @@
                                                 format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
                                                 id="additional_cost_price_{{ $index }}"
                                                 name="{{ $ctrl.additionalCostColumns.Price.name }}_{{ $index }}"
-                                                ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); $ctrl.additionalCostRowPriceChanged(additionalCost, 'input');"
-                                                ng-change="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost)"
-                                                ng-class="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost) ? 'ng-valid' : 'additional_cost_invalid'"
+                                                ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost, additionalCost.additionalCostList); $ctrl.additionalCostRowPriceChanged(additionalCost, 'input');"
+                                                ng-change="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost, additionalCost.additionalCostList)"
+                                                ng-class="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost, additionalCost.additionalCostList) ? 'ng-valid' : 'additional_cost_invalid'"
                                                 ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0)) ||
                                                     $ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id))"
                                                 ng-model="additionalCost.price"

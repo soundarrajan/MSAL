@@ -302,7 +302,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             //  
             // get val.id, make call to get all info about additional cost
             if (window.clickOnSaveAndSend && window.orderDetails) {
-                ctrl.lists.AdditionalCost = angular.copy(window.orderDetails.lists.AdditionalCost);
+                $.each(ctrl.additionalCosts, (key, value) => {
+                    value.additionalCostList = angular.copy(window.orderDetails.lists.AdditionalCost);
+                });
             } else {
                 Factory_Master.get_master_list_filtered('masters', 'additionalcost', 'masters_additionalcostlist', (response) => {
                     // console.log(response);
@@ -313,12 +315,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                                 }
                             });
                     });
+                    $.each(ctrl.additionalCosts, (key, value) => {
+                        value.additionalCostList = ctrl.lists.AdditionalCost;
+                    });
                     console.log(ctrl.lists.AdditionalCost);
                 });
             }
-          
-            // $.each(ctrl.lists.AdditionalCost, function (key, val) {
-            // })
         }
 
         ctrl.setAdditionalCostsForLocation = function() {
@@ -338,10 +340,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     SearchText: null
                 }
             };
+            
             Factory_Master.getAdditionalCostsForLocation(apiJSON, function(response) {
                 // After retrieving location-wise additional costs
                 // 1. Save it to separate list & sort them on top in additional cost list
-                if(!response.data || !response.data.payload || !response.data.payload.length > 0) {
+                if(!response || !response.data || !response.data.payload || !response.data.payload.length > 0) {
+                    $.each(ctrl.additionalCosts, (key, value) => {
+                        value.additionalCostList = ctrl.DefaultAdditionalCosts;
+                    });
                     return;
                 }
                 // Reset add.cost master list and add afresh based on location
@@ -358,41 +364,33 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     obj.priceUom = value0.priceUom;
                     obj.extras = value0.extrasPercentage;
                     obj.trackId = value0.id;
-                    let canPushAddCost = true;
-                    if($state.current.name == STATE.NEW_ORDER && value0.isDeleted == true) { // for new order, push only if active
-                        canPushAddCost = false;
-                    }
-                    else if($state.current.name == STATE.EDIT_ORDER && value0.isDeleted == true) { // for edit order, push inactive entries if already used in current order
-                        canPushAddCost = false;
-                        for(let j = 0; j < ctrl.data.products.length; j++) {
-                            let v = ctrl.data.products[j];
-                            if(v.additionalCosts && v.additionalCosts.length > 0) {
-                                if(value0.locationid) {
-                                    if(v.additionalCosts.some(x => (x.locationAdditionalCostId && x.locationAdditionalCostId == value0.locationid))) {
-                                        canPushAddCost = true;
-                                        break;
-                                    }
-                                } else {
-                                    if(v.additionalCosts.some(x => (x.additionalCost && x.additionalCost.id == value0.additionalCostid))) {
-                                        canPushAddCost = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if(canPushAddCost) {
-                                break;
-                            }
-                        }
-                    }
-                    if(canPushAddCost) {
-                        newArr.push(obj);
-                    }
+                    obj.isDeleted = value0.isDeleted;
+                    newArr.push(obj);
                 });
                 if(newArr.length > 0) {
                     ctrl.lists.AdditionalCost = newArr;
-                    ctrl.locationAdditionalCosts = newArr.filter(x => (x.locationid && x.locationid > 0));
+                    $.each(ctrl.additionalCosts, (key, value) => {
+                        value.additionalCostList = ctrl.getFilteredAdditionalCostMasters(value);
+                    });
+                    ctrl.locationAdditionalCosts = ctrl.lists.AdditionalCost.filter(x => (x.locationid && x.locationid > 0));
                 }
             });
+        }
+
+        ctrl.getFilteredAdditionalCostMasters = function(addCostRow) {
+            let filteredAddCostList = [];
+            if($state.current.name == STATE.NEW_ORDER) {
+                filteredAddCostList = ctrl.lists.AdditionalCost.filter(x => (!x.isDeleted || x.isDeleted == false));
+            }
+            else if($state.current.name == STATE.EDIT_ORDER) {
+                if(addCostRow.additionalCost && addCostRow.additionalCost.id) {
+                    filteredAddCostList = ctrl.lists.AdditionalCost.filter(x => 
+                        ((x.id == addCostRow.additionalCost.id && x.locationid == addCostRow.locationAdditionalCostId) || (!x.isDeleted || x.isDeleted == false)));
+                } else {
+                    filteredAddCostList = ctrl.lists.AdditionalCost.filter(x => (!x.isDeleted || x.isDeleted == false));
+                }
+            }
+            return filteredAddCostList;
         }
 
         ctrl.changedProductContract = function() {
@@ -412,14 +410,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
 
-        ctrl.validateAdditionalCostAllowNegative = function(value, allow, index, additionalCost) {
+        ctrl.validateAdditionalCostAllowNegative = function(value, allow, index, additionalCost, additionalCostList) {
             if (typeof value == 'undefined') {
                 return true;
             }
 
             if (additionalCost) {
             	var allowNegative = false;
-                $.each(ctrl.lists.AdditionalCost, (k, v) => {
+                $.each(additionalCostList, (k, v) => {
                     if (v.id == additionalCost.id) {
 		            	allowNegative = v.allowNegative;
                     }
@@ -1362,6 +1360,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 return;
             }
             let newAdditionalCost = createNewAdditionalCostObject();
+            newAdditionalCost.additionalCostList = ctrl.getFilteredAdditionalCostMasters(newAdditionalCost);
             if (!ctrl.data.products[0].additionalCosts) {
             	ctrl.data.products[0].additionalCosts = [];
             }
