@@ -47,7 +47,7 @@ export class SearchVesselComponent implements OnInit, OnChanges {
       this.selectedValue = this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "";
     } else {
       this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.id ? this.vesselRef.id : "");
-      this.selectedValue = this.vesselRef && this.vesselRef.id ? this.vesselRef.id : "";
+      this.selectedValue = this.vesselRef && this.vesselRef.vesselId ? this.vesselRef.vesselId : "";
     }
     this.filteredOptions = this.searchVesselControl.valueChanges.pipe(
       // startWith(''),
