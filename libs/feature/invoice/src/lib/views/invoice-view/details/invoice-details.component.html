@@ -575,7 +575,7 @@
           <div class="section-header">
             <div class="header-label">Order Details: <span class="order-id">7823</span></div>
             <div class="header-data">
-              Order Date: 
+              Order Date:
               <span>12/12/2021</span>
             </div>
           </div>
@@ -1014,7 +1014,7 @@
                 [currencyList]="currencyList"
                 [physicalSupplierList]="physicalSupplierList"
                 [entityId]="entityId"
-                (amountChanged)="updateAmountValues($event)"
+                (productDetailChanged)="productDetailChanged($event)"
                 (costDetailsChanged)="updateCostDetails($event)"
                 [eventsFormValues]="eventsSubject5.asObservable()"
                 class="col-12"
@@ -1025,7 +1025,7 @@
                 *ngIf="formValues.invoiceClaimDetails.length > 0"
                 [model]="formValues"
                 [currencyList]="currencyList"
-                (amountChanged)="updateAmountValues($event)"
+                (claimDetailChanged)="claimDetailChanged($event)"
                 class="col-12"
                 style="padding-left: 0px; padding-right: 0px;"
               >
