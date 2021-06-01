@@ -10,11 +10,22 @@
 </div> -->
 
 <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
-    <div class="title">Related Invoice Details</div>
-    <div class="agGrid-v2" style="margin: 0">
-        <div style="width:100%;height: 250px;">
-            <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
-                class="ag-theme-material ag-grid-v2 angular-v9 prod-details" (cellClicked)="onCellClicked($event)"></ag-grid-angular>
-        </div>
+  <div class="title-wrapper">
+    <div class="title">Related Invoice Details {{formValues?.requestInfo?.request?.id}}</div>
+
+    <div ckass="invoices-title">
+      Invoices created: {{formValues?.relatedInvoices?.length}}
     </div>
   </div>
+
+  <div class="agGrid-v2" style="margin: 0">
+    <div style="width:100%;height: 250px;">
+      <ag-grid-angular
+        style="width: 100%;height: 100%;"
+        [gridOptions]="gridOptions_data"
+        class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+        (cellClicked)="onCellClicked($event)"
+      ></ag-grid-angular>
+    </div>
+  </div>
+</div>
