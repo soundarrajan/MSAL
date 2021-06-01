@@ -2217,7 +2217,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
     setTimeout(() => {
         this.calculateGrand(this.formValues);
-    });    
+    });
   }
 
   formatDateForBe(value) {
@@ -2790,7 +2790,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -2847,7 +2846,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -2891,7 +2889,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -2966,7 +2963,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -3041,7 +3037,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];

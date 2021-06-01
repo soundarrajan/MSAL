@@ -1,0 +1,10 @@
+
+.title-wrapper {
+    display:flex;
+    justify-content: space-between;
+
+}
+
+.title-wrapper .invoices-title {
+    font-style: italic;
+}
