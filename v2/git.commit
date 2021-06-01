@@ -1,7 +1,9 @@
-﻿commit c2eee30383ba5554badf48156281e9c42445c9a1
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue Jun 1 19:54:56 2021 +0530
+﻿commit eba74748fd37c5dedd17deef1e1901fab43f3d27
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Jun 1 15:19:45 2021 +0000
 
-    Disable save invoice while invoice status is cancelled. #32753.
+    Merged PR 11116: workitem#32766, 32674, 32574 bunker plan dashboard screen related issue has fixed
+    
+    Related work items: #32574, #32674, #32766
 
 branch: master

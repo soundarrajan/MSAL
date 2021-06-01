@@ -88,6 +88,10 @@ export class VesselInfoComponent implements OnInit {
         // loadBunkerPlanComments fn callback to get BP comment count 
         if(this.vesselRef?.vesselId) {
           this.loadBunkerPlanComments();
+          if(this.vesselData) {
+            this.vesselData['vesselId'] = this.vesselRef?.vesselId;
+            this.loadROBArbitrage();
+          }
         }
       });
    }
@@ -162,7 +166,6 @@ export class VesselInfoComponent implements OnInit {
           let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
           this.saveCurrentROB(this.ROBArbitrageData);
-          
         })
       })
   }

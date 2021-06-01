@@ -81,7 +81,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan *ngIf="panel.expanded"  [isExpanded]="panel.expanded" [planId]="item.planId" [vesselRef]="vesselData" [bPlanType]="bPlanType"></app-bunkering-plan>
+        <app-bunkering-plan *ngIf="panel.expanded"  [isExpanded]="panel.expanded" [planId]="item.planId" [vesselRef]="vesselData" [bPlanType]="bPlanType" (isCellClicked)="showViewAlert($event)"></app-bunkering-plan>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
