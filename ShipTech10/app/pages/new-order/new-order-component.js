@@ -4245,6 +4245,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 $.each(response.payload, function(k,v) {
                     v.isFromContract = true;
                     v.id = 0;
+                    v.additionalCostList = ctrl.getFilteredAdditionalCostMasters(v);
                     ctrl.data.products[currentProductIndex].additionalCosts.push(v);
                 });
                 ctrl.getAdditionalCosts();
