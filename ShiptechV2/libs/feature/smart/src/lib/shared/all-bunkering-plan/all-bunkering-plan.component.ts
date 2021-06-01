@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } fro
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { LocalService } from '../../services/local-service.service';
 import moment from 'moment';
 
@@ -74,5 +75,14 @@ export class AllBunkeringPlanComponent implements OnInit {
       titleEle.click();
     })
   }
-
+  showViewAlert(isCellClicked) {
+    if(isCellClicked?.type == "cellClicked") {
+      console.log(isCellClicked);
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data: {message : 'A new Plan exists for this vessel. Cannot update an old Plan', source: 'vesselHardWarning'}
+      });
+    }
+  }
 }
