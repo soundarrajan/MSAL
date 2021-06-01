@@ -1,11 +1,7 @@
-﻿commit f004247dfc910fdf60b525c21d6ed365f2750690
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon May 31 19:28:54 2021 +0000
+﻿commit f9de3dc3e08fdb2cf3c03e4773b1ee3cab65d0ae
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Tue Jun 1 19:35:05 2021 +0530
 
-    Merged PR 11092: current bplan exapnd panel fix.
-    
-    current bplan exapnd panel fix.
-    
-    Related work items: #29780
+    Invoice screen fixes - #32784, #32761 and code review fix.
 
 branch: master
