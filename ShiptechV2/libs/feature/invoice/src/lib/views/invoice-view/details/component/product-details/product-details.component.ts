@@ -460,7 +460,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   type: any;
   expandAddTransactionListPopUp: boolean = false;
   displayedColumns: string[] = ['product', 'delivery'];
-  @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() productDetailChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() costDetailsChanged: EventEmitter<any> = new EventEmitter<any>();
 
   deliveriesToBeInvoicedList: any = [];
@@ -888,35 +888,35 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   calculateGrand(formValues) {
-    if (!formValues.invoiceSummary) {
-      formValues.invoiceSummary = {};
-    }
-    // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
-    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(
-      formValues
-    );
-    formValues.invoiceSummary.invoiceAmountGrandTotal -=
-      formValues.invoiceSummary.provisionalInvoiceAmount;
-    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(
-      formValues
-    );
-    formValues.invoiceSummary.totalDifference =
-      this.convertDecimalSeparatorStringToNumber(
-        formValues.invoiceSummary.invoiceAmountGrandTotal
-      ) -
-      this.convertDecimalSeparatorStringToNumber(
-        formValues.invoiceSummary.estimatedAmountGrandTotal
-      );
-    formValues.invoiceSummary.netPayable =
-      this.convertDecimalSeparatorStringToNumber(
-        formValues.invoiceSummary.invoiceAmountGrandTotal
-      ) -
-      this.convertDecimalSeparatorStringToNumber(
-        formValues.invoiceSummary.deductions
-      );
-    this.changeDetectorRef.detectChanges();
-    this.amountChanged.emit(true);
-    console.log(formValues);
+    // if (!formValues.invoiceSummary) {
+    //   formValues.invoiceSummary = {};
+    // }
+    // // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
+    // formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(
+    //   formValues
+    // );
+    // formValues.invoiceSummary.invoiceAmountGrandTotal -=
+    //   formValues.invoiceSummary.provisionalInvoiceAmount;
+    // formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(
+    //   formValues
+    // );
+    // formValues.invoiceSummary.totalDifference =
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.invoiceAmountGrandTotal
+    //   ) -
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.estimatedAmountGrandTotal
+    //   );
+    // formValues.invoiceSummary.netPayable =
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.invoiceAmountGrandTotal
+    //   ) -
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.deductions
+    //   );
+    // this.changeDetectorRef.detectChanges();
+    this.productDetailChanged.emit(this.formValues.productDetails);
+    // console.log(formValues);
   }
 
   calculateInvoiceGrandTotal(formValues) {
