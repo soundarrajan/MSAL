@@ -47,7 +47,7 @@ export class VesselDetailsComponent implements OnInit {
 
     this.vesselView = this.vesselData.vesselView;
     this.vesselName = this.vesselData.name;
-
+    this.store.dispatch(new saveVesselDataAction({'vesselRef': this.vesselData}));
   }
 
   getBunkerUserMode() {

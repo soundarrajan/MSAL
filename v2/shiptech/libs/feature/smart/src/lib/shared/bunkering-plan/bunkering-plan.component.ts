@@ -402,7 +402,8 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-      let req = { shipId : this.vesselData?.vesselId, planId : this.latestPlanId }
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    let req = { shipId : vesseldata.vesselRef.id, planId : this.latestPlanId }
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];

@@ -1,9 +1,11 @@
-﻿commit eba74748fd37c5dedd17deef1e1901fab43f3d27
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jun 1 15:19:45 2021 +0000
+﻿commit 8d6df05dc0fde90fe37db72638c71dde81d378da
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue Jun 1 21:55:06 2021 +0000
 
-    Merged PR 11116: workitem#32766, 32674, 32574 bunker plan dashboard screen related issue has fixed
+    Merged PR 11117: Map View Requirement Smart_Operator
     
-    Related work items: #32574, #32674, #32766
+    Map View Requirement Smart_Operator
+    
+    Related work items: #29755, #29756, #29758, #29764, #29765, #29767
 
 branch: master
