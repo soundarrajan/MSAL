@@ -1,7 +1,7 @@
-﻿commit f9de3dc3e08fdb2cf3c03e4773b1ee3cab65d0ae
+﻿commit c2eee30383ba5554badf48156281e9c42445c9a1
 Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue Jun 1 19:35:05 2021 +0530
+Date:   Tue Jun 1 19:54:56 2021 +0530
 
-    Invoice screen fixes - #32784, #32761 and code review fix.
+    Disable save invoice while invoice status is cancelled. #32753.
 
 branch: master
