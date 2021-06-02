@@ -7,11 +7,14 @@
     pointer-events: none;
 }
 
+.bankAccountNo {
+    margin: 15px 15px 0px 0px !important;
+}
 .expand-icon::before {
     cursor: pointer;
     content: url(./../../../../../../../../assets/layout/images/pages/expand.svg);
   }
-  
+
 .collapse-icon::before {
     cursor: pointer;
     content: url(./../../../../../../../../assets/layout/images/pages/collapse.svg);
@@ -29,8 +32,39 @@
   .no-padding {
     padding-left: unset !important;
     padding-right: unset !important;
-  }  
+  }
 
   .related-inv-section {
     display: inline-flex;
+  }
+
+
+  .general-information-select-container.mat-select-panel {
+    min-width: calc(100% + 12px) !important;
+    transform: translateX(10px) !important;
+  }
+
+  .general-information-select-container.mat-select-panel {
+    position: relative;
+    top: 26px;
+    background: #37414f !important;
+  }
+
+  .general-information-select-container .mat-option {
+    height: 20px !important;
+    padding: 15px;
+    color: white !important;
+  }
+
+  .general-information-select-container.mat-select-panel
+    .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: white !important;
+    background-color: #37414f !important;
+  }
+
+  .general-information-select-container.mat-select-panel
+    .mat-option.mat-selected.mat-active,
+  .general-information-select-container.mat-select-panel .mat-option.mat-active {
+    color: #37414f !important;
+    background: #fff !important;
   }

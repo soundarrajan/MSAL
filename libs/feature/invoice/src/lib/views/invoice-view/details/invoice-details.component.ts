@@ -558,17 +558,18 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     ],
     hasSeparator: false
   };
+
   public orderDetails2 = {
     contents: [
       {
         label: 'Buyer',
-        value: 'Tom Kelly',
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: []
       },
       {
         label: 'Trader',
-        value: 'Tim Bernard',
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: []
       }
@@ -592,6 +593,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     ],
     hasSeparator: true
   };
+
   invoiceStatusList: any;
   paymentStatusList: any;
   invoiceTypeList: any;
@@ -652,6 +654,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   @Input('detailFormvalues') set _detailFormvalues(val) {
     if (val) {
       this.formValues = val;
+
+      // Set trader and buyer name;
+      this.orderDetails2.contents[0].value = this.formValues.orderDetails.buyerName || this.emptyStringVal;
+      this.orderDetails2.contents[1].value = this.formValues.orderDetails.traderName || this.emptyStringVal;
 
       if(this.formValues.relatedInvoices){
         this.formValues.relatedInvoices.forEach(element => {
@@ -2156,6 +2162,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       ? counterpartyDetails?.brokerName
       : this.emptyStringVal;
   }
+
   setChipDatas() {
     var currencyCode = this.formValues.invoiceRateCurrency.code; // USD
     var emptyValue = `${this.amountFormatValue(0)} ${currencyCode}`; // 0.00 USD
