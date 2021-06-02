@@ -1,9 +1,7 @@
-﻿commit dc9af694302e78f2260ec022b2c9a7d06721a7d4
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jun 2 10:38:58 2021 +0000
+﻿commit e7002fc2aabbeaabb6ab9f90ff07fed62624ddff
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Wed Jun 2 16:53:56 2021 +0530
 
-    Merged PR 11147: Fixed delivery notes
-    
-    Fixed delivery notes
+    Invoice rate currency dropdown change appliers to product, cost, claim and chip summary details. #32752
 
 branch: master
