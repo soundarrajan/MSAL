@@ -1,9 +1,11 @@
-﻿commit e9196c42ad1b50dd515a4007c05cee7afd9f67a3
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jun 2 07:14:23 2021 +0000
+﻿commit 82edfd66bfb9a0c50db404f8d9281fe3d70ec766
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 2 07:43:45 2021 +0000
 
-    Merged PR 11124: #32674: Under current Current ROB and Arbitrage details entered values are not retaining when we navigate from other tabs int validation has done
+    Merged PR 11129: SO Map View - Vessels in bvt
     
-    Related work items: #32674
+    SO Map View - Vessels in bvt
+    
+    Related work items: #29755
 
 branch: master
