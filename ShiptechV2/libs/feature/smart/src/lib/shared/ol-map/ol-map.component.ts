@@ -330,7 +330,7 @@ export class OlMapComponent implements OnInit {
   ngAfterViewInit() {
     this.loadMap();
     this.loadEventListeners();
-    this.loadVessels("All");
+    this.loadVessels(" ");
     this.setCenter();
     this.portMakersLayer.setVisible(true);
     this.loadPorts();
@@ -457,22 +457,25 @@ export class OlMapComponent implements OnInit {
   private loadVessels(filter) {
     this.isLoading = true;
     this.vesselMakersLayer.getSource().clear();
-    if (filter == "All") {
+    debugger
+    if (filter == " ") {
       this.mapService.getVesselsListForMap(" ").subscribe((res: any) => {
-        this.vesselList = res.payload;
-        let vesselMakesrs = [];
-        this.getCurrentTime();
-        for (let vesselDetail of res.payload) {
-          let marker = new OlFeature({
-            id: 'ST' + vesselDetail.vesselId, type: 'vessel', data: vesselDetail,
-            geometry: new OlPoint(fromLonLat([vesselDetail.vesselLatitude, vesselDetail.vesselLongitude]))
-          });
-          marker.setStyle(this.getVesselStyle(vesselDetail));
-          vesselMakesrs.push(marker);
-        }
-        if (vesselMakesrs.length > 0) {
-          this.vesselMakersLayer.getSource().addFeatures(vesselMakesrs);
-          //this.setCenter();
+        if(res.payload != undefined){
+          this.vesselList = res.payload;
+          let vesselMakesrs = [];
+          this.getCurrentTime();
+          for (let vesselDetail of this.vesselList) {
+            let marker = new OlFeature({
+              id: 'ST' + vesselDetail.vesselId, type: 'vessel', data: vesselDetail,
+              geometry: new OlPoint(fromLonLat([vesselDetail.vesselLatitude, vesselDetail.vesselLongitude]))
+            });
+            marker.setStyle(this.getVesselStyle(vesselDetail));
+            vesselMakesrs.push(marker);
+          }
+          if (vesselMakesrs.length > 0) {
+            this.vesselMakersLayer.getSource().addFeatures(vesselMakesrs);
+            this.setCenter();
+          }
         }
       });
     }
@@ -541,11 +544,11 @@ export class OlMapComponent implements OnInit {
 
   loadPorts() {
     this.mapService.getLocationsListForMap(" ").subscribe(res => {
-      if (res != undefined) {
+      if (res.payload != undefined) {
         this.portList = res.payload;
         let portMakesrs = [];
         this.getCurrentTime();
-        for (let port of res.payload) {
+        for (let port of this.portList) {
           let marker = new OlFeature({
             id: 'PID' + port.locationId, type: 'port', data: port,
             geometry: new OlPoint(fromLonLat([port.locationLongitude, port.locationLatitude]))
@@ -1136,7 +1139,7 @@ export class OlMapComponent implements OnInit {
       switch (item.name) {
         case 'All My Vessels': {
           this.selectedFillterTag = null;
-          this.loadVessels("All");
+          this.loadVessels(" ");
           this.setCenter();
           break;
         }
@@ -1145,7 +1148,7 @@ export class OlMapComponent implements OnInit {
           if (this.selectedFillterTag)
             this.loadVessels(this.selectedFillterTag)
           else
-            this.loadVessels("All");
+            this.loadVessels(" ");
           break;
         }
         case 'European Region': {
