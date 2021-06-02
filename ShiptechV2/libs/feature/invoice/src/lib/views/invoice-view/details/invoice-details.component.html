@@ -98,7 +98,10 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="custom-form-field-with-search lightTheme" style="margin-top: 8px !important;">
+            <div
+              class="custom-form-field-with-search lightTheme"
+              style="margin-top: 8px !important; padding-left: 15px;"
+            >
               <div class="d-flex">
                 <mat-form-field class="with-search" [ngClass]="{
                     'invalid-field':
@@ -142,7 +145,10 @@
               <div id="custom-form-field" class="custom-form-field lightTheme can-be-disabled">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Invoice rate currency</mat-label>
-                  <mat-select disableOptionCentering [(ngModel)]="formValues.invoiceRateCurrency"
+                  <mat-select
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  disableOptionCentering [(ngModel)]="formValues.invoiceRateCurrency"
                     [compareWith]="compareCurrencyObjects"
                     (selectionChange) = "triggerChangeFieldsAppSpecific('InvoiceRateCurrency')"
                     name="invoiceRateCurrencyCode" required [disabled]="formValues.status?.name === 'Approved'">
@@ -251,7 +257,7 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div id="custom-form-field" class="lightTheme">
+              <div id="custom-form-field" class="lightTheme can-be-disabled">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Payment Status</mat-label>
                   <mat-select disableOptionCentering [(ngModel)]="formValues.paymentDetails.paymentStatus"
@@ -343,10 +349,10 @@
       <div class="row">
         <div class="col-md-6">
           <div class="section-header">
-            <div class="header-label">Order Details: <span class="order-id">7823</span></div>
+            <div class="header-label">Order Details: <a href="{{ urlService.editOrder(formValues.orderDetails?.order?.id) }}" class="order-id">{{formValues.orderDetails?.order?.id}}</a></div>
             <div class="header-data">
               Order Date:
-              <span>12/12/2021</span>
+              <span>{{formValues.orderDetails?.orderDate | date: this.dateFormat}}</span>
             </div>
           </div>
           <div class="section-content order-details">
@@ -454,8 +460,8 @@
             <div class="row" style="margin: 0px;">
               <div class="col-md-6 pd-0">
                 <readonly-details [options]="counterpartyDetails"></readonly-details>
-                <div class="form-fields" style="margin: 0px -15px;">
-                  <div id="custom-form-field" class="lightTheme" *ngIf="getBankAccountNumberDateConfig().isVisible">
+                <div class="form-fields">
+                  <div id="custom-form-field" class="lightTheme" style="margin: 15px 15px 15px 0px" *ngIf="getBankAccountNumberDateConfig().isVisible">
                     <mat-form-field class="without-search" appearance="legacy" [ngClass]="{
                         'invalid-field':
                           formErrors.counterpartyDetails
