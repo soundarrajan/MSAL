@@ -1,9 +1,9 @@
-﻿commit 4ce542f04333bdf40aa3691b29c483bf66ce4ba7
+﻿commit dc9af694302e78f2260ec022b2c9a7d06721a7d4
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jun 2 09:45:57 2021 +0000
+Date:   Wed Jun 2 10:38:58 2021 +0000
 
-    Merged PR 11140: Fixed barge cost issues in contract and invoice screen
+    Merged PR 11147: Fixed delivery notes
     
-    Fixed barge cost issues in contract and invoice screen
+    Fixed delivery notes
 
 branch: master
