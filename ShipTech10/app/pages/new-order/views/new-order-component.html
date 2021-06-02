@@ -1260,7 +1260,7 @@
                                                    typeahead-append-to-body="true"
                                                    typeahead-append-to-body="true"
                                                    typeahead-editable="false"
-                                                   typeahead-on-select="$ctrl.selectProduct($item.id, $index)"
+                                                   typeahead-on-select="$ctrl.selectProduct($item.id, $index, 'input');"
                                                    uib-typeahead="prod as prod.name for prod in $ctrl.lists.Product | typeaheadCustomFilter:$viewValue:'name'"/>
                                             <span class="input-group-addon" data-toggle="modal" href="#lookup"
                                                   ng-click="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"

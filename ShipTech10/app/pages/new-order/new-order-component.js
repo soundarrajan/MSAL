@@ -2018,6 +2018,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ProductId: product.id 
                       }
                     };
+                    // ctrl.productChanged('selectProduct', ctrl.data.products[index]);
                     $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload2).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
@@ -2158,12 +2159,27 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
         };
 
+        ctrl.productChanged = function(source, data) {
+            if(source == 'selectProduct') {
+                for (let j = 0; j < data.additionalCosts.length; j++) {
+                    let additionalCost = data.additionalCosts[j];
+                    if(additionalCost.costType && additionalCost.costType.name == 'Percent') {
+                        additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
+                    }
+                    ctrl.setLocationBasedAdditionalCosts(additionalCost, data, 'productChanged');
+                    additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
+                    data.additionalCosts[j] = additionalCost;
+                }
+            }
+        };
+
         ctrl.confirmQuantityChanged = function(source, data) {
             // evaluate ctrl.additionalCosts for product qty change
             let prodQuantity = convertDecimalSeparatorStringToNumber(data.confirmedQuantity)
             let quantityModified = false;
             for (let j = 0; j < data.additionalCosts.length; j++) {
-                if (data.additionalCosts[j].confirmedQuantity && data.additionalCosts[j].confirmedQuantity != prodQuantity) {
+                let currAddCostQty = convertDecimalSeparatorStringToNumber(data.additionalCosts[j].confirmedQuantity);
+                if (currAddCostQty != prodQuantity) {
                     quantityModified = true;
                     break;
                 }
@@ -4576,7 +4592,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          */
         ctrl.setLocationBasedAdditionalCosts = function(additionalCost, product, initiatorName) {
             if(initiatorName != 'additionalCostNameChanged' && initiatorName != 'quantityChange' &&
-                initiatorName != 'applicableForChange' || (!additionalCost.costType ||
+                initiatorName != 'applicableForChange' && initiatorName != 'productChanged' || (!additionalCost.costType ||
                 !((additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0) ||
                 additionalCost.locationAdditionalCostId > 0))) {
                 return;
