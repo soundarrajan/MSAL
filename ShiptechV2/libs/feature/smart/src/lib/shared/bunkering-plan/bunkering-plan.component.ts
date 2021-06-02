@@ -604,18 +604,22 @@ export class BunkeringPlanComponent implements OnInit {
       return isHardValidation;
     }
     // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
-    // let isValidMinEcaSod = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod) == -1 ? 'Y':'N';
-    // if(isValidMinEcaSod == 'N'){
-    //   let id = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod);
-    //   let port_id = data[id].port_id;
-    //   const dialogRef = this.dialog.open(NoDataComponent, {
-    //     width: '350px',
-    //     panelClass: 'confirmation-popup',
-    //     data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id}
-    //   });
-    //   isHardValidation = 1;
-    //   return isHardValidation;
-    // }
+    let isValidMinEcaSod = data.findIndex(params => {
+      let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
+      return  sum > parseInt(params?.max_sod) ;
+    });
+    isValidMinEcaSod = isValidMinEcaSod < 0 ? 'Y':'N'
+    if(isValidMinEcaSod == 'N'){
+      let id = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod);
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
     //ECA est cons. validation : ECA Est consumption < LSDIS Est consumption
     let isValidEcaEstCons = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption) == -1 ? 'Y':'N';
     if(isValidEcaEstCons == 'N'){
