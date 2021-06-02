@@ -774,11 +774,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.tenantService.amountPrecision +
       '-' +
       this.tenantService.amountPrecision;
-    this.quantityFormat =
-      '1.' +
-      this.tenantService.quantityPrecision +
-      '-' +
-      this.tenantService.quantityPrecision;
+    // this.quantityFormat =
+    //   '1.' +
+    //   this.tenantService.quantityPrecision +
+    //   '-' +
+    //   this.tenantService.quantityPrecision;
     this.autocompletePaybleTo = knownMastersAutocomplete.payableTo;
     this.autocompleteCompany = knownMastersAutocomplete.company;
     this.autocompleteCarrier = knownMastersAutocomplete.company;
