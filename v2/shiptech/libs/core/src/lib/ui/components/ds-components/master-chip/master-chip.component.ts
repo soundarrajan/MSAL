@@ -16,21 +16,21 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
             </span>
             <span>{{info.Title}}</span>
           </div>
-          <div *ngIf="info.Title === 'Status'" class="data cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+          <div *ngIf="info.Title === 'Status'" class="data cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"
               [matTooltip]="info.Data"
               [matTooltipPosition]="'above'"
               matTooltipClass="custom-tooltip"
               [ngStyle]="{'color': info.statusColorCode}">{{info.Data}}</div>
-          <div *ngIf="info.Title !== 'Deductions' && info.Title != 'Status'" class="data cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+          <div *ngIf="info.Title !== 'Deductions' && info.Title != 'Status'" class="data cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"
               [matTooltip]="info.Data"
               [matTooltipPosition]="'above'"
               matTooltipClass="custom-tooltip">{{info.Data}}</div>
-          <div *ngIf="info.Title === 'Deductions'" class="data deduction-container cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+          <div *ngIf="info.Title === 'Deductions'" class="data deduction-container cip-container" [ngClass]="{'tile-2': info.Title === 'Status' }"
               [matTooltip]="'Deductions'"
               [matTooltipPosition]="'above'"
-              matTooltipClass="custom-tooltip"> 
+              matTooltipClass="custom-tooltip">
                 <div>
-                  <input matInput 
+                  <input matInput
                     [(ngModel)]="formValues.invoiceSummary.deductions"
                     (ngModelChange)="calculateGrand(formValues)"
                     class="deduction-input"
@@ -40,7 +40,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
                 <div>
                   {{formValues.invoiceRateCurrency.code}}
                 </div>
-              
+
           </div>
         </div>
     </div>
@@ -105,6 +105,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
               .cip-container {
                 padding-left: 5px !important;
                 padding-right: 5px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
             `]
   })
@@ -158,7 +161,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
         grandTotal = grandTotal + v.estimatedAmount;
       }
     });
-    
+
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
         if (typeof v.estimatedAmount != 'undefined') {
