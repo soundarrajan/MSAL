@@ -1,11 +1,9 @@
-﻿commit 30b5af7e3d35e5468c65e168a3c5e92d536b3fab
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 2 12:00:33 2021 +0000
+﻿commit 9541d86c28ef26c02a4cf8ae366d47fd36415a84
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jun 2 12:48:00 2021 +0000
 
-    Merged PR 11156: debugger added for map
+    Merged PR 11159: Fixed  Invoice total section when filling data and payment date
     
-    debugger added for map
-    
-    Related work items: #29755
+    Fixed  Invoice total section when filling data and payment date
 
 branch: master

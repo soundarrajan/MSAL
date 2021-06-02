@@ -1292,7 +1292,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       name: location.name
     };
     this.selectedLocation = null;
-    //this.getAdditionalCostsPerPortOnLocationChanging(location.id);
+    this.getAdditionalCostsPerPort(location.id);
     // this.changeDetectorRef.detectChanges();
     //this.contractFormSubject.next(this.formValues);
   }
