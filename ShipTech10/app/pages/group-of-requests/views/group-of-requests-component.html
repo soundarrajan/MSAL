@@ -21,7 +21,7 @@
                             <div class="form-group col-md-6">
                                 <label class="control-label">
                                     {{ $ctrl.generalInfoFields.Request.caption | translate }}
-                                    <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>&nbsp;
+                                <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>&nbsp;
                                 </label>
                                 <div class="input-group">
                                     <input name="request" id="id_Request" class="typeahead form-control"/>
@@ -64,7 +64,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <b>
-                            Quote By<span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span> &nbsp;    
+                            Quote By
                         </b>
                         <div class="input-group" style="width: 225px;">
                             <input
@@ -88,7 +88,7 @@
                                 ng-change="$ctrl.saveComments($ctrl.internalComments, $ctrl.externalComments)">
                         </div>
                         <div class="input-group">
-                            &nbsp;Timezone:<span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>&nbsp;
+                            &nbsp;Timezone:
                             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ $ctrl.quoteByTimezone.name }}
                                 <span class="caret"></span>
