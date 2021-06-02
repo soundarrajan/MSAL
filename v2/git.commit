@@ -1,9 +1,11 @@
-﻿commit 82bec5e6d845682b6d094d4e08671166ffd3f90c
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Wed Jun 2 13:59:23 2021 +0000
+﻿commit 5713d6b00199c0941a63eedc965c6e138a1ba5de
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 2 14:16:38 2021 +0000
 
-    Merged PR 11164: Fix bugs
+    Merged PR 11166: #32812 : Validation for Total Max SOD
     
-    Related work items: #32783, #32808, #32811, #32846
+    #32812 : Validation for Total Max SOD
+    
+    Related work items: #29755, #32812
 
 branch: master
