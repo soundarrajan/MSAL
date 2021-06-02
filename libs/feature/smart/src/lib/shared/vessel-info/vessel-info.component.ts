@@ -34,7 +34,7 @@ export class VesselInfoComponent implements OnInit {
   @ViewChild(CommentsComponent) child: CommentsComponent;
   // @ViewChildren(CommentsComponent) children: CommentsComponent;
   @ViewChild(BunkeringPlanComponent) currentBplan;
-  @Input('vesselData') vesselData;
+  @Input('vesselData') public vesselData;
   @Input('vesselList') vesselList;
   @Input('selectedUserRole') selectedUserRole ;
   @Input() changeRole : Observable<void>;
@@ -88,6 +88,10 @@ export class VesselInfoComponent implements OnInit {
         // loadBunkerPlanComments fn callback to get BP comment count 
         if(this.vesselRef?.vesselId) {
           this.loadBunkerPlanComments();
+          if(this.vesselData) {
+            this.vesselData = Object.assign({vesselId : this.vesselRef?.vesselId, vesselRef:this.vesselRef});
+            this.loadROBArbitrage();
+          }
         }
       });
    }
@@ -96,7 +100,8 @@ export class VesselInfoComponent implements OnInit {
     console.log('Vessel Data ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan.triggerRefreshGrid(this.selectedUserRole));
     this.loadBunkerPlanHeader(this.vesselData);  
-    this.loadBunkerPlanDetails(this.vesselData);
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    this.loadBunkerPlanDetails(vesseldata.vesselRef);   
   }
     
   loadBunkerPlanComments() {
@@ -162,7 +167,6 @@ export class VesselInfoComponent implements OnInit {
           let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
           this.saveCurrentROB(this.ROBArbitrageData);
-          
         })
       })
   }

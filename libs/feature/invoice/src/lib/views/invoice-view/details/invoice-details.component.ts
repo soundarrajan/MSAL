@@ -375,7 +375,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       let newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
+      // console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -623,7 +623,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   visibilityConfigs: any;
   isPricingDateEditable: boolean = false;
   formErrors: any = {};
-  generalConfiguration: any;
+  tenantConfiguration: any;
   _autocompleteType: any;
   @Input() vesselId: number;
   autocompleteSellers: knownMastersAutocomplete;
@@ -782,7 +782,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.setupGrid();
     this.setupGrid_related_invoice();
     this.setClaimsDetailsGrid();
-    this.tenantConfiguration();
   }
 
   ngOnInit(): void {
@@ -799,7 +798,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     });
     this.route.data.subscribe(data => {
       this.staticLists = data.staticLists;
-      this.generalConfiguration = data.tenantConfiguration;
+      this.tenantConfiguration = data.tenantConfiguration;
       this.uomList = this.setListFromStaticLists('Uom');
       this.productList = this.setListFromStaticLists('Product');
       this.currencyList = this.setListFromStaticLists('Currency');
@@ -817,9 +816,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             this.scheduleDashboardLabelConfiguration
           );
         }
-        console.log(this.statusColorCode);
+        // console.log(this.statusColorCode);
       }
       this.setChipDatas();
+      this.setVisibilityAndPricingDateConfig();
+
       this.entityId = this.route.snapshot.params[
         KnownInvoiceRoutes.InvoiceIdParam
       ];
@@ -847,7 +848,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   getDebunkerCheckboxConfig() {
     const isVisible =
       this.manualtab[0].displayName === 'Credit' &&
-      this.generalConfiguration?.invoiceConfiguration?.isDebunker;
+      this.tenantConfiguration?.invoiceConfiguration?.isDebunker;
 
     const isMandatory = false;
     const isChecked =
@@ -863,43 +864,43 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getInvoiceDateConfig() {
-    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+    const isVisible = !this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isInvoiceDateHidden;
 
-    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+    const isMandatory = this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isInvoiceDateMandatory;
 
     return { isVisible, isMandatory: isMandatory && isVisible };
   }
 
   getSupplierInvoiceNumberDateConfig() {
-    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+    const isVisible = !this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isSupplierInvoiceNumberHidden;
-    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+    const isMandatory = this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isSupplierInvoiceNumberMandatory;
     return { isVisible, isMandatory: isMandatory && isVisible };
   }
 
   getReceivedDateConfig() {
-    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+    const isVisible = !this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isReceivedDateHidden;
-    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+    const isMandatory = this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isReceivedDateMandatory;
     return { isVisible, isMandatory: isMandatory && isVisible };
   }
 
   getCustomerDateConfig() {
-    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+    const isVisible = !this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isInvoiceCustomerHidden;
-    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+    const isMandatory = this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isInvoiceCustomerMandatory;
     return { isVisible, isMandatory: isMandatory && isVisible };
   }
 
   getBankAccountNumberDateConfig() {
-    const isVisible = !this.generalConfiguration?.invoiceConfiguration
+    const isVisible = !this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isBankAccountNumberHidden;
-    const isMandatory = this.generalConfiguration?.invoiceConfiguration
+    const isMandatory = this.tenantConfiguration?.invoiceConfiguration
       ?.fieldVisibility?.isBankAccountNumberMandatory;
     return { isVisible, isMandatory: isMandatory && isVisible };
   }
@@ -1110,7 +1111,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
+          // console.log(response);
           additionalCost.invoiceRate = this.quantityFormatValue(response.price);
           this.invoiceConvertUomCost('cost', rowIndex);
         }
@@ -1135,8 +1136,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
   }
   invoiceConvertUomCost(type, rowIndex) {
-    console.log(type);
-    console.log(rowIndex);
+    // console.log(type);
+    // console.log(rowIndex);
     let currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
@@ -1169,7 +1170,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
               if (typeof response == 'string') {
                 this.toastr.error(response);
               } else {
-                console.log(response);
+                // console.log(response);
                 this.calculate(
                   this.old_cost,
                   response[1].id,
@@ -1323,10 +1324,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           .formValues.costDetails[rowIndex].product.deliveryProductId
           ? this.formValues.costDetails[rowIndex].product.deliveryProductId
           : this.formValues.costDetails[rowIndex].deliveryProductId;
-        console.log(
-          '-----------------------',
-          this.formValues.costDetails[rowIndex].deliveryProductId
-        );
+        // console.log('-----------------------',this.formValues.costDetails[rowIndex].deliveryProductId);
         // calculate grandTotal
         if (this.cost) {
           this.calculateCostRecon(rowIndex);
@@ -1342,7 +1340,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         if (typeof result == 'string') {
           this.toastr.error(result);
         } else {
-          console.log(result);
+          // console.log(result);
           if (this.costType) {
             if (this.costType.name == 'Unit') {
               this.formValues.costDetails[rowIndex].invoiceAmount =
@@ -1369,10 +1367,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
               .formValues.costDetails[rowIndex].product.deliveryProductId
               ? this.formValues.costDetails[rowIndex].product.deliveryProductId
               : this.formValues.costDetails[rowIndex].deliveryProductId;
-            console.log(
-              '-----------------------',
-              this.formValues.costDetails[rowIndex].deliveryProductId
-            );
+            // console.log(
+            //   '-----------------------',
+            //   this.formValues.costDetails[rowIndex].deliveryProductId
+            // );
             // calculate grandTotal
             if (this.cost) {
               this.calculateCostRecon(rowIndex);
@@ -1410,21 +1408,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       });
   }
-  tenantConfiguration() {
-    this.invoiceService
-      .getTenantConfiguration(false)
-      .subscribe((result: any) => {
-        this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;
-        if (
-          result.procurementConfiguration.price.pricingDateStopOption?.name ==
-            'Invoice' &&
-          result.procurementConfiguration.price.pricingEventDateManualOverrride
-            ?.name == 'Yes'
-        ) {
-          this.isPricingDateEditable = true;
-        }
-        // console.log('tenenatConfigs',this.isPricingDateEditable);
-      });
+  setVisibilityAndPricingDateConfig() {
+    this.visibilityConfigs = this.tenantConfiguration?.invoiceConfiguration?.fieldVisibility;
+    if (this.tenantConfiguration?.procurementConfiguration.price.pricingDateStopOption?.name == 'Invoice'
+      && this.tenantConfiguration?.procurementConfiguration.price.pricingEventDateManualOverrride?.name == 'Yes') {
+      this.isPricingDateEditable = true;
+    }
   }
 
   getBankAccountNumber() {
@@ -1442,8 +1431,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   invoiceConvertUom(type, rowIndex) {
-    console.log(type);
-    console.log(rowIndex);
+    // console.log(type);
+    // console.log(rowIndex);
     let currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
@@ -1534,7 +1523,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.spinner.hide();
           this.toastr.error(result);
         } else {
-          console.log(result);
+          // console.log(result);
           conversionFactor = result;
           this.formValues.productDetails[currentRowIndex].invoiceAmount =
             this.convertDecimalSeparatorStringToNumber(
@@ -2215,9 +2204,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     } else {
       this.formValues.invoiceSummary = <IInvoiceDetailsItemInvoiceSummary>{};
     }
-    setTimeout(() => {
-        this.calculateGrand(this.formValues);
-    });
+    // commented out because on claim invoice save and load, there error : ViewDestroyedError: Attempt to use a destroyed view: detectChanges
+    // setTimeout(() => {
+    //     this.calculateGrand(this.formValues);
+    // });
   }
 
   formatDateForBe(value) {
@@ -2301,7 +2291,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       });
     }
-    console.log(validCostDetails);
+    // console.log(validCostDetails);
     this.formValues.costDetails = _.cloneDeep(validCostDetails);
 
     this.changeDetectorRef.detectChanges();
@@ -2558,7 +2548,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   addnewProduct(event) {
-    console.log(event);
+    // console.log(event);
     var itemsToUpdate = [];
     this.gridOptions_data.api.forEachNodeAfterFilterAndSort(function(
       rowNode,
@@ -2600,7 +2590,18 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   public updateAmountValues(changes: any): void {
-    this.setChipDatas();
+    // this.setChipDatas();
+    this.calculateGrand(this.formValues);
+  }
+
+  productDetailChanged(productDetails: any): void{
+    this.formValues.productDetails = productDetails;
+    this.calculateGrand(this.formValues);
+  }
+
+  claimDetailChanged(claimDetails: any): void{
+    this.formValues.invoiceClaimDetails = claimDetails;
+    this.calculateGrand(this.formValues);
   }
 
   changedAdditonalcost(event) {
@@ -2611,26 +2612,21 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (!formValues.invoiceSummary) {
       formValues.invoiceSummary = null;
     }
+
     // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
-    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(
-      formValues
-    );
-    formValues.invoiceSummary.invoiceAmountGrandTotal -=
-      formValues.invoiceSummary.provisionalInvoiceAmount;
-    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(
-      formValues
-    );
-    formValues.invoiceSummary.totalDifference =
-      this.convertDecimalSeparatorStringToNumber(
-        formValues.invoiceSummary.invoiceAmountGrandTotal
-      ) -
-      this.convertDecimalSeparatorStringToNumber(
-        formValues.invoiceSummary.estimatedAmountGrandTotal
-      );
-    formValues.invoiceSummary.netPayable =
-      formValues.invoiceSummary.invoiceAmountGrandTotal -
-      formValues.invoiceSummary.deductions;
-    //console.log(formValues);
+    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
+    formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
+    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
+    formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal)
+            - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
+
+    if(formValues.documentType.name === "Credit Note" || formValues.documentType.name === "Pre-claim Credit Note"){
+      formValues.invoiceSummary.netPayable = (formValues.invoiceSummary.invoiceAmountGrandTotal * -1) - formValues.invoiceSummary.deductions;
+    }
+    else{
+      formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions;
+    }
+
     this.changeDetectorRef.detectChanges();
     this.setChipDatas();
   }
@@ -2652,6 +2648,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       }
     });
+
+    formValues.invoiceClaimDetails.forEach((v, k) => {
+      if (typeof v.invoiceAmount != 'undefined') {
+          grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+      }
+    });
     return grandTotal;
   }
 
@@ -2669,6 +2671,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       }
     });
+    return grandTotal;
+  }
+
+  calculateClaimInvoiceGrandTotal(formValues) {
+    let grandTotal = 0;
+
     return grandTotal;
   }
 
@@ -2700,12 +2708,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     return parseFloat(numberToReturn);
   }
   updateCostDetails(data) {
-    console.log(data);
+    // console.log(data);
     this.eventsSubject.next(this.formValues);
   }
 
   additionalCostRemovedLine(data) {
-    console.log(data);
+    // console.log(data);
     this.saveInvoiceDetails();
   }
 
@@ -2790,6 +2798,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
+        // console.log(list);
         return list;
       } else {
         return [];
@@ -2804,7 +2813,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       id: data.id,
       name: data.name
     };
-    console.log(this.formValues.counterpartyDetails.paymentTerm);
+    // console.log(this.formValues.counterpartyDetails.paymentTerm);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -2846,6 +2855,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
+        // console.log(list);
         return list;
       } else {
         return [];
@@ -2860,7 +2870,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       id: data.id,
       name: data.name
     };
-    console.log(this.formValues.orderDetails.paymentCompany);
+    // console.log(this.formValues.orderDetails.paymentCompany);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -2889,6 +2899,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
+        // console.log(list);
         return list;
       } else {
         return [];
@@ -2903,7 +2914,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       id: data.id,
       name: data.name
     };
-    console.log(this.formValues.orderDetails.carrierCompany);
+    // console.log(this.formValues.orderDetails.carrierCompany);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -2963,6 +2974,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
+        // console.log(list);
         return list;
       } else {
         return [];
@@ -2990,7 +3002,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       id: data.id,
       name: data.name
     };
-    console.log(this.formValues.counterpartyDetails.customer);
+    // console.log(this.formValues.counterpartyDetails.customer);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -3037,6 +3049,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
           })
           .splice(0, 10);
+        // console.log(list);
         return list;
       } else {
         return [];
@@ -3064,7 +3077,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       id: data.id,
       name: data.name
     };
-    console.log(this.formValues.counterpartyDetails.payableTo);
+    // console.log(this.formValues.counterpartyDetails.payableTo);
     this.changeDetectorRef.detectChanges();
   }
 

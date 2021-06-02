@@ -52,7 +52,7 @@
   </div>
   <div *ngIf="params.type=='request-link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
-      <a href="{{params.redirectUrl}}/{{params?.data?.requestId}}">{{params.value}}</a>
+      <a href="{{params.redirectUrl}}/{{params?.data?.requestId}}" target="_blank">{{params.value}}</a>
     </div>
   </div>
   

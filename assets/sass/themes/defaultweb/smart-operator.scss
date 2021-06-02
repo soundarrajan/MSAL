@@ -216,16 +216,25 @@ body {
 		background: $dark;
 		border-color: #EB5757;
 		color: #EB5757;
+		word-wrap: break-word;
+		display:inline-block;
+		height:auto;
 	}
 	&.blue {
 		background: $dark;
 		border-color: #66B0D6;
 		color: #66B0D6;
+		word-wrap: break-word;
+		display:inline-block;
+		height:auto;
 	}
 	&.yellow {
 		background: $dark;
 		border-color: #F9C375;
 		color: #F9C375;
+		word-wrap: break-word;
+		display:inline-block;
+		height:auto;
 	}
 }
 

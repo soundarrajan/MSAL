@@ -38,6 +38,7 @@ export class BunkeringPlanComponent implements OnInit {
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
   @Output() loadBplan = new EventEmitter();
+  @Output() isCellClicked?:EventEmitter<any> = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
   @Input('planId') 
   public set planId(v : string) {
@@ -63,8 +64,8 @@ export class BunkeringPlanComponent implements OnInit {
   // private _username$: BehaviorSubject<string>;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store,
               public dialog: MatDialog) 
-    {   
-      
+    {
+    let _this = this;   
     // this._username$ = new BehaviorSubject<string>('');
     // this.username$.subscribe(onchange:{this._username$ in })
     this.gridOptions = <GridOptions>{
@@ -95,6 +96,9 @@ export class BunkeringPlanComponent implements OnInit {
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
         this.gridOptions.api.showLoadingOverlay();
         
+      },
+      onCellClicked: function (params) {
+        _this.isCellClicked.emit(params);
       },
       onCellValueChanged: ($event) => {
       },
@@ -398,7 +402,8 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-      let req = { shipId : this.vesselData?.vesselId, planId : this.latestPlanId }
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    let req = { shipId : vesseldata.vesselRef.id, planId : this.latestPlanId }
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
