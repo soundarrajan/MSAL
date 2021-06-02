@@ -42,7 +42,7 @@ export class PriceTenantFormatDirective implements OnInit {
       if(pricePrecision == 3) {precisionFactor = 1000}   
       if(pricePrecision == 4) {precisionFactor = 10000}   
       response = Math.floor(intvalue * precisionFactor) / precisionFactor;
-      return response;
+      return response.toString();
   }
 
   @HostListener("blur", ["$event.target.value"])
