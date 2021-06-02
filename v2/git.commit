@@ -1,7 +1,11 @@
-﻿commit e7002fc2aabbeaabb6ab9f90ff07fed62624ddff
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Wed Jun 2 16:53:56 2021 +0530
+﻿commit 30b5af7e3d35e5468c65e168a3c5e92d536b3fab
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 2 12:00:33 2021 +0000
 
-    Invoice rate currency dropdown change appliers to product, cost, claim and chip summary details. #32752
+    Merged PR 11156: debugger added for map
+    
+    debugger added for map
+    
+    Related work items: #29755
 
 branch: master
