@@ -8257,7 +8257,11 @@ APP_API.factory('$Api_Service', [
                             admin_users: `${API.BASE_URL_DATA_ADMIN }/api/admin/user/list`
                         };
 
-
+                        if (param.field.Name == "usersList") {
+                            apiJSON.Payload.PageFilters = {
+                                Filters : [{"columnValue":"IsDeleted","ColumnType":"Bool","isComputedColumn":false,"ConditionValue":"=","Values":["0"],"FilterOperator":0}]
+                            }; 
+                        }
                         // console.log(param);
 
                         if (typeof urlMap[param.field.masterSource] != 'undefined') {

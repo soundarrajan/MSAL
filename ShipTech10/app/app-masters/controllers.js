@@ -3444,7 +3444,7 @@
                     }
 
 					if (field.Name == "DefaultSpecGroup" && vm.entity_id && vm.screen_id == "product" && vm.app_id == "masters") {
-						field.Filter = [
+						field.Filters = [
                             {
                                 ColumnName: 'ProductId',
                                 Value: vm.entity_id

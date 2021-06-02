@@ -647,7 +647,7 @@ Number(function() {
                                     );
                                 }
                             }
-                            if (scope.id == 'admin_userlist' && scope.$root.currentColumnRoute.indexOf('claims') != -1) {
+                            if (scope.id == 'admin_userlist' && (scope.$root.currentColumnRoute.indexOf('claims') != -1 || scope.$root.currentColumnRoute == "new-request/admin_userlist")  ) {
                                 if (CLC.tableParams.PageFilters.length == 0) {
                                     CLC.tableParams.PageFilters = [
                                         {
