@@ -647,7 +647,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   initialDueDate: string;
   rowData_aggrid_rel_invoice: any = [];
   totalrowData = [];
-  dateFormat_rel_invoice:any;
+  dateFormat_rel_invoice: any;
   //formValues:any;
 
   // detailFormvalues:any;
@@ -662,29 +662,31 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if(this.formValues.relatedInvoices){
         this.formValues.relatedInvoices.forEach(element => {
           this.rowData_aggrid_rel_invoice.push({
-            "id": element.id,
-            "order-number":element.orderId,
-            "type":element.invoiceType.name,
-            "date":element.invoiceDate ? moment(element.invoiceDate).format(this.dateFormat_rel_invoice):'',
-            "amount":this.format.amount(element.invoiceAmount),
-            "deductions":this.format.amount(element.deductions),
-            "paid":this.format.amount(element.paidAmount),
-            "status":element.invoiceStatus.name
+            id: element.id,
+            'order-number': element.orderId,
+            type: element.invoiceType.name,
+            date: element.invoiceDate
+              ? moment(element.invoiceDate).format(this.dateFormat_rel_invoice)
+              : '',
+            amount: this.format.amount(element.invoiceAmount),
+            deductions: this.format.amount(element.deductions),
+            paid: this.format.amount(element.paidAmount),
+            status: element.invoiceStatus.name
           });
         });
         this.formValues.relatedInvoicesSummary.forEach(total => {
           this.totalrowData.push({
-            "id": "Net Payable",
-            "order-number":this.format.amount(total.netPayable),
-            "type":"",
-            "date":"Total",
-            "amount":this.format.amount(total.invoiceAmountTotal),
-            "deductions":this.format.amount(total.deductionsTotal),
-            "paid":this.format.amount(total.paidAmount),
-            "status":""
+            id: 'Net Payable',
+            'order-number': this.format.amount(total.netPayable),
+            type: '',
+            date: 'Total',
+            amount: this.format.amount(total.invoiceAmountTotal),
+            deductions: this.format.amount(total.deductionsTotal),
+            paid: this.format.amount(total.paidAmount),
+            status: ''
           });
         });
-        if(this.gridOptions_rel_invoice.api){
+        if (this.gridOptions_rel_invoice.api) {
           this.gridOptions_rel_invoice.api.sizeColumnsToFit();
         }
       }
@@ -734,8 +736,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.manualPaymentDateReference = this.formValues.paymentDate;
       this.initialHasManualPaymentDate = this.formValues.hasManualPaymentDate;
     }
-
-
   }
 
   @Output() onInvoiceDetailsChanged = new EventEmitter<any>();
@@ -758,7 +758,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     private tenantService: TenantFormattingService,
     private titleService: Title,
     private toastr: ToastrService,
-    public urlService:UrlService,
+    public urlService: UrlService,
     public appConfig: AppConfig,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats
@@ -784,7 +784,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.autocompleteCarrier = knownMastersAutocomplete.company;
     this.autocompleteCustomer = knownMastersAutocomplete.customer;
     this.autocompletePaymentTerm = knownMastersAutocomplete.paymentTerm;
-    this.dateFormat_rel_invoice = this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/');
+    this.dateFormat_rel_invoice = this.format.dateFormat
+      .replace('DDD', 'ddd')
+      .replace('dd/', 'DD/');
     this.setupGrid();
     this.setupGrid_related_invoice();
     this.setClaimsDetailsGrid();
@@ -849,6 +851,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     });
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
+    if (!this.formValues.paymentDate) {
+      this.formValues.paymentDate = this.formValues.workingDueDate;
+    }
   }
 
   getDebunkerCheckboxConfig() {
@@ -1416,8 +1421,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
   setVisibilityAndPricingDateConfig() {
     this.visibilityConfigs = this.tenantConfiguration?.invoiceConfiguration?.fieldVisibility;
-    if (this.tenantConfiguration?.procurementConfiguration.price.pricingDateStopOption?.name == 'Invoice'
-      && this.tenantConfiguration?.procurementConfiguration.price.pricingEventDateManualOverrride?.name == 'Yes') {
+    if (
+      this.tenantConfiguration?.procurementConfiguration.price
+        .pricingDateStopOption?.name == 'Invoice' &&
+      this.tenantConfiguration?.procurementConfiguration.price
+        .pricingEventDateManualOverrride?.name == 'Yes'
+    ) {
       this.isPricingDateEditable = true;
     }
   }
@@ -2601,12 +2610,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.calculateGrand(this.formValues);
   }
 
-  productDetailChanged(productDetails: any): void{
+  productDetailChanged(productDetails: any): void {
     this.formValues.productDetails = productDetails;
     this.calculateGrand(this.formValues);
   }
 
-  claimDetailChanged(claimDetails: any): void{
+  claimDetailChanged(claimDetails: any): void {
     this.formValues.invoiceClaimDetails = claimDetails;
     this.calculateGrand(this.formValues);
   }
@@ -2620,18 +2629,34 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       formValues.invoiceSummary = null;
     }
 
-    // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
-    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
-    formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
-    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
-    formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal)
-            - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
+    // formValues.invoiceSummary.provisionalInvoiceAmount = this.calculateprovisionalInvoiceAmount(formValues){}
+    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(
+      formValues
+    );
+    formValues.invoiceSummary.invoiceAmountGrandTotal -=
+      formValues.invoiceSummary.provisionalInvoiceAmount ?? 0;
+    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(
+      formValues
+    );
+    formValues.invoiceSummary.totalDifference =
+      this.convertDecimalSeparatorStringToNumber(
+        formValues.invoiceSummary.invoiceAmountGrandTotal
+      ) -
+      this.convertDecimalSeparatorStringToNumber(
+        formValues.invoiceSummary.estimatedAmountGrandTotal
+      );
 
-    if(formValues.documentType.name === "Credit Note" || formValues.documentType.name === "Pre-claim Credit Note"){
-      formValues.invoiceSummary.netPayable = (formValues.invoiceSummary.invoiceAmountGrandTotal * -1) - formValues.invoiceSummary.deductions;
-    }
-    else{
-      formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions;
+    if (
+      formValues.documentType.name === 'Credit Note' ||
+      formValues.documentType.name === 'Pre-claim Credit Note'
+    ) {
+      formValues.invoiceSummary.netPayable =
+        formValues.invoiceSummary.invoiceAmountGrandTotal * -1 -
+        formValues.invoiceSummary.deductions;
+    } else {
+      formValues.invoiceSummary.netPayable =
+        formValues.invoiceSummary.invoiceAmountGrandTotal -
+        formValues.invoiceSummary.deductions;
     }
 
     this.changeDetectorRef.detectChanges();
@@ -2658,7 +2683,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
     formValues.invoiceClaimDetails.forEach((v, k) => {
       if (typeof v.invoiceAmount != 'undefined') {
-          grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+        grandTotal =
+          grandTotal +
+          this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
       }
     });
     return grandTotal;
@@ -3137,21 +3164,24 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
 
     if (name == 'PaymentDate') {
-      if (!this.initialHasManualPaymentDate) {
-        this.formValues.hasManualPaymentDate = false;
-        if (this.manualPaymentDateReference) {
-          if (
-            this.manualPaymentDateReference.split('T')[0] !=
-            this.formValues.paymentDate.split('T')[0]
-          ) {
-            this.formValues.hasManualPaymentDate = true;
-          }
-        }
-      }
+      this.formValues.hasManualPaymentDate = true;
+    }
+    if (name == 'InvoiceRateCurrency') {
+      this.formValues.productDetails.forEach(element => {
+        element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
+      });
+      this.formValues.costDetails.forEach(element => {
+        element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
+      });
+      this.formValues.invoiceClaimDetails.forEach(element => {
+        element.invoiceAmountCurrency = this.formValues.invoiceRateCurrency;
+      });
+
+      this.setChipDatas();
     }
   }
 
-  setupGrid_related_invoice(){
+  setupGrid_related_invoice() {
     this.gridOptions_rel_invoice = <GridOptions>{
       enableColResize: true,
       defaultColDef: {
@@ -3164,18 +3194,25 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       suppressCellSelection: true,
       headerHeight: 35,
       rowHeight: 35,
-      getRowClass:(params) => {
+      getRowClass: params => {
         // Make invoice amount text red if the type is Credit Note or Pre-Claim Credit Note
-        if(params.node.data.type === "Credit Note" || params.node.data.type === "Pre-claim Credit Note"){
-          return ["related-invoice-red-text"]
+        if (
+          params.node.data.type === 'Credit Note' ||
+          params.node.data.type === 'Pre-claim Credit Note'
+        ) {
+          return ['related-invoice-red-text'];
         }
       },
       animateRows: false,
-      onGridReady: (params) => {
+      onGridReady: params => {
         this.gridOptions_rel_invoice.api = params.api;
         this.gridOptions_rel_invoice.columnApi = params.columnApi;
-        this.gridOptions_rel_invoice.api.setPinnedBottomRowData(this.totalrowData);
-        this.gridOptions_rel_invoice.api.setRowData(this.rowData_aggrid_rel_invoice);
+        this.gridOptions_rel_invoice.api.setPinnedBottomRowData(
+          this.totalrowData
+        );
+        this.gridOptions_rel_invoice.api.setRowData(
+          this.rowData_aggrid_rel_invoice
+        );
         this.gridOptions_rel_invoice.api.sizeColumnsToFit();
         // params.api.sizeColumnsToFit();
       },
@@ -3183,52 +3220,93 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         params.api.sizeColumnsToFit();
       },
 
-      onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+      onColumnResized: function(params) {
+        if (
+          params.columnApi.getAllDisplayedColumns().length <= 8 &&
+          params.type === 'columnResized' &&
+          params.finished === true &&
+          params.source === 'uiColumnDragged'
+        ) {
           params.api.sizeColumnsToFit();
         }
       },
-      onColumnVisible: function (params) {
+      onColumnVisible: function(params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8) {
           params.api.sizeColumnsToFit();
         }
       }
-    }
+    };
   }
 
   private columnDef_aggrid_rel_invoice = [
-    { headerName: 'Invoice ID', headerTooltip: 'Invoice ID', field: 'id', width: 100, cellClass: ['aggridlink aggridtextalign-center'], headerClass: ['aggrid-text-align-c'] },
-    { headerName: 'Order number', headerTooltip: 'Order number', field: 'order-number', cellClass: ['aggridtextalign-left'] },
     {
-      headerName: 'Invoice Type', headerTooltip: 'Invoice Type', field: 'type'
+      headerName: 'Invoice ID',
+      headerTooltip: 'Invoice ID',
+      field: 'id',
+      width: 100,
+      cellClass: ['aggridlink aggridtextalign-center'],
+      headerClass: ['aggrid-text-align-c']
     },
     {
-      headerName: 'Invoice Date', headerTooltip: 'Invoice Date', field: 'date', width: 150,
+      headerName: 'Order number',
+      headerTooltip: 'Order number',
+      field: 'order-number',
+      cellClass: ['aggridtextalign-left']
     },
     {
-      headerName: 'Invoice Amt', headerTooltip: 'Invoice Amt', field: 'amount', width: 150,
+      headerName: 'Invoice Type',
+      headerTooltip: 'Invoice Type',
+      field: 'type'
     },
     {
-      headerName: 'Deductions', headerTooltip: 'Deductions', field: 'deductions', width: 150,
+      headerName: 'Invoice Date',
+      headerTooltip: 'Invoice Date',
+      field: 'date',
+      width: 150
     },
     {
-      headerName: 'Paid Amount', headerTooltip: 'Paid Amount', field: 'paid',  width: 150,
+      headerName: 'Invoice Amt',
+      headerTooltip: 'Invoice Amt',
+      field: 'amount',
+      width: 150
     },
-    { headerName: 'Invoice status', headerTooltip: 'Invoice status', field: 'status',
-        cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) {
-          var classArray:string[] =[];
-            classArray.push('aggridtextalign-center');
-            let newClass= params.value==='Reverted' || params.value==='Discrepancy' ?'custom-chip-type1 red-chip':
-                          params.value==='Approved'?'custom-chip-type1 mediumgreen':
-                          params.value==='New'?'custom-chip-type1 dark':
-                          'custom-chip-type1';
-                          classArray.push(newClass);
-            return {cellClass: classArray.length>0?classArray:null} }}
+    {
+      headerName: 'Deductions',
+      headerTooltip: 'Deductions',
+      field: 'deductions',
+      width: 150
+    },
+    {
+      headerName: 'Paid Amount',
+      headerTooltip: 'Paid Amount',
+      field: 'paid',
+      width: 150
+    },
+    {
+      headerName: 'Invoice status',
+      headerTooltip: 'Invoice status',
+      field: 'status',
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellRendererParams: function(params) {
+        var classArray: string[] = [];
+        classArray.push('aggridtextalign-center');
+        let newClass =
+          params.value === 'Reverted' || params.value === 'Discrepancy'
+            ? 'custom-chip-type1 red-chip'
+            : params.value === 'Approved'
+            ? 'custom-chip-type1 mediumgreen'
+            : params.value === 'New'
+            ? 'custom-chip-type1 dark'
+            : 'custom-chip-type1';
+        classArray.push(newClass);
+        return { cellClass: classArray.length > 0 ? classArray : null };
+      }
+    }
   ];
 
-  onCellClicked(params){
-    if(params.colDef.field === 'id' && !params.rowPinned){
-      this.openEditInvoice(params.data.id)
+  onCellClicked(params) {
+    if (params.colDef.field === 'id' && !params.rowPinned) {
+      this.openEditInvoice(params.data.id);
     }
   }
 
@@ -3239,4 +3317,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     );
   }
 
+  compareCurrencyObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
 }

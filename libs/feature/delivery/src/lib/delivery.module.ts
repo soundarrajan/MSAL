@@ -126,13 +126,13 @@ import {
   NgxMatTimepickerModule
 } from '@angular-material-components/datetime-picker';
 
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { BdnAdditionalInformationComponent } from './views/delivery/details/components/bdn-additional-information/bdn-additional-information.component';
 import { QuantityTenantFormatDirective } from './views/delivery/details/directives/quantity-tenant-format.directive';
 import { UomsRouteResolver } from './views/delivery/details/uoms-route.resolver';
 import { DeliveryFeedbackRouteResolver } from './views/delivery/details/delivery-feedback-route.resolver';
 import { SatisfactionLevelRouteResolver } from './views/delivery/details/satisfaction-level-route.resolver';
-import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
+import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NavBarResolver } from './views/delivery/details/navbar-route.resolver';
 import { BargeRouteResolver } from './views/delivery/details/barge-route.resolver';
@@ -149,7 +149,7 @@ import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-ra
 import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
 import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
 import { TextareaAutoresizeDirective } from './views/delivery/details/directives/textarea-autoresize.directive';
-
+import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
 
 @NgModule({
   imports: [
@@ -276,13 +276,17 @@ import { TextareaAutoresizeDirective } from './views/delivery/details/directives
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [RaiseClaimComponent, RaiseClaimModalComponent, SplitDeliveryModalComponent],
+  entryComponents: [
+    RaiseClaimComponent,
+    RaiseClaimModalComponent,
+    SplitDeliveryModalComponent
+  ],
   exports: [
     MainDeliveryComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
     TextareaAutoresizeDirective
-   // PSpinnerDisableKeysSpinDirective,
+    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
   providers: [
@@ -311,18 +315,17 @@ import { TextareaAutoresizeDirective } from './views/delivery/details/directives
     },
     {
       provide: DELIVERY_API_SERVICE,
-      useClass: environment.production
-        ? DeliveryApi
-        : QuantityControlApiMock
+      useClass: environment.production ? DeliveryApi : QuantityControlApiMock
     },
     DeliveryDetailsUnsavedChangesGuard,
-    QcReportService,NotesService,
+    QcReportService,
+    NotesService,
     DeliveryService,
     DialogService,
     MessageService,
     ConfirmationService,
+    InvoiceDetailsService,
     DecimalPipe
-
   ]
 })
 export class DeliveryModule {}

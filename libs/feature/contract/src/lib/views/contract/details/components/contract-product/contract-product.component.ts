@@ -1292,7 +1292,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       name: location.name
     };
     this.selectedLocation = null;
-    this.getAdditionalCostsPerPortOnLocationChanging(location.id);
+    this.getAdditionalCostsPerPort(location.id);
     // this.changeDetectorRef.detectChanges();
     //this.contractFormSubject.next(this.formValues);
   }
@@ -1659,9 +1659,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   changeAdditionalCostList(locationId) {
     console.log(this.additionalCostList);
     console.log(this.additionalCostForLocation[locationId]);
-    let newAdditionalCostList = _.cloneDeep(
-      this.additionalCostForLocation[locationId]
+    let filterElements = _.filter(
+      this.additionalCostForLocation[locationId],
+      function(object) {
+        return !object.isDeleted;
+      }
     );
+    let newAdditionalCostList = _.cloneDeep(filterElements);
     for (let j = 0; j < this.additionalCostList.length; j++) {
       let additionalCostFromCache = this.additionalCostList[j];
       let findAdditionalCostLineIndex = _.findIndex(

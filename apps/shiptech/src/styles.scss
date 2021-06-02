@@ -8,80 +8,92 @@
 
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
-@import "~@ag-grid-community/all-modules/dist/styles/ag-grid.css";
-@import "~@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css";
+@import '~@ag-grid-community/all-modules/dist/styles/ag-grid.css';
+@import '~@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css';
 
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
-
 /* Roboto Fonts */
 @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2) format('woff2'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2) format('woff'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2) format('truetype'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2) format('eot'),
-   }
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2)
+      format('woff2'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2)
+      format('woff'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2)
+      format('truetype'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2)
+      format('eot');
+}
 
-   @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2) format('woff2'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2) format('woff'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2) format('truetype'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2) format('eot'),
-   }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2)
+      format('woff2'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2)
+      format('woff'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2)
+      format('truetype'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2)
+      format('eot');
+}
 
-   @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 300;
-    src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2) format('woff2'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2) format('woff'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2) format('truetype'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2) format('eot'),
-   }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2)
+      format('woff2'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2)
+      format('woff'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2)
+      format('truetype'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300.woff2)
+      format('eot');
+}
 
-   @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-    src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2) format('woff2'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2) format('woff'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2) format('truetype'),
-    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2) format('eot'),
-   }
-
-
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2)
+      format('woff2'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2)
+      format('woff'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2)
+      format('truetype'),
+    url(/assets/fonts/roboto/roboto/roboto-v20-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2)
+      format('eot');
+}
 
 .toastr-copy-input {
-    color: white !important;
-    border: none !important;   
-    font-size: 13px !important; 
+  color: white !important;
+  border: none !important;
+  font-size: 13px !important;
 }
 
 .mat-menu-panel.delivery-mat-menu-panel {
-    background: #364150 !important;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
-    border-radius: 3px !important;
+  background: #364150 !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 3px !important;
 
-    .mat-menu-item  {
-        padding-left: 5px !important;
-        padding-right: 30px !important;
-    }
+  .mat-menu-item {
+    padding-left: 5px !important;
+    padding-right: 30px !important;
+  }
 }
 
-
 .ui-dialog-visible {
-    z-index: 1000000 !important;
+  z-index: 1000000 !important;
 }
 
 // .mat-tab-body.mat-tab-body-active  {
 //     overflow-y: unset !important;
-//     overflow-x: unset !important;  
+//     overflow-x: unset !important;
 // }
 
 // .mat-tab-body-content {
@@ -89,16 +101,24 @@
 // }
 
 .mat-menu-panel.invoice-mat-menu-panel {
-    background: #364150 !important;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
-    border-radius: 3px !important;
+  background: #364150 !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 3px !important;
 
-    .mat-menu-item  {
-        padding-left: 5px !important;
-        padding-right: 30px !important;
-    }
+  .mat-menu-item {
+    padding-left: 5px !important;
+    padding-right: 30px !important;
+  }
 }
 
 body .ui-tabmenu .ui-tabmenu-nav {
-    border-bottom: unset !important;
+  border-bottom: unset !important;
+}
+
+.mat-tab-body.mat-tab-body-active {
+  overflow-y: unset !important;
+}
+
+.invoice-main-container .mat-tab-body .mat-tab-body-content {
+  overflow: hidden !important;
 }
