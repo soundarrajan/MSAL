@@ -1,11 +1,9 @@
-﻿commit 12513f25b7afcede6c8967ecb427ecd82ace66b7
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Wed Jun 2 06:52:58 2021 +0000
+﻿commit e9196c42ad1b50dd515a4007c05cee7afd9f67a3
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Jun 2 07:14:23 2021 +0000
 
-    Merged PR 11102: fix releated invoice length | request id | rename comapny
+    Merged PR 11124: #32674: Under current Current ROB and Arbitrage details entered values are not retaining when we navigate from other tabs int validation has done
     
-    fix releated invoice length | request id | rename comapny
-    
-    Related work items: #32694, #32707, #32778
+    Related work items: #32674
 
 branch: master
