@@ -195,7 +195,7 @@ export class VesselPopupComponent implements OnInit {
         selectedPort = res.filter(item => item.LocationName.toLowerCase() == portName.toLowerCase());
         data = {
           position: 0,
-          port_view: selectedPort[0].flag,
+          port_view: 'higher-warning-view',//selectedPort[0].flag,
           name: selectedPort[0].LocationName,
           earliestTradingTime: '31 Days',
           latestTradingTime: '2 Days',
@@ -225,8 +225,8 @@ export class VesselPopupComponent implements OnInit {
           lsmgo: '10',
           notificationsCount: 6,
           messagesCount: 2,
-          latitude: selectedPort[0].Latitude,
-          longitude: selectedPort[0].Longitude,
+          latitude: selectedPort[0].locationLatitude,
+          longitude: selectedPort[0].locationLongitude,
         }
         if (!routeOpen) {
           if (portPopupData.length >= 2) {
