@@ -2018,7 +2018,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ProductId: product.id 
                       }
                     };
-                    // ctrl.productChanged('selectProduct', ctrl.data.products[index]);
+                    ctrl.productChanged('selectProduct', ctrl.data.products[index]);
                     $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload2).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
@@ -2163,6 +2163,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if(source == 'selectProduct') {
                 for (let j = 0; j < data.additionalCosts.length; j++) {
                     let additionalCost = data.additionalCosts[j];
+                    if(data.product && data.tempProduct && data.product.id != data.tempProduct.id) {
+                        data.amount = 0;
+                    }
                     if(additionalCost.costType && additionalCost.costType.name == 'Percent') {
                         additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
                     }
@@ -4639,6 +4642,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     && additionalCost.confirmedQuantity > 0 && additionalCost.quantityUom && additionalCost.quantityUom.id > 0)) {
                 return;
             }
+            let productId = product.product.id;
+            if(product.product && product.tempProduct && product.product.id != product.tempProduct.id) {
+                productId = product.tempProduct.id;
+            }
             if (additionalCost.costType.id == COST_TYPE_IDS.RANGE || additionalCost.costType.id == COST_TYPE_IDS.TOTAL) {
                 let locAddCost = ctrl.locationAdditionalCosts.find(x => {
                     if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
@@ -4661,7 +4668,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         Filters: [
                             {
                                 ColumnName: 'ProductId',
-                                Value: product.product.id
+                                Value: productId
                             },
                             {
                                 ColumnName: 'LocationId',
