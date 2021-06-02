@@ -7,6 +7,18 @@
   color: #252A32;
 }
 
+:host ::ng-deep {
+.claim-amount-wrapper {
+  .mat-form-field-flex {
+    height: 30px;
+    .mat-form-field-infix {
+      position: relative;
+      bottom:10px;
+    }
+  }
+}
+}
+
 .invoice-product-details-table {
   display: table !important;
   border-collapse: collapse;
@@ -333,6 +345,7 @@ th, td {
       }
     }
   }
+
 
   .split-field {
     //width: 180px;

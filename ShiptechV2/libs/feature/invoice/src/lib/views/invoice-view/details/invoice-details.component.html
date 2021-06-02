@@ -166,7 +166,7 @@
             </div>
             <div
               class="custom-form-field-with-search lightTheme"
-              style="margin-top: 8px !important;"
+              style="margin-top: 8px !important; padding-left: 15px;"
             >
               <div class="d-flex">
                 <mat-form-field
@@ -249,11 +249,9 @@
               >
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Invoice rate currency</mat-label>
-                  <!-- <input matInput
-                                    name="invoiceRateCurrencyCode"
-                                    [(ngModel)]="formValues.invoiceRateCurrency.code"> -->
                   <mat-select
-                    disableOptionCentering
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
                     [(ngModel)]="formValues.invoiceRateCurrency.code"
                     name="invoiceRateCurrencyCode"
                     required
@@ -423,7 +421,7 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div id="custom-form-field" class="lightTheme">
+              <div id="custom-form-field" class="lightTheme can-be-disabled">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Payment Status</mat-label>
                   <mat-select
@@ -573,10 +571,10 @@
       <div class="row">
         <div class="col-md-6">
           <div class="section-header">
-            <div class="header-label">Order Details: <span class="order-id">7823</span></div>
+            <div class="header-label">Order Details: <a href="{{ urlService.editOrder(formValues.orderDetails?.order?.id) }}" class="order-id">{{formValues.orderDetails?.order?.id}}</a></div>
             <div class="header-data">
               Order Date:
-              <span>12/12/2021</span>
+              <span>{{formValues.orderDetails?.orderDate | date: this.dateFormat}}</span>
             </div>
           </div>
           <div class="section-content order-details">
@@ -772,10 +770,10 @@
                 <readonly-details
                   [options]="counterpartyDetails"
                 ></readonly-details>
-                <div class="form-fields" style="margin: 0px -15px;">
+                <div class="form-fields">
                   <div
                     id="custom-form-field"
-                    class="lightTheme"
+                    class="lightTheme bankAccountNo"
                     *ngIf="getBankAccountNumberDateConfig().isVisible"
                   >
                     <mat-form-field
