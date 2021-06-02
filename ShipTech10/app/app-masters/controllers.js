@@ -7742,7 +7742,7 @@
             }
         }
         function IsDataExists(data) {
-            if (data == "" || data == null || data == undefined) {
+            if (data == "" || data == null || data == undefined || data == 0 || data == "0") {
                 return true;
             } else {
                 return false;
