@@ -2080,7 +2080,7 @@
                     	|| (options.gid == "flat_contract_app_contract_list" && options.colModel.name == "fixedPrice")
                     	|| (options.gid == "flat_contract_planning" && options.colModel.name == "deliveryPrice")
                 	) {
-	                    pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
+	                    pricePrecision = rowObject.pricePrecision !== null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                     }
                     if (cellValue != null) {
                         element = $filter("number")(cellValue, pricePrecision);
