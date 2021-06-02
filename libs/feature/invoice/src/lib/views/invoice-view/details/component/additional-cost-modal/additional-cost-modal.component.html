@@ -175,7 +175,11 @@
           </td>
           <td class="padding" style="max-width: initial;min-width: 200px">
             <div class="delivery-number-container">
-              {{ additionalCost.value.costName.name }}
+              {{
+                additionalCost.value.description
+                  ? additionalCost.value.description
+                  : additionalCost.value.costName.name
+              }}
             </div>
           </td>
           <td style="max-width: initial;min-width: 150px" class="padding-line">
@@ -354,6 +358,7 @@
                     <input
                       matInput
                       [(ngModel)]="additionalCost.value.invoiceQuantity"
+                      (keypress)="keyPressNumber($event)"
                       autocomplete="off"
                       (ngModelChange)="
                         getRangeTotalAmount(
@@ -437,6 +442,7 @@
                       matInput
                       autocomplete="off"
                       [(ngModel)]="additionalCost.value.invoiceRate"
+                      (keypress)="keyPressNumber($event)"
                       quantityFormat
                       [disabled]="
                         additionalCost.value.locationAdditionalCostId &&
@@ -518,6 +524,7 @@
                     <input
                       matInput
                       [(ngModel)]="additionalCost.value.invoiceAmount"
+                      (keypress)="keyPressNumber($event)"
                       autocomplete="off"
                       (ngModelChange)="
                         invoiceConvertUom('cost', additionalCost.key)
@@ -548,6 +555,7 @@
                     <input
                       matInput
                       [(ngModel)]="additionalCost.value.invoiceExtras"
+                      (keypress)="keyPressNumber($event)"
                       autocomplete="off"
                       [disabled]="additionalCost.value.locationAdditionalCostId"
                       (ngModelChange)="

@@ -1198,17 +1198,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   setAdditionalCostLine(line, key1, key2) {
-    if (
-      line.costType &&
-      !(line.costType.name == 'Range' || line.costType.name == 'Total')
-    ) {
-      return;
-    }
-    if (!line.additionalCostid) {
-      return;
-    }
     let additionalCost = {
-      id: line.additionalCostid,
+      id: line.additionalCostid ? line.additionalCostid : line.id,
       name: line.name
     };
 
@@ -1224,8 +1215,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       }
     });
     this.formValues.products[key1].additionalCosts[key2].costType =
-      additionalCostLine.costType;
-    if (additionalCostLine.amount) {
+      additionalCostLine && additionalCostLine.costType
+        ? additionalCostLine.costType
+        : null;
+    if (additionalCostLine && additionalCostLine.amount) {
       this.formValues.products[key1].additionalCosts[
         key2
       ].amount = this.amountFormatValue(additionalCostLine.amount);
@@ -1233,14 +1226,16 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       this.formValues.products[key1].additionalCosts[key2].amount = null;
     }
     this.formValues.products[key1].additionalCosts[key2].uom =
-      additionalCostLine.priceUom;
-    if (additionalCostLine.extrasPercentage) {
+      additionalCostLine && additionalCostLine.priceUom
+        ? additionalCostLine.priceUom
+        : null;
+    if (additionalCostLine && additionalCostLine.extrasPercentage) {
       this.formValues.products[key1].additionalCosts[key2].extras =
         additionalCostLine.extrasPercentage;
     } else {
       this.formValues.products[key1].additionalCosts[key2].extras = null;
     }
-    if (additionalCostLine.currency) {
+    if (additionalCostLine && additionalCostLine.currency) {
       this.formValues.products[key1].additionalCosts[key2].currency =
         additionalCostLine.currency;
     } else {
@@ -1249,11 +1244,16 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       ].currency = this.generalTenantSettings.tenantFormats.currency;
     }
     this.formValues.products[key1].additionalCosts[key2].comments =
-      additionalCostLine.costDescription;
+      additionalCostLine && additionalCostLine.costDescription
+        ? additionalCostLine.costDescription
+        : null;
 
     this.formValues.products[key1].additionalCosts[
       key2
-    ].locationAdditionalCostId = additionalCostLine.locationid;
+    ].locationAdditionalCostId =
+      additionalCostLine && additionalCostLine.locationid
+        ? additionalCostLine.locationid
+        : null;
 
     console.log(additionalCostLine);
   }
