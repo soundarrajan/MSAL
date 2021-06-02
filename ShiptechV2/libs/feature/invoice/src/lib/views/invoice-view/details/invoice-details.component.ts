@@ -2616,7 +2616,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       formValues.invoiceSummary = null;
     }
 
-    // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
+    // formValues.invoiceSummary.provisionalInvoiceAmount = this.calculateprovisionalInvoiceAmount(formValues){}
     formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
     formValues.invoiceSummary.invoiceAmountGrandTotal -= (formValues.invoiceSummary.provisionalInvoiceAmount?? 0);
     formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
@@ -3145,6 +3145,19 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       }
     }
+    if(name == 'InvoiceRateCurrency') {
+      this.formValues.productDetails.forEach(element => {
+          element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
+      });
+      this.formValues.costDetails.forEach(element => {
+        element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
+      });
+      this.formValues.invoiceClaimDetails.forEach(element => {
+        element.invoiceAmountCurrency = this.formValues.invoiceRateCurrency;
+      });
+
+      this.setChipDatas();
+    }
   }
 
   setupGrid_related_invoice(){
@@ -3235,4 +3248,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     );
   }
 
+  compareCurrencyObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
 }
