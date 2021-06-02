@@ -1,7 +1,9 @@
-﻿commit 14020c5b9b6696c7602161f65984e94ff56061ae
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Wed Jun 2 14:27:18 2021 +0530
+﻿commit 4ce542f04333bdf40aa3691b29c483bf66ce4ba7
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jun 2 09:45:57 2021 +0000
 
-    Default payment date from working due date field and invoice total calculation fix  #32752.
+    Merged PR 11140: Fixed barge cost issues in contract and invoice screen
+    
+    Fixed barge cost issues in contract and invoice screen
 
 branch: master

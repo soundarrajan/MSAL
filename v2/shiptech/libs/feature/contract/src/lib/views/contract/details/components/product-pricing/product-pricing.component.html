@@ -427,10 +427,7 @@
                       panelClass="general-info-select-container"
                       [compareWith]="compareAdditionalCostObjects"
                       [disabled]="
-                        (additionalCost.value.costType &&
-                          (additionalCost.value.costType.name == 'Total' ||
-                            additionalCost.value.costType.name == 'Range') &&
-                          additionalCost.value.locationAdditionalCostId) ||
+                        additionalCost.value.locationAdditionalCostId ||
                         (formValues.status &&
                           formValues.status.name == 'Confirmed')
                       "
@@ -474,10 +471,7 @@
                       panelClass="general-info-select-container"
                       [compareWith]="compareUomObjects"
                       [disabled]="
-                        (additionalCost.value.costType &&
-                          (additionalCost.value.costType.name == 'Total' ||
-                            additionalCost.value.costType.name == 'Range') &&
-                          additionalCost.value.locationAdditionalCostId) ||
+                        additionalCost.value.locationAdditionalCostId ||
                         (formValues.status &&
                           formValues.status.name == 'Confirmed')
                       "
@@ -526,10 +520,7 @@
                       autocomplete="off"
                       (keypress)="keyPressNumber($event)"
                       [disabled]="
-                        (additionalCost.value.costType &&
-                          (additionalCost.value.costType.name == 'Total' ||
-                            additionalCost.value.costType.name == 'Range') &&
-                          additionalCost.value.locationAdditionalCostId) ||
+                        additionalCost.value.locationAdditionalCostId ||
                         (additionalCost.value.costType &&
                           (additionalCost.value.costType.id == 4 ||
                             additionalCost.value.costType.id == 5)) ||
@@ -558,10 +549,7 @@
                       panelClass="general-info-select-container"
                       [compareWith]="compareUomObjects"
                       [disabled]="
-                        (additionalCost.value.costType &&
-                          (additionalCost.value.costType.name == 'Total' ||
-                            additionalCost.value.costType.name == 'Range') &&
-                          additionalCost.value.locationAdditionalCostId) ||
+                        additionalCost.value.locationAdditionalCostId ||
                         (additionalCost.value.costType &&
                           additionalCost.value.costType.name != 'Unit') ||
                         (formValues.status &&
@@ -592,10 +580,7 @@
                       matInput
                       autocomplete="off"
                       [disabled]="
-                        (additionalCost.value.costType &&
-                          (additionalCost.value.costType.name == 'Total' ||
-                            additionalCost.value.costType.name == 'Range') &&
-                          additionalCost.value.locationAdditionalCostId) ||
+                        additionalCost.value.locationAdditionalCostId ||
                         (formValues.status &&
                           formValues.status.name == 'Confirmed')
                       "
@@ -621,10 +606,7 @@
                       panelClass="general-info-select-container"
                       [compareWith]="compareUomObjects"
                       [disabled]="
-                        (additionalCost.value.costType &&
-                          (additionalCost.value.costType.name == 'Total' ||
-                            additionalCost.value.costType.name == 'Range') &&
-                          additionalCost.value.locationAdditionalCostId) ||
+                        additionalCost.value.locationAdditionalCostId ||
                         (formValues.status &&
                           formValues.status.name == 'Confirmed')
                       "
@@ -652,10 +634,7 @@
                       [(ngModel)]="additionalCost.value.comments"
                       matInput
                       [disabled]="
-                        (additionalCost.value.costType &&
-                          (additionalCost.value.costType.name == 'Total' ||
-                            additionalCost.value.costType.name == 'Range') &&
-                          additionalCost.value.locationAdditionalCostId) ||
+                        additionalCost.value.locationAdditionalCostId ||
                         (formValues.status &&
                           formValues.status.name == 'Confirmed')
                       "
