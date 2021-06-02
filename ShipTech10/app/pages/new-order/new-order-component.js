@@ -1313,6 +1313,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         function orderHasAdditionalCosts() {
+            ctrl.getAdditionalCosts();
             return ctrl.additionalCosts?.length;
         }
 

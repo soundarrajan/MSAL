@@ -2045,7 +2045,7 @@
                                         var FormvalueLength = v.additionalCostDetails.length - 1;
                                         $.each(v.additionalCostDetails, (i, j) => {
                                             if (FormvalueLength != i) {
-                                                if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                                if (IsZeroOrHigher(j.qtyFrom) || IsZeroOrHigher(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
                                                     toastr.error('Please fill all required details in Port Additional Cost Details');
                                                     return returnresult = false
                                                 }
@@ -2058,7 +2058,7 @@
                                                 }
                                             }
                                             else {
-                                                if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                                if (IsZeroOrHigher(j.qtyFrom) || IsZeroOrHigher(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
                                                     toastr.error('Please fill all required details in Port Additional Cost Details');
                                                     return returnresult = false
                                                 }
@@ -7742,10 +7742,17 @@
             }
         }
         function IsDataExists(data) {
-            if (data == "" || data == null || data == undefined || data == 0 || data == "0") {
+            if (data == "" || data == null || data == undefined) {
                 return true;
             } else {
                 return false;
+            }
+        }
+        function IsZeroOrHigher(data) {
+            if (data >= 0) {
+                return false;
+            } else {
+                return true;
             }
         }
 
@@ -7756,31 +7763,34 @@
                 var isvalidbargecostdetails = true;
                 var isvalidminmaxqty = true;
                 var FormvalueLength = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length -1;
-                $.each($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails, (k, v) => {
-                    if(FormvalueLength != k){
-                        if(IsDataExists(v.qtyFrom) || IsDataExists(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
+                
+                for(let k = 0; k < $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length; k++)
+                {
+                    let v = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails[k];
+                    if(FormvalueLength != k) {
+                        if(IsZeroOrHigher(v.qtyFrom) || IsZeroOrHigher(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
                             isvalidbargecostdetails = false;
-                          
+                            break;
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
                             isvalidminmaxqty = false;
-                               
+                            break;
                         }
                     }
                     else{
-                        if(IsDataExists(v.qtyFrom) || IsDataExists(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
+                        if(IsZeroOrHigher(v.qtyFrom) || IsZeroOrHigher(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
                             isvalidbargecostdetails = false;
+                            break;
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
-                            isvalidminmaxqty = false;     
+                            isvalidminmaxqty = false;
+                            break;
                         }
                         else{
                             $scope.prettyCloseModal();
                         }
-
                     }
-
-                });
+                }
 
                 if(!isvalidbargecostdetails){
                     toastr.error('Please fill all required details');
