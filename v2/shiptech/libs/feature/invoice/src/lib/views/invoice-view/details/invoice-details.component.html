@@ -112,6 +112,7 @@
                       formValues.counterpartyDetails.paymentTerm?.name
                     " [matTooltipPosition]="'above'" matTooltipClass="custom-tooltip"
                     [(ngModel)]="formValues.counterpartyDetails.paymentTerm" [ngModelOptions]="{ standalone: true }"
+                    (dateChange) = "triggerChangeFieldsAppSpecific('PaymentTerm')"
                     [matAutocomplete]="auto4" autocomplete="off" placeholder="Payment Term" required />
                   <mat-autocomplete #auto4="matAutocomplete" class="darkPanelAuto" [displayWith]="displayFn"
                     (optionSelected)="
@@ -403,6 +404,7 @@
                   <mat-label>Delivery Date</mat-label>
                   <input [(ngModel)]="formValues.deliveryDate" name="deliveryDate" #validToDateField="ngModel" matInput
                     [matDatepicker]="deliveryDate" (focus)="deliveryDate.open()" autocomplete="off"
+                    (dateChange) = "triggerChangeFieldsAppSpecific('DeliveryDate')"
                     placeholder="Delivery Date" [disabled]="formValues.status?.name === 'Approved'" required />
                   <mat-datepicker-toggle matSuffix [for]="deliveryDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">

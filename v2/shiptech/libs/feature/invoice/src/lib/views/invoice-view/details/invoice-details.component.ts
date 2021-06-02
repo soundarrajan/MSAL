@@ -774,11 +774,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.tenantService.amountPrecision +
       '-' +
       this.tenantService.amountPrecision;
-    this.quantityFormat =
-      '1.' +
-      this.tenantService.quantityPrecision +
-      '-' +
-      this.tenantService.quantityPrecision;
+    // this.quantityFormat =
+    //   '1.' +
+    //   this.tenantService.quantityPrecision +
+    //   '-' +
+    //   this.tenantService.quantityPrecision;
     this.autocompletePaybleTo = knownMastersAutocomplete.payableTo;
     this.autocompleteCompany = knownMastersAutocomplete.company;
     this.autocompleteCarrier = knownMastersAutocomplete.company;
@@ -850,8 +850,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.invoiceTypeList = list.filter(x => x.id !== 6 && x.id !== 7);
     });
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
-    this.getProductList();
-    if (!this.formValues.paymentDate) {
+    // this.getProductList();
+    if(!this.formValues.paymentDate) {
       this.formValues.paymentDate = this.formValues.workingDueDate;
     }
   }
@@ -2790,6 +2790,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         name: selection.name
       };
       this.formValues.counterpartyDetails.paymentTerm = obj;
+      this.triggerChangeFieldsAppSpecific('PaymentTerm');
       this.changeDetectorRef.detectChanges();
     }
   }
@@ -2848,6 +2849,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       name: data.name
     };
     // console.log(this.formValues.counterpartyDetails.paymentTerm);
+    this.triggerChangeFieldsAppSpecific('PaymentTerm');
     this.changeDetectorRef.detectChanges();
   }
 
@@ -3132,52 +3134,87 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     return object1 && object2 && object1.id == object2.id;
   }
 
-  triggerChangeFieldsAppSpecific(name) {
+  triggerChangeFieldsAppSpecific(name: string) {
     let dueDate = this.formValues.dueDate;
-    if (name == 'DueDate') {
-      if (this.initialDueDate) {
-        if (this.initialDueDate.split('T')[0] != this.formValues.dueDate) {
-          this.formValues.manualDueDate = this.formValues.dueDate;
-        } else {
-          this.formValues.manualDueDate = null;
-        }
-      } else {
-        this.formValues.manualDueDate = this.formValues.dueDate;
-      }
-      if (parseFloat(dueDate.split('-')[0]) < 1753) {
-        return;
-      }
-      this.invoiceService
-        .getWorkingDueDate(dueDate)
-        .pipe(finalize(() => {}))
-        .subscribe((response: any) => {
-          if (typeof response == 'string') {
-            this.formValues.workingDueDate = response;
-            if (!this.initialHasManualPaymentDate) {
-              this.formValues.hasManualPaymentDate = false;
-              this.formValues.paymentDate = response;
-              this.manualPaymentDateReference = this.formValues.paymentDate;
-            }
-            this.changeDetectorRef.detectChanges();
+    switch (name) {
+      case 'DueDate':
+        if (this.initialDueDate) {
+          if (this.initialDueDate.split('T')[0] != this.formValues.dueDate) {
+            this.formValues.manualDueDate = this.formValues.dueDate;
+          } else {
+            this.formValues.manualDueDate = null;
           }
+        } else {
+          this.formValues.manualDueDate = this.formValues.dueDate;
+        }
+        if (parseFloat(dueDate.split('-')[0]) < 1753) {
+          return;
+        }
+        this.invoiceService.getWorkingDueDate(dueDate).pipe(finalize(() => { })).subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else {
+              this.formValues.workingDueDate = response;
+              if (!this.initialHasManualPaymentDate) {
+                this.formValues.hasManualPaymentDate = false;
+                this.formValues.paymentDate = response;
+                this.manualPaymentDateReference = this.formValues.paymentDate;
+              }
+              this.changeDetectorRef.detectChanges();
+            }
+          });
+        break;
+      case 'PaymentDate':
+        // if (!this.initialHasManualPaymentDate) {
+        //   this.formValues.hasManualPaymentDate = false;
+        //   if (this.manualPaymentDateReference) {
+        //     if (
+        //       this.manualPaymentDateReference.split('T')[0] !=
+        //       this.formValues.paymentDate.split('T')[0]
+        //     ) {
+        //       this.formValues.hasManualPaymentDate = true;
+        //     }
+        //   }
+        // }
+        this.formValues.hasManualPaymentDate = true;
+        break;
+      case 'InvoiceRateCurrency':
+        this.formValues.productDetails.forEach(element => {
+          element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
         });
-    }
+        this.formValues.costDetails.forEach(element => {
+          element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
+        });
+        this.formValues.invoiceClaimDetails.forEach(element => {
+          element.invoiceAmountCurrency = this.formValues.invoiceRateCurrency;
+        });
+        this.setChipDatas();
+        break;
+      case 'PaymentTerm':
+      case 'DeliveryDate':
+        if (!this.formValues.id || this.formValues.id == 0) {
+          break;
+        }
+        let payload = {
+          InvoiceId: this.formValues.id,
+          PaymentTermId: this.formValues.counterpartyDetails.paymentTerm.id,
+          InvoiceDeliveryDate: this.formValues.deliveryDate,
+          ManualDueDate: this.formValues.manualDueDate
+        };
 
-    if (name == 'PaymentDate') {
-      this.formValues.hasManualPaymentDate = true;
-    }
-    if (name == 'InvoiceRateCurrency') {
-      this.formValues.productDetails.forEach(element => {
-        element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
-      });
-      this.formValues.costDetails.forEach(element => {
-        element.invoiceRateCurrency = this.formValues.invoiceRateCurrency;
-      });
-      this.formValues.invoiceClaimDetails.forEach(element => {
-        element.invoiceAmountCurrency = this.formValues.invoiceRateCurrency;
-      });
-
-      this.setChipDatas();
+        this.invoiceService.getDueDateWithoutSave(payload).pipe(finalize(() => { })).subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else {
+              this.formValues.dueDate = response.dueDate;
+              if (!this.initialHasManualPaymentDate) {
+                this.formValues.paymentDate = response.paymentDate;
+                this.manualPaymentDateReference = this.formValues.paymentDate;
+              }
+              this.formValues.workingDueDate = response.workingDueDate;
+            }
+          });
+        break;
     }
   }
 

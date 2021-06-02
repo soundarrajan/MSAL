@@ -1,11 +1,11 @@
-﻿commit 5713d6b00199c0941a63eedc965c6e138a1ba5de
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 2 14:16:38 2021 +0000
+﻿commit be70d46a8cf7154dc71441cfc52a1d79b133364e
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Jun 2 15:51:04 2021 +0000
 
-    Merged PR 11166: #32812 : Validation for Total Max SOD
+    Merged PR 11170: build fix
     
-    #32812 : Validation for Total Max SOD
+    build fix
     
-    Related work items: #29755, #32812
+    Related work items: #32433
 
 branch: master
