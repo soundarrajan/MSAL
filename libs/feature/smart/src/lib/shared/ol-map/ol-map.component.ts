@@ -462,6 +462,7 @@ export class OlMapComponent implements OnInit {
       this.mapService.getVesselsListForMap(" ").subscribe((res: any) => {
         if(res.payload != undefined){
           this.vesselList = res.payload;
+          console.log('getVesselList payload',res.payload);
           let vesselMakesrs = [];
           this.getCurrentTime();
           for (let vesselDetail of this.vesselList) {
@@ -470,10 +471,12 @@ export class OlMapComponent implements OnInit {
               geometry: new OlPoint(fromLonLat([vesselDetail.vesselLatitude, vesselDetail.vesselLongitude]))
             });
             marker.setStyle(this.getVesselStyle(vesselDetail));
+            console.log('this.getVesselStyle', this.getVesselStyle(vesselDetail))
             vesselMakesrs.push(marker);
           }
           if (vesselMakesrs.length > 0) {
             this.vesselMakersLayer.getSource().addFeatures(vesselMakesrs);
+            console.log('Vessel Markers',vesselMakesrs);
             this.setCenter();
           }
         }
@@ -637,7 +640,7 @@ export class OlMapComponent implements OnInit {
           vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
         // src: "http://cdn.mapmarker.io/api/v1/pin?text=P&size=50&hoffset=1",
         // src: vesselDetail.ColorFlag == 0 ? "./assets/icon/ROB_blue.svg" : vesselDetail.ColorFlag == 1 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_amber.svg",
-        src: "./assets/icon/ROB_blue.svg"//vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
+        src: "./assets/customicons/vessel/ROB_blue.svg"//vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
       }))
     });
     return iconStyle;
