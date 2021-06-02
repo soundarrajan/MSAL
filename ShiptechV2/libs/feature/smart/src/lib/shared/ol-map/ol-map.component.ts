@@ -330,7 +330,7 @@ export class OlMapComponent implements OnInit {
   ngAfterViewInit() {
     this.loadMap();
     this.loadEventListeners();
-    this.loadVessels("All");
+    this.loadVessels(" ");
     this.setCenter();
     this.portMakersLayer.setVisible(true);
     this.loadPorts();
@@ -457,7 +457,8 @@ export class OlMapComponent implements OnInit {
   private loadVessels(filter) {
     this.isLoading = true;
     this.vesselMakersLayer.getSource().clear();
-    if (filter == "All") {
+    debugger
+    if (filter == " ") {
       this.mapService.getVesselsListForMap(" ").subscribe((res: any) => {
         this.vesselList = res.payload;
         let vesselMakesrs = [];
@@ -1136,7 +1137,7 @@ export class OlMapComponent implements OnInit {
       switch (item.name) {
         case 'All My Vessels': {
           this.selectedFillterTag = null;
-          this.loadVessels("All");
+          this.loadVessels(" ");
           this.setCenter();
           break;
         }
@@ -1145,7 +1146,7 @@ export class OlMapComponent implements OnInit {
           if (this.selectedFillterTag)
             this.loadVessels(this.selectedFillterTag)
           else
-            this.loadVessels("All");
+            this.loadVessels(" ");
           break;
         }
         case 'European Region': {
