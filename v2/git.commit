@@ -1,11 +1,11 @@
-﻿commit be70d46a8cf7154dc71441cfc52a1d79b133364e
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jun 2 15:51:04 2021 +0000
+﻿commit e4c67e390b9ba9d5ebee0be2dea42c7944a3e14d
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 2 19:36:14 2021 +0000
 
-    Merged PR 11170: build fix
+    Merged PR 11177: #29755: Map view filter: View all my Vessels
     
-    build fix
+    #29755: Map view filter: View all my Vessels
     
-    Related work items: #32433
+    Related work items: #29755
 
 branch: master
