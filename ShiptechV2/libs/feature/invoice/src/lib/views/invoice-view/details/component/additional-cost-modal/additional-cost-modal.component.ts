@@ -564,7 +564,10 @@ export class AdditionalCostModalComponent implements OnInit {
         : this.formValues.invoiceRateCurrency,
       product: productLine,
       isTaxComponent: isTaxComponent,
-      locationAdditionalCostId: additionalCost.locationid
+      locationAdditionalCostId: additionalCost.locationid,
+      description: additionalCost.costDescription
+        ? additionalCost.costDescription
+        : null
     };
     this.formValues.costDetails.push(newLine);
     this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
@@ -690,11 +693,20 @@ export class AdditionalCostModalComponent implements OnInit {
         rowIndex
       ].invoiceAmount = this.cost.invoiceRate;
       this.formValues.costDetails[rowIndex].invoiceExtrasAmount =
-        (this.formValues.costDetails[rowIndex].invoiceExtras / 100) *
-        this.formValues.costDetails[rowIndex].invoiceAmount;
+        (this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceExtras
+        ) /
+          100) *
+        this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceAmount
+        );
       this.formValues.costDetails[rowIndex].invoiceTotalAmount =
-        parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) +
-        parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+        this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceExtrasAmount
+        ) +
+        this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceAmount
+        );
       this.calculateGrand(this.formValues);
       return;
     }
@@ -708,11 +720,20 @@ export class AdditionalCostModalComponent implements OnInit {
         rowIndex
       ].invoiceAmount = this.cost.invoiceRate;
       this.formValues.costDetails[rowIndex].invoiceExtrasAmount =
-        (this.formValues.costDetails[rowIndex].invoiceExtras / 100) *
-        this.formValues.costDetails[rowIndex].invoiceAmount;
+        (this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceExtras
+        ) /
+          100) *
+        this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceAmount
+        );
       this.formValues.costDetails[rowIndex].invoiceTotalAmount =
-        parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) +
-        parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+        this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceExtrasAmount
+        ) +
+        this.convertDecimalSeparatorStringToNumber(
+          this.formValues.costDetails[rowIndex].invoiceAmount
+        );
       this.calculateGrand(this.formValues);
       return;
     }
@@ -758,19 +779,33 @@ export class AdditionalCostModalComponent implements OnInit {
       if (this.costType) {
         if (this.costType.name == 'Unit') {
           this.formValues.costDetails[rowIndex].invoiceAmount =
-            result * this.cost.invoiceRate * this.cost.invoiceQuantity;
+            result *
+            this.convertDecimalSeparatorStringToNumber(this.cost.invoiceRate) *
+            this.convertDecimalSeparatorStringToNumber(
+              this.cost.invoiceQuantity
+            );
         }
 
         this.formValues.costDetails[rowIndex].invoiceExtrasAmount =
-          (this.formValues.costDetails[rowIndex].invoiceExtras / 100) *
-          this.formValues.costDetails[rowIndex].invoiceAmount;
+          (this.convertDecimalSeparatorStringToNumber(
+            this.formValues.costDetails[rowIndex].invoiceExtras
+          ) /
+            100) *
+          this.convertDecimalSeparatorStringToNumber(
+            this.formValues.costDetails[rowIndex].invoiceAmount
+          );
         this.formValues.costDetails[rowIndex].invoiceTotalAmount =
-          parseFloat(
+          this.convertDecimalSeparatorStringToNumber(
             this.formValues.costDetails[rowIndex].invoiceExtrasAmount
-          ) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+          ) +
+          this.convertDecimalSeparatorStringToNumber(
+            this.formValues.costDetails[rowIndex].invoiceAmount
+          );
         this.formValues.costDetails[rowIndex].difference =
-          parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) -
-          parseFloat(
+          this.convertDecimalSeparatorStringToNumber(
+            this.formValues.costDetails[rowIndex].invoiceTotalAmount
+          ) -
+          this.convertDecimalSeparatorStringToNumber(
             this.formValues.costDetails[rowIndex].estimatedTotalAmount
           );
 
@@ -801,22 +836,35 @@ export class AdditionalCostModalComponent implements OnInit {
           if (this.costType) {
             if (this.costType.name == 'Unit') {
               this.formValues.costDetails[rowIndex].invoiceAmount =
-                result * this.cost.invoiceRate * this.cost.invoiceQuantity;
+                result *
+                this.convertDecimalSeparatorStringToNumber(
+                  this.cost.invoiceRate
+                ) *
+                this.convertDecimalSeparatorStringToNumber(
+                  this.cost.invoiceQuantity
+                );
             }
 
             this.formValues.costDetails[rowIndex].invoiceExtrasAmount =
-              (this.formValues.costDetails[rowIndex].invoiceExtras / 100) *
-              this.formValues.costDetails[rowIndex].invoiceAmount;
+              (this.convertDecimalSeparatorStringToNumber(
+                this.formValues.costDetails[rowIndex].invoiceExtras
+              ) /
+                100) *
+              this.convertDecimalSeparatorStringToNumber(
+                this.formValues.costDetails[rowIndex].invoiceAmount
+              );
             this.formValues.costDetails[rowIndex].invoiceTotalAmount =
-              parseFloat(
+              this.convertDecimalSeparatorStringToNumber(
                 this.formValues.costDetails[rowIndex].invoiceExtrasAmount
               ) +
-              parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+              this.convertDecimalSeparatorStringToNumber(
+                this.formValues.costDetails[rowIndex].invoiceAmount
+              );
             this.formValues.costDetails[rowIndex].difference =
-              parseFloat(
+              this.convertDecimalSeparatorStringToNumber(
                 this.formValues.costDetails[rowIndex].invoiceTotalAmount
               ) -
-              parseFloat(
+              this.convertDecimalSeparatorStringToNumber(
                 this.formValues.costDetails[rowIndex].estimatedTotalAmount
               );
 
@@ -1088,11 +1136,36 @@ export class AdditionalCostModalComponent implements OnInit {
         } else {
           console.log(response);
           this.additionalCostForLocation[locationId] = _.cloneDeep(response);
+          let filterElements = _.filter(
+            this.additionalCostForLocation[locationId],
+            function(object) {
+              return !object.isDeleted;
+            }
+          );
+          let newAdditionalCostList = _.cloneDeep(filterElements);
+          this.additionalCostForLocation[locationId] = _.cloneDeep(
+            filterElements
+          );
+
           this.additionalCostForLocationFilter[locationId] = _.cloneDeep(
-            response
+            filterElements
           );
           this.changeDetectorRef.detectChanges();
         }
       });
+  }
+
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',' || inp == '-') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 }
