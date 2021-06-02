@@ -103,6 +103,14 @@ export class VesselInfoComponent implements OnInit {
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     this.loadBunkerPlanDetails(vesseldata.vesselRef);   
   }
+
+  validateOnlyInt(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
     
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
