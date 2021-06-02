@@ -1,11 +1,7 @@
-﻿commit 82edfd66bfb9a0c50db404f8d9281fe3d70ec766
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 2 07:43:45 2021 +0000
+﻿commit 14020c5b9b6696c7602161f65984e94ff56061ae
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Wed Jun 2 14:27:18 2021 +0530
 
-    Merged PR 11129: SO Map View - Vessels in bvt
-    
-    SO Map View - Vessels in bvt
-    
-    Related work items: #29755
+    Default payment date from working due date field and invoice total calculation fix  #32752.
 
 branch: master

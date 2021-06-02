@@ -843,6 +843,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     });
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
+    if(!this.formValues.paymentDate) {
+      this.formValues.paymentDate = this.formValues.workingDueDate;
+    }
   }
 
   getDebunkerCheckboxConfig() {
@@ -2615,7 +2618,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
     // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
     formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
-    formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
+    formValues.invoiceSummary.invoiceAmountGrandTotal -= (formValues.invoiceSummary.provisionalInvoiceAmount?? 0);
     formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
     formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal)
             - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
