@@ -1,9 +1,11 @@
-﻿commit e0c18b29fccaf8b351bb0466b7b53d39629f6fa7
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Wed Jun 2 18:43:49 2021 +0530
+﻿commit 14f3b90b6d316ad5d31178959d4afe497dfb7a35
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 2 13:39:52 2021 +0000
 
-    Invoice-Notes section UI changes
+    Merged PR 11163: #29755 : Map view filter: View all my Vessels
     
-    Invoice-Notes section UI changes
+    #29755 : Map view filter: View all my Vessels
+    
+    Related work items: #29755
 
 branch: master
