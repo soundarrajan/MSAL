@@ -1,9 +1,9 @@
-﻿commit 9541d86c28ef26c02a4cf8ae366d47fd36415a84
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jun 2 12:48:00 2021 +0000
+﻿commit e0c18b29fccaf8b351bb0466b7b53d39629f6fa7
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Wed Jun 2 18:43:49 2021 +0530
 
-    Merged PR 11159: Fixed  Invoice total section when filling data and payment date
+    Invoice-Notes section UI changes
     
-    Fixed  Invoice total section when filling data and payment date
+    Invoice-Notes section UI changes
 
 branch: master

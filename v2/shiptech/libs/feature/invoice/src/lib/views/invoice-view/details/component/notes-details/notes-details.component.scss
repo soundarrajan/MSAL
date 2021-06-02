@@ -16,7 +16,7 @@
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
   border-radius: 4px;
-  margin-top: 15px;
+  //margin-top: 15px;
   .custom-form-field.lightTheme .mat-form-field.without-search{
     border: 1px solid #a5a5a5;
   }
@@ -303,4 +303,14 @@ border-radius: 4px;
 .title {
   position: relative;
   left: 10px !important;
+}
+
+.table-with-scroll{
+  overflow-y: auto;
+  height: 165px;
+  border: 1px solid #E0E1E4;
+}
+
+.custom-form-field-invoice-notes.lightTheme .mat-form-field.without-search {
+  border: 1px dashed #c4c4c4 !important;
 }
