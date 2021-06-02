@@ -1,11 +1,11 @@
-﻿commit 8d6df05dc0fde90fe37db72638c71dde81d378da
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jun 1 21:55:06 2021 +0000
+﻿commit 12513f25b7afcede6c8967ecb427ecd82ace66b7
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Wed Jun 2 06:52:58 2021 +0000
 
-    Merged PR 11117: Map View Requirement Smart_Operator
+    Merged PR 11102: fix releated invoice length | request id | rename comapny
     
-    Map View Requirement Smart_Operator
+    fix releated invoice length | request id | rename comapny
     
-    Related work items: #29755, #29756, #29758, #29764, #29765, #29767
+    Related work items: #32694, #32707, #32778
 
 branch: master
