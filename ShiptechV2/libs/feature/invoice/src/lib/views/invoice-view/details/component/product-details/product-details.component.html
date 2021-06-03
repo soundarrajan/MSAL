@@ -380,7 +380,8 @@
                       matInput
                       autocomplete="off"
                       [(ngModel)]="productDetail.value.invoiceRate"
-                      quantityFormat
+                      priceFormat 
+                      [attr.precision]="productDetail.value.pricePrecision"
                       (ngModelChange)="
                         invoiceConvertUom('product', productDetail.key)
                       "
