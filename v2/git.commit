@@ -1,11 +1,9 @@
-﻿commit 78afb56c4dabccf6e0ee1ecc0dccc174708cd4f3
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jun 3 05:28:51 2021 +0000
+﻿commit 8a8cd56256e7500fe09602ce5964c233da99139c
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Jun 3 07:02:37 2021 +0000
 
-    Merged PR 11184: #29767 :  Removal of Vessel duplicates from search map.
+    Merged PR 11190: Fixed retaining of modified values(payment status) in the approved status. Ma...
     
-    #29767 :  Removal of Vessel duplicates from search map.
-    
-    Related work items: #29755, #29767
+    Fixed retaining of modified values(payment status) in the approved status. Made due date non-editable in approved status
 
 branch: master
