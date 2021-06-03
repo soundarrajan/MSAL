@@ -330,7 +330,15 @@ export class OlMapComponent implements OnInit {
   ngAfterViewInit() {
     this.loadMap();
     this.loadEventListeners();
-    this.loadVessels(" ");
+    this.mapService.getVesselsListForMap(" ").subscribe((res: any) => {
+      if(res.payload != undefined){
+        this.vesselList = res.payload;
+        console.log('getVesselList payload',res.payload);
+        this.loadVessels(" ");
+        let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+        titleEle.click();
+      }
+    });
     this.setCenter();
     this.portMakersLayer.setVisible(true);
     this.loadPorts();
@@ -459,10 +467,6 @@ export class OlMapComponent implements OnInit {
     this.vesselMakersLayer.getSource().clear();
     debugger
     if (filter == " ") {
-      this.mapService.getVesselsListForMap(" ").subscribe((res: any) => {
-        if(res.payload != undefined){
-          this.vesselList = res.payload;
-          console.log('getVesselList payload',res.payload);
           let vesselMakesrs = [];
           this.getCurrentTime();
           for (let vesselDetail of this.vesselList) {
@@ -479,8 +483,7 @@ export class OlMapComponent implements OnInit {
             console.log('Vessel Markers',vesselMakesrs);
             this.setCenter();
           }
-        }
-      });
+       
     }
     else if (filter == "Unmanageable Vessels") {
         let vesselMakesrs = [];

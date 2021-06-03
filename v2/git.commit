@@ -1,9 +1,11 @@
-﻿commit 8a8cd56256e7500fe09602ce5964c233da99139c
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jun 3 07:02:37 2021 +0000
+﻿commit 8ec6ac40eb6bd4d637486620c640d8b9bdca974d
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jun 3 08:05:24 2021 +0000
 
-    Merged PR 11190: Fixed retaining of modified values(payment status) in the approved status. Ma...
+    Merged PR 11194: Map View Blocker fix #1
     
-    Fixed retaining of modified values(payment status) in the approved status. Made due date non-editable in approved status
+    Map View Blocker fix #1
+    
+    Related work items: #29755
 
 branch: master
