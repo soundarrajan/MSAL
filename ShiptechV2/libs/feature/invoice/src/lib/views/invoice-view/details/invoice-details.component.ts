@@ -3118,15 +3118,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getColorCodeFromLabels(statusObj, labels) {
-    for (let i = 0; i < labels.length; i++) {
-      if (statusObj) {
-        if (
-          statusObj.id === labels[i].id &&
-          statusObj.transactionTypeId === labels[i].transactionTypeId
-        ) {
-          return labels[i].code;
+    if(label){
+        for (let i = 0; i < labels.length; i++) {
+            if (statusObj) {
+                if (
+                statusObj.id === labels[i].id &&
+                statusObj.transactionTypeId === labels[i].transactionTypeId
+                ) {
+                return labels[i].code;
+                }
+            }
         }
-      }
     }
   }
 
