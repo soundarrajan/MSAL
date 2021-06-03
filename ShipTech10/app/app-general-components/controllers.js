@@ -3274,6 +3274,11 @@
             			$('.verifyButton').css({"display": "none"});
             		})
             	}
+            } else if (data.currentScope.currentColumnRoute == 'invoices/invoice') {
+                $('#flat_invoices_app_invoice_list_cb > div' ).html('<i id="selectAllInvoices"' +
+                        ' style="font-size: 25px !important; color: #d9d9d9;"' +
+                        ' class="fa fa-square-o" ng-click="selectAllInvoices()"></i>');
+
             } else {
                 $scope.selectedContractPlanningRows = [];
                 // selectContracts = []
@@ -3283,7 +3288,6 @@
                     ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"  ng-mouseover="evaluateChangedContracts()"></i>');
                 $('#jqgh_flat_contract_planning_actions-0').css('display', 'inherit');
 
-                $('#flat_invoices_app_invoice_list_cb').html('<span id="selectAllInvoices" style="font-size: 25px !important; color: #d9d9d9;" ng-click="selectAllInvoices()"></span>');
            }
 
         });
