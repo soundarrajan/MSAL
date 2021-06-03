@@ -120,8 +120,8 @@ export class PickDateAdapter extends NativeDateAdapter {
   styleUrls: ['./product-quality.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
+  providers: [OrderListGridViewModel,
+              DialogService,
               ConfirmationService,
               {provide: DateAdapter, useClass: PickDateAdapter},
               {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS}]
@@ -149,28 +149,28 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     this._autocompleteType = value;
   }
 
-  @Input('formValues') set _setFormValues(formValues) { 
+  @Input('formValues') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
   }
 
-  @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) { 
+  @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) {
     if (!deliveryProductIndex) {
       return;
-    } 
+    }
     this.deliveryProductIndex = deliveryProductIndex;
   }
 
-  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) { 
+  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) {
     if (!toleranceLimits) {
       return;
-    } 
+    }
     this.toleranceLimits = toleranceLimits;
   }
 
- 
+
   private eventsSubscription: Subscription;
   @Input() events: Observable<void>;
   @Input() vesselId: number;
@@ -194,7 +194,7 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     public format: TenantFormattingService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
+    iconRegistry: MatIconRegistry,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
     @Inject(DecimalPipe) private _decimalPipe,
@@ -212,9 +212,9 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
 
   }
 
-  ngOnInit(){  
+  ngOnInit(){
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
-      this.entityId = params.deliveryId;
+      this.entityId = Number(params.deliveryId);
     });
     this.entityName = 'Delivery';
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
@@ -232,6 +232,7 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     const product = this.formValues.deliveryProducts[this.deliveryProductIndex];
     this.getClaimInfo(product.qualityParameters, product.id);
     this.getQualityMatchList();
+
   }
 
   getClaimInfo(specParams, prodId) {
@@ -277,10 +278,10 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
       return this.qualityMatchList[1];
   };
 
-  
- 
 
-  
+
+
+
   setRequiredFields(data) {
     this.buttonClicked = data;
   }
@@ -293,7 +294,7 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     } else {
       if (field == 'analysedOnDate') {
         this.isAnalysedOnDateInvalid = true;
-      } 
+      }
       this.toastr.error('Please enter the correct format');
     }
 
@@ -362,5 +363,5 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
       return false;
     }
   }
-  
+
 }
