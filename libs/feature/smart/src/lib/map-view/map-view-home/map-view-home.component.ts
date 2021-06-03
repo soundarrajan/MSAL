@@ -6,7 +6,7 @@ import { fromLonLat } from 'ol/proj';
 import { WarningComponent } from '../../shared/warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-
+import { SmartOperatorComponent } from '../../shared/smart-operator/smart-operator.component';
 @Component({
   selector: 'app-map-view-home',
   templateUrl: './map-view-home.component.html',
@@ -16,6 +16,7 @@ export class MapViewHomeComponent implements OnInit {
 
   @ViewChild(OlMapComponent) olmap;
   @ViewChild(VesselDetailsComponent) vesselDetail;
+  @ViewChild(SmartOperatorComponent) tableView;
   public themeDark = true;//dark theme
   public portData;
   public showTable: boolean;
