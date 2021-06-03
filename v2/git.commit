@@ -1,11 +1,11 @@
-﻿commit e4c67e390b9ba9d5ebee0be2dea42c7944a3e14d
+﻿commit 78afb56c4dabccf6e0ee1ecc0dccc174708cd4f3
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 2 19:36:14 2021 +0000
+Date:   Thu Jun 3 05:28:51 2021 +0000
 
-    Merged PR 11177: #29755: Map view filter: View all my Vessels
+    Merged PR 11184: #29767 :  Removal of Vessel duplicates from search map.
     
-    #29755: Map view filter: View all my Vessels
+    #29767 :  Removal of Vessel duplicates from search map.
     
-    Related work items: #29755
+    Related work items: #29755, #29767
 
 branch: master
