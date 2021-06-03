@@ -1,9 +1,7 @@
-﻿commit 3cb381d9f3af1962bad3d02d0a7072833b5d8239
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jun 3 08:25:18 2021 +0000
+﻿commit 179123cd43a16a9515491a004f501c4ccf734c4e
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Thu Jun 3 13:56:48 2021 +0530
 
-    Merged PR 11197: Added Enable/Disable action buttons based on the status of the Invoice
-    
-    Added Enable/Disable action buttons based on the status of the Invoice
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
