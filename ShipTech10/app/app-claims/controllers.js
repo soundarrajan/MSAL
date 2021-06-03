@@ -37,7 +37,7 @@ APP_CLAIMS.controller('Controller_Claims', [
         $rootScope.$on('formValues', (event, data) => {
             
             $scope.formValues = data;
-            if ($scope.formValues.claimDetails) {
+            if ($scope.formValues.claimDetails && $scope.formValues.claimDetails.status) {
                 if ($scope.formValues.claimDetails.status.name != 'New') {
                     if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
                         $.each($scope.formFields['Order Details'].children, (k, v) => {
@@ -360,6 +360,9 @@ APP_CLAIMS.controller('Controller_Claims', [
             }
             if (name == 'OrderID') {
                 // reset bdn qty, vessel qty
+                if(!$scope.formValues.claimDetails) {
+                    $scope.formValues.claimDetails = {};
+                }
                 $scope.formValues.claimDetails.bdnQuantity = null;
                 $scope.formValues.claimDetails.bdnQuantityUom = null;
                 $scope.formValues.claimDetails.vesselQuantity = null;
