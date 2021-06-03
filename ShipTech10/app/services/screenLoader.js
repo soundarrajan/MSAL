@@ -66,6 +66,7 @@ angular.module('shiptech').config([
             'api/infrastructure/reports/getOperationalReportParameters',
             'api/claims/getQuantityShortage',
             'api/procurement/request/isAuthorizedForReportsTab',
+            'api/masters/exchangeRates/convert',
             'api/procurement/rfq/isAuthorizedForReportsTab'
         ];
         $httpProvider.interceptors.push([
