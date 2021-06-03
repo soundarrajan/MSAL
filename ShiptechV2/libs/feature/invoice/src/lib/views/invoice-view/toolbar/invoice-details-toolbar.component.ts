@@ -96,7 +96,6 @@ export class InvoiceDetailsToolbarComponent
     // indexStatus = calculate if is previous, current or next
     if (typeof payload != 'undefined') {
     }
-
     var navigationItems = [
       {
         id: 'request',
@@ -162,12 +161,12 @@ export class InvoiceDetailsToolbarComponent
           id: 'delivery',
           displayName: 'Delivery',
           url:
-            typeof payload != 'undefined' && payload.invoiceId
-              ? `${this.baseOrigin}/v2/delivery/delivery/${payload.invoiceId}/details`
+            typeof payload != 'undefined' && payload.deliveryId
+              ? `${this.baseOrigin}/v2/delivery/delivery/${payload.deliveryId}/details`
               : '',
           entityId:
-            typeof payload != 'undefined' && payload.invoiceId
-              ? payload.invoiceId
+            typeof payload != 'undefined' && payload.deliveryId
+              ? payload.deliveryId
               : '',
           indexStatus: null,
           hidden: false
@@ -246,12 +245,12 @@ export class InvoiceDetailsToolbarComponent
           id: 'delivery',
           displayName: 'Delivery',
           url:
-            typeof payload != 'undefined' && payload.invoiceId
-              ? `${this.baseOrigin}/v2/delivery/delivery/${payload.invoiceId}/details`
+            typeof payload != 'undefined' && payload.deliveryId
+              ? `${this.baseOrigin}/v2/delivery/delivery/${payload.deliveryId}/details`
               : '',
           entityId:
-            typeof payload != 'undefined' && payload.invoiceId
-              ? payload.invoiceId
+            typeof payload != 'undefined' && payload.deliveryId
+              ? payload.deliveryId
               : '',
           indexStatus: null,
           hidden: false
