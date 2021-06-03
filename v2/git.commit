@@ -1,11 +1,11 @@
-﻿commit cda6cde397054729ecb4884d7fd62c616dccc5d9
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Thu Jun 3 11:58:06 2021 +0000
+﻿commit 5645971682636a2774fd6e7ef8be8de7c87623c2
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Jun 3 12:31:47 2021 +0000
 
-    Merged PR 11211: conflicts
+    Merged PR 11215: Fix console error
     
-    conflicts
+    Fix console error
     
-    Related work items: #31507, #32682, #32808
+    Related work items: #32823
 
 branch: master
