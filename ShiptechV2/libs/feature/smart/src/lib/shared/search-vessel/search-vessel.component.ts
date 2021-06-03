@@ -8,6 +8,7 @@ import { Store, Select } from "@ngxs/store";
 import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
 import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
 import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search-vessel',
@@ -33,21 +34,31 @@ export class SearchVesselComponent implements OnInit, OnChanges {
   filteredOptions: Observable<string[]>;
   toggleFlag: boolean;
   public theme:boolean = true;
-  constructor(private store: Store, private localService: LocalService) {
+  constructor(private store: Store, private localService: LocalService, private route: ActivatedRoute) {
     this.vesselData$.subscribe(data=> {
       this.vesselRef = data?.vesselRef;
     });
   }
-
+  
   ngOnInit() {
-    this.vesselRef = (this.vesselRef)? this.vesselRef: this.vesselData;
     this.localService.themeChange.subscribe(value => this.theme = value);
+    //Get vessel list from route resolver to make default vessel on init
+    this.route.data.subscribe(data => {
+      console.log(data);
+      this.vesselList = data?.vesselListWithImono;
+    });
+
+    this.vesselRef = (this.vesselRef)? this.vesselRef: this.vesselData;
+
     if(this.vesselRef?.imono) {
       this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "");
       this.selectedValue = this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "";
     } else {
-      this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.id ? this.vesselRef.id : "");
-      this.selectedValue = this.vesselRef && this.vesselRef.vesselId ? this.vesselRef.vesselId : "";
+    //get imono detail by using vessel id to update in vessel search
+    let selectedVesselId = this.vesselRef?.vesselId;
+    this.vesselRef = this.vesselList.find(element => (element.id == selectedVesselId));
+    this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "");
+    this.selectedValue = this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "";
     }
     this.filteredOptions = this.searchVesselControl.valueChanges.pipe(
       // startWith(''),

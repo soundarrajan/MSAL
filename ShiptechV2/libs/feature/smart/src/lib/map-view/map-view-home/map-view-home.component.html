@@ -7,7 +7,8 @@
         (showBunkerPlan)="toggleBPlan($event)" (openRoutes)="toggleRoutes($event)" (onMapClick)="onMapClick1()"
         (showPortInfoScreen)="togglePortInfo($event)">
     </app-ol-map>
-    <app-smart-operator *ngIf="showTable" (clickEvent)="onClick()" (showTableViewEmit)="this.toggle()">
+
+    <app-smart-operator *ngIf="showTable" (clickEvent)="onClick()" (showTableViewEmit)="this.toggle()" (showBPlan)="toggleBPlan(true)">
     </app-smart-operator>
 
     <app-vessel-details *ngIf="showBPlan" (closeBPlan)="showBPlan = false;olmap.isBunkerPlanOpen =false"
