@@ -7,24 +7,32 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SearchVesselComponent } from '../search-vessel/search-vessel.component';
 import { LocalService } from '../../services/local-service.service';
+import { VesselDetailsComponent } from '../vessel-details/vessel-details.component';
+import moment from 'moment';
+import { ApiCall } from '@shiptech/core/utils/decorators/api-call.decorator';
 @Component({
   selector: 'app-smart-operator',
   templateUrl: './smart-operator.component.html',
   styleUrls: ['./smart-operator.component.scss']
 })
 export class SmartOperatorComponent implements OnInit {
-  isValue: number = 3;
-
+  isValue: number = 3 ;
   public gridOptions: GridOptions;
+  public gridOptions1: GridOptions;
+  public gridOptions2: GridOptions;
   public colResizeDefault;
   public rowCount: Number;
+  rowData: any[];
   public date = new FormControl(new Date());
   public vesselList = [];
-  @Input('vesselData') vesselData;
  //@Input('VesselList') vesselList;
   @Output() showTableViewEmit = new EventEmitter();
   @Output() clickEvent = new EventEmitter();
   @ViewChild(SearchVesselComponent) searchComponent;
+  @Output() showBPlan = new EventEmitter();
+  @ViewChild(VesselDetailsComponent) vesselDetail;
+  public changeVessel;
+  public coldefOnClick:any;
 
   constructor(private localService: LocalService,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
@@ -32,7 +40,7 @@ export class SmartOperatorComponent implements OnInit {
       'data-picker',
       sanitizer.bypassSecurityTrustResourceUrl('../assets/customicons/datepicker.svg'));
     this.gridOptions = <GridOptions>{
-      // columnDefs: this.columnDefs,
+      columnDefs: this.columnDefs_myvessels,
       //enableColResize: true,
       //enableSorting: true,
       animateRows: true,
@@ -52,7 +60,83 @@ export class SmartOperatorComponent implements OnInit {
         this.vesselList = this.isValue == 1 ? this.rowData1 : this.isValue == 2 ? this.rowData2 : this.rowData3;
         this.gridOptions.api.setColumnDefs(this.columnDefs_outstandingrequest);
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
-        this.gridOptions.api.setColumnDefs(this.columnDefs_outstandingrequest);
+        this.gridOptions.api.setColumnDefs(this.columnDefs_myvessels);
+      },
+      onCellClicked: (params) => { this.clickEvent.emit(); },
+      onColumnResized: function (params) {
+      },
+      onColumnVisible: function (params) {
+      },
+      onColumnPinned: function (params) {
+      },
+      onGridSizeChanged: function (params) {
+        params.api.sizeColumnsToFit();
+      }
+    };
+    this.gridOptions1 = <GridOptions>{
+      animateRows: true,
+      headerHeight: 32,
+      rowHeight: 50,
+      groupHeaderHeight: 40,
+      defaultColDef: {
+        filter: true,
+        sortable: true,
+        resizable: true
+      },
+      
+      rowSelection: 'single',
+      onGridReady: (params) => {
+        this.gridOptions1.api = params.api;
+        this.gridOptions1.columnApi = params.columnApi;
+        this.gridOptions1.api.setRowData(this.rowData2);
+        this.rowCount = this.gridOptions1.api.getDisplayedRowCount();
+        this.gridOptions1.api.setColumnDefs(this.columnDefs_unmanageablevessels);
+        params.api.sizeColumnsToFit();
+
+      },
+      onCellClicked: (params) => { 
+        this.coldefOnClick = params.colDef.field;
+      },
+      onColumnResized: function (params) {
+      },
+      onColumnVisible: function (params) {
+      },
+      onColumnPinned: function (params) {
+      },
+      onGridSizeChanged: function (params) {
+        params.api.sizeColumnsToFit();
+      },
+      onRowClicked: (event) =>{
+        let req = { vesselView: 'standard-view', name: event.data.vesselName,  id: event.data.vesselId, vesselId: event.data.vesselId }
+         this.localService.setVesselPopupData(req);
+         
+         if(this.coldefOnClick != 'vesselName'){
+         this.showBPlan.emit(true);
+         this.clickEvent.emit();
+         }
+       }
+    };
+    this.gridOptions2 = <GridOptions>{
+      // columnDefs: this.columnDefs,
+      //enableColResize: true,
+      //enableSorting: true,
+      animateRows: true,
+      headerHeight: 32,
+      rowHeight: 50,
+      groupHeaderHeight: 40,
+      defaultColDef: {
+        filter: true,
+        sortable: true,
+        resizable: true
+      },
+      
+      rowSelection: 'single',
+      onGridReady: (params) => {
+        this.gridOptions2.api = params.api;
+        this.gridOptions2.columnApi = params.columnApi;
+        this.gridOptions2.api.setRowData(this.rowData3);
+        this.rowCount = this.gridOptions2.api.getDisplayedRowCount();
+        this.gridOptions2.api.setColumnDefs(this.columnDefs_outstandingrequest);
         params.api.sizeColumnsToFit();
 
       },
@@ -70,11 +154,10 @@ export class SmartOperatorComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.loadUnmanageableVessels();
+     this.loadUnmanageableVessels();
   }
-
   private columnDefs_outstandingrequest = [
+    
     {
       headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestid', width: 120,
       cellClass: function (params) {
@@ -122,85 +205,27 @@ export class SmartOperatorComponent implements OnInit {
   ];
 
   private columnDefs_myvessels = [
-    {
-      headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'VesselName', width: 150,
-      cellClass: function (params) {
-        var classArray: string[] = ['aggridlink aggrid-vertical-center'];
-        let newClass =
-          params.data.severity === '3' ? 'aggrid-left-ribbon mediumred1' :
-            (params.data.severity === '2' ? 'aggrid-left-ribbon mediumamber' :
-              'aggrid-left-ribbon mediumblue1');
-        classArray.push(newClass);
-        return classArray.length > 0 ? classArray : null
-      }
-    },
-
-    { headerName: 'Service ID', headerTooltip: 'Service ID', field: 'serviceid', width: 100, cellClass: ' aggrid-vertical-center' },
-    { headerName: 'Dept ID', headerTooltip: 'Department ID', field: 'deptid', width: 100, cellClass: ' aggrid-vertical-center' },
-    { headerName: 'Ownership', headerTooltip: 'Ownership', field: 'ownership', width: 100, cellClass: 'aggrid-columgroup-splitter-right aggrid-vertical-center' },
-    { headerName: 'Destination', headerTooltip: 'Destination', field: 'destination', width: 130, cellClass: ' aggrid-vertical-center' },
-    { headerName: 'ETA', headerTooltip: 'ETA', field: 'eta', width: 140, cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], },
-    { headerName: 'Next Desitination', headerTooltip: 'Next Destination', field: 'nextdestination', width: 150, cellClass: ' aggrid-vertical-center' },
-    { headerName: 'ETA', headerTooltip: 'ETA', field: 'eta', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'], width: 140 },
-    {
-      headerName: 'HSFO', headerTooltip: 'HSFO', field: 'hsfo', width: 100,
-      headerClass: ['aggrid-text-align-c'],
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellClass: ['inset-cell aggrid-content-center '],
-      cellRendererParams: function (params) {
-        var classArray: string[] = [];
-        classArray.push(' aggrid-space');
-        let newClass = params.value === '120 MT' ? 'bg-red p-lr-5 ' :
-          params.value === 'New' ? 'custom-chip amber' :
-            params.value === 'Inquired' ? 'custom-chip purple' :
-              'inner-box p-lr-5';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null }
-      }
-    }, 
-    {
-      headerName: 'DOGO', headerTooltip: 'DOGO', field: 'dogo', width: 100,
-      headerClass: ['aggrid-text-align-c'],
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellClass: ['inset-cell aggrid-content-center '],
-      cellRendererParams: function (params) {
-        var classArray: string[] = [];
-        classArray.push(' aggrid-space');
-        let newClass = params.value === '120 MT' ? 'bg-yellow p-lr-5' : 'inner-box p-lr-5';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null }
-      }
-    },
-    {
-      headerName: 'ULSFO', headerTooltip: 'ULSFO', field: 'ulsfo', width: 100,
-      headerClass: ['aggrid-text-align-c'],
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellClass: ['inset-cell aggrid-content-center '],
-      cellRendererParams: function (params) {
-        var classArray: string[] = [];
-        classArray.push(' aggrid-space');
-        let newClass = params.value === '120 MT' ? 'bg-red p-lr-5 ' : 'inner-box p-lr-5';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null }
-      }
-    },
-    {
-      headerName: 'VLSFO', headerTooltip: 'VLSFO', field: 'vlsfo', width: 100,
-      headerClass: 'aggrid-text-align-c',
-      cellClass: ['inset-cell aggrid-content-center  aggrid-columgroup-splitter-right'],
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: function (params) {
-        var classArray: string[] = [];
-        classArray.push(' aggrid-space');
-        let newClass = params.value === '120 MT' ? 'bg-yellow p-lr-5 ' :
-
-          'inner-box p-lr-5';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null }
-      }
-    },
-    { headerName: 'New Request', headerTooltip: 'New Request', field: 'newrequest', cellClass: 'aggridlink aggrid-vertical-center', width: 120 },
-  ];
+    { headerName: "",
+          field: "",
+          filter: true,
+          enableSorting :true,
+          suppressMenu:true,
+          resizable: false,
+          width:40,
+          checkboxSelection: true,
+          suppressSizeToFit: true,
+          // headerClass:'left-10',
+          headerClass:'header-checkbox-center',
+          cellClass:['custom-check-box aggrid-content-center'],
+          pinned:'left',
+          headerCheckboxSelection: true,
+        },
+          { headerName: 'Order ID', headerTooltip: 'Order ID', field: 'serviceid', width: 100, cellClass: ' aggrid-vertical-center' },
+          { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'eta', width: 140, cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], },
+          { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'eta', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center '], width: 140 },
+          { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'ownership', width: 100, cellClass: ' aggrid-vertical-center' },
+          { headerName: 'File Name', headerTooltip: 'File Name', field: 'datasource', cellClass: 'aggrid-vertical-center', width: 120, },
+      ];
   private columnDefs_unmanageablevessels = [
     {
       headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'vesselName', width: 100, filter: 'text',//cellRendererFramework: AGGridCellRendererComponent,
@@ -219,7 +244,9 @@ export class SmartOperatorComponent implements OnInit {
     {
       headerName: 'Data Date', headerTooltip: 'Data Date', field: 'datadate',
       cellClass: 'aggrid-columgroup-splitter-right aggrid-content-center',
-      cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space aggrid-columgroup-splitter-right'] }, headerClass: ['aggrid-text-align-c '],
+      //valueFormatter: params => {return moment(params.value).format('MM/DD/YYYY HH:mm');},
+     cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space aggrid-columgroup-splitter-right'] }}, 
+      headerClass: ['aggrid-text-align-c '],
     },
     { headerName: 'Details', headerTooltip: 'Details', field: 'detail', width: 350, cellClass: 'aggrid-vertical-center' },
     { headerName: 'No of Days Unmanageable', headerTooltip: 'No of Days Unmanageable', field: 'unmanagedDays', width: 150, cellClass: 'aggrid-vertical-center' },
@@ -299,19 +326,19 @@ export class SmartOperatorComponent implements OnInit {
 
 
   ];
-  changeVessel(event) {
-    if (event) {
-      let rows = this.rowData1.filter(item => item.VesselIMONO == event.VesselIMONO);
-      if (rows.length > 0)
-        this.gridOptions.api.setRowData(rows);
-      else {
-        this.gridOptions.api.setRowData(this.isValue == 1 ? this.rowData1 : this.isValue == 2 ? this.rowData2 : this.rowData3);
-      }
-    }
-    else {
-      this.gridOptions.api.setRowData(this.isValue == 1 ? this.rowData1 : this.isValue == 2 ? this.rowData2 : this.rowData3);
-    }
-  }
+  // changeVessel(event) {
+  //   if (event) {
+  //     let rows = this.rowData1.filter(item => item.VesselIMONO == event.VesselIMONO);
+  //     if (rows.length > 0)
+  //       this.gridOptions.api.setRowData(rows);
+  //     else {
+  //       this.gridOptions.api.setRowData(this.isValue == 1 ? this.rowData1 : this.isValue == 2 ? this.rowData2 : this.rowData3);
+  //     }
+  //   }
+  //   else {
+  //     this.gridOptions.api.setRowData(this.isValue == 1 ? this.rowData1 : this.isValue == 2 ? this.rowData2 : this.rowData3);
+  //   }
+  // }
   toggle1() {
     this.isValue = 1;
     this.gridOptions.api.setColumnDefs(this.columnDefs_myvessels);
@@ -370,6 +397,6 @@ export class SmartOperatorComponent implements OnInit {
     );
     
   }
-  
 
+  
 }

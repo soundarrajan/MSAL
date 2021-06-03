@@ -10,6 +10,8 @@
     <a href="{{shiptechUrl}}/#/masters/vessel/edit/{{params?.data?.vesselId}}"  target="_blank" rel="noopener">{{params.value}}</a>
   </div>
 </div>
+
+<div *ngIf="this?.params?.type =='Data-date'" [ngClass]="params.cellClass" matTooltip="{{params.value | date: 'dd/MM/yyyy hh:mm'}}" style="margin:0px">{{params.value | date: 'dd/MM/yyyy HH:MM'}}</div>
   
   <div *ngIf="params.type=='multiple-values'">
     <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">
