@@ -3118,7 +3118,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getColorCodeFromLabels(statusObj, labels) {
-    if(label){
+    if(labels){
         for (let i = 0; i < labels.length; i++) {
             if (statusObj) {
                 if (
