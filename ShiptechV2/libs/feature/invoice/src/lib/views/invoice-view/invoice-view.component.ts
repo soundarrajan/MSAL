@@ -1,9 +1,20 @@
 import { Subject } from 'rxjs';
 import { INewInvoiceDetailsItemRequest } from './../../services/api/dto/invoice-details-item.dto';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild,ChangeDetectorRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KnownInvoiceRoutes } from '../../known-invoice.routes';
-import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from '../../services/api/dto/invoice-details-item.dto';
+import {
+  IInvoiceDetailsItemDto,
+  IInvoiceDetailsItemRequest,
+  IInvoiceDetailsItemResponse
+} from '../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../services/invoice-details.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,39 +27,40 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'shiptech-invoice-view',
   templateUrl: './invoice-view.component.html',
   styleUrls: ['./invoice-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InvoiceViewComponent implements OnInit, OnDestroy {
-
-  @ViewChild("invoiceDetails") invoiceDetailsComponent: any;
+  @ViewChild('invoiceDetails') invoiceDetailsComponent: any;
   _entityId;
-  isConfirm=false;
-  detailFormvalues:any;
-  displayDetailFormvalues:boolean = false;
-  saveDisabled=true;
+  isConfirm = false;
+  detailFormvalues: any;
+  displayDetailFormvalues: boolean = false;
+  saveDisabled = true;
   tabData: any;
   navBar: any;
   reportUrl: string;
   selectedTab = 0;
-  submitreviewBtn:boolean = true;
-  submitapproveBtn:boolean = true;
-  cancelBtn:boolean = true;
-  acceptBtn:boolean = true;
-  revertBtn:boolean = true;
-  rejectBtn:boolean = true;
+  submitreviewBtn: boolean = true;
+  submitapproveBtn: boolean = true;
+  cancelBtn: boolean = true;
+  acceptBtn: boolean = true;
+  revertBtn: boolean = true;
+  rejectBtn: boolean = true;
   email: any;
   formValues: any;
   staticLists: any;
   currencyList: any;
   private _destroy$ = new Subject();
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private invoiceService: InvoiceDetailsService,
     private changeDetectorRef: ChangeDetectorRef,
     private spinner: NgxSpinnerService,
     public dialog: MatDialog,
-    private toastr: ToastrService){
-      this.getTabDataLinks();
+    private toastr: ToastrService
+  ) {
+    this.getTabDataLinks();
   }
 
   ngOnInit(): void {
@@ -57,62 +69,66 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       this.navBar = data.navBar;
       this.staticLists = data.staticLists;
       this.currencyList = this.setListFromStaticLists('Currency');
-      this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+      this._entityId = this.route.snapshot.params[
+        KnownInvoiceRoutes.InvoiceIdParam
+      ];
       this.getTabDataLinks();
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
         // Create new invoice from delivery list // http://localhost:9016/#/invoices/invoice/edit/0
         this.createNewInvoiceFromDelivery();
-      }
-      else if (localStorage.getItem('createInvoice')) {
+      } else if (localStorage.getItem('createInvoice')) {
         this.createNewInvoiceType();
-      }
-      else if (localStorage.getItem('createCreditNote')) {
+      } else if (localStorage.getItem('createCreditNote')) {
         let data = JSON.parse(localStorage.getItem('createCreditNote'));
         this.toastr.success('Credit note is Created!');
         localStorage.removeItem('createCreditNote');
         this.setScreenActions(data);
-      }
-      else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
-        this.createCreditNoteFromInvoiceClaims('createCreditNoteFromInvoiceClaims');
-      }
-      else if (localStorage.getItem('createDebunkerCreditNoteFromInvoiceClaims'))
-      {
-        this.createCreditNoteFromInvoiceClaims('createDebunkerCreditNoteFromInvoiceClaims');
-      }
-      else if (localStorage.getItem('createResaleCreditNoteFromInvoiceClaims'))
-      {
-        this.createCreditNoteFromInvoiceClaims('createResaleCreditNoteFromInvoiceClaims');
-      }
-      else if (localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims'))
-      {
+      } else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
+        this.createCreditNoteFromInvoiceClaims(
+          'createCreditNoteFromInvoiceClaims'
+        );
+      } else if (
+        localStorage.getItem('createDebunkerCreditNoteFromInvoiceClaims')
+      ) {
+        this.createCreditNoteFromInvoiceClaims(
+          'createDebunkerCreditNoteFromInvoiceClaims'
+        );
+      } else if (
+        localStorage.getItem('createResaleCreditNoteFromInvoiceClaims')
+      ) {
+        this.createCreditNoteFromInvoiceClaims(
+          'createResaleCreditNoteFromInvoiceClaims'
+        );
+      } else if (
+        localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')
+      ) {
         this.createPreClaimCreditNote();
-      }
-      else{
+      } else {
         // edit an existing invoice
         this.getInvoiceItem();
       }
     });
   }
 
-
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
   }
 
-  getTabDataLinks()
-  {
-    this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+  getTabDataLinks() {
+    this._entityId = this.route.snapshot.params[
+      KnownInvoiceRoutes.InvoiceIdParam
+    ];
     this.tabData = [
       { disabled: false, name: 'Details' },
       { disabled: false, name: 'Related Invoices' },
       { disabled: false, name: 'Documents', url: `#` },
       { disabled: false, name: 'Audit Log', url: `#` },
-      { disabled: false, name: 'Email Log', url: `#` },
+      { disabled: false, name: 'Email Log', url: `#` }
     ];
 
-    if(parseFloat(this._entityId) && this._entityId > 0) {
+    if (parseFloat(this._entityId) && this._entityId > 0) {
       const baseOrigin = new URL(window.location.href).origin;
       this.tabData[2].url = `${baseOrigin}/#/invoices/invoice/documents/${this._entityId}`;
       this.tabData[3].url = `${baseOrigin}/#/invoices/invoice/audit-log/${this._entityId}`;
@@ -130,70 +146,79 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  detailsSave(){
+  detailsSave() {
     this.invoiceDetailsComponent.saveInvoiceDetails();
     // this.isConfirm = !this.isConfirm;
   }
-  invoiceOptions(options){
+  invoiceOptions(options) {
     this.invoiceDetailsComponent.invoiceOptionSelected(options);
   }
 
   getInvoiceItem() {
-    if(!this._entityId || this._entityId == 0)
-      return;
-    this.invoiceService.getInvoicDetails(this._entityId)
+    if (!this._entityId || this._entityId == 0) return;
+    this.invoiceService
+      .getInvoicDetails(this._entityId)
       .subscribe((response: any) => {
         this.setScreenActions(response);
       });
   }
 
-  createNewInvoiceFromDelivery(){
+  createNewInvoiceFromDelivery() {
     let data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
     localStorage.removeItem('invoiceFromDelivery');
 
-    this.invoiceService.getNewInvoicDetails(data)
+    this.invoiceService
+      .getNewInvoicDetails(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.setScreenActions(response);
       });
   }
 
-  createCreditNoteFromInvoiceClaims(storageKey: string)
-  {
-    this.invoiceService.createCreditNoteFromInvoiceClaims(JSON.parse(localStorage.getItem(storageKey))).subscribe((result: any) => {
-      if (typeof result == 'string') {
-        this.toastr.error('Could not create credit/debit note!', result);
-      } else {
-        this.toastr.success('Credit/Debit note is Created!');
-        this.setScreenActions(result);
-      }
-    });
+  createCreditNoteFromInvoiceClaims(storageKey: string) {
+    this.invoiceService
+      .createCreditNoteFromInvoiceClaims(
+        JSON.parse(localStorage.getItem(storageKey))
+      )
+      .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.toastr.error('Could not create credit/debit note!', result);
+        } else {
+          this.toastr.success('Credit/Debit note is Created!');
+          this.setScreenActions(result);
+        }
+      });
     localStorage.removeItem(storageKey);
   }
 
-  createPreClaimCreditNote()
-  {
-    this.invoiceService.createPreClaimCreditNote(JSON.parse(localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')))
-    .subscribe((result: any) => {
-      if (typeof result == 'string') {
-        this.toastr.error(result);
-      } else {
-        this.toastr.success('Pre Claim Credit note is Created!');
-        this.setScreenActions(result);
-      }
-    });
+  createPreClaimCreditNote() {
+    this.invoiceService
+      .createPreClaimCreditNote(
+        JSON.parse(
+          localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')
+        )
+      )
+      .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Pre Claim Credit note is Created!');
+          this.setScreenActions(result);
+        }
+      });
 
     localStorage.removeItem('createPreclaimCreditNoteFromInvoiceClaims');
   }
 
-  createNewInvoiceType(){
+  createNewInvoiceType() {
     let data = JSON.parse(localStorage.getItem('createInvoice'));
     localStorage.removeItem('createInvoice');
 
     // 2 - Final Invoice - Get provisional invoice data, if final invoice is created from provisional
-    if(data.documentType.id == 2){
+    if (data.documentType.id == 2) {
       data.invoiceSummary.provisionalInvoiceNo = data.id;
-      data.invoiceSummary.provisionalInvoiceAmount = data.invoiceSummary.invoiceAmountGrandTotal;
-    }else{
+      data.invoiceSummary.provisionalInvoiceAmount =
+        data.invoiceSummary.invoiceAmountGrandTotal;
+    } else {
       data.invoiceSummary.provisionalInvoiceNo = '';
       data.invoiceSummary.provisionalInvoiceAmount = null;
     }
@@ -229,20 +254,20 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     data.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
     let deliveryProductIds = [];
     data.productDetails.forEach((v, k) => {
-        v.id = 0;
-        v.invoiceRate = 0;
-        v.description = null;
-        v.pricingDate = null;
-        v.invoiceAmount = null;
-        v.reconStatus = null;
-        v.amountInInvoice = null;
-        v.pricingDate = v.orderProductPricingDate;
-        deliveryProductIds.push(v.deliveryProductId);
+      v.id = 0;
+      v.invoiceRate = 0;
+      v.description = null;
+      v.pricingDate = null;
+      v.invoiceAmount = null;
+      v.reconStatus = null;
+      v.amountInInvoice = null;
+      v.pricingDate = v.orderProductPricingDate;
+      deliveryProductIds.push(v.deliveryProductId);
     });
 
     if (data.costDetails) {
       data.costDetails.forEach((v, k) => {
-        v.id = 0
+        v.id = 0;
         v.invoiceRate = null;
         v.invoiceExtras = null;
         v.description = null;
@@ -261,7 +286,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         // }
       });
     }
-    data.counterpartyDetails.paymentTerm = data.counterpartyDetails.orderPaymentTerm;
+    data.counterpartyDetails.paymentTerm =
+      data.counterpartyDetails.orderPaymentTerm;
     data.deliveryDate = data.orderDeliveryDate;
     data.orderDetails.carrierCompany = data.orderDetails.orderCarrierCompany;
     data.orderDetails.paymentCompany = data.orderDetails.orderPaymentCompany;
@@ -269,36 +295,48 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
     this.displayDetailFormvalues = false;
     this.spinner.show();
-    let requestPayload = { DeliveryProductIds: deliveryProductIds, OrderId: data.orderDetails.order.id };
-    this.invoiceService.getFinalInvoiceDueDates(requestPayload).subscribe((response: any) => {
-      if(response){
-        data.dueDate = response.dueDate;
-        data.paymentDate = response.paymentDate;
-        data.workingDueDate = response.workingDueDate;
-      }
-      this.setScreenActions(data);
-    });
+    let requestPayload = {
+      DeliveryProductIds: deliveryProductIds,
+      OrderId: data.orderDetails.order.id
+    };
+    this.invoiceService
+      .getFinalInvoiceDueDates(requestPayload)
+      .subscribe((response: any) => {
+        if (response) {
+          data.dueDate = response.dueDate;
+          data.paymentDate = response.paymentDate;
+          data.workingDueDate = response.workingDueDate;
+        }
+        this.setScreenActions(data);
+      });
   }
 
-  setScreenActions(formValues: any){
+  setScreenActions(formValues: any) {
+    this.cancelBtn = true;
+    this.submitreviewBtn = true;
     this.saveDisabled = true;
+    this.rejectBtn = true;
+    this.revertBtn = true;
+    this.acceptBtn = true;
+    this.submitapproveBtn = true;
+
     this.displayDetailFormvalues = true;
     this.spinner.hide();
     this.detailFormvalues = <IInvoiceDetailsItemDto>formValues;
     this.detailFormvalues.screenActions.forEach(action => {
-      if(action.name == 'Cancel'){
+      if (action.name == 'Cancel') {
         this.cancelBtn = false;
-      }else if(action.name == "SubmitForReview"){
+      } else if (action.name == 'SubmitForReview') {
         this.submitreviewBtn = false;
-      }else if(action.name == 'ApproveInvoice'){
+      } else if (action.name == 'ApproveInvoice') {
         this.saveDisabled = false;
-      }else if(action.name == "RejectInvoice"){
+      } else if (action.name == 'RejectInvoice') {
         this.rejectBtn = false;
-      }else if(action.name == "Revert"){
+      } else if (action.name == 'Revert') {
         this.revertBtn = false;
-      }else if(action.name == "Accept"){
+      } else if (action.name == 'Accept') {
         this.acceptBtn = false;
-      }else if(action.name == "SubmitForApprovalInvoice"){
+      } else if (action.name == 'SubmitForApprovalInvoice') {
         this.submitapproveBtn = false;
       }
     });
@@ -306,29 +344,42 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   openCurrencyConversionPopUp() {
-    if (this.invoiceDetailsComponent.conversionTo.id == this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id) {
+    if (
+      this.invoiceDetailsComponent.conversionTo.id ==
+      this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id
+    ) {
       this.invoiceDetailsComponent.conversionRoe = 1;
       this.invoiceDetailsComponent.roeDisabled = true;
     } else {
       this.invoiceDetailsComponent.roeDisabled = false;
     }
 
-    this.computeInvoiceTotalConversion(this.invoiceDetailsComponent.conversionRoe, this.invoiceDetailsComponent.conversionTo);
-
+    this.computeInvoiceTotalConversion(
+      this.invoiceDetailsComponent.conversionRoe,
+      this.invoiceDetailsComponent.conversionTo
+    );
   }
 
   computeInvoiceTotalConversion(conversionRoe, conversionTo) {
-    if (this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id == this.invoiceDetailsComponent.conversionTo.id) {
+    if (
+      this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id ==
+      this.invoiceDetailsComponent.conversionTo.id
+    ) {
       this.invoiceDetailsComponent.roeDisabled = true;
       this.invoiceDetailsComponent.conversionRoe = 1;
     } else {
       this.invoiceDetailsComponent.roeDisabled = false;
     }
     this.changeDetectorRef.detectChanges();
-    if (!conversionRoe || !conversionTo /* || !this.formValues.invoiceSummary*/) {
+    if (
+      !conversionRoe ||
+      !conversionTo /* || !this.formValues.invoiceSummary*/
+    ) {
       return false;
     }
-    if (typeof this.invoiceDetailsComponent.changedFromCurrency == 'undefined') {
+    if (
+      typeof this.invoiceDetailsComponent.changedFromCurrency == 'undefined'
+    ) {
       this.invoiceDetailsComponent.changedFromCurrency = false;
     }
 
@@ -337,77 +388,92 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     }
 
     let payloadData = {
-      Amount : this.invoiceDetailsComponent.formValues.invoiceSummary.invoiceAmountGrandTotal,
-      CurrencyId: this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id,
+      Amount: this.invoiceDetailsComponent.formValues.invoiceSummary
+        .invoiceAmountGrandTotal,
+      CurrencyId: this.invoiceDetailsComponent.formValues.invoiceRateCurrency
+        .id,
       ROE: conversionRoe,
       ToCurrencyId: conversionTo.id,
-      CompanyId: this.invoiceDetailsComponent.formValues.orderDetails.carrierCompany.id,
-      GetROE:  this.invoiceDetailsComponent.changedFromCurrency
+      CompanyId: this.invoiceDetailsComponent.formValues.orderDetails
+        .carrierCompany.id,
+      GetROE: this.invoiceDetailsComponent.changedFromCurrency
     };
 
     this.invoiceService
-    .computeInvoiceTotalConversion(payloadData)
-    .pipe(
-        finalize(() => {
-
-        })
-    )
-    .subscribe((result: any) => {
-      if (typeof result == 'string') {
-        this.toastr.error(result);
-      } else {
-        if (this.invoiceDetailsComponent.changedFromCurrency && !result.getROE) {
-          this.toastr.warning('There is no conversion rate available for current selection');
+      .computeInvoiceTotalConversion(payloadData)
+      .pipe(finalize(() => {}))
+      .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.toastr.error(result);
         } else {
-          this.invoiceDetailsComponent.convertedAmount = result.convertedAmount;
-          this.invoiceDetailsComponent.conversionRoe = result.roe;
-          const dialogRef = this.dialog.open(CurrencyConvertorModalComponent, {
-            width: '50%',
-            data:  { formValues: this.detailFormvalues, currencyList: this.currencyList,
-              convertedAmount: this.invoiceDetailsComponent.convertedAmount,
-              conversionTo: this.invoiceDetailsComponent.conversionTo,
-              conversionRoe: this.invoiceDetailsComponent.conversionRoe,
-              roeDisabled: this.invoiceDetailsComponent.roeDisabled
-            }
-          });
+          if (
+            this.invoiceDetailsComponent.changedFromCurrency &&
+            !result.getROE
+          ) {
+            this.toastr.warning(
+              'There is no conversion rate available for current selection'
+            );
+          } else {
+            this.invoiceDetailsComponent.convertedAmount =
+              result.convertedAmount;
+            this.invoiceDetailsComponent.conversionRoe = result.roe;
+            const dialogRef = this.dialog.open(
+              CurrencyConvertorModalComponent,
+              {
+                width: '50%',
+                data: {
+                  formValues: this.detailFormvalues,
+                  currencyList: this.currencyList,
+                  convertedAmount: this.invoiceDetailsComponent.convertedAmount,
+                  conversionTo: this.invoiceDetailsComponent.conversionTo,
+                  conversionRoe: this.invoiceDetailsComponent.conversionRoe,
+                  roeDisabled: this.invoiceDetailsComponent.roeDisabled
+                }
+              }
+            );
 
-          dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-            if (result) {
-              this.invoiceDetailsComponent.convertedAmount = this.convertDecimalSeparatorStringToNumber(result.convertedAmount);
-              this.invoiceDetailsComponent.conversionTo = result.conversionTo;
-              this.invoiceDetailsComponent.conversionRoe = result.conversionRoe;
-              this.invoiceDetailsComponent.roeDisabled = result.roeDisabled;
-            }
-            console.log(this.invoiceDetailsComponent);
-          });
-          this.changeDetectorRef.detectChanges();
-
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+              if (result) {
+                this.invoiceDetailsComponent.convertedAmount = this.convertDecimalSeparatorStringToNumber(
+                  result.convertedAmount
+                );
+                this.invoiceDetailsComponent.conversionTo = result.conversionTo;
+                this.invoiceDetailsComponent.conversionRoe =
+                  result.conversionRoe;
+                this.invoiceDetailsComponent.roeDisabled = result.roeDisabled;
+              }
+              console.log(this.invoiceDetailsComponent);
+            });
+            this.changeDetectorRef.detectChanges();
+          }
         }
-      }
-    });
+      });
     this.invoiceDetailsComponent.changedFromCurrency = false;
     this.changeDetectorRef.detectChanges();
-
   }
-
 
   convertDecimalSeparatorStringToNumber(number) {
     var numberToReturn = number;
     var decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
-        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
-          if (number.indexOf(',') > number.indexOf('.')) {
-            decimalSeparator = ',';
-            thousandsSeparator = '.';
-          } else {
-            thousandsSeparator = ',';
-            decimalSeparator = '.';
-          }
-          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+      if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+        if (number.indexOf(',') > number.indexOf('.')) {
+          decimalSeparator = ',';
+          thousandsSeparator = '.';
         } else {
-          numberToReturn = parseFloat(number);
+          thousandsSeparator = ',';
+          decimalSeparator = '.';
         }
+        numberToReturn =
+          parseFloat(
+            number
+              .split(decimalSeparator)[0]
+              .replace(new RegExp(thousandsSeparator, 'g'), '')
+          ) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+      } else {
+        numberToReturn = parseFloat(number);
+      }
     }
     if (isNaN(numberToReturn)) {
       numberToReturn = 0;
@@ -415,10 +481,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     return parseFloat(numberToReturn);
   }
 
-  getInvoiceDetailsChanged(){
+  getInvoiceDetailsChanged() {
     this.spinner.show();
     this.displayDetailFormvalues = false;
     this.getInvoiceItem();
   }
-
 }
