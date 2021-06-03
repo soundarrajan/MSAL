@@ -196,7 +196,7 @@
           <td style="max-width: initial;min-width: 200px">
             <div class="non-editable-container">
               <div style="float: left;">
-                {{ quantityFormatValue(productDetail.value.estimatedRate) }}
+                {{ priceFormatValue(productDetail.value.estimatedRate, productDetail.value.pricePrecision) }}
               </div>
               <div style="float: right;">
                 {{ productDetail.value.estimatedRateCurrency.code }}
