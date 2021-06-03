@@ -656,10 +656,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues = val;
 
       // Set trader and buyer name;
-      this.orderDetails2.contents[0].value = this.formValues.orderDetails.buyerName || this.emptyStringVal;
-      this.orderDetails2.contents[1].value = this.formValues.orderDetails.traderName || this.emptyStringVal;
+      this.orderDetails2.contents[0].value =
+        this.formValues.orderDetails.buyerName || this.emptyStringVal;
+      this.orderDetails2.contents[1].value =
+        this.formValues.orderDetails.traderName || this.emptyStringVal;
 
-      if(this.formValues.relatedInvoices){
+      if (this.formValues.relatedInvoices) {
         this.formValues.relatedInvoices.forEach(element => {
           this.rowData_aggrid_rel_invoice.push({
             id: element.id,
@@ -817,6 +819,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.invoiceStatusList = this.setListFromStaticLists(
         'InvoiceCustomStatus'
       );
+      this.paymentStatusList = this.setListFromStaticLists('PaymentStatus');
       if (typeof this.formValues.status != 'undefined') {
         if (this.formValues.status && this.formValues.status.name) {
           this.statusColorCode = this.getColorCodeFromLabels(
@@ -842,16 +845,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
 
-    this.legacyLookupsDatabase.getPaymentStatus().then(list => {
-      this.paymentStatusList = list;
-    });
     this.legacyLookupsDatabase.getsInvoiceType().then(list => {
       // avoid preclaim credit/debit note invoice type selection
       this.invoiceTypeList = list.filter(x => x.id !== 6 && x.id !== 7);
     });
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     // this.getProductList();
-    if(!this.formValues.paymentDate) {
+    if (!this.formValues.paymentDate) {
       this.formValues.paymentDate = this.formValues.workingDueDate;
     }
   }
@@ -3150,7 +3150,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         if (parseFloat(dueDate.split('-')[0]) < 1753) {
           return;
         }
-        this.invoiceService.getWorkingDueDate(dueDate).pipe(finalize(() => { })).subscribe((response: any) => {
+        this.invoiceService
+          .getWorkingDueDate(dueDate)
+          .pipe(finalize(() => {}))
+          .subscribe((response: any) => {
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else {
@@ -3202,7 +3205,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           ManualDueDate: this.formValues.manualDueDate
         };
 
-        this.invoiceService.getDueDateWithoutSave(payload).pipe(finalize(() => { })).subscribe((response: any) => {
+        this.invoiceService
+          .getDueDateWithoutSave(payload)
+          .pipe(finalize(() => {}))
+          .subscribe((response: any) => {
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else {
