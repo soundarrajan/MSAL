@@ -1,10 +1,10 @@
-﻿commit 036a14f2968cdc06c8aa2cbfa824cdf62b9ef662
+﻿commit f36887e6ae28fdc22f21c14598408218d4eb808f
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jun 3 08:56:02 2021 +0000
+Date:   Thu Jun 3 10:37:46 2021 +0000
 
-    Merged PR 11198: fix invoice rate price precision
+    Merged PR 11205: fix conflict
     
-    fix invoice rate price precision
+    fix conflict
     
     Related work items: #32433
 
