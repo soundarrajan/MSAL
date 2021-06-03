@@ -113,7 +113,7 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
         this.invoiceService.approveInvoiceItem(this.detailFormvalues)
         .subscribe((response: any) => {
             if (typeof response == 'string') {
-                this.toastrService.error(response);
+                this.toastr.error(response);
             } else {
                 this.toastr.success("Invoiced Approved!");
                 var nextInvoiceId = this.invoiceIds[this.nextInvoice]; 
@@ -135,7 +135,7 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
         this.invoiceService.rejectInvoiceItem(this.currentInvoice)
         .subscribe((response: any) => {
             if (typeof response == 'string') {
-                this.toastrService.error(response);
+                this.toastr.error(response);
             } else {            
                 this.toastr.success("Invoiced Rejected!");
                 var nextInvoiceId = this.invoiceIds[this.nextInvoice]; 
