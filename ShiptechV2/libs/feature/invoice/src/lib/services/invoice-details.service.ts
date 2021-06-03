@@ -254,6 +254,14 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.getWorkingDueDate(payload);
   }
 
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  getDueDateWithoutSave(payload: any): Observable<unknown> {
+    return this.api.getDueDateWithoutSave(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

@@ -21,7 +21,6 @@ export class RelatedInvoiceComponent implements OnInit {
   @Input('detailFormvalues') set _detailFormvalues(val) {
     if(val){
       this.formValues = val;
-      debugger;
       if(this.formValues.relatedInvoices){
         this.formValues.relatedInvoices.forEach(element => {
           this.rowData_aggrid.push({
