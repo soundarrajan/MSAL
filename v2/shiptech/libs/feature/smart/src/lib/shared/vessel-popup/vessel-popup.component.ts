@@ -6,6 +6,7 @@ import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.co
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { LocalService } from '../../services/local-service.service';
 import { LoggerService } from '../../services/logger.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vessel-popup',
@@ -24,7 +25,8 @@ export class VesselPopupComponent implements OnInit {
   public theme:boolean = true;
   FutureRequest: any = [];
   public baseOrigin: string = '';
-  constructor(private elem: ElementRef, private localService: LocalService, private logger: LoggerService) { }
+  scheduleDashboardLabelConfiguration: any;
+  constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService) { }
   @Input() status: string = "standard-view";
   @Input('vesselData') popup_data;
   @Output() showBPlan = new EventEmitter();
@@ -36,6 +38,10 @@ export class VesselPopupComponent implements OnInit {
   @ViewChild('fifth') fifth: MatExpansionPanel;
   
   ngOnInit() {
+    this.route.data.subscribe(data => {
+      console.log(data);
+      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+    });
     this.loadFutureRequestData();
     this.baseOrigin = new URL(window.location.href).origin;
     this.localService.themeChange.subscribe(value => this.theme = value);
@@ -136,6 +142,16 @@ export class VesselPopupComponent implements OnInit {
                   "cancelled"
               ],
               "FilterOperator": 0
+            },
+            {
+                "columnValue": "vesselId",
+                "ColumnType": "Text",
+                "isComputedColumn": false,
+                "ConditionValue": "=",
+                "Values": [
+                    this.popup_data?.vesselId
+                ],
+                "FilterOperator": 0
             }
           ]
         },
@@ -156,7 +172,7 @@ export class VesselPopupComponent implements OnInit {
         }
       }
     }
-    this.localService.getOutstandRequestData(requestPayload).subscribe(response => {
+    this.localService.getOutstandRequestData(requestPayload, this.scheduleDashboardLabelConfiguration).subscribe(response => {
       console.log(response.payload);
       this.FutureRequest = [];
       if(response.payload) {
@@ -286,14 +302,27 @@ export class VesselPopupComponent implements OnInit {
       cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center fs-8'],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
+        let cellStyle = {};
         let status = params?.data?.requestStatus?.displayName;
         classArray.push('aggrid-content-center');
-        let newClass = status === 'Stemmed' ? 'custom-chip small-chip darkgreen' :
-        status === 'New' ? 'custom-chip small-chip amber' :
-        status === 'Inquired' ? 'custom-chip small-chip purple' :
-              '';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null }
+        classArray.push('custom-chip small-chip');
+
+        let colorCode = params?.data?.requestStatus?.colorCode;
+        if(colorCode?.code) {
+          cellStyle = {background: colorCode.code};
+        }
+        // let newClass = status === 'Stemmed' ? 'custom-chip small-chip darkgreen' :
+        // status === 'Validated' ? 'custom-chip small-chip amber' :
+        // status === 'PartiallyInquired' ? 'custom-chip small-chip purple' :
+        // status === 'Inquired' ? 'custom-chip small-chip purple' :
+        // status === 'PartiallyQuoted' ? 'custom-chip small-chip purple' :
+        // status === 'Quoted' ? 'custom-chip small-chip purple' :
+        // status === 'Amended' ? 'custom-chip small-chip purple' :
+        // status === 'PartiallyStemmed' ? 'custom-chip small-chip purple' :
+        // status === 'Cancelled' ? 'custom-chip small-chip purple' :
+        //       'custom-chip small-chip dark';
+        // classArray.push(newClass);
+        return { cellClass: classArray.length > 0 ? classArray : null, cellStyle: cellStyle }
       }
     }
   ];
