@@ -14,25 +14,17 @@
             [matMenuTriggerFor]="productMenu"
             #productMenuTrigger="matMenuTrigger"
             (click)="addTransaction()"
-          >
+            [ngStyle]="{ pointerEvents: formValues.status?.name === 'Approved' ? 'none' : 'auto' }">
             <a class="add-icon"></a>
           </div>
           <mat-menu #productMenu="matMenu" class="select-product-container">
             <div
-              [ngClass]="{
-                'expand-allowed-company-container': expandAddTransactionListPopUp
-              }"
-            >
+              [ngClass]="{'expand-allowed-company-container': expandAddTransactionListPopUp}">
               <div class="col-md-12 header-container-product">
                 <div class="search-product-container col-md-10">
                   <span
                     class="search-product-lookup"
-                    (click)="
-                      $event.stopPropagation();
-                      $event.preventDefault();
-                      searchProducts(productSearch)
-                    "
-                  >
+                    (click)="$event.stopPropagation();$event.preventDefault();searchProducts(productSearch)">
                   </span>
                   <input
                     matInput
@@ -154,13 +146,12 @@
         <tr *ngIf="!productDetail.value.isDeleted">
           <td
             class="padding"
-            style="padding-left: 0px  !important; padding-right: 0px  !important;"
-          >
+            style="padding-left: 0px  !important; padding-right: 0px  !important;">
             <a
               class="remove-icon"
               style="margin-left: 10px;"
               (click)="removeProductDetailLine(productDetail.key)"
-            ></a>
+              [ngStyle]="{ pointerEvents: formValues.status?.name === 'Approved' ? 'none' : 'auto' }"></a>
           </td>
           <td class="padding" style="max-width: initial;min-width: 250px">
             <div class="delivery-number-container">
@@ -205,7 +196,7 @@
           <td style="max-width: initial;min-width: 200px">
             <div class="non-editable-container">
               <div style="float: left;">
-                {{ priceFormatValue(productDetail.value.estimatedRate, productDetail.value.pricePrecision) }}
+                {{ quantityFormatValue(productDetail.value.estimatedRate) }}
               </div>
               <div style="float: right;">
                 {{ productDetail.value.estimatedRateCurrency.code }}

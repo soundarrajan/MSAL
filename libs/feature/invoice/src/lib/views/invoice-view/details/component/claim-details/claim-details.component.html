@@ -34,15 +34,15 @@
             <td class="padding" style="width: 250px">
               <div class="delivery-number-container">
                 <div class="delivery-number-link-container">
-                    <a class="delivery-number-link" href="{{openClaimLink(claimDetail.value.claim.id)}}" target="_blank">
-                      {{claimDetail.value.claim.id}}
+                    <a class="delivery-number-link" href="{{openClaimLink(claimDetail.value?.claim?.id)}}" target="_blank">
+                      {{claimDetail.value?.claim?.id}}
                     </a>
                 </div>
               </div>
             </td>
             <td class="padding-left-column" style="width: 200px" >
               <div>
-                {{claimDetail.value.delivery.id}}
+                {{claimDetail.value?.delivery?.id}}
               </div>
             </td>
             <td class="padding-left-column" style="width: 200px" >
@@ -66,18 +66,19 @@
                 </div>
               </div>
             </td>
+
             <td  style="max-width: initial;min-width: 200px" class="select-container">
               <div class="dotted-container">
                 <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 250px;">
                   <div class="split-field">
-                    <mat-form-field class="without-search long-label-field" style="width: 74%;border: none;" appearance="legacy">
+                    <mat-form-field class="without-search long-label-field claim-amount-wrapper" style="width: 74%;border: none;" appearance="legacy">
                       <input matInput
                         [(ngModel)]="claimDetail.value.invoiceAmount"
                         (ngModelChange)="invoiceAmountChange(claimDetail.key)"
                         autocomplete="off"
                         amountFormat>
                     </mat-form-field>
-                    <mat-form-field style="width: 26%"
+                    <mat-form-field style="width: 26%" class="claim-amount-wrapper"
                         appearance="legacy" aria-disabled="true">
                         <mat-select disableRipple
                           [(ngModel)]="claimDetail.value.invoiceAmountCurrency.id"

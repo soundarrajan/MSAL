@@ -114,7 +114,7 @@ export class MapPanelComponent implements OnInit {
     this.vesselList.forEach(vessel => {
       this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
       this.vList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
-      this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
+     // this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
     });
     // this.vesselList.forEach(vessel => {
     //   this.filterList.push({ type: 'V', id: vessel.VesselIMONO, name: vessel.VesselIMONO });
