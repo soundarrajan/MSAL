@@ -1,7 +1,11 @@
-﻿commit 179123cd43a16a9515491a004f501c4ccf734c4e
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Thu Jun 3 13:56:48 2021 +0530
+﻿commit 036a14f2968cdc06c8aa2cbfa824cdf62b9ef662
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Jun 3 08:56:02 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 11198: fix invoice rate price precision
+    
+    fix invoice rate price precision
+    
+    Related work items: #32433
 
 branch: master
