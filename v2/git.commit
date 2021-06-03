@@ -1,9 +1,11 @@
-﻿commit 56bb900f512087d230bc46b0a5912bfa3ec7a429
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jun 3 14:06:59 2021 +0000
+﻿commit ebb0a43bd68b0546ee95f18d1df301029b301483
+Author: Anurag Dwivedi <anurag.d@Inatech.com>
+Date:   Thu Jun 3 14:27:25 2021 +0000
 
-    Merged PR 11222: #29675: Vessel details: View Future Requests for the Vessel status and default vessel imono at first time load config has done
+    Merged PR 11223: Table view fixes
     
-    Related work items: #29675
+    Table view fixes
+    
+    Related work items: #29749
 
 branch: master
