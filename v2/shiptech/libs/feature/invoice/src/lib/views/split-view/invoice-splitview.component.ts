@@ -112,7 +112,9 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
     approveInvoiceItem() {
         this.invoiceService.approveInvoiceItem(this.detailFormvalues)
         .subscribe((response: any) => {
-            if(response) {
+            if (typeof response == 'string') {
+                this.toastr.error(response);
+            } else {
                 this.toastr.success("Invoiced Approved!");
                 var nextInvoiceId = this.invoiceIds[this.nextInvoice]; 
                 var prevInvoiceId = this.invoiceIds[this.nextInvoice]; 
@@ -124,27 +126,31 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
                     this.setCurrentInvoice(prevInvoiceId);
                 } else {
                     this.noMoreInvoices = true;
+                    this.changeDetectorRef.detectChanges();
                 }
-                console.log(response);
             }
         });
     }
     rejectInvoiceItem() {
         this.invoiceService.rejectInvoiceItem(this.currentInvoice)
         .subscribe((response: any) => {
-            this.toastr.success("Invoiced Rejected!");
-            var nextInvoiceId = this.invoiceIds[this.nextInvoice]; 
-            var prevInvoiceId = this.invoiceIds[this.nextInvoice]; 
-            if(this.nextInvoice !== false) {
-                this.invoiceIds.splice(this.invoiceIds.indexOf(this.currentInvoice), 1);
-                this.setCurrentInvoice(nextInvoiceId);
-            } else if (this.previousInvoice !== false) {
-                this.invoiceIds.splice(this.invoiceIds.indexOf(this.currentInvoice), 1);
-                this.setCurrentInvoice(prevInvoiceId);
-            } else {
-                this.noMoreInvoices = true;
+            if (typeof response == 'string') {
+                this.toastr.error(response);
+            } else {            
+                this.toastr.success("Invoiced Rejected!");
+                var nextInvoiceId = this.invoiceIds[this.nextInvoice]; 
+                var prevInvoiceId = this.invoiceIds[this.nextInvoice]; 
+                if(this.nextInvoice !== false) {
+                    this.invoiceIds.splice(this.invoiceIds.indexOf(this.currentInvoice), 1);
+                    this.setCurrentInvoice(nextInvoiceId);
+                } else if (this.previousInvoice !== false) {
+                    this.invoiceIds.splice(this.invoiceIds.indexOf(this.currentInvoice), 1);
+                    this.setCurrentInvoice(prevInvoiceId);
+                } else {
+                    this.noMoreInvoices = true;
+                    this.changeDetectorRef.detectChanges();
+                }
             }
-            console.log(response);
         });
     }
     

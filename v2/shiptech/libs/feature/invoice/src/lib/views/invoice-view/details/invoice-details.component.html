@@ -696,7 +696,8 @@
                     (focus)="deliveryDate.open()"
                     autocomplete="off"
                     (dateChange)="
-                      triggerChangeFieldsAppSpecific('DeliveryDate')
+                      formValues.deliveryDate= formatDateForBe(formValues.deliveryDate);
+                      triggerChangeFieldsAppSpecific('DeliveryDate');
                     "
                     placeholder="Delivery Date"
                     [disabled]="formValues.status?.name === 'Approved'"

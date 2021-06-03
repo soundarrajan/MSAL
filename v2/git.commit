@@ -1,11 +1,11 @@
-﻿commit ebb0a43bd68b0546ee95f18d1df301029b301483
-Author: Anurag Dwivedi <anurag.d@Inatech.com>
-Date:   Thu Jun 3 14:27:25 2021 +0000
+﻿commit 41f5130c6c315a299ff329cb3aa57b5dfd0b6bc1
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Jun 3 19:46:27 2021 +0000
 
-    Merged PR 11223: Table view fixes
+    Merged PR 11227: fix build error
     
-    Table view fixes
+    fix build error
     
-    Related work items: #29749
+    Related work items: #32840
 
 branch: master
