@@ -432,10 +432,11 @@
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Payment Status</mat-label>
                   <mat-select
-                    disableOptionCentering
                     [compareWith]="compareObjects"
                     [(ngModel)]="formValues.paymentDetails.paymentStatus"
                     name="paymentStatus"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
                     [disabled]="formValues.status?.name !== 'Approved'"
                   >
                     <mat-option

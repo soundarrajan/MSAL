@@ -238,13 +238,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
        if(this.formValues.deliveryNotes != undefined && this.formValues.deliveryNotes != null && this.formValues.deliveryNotes.length > 0){
          this.activeNotesState = true;
        }
-        if (this.formValues.info.request) {
+        if (this.formValues?.info?.request) {
           this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
         } else {
           this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
         }
 
-       
+
         this.setQuantityFormatValues();
         this.decodeFields();
 
@@ -996,7 +996,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           }
         }
 
-        if (this.formValues.info.request) {
+        if (this.formValues?.info?.request) {
           this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
         } else {
           this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
