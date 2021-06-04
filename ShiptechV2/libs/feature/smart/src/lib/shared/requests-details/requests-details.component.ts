@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { FormControl } from '@angular/forms';
 import { LocalService } from '../../services/local-service.service';
-import { filter } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-requests-details',
@@ -27,7 +29,8 @@ export class RequestsDetailsComponent implements OnInit {
   rowData: any[];
   columnFilter: any = [];
   TotalCount: number;
-  constructor(private localService: LocalService) {
+  scheduleDashboardLabelConfiguration: any;
+  constructor(protected store: Store, private route: ActivatedRoute, private localService: LocalService) {
     this.baseOrigin = new URL(window.location.href).origin;
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
@@ -81,6 +84,12 @@ export class RequestsDetailsComponent implements OnInit {
 
   ngOnInit() {
     // this.loadOutstandRequestData();
+    //Get color code config data from route resolve
+    this.route.data.subscribe(data => {
+      console.log(data);
+      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+      
+    });
   }
   createNewRequest() {
     window.open(`${this.baseOrigin}/#/new-request/`, '_blank');
@@ -256,13 +265,24 @@ export class RequestsDetailsComponent implements OnInit {
         }
       }
     return new Promise(async (resolve)=> {
+      // get fresh vesselref from store
+      const vesselRef = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
 
       // generate filter model based on grid filter
       let filterModel = params?.request?.filterModel;
+      let columnFilterByVessel = {
+        "columnValue": "vesselId",
+        "ColumnType": "Text",
+        "isComputedColumn": false,
+        "ConditionValue": "=",
+        "Values": [
+          vesselRef.vesselId
+        ],
+        "FilterOperator": 0
+      };
       if(typeof filterModel == 'object' && Object.keys(filterModel).length>0) {
         this.columnFilter = [];
-
-        filterModel = await this.formatNestFilter(filterModel);
+       filterModel = await this.formatNestFilter(filterModel);
 
         let filterModelArr = Object.keys(filterModel)
 
@@ -277,10 +297,12 @@ export class RequestsDetailsComponent implements OnInit {
           this.columnFilter.push(columnFormat);
           if(filterModelArr.length == index+1) {
             requestPayload.Payload.PageFilters.Filters = this.columnFilter;
+            requestPayload.Payload.PageFilters.Filters.push(columnFilterByVessel);
             resolve(requestPayload);
           }
         })
       } else {
+        requestPayload.Payload.PageFilters.Filters.push(columnFilterByVessel);
         resolve(requestPayload);
       }
       
@@ -328,7 +350,7 @@ export class RequestsDetailsComponent implements OnInit {
       let requestPayload = await this.generateFilterModel(params);
           requestPayload = await this.generateSortModel(params, requestPayload);
 
-      this.localService.getOutstandRequestData(requestPayload).subscribe(response => {
+      this.localService.getOutstandRequestData(requestPayload, this.scheduleDashboardLabelConfiguration).subscribe(response => {
           params.successCallback(
             response.payload, response.matchedCount
           );
@@ -417,14 +439,27 @@ export class RequestsDetailsComponent implements OnInit {
       filter: 'text',
       cellRendererFramework: AGGridCellDataComponent, 
       cellRendererParams: { type: 'request-link', redirectUrl: `${this.baseOrigin}/#/edit-request` },
+      cellStyle: params => {
+        let colorCode = params?.data?.requestStatus?.colorCode;
+        if(colorCode?.code) {
+          return {'box-shadow': `inset 4px 0px 0px -1px ${colorCode.code}`};
+        }
+        return null;
+      },
       cellClass: function (params) {
-        var classArray: string[] = ['aggrid-link', 'aggrid-content-c'];
+        var classArray: string[] = ['aggrid-link', 'aggrid-content-c', 'aggrid-left-ribbon'];
         let status = params?.data?.requestStatus?.displayName;
-        let newClass = status === 'Stemmed' ? 'aggrid-left-ribbon lightgreen' :
-        status === 'New' ? 'aggrid-left-ribbon amber' :
-        status === 'Inquired' ? 'aggrid-left-ribbon mediumpurple' :
-              'aggrid-left-ribbon dark';
-        classArray.push(newClass);
+        // let newClass = status === 'Stemmed' ? 'aggrid-left-ribbon lightgreen' :
+        // status === 'Validated' ? 'aggrid-left-ribbon amber' :
+        // status === 'PartiallyInquired' ? 'aggrid-left-ribbon mediumpurple' :
+        // status === 'Inquired' ? 'aggrid-left-ribbon mediumpurple' :
+        // status === 'PartiallyQuoted' ? 'aggrid-left-ribbon mediumpurple' :
+        // status === 'Quoted' ? 'aggrid-left-ribbon mediumpurple' :
+        // status === 'Amended' ? 'aggrid-left-ribbon mediumpurple' :
+        // status === 'PartiallyStemmed' ? 'aggrid-left-ribbon mediumpurple' :
+        // status === 'Cancelled' ? 'aggrid-left-ribbon dark' :
+              // 'aggrid-left-ribbon dark';
+        // classArray.push(newClass);
         return classArray.length > 0 ? classArray : null
       }
     },
@@ -445,17 +480,40 @@ export class RequestsDetailsComponent implements OnInit {
     { headerName: 'Trader', field: 'buyerName', filter: 'text', headerTooltip: 'Trader', width: 100, cellClass: ['aggrid-content-c aggrid-column-splitter-left'] },
     { headerName: 'Operator', field: 'operatorByName', filter: 'text', headerTooltip: 'Operator', width: 100, cellClass: ['aggrid-content-c'] },
     {
-      headerName: 'Status', field: 'requestStatus.displayName', filter: 'text', headerTooltip: 'Status', cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+      headerName: 'Status', field: 'requestStatus.displayName', filter: 'text', 
+      headerTooltip: 'Status', 
+      cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], 
+      // cellStyle: params => {
+      //   let colorCode = params?.data?.requestStatus?.colorCode;
+      //   if(colorCode.code) {
+      //     return {background: colorCode.code};
+      //   }
+      //   return null;
+      // },
+      cellClass: ['aggrid-content-center'],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
+        let cellStyle = {};
         let status = params?.data?.requestStatus?.displayName;
         classArray.push('aggrid-content-center');
-        let newClass = status === 'Stemmed' ? 'custom-chip lightgreen' :
-          status === 'New' ? 'custom-chip amber' :
-            status === 'Inquired' ? 'custom-chip mediumpurple' :
-              '';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null }
+        classArray.push('custom-chip');
+
+        let colorCode = params?.data?.requestStatus?.colorCode;
+        if(colorCode?.code) {
+          cellStyle = {background: colorCode.code};
+        }
+        // let newClass = status === 'Stemmed' ? 'custom-chip lightgreen' :
+        //   status === 'Validated' ? 'custom-chip amber' :
+        //     status === 'PartiallyInquired' ? 'custom-chip mediumpurple' :
+        //     status === 'Inquired' ? 'custom-chip mediumpurple' :
+        //     status === 'PartiallyQuoted' ? 'custom-chip mediumpurple' :
+        //     status === 'Quoted' ? 'custom-chip mediumpurple' :
+        //     status === 'Amended' ? 'custom-chip mediumpurple' :
+        //     status === 'PartiallyStemmed' ? 'custom-chip mediumpurple' :
+        //     status === 'Cancelled' ? 'custom-chip mediumpurple' :
+        //       '';
+        // classArray.push(newClass);
+        return { cellClass: classArray.length > 0 ? classArray : null, cellStyle: cellStyle }
       }
     },
     // { headerName: 'Request Type', headerTooltip: 'Request Type', field: 'retype', width: 110, cellClass: ['aggrid-content-c'] },

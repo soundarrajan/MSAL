@@ -12,7 +12,17 @@ import { QcReportState } from '../../../store/report/qc-report.state';
 import { BehaviorSubject, empty, Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
 import { NotesService } from '../../../services/notes.service';
-import { catchError, filter, finalize, map, scan, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  finalize,
+  map,
+  scan,
+  skip,
+  switchMap,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction
@@ -48,7 +58,13 @@ import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { VesselToWatchModel } from '../../../store/report/models/vessel-to-watch.model';
 import { MyMonitoringService } from '../../service/logging.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgForm
+} from '@angular/forms';
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IDeliveryTenantSettings } from '../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
@@ -68,12 +84,9 @@ import { ProductListColumnServerKeys } from '@shiptech/core/ui/components/master
 import { Title } from '@angular/platform-browser';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 
-
-
 interface DialogData {
   email: string;
 }
-
 
 @Component({
   selector: 'shiptech-port-call',
@@ -114,10 +127,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   selectedProductIndex: any = 0;
   raiseClaimInfo: any;
   CM: any = {
-    'listsCache': {
-      'ClaimType': []
+    listsCache: {
+      ClaimType: []
     },
-    'selectedProduct': 0
+    selectedProduct: 0
   };
   claimType: any;
   scheduleDashboardConfiguration: any;
@@ -163,49 +176,54 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     private tenantService: TenantFormattingService,
     private loadingBar: LoadingBarService,
     private titleService: Title
-    ) {
+  ) {
     this.formValues = {
-      'sellerName': '',
-      'port': '',
-      'OrderBuyer': '',
-      'surveyorName': '',
-      'bdnInformation': '',
-      'orderNumber': '',
-      'deliveryDate': '',
-      'order': null,
-      'barge': null,
-      'bdnDate': '',
-      'berthingTime': '',
-      'bargeAlongside': '',
-      'deliveryStatus': '',
-      'info': {},
-      'DeliveryNotes':{},
-      'temp': {
-        'orderedProducts': {},
-        'deliverysummary': {},
-        'deliveryProducts': [],
-        'buyerPrecedenceRule': {},
-        'sellerPrecedenceRule': {},
-        'finalQtyPrecedenceLogicRules': {},
-        'isShowQuantityReconciliationSection': {},
-        'isShowDeliveryEmailToLabsButton': {},
-        'hiddenFields': {},
-        'savedProdForCheck': {}
+      sellerName: '',
+      port: '',
+      OrderBuyer: '',
+      surveyorName: '',
+      bdnInformation: '',
+      orderNumber: '',
+      deliveryDate: '',
+      order: null,
+      barge: null,
+      bdnDate: '',
+      berthingTime: '',
+      bargeAlongside: '',
+      deliveryStatus: '',
+      info: {},
+      DeliveryNotes: {},
+      temp: {
+        orderedProducts: {},
+        deliverysummary: {},
+        deliveryProducts: [],
+        buyerPrecedenceRule: {},
+        sellerPrecedenceRule: {},
+        finalQtyPrecedenceLogicRules: {},
+        isShowQuantityReconciliationSection: {},
+        isShowDeliveryEmailToLabsButton: {},
+        hiddenFields: {},
+        savedProdForCheck: {}
       },
-      'deliveryProducts': [],
-      'feedback': {}
+      deliveryProducts: [],
+      feedback: {}
     };
 
-    this.entityName = 'Delivery'
+    this.entityName = 'Delivery';
     const generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
+    this.quantityPrecision =
+      generalTenantSettings.defaultValues.quantityPrecision;
     this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
-            IDeliveryTenantSettings
-          >(TenantSettingsModuleName.Delivery);
+      IDeliveryTenantSettings
+    >(TenantSettingsModuleName.Delivery);
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
-          IGeneralTenantSettings
-        >(TenantSettingsModuleName.General);
-    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
+      IGeneralTenantSettings
+    >(TenantSettingsModuleName.General);
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
     //this.loadingBar.start();
   }
 
@@ -233,23 +251,40 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
       this.orderNumberOptions = data.orderNumbers;
       if (data.delivery) {
-
         this.formValues = data.delivery;
-       if(this.formValues.deliveryNotes != undefined && this.formValues.deliveryNotes != null && this.formValues.deliveryNotes.length > 0){
-         this.activeNotesState = true;
-       }
-        if (this.formValues.info.request) {
-          this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
+        if (
+          this.formValues.deliveryNotes != undefined &&
+          this.formValues.deliveryNotes != null &&
+          this.formValues.deliveryNotes.length > 0
+        ) {
+          this.activeNotesState = true;
+        }
+        if (this.formValues?.info?.request) {
+          this.titleService.setTitle(
+            'Delivery' +
+              ' - ' +
+              'REQ ' +
+              this.formValues.info.request.id +
+              ' - ' +
+              this.formValues.info.vesselName
+          );
         } else {
-          this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
+          this.titleService.setTitle(
+            'Delivery' +
+              ' - ' +
+              this.formValues.order.name +
+              ' - ' +
+              this.formValues.info.vesselName
+          );
         }
 
-       
         this.setQuantityFormatValues();
         this.decodeFields();
-
       }
-      if (typeof this.formValues.feedback == 'undefined' || !this.formValues.feedback) {
+      if (
+        typeof this.formValues.feedback == 'undefined' ||
+        !this.formValues.feedback
+      ) {
         this.formValues.feedback = {};
       }
       this.uoms = data.uoms;
@@ -259,7 +294,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.navBar = data.navBar;
       this.CM.listsCache.ClaimType = data.claimType;
       this.quantityCategory = data.quantityCategory;
-      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+      this.scheduleDashboardLabelConfiguration =
+        data.scheduleDashboardLabelConfiguration;
       this.pumpingRateUom = data.pumpingRateUom;
       this.uomMass = data.uomMass;
       this.uomVolume = data.uomVolume;
@@ -272,11 +308,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
 
       const deliveryData = {
-        'data': this.deliverySettings
-      }
+        data: this.deliverySettings
+      };
       this.setDeliverySettings(deliveryData);
       if (this.formValues.deliveryProducts[this.selectedProductIndex]) {
-        const product = this.formValues.deliveryProducts[this.selectedProductIndex];
+        const product = this.formValues.deliveryProducts[
+          this.selectedProductIndex
+        ];
         if (product.qualityParameters) {
           this.getClaimInfo([...product.qualityParameters], product.id);
         }
@@ -294,34 +332,34 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   initSplitDelivery() {
     this.formValues = {
-      'sellerName': '',
-      'port': '',
-      'OrderBuyer': '',
-      'surveyorName': '',
-      'bdnInformation': '',
-      'orderNumber': '',
-      'deliveryDate': '',
-      'order': null,
-      'barge': null,
-      'bdnDate': '',
-      'berthingTime': '',
-      'bargeAlongside': '',
-      'deliveryStatus': '',
-      'info': {},
-      'temp': {
-        'orderedProducts': {},
-        'deliverysummary': {},
-        'deliveryProducts': [],
-        'buyerPrecedenceRule': {},
-        'sellerPrecedenceRule': {},
-        'finalQtyPrecedenceLogicRules': {},
-        'isShowQuantityReconciliationSection': {},
-        'isShowDeliveryEmailToLabsButton': {},
-        'hiddenFields': {},
-        'savedProdForCheck': {}
+      sellerName: '',
+      port: '',
+      OrderBuyer: '',
+      surveyorName: '',
+      bdnInformation: '',
+      orderNumber: '',
+      deliveryDate: '',
+      order: null,
+      barge: null,
+      bdnDate: '',
+      berthingTime: '',
+      bargeAlongside: '',
+      deliveryStatus: '',
+      info: {},
+      temp: {
+        orderedProducts: {},
+        deliverysummary: {},
+        deliveryProducts: [],
+        buyerPrecedenceRule: {},
+        sellerPrecedenceRule: {},
+        finalQtyPrecedenceLogicRules: {},
+        isShowQuantityReconciliationSection: {},
+        isShowDeliveryEmailToLabsButton: {},
+        hiddenFields: {},
+        savedProdForCheck: {}
       },
-      'deliveryProducts': [],
-      'feedback': {}
+      deliveryProducts: [],
+      feedback: {}
     };
     let data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
     localStorage.removeItem('parentSplitDelivery');
@@ -332,10 +370,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
     data.deliveryProducts.forEach((val, key) => {
       this.formValues.deliveryProducts.push({
-          product: val.product,
-          id: val.id,
-          orderedProduct: val.orderedProduct,
-          orderProductId: val.orderProductId
+        product: val.product,
+        id: val.id,
+        orderedProduct: val.orderedProduct,
+        orderProductId: val.orderProductId
       });
     });
     this.formValues.splittedDeliveryId = data.splitDelivery.splittedDeliveryId;
@@ -343,7 +381,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
       data.splitDelivery.items.forEach((splitProd, key) => {
         if (splitProd.orderProductId == deliveryProd.orderProductId) {
-          deliveryProd.confirmedQuantityAmount = splitProd.remainingConfirmedAmount;
+          deliveryProd.confirmedQuantityAmount =
+            splitProd.remainingConfirmedAmount;
           deliveryProd.confirmedQuantityUom = splitProd.remainingConfirmedUom;
         }
       });
@@ -353,43 +392,50 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.formValues.deliveryProducts.forEach((deliveryProd, key) => {
         if (summaryProd.id == deliveryProd.orderProductId) {
           deliveryProd.orderProductId = summaryProd.id;
-          deliveryProd.productType = { ... summaryProd.productType };
+          deliveryProd.productType = { ...summaryProd.productType };
           deliveryProd.productTypeId = summaryProd.productType.id;
 
           const orderProductId = summaryProd.id;
           const orderProductSpecGroupId = summaryProd.specGroup.id;
 
           var dataForInfo = {
-              Payload: {
-                  Filters: [ {
-                      ColumnName: 'OrderProductId',
-                      Value: orderProductId
-                  }, {
-                      ColumnName: 'SpecGroupId',
-                      Value: orderProductSpecGroupId
-                  } ]
-              }
+            Payload: {
+              Filters: [
+                {
+                  ColumnName: 'OrderProductId',
+                  Value: orderProductId
+                },
+                {
+                  ColumnName: 'SpecGroupId',
+                  Value: orderProductSpecGroupId
+                }
+              ]
+            }
           };
           this.openedScreenLoaders += 1;
           this.deliveryService
-          .loadDeliverySpecParameters(dataForInfo)
-          .pipe(
-            finalize(() => {
-              this.openedScreenLoaders -= 1;
-              if (!this.openedScreenLoaders) {
-                this.isLoading = false;
+            .loadDeliverySpecParameters(dataForInfo)
+            .pipe(
+              finalize(() => {
+                this.openedScreenLoaders -= 1;
+                if (!this.openedScreenLoaders) {
+                  this.isLoading = false;
+                }
+              })
+            )
+            .subscribe((response: any) => {
+              deliveryProd.qualityParameters = response;
+              if (deliveryProd.qualityParameters) {
+                deliveryProd.qualityParameters.forEach(
+                  (productParameter, key1) => {
+                    productParameter.specParameter.name = this.decodeSpecificField(
+                      productParameter.specParameter.name
+                    );
+                  }
+                );
               }
-            })
-          )
-          .subscribe((response: any) => {
-            deliveryProd.qualityParameters = response;
-            if (deliveryProd.qualityParameters) {
-              deliveryProd.qualityParameters.forEach((productParameter, key1) => {
-                productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
-              });
-            }
-            this.changeDetectorRef.detectChanges();
-          });
+              this.changeDetectorRef.detectChanges();
+            });
 
           this.openedScreenLoaders += 1;
           this.deliveryService
@@ -409,15 +455,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         }
       });
     });
-
-
   }
 
-  ChangedValueFun(event){
-  this.formValues.deliveryNotes = event;
+  ChangedValueFun(event) {
+    this.formValues.deliveryNotes = event;
   }
 
-    /* END SELCTIONS FOR RAISE CLAIM IN DELIVERY*/
+  /* END SELCTIONS FOR RAISE CLAIM IN DELIVERY*/
   /* delivery quantity variance and status calculations*/
   initGetConversionInfo(productID, productIdx) {
     if (typeof this.formValues.temp.variances == 'undefined') {
@@ -425,23 +469,23 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
     //this.openedScreenLoaders += 1;
     this.deliveryService
-    .loadConversionInfo(productID)
-    .pipe(
-      finalize(() => {
-        //this.openedScreenLoaders -= 1;
-        if (!this.openedScreenLoaders) {
-          //this.isLoading = false;
-        }
-      })
-    )
-    .subscribe(response => {
-      this.formValues.temp.variances[`product_${ productIdx}`] = null;
-      this.conversionInfoData[productIdx] = response;
-      this.calculateVarianceAndReconStatus(productIdx);
-      this.eventsSubject3.next(this.conversionInfoData);
-      this.changeDetectorRef.detectChanges();
-    });
-  };
+      .loadConversionInfo(productID)
+      .pipe(
+        finalize(() => {
+          //this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            //this.isLoading = false;
+          }
+        })
+      )
+      .subscribe(response => {
+        this.formValues.temp.variances[`product_${productIdx}`] = null;
+        this.conversionInfoData[productIdx] = response;
+        this.calculateVarianceAndReconStatus(productIdx);
+        this.eventsSubject3.next(this.conversionInfoData);
+        this.changeDetectorRef.detectChanges();
+      });
+  }
 
   setQuantityFormat(value) {
     let viewValue = `${value}`;
@@ -452,16 +496,31 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   calculateVarianceAndReconStatus(productIdx) {
     // function called for all quantities, call here calculate final quantity
     this.calculateFinalQuantity(productIdx);
-    let confirmedQuantityUom, vesselQuantityUom, bdnQuantityUom,vesselFlowMeterQuantityUom, surveyorQuantityUom;
+    let confirmedQuantityUom,
+      vesselQuantityUom,
+      bdnQuantityUom,
+      vesselFlowMeterQuantityUom,
+      surveyorQuantityUom;
     let conversionInfo = this.conversionInfoData[productIdx];
     let activeProduct = this.formValues.deliveryProducts[productIdx];
     // get fields values and uom
-    activeProduct.confirmedQuantityUom == null ? confirmedQuantityUom = null : confirmedQuantityUom = activeProduct.confirmedQuantityUom.name;
-    activeProduct.vesselQuantityUom == null ? vesselQuantityUom = null : vesselQuantityUom = activeProduct.vesselQuantityUom.name;
-    activeProduct.bdnQuantityUom == null ? bdnQuantityUom = null : bdnQuantityUom = activeProduct.bdnQuantityUom.name;
-    activeProduct.vesselFlowMeterQuantityUom == null ? vesselFlowMeterQuantityUom = null : vesselFlowMeterQuantityUom = activeProduct.vesselFlowMeterQuantityUom.name;
+    activeProduct.confirmedQuantityUom == null
+      ? (confirmedQuantityUom = null)
+      : (confirmedQuantityUom = activeProduct.confirmedQuantityUom.name);
+    activeProduct.vesselQuantityUom == null
+      ? (vesselQuantityUom = null)
+      : (vesselQuantityUom = activeProduct.vesselQuantityUom.name);
+    activeProduct.bdnQuantityUom == null
+      ? (bdnQuantityUom = null)
+      : (bdnQuantityUom = activeProduct.bdnQuantityUom.name);
+    activeProduct.vesselFlowMeterQuantityUom == null
+      ? (vesselFlowMeterQuantityUom = null)
+      : (vesselFlowMeterQuantityUom =
+          activeProduct.vesselFlowMeterQuantityUom.name);
     // activeProduct.bargeFlowMeterQuantityUom == null ? bargeFlowMeterQuantityUom = null : bargeFlowMeterQuantityUom = activeProduct.bargeFlowMeterQuantityUom.name;
-    activeProduct.surveyorQuantityUom == null ? surveyorQuantityUom = null : surveyorQuantityUom = activeProduct.surveyorQuantityUom.name;
+    activeProduct.surveyorQuantityUom == null
+      ? (surveyorQuantityUom = null)
+      : (surveyorQuantityUom = activeProduct.surveyorQuantityUom.name);
     let Confirm = {
       val: this.setQuantityFormat(activeProduct.confirmedQuantityAmount),
       uom: confirmedQuantityUom
@@ -502,22 +561,32 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       Surveyor: 'surveyorQuantityUom'
     };
     // "BargeFlowMeter": 'bargeFlowMeterQuantityUom',
-    let convertedFields : any = {};
-    let baseUom : any = {};
+    let convertedFields: any = {};
+    let baseUom: any = {};
     let convFact = 1;
     if (typeof conversionInfo == 'undefined') {
       conversionInfo = {};
     }
-    if (productIdx == 0 && typeof this.formValues.temp.variances == 'undefined') {
+    if (
+      productIdx == 0 &&
+      typeof this.formValues.temp.variances == 'undefined'
+    ) {
       this.formValues.temp.variances = [];
     }
-    if (this.formValues.deliveryProducts[productIdx].sellerQuantityType  && typeof this.formValues.deliveryProducts[productIdx].sellerQuantityType.name != 'undefined') {
-      let uomObjId = fieldUoms[this.formValues.deliveryProducts[productIdx].sellerQuantityType.name];
+    if (
+      this.formValues.deliveryProducts[productIdx].sellerQuantityType &&
+      typeof this.formValues.deliveryProducts[productIdx].sellerQuantityType
+        .name != 'undefined'
+    ) {
+      let uomObjId =
+        fieldUoms[
+          this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
+        ];
       baseUom = this.formValues.deliveryProducts[productIdx][uomObjId];
     }
     if (!baseUom) {
-      this.formValues.temp.variances[`uom_${ productIdx}`] = null;
-      this.formValues.temp.variances[`product_${ productIdx}`] = null;
+      this.formValues.temp.variances[`uom_${productIdx}`] = null;
+      this.formValues.temp.variances[`product_${productIdx}`] = null;
       this.setVarianceColor(productIdx);
       // return;
     }
@@ -536,7 +605,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       if (baseUom.name != conversionInfo.toleranceQuantityUom.name) {
         conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
           if (baseUom.name == factVal.sourceUom.name) {
-              convFact = factVal.conversionFactor;
+            convFact = factVal.conversionFactor;
           }
         });
       } else {
@@ -544,15 +613,20 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.formValues.temp.variances[`mfm_product_${ productIdx}`] = null;
-    this.formValues.temp.variances[`mfm_uom_${ productIdx}`] = null;
-    if (activeProduct.vesselFlowMeterQuantityUom && activeProduct.bdnQuantityUom && activeProduct.bdnQuantityAmount && activeProduct.vesselFlowMeterQuantityAmount) {
+    this.formValues.temp.variances[`mfm_product_${productIdx}`] = null;
+    this.formValues.temp.variances[`mfm_uom_${productIdx}`] = null;
+    if (
+      activeProduct.vesselFlowMeterQuantityUom &&
+      activeProduct.bdnQuantityUom &&
+      activeProduct.bdnQuantityAmount &&
+      activeProduct.vesselFlowMeterQuantityAmount
+    ) {
       let mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
       if (mfm_baseUom && conversionInfo.toleranceQuantityUom) {
         if (mfm_baseUom.name != conversionInfo.toleranceQuantityUom.name) {
           conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
             if (mfm_baseUom.name == factVal.sourceUom.name) {
-                var mfm_convFact = factVal.conversionFactor;
+              var mfm_convFact = factVal.conversionFactor;
             }
           });
         } else {
@@ -562,8 +636,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         var bdn_qty = convertedFields.Bdn;
         var variance = mfm_qty - bdn_qty;
         var mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
-        this.formValues.temp.variances[`mfm_product_${ productIdx}`] =  this._decimalPipe.transform(mfm_variance, this.quantityFormat);
-        this.formValues.temp.variances[`mfm_uom_${ productIdx}`] = mfm_baseUom.name;
+        this.formValues.temp.variances[
+          `mfm_product_${productIdx}`
+        ] = this._decimalPipe.transform(mfm_variance, this.quantityFormat);
+        this.formValues.temp.variances[`mfm_uom_${productIdx}`] =
+          mfm_baseUom.name;
       }
     }
 
@@ -571,7 +648,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       return;
     }
     if (!activeProduct.sellerQuantityType) {
-        return;
+      return;
     }
     var buyerOption = activeProduct.buyerQuantityType.name;
     var sellerOption = activeProduct.sellerQuantityType.name;
@@ -579,7 +656,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     var sellerConvertedValue = convertedFields[sellerOption];
     if (!sellerConvertedValue || !buyerConvertedValue) {
       variance = null;
-      this.formValues.temp.variances[`product_${ productIdx}`] = variance;
+      this.formValues.temp.variances[`product_${productIdx}`] = variance;
       this.setVarianceColor(productIdx);
     } else {
       // this is where variance is calculated. rn it's buyer - seler (15/08)
@@ -587,8 +664,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
       //
       var varianceDisplay = variance / convFact;
-      this.formValues.temp.variances[`product_${ productIdx}`] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
-      this.formValues.temp.variances[`uom_${ productIdx}`] = baseUom.name;
+      this.formValues.temp.variances[
+        `product_${productIdx}`
+      ] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
+      this.formValues.temp.variances[`uom_${productIdx}`] = baseUom.name;
       this.setVarianceColor(productIdx);
     }
     if (typeof this.formValues.temp.reconStatus == 'undefined') {
@@ -597,34 +676,45 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (variance != null) {
       if (conversionInfo.quantityReconciliation.name == 'Flat') {
         if (variance < conversionInfo.minToleranceLimit) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 1; // Matched Green
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
         }
-        if (variance > conversionInfo.minToleranceLimit && variance < conversionInfo.maxToleranceLimit) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 2; // Unmatched Amber
+        if (
+          variance > conversionInfo.minToleranceLimit &&
+          variance < conversionInfo.maxToleranceLimit
+        ) {
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
         }
         if (variance > conversionInfo.maxToleranceLimit) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 3; // Unmatched Red
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       } else {
-        var minValue = conversionInfo.minToleranceLimit * this.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
-        var maxValue = conversionInfo.maxToleranceLimit * this.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
+        var minValue =
+          (conversionInfo.minToleranceLimit *
+            this.formValues.deliveryProducts[productIdx]
+              .confirmedQuantityAmount) /
+          100;
+        var maxValue =
+          (conversionInfo.maxToleranceLimit *
+            this.formValues.deliveryProducts[productIdx]
+              .confirmedQuantityAmount) /
+          100;
         if (variance < minValue) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 1; // Matched Green
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
         }
         if (variance > minValue && variance < maxValue) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 2; // Unmatched Amber
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
         }
         if (variance > maxValue) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 3; // Unmatched Red
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       }
     } else {
-      this.formValues.temp.reconStatus[`product_${ productIdx}`] = null;
+      this.formValues.temp.reconStatus[`product_${productIdx}`] = null;
     }
 
-     // Update buyer & seller amount and uom
-     this.setBuyerSellerQuantityAndUom('buyer');
-     this.setBuyerSellerQuantityAndUom('seller');
+    // Update buyer & seller amount and uom
+    this.setBuyerSellerQuantityAndUom('buyer');
+    this.setBuyerSellerQuantityAndUom('seller');
   }
 
   setBuyerSellerQuantityAndUom(qtyToChange) {
@@ -632,32 +722,72 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       let sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
       if (sellerQty == 'Surveyor') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-            this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].surveyorQuantityUom;
-            this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].surveyorQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityAmount;
         });
       }
       if (sellerQty == 'Bdn') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].bdnQuantityUom;
-          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].bdnQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityAmount;
         });
       }
       if (sellerQty == 'Vessel') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].vesselQuantityUom;
-          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].vesselQuantityAmount;
-       });
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityAmount;
+        });
       }
       if (sellerQty == 'VesselFlowMeter') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityUom;
-          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityAmount;
         });
       }
       if (sellerQty == 'Confirm') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].confirmedQuantityUom;
-          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].confirmedQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityAmount;
         });
       }
     }
@@ -666,32 +796,72 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       let buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
       if (buyerQty == 'Surveyor') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].surveyorQuantityUom;
-          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].surveyorQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityAmount;
         });
       }
       if (buyerQty == 'Bdn') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].bdnQuantityUom;
-          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].bdnQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityAmount;
         });
       }
       if (buyerQty == 'Vessel') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].vesselQuantityUom;
-          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].vesselQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityAmount;
         });
       }
       if (buyerQty == 'VesselFlowMeter') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityUom;
-          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityAmount;
         });
       }
       if (buyerQty == 'Confirm') {
         this.formValues.deliveryProducts.forEach((val, key) => {
-          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].confirmedQuantityUom;
-          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].confirmedQuantityAmount;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityAmount;
         });
       }
     }
@@ -711,14 +881,30 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
     // rules are in order, check for each if quantity exists and set that
     // if not, go on
-    for (let i = 0; i < this.finalQuantityRules.length; i ++) {
+    for (let i = 0; i < this.finalQuantityRules.length; i++) {
       let rule = this.finalQuantityRules[i];
-      if (typeof this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`] != 'undefined' &&
-        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != '' &&
-        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
+      if (
+        typeof this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Uom`
+        ] != 'undefined' &&
+        this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Amount`
+        ] != '' &&
+        this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Amount`
+        ] != null
+      ) {
         // quantity exists, set it
-        this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
-        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
+        this.formValues.deliveryProducts[
+          productIdx
+        ].finalQuantityUom = this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Uom`
+        ];
+        this.formValues.deliveryProducts[
+          productIdx
+        ].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Amount`
+        ];
         dataSet = true;
       }
       if (dataSet) {
@@ -734,51 +920,71 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   setVarianceColor(idx) {
     // debugger
-    if (typeof this.formValues.temp.variances[`color_${ idx}`] == 'undefined') {
-      this.formValues.temp.variances[`color_${ idx}`] = '';
+    if (typeof this.formValues.temp.variances[`color_${idx}`] == 'undefined') {
+      this.formValues.temp.variances[`color_${idx}`] = '';
     }
-    if (typeof this.formValues.temp.variances[`mfm_color_${ idx}`] == 'undefined') {
-        this.formValues.temp.variances[`mfm_color_${ idx}`] = '';
+    if (
+      typeof this.formValues.temp.variances[`mfm_color_${idx}`] == 'undefined'
+    ) {
+      this.formValues.temp.variances[`mfm_color_${idx}`] = '';
     }
 
-    if (this.formValues.temp.variances[`product_${ idx}`] != null) {
+    if (this.formValues.temp.variances[`product_${idx}`] != null) {
       // new color code
       // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
       // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
       // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
-      if (parseFloat(this.formValues.temp.variances[`product_${ idx}`]) < 0) {
+      if (parseFloat(this.formValues.temp.variances[`product_${idx}`]) < 0) {
         // 1 or 2
-        if (Math.abs(parseFloat(this.formValues.temp.variances[`product_${ idx}`])) < parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-            this.formValues.temp.variances[`color_${ idx}`] = 'amber';
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`product_${idx}`])
+          ) < parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`color_${idx}`] = 'amber';
         }
 
-        if (Math.abs(parseFloat(this.formValues.temp.variances[`product_${ idx}`])) >= parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-            this.formValues.temp.variances[`color_${ idx}`] = 'red';
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`product_${idx}`])
+          ) >= parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`color_${idx}`] = 'red';
         }
       } else {
-        this.formValues.temp.variances[`color_${ idx}`] = 'green';
+        this.formValues.temp.variances[`color_${idx}`] = 'green';
       }
     } else {
       // if variance is null, set color to white
-      this.formValues.temp.variances[`color_${ idx}`] = 'white';
+      this.formValues.temp.variances[`color_${idx}`] = 'white';
     }
 
-    if (this.formValues.temp.variances[`mfm_product_${ idx}`] != null) {
-      if(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`]) < 0) {
-          if(Math.abs(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`])) <= parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-              this.formValues.temp.variances[`mfm_color_${ idx}`] = 'amber';
-          }
+    if (this.formValues.temp.variances[`mfm_product_${idx}`] != null) {
+      if (
+        parseFloat(this.formValues.temp.variances[`mfm_product_${idx}`]) < 0
+      ) {
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`mfm_product_${idx}`])
+          ) <= parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`mfm_color_${idx}`] = 'amber';
+        }
 
-          if(Math.abs(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`])) > parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-              this.formValues.temp.variances[`mfm_color_${ idx}`] = 'red';
-          }
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`mfm_product_${idx}`])
+          ) > parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`mfm_color_${idx}`] = 'red';
+        }
       } else {
-          this.formValues.temp.variances[`mfm_color_${ idx}`] = 'green';
+        this.formValues.temp.variances[`mfm_color_${idx}`] = 'green';
       }
     } else {
       // if variance is null, set color to white
-      this.formValues.temp.variances[`mfm_color_${ idx}`] = 'white';
+      this.formValues.temp.variances[`mfm_color_${idx}`] = 'white';
     }
   }
 
@@ -804,13 +1010,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     const orderProductSpecGroupId = data.specGroup.id;
     const dataForInfo = {
       Payload: {
-          Filters: [ {
-              ColumnName: 'OrderProductId',
-              Value: orderProductId
-          }, {
-              ColumnName: 'SpecGroupId',
-              Value: orderProductSpecGroupId
-          } ]
+        Filters: [
+          {
+            ColumnName: 'OrderProductId',
+            Value: orderProductId
+          },
+          {
+            ColumnName: 'SpecGroupId',
+            Value: orderProductSpecGroupId
+          }
+        ]
       }
     };
     this.openedScreenLoaders += 1;
@@ -830,9 +1039,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         } else {
           this.formValues.deliveryProducts[0].qualityParameters = response;
           if (this.formValues.deliveryProducts[0].qualityParameters) {
-            this.formValues.deliveryProducts[0].qualityParameters.forEach((productParameter, key1) => {
-              productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
-            });
+            this.formValues.deliveryProducts[0].qualityParameters.forEach(
+              (productParameter, key1) => {
+                productParameter.specParameter.name = this.decodeSpecificField(
+                  productParameter.specParameter.name
+                );
+              }
+            );
           }
           this.changeDetectorRef.detectChanges();
         }
@@ -856,7 +1069,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       });
-
   }
 
   createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList() {
@@ -870,222 +1082,258 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
     data.forEach((delivery, key) => {
       this.formValues.deliveryProducts.push({
-          orderedProduct: delivery.product,
-          product: delivery.product,
-          confirmedQuantityAmount: delivery.confirmedQuantityAmount,
-          confirmedQuantityUom: delivery.confirmedQuantityUom,
-          orderProductId: delivery.orderProductId
+        orderedProduct: delivery.product,
+        product: delivery.product,
+        confirmedQuantityAmount: delivery.confirmedQuantityAmount,
+        confirmedQuantityUom: delivery.confirmedQuantityUom,
+        orderProductId: delivery.orderProductId
       });
       let orderProductId = delivery.orderProductId;
       let orderProductSpecGroupId = delivery.specGroup.id;
       let dataForInfo = {
         Payload: {
-            Filters: [ {
-                ColumnName: 'OrderProductId',
-                Value: orderProductId
-            }, {
-                ColumnName: 'SpecGroupId',
-                Value: orderProductSpecGroupId
-            } ]
+          Filters: [
+            {
+              ColumnName: 'OrderProductId',
+              Value: orderProductId
+            },
+            {
+              ColumnName: 'SpecGroupId',
+              Value: orderProductSpecGroupId
+            }
+          ]
         }
       };
       this.openedScreenLoaders += 1;
       this.deliveryService
-      .loadDeliverySpecParameters(dataForInfo)
-      .pipe(
-        finalize(() => {
-          this.openedScreenLoaders -= 1;
-          if (!this.openedScreenLoaders) {
-            this.isLoading = false;
+        .loadDeliverySpecParameters(dataForInfo)
+        .pipe(
+          finalize(() => {
+            this.openedScreenLoaders -= 1;
+            if (!this.openedScreenLoaders) {
+              this.isLoading = false;
+            }
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastrService.error(response);
+          } else {
+            this.formValues.deliveryProducts[key].qualityParameters = response;
+            if (this.formValues.deliveryProducts[key].qualityParameters) {
+              this.formValues.deliveryProducts[key].qualityParameters.forEach(
+                (productParameter, key1) => {
+                  productParameter.specParameter.name = this.decodeSpecificField(
+                    productParameter.specParameter.name
+                  );
+                }
+              );
+            }
+            this.changeDetectorRef.detectChanges();
           }
-        })
-      )
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastrService.error(response);
-        } else {
-          this.formValues.deliveryProducts[key].qualityParameters = response;
-          if (this.formValues.deliveryProducts[key].qualityParameters) {
-            this.formValues.deliveryProducts[key].qualityParameters.forEach((productParameter, key1) => {
-              productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
-            });
-          }
-          this.changeDetectorRef.detectChanges();
-        }
-      });
+        });
 
       this.openedScreenLoaders += 1;
       this.deliveryService
-      .loadDeliveryQuantityParameters(dataForInfo)
-      .pipe(
-        finalize(() => {
-          this.openedScreenLoaders -= 1;
-          if (!this.openedScreenLoaders) {
-            this.isLoading = false;
+        .loadDeliveryQuantityParameters(dataForInfo)
+        .pipe(
+          finalize(() => {
+            this.openedScreenLoaders -= 1;
+            if (!this.openedScreenLoaders) {
+              this.isLoading = false;
+            }
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastrService.error(response);
+          } else {
+            this.formValues.deliveryProducts[key].quantityParameters = response;
+            this.changeDetectorRef.detectChanges();
           }
-        })
-      )
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastrService.error(response);
-        } else {
-          this.formValues.deliveryProducts[key].quantityParameters = response;
-          this.changeDetectorRef.detectChanges();
-        }
-      });
+        });
     });
   }
 
   getDeliveryOrderSummary(orderId: number) {
-    this.openedScreenLoaders +=1;
+    this.openedScreenLoaders += 1;
     this.deliveryService
-    .loadDeliveryOrderSummary(orderId)
-    .pipe(
+      .loadDeliveryOrderSummary(orderId)
+      .pipe(
         finalize(() => {
-          this.openedScreenLoaders -=1;
+          this.openedScreenLoaders -= 1;
           if (!this.openedScreenLoaders) {
             this.isLoading = false;
           }
         })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastrService.error(response);
-      } else {
-        if (typeof this.formValues.temp == 'undefined') {
-          this.formValues.temp = {};
-        }
-        this.formValues.info.vesselName = response.vesselName;
-        this.formValues.info.locationName = response.location;
-        this.formValues.info.eta = response.eta;
-        this.formValues.info.etb = response.etb;
-        this.formValues.temp.deliverysummary = response;
-        if (!parseFloat(this.entityId)) {
-          // new delivery
-          // also set pricing date for delivery to delivery date if null
-          this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-            this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
-                if (summaryProd.id == deliveryProd.orderProductId) {
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastrService.error(response);
+        } else {
+          if (typeof this.formValues.temp == 'undefined') {
+            this.formValues.temp = {};
+          }
+          this.formValues.info.vesselName = response.vesselName;
+          this.formValues.info.locationName = response.location;
+          this.formValues.info.eta = response.eta;
+          this.formValues.info.etb = response.etb;
+          this.formValues.temp.deliverysummary = response;
+          if (!parseFloat(this.entityId)) {
+            // new delivery
+            // also set pricing date for delivery to delivery date if null
+            this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
+              this.formValues.temp.deliverysummary.products.forEach(
+                (summaryProd, _) => {
+                  if (summaryProd.id == deliveryProd.orderProductId) {
                     if (summaryProd.pricingDate != null) {
-                        deliveryProd.pricingDate = summaryProd.pricingDate;
+                      deliveryProd.pricingDate = summaryProd.pricingDate;
                     } else {
-                        deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
+                      deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
                     }
                     if (summaryProd.convFactorOptions) {
-                        deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
+                      deliveryProd.convFactorOptions =
+                        summaryProd.convFactorOptions;
                     }
                     if (summaryProd.convFactorMassUom != null) {
-                        deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
+                      deliveryProd.convFactorMassUom =
+                        summaryProd.convFactorMassUom;
                     }
                     if (summaryProd.convFactorValue != null) {
-                        deliveryProd.convFactorValue = summaryProd.convFactorValue;
+                      deliveryProd.convFactorValue =
+                        summaryProd.convFactorValue;
                     }
                     if (summaryProd.convFactorVolumeUom != null) {
-                        deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
+                      deliveryProd.convFactorVolumeUom =
+                        summaryProd.convFactorVolumeUom;
                     }
+                  }
                 }
+              );
             });
-          });
-          if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
-            this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+            if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
+              this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+            }
           }
-        }
-        if (typeof this.formValues.deliveryStatus != 'undefined') {
-          if (this.formValues.deliveryStatus.name) {
-              this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+          if (typeof this.formValues.deliveryStatus != 'undefined') {
+            if (this.formValues.deliveryStatus.name) {
+              this.statusColorCode = this.getColorCodeFromLabels(
+                this.formValues.deliveryStatus,
+                this.scheduleDashboardLabelConfiguration
+              );
+            }
           }
-        }
 
-        if (this.formValues.info.request) {
-          this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
-        } else {
-          this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
+          if (this.formValues?.info?.request) {
+            this.titleService.setTitle(
+              'Delivery' +
+                ' - ' +
+                'REQ ' +
+                this.formValues.info.request.id +
+                ' - ' +
+                this.formValues.info.vesselName
+            );
+          } else {
+            this.titleService.setTitle(
+              'Delivery' +
+                ' - ' +
+                this.formValues.order.name +
+                ' - ' +
+                this.formValues.info.vesselName
+            );
+          }
+          // this.orderProductsByProductType('summaryProducts');
+          if (this.formValues.deliveryProducts) {
+            this.setProductsPhysicalSupplier();
+            this.setQtyUoms();
+          }
+          this.changeDetectorRef.detectChanges();
+          this.eventsSubject.next(this.formValues);
         }
-        // this.orderProductsByProductType('summaryProducts');
-        if (this.formValues.deliveryProducts) {
-          this.setProductsPhysicalSupplier();
-          this.setQtyUoms();
-        }
-        this.changeDetectorRef.detectChanges();
-        this.eventsSubject.next(this.formValues);
-      }
-
-    });
+      });
   }
 
   setProductsPhysicalSupplier() {
     this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-      this.formValues.temp.deliverysummary.products.forEach((summaryProd, key) => {
+      this.formValues.temp.deliverysummary.products.forEach(
+        (summaryProd, key) => {
           if (deliveryProd.orderProductId == summaryProd.id) {
             if (!deliveryProd.physicalSupplier && !this.formValues.id) {
-                deliveryProd.physicalSupplier = summaryProd.physicalSupplier;
+              deliveryProd.physicalSupplier = summaryProd.physicalSupplier;
             }
           }
-      });
+        }
+      );
     });
   }
 
   setQtyUoms() {
     this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-        this.formValues.temp.deliverysummary.products.forEach((summaryProd, key) => {
-            if (summaryProd.id == deliveryProd.orderProductId) {
-                if (!deliveryProd.surveyorQuantityUom) {
-                    deliveryProd.surveyorQuantityUom = summaryProd.orderedQuantity.uom;
-                }
-                if (!deliveryProd.vesselQuantityUom) {
-                    deliveryProd.vesselQuantityUom = summaryProd.orderedQuantity.uom;
-                }
-                if (!deliveryProd.agreedQuantityUom) {
-                    deliveryProd.agreedQuantityUom = summaryProd.orderedQuantity.uom;
-                }
-                if (!deliveryProd.bdnQuantityUom) {
-                    deliveryProd.bdnQuantityUom = summaryProd.orderedQuantity.uom;
-                }
-                if (!deliveryProd.vesselFlowMeterQuantityUom) {
-                    deliveryProd.vesselFlowMeterQuantityUom = summaryProd.orderedQuantity.uom;
-                }
-                if (!deliveryProd.finalQuantityUom) {
-                    deliveryProd.finalQuantityUom = summaryProd.orderedQuantity.uom;
-                }
+      this.formValues.temp.deliverysummary.products.forEach(
+        (summaryProd, key) => {
+          if (summaryProd.id == deliveryProd.orderProductId) {
+            if (!deliveryProd.surveyorQuantityUom) {
+              deliveryProd.surveyorQuantityUom =
+                summaryProd.orderedQuantity.uom;
             }
-        });
+            if (!deliveryProd.vesselQuantityUom) {
+              deliveryProd.vesselQuantityUom = summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.agreedQuantityUom) {
+              deliveryProd.agreedQuantityUom = summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.bdnQuantityUom) {
+              deliveryProd.bdnQuantityUom = summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.vesselFlowMeterQuantityUom) {
+              deliveryProd.vesselFlowMeterQuantityUom =
+                summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.finalQuantityUom) {
+              deliveryProd.finalQuantityUom = summaryProd.orderedQuantity.uom;
+            }
+          }
+        }
+      );
     });
-  };
+  }
 
   getColorCodeFromLabels(statusObj, labels) {
-    for(let i = 0; i < labels.length; i++) {
+    for (let i = 0; i < labels.length; i++) {
       if (statusObj) {
-        if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
-            return labels[i].code;
+        if (
+          statusObj.id === labels[i].id &&
+          statusObj.transactionTypeId === labels[i].transactionTypeId
+        ) {
+          return labels[i].code;
         }
       }
     }
   }
-
 
   getRelatedDeliveries(orderId: number) {
     this.relatedDeliveries = [];
     this.openedScreenLoaders += 1;
     let duplicate = false;
     this.deliveryService
-    .loadDeliveryInfoForOrder(orderId)
-    .pipe(
+      .loadDeliveryInfoForOrder(orderId)
+      .pipe(
         finalize(() => {
-           this.openedScreenLoaders -= 1;
-           if (!this.openedScreenLoaders) {
-             this.isLoading = false;
-           }
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.isLoading = false;
+          }
         })
-    )
-    .subscribe((response: any) => {
+      )
+      .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastrService.error(response);
         } else {
           response.forEach((val, key) => {
             this.relatedDeliveries.forEach((val2, key2) => {
-                if (val2.deliveryId == val.deliveryId) {
-                    duplicate = true;
-                }
+              if (val2.deliveryId == val.deliveryId) {
+                duplicate = true;
+              }
             });
             if (!duplicate) {
               this.relatedDeliveries.push(val);
@@ -1094,9 +1342,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
           this.eventsSubject.next(this.formValues);
         }
-    });
+      });
   }
-
 
   setDeliverySettings(response) {
     if (typeof this.formValues.temp == 'undefined') {
@@ -1106,44 +1353,51 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     this.formValues.temp.buyerPrecedenceRule = {};
     this.formValues.temp.sellerPrecedenceRule = {};
     this.formValues.temp.finalQtyPrecedenceLogicRules = [];
-    this.formValues.temp.buyerPrecedenceRule = response.data.buyerPrecedenceLogicRules[0].precedenceRule;
-    this.formValues.temp.sellerPrecedenceRule = response.data.sellerPrecedenceLogicRules[0].precedenceRule;
-
+    this.formValues.temp.buyerPrecedenceRule =
+      response.data.buyerPrecedenceLogicRules[0].precedenceRule;
+    this.formValues.temp.sellerPrecedenceRule =
+      response.data.sellerPrecedenceLogicRules[0].precedenceRule;
 
     // final quantity defaultation rules
     // form local finalQuantityRules, include delivery mapping
-    this.formValues.temp.finalQtyPrecedenceLogicRules = response.data.finalQtyPrecedenceLogicRules;
+    this.formValues.temp.finalQtyPrecedenceLogicRules =
+      response.data.finalQtyPrecedenceLogicRules;
     this.finalQuantityRules = [];
     this.formValues.temp.finalQtyPrecedenceLogicRules.forEach((rule, _) => {
       let localRule = {
-          ord: rule.ord,
-          precedenceRule: rule.precedenceRule,
-          deliveryMapping: ''
+        ord: rule.ord,
+        precedenceRule: rule.precedenceRule,
+        deliveryMapping: ''
       };
       // agreed
-      if(rule.precedenceRule.id == 1) {
-          localRule.deliveryMapping = 'agreedQuantity';
+      if (rule.precedenceRule.id == 1) {
+        localRule.deliveryMapping = 'agreedQuantity';
       }
       // seller
-      if(rule.precedenceRule.id == 2) {
-          localRule.deliveryMapping = 'sellerQuantity';
+      if (rule.precedenceRule.id == 2) {
+        localRule.deliveryMapping = 'sellerQuantity';
       }
       // buyer
-      if(rule.precedenceRule.id == 3) {
-          localRule.deliveryMapping = 'buyerQuantity';
+      if (rule.precedenceRule.id == 3) {
+        localRule.deliveryMapping = 'buyerQuantity';
       }
 
       this.finalQuantityRules.push(localRule);
     });
-    this.finalQuantityRules = _.orderBy(this.finalQuantityRules, [ 'ord' ], [ 'asc' ]);
-
+    this.finalQuantityRules = _.orderBy(
+      this.finalQuantityRules,
+      ['ord'],
+      ['asc']
+    );
 
     // buyer and seller is the same across products, se all of them to first product buyer & seller
     this.setBuyerAndSellerAcrossProducts();
     // when create delivery form order, buyer and seller are not set
     // show & hide fields
-    this.formValues.temp.isShowQuantityReconciliationSection = response.data.isShowQuantityReconciliationSection;
-    this.formValues.temp.isShowDeliveryEmailToLabsButton = response.data.isShowDeliveryEmailToLabsButton;
+    this.formValues.temp.isShowQuantityReconciliationSection =
+      response.data.isShowQuantityReconciliationSection;
+    this.formValues.temp.isShowDeliveryEmailToLabsButton =
+      response.data.isShowDeliveryEmailToLabsButton;
     this.formValues.temp.hiddenFields = {};
     response.data.hiddenFields.forEach((val, key) => {
       if (val.id == 1) {
@@ -1161,10 +1415,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
 
     this.toleranceLimits = {};
-    if(typeof response.data.minToleranceLimit == 'number') {
+    if (typeof response.data.minToleranceLimit == 'number') {
       this.toleranceLimits.minToleranceLimit = response.data.minToleranceLimit;
     }
-    if(typeof response.data.maxToleranceLimit == 'number') {
+    if (typeof response.data.maxToleranceLimit == 'number') {
       this.toleranceLimits.maxToleranceLimit = response.data.maxToleranceLimit;
     }
   }
@@ -1175,39 +1429,36 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
     this.formValues.deliveryProducts.forEach((value, index) => {
       if (value.buyerQuantityType) {
-          this.formValues.temp.buyerPrecedenceRule = value.buyerQuantityType;
+        this.formValues.temp.buyerPrecedenceRule = value.buyerQuantityType;
       }
       if (value.sellerQuantityType) {
-          this.formValues.temp.sellerPrecedenceRule = value.sellerQuantityType;
+        this.formValues.temp.sellerPrecedenceRule = value.sellerQuantityType;
       }
     });
     this.formValues.deliveryProducts.forEach((value, index) => {
-        value.buyerQuantityType = this.formValues.temp.buyerPrecedenceRule;
-        value.sellerQuantityType = this.formValues.temp.sellerPrecedenceRule;
+      value.buyerQuantityType = this.formValues.temp.buyerPrecedenceRule;
+      value.sellerQuantityType = this.formValues.temp.sellerPrecedenceRule;
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void {}
 
-  }
-
-  public detectChanges(form: any):void {
+  public detectChanges(form: any): void {
     this.formValues = form;
     this.changeDetectorRef.detectChanges();
   }
 
-
-
   openRaiseClaimDialog(raiseClaimData: any): void {
     const dialogRef = this.dialog.open(RaiseClaimModalComponent, {
       width: '600px',
-      data:  {
-          availableClaimTypes: raiseClaimData,
-          deliveryProducts: this.formValues.deliveryProducts,
-          raiseClaimInfo: this.raiseClaimInfo,
-          selectedProductIndex: this.selectedProductIndex,
-          formValues: this.formValues,
-          CM: this.CM }
+      data: {
+        availableClaimTypes: raiseClaimData,
+        deliveryProducts: this.formValues.deliveryProducts,
+        raiseClaimInfo: this.raiseClaimInfo,
+        selectedProductIndex: this.selectedProductIndex,
+        formValues: this.formValues,
+        CM: this.CM
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1216,7 +1467,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   raiseNewClaim() {
-    if (typeof this.raiseClaimInfo.allSpecParams == 'undefined' || this.raiseClaimInfo.allSpecParams == null) {
+    if (
+      typeof this.raiseClaimInfo.allSpecParams == 'undefined' ||
+      this.raiseClaimInfo.allSpecParams == null
+    ) {
       this.toastrService.error('Claim can not be raised for this product!');
       return;
     }
@@ -1224,7 +1478,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     const claimType = {
       displayName: '',
       claim: {},
-      specParams: [],
+      specParams: []
     };
     this.CM.listsCache.ClaimType.forEach((val, ind) => {
       // only allow these 3 types of claim
@@ -1236,8 +1490,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (paramVal.claimTypes) {
           paramVal.claimTypes.forEach((element, key) => {
             if (element.id == val.id) {
-                paramVal.disabled = 'false';
-                params.push({...paramVal});
+              paramVal.disabled = 'false';
+              params.push({ ...paramVal });
             }
           });
         }
@@ -1252,30 +1506,40 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       };
       claimType.disabled = true;
       if (params.length > 0) {
-          claimType.disabled = false;
+        claimType.disabled = false;
       }
       if (this.formValues.feedback) {
-        if (this.formValues.feedback.hasLetterOfProtest && this.formValues.feedback.hasLetterOfProtest.id == 1) {
+        if (
+          this.formValues.feedback.hasLetterOfProtest &&
+          this.formValues.feedback.hasLetterOfProtest.id == 1
+        ) {
           claimType.disabled = false;
         }
       }
       if (val.name == 'Quantity') {
         const claim1: any = {};
-        claim1.claim = { ... val };
-        claim1.specParams = [... params];
+        claim1.claim = { ...val };
+        claim1.specParams = [...params];
         claim1.disabled = claimType.disabled;
         claim1.displayName = 'Overstated Density';
         claim1.id = 1;
         claim1.isTypeSelected = false;
-        this.CM.availableClaimTypes.push({ ... claim1});
-        const claim2 : any = {};
-        claim2.claim = { ... val };
+        this.CM.availableClaimTypes.push({ ...claim1 });
+        const claim2: any = {};
+        claim2.claim = { ...val };
         claim2.specParams = [];
         claim2.disabled = false;
         if (typeof this.formValues.temp.variances != 'undefined') {
-            if (typeof this.formValues.temp.variances[`product_${ this.CM.selectedProduct}`] == 'undefined' || this.formValues.temp.variances[`product_${ this.CM.selectedProduct}`] == null) {
-              claim2.disabled = true;
-            }
+          if (
+            typeof this.formValues.temp.variances[
+              `product_${this.CM.selectedProduct}`
+            ] == 'undefined' ||
+            this.formValues.temp.variances[
+              `product_${this.CM.selectedProduct}`
+            ] == null
+          ) {
+            claim2.disabled = true;
+          }
         } else {
           claim2.disabled = true;
         }
@@ -1304,9 +1568,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     this.openRaiseClaimDialog(this.CM.availableClaimTypes);
   }
 
-
-
-  public getSelectedProduct(selectedProduct: any):void {
+  public getSelectedProduct(selectedProduct: any): void {
     this.selectedProductIndex = parseFloat(selectedProduct);
     this.CM.selectedProduct = selectedProduct;
     const product = this.formValues.deliveryProducts[this.selectedProductIndex];
@@ -1324,7 +1586,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   splitDeliveries() {
     const dialogRef = this.dialog.open(SplitDeliveryModalComponent, {
       width: '600px',
-      data:  { formValues: this.formValues, uoms: this.uoms }
+      data: { formValues: this.formValues, uoms: this.uoms }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1332,44 +1594,56 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
   save() {
     this.setReconMatchIdBasedOnProductVarianceColor();
-    let Isvalid=false;
-    let product
+    let Isvalid = false;
+    let product;
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
     }
     this.formValues.deliveryProducts.forEach((deliveryProd, key) => {
-      if(deliveryProd!=null ){
+      if (deliveryProd != null) {
         deliveryProd.qualityParameters.forEach((qualityParameter, key) => {
-          if (qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true && (qualityParameter.bdnValue==null || qualityParameter.bdnValue=="" || qualityParameter.bdnValue==0)){
-            Isvalid=true;
-            product=deliveryProd.product.name;
+          if (
+            qualityParameter.isDisplayedInDelivery == true &&
+            qualityParameter.isMandatoryInDelivery == true &&
+            (qualityParameter.bdnValue == null ||
+              qualityParameter.bdnValue == '' ||
+              qualityParameter.bdnValue == 0)
+          ) {
+            Isvalid = true;
+            product = deliveryProd.product.name;
             this.buttonClicked = true;
             this.eventsSubject2.next(this.buttonClicked);
           }
         });
       }
     });
-    if(Isvalid){
-      this.toastrService.error(`Please fill the required ${product} -bdn value...`);
+    if (Isvalid) {
+      this.toastrService.error(
+        `Please fill the required ${product} -bdn value...`
+      );
       return;
     }
+    setTimeout(() => {
+      this.saveDelivery();
+    }, 150);
+  }
+
+  saveDelivery() {
     let id = parseFloat(this.entityId);
     if (!parseFloat(this.entityId)) {
       this.spinner.show();
       this.deliveryService
-      .saveDeliveryInfo(this.formValues)
-      .pipe(
+        .saveDeliveryInfo(this.formValues)
+        .pipe(
           finalize(() => {
             this.buttonClicked = false;
             this.eventsSubject2.next(this.buttonClicked);
           })
-      )
-      .subscribe((result: any) => {
+        )
+        .subscribe((result: any) => {
           if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
@@ -1379,27 +1653,26 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
-            .navigate([
-              KnownPrimaryRoutes.Delivery,
-              `${KnownDeliverylRoutes.Delivery}`,
-              result,
-              KnownDeliverylRoutes.DeliveryDetails
-            ])
-            .then(() => {
-            });
+              .navigate([
+                KnownPrimaryRoutes.Delivery,
+                `${KnownDeliverylRoutes.Delivery}`,
+                result,
+                KnownDeliverylRoutes.DeliveryDetails
+              ])
+              .then(() => {});
           }
-      });
+        });
     } else {
       this.spinner.show();
       this.deliveryService
-      .updateDeliveryInfo(this.formValues)
-      .pipe(
+        .updateDeliveryInfo(this.formValues)
+        .pipe(
           finalize(() => {
             this.buttonClicked = false;
             this.eventsSubject2.next(this.buttonClicked);
           })
-      )
-      .subscribe((result: any) => {
+        )
+        .subscribe((result: any) => {
           if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
@@ -1417,17 +1690,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 this.formValues = _.merge(this.formValues, data);
                 if (typeof this.formValues.deliveryStatus != 'undefined') {
                   if (this.formValues.deliveryStatus.name) {
-                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+                    this.statusColorCode = this.getColorCodeFromLabels(
+                      this.formValues.deliveryStatus,
+                      this.scheduleDashboardLabelConfiguration
+                    );
                   }
                 }
                 this.setQuantityFormatValues();
                 this.decodeFields();
               });
           }
-       });
+        });
     }
   }
-
 
   setReconMatchIdBasedOnProductVarianceColor() {
     this.formValues.deliveryProducts.forEach((product, k) => {
@@ -1436,29 +1711,29 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         console.log(getColor);
         if (getColor == 'amber') {
           product.reconMatch = {
-            'id': 3
-          }
+            id: 3
+          };
         } else if (getColor == 'green') {
           product.reconMatch = {
-            'id': 1
-          }
+            id: 1
+          };
         } else {
           product.reconMatch = {
-            'id': 2
-          }
+            id: 2
+          };
         }
-
       }
     });
   }
-
 
   verify() {
     let hasFinalQuantityError = false;
     this.formValues.deliveryProducts.forEach((product, k) => {
       if (!product.finalQuantityAmount) {
         hasFinalQuantityError = true;
-        this.toastrService.error(`Please make sure that Quantity to be invoiced for ${product.product.name } is computed based on seller/buyer quantity`);
+        this.toastrService.error(
+          `Please make sure that Quantity to be invoiced for ${product.product.name} is computed based on seller/buyer quantity`
+        );
       }
     });
     if (hasFinalQuantityError) {
@@ -1477,35 +1752,40 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.eventsSubject2.next(this.buttonClicked);
         })
       )
-      .subscribe((response: any) => {
-        if (response == 'Error, could not verify the delivery') {
-          this.toastrService.error('Delivery verification failed!');
-          this.spinner.hide();
-
-        } else {
-          this.toastrService.success('Verify success!');
-          this.deliveryService
-            .loadDeliverytDetails(parseFloat(this.entityId))
-            .pipe(
-              finalize(() => {
-                this.spinner.hide();
-              })
-            )
-            .subscribe((data: any) => {
-              this.formValues = _.merge(this.formValues, data);
-              this.setQuantityFormatValues();
-              this.decodeFields();
-              if (typeof this.formValues.deliveryStatus != 'undefined') {
-                if (this.formValues.deliveryStatus.name) {
-                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+      .subscribe(
+        (response: any) => {
+          if (response == 'Error, could not verify the delivery') {
+            this.toastrService.error('Delivery verification failed!');
+            this.spinner.hide();
+          } else {
+            this.toastrService.success('Verify success!');
+            this.deliveryService
+              .loadDeliverytDetails(parseFloat(this.entityId))
+              .pipe(
+                finalize(() => {
+                  this.spinner.hide();
+                })
+              )
+              .subscribe((data: any) => {
+                this.formValues = _.merge(this.formValues, data);
+                this.setQuantityFormatValues();
+                this.decodeFields();
+                if (typeof this.formValues.deliveryStatus != 'undefined') {
+                  if (this.formValues.deliveryStatus.name) {
+                    this.statusColorCode = this.getColorCodeFromLabels(
+                      this.formValues.deliveryStatus,
+                      this.scheduleDashboardLabelConfiguration
+                    );
+                  }
                 }
-              }
-            });
+              });
+          }
+        },
+        error => {
+          this.spinner.hide();
+          console.error(error);
         }
-      }, error => {
-        this.spinner.hide();
-        console.error(error);
-      });
+      );
   }
 
   revertVerify() {
@@ -1514,8 +1794,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       return;
     }
     let payload = {
-      "DeliveryId": this.formValues.id
-    }
+      DeliveryId: this.formValues.id
+    };
     this.spinner.show();
     this.deliveryService
       .revertVerifyDelivery(payload)
@@ -1525,37 +1805,41 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.eventsSubject2.next(this.buttonClicked);
         })
       )
-      .subscribe((response: any) => {
-        if (response == 'Error, could not revert verify the delivery') {
-          this.spinner.hide();
-          this.toastrService.error('Could not get Revert Verify!');
-        } else {
-          this.toastrService.success('Revert Verify success!');
-          this.deliveryService
-            .loadDeliverytDetails(parseFloat(this.entityId))
-            .pipe(
-              finalize(() => {
-                this.spinner.hide();
-              })
-            )
-            .subscribe((data: any) => {
-              this.formValues = _.merge(this.formValues, data);
-              this.setQuantityFormatValues();
-              this.decodeFields();
-              if (typeof this.formValues.deliveryStatus != 'undefined') {
-                if (this.formValues.deliveryStatus.name) {
-                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+      .subscribe(
+        (response: any) => {
+          if (response == 'Error, could not revert verify the delivery') {
+            this.spinner.hide();
+            this.toastrService.error('Could not get Revert Verify!');
+          } else {
+            this.toastrService.success('Revert Verify success!');
+            this.deliveryService
+              .loadDeliverytDetails(parseFloat(this.entityId))
+              .pipe(
+                finalize(() => {
+                  this.spinner.hide();
+                })
+              )
+              .subscribe((data: any) => {
+                this.formValues = _.merge(this.formValues, data);
+                this.setQuantityFormatValues();
+                this.decodeFields();
+                if (typeof this.formValues.deliveryStatus != 'undefined') {
+                  if (this.formValues.deliveryStatus.name) {
+                    this.statusColorCode = this.getColorCodeFromLabels(
+                      this.formValues.deliveryStatus,
+                      this.scheduleDashboardLabelConfiguration
+                    );
+                  }
                 }
-              }
-            })
+              });
+          }
+        },
+        error => {
+          this.spinner.hide();
+          console.error(error);
         }
-
-      }, error => {
-        this.spinner.hide();
-        console.error(error);
-      });
+      );
   }
-
 
   validateRequiredFields() {
     let requiredFields = 'Please fill in required fields: ';
@@ -1563,19 +1847,29 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       requiredFields += 'Delivery Date';
     }
     if (!this.formValues.bdnDate) {
-      requiredFields +=  (((requiredFields.indexOf('Delivery'))? ',': '') +' Bdn Date. ');
+      requiredFields +=
+        (requiredFields.indexOf('Delivery') ? ',' : '') + ' Bdn Date. ';
     }
     if (this.formValues.deliveryProducts) {
       for (let i = 0; i < this.formValues.deliveryProducts.length; i++) {
         let productFields = '';
         if (!this.formValues.deliveryProducts[i].bdnQuantityAmount) {
-          productFields = ' BDN Quantity'
+          productFields = ' BDN Quantity';
         }
-        if (this.formValues.deliveryProducts[i].deliveredVolume && !this.formValues.deliveryProducts[i].deliveredVolumeUom) {
-          productFields +=  (((productFields === '')? '': ',') + ' Delivered Quantity Uom');
+        if (
+          this.formValues.deliveryProducts[i].deliveredVolume &&
+          !this.formValues.deliveryProducts[i].deliveredVolumeUom
+        ) {
+          productFields +=
+            (productFields === '' ? '' : ',') + ' Delivered Quantity Uom';
         }
-        if(productFields != ''){
-          requiredFields  +=  this.formValues.deliveryProducts[i].product.name+ (i + 1) +'-'+ productFields + ".\n";
+        if (productFields != '') {
+          requiredFields +=
+            this.formValues.deliveryProducts[i].product.name +
+            (i + 1) +
+            '-' +
+            productFields +
+            '.\n';
         }
       }
     }
@@ -1597,36 +1891,54 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (this.formValues.deliveryProducts) {
       this.formValues.deliveryProducts.forEach((product, key) => {
         if (product.confirmedQuantityAmount) {
-          product.confirmedQuantityAmount = this.quantityFormatValue(product.confirmedQuantityAmount);
+          product.confirmedQuantityAmount = this.quantityFormatValue(
+            product.confirmedQuantityAmount
+          );
         }
         if (product.bdnQuantityAmount) {
-          product.bdnQuantityAmount = this.quantityFormatValue(product.bdnQuantityAmount);
+          product.bdnQuantityAmount = this.quantityFormatValue(
+            product.bdnQuantityAmount
+          );
         }
         if (product.vesselQuantityAmount) {
-          product.vesselQuantityAmount = this.quantityFormatValue(product.vesselQuantityAmount);
+          product.vesselQuantityAmount = this.quantityFormatValue(
+            product.vesselQuantityAmount
+          );
         }
         if (product.surveyorQuantityAmount) {
-          product.surveyorQuantityAmount = this.quantityFormatValue(product.surveyorQuantityAmount);
+          product.surveyorQuantityAmount = this.quantityFormatValue(
+            product.surveyorQuantityAmount
+          );
         }
         if (product.vesselFlowMeterQuantityAmount) {
-          product.vesselFlowMeterQuantityAmount = this.quantityFormatValue(product.vesselFlowMeterQuantityAmount);
+          product.vesselFlowMeterQuantityAmount = this.quantityFormatValue(
+            product.vesselFlowMeterQuantityAmount
+          );
         }
         if (product.finalQuantityAmount) {
-          product.finalQuantityAmount = this.quantityFormatValue(product.finalQuantityAmount);
+          product.finalQuantityAmount = this.quantityFormatValue(
+            product.finalQuantityAmount
+          );
         }
         if (product.agreedQuantityAmount) {
-          product.agreedQuantityAmount = this.quantityFormatValue(product.agreedQuantityAmount);
+          product.agreedQuantityAmount = this.quantityFormatValue(
+            product.agreedQuantityAmount
+          );
         }
         if (product.quantityParameters) {
           product.quantityParameters.forEach((productQuantity, key2) => {
             if (productQuantity.bdn) {
-              productQuantity.bdn = this.quantityFormatValue(productQuantity.bdn);
+              productQuantity.bdn = this.quantityFormatValue(
+                productQuantity.bdn
+              );
             }
           });
         }
         if (product.quantityHeader) {
           if (product.quantityHeader.ccaiDelivered) {
-            product.quantityHeader.ccaiDelivered = this.quantityFormatValue(product.quantityHeader.ccaiDelivered);
+            product.quantityHeader.ccaiDelivered = this.quantityFormatValue(
+              product.quantityHeader.ccaiDelivered
+            );
           }
         }
       });
@@ -1640,7 +1952,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if (this.tenantService.quantityPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
@@ -1653,35 +1965,35 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.formValues.deliveryProducts.forEach((product, key) => {
         if (product.qualityHeader) {
           if (product.qualityHeader.comments) {
-            product.qualityHeader.comments = this.decodeSpecificField(product.qualityHeader.comments);
+            product.qualityHeader.comments = this.decodeSpecificField(
+              product.qualityHeader.comments
+            );
           }
         }
         if (product.quantityHeader) {
           if (product.quantityHeader.comments) {
-            product.quantityHeader.comments = this.decodeSpecificField(product.quantityHeader.comments);
+            product.quantityHeader.comments = this.decodeSpecificField(
+              product.quantityHeader.comments
+            );
           }
         }
         if (product.qualityParameters) {
           product.qualityParameters.forEach((productParameter, key1) => {
-            productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
+            productParameter.specParameter.name = this.decodeSpecificField(
+              productParameter.specParameter.name
+            );
           });
         }
       });
     }
-
   }
-
 
   decodeSpecificField(modelValue) {
     let decode = function(str) {
       return str.replace(/&#(\d+);/g, function(match, dec) {
-          return String.fromCharCode(dec);
+        return String.fromCharCode(dec);
       });
     };
     return decode(_.unescape(modelValue));
   }
-
-
-
-
 }

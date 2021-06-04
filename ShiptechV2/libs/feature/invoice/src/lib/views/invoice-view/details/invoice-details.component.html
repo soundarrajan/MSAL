@@ -166,7 +166,7 @@
             </div>
             <div
               class="custom-form-field-with-search lightTheme"
-              style="margin-top: 8px !important;"
+              style="margin-top: 8px !important; padding-left: 15px;"
             >
               <div class="d-flex">
                 <mat-form-field
@@ -189,6 +189,7 @@
                     matTooltipClass="custom-tooltip"
                     [(ngModel)]="formValues.counterpartyDetails.paymentTerm"
                     [ngModelOptions]="{ standalone: true }"
+                    (dateChange)="triggerChangeFieldsAppSpecific('PaymentTerm')"
                     [matAutocomplete]="auto4"
                     autocomplete="off"
                     placeholder="Payment Term"
@@ -249,21 +250,24 @@
               >
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Invoice rate currency</mat-label>
-                  <!-- <input matInput
-                                    name="invoiceRateCurrencyCode"
-                                    [(ngModel)]="formValues.invoiceRateCurrency.code"> -->
                   <mat-select
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
                     disableOptionCentering
-                    [(ngModel)]="formValues.invoiceRateCurrency.code"
+                    [(ngModel)]="formValues.invoiceRateCurrency"
+                    [compareWith]="compareCurrencyObjects"
+                    (selectionChange)="
+                      triggerChangeFieldsAppSpecific('InvoiceRateCurrency')
+                    "
                     name="invoiceRateCurrencyCode"
                     required
                     [disabled]="formValues.status?.name === 'Approved'"
                   >
                     <mat-option
-                      *ngFor="let list of currencyList"
-                      [value]="list.code"
+                      *ngFor="let currency of currencyList"
+                      [value]="currency"
                     >
-                      {{ list.name }}</mat-option
+                      {{ currency.name }}</mat-option
                     >
                   </mat-select>
                 </mat-form-field>
@@ -273,7 +277,7 @@
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field
                   [ngClass]="{ 'invalid-field': formErrors.dueDate }"
-                  class="without-search"
+                  class="without-search invoice-form-field"
                   appearance="legacy"
                 >
                   <mat-label>Due Date</mat-label>
@@ -291,6 +295,7 @@
                       isFormValid({ useToaster: false })
                     "
                     required
+                    [disabled]="formValues.status?.name === 'Approved'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="dueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -321,7 +326,7 @@
                       isFormValid({ useToaster: false })
                     "
                     required
-                    disabled
+                    [disabled]="true"
                   />
                   <mat-datepicker-toggle matSuffix [for]="workingDueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -423,13 +428,15 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div id="custom-form-field" class="lightTheme">
+              <div id="custom-form-field" class="lightTheme can-be-disabled">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Payment Status</mat-label>
                   <mat-select
-                    disableOptionCentering
+                    [compareWith]="compareObjects"
                     [(ngModel)]="formValues.paymentDetails.paymentStatus"
                     name="paymentStatus"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
                     [disabled]="formValues.status?.name !== 'Approved'"
                   >
                     <mat-option
@@ -455,7 +462,8 @@
                     [info]="cData"
                     [formValues]="formValues"
                     (amountChanged)="updateAmountValues($event)"
-                  ></m-chip>
+                  >
+                  </m-chip>
                 </div>
               </div>
             </div>
@@ -560,8 +568,8 @@
                 <mat-checkbox
                   disabled
                   [checked]="formValues.orderDetails.hasWithheldAmount"
-                  >Withheld Amount</mat-checkbox
-                >
+                  >Withheld Amount
+                </mat-checkbox>
               </div>
             </div>
           </div>
@@ -573,16 +581,30 @@
       <div class="row">
         <div class="col-md-6">
           <div class="section-header">
-            <div class="header-label">Order Details: <span class="order-id">7823</span></div>
+            <div class="header-label">
+              Order Details:
+              <a
+                href="{{
+                  urlService.editOrder(formValues.orderDetails?.order?.id)
+                }}"
+                class="order-id"
+                >{{ formValues.orderDetails?.order?.id }}</a
+              >
+            </div>
             <div class="header-data">
               Order Date:
-              <span>12/12/2021</span>
+              <span>{{
+                formValues.orderDetails?.orderDate | date: this.dateFormat
+              }}</span>
             </div>
           </div>
           <div class="section-content order-details">
             <div style="display: flex;">
               <readonly-details [options]="orderDetails"></readonly-details>
-              <readonly-details [options]="orderDetails2" style="margin: 0px 15px;"></readonly-details>
+              <readonly-details
+                [options]="orderDetails2"
+                style="margin: 0px 15px;"
+              ></readonly-details>
             </div>
             <div class="form-fields">
               <div
@@ -651,7 +673,8 @@
                           [entityId]="entityId"
                           [vesselId]="vesselId"
                           [headerName]="getHeaderNameSelector1()"
-                        ></shiptech-shared-master-selector>
+                        >
+                        </shiptech-shared-master-selector>
                       </ng-template>
                     </div>
                   </button>
@@ -672,6 +695,10 @@
                     [matDatepicker]="deliveryDate"
                     (focus)="deliveryDate.open()"
                     autocomplete="off"
+                    (dateChange)="
+                      formValues.deliveryDate= formatDateForBe(formValues.deliveryDate);
+                      triggerChangeFieldsAppSpecific('DeliveryDate');
+                    "
                     placeholder="Delivery Date"
                     [disabled]="formValues.status?.name === 'Approved'"
                     required
@@ -742,7 +769,8 @@
                           [entityId]="entityId"
                           [vesselId]="vesselId"
                           [headerName]="getHeaderNameSelector2()"
-                        ></shiptech-shared-master-selector>
+                        >
+                        </shiptech-shared-master-selector>
                       </ng-template>
                     </div>
                   </button>
@@ -772,10 +800,11 @@
                 <readonly-details
                   [options]="counterpartyDetails"
                 ></readonly-details>
-                <div class="form-fields" style="margin: 0px -15px;">
+                <div class="form-fields">
                   <div
                     id="custom-form-field"
                     class="lightTheme"
+                    style="margin: 15px 15px 15px 0px"
                     *ngIf="getBankAccountNumberDateConfig().isVisible"
                   >
                     <mat-form-field
@@ -802,8 +831,8 @@
                         <mat-option
                           *ngFor="let bank of bankAccountNumbers"
                           [value]="bank.id"
-                          >{{ bank.accountnumber }}</mat-option
-                        >
+                          >{{ bank.accountnumber }}
+                        </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -965,7 +994,8 @@
                             [entityId]="entityId"
                             [vesselId]="vesselId"
                             [headerName]="getHeaderNameSelector()"
-                          ></shiptech-shared-master-selector>
+                          >
+                          </shiptech-shared-master-selector>
                         </ng-template>
                       </div>
                     </button>
@@ -1086,32 +1116,50 @@
     </div>
 
     <!-- Related Invoice Details -->
-    <div class="container-fluid-invoice" style="padding-left: 10px;padding-right: 10px;">
+    <div
+      class="container-fluid-invoice"
+      style="padding-left: 10px;padding-right: 10px;"
+    >
       <div class="row m-b-4">
         <div class="col-12">
-            <div class="match-grid">
-              <div class="header-details col-md-12 no-padding related-inv-section" style="margin-top: 10px;">
-                <span *ngIf="expandRelatedInvoice" (click)="expandRelatedInvoice = !expandRelatedInvoice">
-                  <a class="expand-icon">
-                  </a>
-                </span>
-                <span  *ngIf="!expandRelatedInvoice" (click)="expandRelatedInvoice = !expandRelatedInvoice">
-                  <a class="collapse-icon">
-                  </a>
-                </span>
-                <div class="title">Related Invoice Details</div>
-              </div>
-              <div class="agGrid-v2" style="margin: 0" *ngIf="expandRelatedInvoice">
-                  <div style="width:100%;height: 250px;">
-                      <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_rel_invoice"
-                          class="ag-theme-material ag-grid-v2 angular-v9 prod-details" (cellClicked)="onCellClicked($event)"></ag-grid-angular>
-                  </div>
+          <div class="match-grid">
+            <div
+              class="header-details col-md-12 no-padding related-inv-section"
+              style="margin-top: 10px;"
+            >
+              <span
+                *ngIf="expandRelatedInvoice"
+                (click)="expandRelatedInvoice = !expandRelatedInvoice"
+              >
+                <a class="expand-icon"> </a>
+              </span>
+              <span
+                *ngIf="!expandRelatedInvoice"
+                (click)="expandRelatedInvoice = !expandRelatedInvoice"
+              >
+                <a class="collapse-icon"> </a>
+              </span>
+              <div class="title">Related Invoice Details</div>
+            </div>
+            <div
+              class="agGrid-v2"
+              style="margin: 0"
+              *ngIf="expandRelatedInvoice"
+            >
+              <div style="width:100%;height: 250px;">
+                <ag-grid-angular
+                  style="width: 100%;height: 100%;"
+                  [gridOptions]="gridOptions_rel_invoice"
+                  class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+                  (cellClicked)="onCellClicked($event)"
+                >
+                </ag-grid-angular>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
-
   </form>
 </div>
 

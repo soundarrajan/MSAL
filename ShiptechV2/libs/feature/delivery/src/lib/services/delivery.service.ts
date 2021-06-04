@@ -47,8 +47,11 @@ import { Router } from '@angular/router';
 import { IQcReportState } from '../store/report/qc-report.state.model';
 import { IDeliveryApiService } from './api/delivery.api.service.interface';
 import { DeliveryApi, DELIVERY_API_SERVICE } from './api/delivery-api';
-import { LoadDeliveryDetailsAction, LoadDeliveryDetailsFailedAction, LoadDeliveryDetailsSuccessfulAction } from '../store/delivery/delivery-details.actions';
-
+import {
+  LoadDeliveryDetailsAction,
+  LoadDeliveryDetailsFailedAction,
+  LoadDeliveryDetailsSuccessfulAction
+} from '../store/delivery/delivery-details.actions';
 
 @Injectable()
 export class DeliveryService extends BaseStoreService implements OnDestroy {
@@ -61,7 +64,6 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
   ) {
     super(store, loggerFactory.createLogger(DeliveryService.name));
   }
-
 
   /**
    * @param deliveryId deliveryId in case of editing or falsy in case of new
@@ -79,7 +81,6 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
   loadDeliveryInfoForOrder(orderId: number): Observable<unknown> {
     return this.deliveryApi.getDeliveryInfoForOrder(orderId);
   }
-
 
   /**
    * Load order summary
@@ -108,116 +109,114 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
     return this.deliveryApi.getDeliverySpecParameters(payload);
   }
 
-
   /**
    * Load Delivery Quantity Parameters
    *  @param OrderProductId SpecGroupId
    */
   @ObservableException()
-  loadDeliveryQuantityParameters(payload): Observable<unknown>  {
+  loadDeliveryQuantityParameters(payload): Observable<unknown> {
     return this.deliveryApi.getDeliveryQuantityParameters(payload);
   }
 
-  
-    /**
+  /**
    * Load conversion info
-   *  @param productId 
+   *  @param productId
    */
   @ObservableException()
-  loadConversionInfo(productId: number): Observable<unknown>  {
+  loadConversionInfo(productId: number): Observable<unknown> {
     return this.deliveryApi.getConversionInfo(productId);
   }
 
-    /**
+  /**
    * Save delivery
-   *  @param formValues 
+   *  @param formValues
    */
   @ObservableException()
-  saveDeliveryInfo(formValues: any): Observable<unknown>  {
+  saveDeliveryInfo(formValues: any): Observable<unknown> {
     return this.deliveryApi.saveDelivery(formValues);
   }
 
-     /**
+  /**
    * Update delivery
-   *  @param formValues 
+   *  @param formValues
    */
   @ObservableException()
-  updateDeliveryInfo(formValues: any): Observable<unknown>  {
+  updateDeliveryInfo(formValues: any): Observable<unknown> {
     return this.deliveryApi.updateDelivery(formValues);
   }
 
-  
-      /**
+  /**
    * Verify delivery
-   *  @param formValues 
+   *  @param formValues
    */
   @ObservableException()
-  verifyDelivery(formValues: any): Observable<unknown>  {
+  verifyDelivery(formValues: any): Observable<unknown> {
     return this.deliveryApi.verifyDelivery(formValues);
   }
 
-  
   /**
    * Revert verify delivery
-   *  @param deliveryId 
-  */
+   *  @param deliveryId
+   */
   @ObservableException()
   revertVerifyDelivery(deliveryId: any) {
     return this.deliveryApi.revertVerifyDelivery(deliveryId);
   }
 
-    
   /**
    * Get split delivery limits
-   *  @param  
-  */
-   @ObservableException()
-   getSplitDeliveryLimits(payload: any) {
-     return this.deliveryApi.getSplitDeliveryLimits(payload);
-   }
-
-
-   /**
-   * Raise claim
-   *  @param  
-  */
-   @ObservableException()
-   raiseClaim(payload: any) {
-      return this.deliveryApi.raiseClaim(payload);
+   *  @param
+   */
+  @ObservableException()
+  getSplitDeliveryLimits(payload: any) {
+    return this.deliveryApi.getSplitDeliveryLimits(payload);
   }
- 
 
-  
-   /**
+  /**
+   * Raise claim
+   *  @param
+   */
+  @ObservableException()
+  raiseClaim(payload: any) {
+    return this.deliveryApi.raiseClaim(payload);
+  }
+
+  /**
    * Delete Delivery Product
-   *  @param  
-  */
-    @ObservableException()
-    deleteDeliveryProduct(payload: any) {
-       return this.deliveryApi.deleteDeliveryProduct(payload);
-   }
+   *  @param
+   */
+  @ObservableException()
+  deleteDeliveryProduct(payload: any) {
+    return this.deliveryApi.deleteDeliveryProduct(payload);
+  }
 
-     /**
+  /**
    * Send Email to labs
-   *  @param  
-  */
-    @ObservableException()
-    sendLabsTemplateEmail(payload: any) {
-      return this.deliveryApi.sendLabsTemplateEmail(payload);
-    }
+   *  @param
+   */
+  @ObservableException()
+  sendLabsTemplateEmail(payload: any) {
+    return this.deliveryApi.sendLabsTemplateEmail(payload);
+  }
 
-     /**
+  /**
    * Send Email to labs
-   *  @param  
-  */
-    @ObservableException()
-    getStaticLists(payload: any) {
-      return this.deliveryApi.getStaticLists(payload);
-    }
-  
+   *  @param
+   */
+  @ObservableException()
+  getStaticLists(payload: any) {
+    return this.deliveryApi.getStaticLists(payload);
+  }
 
-  
-    
+  /**
+   * Send Email to labs
+   *  @param
+   */
+  @ObservableException()
+  notesAutoSave(payload: any) {
+    return this.deliveryApi.notesAutoSave(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
