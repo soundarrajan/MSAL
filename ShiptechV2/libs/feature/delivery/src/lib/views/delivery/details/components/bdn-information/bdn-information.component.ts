@@ -30,13 +30,22 @@ import { DocumentsGridViewModel } from '@shiptech/core/ui/components/documents/v
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
-import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
 import { DocumentViewEditNotesComponent } from '@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
@@ -48,10 +57,22 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
-import { DeliveryInfoForOrder, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import {
+  DeliveryInfoForOrder,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
@@ -61,13 +82,16 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import _ from 'lodash';
-import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NgxMatNativeDateAdapter,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-
-
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -77,18 +101,16 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     dateInput: 'YYYY-MM-DD HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
 
-
-  
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   },
   parse: {
     dateInput: 'DD MMM YYYY'
@@ -101,15 +123,15 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
     let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -120,8 +142,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -130,23 +152,20 @@ export class PickDateAdapter extends NativeDateAdapter {
     let date = elem.toDate();
     return value ? date : null;
   }
-
 }
 
-
-
 export interface NgxMatMomentDateAdapterOptions {
-
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<NgxMatMomentDateAdapterOptions>(
-  'MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
-    providedIn: 'root',
-    factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
-  });
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+  NgxMatMomentDateAdapterOptions
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+  providedIn: 'root',
+  factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+});
 
 export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
   return {
@@ -165,19 +184,21 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
 @Injectable()
 export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _localeData: {
-    firstDayOfWeek: number,
-    longMonths: string[],
-    shortMonths: string[],
-    dates: string[],
-    longDaysOfWeek: string[],
-    shortDaysOfWeek: string[],
-    narrowDaysOfWeek: string[]
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
   };
 
-  constructor(@Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
-              @Optional() @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
-              private _options?: NgxMatMomentDateAdapterOptions) {
-
+  constructor(
+    @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+    @Optional()
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    private _options?: NgxMatMomentDateAdapterOptions
+  ) {
     super();
     this.setLocale(dateLocale || moment.locale());
   }
@@ -190,10 +211,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
       longMonths: momentLocaleData.months(),
       shortMonths: momentLocaleData.monthsShort(),
-      dates: range(31, (i) => this.createDate(2017, 0, i + 1).format('D')),
+      dates: range(31, i => this.createDate(2017, 0, i + 1).format('D')),
       longDaysOfWeek: momentLocaleData.weekdays(),
       shortDaysOfWeek: momentLocaleData.weekdaysShort(),
-      narrowDaysOfWeek: momentLocaleData.weekdaysMin(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin()
     };
   }
 
@@ -215,7 +236,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
-    return style === 'long' ? this._localeData.longMonths : this._localeData.shortMonths;
+    return style === 'long'
+      ? this._localeData.longMonths
+      : this._localeData.shortMonths;
   }
 
   getDateNames(): string[] {
@@ -250,14 +273,18 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   createDate(year: number, month: number, date: number): Moment {
     if (month < 0 || month > 11) {
-      throw Error(`Invalid month index "${month}". Month index has to be between 0 and 11.`);
+      throw Error(
+        `Invalid month index "${month}". Month index has to be between 0 and 11.`
+      );
     }
 
     if (date < 1) {
       throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
     }
 
-    const result = this._createMoment({ year, month, date }).locale(this.locale);
+    const result = this._createMoment({ year, month, date }).locale(
+      this.locale
+    );
     if (!result.isValid()) {
       throw Error(`Invalid date "${date}" for month with index "${month}".`);
     }
@@ -274,8 +301,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -292,14 +319,14 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     let formattedDate = moment(date).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -334,8 +361,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       let currentFormat = PICK_FORMATS.display.dateInput;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -375,7 +402,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     date.hours(value);
   }
   setMinute(date: Moment, value: number): void {
-    date.minutes(value)
+    date.minutes(value);
   }
   setSecond(date: Moment, value: number): void {
     date.seconds(value);
@@ -384,9 +411,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _createMoment(
     date: MomentInput,
     format?: MomentFormatSpecification,
-    locale?: string,
+    locale?: string
   ): Moment {
-    const { strict, useUtc }: NgxMatMomentDateAdapterOptions = this._options || {};
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions =
+      this._options || {};
 
     return useUtc
       ? moment.utc(date, format, locale, strict)
@@ -399,20 +427,22 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./bdn-information.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
-              ConfirmationService,
-              {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
-              {
-                provide: NgxMatDateAdapter,
-                useClass: CustomNgxDatetimeAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
-              { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
+  providers: [
+    OrderListGridViewModel,
+    DialogService,
+    ConfirmationService,
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    {
+      provide: NgxMatDateAdapter,
+      useClass: CustomNgxDatetimeAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+  ]
 })
 export class BdnInformationComponent extends DeliveryAutocompleteComponent
-  implements OnInit{
+  implements OnInit {
   switchTheme; //false-Light Theme, true- Dark Theme
   bargeOptions: any;
   orderDetails: any;
@@ -440,24 +470,24 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
-  
-  @Input('statusColorCode') set _setsStatusColorCode(statusColorCode) { 
+
+  @Input('statusColorCode') set _setsStatusColorCode(statusColorCode) {
     if (!statusColorCode) {
       return;
-    } 
+    }
     this.statusColorCode = statusColorCode;
     this.backgroundColor = this.getContrastYIQ(this.statusColorCode);
   }
-  @Input('bargeList') set _setBargeList(bargeList) { 
+  @Input('bargeList') set _setBargeList(bargeList) {
     if (!bargeList) {
       return;
-    } 
+    }
     this.bargeList = bargeList;
   }
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
     if (this.formValues.barge) {
       this.bargeId = this.formValues.barge.id;
@@ -471,10 +501,10 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.relatedDeliveries = relatedDeliveries;
   }
 
-  @Input('orderNumberOptions') set _setOptions(orderNumberOptions) { 
+  @Input('orderNumberOptions') set _setOptions(orderNumberOptions) {
     if (!orderNumberOptions) {
       return;
-    } 
+    }
     this.options = orderNumberOptions;
   }
 
@@ -495,7 +525,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
+
   @Input() vesselId: number;
   @Output() changeInputBdn = new EventEmitter<any>();
   @Output() onDatePicked = new EventEmitter<any>();
@@ -526,7 +556,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   @Input() events: Observable<void>;
   eventsSubject: Subject<void> = new Subject<void>();
   total = 100;
-  data = Array.from({length: this.total}).map((_, i) => `Option ${i}`);
+  data = Array.from({ length: this.total }).map((_, i) => `Option ${i}`);
   limit = 10;
   offset = 0;
   @Input() eventsSaveButton: Observable<void>;
@@ -546,16 +576,16 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
-    sanitizer: DomSanitizer) {
-    
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
     super(changeDetectorRef);
     this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
-                          IDeliveryTenantSettings
-                        >(TenantSettingsModuleName.Delivery);
+      IDeliveryTenantSettings
+    >(TenantSettingsModuleName.Delivery);
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
-                      IGeneralTenantSettings
-                    >(TenantSettingsModuleName.General);
+      IGeneralTenantSettings
+    >(TenantSettingsModuleName.General);
     this.autocompleteVessel = knownMastersAutocomplete.orders;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
@@ -564,27 +594,31 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
     //this.dateTimeFormats.parse.dateInput = this.format.dateFormat;
-
   }
 
-  ngOnInit(){  
+  ngOnInit() {
     this.setOrderNumberOptions();
     this.getBargeList();
     this.entityName = 'Delivery';
-    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
+    this.eventsSubscription = this.events.subscribe(data =>
+      this.setDeliveryForm(data)
+    );
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe(data =>
+      this.setRequiredFields(data)
+    );
     this.eventsSubject.next();
-
   }
 
-  getContrastYIQ(hexcolor){
-    if (!hexcolor) { return "black"; }
-      hexcolor = hexcolor.replace("#", "");
-      var r = parseInt(hexcolor.substr(0,2),16);
-      var g = parseInt(hexcolor.substr(2,2), 16);
-      var b = parseInt(hexcolor.substr(4,2),16);
-      var yiq = ((r*299)+(g*587)+(b*114))/1000;
-      return (yiq >= 128) ? 'black' : 'white';
+  getContrastYIQ(hexcolor) {
+    if (!hexcolor) {
+      return 'black';
+    }
+    hexcolor = hexcolor.replace('#', '');
+    var r = parseInt(hexcolor.substr(0, 2), 16);
+    var g = parseInt(hexcolor.substr(2, 2), 16);
+    var b = parseInt(hexcolor.substr(4, 2), 16);
+    var yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 128 ? 'black' : 'white';
   }
 
   setRequiredFields(data) {
@@ -595,9 +629,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     return object1 && object2 && object1.id == object2.id;
   }
 
-
-  
-  setDeliveryForm(form){
+  setDeliveryForm(form) {
     if (!form) {
       return;
     }
@@ -608,37 +640,31 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.changeDetectorRef.detectChanges();
   }
 
-
-
-
-  ngAfterViewInit(): void {
-  
-  }
+  ngAfterViewInit(): void {}
 
   formatDate(date?: any) {
-    if (date) {    
+    if (date) {
       let currentFormat = this.format.dateFormat;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
       }
       return formattedDate;
     }
   }
 
   async getBargeList() {
-    this.bargeList$ =  await this.legacyLookupsDatabase.getBargeTable();
+    this.bargeList$ = await this.legacyLookupsDatabase.getBargeTable();
   }
 
-  
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
       case knownMastersAutocomplete.orders:
@@ -648,30 +674,24 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     }
   }
 
-
   setOrderNumberOptions() {
     // this.filteredOptions = this.deliveryForm.controls['order'].valueChanges
     //   .pipe(
     //       startWith(''),
     //       map(value => typeof value === 'string' ? value : value.name),
     //       map(name => name ? this._filter(name) : this.options.slice(0, 10))
-    // ); 
+    // );
   }
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
   }
 
-  orderNumberSelection(event: IOrderLookupDto): void {
-   
-  }
+  orderNumberSelection(event: IOrderLookupDto): void {}
 
   onPageSizeChange(pageSize: number): void {
     this.gridViewModel.pageSize = pageSize;
   }
-
- 
- 
 
   displayFn(orderNumber): string {
     return orderNumber && orderNumber.name ? orderNumber.name : '';
@@ -679,11 +699,15 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   public filterOrderNumberList() {
     if (this.formValues.order) {
-      const filterValue = this.formValues.order.name ? this.formValues.order.name : this.formValues.order;
+      const filterValue = this.formValues.order.name
+        ? this.formValues.order.name
+        : this.formValues.order;
       if (this.options) {
-        const list =  this.options.filter((item: any) => {
+        const list = this.options
+          .filter((item: any) => {
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
-        }).splice(0,10);
+          })
+          .splice(0, 10);
         return list;
       } else {
         return [];
@@ -696,31 +720,33 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   public filterBargeList() {
     let filterValue = '';
     if (this.formValues.barge) {
-     filterValue = this.formValues.barge.name ? this.formValues.barge.name.toLowerCase() : this.formValues.barge.toLowerCase();
+      filterValue = this.formValues.barge.name
+        ? this.formValues.barge.name.toLowerCase()
+        : this.formValues.barge.toLowerCase();
     }
     if (this.bargeList$) {
-      const list =  this.bargeList$.filter((item: any) => {
-        return item.name.toLowerCase().includes(filterValue.toLowerCase());
-      }).splice(0,10);
+      const list = this.bargeList$
+        .filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        })
+        .splice(0, 10);
       return list;
     } else {
       return [];
     }
   }
 
-  selectorOrderNumberSelectionChange(
-    selection: IOrderLookupDto
-  ): void {
+  selectorOrderNumberSelectionChange(selection: IOrderLookupDto): void {
     if (selection === null || selection === undefined) {
       this.formValues.order = '';
     } else {
       this.formValues.order = selection.order;
       this.changeDetectorRef.detectChanges();
       const orderId = this.formValues.order ? this.formValues.order.id : null;
-      if(typeof this.formValues.order != 'undefined') {
+      if (typeof this.formValues.order != 'undefined') {
         if (!this.formValues.order.id) {
-            return;
-        };
+          return;
+        }
       }
       this.formValues.SellerName = '';
       this.formValues.Port = '';
@@ -733,15 +759,15 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   selectOrderNumber(event: MatAutocompleteSelectedEvent) {
     const orderId = event.option.value ? event.option.value.id : null;
-    if(typeof this.formValues.order != 'undefined') {
+    if (typeof this.formValues.order != 'undefined') {
       if (!this.formValues.order.id) {
-          return;
-      };
+        return;
+      }
     }
     this.formValues.SellerName = '';
     this.formValues.Port = '';
     this.formValues.OrderBuyer = '';
-    if(typeof this.formValues.order != 'undefined') {
+    if (typeof this.formValues.order != 'undefined') {
       this.spinner.show();
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
@@ -755,24 +781,24 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.openedScreenLoaders += 1;
     let duplicate = false;
     this.deliveryService
-    .loadDeliveryInfoForOrder(orderId)
-    .pipe(
+      .loadDeliveryInfoForOrder(orderId)
+      .pipe(
         finalize(() => {
           this.openedScreenLoaders -= 1;
           if (!this.openedScreenLoaders) {
             this.spinner.hide();
           }
         })
-    )
-    .subscribe((response: any) => {
+      )
+      .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error('An error has occurred!');
         } else {
           response.forEach((val, key) => {
             this.relatedDeliveries.forEach((val2, key2) => {
-                if (val2.deliveryId == val.deliveryId) {
-                    duplicate = true;
-                }
+              if (val2.deliveryId == val.deliveryId) {
+                duplicate = true;
+              }
             });
             if (!duplicate) {
               this.relatedDeliveries.push(val);
@@ -780,15 +806,14 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
           });
           this.changeDetectorRef.markForCheck();
         }
-    });
+      });
   }
 
-  
   getDeliveryOrderSummary(orderId: number) {
     this.openedScreenLoaders += 1;
     this.deliveryService
-    .loadDeliveryOrderSummary(orderId)
-    .pipe(
+      .loadDeliveryOrderSummary(orderId)
+      .pipe(
         finalize(() => {
           this.isLoading = false;
           this.openedScreenLoaders -= 1;
@@ -796,117 +821,139 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
             this.spinner.hide();
           }
         })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error('An error has occurred!');
-      } else {
-        if (typeof this.formValues.temp == 'undefined') {
-          this.formValues.temp = {};
-        }
-        this.formValues.info.vesselName = response.vesselName;
-        this.formValues.info.locationName = response.location;
-        this.formValues.info.eta = response.eta;
-        this.formValues.info.etb = response.etb;
-        this.formValues.temp.deliverysummary = response;
-        this.formValues.temp.deliverySummaryProducts = [ ... response.products];
-        if (!parseInt(this._entityId)) {
-          // new delivery
-          // also set pricing date for delivery to delivery date if null
-          this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-            this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
-                if (summaryProd.id == deliveryProd.orderProductId) {
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error('An error has occurred!');
+        } else {
+          if (typeof this.formValues.temp == 'undefined') {
+            this.formValues.temp = {};
+          }
+          this.formValues.info.vesselName = response.vesselName;
+          this.formValues.info.locationName = response.location;
+          this.formValues.info.eta = response.eta;
+          this.formValues.info.etb = response.etb;
+          this.formValues.temp.deliverysummary = response;
+          this.formValues.temp.deliverySummaryProducts = [...response.products];
+          if (!parseInt(this._entityId)) {
+            // new delivery
+            // also set pricing date for delivery to delivery date if null
+            this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
+              this.formValues.temp.deliverysummary.products.forEach(
+                (summaryProd, _) => {
+                  if (summaryProd.id == deliveryProd.orderProductId) {
                     if (summaryProd.pricingDate != null) {
-                        deliveryProd.pricingDate = summaryProd.pricingDate;
+                      deliveryProd.pricingDate = summaryProd.pricingDate;
                     } else {
-                        deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
+                      deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
                     }
                     if (summaryProd.convFactorOptions) {
-                        deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
+                      deliveryProd.convFactorOptions =
+                        summaryProd.convFactorOptions;
                     }
                     if (summaryProd.convFactorMassUom != null) {
-                        deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
+                      deliveryProd.convFactorMassUom =
+                        summaryProd.convFactorMassUom;
                     }
                     if (summaryProd.convFactorValue != null) {
-                        deliveryProd.convFactorValue = summaryProd.convFactorValue;
+                      deliveryProd.convFactorValue =
+                        summaryProd.convFactorValue;
                     }
                     if (summaryProd.convFactorVolumeUom != null) {
-                        deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
+                      deliveryProd.convFactorVolumeUom =
+                        summaryProd.convFactorVolumeUom;
                     }
+                  }
                 }
+              );
             });
-          });
-          if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
-            this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+            if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
+              this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+            }
           }
+          this.orderProductsByProductType('summaryProducts');
+          if (this.formValues.deliveryProducts) {
+            this.setProductsPhysicalSupplier();
+            this.setQtyUoms();
+          }
+          //this.changeInputBdn.emit(this.formValues);
+          this.changeDetectorRef.markForCheck();
         }
-        this.orderProductsByProductType('summaryProducts');
-        if (this.formValues.deliveryProducts) {
-          this.setProductsPhysicalSupplier();
-          this.setQtyUoms();
-        }
-        //this.changeInputBdn.emit(this.formValues);
-        this.changeDetectorRef.markForCheck();
-
-      }
-
-
-    });
+      });
   }
 
   setProductsPhysicalSupplier() {
     this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-      this.formValues.temp.deliverysummary.products.forEach((summaryProd, key) => {
+      this.formValues.temp.deliverysummary.products.forEach(
+        (summaryProd, key) => {
           if (deliveryProd.orderProductId == summaryProd.id) {
             if (!deliveryProd.physicalSupplier && !this.formValues.id) {
-                deliveryProd.physicalSupplier = Object.assign({}, summaryProd.physicalSupplier);
+              deliveryProd.physicalSupplier = Object.assign(
+                {},
+                summaryProd.physicalSupplier
+              );
             }
           }
-      });
-   });
+        }
+      );
+    });
   }
 
   setQtyUoms() {
     this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-      this.formValues.temp.deliverysummary.products.forEach((summaryProd, key) => {
+      this.formValues.temp.deliverysummary.products.forEach(
+        (summaryProd, key) => {
           if (summaryProd.id == deliveryProd.orderProductId) {
-              if (!deliveryProd.surveyorQuantityUom) {
-                  deliveryProd.surveyorQuantityUom = summaryProd.orderedQuantity.uom;
-              }
-              if (!deliveryProd.vesselQuantityUom) {
-                  deliveryProd.vesselQuantityUom = summaryProd.orderedQuantity.uom;
-              }
-              if (!deliveryProd.agreedQuantityUom) {
-                  deliveryProd.agreedQuantityUom = summaryProd.orderedQuantity.uom;
-              }
-              if (!deliveryProd.bdnQuantityUom) {
-                  deliveryProd.bdnQuantityUom = summaryProd.orderedQuantity.uom;
-              }
-              if (!deliveryProd.vesselFlowMeterQuantityUom) {
-                  deliveryProd.vesselFlowMeterQuantityUom = summaryProd.orderedQuantity.uom;
-              }
-              if (!deliveryProd.finalQuantityUom) {
-                  deliveryProd.finalQuantityUom = summaryProd.orderedQuantity.uom;
-              }
+            if (!deliveryProd.surveyorQuantityUom) {
+              deliveryProd.surveyorQuantityUom =
+                summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.vesselQuantityUom) {
+              deliveryProd.vesselQuantityUom = summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.agreedQuantityUom) {
+              deliveryProd.agreedQuantityUom = summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.bdnQuantityUom) {
+              deliveryProd.bdnQuantityUom = summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.vesselFlowMeterQuantityUom) {
+              deliveryProd.vesselFlowMeterQuantityUom =
+                summaryProd.orderedQuantity.uom;
+            }
+            if (!deliveryProd.finalQuantityUom) {
+              deliveryProd.finalQuantityUom = summaryProd.orderedQuantity.uom;
+            }
           }
-      });
+        }
+      );
     });
   }
 
   orderProductsByProductType(listName) {
-    if(listName == 'deliveryProducts') {
-      this.formValues.deliveryProducts = _.orderBy(this.formValues.deliveryProducts, [ 'productTypeId' ], [ 'asc' ]);
+    if (listName == 'deliveryProducts') {
+      this.formValues.deliveryProducts = _.orderBy(
+        this.formValues.deliveryProducts,
+        ['productTypeId'],
+        ['asc']
+      );
       // set CM.selectedProduct and initial selectedProduct
       this.formValues.temp.savedProdForCheck = this.formValues.deliveryProducts[0].product;
     }
-    if(listName == 'summaryProducts') {
-      this.formValues.temp.deliverysummary.products = _.orderBy(this.formValues.temp.deliverysummary.products, [ 'productType.id' ], [ 'asc' ]);
+    if (listName == 'summaryProducts') {
+      this.formValues.temp.deliverysummary.products = _.orderBy(
+        this.formValues.temp.deliverysummary.products,
+        ['productType.id'],
+        ['asc']
+      );
     }
   }
 
   onChange($event, field) {
     if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment($event.value).format(
+        'YYYY-MM-DDTHH:mm:ss'
+      )}+00:00`;
       if (field == 'deliveryDate') {
         this.isDeliveryDateInvalid = false;
       } else if (field == 'bdnDate') {
@@ -928,14 +975,12 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       }
       this.toastr.error('Please enter the correct format');
     }
-
   }
-  
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
     }
@@ -946,7 +991,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   setBarge(value) {
-    let findBarge = _.find(this.bargeList, function(object){
+    let findBarge = _.find(this.bargeList, function(object) {
       return object.id == value;
     });
     if (findBarge != -1) {
