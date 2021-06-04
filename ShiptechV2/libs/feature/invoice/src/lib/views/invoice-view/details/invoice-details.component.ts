@@ -1044,7 +1044,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           (this.formValues.costDetails[i].costType.name == 'Range' ||
             this.formValues.costDetails[i].costType.name == 'Total')
         ) {
-          this.getRangeTotalAmount(this.formValues.costDetails[i], i);
+          this.getEstimatedRateAndAmount(this.formValues.costDetails[i], i);
         } else {
           this.invoiceConvertUomCost('cost', i);
         }
@@ -1052,7 +1052,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
   }
 
-  getRangeTotalAmount(additionalCost, rowIndex) {
+  getEstimatedRateAndAmount(additionalCost, rowIndex) {
     if (!additionalCost.locationAdditionalCostId) {
       return;
     }
@@ -1094,7 +1094,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           },
           {
             ColumnName: 'Qty',
-            Value: additionalCost.invoiceQuantity
+            Value: additionalCost.deliveryQuantity
           },
           {
             ColumnName: 'QtyUomId',
@@ -1122,9 +1122,14 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          // console.log(response);
-          additionalCost.invoiceRate = this.quantityFormatValue(response.price);
-          this.invoiceConvertUomCost('cost', rowIndex);
+          console.log(response);
+          this.formValues.costDetails[rowIndex].estimatedRate = _.cloneDeep(
+            response.price
+          );
+          this.formValues.costDetails[rowIndex].estimatedAmount = _.cloneDeep(
+            response.price
+          );
+          this.invoiceConvertUom('cost', rowIndex);
         }
       });
   }
@@ -3118,17 +3123,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getColorCodeFromLabels(statusObj, labels) {
-    if(labels){
-        for (let i = 0; i < labels.length; i++) {
-            if (statusObj) {
-                if (
-                statusObj.id === labels[i].id &&
-                statusObj.transactionTypeId === labels[i].transactionTypeId
-                ) {
-                return labels[i].code;
-                }
-            }
+    if (labels) {
+      for (let i = 0; i < labels.length; i++) {
+        if (statusObj) {
+          if (
+            statusObj.id === labels[i].id &&
+            statusObj.transactionTypeId === labels[i].transactionTypeId
+          ) {
+            return labels[i].code;
+          }
         }
+      }
     }
   }
 
