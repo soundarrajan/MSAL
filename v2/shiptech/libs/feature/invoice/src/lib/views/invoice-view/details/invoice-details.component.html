@@ -696,8 +696,10 @@
                     (focus)="deliveryDate.open()"
                     autocomplete="off"
                     (dateChange)="
-                      formValues.deliveryDate= formatDateForBe(formValues.deliveryDate);
-                      triggerChangeFieldsAppSpecific('DeliveryDate');
+                      formValues.deliveryDate = formatDateForBe(
+                        formValues.deliveryDate
+                      );
+                      triggerChangeFieldsAppSpecific('DeliveryDate')
                     "
                     placeholder="Delivery Date"
                     [disabled]="formValues.status?.name === 'Approved'"
@@ -823,6 +825,9 @@
                         [required]="
                           getBankAccountNumberDateConfig().isMandatory
                         "
+                        [compareWith]="compareObjects"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container"
                         [ngModelOptions]="{ standalone: true }"
                         [(ngModel)]="
                           formValues.counterpartyDetails.counterpartyBankAccount
@@ -830,7 +835,7 @@
                       >
                         <mat-option
                           *ngFor="let bank of bankAccountNumbers"
-                          [value]="bank.id"
+                          [value]="bank"
                           >{{ bank.accountnumber }}
                         </mat-option>
                       </mat-select>

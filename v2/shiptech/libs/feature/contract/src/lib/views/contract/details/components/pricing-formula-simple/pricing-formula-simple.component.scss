@@ -13,6 +13,23 @@
   content: url(../../../../../../../../../../assets/layout/images/pages/dropdown-icon.svg);
 }
 
+.general-information-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important;
+}
+
+.general-information-select-container.mat-select-panel {
+  position: relative;
+  top: 26px;
+  background: #37414f !important;
+}
+
+.general-information-select-container .mat-option {
+  height: 20px !important;
+  padding: 15px;
+  color: white !important;
+}
+
 .dropdown-icon {
   width: 25px;
   height: 25px;
@@ -280,7 +297,6 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-
   color: #ffffff;
 }
 

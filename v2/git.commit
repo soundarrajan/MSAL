@@ -1,7 +1,9 @@
-﻿commit 71b62b0460f35d9e9886703ce60af0e98d4719fa
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Jun 4 11:01:23 2021 +0000
+﻿commit 4eb17a8f2217232a80ca86643db17f7713b8318f
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Jun 4 13:52:35 2021 +0000
 
-    Merged PR 11245: Fixed 32874(more option menu)
+    Merged PR 11256: Requirement 29675: Vessel details: View Future Requests for the Vessel has done
+    
+    Related work items: #29675
 
 branch: master

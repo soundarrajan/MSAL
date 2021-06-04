@@ -67,34 +67,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
     this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
   }
-
-  if(params?.sourceField) {
-    switch (params.sourceField) {
-      case 'productName':
-        params['popoverSource'] = {
-          displayName: params?.data?.productName,
-          sourceField: params?.sourceField,
-          rowData: [
-            { key: 'Request Qty', value: params?.data?.maxQuantity, type: 'text' },
-            { key: 'Request Date', value: params?.data?.requestDate, type:'date' },
-            { key: 'Suggested qty', value: params?.data?.suggestedQuantity+params?.data?.uomName, type: 'text' }
-          ]
-        }
-        break;
-      case 'locationName':
-        params['popoverSource'] = {
-          displayName: params?.data?.locationName,
-          sourceField: params?.sourceField,
-          rowData: [
-            { key: 'ETA', value: params?.data?.eta, type: 'date' }
-          ]
-        }
-        break;
-    
-      default:
-        break;
-    }
-  }
   this.setCellClass(params);
   
   }
@@ -272,6 +244,19 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   @ViewChild('inputMenuTrigger') inputMenuTrigger: MatMenuTrigger;
 
 
+  toggleMenu(event) {
+    //onenter
+    this.menuTrigger.openMenu();
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay.classList.add("removeOverlay");
+  }
+
+  toggleMenu2() {
+    //onleave
+    this.menuTrigger.closeMenu();
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay.classList.remove("removeOverlay");
+  }
 
   toggleMenuInfo(event, data) {//onenter
     this.infomenuTrigger.openMenu();
@@ -582,54 +567,46 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
 }
 @Component({
-  selector: 'hover-menu',
+  selector: "hover-menu",
   template: `
-  <div *ngIf="items" style="display:flex;flex-wrap:wrap;" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverTitle"
-  (mouseenter)="toggleMenu($event);" (mouseleave)="toggleMenu2();">
-  <div class="aggrid-content-center" [ngClass]="{'dark-multiple-text': (items?.sourceField!=='locationName')}">
-  <div class=" aggrid-text-resizable"  >{{items?.displayName}}</div>
-          </div>
-          <mat-menu class="outstanding-req-menu" #hoverTitle="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
-          <div class="hover-tooltip" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
-              <table style="border-collapse: collapse; min-width: 100%;">
-                <tr class="hover-title" style="border-bottom:1px solid #253c01; text-align: left; padding-top: 5px; padding-bottom: 5px;">
-                  <th colspan="2" style="color: #0f97c7">{{items?.displayName}}</th>
-                </tr>
-                <tr class="hover-title hover-body-wrapper" *ngFor="let item of items.rowData">
-                  <td>{{item.key}}</td>
-                  <td class="hover-value" *ngIf="item.type!='date'">{{item.value}}</td>
-                  <td class="hover-value" *ngIf="item.type=='date'">{{item.value | date: 'dd/MM/yyyy'}}</td>
-                </tr>
-              </table>
-          </div>
-        </mat-menu>
-</div>
-  
+    <div
+      *ngIf="items"
+      style="display:flex;flex-wrap:wrap;"
+      
+    >
+      <div
+        *ngFor="let item of items"
+        class="aggrid-content-center dark-multiple-text"
+      >
+        <div class=" aggrid-text-resizable">{{ item }}</div>
+      </div>
+         </div>
   `,
-  styles: ['tr.hover-body-wrapper:last-child {border-top:1px solid #253c01; padding-top: 5px; padding-bottom: 5px;}']
 })
 export class HoverMenuComponent {
-  @Input('items') items;
+  @Input("items") items;
 
-  @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
-  public theme:boolean = true;
-  constructor(private elem: ElementRef,private localService: LocalService) { }
+  @ViewChild("menuTrigger") menuTrigger: MatMenuTrigger;
+  public theme: boolean = true;
+  constructor(private elem: ElementRef, private localService: LocalService) {}
 
-  ngOnInit(){
-    this.localService.themeChange.subscribe(value => this.theme = value);
+  ngOnInit() {
+    console.log(this.items);
+    
+    this.localService.themeChange.subscribe((value) => (this.theme = value));
   }
 
-  toggleMenu(event) {//onenter
+  toggleMenu(event) {
+    //onenter
     this.menuTrigger.openMenu();
-    var overlay = document.querySelector('.cdk-overlay-container');
-    overlay.classList.add('removeOverlay');
-
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay.classList.add("removeOverlay");
   }
 
-  toggleMenu2() {//onleave
+  toggleMenu2() {
+    //onleave
     this.menuTrigger.closeMenu();
-    var overlay = document.querySelector('.cdk-overlay-container');
-    overlay.classList.remove('removeOverlay');
-
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay.classList.remove("removeOverlay");
   }
 }
