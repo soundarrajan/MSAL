@@ -28,13 +28,22 @@ import { DocumentsGridViewModel } from '@shiptech/core/ui/components/documents/v
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
-import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
 import { DocumentViewEditNotesComponent } from '@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
@@ -46,10 +55,24 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
-import { DeliveryInfoForOrder, DeliveryProduct, DeliveryProductDto, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter, ThemePalette } from '@angular/material/core';
+import {
+  DeliveryInfoForOrder,
+  DeliveryProduct,
+  DeliveryProductDto,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  NativeDateAdapter,
+  ThemePalette
+} from '@angular/material/core';
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
@@ -82,19 +105,19 @@ export class RaiseClaimModalComponent implements OnInit {
     completed: false,
     color: 'primary',
     subtasks: [
-      {name: 'Primary', completed: false, color: 'primary'},
-      {name: 'Accent', completed: false, color: 'accent'},
-      {name: 'Warn', completed: false, color: 'warn'}
+      { name: 'Primary', completed: false, color: 'primary' },
+      { name: 'Accent', completed: false, color: 'accent' },
+      { name: 'Warn', completed: false, color: 'warn' }
     ]
   };
   currentCheckedValue = null;
 
   allComplete: boolean = false;
-  favoriteSeason: any ;
+  favoriteSeason: any;
   seasons: string[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
   availableClaimTypes: any;
   CM: any = {
-    'availableClaimTypes': ''
+    availableClaimTypes: ''
   };
   deliveryProducts: any;
   switchTheme;
@@ -110,23 +133,23 @@ export class RaiseClaimModalComponent implements OnInit {
     private toastrService: ToastrService,
     private deliveryService: DeliveryService,
     private spinner: NgxSpinnerService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.formValues = data.formValues;
-      this.CM = data.CM;
-      this.CM.availableClaimTypes = data.availableClaimTypes;
-      this.deliveryProducts = data.deliveryProducts;
-      this.raiseClaimInfo = data.raiseClaimInfo;
-      this.baseOrigin = new URL(window.location.href).origin;
-      this.selectedProductIndex = data.selectedProductIndex;
-      this.selectedProduct = this.deliveryProducts[this.selectedProductIndex];
-    }
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.formValues = data.formValues;
+    this.CM = data.CM;
+    this.CM.availableClaimTypes = data.availableClaimTypes;
+    this.deliveryProducts = data.deliveryProducts;
+    this.raiseClaimInfo = data.raiseClaimInfo;
+    this.baseOrigin = new URL(window.location.href).origin;
+    this.selectedProductIndex = data.selectedProductIndex;
+    this.selectedProduct = this.deliveryProducts[this.selectedProductIndex];
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
@@ -142,11 +165,13 @@ export class RaiseClaimModalComponent implements OnInit {
     });
 
     var selectedSpecsInCurrentClaim = 0;
-    this.CM.availableClaimTypes[claimTypeKey].specParams.forEach((specV, specK) => {
+    this.CM.availableClaimTypes[claimTypeKey].specParams.forEach(
+      (specV, specK) => {
         if (specV.isSelected) {
           selectedSpecsInCurrentClaim = selectedSpecsInCurrentClaim + 1;
         }
-    });
+      }
+    );
 
     if (selectedSpecsInCurrentClaim == 0) {
       this.CM.availableClaimTypes.forEach((typeV, typeK) => {
@@ -158,50 +183,51 @@ export class RaiseClaimModalComponent implements OnInit {
       });
     }
 
-    if (selectedSpecsInCurrentClaim == this.CM.availableClaimTypes[claimTypeKey].specParams.length) {
+    if (
+      selectedSpecsInCurrentClaim ==
+      this.CM.availableClaimTypes[claimTypeKey].specParams.length
+    ) {
       this.CM.availableClaimTypes[claimTypeKey].isTypeSelected = true;
     } else {
       this.CM.availableClaimTypes[claimTypeKey].isTypeSelected = false;
     }
-  };
+  }
 
   selectAllParamsToRaiseClaim(claimTypeKey, checked) {
     if (checked) {
       this.CM.availableClaimTypes.forEach((typeV, typeK) => {
-          if (typeK != claimTypeKey) {
-              typeV.isTypeSelected = false;
+        if (typeK != claimTypeKey) {
+          typeV.isTypeSelected = false;
+        }
+        typeV.specParams.forEach((specV, specK) => {
+          specV.isSelected = false;
+          specV.isDisabled = true;
+          if (typeK == claimTypeKey) {
+            specV.isDisabled = false;
+            specV.isSelected = true;
           }
-          typeV.specParams.forEach((specV, specK) => {
-              specV.isSelected = false;
-              specV.isDisabled = true;
-              if (typeK == claimTypeKey) {
-                  specV.isDisabled = false;
-                  specV.isSelected = true;
-              }
-          });
+        });
       });
     } else {
       this.CM.availableClaimTypes.forEach((typeV, typeK) => {
-          typeV.specParams.forEach((specV, specK) => {
-              specV.isDisabled = false;
-              specV.isSelected = false;
-          });
+        typeV.specParams.forEach((specV, specK) => {
+          specV.isDisabled = false;
+          specV.isSelected = false;
+        });
       });
     }
     this.changeDetectorRef.detectChanges();
-  };
-
-  changeGender(e) {
   }
+
+  changeGender(e) {}
 
   closeClick(): void {
     this.dialogRef.close();
   }
 
-
   raiseClaim() {
     if (this.raiseClaimInfo) {
-      let DeliveryProductId = `${this.raiseClaimInfo.productId }`;
+      let DeliveryProductId = `${this.raiseClaimInfo.productId}`;
       let specParamsIds = [];
       let claimTypeId;
       this.CM.availableClaimTypes.forEach((typeV, typeK) => {
@@ -218,7 +244,7 @@ export class RaiseClaimModalComponent implements OnInit {
           claimTypeId = v.claim.id;
         }
       });
-      if(!claimTypeId) {
+      if (!claimTypeId) {
         this.toastrService.error('Please select at least one spec parameter');
         return;
       }
@@ -234,7 +260,8 @@ export class RaiseClaimModalComponent implements OnInit {
   }
 
   raiseNewClaim(data) {
-    let specParamsIds = [], claimId;
+    let specParamsIds = [],
+      claimId;
     this.CM.availableClaimTypes.forEach((typeV, typeK) => {
       typeV.specParams.forEach((specV, specK) => {
         if (specV.isSelected) {
@@ -249,29 +276,29 @@ export class RaiseClaimModalComponent implements OnInit {
       }
     });
 
-    if(!claimId) {
+    if (!claimId) {
       this.toastrService.error('Please select at least one spec parameter');
       return;
     }
 
     if (!data) {
       data = {
-          LabTestResultIds: specParamsIds,
-          DeliveryQualityParameterIds: [],
-          DeliveryProductId: null,
-          ClaimTypeId: claimId
+        LabTestResultIds: specParamsIds,
+        DeliveryQualityParameterIds: [],
+        DeliveryProductId: null,
+        ClaimTypeId: claimId
       };
     }
 
     this.spinner.show();
     this.deliveryService
-    .raiseClaim(data)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
+      .raiseClaim(data)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastrService.error(response);
         } else {
@@ -282,9 +309,15 @@ export class RaiseClaimModalComponent implements OnInit {
   }
 
   changeProduct(value) {
-    let findProductIndex = _.findIndex(this.formValues.deliveryProducts, function(object: any) {
-      return object.product.id == value.product.id && object.product.name == value.product.name;
-    });
+    let findProductIndex = _.findIndex(
+      this.formValues.deliveryProducts,
+      function(object: any) {
+        return (
+          object.product.id == value.product.id &&
+          object.product.name == value.product.name
+        );
+      }
+    );
     if (findProductIndex != -1) {
       this.CM.selectedProduct = findProductIndex;
     }
@@ -302,7 +335,10 @@ export class RaiseClaimModalComponent implements OnInit {
   }
 
   raiseNewClaimWhenChangeProduct() {
-    if (typeof this.raiseClaimInfo.allSpecParams == 'undefined' || this.raiseClaimInfo.allSpecParams == null) {
+    if (
+      typeof this.raiseClaimInfo.allSpecParams == 'undefined' ||
+      this.raiseClaimInfo.allSpecParams == null
+    ) {
       this.toastrService.error('Claim can not be raised for this product!');
       return;
     }
@@ -310,7 +346,7 @@ export class RaiseClaimModalComponent implements OnInit {
     const claimType = {
       displayName: '',
       claim: {},
-      specParams: [],
+      specParams: []
     };
     this.CM.listsCache.ClaimType.forEach((val, ind) => {
       // only allow these 3 types of claim
@@ -322,8 +358,8 @@ export class RaiseClaimModalComponent implements OnInit {
         if (paramVal.claimTypes) {
           paramVal.claimTypes.forEach((element, key) => {
             if (element.id == val.id) {
-                paramVal.disabled = 'false';
-                params.push({...paramVal});
+              paramVal.disabled = 'false';
+              params.push({ ...paramVal });
             }
           });
         }
@@ -338,30 +374,40 @@ export class RaiseClaimModalComponent implements OnInit {
       };
       claimType.disabled = true;
       if (params.length > 0) {
-          claimType.disabled = false;
+        claimType.disabled = false;
       }
       if (this.formValues.feedback) {
-        if (this.formValues.feedback.hasLetterOfProtest && this.formValues.feedback.hasLetterOfProtest.id == 1) {
+        if (
+          this.formValues.feedback.hasLetterOfProtest &&
+          this.formValues.feedback.hasLetterOfProtest.id == 1
+        ) {
           claimType.disabled = false;
         }
       }
       if (val.name == 'Quantity') {
         const claim1: any = {};
-        claim1.claim = { ... val };
-        claim1.specParams = [... params];
+        claim1.claim = { ...val };
+        claim1.specParams = [...params];
         claim1.disabled = claimType.disabled;
         claim1.displayName = 'Overstated Density';
         claim1.id = 1;
         claim1.isTypeSelected = false;
-        this.CM.availableClaimTypes.push({ ... claim1});
-        const claim2 : any = {};
-        claim2.claim = { ... val };
+        this.CM.availableClaimTypes.push({ ...claim1 });
+        const claim2: any = {};
+        claim2.claim = { ...val };
         claim2.specParams = [];
         claim2.disabled = false;
         if (typeof this.formValues.temp.variances != 'undefined') {
-            if (typeof this.formValues.temp.variances[`product_${ this.CM.selectedProduct}`] == 'undefined' || this.formValues.temp.variances[`product_${ this.CM.selectedProduct}`] == null) {
-              claim2.disabled = true;
-            }
+          if (
+            typeof this.formValues.temp.variances[
+              `product_${this.CM.selectedProduct}`
+            ] == 'undefined' ||
+            this.formValues.temp.variances[
+              `product_${this.CM.selectedProduct}`
+            ] == null
+          ) {
+            claim2.disabled = true;
+          }
         } else {
           claim2.disabled = true;
         }
@@ -388,7 +434,4 @@ export class RaiseClaimModalComponent implements OnInit {
     });
     this.raiseClaimInfo.currentSpecParamIds = [];
   }
-
-
-  
 }
