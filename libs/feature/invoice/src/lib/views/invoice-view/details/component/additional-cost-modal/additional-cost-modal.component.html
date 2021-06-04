@@ -361,10 +361,6 @@
                       (keypress)="keyPressNumber($event)"
                       autocomplete="off"
                       (ngModelChange)="
-                        getRangeTotalAmount(
-                          additionalCost.value,
-                          additionalCost.key
-                        );
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       quantityFormat
@@ -375,10 +371,6 @@
                       disableRipple
                       [(ngModel)]="additionalCost.value.invoiceQuantityUom"
                       (ngModelChange)="
-                        getRangeTotalAmount(
-                          additionalCost.value,
-                          additionalCost.key
-                        );
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       [compareWith]="compareUomObjects"
@@ -444,11 +436,6 @@
                       [(ngModel)]="additionalCost.value.invoiceRate"
                       (keypress)="keyPressNumber($event)"
                       quantityFormat
-                      [disabled]="
-                        additionalCost.value.locationAdditionalCostId &&
-                        (additionalCost.value.costType.name == 'Range' ||
-                          additionalCost.value.costType.name == 'Total')
-                      "
                       (ngModelChange)="
                         invoiceConvertUom('cost', additionalCost.key)
                       "
@@ -470,11 +457,6 @@
                       "
                       [compareWith]="compareUomObjects"
                       [disableOptionCentering]="true"
-                      [disabled]="
-                        additionalCost.value.locationAdditionalCostId &&
-                        (additionalCost.value.costType.name == 'Range' ||
-                          additionalCost.value.costType.name == 'Total')
-                      "
                       panelClass="general-information-select-container"
                     >
                       <mat-option
@@ -557,7 +539,6 @@
                       [(ngModel)]="additionalCost.value.invoiceExtras"
                       (keypress)="keyPressNumber($event)"
                       autocomplete="off"
-                      [disabled]="additionalCost.value.locationAdditionalCostId"
                       (ngModelChange)="
                         invoiceConvertUom('cost', additionalCost.key)
                       "
