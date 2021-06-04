@@ -15,17 +15,17 @@
 
 .general-information-select-container.mat-select-panel {
   min-width: calc(100% + 12px) !important;
-  transform: translateX(10px) !important
+  transform: translateX(10px) !important;
 }
 
-.general-information-select-container.mat-select-panel{
+.general-information-select-container.mat-select-panel {
   position: relative;
   top: 26px;
   background: #37414f !important;
 }
 
 .general-information-select-container .mat-option {
-  height: 20px  !important;
+  height: 20px !important;
   padding: 15px;
   color: white !important;
 }
@@ -297,12 +297,7 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-
-<<<<<<< HEAD
-  color: #FFFFFF;
-=======
   color: #ffffff;
->>>>>>> 71b62b0460f35d9e9886703ce60af0e98d4719fa
 }
 
 .header-allowed-locations {
