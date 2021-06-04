@@ -555,7 +555,7 @@ export class AdditionalCostModalComponent implements OnInit {
       invoiceQuantityUom: additionalCost.priceUom
         ? additionalCost.priceUom
         : this.generalTenantSettings.tenantFormats.uom,
-      invoiceRate: additionalCost.amount ? additionalCost.amount : null,
+      invoiceRate: null,
       invoiceRateUom: additionalCost.priceUom
         ? additionalCost.priceUom
         : this.generalTenantSettings.tenantFormats.uom,
