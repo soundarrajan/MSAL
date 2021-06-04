@@ -823,6 +823,9 @@
                         [required]="
                           getBankAccountNumberDateConfig().isMandatory
                         "
+                        [compareWith]="compareObjects"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container"
                         [ngModelOptions]="{ standalone: true }"
                         [(ngModel)]="
                           formValues.counterpartyDetails.counterpartyBankAccount
@@ -830,7 +833,7 @@
                       >
                         <mat-option
                           *ngFor="let bank of bankAccountNumbers"
-                          [value]="bank.id"
+                          [value]="bank"
                           >{{ bank.accountnumber }}
                         </mat-option>
                       </mat-select>

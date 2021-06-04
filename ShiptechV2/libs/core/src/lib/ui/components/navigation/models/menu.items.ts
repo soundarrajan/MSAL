@@ -749,6 +749,21 @@ export const BASE_MENU: KeyedMenuItems = {
             target: '_blank'
           }
         }
+      },
+      trade_book: {
+        label: 'Trade Book',
+        items: {
+          trade_book_list: {
+            label: 'Trade Book List',
+            url: '/#/admin/tradebook',
+            target: '_blank'
+          },
+          new_trade_book: {
+            label: 'New Trade Book',
+            url: '/#/admin/tradebook/edit/',
+            target: '_blank'
+          }
+        }
       }
     }
   },
