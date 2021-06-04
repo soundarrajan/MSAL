@@ -271,21 +271,25 @@ export class VesselPopupComponent implements OnInit {
   }
   private columnDefs = [
     {
-      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 60, 
+      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 80, 
       cellRendererFramework: AGGridCellDataComponent, 
       cellRendererParams: { type: 'request-link', redirectUrl: `${this.baseOrigin}/#/edit-request` },
       headerClass: ['aggrid-columgroup-dark-splitter'], 
       cellClass: ['aggrid-content-center aggrid-link fs-11'],
     },
     { 
-      // headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 70, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c fs-12'] 
-      headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 70,
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'popup-multiple-values', sourceField: 'locationName' }, cellClass: ['aggrid-content-center fs-10'],
-
+      headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 85,
+      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererParams: { type: 'info-with-popup-multiple-values', cellClass: 'aggrid-cell-color white', 
+         context: { componentParent: this } }, 
+         cellClass: ['aggrid-blue-editable-cell editable'],
+          headerClass: ['aggrid-colum-splitter-left']
     },
     {
-      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 65,
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'popup-multiple-values', sourceField: 'productName' }, cellClass: ['aggrid-content-center fs-10'],
+      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 80,
+      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererParams: { type: 'popup-multiple-values' }, 
+      cellClass: ['aggrid-content-center fs-10'],
       valueGetter: function (params) {
         if(params?.data?.productName) {
           return [params.data.productName];
@@ -294,11 +298,8 @@ export class VesselPopupComponent implements OnInit {
         }
       }
     },
-    { 
-      headerName: 'Created By', headerTooltip: 'Created By', field: 'createdByName', width: 70, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c fs-12'] 
-    },
     {
-      headerName: 'Status', field: 'requestStatus.displayName', headerTooltip: 'Status', width: 55,
+      headerName: 'Status', field: 'requestStatus.displayName', headerTooltip: 'Status', width: 65,
       cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center fs-8'],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
