@@ -18,24 +18,23 @@
 
 .split-delivery-modal-top {
   padding-bottom: 15px;
-  border-bottom: 1px solid  #E5E4E4;
+  border-bottom: 1px solid #e5e4e4;
 }
 
 .split-delivery-modal-top .mat-raised-button {
-    background: #00AAE2;
-    border-radius: 3px;
-    opacity: 1;
-    width: 80%;
-    .mat-button-wrapper {
-        color: white;
-    }
+  background: #00aae2;
+  border-radius: 3px;
+  opacity: 1;
+  width: 80%;
+  .mat-button-wrapper {
+    color: white;
+  }
 }
 
 .mat-dialog-container {
-    padding: 15px !important;
-    overflow: unset !important;
+  padding: 15px !important;
+  overflow: unset !important;
 }
-
 
 .custom-form-field-split-delivery {
   margin: 0px 20px 0px 0px;
@@ -162,7 +161,6 @@
   }
 }
 
-
 .product-header-name {
   margin-bottom: 10px;
   font-family: Roboto;
@@ -174,9 +172,9 @@
 }
 
 .invalid-input-split-delivery {
-  border-color: #e73d4a!important;
+  border-color: #e73d4a !important;
   .mat-form-field-label mat-label {
-    color: #e73d4a!important;
+    color: #e73d4a !important;
   }
 }
 
