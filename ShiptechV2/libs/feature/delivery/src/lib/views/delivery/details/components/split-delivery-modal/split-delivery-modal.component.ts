@@ -28,13 +28,22 @@ import { DocumentsGridViewModel } from '@shiptech/core/ui/components/documents/v
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
-import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
 import { DocumentViewEditNotesComponent } from '@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
@@ -46,10 +55,24 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
-import { DeliveryInfoForOrder, DeliveryProduct, DeliveryProductDto, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter, ThemePalette } from '@angular/material/core';
+import {
+  DeliveryInfoForOrder,
+  DeliveryProduct,
+  DeliveryProductDto,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  NativeDateAdapter,
+  ThemePalette
+} from '@angular/material/core';
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
@@ -59,7 +82,10 @@ import _ from 'lodash';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ColumnsToolPanelModule, Optional } from '@ag-grid-enterprise/all-modules';
+import {
+  ColumnsToolPanelModule,
+  Optional
+} from '@ag-grid-enterprise/all-modules';
 import { MatRadioChange } from '@angular/material/radio';
 import { Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
@@ -90,15 +116,19 @@ export class SplitDeliveryModalComponent implements OnInit {
     private router: Router,
     private tenantService: TenantFormattingService,
     @Inject(DecimalPipe) private _decimalPipe,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
-      this.formValues = data.formValues;
-      this.uoms = data.uoms;
-      this.initSplitModalContent();
-    }
-
-  ngOnInit() {
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
+    this.formValues = data.formValues;
+    this.uoms = data.uoms;
+    this.initSplitModalContent();
   }
+
+  ngOnInit() {}
 
   closeClick(): void {
     this.dialogRef.close();
@@ -112,63 +142,74 @@ export class SplitDeliveryModalComponent implements OnInit {
 
     this.formValues.deliveryProducts.forEach((value, _) => {
       delProd = {
-          name: value.orderedProduct.name,
-          deliveryProductId: value.id,
-          initialConfirmedAmount: this.quantityFormatValue(value.confirmedQuantityAmount),
-          initialConfirmedUom: value.confirmedQuantityUom,
-          remainingConfirmedAmount: null,
-          remainingConfirmedUom: value.confirmedQuantityUom,
-          updateAgreedQuantityAmount: false,
-          initialAgreedAmount: this.quantityFormatValue(value.agreedQuantityAmount),
-          remainingAgreedAmount: null,
-          updateVesselQuantityAmount: false,
-          initialVesselAmount: this.quantityFormatValue(value.vesselQuantityAmount),
-          remainingVesselAmount: null,
-          updateVesselFlowQuantityAmount: false,
-          initialVesselFlowAmount: this.quantityFormatValue(value.vesselFlowMeterQuantityAmount),
-          remainingVesselFlowAmount: null,
-          updateSurveyorQuantityAmount: false,
-          initialSurveyorAmount: this.quantityFormatValue(value.surveyorQuantityAmount),
-          remainingSurveyorAmount: null,
-          updateBDNQuantityAmount: false,
-          initialBDNAmount: this.quantityFormatValue(value.bdnQuantityAmount),
-          remainingBDNAmount: null,
-          productId: value.product.id,
-          orderProductId: value.orderProductId
+        name: value.orderedProduct.name,
+        deliveryProductId: value.id,
+        initialConfirmedAmount: this.quantityFormatValue(
+          value.confirmedQuantityAmount
+        ),
+        initialConfirmedUom: value.confirmedQuantityUom,
+        remainingConfirmedAmount: null,
+        remainingConfirmedUom: value.confirmedQuantityUom,
+        updateAgreedQuantityAmount: false,
+        initialAgreedAmount: this.quantityFormatValue(
+          value.agreedQuantityAmount
+        ),
+        remainingAgreedAmount: null,
+        updateVesselQuantityAmount: false,
+        initialVesselAmount: this.quantityFormatValue(
+          value.vesselQuantityAmount
+        ),
+        remainingVesselAmount: null,
+        updateVesselFlowQuantityAmount: false,
+        initialVesselFlowAmount: this.quantityFormatValue(
+          value.vesselFlowMeterQuantityAmount
+        ),
+        remainingVesselFlowAmount: null,
+        updateSurveyorQuantityAmount: false,
+        initialSurveyorAmount: this.quantityFormatValue(
+          value.surveyorQuantityAmount
+        ),
+        remainingSurveyorAmount: null,
+        updateBDNQuantityAmount: false,
+        initialBDNAmount: this.quantityFormatValue(value.bdnQuantityAmount),
+        remainingBDNAmount: null,
+        productId: value.product.id,
+        orderProductId: value.orderProductId
       };
       this.formValues.splitDelivery.items.push(delProd);
-  });
-  let splitLimits = [];
-  this.formValues.deliveryProducts.forEach((value, key) => {
+    });
+    let splitLimits = [];
+    this.formValues.deliveryProducts.forEach((value, key) => {
       let pair = {
-          OrderId: this.formValues.order.id,
-          OrderProductId: value.orderProductId, // sending orderProductId in field ProductId, returns in ProductId but its actually orderProductId
-          DeliveryId: this.formValues.id
+        OrderId: this.formValues.order.id,
+        OrderProductId: value.orderProductId, // sending orderProductId in field ProductId, returns in ProductId but its actually orderProductId
+        DeliveryId: this.formValues.id
       };
       splitLimits.push(pair);
-  });
-  this.splitDeliveryInLimit = [];
-  this.deliveryService
-    .getSplitDeliveryLimits(splitLimits)
-    .pipe()
-    .subscribe((response: any) => {
-      this.formValues.splitDelivery.items.forEach((splitProd, key) => {
-        response.forEach((respProd, _) => {
-            if(respProd.orderProductId == splitProd.orderProductId) {
-                splitProd.orderLimit = respProd.orderLimit;
-                splitProd.remainingConfirmedAmount = this.quantityFormatValue(respProd.remainingConfirmedAmount);
-                this.splitDeliveryInLimit[key] = true;
-            }
-        });
-      });
-      this.changeDetectorRef.detectChanges();
     });
-
+    this.splitDeliveryInLimit = [];
+    this.deliveryService
+      .getSplitDeliveryLimits(splitLimits)
+      .pipe()
+      .subscribe((response: any) => {
+        this.formValues.splitDelivery.items.forEach((splitProd, key) => {
+          response.forEach((respProd, _) => {
+            if (respProd.orderProductId == splitProd.orderProductId) {
+              splitProd.orderLimit = respProd.orderLimit;
+              splitProd.remainingConfirmedAmount = this.quantityFormatValue(
+                respProd.remainingConfirmedAmount
+              );
+              this.splitDeliveryInLimit[key] = true;
+            }
+          });
+        });
+        this.changeDetectorRef.detectChanges();
+      });
   }
 
   quantityFormatValue(value) {
     if (value == 0) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if (this.tenantService.quantityPrecision == 0) {
         return 0;
       } else {
         return this._decimalPipe.transform(0, this.quantityFormat);
@@ -183,7 +224,7 @@ export class SplitDeliveryModalComponent implements OnInit {
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if (this.tenantService.quantityPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
@@ -191,48 +232,46 @@ export class SplitDeliveryModalComponent implements OnInit {
     }
   }
 
-
   disabledSplitDelivery(splitDeliveryInLimit) {
-    if(splitDeliveryInLimit.indexOf(false) < 0) {
-        return false;
+    if (splitDeliveryInLimit.indexOf(false) < 0) {
+      return false;
     }
     return true;
-};
-
+  }
 
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
   }
 
-
-  changeGender(e) {
-  }
+  changeGender(e) {}
 
   splitDelivery() {
     let newProductsList = [];
     this.formValues.splitDelivery.items.forEach((split_val, _) => {
       this.formValues.deliveryProducts.forEach((prod_val, key) => {
-            if(split_val.deliveryProductId == prod_val.id) {
-                if(split_val.remainingConfirmedAmount != 0) {
-                  newProductsList.push(prod_val);
-                }
-            }
+        if (split_val.deliveryProductId == prod_val.id) {
+          if (split_val.remainingConfirmedAmount != 0) {
+            newProductsList.push(prod_val);
+          }
+        }
       });
     });
     this.formValues.deliveryProducts = [...newProductsList];
     this.formValues.splitDelivery.splittedDeliveryId = this.formValues.id;
 
-    localStorage.setItem('parentSplitDelivery',  JSON.stringify(this.formValues));
+    localStorage.setItem(
+      'parentSplitDelivery',
+      JSON.stringify(this.formValues)
+    );
     this.dialogRef.close();
     this.router
-    .navigate([
-      KnownPrimaryRoutes.Delivery,
-      `${KnownDeliverylRoutes.Delivery}`,
-      0,
-      KnownDeliverylRoutes.DeliveryDetails
-    ])
-    .then(() => {
-    });
+      .navigate([
+        KnownPrimaryRoutes.Delivery,
+        `${KnownDeliverylRoutes.Delivery}`,
+        0,
+        KnownDeliverylRoutes.DeliveryDetails
+      ])
+      .then(() => {});
   }
 
   // Only Number
@@ -248,5 +287,4 @@ export class SplitDeliveryModalComponent implements OnInit {
       return false;
     }
   }
-  
 }
