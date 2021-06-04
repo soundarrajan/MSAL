@@ -627,6 +627,30 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
   }
 
+
+  priceFormatValue(value, pricePrecision) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    var productPricePrecision = this.tenantService.pricePrecision;
+    if(pricePrecision !== null) {
+        productPricePrecision = pricePrecision;
+    }
+    this.priceFormat = '1.' + productPricePrecision + '-' + productPricePrecision;    
+    if (plainNumber) {
+      if (productPricePrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+      }
+    }
+  }  
+
   amountFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;

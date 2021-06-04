@@ -7,6 +7,8 @@
     padding-top: 15px;
     padding-bottom: 15px;
     color: #252A32;
+    display: flex;
+    justify-content: space-between;
 }
 
 .product-quality-header-container {
@@ -97,7 +99,35 @@ td .custom-form-field{
 }
 
 .email-to-labs {
-    border: 1px solid lightgray;
+    border: none;
+    box-shadow: none !important;
+    color: gray;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+
+    .mat-icon {
+        margin-right: 8px;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    &:hover {
+        text-decoration: none;
+        cursor: not-allowed;
+    }
+
+    &.active {
+        color:#00AAE2;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
+
 }
 
 .custom-form-field-comments {
@@ -105,7 +135,7 @@ td .custom-form-field{
 }
 
 textarea.mat-input-element {
-    height: 80px; 
+    height: 80px;
     overflow-y: scroll  !important;
 }
 

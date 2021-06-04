@@ -42,7 +42,8 @@ export class StaticListsRouteResolver implements Resolve<any> {
       'Supplier',
       'CostType',
       'Customer',
-      'InvoiceCustomStatus'
+      'InvoiceCustomStatus',
+      'PaymentStatus'
     ]);
   }
 }
