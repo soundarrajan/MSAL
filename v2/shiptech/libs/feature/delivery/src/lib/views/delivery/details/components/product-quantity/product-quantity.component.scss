@@ -1,100 +1,98 @@
 .product-quantity-header {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    color: #252A32;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #252a32;
 }
 
 .product-quantity-header-container {
-    display: inline-flex;
+  display: inline-flex;
 }
 
 .product-quantity-table {
-    display: table !important;
-    border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
-    min-width: 900px;
-    border: 1px solid #E0E1E4;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin-top: 15px;
+  display: table !important;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  min-width: 900px;
+  border: 1px solid #e0e1e4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-top: 15px;
 }
 
 .product-quantity-table thead tr {
-    height: 40px;
-    background: #F1F1F2;
-    border: 1px solid #E0E1E4;
-    box-sizing: border-box;
-    border-radius: 4px 4px 0px 0px;
+  height: 40px;
+  background: #f1f1f2;
+  border: 1px solid #e0e1e4;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0px 0px;
 }
 
 .product-quantity-table thead tr td {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
-    color: #252A32;
-    padding: 10px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252a32;
+  padding: 10px;
 }
 
 .product-quantity-table tbody tr td {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    color: #252A32;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252a32;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-
 .product-quantity-field-container {
-    width: 13%;
-    margin-right: 20px !important;
+  width: 13%;
+  margin-right: 20px !important;
 }
 
 .quantity-table-data-true {
-    background-color: #99cb82;
-    color: #fff;
-    width: 60%;
-    text-align: center;
-    padding: 10px 5px;
-    display: inline-block;
+  background-color: #99cb82;
+  color: #fff;
+  width: 60%;
+  text-align: center;
+  padding: 10px 5px;
+  display: inline-block;
 }
 
 .quantity-table-data-false {
-    background-color: #c33939;
-    color: #fff;
-    width: 60%;
-    text-align: center;
-    padding: 10px 5px;
-    display: inline-block;
+  background-color: #c33939;
+  color: #fff;
+  width: 60%;
+  text-align: center;
+  padding: 10px 5px;
+  display: inline-block;
 }
 
-td .custom-form-field{
-    width: 100% !important;
+td .custom-form-field {
+  width: 100% !important;
 }
-
 
 .product-quantity-comments {
-    padding: 15px;
-    width: 100%;
+  padding: 15px;
+  width: 100%;
 }
 
-
-.custom-form-field.product-quantity-comments.lightTheme .mat-form-field.without-search {
-    height: 50px  !important;
+.custom-form-field.product-quantity-comments.lightTheme
+  .mat-form-field.without-search {
+  height: 50px !important;
 }
 
 .quantity-comments-container {
-    margin-top: 10px;
+  margin-top: 10px;
 }

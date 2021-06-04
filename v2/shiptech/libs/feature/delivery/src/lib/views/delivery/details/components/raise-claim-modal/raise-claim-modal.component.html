@@ -1,7 +1,10 @@
-
 <div class="row raise-claim-modal-top">
   <div class="col-md-12">
-    <a (click)="closeClick()" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button raise-claim-close-button" role="button">
+    <a
+      (click)="closeClick()"
+      class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button raise-claim-close-button"
+      role="button"
+    >
       <span class="pi pi-times cl-content"></span>
     </a>
   </div>
@@ -9,61 +12,91 @@
     Claim Details
   </div>
   <div class="col-md-3">
-    <button  type="button" mat-raised-button 
-      (click)="raiseClaim()">
+    <button type="button" mat-raised-button (click)="raiseClaim()">
       Raise Claim
-    </button>    
+    </button>
   </div>
 </div>
 <div mat-dialog-content class="raise-claim-modal">
-  <div class="custom-form-field-modal" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+  <div
+    class="custom-form-field-modal"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  >
     <mat-form-field class="without-search" appearance="legacy">
-        <mat-label>Product</mat-label>
-        <mat-select disableOptionCentering 
-                    [panelClass]="'darkPanel select-product-raise-modal'"
-                    [compareWith]="compareUomObjects"
-                    [(ngModel)]="selectedProduct"
-                    (selectionChange)="changeProduct($event.value)">
-            <mat-option *ngFor="let deliveryProduct of deliveryProducts"
-                      [value]="deliveryProduct">
-                    {{deliveryProduct.product.name}}
-            </mat-option>
-        </mat-select>
+      <mat-label>Product</mat-label>
+      <mat-select
+        disableOptionCentering
+        [panelClass]="'darkPanel select-product-raise-modal'"
+        [compareWith]="compareUomObjects"
+        [(ngModel)]="selectedProduct"
+        (selectionChange)="changeProduct($event.value)"
+      >
+        <mat-option
+          *ngFor="let deliveryProduct of deliveryProducts"
+          [value]="deliveryProduct"
+        >
+          {{ deliveryProduct.product.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <div class="claimRadioBtn" *ngFor="let claimType of CM.availableClaimTypes | keyvalue">
+      <div
+        class="claimRadioBtn"
+        *ngFor="let claimType of CM.availableClaimTypes | keyvalue"
+      >
         <section class="example-section">
           <span class="example-list-section">
-            <mat-radio-group  [disabled]="claimType.value.disabled"
-                            (click)="!claimType.value.disabled ? claimType.value.isTypeSelected = !claimType.value.isTypeSelected : ''">
-              <mat-radio-button class="collectionRadioButton" 
-                              [value]="claimType.value"  
-                              [checked]="claimType.value.isTypeSelected"
-                              (click)="!claimType.value.disabled ? selectAllParamsToRaiseClaim(claimType.key, !claimType.value.isTypeSelected) : ''">
-                {{claimType.value.displayName}}
+            <mat-radio-group
+              [disabled]="claimType.value.disabled"
+              (click)="
+                !claimType.value.disabled
+                  ? (claimType.value.isTypeSelected = !claimType.value
+                      .isTypeSelected)
+                  : ''
+              "
+            >
+              <mat-radio-button
+                class="collectionRadioButton"
+                [value]="claimType.value"
+                [checked]="claimType.value.isTypeSelected"
+                (click)="
+                  !claimType.value.disabled
+                    ? selectAllParamsToRaiseClaim(
+                        claimType.key,
+                        !claimType.value.isTypeSelected
+                      )
+                    : ''
+                "
+              >
+                {{ claimType.value.displayName }}
               </mat-radio-button>
             </mat-radio-group>
           </span>
           <span class="example-list-section">
             <ul class="row">
-              <li class="col-md-6 spec-parameter-container" *ngFor="let val2 of claimType.value.specParams | keyvalue">
-                <mat-checkbox [(ngModel)]="val2.value.isSelected" 
-                            (change)="selectParamToRaiseClaim(claimType.key, val2.key)"
-                            [disabled]="val2.value.isDisabled">
-                  {{val2.value.specParameter.name}}
+              <li
+                class="col-md-6 spec-parameter-container"
+                *ngFor="let val2 of claimType.value.specParams | keyvalue"
+              >
+                <mat-checkbox
+                  [(ngModel)]="val2.value.isSelected"
+                  (change)="selectParamToRaiseClaim(claimType.key, val2.key)"
+                  [disabled]="val2.value.isDisabled"
+                >
+                  {{ val2.value.specParameter.name }}
                 </mat-checkbox>
               </li>
             </ul>
           </span>
         </section>
+      </div>
     </div>
-</div>
-</div>
+  </div>
 
-
-<div mat-dialog-actions style="display: none;">
-  <button mat-button (click)="onNoClick()">No</button>
-  <button mat-button  cdkFocusInitial>Yes</button>
+  <div mat-dialog-actions style="display: none;">
+    <button mat-button (click)="onNoClick()">No</button>
+    <button mat-button cdkFocusInitial>Yes</button>
+  </div>
 </div>

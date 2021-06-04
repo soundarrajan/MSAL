@@ -1,11 +1,9 @@
-﻿commit 41f5130c6c315a299ff329cb3aa57b5dfd0b6bc1
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jun 3 19:46:27 2021 +0000
+﻿commit 0061c785c419e2f5ea3a18bba437070e41c54a84
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Jun 4 07:19:59 2021 +0000
 
-    Merged PR 11227: fix build error
+    Merged PR 11237: Fixed Highlight functionality for the spec parameter while saving the delivery
     
-    fix build error
-    
-    Related work items: #32840
+    Fixed Highlight functionality for the spec parameter while saving the delivery
 
 branch: master
