@@ -1,56 +1,90 @@
-
 <shiptech-contract-details-toolbar
-[navBar]="navBar"
-[contractConfiguration]="contractConfiguration">
-<div style="width: 220px;">
-  <div style="float:right;">
-    <button  class="cust-btn small"
-      *ngIf="!formValues.status || (formValues.status && formValues.status.name != 'Confirmed' && formValues.status.name != 'Delivered')"
-      type="button"
-      (click)="saveContract()"
-        ><span class="btn-text">Save</span></button>
-    <button  class="ui-button-info mr-1 btn-i-blue-color" label="Confirm"
-      *ngIf="formValues.status &&  formValues.status.name != 'Cancelled' && formValues.status.name != 'Confirmed' && formValues.status.name != 'Delivered' "
-      pButton
-      type="button"
-      (click)="confirmContract()"></button>
-    <button mat-icon-button [matMenuTriggerFor]="menu" >
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu" class="delivery-mat-menu-panel">
-      <button mat-menu-item 
-        *ngIf="formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')"
-        (click)="undoContract()">
-        <img id="undo-contract" alt="Shiptech" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiPg0KPHBhdGggZD0iTTYuNjM3NCA2LjYzNjA0QzMuMTIyNjggMTAuMTUwOCAzLjEyMjY4IDE1Ljg0OTIgNi42Mzc0IDE5LjM2NEMxMC4xNTIxIDIyLjg3ODcgMTUuODUwNiAyMi44Nzg3IDE5LjM2NTMgMTkuMzY0QzIyLjg4IDE1Ljg0OTIgMjIuODggMTAuMTUwOCAxOS4zNjUzIDYuNjM2MDRDMTUuODQ4MiAzLjEyNzExIDEwLjE1NDUgMy4xMjcxMSA2LjYzNzQgNi42MzYwNFpNMTguODM1IDE4LjgzMzZDMTUuNjEzMiAyMi4wNTU1IDEwLjM4OTYgMjIuMDU1NSA3LjE2NzcyIDE4LjgzMzZDMy45NDU4OSAxNS42MTE4IDMuOTQ1ODkgMTAuMzg4MiA3LjE2NzcyIDcuMTY2MzZDMTAuMzg5NiAzLjk0NDUzIDE1LjYxMzIgMy45NDQ1MyAxOC44MzUgNy4xNjYzNkMyMi4wNTE3IDEwLjM5MDMgMjIuMDUxNyAxNS42MDk3IDE4LjgzNSAxOC44MzM2WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTguOTMxMTQgMTcuNDU2N0M4LjEwNjk1IDE2LjcyNTggNy41MTU1MiAxNS43NjkgNy4yMzAyOSAxNC43MDVMNy45NTU3OCAxNC41MTE3QzguNjQ4NjEgMTcuMTE0OCAxMS4zMjA1IDE4LjY2MzQgMTMuOTIzNiAxNy45NzA2QzE2LjUyNjggMTcuMjc3OCAxOC4wNzUzIDE0LjYwNiAxNy4zODI1IDEyLjAwMjhDMTYuNjg5NyA5LjM5OTczIDE0LjAxNzggNy44NTExIDExLjQxNDcgOC41NDM5QzEwLjQwMDggOC44MTM3NCA5LjUwMDkxIDkuNDAzMzYgOC44NDg2OCAxMC4yMjUyTDEwLjM1NDEgMTAuMTc0OEwxMC4zNzg2IDEwLjkyNDlMOC4xMzAyOCAxMS4wMDAxQzcuOTIzNDMgMTEuMDA2OSA3Ljc1MDE3IDEwLjg0NDkgNy43NDMxNSAxMC42MzhMNy42Njc3NiA4LjM5MDA0TDguNDE4MDcgOC4zNjUyTDguNDU0NjEgOS41MTc1NEMxMC41MTUzIDcuMTkzNjUgMTQuMDY5OCA2Ljk4MDMxIDE2LjM5MzggOS4wNDEwN0MxOC43MTc3IDExLjEwMTggMTguOTMxMSAxNC42NTYzIDE2Ljg3MDMgMTYuOTgwMkMxNC44MDk1IDE5LjMwNDEgMTEuMjU1MSAxOS41MTc0IDguOTMxMTQgMTcuNDU2N1oiIGZpbGw9IiMwMEFBRTIiLz4NCjwvZz4NCjxkZWZzPg0KPGNsaXBQYXRoIGlkPSJjbGlwMCI+DQo8cmVjdCB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIGZpbGw9IndoaXRlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjI3MzQzOCAxMykgcm90YXRlKC00NSkiLz4NCjwvY2xpcFBhdGg+DQo8L2RlZnM+DQo8L3N2Zz4NCg==">
-        <span class="label-for-contract-menu-undo">Undo Confirm</span>
+  [navBar]="navBar"
+  [contractConfiguration]="contractConfiguration"
+>
+  <div style="width: 250px;">
+    <div style="float:right;">
+      <button
+        class="cust-btn small"
+        *ngIf="
+          !formValues.status ||
+          (formValues.status &&
+            formValues.status.name != 'Confirmed' &&
+            formValues.status.name != 'Delivered')
+        "
+        type="button"
+        (click)="saveContract()"
+      >
+        <span class="btn-text">Save</span>
       </button>
-      <button mat-menu-item
-        *ngIf="entityId"
-        (click)="copyContract()">
-        <img id="copy-contract" alt="Shiptech" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0zLjc1IDE5LjM3NUgxMy43NUMxNC4xNjQzIDE5LjM3NDUgMTQuNTYxNCAxOS4yMDk4IDE0Ljg1NDMgMTguOTE2OEMxNS4xNDczIDE4LjYyMzkgMTUuMzEyIDE4LjIyNjggMTUuMzEyNSAxNy44MTI1VjE2LjU2MjVIMTYuMjVDMTYuNjY0MyAxNi41NjIgMTcuMDYxNCAxNi4zOTczIDE3LjM1NDMgMTYuMTA0M0MxNy42NDczIDE1LjgxMTQgMTcuODEyIDE1LjQxNDMgMTcuODEyNSAxNVY1LjIzNDc5QzE3LjgxMjIgNS4wMTkxMiAxNy43Njc1IDQuODA1ODMgMTcuNjgxIDQuNjA4MjdDMTcuNTk0NSA0LjQxMDcxIDE3LjQ2ODEgNC4yMzMxMyAxNy4zMDk4IDQuMDg2NjZMMTQuMDA4NiAxLjAzOTM2QzEzLjcyMDIgMC43NzI1NyAxMy4zNDE2IDAuNjI0NTY3IDEyLjk0ODggMC42MjQ5OTNINy44MTI1QzcuMzk4MjQgMC42MjU0NjEgNy4wMDEwOSAwLjc5MDIzMSA2LjcwODE2IDEuMDgzMTZDNi40MTUyNCAxLjM3NjA4IDYuMjUwNDcgMS43NzMyNCA2LjI1IDIuMTg3NDlWMy40Mzc0OUgzLjc1QzMuMzM1NzQgMy40Mzc5NiAyLjkzODU5IDMuNjAyNzMgMi42NDU2NiAzLjg5NTY2QzIuMzUyNzQgNC4xODg1OCAyLjE4Nzk3IDQuNTg1NzQgMi4xODc1IDQuOTk5OTlWMTcuODEyNUMyLjE4Nzk3IDE4LjIyNjggMi4zNTI3NCAxOC42MjM5IDIuNjQ1NjYgMTguOTE2OEMyLjkzODU5IDE5LjIwOTggMy4zMzU3NCAxOS4zNzQ1IDMuNzUgMTkuMzc1Wk02Ljg3NSAyLjE4NzQ5QzYuODc1MjggMS45Mzg5NCA2Ljk3NDE0IDEuNzAwNjQgNy4xNDk4OSAxLjUyNDg5QzcuMzI1NjUgMS4zNDkxMyA3LjU2Mzk0IDEuMjUwMjcgNy44MTI1IDEuMjQ5OTlIMTIuOTQ4OEMxMy4wMDc5IDEuMjUgMTMuMDY2OSAxLjI1NTU5IDEzLjEyNSAxLjI2NjY3VjMuNDM3NDlDMTMuMTI1NSAzLjg1MTc1IDEzLjI5MDIgNC4yNDg5MSAxMy41ODMyIDQuNTQxODNDMTMuODc2MSA0LjgzNDc2IDE0LjI3MzIgNC45OTk1MyAxNC42ODc1IDQuOTk5OTlIMTUuNjI1VjQuMzc0OTlIMTQuNjg3NUMxNC40Mzg5IDQuMzc0NzIgMTQuMjAwNiA0LjI3NTg1IDE0LjAyNDkgNC4xMDAxQzEzLjg0OTEgMy45MjQzNCAxMy43NTAzIDMuNjg2MDUgMTMuNzUgMy40Mzc0OVYxLjY1MTI0TDE2Ljg4NTkgNC41NDU5MUMxNi45ODA5IDQuNjMzOCAxNy4wNTY3IDQuNzQwMzQgMTcuMTA4NiA0Ljg1ODg4QzE3LjE2MDUgNC45Nzc0MSAxNy4xODczIDUuMTA1MzkgMTcuMTg3NSA1LjIzNDc5VjE1QzE3LjE4NzIgMTUuMjQ4NSAxNy4wODg0IDE1LjQ4NjggMTYuOTEyNiAxNS42NjI2QzE2LjczNjkgMTUuODM4NCAxNi40OTg2IDE1LjkzNzIgMTYuMjUgMTUuOTM3NUgxNS4zMTI1VjguMDQ3MjlDMTUuMzEyMiA3LjgzMTYyIDE1LjI2NzUgNy42MTgzMyAxNS4xODEgNy40MjA3N0MxNS4wOTQ1IDcuMjIzMjEgMTQuOTY4MSA3LjA0NTY0IDE0LjgwOTggNi44OTkxNkwxMS41MDg2IDMuODUxODZDMTEuMjIwMiAzLjU4NTA3IDEwLjg0MTYgMy40MzcwNyAxMC40NDg4IDMuNDM3NDlINi44NzVWMi4xODc0OVpNMi44MTI1IDQuOTk5OTlDMi44MTI3OCA0Ljc1MTQ0IDIuOTExNjQgNC41MTMxNCAzLjA4NzM5IDQuMzM3MzlDMy4yNjMxNSA0LjE2MTYzIDMuNTAxNDQgNC4wNjI3NyAzLjc1IDQuMDYyNDlIMTAuNDQ4OEMxMC41MDc5IDQuMDYyNSAxMC41NjY5IDQuMDY4MDkgMTAuNjI1IDQuMDc5MTdWNi4yNDk5OUMxMC42MjU1IDYuNjY0MjUgMTAuNzkwMiA3LjA2MTQxIDExLjA4MzIgNy4zNTQzM0MxMS4zNzYxIDcuNjQ3MjYgMTEuNzczMiA3LjgxMjAzIDEyLjE4NzUgNy44MTI0OUgxMy4xMjVWNy4xODc0OUgxMi4xODc1QzExLjkzODkgNy4xODcyMiAxMS43MDA2IDcuMDg4MzUgMTEuNTI0OSA2LjkxMjZDMTEuMzQ5MSA2LjczNjg0IDExLjI1MDMgNi40OTg1NSAxMS4yNSA2LjI0OTk5VjQuNDYzNzRMMTQuMzg1OSA3LjM1ODQxQzE0LjQ4MDkgNy40NDYzIDE0LjU1NjcgNy41NTI4NCAxNC42MDg2IDcuNjcxMzhDMTQuNjYwNSA3Ljc4OTkxIDE0LjY4NzMgNy45MTc4OSAxNC42ODc1IDguMDQ3MjlWMTcuODEyNUMxNC42ODcyIDE4LjA2MSAxNC41ODg0IDE4LjI5OTMgMTQuNDEyNiAxOC40NzUxQzE0LjIzNjkgMTguNjUwOSAxMy45OTg2IDE4Ljc0OTcgMTMuNzUgMTguNzVIMy43NUMzLjUwMTQ0IDE4Ljc0OTcgMy4yNjMxNSAxOC42NTA5IDMuMDg3MzkgMTguNDc1MUMyLjkxMTY0IDE4LjI5OTMgMi44MTI3OCAxOC4wNjEgMi44MTI1IDE3LjgxMjVWNC45OTk5OVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik02LjI1IDYuMjVIOC43NVY2Ljg3NUg2LjI1VjYuMjVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNC4zNzUgNi4yNUg1LjMxMjVWNi44NzVINC4zNzVWNi4yNVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik03LjUgOC4xMjVIOC43NVY4Ljc1SDcuNVY4LjEyNVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik05LjY4NzUgMTBIMTMuMTI1VjEwLjYyNUg5LjY4NzVWMTBaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNi41NjI1IDEwSDguNzVWMTAuNjI1SDYuNTYyNVYxMFoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik00LjM3NSAxMEg1LjYyNVYxMC42MjVINC4zNzVWMTBaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNOC43NSAxMS44NzVIMTMuMTI1VjEyLjVIOC43NVYxMS44NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNC4zNzUgMTEuODc1SDcuODEyNVYxMi41SDQuMzc1VjExLjg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xMS4yNSAxMy43NUgxMy4xMjVWMTQuMzc1SDExLjI1VjEzLjc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTYuNTYyNSAxMy43NUgxMC4zMTI1VjE0LjM3NUg2LjU2MjVWMTMuNzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNC4zNzUgMTMuNzVINS42MjVWMTQuMzc1SDQuMzc1VjEzLjc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTguMTI1IDE1LjYyNUgxMy4xMjVWMTYuMjVIOC4xMjVWMTUuNjI1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTQuMzc1IDE1LjYyNUg3LjE4NzVWMTYuMjVINC4zNzVWMTUuNjI1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTQuMzc1IDguMTI1SDYuNTYyNVY4Ljc1SDQuMzc1VjguMTI1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPC9zdmc+DQo=">
-        <span class="label-for-contract-menu">Copy Contract</span>
+      <button
+        class="ui-button-info mr-1 btn-i-blue-color"
+        label="Confirm"
+        *ngIf="
+          formValues.status &&
+          formValues.status.name != 'Cancelled' &&
+          formValues.status.name != 'Confirmed' &&
+          formValues.status.name != 'Delivered'
+        "
+        pButton
+        type="button"
+        (click)="confirmContract()"
+      ></button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-menu-item
-        (click)="extendContract()"
-        *ngIf="entityId">
-        <img id="extend-contract" alt="Shiptech" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik03Ljg3NSAxLjY4NzVIMFYxNi4zMTI1SDcuODc1VjE4SDlWMEg3Ljg3NVYxLjY4NzVaTTcuODc1IDE1LjE4NzVIMS4xMjVWMi44MTI1SDcuODc1VjE1LjE4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTMuNSAxLjY4NzVIMTIuMzc1VjIuODEyNUgxMy41VjEuNjg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xMS4yNSAxLjY4NzVIMTAuMTI1VjIuODEyNUgxMS4yNVYxLjY4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTUuNzUgMS42ODc1SDE0LjYyNVYyLjgxMjVIMTUuNzVWMS42ODc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTE4IDEuNjg3NUgxNi44NzVWMi44MTI1SDE4VjEuNjg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xMy41IDE1LjE4NzVIMTIuMzc1VjE2LjMxMjVIMTMuNVYxNS4xODc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTExLjI1IDE1LjE4NzVIMTAuMTI1VjE2LjMxMjVIMTEuMjVWMTUuMTg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xNS43NSAxNS4xODc1SDE0LjYyNVYxNi4zMTI1SDE1Ljc1VjE1LjE4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTggMTUuMTg3NUgxNi44NzVWMTYuMzEyNUgxOFYxNS4xODc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTE4IDEyLjkzNzVIMTYuODc1VjE0LjA2MjVIMThWMTIuOTM3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xOCAxMC42ODc1SDE2Ljg3NVYxMS44MTI1SDE4VjEwLjY4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTggOC40Mzc1SDE2Ljg3NVY5LjU2MjVIMThWOC40Mzc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTE4IDYuMTg3NUgxNi44NzVWNy4zMTI1SDE4VjYuMTg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xOCAzLjkzNzVIMTYuODc1VjUuMDYyNUgxOFYzLjkzNzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8L3N2Zz4NCg==">
-        <span class="label-for-contract-menu">Extend Expiry</span>
-      </button>
-      <button mat-menu-item
-        *ngIf="entityId"
-        (click)="cancelContract()">
-        <img id="cancel-contract" alt="Shiptech" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik03LjA5OTQgNi4wMTA3TDExLjc3MiAxLjMzOEMxMi4wNzYgMS4wMzQwNiAxMi4wNzYgMC41NDI2MzYgMTEuNzcyIDAuMjM4Njk3QzExLjQ2OCAtMC4wNjUyNDI3IDEwLjk3NjYgLTAuMDY1MjQyNyAxMC42NzI3IDAuMjM4Njk3TDUuOTk5OTQgNC45MTEzOUwxLjMyNzM3IDAuMjM4Njk3QzEuMDIzMjkgLTAuMDY1MjQyNyAwLjUzMjAwMyAtMC4wNjUyNDI3IDAuMjI4MDYyIDAuMjM4Njk3Qy0wLjA3NjAyMDcgMC41NDI2MzYgLTAuMDc2MDIwNyAxLjAzNDA2IDAuMjI4MDYyIDEuMzM4TDQuOTAwNjMgNi4wMTA3TDAuMjI4MDYyIDEwLjY4MzRDLTAuMDc2MDIwNyAxMC45ODczIC0wLjA3NjAyMDcgMTEuNDc4OCAwLjIyODA2MiAxMS43ODI3QzAuMzc5NTM0IDExLjkzNDMgMC41Nzg2OTcgMTIuMDEwNSAwLjc3NzcxOCAxMi4wMTA1QzAuOTc2NzM4IDEyLjAxMDUgMS4xNzU3NiAxMS45MzQzIDEuMzI3MzcgMTEuNzgyN0w1Ljk5OTk0IDcuMTEwMDFMMTAuNjcyNyAxMS43ODI3QzEwLjgyNDMgMTEuOTM0MyAxMS4wMjMzIDEyLjAxMDUgMTEuMjIyMyAxMi4wMTA1QzExLjQyMTMgMTIuMDEwNSAxMS42MjA0IDExLjkzNDMgMTEuNzcyIDExLjc4MjdDMTIuMDc2IDExLjQ3ODggMTIuMDc2IDEwLjk4NzMgMTEuNzcyIDEwLjY4MzRMNy4wOTk0IDYuMDEwN1oiIGZpbGw9IiNFRDYxNjEiLz4NCjwvc3ZnPg0K">
-        <span class="label-for-contract-menu">Cancel Contract</span>
-      </button>
-      <button mat-menu-item
-        *ngIf="entityId"
-        (click)="deleteContract()">
-        <img id="delete-contract" alt="Shiptech" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTciIHZpZXdCb3g9IjAgMCAxNCAxNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik04Ljk2NTc5IDUuOTY3MTZDOC43NTI3NSA1Ljk2NzE2IDguNTgwMDggNi4xMzk4MyA4LjU4MDA4IDYuMzUyODhWMTMuNjQyOUM4LjU4MDA4IDEzLjg1NTggOC43NTI3NSAxNC4wMjg2IDguOTY1NzkgMTQuMDI4NkM5LjE3ODg0IDE0LjAyODYgOS4zNTE1MSAxMy44NTU4IDkuMzUxNTEgMTMuNjQyOVY2LjM1Mjg4QzkuMzUxNTEgNi4xMzk4MyA5LjE3ODg0IDUuOTY3MTYgOC45NjU3OSA1Ljk2NzE2WiIgZmlsbD0iI0VCNTc1NyIvPg0KPHBhdGggZD0iTTQuNDExMSA1Ljk2NzE2QzQuMTk4MDYgNS45NjcxNiA0LjAyNTM5IDYuMTM5ODMgNC4wMjUzOSA2LjM1Mjg4VjEzLjY0MjlDNC4wMjUzOSAxMy44NTU4IDQuMTk4MDYgMTQuMDI4NiA0LjQxMTEgMTQuMDI4NkM0LjYyNDE1IDE0LjAyODYgNC43OTY4MiAxMy44NTU4IDQuNzk2ODIgMTMuNjQyOVY2LjM1Mjg4QzQuNzk2ODIgNi4xMzk4MyA0LjYyNDE1IDUuOTY3MTYgNC40MTExIDUuOTY3MTZaIiBmaWxsPSIjRUI1NzU3Ii8+DQo8cGF0aCBkPSJNMS4wOTU0OSA0LjkwMzI4VjE0LjQwNjRDMS4wOTU0OSAxNC45NjgxIDEuMzAxNDUgMTUuNDk1NiAxLjY2MTI1IDE1Ljg3NDFDMi4wMTkzOSAxNi4yNTM2IDIuNTE3ODEgMTYuNDY5MSAzLjAzOTQyIDE2LjQ3SDEwLjMzNzJDMTAuODU5IDE2LjQ2OTEgMTEuMzU3NCAxNi4yNTM2IDExLjcxNTQgMTUuODc0MUMxMi4wNzUyIDE1LjQ5NTYgMTIuMjgxMiAxNC45NjgxIDEyLjI4MTIgMTQuNDA2NFY0LjkwMzI4QzEyLjk5NjQgNC43MTM0MyAxMy40NTk5IDQuMDIyNDcgMTMuMzY0MiAzLjI4ODU2QzEzLjI2ODQgMi41NTQ4IDEyLjY0MzIgMi4wMDU5MSAxMS45MDMxIDIuMDA1NzZIOS45MjgzMlYxLjUyMzYyQzkuOTMwNTggMS4xMTgxNyA5Ljc3MDI3IDAuNzI4ODM3IDkuNDgzMjQgMC40NDI0MTVDOS4xOTYyMiAwLjE1NjE0NCA4LjgwNjI5IC0wLjAwMzI2NDA0IDguNDAwODQgNS4wNjc5NWUtMDVINC45NzU4MkM0LjU3MDM3IC0wLjAwMzI2NDA0IDQuMTgwNDQgMC4xNTYxNDQgMy44OTM0MiAwLjQ0MjQxNUMzLjYwNjM5IDAuNzI4ODM3IDMuNDQ2MDggMS4xMTgxNyAzLjQ0ODM0IDEuNTIzNjJWMi4wMDU3NkgxLjQ3MzUyQzAuNzMzNDMgMi4wMDU5MSAwLjEwODMwNCAyLjU1NDggMC4wMTI0NzggMy4yODg1NkMtMC4wODMxOTY5IDQuMDIyNDcgMC4zODAyNjIgNC43MTM0MyAxLjA5NTQ5IDQuOTAzMjhaTTEwLjMzNzIgMTUuNjk4NkgzLjAzOTQyQzIuMzc5OTQgMTUuNjk4NiAxLjg2NjkxIDE1LjEzMjEgMS44NjY5MSAxNC40MDY0VjQuOTM3MThIMTEuNTA5N1YxNC40MDY0QzExLjUwOTcgMTUuMTMyMSAxMC45OTY3IDE1LjY5ODYgMTAuMzM3MiAxNS42OTg2Wk00LjIxOTc3IDEuNTIzNjJDNC4yMTcyIDEuMzIyNzggNC4yOTYxNSAxLjEyOTQ3IDQuNDM4NjkgMC45ODc2ODdDNC41ODEwNyAwLjg0NTkwNyA0Ljc3NDgzIDAuNzY4MDExIDQuOTc1ODIgMC43NzE0NzdIOC40MDA4NEM4LjYwMTgzIDAuNzY4MDExIDguNzk1NTkgMC44NDU5MDcgOC45Mzc5NyAwLjk4NzY4N0M5LjA4MDUgMS4xMjkzMiA5LjE1OTQ1IDEuMzIyNzggOS4xNTY4OSAxLjUyMzYyVjIuMDA1NzZINC4yMTk3N1YxLjUyMzYyWk0xLjQ3MzUyIDIuNzc3MThIMTEuOTAzMUMxMi4yODY2IDIuNzc3MTggMTIuNTk3NCAzLjA4ODAyIDEyLjU5NzQgMy40NzE0N0MxMi41OTc0IDMuODU0OTIgMTIuMjg2NiA0LjE2NTc1IDExLjkwMzEgNC4xNjU3NUgxLjQ3MzUyQzEuMDkwMDYgNC4xNjU3NSAwLjc3OTIzNCAzLjg1NDkyIDAuNzc5MjM0IDMuNDcxNDdDMC43NzkyMzQgMy4wODgwMiAxLjA5MDA2IDIuNzc3MTggMS40NzM1MiAyLjc3NzE4WiIgZmlsbD0iI0VCNTc1NyIvPg0KPHBhdGggZD0iTTYuNjg2NSA1Ljk2NzE2QzYuNDczNDUgNS45NjcxNiA2LjMwMDc4IDYuMTM5ODMgNi4zMDA3OCA2LjM1Mjg4VjEzLjY0MjlDNi4zMDA3OCAxMy44NTU4IDYuNDczNDUgMTQuMDI4NiA2LjY4NjUgMTQuMDI4NkM2Ljg5OTU0IDE0LjAyODYgNy4wNzIyMSAxMy44NTU4IDcuMDcyMjEgMTMuNjQyOVY2LjM1Mjg4QzcuMDcyMjEgNi4xMzk4MyA2Ljg5OTU0IDUuOTY3MTYgNi42ODY1IDUuOTY3MTZaIiBmaWxsPSIjRUI1NzU3Ii8+DQo8L3N2Zz4NCg==">
-        <span class="label-for-contract-menu">Delete Contract</span>
-      </button>
-    </mat-menu>    
+      <mat-menu #menu="matMenu" class="delivery-mat-menu-panel">
+        <button
+          mat-menu-item
+          *ngIf="
+            formValues.status &&
+            (formValues.status.name == 'Confirmed' ||
+              formValues.status.name == 'Delivered')
+          "
+          (click)="undoContract()"
+        >
+          <img
+            id="undo-contract"
+            alt="Shiptech"
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiPg0KPHBhdGggZD0iTTYuNjM3NCA2LjYzNjA0QzMuMTIyNjggMTAuMTUwOCAzLjEyMjY4IDE1Ljg0OTIgNi42Mzc0IDE5LjM2NEMxMC4xNTIxIDIyLjg3ODcgMTUuODUwNiAyMi44Nzg3IDE5LjM2NTMgMTkuMzY0QzIyLjg4IDE1Ljg0OTIgMjIuODggMTAuMTUwOCAxOS4zNjUzIDYuNjM2MDRDMTUuODQ4MiAzLjEyNzExIDEwLjE1NDUgMy4xMjcxMSA2LjYzNzQgNi42MzYwNFpNMTguODM1IDE4LjgzMzZDMTUuNjEzMiAyMi4wNTU1IDEwLjM4OTYgMjIuMDU1NSA3LjE2NzcyIDE4LjgzMzZDMy45NDU4OSAxNS42MTE4IDMuOTQ1ODkgMTAuMzg4MiA3LjE2NzcyIDcuMTY2MzZDMTAuMzg5NiAzLjk0NDUzIDE1LjYxMzIgMy45NDQ1MyAxOC44MzUgNy4xNjYzNkMyMi4wNTE3IDEwLjM5MDMgMjIuMDUxNyAxNS42MDk3IDE4LjgzNSAxOC44MzM2WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTguOTMxMTQgMTcuNDU2N0M4LjEwNjk1IDE2LjcyNTggNy41MTU1MiAxNS43NjkgNy4yMzAyOSAxNC43MDVMNy45NTU3OCAxNC41MTE3QzguNjQ4NjEgMTcuMTE0OCAxMS4zMjA1IDE4LjY2MzQgMTMuOTIzNiAxNy45NzA2QzE2LjUyNjggMTcuMjc3OCAxOC4wNzUzIDE0LjYwNiAxNy4zODI1IDEyLjAwMjhDMTYuNjg5NyA5LjM5OTczIDE0LjAxNzggNy44NTExIDExLjQxNDcgOC41NDM5QzEwLjQwMDggOC44MTM3NCA5LjUwMDkxIDkuNDAzMzYgOC44NDg2OCAxMC4yMjUyTDEwLjM1NDEgMTAuMTc0OEwxMC4zNzg2IDEwLjkyNDlMOC4xMzAyOCAxMS4wMDAxQzcuOTIzNDMgMTEuMDA2OSA3Ljc1MDE3IDEwLjg0NDkgNy43NDMxNSAxMC42MzhMNy42Njc3NiA4LjM5MDA0TDguNDE4MDcgOC4zNjUyTDguNDU0NjEgOS41MTc1NEMxMC41MTUzIDcuMTkzNjUgMTQuMDY5OCA2Ljk4MDMxIDE2LjM5MzggOS4wNDEwN0MxOC43MTc3IDExLjEwMTggMTguOTMxMSAxNC42NTYzIDE2Ljg3MDMgMTYuOTgwMkMxNC44MDk1IDE5LjMwNDEgMTEuMjU1MSAxOS41MTc0IDguOTMxMTQgMTcuNDU2N1oiIGZpbGw9IiMwMEFBRTIiLz4NCjwvZz4NCjxkZWZzPg0KPGNsaXBQYXRoIGlkPSJjbGlwMCI+DQo8cmVjdCB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIGZpbGw9IndoaXRlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjI3MzQzOCAxMykgcm90YXRlKC00NSkiLz4NCjwvY2xpcFBhdGg+DQo8L2RlZnM+DQo8L3N2Zz4NCg=="
+          />
+          <span class="label-for-contract-menu-undo">Undo Confirm</span>
+        </button>
+        <button mat-menu-item *ngIf="entityId" (click)="copyContract()">
+          <img
+            id="copy-contract"
+            alt="Shiptech"
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0zLjc1IDE5LjM3NUgxMy43NUMxNC4xNjQzIDE5LjM3NDUgMTQuNTYxNCAxOS4yMDk4IDE0Ljg1NDMgMTguOTE2OEMxNS4xNDczIDE4LjYyMzkgMTUuMzEyIDE4LjIyNjggMTUuMzEyNSAxNy44MTI1VjE2LjU2MjVIMTYuMjVDMTYuNjY0MyAxNi41NjIgMTcuMDYxNCAxNi4zOTczIDE3LjM1NDMgMTYuMTA0M0MxNy42NDczIDE1LjgxMTQgMTcuODEyIDE1LjQxNDMgMTcuODEyNSAxNVY1LjIzNDc5QzE3LjgxMjIgNS4wMTkxMiAxNy43Njc1IDQuODA1ODMgMTcuNjgxIDQuNjA4MjdDMTcuNTk0NSA0LjQxMDcxIDE3LjQ2ODEgNC4yMzMxMyAxNy4zMDk4IDQuMDg2NjZMMTQuMDA4NiAxLjAzOTM2QzEzLjcyMDIgMC43NzI1NyAxMy4zNDE2IDAuNjI0NTY3IDEyLjk0ODggMC42MjQ5OTNINy44MTI1QzcuMzk4MjQgMC42MjU0NjEgNy4wMDEwOSAwLjc5MDIzMSA2LjcwODE2IDEuMDgzMTZDNi40MTUyNCAxLjM3NjA4IDYuMjUwNDcgMS43NzMyNCA2LjI1IDIuMTg3NDlWMy40Mzc0OUgzLjc1QzMuMzM1NzQgMy40Mzc5NiAyLjkzODU5IDMuNjAyNzMgMi42NDU2NiAzLjg5NTY2QzIuMzUyNzQgNC4xODg1OCAyLjE4Nzk3IDQuNTg1NzQgMi4xODc1IDQuOTk5OTlWMTcuODEyNUMyLjE4Nzk3IDE4LjIyNjggMi4zNTI3NCAxOC42MjM5IDIuNjQ1NjYgMTguOTE2OEMyLjkzODU5IDE5LjIwOTggMy4zMzU3NCAxOS4zNzQ1IDMuNzUgMTkuMzc1Wk02Ljg3NSAyLjE4NzQ5QzYuODc1MjggMS45Mzg5NCA2Ljk3NDE0IDEuNzAwNjQgNy4xNDk4OSAxLjUyNDg5QzcuMzI1NjUgMS4zNDkxMyA3LjU2Mzk0IDEuMjUwMjcgNy44MTI1IDEuMjQ5OTlIMTIuOTQ4OEMxMy4wMDc5IDEuMjUgMTMuMDY2OSAxLjI1NTU5IDEzLjEyNSAxLjI2NjY3VjMuNDM3NDlDMTMuMTI1NSAzLjg1MTc1IDEzLjI5MDIgNC4yNDg5MSAxMy41ODMyIDQuNTQxODNDMTMuODc2MSA0LjgzNDc2IDE0LjI3MzIgNC45OTk1MyAxNC42ODc1IDQuOTk5OTlIMTUuNjI1VjQuMzc0OTlIMTQuNjg3NUMxNC40Mzg5IDQuMzc0NzIgMTQuMjAwNiA0LjI3NTg1IDE0LjAyNDkgNC4xMDAxQzEzLjg0OTEgMy45MjQzNCAxMy43NTAzIDMuNjg2MDUgMTMuNzUgMy40Mzc0OVYxLjY1MTI0TDE2Ljg4NTkgNC41NDU5MUMxNi45ODA5IDQuNjMzOCAxNy4wNTY3IDQuNzQwMzQgMTcuMTA4NiA0Ljg1ODg4QzE3LjE2MDUgNC45Nzc0MSAxNy4xODczIDUuMTA1MzkgMTcuMTg3NSA1LjIzNDc5VjE1QzE3LjE4NzIgMTUuMjQ4NSAxNy4wODg0IDE1LjQ4NjggMTYuOTEyNiAxNS42NjI2QzE2LjczNjkgMTUuODM4NCAxNi40OTg2IDE1LjkzNzIgMTYuMjUgMTUuOTM3NUgxNS4zMTI1VjguMDQ3MjlDMTUuMzEyMiA3LjgzMTYyIDE1LjI2NzUgNy42MTgzMyAxNS4xODEgNy40MjA3N0MxNS4wOTQ1IDcuMjIzMjEgMTQuOTY4MSA3LjA0NTY0IDE0LjgwOTggNi44OTkxNkwxMS41MDg2IDMuODUxODZDMTEuMjIwMiAzLjU4NTA3IDEwLjg0MTYgMy40MzcwNyAxMC40NDg4IDMuNDM3NDlINi44NzVWMi4xODc0OVpNMi44MTI1IDQuOTk5OTlDMi44MTI3OCA0Ljc1MTQ0IDIuOTExNjQgNC41MTMxNCAzLjA4NzM5IDQuMzM3MzlDMy4yNjMxNSA0LjE2MTYzIDMuNTAxNDQgNC4wNjI3NyAzLjc1IDQuMDYyNDlIMTAuNDQ4OEMxMC41MDc5IDQuMDYyNSAxMC41NjY5IDQuMDY4MDkgMTAuNjI1IDQuMDc5MTdWNi4yNDk5OUMxMC42MjU1IDYuNjY0MjUgMTAuNzkwMiA3LjA2MTQxIDExLjA4MzIgNy4zNTQzM0MxMS4zNzYxIDcuNjQ3MjYgMTEuNzczMiA3LjgxMjAzIDEyLjE4NzUgNy44MTI0OUgxMy4xMjVWNy4xODc0OUgxMi4xODc1QzExLjkzODkgNy4xODcyMiAxMS43MDA2IDcuMDg4MzUgMTEuNTI0OSA2LjkxMjZDMTEuMzQ5MSA2LjczNjg0IDExLjI1MDMgNi40OTg1NSAxMS4yNSA2LjI0OTk5VjQuNDYzNzRMMTQuMzg1OSA3LjM1ODQxQzE0LjQ4MDkgNy40NDYzIDE0LjU1NjcgNy41NTI4NCAxNC42MDg2IDcuNjcxMzhDMTQuNjYwNSA3Ljc4OTkxIDE0LjY4NzMgNy45MTc4OSAxNC42ODc1IDguMDQ3MjlWMTcuODEyNUMxNC42ODcyIDE4LjA2MSAxNC41ODg0IDE4LjI5OTMgMTQuNDEyNiAxOC40NzUxQzE0LjIzNjkgMTguNjUwOSAxMy45OTg2IDE4Ljc0OTcgMTMuNzUgMTguNzVIMy43NUMzLjUwMTQ0IDE4Ljc0OTcgMy4yNjMxNSAxOC42NTA5IDMuMDg3MzkgMTguNDc1MUMyLjkxMTY0IDE4LjI5OTMgMi44MTI3OCAxOC4wNjEgMi44MTI1IDE3LjgxMjVWNC45OTk5OVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik02LjI1IDYuMjVIOC43NVY2Ljg3NUg2LjI1VjYuMjVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNC4zNzUgNi4yNUg1LjMxMjVWNi44NzVINC4zNzVWNi4yNVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik03LjUgOC4xMjVIOC43NVY4Ljc1SDcuNVY4LjEyNVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik05LjY4NzUgMTBIMTMuMTI1VjEwLjYyNUg5LjY4NzVWMTBaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNi41NjI1IDEwSDguNzVWMTAuNjI1SDYuNTYyNVYxMFoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik00LjM3NSAxMEg1LjYyNVYxMC42MjVINC4zNzVWMTBaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNOC43NSAxMS44NzVIMTMuMTI1VjEyLjVIOC43NVYxMS44NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNC4zNzUgMTEuODc1SDcuODEyNVYxMi41SDQuMzc1VjExLjg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xMS4yNSAxMy43NUgxMy4xMjVWMTQuMzc1SDExLjI1VjEzLjc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTYuNTYyNSAxMy43NUgxMC4zMTI1VjE0LjM3NUg2LjU2MjVWMTMuNzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNNC4zNzUgMTMuNzVINS42MjVWMTQuMzc1SDQuMzc1VjEzLjc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTguMTI1IDE1LjYyNUgxMy4xMjVWMTYuMjVIOC4xMjVWMTUuNjI1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTQuMzc1IDE1LjYyNUg3LjE4NzVWMTYuMjVINC4zNzVWMTUuNjI1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTQuMzc1IDguMTI1SDYuNTYyNVY4Ljc1SDQuMzc1VjguMTI1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPC9zdmc+DQo="
+          />
+          <span class="label-for-contract-menu">Copy Contract</span>
+        </button>
+        <button mat-menu-item (click)="extendContract()" *ngIf="entityId">
+          <img
+            id="extend-contract"
+            alt="Shiptech"
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik03Ljg3NSAxLjY4NzVIMFYxNi4zMTI1SDcuODc1VjE4SDlWMEg3Ljg3NVYxLjY4NzVaTTcuODc1IDE1LjE4NzVIMS4xMjVWMi44MTI1SDcuODc1VjE1LjE4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTMuNSAxLjY4NzVIMTIuMzc1VjIuODEyNUgxMy41VjEuNjg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xMS4yNSAxLjY4NzVIMTAuMTI1VjIuODEyNUgxMS4yNVYxLjY4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTUuNzUgMS42ODc1SDE0LjYyNVYyLjgxMjVIMTUuNzVWMS42ODc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTE4IDEuNjg3NUgxNi44NzVWMi44MTI1SDE4VjEuNjg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xMy41IDE1LjE4NzVIMTIuMzc1VjE2LjMxMjVIMTMuNVYxNS4xODc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTExLjI1IDE1LjE4NzVIMTAuMTI1VjE2LjMxMjVIMTEuMjVWMTUuMTg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xNS43NSAxNS4xODc1SDE0LjYyNVYxNi4zMTI1SDE1Ljc1VjE1LjE4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTggMTUuMTg3NUgxNi44NzVWMTYuMzEyNUgxOFYxNS4xODc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTE4IDEyLjkzNzVIMTYuODc1VjE0LjA2MjVIMThWMTIuOTM3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xOCAxMC42ODc1SDE2Ljg3NVYxMS44MTI1SDE4VjEwLjY4NzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8cGF0aCBkPSJNMTggOC40Mzc1SDE2Ljg3NVY5LjU2MjVIMThWOC40Mzc1WiIgZmlsbD0iIzAwQUFFMiIvPg0KPHBhdGggZD0iTTE4IDYuMTg3NUgxNi44NzVWNy4zMTI1SDE4VjYuMTg3NVoiIGZpbGw9IiMwMEFBRTIiLz4NCjxwYXRoIGQ9Ik0xOCAzLjkzNzVIMTYuODc1VjUuMDYyNUgxOFYzLjkzNzVaIiBmaWxsPSIjMDBBQUUyIi8+DQo8L3N2Zz4NCg=="
+          />
+          <span class="label-for-contract-menu">Extend Expiry</span>
+        </button>
+        <button mat-menu-item *ngIf="entityId" (click)="cancelContract()">
+          <img
+            id="cancel-contract"
+            alt="Shiptech"
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik03LjA5OTQgNi4wMTA3TDExLjc3MiAxLjMzOEMxMi4wNzYgMS4wMzQwNiAxMi4wNzYgMC41NDI2MzYgMTEuNzcyIDAuMjM4Njk3QzExLjQ2OCAtMC4wNjUyNDI3IDEwLjk3NjYgLTAuMDY1MjQyNyAxMC42NzI3IDAuMjM4Njk3TDUuOTk5OTQgNC45MTEzOUwxLjMyNzM3IDAuMjM4Njk3QzEuMDIzMjkgLTAuMDY1MjQyNyAwLjUzMjAwMyAtMC4wNjUyNDI3IDAuMjI4MDYyIDAuMjM4Njk3Qy0wLjA3NjAyMDcgMC41NDI2MzYgLTAuMDc2MDIwNyAxLjAzNDA2IDAuMjI4MDYyIDEuMzM4TDQuOTAwNjMgNi4wMTA3TDAuMjI4MDYyIDEwLjY4MzRDLTAuMDc2MDIwNyAxMC45ODczIC0wLjA3NjAyMDcgMTEuNDc4OCAwLjIyODA2MiAxMS43ODI3QzAuMzc5NTM0IDExLjkzNDMgMC41Nzg2OTcgMTIuMDEwNSAwLjc3NzcxOCAxMi4wMTA1QzAuOTc2NzM4IDEyLjAxMDUgMS4xNzU3NiAxMS45MzQzIDEuMzI3MzcgMTEuNzgyN0w1Ljk5OTk0IDcuMTEwMDFMMTAuNjcyNyAxMS43ODI3QzEwLjgyNDMgMTEuOTM0MyAxMS4wMjMzIDEyLjAxMDUgMTEuMjIyMyAxMi4wMTA1QzExLjQyMTMgMTIuMDEwNSAxMS42MjA0IDExLjkzNDMgMTEuNzcyIDExLjc4MjdDMTIuMDc2IDExLjQ3ODggMTIuMDc2IDEwLjk4NzMgMTEuNzcyIDEwLjY4MzRMNy4wOTk0IDYuMDEwN1oiIGZpbGw9IiNFRDYxNjEiLz4NCjwvc3ZnPg0K"
+          />
+          <span class="label-for-contract-menu">Cancel Contract</span>
+        </button>
+        <button mat-menu-item *ngIf="entityId" (click)="deleteContract()">
+          <img
+            id="delete-contract"
+            alt="Shiptech"
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTciIHZpZXdCb3g9IjAgMCAxNCAxNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik04Ljk2NTc5IDUuOTY3MTZDOC43NTI3NSA1Ljk2NzE2IDguNTgwMDggNi4xMzk4MyA4LjU4MDA4IDYuMzUyODhWMTMuNjQyOUM4LjU4MDA4IDEzLjg1NTggOC43NTI3NSAxNC4wMjg2IDguOTY1NzkgMTQuMDI4NkM5LjE3ODg0IDE0LjAyODYgOS4zNTE1MSAxMy44NTU4IDkuMzUxNTEgMTMuNjQyOVY2LjM1Mjg4QzkuMzUxNTEgNi4xMzk4MyA5LjE3ODg0IDUuOTY3MTYgOC45NjU3OSA1Ljk2NzE2WiIgZmlsbD0iI0VCNTc1NyIvPg0KPHBhdGggZD0iTTQuNDExMSA1Ljk2NzE2QzQuMTk4MDYgNS45NjcxNiA0LjAyNTM5IDYuMTM5ODMgNC4wMjUzOSA2LjM1Mjg4VjEzLjY0MjlDNC4wMjUzOSAxMy44NTU4IDQuMTk4MDYgMTQuMDI4NiA0LjQxMTEgMTQuMDI4NkM0LjYyNDE1IDE0LjAyODYgNC43OTY4MiAxMy44NTU4IDQuNzk2ODIgMTMuNjQyOVY2LjM1Mjg4QzQuNzk2ODIgNi4xMzk4MyA0LjYyNDE1IDUuOTY3MTYgNC40MTExIDUuOTY3MTZaIiBmaWxsPSIjRUI1NzU3Ii8+DQo8cGF0aCBkPSJNMS4wOTU0OSA0LjkwMzI4VjE0LjQwNjRDMS4wOTU0OSAxNC45NjgxIDEuMzAxNDUgMTUuNDk1NiAxLjY2MTI1IDE1Ljg3NDFDMi4wMTkzOSAxNi4yNTM2IDIuNTE3ODEgMTYuNDY5MSAzLjAzOTQyIDE2LjQ3SDEwLjMzNzJDMTAuODU5IDE2LjQ2OTEgMTEuMzU3NCAxNi4yNTM2IDExLjcxNTQgMTUuODc0MUMxMi4wNzUyIDE1LjQ5NTYgMTIuMjgxMiAxNC45NjgxIDEyLjI4MTIgMTQuNDA2NFY0LjkwMzI4QzEyLjk5NjQgNC43MTM0MyAxMy40NTk5IDQuMDIyNDcgMTMuMzY0MiAzLjI4ODU2QzEzLjI2ODQgMi41NTQ4IDEyLjY0MzIgMi4wMDU5MSAxMS45MDMxIDIuMDA1NzZIOS45MjgzMlYxLjUyMzYyQzkuOTMwNTggMS4xMTgxNyA5Ljc3MDI3IDAuNzI4ODM3IDkuNDgzMjQgMC40NDI0MTVDOS4xOTYyMiAwLjE1NjE0NCA4LjgwNjI5IC0wLjAwMzI2NDA0IDguNDAwODQgNS4wNjc5NWUtMDVINC45NzU4MkM0LjU3MDM3IC0wLjAwMzI2NDA0IDQuMTgwNDQgMC4xNTYxNDQgMy44OTM0MiAwLjQ0MjQxNUMzLjYwNjM5IDAuNzI4ODM3IDMuNDQ2MDggMS4xMTgxNyAzLjQ0ODM0IDEuNTIzNjJWMi4wMDU3NkgxLjQ3MzUyQzAuNzMzNDMgMi4wMDU5MSAwLjEwODMwNCAyLjU1NDggMC4wMTI0NzggMy4yODg1NkMtMC4wODMxOTY5IDQuMDIyNDcgMC4zODAyNjIgNC43MTM0MyAxLjA5NTQ5IDQuOTAzMjhaTTEwLjMzNzIgMTUuNjk4NkgzLjAzOTQyQzIuMzc5OTQgMTUuNjk4NiAxLjg2NjkxIDE1LjEzMjEgMS44NjY5MSAxNC40MDY0VjQuOTM3MThIMTEuNTA5N1YxNC40MDY0QzExLjUwOTcgMTUuMTMyMSAxMC45OTY3IDE1LjY5ODYgMTAuMzM3MiAxNS42OTg2Wk00LjIxOTc3IDEuNTIzNjJDNC4yMTcyIDEuMzIyNzggNC4yOTYxNSAxLjEyOTQ3IDQuNDM4NjkgMC45ODc2ODdDNC41ODEwNyAwLjg0NTkwNyA0Ljc3NDgzIDAuNzY4MDExIDQuOTc1ODIgMC43NzE0NzdIOC40MDA4NEM4LjYwMTgzIDAuNzY4MDExIDguNzk1NTkgMC44NDU5MDcgOC45Mzc5NyAwLjk4NzY4N0M5LjA4MDUgMS4xMjkzMiA5LjE1OTQ1IDEuMzIyNzggOS4xNTY4OSAxLjUyMzYyVjIuMDA1NzZINC4yMTk3N1YxLjUyMzYyWk0xLjQ3MzUyIDIuNzc3MThIMTEuOTAzMUMxMi4yODY2IDIuNzc3MTggMTIuNTk3NCAzLjA4ODAyIDEyLjU5NzQgMy40NzE0N0MxMi41OTc0IDMuODU0OTIgMTIuMjg2NiA0LjE2NTc1IDExLjkwMzEgNC4xNjU3NUgxLjQ3MzUyQzEuMDkwMDYgNC4xNjU3NSAwLjc3OTIzNCAzLjg1NDkyIDAuNzc5MjM0IDMuNDcxNDdDMC43NzkyMzQgMy4wODgwMiAxLjA5MDA2IDIuNzc3MTggMS40NzM1MiAyLjc3NzE4WiIgZmlsbD0iI0VCNTc1NyIvPg0KPHBhdGggZD0iTTYuNjg2NSA1Ljk2NzE2QzYuNDczNDUgNS45NjcxNiA2LjMwMDc4IDYuMTM5ODMgNi4zMDA3OCA2LjM1Mjg4VjEzLjY0MjlDNi4zMDA3OCAxMy44NTU4IDYuNDczNDUgMTQuMDI4NiA2LjY4NjUgMTQuMDI4NkM2Ljg5OTU0IDE0LjAyODYgNy4wNzIyMSAxMy44NTU4IDcuMDcyMjEgMTMuNjQyOVY2LjM1Mjg4QzcuMDcyMjEgNi4xMzk4MyA2Ljg5OTU0IDUuOTY3MTYgNi42ODY1IDUuOTY3MTZaIiBmaWxsPSIjRUI1NzU3Ii8+DQo8L3N2Zz4NCg=="
+          />
+          <span class="label-for-contract-menu">Delete Contract</span>
+        </button>
+      </mat-menu>
+    </div>
   </div>
-</div>
 </shiptech-contract-details-toolbar>
 <div class="container-fluid-contract contract-container">
   <div class="row m-b-4">
@@ -58,105 +92,107 @@
       <p-panel [showHeader]="false">
         <div fxLayout="row">
           <shiptech-general-information-contract
-                [model]="formValues"
-                [generalConfiguration]="generalConfiguration"
-                [contractConfiguration]="contractConfiguration"
-                [sellerList]="sellerList"
-                [companyList]="companyList"
-                [agreementTypeList]="agreementTypeList"
-                [paymentTermList]="paymentTermList"
-                [incotermList]="incotermList"
-                [applyToList]="applyToList"
-                [entityId]="entityId"
-                [statusColorCode]="statusColorCode"
-                [customerList]="customerList"
-                [eventsSaveButton]="eventsSubject2.asObservable()"
-                class="col-12"
-                style="padding-left: 0px; padding-right: 0px;">
-          </shiptech-general-information-contract>  
+            [model]="formValues"
+            [generalConfiguration]="generalConfiguration"
+            [contractConfiguration]="contractConfiguration"
+            [sellerList]="sellerList"
+            [companyList]="companyList"
+            [agreementTypeList]="agreementTypeList"
+            [paymentTermList]="paymentTermList"
+            [incotermList]="incotermList"
+            [applyToList]="applyToList"
+            [entityId]="entityId"
+            [statusColorCode]="statusColorCode"
+            [customerList]="customerList"
+            [eventsSaveButton]="eventsSubject2.asObservable()"
+            class="col-12"
+            style="padding-left: 0px; padding-right: 0px;"
+          >
+          </shiptech-general-information-contract>
         </div>
       </p-panel>
     </div>
   </div>
-  </div>
+</div>
 
-  <div class="container-fluid-contract">
-    <div class="row m-b-4">
-      <div class="col-12">
-        <p-panel [showHeader]="false">
-          <div fxLayout="row">
-            <shiptech-contract-quantity
-                  [model]="formValues"
-                  [entityId]="entityId"
-                  [contractualQuantityOptionList]="contractualQuantityOptionList"
-                  [uomList]="uomList"
-                  class="col-12"
-                  style="padding-left: 0px; padding-right: 0px;">
-            </shiptech-contract-quantity>  
-          </div>
-        </p-panel>
-      </div>
+<div class="container-fluid-contract">
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-panel [showHeader]="false">
+        <div fxLayout="row">
+          <shiptech-contract-quantity
+            [model]="formValues"
+            [entityId]="entityId"
+            [contractualQuantityOptionList]="contractualQuantityOptionList"
+            [uomList]="uomList"
+            class="col-12"
+            style="padding-left: 0px; padding-right: 0px;"
+          >
+          </shiptech-contract-quantity>
+        </div>
+      </p-panel>
     </div>
   </div>
+</div>
 
-
-
-  <div class="container-fluid-contract">
+<div class="container-fluid-contract">
   <div class="row m-b-4">
     <div class="col-12">
       <p-panel [showHeader]="false">
         <div fxLayout="row">
           <shiptech-contract-product
-                [generalTenantSettings]="generalTenantSettings"
-                [model]="formValues"
-                [contractConfiguration]="contractConfiguration"
-                [locationMasterList]="locationMasterList"
-                [productMasterList]="productMasterList"
-                [uomMassList]="uomMassList"
-                [uomVolumeList]="uomVolumeList"
-                [contractConversionFactorOptions]="contractConversionFactorOptions"
-                [specParameterList]="specParameterList"
-                [entityId]="entityId"
-                [uomList]="uomList"
-                [formulaTypeList]="formulaTypeList"
-                [systemInstumentList]="systemInstumentList"
-                [marketPriceList]="marketPriceList"
-                [formulaPlusMinusList]="formulaPlusMinusList"
-                [formulaFlatPercentageList]="formulaFlatPercentageList"
-                [currencyList]="currencyList"
-                [formulaOperationList]="formulaOperationList"
-                [formulaFunctionList]="formulaFunctionList"
-                [marketPriceTypeList]="marketPriceTypeList"
-                [pricingScheduleList]="pricingScheduleList"
-                [holidayRuleList]="holidayRuleList"
-                [pricingSchedulePeriodList]="pricingSchedulePeriodList"
-                [eventList]="eventList"
-                [dayOfWeekList]="dayOfWeekList"
-                [businessCalendarList]="businessCalendarList"
-                [formulaEventIncludeList]="formulaEventIncludeList"
-                [quantityTypeList]="quantityTypeList"
-                [productList]="productList"
-                [locationList]="locationList"
-                [additionalCostList]="additionalCostList"
-                [costTypeList]="costTypeList"
-                [buttonClicked1]="buttonClicked"
-                [eventsSaveButton]="eventsSubject2.asObservable()"  
-                [eventsSelectedTabIndex]="eventsSubject3.asObservable()"
-                [eventsEntityCopied]="eventsSubject5.asObservable()"
-                class="col-12"
-                style="padding-left: 0px; padding-right: 0px;">
-          </shiptech-contract-product>  
+            [generalTenantSettings]="generalTenantSettings"
+            [model]="formValues"
+            [contractConfiguration]="contractConfiguration"
+            [locationMasterList]="locationMasterList"
+            [productMasterList]="productMasterList"
+            [uomMassList]="uomMassList"
+            [uomVolumeList]="uomVolumeList"
+            [contractConversionFactorOptions]="contractConversionFactorOptions"
+            [specParameterList]="specParameterList"
+            [entityId]="entityId"
+            [uomList]="uomList"
+            [formulaTypeList]="formulaTypeList"
+            [systemInstumentList]="systemInstumentList"
+            [marketPriceList]="marketPriceList"
+            [formulaPlusMinusList]="formulaPlusMinusList"
+            [formulaFlatPercentageList]="formulaFlatPercentageList"
+            [currencyList]="currencyList"
+            [formulaOperationList]="formulaOperationList"
+            [formulaFunctionList]="formulaFunctionList"
+            [marketPriceTypeList]="marketPriceTypeList"
+            [pricingScheduleList]="pricingScheduleList"
+            [holidayRuleList]="holidayRuleList"
+            [pricingSchedulePeriodList]="pricingSchedulePeriodList"
+            [eventList]="eventList"
+            [dayOfWeekList]="dayOfWeekList"
+            [businessCalendarList]="businessCalendarList"
+            [formulaEventIncludeList]="formulaEventIncludeList"
+            [quantityTypeList]="quantityTypeList"
+            [productList]="productList"
+            [locationList]="locationList"
+            [additionalCostList]="additionalCostList"
+            [costTypeList]="costTypeList"
+            [buttonClicked1]="buttonClicked"
+            [eventsSaveButton]="eventsSubject2.asObservable()"
+            [eventsSelectedTabIndex]="eventsSubject3.asObservable()"
+            [eventsEntityCopied]="eventsSubject5.asObservable()"
+            class="col-12"
+            style="padding-left: 0px; padding-right: 0px;"
+          >
+          </shiptech-contract-product>
         </div>
       </p-panel>
     </div>
   </div>
-
 </div>
 
-
-
-<div class="bootstrap-loading" *ngIf="isLoading" style="top: 0px !important; background-color: #DCE3EB; z-index: 100000;"> 
-<div class="bounce1" style="position: relative; top: 40% !important"></div>
-<div class="bounce2" style="position: relative; top: 40% !important"></div>
-<div class="bounce3" style="position: relative; top: 40% !important"></div>
+<div
+  class="bootstrap-loading"
+  *ngIf="isLoading"
+  style="top: 0px !important; background-color: #DCE3EB; z-index: 100000;"
+>
+  <div class="bounce1" style="position: relative; top: 40% !important"></div>
+  <div class="bounce2" style="position: relative; top: 40% !important"></div>
+  <div class="bounce3" style="position: relative; top: 40% !important"></div>
 </div>
