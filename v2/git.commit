@@ -1,9 +1,7 @@
-﻿commit 0061c785c419e2f5ea3a18bba437070e41c54a84
+﻿commit 71b62b0460f35d9e9886703ce60af0e98d4719fa
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Jun 4 07:19:59 2021 +0000
+Date:   Fri Jun 4 11:01:23 2021 +0000
 
-    Merged PR 11237: Fixed Highlight functionality for the spec parameter while saving the delivery
-    
-    Fixed Highlight functionality for the spec parameter while saving the delivery
+    Merged PR 11245: Fixed 32874(more option menu)
 
 branch: master
