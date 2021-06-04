@@ -654,7 +654,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   @Input('detailFormvalues') set _detailFormvalues(val) {
     if (val) {
       this.formValues = val;
-
       // Set trader and buyer name;
       this.orderDetails2.contents[0].value =
         this.formValues.orderDetails.buyerName || this.emptyStringVal;

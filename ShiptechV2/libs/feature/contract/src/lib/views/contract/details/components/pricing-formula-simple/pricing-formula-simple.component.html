@@ -6,26 +6,26 @@
     <div class="d-flex">
       <mat-form-field class="with-search" appearance="legacy">
         <mat-label>System instument</mat-label>
-        <input class="free-text-field" 
+        <input class="free-text-field"
                 type="text"
-                matInput 
+                matInput
                 [(ngModel)]="formValues.simpleFormula.systemInstrument"
                 [matAutocomplete]="auto"
                 required
                 placeholder="System instument"
                 [disabled]="!formValues.isEditable">
-        <mat-autocomplete #auto="matAutocomplete" 
+        <mat-autocomplete #auto="matAutocomplete"
                           class="darkPanelAuto"
                           [displayWith]="displayFn"
                           (optionSelected)="selectSystemInstrument($event)">
-            <mat-option *ngFor="let option of filterSystemInstrumenttList()" 
+            <mat-option *ngFor="let option of filterSystemInstrumenttList()"
                   [value]="option">
                 {{option.name}}
             </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <button 
-        [disabled]="!formValues.isEditable" 
+      <button
+        [disabled]="!formValues.isEditable"
         [ngClass]="{'search-icon-disabled': !formValues.isEditable}"
         class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
         <div class="img">
@@ -35,7 +35,7 @@
                                           [entityName]="entityName"
                                           [headerName]="getHeaderNameSelector()"
             ></shiptech-shared-master-selector>
-          </ng-template> 
+          </ng-template>
         </div>
       </button>
     </div>
@@ -43,7 +43,7 @@
   <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Price Type</mat-label>
-      <mat-select 
+      <mat-select
                 [(ngModel)]="formValues.simpleFormula.priceType"
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
@@ -60,7 +60,7 @@
   <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Premium/Discount</mat-label>
-      <mat-select 
+      <mat-select
                 [(ngModel)]="formValues.simpleFormula.plusMinus"
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
@@ -89,7 +89,7 @@
   <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Flat/percentage</mat-label>
-      <mat-select 
+      <mat-select
                 [(ngModel)]="formValues.simpleFormula.flatPercentage"
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
@@ -105,13 +105,13 @@
   <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Uom</mat-label>
-      <mat-select 
+      <mat-select
                 [(ngModel)]="formValues.simpleFormula.uom"
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 placeholder="Uom"
-                [disabled]="!formValues.isEditable 
+                [disabled]="!formValues.isEditable
                   || (formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3)
                   || (formValues.simpleFormula.flatPercentage && formValues.simpleFormula.flatPercentage.id != 1)">
           <mat-option *ngFor="let option of uomList" [value]="option">
