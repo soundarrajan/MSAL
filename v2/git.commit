@@ -1,9 +1,11 @@
-﻿commit 4eb17a8f2217232a80ca86643db17f7713b8318f
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jun 4 13:52:35 2021 +0000
+﻿commit 008763451c983d5d3ba59ff24587329e8f97dea9
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jun 7 07:23:23 2021 +0000
 
-    Merged PR 11256: Requirement 29675: Vessel details: View Future Requests for the Vessel has done
+    Merged PR 11271: #32903 : Bug Fix => Region filter_ The region filter count and the vessel displayed in the map view count is not matched.
     
-    Related work items: #29675
+    #32903 : Bug Fix => Region filter_ The region filter count and the vessel displayed in the map view count is not matched.
+    
+    Related work items: #32903
 
 branch: master
