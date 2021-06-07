@@ -490,7 +490,6 @@ export class OlMapComponent implements OnInit {
   private loadVessels(filter) {
     this.isLoading = true;
     this.vesselMakersLayer.getSource().clear();
-    debugger
     if (filter == " ") {
       this.createVesselMakeSrs(this.vesselList);
     }
@@ -538,18 +537,19 @@ export class OlMapComponent implements OnInit {
                                           this.filterData[1].count = filter.vesselsCount
                                           break;
                                         }
-            case 'Asia':{
-                          this.filterData[2].count = filter.vesselsCount
-                          break;
-                        }
             case 'Europe':{
-                            this.filterData[3].count = filter.vesselsCount
+                            this.filterData[2].count = filter.vesselsCount
                             break;
                           }
             case 'North America':{
-                                    this.filterData[4].count = filter.vesselsCount
+                                    this.filterData[3].count = filter.vesselsCount
                                     break;
                                   }
+            case 'Asia':{
+                          this.filterData[4].count = filter.vesselsCount
+                          break;
+                        }
+            
           }
         })
       }
@@ -1096,6 +1096,7 @@ export class OlMapComponent implements OnInit {
     this.vesselMakersLayer.setOpacity(1);
     this.showVesselPop = false;
     this.showLocationPop = false;
+    this.selectedFillterTag = null;
     if (item != null) {
       switch (item.name) {
         case 'All My Vessels': {
@@ -1105,24 +1106,25 @@ export class OlMapComponent implements OnInit {
           break;
         }
         case 'Unmanageable Vessels': {
-          this.selectedFillterTag = this.selectedFillterTag != item.name ? item.name : null;
-          if (this.selectedFillterTag)
-            this.loadVessels(this.selectedFillterTag)
-          else
-            this.loadVessels(" ");
+          this.selectedFillterTag = item.name;
+          this.loadVessels('Unmanageable Vessels')
+          this.setCenter();
           break;
         }
         case 'European Region': {
+          this.selectedFillterTag = item.name;
           this.flyTo(item.lonlat, () => { this.isLoading = false }, 4.2);
           this.loadVessels('Europe');
           break;
         }
         case 'N.America Region': {
+          this.selectedFillterTag = item.name;
           this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('North America');
           break;
         }
         case 'Asia Region': {
+          this.selectedFillterTag = item.name;
           this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('Asia');
           break;
