@@ -1876,12 +1876,12 @@ label {
 	transform: matrix(1, 0, 0, 1, 0, 0);
 	height: 12px;
 	font-size: 10px;
-	width: 52.63px;
+	width: auto;
 	color: $white;
 	margin: 1px 0px;
 	cursor: pointer;
 	text-align: center;
-	padding: 7px 0px;
+	padding: 7px 4px;
 	font-weight: 100;
 
 }
@@ -7800,4 +7800,109 @@ cursor:pointer;
 }
 .port-deptails-popup{
 	overflow: hidden !important;
+}
+.port-future-req-popup{
+	background-color: #37414F;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25), 2px 0px 2px rgba(0, 0, 0, 0.25);
+	border-radius: 2px;
+	width: 275px;
+	height: 190px;
+	font-size: 10px;
+	.port-future-req{
+		padding:10px;
+	}
+	.main-header{
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 12px;
+		color: #66B0D6;
+	}
+
+	.right-align{
+		text-align: right;
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: 300;
+		font-size: 10px;
+	}
+	th{
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: 300;
+		font-size: 8px;
+		color: #C4C4C4;
+	}
+
+	td{
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 10px;
+		color: #EFF3F9;
+	}
+	.line{
+		margin-top: 2px;
+		margin-bottom: 2px;
+		border-bottom:2px solid rgba(13, 18, 24, 0.2);
+	}
+	table{
+		border-spacing: 8px;
+		border-collapse: separate;
+	}
+	.subheader-data{
+		color: #C4C4C4;
+	}
+	.subheader-value{
+		font-family: Roboto;
+		font-size: 8px;
+		font-style: normal;
+		font-weight: 300;
+		line-height: 16px;
+		letter-spacing: 0em;
+		text-align: left;
+		
+		font-family: Roboto;
+		font-size: 10px;
+		font-style: normal;
+		font-weight: 400;
+		text-align: left;
+		
+		
+	}
+}
+  //.tooltip:hover 
+  
+  .info-blue-right:hover{
+	.info-blue-tooltiptext {
+		visibility: visible;
+	  }
+	background-color: #66B0D6;
+	color:#FFFFFF;
+}
+
+
+.info-blue{
+	cursor: pointer;
+	height:8px;
+	width:8px;	
+	background-color:#37414f;
+	color: #66B0D6;
+	 font-size:6px;
+	  margin-right:10px;
+	  position:relative;top:-2px;
+	  display:inline-block;
+	  line-height: 8px;
+	  text-align: center;
+}
+.info-blue:hover{
+	background-color: #66B0D6;
+	color:#FFFFFF;
+}
+.tab-right{
+	.mat-tab-header{
+		position: absolute;
+    top: 0;
+    right: 0;
+	}
 }

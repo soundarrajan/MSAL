@@ -59,8 +59,53 @@
   </div>
   
   <div *ngIf="params.type=='popup-multiple-values'">
-  <hover-menu #menu [items]="params?.popoverSource"></hover-menu>
+  <hover-menu #menu [items]="params?.value"></hover-menu>
   </div>
+
+  <div *ngIf="params.type=='info-with-popup-multiple-values'">
+    <div style="display:flex;flex-wrap:wrap;" >
+      <div><span class="info-blue" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverTitle1"
+      (mouseclick)="toggleMenu($event);" (mouseleave)="toggleMenu2();" >i</span>{{params.value}}</div>
+    </div> 
+  </div>
+    <mat-menu class="port-future-req-popup" #hoverTitle1="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
+       <div class="port-future-req" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
+          <div class="row">
+            <span class=" col-6 main-header">Port of {{params.value}}</span>
+            <span class=" col-6 right-align">ETA : {{params?.data?.eta | date: 'dd/MM/yyyy'}}</span>
+          </div>   
+          <div class="line"></div>
+          <div>product Details</div>
+    
+          <table>
+            <tr class="port-table-heading">
+              <th>Fuel Type</th>
+              <th>Req.Qty</th>
+              <th>Req Date</th>
+              <th>Sugg. Qty</th>
+            </tr>
+            <tr class="port-tablevalues">
+              <td>{{params?.data?.productName}}</td>
+              <td>{{params?.data?.maxQuantity +' '+ params?.data?.uomName}}</td>
+              <td>{{params?.data?.requestDate | date: 'dd/MM/yyyy HH:mm'}}</td>
+              <td>{{params?.data?.suggestedQuantity +' '+ params?.data?.uomName}}</td>
+            </tr>
+            <!-- <tr class="port-tablevalues">
+              <td>RMK5005</td>
+              <td>350 MT</td>
+              <td>12/09/2020 12:45</td>
+              <td>340 MT</td>
+            </tr> -->
+          </table>
+          <div class="line"></div>
+          <div>Request details</div>
+          <div>
+            <span class="subheader-data">Created by:</span>
+            <span class="subheader-value"> {{params?.data?.createdByName}} {{params?.data?.createdOn | date: 'dd/MM/yyyy'}}</span>
+          </div> 
+        </div>
+      
+      </mat-menu>
   
   
   <div *ngIf="params.type=='edit'">
