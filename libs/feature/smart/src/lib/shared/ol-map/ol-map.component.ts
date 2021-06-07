@@ -490,7 +490,6 @@ export class OlMapComponent implements OnInit {
   private loadVessels(filter) {
     this.isLoading = true;
     this.vesselMakersLayer.getSource().clear();
-    debugger
     if (filter == " ") {
       this.createVesselMakeSrs(this.vesselList);
     }
@@ -538,18 +537,19 @@ export class OlMapComponent implements OnInit {
                                           this.filterData[1].count = filter.vesselsCount
                                           break;
                                         }
-            case 'Asia':{
-                          this.filterData[2].count = filter.vesselsCount
-                          break;
-                        }
             case 'Europe':{
-                            this.filterData[3].count = filter.vesselsCount
+                            this.filterData[2].count = filter.vesselsCount
                             break;
                           }
             case 'North America':{
-                                    this.filterData[4].count = filter.vesselsCount
+                                    this.filterData[3].count = filter.vesselsCount
                                     break;
                                   }
+            case 'Asia':{
+                          this.filterData[4].count = filter.vesselsCount
+                          break;
+                        }
+            
           }
         })
       }
