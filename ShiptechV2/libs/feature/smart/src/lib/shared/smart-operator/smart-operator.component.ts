@@ -33,7 +33,7 @@ export class SmartOperatorComponent implements OnInit {
   @ViewChild(VesselDetailsComponent) vesselDetail;
   public changeVessel;
   public coldefOnClick:any;
-
+  
   constructor(private localService: LocalService,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
@@ -85,13 +85,18 @@ export class SmartOperatorComponent implements OnInit {
       },
       
       rowSelection: 'single',
+      overlayLoadingTemplate:
+      '<span class="ag-overlay-loading-center">Rows are loading...</span>',
+       overlayNoRowsTemplate:
+       `<span> No rows to Display</span>`,
       onGridReady: (params) => {
         this.gridOptions1.api = params.api;
         this.gridOptions1.columnApi = params.columnApi;
+        this.gridOptions1.api.setColumnDefs(this.columnDefs_unmanageablevessels);
+        this.gridOptions.api.sizeColumnsToFit();
         this.gridOptions1.api.setRowData(this.rowData2);
         this.rowCount = this.gridOptions1.api.getDisplayedRowCount();
-        this.gridOptions1.api.setColumnDefs(this.columnDefs_unmanageablevessels);
-        params.api.sizeColumnsToFit();
+        this.gridOptions1.api.showLoadingOverlay();
 
       },
       onCellClicked: (params) => { 
