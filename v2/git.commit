@@ -1,7 +1,11 @@
-﻿commit b0b389bce0f4a3e584b9f9eae65a28aaac16d167
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Jun 7 15:17:58 2021 +0300
+﻿commit ca373927da45c5889a7b8e3748e17d49c36099bf
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jun 7 13:01:14 2021 +0000
 
-    Fixed showing of sample detail in bdn additional information
+    Merged PR 11297: Bug 32814: Current Bunkering plan: HSFO label
+    
+    Date format custom pipe has created and formatted by using ng date format
+    
+    Related work items: #32814
 
 branch: master

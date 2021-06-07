@@ -48,6 +48,7 @@ import { GroupByPipe } from './pipes/groupByPipe/group-by.pipe'
 import { groupBy } from 'lodash';
 import { FilterCommentByParticipantPipe } from './pipes/filterCommentPipe/filter-comment-by-participant.pipe';
 import { GroupByParticipantPipe } from './pipes/groupByParticipantPipe/group-by-participant.pipe';
+import { EnUsDatePipePipe } from './pipes/EnUsDatePipe/en-us-date-pipe.pipe';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
@@ -56,7 +57,7 @@ import { GroupByParticipantPipe } from './pipes/groupByParticipantPipe/group-by-
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
     DatePickerFromToComponent,
-    FilterPipe, AllBunkeringPlanComponent,NoDataComponent, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe],
+    FilterPipe, AllBunkeringPlanComponent,NoDataComponent, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -73,7 +74,7 @@ import { GroupByParticipantPipe } from './pipes/groupByParticipantPipe/group-by-
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
     CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent,
-    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, AllBunkeringPlanComponent,NoDataComponent],
+    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, AllBunkeringPlanComponent,NoDataComponent],
   providers: [LocalService, LoggerService, AuthGaurdService, BunkeringPlanComponent],
   entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent]
 })

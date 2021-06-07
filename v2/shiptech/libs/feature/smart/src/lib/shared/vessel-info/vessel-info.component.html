@@ -11,7 +11,7 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value" *ngIf="(scrubberDate)">{{scrubberDate}}</td>
+        <td class="value" *ngIf="scrubberDate">{{scrubberDate | enUsDatePipe | date: 'dd/MM/yyyy'}}</td>
         <td class="value" *ngIf="!scrubberDate">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
