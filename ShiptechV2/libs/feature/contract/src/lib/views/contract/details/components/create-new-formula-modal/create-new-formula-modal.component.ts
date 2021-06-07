@@ -29,15 +29,26 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import moment from 'moment';
-import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
-
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter
+} from '@angular/material/core';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -47,18 +58,16 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     dateInput: 'YYYY-MM-DD HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
 
-
-  
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   },
   parse: {
     dateInput: 'DD MMM YYYY'
@@ -71,15 +80,15 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
     let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -90,8 +99,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -100,23 +109,20 @@ export class PickDateAdapter extends NativeDateAdapter {
     let date = elem.toDate();
     return value ? date : null;
   }
-
 }
 
-
-
 export interface NgxMatMomentDateAdapterOptions {
-
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<NgxMatMomentDateAdapterOptions>(
-  'MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
-    providedIn: 'root',
-    factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
-  });
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+  NgxMatMomentDateAdapterOptions
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+  providedIn: 'root',
+  factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+});
 
 export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
   return {
@@ -135,19 +141,21 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
 @Injectable()
 export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _localeData: {
-    firstDayOfWeek: number,
-    longMonths: string[],
-    shortMonths: string[],
-    dates: string[],
-    longDaysOfWeek: string[],
-    shortDaysOfWeek: string[],
-    narrowDaysOfWeek: string[]
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
   };
 
-  constructor(@Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
-              @Optional() @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
-              private _options?: NgxMatMomentDateAdapterOptions) {
-
+  constructor(
+    @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+    @Optional()
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    private _options?: NgxMatMomentDateAdapterOptions
+  ) {
     super();
     this.setLocale(dateLocale || moment.locale());
   }
@@ -160,10 +168,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
       longMonths: momentLocaleData.months(),
       shortMonths: momentLocaleData.monthsShort(),
-      dates: range(31, (i) => this.createDate(2017, 0, i + 1).format('D')),
+      dates: range(31, i => this.createDate(2017, 0, i + 1).format('D')),
       longDaysOfWeek: momentLocaleData.weekdays(),
       shortDaysOfWeek: momentLocaleData.weekdaysShort(),
-      narrowDaysOfWeek: momentLocaleData.weekdaysMin(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin()
     };
   }
 
@@ -185,7 +193,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
-    return style === 'long' ? this._localeData.longMonths : this._localeData.shortMonths;
+    return style === 'long'
+      ? this._localeData.longMonths
+      : this._localeData.shortMonths;
   }
 
   getDateNames(): string[] {
@@ -220,14 +230,18 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   createDate(year: number, month: number, date: number): Moment {
     if (month < 0 || month > 11) {
-      throw Error(`Invalid month index "${month}". Month index has to be between 0 and 11.`);
+      throw Error(
+        `Invalid month index "${month}". Month index has to be between 0 and 11.`
+      );
     }
 
     if (date < 1) {
       throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
     }
 
-    const result = this._createMoment({ year, month, date }).locale(this.locale);
+    const result = this._createMoment({ year, month, date }).locale(
+      this.locale
+    );
     if (!result.isValid()) {
       throw Error(`Invalid date "${date}" for month with index "${month}".`);
     }
@@ -244,8 +258,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -262,14 +276,14 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     let formattedDate = moment(date).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -304,8 +318,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       let currentFormat = PICK_FORMATS.display.dateInput;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -346,7 +360,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     date.hours(value);
   }
   setMinute(date: Moment, value: number): void {
-    date.minutes(value)
+    date.minutes(value);
   }
   setSecond(date: Moment, value: number): void {
     date.seconds(value);
@@ -355,9 +369,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _createMoment(
     date: MomentInput,
     format?: MomentFormatSpecification,
-    locale?: string,
+    locale?: string
   ): Moment {
-    const { strict, useUtc }: NgxMatMomentDateAdapterOptions = this._options || {};
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions =
+      this._options || {};
 
     return useUtc
       ? moment.utc(date, format, locale, strict)
@@ -371,22 +386,26 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./create-new-formula-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [  {provide: DateAdapter, useClass: PickDateAdapter},
-    {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
+  providers: [
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     {
       provide: NgxMatDateAdapter,
       useClass: CustomNgxDatetimeAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
-    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+  ]
 })
-export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponent implements OnInit {
+export class CreateNewFormulaModalComponent
+  extends DeliveryAutocompleteComponent
+  implements OnInit {
   deliveryProducts: any;
   switchTheme;
   selectedProduct;
   formValues: any = {
-    'name': '',
-    'simpleFormula': {}
+    name: '',
+    simpleFormula: {}
   };
   splitDeliveryInLimit: any[];
   uoms: any;
@@ -442,72 +461,70 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
     private format: TenantFormattingService,
-    
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) 
-    {
-      super(changeDetectorRef);
-      this.dateFormats.display.dateInput = this.format.dateFormat;
-      this.dateFormats.parse.dateInput = this.format.dateFormat;
-      this.dateTimeFormats.display.dateInput = this.format.dateFormat;
-      CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
-      PICK_FORMATS.display.dateInput = this.format.dateFormat;
-      console.log(data);
-      this.formValues = data.formValues;
-      if (!this.formValues) {
-        this.formValues = {
-          formulaType: {},
-          isEditable: true,
-          formulaHolidayRules: null
-        };
-      }
-      if (this.formValues && !this.formValues.formulaHolidayRules) {
-        this.formValues.formulaHolidayRules =  null;
-      }
-      this.formulaTypeList = data.formulaTypeList;
-      this.systemInstumentList = data.systemInstumentList;
-      this.marketPriceList =  data.marketPriceList;
-      this.formulaPlusMinusList = data.formulaPlusMinusList;
-      this.formulaFlatPercentageList = data.formulaFlatPercentageList;
-      this.uomList = data.uomList;
-      this.currencyList = data.currencyList;
-      this.formulaOperationList = data.formulaOperationList;
-      this.formulaFunctionList = data.formulaFunctionList;
-      this.marketPriceTypeList = data.marketPriceTypeList;
-      this.pricingScheduleList = data.pricingScheduleList;
-      this.holidayRuleList = data.holidayRuleList;
-      this.pricingSchedulePeriodList = data.pricingSchedulePeriodList;
-      this.eventList = data.eventList;
-      this.dayOfWeekList = data.dayOfWeekList;
-      this.businessCalendarList = data.businessCalendarList;
-      this.formulaEventIncludeList = data.formulaEventIncludeList;
-      this.quantityTypeList = data.quantityTypeList;
-      this.productList = data.productList;
-      this.locationList = data.locationList;
-      this.hasInvoicedOrder = data.hasInvoicedOrder;
+
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    super(changeDetectorRef);
+    this.dateFormats.display.dateInput = this.format.dateFormat;
+    this.dateFormats.parse.dateInput = this.format.dateFormat;
+    this.dateTimeFormats.display.dateInput = this.format.dateFormat;
+    CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
+    PICK_FORMATS.display.dateInput = this.format.dateFormat;
+    console.log(data);
+    this.formValues = data.formValues;
+    if (!this.formValues) {
+      this.formValues = {
+        formulaType: {},
+        isEditable: true,
+        formulaHolidayRules: null
+      };
     }
+    if (this.formValues && !this.formValues.formulaHolidayRules) {
+      this.formValues.formulaHolidayRules = null;
+    }
+    this.formulaTypeList = data.formulaTypeList;
+    this.systemInstumentList = data.systemInstumentList;
+    this.marketPriceList = data.marketPriceList;
+    this.formulaPlusMinusList = data.formulaPlusMinusList;
+    this.formulaFlatPercentageList = data.formulaFlatPercentageList;
+    this.uomList = data.uomList;
+    this.currencyList = data.currencyList;
+    this.formulaOperationList = data.formulaOperationList;
+    this.formulaFunctionList = data.formulaFunctionList;
+    this.marketPriceTypeList = data.marketPriceTypeList;
+    this.pricingScheduleList = data.pricingScheduleList;
+    this.holidayRuleList = data.holidayRuleList;
+    this.pricingSchedulePeriodList = data.pricingSchedulePeriodList;
+    this.eventList = data.eventList;
+    this.dayOfWeekList = data.dayOfWeekList;
+    this.businessCalendarList = data.businessCalendarList;
+    this.formulaEventIncludeList = data.formulaEventIncludeList;
+    this.quantityTypeList = data.quantityTypeList;
+    this.productList = data.productList;
+    this.locationList = data.locationList;
+    this.hasInvoicedOrder = data.hasInvoicedOrder;
+  }
 
   ngOnInit() {
     this.entityName = 'Contract';
-
   }
-
-
 
   closeClick(): void {
     this.dialogRef.close();
   }
 
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => {
     return 0;
-  }
+  };
 
   displayFn(value): string {
     return value && value.name ? value.name : '';
   }
 
-  ngAfterViewInit(): void {
-  
-  }
+  ngAfterViewInit(): void {}
 
   clearSchedules(id) {
     this.formValues.pricingScheduleOptionDateRange = null;
@@ -517,112 +534,195 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     this.formValues.pricingScheduleOptionEventBasedContinuous = null;
     if (id == 4) {
       this.formValues.pricingScheduleOptionDateRange = {};
-      this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
     } else if (id == 5) {
       this.formValues.pricingScheduleOptionSpecificDate = {};
-      this.formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
     } else if (id == 6) {
       this.formValues.pricingScheduleOptionEventBasedSimple = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
     } else if (id == 7) {
       this.formValues.pricingScheduleOptionEventBasedExtended = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedExtended.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedExtended.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedExtended.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedExtended.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedExtended.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedExtended.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
     } else if (id == 8) {
       this.formValues.pricingScheduleOptionEventBasedContinuous = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
-      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
     }
 
     if (!this.formValues.formulaHolidayRules) {
       this.formValues.formulaHolidayRules = {};
-      this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
-      this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
-      this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
-      this.formValues.formulaHolidayRules.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
-      this.formValues.formulaHolidayRules.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
-      this.formValues.formulaHolidayRules.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
-      this.formValues.formulaHolidayRules.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[1]);
+      this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
     }
 
     console.log(this.formValues.formulaHolidayRules);
-
   }
 
   saveFormula() {
     if (this.formValues.id) {
       this.spinner.show();
       this.contractService
-      .updateFormula(this.formValues)
-      .pipe(
-        finalize(() => {
-          this.spinner.hide();
-        })
-      )
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-          this.dialogRef.close({
-            'name': this.formValues.name,
-            'id': this.formValues.id });
-          this.toastr.success('Operation completed successfully!')
-        }
-      });
-  
+        .updateFormula(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.spinner.hide();
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.dialogRef.close({
+              name: this.formValues.name,
+              id: this.formValues.id
+            });
+            this.toastr.success('Operation completed successfully!');
+          }
+        });
     } else {
       this.spinner.show();
       this.contractService
-      .saveFormula(this.formValues)
-      .pipe(
-        finalize(() => {
-          this.spinner.hide();
-        })
-      )
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-          this.dialogRef.close({
-            'name': this.formValues.name,
-            'id': response });
-          this.toastr.success('Operation completed successfully!')
-        }
-      });
-
+        .saveFormula(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.spinner.hide();
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.dialogRef.close({
+              name: this.formValues.name,
+              id: response
+            });
+            this.toastr.success('Operation completed successfully!');
+          }
+        });
     }
   }
 
   isEmptyObject(obj) {
-    return (obj && (Object.keys(obj).length === 0));
+    return obj && Object.keys(obj).length === 0;
   }
 
   setFormulaTypeSelected(id) {
@@ -636,7 +736,7 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       }
     } else {
       if (!this.formValues.simpleFormula) {
-        this.formValues.simpleFormula = {}; 
+        this.formValues.simpleFormula = {};
       }
     }
   }
@@ -647,10 +747,34 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     }
   }
 
+  setHolidayRules() {
+    if (!this.formValues.formulaHolidayRules) {
+      this.formValues.formulaHolidayRules = {};
+      this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+    }
+  }
+
   cancelFormula() {
     this.dialogRef.close();
   }
-
-  
-  
 }

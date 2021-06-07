@@ -728,6 +728,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (!this.entityId) {
         this.summaryCalculationsForProductDetails();
         this.summaryCalculationsForCostDetails();
+      } else {
+        this.calculationForRanegAndTotal();
       }
 
       //For Due Date
@@ -1051,6 +1053,20 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
   }
 
+  calculationForRanegAndTotal() {
+    if (this.formValues.costDetails) {
+      for (let i = 0; i < this.formValues.costDetails.length; i++) {
+        if (
+          this.formValues.costDetails[i] &&
+          (this.formValues.costDetails[i].costType.name == 'Range' ||
+            this.formValues.costDetails[i].costType.name == 'Total')
+        ) {
+          this.getEstimatedRateAndAmount(this.formValues.costDetails[i], i);
+        }
+      }
+    }
+  }
+
   getEstimatedRateAndAmount(additionalCost, rowIndex) {
     if (!additionalCost.locationAdditionalCostId) {
       return;
@@ -1128,6 +1144,14 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.formValues.costDetails[rowIndex].estimatedAmount = _.cloneDeep(
             response.price
           );
+          this.formValues.costDetails[rowIndex].estimatedExtrasAmount =
+            (this.formValues.costDetails[rowIndex].estimatedExtras / 100) *
+            this.formValues.costDetails[rowIndex].estimatedAmount;
+          this.formValues.costDetails[rowIndex].estimatedTotalAmount =
+            parseFloat(
+              this.formValues.costDetails[rowIndex].estimatedExtrasAmount
+            ) +
+            parseFloat(this.formValues.costDetails[rowIndex].estimatedAmount);
           this.invoiceConvertUom('cost', rowIndex);
         }
       });

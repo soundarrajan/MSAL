@@ -606,4 +606,17 @@ export class NotesLogComponent implements OnInit {
       return null;
     }
   }
+
+  notesUpdate() {
+    let findNotesWithIdZero = _.filter(this.formValues.deliveryNotes, function(
+      object
+    ) {
+      return object.id == 0;
+    });
+
+    console.log('mouseoiut');
+    if (findNotesWithIdZero && findNotesWithIdZero.length) {
+      this.autoSave();
+    }
+  }
 }
