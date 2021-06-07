@@ -1,11 +1,7 @@
-﻿commit ca373927da45c5889a7b8e3748e17d49c36099bf
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jun 7 13:01:14 2021 +0000
+﻿commit d53645423c4f50ede6e54259bc3f5b3459ba7d33
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Mon Jun 7 19:24:33 2021 +0530
 
-    Merged PR 11297: Bug 32814: Current Bunkering plan: HSFO label
-    
-    Date format custom pipe has created and formatted by using ng date format
-    
-    Related work items: #32814
+    32940 -Delivery Notes
 
 branch: master
