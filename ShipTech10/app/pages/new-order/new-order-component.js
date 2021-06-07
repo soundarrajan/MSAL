@@ -390,6 +390,25 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     filteredAddCostList = ctrl.lists.AdditionalCost.filter(x => (!x.isDeleted || x.isDeleted == false));
                 }
             }
+            // if additional cost list does not contain the item mentioned in contract, then do a hard-coded push here
+            if(addCostRow.isContract) {
+                if(addCostRow.additionalCost && addCostRow.additionalCost.id) {
+                    if(!filteredAddCostList.some(x =>
+                        ((x.id == addCostRow.additionalCost.id && x.locationid == addCostRow.locationAdditionalCostId)))) {
+                            let obj = {};
+                            obj.id = addCostRow.additionalCost.id;
+                            obj.name = addCostRow.additionalCost.name;
+                            obj.allowNegative = addCostRow.additionalCost.isAllowingNegativeAmmount;
+                            obj.locationid = addCostRow.locationAdditionalCostId;
+                            obj.price = addCostRow.additionalCost.amount;
+                            obj.costType = addCostRow.additionalCost.costType;
+                            obj.priceUom = addCostRow.additionalCost.priceUom;
+                            obj.extras = addCostRow.additionalCost.extrasPercentage;
+                            obj.isDeleted = addCostRow.additionalCost.isDeleted;
+                            filteredAddCostList.push(obj);
+                        }
+                }
+            }
             return filteredAddCostList;
         }
 
@@ -3375,6 +3394,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 additionalCost.extrasAmount = null;
                 additionalCost.priceUom = null;
                 additionalCost.costType = null;
+                if(additionalCost.isContract) {
+                    additionalCost.isContract = false;
+                    additionalCost.additionalCostList = ctrl.getFilteredAdditionalCostMasters(additionalCost);
+                }
             }
             additionalCost.costType = getAdditionalCostDefaultCostType(additionalCost);
             // Must do this manually, since a programatic change of the
@@ -4263,12 +4286,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ctrl.data.products[currentProductIndex].additionalCosts = []
                 }
                 for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
-                    if (ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract) {
+                    if (ctrl.data.products[currentProductIndex].additionalCosts[i].isContract) {
                         ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1)
                     }
                 }
                 $.each(response.payload, function(k,v) {
-                    v.isFromContract = true;
+                    v.isContract = true;
                     v.id = 0;
                     v.additionalCostList = ctrl.getFilteredAdditionalCostMasters(v);
                     ctrl.data.products[currentProductIndex].additionalCosts.push(v);
