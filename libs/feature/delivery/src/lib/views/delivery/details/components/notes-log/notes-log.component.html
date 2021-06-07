@@ -21,7 +21,9 @@
 <div class="col-md-12 d-flex no-padding" *ngIf="expandDeliveryNotes">
   <table
     class="notes-details-table table table-stripped table-hover"
-    style="width:100%"
+    style="width:100%; min-height: 301px !important;
+    overflow-y: scroll;
+    display: block !important;"
   >
     <thead>
       <tr>
@@ -65,7 +67,7 @@
               class="custom-form-field-invoice-notes"
               [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
             >
-              <mat-form-field class="without-search" appearance="legacy">
+              <mat-form-field class="without-search" appearance="legacy" style="border: 1px dashed #a5a5a5; height: 37px;">
                 <input
                   [(ngModel)]="noteLine.value.note"
                   (blur)="updateNotes(noteLine.key)"
