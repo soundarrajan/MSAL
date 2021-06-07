@@ -1411,8 +1411,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 product.additionalCosts.push(additionalCost);
             }
             if(initiatorName == 'input') {
-                ctrl.setLocationBasedAdditionalCosts(additionalCost, product, 'applicableForChange');
-                calculateAdditionalCostAmounts(additionalCost, product);
+                if(!additionalCost.isAllProductsCost) {
+                    ctrl.setLocationBasedAdditionalCosts(additionalCost, product, 'applicableForChange');
+                    calculateAdditionalCostAmounts(additionalCost, product);
+                }
                 ctrl.evaluateAdditionalCostList();
             }
         };

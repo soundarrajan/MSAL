@@ -1892,7 +1892,7 @@
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
                                             ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id' ">
 
-                                            <option ng-if="!(additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0)" selected value="">
+                                            <option ng-if="!(additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total')" selected value="">
                                                 All
                                             </option>
                                         </select>
