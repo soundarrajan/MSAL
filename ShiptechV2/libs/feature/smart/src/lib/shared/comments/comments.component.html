@@ -6,7 +6,7 @@
           <mat-icon id="searchIcon" matPrefix>search</mat-icon>
         </button>
         <div class="br">
-          <input id="messageSearch" [(ngModel)]="searchText" type="text" placeholder="Search for messages">
+          <input id="messageSearch" [(ngModel)]="searchText" (keyup)="RetainOriginalBPComment($event.target.value)" type="text" placeholder="Search for messages">
         </div>
       </div>
 
