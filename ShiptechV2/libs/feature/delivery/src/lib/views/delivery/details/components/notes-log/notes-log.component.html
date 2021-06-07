@@ -70,7 +70,6 @@
                   [(ngModel)]="noteLine.value.note"
                   (blur)="updateNotes(noteLine.key)"
                   [disabled]="detectCurrentUser(noteLine.value)"
-                  (mouseleave)="notesUpdate()"
                   matInput
                   autocomplete="off"
                 />

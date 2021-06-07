@@ -1996,4 +1996,43 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     };
     return decode(_.unescape(modelValue));
   }
+
+  notesUpdate() {
+    console.log('Mouse out notes section');
+    let findNotesWithIdZero = _.filter(this.formValues.deliveryNotes, function(
+      object
+    ) {
+      return object.id == 0;
+    });
+
+    if (findNotesWithIdZero && findNotesWithIdZero.length) {
+      this.autoSave();
+    }
+  }
+
+  autoSave() {
+    if (parseFloat(this.entityId)) {
+      let payload = {
+        DeliveryId: parseFloat(this.entityId),
+        DeliveryNotes: this.formValues.deliveryNotes
+      };
+      this.deliveryService
+        .notesAutoSave(payload)
+        .pipe(
+          finalize(() => {
+            this.spinner.hide();
+          })
+        )
+        .subscribe((result: any) => {
+          if (typeof result == 'string') {
+            this.spinner.hide();
+            this.toastrService.error(result);
+          } else {
+            console.log(result);
+            this.formValues.deliveryNotes = _.cloneDeep(result);
+            this.changeDetectorRef.detectChanges();
+          }
+        });
+    }
+  }
 }

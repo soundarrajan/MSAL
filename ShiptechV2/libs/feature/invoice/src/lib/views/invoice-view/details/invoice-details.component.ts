@@ -1038,6 +1038,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   summaryCalculationsForCostDetails() {
+    //for invoice with id 0
     if (this.formValues.costDetails) {
       for (let i = 0; i < this.formValues.costDetails.length; i++) {
         if (
