@@ -1,11 +1,7 @@
-﻿commit e8c9cd71ef2a246c9d81f0d83a3c3e7621c43e5b
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jun 7 08:53:51 2021 +0000
+﻿commit 58228c3ed673541fa43d54071290bfd446af33bb
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Jun 7 13:36:21 2021 +0300
 
-    Merged PR 11278: #32905 : Navigation to unmanageable vessel => Bug Fix
-    
-    #32905 : Navigation to unmanageable vessel   => Bug Fix
-    
-    Related work items: #32905
+    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
 
 branch: master
