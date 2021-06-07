@@ -558,6 +558,7 @@ export class NotesLogComponent implements OnInit {
           } else {
             console.log(result);
             this.formValues.deliveryNotes = _.cloneDeep(result);
+            this.changeDetectorRef.detectChanges();
           }
         });
     }
@@ -614,7 +615,6 @@ export class NotesLogComponent implements OnInit {
       return object.id == 0;
     });
 
-    console.log('mouseoiut');
     if (findNotesWithIdZero && findNotesWithIdZero.length) {
       this.autoSave();
     }
