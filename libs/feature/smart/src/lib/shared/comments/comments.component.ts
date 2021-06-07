@@ -19,6 +19,7 @@ export class CommentsComponent implements OnInit {
   public loginUser = "YH";
   public participants = [];
   public BunkerPlanCommentList = [];
+  public BunkerPlanCommentTemp = [];
   public RequestCommentList = [];
   public searchParticipant: string = '';
   public totalCommentCount: any = 0;
@@ -94,6 +95,7 @@ export class CommentsComponent implements OnInit {
     this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
       console.log('Bunker Plan Comments...', response?.payload);
       this.BunkerPlanCommentList = response?.payload;
+      this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
       let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
     })   
@@ -109,6 +111,15 @@ export class CommentsComponent implements OnInit {
       let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
     })
+  }
+
+  RetainOriginalBPComment(participant) {
+    //retain all BP comments once filter get reset
+    if(!participant || participant.trim()=='') {
+      this.BunkerPlanCommentList = [];
+      this.BunkerPlanCommentList = this.BunkerPlanCommentTemp;
+      this.searchParticipant = '';
+    }
   }
 
   searchParticipantComment(participant) {
@@ -162,6 +173,7 @@ export class CommentsComponent implements OnInit {
       this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
         console.log('Post Bunker Plan Comments...', response?.payload);
         this.BunkerPlanCommentList = response?.payload;
+        this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
         this.newComment = "";
       });
 
