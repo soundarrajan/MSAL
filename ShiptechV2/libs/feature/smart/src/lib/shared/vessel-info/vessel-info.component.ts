@@ -139,23 +139,25 @@ export class VesselInfoComponent implements OnInit {
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.scrubberDate = this.bunkerPlanHeaderDetail?.scrubberDate;
+      this.scrubberDate = (this.scrubberDate!='null' && this.scrubberDate.indexOf('2050')==-1)? this.scrubberDate: false;
+      
       //handle scrubberDate formate : Convert "MMM D YYYY hh:mm" to "dd/mm/yyyy"
-      var arr = this.scrubberDate.split(' ');
-      var month = "";
-      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      var i = 0;
-      for (i; i < months.length; i++) {
-          if (months[i] == arr[0]) {
-              break;
-          }
-      }
-      i++;
-      if (i >= 10) month = months[arr[0]]+1;
-      else month = "0" + i;
-      if(arr[2] < 10)
-      arr[2] = "0" + arr[2];
-      var formatddate = arr[2] + '/' + month + '/' + arr[3];
-      this.scrubberDate = formatddate;
+      // var arr = this.scrubberDate.split(' ');
+      // var month = "";
+      // var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      // var i = 0;
+      // for (i; i < months.length; i++) {
+      //     if (months[i] == arr[0]) {
+      //         break;
+      //     }
+      // }
+      // i++;
+      // if (i >= 10) month = months[arr[0]]+1;
+      // else month = "0" + i;
+      // if(arr[2] < 10)
+      // arr[2] = "0" + arr[2];
+      // var formatddate = arr[2] + '/' + month + '/' + arr[3];
+      // this.scrubberDate = formatddate;
 
       this.loadROBArbitrage();
       let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
