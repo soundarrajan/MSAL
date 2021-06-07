@@ -1,7 +1,9 @@
-﻿commit aba0cfb4373ceed01075244f33d431a5051f0c59
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Jun 7 13:45:48 2021 +0300
+﻿commit 62e3b8495b0b230efdea8fa75bbdfadcae7ae896
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jun 7 11:11:01 2021 +0000
 
-     Calculated extra amt and total in invoice screen.Fixed notes duplicating in delivery screen. Added Minimum values for quantity section in contract screen
+    Merged PR 11286: #32526: Comment section-Clear filter by participant functionality is not working issue has fixed
+    
+    Related work items: #32526
 
 branch: master
