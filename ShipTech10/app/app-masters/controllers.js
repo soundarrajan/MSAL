@@ -9863,15 +9863,19 @@
         /*Additional Cost Details Popup Close Modal start*/
 
         $scope.PopupprettyCloseModal = function(){
-        $scope.showModalAdditionalCostDetailsConfirmation('Do you still want to Cancel Additional Cost Details?', true, (modalResponse) => {
-            if (modalResponse) {
-                $scope.prettyCloseModal();
-            }
-        });
-    }
+            $scope.showModalAdditionalCostDetailsConfirmation('Do you still want to Cancel Additional Cost Details?', true, (modalResponse) => {
+                if (modalResponse) {
+                    $scope.prettyCloseModal();
+                }
+            });
+        }
 
         $scope.showModalAdditionalCostDetailsConfirmation = function(message, additionalData, callback) {
 
+            if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length == 0){
+                $scope.prettyCloseModal();
+                return;
+            }
 
             $scope.confirmModalAdditionalData = additionalData;
             $('.AdditionalCostDetailsModalConfirmation').modal();
@@ -10077,6 +10081,20 @@
 				!$scope.formValues.latestPortTradingTime ? $scope.formValues.latestPortTradingTime = 3 : "";
         	})
         }
+
+        $scope.bargeCostSequenceChange = (currentadditionalCostsdetails, key, value) => {
+            if($scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1]) {
+                $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1].qtyFrom = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key].qtyTo;         
+            }
+        }
+        $scope.bargeCostSequenceUomChange = (currentadditionalCostsdetails) => {
+            $.each($scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails, (k,v) => {
+                if(k !== 0) {
+                    v.priceUom = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[0].priceUom;
+                }
+            })
+        }        
+
     }
 ]);
 
