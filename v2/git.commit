@@ -1,7 +1,7 @@
-﻿commit 557badb7bc607c7578c8fffb423520fa21b83d6b
+﻿commit b0b389bce0f4a3e584b9f9eae65a28aaac16d167
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Jun 7 14:55:48 2021 +0300
+Date:   Mon Jun 7 15:17:58 2021 +0300
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+    Fixed showing of sample detail in bdn additional information
 
 branch: master
