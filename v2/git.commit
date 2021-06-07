@@ -1,9 +1,7 @@
-﻿commit 62e3b8495b0b230efdea8fa75bbdfadcae7ae896
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jun 7 11:11:01 2021 +0000
+﻿commit 557badb7bc607c7578c8fffb423520fa21b83d6b
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Jun 7 14:55:48 2021 +0300
 
-    Merged PR 11286: #32526: Comment section-Clear filter by participant functionality is not working issue has fixed
-    
-    Related work items: #32526
+    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
 
 branch: master
