@@ -1,7 +1,7 @@
-﻿commit 58228c3ed673541fa43d54071290bfd446af33bb
+﻿commit aba0cfb4373ceed01075244f33d431a5051f0c59
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Jun 7 13:36:21 2021 +0300
+Date:   Mon Jun 7 13:45:48 2021 +0300
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+     Calculated extra amt and total in invoice screen.Fixed notes duplicating in delivery screen. Added Minimum values for quantity section in contract screen
 
 branch: master
