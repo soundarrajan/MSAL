@@ -2162,6 +2162,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.productChanged = function(source, data) {
             if(source == 'selectProduct') {
+                if(!data.additionalCosts) {
+                    data.additionalCosts = [];
+                }
                 for (let j = 0; j < data.additionalCosts.length; j++) {
                     let additionalCost = data.additionalCosts[j];
                     if(data.product && data.tempProduct && data.product.id != data.tempProduct.id) {
