@@ -1,9 +1,11 @@
-﻿commit e9d0f171fad1159554ae92d2363fc384a7179491
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jun 7 15:30:40 2021 +0000
+﻿commit 2b3622a75e968d82a4beabd0141724dca6d3f329
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jun 7 21:06:42 2021 +0000
 
-    Merged PR 11298: #32250: View All Bunkering plans: Bunkering plans not getting displayed issue and memory leakage issue for bunkering plan screen has fixed
+    Merged PR 11302: #32812 : Validation for Total Max SOD bug Fix
     
-    Related work items: #32250
+    #32812 : Validation for Total Max SOD bug Fix
+    
+    Related work items: #32812
 
 branch: master
