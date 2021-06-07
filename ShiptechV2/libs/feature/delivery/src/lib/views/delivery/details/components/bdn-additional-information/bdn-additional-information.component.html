@@ -511,7 +511,10 @@
           <ng-container
             *ngFor="let sampleDetail of formValues.sampleSources | keyvalue"
           >
-            <div class="sampleDetails-addRemove">
+            <div
+              class="sampleDetails-addRemove"
+              *ngIf="!sampleDetail.value.isDeleted"
+            >
               <div class="divider"></div>
               <a
                 class="remove-sample-details-icon"
