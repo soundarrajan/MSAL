@@ -1096,6 +1096,7 @@ export class OlMapComponent implements OnInit {
     this.vesselMakersLayer.setOpacity(1);
     this.showVesselPop = false;
     this.showLocationPop = false;
+    this.selectedFillterTag = null;
     if (item != null) {
       switch (item.name) {
         case 'All My Vessels': {
@@ -1105,24 +1106,25 @@ export class OlMapComponent implements OnInit {
           break;
         }
         case 'Unmanageable Vessels': {
-          this.selectedFillterTag = this.selectedFillterTag != item.name ? item.name : null;
-          if (this.selectedFillterTag)
-            this.loadVessels(this.selectedFillterTag)
-          else
-            this.loadVessels(" ");
+          this.selectedFillterTag = item.name;
+          this.loadVessels('Unmanageable Vessels')
+          this.setCenter();
           break;
         }
         case 'European Region': {
+          this.selectedFillterTag = item.name;
           this.flyTo(item.lonlat, () => { this.isLoading = false }, 4.2);
           this.loadVessels('Europe');
           break;
         }
         case 'N.America Region': {
+          this.selectedFillterTag = item.name;
           this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('North America');
           break;
         }
         case 'Asia Region': {
+          this.selectedFillterTag = item.name;
           this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('Asia');
           break;
