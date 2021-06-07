@@ -1,11 +1,11 @@
-﻿commit f0291b63d07a1bc5f899e1a1276de73ec105aab2
-Author: Anurag Dwivedi <anurag.d@Inatech.com>
-Date:   Mon Jun 7 08:07:46 2021 +0000
+﻿commit e8c9cd71ef2a246c9d81f0d83a3c3e7621c43e5b
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jun 7 08:53:51 2021 +0000
 
-    Merged PR 11273: Bug fix table view.
+    Merged PR 11278: #32905 : Navigation to unmanageable vessel => Bug Fix
     
-    Bug fix table view.
+    #32905 : Navigation to unmanageable vessel   => Bug Fix
     
-    Related work items: #29749
+    Related work items: #32905
 
 branch: master
