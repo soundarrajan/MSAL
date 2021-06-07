@@ -4,6 +4,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { LocalService } from '../../services/local-service.service';
+import { Select, Selector } from "@ngxs/store";
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
+import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
+import { Observable, Subscription } from 'rxjs';
 import moment from 'moment';
 
 
@@ -15,6 +19,7 @@ import moment from 'moment';
 })
 export class AllBunkeringPlanComponent implements OnInit {
 
+  @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
   @Output() changeVessel = new EventEmitter();
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
@@ -33,14 +38,19 @@ export class AllBunkeringPlanComponent implements OnInit {
   public planId: any;
   public shipId: any;
   public bPlanType : any = 'A';
-  public planIdDetails : any ={ planId : '777888', status: 'INP'};
   public allBunkerPlanIds : any;
-  constructor(private localService: LocalService, private bunkerPlanService : BunkeringPlanService, public dialog: MatDialog) { }
-
+  subscription: Subscription;
+  constructor(private localService: LocalService, private bunkerPlanService : BunkeringPlanService, public dialog: MatDialog) {}
+  
   ngOnInit() {//Temp Variable to store the count of accordions to be displayed
     for (let i = 0; i < 20; i++) {
       this.countArray.push({ expanded: false });
     }
+    this.subscription = this.vesselData$.subscribe(data=> {
+      if(data?.vesselId) {
+        this.vesselData = data?.vesselRef;
+      }
+    });
    this.loadBunkerPlanHistory(this.vesselData);
   }
   
@@ -84,5 +94,9 @@ export class AllBunkeringPlanComponent implements OnInit {
         data: {message : 'A new Plan exists for this vessel. Cannot update an old Plan', source: 'vesselHardWarning'}
       });
     }
+  }
+  ngOnDestroy() {
+    //unsubscribe to avoid memory leakage
+    this.subscription.unsubscribe();
   }
 }

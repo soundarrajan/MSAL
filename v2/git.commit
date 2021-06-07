@@ -1,7 +1,9 @@
-﻿commit d53645423c4f50ede6e54259bc3f5b3459ba7d33
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Mon Jun 7 19:24:33 2021 +0530
+﻿commit e9d0f171fad1159554ae92d2363fc384a7179491
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jun 7 15:30:40 2021 +0000
 
-    32940 -Delivery Notes
+    Merged PR 11298: #32250: View All Bunkering plans: Bunkering plans not getting displayed issue and memory leakage issue for bunkering plan screen has fixed
+    
+    Related work items: #32250
 
 branch: master
