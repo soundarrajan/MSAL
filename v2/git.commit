@@ -1,7 +1,11 @@
-﻿commit 6434fcc8a05f08a5b10be8ecdb8ae12f5ab6000a
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Jun 8 09:42:36 2021 +0000
+﻿commit 470542fb56cf7f6a19742cfce3561c9dd5525fc8
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue Jun 8 14:27:54 2021 +0000
 
-    Merged PR 11322: Fixed red error when entering percent amount after leaving it blank(32983)
+    Merged PR 11340: New template for warning poup , HSFO recalculation for Save
+    
+    New template for warning poup , HSFO_currentROB recalculation for Save
+    
+    Related work items: #32549
 
 branch: master
