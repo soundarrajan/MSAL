@@ -4406,7 +4406,7 @@ a[disabled]{
     padding: 5px 10px;
     font-size: 16px !important;
     z-index: 9999;
-	transform: translateY(-100%) translateX(-100%);
+	transform: translateY(-100%); /* translateX(-100%); */
 }
 
 table#new_order_products td {
