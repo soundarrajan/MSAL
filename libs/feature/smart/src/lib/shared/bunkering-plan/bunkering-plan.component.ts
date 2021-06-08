@@ -610,7 +610,10 @@ export class BunkeringPlanComponent implements OnInit {
     });
     isValidMinEcaSod = isValidMinEcaSod < 0 ? 'Y':'N'
     if(isValidMinEcaSod == 'N'){
-      let id = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod);
+      let id = data.findIndex(params => {
+        let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
+        return  sum > parseInt(params?.max_sod) ;
+      });
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(NoDataComponent, {
         width: '350px',

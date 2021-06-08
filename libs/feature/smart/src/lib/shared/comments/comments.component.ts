@@ -4,7 +4,8 @@ import { BunkeringPlanComponent } from "./../bunkering-plan/bunkering-plan.compo
 import { Select, Selector } from "@ngxs/store";
 import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
 import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
@@ -26,6 +27,7 @@ export class CommentsComponent implements OnInit {
   // selectedCommentTab: number = 0;
   public newComment = "";
   public searchText = '';
+  subscription: Subscription;
   // public newAttachment = [];
   // public bunkerPlanData = [
   //   {
@@ -73,10 +75,15 @@ export class CommentsComponent implements OnInit {
   // ]
   
   constructor(private BPService: BunkeringPlanCommentsService) {
-    this.vesselData$.subscribe(data=> {
+    //Subscribe only once after getting different object model after 800ms
+    this.subscription = this.vesselData$
+    .pipe(
+      debounceTime(800), 
+      distinctUntilChanged()
+    )
+    .subscribe(data=> {
       this.vesselRef = data;
-      this.loadBunkerPlanComments();
-      this.loadRequestComments();
+      this.loadComments();
     });
   }
 
@@ -89,6 +96,7 @@ export class CommentsComponent implements OnInit {
     this.loadBunkerPlanComments();
     this.loadRequestComments();
   }
+
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
     
@@ -179,6 +187,11 @@ export class CommentsComponent implements OnInit {
 
 
     }
+  }
+
+  ngOnDestroy() {
+    //unsubscribe to avoid memory leakage
+    this.subscription.unsubscribe();
   }
 
   // addNewComment(tabGroup) {

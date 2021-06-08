@@ -19,6 +19,7 @@ import { SaveCurrentROBState,GeneratePlanState } from '../../store/bunker-plan/b
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import moment  from 'moment';
 import { Subject, Subscription, Observable } from 'rxjs';
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 
 @Component({
@@ -76,14 +77,20 @@ export class VesselInfoComponent implements OnInit {
   public isChecked : boolean = false;
   public scrubberDate : any;
   currentROBChange: Subject<void> = new Subject<void>();
+  subscription: Subscription;
  
 
   constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
-
-      this.vesselData$.subscribe(data=> {
+      //Subscribe only once after getting different object model after 800ms
+      this.subscription = this.vesselData$
+      .pipe(
+        debounceTime(800), 
+        distinctUntilChanged()
+      )
+      .subscribe(data=> {
         this.vesselRef = data;
         // loadBunkerPlanComments fn callback to get BP comment count 
         if(this.vesselRef?.vesselId) {
@@ -102,6 +109,8 @@ export class VesselInfoComponent implements OnInit {
     this.loadBunkerPlanHeader(this.vesselData);  
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     this.loadBunkerPlanDetails(vesseldata.vesselRef);   
+    //trigger unsubscribe to avoid memory leakage
+    window.onbeforeunload = () => this.ngOnDestroy();
   }
 
   validateOnlyInt(event): boolean {
@@ -159,7 +168,7 @@ export class VesselInfoComponent implements OnInit {
       // var formatddate = arr[2] + '/' + month + '/' + arr[3];
       // this.scrubberDate = formatddate;
 
-      this.loadROBArbitrage();
+      // this.loadROBArbitrage();
       let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
     })
@@ -459,6 +468,11 @@ export class VesselInfoComponent implements OnInit {
       let url = `${baseOrigin}/#/new-request/${voyage_id}` ;
       window.open(url, "_blank");
     }      
+  }
+
+  ngOnDestroy() {
+    //unsubscribe to avoid memory leakage
+    this.subscription.unsubscribe();
   }
   
 
