@@ -4597,6 +4597,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 return result;
             }
             result = ctrl.globalAdditionalCosts;
+            if (result) {
+                for (let k = 0; k < result.length; k++) {
+                    additionalCost = result[k];
+                    additionalCost.confirmedQuantity = sumProductConfirmedQuantities(ctrl.data.products);
+                    additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
+                    additionalCost = calculateAdditionalCostAmounts(additionalCost, null);
+                }
+            }
             if (ctrl.data.products) {
                 for (let i = 0; i < ctrl.data.products.length; i++) {
                     if (ctrl.data.products[i].additionalCosts) {
