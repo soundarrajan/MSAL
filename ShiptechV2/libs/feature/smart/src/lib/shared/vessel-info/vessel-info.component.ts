@@ -14,9 +14,10 @@ import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveScrubberReadyAction, ImportGsisAction, GeneratePlanProgressAction, SendPlanAction } from './../../store/bunker-plan/bunkering-plan.action';
+import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveScrubberReadyAction, ImportGsisAction, GeneratePlanProgressAction, SendPlanAction, 
+         ImportGsisProgressAction, newVesselPlanAvailableAction } from './../../store/bunker-plan/bunkering-plan.action';
 import { SaveCurrentROBState,GeneratePlanState } from '../../store/bunker-plan/bunkering-plan.state';
-import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
+import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import moment  from 'moment';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
@@ -267,6 +268,8 @@ export class VesselInfoComponent implements OnInit {
       //to store HSFO header value
       this.scrubberReady = this.currPlanIdDetails?.isScrubberReady === 'Y' ? 'HSFO':'VLSFO';
       this.store.dispatch(new SaveScrubberReadyAction(this.scrubberReady));
+      //to store isNewVesselPlanAvailable variable for shared ref
+      this.store.dispatch(new newVesselPlanAvailableAction(this.currPlanIdDetails?.isNewVesselPlanAvailable));
     })
   }
 
@@ -385,10 +388,10 @@ export class VesselInfoComponent implements OnInit {
     this.store.dispatch(new SendPlanAction(req.send_plan) )
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
-      if(data){
-        const dialogRef = this.dialog.open(NoDataComponent, {
+      if(data?.isSuccess == true){
+        const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
-          panelClass: 'confirmation-popup',
+          panelClass: 'confirmation-popup-operator',
           data: {message : 'Plan will send to vessel in a short while.'}
         });
       }
@@ -422,30 +425,35 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
-      if(data){
-        const dialogRef = this.dialog.open(NoDataComponent, {
+      if(data?.isSuccess == true ){
+      //if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0 && data?.payload[0]?.import_in_progress == 0){
+        const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
-          panelClass: 'confirmation-popup',
+          panelClass: 'confirmation-popup-operator',
           data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
-        //this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
+        this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
+        this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
       }
-      else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1){
-        const dialogRef = this.dialog.open(NoDataComponent, {
+      else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1 && data?.payload[0]?.import_in_progress == 0){
+        const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
-          panelClass: 'gsis-popup',
+          panelClass: 'confirmation-popup-operator',
           data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
         this.store.dispatch(new GeneratePlanAction(0));
         this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
+        this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
       }
-      // if(data.payload && data?.payload[0]?.import_in_progress == 1){
-      //   const dialogRef = this.dialog.open(NoDataComponent, {
-      //     width: '350px',
-      //     panelClass: 'confirmation-popup',
-      //     data: {message : 'Please wait, GSIS import is under process'}
-      //   })
-      // }
+      else if(data.payload && data?.payload[0]?.import_in_progress == 1){
+        const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+          width: '350px',
+          panelClass: 'confirmation-popup-operator',
+          data: {message : 'Please wait, GSIS import is under process'}
+        })
+        this.store.dispatch(new GeneratePlanAction(0));
+        this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
+      }
     })
     event.stopPropagation();
   }
