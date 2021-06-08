@@ -10,7 +10,7 @@ import { Store } from '@ngxs/store';
 import moment  from 'moment';
 import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from "../../store/bunker-plan/bunkering-plan.action";
 import { UpdateBplanTypeState } from "../../store/bunker-plan/bunkering-plan.state";
-import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
+import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 const today = new Date();
 
 @Component({
@@ -497,9 +497,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   restrictionForPrevBplan(event){
     this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
     if(this.bplanType =='P'){
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
       });
     }
