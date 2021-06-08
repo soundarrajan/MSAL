@@ -7551,10 +7551,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 }
                 $(element).css('opacity', '1');
             });
-        };
+        }; 
 
         ctrl.getWidth = function(element) {
             $(element).css('opacity', '0');
+            $(element).css('left', '-300px');
             if (!ctrl.allExpanded) {
                 // $('#negotiation-table-fixed-container').css('overflow', 'initial');
             }
