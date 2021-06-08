@@ -1201,12 +1201,6 @@
                     if($rootScope.TempcounterpartyBankAccounts != undefined && $rootScope.TempcounterpartyBankAccounts.length !=0){
                         $scope.formValues.counterpartyBankAccounts = angular.merge($scope.formValues.counterpartyBankAccounts, $rootScope.TempcounterpartyBankAccounts);
                     }
-                    if ($scope.formValues.invoiceReminderEmail) {
-	                	if (!$scope.validateEmailPattern($scope.formValues.invoiceReminderEmail, true)) {
-		                    toastr.error('Invalid email address for "Invoice Reminder Email"');
-		                    return; 
-	                	}
-                    }
                 }
                 if ($scope.isCustomerCounterparty()) {
                 	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = false;
@@ -1245,12 +1239,6 @@
             	if ($scope.formValues.latestRedelivery == '0000-00-00T00:00+00:00') {
                     $scope.formValues.latestRedelivery = null;
                 };
-               	if ($scope.formValues.customNonMandatoryAttribute1) {
-                	if (!$scope.validateEmailPattern($scope.formValues.customNonMandatoryAttribute1, true)) {
-	                    toastr.error('Invalid email address for "Vessel Owner"');
-	                    return; 
-                	}
-                }; 
                 if ($scope.formValues.earliestRedelivery >= $scope.formValues.latestRedelivery && $scope.formValues.earliestRedelivery != null && $scope.formValues.latestRedelivery != null) {
                     toastr.error('Latest Redelivery Date can\'t be lower than Earliest redelivery date');
                     setTimeout(() => {
