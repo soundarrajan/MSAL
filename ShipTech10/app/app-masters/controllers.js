@@ -10093,7 +10093,26 @@
                     v.priceUom = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[0].priceUom;
                 }
             })
-        }        
+        }   
+        $scope.bargeCostSequenceQtyToInvalid = (currentadditionalCostsdetails, key, value) => {
+            var qtyTo = parseFloat(value.qtyTo);
+            var qtyFrom = parseFloat(value.qtyFrom);
+            if($scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1]) {
+                nextQtyTo = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1].qtyTo;         
+            } else {
+                nextQtyTo = false;
+            }
+            if(qtyTo <= qtyFrom) {
+                return true;
+            }
+            if(nextQtyTo == false) {
+                return false;
+            }
+            if(qtyTo >= nextQtyTo ) {
+                return true;
+            }
+            return false;
+        }  
 
     }
 ]);

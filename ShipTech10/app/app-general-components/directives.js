@@ -2405,7 +2405,8 @@ Number(function() {
                                 if(fraction == 0) {
                                     elem.val(parseInt(plainNumber));
                                 } else{
-                                    elem.val($filter(filter)(plainNumber, fraction));
+                                    newVal = $filter(filter)(plainNumber, fraction);
+                                    elem.val(newVal);
                                 }
                             } else {
                                 elem.val(plainNumber);

@@ -64,7 +64,7 @@
                             <input ng-disabled="true" 
                                 class="form-control" 
                                 ng-required="true" 
-                                type="number" decode-input-format 
+                                type="text" decode-input-format 
                                 ng-model="value.qtyFrom" 
                                 format='number:{{ tenantSetting.defaultValues.amountPrecision }}' 
                                 ng-change="getValidFromTo(value.qtyFrom, value.qtyTo)" >
@@ -75,8 +75,8 @@
                                     style="width: 70%;" 
                                     class="form-control" 
                                     format='number:{{ tenantSetting.defaultValues.amountPrecision }}' 
-                                    type="number" 
-                                    min="{{value.qtyFrom + 0.001}}"
+                                    type="text" 
+                                    ng-invalid="{{bargeCostSequenceQtyToInvalid(CurrentadditionalCostsdetails, key, value)}}"
                                     ng-model="value.qtyTo">
                                 <select ng-disabled="key !== 0" 
                                     ng-init="key != 0 ? value.priceUom = formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails[key-1].priceUom : '' "
