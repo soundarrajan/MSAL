@@ -16,18 +16,23 @@ export class CommentsComponent implements OnInit {
   @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
   vesselRef: ISaveVesselData;
   @Output() ShowCommentCount = new EventEmitter<any>();
+  
   public expanded: boolean = false;
   public loginUser = "YH";
   public participants = [];
   public BunkerPlanCommentList = [];
   public BunkerPlanCommentTemp = [];
+  public BPCommentsCount = 0
   public RequestCommentList = [];
-  public searchParticipant: string = '';
+  public searchText: string = '';
+  public searchByComment: string = '';
+  public selectedIndex = null;
   public totalCommentCount: any = 0;
   // selectedCommentTab: number = 0;
   public newComment = "";
-  public searchText = '';
   subscription: Subscription;
+  searchKey: string;
+  _timer;
   // public newAttachment = [];
   // public bunkerPlanData = [
   //   {
@@ -92,6 +97,14 @@ export class CommentsComponent implements OnInit {
     this.loadComments();
   }
 
+  BPCommentsCountFn(count) {
+    this.BPCommentsCount = count? count:0;
+    clearTimeout(this._timer);
+    this._timer = setTimeout(() => {
+      this.triggerTitleToBind();
+    }, 100);
+  }
+
   public loadComments() {
     this.loadBunkerPlanComments();
     this.loadRequestComments();
@@ -104,8 +117,7 @@ export class CommentsComponent implements OnInit {
       console.log('Bunker Plan Comments...', response?.payload);
       this.BunkerPlanCommentList = response?.payload;
       this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
-      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-          titleEle.click();
+      this.triggerTitleToBind();
     })   
   }
   loadRequestComments() {
@@ -116,22 +128,28 @@ export class CommentsComponent implements OnInit {
       this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
       +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
       this.ShowCommentCount.emit(this.totalCommentCount);
-      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-          titleEle.click();
+      this.triggerTitleToBind();
     })
   }
 
   RetainOriginalBPComment(participant) {
     //retain all BP comments once filter get reset
+    this.selectedIndex = null;
     if(!participant || participant.trim()=='') {
       this.BunkerPlanCommentList = [];
       this.BunkerPlanCommentList = this.BunkerPlanCommentTemp;
-      this.searchParticipant = '';
+      this.searchKey = 'notes'
+      this.searchText = '';
+    } else {
+      this.searchKey = 'notes'
+      this.searchText = participant;
     }
   }
 
   searchParticipantComment(participant) {
-    this.searchParticipant = participant;
+    this.searchKey = 'createdBy.displayName'
+    this.searchText = participant;
+    this.searchByComment = '';
   }
 
   onTabChange(event) {
@@ -187,6 +205,11 @@ export class CommentsComponent implements OnInit {
 
 
     }
+  }
+
+  triggerTitleToBind() {
+    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+    titleEle.click();
   }
 
   ngOnDestroy() {
