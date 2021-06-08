@@ -1,5 +1,5 @@
-
-<div  ng-repeat="(k,location) in $ctrl.individuals track by $index" class="row">
+<div ng-init="$ctrl.getFilterAdditionalCostList()"></div>
+<div ng-repeat="(k,location) in $ctrl.individuals track by $index" class="row">
     <div class="col-md-12" ng-show="location.request.id == $ctrl.active_req">
         <!-- PRODUCT TABLE -->
         <div class="portlet light stretch-vertical grey_portlet">
@@ -219,7 +219,7 @@
                                                     </a>
                                                 </a>
                                             </td>
-                                            
+
                                             <td style="min-width: 220px">
                                                 <div class="input-group">
                                                     <input class="form-control" value="{{ product.minQuantity | number: $ctrl.numberPrecision.quantityPrecision }} - {{ product.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}" readonly disabled/>
@@ -246,18 +246,18 @@
 
                                                     <div class="input-group-btn">
                                                          <select name="" id="" class="form-control no-padding"
-                                                         disabled="true"                                                          
+                                                         disabled="true"
                                                         ng-model="product.uom"
                                                         ng-options="uom as uom.name for uom in $ctrl.lists.Uom | decodeReadOnly track by uom.id"
                                                         style="min-width:60px"></select>
                                                     </div>
                                                 </div>
-                                            </td>   
+                                            </td>
                                             <td style="min-width: 220px" ng-if="!$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden">
 	            	                            <div class="input-group form_input date form_meridian_datetime w100">
 					                                <input name="product_{{$index}}_supplyDeliveryDate" id="product_{{$index}}_supplyDeliveryDate" screen-type="{{$ctrl.token ? 'supplierPortal' : '' }}" ng-required="$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateMandatory" class="form-control date-mask new-date-picker" picker-type="date" new-date-picker ng-model="product.sellers[0].offers[0].supplyDeliveryDate" />
 					                            </div>
-                                            </td>                                         
+                                            </td>
 
 
                                             <td style="min-width: 220px">
@@ -348,7 +348,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody >
 
                                     <tr ng-repeat="additionalCost in $ctrl.getAdditionalCosts(location)  track by $index" ng-if="!additionalCost.isDeleted">
 
@@ -362,8 +362,9 @@
                                                 <i class="fa fa-minus clickable"></i>
                                             </span>
                                         </td>
+
                                         <td style="min-width: 150px">
-                                            <select class="form-control" ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)" ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by addCost.id" ng-model="additionalCost.additionalCost" ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost, location);" ng-required="additionalCost.price"></select>
+                                            <select class="form-control" ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)" ng-options="addCost as addCost.name for addCost in $ctrl.FilterAdditionalCost | decodeReadOnly track by addCost.id" ng-model="additionalCost.additionalCost" ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost, location);" ng-required="additionalCost.price"></select>
                                         </td>
                                         <td style="min-width: 150px" >
 
@@ -375,7 +376,7 @@
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)"
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]);"
                                             style="min-width: 80px">
-                                            </select>   
+                                            </select>
 
                                         </td>
                                         <td style="min-width: 150px">
@@ -423,18 +424,18 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="min-width: 150px">									
+                                        <td style="min-width: 150px">
 
 											<span ng-if="$ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id">
 												<input class="form-control" disabled ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId].product.name"/>
 											</span>
 
 											<!-- | filterNoQuoteProducts -->
-                                            <select ng-if="!($ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id)" 
-                                            ng-options="product as (product.product.name | decodeReadOnly) for product in location.products | filter: {productStatus:{name: '!Stemmed'}}" 
-                                            ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]" 
-                                            ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);" 
-                                            class="form-control" 
+                                            <select ng-if="!($ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id)"
+                                            ng-options="product as (product.product.name | decodeReadOnly) for product in location.products | filter: {productStatus:{name: '!Stemmed'}}"
+                                            ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
+                                            ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);"
+                                            class="form-control"
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products) || !additionalCost.additionalCost || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') ">
                                                 <option value="" >
                                                     All

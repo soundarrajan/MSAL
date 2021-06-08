@@ -234,7 +234,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     ctrl.getAvailableDocumentAttachments(ctrl.data.orderId, 'Order');
                 });
             }
-            
+
             if (ctrl.transaction === 'OrderNoBDNToVesselEmail') {
                 return new Promise((resolve, reject) => {
                     orderModel.previewOrderToBeDeliveredMail(ctrl.data, ctrl.template).then((data) => {
@@ -246,7 +246,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                                 return;
                             }
                             ctrl.templateList = [ ctrl.email.comment.emailTemplate ];
-                            ctrl.template = ctrl.email.comment.emailTemplate; 
+                            ctrl.template = ctrl.email.comment.emailTemplate;
                         }
                         ctrl.getAvailableDocumentAttachments(ctrl.data.orderId, 'Order');
                     }, () => {
@@ -399,7 +399,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 //         ctrl.template = null;
                 //         return;
                 //     }
-                // }                
+                // }
             }
 
             let payload;
@@ -449,7 +449,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 });
 
 
-               
+
                 break;
             case EMAIL_TRANSACTION.GROUP_OF_REQUESTS:
                 // console.log(ctrl.data);
@@ -886,7 +886,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 	                    ctrl.buttonsDisabled = false;
 	                });
         			return;
-        		}        		
+        		}
             }
             if (ctrl.transaction == EMAIL_TRANSACTION.REQUOTE) {
             	// ctrl.email.businessId = ctrl.data.groupId;
@@ -1009,13 +1009,13 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 	            	}
 	            });
             }
-        
+
             if (window.location.href.indexOf('preview-email?') == -1 && ctrl.transaction == 'QuantityControl') {
                 window.history.back();
 
             }
-            
-         
+
+
         };
 
 

@@ -1,5 +1,6 @@
 angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API', '$scope', '$rootScope', 'Factory_Master', '$element', '$attrs', '$timeout','$http', '$filter', '$state', '$stateParams', 'tenantModel', 'tenantSupplierPortalService', 'uiApiModel', 'listsModel', 'lookupModel', 'supplierPortalModel', 'groupOfRequestsModel', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'VALIDATION_MESSAGES', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'IDS', 'VALIDATION_STOP_TYPE_IDS', 'CUSTOM_EVENTS', 'MOCKUP_MAP', 'PACKAGES_CONFIGURATION', 'tenantService', '$compile', 'screenLoader', '$listsCache',
-    function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $http, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, tenantService, $compile, screenLoader, $listsCache) {
+
+function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $http, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, tenantService, $compile, screenLoader, $listsCache) {
         let ctrl = this;
         ctrl.token = $stateParams.token;
         $scope.forms = {};
@@ -9,6 +10,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
         ctrl.isSupportedBrowser = true;
         // ctrl.packages = [];
         ctrl.lists = $listsCache;
+        ctrl.FilterAdditionalCost = [];
         ctrl.reasons = ctrl.lists.NoQuoteReason;
         ctrl.lookupType = null;
         ctrl.sellerPortalModule = null;
@@ -83,6 +85,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
             });
 
             function bootSellerPortal() {
+
                 var quoteByDateExpired, timeNowUtc, quoteByDateInUtc, request, req_ids;
                 $scope.display = 3;
                 tenantModel.getForSupplierPortal(ctrl.token).then((data) => {
@@ -739,7 +742,6 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
 	                additionalCost.isTaxComponent = !(ctrl.additionalCostTypes[additionalCost.additionalCost.id].componentType.id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT);
 	                if (additionalCost.isTaxComponent) {
 	                	// console.log("Tax:" + additionalCost.additionalCost.name)
-	                	// debugger;
 	                } else {
 		                additionalCost.isTaxComponent = false;
 	                }
@@ -1697,11 +1699,11 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
                                         additionalCost.priceUom =  defaultUomAndCompany.defaultUom;
                                     }
 
-                                }                               
+                                }
                             }
-                        }); 
+                        });
                     }
-                });  
+                });
 
             } else {
                 let payload = { Payload: product.product.id };
@@ -1715,13 +1717,13 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
                             if (additionalCost.costType.name == "Unit") {
                                 additionalCost.priceUom =  defaultUomAndCompany.defaultUom;
                             }
-                            
-                        }   
-                       
+
+                        }
+
                     }
                 });
             }
-            
+
         }
         ctrl.quotedByChanged = function(quotedBy) {
             for (let i = 0; i < ctrl.individuals.length; i++) {
@@ -2439,6 +2441,15 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
             return allHasDisableStatus;
         };
 
+        ctrl.getFilterAdditionalCostList = function() {
+            // Shiptech10.Api.Masters/api/masters/additionalcosts/listApps
+            let payload =  { Payload: {} };
+            let result = $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/additionalcosts/listApps`, payload).then((result) => {
+                const results = result.data?.payload;
+                let futureAdditionalCost = results.filter(e => e.costType.name !== "Total" || e.costType.name !== "Range")
+                ctrl.FilterAdditionalCost = futureAdditionalCost;
+            })
+        }
         ctrl.mapSpecParamKeyById = function(product) {
         	let mappedSpecParamKeys = [];
         	let object = product.sellers[0].offers[0].energyParameterValues;
