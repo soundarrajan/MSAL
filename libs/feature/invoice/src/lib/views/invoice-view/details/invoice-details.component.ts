@@ -2295,15 +2295,52 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     ) {
       // this.spinner.show();
       this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
+        if (typeof result == 'string') {
+          console.log('Format Additional costs');
+          this.formatAdditionalCosts();
+        }
         this.entityId = result;
         this.handleServiceResponse(result, 'Invoice saved successfully.');
       });
     } else {
       // this.spinner.show();
       this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
+        if (typeof result == 'string') {
+          console.log('Format Additional costs');
+          this.formatAdditionalCosts();
+        }
         this.handleServiceResponse(result, 'Invoice updated successfully.');
       });
     }
+  }
+
+  formatAdditionalCosts() {
+    for (let i = 0; i < this.formValues.costDetails.length; i++) {
+      if (this.formValues.costDetails[i].product) {
+        if (this.formValues.costDetails[i].product.id != -1) {
+          if (
+            this.formValues.costDetails[i].product.id !=
+            this.formValues.costDetails[i].deliveryProductId
+          ) {
+            this.formValues.costDetails[
+              i
+            ].product.productId = this.formValues.costDetails[i].product.id;
+            this.formValues.costDetails[
+              i
+            ].product.id = this.formValues.costDetails[i].deliveryProductId;
+          }
+        }
+      } else {
+        this.formValues.costDetails[i].product = {
+          id: -1,
+          name: 'All',
+          deliveryProductId: null
+        };
+      }
+    }
+
+    console.log(this.formValues.costDetails);
+    this.changeDetectorRef.detectChanges();
   }
 
   setAdditionalCostLine() {
