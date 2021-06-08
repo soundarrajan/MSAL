@@ -1,11 +1,7 @@
-﻿commit 2b3622a75e968d82a4beabd0141724dca6d3f329
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jun 7 21:06:42 2021 +0000
+﻿commit 3f5605c2f71ec07afc440b1228723fa69cc9b520
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Tue Jun 8 09:11:57 2021 +0530
 
-    Merged PR 11302: #32812 : Validation for Total Max SOD bug Fix
-    
-    #32812 : Validation for Total Max SOD bug Fix
-    
-    Related work items: #32812
+    Delivery Notes
 
 branch: master
