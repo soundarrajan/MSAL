@@ -100,6 +100,14 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                         ctrl.productFormFields = normalizeArrayToHash(ctrl.ui.product.fields, 'name');
                         ctrl.productColumns = normalizeArrayToHash(ctrl.ui.product.columns, 'name');
                         ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
+                        if (ctrl.tenantSettings) {
+                            if (ctrl.tenantSettings.fieldVisibility.isSupplyQuantityHidden) {
+                                delete ctrl.productColumns["supplyQuantity"];
+                            }
+                            if (ctrl.tenantSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
+                                delete ctrl.productColumns["supplyDeliveryDate"];
+                            }
+                        }                        
                         listsModel.getForSupplierPortal(ctrl.token).then((data) => {
                             ctrl.lists = data;
                             console.log(ctrl.lists);
