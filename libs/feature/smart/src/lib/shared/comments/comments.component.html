@@ -6,7 +6,7 @@
           <mat-icon id="searchIcon" matPrefix>search</mat-icon>
         </button>
         <div class="br">
-          <input id="messageSearch" [(ngModel)]="searchText" (keyup)="RetainOriginalBPComment($event.target.value)" type="text" placeholder="Search for messages">
+          <input id="messageSearch" [(ngModel)]="searchByComment" (keyup)="RetainOriginalBPComment($event.target.value)" type="text" placeholder="Search for messages">
         </div>
       </div>
 
@@ -14,9 +14,9 @@
         <div class="grey-box">
           <div class="section-title">Filter by Participants</div>
           <div class="available-comments">
-            <ng-container *ngFor="let item of BunkerPlanCommentList | groupByParticipant: searchText: 'createdBy.displayName': 'notes'">
+            <ng-container *ngFor="let item of BunkerPlanCommentList | groupByParticipant: '': 'createdBy.displayName': 'notes'; let i = index">
               <!-- Single Comment Start -->
-              <div class="comments-box" (click)="searchParticipantComment(item?.createdBy?.displayName)">
+              <div class="comments-box" [class.active-comment]="selectedIndex === i" (click)="searchParticipantComment(item?.createdBy?.displayName);selectedIndex=i;">
                 <div style="display: flex;">
                   <div class="comment-user">{{item?.createdBy?.displayName == loginUser? 'Me': ((item?.createdBy?.displayName) | commentDPFormat)}}</div>
                 </div>
@@ -42,10 +42,11 @@
       <div id="expanded-comments-wrapper" style="border-radius: 10px;">
         <div class="blue-tab" style="padding-bottom: 10px;">
           <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
-            <mat-tab label="Bunker Plan({{BunkerPlanCommentList.length}})">
-              <div [ngStyle]="{'height':!expanded?'42vh':'46vh'}" style="overflow-y: scroll;">
-                <ng-container *ngFor="let item of BunkerPlanCommentList | filterCommentByParticipant: 'createdBy.displayName':searchParticipant">
-                  <div class="comments-section">
+            <mat-tab label="Bunker Plan({{BPCommentsCount}})">
+              <div #BPCommentLength [ngStyle]="{'height':!expanded?'42vh':'46vh'}" style="overflow-y: scroll;">
+                <ng-container *ngFor="let item of BunkerPlanCommentList | filterCommentByParticipant: searchKey: searchText; let count = count">
+                  <div [attr.counttrigger]="(item!==-1)? BPCommentsCountFn(count): BPCommentsCountFn(0)"></div>
+                  <div class="comments-section" *ngIf="item!==-1">
                     <!-- Single Comment Start -->
                     <div class="dark-comment"> <!-- [ngClass]="{'blue-comment':item.placeholder == loginUser}" -->
                       <div class="row">
