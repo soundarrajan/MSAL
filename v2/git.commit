@@ -1,7 +1,7 @@
-﻿commit 3f5605c2f71ec07afc440b1228723fa69cc9b520
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Tue Jun 8 09:11:57 2021 +0530
+﻿commit 6434fcc8a05f08a5b10be8ecdb8ae12f5ab6000a
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Jun 8 09:42:36 2021 +0000
 
-    Delivery Notes
+    Merged PR 11322: Fixed red error when entering percent amount after leaving it blank(32983)
 
 branch: master
