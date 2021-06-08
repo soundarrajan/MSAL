@@ -82,6 +82,14 @@ export class ImportGsisAction{
   }
 }
 
+export class ImportGsisProgressAction{
+  static readonly type = '[Plan] Import GSIS Progress';
+
+  constructor(public value:any){
+
+  }
+}
+
 export class SendPlanAction{
   static readonly type = '[Plan] Import GSIS';
 
@@ -90,3 +98,10 @@ export class SendPlanAction{
   }
 }
 
+export class newVesselPlanAvailableAction{
+  static readonly type = '[Plan] newVesselPlanAvailable';
+
+  constructor(public value:any){
+
+  }
+}

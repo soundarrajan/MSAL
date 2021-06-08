@@ -3,7 +3,7 @@ import {ICellEditorAngularComp} from '@ag-grid-community/angular';
 import { Store } from '@ngxs/store';
 import { UpdateBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
 import { SaveBunkeringPlanState } from '../../store/bunker-plan/bunkering-plan.state';
-import { NoDataComponent } from '../../shared/no-data-popup/no-data-popup.component';
+import { WarningoperatorpopupComponent } from '../../shared/warningoperatorpopup/warningoperatorpopup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 
 
@@ -35,7 +35,7 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
     private cancelBeforeStart: boolean = false;
     public highlightAllOnFocus: boolean = true;
     public showInfoIcon : boolean = false;
-    public dialogRef: MatDialogRef<NoDataComponent>;
+    public dialogRef: MatDialogRef<WarningoperatorpopupComponent>;
     @Input('bplanType') 
     public set bplanType(v : any) {
       this.bplanType = v;
@@ -93,9 +93,9 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
         isSafePortRestricted = this.checkSafePortRestriction(this.params?.colDef?.field, this.params?.data?.detail_no);
           if(isSafePortRestricted === 'Y'){
             this.value = 0;
-            const dialogRef = this.dialog.open(NoDataComponent, {
+            const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
               width: '350px',
-              panelClass: 'confirmation-popup',
+              panelClass: 'confirmation-popup-operator',
               data : {message: 'You should enter only one safe port value for each product type'}
             });
           }

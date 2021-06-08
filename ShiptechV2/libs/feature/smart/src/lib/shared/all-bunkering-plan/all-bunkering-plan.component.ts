@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } from '@angular/core';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { LocalService } from '../../services/local-service.service';
 import { Select, Selector } from "@ngxs/store";
@@ -33,7 +32,6 @@ export class AllBunkeringPlanComponent implements OnInit {
   requestPayload : any = {};
   inputModel = '';
 
-  public dialogRef: MatDialogRef<NoDataComponent>;
   public countArray = [];//Temp Variable to store the count of accordions to be displayed
   public planId: any;
   public shipId: any;
