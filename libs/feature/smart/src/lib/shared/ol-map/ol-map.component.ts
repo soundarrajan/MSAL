@@ -137,19 +137,22 @@ export class OlMapComponent implements OnInit {
       name: 'European Region',
       count: '0',
       color: '#5780A6',
-      lonlat: [1698859.9306153469, 6262837.730208559]
+      // lonlat: [1698859.9306153469, 6262837.730208559],
+      lonlat: []
     },
     {
       name: 'N.America Region',
       count: '0',
       color: '#5780A6',
-      lonlat: [-11529522.794165753, 5795972.288921478]
+      // lonlat: [-11529522.794165753, 5795972.288921478],
+      lonlat: []
     },
     {
       name: 'Asia Region',
       count: '0',
       color: '#5780A6',
-      lonlat: [10143642.22417868, 7066005.284367598]
+      // lonlat: [10143642.22417868, 7066005.284367598],
+      lonlat: []
     }
   ];
 
@@ -340,7 +343,12 @@ export class OlMapComponent implements OnInit {
     });
     this.setCenter();
     this.portMakersLayer.setVisible(true);
-    this.loadPorts();
+    this.mapService.getLocationsListForMap(" ").subscribe(res => {
+      if (res.payload != undefined) {
+        this.portList = res.payload;
+        this.loadPorts(" ");
+      }
+    })
     this.loadFilterData();
 
     // this.loadRoute();
@@ -501,14 +509,10 @@ export class OlMapComponent implements OnInit {
     }
   }
 
-
-  loadPorts() {
-    this.mapService.getLocationsListForMap(" ").subscribe(res => {
-      if (res.payload != undefined) {
-        this.portList = res.payload;
-        let portMakesrs = [];
+  createPortMakeSrs(ports : any ){
+    let portMakesrs = [];
         this.getCurrentTime();
-        for (let port of this.portList) {
+        for (let port of ports) {
           let marker = new OlFeature({
             id: 'PID' + port.locationId, type: 'port', data: port,
             geometry: new OlPoint(fromLonLat([port.locationLongitude, port.locationLatitude]))
@@ -518,8 +522,17 @@ export class OlMapComponent implements OnInit {
         }
         if (portMakesrs.length > 0)
           this.portMakersLayer.getSource().addFeatures(portMakesrs);
-      }
-    });
+  }
+
+  loadPorts(filter) {
+    this.portMakersLayer.getSource().clear();
+    if(filter == " " || filter == "Unmanageable Vessels"){
+      this.createPortMakeSrs(this.portList);
+    }
+    else {
+      this.createPortMakeSrs(this.portList.filter(item => item.regionName == filter));
+    }   
+
   }
 
   loadFilterData(){
@@ -1102,31 +1115,39 @@ export class OlMapComponent implements OnInit {
         case 'All My Vessels': {
           this.selectedFillterTag = null;
           this.loadVessels(" ");
+          this.loadPorts(" ")
           this.setCenter();
           break;
         }
         case 'Unmanageable Vessels': {
           this.selectedFillterTag = item.name;
           this.loadVessels('Unmanageable Vessels')
+          this.loadPorts('Unmanageable Vessels')
           this.setCenter();
           break;
         }
         case 'European Region': {
           this.selectedFillterTag = item.name;
-          this.flyTo(item.lonlat, () => { this.isLoading = false }, 4.2);
+          //this.flyTo(item.lonlat, () => { this.isLoading = false }, 4.2);
           this.loadVessels('Europe');
+          this.loadPorts('Europe')
+          this.setCenter();
           break;
         }
         case 'N.America Region': {
           this.selectedFillterTag = item.name;
-          this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
+          //this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('North America');
+          this.loadPorts('North America')
+          this.setCenter();
           break;
         }
         case 'Asia Region': {
           this.selectedFillterTag = item.name;
-          this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
+          //this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('Asia');
+          this.loadPorts('Asia');
+          this.setCenter();
           break;
         }
       }
@@ -1134,17 +1155,6 @@ export class OlMapComponent implements OnInit {
     else
       this.selectedFillterTag = null;
 
-
-    // if (item != null && item.name != "All My Vessels") {
-    //   this.selectedFillterTag = this.selectedFillterTag != item.name ? item.name : null;
-    // }
-    // else
-    //   this.selectedFillterTag = null;
-
-    // if (this.selectedFillterTag)
-    //   this.loadVessels(true)
-    // else
-    //   this.loadVessels(false);
   }
 
   //Events - start
