@@ -36,12 +36,7 @@ angular
                     window.actionLevel = event.target.outerText.trim();
                 }
 
-            });
-            
-            $rootScope.$on('$locationChangeStart', (event, next, current) => {
-                let activePage = window.location.href.replace('/#/', '/');
-                window.strum('routeChange', activePage);
-            });
+            });            
 
 
             console.log(adalService);
