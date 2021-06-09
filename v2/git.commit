@@ -1,9 +1,11 @@
-﻿commit d9683d06f6bbf8261d693bd9bdc34dcf3eabb65f
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Wed Jun 9 15:04:57 2021 +0530
+﻿commit 52594ce4647d2c0452c6ae8372902304567cd9aa
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 9 11:13:14 2021 +0000
 
-    VSTS - 32217,32828,32779
+    Merged PR 11358: #32574 : bug fix
     
-    VSTS - 32217,32828,32779
+    #32574 : bug fix
+    
+    Related work items: #32574
 
 branch: master
