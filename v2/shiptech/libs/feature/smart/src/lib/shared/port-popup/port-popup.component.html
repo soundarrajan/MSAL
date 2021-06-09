@@ -59,35 +59,35 @@
 
                 <div class="voyage-details-header popup-header-icon">
                   <div>
-                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg"
+                    <img class="icon-circle-background" src="../../../assets/customicons/calendar.svg"
                       alt="community-icon">
                   </div>
                   <div
                     style="flex:0 0 28%;display: flex;align-items: flex-start;flex-direction: column;margin-left: 4px;">
                     <div class="label">Earliest Trading Time </div>
                     <div class="value">
-                      {{popup_data.earliestTradingTime}}</div>
+                      {{popup_data.earliestTradingTime}} Days</div>
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div>
-                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg"
+                    <img class="icon-circle-background" src="../../../assets/customicons/calendar.svg"
                       alt="community-icon">
                   </div>
                   <div
                     style="flex:0 0 28%;display: flex;align-items: flex-start;flex-direction: column;margin-left: 4px;">
                     <div class="label">Latest Trading Time </div>
                     <div class="value">
-                      {{popup_data.latestTradingTime}}</div>
+                      {{popup_data.latestTradingTime}} Days</div>
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div class="link" style="flex:0 0 16%;">
-                    Link to <br> Port Master
+                    <a href="{{shiptechUrl}}/#/masters/location/edit/{{popup_data.locationId}}" target="_blank" rel="noopener">Link to <br> Port Master</a>    
                   </div>
                 </div>
               </div>
 
               <div class="row product-category">
-                <div class="col-7 row available m-0 pd-0">
+                <div class="col-12 row available m-0 pd-0">
                   <div class="col-12 label">Available product category</div>
                   <div style="width: 100%; display: flex;padding-left: 15px;">
                     <div *ngFor="let prod of popup_data.avlProdCategory" class="value">
@@ -95,14 +95,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-5 not-available m-0 pd-0">
+                <!-- <div class="col-5 not-available m-0 pd-0">
                   <div class="col-12 label">Non Available</div>
                   <div style="width: 100%; display: flex;padding-left: 15px;">
                     <div *ngFor="let prod of popup_data.notavlProdCategory" class="value">
                       {{prod}}
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -821,45 +821,57 @@
             (opened)="changeDefault()">
             <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
               <mat-panel-title>
-                <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                 Agents Information
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div *ngIf="fifth.expanded" class="">
               <div class="agents-info-panel" *ngFor="let item of agentsInfo">                                                      
                   <div>
-                    <img src="../../../assets/customicons/mail.svg" alt="mail-icon" style="margin-right: 7px;"><span class="link">{{item.email}}</span>
+                    <img src="./assets/customicons/mail.svg" alt="mail-icon" style="margin-right: 7px;"><span class="link">{{item.email}}</span>
                   </div>                  
               </div>
             </div>
           </mat-expansion-panel>
-            <mat-expansion-panel #sixth id="other-port" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
-              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
-                <mat-panel-title>
-                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
-                  Other Port Details
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <div *ngIf="sixth.expanded" class="otherport-details">
-                <ng-container>
-                  <div class="single-detail" *ngFor="let item of otherPorts">
-                    <div class="detail"
-                      *ngIf="item.detail!='ECA Region' ||(popup_data.name!='Kochi' && item.detail=='ECA Region');else elseBlock">
-                      <div>{{item.detail}}<span *ngIf="item.subdetail" class="subdata">{{item.subdetail}}</span></div>
-                      <div class="yes-or-no" [ngClass]="item.value==1?'yes':'no'">{{item.value==1?'YES':'NO'}}</div>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-template #elseBlock>
-                  <div class="detail">
-                    <div>ECA Region<span class="baltic-region">1250 NMs away</span><span
-                        class="baltic-region">Baltic</span></div>
-                    <div class="yes-or-no no">NO</div>
-                  </div>
-                </ng-template>
+          <mat-expansion-panel #sixth id="other-port" hideToggle="true" (closed)="changeDefault()"
+          (opened)="changeDefault()">
+          <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+            <mat-panel-title>
+              <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+              Other Details
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngIf="sixth.expanded" class="otherport-details">
+            <ng-container>
+              <div class="single-detail">
+                <div class="detail">
+                  <div>Pretest Available</div>
+                  <div class="yes-or-no" [ngClass]="otherPorts.pretestAvailable == 'NO'? 'no': 'yes'">{{otherPorts.pretestAvailable == 'NO'? 'NO': 'YES'}}</div>
+                </div>
+                <div class="detail"
+                  *ngIf="otherPorts.ecaRegion =='YES';else elseBlock">
+                  <div>ECA REGION<span class="subdata">{{otherPorts.region}}</span>
+                    <span class="subdata">{{otherPorts.distanceSECAArea}} Nms away</span></div>
+                  <div class="yes-or-no yes">YES</div>
+                </div>
+                <div class="detail">
+                  <div>Mandatory LSDIS port</div>
+                  <div class="yes-or-no" [ngClass]="otherPorts.mandatoryLSDISPort == 'NO'? 'no': 'yes'">{{otherPorts.mandatoryLSDISPort == 'NO'? 'NO': 'YES'}}</div>
+                </div>
+                <div class="detail">
+                  <div>Scrubber not Allowed</div>
+                  <div class="yes-or-no" [ngClass]="otherPorts.scrubberNotAllowed == 'NO'? 'no': 'yes'">{{otherPorts.scrubberNotAllowed == 'NO'? 'NO': 'YES'}}</div>
+                </div>
               </div>
-            </mat-expansion-panel>
+            </ng-container>
+            <ng-template #elseBlock>
+              <div class="detail">
+                <div>ECA Region</div>
+                <div class="yes-or-no no">NO</div>
+              </div>
+            </ng-template>
+          </div>
+        </mat-expansion-panel>
           </mat-accordion>
         </div>
       </div>
