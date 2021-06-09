@@ -5,6 +5,7 @@ import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { LoggerService } from '../../services/logger.service';
 import { LocalService } from '../../services/local-service.service';
+import { PortPopupService } from '../../services/port-popup.service';
 
 @Component({
   selector: 'app-port-popup',
@@ -33,7 +34,7 @@ export class PortPopupComponent implements OnInit {
   public count = 0;//to serve as ID of alerts
   public theme: boolean = true;
 
-  constructor(private logger: LoggerService,private localService: LocalService) { }
+  constructor(private logger: LoggerService,private localService: LocalService, private portService : PortPopupService) { }
   @Input() status: string = "standard-view";
   @Input('portData') popup_data;
   @Output() closePopup = new EventEmitter();
@@ -80,22 +81,23 @@ export class PortPopupComponent implements OnInit {
         value: '1'
       }
     ]
-    this.agentsInfo = [
-      {
-        name: 'Bernard Ingstmann',
-        initials: 'BI',
-        address: '99 Meadow City, Aden',
-        tele: '+140-9048776333',
-        email: 'b.stmann@stbunkers.com'
-      },
-      {
-        name: 'Chris Kristen',
-        initials: 'CK',
-        address: '99 Meadow City, Aden',
-        tele: '+140-9039088574',
-        email: 'c.kristen@stbunkers.com'
-      }
-    ]
+    this.loadAgentInfo(this.popup_data.locationId);
+    // this.agentsInfo = [
+    //   {
+    //     name: 'Bernard Ingstmann',
+    //     initials: 'BI',
+    //     address: '99 Meadow City, Aden',
+    //     tele: '+140-9048776333',
+    //     email: 'b.stmann@stbunkers.com'
+    //   },
+    //   {
+    //     name: 'Chris Kristen',
+    //     initials: 'CK',
+    //     address: '99 Meadow City, Aden',
+    //     tele: '+140-9039088574',
+    //     email: 'c.kristen@stbunkers.com'
+    //   }
+    // ]
     this.hsfo = [
       { prd: 'RMG18005' },
       { prd: 'RMG38005' },
@@ -170,6 +172,16 @@ export class PortPopupComponent implements OnInit {
 
 
   ];
+
+  loadAgentInfo(locationId){
+    let req = { LocationId : locationId}
+    this.portService.getAgentInfo(req).subscribe((res: any)=>{
+      if(res.payload != undefined){
+        this.agentsInfo = res.payload
+      }
+    })
+
+  }
 
   saveRemark() {
     this.alerts.push(

@@ -817,30 +817,21 @@
               </div>
             </mat-expansion-panel>
             <mat-expansion-panel #fifth id="agents-info" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
-              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
-                <mat-panel-title>
-                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
-                  Agents Information
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <div *ngIf="fifth.expanded" class="agents-info-container">
-                <div class="info" *ngFor="let item of agentsInfo">
-                  <div class="circle">{{item.initials}} </div>
-                  <div class="name">{{item.name}}
-                  </div>
-                  <div class="address">{{item.address}}</div>
-                  <div class="contact">
-                    <div>
-                      <img src="./assets/customicons/telephone.svg" alt="telephone-icon">{{item.tele}}
-                    </div>
-                    <div>
-                      <img src="./assets/customicons/mail.svg" alt="mail-icon">{{item.email}}
-                    </div>
-                  </div>
-                </div>
+            (opened)="changeDefault()">
+            <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+              <mat-panel-title>
+                <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                Agents Information
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="fifth.expanded" class="">
+              <div class="agents-info-panel" *ngFor="let item of agentsInfo">                                                      
+                  <div>
+                    <img src="../../../assets/customicons/mail.svg" alt="mail-icon" style="margin-right: 7px;"><span class="link">{{item.email}}</span>
+                  </div>                  
               </div>
-            </mat-expansion-panel>
+            </div>
+          </mat-expansion-panel>
             <mat-expansion-panel #sixth id="other-port" hideToggle="true" (closed)="changeDefault()"
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
