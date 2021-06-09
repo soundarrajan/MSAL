@@ -6,7 +6,19 @@ import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.co
 import { LoggerService } from '../../services/logger.service';
 import { LocalService } from '../../services/local-service.service';
 import { PortPopupService } from '../../services/port-popup.service';
-
+export interface IPortGrade {
+  'HSFO': string[];
+  'ULSFO': string[];
+  'DIS': string[];
+}
+export interface IPortProduct {
+  "productType": string;
+  "bopsProductType": string;
+  "maxTransferRate": string;
+  "minSupplyQty": string;
+  "maxSupplyQty": string;
+  "lowestGradeProductName": string;
+}
 @Component({
   selector: 'app-port-popup',
   templateUrl: './port-popup.component.html',
@@ -33,6 +45,9 @@ export class PortPopupComponent implements OnInit {
   public description = "";
   public count = 0;//to serve as ID of alerts
   public theme: boolean = true;
+  PortProductAvailability: any;
+  PortProductList: IPortProduct[] = [];
+  PortGradeList: IPortGrade;
 
   constructor(private logger: LoggerService,private localService: LocalService, private portService : PortPopupService) { }
   @Input() status: string = "standard-view";
@@ -118,7 +133,7 @@ export class PortPopupComponent implements OnInit {
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       //enableColResize: false,
-      //enableSorting: false,
+      // enableSorting: false,
       animateRows: false,
       headerHeight: 22,
       rowHeight: 30,
@@ -131,7 +146,7 @@ export class PortPopupComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
-        this.gridOptions.api.setRowData(this.rowData);
+        this.gridOptions.api.setRowData(this.PortProductList);
 
       },
     };
@@ -139,7 +154,44 @@ export class PortPopupComponent implements OnInit {
   ngAfterViewInit() {
     this.logger.logInfo('PortPopupComponent-ngAfterViewInit()', new Date());
   }
+  loadPortProductAvailability() {
+    // let payloadReq = {'LocationId': 37}
+    let payloadReq = {'LocationId': this.popup_data.locationId}
+    
+    this.portService.getPortProductAvailability(payloadReq).subscribe(async (response) => {
+      console.log(response);
+      this.PortProductAvailability = response?.payload;
+      this.PortProductList = this.PortProductAvailability?.smartPortProductDtos;
+      //apply row data to ag grid
+      this.gridOptions.api.setRowData(this.PortProductList);
+      this.PortGradeList = await this.formatPortGrade(this.PortProductAvailability?.smartPortGradeDtos);
+      this.triggerEventToUpdate();
+    })
+  }
+  async formatPortGrade(portgrade) {
+    let portGradeArr = {'HSFO': [], 'ULSFO': [], 'DIS': []};
+    var promises = new Promise(resolve => {
+        portgrade.forEach((element, index) => {
+        console.log(element);
+        portGradeArr['HSFO'].push(element.hsfO35);
+        portGradeArr['ULSFO'].push(element.hsfO05);
+        portGradeArr['DIS'].push(element.dis);
+        if(portgrade.length == index+1) { resolve(true) }
+      });
+    });
+    await Promise.all([promises]);
+    return portGradeArr;
+  }
+  
+  triggerEventToUpdate() {
+    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+      titleEle.click();
+  }
+
   public changeDefault() {
+    if(this.third?.expanded) {
+      this.loadPortProductAvailability();
+    }
     // if (this.second.expanded && !this.third.expanded && !this.fourth.expanded && !this.fifth.expanded && !this.sixth.expanded) {
     //   this.defaultView = true;
     // }
@@ -149,29 +201,29 @@ export class PortPopupComponent implements OnInit {
 
   private columnDefs = [
 
-    { headerName: 'Product ID', field: 'productid', headerTooltip: 'Product ID', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['font-bold aggrid-content-c '] },
-    { headerName: 'Max Pump.Rate', field: 'maxpumprate', headerTooltip: 'Max Pump.Rate', width: 70, cellClass: ['aggrid-text-align-r '], cellRendererFramework: AGGridCellRendererComponent },
-    { headerName: 'Min Supply Qty', field: 'minsupqty', headerTooltip: 'Min Supply Qty', width: 55, cellClass: ['aggrid-text-align-r '], cellRendererFramework: AGGridCellRendererComponent },
-    { headerName: 'Max Supply Qty', field: 'maxsupqty', headerTooltip: 'Max Supply Qty', width: 70, cellClass: ['aggrid-text-align-r '], cellRendererFramework: AGGridCellRendererComponent },
-    { headerName: 'Lowest Grade', field: 'lowestgrade', headerTooltip: 'Lowest Grade', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c'] }
+    { headerName: 'Product ID', field: 'productType', headerTooltip: 'Product ID', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['font-bold aggrid-content-c '] },
+    { headerName: 'Max Pump.Rate', field: 'maxTransferRate', headerTooltip: 'Max Pump.Rate', width: 70, cellClass: ['aggrid-text-align-r '], cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Min Supply Qty', field: 'minSupplyQty', headerTooltip: 'Min Supply Qty', width: 55, cellClass: ['aggrid-text-align-r '], cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Max Supply Qty', field: 'maxSupplyQty', headerTooltip: 'Max Supply Qty', width: 70, cellClass: ['aggrid-text-align-r '], cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Lowest Grade', field: 'lowestGradeProductName', headerTooltip: 'Lowest Grade', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c'] }
   ];
 
-  private rowData = [
-    {
-      productid: 'HSFO', maxpumprate: '1500 mt/h', minsupqty: '100 mt', maxsupqty: '12000 mt', lowestgrade: 'RMK850'
-    },
-    {
-      productid: 'ULSFO', maxpumprate: '1500 mt/h', minsupqty: '30 mt', maxsupqty: '12000 mt', lowestgrade: 'RMD8001'
-    },
-    {
-      productid: 'LSDIS', maxpumprate: '1500 mt/h', minsupqty: '30 mt', maxsupqty: '12000 mt', lowestgrade: 'DMA01'
-    },
-    {
-      productid: 'HSFO 0.5', maxpumprate: '1500 mt/h', minsupqty: '100 mt', maxsupqty: '12000 mt', lowestgrade: 'RMK85005'
-    },
+  // private rowData = [
+  //   {
+  //     productid: 'HSFO', maxpumprate: '1500 mt/h', minsupqty: '100 mt', maxsupqty: '12000 mt', lowestgrade: 'RMK850'
+  //   },
+  //   {
+  //     productid: 'ULSFO', maxpumprate: '1500 mt/h', minsupqty: '30 mt', maxsupqty: '12000 mt', lowestgrade: 'RMD8001'
+  //   },
+  //   {
+  //     productid: 'LSDIS', maxpumprate: '1500 mt/h', minsupqty: '30 mt', maxsupqty: '12000 mt', lowestgrade: 'DMA01'
+  //   },
+  //   {
+  //     productid: 'HSFO 0.5', maxpumprate: '1500 mt/h', minsupqty: '100 mt', maxsupqty: '12000 mt', lowestgrade: 'RMK85005'
+  //   },
 
 
-  ];
+  // ];
 
   loadAgentInfo(locationId){
     let req = { LocationId : locationId}
