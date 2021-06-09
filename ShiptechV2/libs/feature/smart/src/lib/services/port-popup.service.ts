@@ -11,6 +11,8 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 export namespace PortPopupApiPaths{
     export const getAgentInfo = () => `api/Smart/Port/getPortAgentInfo`;
     export const getPortProductAvailability = () => `api/Smart/Port/getPortProductAvailability`;
+    export const getOtherDetails = () => `api/Smart/Port/getPortOtherDetails`;
+    export const getPortBasicInfo = () => `api/Smart/Port/getPortBasicInfo`;
 }
 
 @Injectable({
@@ -24,6 +26,14 @@ export class PortPopupService{
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
   @ObservableException()
+  getPortBasicInfo(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${PortPopupApiPaths.getPortBasicInfo()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
   getAgentInfo(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${PortPopupApiPaths.getAgentInfo()}`,
@@ -35,6 +45,13 @@ export class PortPopupService{
   getPortProductAvailability(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${PortPopupApiPaths.getPortProductAvailability()}`,
+      { payload: request }
+    );
+  }
+  
+  getOtherDetails(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${PortPopupApiPaths.getOtherDetails()}`,
       { payload: request }
     );
   }

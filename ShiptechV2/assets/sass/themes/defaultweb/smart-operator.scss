@@ -169,7 +169,7 @@ body {
 	width: 16px;
 	text-align: center;
 	height: 16px;
-	right: 55px;
+	right: 21px;//55px;
 	position: absolute;
 	border-radius: 50%;
 	top: 11px;
@@ -6229,8 +6229,8 @@ label {
 				font-size: 12px;
 				line-height: 16px;
 				color: $popup_blue;
-				margin: 0px 11px;
-				padding: 0px 10px;
+				margin-left: 5px;
+    			padding: 0px 5px;
 				//border-left: 1px solid rgba(84, 97, 122, 0.2);
 				;
 			}
