@@ -1,11 +1,11 @@
 <div
   fxLayout="row"
   fxLayoutAlign="start center"
-  class="page-bar h-40"
+  class="page-bar h-40 toolbar-fixed"
   >
   <shiptech-breadcrumbs class="col-md-6">
   </shiptech-breadcrumbs>
-  <div class="st-breadcrumbs-progress-bar col-md-6">
+  <div class="st-breadcrumbs-progress-bar col-md-6" style="margin: 0px 15px;">
     <ul class="page-breadcrumb">
       <li *ngFor="let navItem of navigationItems" class="btn btn-fit-height {{navItem.indexStatus}}"  title="{{navItem.entityId}}" >          
         <a *ngIf="navItem.url" href="{{navItem.url}}" class="breadcrumb-a">
@@ -21,7 +21,7 @@
 
 <shiptech-wunderbar>
   <!-- TODO: Remove inline style-->
-  <div class="row" style="margin: 5px 0;">
+  <div class="row" style="margin: 0px;">
     <div class="d-flex contract-topbar">
       <div class="shiptech-tab ui-tabmenu ui-widget ui-widget-content ui-corner-all">
         <ul class="ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">

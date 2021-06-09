@@ -6,7 +6,7 @@
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
   border-radius: 4px;
-  margin-top: 15px;
+  //margin-top: 15px;
 }
 
 .product-based-table thead tr {
@@ -45,4 +45,10 @@
 .product-based-info {
   margin-bottom: unset  !important;
   width: 100%;
+}
+
+.table-with-scroll{
+  border: 1px solid #E0E1E4;
+  overflow-y: auto;
+  height: 220px;
 }

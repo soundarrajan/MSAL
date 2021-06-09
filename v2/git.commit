@@ -1,11 +1,9 @@
-﻿commit cdf2f242b0577e0812313ddca1e0388a1b24fa77
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 9 07:52:57 2021 +0000
+﻿commit d9683d06f6bbf8261d693bd9bdc34dcf3eabb65f
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Wed Jun 9 15:04:57 2021 +0530
 
-    Merged PR 11351: #29775 Req : Port details: View Agents information  & Header User Initials Removal
+    VSTS - 32217,32828,32779
     
-    #29775 Port details: View Agents information & Header User Initials Removal
-    
-    Related work items: #29775, #32948
+    VSTS - 32217,32828,32779
 
 branch: master
