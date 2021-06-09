@@ -731,6 +731,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       } else {
         this.calculationForRanegAndTotal();
       }
+      this.calculateDifference();
 
       //For Due Date
       this.initialDueDate = this.formValues.dueDate;
@@ -1068,6 +1069,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
   }
 
+  calculateDifference() {
+    if (this.formValues.costDetails) {
+      for (let i = 0; i < this.formValues.costDetails.length; i++) {}
+    }
+  }
+
   getEstimatedRateAndAmount(additionalCost, rowIndex) {
     if (!additionalCost.locationAdditionalCostId) {
       return;
@@ -1082,7 +1089,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       return;
     }
 
-    if (!additionalCost.invoiceQuantity) {
+    if (!additionalCost.deliveryQuantity) {
       return;
     }
 
@@ -1092,9 +1099,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         Filters: [
           {
             ColumnName: 'ProductId',
-            Value: additionalCost.product
+            Value: additionalCost.product.productId
               ? additionalCost.product.productId
-              : null
+              : additionalCost.product.id
           },
           {
             ColumnName: 'LocationId',
@@ -1153,6 +1160,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
               this.formValues.costDetails[rowIndex].estimatedExtrasAmount
             ) +
             parseFloat(this.formValues.costDetails[rowIndex].estimatedAmount);
+          this.formValues.costDetails[rowIndex].difference =
+            parseFloat(
+              this.formValues.costDetails[rowIndex].invoiceTotalAmount
+            ) -
+            parseFloat(
+              this.formValues.costDetails[rowIndex].estimatedTotalAmount
+            );
           this.invoiceConvertUom('cost', rowIndex);
         }
       });
