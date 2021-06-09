@@ -30,7 +30,12 @@
         </div>
         <mat-menu #menuAllowedLocations="matMenu" class="allowed-locations-modal ">
           <div style="height: 265px;">
-            <div class="col-md-12 header-container-company">
+            <div class="col-md-12 row company-container-header header-allowed">
+              <div class="header-allowed-name">
+                Allowed locations
+              </div>
+            </div>
+            <div class="col-md-12 header-container-hcompany">
               <div class="select-company-container col-md-10">
                 <span class="search-company-lookup">
                 </span>
@@ -41,12 +46,7 @@
                       [formControl]="allowedLocationSearch"
                       (click)="$event.stopPropagation();$event.preventDefault();">
               </div>
-            </div>
-            <div class="col-md-12 row company-container-header header-allowed">
-              <div class="header-allowed-name">
-                Allowed locations
-              </div>
-            </div>
+            </div>          
             <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let location of filteredAllowedLocationOptions | async">
               <mat-checkbox [(ngModel)]="location.isSelected">
                 {{location.name}}
@@ -90,7 +90,12 @@
         </div>
         <mat-menu #menuAllowedProducts="matMenu" class="allowed-locations-modal ">
           <div style="height: 265px;">
-            <div class="col-md-12 header-container-company">
+            <div class="col-md-12 row company-container-header header-allowed">
+              <div class="header-allowed-name">
+                Allowed products
+              </div>
+            </div>
+            <div class="col-md-12 header-container-hcompany">
               <div class="select-company-container col-md-10">
                 <span class="search-company-lookup">
                 </span>
@@ -102,18 +107,13 @@
                       (click)="$event.stopPropagation();$event.preventDefault();">
               </div>
             </div>
-            <div class="col-md-12 row company-container-header header-allowed">
-              <div class="header-allowed-name">
-                Allowed products
-              </div>
-            </div>
             <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let product of filteredAllowedProductOptions | async">
               <mat-checkbox [(ngModel)]="product.isSelected">
                 {{product.name}}
               </mat-checkbox>
             </div>
           </div>
-          <div class="saveProducts prod">
+          <div class="saveProducts">
             <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
             style="float: right;"
             pButton

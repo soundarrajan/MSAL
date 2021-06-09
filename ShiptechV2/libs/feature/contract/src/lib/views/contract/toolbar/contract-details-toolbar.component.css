@@ -322,3 +322,11 @@ a.breadcrumb-a:hover {
   border-bottom: 3px solid #1fbbe6 !important;
   padding-top: 5px !important;
 }
+
+.toolbar-fixed{
+    position: fixed;
+    z-index: 9;
+    width: 100%;
+    left: 20px;
+    top:40px
+}

@@ -273,8 +273,8 @@
   box-shadow: 0px 6px 7px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
   padding: 15px;
-  min-width: 235px !important;
-  width: fit-content;
+  //min-width: 370px !important;
+  width: 385px !important;
   max-width: unset !important;
  // max-height: fit-content;
   //position: relative;
@@ -522,9 +522,21 @@
   position: fixed;
   background: #364150;
   margin: 23px -16px;
-  width: 354px;
+  width: 385px !important;
   padding: 10px;
-  &.prod{
-    width: 352px !important;
-  }
+}
+
+.company-container-header {
+  padding: 0px 15px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+
+.header-container-hcompany{
+  display: inline-flex;
+  padding: 10px 2px;
 }
