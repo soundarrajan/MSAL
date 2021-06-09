@@ -1,9 +1,7 @@
-﻿commit 5588e956c64896b3e4dad8a5750ad0e042ac504e
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jun 9 13:13:05 2021 +0000
+﻿commit 1152788b53ed602337820090d7951252c16fb885
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Jun 9 17:30:25 2021 +0300
 
-    Merged PR 11363: Fixed invoice barge cost issues(33051, 33049)
-    
-    Fixed invoice barge cost issues
+    Removed sematext in v2
 
 branch: master
