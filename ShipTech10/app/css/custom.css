@@ -4407,6 +4407,8 @@ a[disabled]{
     font-size: 16px !important;
     z-index: 9999;
 	transform: translateY(-100%); /* translateX(-100%); */
+    right: 0 !important;
+    left: initial !important;
 }
 
 table#new_order_products td {
