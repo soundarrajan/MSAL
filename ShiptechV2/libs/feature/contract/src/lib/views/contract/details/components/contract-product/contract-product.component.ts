@@ -1659,13 +1659,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   changeAdditionalCostList(locationId) {
     console.log(this.additionalCostList);
     console.log(this.additionalCostForLocation[locationId]);
-    let filterElements = _.filter(
-      this.additionalCostForLocation[locationId],
-      function(object) {
-        return !object.isDeleted;
-      }
+    let newAdditionalCostList = _.cloneDeep(
+      this.additionalCostForLocation[locationId]
     );
-    let newAdditionalCostList = _.cloneDeep(filterElements);
     for (let j = 0; j < this.additionalCostList.length; j++) {
       let additionalCostFromCache = this.additionalCostList[j];
       let findAdditionalCostLineIndex = _.findIndex(
@@ -1683,7 +1679,40 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.additionalCostForLocation[locationId] = _.cloneDeep(
       newAdditionalCostList
     );
+    this.formatAdditionalCostIds(locationId);
     this.changeDetectorRef.detectChanges();
+  }
+
+  formatAdditionalCostIds(locationId) {
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      for (
+        let j = 0;
+        j < this.formValues.products[i].additionalCosts.length;
+        j++
+      ) {
+        if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
+          if (this.formValues.products[i].additionalCosts[j].additionalCost) {
+            let additionalLocationId = this.formValues.products[i]
+              .additionalCosts[j].locationAdditionalCostId;
+            let findLocationId = _.findIndex(
+              this.additionalCostForLocation[locationId],
+              function(object: any) {
+                return object.locationid == additionalLocationId;
+              }
+            );
+            if (findLocationId != -1) {
+              this.formValues.products[i].additionalCosts[
+                j
+              ].additionalCost.locationid = this.formValues.products[
+                i
+              ].additionalCosts[j].locationAdditionalCostId;
+            }
+          }
+        }
+      }
+    }
+
+    console.log(this.formValues);
   }
 
   ngAfterViewInit(): void {}

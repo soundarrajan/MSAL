@@ -1076,10 +1076,29 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   compareAdditionalCostObjects(object1: any, object2: any) {
-    if (object1 && object2 && object1.additionalCostid) {
+    if (
+      object1 &&
+      object2 &&
+      object1.additionalCostid &&
+      object2.id &&
+      object1.locationid &&
+      object2.locationid
+    ) {
+      return (
+        object1 &&
+        object2 &&
+        object1.additionalCostid == object2.id &&
+        object1.locationid == object2.locationid
+      );
+    } else if (
+      object1 &&
+      object2 &&
+      object1.additionalCostid &&
+      object2.id &&
+      !object1.locationid &&
+      !object2.locationid
+    ) {
       return object1 && object2 && object1.additionalCostid == object2.id;
-    } else if (object1 && object2 && !object1.additionalCostid) {
-      return object1 && object2 && object1.id == object2.id;
     }
   }
 
@@ -1255,6 +1274,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         ? additionalCostLine.locationid
         : null;
 
+    this.formValues.products[key1].additionalCosts[key2].additionalCostid =
+      additionalCostLine && additionalCostLine.additionalCostid
+        ? additionalCostLine.additionalCostid
+        : null;
     console.log(additionalCostLine);
   }
 
@@ -1263,7 +1286,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (value.additionalCostid) {
       this.formValues.products[key1].additionalCosts[key2].additionalCost = {
         id: value.additionalCostid,
-        name: value.name
+        name: value.name,
+        locationid: value.locationid
       };
     } else {
       this.formValues.products[key1].additionalCosts[key2].additionalCost = {
