@@ -47,7 +47,7 @@ export class ClaimDetailsComponent implements OnInit {
   }
 
   amountFormatValue(value) {
-    if (typeof value != 'string') {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');

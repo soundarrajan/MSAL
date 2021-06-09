@@ -627,7 +627,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
   }
 
-
   priceFormatValue(value, pricePrecision) {
     if (typeof value == 'undefined' || value == null) {
       return null;
@@ -638,10 +637,11 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       return null;
     }
     var productPricePrecision = this.tenantService.pricePrecision;
-    if(pricePrecision !== null) {
-        productPricePrecision = pricePrecision;
+    if (pricePrecision !== null) {
+      productPricePrecision = pricePrecision;
     }
-    this.priceFormat = '1.' + productPricePrecision + '-' + productPricePrecision;    
+    this.priceFormat =
+      '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
       if (productPricePrecision == 0) {
         return plainNumber;
@@ -649,10 +649,10 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         return this._decimalPipe.transform(plainNumber, this.priceFormat);
       }
     }
-  }  
+  }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined' || value == null) {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');

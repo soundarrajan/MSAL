@@ -375,6 +375,9 @@ export class VesselLocationBased extends DeliveryAutocompleteComponent
   }
 
   amountFormatValue(value) {
+    if (typeof value == 'undefined' || !value) {
+      return null;
+    }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
     if (isNaN(number)) {
