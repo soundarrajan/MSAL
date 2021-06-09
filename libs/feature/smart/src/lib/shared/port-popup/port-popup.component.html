@@ -243,39 +243,40 @@
               </mat-expansion-panel-header>
               <div *ngIf="third.expanded" style="border-bottom: 2px solid rgba(13, 18, 24, 0.2);">
                 <div class="row">
-                  <div class="col-3 ">
+                  <div class="col-3">
                     <div class="label link">HSFO</div>
                     <div class="product-list">
-                      <ul>
-                        <li *ngFor="let item of hsfo">
-                          <span [title]="item.prd">{{item.prd}}</span></li>
+                      <ul *ngIf="this.PortGradeList?.HSFO.length > 0;else emptyBlock">
+                        <li *ngFor="let item of this.PortGradeList?.HSFO">
+                          <span [title]="item">{{item}}</span></li>
                       </ul>
+                      <ng-template #emptyBlock>
+                        <ul>
+                          <li>-</li>
+                        </ul>
+                      </ng-template>
                     </div>
                   </div>
                   <div class="col-3">
-                    <div class="label link">ULSFO</div>
+                    <div class="label link">VLSFO</div>
                     <div class="product-list">
-                      <ul>
-                        <li *ngFor="let item of ulsfo">
-                          <span [title]="item.prd">{{item.prd}}</span></li>
+                      <ul *ngIf="this.PortGradeList?.ULSFO.length > 0;else emptyBlock">
+                        <li *ngFor="let item of this.PortGradeList?.ULSFO">
+                          <span [title]="item">{{item}}</span></li>
                       </ul>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="label link">LSDIS</div>
-                    <div class="product-list">
-                      <ul>
-                        <li *ngFor="let item of lsdis">
-                          <span [title]="item.prd">{{item.prd}}</span></li>
-                      </ul>
+                      <ng-template #emptyBlock>
+                        <ul>
+                          <li>-</li>
+                        </ul>
+                      </ng-template>
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="label link">DIS</div>
                     <div class="product-list">
-                      <ul *ngIf="dis.length > 0;else emptyBlock">
-                        <li *ngFor="let item of dis">
-                          <span [title]="item.prd">{{item.prd}}</span></li>
+                      <ul *ngIf="this.PortGradeList?.DIS.length > 0;else emptyBlock">
+                        <li *ngFor="let item of this.PortGradeList?.DIS">
+                          <span [title]="item">{{item}}</span></li>
                       </ul>
                       <ng-template #emptyBlock>
                         <ul>

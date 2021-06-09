@@ -10,6 +10,7 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 export namespace PortPopupApiPaths{
     export const getAgentInfo = () => `api/Smart/Port/getPortAgentInfo`;
+    export const getPortProductAvailability = () => `api/Smart/Port/getPortProductAvailability`;
 }
 
 @Injectable({
@@ -26,6 +27,14 @@ export class PortPopupService{
   getAgentInfo(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${PortPopupApiPaths.getAgentInfo()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  getPortProductAvailability(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${PortPopupApiPaths.getPortProductAvailability()}`,
       { payload: request }
     );
   }
