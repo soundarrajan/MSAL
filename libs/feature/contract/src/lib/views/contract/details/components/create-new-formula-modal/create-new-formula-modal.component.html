@@ -1,5 +1,5 @@
 <div class="row col-md-12 create-new-formula-modal-top">
-  <div class="col-md-12">
+  <!-- <div class="col-md-12">
     <a
       (click)="closeClick()"
       class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button create-new-formula-close-button"
@@ -7,24 +7,16 @@
     >
       <span class="pi pi-times cl-content"></span>
     </a>
-  </div>
+  </div> -->
   <div class="col-md-12">
     <div style="float: left;" class="header-create-new-formula">
       Pricing Details
     </div>
-    <div style="float: right;">
-      <button
-        type="button"
-        mat-raised-button
-        class="new-formula-button cancel-button"
-        (click)="cancelFormula()"
-      >
+    <div  style="float: right;">
+      <button  type="button" class="new-formula-button cancel-button" (click)="cancelFormula()">
         Cancel
-      </button>
-      <button
-        type="button"
-        mat-raised-button
-        class="new-formula-button"
+      </button>  
+      <button  type="button" class="new-formula-button"
         (click)="saveFormula()"
         [disabled]="!formValues.isEditable"
       >

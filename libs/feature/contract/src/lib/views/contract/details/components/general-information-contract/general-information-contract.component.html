@@ -303,7 +303,7 @@
                   <img  [ngClass]="{'expand-company-img': expandCompanyPopUp}" (click)="expandCompanyPopUp = !expandCompanyPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
               </div>
             </div>
-            <div class="col-md-12 row company-container-header">
+            <div class="col-md-12 row company-container-h">
               {{generalConfiguration && generalConfiguration.companyDisplayName ? generalConfiguration.companyDisplayName.name : 'Company'}} Name
             </div>
             <mat-radio-group
@@ -330,15 +330,15 @@
         <div *ngIf="!formValues.company || (formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
         </div>
         <mat-menu #menu1="matMenu" class="general-allowed-company-modal">
-          <div style="height: 293px;" [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
-            <div class="col-md-12 header-allowed-company">
-              <div class="allowed-company-header col-md-10 contract-no-padding" >
-                Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
-              </div>
-              <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
-                  <img  [ngClass]="{'expand-company-img': expandAllowedCompanylistPopUp}" (click)="expandAllowedCompanylistPopUp = !expandAllowedCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-              </div>
+          <div class="header-allowed-company fixedHeader" [ngClass]="{'expand-allowed-company-hcontainer': expandAllowedCompanylistPopUp}">
+            <div class="allowed-company-header col-md-10 contract-no-padding" style="padding: 10px;">
+              Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
             </div>
+            <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
+                <img  [ngClass]="{'expand-company-img': expandAllowedCompanylistPopUp}" (click)="expandAllowedCompanylistPopUp = !expandAllowedCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+            </div>
+          </div>
+          <div style="height: 293px;" [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
             <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyList">
               <mat-checkbox [(ngModel)]="company.isSelected">
                 {{company.name}}
@@ -512,8 +512,8 @@
         </div>
         <div *ngIf="(formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
         </div>
-        <mat-menu #menu3="matMenu" class="general-allowed-company-modal">
-          <div style="height: 280px;" [ngClass]="{'expand-allowed-company-container': expandCustomerListPopUp}">
+        <mat-menu #menu3="matMenu" class="general-allowed-company-modal cust-modal">
+          <div class="fixedCustHeader" [ngClass]="{'expand-customer-hcontainer': expandCustomerListPopUp}">
             <div class="col-md-12 header-allowed-company">
               <div class="allowed-company-header col-md-10 contract-no-padding" >
                 Customer
@@ -521,14 +521,16 @@
               <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
                   <img  [ngClass]="{'expand-company-img': expandCustomerListPopUp}" (click)="expandCustomerListPopUp = !expandCustomerListPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
               </div>
-            </div>
+            </div>          
+          </div>
+          <div style="height: 280px;" [ngClass]="{'expand-customer-container': expandCustomerListPopUp}">
             <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let customer of customerList">
               <mat-checkbox [(ngModel)]="customer.isSelected">
                 {{customer.name}}
               </mat-checkbox>
-            </div>           
+            </div> 
           </div>
-          <div class="saveCustomer" [ngClass]="{'expand-save-button': expandCustomerListPopUp}">
+          <div class="saveCustomer" [ngClass]="{'expand-cust-save-button': expandCustomerListPopUp}">
             <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
               pButton
               (click)="saveCustomer()"

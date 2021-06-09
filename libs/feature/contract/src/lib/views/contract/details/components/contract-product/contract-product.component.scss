@@ -537,7 +537,7 @@
 }
 
 .expand-select-location-container {
-  width: 50vw !important;
+  width: 55vw !important;
 }
 
 
@@ -573,8 +573,8 @@
   max-width: fit-content;
   background-color: #364150 !important;
   padding: 15px !important;
-  min-width: 311px !important;
-  width: fit-content;
+  //min-width: 311px !important;
+  min-width: 45vw !important;
   max-width: unset !important;
   position: relative;
   top: -20px;
