@@ -155,8 +155,9 @@ export class PortPopupComponent implements OnInit {
     this.logger.logInfo('PortPopupComponent-ngAfterViewInit()', new Date());
   }
   loadPortProductAvailability() {
-    let payloadReq = {'LocationId': 37}
-    // let payloadReq = {'LocationId': this.popup_data.locationId}
+    // let payloadReq = {'LocationId': 37}
+    let payloadReq = {'LocationId': this.popup_data.locationId}
+    
     this.portService.getPortProductAvailability(payloadReq).subscribe(async (response) => {
       console.log(response);
       this.PortProductAvailability = response?.payload;
