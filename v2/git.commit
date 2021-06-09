@@ -1,11 +1,7 @@
-﻿commit 52594ce4647d2c0452c6ae8372902304567cd9aa
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 9 11:13:14 2021 +0000
+﻿commit ad1212c1ca040e49e795fd0091cfc44826d83e5f
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jun 9 12:34:54 2021 +0000
 
-    Merged PR 11358: #32574 : bug fix
-    
-    #32574 : bug fix
-    
-    Related work items: #32574
+    Merged PR 11361:  Fixed red error  when selecting contract product
 
 branch: master

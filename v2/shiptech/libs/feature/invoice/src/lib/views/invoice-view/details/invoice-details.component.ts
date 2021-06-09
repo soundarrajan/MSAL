@@ -2654,7 +2654,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -3431,5 +3431,4 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   compareCurrencyObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
   }
-
 }
