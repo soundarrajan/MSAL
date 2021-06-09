@@ -1016,7 +1016,7 @@
                                                     <select ng-options="agreementType as agreementType.name for agreementType in $ctrl.lists.AgreementType | decodeReadOnly track by agreementType.id" ng-model="product.agreementType" class="form-control" ng-required="product.product !== null" data-original-title="{{ product.agreementType.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
                                                 </td>
                                                 <td ng-if="!$ctrl.tenantSettings.shiptechLite">
-                                                    <a href="/#/contracts/contract/edit/{{product.contract.contract.id}}">{{product.contract.contract.name}}</a>
+                                                    <a href="/v2/contracts/contract/{{product.contract.contract.id}}/details" target="_blank">{{product.contract.contract.name}}</a>
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.Comment.visible" style="width:15%;min-width: 100px;">
                                                     <input decode-input-format type="text" class="form-control input-sm" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-model="product.comments" id="product_comment_{{ $index }}" id="product_productStatus_{{ $index }}">
