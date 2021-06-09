@@ -27,17 +27,35 @@ import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/b
 import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
-import { DeliveryInfoForOrder, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  DeliveryInfoForOrder,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
@@ -46,13 +64,22 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import _ from 'lodash';
-import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NgxMatNativeDateAdapter,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
@@ -62,20 +89,16 @@ import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/prod
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
-
-
 @Component({
   selector: 'shiptech-pricing-formula-complex',
   templateUrl: './pricing-formula-complex.component.html',
   styleUrls: ['./pricing-formula-complex.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
-              ConfirmationService]
+  providers: [OrderListGridViewModel, DialogService, ConfirmationService]
 })
 export class PricingFormulaComplex extends DeliveryAutocompleteComponent
-  implements OnInit{
+  implements OnInit {
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
   _entityId: number;
@@ -96,10 +119,8 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   @ViewChildren('locationMenuTrigger') locationMenuTrigger;
   @ViewChildren('productMenuTrigger') productMenuTrigger;
 
-
-
   productMasterList: any;
-  expandLocationProductPopUp =  false;
+  expandLocationProductPopUp = false;
   locationMasterSearchList: any[];
   searchLocationInput: any;
   expandCompanyPopUp: any;
@@ -145,7 +166,6 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   amountFormat: string;
   hasInvoicedOrder: any;
 
-
   get entityId(): number {
     return this._entityId;
   }
@@ -163,166 +183,171 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
+
   @Input() vesselId: number;
 
-  @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) { 
+  @Input('contractProductIndex') set _setContractProductIndex(
+    contractProductIndex
+  ) {
     if (!contractProductIndex) {
       return;
-    } 
+    }
     this.selectedTabIndex = contractProductIndex;
   }
 
-  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
+  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) {
     if (!locationMasterList) {
       return;
-    } 
+    }
     this.locationMasterList = _.cloneDeep(locationMasterList);
-
   }
 
-  @Input('productMasterList') set _setProductMasterList(productMasterList) { 
+  @Input('productMasterList') set _setProductMasterList(productMasterList) {
     if (!productMasterList) {
       return;
-    } 
+    }
 
-    this.productMasterList =  _.cloneDeep(productMasterList);
-
-
+    this.productMasterList = _.cloneDeep(productMasterList);
   }
 
-  @Input('specParameterList') set _setSpecParameterList(specParameterList) { 
+  @Input('specParameterList') set _setSpecParameterList(specParameterList) {
     if (!specParameterList) {
       return;
-    } 
+    }
     this.specParameterList = specParameterList;
   }
 
-
-  @Input('uomList') set _setUomList(uomList) { 
+  @Input('uomList') set _setUomList(uomList) {
     if (!uomList) {
       return;
-    } 
+    }
     this.uomList = uomList;
   }
 
-
-  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
+  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) {
     if (!uomVolumeList) {
       return;
-    } 
+    }
     this.uomVolumeList = uomVolumeList;
   }
 
-  
-  @Input('uomMassList') set _setUomMassList(uomMassList) { 
+  @Input('uomMassList') set _setUomMassList(uomMassList) {
     if (!uomMassList) {
       return;
-    } 
+    }
     this.uomMassList = uomMassList;
   }
 
-  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) { 
+  @Input('contractConversionFactorOptions')
+  set _setContractConversionFactorOptions(contractConversionFactorOptions) {
     if (!contractConversionFactorOptions) {
       return;
-    } 
+    }
     this.contractConversionFactorOptions = contractConversionFactorOptions;
   }
 
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
-    if (this.formValues.complexFormulaQuoteLines && this.formValues.complexFormulaQuoteLines.length) {
+    if (
+      this.formValues.complexFormulaQuoteLines &&
+      this.formValues.complexFormulaQuoteLines.length
+    ) {
       this.formatAmount();
     }
   }
 
-  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
+  @Input('generalTenantSettings') set _setGeneralTenantSettings(
+    generalTenantSettings
+  ) {
     if (!generalTenantSettings) {
       return;
-    } 
+    }
     this.generalTenantSettings = generalTenantSettings;
   }
-  
-  @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(formulaFlatPercentageList) { 
+
+  @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(
+    formulaFlatPercentageList
+  ) {
     if (!formulaFlatPercentageList) {
       return;
-    } 
+    }
     this.formulaFlatPercentageList = formulaFlatPercentageList;
   }
 
-  @Input('systemInstumentList') set _setSystemInstumentList(systemInstumentList) { 
+  @Input('systemInstumentList') set _setSystemInstumentList(
+    systemInstumentList
+  ) {
     if (!systemInstumentList) {
       return;
-    } 
+    }
     this.systemInstumentList = systemInstumentList;
   }
 
-  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(formulaPlusMinusList) { 
+  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(
+    formulaPlusMinusList
+  ) {
     if (!formulaPlusMinusList) {
       return;
-    } 
+    }
     this.formulaPlusMinusList = formulaPlusMinusList;
   }
 
-  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) { 
+  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) {
     if (!marketPriceList) {
       return;
-    } 
+    }
     this.marketPriceList = marketPriceList;
   }
 
-  
-  @Input('currencyList') set _setCurrencyList(currencyList) { 
+  @Input('currencyList') set _setCurrencyList(currencyList) {
     if (!currencyList) {
       return;
-    } 
+    }
     this.currencyList = currencyList;
   }
 
-
-  @Input('formulaOperationList') set _setFormulaOperationList(formulaOperationList) { 
+  @Input('formulaOperationList') set _setFormulaOperationList(
+    formulaOperationList
+  ) {
     if (!formulaOperationList) {
       return;
-    } 
+    }
     this.formulaOperationList = formulaOperationList;
   }
 
-  
-  @Input('formulaFunctionList') set _setFormulaFunctionList(formulaFunctionList) { 
+  @Input('formulaFunctionList') set _setFormulaFunctionList(
+    formulaFunctionList
+  ) {
     if (!formulaFunctionList) {
       return;
-    } 
+    }
     this.formulaFunctionList = formulaFunctionList;
   }
 
-  @Input('marketPriceTypeList') set _setMarketPriceTypeList(marketPriceTypeList) { 
+  @Input('marketPriceTypeList') set _setMarketPriceTypeList(
+    marketPriceTypeList
+  ) {
     if (!marketPriceTypeList) {
       return;
-    } 
+    }
     this.marketPriceTypeList = marketPriceTypeList;
   }
 
-  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) {
     if (!hasInvoicedOrder) {
       return;
-    } 
+    }
     this.hasInvoicedOrder = hasInvoicedOrder;
   }
 
-
-
-
-
-
   index = 0;
   expandLocationPopUp = false;
-  array = [0,1,2,3,4,5,6,7,8,9,10];
+  array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
-
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -338,23 +363,28 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
-    public dialog: MatDialog, 
+    iconRegistry: MatIconRegistry,
+    public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
-    private overlayContainer: OverlayContainer) {
+    private overlayContainer: OverlayContainer
+  ) {
     super(changeDetectorRef);
-    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
+    this.autocompletePhysicalSupplier =
+      knownMastersAutocomplete.physicalSupplier;
     this.baseOrigin = new URL(window.location.href).origin;
-    this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
+    this.amountFormat =
+      '1.' +
+      this.tenantService.amountPrecision +
+      '-' +
+      this.tenantService.amountPrecision;
   }
 
-  ngOnInit(){ 
+  ngOnInit() {
     this.entityName = 'Contract';
     this.autocompleteCurrency = knownMastersAutocomplete.currency;
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
-
   }
 
   setContractForm(form) {
@@ -362,15 +392,16 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     console.log(this.formValues);
   }
 
-
-
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
   }
 
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => {
     return 0;
-  }
+  };
 
   displayFn(value): string {
     return value && value.name ? value.name : '';
@@ -378,54 +409,62 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
 
   selectCurrency(event: MatAutocompleteSelectedEvent) {
     this.formValues.currency = event.option.value;
-    if (!this.formValues.complexFormulaQuoteLines || !this.formValues.complexFormulaQuoteLines.length) {
+    if (
+      !this.formValues.complexFormulaQuoteLines ||
+      !this.formValues.complexFormulaQuoteLines.length
+    ) {
       this.formValues.complexFormulaQuoteLines = [
-          {
-              id: 0,
-              weight: '100',
-              formulaFunction: {
-                  id: 1,
-                  name: 'Min',
-                  internalName: null,
-                  code: null
-              }
+        {
+          id: 0,
+          weight: '100',
+          formulaFunction: {
+            id: 1,
+            name: 'Min',
+            internalName: null,
+            code: null
           }
+        }
       ];
       if (!this.formValues.isMean) {
-          this.formValues.complexFormulaQuoteLines[0].formulaOperation = {
-              id: 1,
-              name: 'Add',
-              internalName: null,
-              code: null
-          };
+        this.formValues.complexFormulaQuoteLines[0].formulaOperation = {
+          id: 1,
+          name: 'Add',
+          internalName: null,
+          code: null
+        };
       } else {
-          this.formValues.complexFormulaQuoteLines[0].formulaOperation = {
-              id: 3,
-              name: 'Mean',
-              internalName: null,
-              code: null
-          };
+        this.formValues.complexFormulaQuoteLines[0].formulaOperation = {
+          id: 3,
+          name: 'Mean',
+          internalName: null,
+          code: null
+        };
       }
-      this.formValues.complexFormulaQuoteLines[0].systemInstruments = [  {
-        id: 0
-      }, 
-      {
-        id: 0
-      }, 
-      {
-        id: 0
-      } ];
+      this.formValues.complexFormulaQuoteLines[0].systemInstruments = [
+        {
+          id: 0
+        },
+        {
+          id: 0
+        },
+        {
+          id: 0
+        }
+      ];
     }
   }
 
-
-    
   filterCurrencyList() {
     if (this.formValues.currency) {
-      const filterValue = this.formValues.currency.name ? this.formValues.currency.name.toLowerCase() : this.formValues.currency.toLowerCase();
+      const filterValue = this.formValues.currency.name
+        ? this.formValues.currency.name.toLowerCase()
+        : this.formValues.currency.toLowerCase();
       console.log(filterValue);
       if (this.currencyList) {
-        return this.currencyList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.currencyList
+          .filter(
+            option => option.name.toLowerCase().indexOf(filterValue) === 0
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -444,33 +483,34 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     }
   }
 
-  selectorCurrencySelectionChange(
-    selection: IOrderLookupDto
-  ): void {
+  selectorCurrencySelectionChange(selection: IOrderLookupDto): void {
     if (selection === null || selection === undefined) {
       this.formValues.currency = '';
     } else {
       const obj = {
-        'id': selection.id,
-        'name': selection.name
+        id: selection.id,
+        name: selection.name
       };
-      this.formValues.currency = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.currency = obj;
+      this.changeDetectorRef.detectChanges();
     }
   }
 
-  
-
   isMeanChange(ob: MatCheckboxChange) {
-    console.log("checked: " + ob.checked);
+    console.log('checked: ' + ob.checked);
     if (ob.checked) {
-      for (let i = 0; i < this.formValues.complexFormulaQuoteLines.length; i++) {
+      for (
+        let i = 0;
+        i < this.formValues.complexFormulaQuoteLines.length;
+        i++
+      ) {
         this.formValues.complexFormulaQuoteLines[i].formulaOperation.id = 3;
-        this.formValues.complexFormulaQuoteLines[i].formulaOperation.name = 'Mean';
+        this.formValues.complexFormulaQuoteLines[i].formulaOperation.name =
+          'Mean';
       }
       this.changeDetectorRef.detectChanges();
     }
-  } 
+  }
 
   addComplexFormulaQuoteLine() {
     if (!this.formValues.complexFormulaQuoteLines) {
@@ -478,36 +518,36 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     }
     var count = 0;
     this.formValues.complexFormulaQuoteLines.forEach((val, key) => {
-      if(!val.isDeleted) {
-          count++;
+      if (!val.isDeleted) {
+        count++;
       }
     });
     if (count < 3) {
       this.formValues.complexFormulaQuoteLines.push({
-          id: 0,
-          formulaOperation: {
-              id: this.formValues.isMean ? 3 : 1,
-              name: this.formValues.isMean ? 'Mean' : 'Add',
-              internalName: null,
-              code: null
+        id: 0,
+        formulaOperation: {
+          id: this.formValues.isMean ? 3 : 1,
+          name: this.formValues.isMean ? 'Mean' : 'Add',
+          internalName: null,
+          code: null
+        },
+        weight: '100',
+        formulaFunction: {
+          id: 1,
+          name: 'Min',
+          internalName: null,
+          code: null
+        },
+        systemInstruments: [
+          {
+            id: 0
           },
-          weight: '100',
-          formulaFunction: {
-              id: 1,
-              name: 'Min',
-              internalName: null,
-              code: null
+          {
+            id: 0
           },
-          systemInstruments: [ 
-            {
-              id: 0
-            }, 
-            {
-              id: 0
-            }, 
-            {
-              id: 0
-            }
+          {
+            id: 0
+          }
         ]
       });
     } else {
@@ -533,21 +573,27 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       return obj.id == value;
     });
     if (findObject != -1) {
-      this.formValues.complexFormulaQuoteLines[line].formulaOperation = _.cloneDeep(findObject);
+      this.formValues.complexFormulaQuoteLines[
+        line
+      ].formulaOperation = _.cloneDeep(findObject);
     }
     console.log(value);
-    
   }
 
   selectSystemInstrumentFromComplexFormulaQuoteLine(value, line, key) {
-    this.formValues.complexFormulaQuoteLines[line].systemInstruments[key].systemInstrument = value;
+    this.formValues.complexFormulaQuoteLines[line].systemInstruments[
+      key
+    ].systemInstrument = value;
   }
 
   filterSystemInstrumentListFromComplexFormulaQuoteLine(value) {
     if (value) {
-      const  filterValue = value.toLowerCase();
+      const filterValue = value.toLowerCase();
       if (this.systemInstumentList) {
-        return this.systemInstumentList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.systemInstumentList
+          .filter(
+            option => option.name.toLowerCase().indexOf(filterValue) === 0
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -560,7 +606,11 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   formatAmount() {
     for (let i = 0; i < this.formValues.complexFormulaQuoteLines.length; i++) {
       if (this.formValues.complexFormulaQuoteLines[i].amount) {
-        this.formValues.complexFormulaQuoteLines[i].amount = this.amountFormatValue(this.formValues.complexFormulaQuoteLines[i].amount);
+        this.formValues.complexFormulaQuoteLines[
+          i
+        ].amount = this.amountFormatValue(
+          this.formValues.complexFormulaQuoteLines[i].amount
+        );
       }
     }
   }
@@ -575,7 +625,7 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.amountPrecision == 0) {
+      if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.amountFormat);
@@ -583,9 +633,8 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     }
   }
 
-
-   // Only Number
-   keyPressNumber(event) {
+  // Only Number
+  keyPressNumber(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (inp == '.' || inp == ',' || inp == '-') {
       return true;
@@ -598,12 +647,5 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     }
   }
 
-
-
-
-
-  ngAfterViewInit(): void {
-  
-  }
+  ngAfterViewInit(): void {}
 }
-
