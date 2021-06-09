@@ -326,7 +326,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   toggleMenu3Input(event) { //onclick
     this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
-    if(this.bplanType != 'P'){
+    if(this.bplanType == 'C'){
       this.menuClick = true;
       this.inputMenuTrigger.openMenu();
       if (document.getElementById('inputValue')) {
