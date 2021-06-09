@@ -1,7 +1,9 @@
-﻿commit ad1212c1ca040e49e795fd0091cfc44826d83e5f
+﻿commit 5588e956c64896b3e4dad8a5750ad0e042ac504e
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jun 9 12:34:54 2021 +0000
+Date:   Wed Jun 9 13:13:05 2021 +0000
 
-    Merged PR 11361:  Fixed red error  when selecting contract product
+    Merged PR 11363: Fixed invoice barge cost issues(33051, 33049)
+    
+    Fixed invoice barge cost issues
 
 branch: master
