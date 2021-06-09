@@ -2454,7 +2454,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             let payload =  { Payload: {} };
             let result = $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/additionalcosts/listApps`, payload).then((result) => {
                 const results = result.data?.payload;
-                let futureAdditionalCost = results.filter(e => e.costType.name !== "Total" || e.costType.name !== "Range")
+                let futureAdditionalCost = results.filter(e => e.costType.name !== "Total" && e.costType.name !== "Range")
                 ctrl.FilterAdditionalCost = futureAdditionalCost;
             })
         }
