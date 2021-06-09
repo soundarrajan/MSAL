@@ -48,8 +48,11 @@ export class PortPopupComponent implements OnInit {
   PortProductAvailability: any;
   PortProductList: IPortProduct[] = [];
   PortGradeList: IPortGrade;
+  public shiptechUrl : string;
 
-  constructor(private logger: LoggerService,private localService: LocalService, private portService : PortPopupService) { }
+  constructor(private logger: LoggerService,private localService: LocalService, private portService : PortPopupService) {
+    this.shiptechUrl =  new URL(window.location.href).origin;
+  }
   @Input() status: string = "standard-view";
   @Input('portData') popup_data;
   @Output() closePopup = new EventEmitter();
@@ -77,42 +80,9 @@ export class PortPopupComponent implements OnInit {
     this.alerts = [
 
     ]
-    this.otherPorts = [
-      {
-        detail: 'Pretest Available',
-        value: '1'
-      },
-      {
-        detail: 'ECA Region',
-        value: '1',
-        subdetail: 'Baltic Region'
-      },
-      {
-        detail: 'Mandatory LSDIS port',
-        value: '0'
-      },
-      {
-        detail: 'Use of scrubber allowed',
-        value: '1'
-      }
-    ]
+    this.loadPortBasicInfo(this.popup_data.locationId);
+    this.loadOtherDetails(this.popup_data.locationId);
     this.loadAgentInfo(this.popup_data.locationId);
-    // this.agentsInfo = [
-    //   {
-    //     name: 'Bernard Ingstmann',
-    //     initials: 'BI',
-    //     address: '99 Meadow City, Aden',
-    //     tele: '+140-9048776333',
-    //     email: 'b.stmann@stbunkers.com'
-    //   },
-    //   {
-    //     name: 'Chris Kristen',
-    //     initials: 'CK',
-    //     address: '99 Meadow City, Aden',
-    //     tele: '+140-9039088574',
-    //     email: 'c.kristen@stbunkers.com'
-    //   }
-    // ]
     this.hsfo = [
       { prd: 'RMG18005' },
       { prd: 'RMG38005' },
@@ -225,14 +195,43 @@ export class PortPopupComponent implements OnInit {
 
   // ];
 
-  loadAgentInfo(locationId){
-    let req = { LocationId : locationId}
-    this.portService.getAgentInfo(req).subscribe((res: any)=>{
-      if(res.payload != undefined){
-        this.agentsInfo = res.payload
-      }
-    })
+  loadPortBasicInfo(locationId){
+    if(locationId != null){
+      let req = { LocationId : locationId}
+      this.portService.getPortBasicInfo(req).subscribe((res: any)=>{
+        if(res.payload.length > 0){
+          this.popup_data.earliestTradingTime = res.payload[0].earliestTradingTime;
+          this.popup_data.latestTradingTime = res.payload[0].latestTradingTime;
+          this.popup_data.avlProdCategory = [];
+          res.payload.filter(item=> {
+            this.popup_data.avlProdCategory.push(item.availableProductCategory);
+          });
+          // this.popup_data.notavlProdCategory = ['DIS'],
+        }
+      })
+    }
+  }
 
+  loadAgentInfo(locationId){
+    if(locationId != null){
+      let req = { LocationId : locationId}
+      this.portService.getAgentInfo(req).subscribe((res: any)=>{
+        if(res.payload != undefined){
+          this.agentsInfo = res.payload
+        }
+      })
+    }
+  }
+
+  loadOtherDetails(locationId){
+    if(locationId != null){
+      let req = { LocationId : locationId };
+      this.portService.getOtherDetails(req).subscribe((res: any)=>{
+        if(res.payload != undefined){
+          this.otherPorts = res.payload[0];
+        }
+      })
+    }
   }
 
   saveRemark() {
