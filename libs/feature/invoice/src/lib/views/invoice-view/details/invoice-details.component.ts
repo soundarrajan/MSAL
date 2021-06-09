@@ -2654,7 +2654,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
