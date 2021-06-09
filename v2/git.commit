@@ -1,11 +1,11 @@
-﻿commit 079a579f4321a0da92fca8dcce1f61343f17d11b
+﻿commit cdf2f242b0577e0812313ddca1e0388a1b24fa77
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jun 8 21:47:45 2021 +0000
+Date:   Wed Jun 9 07:52:57 2021 +0000
 
-    Merged PR 11342: #29758, #29764 , # 29765 Requirement fix.
+    Merged PR 11351: #29775 Req : Port details: View Agents information  & Header User Initials Removal
     
-    #29758, #29764 , #29765 Requirement fix.
+    #29775 Port details: View Agents information & Header User Initials Removal
     
-    Related work items: #29758, #29764, #29765
+    Related work items: #29775, #32948
 
 branch: master

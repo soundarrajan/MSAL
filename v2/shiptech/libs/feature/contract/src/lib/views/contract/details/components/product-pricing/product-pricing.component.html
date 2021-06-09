@@ -432,16 +432,24 @@
                           formValues.status.name == 'Confirmed')
                       "
                     >
-                      <mat-option
+                      <ng-container
                         *ngFor="
                           let option of additionalCostForLocation[
                             formValues.products[selectedTabIndex].location.id
                           ]
                         "
-                        [value]="option"
                       >
-                        {{ option.name }}
-                      </mat-option>
+                        <mat-option
+                          *ngIf="option.isDeleted"
+                          [value]="option"
+                          style="display: none;"
+                        >
+                          {{ option.name }}
+                        </mat-option>
+                        <mat-option *ngIf="!option.isDeleted" [value]="option">
+                          {{ option.name }}
+                        </mat-option>
+                      </ng-container>
                     </mat-select>
                   </mat-form-field>
                 </div>

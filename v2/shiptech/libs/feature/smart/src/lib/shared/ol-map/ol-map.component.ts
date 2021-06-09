@@ -1230,6 +1230,7 @@ export class OlMapComponent implements OnInit {
     if (!((this.showPortList.filter(port => port.name == pData.locationName)).length > 0)) {
       let count = this.showPortList.length;
       this.portPopData = {
+        locationId: pData.locationId,
         position: 1,
         port_view: "standard-view",//pData.flag,
         name: pData.locationName,
