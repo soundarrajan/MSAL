@@ -1244,10 +1244,19 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     } else {
       this.formValues.products[key1].additionalCosts[key2].amount = null;
     }
-    this.formValues.products[key1].additionalCosts[key2].uom =
-      additionalCostLine && additionalCostLine.priceUom
-        ? additionalCostLine.priceUom
-        : null;
+    if (additionalCostLine && additionalCostLine.uom) {
+      this.formValues.products[key1].additionalCosts[key2].uom =
+        additionalCostLine.priceUom;
+    } else if (
+      this.formValues.products[key1].additionalCosts[key2].costType &&
+      this.formValues.products[key1].additionalCosts[key2].costType.name ==
+        'Unit'
+    ) {
+      this.formValues.products[key1].additionalCosts[
+        key2
+      ].uom = this.generalTenantSettings.tenantFormats.uom;
+    }
+
     if (additionalCostLine && additionalCostLine.extrasPercentage) {
       this.formValues.products[key1].additionalCosts[key2].extras =
         additionalCostLine.extrasPercentage;
