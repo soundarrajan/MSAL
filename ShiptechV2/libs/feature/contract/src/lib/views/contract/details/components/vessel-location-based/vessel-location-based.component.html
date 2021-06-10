@@ -1,139 +1,233 @@
-<div class="col-md-12 formula-description-header d-flex" style="margin-top: 15px;">
+<div
+  class="col-md-12 formula-description-header d-flex"
+  style="margin-top: 15px;"
+>
   <div class="title">
     Discount Definition
   </div>
 </div>
-<div class="col-md-12" style="margin-top: 15px;"> 
-    <table class="product-based-table table table-stripped table-hover" style="width:100%">
-      <thead>
-        <tr>
-          <td class="padding" style="width: 30px;">
-            <a class="add-icon" (click)="!formValues.isEditable ? '' : addNewLocationBasedLine()"></a>
-          </td>
-          <td class="padding" style="width:20%">
-            <b>Vessel - Location</b>
-          </td>
-          <td class="padding" style="width:20%">
-            <b>+/-</b>
-          </td>
-          <td class="padding" style="width:20%">
-            <b>Amount</b>
-          </td>
-          <td class="padding" style="width:20%">
-            <b>$/%</b>
-          </td>
-          <td class="padding" style="width:20%">
-            <b>Uom</b>
-          </td>
-        </tr>
-      </thead>
+<div class="col-md-12" style="margin-top: 15px;">
+  <table
+    class="product-based-table table table-stripped table-hover"
+    style="width:100%"
+  >
+    <thead>
+      <tr>
+        <td class="padding" style="width: 30px;">
+          <a
+            class="add-icon"
+            (click)="!formValues.isEditable ? '' : addNewLocationBasedLine()"
+          ></a>
+        </td>
+        <td class="padding" style="width:20%">
+          <b>Vessel - Location</b>
+        </td>
+        <td class="padding" style="width:20%">
+          <b>+/-</b>
+        </td>
+        <td class="padding" style="width:20%">
+          <b>Amount</b>
+        </td>
+        <td class="padding" style="width:20%">
+          <b>$/%</b>
+        </td>
+        <td class="padding" style="width:20%">
+          <b>Uom</b>
+        </td>
+      </tr>
+    </thead>
+  </table>
+  <div class="table-with-scroll">
+    <table>
+      <tbody>
+        <ng-container
+          *ngFor="
+            let locationDiscountRule of formValues.locationDiscountRules
+              | keyvalue: originalOrder
+          "
+        >
+          <tr *ngIf="!locationDiscountRule.value.isDeleted">
+            <td
+              class="padding"
+              style="padding-left: 0px  !important; padding-right: 0px  !important;"
+            >
+              <a
+                class="remove-icon"
+                style="margin-left: 10px;"
+                (click)="
+                  !formValues.isEditable
+                    ? ''
+                    : removeLocationBasedLine(locationDiscountRule.key)
+                "
+              ></a>
+            </td>
+            <td style="width:20%">
+              <div
+                class="custom-form-field product-based-info"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+              >
+                <mat-form-field class="without-search" appearance="legacy">
+                  <input
+                    class="free-text-field"
+                    type="text"
+                    [(ngModel)]="locationDiscountRule.value.location"
+                    matInput
+                    [matAutocomplete]="auto"
+                    [disabled]="!formValues.isEditable"
+                  />
+                  <mat-autocomplete
+                    #auto="matAutocomplete"
+                    class="darkPanelAuto"
+                    [displayWith]="displayFn"
+                    (optionSelected)="
+                      selectLocationDiscountRuleLine(
+                        $event.option.value,
+                        locationDiscountRule.key
+                      )
+                    "
+                  >
+                    <mat-option
+                      *ngFor="
+                        let option of filterLocationList(
+                          locationDiscountRule.value.location &&
+                            locationDiscountRule.value.location.name
+                            ? locationDiscountRule.value.location.name
+                            : locationDiscountRule.value.location
+                        )
+                      "
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </td>
+            <td style="width:20%">
+              <div
+                class="custom-form-field quantity-based-info"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+              >
+                <mat-form-field
+                  class="without-search conversion-factor-dropdown-component"
+                  appearance="legacy"
+                >
+                  <mat-select
+                    [(ngModel)]="locationDiscountRule.value.plusMinus"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [compareWith]="compareUomObjects"
+                    [disabled]="!formValues.isEditable"
+                  >
+                    <mat-option
+                      *ngFor="let option of formulaPlusMinusList"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </td>
+            <td style="width:20%">
+              <div
+                class="custom-form-field quantity-based-info"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+              >
+                <mat-form-field class="without-search" appearance="legacy">
+                  <input
+                    matInput
+                    [(ngModel)]="locationDiscountRule.value.amount"
+                    (keypress)="keyPressNumber($event)"
+                    autocomplete="off"
+                    required
+                    amountFormat
+                    [disabled]="
+                      !formValues.isEditable ||
+                      (locationDiscountRule.value.plusMinus &&
+                        locationDiscountRule.value.plusMinus.id == 3)
+                    "
+                  />
+                </mat-form-field>
+              </div>
+            </td>
+            <td style="width:20%">
+              <div
+                class="custom-form-field quantity-based-info"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+              >
+                <mat-form-field
+                  class="without-search conversion-factor-dropdown-component"
+                  appearance="legacy"
+                >
+                  <mat-select
+                    [(ngModel)]="locationDiscountRule.value.flatPercentage"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [compareWith]="compareUomObjects"
+                    [disabled]="
+                      !formValues.isEditable ||
+                      (locationDiscountRule.value.plusMinus &&
+                        locationDiscountRule.value.plusMinus.id == 3)
+                    "
+                  >
+                    <mat-option
+                      *ngFor="let option of formulaFlatPercentageList"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </td>
+            <td style="width:20%">
+              <div
+                class="custom-form-field quantity-based-info"
+                [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+              >
+                <mat-form-field
+                  class="without-search conversion-factor-dropdown-component"
+                  appearance="legacy"
+                >
+                  <mat-select
+                    [(ngModel)]="locationDiscountRule.value.uom"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [compareWith]="compareUomObjects"
+                    [disabled]="
+                      !formValues.isEditable ||
+                      (locationDiscountRule.value.plusMinus &&
+                        locationDiscountRule.value.plusMinus.id == 3) ||
+                      (locationDiscountRule.value.flatPercentage &&
+                        locationDiscountRule.value.flatPercentage.id != 1)
+                    "
+                  >
+                    <mat-option *ngFor="let option of uomList" [value]="option">
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
     </table>
-    <div class="table-with-scroll">
-      <table> 
-        <tbody>
-            <ng-container  *ngFor="let locationDiscountRule of formValues.locationDiscountRules | keyvalue : originalOrder">
-              <tr *ngIf="!locationDiscountRule.value.isDeleted">
-                <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-                  <a class="remove-icon" style="margin-left: 10px;" (click)="!formValues.isEditable ? '' : removeLocationBasedLine(locationDiscountRule.key)"></a>
-                </td>
-                <td  style="width:20%">
-                  <div class="custom-form-field product-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search" appearance="legacy">
-                      <input class="free-text-field" 
-                              type="text"
-                              [(ngModel)]="locationDiscountRule.value.location"
-                              matInput 
-                              [matAutocomplete]="auto"
-                              [disabled]="!formValues.isEditable">
-                      <mat-autocomplete #auto="matAutocomplete" 
-                                      class="darkPanelAuto"
-                                      [displayWith]="displayFn"
-                                      (optionSelected)="selectLocationDiscountRuleLine($event.option.value, locationDiscountRule.key)">
-                          <mat-option *ngFor="let option of filterLocationList(locationDiscountRule.value.location && locationDiscountRule.value.location.name ? locationDiscountRule.value.location.name : locationDiscountRule.value.location)" 
-                                [value]="option">
-                              {{option.name}}
-                          </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                  </div>
-                </td> 
-                <td  style="width:20%">
-                  <div class="custom-form-field quantity-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                      <mat-select 
-                              [(ngModel)]="locationDiscountRule.value.plusMinus"
-                              [disableOptionCentering]="true"
-                              panelClass="general-information-select-container"
-                              [compareWith]="compareUomObjects"
-                              [disabled]="!formValues.isEditable">
-                          <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
-                              {{option.name}}
-                          </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td> 
-                <td  style="width:20%">
-                  <div class="custom-form-field quantity-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search" appearance="legacy">
-                      <input matInput
-                          [(ngModel)]="locationDiscountRule.value.amount"
-                          (keypress)="keyPressNumber($event)"
-                          autocomplete="off"
-                          required
-                          amountFormat
-                          [disabled]="!formValues.isEditable || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)">
-                      </mat-form-field>
-                  </div>
-                </td> 
-                <td  style="width:20%">
-                  <div class="custom-form-field quantity-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                      <mat-select 
-                              [(ngModel)]="locationDiscountRule.value.flatPercentage"
-                              [disableOptionCentering]="true"
-                              panelClass="general-information-select-container"
-                              [compareWith]="compareUomObjects"
-                              [disabled]="!formValues.isEditable || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)">
-                          <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
-                              {{option.name}}
-                          </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td>
-                <td  style="width:15%">
-                  <div class="custom-form-field quantity-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                      <mat-select 
-                              [(ngModel)]="locationDiscountRule.value.uom"
-                              [disableOptionCentering]="true"
-                              panelClass="general-information-select-container"
-                              [compareWith]="compareUomObjects"
-                              [disabled]="!formValues.isEditable 
-                                  || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)
-                                  || (locationDiscountRule.value.flatPercentage && locationDiscountRule.value.flatPercentage.id != 1)">
-                          <mat-option *ngFor="let option of uomList" [value]="option">
-                              {{option.name}}
-                          </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </td> 
-              </tr>
-            </ng-container>
-        </tbody>
-      </table>
-    </div>
+  </div>
 </div>
-<div style="margin-top: 15px" class="col-md-12" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+<div
+  style="margin-top: 15px"
+  class="col-md-12"
+  [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+>
   <mat-form-field appearance="outline" class="custom-form-field-comments">
-      <mat-label>Comments</mat-label>
-      <textarea  
-          [(ngModel)]="formValues.comments"
-          matInput
-          autocomplete="off"
-          [disabled]="!formValues.isEditable"
-          ></textarea>
+    <mat-label>Comments</mat-label>
+    <textarea
+      [(ngModel)]="formValues.comments"
+      matInput
+      autocomplete="off"
+      [disabled]="!formValues.isEditable"
+    ></textarea>
   </mat-form-field>
 </div>

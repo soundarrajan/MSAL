@@ -1,15 +1,21 @@
 <div class="col-md-12 d-flex contract-section">
   <div class="col-md-3" style="padding-left: 0px;">
     <div id="custom-contract-btn-toggle-v2">
-      <mat-button-toggle-group  
+      <mat-button-toggle-group
         [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-        #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
+        #group="matButtonToggleGroup"
+        [value]="selectedVal"
+        (change)="onValChange(group.value)"
+      >
         <mat-button-toggle value="dateSpecific">
-          <span *ngIf="selectedVal == 'dateSpecific'" class="toggle-icon"></span> 
+          <span
+            *ngIf="selectedVal == 'dateSpecific'"
+            class="toggle-icon"
+          ></span>
           Date specific
         </mat-button-toggle>
-        <mat-button-toggle value="evergreen" >
-          <span  *ngIf="selectedVal == 'evergreen'" class="toggle-icon"></span> 
+        <mat-button-toggle value="evergreen">
+          <span *ngIf="selectedVal == 'evergreen'" class="toggle-icon"></span>
           Evergreen
         </mat-button-toggle>
       </mat-button-toggle-group>
@@ -19,17 +25,24 @@
     <div class="contract-created-container">
       <div class="contract-created-information">
         <div>
-          <div class="value p-l-10 m-w-150 " >Created by: 
-            <span class="created-by-field" matTooltip="{{formValues.createdBy ? formValues.createdBy.displayName : ''}}">
-              {{formValues.createdBy ? formValues.createdBy.displayName : ''}}
+          <div class="value p-l-10 m-w-150 ">
+            Created by:
+            <span
+              class="created-by-field"
+              matTooltip="{{
+                formValues.createdBy ? formValues.createdBy.displayName : ''
+              }}"
+            >
+              {{ formValues.createdBy ? formValues.createdBy.displayName : '' }}
             </span>
           </div>
         </div>
         <div class="border_line">|</div>
-        <div> 
-          <div class="value m-w-135">On: 
+        <div>
+          <div class="value m-w-135">
+            On:
             <span class="created-on-field">
-              {{formValues.createdOn ? formatDate(formValues.createdOn) : ''}}
+              {{ formValues.createdOn ? formatDate(formValues.createdOn) : '' }}
             </span>
           </div>
         </div>
@@ -37,330 +50,705 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div class="contract-qty-section" style="display: flex;justify-content: flex-start;">
-        <div class="contract-qty-container">
-          <div>
-            <span class="label">
-              <span *ngIf="formValues.status" class="delivery-number-dot">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E" [ngStyle]="{'fill': statusColorCode }"/>
-                </svg>
-              </span>
-              <span *ngIf="!formValues.status" class="delivery-number-dot">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
-                </svg>
-              </span>
-              Status
+    <div
+      class="contract-qty-section"
+      style="display: flex;justify-content: flex-start;"
+    >
+      <div class="contract-qty-container">
+        <div>
+          <span class="label">
+            <span *ngIf="formValues.status" class="delivery-number-dot">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  fill="#9E9E9E"
+                  [ngStyle]="{ fill: statusColorCode }"
+                />
+              </svg>
             </span>
-            <div *ngIf="formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
-              {{formValues.status.displayName}}
-            </div>
-            <div *ngIf="!formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
-              Draft
-            </div>
+            <span *ngIf="!formValues.status" class="delivery-number-dot">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  fill="#9E9E9E"
+                />
+              </svg>
+            </span>
+            Status
+          </span>
+          <div
+            *ngIf="formValues.status"
+            class="value status-entity"
+            [ngStyle]="{ color: statusColorCode }"
+          >
+            {{ formValues.status.displayName }}
+          </div>
+          <div
+            *ngIf="!formValues.status"
+            class="value status-entity"
+            [ngStyle]="{ color: statusColorCode }"
+          >
+            Draft
           </div>
         </div>
-        <div class="contract-qty-container">
-          <div>
-            <span class="label">
-              <span *ngIf="formValues.summary.contractedQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
-                </svg>
-              </span>
-              <span *ngIf="!formValues.summary.contractedQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
-                </svg>
-              </span>
-              Total Qty
+      </div>
+      <div class="contract-qty-container">
+        <div>
+          <span class="label">
+            <span *ngIf="formValues.summary.contractedQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: '#00AAE2' }"
+                />
+              </svg>
             </span>
-            <div *ngIf="formValues.summary.contractedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
-              {{ quantityFormatValue(formValues.summary.contractedQuantity) }}
-              {{ formValues.summary.uom }}
-            </div>
-            <div *ngIf="!formValues.summary.contractedQuantity" class="value" [ngStyle]="{'color': 'white'}">
-              {{ quantityFormatValue(0) }}
-              {{ formValues.summary.uom }}
-            </div>
+            <span *ngIf="!formValues.summary.contractedQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: 'white' }"
+                />
+              </svg>
+            </span>
+            Total Qty
+          </span>
+          <div
+            *ngIf="formValues.summary.contractedQuantity"
+            class="value"
+            [ngStyle]="{ color: '#00AAE2' }"
+          >
+            {{ quantityFormatValue(formValues.summary.contractedQuantity) }}
+            {{ formValues.summary.uom }}
+          </div>
+          <div
+            *ngIf="!formValues.summary.contractedQuantity"
+            class="value"
+            [ngStyle]="{ color: 'white' }"
+          >
+            {{ quantityFormatValue(0) }}
+            {{ formValues.summary.uom }}
           </div>
         </div>
-        <div class="contract-qty-container">
-          <div>
-            <span class="label">
-              <span *ngIf="formValues.summary.plannedQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
-                </svg>
-              </span>
-              <span *ngIf="!formValues.summary.plannedQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
-                </svg>
-              </span>
-              Planned Qty
+      </div>
+      <div class="contract-qty-container">
+        <div>
+          <span class="label">
+            <span *ngIf="formValues.summary.plannedQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: '#00AAE2' }"
+                />
+              </svg>
             </span>
-            <div *ngIf="formValues.summary.plannedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
-              {{ quantityFormatValue(formValues.summary.plannedQuantity) }}
-              {{ formValues.summary.uom }}
-            </div>
-            <div *ngIf="!formValues.summary.plannedQuantity" class="value" [ngStyle]="{'color': 'white'}">
-              {{ quantityFormatValue(0) }}
-              {{ formValues.summary.uom }}
-            </div>
+            <span *ngIf="!formValues.summary.plannedQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: 'white' }"
+                />
+              </svg>
+            </span>
+            Planned Qty
+          </span>
+          <div
+            *ngIf="formValues.summary.plannedQuantity"
+            class="value"
+            [ngStyle]="{ color: '#00AAE2' }"
+          >
+            {{ quantityFormatValue(formValues.summary.plannedQuantity) }}
+            {{ formValues.summary.uom }}
+          </div>
+          <div
+            *ngIf="!formValues.summary.plannedQuantity"
+            class="value"
+            [ngStyle]="{ color: 'white' }"
+          >
+            {{ quantityFormatValue(0) }}
+            {{ formValues.summary.uom }}
           </div>
         </div>
-        <div class="contract-qty-container">
-          <div>
-            <span class="label">
-              <span *ngIf="formValues.summary.utilizedQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
-                </svg>
-              </span>
-              <span *ngIf="!formValues.summary.utilizedQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
-                </svg>
-              </span>
-              Utilised Qty
+      </div>
+      <div class="contract-qty-container">
+        <div>
+          <span class="label">
+            <span *ngIf="formValues.summary.utilizedQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: '#00AAE2' }"
+                />
+              </svg>
             </span>
-            <div *ngIf="formValues.summary.utilizedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
-              {{ quantityFormatValue(formValues.summary.utilizedQuantity) }}
-              {{ formValues.summary.uom }}
-            </div>
-            <div *ngIf="!formValues.summary.utilizedQuantity" class="value" [ngStyle]="{'color': 'white'}">
-              {{ quantityFormatValue(0) }}
-              {{ formValues.summary.uom }}
-            </div>
+            <span *ngIf="!formValues.summary.utilizedQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: 'white' }"
+                />
+              </svg>
+            </span>
+            Utilised Qty
+          </span>
+          <div
+            *ngIf="formValues.summary.utilizedQuantity"
+            class="value"
+            [ngStyle]="{ color: '#00AAE2' }"
+          >
+            {{ quantityFormatValue(formValues.summary.utilizedQuantity) }}
+            {{ formValues.summary.uom }}
+          </div>
+          <div
+            *ngIf="!formValues.summary.utilizedQuantity"
+            class="value"
+            [ngStyle]="{ color: 'white' }"
+          >
+            {{ quantityFormatValue(0) }}
+            {{ formValues.summary.uom }}
           </div>
         </div>
-        <div class="contract-qty-container">
-          <div>
-            <span class="label">
-              <span *ngIf="formValues.summary.availableQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
-                </svg>
-              </span>
-              <span *ngIf="!formValues.summary.availableQuantity">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
-                </svg>
-              </span>
-              Available Qty
+      </div>
+      <div class="contract-qty-container">
+        <div>
+          <span class="label">
+            <span *ngIf="formValues.summary.availableQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: '#00AAE2' }"
+                />
+              </svg>
             </span>
-            <div *ngIf="formValues.summary.availableQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
-              {{ quantityFormatValue(formValues.summary.availableQuantity) }}
-              {{ formValues.summary.uom }}
-            </div>
-            <div *ngIf="!formValues.summary.availableQuantity" class="value" [ngStyle]="{'color': 'white'}">
-              {{ quantityFormatValue(0) }}
-              {{ formValues.summary.uom }}
-            </div>
+            <span *ngIf="!formValues.summary.availableQuantity">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: 'white' }"
+                />
+              </svg>
+            </span>
+            Available Qty
+          </span>
+          <div
+            *ngIf="formValues.summary.availableQuantity"
+            class="value"
+            [ngStyle]="{ color: '#00AAE2' }"
+          >
+            {{ quantityFormatValue(formValues.summary.availableQuantity) }}
+            {{ formValues.summary.uom }}
+          </div>
+          <div
+            *ngIf="!formValues.summary.availableQuantity"
+            class="value"
+            [ngStyle]="{ color: 'white' }"
+          >
+            {{ quantityFormatValue(0) }}
+            {{ formValues.summary.uom }}
           </div>
         </div>
-        <div class="contract-qty-container">
-          <div>
-            <span class="label">
-              <span *ngIf="formValues.noOfDaysBeforeExpiry">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#9CD7B6' }"/>
-                </svg>
-              </span>
-              <span *ngIf="!formValues.noOfDaysBeforeExpiry">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
-                </svg>
-              </span>
-              Expiry Count down
+      </div>
+      <div class="contract-qty-container">
+        <div>
+          <span class="label">
+            <span *ngIf="formValues.noOfDaysBeforeExpiry">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: '#9CD7B6' }"
+                />
+              </svg>
             </span>
-            <div *ngIf="formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': '#9CD7B6'}">
-              {{ noOfDaysBeforeExpiryFormatValue(formValues.noOfDaysBeforeExpiry) }}
-              Days
-            </div>
-            <div *ngIf="!formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': 'white'}">
-               0 Days
-            </div>
+            <span *ngIf="!formValues.noOfDaysBeforeExpiry">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <ellipse
+                  cx="4.90561"
+                  cy="4"
+                  rx="4.22642"
+                  ry="4"
+                  [ngStyle]="{ fill: 'white' }"
+                />
+              </svg>
+            </span>
+            Expiry Count down
+          </span>
+          <div
+            *ngIf="formValues.noOfDaysBeforeExpiry"
+            class="value"
+            [ngStyle]="{ color: '#9CD7B6' }"
+          >
+            {{
+              noOfDaysBeforeExpiryFormatValue(formValues.noOfDaysBeforeExpiry)
+            }}
+            Days
+          </div>
+          <div
+            *ngIf="!formValues.noOfDaysBeforeExpiry"
+            class="value"
+            [ngStyle]="{ color: 'white' }"
+          >
+            0 Days
           </div>
         </div>
+      </div>
     </div>
   </div>
 </div>
 <div class="col-md-12 d-flex contract-section">
   <div class="col-md-6 no-padding d-flex">
-    <div class="custom-form-field custom-field-general" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" 
+    <div
+      class="custom-form-field custom-field-general"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field
+        class="without-search"
         appearance="legacy"
-        [ngClass]="{'required-field': (buttonClicked && !formValues.name)}">
+        [ngClass]="{ 'required-field': buttonClicked && !formValues.name }"
+      >
         <mat-label>Contract name</mat-label>
-        <input matInput
-            [(ngModel)]="formValues.name"
-            placeholder="Contract name"
-            autocomplete="off"
-            required
-            [matTooltip]="formValues.name"
-            [matTooltipPosition]="'above'"
-            matTooltipClass="custom-tooltip"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-        </mat-form-field>
+        <input
+          matInput
+          [(ngModel)]="formValues.name"
+          placeholder="Contract name"
+          autocomplete="off"
+          required
+          [matTooltip]="formValues.name"
+          [matTooltipPosition]="'above'"
+          matTooltipClass="custom-tooltip"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+        />
+      </mat-form-field>
     </div>
-    <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field lookup-delivery-container custom-field-general-lookup"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <div class="d-flex">
-        <mat-form-field class="with-search" 
+        <mat-form-field
+          class="with-search"
           appearance="legacy"
-          [ngClass]="{'required-field': (buttonClicked && (!formValues.seller || (formValues.seller && !formValues.seller.name)))}">
+          [ngClass]="{
+            'required-field':
+              buttonClicked &&
+              (!formValues.seller ||
+                (formValues.seller && !formValues.seller.name))
+          }"
+        >
           <mat-label>Seller name</mat-label>
-          <input class="free-text-field" 
-                  type="text"
-                  matInput 
-                  [(ngModel)]="formValues.seller"
-                  [matAutocomplete]="auto"
-                  autocomplete="off"
-                  placeholder="Seller name"
-                  required
-                  [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-          <mat-autocomplete #auto="matAutocomplete" 
-                            class="darkPanelAuto"
-                            [displayWith]="displayFn"
-                            (optionSelected)="selectSeller($event)">
-              <mat-option *ngFor="let option of filterSellerList()" 
-                    [value]="option">
-                  {{option.name}}
-              </mat-option>
+          <input
+            class="free-text-field"
+            type="text"
+            matInput
+            [(ngModel)]="formValues.seller"
+            [matAutocomplete]="auto"
+            autocomplete="off"
+            placeholder="Seller name"
+            required
+            [disabled]="
+              formValues.status && formValues.status.name == 'Confirmed'
+            "
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            class="darkPanelAuto"
+            [displayWith]="displayFn"
+            (optionSelected)="selectSeller($event)"
+          >
+            <mat-option
+              *ngFor="let option of filterSellerList()"
+              [value]="option"
+            >
+              {{ option.name }}
+            </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        
-        <button (click)="openSeller()" 
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
-            [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}"
-            class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+
+        <button
+          (click)="openSeller()"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+          [ngClass]="{
+            'search-icon-disabled':
+              formValues.status && formValues.status.name == 'Confirmed'
+          }"
+          class="search-icon"
+          appMasterSelectorTrigger
+          [masterSelector]="masterSelector"
+          #masterSelectorTrigger="masterSelectorTrigger"
+          [header]="getHeaderNameSelector()"
+        >
           <div class="img">
-            <ng-template cdkPortal #masterSelector="cdkPortal" >
-              <shiptech-shared-master-selector (selectedChange)="selectorSellerSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteSellers"
-                                            [disabled]="disabled"
-                                            [readonly]="readonly"
-                                            [entityName]="entityName"
-                                            [entityId]="entityId"
-                                            [vesselId]="vesselId"
-                                            [headerName]="getHeaderNameSelector()"
+            <ng-template cdkPortal #masterSelector="cdkPortal">
+              <shiptech-shared-master-selector
+                (selectedChange)="
+                  selectorSellerSelectionChange($event);
+                  masterSelectorTrigger.close()
+                "
+                (shouldCloseModal)="masterSelectorTrigger.close()"
+                [selectorType]="autocompleteSellers"
+                [disabled]="disabled"
+                [readonly]="readonly"
+                [entityName]="entityName"
+                [entityId]="entityId"
+                [vesselId]="vesselId"
+                [headerName]="getHeaderNameSelector()"
               ></shiptech-shared-master-selector>
-            </ng-template> 
+            </ng-template>
           </div>
         </button>
       </div>
     </div>
-    <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field lookup-delivery-container custom-field-general-lookup"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <div class="d-flex">
-        <mat-form-field 
-          class="with-search" appearance="legacy"
-          [ngClass]="{'required-field': (buttonClicked && (!formValues.company || (formValues.company && !formValues.company.name)))}">
-          <mat-label>{{generalConfiguration && generalConfiguration.companyDisplayName ? generalConfiguration.companyDisplayName.name : 'Company'}} name</mat-label>
-          <input class="free-text-field" 
-                  type="text"
-                  matInput 
-                  [(ngModel)]="formValues.company"
-                  [matAutocomplete]="auto1"
-                  [placeholder]="generalConfiguration && generalConfiguration.companyDisplayName ? generalConfiguration.companyDisplayName.name + ' name' : 'Company name'"
-                  autocomplete="off"
-                  required
-                  [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-          <mat-autocomplete #auto1="matAutocomplete" 
-                            class="darkPanelAuto"
-                            [displayWith]="displayFn"
-                            (optionSelected)="selectCompany($event)">
-              <mat-option *ngFor="let option of filterCompanyList()" 
-                    [value]="option">
-                  {{option.name}}
-              </mat-option>
+        <mat-form-field
+          class="with-search"
+          appearance="legacy"
+          [ngClass]="{
+            'required-field':
+              buttonClicked &&
+              (!formValues.company ||
+                (formValues.company && !formValues.company.name))
+          }"
+        >
+          <mat-label
+            >{{
+              generalConfiguration && generalConfiguration.companyDisplayName
+                ? generalConfiguration.companyDisplayName.name
+                : 'Company'
+            }}
+            name</mat-label
+          >
+          <input
+            class="free-text-field"
+            type="text"
+            matInput
+            [(ngModel)]="formValues.company"
+            [matAutocomplete]="auto1"
+            [placeholder]="
+              generalConfiguration && generalConfiguration.companyDisplayName
+                ? generalConfiguration.companyDisplayName.name + ' name'
+                : 'Company name'
+            "
+            autocomplete="off"
+            required
+            [disabled]="
+              formValues.status && formValues.status.name == 'Confirmed'
+            "
+          />
+          <mat-autocomplete
+            #auto1="matAutocomplete"
+            class="darkPanelAuto"
+            [displayWith]="displayFn"
+            (optionSelected)="selectCompany($event)"
+          >
+            <mat-option
+              *ngFor="let option of filterCompanyList()"
+              [value]="option"
+            >
+              {{ option.name }}
+            </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <div class="search-icon" 
+        <div
+          class="search-icon"
           *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"
-          [matMenuTriggerFor]="menu" (click)="resetCompanyData()">
+          [matMenuTriggerFor]="menu"
+          (click)="resetCompanyData()"
+        >
           <div class="img"></div>
         </div>
-        <div class="search-icon" 
-          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"         
-          [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}">
-        <div class="img"></div>
-      </div>
+        <div
+          class="search-icon"
+          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"
+          [ngClass]="{
+            'search-icon-disabled':
+              formValues.status && formValues.status.name == 'Confirmed'
+          }"
+        >
+          <div class="img"></div>
+        </div>
         <mat-menu #menu="matMenu" class="company-modal">
-          <div [ngClass]="{'container-modal': !expandCompanyPopUp, 'container-modal-expand': expandCompanyPopUp}">
+          <div
+            [ngClass]="{
+              'container-modal': !expandCompanyPopUp,
+              'container-modal-expand': expandCompanyPopUp
+            }"
+          >
             <div class="col-md-12 header-container-company">
               <div class="select-company-container col-md-10">
-                <span class="search-company-lookup">
-                </span>
-                <input matInput 
-                    [placeholder]="generalConfiguration && generalConfiguration.companyDisplayName ? 'Type ' + generalConfiguration.companyDisplayName.name.toLowerCase() + ' name' : 'Type company name'"                      class="search-company-input"
-                    autocomplete="off"
-                    [(ngModel)]="searchCompanyModel"
-                    (click)="$event.stopPropagation();$event.preventDefault();"
-                    (input)="searchCompanyList($event.target.value)">
+                <span class="search-company-lookup"> </span>
+                <input
+                  matInput
+                  [placeholder]="
+                    generalConfiguration &&
+                    generalConfiguration.companyDisplayName
+                      ? 'Type ' +
+                        generalConfiguration.companyDisplayName.name.toLowerCase() +
+                        ' name'
+                      : 'Type company name'
+                  "
+                  class="search-company-input"
+                  autocomplete="off"
+                  [(ngModel)]="searchCompanyModel"
+                  (click)="$event.stopPropagation(); $event.preventDefault()"
+                  (input)="searchCompanyList($event.target.value)"
+                />
               </div>
-              <div class="col-md-2"  (click)="$event.stopPropagation();$event.preventDefault();">
-                  <img  [ngClass]="{'expand-company-img': expandCompanyPopUp}" (click)="expandCompanyPopUp = !expandCompanyPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              <div
+                class="col-md-2"
+                (click)="$event.stopPropagation(); $event.preventDefault()"
+              >
+                <img
+                  [ngClass]="{ 'expand-company-img': expandCompanyPopUp }"
+                  (click)="expandCompanyPopUp = !expandCompanyPopUp"
+                  alt="Shiptech"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                />
               </div>
             </div>
             <div class="col-md-12 row company-container-h">
-              {{generalConfiguration && generalConfiguration.companyDisplayName ? generalConfiguration.companyDisplayName.name : 'Company'}} Name
+              {{
+                generalConfiguration && generalConfiguration.companyDisplayName
+                  ? generalConfiguration.companyDisplayName.name
+                  : 'Company'
+              }}
+              Name
             </div>
             <mat-radio-group
               class="company-container"
               [(ngModel)]="selectedCompany"
-              (change)="radioCompanyChange($event)">
-              <mat-radio-button class="company-container-radio-button" *ngFor="let company of companyListForSearch" [value]="company">
-                {{company.name}}
+              (change)="radioCompanyChange($event)"
+            >
+              <mat-radio-button
+                class="company-container-radio-button"
+                *ngFor="let company of companyListForSearch"
+                [value]="company"
+              >
+                {{ company.name }}
               </mat-radio-button>
             </mat-radio-group>
-          </div>        
+          </div>
         </mat-menu>
       </div>
     </div>
   </div>
   <div class="col-md-6">
-    <div [ngClass]="{'allowed-companies-container': !expandAllowCompanies, 'allowed-companies-container-expand': expandAllowCompanies}">
+    <div
+      [ngClass]="{
+        'allowed-companies-container': !expandAllowCompanies,
+        'allowed-companies-container-expand': expandAllowCompanies
+      }"
+    >
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list-modal-container">
-            Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
+          Allowed
+          {{
+            generalConfiguration &&
+            generalConfiguration.companyDisplayName.name == 'Pool'
+              ? 'Pools'
+              : 'Companies'
+          }}
         </div>
-        <div *ngIf="formValues.company && !(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menu1" class="edit-allow-companies">
-        </div>
-        <div *ngIf="!formValues.company || (formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
-        </div>
+        <div
+          *ngIf="
+            formValues.company &&
+            !(formValues.status && formValues.status.name == 'Confirmed')
+          "
+          [matMenuTriggerFor]="menu1"
+          class="edit-allow-companies"
+        ></div>
+        <div
+          *ngIf="
+            !formValues.company ||
+            (formValues.status && formValues.status.name == 'Confirmed')
+          "
+          class="edit-allow-companies"
+        ></div>
         <mat-menu #menu1="matMenu" class="general-allowed-company-modal">
-          <div class="header-allowed-company fixedHeader" [ngClass]="{'expand-allowed-company-hcontainer': expandAllowedCompanylistPopUp}">
-            <div class="allowed-company-header col-md-10 contract-no-padding" style="padding: 10px;">
-              Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
+          <div
+            class="header-allowed-company fixedHeader"
+            [ngClass]="{
+              'expand-allowed-company-hcontainer': expandAllowedCompanylistPopUp
+            }"
+          >
+            <div
+              class="allowed-company-header col-md-10 contract-no-padding"
+              style="padding: 10px;"
+            >
+              Allowed
+              {{
+                generalConfiguration &&
+                generalConfiguration.companyDisplayName.name == 'Pool'
+                  ? 'Pools'
+                  : 'Companies'
+              }}
             </div>
-            <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
-                <img  [ngClass]="{'expand-company-img': expandAllowedCompanylistPopUp}" (click)="expandAllowedCompanylistPopUp = !expandAllowedCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+            <div
+              class="col-md-2 contract-no-padding expand-allowed-companies"
+              (click)="$event.stopPropagation(); $event.preventDefault()"
+            >
+              <img
+                [ngClass]="{
+                  'expand-company-img': expandAllowedCompanylistPopUp
+                }"
+                (click)="
+                  expandAllowedCompanylistPopUp = !expandAllowedCompanylistPopUp
+                "
+                alt="Shiptech"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+              />
             </div>
           </div>
-          <div style="height: 293px;" [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
-            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyList">
+          <div
+            style="height: 293px;"
+            [ngClass]="{
+              'expand-allowed-company-container': expandAllowedCompanylistPopUp
+            }"
+          >
+            <div
+              (click)="$event.stopPropagation()"
+              class="col-md-12 contract-no-padding allowed-company-line"
+              *ngFor="let company of companyList"
+            >
               <mat-checkbox [(ngModel)]="company.isSelected">
-                {{company.name}}
+                {{ company.name }}
               </mat-checkbox>
             </div>
           </div>
-          <div class="saveAllowedCompanies" [ngClass]="{'expand-save-button': expandAllowedCompanylistPopUp}">
-            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+          <div
+            class="saveAllowedCompanies"
+            [ngClass]="{ 'expand-save-button': expandAllowedCompanylistPopUp }"
+          >
+            <button
+              class="ui-button-info mr-1 btn-i-blue-color"
+              label="Save"
               pButton
               (click)="saveAllowedCompanies()"
               style="float:right"
-              type="button"></button>
+              type="button"
+            ></button>
           </div>
         </mat-menu>
       </div>
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list">
-          <ng-container  *ngFor="let allowedCompany of formValues.allowedCompanies"> 
+          <ng-container
+            *ngFor="let allowedCompany of formValues.allowedCompanies"
+          >
             <span class="allow-company">
-              <span class="dot-allow-company">
-              </span>
-              {{allowedCompany.name}}
+              <span class="dot-allow-company"> </span>
+              {{ allowedCompany.name }}
             </span>
           </ng-container>
         </div>
@@ -372,180 +760,272 @@
   </div>
 </div>
 <div class="col-md-12 d-flex contract-section">
-    <div class="custom-form-field" 
-      [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"
-      *ngIf="contractConfiguration && contractConfiguration.agreementTypeDisplay.id == 1">
-      <mat-form-field class="without-search" 
-        appearance="legacy"
-        [ngClass]="{'required-field': (buttonClicked && !formValues.agreementType)}">
-        <mat-label>Agreement Type</mat-label>
-        <mat-select 
-            [(ngModel)]="formValues.agreementType"
-            (selectionChange)="changeAgreementType()"
-            [disableOptionCentering]="true"
-            panelClass="general-info-select-container"
-            [compareWith]="compareUomObjects"
-            placeholder="Agreement Type"
-            required
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-            <mat-option *ngFor="let option of agreementTypeList" [value]="option">
-                {{option.name}}
-            </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div
+    class="custom-form-field"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    *ngIf="
+      contractConfiguration &&
+      contractConfiguration.agreementTypeDisplay.id == 1
+    "
+  >
+    <mat-form-field
+      class="without-search"
+      appearance="legacy"
+      [ngClass]="{
+        'required-field': buttonClicked && !formValues.agreementType
+      }"
+    >
+      <mat-label>Agreement Type</mat-label>
+      <mat-select
+        [(ngModel)]="formValues.agreementType"
+        (selectionChange)="changeAgreementType()"
+        [disableOptionCentering]="true"
+        panelClass="general-info-select-container"
+        [compareWith]="compareUomObjects"
+        placeholder="Agreement Type"
+        required
+        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+      >
+        <mat-option *ngFor="let option of agreementTypeList" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div
+    class="custom-form-field"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  >
+    <mat-form-field class="without-search" appearance="legacy">
+      <mat-label>Payment Term</mat-label>
+      <mat-select
+        [(ngModel)]="formValues.paymentTerm"
+        [disableOptionCentering]="true"
+        panelClass="general-info-select-container"
+        [compareWith]="compareUomObjects"
+        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+        placeholder="Payment Term"
+      >
+        <mat-option *ngFor="let option of paymentTermList" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div
+    class="custom-form-field"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  >
+    <mat-form-field
+      class="without-search"
+      appearance="legacy"
+      [ngClass]="{ 'required-field': buttonClicked && !formValues.incoterm }"
+    >
+      <mat-label>Delivery Term</mat-label>
+      <mat-select
+        [(ngModel)]="formValues.incoterm"
+        [disableOptionCentering]="true"
+        panelClass="general-info-select-container"
+        [compareWith]="compareUomObjects"
+        placeholder="Delivery Term"
+        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+        required
+      >
+        <mat-option *ngFor="let option of incotermList" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div
+    class="custom-form-field"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  >
+    <mat-form-field
+      class="without-search"
+      appearance="legacy"
+      [ngClass]="{
+        'required-field': buttonClicked && !formValues.validFrom,
+        'date-invalid': isValidFromDateInvalid,
+        'date-valid': !isValidFromDateInvalid
+      }"
+    >
+      <mat-label>Start Date</mat-label>
+      <input
+        [(ngModel)]="formValues.validFrom"
+        #validFromDateField="ngModel"
+        matInput
+        [matDatepicker]="validFrom"
+        (focus)="validFrom.open()"
+        autocomplete="off"
+        placeholder="Start Date"
+        (dateInput)="onChange($event, 'validFrom')"
+        (dateChange)="
+          formValues.validFrom = formatDateForBe(formValues.validFrom)
+        "
+        required
+        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+      />
+      <mat-datepicker-toggle matSuffix [for]="validFrom">
+        <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker
+        #validFrom
+        [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+      ></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div
+    *ngIf="!formValues.evergreen"
+    class="custom-form-field"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  >
+    <mat-form-field
+      class="without-search"
+      appearance="legacy"
+      [ngClass]="{
+        'required-field': buttonClicked && !formValues.validTo,
+        'date-invalid': isValidToDateInvalid,
+        'date-valid': !isValidToDateInvalid
+      }"
+    >
+      <mat-label>End Date</mat-label>
+      <input
+        [(ngModel)]="formValues.validTo"
+        #validToDateField="ngModel"
+        matInput
+        [matDatepicker]="validTo"
+        (focus)="validTo.open()"
+        autocomplete="off"
+        placeholder="End Date"
+        (dateInput)="onChange($event, 'validTo')"
+        (dateChange)="formValues.validTo = formatDateForBe(formValues.validTo)"
+        required
+        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+      />
+      <mat-datepicker-toggle matSuffix [for]="validTo">
+        <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker
+        #validTo
+        [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+      ></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div
+    class="custom-form-field"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  >
+    <mat-form-field class="without-search" appearance="legacy">
+      <mat-label>Date apply on</mat-label>
+      <mat-select
+        [(ngModel)]="formValues.applyTo"
+        [disableOptionCentering]="true"
+        panelClass="general-info-select-container"
+        [compareWith]="compareUomObjects"
+        placeholder="Date apply on"
+        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+      >
+        <mat-option *ngFor="let option of applyToList" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="inital-end-date-readonly" *ngIf="!formValues.evergreen">
+    <div class="label">Initial End Date :</div>
+    <div class="value">
+      {{
+        formValues.initialValidTo
+          ? formatDate(formValues.initialValidTo)
+          : ' --/--/---'
+      }}
     </div>
-    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
-        <mat-label>Payment Term</mat-label>
-        <mat-select 
-            [(ngModel)]="formValues.paymentTerm"
-            [disableOptionCentering]="true"
-            panelClass="general-info-select-container"
-            [compareWith]="compareUomObjects"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-            placeholder="Payment Term">
-            <mat-option *ngFor="let option of paymentTermList" [value]="option">
-                {{option.name}}
-            </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" 
-        appearance="legacy"
-        [ngClass]="{'required-field': (buttonClicked && !formValues.incoterm)}">
-        <mat-label>Delivery Term</mat-label>
-        <mat-select 
-            [(ngModel)]="formValues.incoterm"
-            [disableOptionCentering]="true"
-            panelClass="general-info-select-container"
-            [compareWith]="compareUomObjects"
-            placeholder="Delivery Term"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-            required>
-            <mat-option *ngFor="let option of incotermList" [value]="option">
-                {{option.name}}
-            </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="custom-form-field" 
-        [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" 
-          appearance="legacy"
-          [ngClass]="{'required-field': (buttonClicked && !formValues.validFrom), 
-              'date-invalid': isValidFromDateInvalid , 'date-valid': !isValidFromDateInvalid}">
-        <mat-label>Start Date</mat-label>
-        <input [(ngModel)]="formValues.validFrom" 
-              #validFromDateField="ngModel" 
-              matInput 
-              [matDatepicker]="validFrom"
-              (focus)="validFrom.open()"
-              autocomplete="off"
-              placeholder="Start Date"
-              (dateInput)="onChange($event, 'validFrom')"
-              (dateChange)="formValues.validFrom= formatDateForBe(formValues.validFrom)"
-              required
-              [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-              <mat-datepicker-toggle matSuffix [for]="validFrom">
-                <mat-icon matDatepickerToggleIcon class="icon-date">
-                </mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #validFrom [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <div *ngIf="!formValues.evergreen"
-        class="custom-form-field" 
-        [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" 
-          appearance="legacy"
-          [ngClass]="{'required-field': (buttonClicked && !formValues.validTo),
-            'date-invalid': isValidToDateInvalid , 'date-valid': !isValidToDateInvalid}">
-        <mat-label>End Date</mat-label>
-        <input [(ngModel)]="formValues.validTo" 
-              #validToDateField="ngModel" 
-              matInput 
-              [matDatepicker]="validTo"
-              (focus)="validTo.open()"
-              autocomplete="off"
-              placeholder="End Date"
-              (dateInput)="onChange($event, 'validTo')"
-              (dateChange)="formValues.validTo= formatDateForBe(formValues.validTo)"
-              required
-              [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-              <mat-datepicker-toggle matSuffix [for]="validTo">
-                <mat-icon matDatepickerToggleIcon class="icon-date">
-                </mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #validTo [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
-        <mat-label>Date apply on</mat-label>
-        <mat-select 
-            [(ngModel)]="formValues.applyTo"
-            [disableOptionCentering]="true"
-            panelClass="general-info-select-container"
-            [compareWith]="compareUomObjects"
-            placeholder="Date apply on"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-            <mat-option *ngFor="let option of applyToList" [value]="option">
-                {{option.name}}
-            </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="inital-end-date-readonly" *ngIf="!formValues.evergreen">
-      <div class="label">Initial End Date :</div>
-      <div class="value">{{formValues.initialValidTo ? formatDate(formValues.initialValidTo) : ' --/--/---'}}</div>
-    </div>
+  </div>
 </div>
 <div class="col-md-12 d-flex contract-section">
   <div class="col-md-6 no-padding">
-    <div [ngClass]="{'allowed-companies-container': !expandAllowCustomer, 'allowed-companies-container-expand': expandAllowCustomer}">
+    <div
+      [ngClass]="{
+        'allowed-companies-container': !expandAllowCustomer,
+        'allowed-companies-container-expand': expandAllowCustomer
+      }"
+    >
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list-modal-container">
           Customer
         </div>
-        <div *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menu3" class="edit-allow-companies">
-        </div>
-        <div *ngIf="(formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
-        </div>
-        <mat-menu #menu3="matMenu" class="general-allowed-company-modal cust-modal">
-          <div class="fixedCustHeader" [ngClass]="{'expand-customer-hcontainer': expandCustomerListPopUp}">
+        <div
+          *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"
+          [matMenuTriggerFor]="menu3"
+          class="edit-allow-companies"
+        ></div>
+        <div
+          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"
+          class="edit-allow-companies"
+        ></div>
+        <mat-menu
+          #menu3="matMenu"
+          class="general-allowed-company-modal cust-modal"
+        >
+          <div
+            class="fixedCustHeader"
+            [ngClass]="{
+              'expand-customer-hcontainer': expandCustomerListPopUp
+            }"
+          >
             <div class="col-md-12 header-allowed-company">
-              <div class="allowed-company-header col-md-10 contract-no-padding" >
+              <div class="allowed-company-header col-md-10 contract-no-padding">
                 Customer
               </div>
-              <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
-                  <img  [ngClass]="{'expand-company-img': expandCustomerListPopUp}" (click)="expandCustomerListPopUp = !expandCustomerListPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              <div
+                class="col-md-2 contract-no-padding expand-allowed-companies"
+                (click)="$event.stopPropagation(); $event.preventDefault()"
+              >
+                <img
+                  [ngClass]="{ 'expand-company-img': expandCustomerListPopUp }"
+                  (click)="expandCustomerListPopUp = !expandCustomerListPopUp"
+                  alt="Shiptech"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                />
               </div>
-            </div>          
+            </div>
           </div>
-          <div style="height: 280px;" [ngClass]="{'expand-customer-container': expandCustomerListPopUp}">
-            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let customer of customerList">
+          <div
+            style="height: 280px;"
+            [ngClass]="{ 'expand-customer-container': expandCustomerListPopUp }"
+          >
+            <div
+              (click)="$event.stopPropagation()"
+              class="col-md-12 contract-no-padding allowed-company-line"
+              *ngFor="let customer of customerList"
+            >
               <mat-checkbox [(ngModel)]="customer.isSelected">
-                {{customer.name}}
+                {{ customer.name }}
               </mat-checkbox>
-            </div> 
+            </div>
           </div>
-          <div class="saveCustomer" [ngClass]="{'expand-cust-save-button': expandCustomerListPopUp}">
-            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+          <div
+            class="saveCustomer"
+            [ngClass]="{ 'expand-cust-save-button': expandCustomerListPopUp }"
+          >
+            <button
+              class="ui-button-info mr-1 btn-i-blue-color"
+              label="Save"
               pButton
               (click)="saveCustomer()"
               style="float:right"
-              type="button"></button>
+              type="button"
+            ></button>
           </div>
         </mat-menu>
       </div>
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list">
-          <ng-container  *ngFor="let customer of formValues.customers"> 
-            <span class="allow-company" title="{{customer.name}}" >
-              <span class="dot-allow-company">
-              </span>
-              {{customer.name}} 
+          <ng-container *ngFor="let customer of formValues.customers">
+            <span class="allow-company" title="{{ customer.name }}">
+              <span class="dot-allow-company"> </span>
+              {{ customer.name }}
             </span>
           </ng-container>
         </div>
@@ -560,5 +1040,6 @@
   bdColor="rgba(51,51,51,0.8)"
   size="medium"
   color="#fff"
-  type="ball-spin-clockwise-fade">
+  type="ball-spin-clockwise-fade"
+>
 </ngx-spinner>
