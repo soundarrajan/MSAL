@@ -1,11 +1,9 @@
-﻿commit 733dc255777f5c426f9f5327605d8ab2da44b32a
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jun 10 11:20:04 2021 +0000
+﻿commit 6aa1dfb7f9ab1be92b3103fd2373053a241bc819
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Jun 10 12:37:28 2021 +0000
 
-    Merged PR 11395: Fix Price Precision
+    Merged PR 11401: Removed defaulting of Extras% from the location master
     
-    Fix Price Precision
-    
-    Related work items: #32433
+    Removed defaulting of Extras% from the location master
 
 branch: master
