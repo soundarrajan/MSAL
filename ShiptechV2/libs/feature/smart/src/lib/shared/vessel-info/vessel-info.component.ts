@@ -62,8 +62,8 @@ export class VesselInfoComponent implements OnInit {
   public bPlanType : any = {curr : 'C', prev : 'P'};
   public statusCurrBPlan : boolean;
   public statusPrevBPlan : boolean;
-  public statusCurr : any;
-  public statusPrev : any;
+  public statusCurr : any = '';
+  public statusPrev : any = '';
   public shiptechRequestUrl :string = 'shiptechUrl/#/new-request/{{voyage_detail_id}}';
   public voyageDetailId: any;
   public selectedPort: any = [];
@@ -259,9 +259,17 @@ export class VesselInfoComponent implements OnInit {
       console.log('bunker plan Id and status details', data);
       this.currPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
       this.planId = this.currPlanIdDetails?.planId;
-      this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
-      this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
-      this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
+      if(this.planId != null){
+        this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
+        this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
+        this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
+      }
+      else {
+        this.statusCurrBPlan = false;
+        this.statusCurr = '';
+        this.planDate = '';
+      }
+      
       this.loadBplan = true;
       // store vesselid and planid for shared ref
       this.store.dispatch(new saveVesselDataAction({'vesselId': request.shipId, 'planId': this.planId}));
@@ -280,12 +288,21 @@ export class VesselInfoComponent implements OnInit {
       console.log('bunker plan Id and status details', data);
       this.prevPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
       this.prevPlanId = this.prevPlanIdDetails?.planId;
-      if(this.currPlanIdDetails?.isPlanInvalid === 'Y')
-          this.statusPrevBPlan = this.prevPlanIdDetails?.isPlanInvalid === 'N' ? true:false ;
-      else
-          this.statusPrevBPlan = false;
-      this.statusPrev = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
-      this.prevPlanDate = moment(this.prevPlanIdDetails?.planDate).format('DD/MM/YYYY');
+      if(this.prevPlanId != null){
+          if(this.currPlanIdDetails?.isPlanInvalid === 'Y'){
+              this.statusPrevBPlan = this.prevPlanIdDetails?.isPlanInvalid === 'N' ? true:false ;
+          }
+          else{
+              this.statusPrevBPlan = false;
+          }
+        this.statusPrev = this.prevPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
+        this.prevPlanDate = moment(this.prevPlanIdDetails?.planDate).format('DD/MM/YYYY');
+      }
+      else{
+        this.statusPrevBPlan = false;
+        this.statusPrev = '';
+        this.prevPlanDate = '';
+      }
       this.loadBplan = true;
     })
   
