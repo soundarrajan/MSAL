@@ -218,7 +218,7 @@ export class PaymentTermListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 

@@ -30,11 +30,13 @@ import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler
 import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.filter';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
-import { OrderListColumns, OrderListColumnServerKeys, OrderListColumnsLabels } from './order-list.columns';
+import {
+  OrderListColumns,
+  OrderListColumnServerKeys,
+  OrderListColumnsLabels
+} from './order-list.columns';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { IServerGridPageFilters } from '@shiptech/core/grid/server-grid/server-grid-request-response';
-
-
 
 function model(prop: keyof IOrderListDto): keyof IOrderListDto {
   return prop;
@@ -143,7 +145,6 @@ export class OrderListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-  
   confirmedQuantityCol: ITypedColDef<IOrderListDto, string> = {
     headerName: OrderListColumnsLabels.confirmedQuantity,
     colId: OrderListColumns.confirmedQuantity,
@@ -182,8 +183,6 @@ export class OrderListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -217,35 +216,31 @@ export class OrderListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const pageFilters =  {
-      "Filters": [
+    const pageFilters = {
+      Filters: [
         {
-            "columnValue": "OrderStatus_DisplayName",
-            "ColumnType": "Text",
-            "isComputedColumn": false,
-            "ConditionValue": "=",
-            "Values": [
-                "Confirmed"
-            ],
-            "FilterOperator": 0
+          columnValue: 'OrderStatus_DisplayName',
+          ColumnType: 'Text',
+          isComputedColumn: false,
+          ConditionValue: '=',
+          Values: ['Confirmed'],
+          FilterOperator: 0
         },
         {
-            "columnValue": "OrderStatus_DisplayName",
-            "ColumnType": "Text",
-            "isComputedColumn": false,
-            "ConditionValue": "=",
-            "Values": [
-                "PartiallyDelivered"
-            ],
-            "FilterOperator": 2
+          columnValue: 'OrderStatus_DisplayName',
+          ColumnType: 'Text',
+          isComputedColumn: false,
+          ConditionValue: '=',
+          Values: ['PartiallyDelivered'],
+          FilterOperator: 2
         }
       ]
-   };
+    };
     this.bdnInformationApiService
       .getOrderList({
         ...transformLocalToServeGridInfo(
