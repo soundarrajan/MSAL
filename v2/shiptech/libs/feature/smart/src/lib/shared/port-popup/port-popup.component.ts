@@ -208,6 +208,7 @@ export class PortPopupComponent implements OnInit {
           });
           // this.popup_data.notavlProdCategory = ['DIS'],
         }
+        this.triggerEventToUpdate();
       })
     }
   }

@@ -1,9 +1,13 @@
-﻿commit 6aa1dfb7f9ab1be92b3103fd2373053a241bc819
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jun 10 12:37:28 2021 +0000
+﻿commit 744523eb49bd390f9e174b2cd69a261d9117869e
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jun 10 13:47:48 2021 +0000
 
-    Merged PR 11401: Removed defaulting of Extras% from the location master
+    Merged PR 11407: #29769 : Port details: View Port Basic Information trigger update
     
-    Removed defaulting of Extras% from the location master
+    #29769 : Port details: View Port Basic Information trigger update
+    
+    && #29776 Style fix
+    
+    Related work items: #29769
 
 branch: master
