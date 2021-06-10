@@ -971,6 +971,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.formValues.products.push(emptyProductObj);
     }
 
+    this.locationMasterSearchListOptions[
+      this.formValues.products.length - 1
+    ] = _.cloneDeep(this.locationMasterList);
+
+    this.productMasterSearchListOptions[
+      this.formValues.products.length - 1
+    ] = _.cloneDeep(this.productMasterList);
+
     //this.selectedTabIndex =  0;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
@@ -1693,18 +1701,18 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     let newAdditionalCostList = _.cloneDeep(
       this.additionalCostForLocation[locationId]
     );
-    for (let j = 0; j < this.additionalCostList.length; j++) {
-      let additionalCostFromCache = this.additionalCostList[j];
-      let findAdditionalCostLineIndex = _.findIndex(
-        newAdditionalCostList,
-        function(object: any) {
-          return additionalCostFromCache.id == object.additionalCostid;
-        }
-      );
-      if (findAdditionalCostLineIndex == -1) {
-        newAdditionalCostList.push(additionalCostFromCache);
-      }
-    }
+    // for (let j = 0; j < this.additionalCostList.length; j++) {
+    //   let additionalCostFromCache = this.additionalCostList[j];
+    //   let findAdditionalCostLineIndex = _.findIndex(
+    //     newAdditionalCostList,
+    //     function(object: any) {
+    //       return additionalCostFromCache.id == object.additionalCostid;
+    //     }
+    //   );
+    //   if (findAdditionalCostLineIndex == -1) {
+    //     newAdditionalCostList.push(additionalCostFromCache);
+    //   }
+    // }
 
     console.log(newAdditionalCostList);
     this.additionalCostForLocation[locationId] = _.cloneDeep(
