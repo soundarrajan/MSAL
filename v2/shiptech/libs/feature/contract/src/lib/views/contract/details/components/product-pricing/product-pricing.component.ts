@@ -983,7 +983,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       console.log(filterValue);
       if (this.contractFormulaList) {
         return this.contractFormulaList
-          .filter(option => option.name.toLowerCase().includes(filterValue))
+          .filter(option =>
+            option.name.toLowerCase().includes(filterValue.trim())
+          )
           .slice(0, 10);
       } else {
         return [];

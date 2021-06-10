@@ -2,55 +2,83 @@
   Formula description
 </div>
 <div class="col-md-12 d-flex" style="margin-top: 15px; flex-wrap: wrap;">
-  <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+  <div
+    class="custom-form-field create-new-formula-form-field"
+    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  >
     <div class="d-flex">
       <mat-form-field class="with-search" appearance="legacy">
         <mat-label>Currency</mat-label>
-        <input class="free-text-field" 
-                type="text"
-                matInput 
-                [(ngModel)]="formValues.currency"
-                [matAutocomplete]="auto"
-                placeholder="Currency"
-                [disabled]="!formValues.isEditable">
-        <mat-autocomplete #auto="matAutocomplete" 
-                          class="darkPanelAuto"
-                          [displayWith]="displayFn"
-                          (optionSelected)="selectCurrency($event)">
-            <mat-option *ngFor="let option of filterCurrencyList()" 
-                  [value]="option">
-                {{option.name}}
-            </mat-option>
+        <input
+          class="free-text-field"
+          type="text"
+          matInput
+          [(ngModel)]="formValues.currency"
+          [matAutocomplete]="auto"
+          placeholder="Currency"
+          [disabled]="!formValues.isEditable"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          class="darkPanelAuto"
+          [displayWith]="displayFn"
+          (optionSelected)="selectCurrency($event)"
+        >
+          <mat-option
+            *ngFor="let option of filterCurrencyList()"
+            [value]="option"
+          >
+            {{ option.name }}
+          </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <button 
-        [disabled]="!formValues.isEditable" 
-        [ngClass]="{'search-icon-disabled': !formValues.isEditable}"
-        class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
+      <button
+        [disabled]="!formValues.isEditable"
+        [ngClass]="{ 'search-icon-disabled': !formValues.isEditable }"
+        class="search-icon"
+        appMasterSelectorTrigger
+        [masterSelector]="masterSelector1"
+        #masterSelectorTrigger1="masterSelectorTrigger"
+        [header]="getHeaderNameSelector1()"
+      >
         <div class="img">
-          <ng-template cdkPortal #masterSelector1="cdkPortal" >
-            <shiptech-shared-master-selector (selectedChange)="selectorCurrencySelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompleteCurrency"
-                                          [disabled]="disabled"
-                                          [entityName]="entityName"
-                                          [headerName]="getHeaderNameSelector1()"
+          <ng-template cdkPortal #masterSelector1="cdkPortal">
+            <shiptech-shared-master-selector
+              (selectedChange)="
+                selectorCurrencySelectionChange($event);
+                masterSelectorTrigger1.close()
+              "
+              (shouldCloseModal)="masterSelectorTrigger1.close()"
+              [selectorType]="autocompleteCurrency"
+              [disabled]="disabled"
+              [entityName]="entityName"
+              [headerName]="getHeaderNameSelector1()"
             ></shiptech-shared-master-selector>
-          </ng-template> 
+          </ng-template>
         </div>
       </button>
     </div>
   </div>
   <mat-checkbox
-    [disabled]="!formValues.isEditable" 
+    [disabled]="!formValues.isEditable"
     [(ngModel)]="formValues.isMean"
     class="is-mean-checkbox"
-    (change)="isMeanChange($event)">Apply mean for entire table</mat-checkbox>
+    (change)="isMeanChange($event)"
+    >Apply mean for entire table</mat-checkbox
+  >
 </div>
 <div class="col-md-12">
-  <table class="complex-formula-quote-lines table table-stripped table-hover" style="width:100%">
+  <table
+    class="complex-formula-quote-lines table table-stripped table-hover"
+    style="width:100%"
+  >
     <thead>
       <tr>
         <td class="padding" style="width: 30px;">
-          <a class="add-new-quote-line-icon"  (click)="!formValues.isEditable ? '' : addComplexFormulaQuoteLine()"></a>
+          <a
+            class="add-new-quote-line-icon"
+            (click)="!formValues.isEditable ? '' : addComplexFormulaQuoteLine()"
+          ></a>
         </td>
         <td class="padding" style="width:10%">
           <b>Operation</b>
@@ -94,231 +122,443 @@
       </tr>
     </thead>
     <tbody>
-        <ng-container  *ngFor="let complexFormulaQuoteLine of formValues.complexFormulaQuoteLines | keyvalue : originalOrder">
-          <tr *ngIf="!complexFormulaQuoteLine.value.isDeleted">
-            <td class="padding" style="width: 30px;">
-              <a class="remove-new-quote-line-icon" (click)="!formValues.isEditable ? '' : removeComplexFormulaQuoteLine(complexFormulaQuoteLine.key)" style="left: 10px;"></a>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.formulaOperation.id"
-                          (ngModelChange)="setFormulaOperation($event, complexFormulaQuoteLine.key)"
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [disabled]="formValues.isMean || !formValues.isEditable"
-                          >
-                      <mat-option *ngFor="let option of formulaOperationList" [value]="option.id">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td> 
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search" appearance="legacy">
-                  <input 
-                      [(ngModel)]="complexFormulaQuoteLine.value.weight"
-                      [disabled]="formValues.isMean || !formValues.isEditable" 
-                      matInput 
-                      autocomplete="off">
-                </mat-form-field>
-              </div>
-            </td> 
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.formulaFunction" 
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [compareWith]="compareUomObjects"
-                          [disabled]="!formValues.isEditable" >
-                      <mat-option *ngFor="let option of formulaFunctionList" [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td> 
-            <td style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search" appearance="legacy">
-                  <input class="free-text-field" 
-                          type="text"
-                          matInput 
-                          [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[0].systemInstrument"
-                          [matAutocomplete]="auto"
-                          [disabled]="!formValues.isEditable">
-                  <mat-autocomplete #auto="matAutocomplete" 
-                                    class="darkPanelAuto"
-                                    [displayWith]="displayFn"
-                                    (optionSelected)="selectSystemInstrumentFromComplexFormulaQuoteLine($event.option.value, complexFormulaQuoteLine.key, 0)">
-                      <mat-option *ngFor="let option of filterSystemInstrumentListFromComplexFormulaQuoteLine(complexFormulaQuoteLine.value.systemInstruments[0].systemInstrument && complexFormulaQuoteLine.value.systemInstruments[0].systemInstrument.name ? complexFormulaQuoteLine.value.systemInstruments[0].systemInstrument.name : complexFormulaQuoteLine.value.systemInstruments[0].systemInstrument)" 
-                            [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </div>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[0].marketPriceTypeId" 
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [compareWith]="compareUomObjects"
-                          [disabled]="!formValues.isEditable">
-                      <mat-option *ngFor="let option of marketPriceTypeList" [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td> 
-            <td style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search" appearance="legacy">
-                  <input class="free-text-field" 
-                          type="text"
-                          matInput 
-                          [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[1].systemInstrument"
-                          [matAutocomplete]="auto1"
-                          [disabled]="!formValues.isEditable">
-                  <mat-autocomplete #auto1="matAutocomplete" 
-                                    class="darkPanelAuto"
-                                    [displayWith]="displayFn"
-                                    (optionSelected)="selectSystemInstrumentFromComplexFormulaQuoteLine($event.option.value, complexFormulaQuoteLine.key, 1)">
-                      <mat-option *ngFor="let option of filterSystemInstrumentListFromComplexFormulaQuoteLine(complexFormulaQuoteLine.value.systemInstruments[1].systemInstrument && complexFormulaQuoteLine.value.systemInstruments[1].systemInstrument.name ? complexFormulaQuoteLine.value.systemInstruments[1].systemInstrument.name : complexFormulaQuoteLine.value.systemInstruments[1].systemInstrument)" 
-                            [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </div>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[1].marketPriceTypeId" 
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [compareWith]="compareUomObjects"
-                          [disabled]="!formValues.isEditable">
-                      <mat-option *ngFor="let option of marketPriceTypeList" [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td> 
-            <td style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search" appearance="legacy">
-                  <input class="free-text-field" 
-                          type="text"
-                          matInput 
-                          [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[2].systemInstrument"
-                          [matAutocomplete]="auto2"
-                          [disabled]="!formValues.isEditable">
-                  <mat-autocomplete #auto2="matAutocomplete" 
-                                    class="darkPanelAuto"
-                                    [displayWith]="displayFn"
-                                    (optionSelected)="selectSystemInstrumentFromComplexFormulaQuoteLine($event.option.value, complexFormulaQuoteLine.key, 2)">
-                      <mat-option *ngFor="let option of filterSystemInstrumentListFromComplexFormulaQuoteLine(complexFormulaQuoteLine.value.systemInstruments[2].systemInstrument && complexFormulaQuoteLine.value.systemInstruments[2].systemInstrument.name ? complexFormulaQuoteLine.value.systemInstruments[2].systemInstrument.name : complexFormulaQuoteLine.value.systemInstruments[2].systemInstrument)" 
-                            [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </div>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[2].marketPriceTypeId" 
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [compareWith]="compareUomObjects"
-                          [disabled]="!formValues.isEditable">
-                      <mat-option *ngFor="let option of marketPriceTypeList" [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.formulaPlusMinus" 
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [compareWith]="compareUomObjects"
-                          [disabled]="!formValues.isEditable">
-                      <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search" appearance="legacy">
-                  <input 
-                      [(ngModel)]="complexFormulaQuoteLine.value.amount" 
-                      (keypress)="keyPressNumber($event)"
-                      [disabled]="!formValues.isEditable || (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)"
-                      matInput 
-                      autocomplete="off"
-                      amountFormat>
-                </mat-form-field>
-              </div>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.formulaFlatPercentage" 
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [compareWith]="compareUomObjects"
-                          [disabled]="!formValues.isEditable ||  (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)">
-                      <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td>
-            <td  style="width:10%">
-              <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search complex-formula-quote-dropdown-component" appearance="legacy">
-                  <mat-select 
-                          [(ngModel)]="complexFormulaQuoteLine.value.uom" 
-                          [disableOptionCentering]="true"
-                          panelClass="general-information-select-container"
-                          [compareWith]="compareUomObjects"
-                          [disabled]="!formValues.isEditable 
-                            || (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)
-                            || (complexFormulaQuoteLine.value.formulaFlatPercentage && complexFormulaQuoteLine.value.formulaFlatPercentage.id != 1)">
-                      <mat-option *ngFor="let option of uomList" [value]="option">
-                          {{option.name}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td>
-          </tr>
-        </ng-container>
+      <ng-container
+        *ngFor="
+          let complexFormulaQuoteLine of formValues.complexFormulaQuoteLines
+            | keyvalue: originalOrder
+        "
+      >
+        <tr *ngIf="!complexFormulaQuoteLine.value.isDeleted">
+          <td class="padding" style="width: 30px;">
+            <a
+              class="remove-new-quote-line-icon"
+              (click)="
+                !formValues.isEditable
+                  ? ''
+                  : removeComplexFormulaQuoteLine(complexFormulaQuoteLine.key)
+              "
+              style="left: 10px;"
+            ></a>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.formulaOperation.id
+                  "
+                  (ngModelChange)="
+                    setFormulaOperation($event, complexFormulaQuoteLine.key)
+                  "
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [disabled]="formValues.isMean || !formValues.isEditable"
+                >
+                  <mat-option
+                    *ngFor="let option of formulaOperationList"
+                    [value]="option.id"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field class="without-search" appearance="legacy">
+                <input
+                  [(ngModel)]="complexFormulaQuoteLine.value.weight"
+                  [disabled]="formValues.isMean || !formValues.isEditable"
+                  matInput
+                  autocomplete="off"
+                />
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="complexFormulaQuoteLine.value.formulaFunction"
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [compareWith]="compareUomObjects"
+                  [disabled]="!formValues.isEditable"
+                >
+                  <mat-option
+                    *ngFor="let option of formulaFunctionList"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field class="without-search" appearance="legacy">
+                <input
+                  class="free-text-field"
+                  type="text"
+                  matInput
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.systemInstruments[0]
+                      .systemInstrument
+                  "
+                  [matAutocomplete]="auto"
+                  [disabled]="!formValues.isEditable"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  class="darkPanelAuto"
+                  [displayWith]="displayFn"
+                  (optionSelected)="
+                    selectSystemInstrumentFromComplexFormulaQuoteLine(
+                      $event.option.value,
+                      complexFormulaQuoteLine.key,
+                      0
+                    )
+                  "
+                >
+                  <mat-option
+                    *ngFor="
+                      let option of filterSystemInstrumentListFromComplexFormulaQuoteLine(
+                        complexFormulaQuoteLine.value.systemInstruments[0]
+                          .systemInstrument &&
+                          complexFormulaQuoteLine.value.systemInstruments[0]
+                            .systemInstrument.name
+                          ? complexFormulaQuoteLine.value.systemInstruments[0]
+                              .systemInstrument.name
+                          : complexFormulaQuoteLine.value.systemInstruments[0]
+                              .systemInstrument
+                      )
+                    "
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.systemInstruments[0]
+                      .marketPriceTypeId
+                  "
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [compareWith]="compareUomObjects"
+                  [disabled]="!formValues.isEditable"
+                >
+                  <mat-option
+                    *ngFor="let option of marketPriceTypeList"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field class="without-search" appearance="legacy">
+                <input
+                  class="free-text-field"
+                  type="text"
+                  matInput
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.systemInstruments[1]
+                      .systemInstrument
+                  "
+                  [matAutocomplete]="auto1"
+                  [disabled]="!formValues.isEditable"
+                />
+                <mat-autocomplete
+                  #auto1="matAutocomplete"
+                  class="darkPanelAuto"
+                  [displayWith]="displayFn"
+                  (optionSelected)="
+                    selectSystemInstrumentFromComplexFormulaQuoteLine(
+                      $event.option.value,
+                      complexFormulaQuoteLine.key,
+                      1
+                    )
+                  "
+                >
+                  <mat-option
+                    *ngFor="
+                      let option of filterSystemInstrumentListFromComplexFormulaQuoteLine(
+                        complexFormulaQuoteLine.value.systemInstruments[1]
+                          .systemInstrument &&
+                          complexFormulaQuoteLine.value.systemInstruments[1]
+                            .systemInstrument.name
+                          ? complexFormulaQuoteLine.value.systemInstruments[1]
+                              .systemInstrument.name
+                          : complexFormulaQuoteLine.value.systemInstruments[1]
+                              .systemInstrument
+                      )
+                    "
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.systemInstruments[1]
+                      .marketPriceTypeId
+                  "
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [compareWith]="compareUomObjects"
+                  [disabled]="!formValues.isEditable"
+                >
+                  <mat-option
+                    *ngFor="let option of marketPriceTypeList"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field class="without-search" appearance="legacy">
+                <input
+                  class="free-text-field"
+                  type="text"
+                  matInput
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.systemInstruments[2]
+                      .systemInstrument
+                  "
+                  [matAutocomplete]="auto2"
+                  [disabled]="!formValues.isEditable"
+                />
+                <mat-autocomplete
+                  #auto2="matAutocomplete"
+                  class="darkPanelAuto"
+                  [displayWith]="displayFn"
+                  (optionSelected)="
+                    selectSystemInstrumentFromComplexFormulaQuoteLine(
+                      $event.option.value,
+                      complexFormulaQuoteLine.key,
+                      2
+                    )
+                  "
+                >
+                  <mat-option
+                    *ngFor="
+                      let option of filterSystemInstrumentListFromComplexFormulaQuoteLine(
+                        complexFormulaQuoteLine.value.systemInstruments[2]
+                          .systemInstrument &&
+                          complexFormulaQuoteLine.value.systemInstruments[2]
+                            .systemInstrument.name
+                          ? complexFormulaQuoteLine.value.systemInstruments[2]
+                              .systemInstrument.name
+                          : complexFormulaQuoteLine.value.systemInstruments[2]
+                              .systemInstrument
+                      )
+                    "
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.systemInstruments[2]
+                      .marketPriceTypeId
+                  "
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [compareWith]="compareUomObjects"
+                  [disabled]="!formValues.isEditable"
+                >
+                  <mat-option
+                    *ngFor="let option of marketPriceTypeList"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="complexFormulaQuoteLine.value.formulaPlusMinus"
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [compareWith]="compareUomObjects"
+                  [disabled]="!formValues.isEditable"
+                >
+                  <mat-option
+                    *ngFor="let option of formulaPlusMinusList"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field class="without-search" appearance="legacy">
+                <input
+                  [(ngModel)]="complexFormulaQuoteLine.value.amount"
+                  (keypress)="keyPressNumber($event)"
+                  [disabled]="
+                    !formValues.isEditable ||
+                    (complexFormulaQuoteLine.value.formulaPlusMinus &&
+                      complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)
+                  "
+                  matInput
+                  autocomplete="off"
+                  amountFormat
+                />
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="
+                    complexFormulaQuoteLine.value.formulaFlatPercentage
+                  "
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [compareWith]="compareUomObjects"
+                  [disabled]="
+                    !formValues.isEditable ||
+                    (complexFormulaQuoteLine.value.formulaPlusMinus &&
+                      complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)
+                  "
+                >
+                  <mat-option
+                    *ngFor="let option of formulaFlatPercentageList"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+          <td style="width:10%">
+            <div
+              class="custom-form-field complex-formula-quote-info"
+              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            >
+              <mat-form-field
+                class="without-search complex-formula-quote-dropdown-component"
+                appearance="legacy"
+              >
+                <mat-select
+                  [(ngModel)]="complexFormulaQuoteLine.value.uom"
+                  [disableOptionCentering]="true"
+                  panelClass="general-information-select-container"
+                  [compareWith]="compareUomObjects"
+                  [disabled]="
+                    !formValues.isEditable ||
+                    (complexFormulaQuoteLine.value.formulaPlusMinus &&
+                      complexFormulaQuoteLine.value.formulaPlusMinus.id == 3) ||
+                    (complexFormulaQuoteLine.value.formulaFlatPercentage &&
+                      complexFormulaQuoteLine.value.formulaFlatPercentage.id !=
+                        1)
+                  "
+                >
+                  <mat-option *ngFor="let option of uomList" [value]="option">
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>

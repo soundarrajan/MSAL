@@ -1,9 +1,9 @@
-﻿commit 868dab75d9ffa737423b24d5a66bdac06570c501
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jun 10 07:44:19 2021 +0000
+﻿commit 94c7361b42d9666b19110ee3490a32f89e3751fb
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Jun 10 08:32:48 2021 +0000
 
-    Merged PR 11385: #32526: Comment section- reset comments code customize has done
+    Merged PR 11387: Added trim function in all lookup fields
     
-    Related work items: #32526
+    Added trim function in all lookup fields
 
 branch: master

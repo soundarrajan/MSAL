@@ -32,10 +32,16 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { IFormulaListDto, IPhysicalSupplierListDto, IProductListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-import { FormulaListColumns, FormulaListColumnServerKeys, FormulaListColumnsLabels } from './formula-list.columns';
-
-
+import {
+  IFormulaListDto,
+  IPhysicalSupplierListDto,
+  IProductListDto
+} from '@shiptech/core/delivery-api/masters-list/masters-list-response';
+import {
+  FormulaListColumns,
+  FormulaListColumnServerKeys,
+  FormulaListColumnsLabels
+} from './formula-list.columns';
 
 function model(prop: keyof IFormulaListDto): keyof IFormulaListDto {
   return prop;
@@ -184,12 +190,6 @@ export class FormulaListSelectorGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-
-  
-
-
-
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -222,16 +222,17 @@ export class FormulaListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-      const filters: ServerQueryFilter[] = [
-        {
-          columnName: 'ContractId',
-          value:  this._entityId ? this._entityId.toString() : null
-        }];
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: 'ContractId',
+        value: this._entityId ? this._entityId.toString() : null
+      }
+    ];
     this.mastersListApiService
       .getFormulaList({
         ...transformLocalToServeGridInfo(

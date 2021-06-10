@@ -705,7 +705,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       if (this.options) {
         const list = this.options
           .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
+            return item.name
+              .toLowerCase()
+              .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
         return list;

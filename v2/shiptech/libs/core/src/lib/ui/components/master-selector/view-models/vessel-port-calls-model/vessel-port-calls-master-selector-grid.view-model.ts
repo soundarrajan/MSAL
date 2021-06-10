@@ -190,7 +190,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 
