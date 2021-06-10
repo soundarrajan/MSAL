@@ -1686,6 +1686,17 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     } else {
       this.formValues.products[key].isDeleted = true;
     }
+    console.log(this.selectedTabIndex);
+
+    let findFirstIndex = _.findIndex(this.formValues.products, function(
+      object: any
+    ) {
+      return !object.isDeleted;
+    });
+    if (findFirstIndex != -1) {
+      this.selectedTabIndex = findFirstIndex;
+    }
+    console.log(this.selectedTabIndex);
   }
 
   originalOrder = (
