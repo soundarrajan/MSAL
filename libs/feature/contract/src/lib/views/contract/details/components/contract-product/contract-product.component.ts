@@ -524,6 +524,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   additionalCostForLocation: any = [];
   entityCopied: any;
   eventsEntityCopiedSubscription: any;
+  locationMasterSearchListOptions: any = [];
+  productMasterSearchListOptions: any = [];
   get entityId(): number {
     return this._entityId;
   }
@@ -878,6 +880,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   ngOnInit() {
     this.entityName = 'Contract';
+    if (this.locationMasterSearchList) {
+      console.log(this.formValues);
+      this.setLocationsOptions();
+    }
     this.getContractFormulaList1();
     if (this.formValues.products && !this.formValues.products.length) {
       this.addEmptyProductLine();
@@ -891,6 +897,20 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe(
       data => this.setEntityCopied(data)
     );
+  }
+
+  setLocationsOptions() {
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      this.locationMasterSearchListOptions[i] = _.cloneDeep(
+        this.locationMasterList
+      );
+      this.productMasterSearchListOptions[i] = _.cloneDeep(
+        this.productMasterList
+      );
+    }
+
+    console.log(this.locationMasterSearchListOptions);
+    console.log(this.productMasterSearchListOptions);
   }
 
   setEntityCopied(data) {
@@ -908,21 +928,25 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.eventsSubject2.next(this.buttonClicked);
   }
 
-  searchLocations(value: string): void {
+  searchLocations(value: string, contractProductIndex): void {
     let filterLocations = this.locationMasterList.filter(location =>
-      location.name.toLowerCase().includes(value)
+      location.name.toLowerCase().includes(value.toLowerCase())
     );
     console.log(filterLocations);
-    this.locationMasterSearchList = [...filterLocations];
+    this.locationMasterSearchListOptions[contractProductIndex] = [
+      ...filterLocations
+    ];
     this.changeDetectorRef.detectChanges();
   }
 
-  searchProducts(value: string): void {
+  searchProducts(value: string, contractProductIndex): void {
     let filterProducts = this.productMasterList.filter(location =>
-      location.name.toLowerCase().includes(value)
+      location.name.toLowerCase().includes(value.toLowerCase())
     );
     console.log(filterProducts);
-    this.productMasterSearchList = [...filterProducts];
+    this.productMasterSearchListOptions[contractProductIndex] = [
+      ...filterProducts
+    ];
     this.changeDetectorRef.detectChanges();
   }
 
@@ -985,6 +1009,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.formValues.products.push(emptyProductObj);
     }
 
+    this.locationMasterSearchListOptions[
+      this.formValues.products.length - 1
+    ] = _.cloneDeep(this.locationMasterList);
+
+    this.productMasterSearchListOptions[
+      this.formValues.products.length - 1
+    ] = _.cloneDeep(this.productMasterList);
     this.selectedTabIndex = this.formValues.products.length - 1;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
