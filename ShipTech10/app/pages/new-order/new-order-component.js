@@ -1164,15 +1164,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 additionalCost.priceUom = null;
                 break;
             case COST_TYPE_IDS.RANGE : case COST_TYPE_IDS.TOTAL :
-                // let locAddCost = ctrl.locationAdditionalCosts.find(x => {
-                //     if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
-                //         return true;
-                //     } else {
-                //         return false;
-                //     }
-                // });
-                // additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
-                // additionalCost.amount = locAddCost.amount || additionalCost.amount || 0;
                 additionalCost.amount = additionalCost.price || 0;
                 break;
             }
@@ -4644,7 +4635,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if ((additionalCost.costType.id == COST_TYPE_IDS.FLAT || additionalCost.costType.id == COST_TYPE_IDS.UNIT ||
                 additionalCost.costType.id == COST_TYPE_IDS.PERCENT)) {
                 let locAddCost = ctrl.locationAdditionalCosts.find(x => {
-                    if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
+                    if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id &&
+                        (!x.locationid || !additionalCost.additionalCost.locationid || x.locationid == additionalCost.additionalCost.locationid)) {
                         return true;
                     } else {
                         return false;
@@ -4685,7 +4677,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             if (additionalCost.costType.id == COST_TYPE_IDS.RANGE || additionalCost.costType.id == COST_TYPE_IDS.TOTAL) {
                 let locAddCost = ctrl.locationAdditionalCosts.find(x => {
-                    if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id) {
+                    if(x.id == additionalCost.additionalCost.id && x.costType.id == additionalCost.costType.id &&
+                        (!x.locationid || !additionalCost.additionalCost.locationid || x.locationid == additionalCost.additionalCost.locationid)) {
                         return true;
                     } else {
                         return false;
