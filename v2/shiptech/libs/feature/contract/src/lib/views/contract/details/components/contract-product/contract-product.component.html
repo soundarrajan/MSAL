@@ -1,302 +1,403 @@
-<div class="row col-md-12 contract-section" style="margin-left: 0px;" id="container-contract">
-  <div class="add-contract-product-section" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : addProductToContract()" style="position: relative;
-  top: 0px;">
+<div
+  class="row col-md-12 contract-section"
+  style="margin-left: 0px;"
+  id="container-contract"
+>
+  <div
+    class="add-contract-product-section"
+    (click)="
+      formValues.status && formValues.status.name == 'Confirmed'
+        ? ''
+        : addProductToContract()
+    "
+    style="position: relative;
+  top: 0px;"
+  >
     <a class="add-contract-product-icon"></a>
   </div>
-  <ng-container *ngFor="let contractProduct of formValues.products | keyvalue: originalOrder; let i = index">
+  <ng-container
+    *ngFor="
+      let contractProduct of formValues.products | keyvalue: originalOrder;
+      let i = index
+    "
+  >
     <ng-container *ngIf="!contractProduct.value.isDeleted">
-      <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
-        <div class="contract-addProduct-separator" 
-        *ngIf="formValues.products && formValues.products.length >1 && i > 0"></div>
+      <div
+        (click)="
+          selectedTabIndex = contractProduct.key;
+          setAllowedLocations(selectedTabIndex);
+          setAllowedProducts(selectedTabIndex)
+        "
+      >
+        <div
+          class="contract-addProduct-separator"
+          *ngIf="formValues.products && formValues.products.length > 1 && i > 0"
+        ></div>
         <div class="hoveraddedProduct">
-        <div class="hover-remove-icon" *ngIf="formValues.products && formValues.products.length >1" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : removeProductFromContract(contractProduct.key)" ></div>
-        <div class="contract-location-with-product-container d-flex">
-          <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
-            'lightTheme':!switchTheme,
-            'container-location-with-value': contractProduct.value.location && selectedTabIndex == contractProduct.key}">
-            <mat-form-field 
-              class="without-search"
-              appearance="legacy">
-              <mat-label *ngIf="!contractProduct.value.location">Add location</mat-label>
-              <mat-select [(ngModel)]="contractProduct.value.location"
-                #singleSelect
-                disableOptionCentering 
-                [panelClass]="'location-select-container'"
-                [compareWith]="compareUomObjects"
-                (ngModelChange)="setLocationChange(contractProduct.value.location, contractProduct.key)"
-                [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+          <div
+            class="hover-remove-icon"
+            *ngIf="formValues.products && formValues.products.length > 1"
+            (click)="
+              formValues.status && formValues.status.name == 'Confirmed'
+                ? ''
+                : removeProductFromContract(contractProduct.key)
+            "
+          ></div>
+          <div class="contract-location-with-product-container d-flex">
+            <div
+              class="custom-form-field custom-form-field-location"
+              [ngClass]="{
+                darkTheme: switchTheme,
+                lightTheme: !switchTheme,
+                'container-location-with-value':
+                  contractProduct.value.location &&
+                  selectedTabIndex == contractProduct.key
+              }"
+            >
+              <mat-form-field class="without-search" appearance="legacy">
+                <mat-label *ngIf="!contractProduct.value.location"
+                  >Add location</mat-label
                 >
-                <div [ngClass]="{'expand-select-location-container': expandLocation}">
-                  <div class="col-md-12 header-container-location no-padding">
-                    <div class="search-location-container col-md-10 no-padding">
-                      <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchLocations(searchLocationInput)">
-                      </span>
-                      <div class="search-location-input">
-                        <mat-option>
-                          <ngx-mat-select-search [(ngModel)]="searchLocationInput"
-                            (ngModelChange)="searchLocations(searchLocationInput)"
-                            placeholderLabel="Search all and select a location">
-                          </ngx-mat-select-search>
-                        </mat-option>
+                <mat-select
+                  [(ngModel)]="contractProduct.value.location"
+                  #singleSelect
+                  disableOptionCentering
+                  [panelClass]="'location-select-container'"
+                  [compareWith]="compareUomObjects"
+                  (ngModelChange)="
+                    setLocationChange(
+                      contractProduct.value.location,
+                      contractProduct.key
+                    )
+                  "
+                  [disabled]="
+                    formValues.status && formValues.status.name == 'Confirmed'
+                  "
+                >
+                  <div
+                    [ngClass]="{
+                      'expand-select-location-container': expandLocation
+                    }"
+                  >
+                    <div class="col-md-12 header-container-location no-padding">
+                      <div
+                        class="search-location-container col-md-10 no-padding"
+                      >
+                        <span
+                          class="search-location-lookup"
+                          (click)="
+                            $event.stopPropagation();
+                            $event.preventDefault();
+                            searchLocations(
+                              searchLocationInput,
+                              contractProduct.key
+                            )
+                          "
+                        >
+                        </span>
+                        <div class="search-location-input">
+                          <mat-option>
+                            <ngx-mat-select-search
+                              [(ngModel)]="searchLocationInput"
+                              (ngModelChange)="
+                                searchLocations(
+                                  searchLocationInput,
+                                  contractProduct.key
+                                )
+                              "
+                              placeholderLabel="Search all and select a location"
+                            >
+                            </ngx-mat-select-search>
+                          </mat-option>
+                        </div>
+                      </div>
+                      <div
+                        class="col-md-2 no-padding"
+                        (click)="
+                          $event.stopPropagation(); $event.preventDefault()
+                        "
+                      >
+                        <img
+                          style="float: right;"
+                          (click)="expandLocation = !expandLocation"
+                          alt="Shiptech"
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                        />
                       </div>
                     </div>
-                    <div class="col-md-2 no-padding"  (click)="$event.stopPropagation();$event.preventDefault();">
-                        <img style="float: right;" (click)="expandLocation = !expandLocation;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                    </div>
+                    <table
+                      class="location-pop-up col-md-12 no-padding"
+                      *ngIf="
+                        locationMasterSearchListOptions[contractProduct.key]
+                      "
+                      mat-table
+                      [dataSource]="
+                        locationMasterSearchListOptions[contractProduct.key]
+                      "
+                    >
+                      <!-- Location name Column -->
+                      <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>
+                          Most used locations
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-option [value]="element" class="no-padding">
+                            <mat-radio-button
+                              class="location-container-radio-button"
+                              [value]="element"
+                            >
+                              {{ element.name }}
+                            </mat-radio-button>
+                          </mat-option>
+                        </td>
+                      </ng-container>
+
+                      <!-- Country Column -->
+                      <ng-container matColumnDef="country">
+                        <th mat-header-cell *matHeaderCellDef>Country</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.country.name }}
+                        </td>
+                      </ng-container>
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumns"
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumns"
+                      ></tr>
+                    </table>
                   </div>
-                  <table  class="location-pop-up col-md-12 no-padding" *ngIf="locationMasterSearchList" mat-table [dataSource]="locationMasterSearchList">
-                    <!-- Location name Column -->
-                    <ng-container matColumnDef="name">
-                      <th mat-header-cell *matHeaderCellDef> Most used locations </th>
-                      <td mat-cell *matCellDef="let element"> 
-                        <mat-option [value]="element" class="no-padding">
-                          <mat-radio-button  class="location-container-radio-button" [value]="element">   
-                            {{element.name}} 
-                          </mat-radio-button>
-                        </mat-option>
-                      </td>
-                    </ng-container>
-            
-                    <!-- Country Column -->
-                    <ng-container matColumnDef="country">
-                      <th mat-header-cell *matHeaderCellDef> Country </th>
-                      <td mat-cell *matCellDef="let element"> 
-                          {{element.country.name}} 
-                      </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-                </div>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div [ngClass]="{'container-product-with-value': contractProduct.value.product  && selectedTabIndex == contractProduct.key,
-              'mat-form-field-disabled': formValues.status && formValues.status.name == 'Confirmed' && selectedTabIndex != contractProduct.key}">
-            <a class="remove-product-black-icon remove-product-icon">
-            </a>
-          </div>
-          <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
-            'lightTheme':!switchTheme, 'container-product-with-value without-search': contractProduct.value.product  && selectedTabIndex == contractProduct.key}">
-            <mat-form-field   class="without-search" 
-              appearance="legacy">
-              <mat-label *ngIf="!contractProduct.value.product">Add product</mat-label>
-              <mat-select [(ngModel)]="contractProduct.value.product"
-                #singleSelect
-                disableOptionCentering 
-                [panelClass]="'location-select-container'"
-                [compareWith]="compareUomObjects"
-                (ngModelChange)="setProductChange(contractProduct.value.product, contractProduct.key)"
-                [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-                <div [ngClass]="{'expand-select-location-container': expandLocation}">
-                  <div class="col-md-12 header-container-location no-padding">
-                    <div class="search-location-container col-md-10 no-padding">
-                      <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchLocations(searchLocationInput)">
-                      </span>
-                      <div class="search-location-input">
-                        <mat-option>
-                          <ngx-mat-select-search [(ngModel)]="searchProductInput"
-                            (ngModelChange)="searchProducts(searchProductInput)"
-                            placeholderLabel="Search all and select a product">
-                          </ngx-mat-select-search>
-                        </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div
+              [ngClass]="{
+                'container-product-with-value':
+                  contractProduct.value.product &&
+                  selectedTabIndex == contractProduct.key,
+                'mat-form-field-disabled':
+                  formValues.status &&
+                  formValues.status.name == 'Confirmed' &&
+                  selectedTabIndex != contractProduct.key
+              }"
+            >
+              <a class="remove-product-black-icon remove-product-icon"> </a>
+            </div>
+            <div
+              class="custom-form-field custom-form-field-location"
+              [ngClass]="{
+                darkTheme: switchTheme,
+                lightTheme: !switchTheme,
+                'container-product-with-value without-search':
+                  contractProduct.value.product &&
+                  selectedTabIndex == contractProduct.key
+              }"
+            >
+              <mat-form-field class="without-search" appearance="legacy">
+                <mat-label *ngIf="!contractProduct.value.product"
+                  >Add product</mat-label
+                >
+                <mat-select
+                  [(ngModel)]="contractProduct.value.product"
+                  #singleSelect
+                  disableOptionCentering
+                  [panelClass]="'location-select-container'"
+                  [compareWith]="compareUomObjects"
+                  (ngModelChange)="
+                    setProductChange(
+                      contractProduct.value.product,
+                      contractProduct.key
+                    )
+                  "
+                  [disabled]="
+                    formValues.status && formValues.status.name == 'Confirmed'
+                  "
+                >
+                  <div
+                    [ngClass]="{
+                      'expand-select-location-container': expandLocation
+                    }"
+                  >
+                    <div class="col-md-12 header-container-location no-padding">
+                      <div
+                        class="search-location-container col-md-10 no-padding"
+                      >
+                        <span
+                          class="search-location-lookup"
+                          (click)="
+                            $event.stopPropagation();
+                            $event.preventDefault();
+                            searchProducts(
+                              searchProductInput,
+                              contractProduct.key
+                            )
+                          "
+                        >
+                        </span>
+                        <div class="search-location-input">
+                          <mat-option>
+                            <ngx-mat-select-search
+                              [(ngModel)]="searchProductInput"
+                              (ngModelChange)="
+                                searchProducts(
+                                  searchProductInput,
+                                  contractProduct.key
+                                )
+                              "
+                              placeholderLabel="Search all and select a product"
+                            >
+                            </ngx-mat-select-search>
+                          </mat-option>
+                        </div>
+                      </div>
+                      <div
+                        class="col-md-2 no-padding"
+                        (click)="
+                          $event.stopPropagation(); $event.preventDefault()
+                        "
+                      >
+                        <img
+                          style="float: right;"
+                          (click)="expandLocation = !expandLocation"
+                          alt="Shiptech"
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                        />
                       </div>
                     </div>
-                    <div class="col-md-2 no-padding"  (click)="$event.stopPropagation();$event.preventDefault();">
-                        <img style="float: right;" (click)="expandLocation = !expandLocation;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                    </div>
+                    <table
+                      class="location-pop-up col-md-12 no-padding"
+                      *ngIf="
+                        productMasterSearchListOptions[contractProduct.key]
+                      "
+                      mat-table
+                      [dataSource]="
+                        productMasterSearchListOptions[contractProduct.key]
+                      "
+                    >
+                      <!-- Location name Column -->
+                      <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>
+                          Most used products
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-option [value]="element" class="no-padding">
+                            <mat-radio-button
+                              class="location-container-radio-button"
+                              [value]="element"
+                            >
+                              {{ element.name }}
+                            </mat-radio-button>
+                          </mat-option>
+                        </td>
+                      </ng-container>
+
+                      <!-- Country Column -->
+                      <ng-container matColumnDef="productType">
+                        <th mat-header-cell *matHeaderCellDef>Product Type</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.productType.name }}
+                        </td>
+                      </ng-container>
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedProductColumns"
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedProductColumns"
+                      ></tr>
+                    </table>
                   </div>
-                  <table  class="location-pop-up col-md-12 no-padding" *ngIf="productMasterSearchList" mat-table [dataSource]="productMasterSearchList">
-                    <!-- Location name Column -->
-                    <ng-container matColumnDef="name">
-                      <th mat-header-cell *matHeaderCellDef> Most used products </th>
-                      <td mat-cell *matCellDef="let element"> 
-                        <mat-option [value]="element" class="no-padding">
-                          <mat-radio-button  class="location-container-radio-button" [value]="element">   
-                            {{element.name}} 
-                          </mat-radio-button>
-                        </mat-option>
-                      </td>
-                    </ng-container>
-            
-                    <!-- Country Column -->
-                    <ng-container matColumnDef="productType">
-                      <th mat-header-cell *matHeaderCellDef> Product Type </th>
-                      <td mat-cell *matCellDef="let element"> 
-                        {{element.productType.name}} 
-                      </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedProductColumns;"></tr>
-                  </table>
-                </div>
-              </mat-select>
-            </mat-form-field>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
         </div>
-        </div>
-       </div>
+      </div>
     </ng-container>
   </ng-container>
-  <mat-menu #locationMenu="matMenu" class="select-location-container"  overlapTrigger="false">
-    <div [ngClass]="{'expand-select-location-container': expandLocation}">
-      <div class="col-md-12 header-container-location no-padding">
-        <div class="search-location-container col-md-10 no-padding">
-          <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchLocations(searchLocationInput)">
-          </span>
-          <input matInput 
-                placeholder="Search all and select a location"
-                [(ngModel)]="searchLocationInput"
-                (click)="$event.stopPropagation();$event.preventDefault();"
-                class="search-location-input"
-                autocomplete="off">
-        </div>
-        <div class="col-md-2 no-padding"  (click)="$event.stopPropagation();$event.preventDefault();">
-            <img style="float: right;" (click)="expandLocation = !expandLocation;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-        </div>
-      </div>
-      <table *ngIf="locationMasterSearchList" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="locationMasterSearchList">
-        <!-- Location name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Most used locations </th>
-          <td mat-cell *matCellDef="let element"> 
-            <mat-radio-group 
-              name="radioOpt1" 
-              [ngClass]="{'unchecked-mat-radio': !selectedLocation}"
-              [(ngModel)]="selectedLocation"
-              (change)="setLocationChange(selectedLocation, selectedTabIndex); selectedLocation = null">
-              <mat-radio-button   class="location-container-radio-button"
-                  [value]="element">{{element.name}}</mat-radio-button>
-            </mat-radio-group>
-          </td>
-        </ng-container>
-
-        <!-- Country Column -->
-        <ng-container matColumnDef="country">
-          <th mat-header-cell *matHeaderCellDef style="float: right; position: relative; top: 5px;"> Country </th>
-          <td mat-cell *matCellDef="let element" style="float: right" class="location-container-radio-button"> 
-              {{element.country.name}} 
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
-  </mat-menu>
-  <mat-menu #productMenu="matMenu" class="select-location-container" overlapTrigger="false">
-    <div [ngClass]="{'expand-select-location-container': expandProduct}">
-      <div class="col-md-12 header-container-location no-padding">
-        <div class="search-location-container col-md-10 no-padding">
-          <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchProducts(searchProductInput)">
-          </span>
-          <input matInput 
-                placeholder="Search all and select a product"
-                [(ngModel)]="searchProductInput"
-                (click)="$event.stopPropagation();$event.preventDefault();"
-                class="search-location-input"
-                autocomplete="off">
-        </div>
-        <div class="col-md-2 no-padding" (click)="$event.stopPropagation();$event.preventDefault();">
-            <img style="float: right;" (click)="expandProduct = !expandProduct;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-        </div>
-      </div>
-      <table *ngIf="productMasterSearchList" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="productMasterSearchList">
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Most used products </th>
-          <td mat-cell *matCellDef="let element"> 
-            <mat-radio-group 
-              name="radioOpt1" 
-              [(ngModel)]="selectedProduct"
-              (change)="setProductChange(selectedProduct, selectedTabIndex);"
-              [ngClass]="{'unchecked-mat-radio': !selectedProduct}">
-              <mat-radio-button class="location-container-radio-button"
-                  [value]="element"
-                  [checked]="selectedProduct">{{element.name}}</mat-radio-button>
-            </mat-radio-group>
-          </td>
-        </ng-container>
-
-        <!-- Product type Column -->
-        <ng-container matColumnDef="productType">
-          <th mat-header-cell *matHeaderCellDef style="float: right; position: relative; top: 5px;"> Country </th>
-          <td mat-cell *matCellDef="let element" style="float: right" class="location-container-radio-button"> 
-              {{element.productType.name}} 
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedProductColumns;"></tr>
-      </table>
-    </div>
-  </mat-menu>
 </div>
-<div *ngIf="formValues.products && formValues.products.length" style="position:relative;">
-  <div class="custom-border"></div> 
-  <div  *ngFor="let contractProduct of formValues.products | keyvalue : originalOrder">
+<div
+  *ngIf="formValues.products && formValues.products.length"
+  style="position:relative;"
+>
+  <div class="custom-border"></div>
+  <div
+    *ngFor="
+      let contractProduct of formValues.products | keyvalue: originalOrder
+    "
+  >
     <ng-container *ngIf="!contractProduct.value.isDeleted">
-      <div *ngIf="contractProduct.key == selectedTabIndex" class="row col-md-12">
-          <shiptech-product-details  [generalTenantSettings]="generalTenantSettings"
-            [contractConfiguration]="contractConfiguration"
-            [model]="formValues"
-            [contractProductIndex]="contractProduct.key"
-            [locationMasterList]="locationMasterList"
-            [productMasterList]="productMasterList"
-            [uomMassList]="uomMassList"
-            [uomVolumeList]="uomVolumeList"
-            [contractConversionFactorOptions]="contractConversionFactorOptions"
-            [specParameterList]="specParameterList"
-            [uomList]="uomList"
-            [productSpecGroup]="productSpecGroup"
-            [events]="contractFormSubject.asObservable()"
-            [events1]="productSpecGroupSubject.asObservable()"
-            class="col-md-6">
-          </shiptech-product-details>
-        <shiptech-product-pricing  [generalTenantSettings]="generalTenantSettings"
-              [model]="formValues"
-              [entityId]="_entityId"
-              [contractProductIndex]="contractProduct.key"
-              [uomList]="uomList"
-              [formulaTypeList]="formulaTypeList"
-              [systemInstumentList]="systemInstumentList"
-              [marketPriceList]="marketPriceList"
-              [formulaPlusMinusList]="formulaPlusMinusList"
-              [formulaFlatPercentageList]="formulaFlatPercentageList"
-              [currencyList]="currencyList"
-              [formulaOperationList]="formulaOperationList"
-              [formulaFunctionList]="formulaFunctionList"
-              [marketPriceTypeList]="marketPriceTypeList"
-              [pricingScheduleList]="pricingScheduleList"
-              [holidayRuleList]="holidayRuleList"
-              [pricingSchedulePeriodList]="pricingSchedulePeriodList"
-              [eventList]="eventList"
-              [dayOfWeekList]="dayOfWeekList"
-              [businessCalendarList]="businessCalendarList"
-              [formulaEventIncludeList]="formulaEventIncludeList"
-              [quantityTypeList]="quantityTypeList"
-              [productList]="productList"
-              [locationList]="locationList"
-              [contractFormulaList]="contractFormulaList"
-              [additionalCostList]="additionalCostList"
-              [costTypeList]="costTypeList"
-              [entityCopied]="entityCopied"
-              [additionalCostsComponentTypes]="additionalCostsComponentTypes"
-              [additionalCostForLocation]="additionalCostForLocation"
-              [eventsSaveButton]="eventsSubject2.asObservable()"
-              [eventsEntityCopied]="eventsSubject3.asObservable()"
-              [events]="contractFormSubject.asObservable()"
-              class="col-md-6">
+      <div
+        *ngIf="contractProduct.key == selectedTabIndex"
+        class="row col-md-12"
+      >
+        <shiptech-product-details
+          [generalTenantSettings]="generalTenantSettings"
+          [contractConfiguration]="contractConfiguration"
+          [model]="formValues"
+          [contractProductIndex]="contractProduct.key"
+          [locationMasterList]="locationMasterList"
+          [productMasterList]="productMasterList"
+          [uomMassList]="uomMassList"
+          [uomVolumeList]="uomVolumeList"
+          [contractConversionFactorOptions]="contractConversionFactorOptions"
+          [specParameterList]="specParameterList"
+          [uomList]="uomList"
+          [productSpecGroup]="productSpecGroup"
+          [events]="contractFormSubject.asObservable()"
+          [events1]="productSpecGroupSubject.asObservable()"
+          class="col-md-6"
+        >
+        </shiptech-product-details>
+        <shiptech-product-pricing
+          [generalTenantSettings]="generalTenantSettings"
+          [model]="formValues"
+          [entityId]="_entityId"
+          [contractProductIndex]="contractProduct.key"
+          [uomList]="uomList"
+          [formulaTypeList]="formulaTypeList"
+          [systemInstumentList]="systemInstumentList"
+          [marketPriceList]="marketPriceList"
+          [formulaPlusMinusList]="formulaPlusMinusList"
+          [formulaFlatPercentageList]="formulaFlatPercentageList"
+          [currencyList]="currencyList"
+          [formulaOperationList]="formulaOperationList"
+          [formulaFunctionList]="formulaFunctionList"
+          [marketPriceTypeList]="marketPriceTypeList"
+          [pricingScheduleList]="pricingScheduleList"
+          [holidayRuleList]="holidayRuleList"
+          [pricingSchedulePeriodList]="pricingSchedulePeriodList"
+          [eventList]="eventList"
+          [dayOfWeekList]="dayOfWeekList"
+          [businessCalendarList]="businessCalendarList"
+          [formulaEventIncludeList]="formulaEventIncludeList"
+          [quantityTypeList]="quantityTypeList"
+          [productList]="productList"
+          [locationList]="locationList"
+          [contractFormulaList]="contractFormulaList"
+          [additionalCostList]="additionalCostList"
+          [costTypeList]="costTypeList"
+          [entityCopied]="entityCopied"
+          [additionalCostsComponentTypes]="additionalCostsComponentTypes"
+          [additionalCostForLocation]="additionalCostForLocation"
+          [eventsSaveButton]="eventsSubject2.asObservable()"
+          [eventsEntityCopied]="eventsSubject3.asObservable()"
+          [events]="contractFormSubject.asObservable()"
+          class="col-md-6"
+        >
         </shiptech-product-pricing>
       </div>
     </ng-container>
-  
   </div>
 </div>
- 
+
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
   size="medium"
   color="#fff"
-  type="ball-spin-clockwise-fade">
+  type="ball-spin-clockwise-fade"
+>
 </ngx-spinner>
-
-

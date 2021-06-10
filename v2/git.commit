@@ -1,11 +1,9 @@
-﻿commit 317e08fd476e1346840c764e0eb4cae34ef2d025
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 9 22:40:30 2021 +0000
+﻿commit 61a5e8ba4211c3a5bec932cabd8cce2cc8d9ec43
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Jun 10 06:19:34 2021 +0000
 
-    Merged PR 11370: Build error fix.
+    Merged PR 11376: Fixed filtering data in  Location and Product Search look up  in contract screen
     
-    Build error fix.
-    
-    Related work items: #29769
+    Fixed filtering data in  Location and Product Search look up  in contract screen
 
 branch: master
