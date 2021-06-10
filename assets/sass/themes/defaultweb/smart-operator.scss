@@ -8015,7 +8015,14 @@ cursor:pointer;
 // Ports agent info panel
 .agents-info-panel{
 		padding-left: 12px;
-		text-decoration-line: underline;
 		color: #278CE5;
 		font-size: 12px;
+		word-break: break-all;
+        text-align: left;
+		.link{
+			display: -webkit-inline-box;
+			width: 250px;
+			text-decoration-line: underline !important;
+		}
+       
 	}
