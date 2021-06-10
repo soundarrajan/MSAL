@@ -1,8 +1,8 @@
-﻿commit bb51df2c185c1fb16540dd7aeecc13dd3c739ba6
+﻿commit 868dab75d9ffa737423b24d5a66bdac06570c501
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jun 10 07:18:24 2021 +0000
+Date:   Thu Jun 10 07:44:19 2021 +0000
 
-    Merged PR 11383: #32526: Comment section-Clear filter by participant reset comments issue has fixed
+    Merged PR 11385: #32526: Comment section- reset comments code customize has done
     
     Related work items: #32526
 

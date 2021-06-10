@@ -136,16 +136,19 @@ export class CommentsComponent implements OnInit {
     //retain all BP comments once filter get reset
     this.selectedIndex = null;
     if(!participant || participant.trim()=='') {
-      this.BunkerPlanCommentList = [];
-      this.BunkerPlanCommentList = this.BunkerPlanCommentTemp;
-      this.searchKey = 'notes'
-      this.searchText = '';
+      this.resetBPComment();
     } else {
       this.searchKey = 'notes'
       this.searchText = participant;
     }
   }
-
+  resetBPComment() {
+    //reset BP comment list
+    this.BunkerPlanCommentList = [];
+    this.BunkerPlanCommentList = this.BunkerPlanCommentTemp;
+    this.searchKey = 'notes'
+    this.searchText = '';
+  }
   searchParticipantComment(participant) {
     this.searchKey = 'createdBy.displayName'
     this.searchText = participant;
@@ -216,8 +219,7 @@ export class CommentsComponent implements OnInit {
     let target = event?.currentTarget;
     if(target?.classList.length && (target?.classList).contains('active-comment')) {
       this.selectedIndex= null;
-      this.BunkerPlanCommentList = [];
-      this.BunkerPlanCommentList = this.BunkerPlanCommentTemp;
+      this.resetBPComment();
     } else {
       this.selectedIndex= index;
     }
