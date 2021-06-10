@@ -216,6 +216,8 @@ export class CommentsComponent implements OnInit {
     let target = event?.currentTarget;
     if(target?.classList.length && (target?.classList).contains('active-comment')) {
       this.selectedIndex= null;
+      this.BunkerPlanCommentList = [];
+      this.BunkerPlanCommentList = this.BunkerPlanCommentTemp;
     } else {
       this.selectedIndex= index;
     }
