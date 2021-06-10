@@ -1170,9 +1170,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!product) {
                 product = ctrl.data.products[0];
             }
-            // if (ctrl.defaultValueUom && !additionalCost.priceUom) {
-            //     additionalCost.priceUom = ctrl.defaultValueUom;
-            // }
          
             additionalCost.quantityUom = product.quantityUom;
             additionalCost.confirmedQuantity = parseFloat(additionalCost.confirmedQuantity) ? parseFloat(additionalCost.confirmedQuantity) : parseFloat(product.maxQuantity);
@@ -1184,6 +1181,20 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 additionalCost.additionalCost.locationid = additionalCost?.locationAdditionalCostId ?? additionalCost?.additionalCost?.locationid;
             }
             return additionalCost;
+        }
+
+        ctrl.setDefaultUomForAdditionalCost = function(additionalCost, product) {
+            if(!ctrl.defaultUomsForProduct) {
+                ctrl.defaultUomsForProduct = [];
+            } 
+            let obj = ctrl.defaultUomsForProduct.find(x => x.productUniqueId == product.uniqueIdUI);
+            if(obj) {
+                if(!ctrl.defaultValueUom) {
+                    ctrl.defaultValueUom = obj.defaultUom;
+                }
+            } else {
+                ctrl.getDefaultUomForAdditionalCost(additionalCost, product);
+            }
         }
 
         ctrl.getDefaultUomForAdditionalCost = function(additionalCost, product) {
@@ -1204,13 +1215,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                                 });
                                 if (defaultUomAndCompany) {
                                     ctrl.defaultValueUom = defaultUomAndCompany.defaultUom;
-
-                                }                               
+                                    if(ctrl.defaultUomsForProduct &&
+                                        !ctrl.defaultUomsForProduct.some(x => x.productUniqueId == product.uniqueIdUI)) {
+                                        ctrl.defaultUomsForProduct.push({ productUniqueId: product.uniqueIdUI, defaultValueUom: defaultUomAndCompany.defaultUom });
+                                    }
+                                }
                             }
                         }); 
                     }
-                });  
-
+                });
             } else {
                 let payload = { Payload: product.product.id };
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
@@ -1221,12 +1234,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         });
                         if (defaultUomAndCompany) {
                             ctrl.defaultValueUom = defaultUomAndCompany.defaultUom;
+                            if(ctrl.defaultUomsForProduct &&
+                                !ctrl.defaultUomsForProduct.some(x => x.productUniqueId == product.uniqueIdUI)) {
+                                ctrl.defaultUomsForProduct.push({ productUniqueId: product.uniqueIdUI, defaultValueUom: defaultUomAndCompany.defaultUom });
+                            }
                         } 
-                       
                     }
                 });
             }
-            
         }
 
         /**
@@ -3430,11 +3445,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 // ctrl.applicableForChange(additionalCost, null);
             }
 
+            let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
             if (additionalCost.costType.name == 'Unit') {
+                ctrl.setDefaultUomForAdditionalCost(additionalCost, product);
                 additionalCost.disabledApplicableFor = false;
             }
 
-            let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
             if(initiatorName == 'additionalCostNameChanged') {
                 ctrl.setLocationBasedAdditionalCosts(additionalCost, product, initiatorName);
             }
