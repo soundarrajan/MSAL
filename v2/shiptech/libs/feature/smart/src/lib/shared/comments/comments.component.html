@@ -16,7 +16,7 @@
           <div class="available-comments">
             <ng-container *ngFor="let item of BunkerPlanCommentList | groupByParticipant: '': 'createdBy.displayName': 'notes'; let i = index">
               <!-- Single Comment Start -->
-              <div class="comments-box" [class.active-comment]="selectedIndex === i" (click)="searchParticipantComment(item?.createdBy?.displayName);selectedIndex=i;">
+              <div class="comments-box" [class.active-comment]="selectedIndex === i" (click)="searchParticipantComment(item?.createdBy?.displayName);toggleSelectParticipant($event, i);">
                 <div style="display: flex;">
                   <div class="comment-user">{{item?.createdBy?.displayName == loginUser? 'Me': ((item?.createdBy?.displayName) | commentDPFormat)}}</div>
                 </div>

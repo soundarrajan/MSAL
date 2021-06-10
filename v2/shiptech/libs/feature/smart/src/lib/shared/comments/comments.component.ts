@@ -211,6 +211,14 @@ export class CommentsComponent implements OnInit {
     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
     titleEle.click();
   }
+  toggleSelectParticipant(event, index) {
+    let target = event?.currentTarget;
+    if(target?.classList.length && (target?.classList).includes('active-comment')) {
+      this.selectedIndex= null;
+    } else {
+      this.selectedIndex= index;
+    }
+  }
 
   ngOnDestroy() {
     //unsubscribe to avoid memory leakage

@@ -1,11 +1,9 @@
-﻿commit c033cb49dbeb538bcd3de0eb675f267219c21a07
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jun 10 06:56:51 2021 +0000
+﻿commit c840d93da064e8192c3e53236c4e73635b7a5eee
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Jun 10 07:03:27 2021 +0000
 
-    Merged PR 11380: #29769 Icon fix.
+    Merged PR 11381: #32526: Comment section-Clear filter by participant functionality is not working issue has fixed
     
-    #29769 Icon fix.
-    
-    Related work items: #29769
+    Related work items: #32526
 
 branch: master
