@@ -550,7 +550,7 @@ export class AdditionalCostModalComponent implements OnInit {
       invoiceAmount: additionalCost.amount
         ? this.amountFormatValue(additionalCost.amount)
         : '',
-      invoiceExtras: additionalCost.extrasPercentage,
+      invoiceExtras: null,
       invoiceQuantity: null,
       invoiceQuantityUom: additionalCost.priceUom
         ? additionalCost.priceUom
