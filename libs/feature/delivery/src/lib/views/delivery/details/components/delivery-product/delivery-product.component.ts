@@ -27,13 +27,22 @@ import { DocumentsGridViewModel } from '@shiptech/core/ui/components/documents/v
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
-import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
 import { DocumentViewEditNotesComponent } from '@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
@@ -45,10 +54,23 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
-import { DeliveryInfoForOrder, DeliveryProduct, DeliveryProductDto, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
+import {
+  DeliveryInfoForOrder,
+  DeliveryProduct,
+  DeliveryProductDto,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
@@ -62,19 +84,18 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { throws } from 'assert';
 
-import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service'
+import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   },
   parse: {
     dateInput: 'DD MMM YYYY'
   }
 };
-
 
 export class PickDateAdapter extends NativeDateAdapter {
   format(value: Date, displayFormat: string): string {
@@ -82,19 +103,18 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
     let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
-
 
   parse(value) {
     // We have no way using the native JS Date to set the parse format or locale, so we ignore these
@@ -102,8 +122,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -112,10 +132,7 @@ export class PickDateAdapter extends NativeDateAdapter {
     let date = elem.toDate();
     return value ? date : null;
   }
-
 }
-
-
 
 @Component({
   selector: 'shiptech-delivery-product',
@@ -123,14 +140,16 @@ export class PickDateAdapter extends NativeDateAdapter {
   styleUrls: ['./delivery-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel,
-              DialogService,
-              ConfirmationService,
-              {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS}]
+  providers: [
+    OrderListGridViewModel,
+    DialogService,
+    ConfirmationService,
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS }
+  ]
 })
 export class DeliveryProductComponent extends DeliveryAutocompleteComponent
-  implements OnInit{
+  implements OnInit {
   switchTheme; //false-Light Theme, true- Dark Theme
   uomList$: any;
   text: any;
@@ -146,7 +165,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   uomMass: any;
   deliveredQuantityUoms: any;
   pumpingRateUom: any;
-
 
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) {
     if (!finalQuantityRules) {
@@ -212,7 +230,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.buttonClicked = buttonClicked;
   }
 
-
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -226,8 +243,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   @Input() set entityId(value: number) {
-    this._entityId = this.formValues.deliveryProducts[this.deliveryProductIndex].productTypeId;
-    this.gridViewModel.entityId = this.formValues.deliveryProducts[this.deliveryProductIndex].productTypeId;
+    this._entityId = this.formValues.deliveryProducts[
+      this.deliveryProductIndex
+    ].productTypeId;
+    this.gridViewModel.entityId = this.formValues.deliveryProducts[
+      this.deliveryProductIndex
+    ].productTypeId;
   }
 
   @Input() set entityName(value: string) {
@@ -255,44 +276,116 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.formValues = formValues;
   }
 
-  @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) {
+  @Input('deliveryProductIndex') set _setDeliveryProductIndex(
+    deliveryProductIndex
+  ) {
     if (!deliveryProductIndex) {
       return;
     }
     this.deliveryProductIndex = deliveryProductIndex;
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex]){
-      this.deliveryProduct = this.formValues.deliveryProducts[this.deliveryProductIndex];
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
+      this.deliveryProduct = this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ];
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].confirmedQuantityAmount) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].confirmedQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].confirmedQuantityAmount);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .confirmedQuantityAmount
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].confirmedQuantityAmount = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .confirmedQuantityAmount
+      );
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].bdnQuantityAmount) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].bdnQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].bdnQuantityAmount);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .bdnQuantityAmount
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].bdnQuantityAmount = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .bdnQuantityAmount
+      );
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].vesselQuantityAmount) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].vesselQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].vesselQuantityAmount);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .vesselQuantityAmount
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].vesselQuantityAmount = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .vesselQuantityAmount
+      );
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].surveyorQuantityAmount) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].surveyorQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].surveyorQuantityAmount);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .surveyorQuantityAmount
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].surveyorQuantityAmount = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .surveyorQuantityAmount
+      );
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].vesselFlowMeterQuantityAmount) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].vesselFlowMeterQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].vesselFlowMeterQuantityAmount);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .vesselFlowMeterQuantityAmount
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].vesselFlowMeterQuantityAmount = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .vesselFlowMeterQuantityAmount
+      );
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .finalQuantityAmount
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].finalQuantityAmount = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .finalQuantityAmount
+      );
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .agreedQuantityAmount
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].agreedQuantityAmount = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .agreedQuantityAmount
+      );
     }
-    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom  = 'Celsius';
+    if (
+      !this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .fuelManifoldTemperatureUom
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].fuelManifoldTemperatureUom = 'Celsius';
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].deliveredVolume) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].deliveredVolume = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].deliveredVolume);
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .deliveredVolume
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].deliveredVolume = this.quantityFormatValue(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .deliveredVolume
+      );
     }
     this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
-
 
   private eventsSubscription: Subscription;
   @Input() events: Observable<void>;
@@ -329,19 +422,29 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   ) {
     super(changeDetectorRef);
     this.autocompleteProducts = knownMastersAutocomplete.products;
-    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
+    this.autocompletePhysicalSupplier =
+      knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
-    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
-
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.entityName = 'Delivery';
-    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    this.events1Subscription = this.events1.subscribe((data) => this.setConversionDataInfo(data));
-    this.events2Subscription = this.events2.subscribe((data) => this.setRequiredFields(data));
+    this.eventsSubscription = this.events.subscribe(data =>
+      this.setDeliveryForm(data)
+    );
+    this.events1Subscription = this.events1.subscribe(data =>
+      this.setConversionDataInfo(data)
+    );
+    this.events2Subscription = this.events2.subscribe(data =>
+      this.setRequiredFields(data)
+    );
     this.getUomList();
     this.getProductList();
     this.getPhysicalSupplierList();
@@ -359,7 +462,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.conversionInfoData = conversionInfo;
   }
 
-  setDeliveryForm(form){
+  setDeliveryForm(form) {
     if (!form) {
       return;
     }
@@ -369,8 +472,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
     //this.changeDetectorRef.detectChanges();
   }
-
-
 
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
@@ -390,16 +491,28 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
   }
 
-
   getUomList() {
-    this.uomList$ =  this.legacyLookupsDatabase.getUomTable();
+    this.uomList$ = this.legacyLookupsDatabase.getUomTable();
   }
 
-  getProductList(){
-    let data : any = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"productTypeId","Value": this.formValues.deliveryProducts[this.deliveryProductIndex].productTypeId}],"SearchText":null,"Pagination":{}}
+  getProductList() {
+    let data: any = {
+      Order: null,
+      PageFilters: { Filters: [] },
+      SortList: { SortList: [] },
+      Filters: [
+        {
+          ColumnName: 'productTypeId',
+          Value: this.formValues.deliveryProducts[this.deliveryProductIndex]
+            .productTypeId
+        }
+      ],
+      SearchText: null,
+      Pagination: {}
+    };
     this.mastersListApiService.getProducts(data).subscribe((response: any) => {
-      if(response){
-          this.productList=response.payload;
+      if (response) {
+        this.productList = response.payload;
       }
     });
   }
@@ -408,41 +521,51 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
   }
 
-
-  selectorPhysicalSupplierSelectionChange(
-    selection: IDisplayLookupDto
-  ): void {
+  selectorPhysicalSupplierSelectionChange(selection: IDisplayLookupDto): void {
     if (selection === null || selection === undefined) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier = '';
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].physicalSupplier = '';
     } else {
       const obj = {
-        'id': selection.id,
-        'name': selection.name
+        id: selection.id,
+        name: selection.name
       };
-      this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier = obj;
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].physicalSupplier = obj;
       this.changeDetectorRef.detectChanges();
     }
   }
 
-  selectorProductSelectionChange(
-    selection: IDisplayLookupDto
-  ): void {
+  selectorProductSelectionChange(selection: IDisplayLookupDto): void {
     if (selection === null || selection === undefined) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].product = '';
     } else {
       const obj = {
-        'id': selection.id,
-        'name': selection.name
+        id: selection.id,
+        name: selection.name
       };
-      this.formValues.deliveryProducts[this.deliveryProductIndex].product  = obj;
+      this.formValues.deliveryProducts[this.deliveryProductIndex].product = obj;
       this.changeDetectorRef.detectChanges();
     }
   }
 
   filterProductList() {
-    const filterValue = this.formValues.deliveryProducts[this.deliveryProductIndex].product.name ? this.formValues.deliveryProducts[this.deliveryProductIndex].product.name.toLowerCase() : this.formValues.deliveryProducts[this.deliveryProductIndex].product.toLowerCase();
+    const filterValue = this.formValues.deliveryProducts[
+      this.deliveryProductIndex
+    ].product.name
+      ? this.formValues.deliveryProducts[
+          this.deliveryProductIndex
+        ].product.name.toLowerCase()
+      : this.formValues.deliveryProducts[
+          this.deliveryProductIndex
+        ].product.toLowerCase();
     if (this.productList) {
-      return this.productList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+      return this.productList
+        .filter(
+          option => option.name.toLowerCase().indexOf(filterValue.trim()) === 0
+        )
         .slice(0, 10);
     } else {
       return [];
@@ -450,10 +573,25 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   filterPhysicalSupplierList() {
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier) {
-      const filterValue = this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier.name ? this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier.name.toLowerCase() : this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier.toLowerCase();
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .physicalSupplier
+    ) {
+      const filterValue = this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].physicalSupplier.name
+        ? this.formValues.deliveryProducts[
+            this.deliveryProductIndex
+          ].physicalSupplier.name.toLowerCase()
+        : this.formValues.deliveryProducts[
+            this.deliveryProductIndex
+          ].physicalSupplier.toLowerCase();
       if (this.physicalSupplierList) {
-        return this.physicalSupplierList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.physicalSupplierList
+          .filter(
+            option =>
+              option.name.toLowerCase().indexOf(filterValue.trim()) === 0
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -463,9 +601,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
   }
 
-  ngAfterViewInit(): void {
-
-  }
+  ngAfterViewInit(): void {}
 
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
@@ -475,9 +611,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     return product && product.name ? product.name : '';
   }
 
-  valueChange(value){
-    this.formValues.deliveryProducts[this.deliveryProductIndex].confirmedQuantityAmount  = value;
-
+  valueChange(value) {
+    this.formValues.deliveryProducts[
+      this.deliveryProductIndex
+    ].confirmedQuantityAmount = value;
   }
 
   setVarianceQty(qtyToChange, rule) {
@@ -498,99 +635,196 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
   }
 
-   /* delivery quantity variance and status calculations*/
+  /* delivery quantity variance and status calculations*/
   setBuyerSellerQuantityAndUom(qtyToChange) {
     if (qtyToChange == 'seller') {
-        let sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
-        if (sellerQty == 'Surveyor') {
-            this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].surveyorQuantityUom;
-              this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].surveyorQuantityAmount;
-            });
-        }
-        if (sellerQty == 'Bdn') {
-            this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].bdnQuantityUom;
-              this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].bdnQuantityAmount;
-            });
-        }
-        if (sellerQty == 'Vessel') {
-            this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].vesselQuantityUom;
-              this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].vesselQuantityAmount;
-            });
-        }
-        if (sellerQty == 'VesselFlowMeter') {
-            this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityUom;
-              this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityAmount;
-            });
-        }
-        if (sellerQty == 'Confirm') {
-            this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].confirmedQuantityUom;
-              this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].confirmedQuantityAmount;
-            });
-        }
+      let sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
+      if (sellerQty == 'Surveyor') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityAmount;
+        });
+      }
+      if (sellerQty == 'Bdn') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityAmount;
+        });
+      }
+      if (sellerQty == 'Vessel') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityAmount;
+        });
+      }
+      if (sellerQty == 'VesselFlowMeter') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityAmount;
+        });
+      }
+      if (sellerQty == 'Confirm') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].sellerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityAmount;
+        });
+      }
     }
     if (qtyToChange == 'buyer') {
-        let buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
-        if (buyerQty == 'Surveyor') {
-            this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].surveyorQuantityUom;
-              this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].surveyorQuantityAmount;
-            });
-        }
-        if (buyerQty == 'Bdn') {
-            this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].bdnQuantityUom;
-              this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].bdnQuantityAmount;
-            });
-        }
-        if (buyerQty == 'Vessel') {
-          this.formValues.deliveryProducts.forEach((val, key) => {
-              this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].vesselQuantityUom;
-              this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].vesselQuantityAmount;
-          });
-        }
-        if (buyerQty == 'VesselFlowMeter') {
-          this.formValues.deliveryProducts.forEach((val, key) => {
-            this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityUom;
-            this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityAmount;
-          });
-        }
-        if (buyerQty == 'Confirm') {
-          this.formValues.deliveryProducts.forEach((val, key) => {
-            this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].confirmedQuantityUom;
-            this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].confirmedQuantityAmount;
-          });
-        }
+      let buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
+      if (buyerQty == 'Surveyor') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].surveyorQuantityAmount;
+        });
+      }
+      if (buyerQty == 'Bdn') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].bdnQuantityAmount;
+        });
+      }
+      if (buyerQty == 'Vessel') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselQuantityAmount;
+        });
+      }
+      if (buyerQty == 'VesselFlowMeter') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].vesselFlowMeterQuantityAmount;
+        });
+      }
+      if (buyerQty == 'Confirm') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityUom = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityUom;
+          this.formValues.deliveryProducts[
+            key
+          ].buyerQuantityAmount = this.formValues.deliveryProducts[
+            key
+          ].confirmedQuantityAmount;
+        });
+      }
     }
     // function called for all quantities, call here calculate final quantity
     this.calculateFinalQuantity(this.selectedProduct);
-  };
+  }
 
   calculateFinalQuantity(productIdx) {
     // debugger;
     if (typeof productIdx == 'undefined') {
-        return;
+      return;
     }
     if (typeof this.formValues.deliveryProducts[productIdx] == 'undefined') {
-        return;
+      return;
     }
     let dataSet = false;
 
-
     // rules are in order, check for each if quantity exists and set that
     // if not, go on
-    for (let i = 0; i < this.finalQuantityRules.length; i ++) {
+    for (let i = 0; i < this.finalQuantityRules.length; i++) {
       let rule = this.finalQuantityRules[i];
-      if (typeof this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`] != 'undefined' &&
-        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != '' &&
-        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
+      if (
+        typeof this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Uom`
+        ] != 'undefined' &&
+        this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Amount`
+        ] != '' &&
+        this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Amount`
+        ] != null
+      ) {
         // quantity exists, set it
-        this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
-        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`]);
+        this.formValues.deliveryProducts[
+          productIdx
+        ].finalQuantityUom = this.formValues.deliveryProducts[productIdx][
+          `${rule.deliveryMapping}Uom`
+        ];
+        this.formValues.deliveryProducts[
+          productIdx
+        ].finalQuantityAmount = this.quantityFormatValue(
+          this.formValues.deliveryProducts[productIdx][
+            `${rule.deliveryMapping}Amount`
+          ]
+        );
         dataSet = true;
       }
       if (dataSet) {
@@ -598,11 +832,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       } // break loop
     }
 
-    if(!dataSet) {
+    if (!dataSet) {
       this.formValues.deliveryProducts[productIdx].finalQuantityUom = null;
       this.formValues.deliveryProducts[productIdx].finalQuantityAmount = null;
     }
-  };
+  }
 
   setQuantityFormat(value) {
     let viewValue = `${value}`;
@@ -610,20 +844,34 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     return plainNumber;
   }
 
-
   calculateVarianceAndReconStatus(productIdx) {
     // function called for all quantities, call here calculate final quantity
     this.calculateFinalQuantity(productIdx);
-    let confirmedQuantityUom, vesselQuantityUom, bdnQuantityUom,vesselFlowMeterQuantityUom, surveyorQuantityUom;
+    let confirmedQuantityUom,
+      vesselQuantityUom,
+      bdnQuantityUom,
+      vesselFlowMeterQuantityUom,
+      surveyorQuantityUom;
     let conversionInfo = this.conversionInfoData[productIdx];
     let activeProduct = this.formValues.deliveryProducts[productIdx];
     // get fields values and uom
-    activeProduct.confirmedQuantityUom == null ? confirmedQuantityUom = null : confirmedQuantityUom = activeProduct.confirmedQuantityUom.name;
-    activeProduct.vesselQuantityUom == null ? vesselQuantityUom = null : vesselQuantityUom = activeProduct.vesselQuantityUom.name;
-    activeProduct.bdnQuantityUom == null ? bdnQuantityUom = null : bdnQuantityUom = activeProduct.bdnQuantityUom.name;
-    activeProduct.vesselFlowMeterQuantityUom == null ? vesselFlowMeterQuantityUom = null : vesselFlowMeterQuantityUom = activeProduct.vesselFlowMeterQuantityUom.name;
+    activeProduct.confirmedQuantityUom == null
+      ? (confirmedQuantityUom = null)
+      : (confirmedQuantityUom = activeProduct.confirmedQuantityUom.name);
+    activeProduct.vesselQuantityUom == null
+      ? (vesselQuantityUom = null)
+      : (vesselQuantityUom = activeProduct.vesselQuantityUom.name);
+    activeProduct.bdnQuantityUom == null
+      ? (bdnQuantityUom = null)
+      : (bdnQuantityUom = activeProduct.bdnQuantityUom.name);
+    activeProduct.vesselFlowMeterQuantityUom == null
+      ? (vesselFlowMeterQuantityUom = null)
+      : (vesselFlowMeterQuantityUom =
+          activeProduct.vesselFlowMeterQuantityUom.name);
     // activeProduct.bargeFlowMeterQuantityUom == null ? bargeFlowMeterQuantityUom = null : bargeFlowMeterQuantityUom = activeProduct.bargeFlowMeterQuantityUom.name;
-    activeProduct.surveyorQuantityUom == null ? surveyorQuantityUom = null : surveyorQuantityUom = activeProduct.surveyorQuantityUom.name;
+    activeProduct.surveyorQuantityUom == null
+      ? (surveyorQuantityUom = null)
+      : (surveyorQuantityUom = activeProduct.surveyorQuantityUom.name);
     let Confirm = {
       val: this.setQuantityFormat(activeProduct.confirmedQuantityAmount),
       uom: confirmedQuantityUom
@@ -664,22 +912,32 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       Surveyor: 'surveyorQuantityUom'
     };
     // "BargeFlowMeter": 'bargeFlowMeterQuantityUom',
-    let convertedFields : any = {};
-    let baseUom : any = {};
+    let convertedFields: any = {};
+    let baseUom: any = {};
     let convFact = 1;
     if (typeof conversionInfo == 'undefined') {
       conversionInfo = {};
     }
-    if (productIdx == 0 && typeof this.formValues.temp.variances == 'undefined') {
+    if (
+      productIdx == 0 &&
+      typeof this.formValues.temp.variances == 'undefined'
+    ) {
       this.formValues.temp.variances = [];
     }
-    if (this.formValues.deliveryProducts[productIdx].sellerQuantityType  && typeof this.formValues.deliveryProducts[productIdx].sellerQuantityType.name != 'undefined') {
-      let uomObjId = fieldUoms[this.formValues.deliveryProducts[productIdx].sellerQuantityType.name];
+    if (
+      this.formValues.deliveryProducts[productIdx].sellerQuantityType &&
+      typeof this.formValues.deliveryProducts[productIdx].sellerQuantityType
+        .name != 'undefined'
+    ) {
+      let uomObjId =
+        fieldUoms[
+          this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
+        ];
       baseUom = this.formValues.deliveryProducts[productIdx][uomObjId];
     }
     if (!baseUom) {
-      this.formValues.temp.variances[`uom_${ productIdx}`] = null;
-      this.formValues.temp.variances[`product_${ productIdx}`] = null;
+      this.formValues.temp.variances[`uom_${productIdx}`] = null;
+      this.formValues.temp.variances[`product_${productIdx}`] = null;
       this.setVarianceColor(productIdx);
       // return;
     }
@@ -698,7 +956,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       if (baseUom.name != conversionInfo.toleranceQuantityUom.name) {
         conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
           if (baseUom.name == factVal.sourceUom.name) {
-              convFact = factVal.conversionFactor;
+            convFact = factVal.conversionFactor;
           }
         });
       } else {
@@ -706,15 +964,20 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       }
     }
 
-    this.formValues.temp.variances[`mfm_product_${ productIdx}`] = null;
-    this.formValues.temp.variances[`mfm_uom_${ productIdx}`] = null;
-    if (activeProduct.vesselFlowMeterQuantityUom && activeProduct.bdnQuantityUom && activeProduct.bdnQuantityAmount && activeProduct.vesselFlowMeterQuantityAmount) {
+    this.formValues.temp.variances[`mfm_product_${productIdx}`] = null;
+    this.formValues.temp.variances[`mfm_uom_${productIdx}`] = null;
+    if (
+      activeProduct.vesselFlowMeterQuantityUom &&
+      activeProduct.bdnQuantityUom &&
+      activeProduct.bdnQuantityAmount &&
+      activeProduct.vesselFlowMeterQuantityAmount
+    ) {
       let mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
       if (mfm_baseUom && conversionInfo.toleranceQuantityUom) {
         if (mfm_baseUom.name != conversionInfo.toleranceQuantityUom.name) {
           conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
             if (mfm_baseUom.name == factVal.sourceUom.name) {
-                var mfm_convFact = factVal.conversionFactor;
+              var mfm_convFact = factVal.conversionFactor;
             }
           });
         } else {
@@ -724,8 +987,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         var bdn_qty = convertedFields.Bdn;
         var variance = mfm_qty - bdn_qty;
         var mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
-        this.formValues.temp.variances[`mfm_product_${ productIdx}`] = this._decimalPipe.transform(mfm_variance, this.quantityFormat);
-        this.formValues.temp.variances[`mfm_uom_${ productIdx}`] = mfm_baseUom.name;
+        this.formValues.temp.variances[
+          `mfm_product_${productIdx}`
+        ] = this._decimalPipe.transform(mfm_variance, this.quantityFormat);
+        this.formValues.temp.variances[`mfm_uom_${productIdx}`] =
+          mfm_baseUom.name;
       }
     }
 
@@ -733,7 +999,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       return;
     }
     if (!activeProduct.sellerQuantityType) {
-        return;
+      return;
     }
     var buyerOption = activeProduct.buyerQuantityType.name;
     var sellerOption = activeProduct.sellerQuantityType.name;
@@ -741,7 +1007,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     var sellerConvertedValue = convertedFields[sellerOption];
     if (!sellerConvertedValue || !buyerConvertedValue) {
       variance = null;
-      this.formValues.temp.variances[`product_${ productIdx}`] = variance;
+      this.formValues.temp.variances[`product_${productIdx}`] = variance;
       this.setVarianceColor(productIdx);
     } else {
       // this is where variance is calculated. rn it's buyer - seler (15/08)
@@ -749,8 +1015,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
       //
       var varianceDisplay = variance / convFact;
-      this.formValues.temp.variances[`product_${ productIdx}`] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
-      this.formValues.temp.variances[`uom_${ productIdx}`] = baseUom.name;
+      this.formValues.temp.variances[
+        `product_${productIdx}`
+      ] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
+      this.formValues.temp.variances[`uom_${productIdx}`] = baseUom.name;
       this.setVarianceColor(productIdx);
     }
     if (typeof this.formValues.temp.reconStatus == 'undefined') {
@@ -759,48 +1027,61 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     if (variance != null) {
       if (conversionInfo.quantityReconciliation.name == 'Flat') {
         if (variance < conversionInfo.minToleranceLimit) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 1; // Matched Green
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
         }
-        if (variance > conversionInfo.minToleranceLimit && variance < conversionInfo.maxToleranceLimit) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 2; // Unmatched Amber
+        if (
+          variance > conversionInfo.minToleranceLimit &&
+          variance < conversionInfo.maxToleranceLimit
+        ) {
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
         }
         if (variance > conversionInfo.maxToleranceLimit) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 3; // Unmatched Red
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       } else {
-        var minValue = conversionInfo.minToleranceLimit * this.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
-        var maxValue = conversionInfo.maxToleranceLimit * this.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
+        var minValue =
+          (conversionInfo.minToleranceLimit *
+            this.formValues.deliveryProducts[productIdx]
+              .confirmedQuantityAmount) /
+          100;
+        var maxValue =
+          (conversionInfo.maxToleranceLimit *
+            this.formValues.deliveryProducts[productIdx]
+              .confirmedQuantityAmount) /
+          100;
         if (variance < minValue) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 1; // Matched Green
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
         }
         if (variance > minValue && variance < maxValue) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 2; // Unmatched Amber
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
         }
         if (variance > maxValue) {
-            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 3; // Unmatched Red
+          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       }
     } else {
-      this.formValues.temp.reconStatus[`product_${ productIdx}`] = null;
+      this.formValues.temp.reconStatus[`product_${productIdx}`] = null;
     }
 
-     // Update buyer & seller amount and uom
+    // Update buyer & seller amount and uom
     this.setBuyerSellerQuantityAndUom('buyer');
     this.setBuyerSellerQuantityAndUom('seller');
   }
 
   setVarianceColor(idx) {
-     // debugger
-    if(typeof this.formValues.temp.variances[`color_${ idx}`] == 'undefined') {
-      this.formValues.temp.variances[`color_${ idx}`] = '';
+    // debugger
+    if (typeof this.formValues.temp.variances[`color_${idx}`] == 'undefined') {
+      this.formValues.temp.variances[`color_${idx}`] = '';
     }
-    if(typeof this.formValues.temp.variances[`mfm_color_${ idx}`] == 'undefined') {
-      this.formValues.temp.variances[`mfm_color_${ idx}`] = '';
+    if (
+      typeof this.formValues.temp.variances[`mfm_color_${idx}`] == 'undefined'
+    ) {
+      this.formValues.temp.variances[`mfm_color_${idx}`] = '';
     }
     // ckeck product_{{idx}}
 
-    if(this.formValues.temp.variances[`product_${ idx}`] != null) {
-        /*
+    if (this.formValues.temp.variances[`product_${idx}`] != null) {
+      /*
       // old color code
       // 1. Variance < Min Tolerance  => Green
         if(parseFloat(this.formValues.temp.variances["product_" + idx]) < parseFloat(this.toleranceLimits.minToleranceLimit))
@@ -818,57 +1099,76 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         }
         */
 
+      // new color code
+      // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
+      // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
+      // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
-        // new color code
-        // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
-        // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
-        // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
-
-        if(parseFloat(this.formValues.temp.variances[`product_${ idx}`]) < 0) {
-          // 1 or 2
-          if(Math.abs(parseFloat(this.formValues.temp.variances[`product_${ idx}`])) < parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-            this.formValues.temp.variances[`color_${ idx}`] = 'amber';
-          }
-
-          if(Math.abs(parseFloat(this.formValues.temp.variances[`product_${ idx}`])) >= parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-            this.formValues.temp.variances[`color_${ idx}`] = 'red';
-          }
-        }else{
-          this.formValues.temp.variances[`color_${ idx}`] = 'green';
+      if (parseFloat(this.formValues.temp.variances[`product_${idx}`]) < 0) {
+        // 1 or 2
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`product_${idx}`])
+          ) < parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`color_${idx}`] = 'amber';
         }
-    }else{
-        // if variance is null, set color to white
-      this.formValues.temp.variances[`color_${ idx}`] = 'white';
+
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`product_${idx}`])
+          ) >= parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`color_${idx}`] = 'red';
+        }
+      } else {
+        this.formValues.temp.variances[`color_${idx}`] = 'green';
+      }
+    } else {
+      // if variance is null, set color to white
+      this.formValues.temp.variances[`color_${idx}`] = 'white';
     }
 
-    if(this.formValues.temp.variances[`mfm_product_${ idx}`] != null) {
-        if(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`]) < 0) {
-            if(Math.abs(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`])) <= parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-                this.formValues.temp.variances[`mfm_color_${ idx}`] = 'amber';
-            }
-
-            if(Math.abs(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`])) > parseFloat(this.toleranceLimits.maxToleranceLimit)) {
-                this.formValues.temp.variances[`mfm_color_${ idx}`] = 'red';
-            }
-        }else{
-            this.formValues.temp.variances[`mfm_color_${ idx}`] = 'green';
+    if (this.formValues.temp.variances[`mfm_product_${idx}`] != null) {
+      if (
+        parseFloat(this.formValues.temp.variances[`mfm_product_${idx}`]) < 0
+      ) {
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`mfm_product_${idx}`])
+          ) <= parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`mfm_color_${idx}`] = 'amber';
         }
-    }else{
-        // if variance is null, set color to white
-        this.formValues.temp.variances[`mfm_color_${ idx}`] = 'white';
+
+        if (
+          Math.abs(
+            parseFloat(this.formValues.temp.variances[`mfm_product_${idx}`])
+          ) > parseFloat(this.toleranceLimits.maxToleranceLimit)
+        ) {
+          this.formValues.temp.variances[`mfm_color_${idx}`] = 'red';
+        }
+      } else {
+        this.formValues.temp.variances[`mfm_color_${idx}`] = 'green';
+      }
+    } else {
+      // if variance is null, set color to white
+      this.formValues.temp.variances[`mfm_color_${idx}`] = 'white';
     }
   }
 
   getColorCodeFromLabels(statusObj, labels) {
-    for(let i = 0; i < labels.length; i++) {
+    for (let i = 0; i < labels.length; i++) {
       if (statusObj) {
-        if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
-            return labels[i].code;
+        if (
+          statusObj.id === labels[i].id &&
+          statusObj.transactionTypeId === labels[i].transactionTypeId
+        ) {
+          return labels[i].code;
         }
       }
     }
   }
-
 
   quantityFormatValue(value) {
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -877,7 +1177,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if (this.tenantService.quantityPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
@@ -887,7 +1187,9 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   onChange($event, field) {
     if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment($event.value).format(
+        'YYYY-MM-DDTHH:mm:ss'
+      )}+00:00`;
       if (field == 'pricingEventDate') {
         this.isPricingEventDateInvalid = false;
       }
@@ -897,21 +1199,20 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       }
       this.toastr.error('Please enter the correct format');
     }
-
   }
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
     }
   }
 
-
   setDeliveredQuantityUomList(deliveryProductIndex) {
-    let bdnUom = this.formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom;
+    let bdnUom = this.formValues.deliveryProducts[deliveryProductIndex]
+      .bdnQuantityUom;
     if (bdnUom) {
       let verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
         return object.name == bdnUom.name && object.id == bdnUom.id;
@@ -929,29 +1230,45 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   calculatePumpingRate(timeString, prodIndex) {
-    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined' || !this.formValues.deliveryProducts.length) {
+    if (
+      typeof timeString == 'undefined' ||
+      typeof this.formValues.deliveryProducts == 'undefined' ||
+      !this.formValues.deliveryProducts.length
+    ) {
       return;
     }
-    if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
+    if (
+      typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom ==
+        'undefined' ||
+      this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null ||
+      this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null
+    ) {
       return;
     }
     if (typeof this.formValues.pumpingRate == 'undefined') {
       this.formValues.pumpingRate = '';
       this.formValues.pumpingRateUom = '';
     }
-    var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
-    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    var pumpingTime =
+      (parseInt(timeString.split(':')[0]) * 60 +
+        parseInt(timeString.split(':')[1])) /
+      60;
+    this.formValues.pumpingRate =
+      this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount /
+      pumpingTime;
     this.pumpingRateUom.forEach((val, key) => {
-      if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
+      if (
+        val.name.split('/')[0] ==
+        this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name
+      ) {
         this.formValues.pumpingRateUom = val;
       }
     });
-  };
-
+  }
 
   // Only Number
-   // Only Number
-   keyPressNumber(event) {
+  // Only Number
+  keyPressNumber(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (inp == '.' || inp == ',' || inp == '-') {
       return true;
@@ -963,7 +1280,4 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       return false;
     }
   }
-
-
-
 }

@@ -32,12 +32,20 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { IPhysicalSupplierListDto, IProductListDto, ISystemInstrumentListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-import { SystemInstrumentListColumns, SystemInstrumentListColumnServerKeys, SystemInstrumentListColumnsLabels } from './system-instrument-list.columns';
+import {
+  IPhysicalSupplierListDto,
+  IProductListDto,
+  ISystemInstrumentListDto
+} from '@shiptech/core/delivery-api/masters-list/masters-list-response';
+import {
+  SystemInstrumentListColumns,
+  SystemInstrumentListColumnServerKeys,
+  SystemInstrumentListColumnsLabels
+} from './system-instrument-list.columns';
 
-
-
-function model(prop: keyof ISystemInstrumentListDto): keyof ISystemInstrumentListDto {
+function model(
+  prop: keyof ISystemInstrumentListDto
+): keyof ISystemInstrumentListDto {
   return prop;
 }
 
@@ -124,7 +132,6 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     flex: 1
   };
 
-
   nameCol: ITypedColDef<ISystemInstrumentListDto, string> = {
     headerName: SystemInstrumentListColumnsLabels.name,
     colId: SystemInstrumentListColumns.name,
@@ -141,7 +148,10 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     flex: 2
   };
 
-  marketInstumentCol: ITypedColDef<ISystemInstrumentListDto, IDisplayLookupDto> = {
+  marketInstumentCol: ITypedColDef<
+    ISystemInstrumentListDto,
+    IDisplayLookupDto
+  > = {
     headerName: SystemInstrumentListColumnsLabels.marketInstrument,
     colId: SystemInstrumentListColumns.marketInstrument,
     field: model('marketInstrument'),
@@ -169,7 +179,10 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     flex: 2
   };
 
-  lastModifiedByCol: ITypedColDef<ISystemInstrumentListDto, IDisplayLookupDto> = {
+  lastModifiedByCol: ITypedColDef<
+    ISystemInstrumentListDto,
+    IDisplayLookupDto
+  > = {
     headerName: SystemInstrumentListColumnsLabels.lastModifiedBy,
     colId: SystemInstrumentListColumns.lastModifiedBy,
     field: model('lastModifiedBy'),
@@ -201,7 +214,6 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     cellClass: 'cell-background',
     width: 150
   };
-
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -237,7 +249,7 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 
