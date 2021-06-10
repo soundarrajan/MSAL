@@ -565,21 +565,9 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
     this.autocompleteFormula = knownMastersAutocomplete.formula;
-    this.quantityFormat =
-      '1.' +
-      this.tenantService.quantityPrecision +
-      '-' +
-      this.tenantService.quantityPrecision;
-    this.amountFormat =
-      '1.' +
-      this.tenantService.amountPrecision +
-      '-' +
-      this.tenantService.amountPrecision;
-    this.priceFormat =
-      '1.' +
-      this.tenantService.pricePrecision +
-      '-' +
-      this.tenantService.pricePrecision;
+    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
+    this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
+    this.priceFormat = '1.' + this.tenantService.pricePrecision + '-' + this.tenantService.pricePrecision;
   }
 
   ngOnInit(): void {
@@ -599,7 +587,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     return 0;
   };
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   openDeliveryLink(deliveryId) {
     return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
@@ -637,11 +625,10 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       return null;
     }
     var productPricePrecision = this.tenantService.pricePrecision;
-    if (pricePrecision !== null) {
+    if (pricePrecision) {
       productPricePrecision = pricePrecision;
     }
-    this.priceFormat =
-      '1.' + productPricePrecision + '-' + productPricePrecision;
+    this.priceFormat = '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
       if (productPricePrecision == 0) {
         return plainNumber;
@@ -808,7 +795,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         if (
           product.invoiceQuantityUom == null ||
           product.invoiceRateUom ==
-            null /* || typeof(product.invoiceAmount) == 'undefined'*/
+          null /* || typeof(product.invoiceAmount) == 'undefined'*/
         ) {
           return;
         }
@@ -880,7 +867,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
 
     this.invoiceService
       .getUomConversionFactor(data)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -1021,7 +1008,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
     this.invoiceService
       .calculateProductRecon(product)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -1141,7 +1128,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       rowData.product.productId = rowData.product.id;
       transactionstobeinvoiced_dtRow = {
         amountInInvoice: '',
-        deliveryNo: rowData.delivery.name,
+        deliveryId: rowData.delivery.id,
         agreementType: rowData.agreementType,
         deliveryProductId: rowData.deliveryProductId,
         invoicedProduct: rowData.invoicedProduct,
@@ -1161,7 +1148,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         invoiceAmountCurrency: {},
         invoiceQuantity: '',
         invoiceQuantityUom: {},
-        invoiceRate: '',
+        invoiceRate: 0,
         invoiceRateUom: rowData.invoiceRateUom,
         invoiceRateCurrency: this.formValues.invoiceRateCurrency,
         isDeleted: rowData.isDeleted,
@@ -1171,8 +1158,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         estimatedRateUom: rowData.estimatedRateUom,
         pricingScheduleName: rowData.pricingScheduleName,
         reconStatus: {
-          id: 1,
-          name: 'Matched',
+          id: 2,
+          name: 'Unmatched',
           code: '',
           collectionName: null
         }
