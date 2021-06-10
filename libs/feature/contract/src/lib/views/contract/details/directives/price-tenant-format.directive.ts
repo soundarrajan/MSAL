@@ -34,7 +34,7 @@ export class PriceTenantFormatDirective implements OnInit {
   }
 
   roundDown(value, pricePrecision) {
-      var precisionFactor = 0;
+      var precisionFactor = 1;
       var response = 0;
       var intvalue = parseFloat(value);
       if(pricePrecision == 1) {precisionFactor = 10}   
