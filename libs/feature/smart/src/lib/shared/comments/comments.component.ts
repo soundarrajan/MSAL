@@ -212,8 +212,9 @@ export class CommentsComponent implements OnInit {
     titleEle.click();
   }
   toggleSelectParticipant(event, index) {
+    //Toggle active and reset comments filter based on participant select or unselect
     let target = event?.currentTarget;
-    if(target?.classList.length && (target?.classList).includes('active-comment')) {
+    if(target?.classList.length && (target?.classList).contains('active-comment')) {
       this.selectedIndex= null;
     } else {
       this.selectedIndex= index;
