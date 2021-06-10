@@ -1,9 +1,11 @@
-﻿commit 102883ca5a3690bf8fe110e7baa11ecaeebe7f34
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jun 10 06:30:56 2021 +0000
+﻿commit c033cb49dbeb538bcd3de0eb675f267219c21a07
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jun 10 06:56:51 2021 +0000
 
-    Merged PR 11379: Removed additional cost item with Total and range name which were not part of...
+    Merged PR 11380: #29769 Icon fix.
     
-    Removed additional cost item with Total and range name which were not part of Location
+    #29769 Icon fix.
+    
+    Related work items: #29769
 
 branch: master
