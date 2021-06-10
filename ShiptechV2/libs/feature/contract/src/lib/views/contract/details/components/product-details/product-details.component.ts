@@ -27,32 +27,63 @@ import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/b
 import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
-import { DeliveryInfoForOrder, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  DeliveryInfoForOrder,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, _MatAutocompleteBase } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  _MatAutocompleteBase
+} from '@angular/material/autocomplete';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import _ from 'lodash';
-import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NgxMatNativeDateAdapter,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
@@ -60,8 +91,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
-
-
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -71,18 +100,16 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     dateInput: 'YYYY-MM-DD HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
-
-
 
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   },
   parse: {
     dateInput: 'DD MMM YYYY'
@@ -95,15 +122,15 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
     let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -114,8 +141,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -124,23 +151,20 @@ export class PickDateAdapter extends NativeDateAdapter {
     let date = elem.toDate();
     return value ? date : null;
   }
-
 }
 
-
-
 export interface NgxMatMomentDateAdapterOptions {
-
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<NgxMatMomentDateAdapterOptions>(
-  'MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
-    providedIn: 'root',
-    factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
-  });
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+  NgxMatMomentDateAdapterOptions
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+  providedIn: 'root',
+  factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+});
 
 export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
   return {
@@ -159,19 +183,21 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
 @Injectable()
 export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _localeData: {
-    firstDayOfWeek: number,
-    longMonths: string[],
-    shortMonths: string[],
-    dates: string[],
-    longDaysOfWeek: string[],
-    shortDaysOfWeek: string[],
-    narrowDaysOfWeek: string[]
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
   };
 
-  constructor(@Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
-              @Optional() @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
-              private _options?: NgxMatMomentDateAdapterOptions) {
-
+  constructor(
+    @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+    @Optional()
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    private _options?: NgxMatMomentDateAdapterOptions
+  ) {
     super();
     this.setLocale(dateLocale || moment.locale());
   }
@@ -184,10 +210,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
       longMonths: momentLocaleData.months(),
       shortMonths: momentLocaleData.monthsShort(),
-      dates: range(31, (i) => this.createDate(2017, 0, i + 1).format('D')),
+      dates: range(31, i => this.createDate(2017, 0, i + 1).format('D')),
       longDaysOfWeek: momentLocaleData.weekdays(),
       shortDaysOfWeek: momentLocaleData.weekdaysShort(),
-      narrowDaysOfWeek: momentLocaleData.weekdaysMin(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin()
     };
   }
 
@@ -209,7 +235,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
-    return style === 'long' ? this._localeData.longMonths : this._localeData.shortMonths;
+    return style === 'long'
+      ? this._localeData.longMonths
+      : this._localeData.shortMonths;
   }
 
   getDateNames(): string[] {
@@ -244,14 +272,18 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   createDate(year: number, month: number, date: number): Moment {
     if (month < 0 || month > 11) {
-      throw Error(`Invalid month index "${month}". Month index has to be between 0 and 11.`);
+      throw Error(
+        `Invalid month index "${month}". Month index has to be between 0 and 11.`
+      );
     }
 
     if (date < 1) {
       throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
     }
 
-    const result = this._createMoment({ year, month, date }).locale(this.locale);
+    const result = this._createMoment({ year, month, date }).locale(
+      this.locale
+    );
     if (!result.isValid()) {
       throw Error(`Invalid date "${date}" for month with index "${month}".`);
     }
@@ -268,8 +300,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -286,14 +318,14 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     let formattedDate = moment(date).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -328,8 +360,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       let currentFormat = PICK_FORMATS.display.dateInput;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -370,7 +402,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     date.hours(value);
   }
   setMinute(date: Moment, value: number): void {
-    date.minutes(value)
+    date.minutes(value);
   }
   setSecond(date: Moment, value: number): void {
     date.seconds(value);
@@ -379,9 +411,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _createMoment(
     date: MomentInput,
     format?: MomentFormatSpecification,
-    locale?: string,
+    locale?: string
   ): Moment {
-    const { strict, useUtc }: NgxMatMomentDateAdapterOptions = this._options || {};
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions =
+      this._options || {};
 
     return useUtc
       ? moment.utc(date, format, locale, strict)
@@ -394,20 +427,22 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./product-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel,
-              DialogService,
-              ConfirmationService,
-              {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
-              {
-                provide: NgxMatDateAdapter,
-                useClass: CustomNgxDatetimeAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
-              { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
+  providers: [
+    OrderListGridViewModel,
+    DialogService,
+    ConfirmationService,
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    {
+      provide: NgxMatDateAdapter,
+      useClass: CustomNgxDatetimeAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+  ]
 })
 export class ProductDetails extends DeliveryAutocompleteComponent
-  implements OnInit{
+  implements OnInit {
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
   _entityId: number;
@@ -429,10 +464,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   @ViewChildren('locationMenuTrigger') locationMenuTrigger;
   @ViewChildren('productMenuTrigger') productMenuTrigger;
 
-
-
   productMasterList: any;
-  expandLocationProductPopUp =  false;
+  expandLocationProductPopUp = false;
   locationMasterSearchList: any[];
   searchLocationInput: any;
   expandCompanyPopUp: any;
@@ -471,7 +504,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   filteredAllowedProductOptions: Observable<string[]>;
   openedScreenLoaders: number = 0;
 
-
   get entityId(): number {
     return this._entityId;
   }
@@ -492,7 +524,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   @Input() vesselId: number;
 
-  @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) {
+  @Input('contractProductIndex') set _setContractProductIndex(
+    contractProductIndex
+  ) {
     if (!contractProductIndex) {
       return;
     }
@@ -509,7 +543,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     if (this.formValues && this.formValues.products) {
       this.setAllowedLocations(this.selectedTabIndex);
     }
-
   }
 
   @Input('productMasterList') set _setProductMasterList(productMasterList) {
@@ -517,13 +550,12 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       return;
     }
 
-    this.productMasterList =  _.cloneDeep(productMasterList);
+    this.productMasterList = _.cloneDeep(productMasterList);
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
     this.selectedProductList = _.cloneDeep(this.productMasterList);
     if (this.formValues && this.formValues.products) {
       this.setAllowedProducts(this.selectedTabIndex);
     }
-
   }
 
   @Input('specParameterList') set _setSpecParameterList(specParameterList) {
@@ -532,7 +564,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
     this.specParameterList = specParameterList;
   }
-
 
   @Input('uomList') set _setUomList(uomList) {
     if (!uomList) {
@@ -548,15 +579,12 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.productSpecGroup = productSpecGroup;
   }
 
-
-
   @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) {
     if (!uomVolumeList) {
       return;
     }
     this.uomVolumeList = uomVolumeList;
   }
-
 
   @Input('uomMassList') set _setUomMassList(uomMassList) {
     if (!uomMassList) {
@@ -565,7 +593,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.uomMassList = uomMassList;
   }
 
-  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) {
+  @Input('contractConversionFactorOptions')
+  set _setContractConversionFactorOptions(contractConversionFactorOptions) {
     if (!contractConversionFactorOptions) {
       return;
     }
@@ -577,27 +606,29 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       return;
     }
     this.formValues = formValues;
-
   }
 
-  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) {
+  @Input('generalTenantSettings') set _setGeneralTenantSettings(
+    generalTenantSettings
+  ) {
     if (!generalTenantSettings) {
       return;
     }
     this.generalTenantSettings = generalTenantSettings;
   }
 
-  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) {
+  @Input('contractConfiguration') set _setContractConfiguration(
+    contractConfiguration
+  ) {
     if (!contractConfiguration) {
       return;
     }
     this.contractConfiguration = contractConfiguration;
   }
 
-
   index = 0;
   expandLocationPopUp = false;
-  array = [0,1,2,3,4,5,6,7,8,9,10];
+  array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
   @Input() events1: Observable<void>;
@@ -608,7 +639,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   searchAllowedLocation: any = '';
   allowedLocationSearch = new FormControl();
   allowedProductSearch = new FormControl();
-
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -629,19 +659,25 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
-    private overlayContainer: OverlayContainer) {
+    private overlayContainer: OverlayContainer
+  ) {
     super(changeDetectorRef);
-    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
+    this.autocompletePhysicalSupplier =
+      knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
-    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.entityName = 'Contract';
     console.log('Product details');
     console.log(this.locationMasterList);
@@ -651,8 +687,12 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       this.setAllowedProducts(this.selectedTabIndex);
     }
     this.getPhysicalSupplierList();
-    this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
-    this.events1Subscription = this.events1.subscribe((data) => this.setProductSpecGroup(data));
+    this.eventsSubscription = this.events.subscribe(data =>
+      this.setContractForm(data)
+    );
+    this.events1Subscription = this.events1.subscribe(data =>
+      this.setProductSpecGroup(data)
+    );
     this.filteredAllowedLocationOptions = this.allowedLocationSearch.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
@@ -662,21 +702,23 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       startWith(''),
       map(value => this._filter1(value))
     );
-
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.selectedLocationList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.selectedLocationList.filter(
+      option => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   private _filter1(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.selectedProductList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.selectedProductList.filter(
+      option => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
-
 
   setProductSpecGroup(data) {
     console.log(data);
@@ -688,12 +730,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     console.log(this.formValues);
   }
 
-
   async getPhysicalSupplierList() {
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
     console.log(this.physicalSupplierList);
   }
-
 
   getHeaderNameSelector1(): string {
     switch (this._autocompleteType) {
@@ -704,40 +744,38 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
   }
 
-
-
-
   searchLocations(value: string): void {
-    let filterLocations = this.locationMasterList.filter((location) => location.name.toLowerCase().includes(value));
+    let filterLocations = this.locationMasterList.filter(location =>
+      location.name.toLowerCase().includes(value)
+    );
     console.log(filterLocations);
-    this.locationMasterSearchList = [ ... filterLocations];
+    this.locationMasterSearchList = [...filterLocations];
     this.changeDetectorRef.detectChanges();
   }
 
   searchProducts(value: string): void {
-    let filterProducts = this.productMasterList.filter((location) => location.name.toLowerCase().includes(value));
+    let filterProducts = this.productMasterList.filter(location =>
+      location.name.toLowerCase().includes(value)
+    );
     console.log(filterProducts);
-    this.productMasterSearchList = [ ... filterProducts];
+    this.productMasterSearchList = [...filterProducts];
     this.changeDetectorRef.detectChanges();
   }
-
 
   openAddLocationSelect() {
     this.searchLocationInput = null;
     if (this.locationMasterList) {
-      this.locationMasterSearchList = [ ... this.locationMasterList];
+      this.locationMasterSearchList = [...this.locationMasterList];
       this.changeDetectorRef.detectChanges();
     }
     this.mySelect.close();
     this.mySelect.open();
-
   }
-
 
   clickAdd(key) {
     console.log('as');
     let trigger = this.locationMenuTrigger._results;
-    for (let i = 0 ; i < this.locationMenuTrigger._results.length; i++) {
+    for (let i = 0; i < this.locationMenuTrigger._results.length; i++) {
       if (i != key) {
         trigger[i].closeMenu();
       } else {
@@ -747,14 +785,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
     console.log(trigger);
     this.isMenuOpen = true;
-
-
   }
 
   onClickedOutside(event) {
     console.log(event);
   }
-
 
   addProductToContract() {
     console.log(this.formValues);
@@ -763,13 +798,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       details: [
         {
           contractualQuantityOption: {
-              id: 1,
-              name: 'TotalContractualQuantity',
-              code: '',
-              collectionName: null
+            id: 1,
+            name: 'TotalContractualQuantity',
+            code: '',
+            collectionName: null
           },
           id: 0,
-          uom : this.generalTenantSettings.tenantFormats.uom
+          uom: this.generalTenantSettings.tenantFormats.uom
         }
       ],
       additionalCosts: [],
@@ -782,19 +817,19 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       allowedLocations: []
     };
     if (this.formValues) {
-        if (!this.formValues.products) {
-            this.formValues.products = [];
-            this.formValues.products.push(emptyProductObj);
-        } else {
-            this.formValues.products.push(emptyProductObj);
-        }
-    } else {
-        this.formValues = {};
+      if (!this.formValues.products) {
         this.formValues.products = [];
         this.formValues.products.push(emptyProductObj);
-    };
+      } else {
+        this.formValues.products.push(emptyProductObj);
+      }
+    } else {
+      this.formValues = {};
+      this.formValues.products = [];
+      this.formValues.products.push(emptyProductObj);
+    }
 
-    this.selectedTabIndex =  this.formValues.products.length - 1;
+    this.selectedTabIndex = this.formValues.products.length - 1;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
     this.changeDetectorRef.detectChanges();
@@ -802,51 +837,72 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     console.log(this.formValues);
   }
 
-
   setAllowedLocations(selectedTabIndex) {
     this.selectedLocationList = _.cloneDeep(this.locationMasterList);
     let contractProduct = this.formValues.products[selectedTabIndex];
-    if (contractProduct.allowedLocations && contractProduct.allowedLocations.length) {
+    if (
+      contractProduct.allowedLocations &&
+      contractProduct.allowedLocations.length
+    ) {
       for (let i = 0; i < contractProduct.allowedLocations.length; i++) {
         let allowedLocation = contractProduct.allowedLocations[i];
-        let findIndexOfLocationInLocationList = _.findIndex(this.selectedLocationList, function(obj) {
-          return obj.id == allowedLocation.id && obj.name == allowedLocation.name;
-        });
+        let findIndexOfLocationInLocationList = _.findIndex(
+          this.selectedLocationList,
+          function(obj) {
+            return (
+              obj.id == allowedLocation.id && obj.name == allowedLocation.name
+            );
+          }
+        );
         if (findIndexOfLocationInLocationList != -1) {
-          this.selectedLocationList[findIndexOfLocationInLocationList].isSelected = true;
+          this.selectedLocationList[
+            findIndexOfLocationInLocationList
+          ].isSelected = true;
         }
       }
     }
     console.log(this.selectedLocationList);
   }
 
-  saveAllowedLocations(selectedTabIndex){
+  saveAllowedLocations(selectedTabIndex) {
     let newAllowedLocations = [];
     let allowedLocations = this.selectedLocationList;
     for (let i = 0; i < allowedLocations.length; i++) {
       if (allowedLocations[i].isSelected) {
         let allowedLocation = {
-          'id': allowedLocations[i].id,
-          'name': allowedLocations[i].name
-        }
+          id: allowedLocations[i].id,
+          name: allowedLocations[i].name
+        };
         newAllowedLocations.push(allowedLocation);
       }
     }
 
-    this.formValues.products[selectedTabIndex].allowedLocations = _.cloneDeep(newAllowedLocations);
+    this.formValues.products[selectedTabIndex].allowedLocations = _.cloneDeep(
+      newAllowedLocations
+    );
   }
 
   setAllowedProducts(selectedTabIndex) {
     this.selectedProductList = _.cloneDeep(this.productMasterList);
     let contractProduct = this.formValues.products[selectedTabIndex];
-    if (contractProduct.allowedProducts && contractProduct.allowedProducts.length) {
+    if (
+      contractProduct.allowedProducts &&
+      contractProduct.allowedProducts.length
+    ) {
       for (let i = 0; i < contractProduct.allowedProducts.length; i++) {
         let allowedProduct = contractProduct.allowedProducts[i];
-        let findIndexOfProductInProductList = _.findIndex(this.selectedProductList, function(obj) {
-          return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
-        });
+        let findIndexOfProductInProductList = _.findIndex(
+          this.selectedProductList,
+          function(obj) {
+            return (
+              obj.id == allowedProduct.id && obj.name == allowedProduct.name
+            );
+          }
+        );
         if (findIndexOfProductInProductList != -1) {
-          this.selectedProductList[findIndexOfProductInProductList].isSelected = true;
+          this.selectedProductList[
+            findIndexOfProductInProductList
+          ].isSelected = true;
         }
       }
     }
@@ -854,29 +910,41 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     console.log(this.selectedProductList);
   }
 
-
-  saveAllowedProducts(selectedTabIndex){
+  saveAllowedProducts(selectedTabIndex) {
     let newAllowedProducts = [];
     let allowedProducts = this.selectedProductList;
     for (let i = 0; i < allowedProducts.length; i++) {
       if (allowedProducts[i].isSelected) {
         let allowedProduct = {
-          'id': allowedProducts[i].id,
-          'name': allowedProducts[i].name
-        }
+          id: allowedProducts[i].id,
+          name: allowedProducts[i].name
+        };
         newAllowedProducts.push(allowedProduct);
       }
     }
 
-    let previousAllowedProducts = _.cloneDeep(this.formValues.products[selectedTabIndex].allowedProducts);
-    this.formValues.products[selectedTabIndex].allowedProducts = _.cloneDeep(newAllowedProducts);
+    let previousAllowedProducts = _.cloneDeep(
+      this.formValues.products[selectedTabIndex].allowedProducts
+    );
+    this.formValues.products[selectedTabIndex].allowedProducts = _.cloneDeep(
+      newAllowedProducts
+    );
 
     //check new  allowed products added
-    for (let i = 0; i < this.formValues.products[selectedTabIndex].allowedProducts.length; i++) {
-      let allowedProduct = { ... this.formValues.products[selectedTabIndex].allowedProducts[i]}
-      let findProductIfExistsInPreviousAllowedProducts = _.find(previousAllowedProducts, function(obj) {
-        return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
-      });
+    for (
+      let i = 0;
+      i < this.formValues.products[selectedTabIndex].allowedProducts.length;
+      i++
+    ) {
+      let allowedProduct = {
+        ...this.formValues.products[selectedTabIndex].allowedProducts[i]
+      };
+      let findProductIfExistsInPreviousAllowedProducts = _.find(
+        previousAllowedProducts,
+        function(obj) {
+          return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
+        }
+      );
       //new allowed product added
       if (!findProductIfExistsInPreviousAllowedProducts) {
         this.addProductToConversion(selectedTabIndex, allowedProduct, false);
@@ -885,19 +953,21 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
     //check allowed products removed
     for (let i = 0; i < previousAllowedProducts.length; i++) {
-      let previousAllowedProduct = { ... previousAllowedProducts[i]}
-      let findProductIfExistsInAllowedProducts = _.find(this.formValues.products[selectedTabIndex].allowedProducts, function(obj) {
-        return obj.id == previousAllowedProduct.id && obj.name == previousAllowedProduct.name;
-      });
+      let previousAllowedProduct = { ...previousAllowedProducts[i] };
+      let findProductIfExistsInAllowedProducts = _.find(
+        this.formValues.products[selectedTabIndex].allowedProducts,
+        function(obj) {
+          return (
+            obj.id == previousAllowedProduct.id &&
+            obj.name == previousAllowedProduct.name
+          );
+        }
+      );
       //product was removed from allowed product
       if (!findProductIfExistsInAllowedProducts) {
         this.addProductToConversion(selectedTabIndex, null, false);
       }
-  }
-
-
-
-
+    }
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -906,7 +976,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   onChange($event, field) {
     if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment($event.value).format(
+        'YYYY-MM-DDTHH:mm:ss'
+      )}+00:00`;
       if (field == 'dealDate') {
         this.isDealDateInvalid = false;
       }
@@ -917,13 +989,12 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       }
       this.toastr.error('Please enter the correct format');
     }
-
   }
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
     }
@@ -933,13 +1004,22 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     return product && product.name ? product.name : '';
   }
 
-
   filterPhysicalSupplierList() {
     if (this.formValues.products[this.selectedTabIndex].physicalSupplier) {
-      const filterValue = this.formValues.products[this.selectedTabIndex].physicalSupplier.name ? this.formValues.products[this.selectedTabIndex].physicalSupplier.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSupplier.toLowerCase();
+      const filterValue = this.formValues.products[this.selectedTabIndex]
+        .physicalSupplier.name
+        ? this.formValues.products[
+            this.selectedTabIndex
+          ].physicalSupplier.name.toLowerCase()
+        : this.formValues.products[
+            this.selectedTabIndex
+          ].physicalSupplier.toLowerCase();
       console.log(filterValue);
       if (this.physicalSupplierList) {
-        return this.physicalSupplierList.filter(option => option.name.toLowerCase().includes(filterValue))
+        return this.physicalSupplierList
+          .filter(option =>
+            option.name.toLowerCase().includes(filterValue.trim())
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -949,15 +1029,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
   }
 
-  selectorPhysicalSupplierSelectionChange(
-    selection: IDisplayLookupDto
-  ): void {
+  selectorPhysicalSupplierSelectionChange(selection: IDisplayLookupDto): void {
     if (selection === null || selection === undefined) {
       this.formValues.products[this.selectedTabIndex].physicalSupplier = '';
     } else {
       const obj = {
-        'id': selection.id,
-        'name': selection.name
+        id: selection.id,
+        name: selection.name
       };
       this.formValues.products[this.selectedTabIndex].physicalSupplier = obj;
       this.changeDetectorRef.detectChanges();
@@ -965,61 +1043,55 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
   }
 
-
   getSpecGroupByProduct(productId, additionalSpecGroup) {
     var data = {
-        Payload: {
-            Filters: [
-                {
-                    ColumnName: 'ProductId',
-                    Value: productId
-                }
-            ]
-        }
+      Payload: {
+        Filters: [
+          {
+            ColumnName: 'ProductId',
+            Value: productId
+          }
+        ]
+      }
     };
     if (typeof this.productSpecGroup == 'undefined') {
-        this.productSpecGroup = [];
+      this.productSpecGroup = [];
     }
 
     // if spec group for product exists, do not make call again
     if (typeof this.productSpecGroup[productId] != 'undefined') {
-        return;
+      return;
     }
 
     this.contractService
-    .getSpecGroupGetByProduct(data)
-    .pipe(
-      finalize(() => {
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        console.log(response);
-        if (response) {
-          response  = _.filter(response, function(o) {
-            return o.isDeleted == false;
-          });
-          if (additionalSpecGroup) {
-            var additionalSpecIsInArray = false;
-            response.forEach(function(v, k){
-              if (v.id == additionalSpecGroup.id) {
-                additionalSpecIsInArray = true;
+      .getSpecGroupGetByProduct(data)
+      .pipe(finalize(() => {}))
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          if (response) {
+            response = _.filter(response, function(o) {
+              return o.isDeleted == false;
+            });
+            if (additionalSpecGroup) {
+              var additionalSpecIsInArray = false;
+              response.forEach(function(v, k) {
+                if (v.id == additionalSpecGroup.id) {
+                  additionalSpecIsInArray = true;
+                }
+              });
+              if (!additionalSpecIsInArray) {
+                response.push(additionalSpecGroup);
               }
-            })
-            if (!additionalSpecIsInArray) {
-              response.push(additionalSpecGroup);
             }
+            this.productSpecGroup[productId] = response;
+            this.changeDetectorRef.detectChanges();
           }
-          this.productSpecGroup[productId] = response;
-          this.changeDetectorRef.detectChanges();
         }
-      }
-    });
-
-  };
-
+      });
+  }
 
   openSpecGroupPopUp(product) {
     if (!product.specGroup) {
@@ -1029,22 +1101,22 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.activeProductForSpecGroupEdit = product;
     var productId = product.product.id;
     var data = {
-        Payload: {
-            Filters: [
-                {
-                    ColumnName: 'ContractProductId',
-                    Value: product.id ? product.id : null
-                },
-                {
-                    ColumnName: 'SpecGroupId',
-                    Value: product.specGroup.id
-                },
-                {
-                    ColumnName: 'ProductId',
-                    Value: productId
-                }
-            ]
-        }
+      Payload: {
+        Filters: [
+          {
+            ColumnName: 'ContractProductId',
+            Value: product.id ? product.id : null
+          },
+          {
+            ColumnName: 'SpecGroupId',
+            Value: product.specGroup.id
+          },
+          {
+            ColumnName: 'ProductId',
+            Value: productId
+          }
+        ]
+      }
     };
     if (this.formValues.status) {
       if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
@@ -1054,161 +1126,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
     this.spinner.show();
     this.contractService
-    .getSpecForProcurement(data)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        console.log(response);
-        if (response) {
-          this.modalSpecGroupParameters = response;
-          for (let i = 0; i < this.modalSpecGroupParameters.length; i++) {
-              this.modalSpecGroupParameters[i].specParameter.name = this.decodeSpecificField(this.modalSpecGroupParameters[i].specParameter.name);
-          }
-          const dialogRef = this.dialog.open(ProductSpecGroupModalComponent, {
-            width: '50%',
-            data:  {
-              'modalSpecGroupParameters': this.modalSpecGroupParameters,
-              'modalSpecGroupParametersEditable': this.modalSpecGroupParametersEditable,
-              'specParameterList': this.specParameterList,
-              'activeProductForSpecGroupEdit': this.activeProductForSpecGroupEdit
-            }
-          });
-
-          dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-          });
-        }
-      }
-    });
-
-  }
-
-
-  decodeSpecificField(modelValue) {
-    let decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
-          return String.fromCharCode(dec);
-      });
-    };
-    return decode(_.unescape(modelValue));
-  }
-
-
-
-  setLocationChange(location, index) {
-    console.log(location);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectLocation =  {
-      'id': location.id,
-      'name': location.name
-    }
-    this.selectedLocation = null;
-    this.formValues.products[index].location = { ... objectLocation };
-    this.changeDetectorRef.detectChanges();
-
-  }
-
-
-  setProductChange(product, index) {
-    console.log(product);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectProduct =  {
-      'id': product.id,
-      'name': product.name
-    }
-    this.formValues.products[index].product = { ... objectProduct };
-    this.selectedProduct = null;
-    this.changeDetectorRef.detectChanges();
-    this.addProductToConversion(index, null, true);
-  }
-
-  addProductToConversion(index, allowProduct, isMainProduct) {
-    if (!this.formValues.products[index].conversionFactors) {
-      this.formValues.products[index].conversionFactors = [];
-    }
-    let selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
-    let payload;
-
-    if (isMainProduct) {
-      selectedProduct = this.formValues.products[index];
-      if (this.formValues.products[index].conversionFactors.length) {
-        var allowProducts = this.formValues.products[index].allowedProducts;
-        if (allowProducts.length) {
-          this.formValues.products[index].conversionFactors.forEach((value, key) => {
-            var idIndex = _.findIndex(allowProducts, (o: any) => {
-                return o.id == value.product.id;
-            });
-            if (idIndex == -1) {
-                if (value.id == 0) {
-                    this.formValues.products[index].conversionFactors.splice(key, 1);
-                    return;
-                }
-                this.formValues.products[index].conversionFactors[key].isDeleted = true;
-            }
-          });
-        } else {
-          var indexProduct = this.formValues.products[index].conversionFactors.length - 1;
-          this.formValues.products[index].conversionFactors[indexProduct].isDeleted = true;
-        }
-      }
-    } else if (allowProduct != null) {
-      selectedProduct = { product: allowProduct };
-    } else if (allowProduct == null) {
-        var allowProducts = this.formValues.products[index].allowedProducts;
-        if (allowProducts.length) {
-          this.formValues.products[index].conversionFactors.forEach((value, key) => {
-            if (value.product.id != this.formValues.products[index].product.id) {
-              var idIndex = _.findIndex(allowProducts, (o : any) => {
-                  return o.id == value.product.id;
-              });
-              if (idIndex == -1) {
-                  indexDeleted = key;
-                  if (value.id == 0) {
-                      this.formValues.products[index].conversionFactors.splice(indexDeleted, 1);
-                      return;
-                  }
-                  this.formValues.products[index].conversionFactors[indexDeleted].isDeleted = true;
-              }
-            }
-          });
-        } else {
-          this.formValues.products[index].conversionFactors.forEach((value, key) => {
-            if (value.product.id != this.formValues.products[index].product.id && !value.isDeleted) {
-                if (value.id == 0) {
-                    this.formValues.products[index].conversionFactors.splice(key, 1);
-                    return;
-                }
-                this.formValues.products[index].conversionFactors[key].isDeleted = true;
-            }
-          });
-        }
-    }
-    if (this.formValues.products[index].conversionFactors) {
-      if (selectedProduct) {
-        let indexProduct = _.findLastIndex(this.formValues.products[index].conversionFactors, (o: any) => {
-          return o.product.id == selectedProduct.product.id;
-        });
-        if (indexProduct != -1) {
-            if (!this.formValues.products[index].conversionFactors[indexProduct].isDeleted) {
-              this.toastr.error('Product is already added');
-              isAlreadyAdded = 1;
-            }
-        }
-      }
-    }
-    if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
-      payload = {Payload: { ProductId: selectedProduct.product.id} };
-      this.spinner.show();
-      this.contractService
-      .getProdDefaultConversionFactors(payload)
+      .getSpecForProcurement(data)
       .pipe(
         finalize(() => {
           this.spinner.hide();
@@ -1219,41 +1137,236 @@ export class ProductDetails extends DeliveryAutocompleteComponent
           this.toastr.error(response);
         } else {
           console.log(response);
-          let contractConversionFactor = {
-            id: 3,
-            name: "Standard (Product)"
+          if (response) {
+            this.modalSpecGroupParameters = response;
+            for (let i = 0; i < this.modalSpecGroupParameters.length; i++) {
+              this.modalSpecGroupParameters[
+                i
+              ].specParameter.name = this.decodeSpecificField(
+                this.modalSpecGroupParameters[i].specParameter.name
+              );
+            }
+            const dialogRef = this.dialog.open(ProductSpecGroupModalComponent, {
+              width: '50%',
+              data: {
+                modalSpecGroupParameters: this.modalSpecGroupParameters,
+                modalSpecGroupParametersEditable: this
+                  .modalSpecGroupParametersEditable,
+                specParameterList: this.specParameterList,
+                activeProductForSpecGroupEdit: this
+                  .activeProductForSpecGroupEdit
+              }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+            });
           }
-          let object = {
+        }
+      });
+  }
+
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
+
+  setLocationChange(location, index) {
+    console.log(location);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectLocation = {
+      id: location.id,
+      name: location.name
+    };
+    this.selectedLocation = null;
+    this.formValues.products[index].location = { ...objectLocation };
+    this.changeDetectorRef.detectChanges();
+  }
+
+  setProductChange(product, index) {
+    console.log(product);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectProduct = {
+      id: product.id,
+      name: product.name
+    };
+    this.formValues.products[index].product = { ...objectProduct };
+    this.selectedProduct = null;
+    this.changeDetectorRef.detectChanges();
+    this.addProductToConversion(index, null, true);
+  }
+
+  addProductToConversion(index, allowProduct, isMainProduct) {
+    if (!this.formValues.products[index].conversionFactors) {
+      this.formValues.products[index].conversionFactors = [];
+    }
+    let selectedProduct,
+      isAlreadyAdded = 0,
+      indexDeleted = -1;
+    let payload;
+
+    if (isMainProduct) {
+      selectedProduct = this.formValues.products[index];
+      if (this.formValues.products[index].conversionFactors.length) {
+        var allowProducts = this.formValues.products[index].allowedProducts;
+        if (allowProducts.length) {
+          this.formValues.products[index].conversionFactors.forEach(
+            (value, key) => {
+              var idIndex = _.findIndex(allowProducts, (o: any) => {
+                return o.id == value.product.id;
+              });
+              if (idIndex == -1) {
+                if (value.id == 0) {
+                  this.formValues.products[index].conversionFactors.splice(
+                    key,
+                    1
+                  );
+                  return;
+                }
+                this.formValues.products[index].conversionFactors[
+                  key
+                ].isDeleted = true;
+              }
+            }
+          );
+        } else {
+          var indexProduct =
+            this.formValues.products[index].conversionFactors.length - 1;
+          this.formValues.products[index].conversionFactors[
+            indexProduct
+          ].isDeleted = true;
+        }
+      }
+    } else if (allowProduct != null) {
+      selectedProduct = { product: allowProduct };
+    } else if (allowProduct == null) {
+      var allowProducts = this.formValues.products[index].allowedProducts;
+      if (allowProducts.length) {
+        this.formValues.products[index].conversionFactors.forEach(
+          (value, key) => {
+            if (
+              value.product.id != this.formValues.products[index].product.id
+            ) {
+              var idIndex = _.findIndex(allowProducts, (o: any) => {
+                return o.id == value.product.id;
+              });
+              if (idIndex == -1) {
+                indexDeleted = key;
+                if (value.id == 0) {
+                  this.formValues.products[index].conversionFactors.splice(
+                    indexDeleted,
+                    1
+                  );
+                  return;
+                }
+                this.formValues.products[index].conversionFactors[
+                  indexDeleted
+                ].isDeleted = true;
+              }
+            }
+          }
+        );
+      } else {
+        this.formValues.products[index].conversionFactors.forEach(
+          (value, key) => {
+            if (
+              value.product.id != this.formValues.products[index].product.id &&
+              !value.isDeleted
+            ) {
+              if (value.id == 0) {
+                this.formValues.products[index].conversionFactors.splice(
+                  key,
+                  1
+                );
+                return;
+              }
+              this.formValues.products[index].conversionFactors[
+                key
+              ].isDeleted = true;
+            }
+          }
+        );
+      }
+    }
+    if (this.formValues.products[index].conversionFactors) {
+      if (selectedProduct) {
+        let indexProduct = _.findLastIndex(
+          this.formValues.products[index].conversionFactors,
+          (o: any) => {
+            return o.product.id == selectedProduct.product.id;
+          }
+        );
+        if (indexProduct != -1) {
+          if (
+            !this.formValues.products[index].conversionFactors[indexProduct]
+              .isDeleted
+          ) {
+            this.toastr.error('Product is already added');
+            isAlreadyAdded = 1;
+          }
+        }
+      }
+    }
+    if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
+      payload = { Payload: { ProductId: selectedProduct.product.id } };
+      this.spinner.show();
+      this.contractService
+        .getProdDefaultConversionFactors(payload)
+        .pipe(
+          finalize(() => {
+            this.spinner.hide();
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            console.log(response);
+            let contractConversionFactor = {
+              id: 3,
+              name: 'Standard (Product)'
+            };
+            let object = {
               id: 0,
-              product : selectedProduct.product,
+              product: selectedProduct.product,
               value: response.value,
               massUom: response.massUom,
               volumeUom: response.volumeUom,
               contractConversionFactorOptions: contractConversionFactor
-          };
-          this.formValues.products[index].conversionFactors.push(object);
-          this.changeDetectorRef.detectChanges();
-        }
-      });
-
-
+            };
+            this.formValues.products[index].conversionFactors.push(object);
+            this.changeDetectorRef.detectChanges();
+          }
+        });
     }
-
-
   }
 
   saveConversionFactors(conversionFactors, conversionFactorsDropdown) {
-    if (conversionFactorsDropdown && (conversionFactors.contractConversionFactorOptions.id == 3 || conversionFactors.contractConversionFactorOptions.id == 4)) {
+    if (
+      conversionFactorsDropdown &&
+      (conversionFactors.contractConversionFactorOptions.id == 3 ||
+        conversionFactors.contractConversionFactorOptions.id == 4)
+    ) {
       let payload = {};
       if (conversionFactors.contractConversionFactorOptions.id == 4) {
         let product = this.formValues.products[this.selectedTabIndex];
         if (product.fixedPrice) {
-          this.toastr.warning("Please select formula for using system instrument conversion");
+          this.toastr.warning(
+            'Please select formula for using system instrument conversion'
+          );
           return;
         }
         if (product.isFormula) {
           if (!(product.formula && product.formula.id)) {
-            this.toastr.warning("Please select formula for using system instrument conversion");
+            this.toastr.warning(
+              'Please select formula for using system instrument conversion'
+            );
             return;
           }
 
@@ -1267,59 +1380,65 @@ export class ProductDetails extends DeliveryAutocompleteComponent
           }
         }
       } else {
-        payload = {Payload: { ProductId: conversionFactors.product.id } };
+        payload = { Payload: { ProductId: conversionFactors.product.id } };
       }
       this.openedScreenLoaders += 1;
       this.spinner.show();
       this.contractService
-      .getProdDefaultConversionFactors(payload)
-      .pipe(
-        finalize(() => {
-          this.openedScreenLoaders -= 1;
-          if (!this.openedScreenLoaders) {
+        .getProdDefaultConversionFactors(payload)
+        .pipe(
+          finalize(() => {
+            this.openedScreenLoaders -= 1;
+            if (!this.openedScreenLoaders) {
+              this.spinner.hide();
+            }
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
             this.spinner.hide();
-          }
-        })
-      )
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-          this.spinner.hide();
-        } else {
-          console.log(response);
-          if (response) {
-            conversionFactors.value = response.value;
-            conversionFactors.massUom = response.massUom;
-            conversionFactors.volumeUom = response.volumeUom;
-            if (conversionFactors.contractProductId) {
-              let conversionFactorsList = [];
-              conversionFactorsList.push(conversionFactors);
-              payload = { Payload: conversionFactorsList };
-              this.openedScreenLoaders += 1;
-              this.contractService
-                .saveConversionFactorsForContractProduct(payload)
-                .pipe(
-                  finalize(() => {
-                    this.openedScreenLoaders -= 1;
-                    if (!this.openedScreenLoaders) {
-                      this.spinner.hide();
+          } else {
+            console.log(response);
+            if (response) {
+              conversionFactors.value = response.value;
+              conversionFactors.massUom = response.massUom;
+              conversionFactors.volumeUom = response.volumeUom;
+              if (conversionFactors.contractProductId) {
+                let conversionFactorsList = [];
+                conversionFactorsList.push(conversionFactors);
+                payload = { Payload: conversionFactorsList };
+                this.openedScreenLoaders += 1;
+                this.contractService
+                  .saveConversionFactorsForContractProduct(payload)
+                  .pipe(
+                    finalize(() => {
+                      this.openedScreenLoaders -= 1;
+                      if (!this.openedScreenLoaders) {
+                        this.spinner.hide();
+                      }
+                    })
+                  )
+                  .subscribe((response: any) => {
+                    if (typeof response == 'string') {
+                      this.toastr.error(response);
+                    } else if (response) {
+                      let res = response[0];
+                      this.formValues.products[
+                        this.selectedTabIndex
+                      ].convFactorMassUom = res.massUom;
+                      this.formValues.products[
+                        this.selectedTabIndex
+                      ].convFactorValue = res.value;
+                      this.formValues.products[
+                        this.selectedTabIndex
+                      ].convFactorVolumeUom = res.volumeUom;
                     }
-                  })
-                )
-                .subscribe((response: any) => {
-                  if (typeof response == 'string') {
-                    this.toastr.error(response);
-                  } else if (response) {
-                    let res = response[0];
-                    this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
-                    this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
-                    this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
-                  }
-                });
+                  });
+              }
             }
           }
-        }
-      });
+        });
     } else {
       if (conversionFactors.contractProductId) {
         let conversionFactorsList = [];
@@ -1338,12 +1457,17 @@ export class ProductDetails extends DeliveryAutocompleteComponent
               this.toastr.error(response);
             } else if (response) {
               let res = response[0];
-              this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
-              this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
-              this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+              this.formValues.products[
+                this.selectedTabIndex
+              ].convFactorMassUom = res.massUom;
+              this.formValues.products[this.selectedTabIndex].convFactorValue =
+                res.value;
+              this.formValues.products[
+                this.selectedTabIndex
+              ].convFactorVolumeUom = res.volumeUom;
             }
           });
-    }
+      }
     }
   }
 
@@ -1351,17 +1475,12 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     document.getElementsByTagName('body')[0].click();
   }
 
-
-
-
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => {
     return 0;
-  }
+  };
 
-
-
-  ngAfterViewInit(): void {
-
-  }
+  ngAfterViewInit(): void {}
 }
-

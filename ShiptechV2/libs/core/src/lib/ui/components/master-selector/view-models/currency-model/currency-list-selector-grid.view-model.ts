@@ -32,10 +32,12 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { CurrencyListColumns, CurrencyListColumnServerKeys, CurrencyListColumnsLabels } from './currency-list.columns';
+import {
+  CurrencyListColumns,
+  CurrencyListColumnServerKeys,
+  CurrencyListColumnsLabels
+} from './currency-list.columns';
 import { ICurrencyListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-
-
 
 function model(prop: keyof ICurrencyListDto): keyof ICurrencyListDto {
   return prop;
@@ -124,7 +126,6 @@ export class CurrencyListSelectorGridViewModel extends BaseGridViewModel {
     flex: 1
   };
 
-
   nameCol: ITypedColDef<ICurrencyListDto, string> = {
     headerName: CurrencyListColumnsLabels.name,
     colId: CurrencyListColumns.name,
@@ -193,7 +194,6 @@ export class CurrencyListSelectorGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -227,7 +227,7 @@ export class CurrencyListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 

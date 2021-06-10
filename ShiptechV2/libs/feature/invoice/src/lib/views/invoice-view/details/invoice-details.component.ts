@@ -2968,7 +2968,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (this.companyList) {
         const list = this.companyList
           .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
+            return item.name
+              .toLowerCase()
+              .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
         // console.log(list);
@@ -3012,7 +3014,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (this.companyList) {
         const list = this.companyList
           .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
+            return item.name
+              .toLowerCase()
+              .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
         // console.log(list);
@@ -3087,7 +3091,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (this.customerList) {
         const list = this.customerList
           .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
+            return item.name
+              .toLowerCase()
+              .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
         // console.log(list);
@@ -3162,7 +3168,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (this.paybleToList) {
         const list = this.paybleToList
           .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
+            return item.name
+              .toLowerCase()
+              .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
         // console.log(list);

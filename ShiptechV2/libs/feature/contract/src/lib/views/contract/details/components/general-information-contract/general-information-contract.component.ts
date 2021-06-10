@@ -807,7 +807,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       if (this.sellerList) {
         const list = this.sellerList
           .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
+            return item.name
+              .toLowerCase()
+              .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
         console.log(list);
@@ -829,7 +831,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       if (this.companyList) {
         const list = this.companyList
           .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
+            return item.name
+              .toLowerCase()
+              .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
         console.log(list);

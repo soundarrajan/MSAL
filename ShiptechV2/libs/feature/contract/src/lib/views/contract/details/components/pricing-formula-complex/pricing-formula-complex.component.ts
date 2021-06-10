@@ -463,7 +463,8 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       if (this.currencyList) {
         return this.currencyList
           .filter(
-            option => option.name.toLowerCase().indexOf(filterValue) === 0
+            option =>
+              option.name.toLowerCase().indexOf(filterValue.trim()) === 0
           )
           .slice(0, 10);
       } else {
@@ -592,7 +593,8 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       if (this.systemInstumentList) {
         return this.systemInstumentList
           .filter(
-            option => option.name.toLowerCase().indexOf(filterValue) === 0
+            option =>
+              option.name.toLowerCase().indexOf(filterValue.trim()) === 0
           )
           .slice(0, 10);
       } else {
