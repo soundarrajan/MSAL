@@ -1,11 +1,11 @@
-﻿commit abca253275b8c02e935e1346e19a523d34394141
+﻿commit 7c939667edb74d242a4699ff93ebb112ea0dfd33
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jun 10 20:28:38 2021 +0000
+Date:   Thu Jun 10 21:37:51 2021 +0000
 
-    Merged PR 11412: #29775 : Port details: View Agents information => styles fix.
+    Merged PR 11413: #32910 : Click on a (vessel) row to view vessel bunkering plan bug fix.
     
-    #29775 : Port details: View Agents information => styles fix.
+    #32910 : Click on a (vessel) row to view vessel bunkering plan bug fix.
     
-    Related work items: #29775
+    Related work items: #32910
 
 branch: master
