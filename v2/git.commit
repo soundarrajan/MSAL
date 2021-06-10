@@ -1,9 +1,9 @@
-﻿commit 94c7361b42d9666b19110ee3490a32f89e3751fb
+﻿commit 05aab7722af55e6d2a2ec394e0619764ba3e17c8
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jun 10 08:32:48 2021 +0000
+Date:   Thu Jun 10 10:31:01 2021 +0000
 
-    Merged PR 11387: Added trim function in all lookup fields
+    Merged PR 11392: Fixed delete behavior in contract screen
     
-    Added trim function in all lookup fields
+    Fixed delete behavior in contract screen
 
 branch: master
