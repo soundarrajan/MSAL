@@ -1,9 +1,7 @@
-﻿commit 05aab7722af55e6d2a2ec394e0619764ba3e17c8
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jun 10 10:31:01 2021 +0000
+﻿commit bdfe1201a78cafcff3525c0addb578424868e2a5
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Thu Jun 10 16:25:51 2021 +0530
 
-    Merged PR 11392: Fixed delete behavior in contract screen
-    
-    Fixed delete behavior in contract screen
+    New invoice screen - add transaction deliveries to existing invoice and 0 formatting issue fix for summary chip. #33064
 
 branch: master
