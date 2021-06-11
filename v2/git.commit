@@ -1,11 +1,11 @@
-﻿commit fde5369a10200137d8494b23db8b8c5f9af0edfe
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Jun 11 11:37:02 2021 +0000
+﻿commit 9438c906c569b70f46fa610904a1505f5a46e569
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Jun 11 14:34:06 2021 +0000
 
-    Merged PR 11452: #29658 : Vessel Basic Info
+    Merged PR 11466: Fix price precision in Est Rate in invoice
     
-    #29658 : Vessel Basic Info
+    Fix price precision in Est Rate in invoice
     
-    Related work items: #29658
+    Related work items: #32433
 
 branch: master
