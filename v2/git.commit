@@ -1,9 +1,11 @@
-﻿commit 65f00c07ff0492b49c409b6c8dd2be727fa05162
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Jun 11 08:50:00 2021 +0000
+﻿commit 542dd886ade6264f4c76dd6ae385222ffb5ce766
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Fri Jun 11 09:34:15 2021 +0000
 
-    Merged PR 11431: Fixed approved action from pdf split view
+    Merged PR 11432: fix
     
-    Fixed approved action from pdf split view
+    fix
+    
+    Related work items: #31899, #32723, #33143
 
 branch: master
