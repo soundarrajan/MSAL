@@ -479,9 +479,9 @@
                 <td wclass="padding" style="width:40%">
                     <div class="custom-form-field sample-details-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                         <mat-form-field class="without-search" appearance="legacy">
-                          <input  
+                          <input
                               [(ngModel)]="sampleDetail.value.sealNumber"
-                              matInput 
+                              matInput
                               (keypress)="keyPressAlphaNumeric($event)"
                               [disabled]="formValues.deliveryStatus.name == 'Verified'"
                               autocomplete="off">
@@ -564,7 +564,7 @@
                       matInput
                       (keypress)="keyPressAlphaNumeric($event)"
                       [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      placeholder="Value"
+                      [placeholder]="sampleDetail.value.sealNumber ? '' : 'Value'"
                       autocomplete="off"
                     />
                   </mat-form-field>
@@ -612,9 +612,9 @@
                 <td wclass="padding" style="width:40%">
                     <div class="custom-form-field sample-details-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                         <mat-form-field class="without-search" appearance="legacy">
-                          <input  
+                          <input
                               [(ngModel)]="sampleDetail.value.sealNumber"
-                              matInput 
+                              matInput
                               (keypress)="keyPressAlphaNumeric($event)"
                               [disabled]="formValues.deliveryStatus.name == 'Verified'"
                               autocomplete="off">

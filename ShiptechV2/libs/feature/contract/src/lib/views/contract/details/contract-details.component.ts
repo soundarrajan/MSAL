@@ -220,7 +220,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.formValues = data.contract;
         if (this.entityId) {
           this.titleService.setTitle('Contract' + ' - ' + this.formValues.name);
-        } 
+        }
         if (typeof this.formValues.status != 'undefined') {
           if (this.formValues.status.name) {
               this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
@@ -293,7 +293,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.changeDetectorRef.detectChanges();
       }
 
-      
+
       console.log(this.staticLists);
     });
   }
@@ -320,7 +320,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
     console.log(this.companyList);
 
-    
+
   }
 
 
@@ -428,22 +428,124 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     return parseFloat(numberToReturn);
   }
 
+
+
+  showFormErrors() {
+
+    let message = 'Please fill in required fields:';
+    if (!this.formValues.name) {
+      message += ' Name,';
+    }
+    if (!this.formValues.seller || (this.formValues.seller && !this.formValues.seller.name)) {
+      message += ' Seller,';
+    }
+    if (!this.formValues.company) {
+      message += ' Company,';
+    }
+    if (this.contractConfiguration && this.contractConfiguration.agreementTypeDisplay.id == 1) {
+      if (!this.formValues.agreementType) {
+        message += ' Agreement Type,';
+      }
+    }
+    if (!this.formValues.incoterm) {
+      message += ' Delivery Term,';
+    }
+    if (!this.formValues.validFrom) {
+      message += ' Start Date,';
+    }
+    if (!this.formValues.validTo && !this.formValues.evergreen) {
+      message += ' End Date,';
+    }
+
+    this.buttonClicked = true;
+    this.eventsSubject2.next(this.buttonClicked);
+
+    if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message =  message.substring(0,  message.length - 1);
+      }
+      this.toastr.error(message);
+      return;
+    }
+    let additionalCost = [];
+    let additionalCostRequired = [];
+    for (let i = 0; i < this.formValues.products.length; i++) {
+        for (let j = 0; j < this.formValues.products[i].additionalCosts.length; j++) {
+            if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
+                let amount = parseInt(this.formValues.products[i].additionalCosts[j].amount);
+                if (amount < 0 && !this.formValues.products[i].additionalCosts[j].isAllowingNegativeAmmount) {
+                    additionalCost.push(this.formValues.products[i].additionalCosts[j].additionalCost.name);
+                }
+                if (!this.formValues.products[i].additionalCosts[j].additionalCost) {
+                  additionalCostRequired.push('Item Name');
+                }
+                if (!this.formValues.products[i].additionalCosts[j].costType) {
+                  additionalCostRequired.push('Type');
+                }
+                if (this.formValues.products[i].additionalCosts[j].costType && this.formValues.products[i].additionalCosts[j].costType.id != 4 && this.formValues.products[i].additionalCosts[j].costType.id != 5) {
+                  if (!this.formValues.products[i].additionalCosts[j].amount) {
+                    additionalCostRequired.push('Amount');
+                  }
+                }
+            }
+        }
+    }
+
+    additionalCostRequired =_.uniq(additionalCostRequired);
+    let additionalCostRequiredString = '';
+    for (let i = 0; i < additionalCostRequired.length; i++) {
+      additionalCostRequiredString += additionalCostRequired[i] + ',';
+    }
+    if (additionalCostRequiredString[additionalCostRequiredString.length - 1] == ',') {
+      additionalCostRequiredString =  additionalCostRequiredString.substring(0,  additionalCostRequiredString.length - 1);
+    }
+
+    if (additionalCostRequiredString != ''  && additionalCostRequired.length > 1) {
+      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+      return;
+    }
+    if (additionalCostRequiredString != '' && additionalCostRequired.length == 1) {
+      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+      return;
+    }
+
+    additionalCost = _.uniq(additionalCost);
+    let additionalCostString = '';
+    for (let i = 0; i < additionalCost.length; i++) {
+      additionalCostString += additionalCost[i] + ',';
+    }
+    if (additionalCostString[additionalCostString.length - 1] == ',') {
+      additionalCostString =  additionalCostString.substring(0,  additionalCostString.length - 1);
+    }
+    if (additionalCostString != ''  && additionalCost.length > 1) {
+      this.toastr.warning('The additional costs ' + additionalCostString + ' does not allow negative amounts!');
+      return;
+    }
+    if (additionalCostString != '' && additionalCost.length == 1) {
+      this.toastr.warning('The additional cost ' + additionalCostString + ' does not allow negative amounts!');
+      return;
+    }
+  }
   saveContract() {
     let hasTotalContractualQuantity = false;
+
+    this.showFormErrors();
+
     if (!this.formValues.products) {
       this.toastr.error('You must add at least one product in the contract');
       return;
     }
 
+
+
     let notValidConversionFactor = false;
     for (let i = 0; i < this.formValues.products.length; i++) {
-      console.log(this.formValues.products[i]);
       let conversionFactorForProduct = this.formValues.products[i].conversionFactors;
       if (conversionFactorForProduct && conversionFactorForProduct.length) {
         let findSystemInstrumentOption = _.find(conversionFactorForProduct, function(object) {
           return object.contractConversionFactorOptions.id == 4;
         });
-        
+
         if (findSystemInstrumentOption) {
           if (this.formValues.products[i].fixedPrice || (this.formValues.products[i].isFormula && (!(this.formValues.products[i].formula && this.formValues.products[i].formula.id)))){
             console.log(findSystemInstrumentOption);
@@ -512,99 +614,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     }
 
 
-    let message = 'Please fill in required fields:';
-    if (!this.formValues.name) {
-      message += ' Name,';
-    }
-    if (!this.formValues.seller || (this.formValues.seller && !this.formValues.seller.name)) {
-      message += ' Seller,';
-    }
-    if (!this.formValues.company) {
-      message += ' Company,';
-    }
-    if (this.contractConfiguration && this.contractConfiguration.agreementTypeDisplay.id == 1) {
-      if (!this.formValues.agreementType) {
-        message += ' Agreement Type,';
-      }
-    }
-    if (!this.formValues.incoterm) {
-      message += ' Delivery Term,';
-    }
-    if (!this.formValues.validFrom) {
-      message += ' Start Date,';
-    }
-    if (!this.formValues.validTo && !this.formValues.evergreen) {
-      message += ' End Date,';
-    }
-
-    this.buttonClicked = true;
-    this.eventsSubject2.next(this.buttonClicked);
-
-    if (message != 'Please fill in required fields:') {
-      if (message[message.length - 1] == ',') {
-        message =  message.substring(0,  message.length - 1);
-      }
-      this.toastr.error(message);
-      return;
-    }
-    let additionalCost = [];
-    let additionalCostRequired = [];
-    for (let i = 0; i < this.formValues.products.length; i++) {
-        for (let j = 0; j < this.formValues.products[i].additionalCosts.length; j++) {
-            if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
-                let amount = parseInt(this.formValues.products[i].additionalCosts[j].amount);
-                if (amount < 0 && !this.formValues.products[i].additionalCosts[j].isAllowingNegativeAmmount) {
-                    additionalCost.push(this.formValues.products[i].additionalCosts[j].additionalCost.name);
-                }
-                if (!this.formValues.products[i].additionalCosts[j].additionalCost) {
-                  additionalCostRequired.push('Item Name');
-                } 
-                if (!this.formValues.products[i].additionalCosts[j].costType) {
-                  additionalCostRequired.push('Type');
-                } 
-                if (this.formValues.products[i].additionalCosts[j].costType && this.formValues.products[i].additionalCosts[j].costType.id != 4 && this.formValues.products[i].additionalCosts[j].costType.id != 5) {
-                  if (!this.formValues.products[i].additionalCosts[j].amount) {
-                    additionalCostRequired.push('Amount');
-                  }
-                }
-            }
-        }
-    }
-
-    additionalCostRequired =_.uniq(additionalCostRequired);
-    let additionalCostRequiredString = '';
-    for (let i = 0; i < additionalCostRequired.length; i++) {
-      additionalCostRequiredString += additionalCostRequired[i] + ',';
-    }
-    if (additionalCostRequiredString[additionalCostRequiredString.length - 1] == ',') {
-      additionalCostRequiredString =  additionalCostRequiredString.substring(0,  additionalCostRequiredString.length - 1);
-    }
-
-    if (additionalCostRequiredString != ''  && additionalCostRequired.length > 1) {
-      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
-      return;
-    }
-    if (additionalCostRequiredString != '' && additionalCostRequired.length == 1) {
-      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
-      return;
-    }
-
-    additionalCost = _.uniq(additionalCost);
-    let additionalCostString = '';
-    for (let i = 0; i < additionalCost.length; i++) {
-      additionalCostString += additionalCost[i] + ',';
-    }
-    if (additionalCostString[additionalCostString.length - 1] == ',') {
-      additionalCostString =  additionalCostString.substring(0,  additionalCostString.length - 1);
-    }
-    if (additionalCostString != ''  && additionalCost.length > 1) {
-      this.toastr.warning('The additional costs ' + additionalCostString + ' does not allow negative amounts!');
-      return;
-    }
-    if (additionalCostString != '' && additionalCost.length == 1) {
-      this.toastr.warning('The additional cost ' + additionalCostString + ' does not allow negative amounts!');
-      return;
-    }
 
     let id = this.entityId;
     this.entityCopied = false;
@@ -871,5 +880,5 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   }
 
-  
+
 }

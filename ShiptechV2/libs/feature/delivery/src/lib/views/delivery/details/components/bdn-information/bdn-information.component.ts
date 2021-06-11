@@ -634,6 +634,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return;
     }
     this.formValues = form;
+
     if (this.formValues.barge) {
       this.bargeId = this.formValues.barge.id;
     }
