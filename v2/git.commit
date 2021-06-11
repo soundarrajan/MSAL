@@ -1,11 +1,11 @@
-﻿commit 542dd886ade6264f4c76dd6ae385222ffb5ce766
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Fri Jun 11 09:34:15 2021 +0000
+﻿commit 41e73814e5a6044ce63234800e320e9f6d9309fd
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Jun 11 10:40:47 2021 +0000
 
-    Merged PR 11432: fix
+    Merged PR 11441: changed invoice validation date mapping
     
-    fix
+    changed invoice validation date mapping
     
-    Related work items: #31899, #32723, #33143
+    Related work items: #33050
 
 branch: master

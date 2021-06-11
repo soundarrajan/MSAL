@@ -409,15 +409,15 @@
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Validation Date</mat-label>
                   <input
-                    [(ngModel)]="formValues.accountancyDate"
-                    name="accountancyDate"
+                    [(ngModel)]="formValues.approvedDate"
+                    name="approvedDate"
                     #validToDateField="ngModel"
                     matInput
                     [matDatepicker]="validationDate"
                     (focus)="validationDate.open()"
                     autocomplete="off"
                     placeholder="Validation Date"
-                    (dateChange)="formatDateForBe(formValues.accountancyDate)"
+                    (dateChange)="formatDateForBe(formValues.approvedDate)"
                   />
                   <mat-datepicker-toggle matSuffix [for]="validationDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
