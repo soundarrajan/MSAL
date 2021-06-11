@@ -1,9 +1,11 @@
-﻿commit 8d9d4a4fc5ece0c05ec66d043e21955c257dff7c
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Jun 11 11:00:14 2021 +0000
+﻿commit fde5369a10200137d8494b23db8b8c5f9af0edfe
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri Jun 11 11:37:02 2021 +0000
 
-    Merged PR 11444: Fixed counterpartyBankAccount error
+    Merged PR 11452: #29658 : Vessel Basic Info
     
-    Fixed counterpartyBankAccount error
+    #29658 : Vessel Basic Info
+    
+    Related work items: #29658
 
 branch: master
