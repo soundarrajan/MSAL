@@ -7,6 +7,8 @@ import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { LocalService } from '../../services/local-service.service';
 import { LoggerService } from '../../services/logger.service';
 import { ActivatedRoute } from '@angular/router';
+import { VesselPopupService } from '../../services/vessel-popup.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-vessel-popup',
@@ -23,10 +25,13 @@ export class VesselPopupComponent implements OnInit {
   public changeLog;
   public menuData;
   public theme:boolean = true;
+  public shiptechUrl : string = '';
   FutureRequest: any = [];
-  public baseOrigin: string = '';
   scheduleDashboardLabelConfiguration: any;
-  constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService) { }
+ 
+  constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService : VesselPopupService) { 
+    this.shiptechUrl =  new URL(window.location.href).origin;
+  }
   @Input() status: string = "standard-view";
   @Input('vesselData') popup_data;
   @Output() showBPlan = new EventEmitter();
@@ -42,8 +47,8 @@ export class VesselPopupComponent implements OnInit {
       console.log(data);
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
     });
+    this.loadVesselBasicInfo(this.popup_data.vesselId);
     this.loadFutureRequestData();
-    this.baseOrigin = new URL(window.location.href).origin;
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.alerts = [
       {
@@ -127,6 +132,31 @@ export class VesselPopupComponent implements OnInit {
     this.logger.logInfo('VesselPopupComponent-ngAfterViewInit()', new Date());
   }
 
+  loadVesselBasicInfo(vesselId){
+    if(vesselId != null){
+      let req = { VesselId : vesselId};
+      this.vesselService.getVesselBasicInfo(req).subscribe((res)=>{
+        if(res.payload.length > 0){
+          this.popup_data.serviceId = res.payload[0].serviceId;
+          this.popup_data.deptId = res.payload[0].deptId;
+          this.popup_data.ownership = res.payload[0].ownership;
+          this.popup_data.destination = res.payload[0].destination;
+          this.popup_data.next_destination = res.payload[0].nextDestination;
+          this.popup_data.eta1 = this.dateFormatter(res.payload[0].destinationEta);
+          this.popup_data.eta2 = this.dateFormatter(res.payload[0].nextDestinationEta);
+          this.popup_data.hsfo = res.payload[0].hsfo_current_stock;
+          this.popup_data.ulsfo = res.payload[0].ulsfo_current_stock;
+          this.popup_data.vlsfo = res.payload[0].vlsfo_current_stock;
+          this.popup_data.lsdis = res.payload[0].lsdis_current_stock;
+          this.popup_data.dis = res.payload[0].hsdis_current_stock;  
+
+          this.triggerClickEvent();     
+        }
+      })
+    }
+  }
+
+ 
   loadFutureRequestData() {
     let requestPayload = {
       "Payload": {
@@ -189,6 +219,10 @@ export class VesselPopupComponent implements OnInit {
   triggerClickEvent() {
     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
       titleEle.click();
+  }
+
+  dateFormatter(params) {
+    return moment(params.value).format('YYYY-MM-DD HH:mm');
   }
 
   public changeDefault() {
@@ -273,7 +307,7 @@ export class VesselPopupComponent implements OnInit {
     {
       headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 80, 
       cellRendererFramework: AGGridCellDataComponent, 
-      cellRendererParams: { type: 'request-link', redirectUrl: `${this.baseOrigin}/#/edit-request` },
+      cellRendererParams: { type: 'request-link', redirectUrl: `${this.shiptechUrl}/#/edit-request` },
       headerClass: ['aggrid-columgroup-dark-splitter'], 
       cellClass: ['aggrid-content-center aggrid-link fs-11'],
     },
