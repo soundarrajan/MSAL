@@ -1138,10 +1138,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         }
                     }
                 }
-                // }
-                // else {
-                //    additionalCost.amount = additionalCost.confirmedQuantity * additionalCost.price;
-                // }
                 break;
             case COST_TYPE_IDS.FLAT:
                 additionalCost.amount = convertDecimalSeparatorStringToNumber(additionalCost.price) || 0;
@@ -2151,14 +2147,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             function defaultFromInput(data) {
                 // evaluate ctrl.additionalCosts for product qty change
                 let quantityModified = false;
-                if(data.maxQuantity != data.confirmedQuantity) {
+                let prodQuantity = convertDecimalSeparatorStringToNumber(data.maxQuantity);
+                if(prodQuantity != data.confirmedQuantity) {
                     quantityModified = true;
                 }
-                data.confirmedQuantity = data.maxQuantity;
+                data.confirmedQuantity = prodQuantity;
+                ctrl.confirmedQuantityChanged(data);
                 if(quantityModified) {
                     for (let j = 0; j < data.additionalCosts.length; j++) {
                         let additionalCost = data.additionalCosts[j];
-                        additionalCost.confirmedQuantity = convertDecimalSeparatorStringToNumber(data.confirmedQuantity);
+                        additionalCost.confirmedQuantity = prodQuantity;
                         additionalCost.quantityUom = data.quantityUom;
                         ctrl.setLocationBasedAdditionalCosts(additionalCost, data, 'quantityChange');
                         additionalCost = calculateAdditionalCostAmounts(additionalCost, data);
@@ -2166,8 +2164,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }
                     ctrl.evaluateAdditionalCostList();
                 }
-                // data.quantityUom = data.minMaxQuantityUom;
-                // ctrl.productUomChanged(data);
             }
 
             function initMaxQtyFromConfirmed() {
@@ -4155,6 +4151,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
                 if ((changeContract || changeContractAutocomplete) && !isQuantityUom) { 
                     ctrl.data.products[idx].price = angular.copy(selection.price);
+                    ctrl.productPriceChanged(ctrl.data.products[idx]);
                 }
                 ctrl.recomputeProductPricePrecision(idx);
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
@@ -4291,16 +4288,19 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if (!ctrl.data.products[currentProductIndex].additionalCosts) {
                     ctrl.data.products[currentProductIndex].additionalCosts = []
                 }
-                for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
-                    let addCost = ctrl.data.products[currentProductIndex].additionalCosts[i];
-                    if (addCost.isContract) {
-                        if (addCost.fakeId < 0) {
-                            ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1);
-                        } else {
-                            addCost.isDeleted = true;
-                        }
-                    }
-                }
+                // Commenting as per task #33115 expected behavior
+                // /* Remove existing contract based add.costs if any - Start */
+                // for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
+                //     let addCost = ctrl.data.products[currentProductIndex].additionalCosts[i];
+                //     if (addCost.isContract) {
+                //         if (addCost.fakeId < 0) {
+                //             ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1);
+                //         } else {
+                //             addCost.isDeleted = true;
+                //         }
+                //     }
+                // }
+                // /* Remove existing contract based add.costs if any - End */
                 $.each(response.payload, function(k,v) {
                     v.isContract = true;
                     v.id = 0;
@@ -4585,6 +4585,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         	ctrl.data.products[productKey].price = 0
         	$timeout(()=>{
 	        	ctrl.data.products[productKey].price = producInitialPrice;
+                ctrl.productPriceChanged(ctrl.data.products[productKey]);
         	})
         }
         $scope.createRange = function(min, max) {
