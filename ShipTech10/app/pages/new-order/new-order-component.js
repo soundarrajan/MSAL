@@ -1165,6 +1165,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 break;
             case COST_TYPE_IDS.RANGE : case COST_TYPE_IDS.TOTAL :
                 additionalCost.amount = additionalCost.price || 0;
+                additionalCost.priceUom = null;
                 break;
             }
             if (!product) {
@@ -3439,10 +3440,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
 
-            if (additionalCost.costType.name == 'Flat') {
-                // additionalCost.disabledApplicableFor = false;
+            if (additionalCost.costType.name == 'Flat' || additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total') {
                 additionalCost.priceUom = null;
-                // ctrl.applicableForChange(additionalCost, null);
             }
 
             let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
@@ -4293,8 +4292,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ctrl.data.products[currentProductIndex].additionalCosts = []
                 }
                 for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
-                    if (ctrl.data.products[currentProductIndex].additionalCosts[i].isContract) {
-                        ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1)
+                    let addCost = ctrl.data.products[currentProductIndex].additionalCosts[i];
+                    if (addCost.isContract) {
+                        if (addCost.fakeId < 0) {
+                            ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1);
+                        } else {
+                            addCost.isDeleted = true;
+                        }
                     }
                 }
                 $.each(response.payload, function(k,v) {
