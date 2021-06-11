@@ -121,13 +121,17 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
   }
 
   approveInvoiceItem() {
-    if (
-      this.detailFormvalues.counterpartyDetails.counterpartyBankAccount.id ==
-        undefined ||
-      this.detailFormvalues.counterpartyDetails.counterpartyBankAccount.id == 0
-    ) {
-      this.detailFormvalues.counterpartyDetails.counterpartyBankAccount = null;
+    if (this.detailFormvalues.counterpartyDetails.counterpartyBankAccount) {
+      if (
+        this.detailFormvalues.counterpartyDetails.counterpartyBankAccount.id ==
+          undefined ||
+        this.detailFormvalues.counterpartyDetails.counterpartyBankAccount.id ==
+          0
+      ) {
+        this.detailFormvalues.counterpartyDetails.counterpartyBankAccount = null;
+      }
     }
+
     this.setAdditionalCostLine();
     this.invoiceService
       .approveInvoiceItem(this.detailFormvalues)
