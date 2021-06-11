@@ -1,11 +1,9 @@
-﻿commit 41e73814e5a6044ce63234800e320e9f6d9309fd
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Jun 11 10:40:47 2021 +0000
+﻿commit 8d9d4a4fc5ece0c05ec66d043e21955c257dff7c
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Jun 11 11:00:14 2021 +0000
 
-    Merged PR 11441: changed invoice validation date mapping
+    Merged PR 11444: Fixed counterpartyBankAccount error
     
-    changed invoice validation date mapping
-    
-    Related work items: #33050
+    Fixed counterpartyBankAccount error
 
 branch: master
