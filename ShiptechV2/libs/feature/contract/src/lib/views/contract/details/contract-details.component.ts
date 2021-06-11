@@ -8,7 +8,17 @@ import {
 } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { BehaviorSubject, empty, Observable, Subject } from 'rxjs';
-import { catchError, filter, finalize, map, scan, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  finalize,
+  map,
+  scan,
+  skip,
+  switchMap,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { DecimalPipe, Location } from '@angular/common';
@@ -18,7 +28,13 @@ import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status
 import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MyMonitoringService } from '../../service/logging.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgForm
+} from '@angular/forms';
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IDeliveryTenantSettings } from '../../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
@@ -39,7 +55,6 @@ import { Title } from '@angular/platform-browser';
 interface DialogData {
   email: string;
 }
-
 
 @Component({
   selector: 'shiptech-port-call',
@@ -79,10 +94,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   selectedProductIndex: any = 0;
   raiseClaimInfo: any;
   CM: any = {
-    'listsCache': {
-      'ClaimType': []
+    listsCache: {
+      ClaimType: []
     },
-    'selectedProduct': 0
+    selectedProduct: 0
   };
   claimType: any;
   scheduleDashboardConfiguration: any;
@@ -141,7 +156,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   contractConfiguration: any;
   generalConfiguration: any;
   customerList: any;
-  entityCopied: boolean =  false;
+  entityCopied: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -166,7 +181,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     private tenantService: TenantFormattingService,
     private loadingBar: LoadingBarService,
     private titleService: Title
-    ) {
+  ) {
     this.formValues = {
       name: null,
       company: null,
@@ -179,7 +194,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       summary: {},
       createdOn: null,
       products: []
-
     };
     this.entityName = 'Contract';
     this.appId = 'contracts';
@@ -187,20 +201,23 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
-          IGeneralTenantSettings
-        >(TenantSettingsModuleName.General);
-    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
+      IGeneralTenantSettings
+    >(TenantSettingsModuleName.General);
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
     console.log(this.deliverySettings);
     //this.loadingBar.start();
   }
-
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.contractId);
     });
     this.route.data.subscribe(data => {
-      if (localStorage.getItem(`${this.appId + this.screenId }_copy`)) {
+      if (localStorage.getItem(`${this.appId + this.screenId}_copy`)) {
         console.log('copy contract');
         this.isLoading = true;
         this.setFormValuesAfterCopyContract();
@@ -208,13 +225,22 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       console.log(data);
       this.navBar = data.navBar;
       this.tenantConfiguration = data.tenantConfiguration;
-      if (data.tenantConfiguration && data.tenantConfiguration.contractConfiguration) {
-        this.contractConfiguration = data.tenantConfiguration.contractConfiguration;
+      if (
+        data.tenantConfiguration &&
+        data.tenantConfiguration.contractConfiguration
+      ) {
+        this.contractConfiguration =
+          data.tenantConfiguration.contractConfiguration;
       }
-      if (data.tenantConfiguration && data.tenantConfiguration.generalConfiguration) {
-        this.generalConfiguration = data.tenantConfiguration.generalConfiguration;
+      if (
+        data.tenantConfiguration &&
+        data.tenantConfiguration.generalConfiguration
+      ) {
+        this.generalConfiguration =
+          data.tenantConfiguration.generalConfiguration;
       }
-      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+      this.scheduleDashboardLabelConfiguration =
+        data.scheduleDashboardLabelConfiguration;
       console.log(this.scheduleDashboardLabelConfiguration);
       if (data.contract) {
         this.formValues = data.contract;
@@ -223,18 +249,19 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         }
         if (typeof this.formValues.status != 'undefined') {
           if (this.formValues.status.name) {
-              this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+            this.statusColorCode = this.getColorCodeFromLabels(
+              this.formValues.status,
+              this.scheduleDashboardLabelConfiguration
+            );
           }
         }
       } else {
         if (!this.formValues.applyTo) {
-        	this.formValues.applyTo = { id:3 };
+          this.formValues.applyTo = { id: 3 };
         }
 
         this.titleService.setTitle('New Contract');
-
       }
-
 
       this.staticLists = data.staticLists;
       this.locationMasterList = data.locationList;
@@ -246,27 +273,45 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.paymentTermList = this.setListFromStaticLists('PaymentTerm');
       this.incotermList = this.setListFromStaticLists('Incoterm');
       this.applyToList = this.setListFromStaticLists('ApplyTo');
-      this.contractualQuantityOptionList = this.setListFromStaticLists('ContractualQuantityOption');
+      this.contractualQuantityOptionList = this.setListFromStaticLists(
+        'ContractualQuantityOption'
+      );
       this.uomMassList = this.setListFromStaticLists('UomMass');
       this.uomVolumeList = this.setListFromStaticLists('UomVolume');
-      this.contractConversionFactorOptions = this.setListFromStaticLists('ContractConversionFactorOptions');
+      this.contractConversionFactorOptions = this.setListFromStaticLists(
+        'ContractConversionFactorOptions'
+      );
       this.specParameterList = this.setListFromStaticLists('SpecParameter');
       this.formulaTypeList = this.setListFromStaticLists('FormulaType');
-      this.systemInstumentList = this.setListFromStaticLists('SystemInstrument');
+      this.systemInstumentList = this.setListFromStaticLists(
+        'SystemInstrument'
+      );
       this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
-      this.formulaPlusMinusList = this.setListFromStaticLists('FormulaPlusMinus');
-      this.formulaFlatPercentageList = this.setListFromStaticLists('FormulaFlatPercentage');
+      this.formulaPlusMinusList = this.setListFromStaticLists(
+        'FormulaPlusMinus'
+      );
+      this.formulaFlatPercentageList = this.setListFromStaticLists(
+        'FormulaFlatPercentage'
+      );
       this.currencyList = this.setListFromStaticLists('Currency');
-      this.formulaOperationList = this.setListFromStaticLists('FormulaOperation');
+      this.formulaOperationList = this.setListFromStaticLists(
+        'FormulaOperation'
+      );
       this.formulaFunctionList = this.setListFromStaticLists('FormulaFunction');
       this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
       this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
       this.holidayRuleList = this.setListFromStaticLists('HolidayRule');
-      this.pricingSchedulePeriodList = this.setListFromStaticLists('PricingSchedulePeriod');
+      this.pricingSchedulePeriodList = this.setListFromStaticLists(
+        'PricingSchedulePeriod'
+      );
       this.eventList = this.setListFromStaticLists('Event');
       this.dayOfWeekList = this.setListFromStaticLists('DayOfWeek');
-      this.businessCalendarList = this.setListFromStaticLists('BusinessCalendar');
-      this.formulaEventIncludeList = this.setListFromStaticLists('FormulaEventInclude');
+      this.businessCalendarList = this.setListFromStaticLists(
+        'BusinessCalendar'
+      );
+      this.formulaEventIncludeList = this.setListFromStaticLists(
+        'FormulaEventInclude'
+      );
       this.quantityTypeList = this.setListFromStaticLists('QuantityType');
       this.productList = this.setListFromStaticLists('Product');
       this.locationList = this.setListFromStaticLists('Location');
@@ -277,22 +322,21 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       var defaultUom = this.generalTenantSettings.tenantFormats.uom;
       var defaultQuantityType = this.contractualQuantityOptionList[0];
       let firstEntry = {
-          contractualQuantityOption: defaultQuantityType,
-          minContractQuantity: null,
-          maxContractQuantity: null,
-          convertedMaxContractQuantity: null,
-          uom: defaultUom,
-          tolerance: null,
-          id: 0
+        contractualQuantityOption: defaultQuantityType,
+        minContractQuantity: null,
+        maxContractQuantity: null,
+        convertedMaxContractQuantity: null,
+        uom: defaultUom,
+        tolerance: null,
+        id: 0
       };
       if (typeof this.formValues.details == 'undefined') {
-        this.formValues.details = [ firstEntry ];
+        this.formValues.details = [firstEntry];
       }
       if (this.formValues.allowedCompanies) {
         this.selectedAllowedCompanies();
         this.changeDetectorRef.detectChanges();
       }
-
 
       console.log(this.staticLists);
     });
@@ -309,7 +353,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   selectedAllowedCompanies() {
     this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
-      let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
+      let findCompanyIndex = _.findIndex(this.companyList, function(
+        object: any
+      ) {
         return object.id == allowedCompany.id;
       });
       if (findCompanyIndex != -1 && this.companyList) {
@@ -319,34 +365,34 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
 
     console.log(this.companyList);
-
-
   }
 
-
   getColorCodeFromLabels(statusObj, labels) {
-    for(let i = 0; i < labels.length; i++) {
+    for (let i = 0; i < labels.length; i++) {
       if (statusObj) {
-        if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
-            return labels[i].code;
+        if (
+          statusObj.id === labels[i].id &&
+          statusObj.transactionTypeId === labels[i].transactionTypeId
+        ) {
+          return labels[i].code;
         }
       }
     }
   }
 
   setFormValuesAfterCopyContract() {
-    var contractId = localStorage.getItem(`${this.appId + this.screenId }_copy`);
-    localStorage.removeItem(`${this.appId + this.screenId }_copy`);
-    console.log("id", contractId);
+    var contractId = localStorage.getItem(`${this.appId + this.screenId}_copy`);
+    localStorage.removeItem(`${this.appId + this.screenId}_copy`);
+    console.log('id', contractId);
     this.contractService
-    .loadContractDetails(parseFloat(contractId))
-    .pipe(
-      finalize(() => {
-        this.isLoading = false;
-        this.changeDetectorRef.detectChanges();
-      })
-    )
-    .subscribe((result: any) => {
+      .loadContractDetails(parseFloat(contractId))
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.changeDetectorRef.detectChanges();
+        })
+      )
+      .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.toastr.error(result);
         } else {
@@ -401,26 +447,30 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
           this.toastr.success('Entity copied');
         }
-     });
+      });
   }
-
 
   convertDecimalSeparatorStringToNumber(number) {
     var numberToReturn = number;
     var decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
-        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
-          if (number.indexOf(',') > number.indexOf('.')) {
-            decimalSeparator = ',';
-            thousandsSeparator = '.';
-          } else {
-            thousandsSeparator = ',';
-            decimalSeparator = '.';
-          }
-          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+      if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+        if (number.indexOf(',') > number.indexOf('.')) {
+          decimalSeparator = ',';
+          thousandsSeparator = '.';
         } else {
-          numberToReturn = parseFloat(number);
+          thousandsSeparator = ',';
+          decimalSeparator = '.';
         }
+        numberToReturn =
+          parseFloat(
+            number
+              .split(decimalSeparator)[0]
+              .replace(new RegExp(thousandsSeparator, 'g'), '')
+          ) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+      } else {
+        numberToReturn = parseFloat(number);
+      }
     }
     if (isNaN(numberToReturn)) {
       numberToReturn = 0;
@@ -428,21 +478,24 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     return parseFloat(numberToReturn);
   }
 
-
-
   showFormErrors() {
-
     let message = 'Please fill in required fields:';
     if (!this.formValues.name) {
       message += ' Name,';
     }
-    if (!this.formValues.seller || (this.formValues.seller && !this.formValues.seller.name)) {
+    if (
+      !this.formValues.seller ||
+      (this.formValues.seller && !this.formValues.seller.name)
+    ) {
       message += ' Seller,';
     }
     if (!this.formValues.company) {
       message += ' Company,';
     }
-    if (this.contractConfiguration && this.contractConfiguration.agreementTypeDisplay.id == 1) {
+    if (
+      this.contractConfiguration &&
+      this.contractConfiguration.agreementTypeDisplay.id == 1
+    ) {
       if (!this.formValues.agreementType) {
         message += ' Agreement Type,';
       }
@@ -462,7 +515,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
     if (message != 'Please fill in required fields:') {
       if (message[message.length - 1] == ',') {
-        message =  message.substring(0,  message.length - 1);
+        message = message.substring(0, message.length - 1);
       }
       this.toastr.error(message);
       return;
@@ -470,42 +523,74 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     let additionalCost = [];
     let additionalCostRequired = [];
     for (let i = 0; i < this.formValues.products.length; i++) {
-        for (let j = 0; j < this.formValues.products[i].additionalCosts.length; j++) {
-            if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
-                let amount = parseInt(this.formValues.products[i].additionalCosts[j].amount);
-                if (amount < 0 && !this.formValues.products[i].additionalCosts[j].isAllowingNegativeAmmount) {
-                    additionalCost.push(this.formValues.products[i].additionalCosts[j].additionalCost.name);
-                }
-                if (!this.formValues.products[i].additionalCosts[j].additionalCost) {
-                  additionalCostRequired.push('Item Name');
-                }
-                if (!this.formValues.products[i].additionalCosts[j].costType) {
-                  additionalCostRequired.push('Type');
-                }
-                if (this.formValues.products[i].additionalCosts[j].costType && this.formValues.products[i].additionalCosts[j].costType.id != 4 && this.formValues.products[i].additionalCosts[j].costType.id != 5) {
-                  if (!this.formValues.products[i].additionalCosts[j].amount) {
-                    additionalCostRequired.push('Amount');
-                  }
-                }
+      for (
+        let j = 0;
+        j < this.formValues.products[i].additionalCosts.length;
+        j++
+      ) {
+        if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
+          let amount = parseInt(
+            this.formValues.products[i].additionalCosts[j].amount
+          );
+          if (
+            amount < 0 &&
+            !this.formValues.products[i].additionalCosts[j]
+              .isAllowingNegativeAmmount
+          ) {
+            additionalCost.push(
+              this.formValues.products[i].additionalCosts[j].additionalCost.name
+            );
+          }
+          if (!this.formValues.products[i].additionalCosts[j].additionalCost) {
+            additionalCostRequired.push('Item Name');
+          }
+          if (!this.formValues.products[i].additionalCosts[j].costType) {
+            additionalCostRequired.push('Type');
+          }
+          if (
+            this.formValues.products[i].additionalCosts[j].costType &&
+            this.formValues.products[i].additionalCosts[j].costType.id != 4 &&
+            this.formValues.products[i].additionalCosts[j].costType.id != 5
+          ) {
+            if (!this.formValues.products[i].additionalCosts[j].amount) {
+              additionalCostRequired.push('Amount');
             }
+          }
         }
+      }
     }
 
-    additionalCostRequired =_.uniq(additionalCostRequired);
+    additionalCostRequired = _.uniq(additionalCostRequired);
     let additionalCostRequiredString = '';
     for (let i = 0; i < additionalCostRequired.length; i++) {
       additionalCostRequiredString += additionalCostRequired[i] + ',';
     }
-    if (additionalCostRequiredString[additionalCostRequiredString.length - 1] == ',') {
-      additionalCostRequiredString =  additionalCostRequiredString.substring(0,  additionalCostRequiredString.length - 1);
+    if (
+      additionalCostRequiredString[additionalCostRequiredString.length - 1] ==
+      ','
+    ) {
+      additionalCostRequiredString = additionalCostRequiredString.substring(
+        0,
+        additionalCostRequiredString.length - 1
+      );
     }
 
-    if (additionalCostRequiredString != ''  && additionalCostRequired.length > 1) {
-      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+    if (
+      additionalCostRequiredString != '' &&
+      additionalCostRequired.length > 1
+    ) {
+      this.toastr.error(
+        'Please fill in required fields: ' + additionalCostRequiredString
+      );
       return;
     }
-    if (additionalCostRequiredString != '' && additionalCostRequired.length == 1) {
-      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+    if (
+      additionalCostRequiredString != '' &&
+      additionalCostRequired.length == 1
+    ) {
+      this.toastr.error(
+        'Please fill in required fields: ' + additionalCostRequiredString
+      );
       return;
     }
 
@@ -515,42 +600,206 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       additionalCostString += additionalCost[i] + ',';
     }
     if (additionalCostString[additionalCostString.length - 1] == ',') {
-      additionalCostString =  additionalCostString.substring(0,  additionalCostString.length - 1);
+      additionalCostString = additionalCostString.substring(
+        0,
+        additionalCostString.length - 1
+      );
     }
-    if (additionalCostString != ''  && additionalCost.length > 1) {
-      this.toastr.warning('The additional costs ' + additionalCostString + ' does not allow negative amounts!');
+    if (additionalCostString != '' && additionalCost.length > 1) {
+      this.toastr.warning(
+        'The additional costs ' +
+          additionalCostString +
+          ' does not allow negative amounts!'
+      );
       return;
     }
     if (additionalCostString != '' && additionalCost.length == 1) {
-      this.toastr.warning('The additional cost ' + additionalCostString + ' does not allow negative amounts!');
+      this.toastr.warning(
+        'The additional cost ' +
+          additionalCostString +
+          ' does not allow negative amounts!'
+      );
       return;
     }
   }
   saveContract() {
     let hasTotalContractualQuantity = false;
 
-    this.showFormErrors();
+    let message = 'Please fill in required fields:';
+    if (!this.formValues.name) {
+      message += ' Name,';
+    }
+    if (
+      !this.formValues.seller ||
+      (this.formValues.seller && !this.formValues.seller.name)
+    ) {
+      message += ' Seller,';
+    }
+    if (!this.formValues.company) {
+      message += ' Company,';
+    }
+    if (
+      this.contractConfiguration &&
+      this.contractConfiguration.agreementTypeDisplay.id == 1
+    ) {
+      if (!this.formValues.agreementType) {
+        message += ' Agreement Type,';
+      }
+    }
+    if (!this.formValues.incoterm) {
+      message += ' Delivery Term,';
+    }
+    if (!this.formValues.validFrom) {
+      message += ' Start Date,';
+    }
+    if (!this.formValues.validTo && !this.formValues.evergreen) {
+      message += ' End Date,';
+    }
+
+    this.buttonClicked = true;
+    this.eventsSubject2.next(this.buttonClicked);
+
+    if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message = message.substring(0, message.length - 1);
+      }
+      this.toastr.error(message);
+      return;
+    }
+    let additionalCost = [];
+    let additionalCostRequired = [];
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      for (
+        let j = 0;
+        j < this.formValues.products[i].additionalCosts.length;
+        j++
+      ) {
+        if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
+          let amount = parseInt(
+            this.formValues.products[i].additionalCosts[j].amount
+          );
+          if (
+            amount < 0 &&
+            !this.formValues.products[i].additionalCosts[j]
+              .isAllowingNegativeAmmount
+          ) {
+            additionalCost.push(
+              this.formValues.products[i].additionalCosts[j].additionalCost.name
+            );
+          }
+          if (!this.formValues.products[i].additionalCosts[j].additionalCost) {
+            additionalCostRequired.push('Item Name');
+          }
+          if (!this.formValues.products[i].additionalCosts[j].costType) {
+            additionalCostRequired.push('Type');
+          }
+          if (
+            this.formValues.products[i].additionalCosts[j].costType &&
+            this.formValues.products[i].additionalCosts[j].costType.id != 4 &&
+            this.formValues.products[i].additionalCosts[j].costType.id != 5
+          ) {
+            if (!this.formValues.products[i].additionalCosts[j].amount) {
+              additionalCostRequired.push('Amount');
+            }
+          }
+        }
+      }
+    }
+
+    additionalCostRequired = _.uniq(additionalCostRequired);
+    let additionalCostRequiredString = '';
+    for (let i = 0; i < additionalCostRequired.length; i++) {
+      additionalCostRequiredString += additionalCostRequired[i] + ',';
+    }
+    if (
+      additionalCostRequiredString[additionalCostRequiredString.length - 1] ==
+      ','
+    ) {
+      additionalCostRequiredString = additionalCostRequiredString.substring(
+        0,
+        additionalCostRequiredString.length - 1
+      );
+    }
+
+    if (
+      additionalCostRequiredString != '' &&
+      additionalCostRequired.length > 1
+    ) {
+      this.toastr.error(
+        'Please fill in required fields: ' + additionalCostRequiredString
+      );
+      return;
+    }
+    if (
+      additionalCostRequiredString != '' &&
+      additionalCostRequired.length == 1
+    ) {
+      this.toastr.error(
+        'Please fill in required fields: ' + additionalCostRequiredString
+      );
+      return;
+    }
+
+    additionalCost = _.uniq(additionalCost);
+    let additionalCostString = '';
+    for (let i = 0; i < additionalCost.length; i++) {
+      additionalCostString += additionalCost[i] + ',';
+    }
+    if (additionalCostString[additionalCostString.length - 1] == ',') {
+      additionalCostString = additionalCostString.substring(
+        0,
+        additionalCostString.length - 1
+      );
+    }
+    if (additionalCostString != '' && additionalCost.length > 1) {
+      this.toastr.warning(
+        'The additional costs ' +
+          additionalCostString +
+          ' does not allow negative amounts!'
+      );
+      return;
+    }
+    if (additionalCostString != '' && additionalCost.length == 1) {
+      this.toastr.warning(
+        'The additional cost ' +
+          additionalCostString +
+          ' does not allow negative amounts!'
+      );
+      return;
+    }
 
     if (!this.formValues.products) {
       this.toastr.error('You must add at least one product in the contract');
       return;
     }
 
-
-
     let notValidConversionFactor = false;
     for (let i = 0; i < this.formValues.products.length; i++) {
-      let conversionFactorForProduct = this.formValues.products[i].conversionFactors;
+      let conversionFactorForProduct = this.formValues.products[i]
+        .conversionFactors;
       if (conversionFactorForProduct && conversionFactorForProduct.length) {
-        let findSystemInstrumentOption = _.find(conversionFactorForProduct, function(object) {
-          return object.contractConversionFactorOptions.id == 4;
-        });
+        let findSystemInstrumentOption = _.find(
+          conversionFactorForProduct,
+          function(object) {
+            return object.contractConversionFactorOptions.id == 4;
+          }
+        );
 
         if (findSystemInstrumentOption) {
-          if (this.formValues.products[i].fixedPrice || (this.formValues.products[i].isFormula && (!(this.formValues.products[i].formula && this.formValues.products[i].formula.id)))){
+          if (
+            this.formValues.products[i].fixedPrice ||
+            (this.formValues.products[i].isFormula &&
+              !(
+                this.formValues.products[i].formula &&
+                this.formValues.products[i].formula.id
+              ))
+          ) {
             console.log(findSystemInstrumentOption);
             notValidConversionFactor = true;
-            this.toastr.error(`Please select formula for using system instrument conversion for Product ${ i + 1 }.`);
+            this.toastr.error(
+              `Please select formula for using system instrument conversion for Product ${i +
+                1}.`
+            );
           }
         }
       }
@@ -563,18 +812,25 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     // check for product location to be obj
     let notValidLocation = false;
     this.formValues.products.forEach((val, key) => {
-      if(typeof val.location != 'object') {
+      if (typeof val.location != 'object') {
         var keyno = key + 1;
-        this.toastr.error(`Please select a valid location for product ${ keyno }.`);
+        this.toastr.error(
+          `Please select a valid location for product ${keyno}.`
+        );
         notValidLocation = true;
-      } else if (val.isFormula == true && (typeof val.formula != 'object' || !val.formula)) {
+      } else if (
+        val.isFormula == true &&
+        (typeof val.formula != 'object' || !val.formula)
+      ) {
         var keyno = key + 1;
-        this.toastr.error(`Please select a valid Formula for Product ${ keyno }.`);
+        this.toastr.error(
+          `Please select a valid Formula for Product ${keyno}.`
+        );
         notValidLocation = true;
       }
     });
 
-    if(notValidLocation) {
+    if (notValidLocation) {
       return;
     }
     if (this.formValues.products.length == 0) {
@@ -585,13 +841,16 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     let minQuyanityValidationError = false;
     this.formValues.details.forEach((v, k) => {
       if (typeof v != 'undefined') {
-        if(typeof v.contractualQuantityOption != 'undefined') {
+        if (typeof v.contractualQuantityOption != 'undefined') {
           if (v.contractualQuantityOption.name == 'TotalContractualQuantity') {
             hasTotalContractualQuantity = true;
           }
         }
         if (v.minContractQuantity && v.maxContractQuantity) {
-          if (this.convertDecimalSeparatorStringToNumber(v.minContractQuantity) > this.convertDecimalSeparatorStringToNumber(v.maxContractQuantity)) {
+          if (
+            this.convertDecimalSeparatorStringToNumber(v.minContractQuantity) >
+            this.convertDecimalSeparatorStringToNumber(v.maxContractQuantity)
+          ) {
             minQuyanityValidationError = true;
           }
         }
@@ -603,17 +862,17 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       return;
     }
     if (!hasTotalContractualQuantity) {
-      this.toastr.error('TotalContractualQuantity option is required in Contractual Quantity section');
+      this.toastr.error(
+        'TotalContractualQuantity option is required in Contractual Quantity section'
+      );
       return;
     }
 
     // test dates
     let notValid = this.testForValidDates();
-    if(notValid) {
+    if (notValid) {
       return;
     }
-
-
 
     let id = this.entityId;
     this.entityCopied = false;
@@ -621,14 +880,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!id) {
       this.spinner.show();
       this.contractService
-      .createContract(this.formValues)
-      .pipe(
+        .createContract(this.formValues)
+        .pipe(
           finalize(() => {
             this.buttonClicked = false;
             this.eventsSubject2.next(this.buttonClicked);
           })
-      )
-      .subscribe((result: any) => {
+        )
+        .subscribe((result: any) => {
           if (typeof result == 'string') {
             this.spinner.hide();
             this.toastr.error(result);
@@ -637,29 +896,29 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.isLoading = true;
             this.toastr.success('Contract saved successfully');
             this.router
-            .navigate([
-              KnownPrimaryRoutes.Contract,
-              `${KnownContractRoutes.Contract}`,
-              result.id,
-              KnownContractRoutes.ContractDetails
-            ])
-            .then(() => {
-              this.isLoading = false;
-              this.eventsSubject3.next(0);
-            });
+              .navigate([
+                KnownPrimaryRoutes.Contract,
+                `${KnownContractRoutes.Contract}`,
+                result.id,
+                KnownContractRoutes.ContractDetails
+              ])
+              .then(() => {
+                this.isLoading = false;
+                this.eventsSubject3.next(0);
+              });
           }
-      });
+        });
     } else {
       this.spinner.show();
       this.contractService
-      .updateContract(this.formValues)
-      .pipe(
+        .updateContract(this.formValues)
+        .pipe(
           finalize(() => {
             this.buttonClicked = false;
             this.eventsSubject2.next(this.buttonClicked);
           })
-      )
-      .subscribe((result: any) => {
+        )
+        .subscribe((result: any) => {
           if (typeof result == 'string') {
             this.spinner.hide();
             this.toastr.error(result);
@@ -677,45 +936,50 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
                 this.eventsSubject3.next(0);
                 if (typeof this.formValues.status != 'undefined') {
                   if (this.formValues.status.name) {
-                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                    this.statusColorCode = this.getColorCodeFromLabels(
+                      this.formValues.status,
+                      this.scheduleDashboardLabelConfiguration
+                    );
                   }
                 }
                 this.changeDetectorRef.detectChanges();
               });
           }
-       });
+        });
     }
   }
 
   testForValidDates() {
     var notValidDates = false;
-    if(!this.formValues.evergreen) {
+    if (!this.formValues.evergreen) {
       let start = new Date(this.formValues.validFrom);
       let startDate = start.getTime();
       let end = new Date(this.formValues.validTo);
       let endDate = end.getTime();
 
       if (startDate > endDate) {
-        this.toastr.error('Contract Start Date must be lesser than Contract End Date');
+        this.toastr.error(
+          'Contract Start Date must be lesser than Contract End Date'
+        );
         notValidDates = true;
       }
     }
     return notValidDates;
-};
+  }
 
   confirmContract() {
     this.buttonClicked = true;
     this.eventsSubject2.next(this.buttonClicked);
     this.spinner.show();
     this.contractService
-    .confirmContract(this.formValues)
-    .pipe(
+      .confirmContract(this.formValues)
+      .pipe(
         finalize(() => {
           this.buttonClicked = false;
           this.eventsSubject2.next(this.buttonClicked);
         })
-    )
-    .subscribe((result: any) => {
+      )
+      .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
@@ -733,24 +997,23 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
-                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                  this.statusColorCode = this.getColorCodeFromLabels(
+                    this.formValues.status,
+                    this.scheduleDashboardLabelConfiguration
+                  );
                 }
               }
             });
         }
-    });
+      });
   }
 
   undoContract() {
     this.spinner.show();
     this.contractService
-    .undoConfirmContract(this.formValues)
-    .pipe(
-        finalize(() => {
-
-        })
-    )
-    .subscribe((result: any) => {
+      .undoConfirmContract(this.formValues)
+      .pipe(finalize(() => {}))
+      .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
@@ -768,24 +1031,23 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
-                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                  this.statusColorCode = this.getColorCodeFromLabels(
+                    this.formValues.status,
+                    this.scheduleDashboardLabelConfiguration
+                  );
                 }
               }
             });
         }
-     });
+      });
   }
 
   deleteContract() {
     this.spinner.show();
     this.contractService
-    .deleteContract(this.formValues)
-    .pipe(
-        finalize(() => {
-
-        })
-    )
-    .subscribe((result: any) => {
+      .deleteContract(this.formValues)
+      .pipe(finalize(() => {}))
+      .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
@@ -803,25 +1065,23 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
-                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                  this.statusColorCode = this.getColorCodeFromLabels(
+                    this.formValues.status,
+                    this.scheduleDashboardLabelConfiguration
+                  );
                 }
               }
             });
         }
-     });
+      });
   }
-
 
   cancelContract() {
     this.spinner.show();
     this.contractService
-    .cancelContract(this.formValues)
-    .pipe(
-        finalize(() => {
-
-        })
-    )
-    .subscribe((result: any) => {
+      .cancelContract(this.formValues)
+      .pipe(finalize(() => {}))
+      .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
@@ -839,22 +1099,25 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
-                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                  this.statusColorCode = this.getColorCodeFromLabels(
+                    this.formValues.status,
+                    this.scheduleDashboardLabelConfiguration
+                  );
                 }
               }
             });
         }
-     });
+      });
   }
 
   extendContract() {
     const dialogRef = this.dialog.open(ExtendContractModalComponent, {
       width: '600px',
-      data:  { formValues: this.formValues}
+      data: { formValues: this.formValues }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log("close extend pop-up");
+        console.log('close extend pop-up');
         this.formValues = result;
         this.changeDetectorRef.detectChanges();
       }
@@ -862,7 +1125,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   copyContract() {
-    localStorage.setItem(`${this.appId + this.screenId }_copy`, this.entityId.toString());
+    localStorage.setItem(
+      `${this.appId + this.screenId}_copy`,
+      this.entityId.toString()
+    );
     this.router
       .navigate([
         KnownPrimaryRoutes.Contract,
@@ -871,14 +1137,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         KnownContractRoutes.ContractDetails
       ])
       .then(() => {
-        console.log("copy contract");
+        console.log('copy contract');
       });
-
   }
 
-  ngOnDestroy(): void {
-
-  }
-
-
+  ngOnDestroy(): void {}
 }
