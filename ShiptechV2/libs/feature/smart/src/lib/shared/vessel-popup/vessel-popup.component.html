@@ -106,7 +106,7 @@
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link" style="line-height: 22px;">
-                    Create Request
+                    <a href="{{shiptechUrl}}/#/new-request/{{popup_data.voyageDetailId}}" target="_blank" rel="noopener">Create Request</a>   
                   </div>
                 </div>
 
@@ -128,7 +128,7 @@
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link">
-                    Link to <br> Vessel Master
+                    <a href="{{shiptechUrl}}/#/masters/vessel/edit/{{popup_data.vesselId}}" target="_blank" rel="noopener">Link to <br> Vessel Master</a>    
                   </div>
                 </div>
               </div>
@@ -145,11 +145,11 @@
                   </div>
                   <div class="col-3">
                     <div class="value">
-                      {{popup_data.dogo}}
+                      {{popup_data.lsdis}}
                       <span class="unit">MT</span>
                     </div>
                     <div class="name">
-                      DOGO
+                      LSDIS
                     </div>
                   </div>
                   <div class="col-3">
@@ -168,6 +168,15 @@
                     </div>
                     <div class="name">
                       VLSFO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value minor-warning-border">
+                      {{popup_data.dis}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      DIS
                     </div>
                   </div>
                 </div>
