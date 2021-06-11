@@ -10082,8 +10082,8 @@
             })
         }
         $scope.bargeCostSequenceQtyToInvalid = (currentadditionalCostsdetails, key, value) => {
-            var qtyTo = parseFloat(value.qtyTo);
-            var qtyFrom = parseFloat(value.qtyFrom);
+            var qtyTo = convertDecimalSeparatorStringToNumber(value.qtyTo);
+            var qtyFrom = convertDecimalSeparatorStringToNumber(value.qtyFrom);
             if($scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1]) {
                 nextQtyTo = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1].qtyTo;
             } else {
