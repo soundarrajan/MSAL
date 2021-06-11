@@ -1357,7 +1357,6 @@ APP_RATING.factory('Factory_Rating', ['$listsCache', '$tenantSettings', 'API', '
                 return;
             },
             lookup: function(param, callback) {
-                debugger;
                 if (_debug) console.log("$APIService dropdown.lookup called with params:", param);
 
                 if (typeof(param.field.Filter) != 'undefined') {

@@ -3,7 +3,6 @@ angular.module('shiptech').service('getExternalFilters', [ 'Factory_Master', fun
         let filters = [];
 
         // 1. documenttype entity_documents
-        debugger;
         if(screen_id == 'documenttypelist' && clc_id == 'entity_documents') {
             // filter based on templates transaction type
             Factory_Master.get_master_entity(entity_id, screen_id, app_id, (callback) => {

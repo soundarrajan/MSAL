@@ -1,6 +1,6 @@
 /*!
  * ui-grid - v4.4.9 - 2018-04-30
- * Copyright (c) 2018 ; License: MIT 
+ * Copyright (c) 2018 ; License: MIT
  */
 
 (function () {
@@ -272,7 +272,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           // No controller, compile the element manually (for unit tests)
           else {
             if ( uiGridCtrl && !$scope.col.compiledElementFn ){
-              // gridUtil.logError('Render has been called before precompile.  Please log a ui-grid issue');  
+              // gridUtil.logError('Render has been called before precompile.  Please log a ui-grid issue');
 
               $scope.col.getCompiledElementFn()
                 .then(function (compiledElementFn) {
@@ -315,10 +315,10 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           if ($scope.col.cellClass) {
             updateClass();
           }
-          
+
           // Register a data change watch that would get triggered whenever someone edits a cell or modifies column defs
           var dataChangeDereg = $scope.grid.registerDataChangeCallback( updateClass, [uiGridConstants.dataChange.COLUMN, uiGridConstants.dataChange.EDIT]);
-          
+
           // watch the col and row to see if they change - which would indicate that we've scrolled or sorted or otherwise
           // changed the row/col that this cell relates to, and we need to re-evaluate cell classes and maybe other things
           var cellChangeFunction = function( n, o ){
@@ -342,14 +342,14 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           var colWatchDereg = $scope.$watch( 'col', cellChangeFunction );
 */
           var rowWatchDereg = $scope.$watch( 'row', cellChangeFunction );
-          
-          
+
+
           var deregisterFunction = function() {
             dataChangeDereg();
 //            colWatchDereg();
-            rowWatchDereg(); 
+            rowWatchDereg();
           };
-          
+
           $scope.$on( '$destroy', deregisterFunction );
           $elm.on( '$destroy', deregisterFunction );
         }
@@ -909,7 +909,6 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService, $documen
       };
 
       $scope.hideColumn = function () {
-          debugger;
         $scope.col.colDef.visible = false;
         $scope.col.visible = false;
 
@@ -1030,7 +1029,7 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService, $documen
                 contents.removeClass( classAdded );
                 classAdded = null;
               }
-  
+
               if (angular.isFunction($scope.col.footerCellClass)) {
                 classAdded = $scope.col.footerCellClass($scope.grid, $scope.row, $scope.col, $scope.rowRenderIndex, $scope.colRenderIndex);
               }
@@ -1039,7 +1038,7 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService, $documen
               }
               contents.addClass(classAdded);
             };
-  
+
             if ($scope.col.footerCellClass) {
               updateClass();
             }
@@ -1618,19 +1617,19 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService, $documen
             $scope.colContainer = containerCtrl.colContainer;
 
             updateHeaderReferences();
-            
+
             var headerTemplate;
             if (!$scope.grid.options.showHeader) {
               headerTemplate = emptyTemplate;
             }
             else {
-              headerTemplate = ($scope.grid.options.headerTemplate) ? $scope.grid.options.headerTemplate : defaultTemplate;            
+              headerTemplate = ($scope.grid.options.headerTemplate) ? $scope.grid.options.headerTemplate : defaultTemplate;
             }
 
             gridUtil.getTemplate(headerTemplate)
               .then(function (contents) {
                 var template = angular.element(contents);
-                
+
                 var newElm = $compile(template)($scope);
                 $elm.replaceWith(newElm);
 
@@ -1702,7 +1701,7 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService, $documen
               // already being populated correctly
 
               var columnCache = containerCtrl.colContainer.visibleColumnCache;
-              
+
               // Build the CSS
               // uiGridCtrl.grid.columns.forEach(function (column) {
               var ret = '';
@@ -1713,13 +1712,13 @@ function ($timeout, gridUtil, uiGridConstants, uiGridColumnMenuService, $documen
               });
 
               containerCtrl.colContainer.canvasWidth = canvasWidth;
-              
+
               // Return the styles back to buildStyles which pops them into the `customStyles` scope variable
               return ret;
             }
-            
+
             containerCtrl.header = $elm;
-            
+
             var headerViewport = $elm[0].getElementsByClassName('ui-grid-header-viewport')[0];
             if (headerViewport) {
               containerCtrl.headerViewport = headerViewport;
@@ -2984,7 +2983,7 @@ function ($compile, $timeout, $window, $document, gridUtil, uiGridConstants, i18
               else {
                 ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId + ' .ui-grid-header-canvas { height: inherit; }';
               }
-  
+
               ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId +
                 ' .ui-grid-viewport { width: ' + viewportWidth + 'px; height: ' + viewportHeight + 'px; }';
               ret += '\n .grid' + uiGridCtrl.grid.id + ' .ui-grid-render-container-' + $scope.containerId +
@@ -9704,7 +9703,7 @@ angular.module('ui.grid')
           if (grid.options.rowTemplate) {
             var rowTemplateFnPromise = $q.defer();
             grid.getRowTemplateFn = rowTemplateFnPromise.promise;
-            
+
             gridUtil.getTemplate(grid.options.rowTemplate)
               .then(
                 function (template) {
@@ -9871,7 +9870,7 @@ angular.module('ui.grid')
               .then(function (template) {
                 // Compile the template
                 var rowTemplateFn = $compile(template);
-                
+
                 // Resolve the compiled template function promise
                 perRowTemplateFnPromise.resolve(rowTemplateFn);
               },
@@ -12346,7 +12345,7 @@ module.filter('px', function() {
       }]);
     }]);
   })();
-  
+
 (function () {
   angular.module('ui.grid').config(['$provide', function($provide) {
     $provide.decorator('i18nService', ['$delegate', function($delegate) {
@@ -14838,7 +14837,7 @@ module.filter('px', function() {
           },
           sizes: 'Sayfadaki nesne sayısı',
           totalItems: 'kayıtlar',
-          through: '', //note(fsw) : turkish dont have this preposition 
+          through: '', //note(fsw) : turkish dont have this preposition
           of: '' //note(fsw) : turkish dont have this preposition
         },
         grouping: {
@@ -24044,7 +24043,7 @@ module.filter('px', function() {
 
           var options = uiGridCtrl.grid.options;
 
-          
+
           uiGridCtrl.grid.renderContainers.body.registerViewportAdjuster(function (adjustment) {
             if (options.enablePaginationControls) {
               adjustment.height = adjustment.height - gridUtil.elementHeight($elm, "padding");
@@ -29426,7 +29425,7 @@ module.filter('px', function() {
 
 (function () {
   'use strict';
-  
+
   /**
    * @ngdoc overview
    * @name ui.grid.validate
@@ -29442,7 +29441,7 @@ module.filter('px', function() {
    * -------------------
    *
    * Validation is not based on angularjs validation, since it would work only when editing the field.
-   * 
+   *
    * Instead it adds custom properties to any field considered as invalid.
    *
    * <br/>
@@ -29452,8 +29451,8 @@ module.filter('px', function() {
    */
 
   var module = angular.module('ui.grid.validate', ['ui.grid']);
-  
-  
+
+
   /**
    *  @ngdoc service
    *  @name ui.grid.validate.service:uiGridValidateService
@@ -29463,7 +29462,7 @@ module.filter('px', function() {
   module.service('uiGridValidateService', ['$sce', '$q', '$http', 'i18nService', 'uiGridConstants', function ($sce, $q, $http, i18nService, uiGridConstants) {
 
     var service = {
-      
+
       /**
        *  @ngdoc object
        *  @name validatorFactories
@@ -29487,7 +29486,7 @@ module.filter('px', function() {
        */
       validatorFactories: {},
 
-      
+
       /**
        * @ngdoc service
        * @name setExternalFactoryFunction
@@ -29496,13 +29495,13 @@ module.filter('px', function() {
        * <p>Validators from this external service have a higher priority than default
        * ones
        * @param {function} externalFactoryFunction a function that accepts name and argument to pass to a
-       * validator factory and that returns an object with the same properties as 
+       * validator factory and that returns an object with the same properties as
        * you can see in {@link ui.grid.validate.service:uiGridValidateService#properties_validatorFactories validatorFactories}
        */
       setExternalFactoryFunction: function(externalFactoryFunction) {
         service.externalFactoryFunction = externalFactoryFunction;
       },
-      
+
       /**
        * @ngdoc service
        * @name clearExternalFactory
@@ -29525,7 +29524,7 @@ module.filter('px', function() {
       getValidatorFromExternalFactory: function(name, argument) {
         return service.externalFactoryFunction(name, argument).validatorFactory(argument);
       },
-      
+
       /**
        * @ngdoc service
        * @name getMessageFromExternalFactory
@@ -29537,7 +29536,7 @@ module.filter('px', function() {
       getMessageFromExternalFactory: function(name, argument) {
         return service.externalFactoryFunction(name, argument).messageFunction(argument);
       },
-      
+
       /**
        * @ngdoc service
        * @name setValidator
@@ -29581,7 +29580,7 @@ module.filter('px', function() {
        * @ngdoc service
        * @name getMessage
        * @methodOf ui.grid.validate.service:uiGridValidateService
-       * @description Returns the error message related to the validator 
+       * @description Returns the error message related to the validator
        * @param {string} name the name of the validator
        * @param {object} argument an argument to pass to the message function
        * @returns {string} the error message related to the validator
@@ -29600,7 +29599,7 @@ module.filter('px', function() {
        * @ngdoc service
        * @name isInvalid
        * @methodOf ui.grid.validate.service:uiGridValidateService
-       * @description Returns true if the cell (identified by rowEntity, colDef) is invalid 
+       * @description Returns true if the cell (identified by rowEntity, colDef) is invalid
        * @param {object} rowEntity the row entity of the cell
        * @param {object} colDef the colDef of the cell
        * @returns {boolean} true if the cell is invalid
@@ -29620,7 +29619,7 @@ module.filter('px', function() {
       setInvalid: function (rowEntity, colDef) {
         rowEntity['$$invalid'+colDef.name] = true;
       },
-    
+
       /**
        * @ngdoc service
        * @name setValid
@@ -29666,7 +29665,7 @@ module.filter('px', function() {
             delete rowEntity['$$errors'+colDef.name][validatorName];
         }
       },
-      
+
       /**
        * @ngdoc function
        * @name getErrorMessages
@@ -29686,10 +29685,10 @@ module.filter('px', function() {
         Object.keys(rowEntity['$$errors'+colDef.name]).sort().forEach(function(validatorName) {
           errors.push(service.getMessage(validatorName, colDef.validators[validatorName]));
         });
-        
+
         return errors;
       },
-      
+
       /**
        * @ngdoc function
        * @name getFormattedErrors
@@ -29705,11 +29704,11 @@ module.filter('px', function() {
         var msgString = "";
 
         var errors = service.getErrorMessages(rowEntity, colDef);
-        
+
         if (!errors.length) {
           return;
         }
-        
+
         errors.forEach(function(errorMsg) {
           msgString += errorMsg + "<br/>";
         });
@@ -29721,7 +29720,7 @@ module.filter('px', function() {
        * @ngdoc function
        * @name getTitleFormattedErrors
        * @methodOf ui.grid.validate.service:uiGridValidateService
-       * @description returns the error i18n-ed and formatted in javaScript to be shown inside an html 
+       * @description returns the error i18n-ed and formatted in javaScript to be shown inside an html
        * title attribute.
        * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
        * @param {object} colDef the column whose errors we are looking for
@@ -29733,13 +29732,13 @@ module.filter('px', function() {
         var newLine = "\n";
 
         var msgString = "";
-        
+
         var errors = service.getErrorMessages(rowEntity, colDef);
-        
+
         if (!errors.length) {
           return;
         }
-        
+
         errors.forEach(function(errorMsg) {
           msgString += errorMsg + newLine;
         });
@@ -29758,18 +29757,18 @@ module.filter('px', function() {
        * @param {object} oldValue the value the field had before
        */
       runValidators: function(rowEntity, colDef, newValue, oldValue, grid) {
-        
+
         if (newValue === oldValue) {
           // If the value has not changed we perform no validation
           return;
         }
-        
+
         if (typeof(colDef.name) === 'undefined' || !colDef.name) {
           throw new Error('colDef.name is required to perform validation');
         }
-        
+
         service.setValid(rowEntity, colDef);
-        
+
         var validateClosureFactory = function(rowEntity, colDef, validatorName) {
           return function(value) {
             if (!value) {
@@ -29788,14 +29787,14 @@ module.filter('px', function() {
           service.clearError(rowEntity, colDef, validatorName);
           var msg;
           var validatorFunction = service.getValidator(validatorName, colDef.validators[validatorName]);
-          // We pass the arguments as oldValue, newValue so they are in the same order 
+          // We pass the arguments as oldValue, newValue so they are in the same order
           // as ng-model validators (modelValue, viewValue)
           var promise = $q
                         .when(validatorFunction(oldValue, newValue, rowEntity, colDef))
                         .then(validateClosureFactory(rowEntity, colDef, validatorName));
           promises.push(promise);
         }
-        
+
         return $q.all(promises);
       },
 
@@ -29818,7 +29817,7 @@ module.filter('px', function() {
                                function(argument) {
                                  return i18nService.getSafeText('validate.minLength').replace('THRESHOLD', argument);
                                });
-        
+
         service.setValidator('maxLength',
                              function (argument) {
                                return function (oldValue, newValue, rowEntity, colDef) {
@@ -29831,7 +29830,7 @@ module.filter('px', function() {
                              function(threshold) {
                                return i18nService.getSafeText('validate.maxLength').replace('THRESHOLD', threshold);
                              });
-        
+
         service.setValidator('required',
                              function (argument) {
                                return function (oldValue, newValue, rowEntity, colDef) {
@@ -29848,16 +29847,16 @@ module.filter('px', function() {
 
       initializeGrid: function (scope, grid) {
         grid.validate = {
-        
+
           isInvalid: service.isInvalid,
 
           getFormattedErrors: service.getFormattedErrors,
-         
+
           getTitleFormattedErrors: service.getTitleFormattedErrors,
 
           runValidators: service.runValidators
         };
-        
+
         /**
          *  @ngdoc object
          *  @name ui.grid.validate.api:PublicApi
@@ -29871,7 +29870,7 @@ module.filter('px', function() {
                * @ngdoc event
                * @name validationFailed
                * @eventOf  ui.grid.validate.api:PublicApi
-               * @description raised when one or more failure happened during validation 
+               * @description raised when one or more failure happened during validation
                * <pre>
                *      gridApi.validate.on.validationFailed(scope, function(rowEntity, colDef, newValue, oldValue){...})
                * </pre>
@@ -29927,7 +29926,7 @@ module.filter('px', function() {
                * @ngdoc function
                * @name getTitleFormattedErrors
                * @methodOf  ui.grid.validate.api:PublicApi
-               * @description returns the error i18n-ed and formatted in javaScript to be shown inside an html 
+               * @description returns the error i18n-ed and formatted in javaScript to be shown inside an html
                * title attribute.
                * @param {object} rowEntity gridOptions.data[] array instance whose errors we are looking for
                * @param {object} colDef the column whose errors we are looking for
@@ -29937,10 +29936,10 @@ module.filter('px', function() {
               getTitleFormattedErrors: function (rowEntity, colDef) {
                 return grid.validate.getTitleFormattedErrors(rowEntity, colDef);
               }
-            } 
+            }
           }
         };
-        
+
         grid.api.registerEventsFromObject(publicApi.events);
         grid.api.registerMethodsFromObject(publicApi.methods);
 
@@ -29952,13 +29951,13 @@ module.filter('px', function() {
 
         service.createDefaultValidators();
       }
-      
+
     };
-  
+
     return service;
   }]);
-  
-  
+
+
   /**
    *  @ngdoc directive
    *  @name ui.grid.validate.directive:uiGridValidate
