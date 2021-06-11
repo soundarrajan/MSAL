@@ -1,11 +1,7 @@
-﻿commit 7c939667edb74d242a4699ff93ebb112ea0dfd33
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jun 10 21:37:51 2021 +0000
+﻿commit 968a38231706e56e8688fe0fc0a4d6bbda58a998
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Fri Jun 11 11:50:44 2021 +0530
 
-    Merged PR 11413: #32910 : Click on a (vessel) row to view vessel bunkering plan bug fix.
-    
-    #32910 : Click on a (vessel) row to view vessel bunkering plan bug fix.
-    
-    Related work items: #32910
+    Delivery-Notes
 
 branch: master
