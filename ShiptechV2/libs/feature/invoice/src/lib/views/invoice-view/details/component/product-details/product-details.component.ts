@@ -625,7 +625,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       return null;
     }
     var productPricePrecision = this.tenantService.pricePrecision;
-    if (pricePrecision) {
+    if (pricePrecision !== null) {
       productPricePrecision = pricePrecision;
     }
     this.priceFormat = '1.' + productPricePrecision + '-' + productPricePrecision;
