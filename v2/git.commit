@@ -1,9 +1,7 @@
-﻿commit ab855d3f0c6308b40e204e5921dad957cee37647
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Jun 14 10:07:54 2021 +0000
+﻿commit 58913278ca69ab8ef4ad1fbdb57c5aa727ef9be9
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Mon Jun 14 17:11:32 2021 +0530
 
-    Merged PR 11489: Fixed 33142 and 33137
-    
-    Fixed 33142 and 33137
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
