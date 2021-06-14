@@ -141,7 +141,7 @@
       class="custom-form-field product-details"
       [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
     >
-      <mat-form-field class="without-search" appearance="legacy">
+      <mat-form-field class="without-search" appearance="legacy" [ngClass]="{ 'required-field': buttonClicked }">
         <mat-label>Price</mat-label>
         <input
           [(ngModel)]="formValues.products[selectedTabIndex].price"
