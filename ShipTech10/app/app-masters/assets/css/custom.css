@@ -350,6 +350,10 @@ clc-table-list>.jqgrid_component {
     border-color: red!important;
 }
 
+.barge-sequence .ng-invalid-required {
+    border-color: red !important;
+}
+
 input[ng-invalid="true"]{
     border-color: red!important;
 }
