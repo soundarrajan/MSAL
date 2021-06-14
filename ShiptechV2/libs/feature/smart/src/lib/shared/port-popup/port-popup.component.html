@@ -825,12 +825,17 @@
                 Agents Information
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div *ngIf="fifth.expanded" class="">
+            <div *ngIf="fifth.expanded">
               <div class="agents-info-panel" *ngFor="let item of agentsInfo">                                                      
                   <div>
                     <img src="./assets/customicons/mail.svg" alt="mail-icon" style="margin-right: 7px; vertical-align: middle;"><span class="link">{{item.email}}</span>
                   </div>                  
               </div>
+              <div class="agents-info-panel" *ngIf="agentsInfo.length == 0">                                                      
+                <div>
+                  <span class="link" style = "text-decoration-line:none !important">No agents information available</span>
+                </div>                  
+            </div>
             </div>
           </mat-expansion-panel>
           <mat-expansion-panel #sixth id="other-port" hideToggle="true" (closed)="changeDefault()"
