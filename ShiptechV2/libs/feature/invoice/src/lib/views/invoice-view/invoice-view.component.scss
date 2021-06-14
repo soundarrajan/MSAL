@@ -1,44 +1,54 @@
 .label-for-invoice {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
-    position: relative;
-    top: -8px;
-    left: 5px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
 }
 
 .label-for-invoice-revert {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
-    position: relative;
-    top: -8px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-wrapper {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.hr {
+    display: block;
+    width: 88%;
+    height: 1px;
+    background: #555555;
+    margin: 4px auto;
 }
 
 .accept-invoice {
-    position: relative;
-    top: -4px;
 }
 
 .revert-invoice {
-    position: relative;
-    left: -3px;
 }
 
 .reject-invoice {
-    position: relative;
-    top: -5px;
-    width: 15px;
 }
 
-button{
-  &:disabled{
+button {
+  &:disabled {
     color: grey !important;
   }
 }
