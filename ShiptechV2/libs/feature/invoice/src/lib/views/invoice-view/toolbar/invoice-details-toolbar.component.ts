@@ -53,7 +53,7 @@ export class InvoiceDetailsToolbarComponent
   }
 
   //@Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
-  public menuItems: MenuItem[];
+  public menuItems: any[];
   public deliveryTabs: MenuItem[];
   private navBarList: NavBar;
 
@@ -86,9 +86,52 @@ export class InvoiceDetailsToolbarComponent
     });
   }
 
+
+  
   setNavIds(params: any, navBarList: NavBar) {
-    const invoiceId = params.invoiceId;
+    const invoiceId = params.invoiceid;
     const disabled = invoiceId === '0';
+    const routeLinkToReportDetails = [
+      '/',
+      KnownPrimaryRoutes.Invoices,
+      KnownInvoiceRoutes.InvoiceDetails,
+      invoiceId
+    ];
+
+    this.menuItems = [
+      {
+        label: 'Main Page',
+        routerLink: [
+          ...routeLinkToReportDetails,
+          KnownInvoiceRoutes.InvoiceDetails
+        ],
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'details-tab',
+        mainPage: true
+      },
+      {
+        label: 'Documents',
+        url: parseFloat(invoiceId) ? `${this.baseOrigin}/#/invoices/invoice/documents/${invoiceId}` : null,
+        routerLinkActiveOptions: { exact: true },
+        disabled,
+        styleClass: 'tab'
+      },
+      {
+        label: 'Email Log',
+        url: parseFloat(invoiceId) ? `${this.baseOrigin}/#/invoices/invoice/email-log/${invoiceId}` : null,
+        routerLinkActiveOptions: { exact: true },
+        disabled,
+        styleClass: 'tab'
+      },
+      {
+        label: 'Audit Log',
+        url: parseFloat(invoiceId) ? `${this.baseOrigin}/#/invoices/invoice/audit-log/${invoiceId}` : null,
+        routerLinkActiveOptions: { exact: true },
+        disabled,
+        styleClass: 'tab'
+      }
+    ];
+   
     this.chRef.detectChanges();
   }
 
