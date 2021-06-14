@@ -1,11 +1,11 @@
-﻿commit 9438c906c569b70f46fa610904a1505f5a46e569
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Jun 11 14:34:06 2021 +0000
+﻿commit 378857f5537ab3bd59907acf98f444ea178c1328
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jun 14 08:02:56 2021 +0000
 
-    Merged PR 11466: Fix price precision in Est Rate in invoice
+    Merged PR 11484: #33173 Agent Info_ The scroll bar is missing.
     
-    Fix price precision in Est Rate in invoice
+    #33173 Agent Info_ The scroll bar is missing.
     
-    Related work items: #32433
+    Related work items: #33173
 
 branch: master

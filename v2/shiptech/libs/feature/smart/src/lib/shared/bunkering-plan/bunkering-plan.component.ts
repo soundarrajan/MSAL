@@ -522,7 +522,7 @@ export class BunkeringPlanComponent implements OnInit {
   toggleSave() {
     this.gridSaved = true;
     this.gridChanged = false;
-    this.getRecalculatedHsfoCurrentStock();
+   //this.getRecalculatedHsfoCurrentStock();
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
     let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData);
     let storeVesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
