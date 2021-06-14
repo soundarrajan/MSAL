@@ -378,7 +378,7 @@
                 <td colspan="5">
                     <form class="form-inline">
                         <div class="form-group-sm" style="display: flex; align-items: center;">
-                            <span>Counterparty &nbsp;&nbsp;</span>
+                            <span>Counterparty <sup style=" color: orange">*</sup>&nbsp;&nbsp;</span>
                             <div class="input-group">
                                 <input decode-input-format ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[location.id]" placeholder="Add counterparty" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList | typeaheadCustomFilter:$viewValue:'name'" class="form-control" typeahead-on-select="$ctrl.addSellerToLocations($ctrl.newSeller[location.id].id, location)" ng-click="$ctrl.setLookupInput(location);" typeahead-editable="false"  ng-keypress="$ctrl.keyPress()">          
                                 <span ng-controller="Controller_Master as CM" class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled' }}" ng-click="$ctrl.newSellerLocation = location; $ctrl.setLookupInput(location); triggerModal('general', 'procurement_requestcounterpartytypes', 'counterparty', 'counterparty','','', '', $ctrl.sellerTypeIds)">
@@ -436,7 +436,7 @@
     
                 ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                 <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
-                    <span style="font-size: 12px">Market Price</span>  
+                    <span style="font-size: 12px">Market Price <sup style=" color: orange">*</sup></span>  
                     <span>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown" data-close-others="true" ng-click="$ctrl.getMarketPriceData(product, location)" >
                             <span ng-mouseover="portSellerStatustooltip['marketPrice'] = true; " ng-mouseleave="portSellerStatustooltip['marketPrice'] = false;"  style="position:relative;overflow:auto; top: 7px;">
