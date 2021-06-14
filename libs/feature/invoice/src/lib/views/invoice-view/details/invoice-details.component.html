@@ -333,8 +333,9 @@
                 <mat-checkbox disabled [checked]="getDebunkerCheckboxConfig().value">Debunker</mat-checkbox>
               </div>
             </div>
+            <div class="border_line"></div>
             <div class="col-md-3">
-              <div class="checkbox">
+              <div class="checkbox whithheld-amount">
                 <mat-checkbox disabled [checked]="formValues.orderDetails.hasWithheldAmount">Withheld Amount
                 </mat-checkbox>
               </div>
@@ -387,7 +388,10 @@
                     </mat-autocomplete>
                   </mat-form-field>
 
-                  <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector1"
+                  <button [ngClass]="{
+                    'search-icon-disabled':
+                      formValues.status && formValues.status?.name === 'Approved'
+                  }" class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector1"
                     #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
                     <div class="img">
                       <ng-template cdkPortal #masterSelector1="cdkPortal">
