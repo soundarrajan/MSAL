@@ -1,7 +1,11 @@
-﻿commit 78db32a94be30e30aaf0e2b2883f56fc7fd94681
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Jun 14 15:45:14 2021 +0300
+﻿commit 83c39524a84f836e90836cec0ae9a8bb959e79e0
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jun 14 18:42:36 2021 +0000
 
-    Fixed build error
+    Merged PR 11518: #32744 : Current bplan status badge style update.
+    
+    #32744 : Current bplan status badge style update.
+    
+    Related work items: #32744
 
 branch: master
