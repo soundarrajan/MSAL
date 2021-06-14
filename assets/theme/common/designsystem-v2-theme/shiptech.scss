@@ -24,6 +24,10 @@
             padding-top: 10px;
             margin: 0px 15px;
             border-top: solid 2px #dce3eb;
+
+            &:first-child {
+              border-top: none;
+            }
         }
     }
 }
@@ -1519,3 +1523,4 @@
 .mat-tab-body-content {
   overflow: hidden;
 }
+
