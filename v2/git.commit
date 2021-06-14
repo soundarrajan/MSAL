@@ -1,9 +1,7 @@
-﻿commit 53132d6199e9a7b313210336f2ccb0a8126085f0
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Mon Jun 14 12:36:26 2021 +0000
+﻿commit 78db32a94be30e30aaf0e2b2883f56fc7fd94681
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Jun 14 15:45:14 2021 +0300
 
-    Merged PR 11503: Tasks pack
-    
-    Related work items: #31899, #33138, #33140, #33146, #33161
+    Fixed build error
 
 branch: master

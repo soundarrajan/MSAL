@@ -18,16 +18,16 @@
     .mat-tab-body-content {
       overflow: visible;
     }
-    .details{
-        .section1{
-            padding-top: 10px;
-            margin: 0px 15px;
-            border-top: solid 2px #dce3eb;
+    .details {
+      .section1 {
+        padding-top: 10px;
+        margin: 0px 15px;
+        border-top: solid 2px #dce3eb;
 
-            &:first-child {
-              border-top: none;
-            }
+        &:first-child {
+          border-top: none;
         }
+      }
     }
   }
 }
@@ -1547,7 +1547,3 @@
 .mat-tab-body-content {
   overflow: hidden;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 9903e84a6b9231695be36e600b7dce3e09607bad
