@@ -211,12 +211,17 @@
             <div style="flex:0 0 80%;display: flex;align-items: center;">
               <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID :
               </span><span class="content">{{this.planId}}</span></div>
-              <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">Plan
-                  Date :
-                </span><span class="content">{{this.planDate}}</span></div>
-                <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">
-                  Status :
-                </span><span *ngIf="this.statusCurr != ''" [ngClass]="this.statusCurr =='INVALID'? 'content content_invalid' : 'content content_valid'" style="padding: 3% 16% !important; ">{{this.statusCurr}}</span></div>
+              <div id="plan-date"  class="border-leftside" style="flex:0 0 13%;text-align: center;">
+                <span class="title">Plan Date :</span>
+                <span class="content">{{this.planDate}}</span>
+              </div>
+              <div style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
+                  <span class="title">Status : </span>
+                <span *ngIf="this.statusCurr != ''" [ngClass]="[this.statusCurr =='Invalid'? 'invalid-status' : 'valid-status']">{{this.statusCurr}}</span>
+                </div>
+              </div>
+
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
                   style="display: flex;flex: 0 0 40%;justify-content: space-between;padding: 0px 5px;">
@@ -280,15 +285,19 @@
                 <span class="title">Plan ID :</span>
                 <span class="content">{{this.prevPlanId}}</span>
               </div>
-              <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
+              <div id="plan-date" class="border-leftside" style="flex:0 0 13%;text-align: center;">
                 <span class="title">Plan Date :</span>
                 <span class="content">{{this.prevPlanDate}}</span>
               </div>
-              <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
-                <span class="title">Status : </span>
-                <span *ngIf="this.statusPrev != ''" [ngClass]="this.statusPrev =='INVALID'? 'content content_invalid' : ' content content_valid'" style="padding: 3% 16% !important; ">{{this.statusPrev}}</span>
+              <div style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
+                  <span class="title">Status : </span>
+                  <span *ngIf="this.statusPrev != ''" [ngClass]="[this.statusPrev =='Invalid'? 'invalid-status' : 'valid-status']">{{this.statusPrev}}</span>
+                </div>
               </div>
             </div>
+
+
             <ng-container *ngIf="panel1.expanded">
               <div style="flex:0 0 4%;text-align: center;">
                 <div  *ngIf="!expandPrevBPlan; else collapseBlock"  (click)="togglePrevBPlan($event)" class="expand-accordion-icon hand"></div>
