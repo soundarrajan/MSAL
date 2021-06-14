@@ -323,7 +323,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.displayDetailFormvalues = true;
     this.spinner.hide();
     this.detailFormvalues = <IInvoiceDetailsItemDto>formValues;
-    this.detailFormvalues.screenActions.forEach(action => {
+    this.detailFormvalues?.screenActions?.forEach(action => {
       if (action.name == 'Cancel') {
         this.cancelBtn = false;
       } else if (action.name == 'SubmitForReview') {
