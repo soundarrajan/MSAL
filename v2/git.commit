@@ -1,7 +1,9 @@
-﻿commit 58913278ca69ab8ef4ad1fbdb57c5aa727ef9be9
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Mon Jun 14 17:11:32 2021 +0530
+﻿commit 53132d6199e9a7b313210336f2ccb0a8126085f0
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Mon Jun 14 12:36:26 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 11503: Tasks pack
+    
+    Related work items: #31899, #33138, #33140, #33146, #33161
 
 branch: master

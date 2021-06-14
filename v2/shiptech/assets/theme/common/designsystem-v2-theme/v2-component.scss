@@ -2116,24 +2116,28 @@ div.component-viewer-nav-content
     }
   }
 }
+
+.custom-form-field-with-search.lightTheme .mat-form-field .mat-placeholder-required {
+  color: #f44336;
+}
 /****  Button-V2 - END ****/
 
 /* Scrollbar */
 
-// ::-webkit-scrollbar {
-//    width: 10px;
-//    height: 10px;
-//    background-color: transparent;
-// }
+.custom-hardcoded-table::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+}
 
-// ::-webkit-scrollbar-track {
-//   border-radius: 10px;
-//   background-color: transparent;
-// }
+.custom-hardcoded-table::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;
+}
 
-// ::-webkit-scrollbar-thumb {
-//   border-radius: 10px;
-//   background-color: #8d8d8d;
-// }
+.custom-hardcoded-table::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #c1c1c1;
+}
 
 /* Scrollbar */
