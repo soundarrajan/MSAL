@@ -1,7 +1,6 @@
 <div *ngIf="params.type==='newRequest'">
-    <div class="aggrid-content-center new-request">
-      <span class="plus-icon"> + </span>
-      <span class="content"> New Request </span>
+    <div class="content aggrid-content-center">
+      <a href="{{params.redirectUrl}}/{{params?.data?.voyageDetailId}}" target="_blank">New Request</a>
     </div>
   </div>
 

@@ -1541,7 +1541,10 @@ label {
 
 #table-view {
 	height: calc(100vh - 50px);
-	overflow: hidden;
+	.mat-tab-body-content {
+		height: 100%;
+		overflow: hidden;
+	}
 	background-color: $dark-row;
 	.header-container {
 		display: flex;
@@ -1752,6 +1755,9 @@ label {
 		}
 		.mat-standard-chip {
 			min-height: 28px !important;
+		}
+		.mat-chip-list-wrapper {
+			margin: -4px !important;
 		}
 		.toggle-active-chip {
 			// background-color: $denim !important;
