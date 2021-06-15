@@ -614,27 +614,34 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       }
     }
   }
-
+  roundDown(value, pricePrecision) {
+      var precisionFactor = 1;
+      var response = 0;
+      var intvalue = parseFloat(value);
+      if(pricePrecision == 1) {precisionFactor = 10}   
+      if(pricePrecision == 2) {precisionFactor = 100}   
+      if(pricePrecision == 3) {precisionFactor = 1000}   
+      if(pricePrecision == 4) {precisionFactor = 10000}   
+      response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+      return response.toString();
+  }
   priceFormatValue(value, pricePrecision) {
-    if (typeof value == 'undefined' || value == null) {
-      return null;
-    }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
-    if (isNaN(number)) {
-      return null;
+      if (typeof value == 'undefined' || value == null) {
+          return null;
+        }
+        let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+        let number = parseFloat(plainNumber);
+        if (isNaN(number)) {
+            return null;
     }
     var productPricePrecision = this.tenantService.pricePrecision;
     if (pricePrecision !== null) {
-      productPricePrecision = pricePrecision;
+        productPricePrecision = pricePrecision;
     }
     this.priceFormat = '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
-      if (productPricePrecision == 0) {
-        return plainNumber;
-      } else {
+        plainNumber = this.roundDown(plainNumber, pricePrecision);
         return this._decimalPipe.transform(plainNumber, this.priceFormat);
-      }
     }
   }
 
