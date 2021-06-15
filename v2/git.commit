@@ -1,11 +1,11 @@
-﻿commit 7e0b3d5afc822b01ea1d9cfc0409889bb8b9088c
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Tue Jun 15 13:27:14 2021 +0000
+﻿commit 78cd25c47ff6a9d3a312070d5e6d55f131deb7f6
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Jun 15 16:19:04 2021 +0000
 
-    Merged PR 11546: css fix and remove invoice types
+    Merged PR 11548: Fix price precision in invoice
     
-    css fix and remove invoice types
+    Fix price precision in invoice
     
-    Related work items: #32762
+    Related work items: #33230
 
 branch: master
