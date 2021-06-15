@@ -1,11 +1,11 @@
-﻿commit 8970bbd23a791df9e2677a89405b1846d41f0a19
+﻿commit ced205c14e826656e88710343024033231645296
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jun 15 10:59:30 2021 +0000
+Date:   Tue Jun 15 11:11:25 2021 +0000
 
-    Merged PR 11532: #29658 Vessel basic info Destination style update.
+    Merged PR 11535: Generate bunker plan maerskqc bug fix.
     
-    #29658 Vessel basic info Destination style update.
+    Generate bunker plan maerskqc bug fix.
     
-    Related work items: #29658
+    Related work items: #29780
 
 branch: master
