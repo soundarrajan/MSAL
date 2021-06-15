@@ -3978,12 +3978,14 @@ label {
 				color: $text_color_title;
 				line-height: 8px;
 				transform: rotate(0.08deg);
+				margin-top: 5px;
 			}
 			.caption-details {
 				font-style: normal;
 				font-weight: normal;
 				font-size: 11px;
-				line-height: 22px;
+				word-break: break-word;
+    			line-height: 15px;
 				color: $text_color_content;
 				transform: rotate(0.08deg);
 			}

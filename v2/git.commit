@@ -1,11 +1,11 @@
-﻿commit 9c93d1ef00bcf8996d6056b2837530ad8bddb92a
+﻿commit 8970bbd23a791df9e2677a89405b1846d41f0a19
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jun 15 08:09:07 2021 +0000
+Date:   Tue Jun 15 10:59:30 2021 +0000
 
-    Merged PR 11527: #29749 style update for data-date
+    Merged PR 11532: #29658 Vessel basic info Destination style update.
     
-    #29749 style update for data-date
+    #29658 Vessel basic info Destination style update.
     
-    Related work items: #29749
+    Related work items: #29658
 
 branch: master
