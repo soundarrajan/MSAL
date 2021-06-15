@@ -2080,7 +2080,7 @@
                     	|| (options.gid == "flat_contract_app_contract_list" && options.colModel.name == "fixedPrice")
                     	|| (options.gid == "flat_contract_planning" && options.colModel.name == "deliveryPrice")
                 	) {
-	                    pricePrecision = rowObject.pricePrecision !== null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
+	                    pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                     }
                     if (cellValue != null) {
                         element = $filter("number")(cellValue, pricePrecision);
@@ -3146,9 +3146,9 @@
                     }
                     // vm.product[rowIdx] = value;
                     // $('#contract_planning_product_select_' + rowIdx).val(value.id).trigger('change');
-                    setTimeout(function(){
-                        vm.setContractFiltersContractPlanning(rowIdx)
-                    },500)
+                    // setTimeout(function(){
+                    //     vm.setContractFiltersContractPlanning(rowIdx)
+                    // },500)
 
                     if (!isOnInit) {
                         if (vm.cpCtr) {
@@ -3274,11 +3274,6 @@
             			$('.verifyButton').css({"display": "none"});
             		})
             	}
-            } else if (data.currentScope.currentColumnRoute == 'invoices/invoice') {
-                $('#flat_invoices_app_invoice_list_cb > div' ).html('<i id="selectAllInvoices"' +
-                        ' style="font-size: 25px !important; color: #d9d9d9;"' +
-                        ' class="fa fa-square-o" ng-click="selectAllInvoices()"></i>');
-
             } else {
                 $scope.selectedContractPlanningRows = [];
                 // selectContracts = []
@@ -3288,6 +3283,7 @@
                     ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"  ng-mouseover="evaluateChangedContracts()"></i>');
                 $('#jqgh_flat_contract_planning_actions-0').css('display', 'inherit');
 
+                $('#flat_invoices_app_invoice_list_cb').html('<span id="selectAllInvoices" style="font-size: 25px !important; color: #d9d9d9;" ng-click="selectAllInvoices()"></span>');
            }
 
         });
