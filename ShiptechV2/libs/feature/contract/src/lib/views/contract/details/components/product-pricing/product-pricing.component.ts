@@ -1387,19 +1387,30 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       }
     }
   }
-
+  roundDown(value, pricePrecision) {
+      var precisionFactor = 1;
+      var response = 0;
+      var intvalue = parseFloat(value);
+      if(pricePrecision == 1) {precisionFactor = 10}   
+      if(pricePrecision == 2) {precisionFactor = 100}   
+      if(pricePrecision == 3) {precisionFactor = 1000}   
+      if(pricePrecision == 4) {precisionFactor = 10000}   
+      response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+      return response.toString();
+  }
   priceFormatValue(value, pricePrecision) {
-    if (typeof value == 'undefined') {
-      return null;
-    }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
-    if (isNaN(number)) {
-      return null;
-    }
+      if (typeof value == 'undefined') {
+          return null;
+        }
+        let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+        let number = parseFloat(plainNumber);
+        if (isNaN(number)) {
+            return null;
+        }
     if (number) {
+        plainNumber = this.roundDown(plainNumber, pricePrecision);
       return this._decimalPipe.transform(
-        number,
+        plainNumber,
         '1.' + pricePrecision + '-' + pricePrecision
       );
     }
