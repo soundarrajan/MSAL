@@ -418,7 +418,6 @@ export class VesselInfoComponent implements OnInit {
   setImportGSIS(event){
     this.import_gsis = this.isChecked == false ? 1:0 ;
     this.store.dispatch(new ImportGsisAction(this.import_gsis))
-    if(this.import_gsis == 1){
       let req = {
         action:"",
         ship_id: this.vesselData?.vesselId,
@@ -428,7 +427,7 @@ export class VesselInfoComponent implements OnInit {
       this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('Import GSIS status',data);
       })
-    }
+
     event.stopPropagation();
   }
   generateCurrentBPlan(event){
@@ -442,8 +441,8 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
-      if(data?.isSuccess == true ){
-      //if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0 && data?.payload[0]?.import_in_progress == 0){
+      // if(data?.isSuccess == true ){
+      if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0 && data?.payload[0]?.import_in_progress == 0){
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
           panelClass: 'confirmation-popup-operator',
