@@ -5,16 +5,15 @@
       <div class="row">
         <div class="col-md-6 col-sm-12 col-12 pt-4" style="line-height: 55px; padding: 0px 20px; margin: 0px;">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div id="custom-btn-toggle-v2">
-                <mat-button-toggle-group #btnToggle (change)="formValues.documentType.id = $event.value"
-                  style="padding-right: 35px; background-color: #e0e1e4;">
-                  <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value"
-                    [checked]="formValues.documentType.id == items.value">
-                    <span class="toggle-icon" *ngIf="formValues.documentType.id == items.value"></span>
-                    {{ items.displayName }}
+                <mat-button-toggle-group style="width:100%;" #btnToggle (change)="formValues.documentType.id = $event.value">
+                  <mat-button-toggle style="width:100%;" [disabled]="true"
+                    [checked]="true">
+                    <span class="toggle-icon"></span>
+                    {{ formValues?.documentType?.name }}
                   </mat-button-toggle>
-                  <div class="more-dots" (click)="openMoreButtons($event)"></div>
+                  <!-- <div class="more-dots" (click)="openMoreButtons($event)"></div> -->
                 </mat-button-toggle-group>
               </div>
               <div class="more-button-options" *ngIf="showMoreButtons">
@@ -26,7 +25,7 @@
                 </mat-radio-group>
               </div>
             </div>
-            <div class="col-md-6" style="padding: 0px 35px;">
+            <div class="col-md-6">
               <div class="badge-header-v2">
                 <span class="label_text" matTooltip="{{ formValues.createdByUser?.displayName }}">Created by:
                   <b>{{ formValues.createdByUser?.displayName }}</b></span>
@@ -461,7 +460,7 @@
             </div>
 
             <div class="field-textarea">
-              <textarea rows="4" cols="50" [disabled]="true" placeholder="Type front office comments here"
+              <textarea rows="4" cols="50" [disabled]="true" placeholder="Type Front office comments here"
                 name="frontOfficeComments" [(ngModel)]="formValues.orderDetails.frontOfficeComments"></textarea>
             </div>
           </div>

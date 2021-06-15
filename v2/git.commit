@@ -1,11 +1,11 @@
-﻿commit 72fe252e88329467d1d3b6806f00f75a8c4eb7d0
+﻿commit 7e0b3d5afc822b01ea1d9cfc0409889bb8b9088c
 Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Tue Jun 15 11:23:14 2021 +0000
+Date:   Tue Jun 15 13:27:14 2021 +0000
 
-    Merged PR 11536: fix
+    Merged PR 11546: css fix and remove invoice types
     
-    fix
+    css fix and remove invoice types
     
-    Related work items: #32723, #33152
+    Related work items: #32762
 
 branch: master
