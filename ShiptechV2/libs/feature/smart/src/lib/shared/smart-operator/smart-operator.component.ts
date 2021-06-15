@@ -298,12 +298,8 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Data Source', headerTooltip: 'Data Source', field: 'dataSource', cellClass: 'aggrid-vertical-center', width: 120, },
     {
       headerName: 'Data Date', headerTooltip: 'Data Date', field: 'datadate',
-      // cellClass: 'aggrid-columgroup-splitter-right aggrid-content-center',
-      //valueFormatter: params => {return moment(params.value).format('MM/DD/YYYY HH:mm');},
-    //  cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space aggrid-columgroup-splitter-right'] }}, 
-    //   headerClass: ['aggrid-text-align-c '],
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
-      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] 
+      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'] 
     },
     { headerName: 'Details', headerTooltip: 'Details', field: 'detail', width: 350, cellClass: 'aggrid-vertical-center' },
     { headerName: 'No of Days Unmanageable', headerTooltip: 'No of Days Unmanageable', field: 'unmanagedDays', width: 150, cellClass: 'aggrid-vertical-center' },
