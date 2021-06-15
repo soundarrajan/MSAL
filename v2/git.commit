@@ -1,11 +1,11 @@
-﻿commit ced205c14e826656e88710343024033231645296
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jun 15 11:11:25 2021 +0000
+﻿commit 72fe252e88329467d1d3b6806f00f75a8c4eb7d0
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Tue Jun 15 11:23:14 2021 +0000
 
-    Merged PR 11535: Generate bunker plan maerskqc bug fix.
+    Merged PR 11536: fix
     
-    Generate bunker plan maerskqc bug fix.
+    fix
     
-    Related work items: #29780
+    Related work items: #32723, #33152
 
 branch: master
