@@ -263,7 +263,6 @@ export class VesselInfoComponent implements OnInit {
         this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
         this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'Invalid' : 'Valid';
         this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
-        //this.store.dispatch(new UpdatePlanStatusAction(this.statusCurr));
       }
       else {
         this.statusCurrBPlan = false;
