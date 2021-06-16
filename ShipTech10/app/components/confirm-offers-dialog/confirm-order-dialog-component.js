@@ -105,6 +105,27 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             });
             console.log(ctrl.orderList);
         };
+
+        $scope.roundDown = (value, pricePrecision) => {
+            var precisionFactor = 1;
+            var response = 0;
+            var intvalue = parseFloat(value);
+            if(pricePrecision == 1) {precisionFactor = 10}   
+            if(pricePrecision == 2) {precisionFactor = 100}   
+            if(pricePrecision == 3) {precisionFactor = 1000}   
+            if(pricePrecision == 4) {precisionFactor = 10000}   
+            response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+            return response.toString();
+        }
+
+        ctrl.priceFormat = (value, pricePrecision) => {
+            if (pricePrecision == null) {
+                pricePrecision = ctrl.tenantSettings.defaultValues.pricePrecision; 
+            }
+            plainNumber = $scope.roundDown(value);
+            return $filter("number")(plainNumber, pricePrecision);
+        }
+
         ctrl.confirmOffers = function(shouldValidate) {
             // ctrl.warningValidation = false;
             // $("#termCtrWarning").hide();

@@ -741,6 +741,19 @@
             }
             return canReconfirm;
         };
+
+        $scope.roundDown = (value, pricePrecision) => {
+            var precisionFactor = 1;
+            var response = 0;
+            var intvalue = parseFloat(value);
+            if(pricePrecision == 1) {precisionFactor = 10}   
+            if(pricePrecision == 2) {precisionFactor = 100}   
+            if(pricePrecision == 3) {precisionFactor = 1000}   
+            if(pricePrecision == 4) {precisionFactor = 10000}   
+            response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+            return response.toString();
+        }
+
         // Get jQgrid Formatter
         vm.get_formatter = function(name) {
             // ====== SETTINGS ======
@@ -2080,10 +2093,11 @@
                     	|| (options.gid == "flat_contract_app_contract_list" && options.colModel.name == "fixedPrice")
                     	|| (options.gid == "flat_contract_planning" && options.colModel.name == "deliveryPrice")
                 	) {
-	                    pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
+	                    pricePrecision = rowObject.pricePrecision !== null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                     }
                     if (cellValue != null) {
-                        element = $filter("number")(cellValue, pricePrecision);
+                        plainNumber = $scope.roundDown(cellValue, pricePrecision);
+                        element = $filter("number")(plainNumber, pricePrecision);
                     }
                     return element;
                 };
@@ -2204,10 +2218,11 @@
                     var tpl = '<span class=""></span>';
                     if(cellValue != null){
                         if(rowObject.currency != null){
-
+                            
                             var currency = rowObject.currency.name;
                             pricePrecision = rowObject.pricePrecision != null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
-                            var price =  $filter('number')(rowObject.fixedPrice, pricePrecision);
+                            plainNumber = $scope.roundDown(rowObject.fixedPrice, pricePrecision);
+                            var price =  $filter('number')(plainNumber, pricePrecision);
 
                             tpl = '<span class="">' + currency + ' ' + price + '</span>';
                         }
