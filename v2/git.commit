@@ -1,11 +1,9 @@
-﻿commit 78cd25c47ff6a9d3a312070d5e6d55f131deb7f6
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Jun 15 16:19:04 2021 +0000
+﻿commit 49366efc96a1687c4549dfba6e4c8d59b3a4c267
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jun 16 10:50:32 2021 +0000
 
-    Merged PR 11548: Fix price precision in invoice
+    Merged PR 11566: Fixed delivery notes duplication
     
-    Fix price precision in invoice
-    
-    Related work items: #33230
+    Fixed delivery notes duplication
 
 branch: master
