@@ -94,7 +94,7 @@
             <ng-template mat-tab-label>
               <div class="custom-label-holder" >
                 <div class="custom-tab-ui"></div>
-                <div class="custom-label">All my Vessels</div>
+                <div class="custom-label" matTooltip="All my Vessels" >All my Vessels</div>
               </div>
             </ng-template>
             <section id="smart-operator-grid">
@@ -116,7 +116,7 @@
             <ng-template mat-tab-label>
               <div class="custom-label-holder">
                 <div class="custom-tab-ui"></div>
-                <div class="custom-label truncate-f85" style="padding-left: 20px;">Unmanageable</div>
+                <div class="custom-label truncate-f85" style="padding-left: 20px;" matTooltip="Unmanageable">Unmanageable</div>
               </div>
             </ng-template>
             <section id="smart-operator-grid">
@@ -138,7 +138,7 @@
             <ng-template mat-tab-label>
               <div class="custom-label-holder">
                 <div class="custom-tab-ui"></div>
-                <div class="custom-label truncate-f85" style="padding-left: 20px;">Future Request</div>
+                <div class="custom-label truncate-f85" style="padding-left: 20px;" matTooltip="Future Request">Future Request</div>
               </div>
             </ng-template>
             <section id="smart-operator-grid">
@@ -149,6 +149,7 @@
                 <ag-grid-angular
                   id="tableviewGrid"
                   style="width: 100%; height: calc(100vh - 135px)"
+                  [rowData]="rowData3"
                   [gridOptions]="gridOptions2"
                   class="ag-theme-balham-dark ag-table-view"
                 ></ag-grid-angular>

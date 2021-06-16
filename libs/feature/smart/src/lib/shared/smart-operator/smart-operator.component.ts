@@ -34,6 +34,10 @@ export class SmartOperatorComponent implements OnInit {
   public changeVessel;
   public coldefOnClick:any;
     public shiptechUrl : string = '';
+  // public paginationPageSize : number = 20;
+  // public currentPage : number = 1;
+  // public lastPage : number = 99;
+  // public activePage : boolean = true; 
   
   constructor(private localService: LocalService,private vesselService : VesselPopupService,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
@@ -83,7 +87,10 @@ export class SmartOperatorComponent implements OnInit {
          this.showBPlan.emit(true);
          this.clickEvent.emit();
          }
-       }
+       },
+      //  onPaginationChanged:(event) =>{
+      //   this.gridOptions.api.paginationSetPageSize(Number(this.paginationPageSize));
+      //  }
     };
     this.gridOptions1 = <GridOptions>{
       animateRows: true,
@@ -190,15 +197,15 @@ export class SmartOperatorComponent implements OnInit {
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
     },
 
-    { headerName: 'Service ID', headerTooltip: 'Service ID', field: 'serviceId', width: 100, cellClass: ' aggrid-vertical-center' },
-    { headerName: 'Dept ID', headerTooltip: 'Dept ID', field: 'deptId', width: 100, cellClass: ' aggrid-vertical-center' },
-    { headerName: 'Ownership', headerTooltip: 'Ownership', field: 'ownership', width: 100, cellClass: 'aggrid-columgroup-splitter-right aggrid-vertical-center' },
-    { headerName: 'Destination', headerTooltip: 'Destination', field: 'destination', width: 130, cellClass: ' aggrid-vertical-center' },
+    { headerName: 'Service ID', headerTooltip: 'Service ID', field: 'serviceId', width: 100, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent},
+    { headerName: 'Dept ID', headerTooltip: 'Dept ID', field: 'deptId', width: 100, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Ownership', headerTooltip: 'Ownership', field: 'ownership', width: 100, cellClass: 'aggrid-columgroup-splitter-right aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Destination', headerTooltip: 'Destination', field: 'destination', width: 130, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETA', headerTooltip: 'ETA', field: 'destinationEta', width: 140,
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
       headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] 
     },
-    { headerName: 'Next desitination', headerTooltip: 'Next destination', field: 'nextDestination', width: 150, cellClass: ' aggrid-vertical-center' },
+    { headerName: 'Next desitination', headerTooltip: 'Next destination', field: 'nextDestination', width: 150, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETA', headerTooltip: 'ETA', field: 'nextDestinationEta', width: 140,
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
       headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'] 
@@ -448,13 +455,11 @@ export class SmartOperatorComponent implements OnInit {
     this.vesselService.getVesselBasicInfo(req).subscribe((res)=>{
       if(res.payload.length > 0){
         this.rowData1 = res.payload;
-        if(this.rowData1 != null)
+        if(this.gridOptions.api && this.rowData1 !=null)
           this.gridOptions.api.setRowData(this.rowData1);
-      
       }
-      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-      titleEle.click();
-      this.rowCount = this.gridOptions.api.getDisplayedRowCount();
+      this.triggerUpdateEvent();
+      this.setRowCount(this.gridOptions);
     })
   }
 
@@ -473,12 +478,32 @@ export class SmartOperatorComponent implements OnInit {
         data.displayName = rowData.VesselName
       })
     })
-      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-      titleEle.click();
+      this.triggerUpdateEvent();
     }
     );
     
   }
 
-  
+  public triggerUpdateEvent(){
+    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+      titleEle.click();
+  }
+  public setRowCount(gridOptions){
+    this.rowCount = gridOptions.api.getDisplayedRowCount();
+  }
+
+  // public onPageChange(input){
+  //   this.gridOptions.api.paginationGoToPage(parseInt(input));  
+  //   this.currentPage = this.gridOptions.api.paginationGetCurrentPage();
+  // }
+
+  // public onPaginationChange(event){
+  //   this.gridOptions.api.paginationSetPageSize(event.value);
+    
+  // }
+
+  // public onPaginationChangedEvent(event){
+  //   this.gridOptions.api.paginationSetPageSize(Number(this.paginationPageSize));
+  // }
+
 }

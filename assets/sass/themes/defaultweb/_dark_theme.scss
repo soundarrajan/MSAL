@@ -200,6 +200,10 @@ $denim: #5780A6;
 	//////////////////////////AG-GRID///////////////////////////////////////////////
 	//******************************************************************************
 	.ag-theme-balham-dark {
+		.ag-root ::-webkit-scrollbar {
+			width: 4px;
+			height: 4px;
+		}
 		.ag-body-viewport {
 			background-color: $basecolor-l2;
 		}
@@ -1018,6 +1022,10 @@ $denim: #5780A6;
 	//bottom pagination
 	#bottom-pagination {
 		color: #C4C4C4;
+		// background: transparent;
+		// width: fit-content;
+    	// box-shadow: none;
+		// padding-bottom: 22px;
 		.mat-select-arrow {
 			color: #5780A6;
 		}

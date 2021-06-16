@@ -223,6 +223,10 @@ $white:#FFFFFF;
 	//////////////////////////AG-GRID///////////////////////////////////////////////
 	//******************************************************************************
 	.ag-theme-balham-dark {
+		.ag-root ::-webkit-scrollbar {
+			width: 4px;
+			height: 4px;
+		}
 		.ag-body-viewport {
 			background-color: $darkl2;
 		}
@@ -1061,6 +1065,10 @@ $white:#FFFFFF;
 	//bottom pagination
 	#bottom-pagination {
 		color: $basecolor-l1;
+		// background: transparent;
+		// width: fit-content;
+    	// box-shadow: none;
+		// padding-bottom: 22px;
 		.mat-select-arrow {
 			color: $basecolor-l1;
 		}
