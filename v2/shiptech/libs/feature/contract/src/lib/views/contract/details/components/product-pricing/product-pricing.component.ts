@@ -980,8 +980,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
             this.selectedTabIndex
           ].formula.name.toLowerCase()
         : this.formValues.products[this.selectedTabIndex].formula.toLowerCase();
-      console.log(filterValue);
-      if (this.contractFormulaList) {
+
+        if (this.contractFormulaList) {
         return this.contractFormulaList
           .filter(option =>
             option.name.toLowerCase().includes(filterValue.trim())
@@ -1391,10 +1391,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       var precisionFactor = 1;
       var response = 0;
       var intvalue = parseFloat(value);
-      if(pricePrecision == 1) {precisionFactor = 10}   
-      if(pricePrecision == 2) {precisionFactor = 100}   
-      if(pricePrecision == 3) {precisionFactor = 1000}   
-      if(pricePrecision == 4) {precisionFactor = 10000}   
+      if(pricePrecision == 1) {precisionFactor = 10}
+      if(pricePrecision == 2) {precisionFactor = 100}
+      if(pricePrecision == 3) {precisionFactor = 1000}
+      if(pricePrecision == 4) {precisionFactor = 10000}
       response = Math.floor(intvalue * precisionFactor) / precisionFactor;
       return response.toString();
   }

@@ -1,9 +1,11 @@
-﻿commit 49366efc96a1687c4549dfba6e4c8d59b3a4c267
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jun 16 10:50:32 2021 +0000
+﻿commit c17c757c9ef0d413ff159607a5dc686ffc0088af
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Wed Jun 16 13:36:11 2021 +0000
 
-    Merged PR 11566: Fixed delivery notes duplication
+    Merged PR 11578: fixed
     
-    Fixed delivery notes duplication
+    fixed
+    
+    Related work items: #33161, #33259
 
 branch: master
