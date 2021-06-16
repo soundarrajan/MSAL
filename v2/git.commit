@@ -1,11 +1,9 @@
-﻿commit 3f3253871709523bf8c0d6fdfeaa77da77eda285
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 16 18:11:01 2021 +0000
+﻿commit b563b99fdabfe71dbdb6d24ee5a4ec279928a970
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Jun 16 18:28:49 2021 +0000
 
-    Merged PR 11589: triggerRefreshGrid error handling for header.
+    Merged PR 11590: #29771: Port details: View Port remarks change log section has completed
     
-    triggerRefreshGrid error handling for header.
-    
-    Related work items: #29829
+    Related work items: #29771
 
 branch: master
