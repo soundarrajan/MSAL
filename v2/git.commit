@@ -1,11 +1,11 @@
-﻿commit 16a1cfc6e75ab6de2e5df1b7b14e954a8fb00a9e
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jun 16 16:14:34 2021 +0000
+﻿commit 3f3253871709523bf8c0d6fdfeaa77da77eda285
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 16 18:11:01 2021 +0000
 
-    Merged PR 11586: Workitem # 32735, 29771 code checkin has done
+    Merged PR 11589: triggerRefreshGrid error handling for header.
     
-    Pending work in workitem #29771 is log section on Edit remark popup due to BE changes
+    triggerRefreshGrid error handling for header.
     
-    Related work items: #29771, #32735
+    Related work items: #29829
 
 branch: master
