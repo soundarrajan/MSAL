@@ -5380,7 +5380,8 @@ label {
 	.new-remarks-menu {
 		//background: $popup_background_primary;
 		width: 242px;
-		height: 198px;
+		// height: 198px;
+		height: 100%;
 		.row {
 			margin: 0px;
 			align-items: center;
@@ -5415,7 +5416,7 @@ label {
 			color: #999999;
 			cursor: pointer;
 		}
-		.description {
+		.description, .remark-comment {
 			font-style: normal;
 			// font-weight: normal;
 			font-size: 9px;
@@ -5469,6 +5470,24 @@ label {
 				}
 			}
 		}
+		.change-log {
+			font-style: normal;
+			// font-weight: normal;
+			font-size: 9px;
+			line-height: 24px;
+			//color: $text_color_title;
+			padding: 0px 10px;
+			.change-log-detail {
+				resize: none;
+				font-style: normal;
+				font-weight: normal;
+				font-size: 11px;
+				line-height: 16px;
+				height: 46px;
+				overflow-y: scroll;
+				//color: $text_color_content;
+			}
+		}
 		.actions {
 			margin-top: 10px;
 			display: flex;
@@ -5501,7 +5520,7 @@ label {
 			border-bottom: 1px solid rgba(84, 97, 122, 0.2);
 		}
 
-		.description {
+		.description, .remark-comment {
 			color: $text_color_title;
 			font-weight: normal;
 			textarea {
@@ -5549,7 +5568,7 @@ label {
 		.warning-header {
 			border-bottom: 1px solid rgba(84, 97, 122, 0.2);
 		}
-		.description {
+		.description, .remark-comment {
 			color: #333333;
 			font-weight: 500;
 			textarea {
@@ -7936,7 +7955,7 @@ cursor:pointer;
 
 .confirmation-popup-operator{
 	width:490px;
-	background-color: #2F3845!important;
+	background-color: #2F3845 !important;
 	color:  #FFFFFF;
 	text-align: left;
 	.mat-dialog-container{
