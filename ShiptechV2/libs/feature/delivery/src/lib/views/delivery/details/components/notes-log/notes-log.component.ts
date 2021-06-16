@@ -520,7 +520,7 @@ export class NotesLogComponent implements OnInit {
       note: '',
       createdBy: createdBy,
       createdAt: this.formatDateForBe(new Date()),
-      lastModifiedAt: ''
+      lastModifiedAt: null
     };
 
     this.formValues.deliveryNotes.push(notesLine);
@@ -528,14 +528,22 @@ export class NotesLogComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  updateNotes(key) {
+  updateNotes(event, key) {
     this.formValues.deliveryNotes[key].createdAt = _.cloneDeep(
       this.formatDateForBe(new Date())
     );
     this.changeDetectorRef.detectChanges();
-    console.log(this.formValues.deliveryNotes);
-    console.log(this._entityId);
-    this.autoSave();
+
+    // if the blur was because of outside focus
+    //  relatedTarget is the clicked element
+    if (
+      event.relatedTarget &&
+      event.relatedTarget.classList.contains('cust-btn')
+    ) {
+      console.log('Click on button');
+    } else {
+      this.autoSave();
+    }
   }
 
   autoSave() {
