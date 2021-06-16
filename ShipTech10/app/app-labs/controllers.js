@@ -552,20 +552,31 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     $scope.comparableLabResults = [];
                     $scope.comparedLabResult = response.data.payload;
                     if ($scope.comparedLabResult.length > 0) {
-                        var initArr = $scope.comparedLabResult[0].labTestResult.length == Math.max($scope.comparedLabResult[0].labTestResult.length, $scope.comparedLabResult[1].labTestResult.length) ?
-                            $scope.comparedLabResult[0] : $scope.comparedLabResult[1];
-                        for (let i = 0; i < initArr.labTestResult.length; i++) {
+                        var uniqSpecParams = [];
+                        if($scope.comparedLabResult[0].labTestResult.length > 0) {
+                            uniqSpecParams = uniqSpecParams.concat($scope.comparedLabResult[0].labTestResult.map(ltr => ltr.specParameter));
+                        }
+                        if($scope.comparedLabResult[1].labTestResult.length > 0) {
+                            uniqSpecParams = uniqSpecParams.concat($scope.comparedLabResult[1].labTestResult.map(ltr => ltr.specParameter));
+                        }
+                        uniqSpecParams = uniqSpecParams.filter((specParam, index) => {
+                            const _specParam = JSON.stringify(specParam);
+                            return index === uniqSpecParams.findIndex(obj => {
+                                return JSON.stringify(obj) === _specParam;
+                            });
+                        });
+                        for (let i = 0; i < uniqSpecParams.length; i++) {
                             let firstLTR = {};
                             let secondLTR = {};
                             for (let j = 0; j < $scope.comparedLabResult[0].labTestResult.length; j++) {
-                                if ($scope.comparedLabResult[0].labTestResult[i].specParameter.id == initArr.labTestResult[i].specParameter.id) {
-                                    firstLTR = $scope.comparedLabResult[0].labTestResult[i];
+                                if ($scope.comparedLabResult[0].labTestResult[j].specParameter.id == uniqSpecParams[i].id) {
+                                    firstLTR = $scope.comparedLabResult[0].labTestResult[j];
                                     break;
                                 }
                             }
                             for (let j = 0; j < $scope.comparedLabResult[1].labTestResult.length; j++) {
-                                if ($scope.comparedLabResult[1].labTestResult[i].specParameter.id == initArr.labTestResult[i].specParameter.id) {
-                                    secondLTR = $scope.comparedLabResult[1].labTestResult[i];
+                                if ($scope.comparedLabResult[1].labTestResult[j].specParameter.id == uniqSpecParams[i].id) {
+                                    secondLTR = $scope.comparedLabResult[1].labTestResult[j];
                                     break;
                                 }
                             }
@@ -573,7 +584,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                             $scope.comparableLabResults.push({
                                 'item_0_lrId': $scope.comparedLabResult[0].id,
                                 'item_1_lrId': $scope.comparedLabResult[1].id,
-                                'orderSpecParamName': initArr.labTestResult[i].specParameter.name,
+                                'orderSpecParamName': uniqSpecParams[i].name,
                                 'bdnValue': firstLTR?.bdnValue ?? secondLTR?.bdnValue,
 
                                 'item_0_labs': firstLTR?.value,
