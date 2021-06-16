@@ -1051,7 +1051,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         SearchText: null,
         Pagination: {
           Skip: 0,
-          Take: 999
+          Take: 999999
         }
       }
     };
@@ -1083,7 +1083,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         SearchText: null,
         Pagination: {
           Skip: 0,
-          Take: 999
+          Take: 999999
         }
       }
     };
