@@ -88,7 +88,7 @@ export class AllBunkeringPlanComponent implements OnInit {
       console.log(isCellClicked);
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator confirmation-popup',
         data: {message : 'A new Plan exists for this vessel. Cannot update an old Plan', source: 'vesselHardWarning'}
       });
     }

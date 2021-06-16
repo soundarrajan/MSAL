@@ -108,47 +108,47 @@
           </div>
           <mat-accordion>
             <mat-expansion-panel #second id="alerts" hideToggle="true" [expanded]="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
+              (opened)="changeDefault('second')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   <div>Port Remarks</div>
-                  <div class="count">{{alerts.length}}
+                  <div class="count">{{portRemarkList.length}}
                   </div>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div>
                 <div class="alerts-container">
-                  <div class="single-alert" *ngFor="let item of alerts">
+                  <div class="single-alert" *ngFor="let item of portRemarkList">
                     <!-- Single Alert Start -->
                     <div class="alert-notif">
                       <div class="alert-title">
                         <div class="d-flex align-items-center">
-                          <ng-container [ngSwitch]="item.priority">
-                            <img *ngSwitchCase="1" class="icon" src="./assets/customicons/red-warning-o.svg"
+                          <ng-container [ngSwitch]="item?.remarkSeverity?.name">
+                            <img *ngSwitchCase="'High'" class="icon" src="./assets/customicons/red-warning-o.svg"
                               alt="warning-icon">
-                            <img *ngSwitchCase="2" class="icon" src="./assets/customicons/amber-warning-o.svg"
+                            <img *ngSwitchCase="'Medium'" class="icon" src="./assets/customicons/amber-warning-o.svg"
                               alt="warning-icon">
-                            <img *ngSwitchCase="3" class="icon" src="./assets/customicons/green-warning-o.svg"
+                            <img *ngSwitchDefault class="icon" src="./assets/customicons/green-warning-o.svg"
                               alt="warning-icon">
                           </ng-container>
-                          <div>{{item.alert}}</div>
+                          <div>{{item?.remarkTypes?.name}}</div>
                         </div>
                         <div class="alert-action">
-                          <ng-container *ngIf="item.status!='Pending' && item.status!='Resolved'" class="alert-action">
-                            <div style="flex: 0 0 78%;text-align: center;">{{item.status}}</div>
+                          <ng-container *ngIf="item?.remarkStatus?.name!='Pending' && item?.remarkStatus?.name!='Resolved'" class="alert-action">
+                            <div style="flex: 0 0 78%;text-align: center;">{{item?.remarkStatus?.name}}</div>
                           </ng-container>
-                          <ng-container *ngIf="item.status=='Pending'" class="alert-status">
+                          <ng-container *ngIf="item?.remarkStatus?.name=='Pending'" class="alert-status">
                             <img style="flex: 0 0 22%;" class="status-icon"
                               src="./assets/customicons/seen-icon.svg" alt="seen-icon">
-                            <div style="flex: 0 0 56%;">Pending</div>
+                            <div style="flex: 0 0 56%;">{{item?.remarkStatus?.name}}</div>
                           </ng-container>
-                          <ng-container *ngIf="item.status=='Resolved'" class="alert-status">
+                          <ng-container *ngIf="item?.remarkStatus?.name=='Resolved'" class="alert-status">
                             <img style="flex: 0 0 22%;" class="tick-icon" src="./assets/customicons/tick.svg"
                               alt="tick-icon">
-                            <div style="flex: 0 0 56%;">Resolved</div>
+                            <div style="flex: 0 0 56%;">{{item?.remarkStatus?.name}}</div>
                           </ng-container>
-                          <port-menu #menu [item]="item" [alerts]="alerts"></port-menu>
+                          <port-menu #menu [item]="item" [alerts]="alerts" (refreshPortRemark)="refreshPortRemark($event)"></port-menu>
                         </div>
                       </div>
                     </div>
@@ -179,26 +179,26 @@
                             [ngClass]="{'remark-type-list-light':!theme,'remark-type-list':theme}"
                             *ngFor="let remark of remarkTypes"
                             (click)="newRemarksMenuTrigger.openMenu();selectedType=remark;">
-                            {{remark}}
+                            {{remark?.displayName}}
                           </div>
                         </div>
 
                       </mat-menu>
                       <mat-menu #newRemarksMenu="matMenu" class="common" xPosition="after">
-                        <div class="new-remarks-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
+                        <div class="new-remarks-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}" (click)="$event.stopPropagation();">
                           <div class="warning-header">
-                            <div style="margin-bottom: 5px;">
-                              <ng-container [ngSwitch]="severity">
-                                <img *ngSwitchCase="1" class="warning-icon"
+                            <div>
+                              <ng-container [ngSwitch]="severity?.name">
+                                <img *ngSwitchCase="'High'" class="warning-icon"
                                   src="./assets/customicons/red-warning-o.svg" alt="warning-icon">
-                                <img *ngSwitchCase="2" class="warning-icon"
+                                <img *ngSwitchCase="'Medium'" class="warning-icon"
                                   src="./assets/customicons/amber-warning-o.svg" alt="warning-icon">
-                                <img *ngSwitchCase="3" class="warning-icon"
-                                  src="./assets/customicons/green-warning-o.svg" alt="warning-icon">
+                                <!-- <img *ngSwitchDefault class="warning-icon"
+                                  src="./assets/customicons/green-warning-o.svg" alt="warning-icon"> -->
                               </ng-container>
                             </div>
                             <div class="warning-title">
-                              {{selectedType}}
+                              {{selectedType?.displayName}}
                             </div>
                             <div (click)="closeMenu()">
                               <mat-icon class="close">close</mat-icon>
@@ -207,17 +207,17 @@
                           <div class="description">
                             <div>Description</div>
                             <mat-form-field appearance="fill">
-                              <textarea matInput [(ngModel)]="description" (keydown)="selectionChange=true"
+                              <textarea style="caret-color:#fff !important;" matInput [(ngModel)]="description" (keydown)="selectionChange=true"
                                 (click)="$event.stopPropagation();"></textarea>
                             </mat-form-field>
                           </div>
                           <div class="severity">
                             <span style="padding-right: 15px">Severity</span>
                             <mat-radio-group aria-label="Severity" [(ngModel)]="severity">
-                              <mat-radio-button style="margin-right: 5px;" (click)="$event.stopPropagation();"
-                                [value]="1">HIGH</mat-radio-button>
-                              <mat-radio-button style="margin-right: 5px;" (click)="$event.stopPropagation();"
-                                [value]="2">MEDIUM</mat-radio-button>
+                              <mat-radio-button style="margin-right: 5px;" *ngFor="let severityObj of portSeverities" (click)="$event.stopPropagation();"
+                                [value]="severityObj">{{severityObj?.displayName}}</mat-radio-button>
+                              <!-- <mat-radio-button style="margin-right: 5px;" (click)="$event.stopPropagation();"
+                                [value]="2">MEDIUM</mat-radio-button> -->
                             </mat-radio-group>
                           </div>
                           <div class="actions">
@@ -234,7 +234,7 @@
               </div>
             </mat-expansion-panel>
             <mat-expansion-panel #third id="product-availability" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
+              (opened)="changeDefault('third')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
