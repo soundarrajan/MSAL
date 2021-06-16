@@ -1628,7 +1628,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
     //setTimeout(() => {
     this.saveDelivery();
-    //}, 150);
+    //}, 300);
   }
 
   saveDelivery() {

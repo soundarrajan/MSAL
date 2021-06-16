@@ -1,59 +1,35 @@
 <shiptech-delivery-details-toolbar [navBar]="navBar">
   <div class="col-6">
     <div style="float:right;position: relative;">
-      <button
-        *ngIf="
+      <button *ngIf="
           formValues.deliveryStatus &&
           (formValues.deliveryStatus.name == 'NotVerified' ||
             formValues.deliveryStatus.name == 'Open')
-        "
-        class="cust-btn small"
-        type="button"
-        (click)="verify()"
-      >
+        " class="cust-btn small" type="button" (click)="verify()">
         <span class="btn-text">Verify</span>
       </button>
-      <button
-        *ngIf="
+      <button *ngIf="
           formValues.deliveryStatus &&
           formValues.deliveryStatus.name == 'Verified'
-        "
-        class="cust-btn small"
-        type="button"
-        (click)="revertVerify()"
-      >
+        " class="cust-btn small" type="button" (click)="revertVerify()">
         <span class="btn-text">Revert Verify</span>
       </button>
       <button class="cust-btn small" type="button" (click)="save()">
         <span class="btn-text">Save</span>
       </button>
-      <button
-        class="cust-menu-btn small"
-        mat-icon-button
-        [matMenuTriggerFor]="menu"
-        [disabled]="!formValues.deliveryStatus"
-      >
+      <button class="cust-menu-btn small" mat-icon-button [matMenuTriggerFor]="menu"
+        [disabled]="!formValues.deliveryStatus">
         <mat-icon>more_horiz</mat-icon>
       </button>
       <mat-menu #menu="matMenu" class="delivery-mat-menu-panel">
         <button mat-menu-item (click)="splitDeliveries()">
-          <img
-            id="split-deliveries"
-            alt="Shiptech"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFgSURBVFhH7ZetS0RBFEcXDMKCQTAsCAZBMAgGYbvNtGwxiG2TYDBpki0GsW0SDJbdptVqtlqt/iMjZ+DCMF5m7wwPdpQJJ7z3u7w5M2/u++gNj8euVppcKf9D7uD00m0+vLmN2XsnbN88qeOEmOQORxO3tvhyvZfvThncztXxBJMcs+RiO1czNRf2z699HSuj5cLRyZlbf/70tVouZMkxuJYLVjmgpskJK5Hbvbj3F6NjtVzIkaMZltWZ5GK27l69cHw+JUcTWCYYki2HGAL9x49fWUpubzL1GY8kq2CWXCjGSsT5stvKaucImuVEDNgvNEkINbEcx3EdE7MKmuTklqSgLpZDJq4L0bZGyN9fOaHaPSekBFNyuWKQLQcIQnw+JYcQL3urGJjkqn5DsJEZlMG1XMiRo4ZaLROanEbnclV+CVf9DwF0apV/X6uiyZXS5EppcqU0uVKaXCkVy43dDwKUKPtf2PlPAAAAAElFTkSuQmCC"
-          />
+          <img id="split-deliveries" alt="Shiptech"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFgSURBVFhH7ZetS0RBFEcXDMKCQTAsCAZBMAgGYbvNtGwxiG2TYDBpki0GsW0SDJbdptVqtlqt/iMjZ+DCMF5m7wwPdpQJJ7z3u7w5M2/u++gNj8euVppcKf9D7uD00m0+vLmN2XsnbN88qeOEmOQORxO3tvhyvZfvThncztXxBJMcs+RiO1czNRf2z699HSuj5cLRyZlbf/70tVouZMkxuJYLVjmgpskJK5Hbvbj3F6NjtVzIkaMZltWZ5GK27l69cHw+JUcTWCYYki2HGAL9x49fWUpubzL1GY8kq2CWXCjGSsT5stvKaucImuVEDNgvNEkINbEcx3EdE7MKmuTklqSgLpZDJq4L0bZGyN9fOaHaPSekBFNyuWKQLQcIQnw+JYcQL3urGJjkqn5DsJEZlMG1XMiRo4ZaLROanEbnclV+CVf9DwF0apV/X6uiyZXS5EppcqU0uVKaXCkVy43dDwKUKPtf2PlPAAAAAElFTkSuQmCC" />
           <span class="label-for-delivery-menu">Split deliveries</span>
         </button>
-        <button
-          mat-menu-item
-          (click)="raiseNewClaim()"
-          *ngIf="formValues.deliveryStatus"
-        >
-          <img
-            id="raise-claim"
-            alt="Shiptech"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAmCAYAAABOFCLqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAGPSURBVFhH7ZahSwRBFIcPDIJgEAyCYBAEg2AQrttMcsUgtkuCwaRJLAa5dkkwWLRptZqtVqv/yMg38INxnTc7ygwqTvjY2dt3M9++927mBsPtkfstNBmLvyuztbPv5q6e3eD+rZf56ZOPj81jkS0TiixePLj1gxOTtfG5j1s9vIzOZZElIxGxfHodjQtBJicupFdGIjN3r/6Nf1SGCZk4ZOV4Go0NqSZDM8aepaguQ5m4T0EMsdVlFiaPfpxCAv+rTPySWCQFexCxjKvK5PQMmx6x1WU29o4+7bZdNnfHPra6TE6ZaHJiGVeV+QrVZZbObv1YxHZiPpu9efmQKZWuj6IyPEeAK/2js4xzLUeoWJlYDBH9bUAAWR206qUUxWSIozy6D3sGQe71zKJXhlQzEW8XlqgLIlz1PTKhc4qSFZEBJuMtU7DzsqB6g75hX2LMszBrFlkyuZA9QIh+QYYrkspSiqIyLI6MykoTMyZzsfguRWWEzjCykrvHQBWZ79JkLJqMRZOxaDIWTSbOyL0D13+tsyqU0oUAAAAASUVORK5CYII="
-          />
+        <button mat-menu-item (click)="raiseNewClaim()" *ngIf="formValues.deliveryStatus">
+          <img id="raise-claim" alt="Shiptech"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAmCAYAAABOFCLqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAGPSURBVFhH7ZahSwRBFIcPDIJgEAyCYBAEg2AQrttMcsUgtkuCwaRJLAa5dkkwWLRptZqtVqv/yMg38INxnTc7ygwqTvjY2dt3M9++927mBsPtkfstNBmLvyuztbPv5q6e3eD+rZf56ZOPj81jkS0TiixePLj1gxOTtfG5j1s9vIzOZZElIxGxfHodjQtBJicupFdGIjN3r/6Nf1SGCZk4ZOV4Go0NqSZDM8aepaguQ5m4T0EMsdVlFiaPfpxCAv+rTPySWCQFexCxjKvK5PQMmx6x1WU29o4+7bZdNnfHPra6TE6ZaHJiGVeV+QrVZZbObv1YxHZiPpu9efmQKZWuj6IyPEeAK/2js4xzLUeoWJlYDBH9bUAAWR206qUUxWSIozy6D3sGQe71zKJXhlQzEW8XlqgLIlz1PTKhc4qSFZEBJuMtU7DzsqB6g75hX2LMszBrFlkyuZA9QIh+QYYrkspSiqIyLI6MykoTMyZzsfguRWWEzjCykrvHQBWZ79JkLJqMRZOxaDIWTSbOyL0D13+tsyqU0oUAAAAASUVORK5CYII=" />
           <span class="label-for-delivery-menu">Raise claim</span>
         </button>
       </mat-menu>
@@ -65,21 +41,12 @@
     <div class="col-12">
       <p-panel [showHeader]="false">
         <div fxLayout="row">
-          <shiptech-bdn-information
-            [events]="eventsSubject.asObservable()"
-            [model]="formValues"
-            [entityId]="entityId"
-            [orderNumberOptions]="orderNumberOptions"
-            [relatedDeliveries]="relatedDeliveries"
-            (changeInputBdn)="detectChanges($event)"
-            (onOrderNumberChanged)="getOrderNumberChanged($event)"
-            [bargeList]="bargeList"
-            [statusColorCode]="statusColorCode"
-            [eventsSaveButton]="eventsSubject2.asObservable()"
-            class="col-12"
-            style="margin-right: 0px !important;
-            padding-right: 0px !important;"
-          >
+          <shiptech-bdn-information [events]="eventsSubject.asObservable()" [model]="formValues" [entityId]="entityId"
+            [orderNumberOptions]="orderNumberOptions" [relatedDeliveries]="relatedDeliveries"
+            (changeInputBdn)="detectChanges($event)" (onOrderNumberChanged)="getOrderNumberChanged($event)"
+            [bargeList]="bargeList" [statusColorCode]="statusColorCode"
+            [eventsSaveButton]="eventsSubject2.asObservable()" class="col-12" style="margin-right: 0px !important;
+            padding-right: 0px !important;">
           </shiptech-bdn-information>
         </div>
       </p-panel>
@@ -92,23 +59,13 @@
     <div class="col-12">
       <p-panel [showHeader]="false">
         <div fxLayout="row">
-          <shiptech-delivery-products-group
-            [events]="eventsSubject.asObservable()"
-            [model]="formValues"
-            [finalQuantityRules]="finalQuantityRules"
-            [toleranceLimits]="toleranceLimits"
-            [uoms]="uoms"
-            [pumpingRateUom]="pumpingRateUom"
-            [uomMass]="uomMass"
-            [uomVolume]="uomVolume"
-            [conversionInfoData]="conversionInfoData"
-            [quantityCategory]="quantityCategory"
-            class="col-12"
-            (onProductSelected)="getSelectedProduct($event)"
-            [eventsConversionInfoData]="eventsSubject3.asObservable()"
+          <shiptech-delivery-products-group [events]="eventsSubject.asObservable()" [model]="formValues"
+            [finalQuantityRules]="finalQuantityRules" [toleranceLimits]="toleranceLimits" [uoms]="uoms"
+            [pumpingRateUom]="pumpingRateUom" [uomMass]="uomMass" [uomVolume]="uomVolume"
+            [conversionInfoData]="conversionInfoData" [quantityCategory]="quantityCategory" class="col-12"
+            (onProductSelected)="getSelectedProduct($event)" [eventsConversionInfoData]="eventsSubject3.asObservable()"
             [eventsSaveButton]="eventsSubject2.asObservable()"
-            [eventsChangedOrderNumber]="eventsSubject4.asObservable()"
-          >
+            [eventsChangedOrderNumber]="eventsSubject4.asObservable()">
           </shiptech-delivery-products-group>
         </div>
       </p-panel>
@@ -120,17 +77,10 @@
     <div class="col-12">
       <p-panel [showHeader]="false">
         <div fxLayout="row">
-          <shiptech-bdn-additional-information
-            [events]="eventsSubject.asObservable()"
-            [model]="formValues"
-            [finalQuantityRules]="finalQuantityRules"
-            [toleranceLimits]="toleranceLimits"
-            [deliveryFeedback]="deliveryFeedback"
-            [satisfactionLevel]="satisfactionLevel"
-            [pumpingRateUom]="pumpingRateUom"
-            [sampleSource]="sampleSource"
-            class="col-12"
-          >
+          <shiptech-bdn-additional-information [events]="eventsSubject.asObservable()" [model]="formValues"
+            [finalQuantityRules]="finalQuantityRules" [toleranceLimits]="toleranceLimits"
+            [deliveryFeedback]="deliveryFeedback" [satisfactionLevel]="satisfactionLevel"
+            [pumpingRateUom]="pumpingRateUom" [sampleSource]="sampleSource" class="col-12">
           </shiptech-bdn-additional-information>
         </div>
       </p-panel>
@@ -143,13 +93,8 @@
     <div class="col-12">
       <p-panel [showHeader]="false">
         <div fxLayout="row">
-          <shiptech-notes-log
-            [model]="formValues"
-            [entityId]="entityId"
-            (mouseleave)="notesUpdate()"
-            class="col-12"
-            style="padding-left: 0px; padding-right: 0px;"
-          >
+          <shiptech-notes-log [model]="formValues" [entityId]="entityId" class="col-12"
+            style="padding-left: 0px; padding-right: 0px;">
           </shiptech-notes-log>
         </div>
       </p-panel>
@@ -157,20 +102,12 @@
   </div>
 </div>
 
-<div
-  class="bootstrap-loading"
-  *ngIf="isLoading"
-  style="top: 0px !important; background-color: #DCE3EB; z-index: 100000; height: 100vh;"
->
+<div class="bootstrap-loading" *ngIf="isLoading"
+  style="top: 0px !important; background-color: #DCE3EB; z-index: 100000; height: 100vh;">
   <div class="bounce1" style="position: relative; top: 40% !important"></div>
   <div class="bounce2" style="position: relative; top: 40% !important"></div>
   <div class="bounce3" style="position: relative; top: 40% !important"></div>
 </div>
 
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-spin-clockwise-fade"
->
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade">
 </ngx-spinner>
