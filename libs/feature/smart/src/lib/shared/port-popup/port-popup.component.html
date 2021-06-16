@@ -113,7 +113,7 @@
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   <div>Port Remarks</div>
-                  <div class="count">{{portRemarkList.length}}
+                  <div class="count">{{(portRemarkList?.length)? portRemarkList.length: 0}}
                   </div>
                 </mat-panel-title>
               </mat-expansion-panel-header>
@@ -148,7 +148,7 @@
                               alt="tick-icon">
                             <div style="flex: 0 0 56%;">{{item?.remarkStatus?.name}}</div>
                           </ng-container>
-                          <port-menu #menu [item]="item" [alerts]="alerts" (refreshPortRemark)="refreshPortRemark($event)"></port-menu>
+                          <port-menu #menu [item]="item" [remarkLogs]="portRemarkLogs" (refreshPortRemark)="refreshPortRemark($event)"></port-menu>
                         </div>
                       </div>
                     </div>
