@@ -1,9 +1,11 @@
-﻿commit b563b99fdabfe71dbdb6d24ee5a4ec279928a970
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jun 16 18:28:49 2021 +0000
+﻿commit 3df43fffd67017b3e028b91d8740779694aa178b
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 16 22:36:10 2021 +0000
 
-    Merged PR 11590: #29771: Port details: View Port remarks change log section has completed
+    Merged PR 11591: #29704 tableview styles update.
     
-    Related work items: #29771
+    #29704 tableview styles update.
+    
+    Related work items: #29704
 
 branch: master
