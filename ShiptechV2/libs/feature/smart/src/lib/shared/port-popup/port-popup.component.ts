@@ -31,7 +31,7 @@ export interface IPortProduct {
 export class PortPopupComponent implements OnInit {
 
   @ViewChild('newRemarksMenuTrigger') newRemarksMenuTrigger: MatMenuTrigger;
-  public alerts;
+  public remarkLogs;
   public otherPorts;
   public agentsInfo;
   public hsfo;
@@ -56,6 +56,7 @@ export class PortPopupComponent implements OnInit {
   PortGradeList: IPortGrade;
   portRemarkList: any = [];
   public shiptechUrl : string;
+  portRemarkLogs: any;
 
   constructor(private logger: LoggerService,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) {
     this.shiptechUrl =  new URL(window.location.href).origin;
@@ -83,9 +84,6 @@ export class PortPopupComponent implements OnInit {
         time: "MAR 12, 2020 1:43PM",
         action: "Alert marked as resolved by John Smith"
       }
-    ]
-    this.alerts = [
-
     ]
     this.loadPortBasicInfo(this.popup_data.locationId);
     this.loadOtherDetails(this.popup_data.locationId);
@@ -341,7 +339,8 @@ export class PortPopupComponent implements OnInit {
     this.portService.putPortRemark(requestPayload).subscribe(data=> {
       console.log(data);
       this.closeMenu();
-      this.portRemarkList = data.payload;
+      this.portRemarkList = data?.payload?.portRemarkDetails;
+      this.portRemarkLogs = data?.payload?.portRemarkLogs;
       this.triggerClickEvent();
     })
   }
@@ -351,12 +350,263 @@ export class PortPopupComponent implements OnInit {
     }
     this.portService.loadPortRemark(requestPayload).subscribe(data=> {
       console.log(data);
-      this.portRemarkList = data.payload;
+      this.portRemarkList = data?.payload?.portRemarkDetails;
+      this.portRemarkLogs = data?.payload?.portRemarkLogs;
+      // this.portRemarkLogs = [
+      //   {
+      //     "portId": 425,
+      //     "remarkTypes": {
+      //       "id": 1,
+      //       "name": "Market price variation",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "remarkStatus": {
+      //       "id": 2,
+      //       "name": "Pending",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdOn": "2021-06-16T17:07:48.613Z",
+      //     "lastModifiedBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "lastModifiedOn": "2021-06-16T17:07:48.613Z",
+      //     "id": 1,
+      //     "isDeleted": false,
+      //     "modulePathUrl": null,
+      //     "clientIpAddress": null,
+      //     "userAction": null
+      //   },
+      //   {
+      //     "portId": 425,
+      //     "remarkTypes": {
+      //       "id": 2,
+      //       "name": "Port closure",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "remarkStatus": {
+      //       "id": 2,
+      //       "name": "Pending",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdOn": "2021-06-16T17:08:41.537Z",
+      //     "lastModifiedBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "lastModifiedOn": "2021-06-16T17:08:41.537Z",
+      //     "id": 2,
+      //     "isDeleted": false,
+      //     "modulePathUrl": null,
+      //     "clientIpAddress": null,
+      //     "userAction": null
+      //   },
+      //   {
+      //     "portId": 425,
+      //     "remarkTypes": {
+      //       "id": 2,
+      //       "name": "Port closure",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "remarkStatus": {
+      //       "id": 3,
+      //       "name": "Resolved",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdOn": "2021-06-16T17:09:22.233Z",
+      //     "lastModifiedBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "lastModifiedOn": "2021-06-16T17:09:22.233Z",
+      //     "id": 3,
+      //     "isDeleted": false,
+      //     "modulePathUrl": null,
+      //     "clientIpAddress": null,
+      //     "userAction": null
+      //   },
+      //   {
+      //     "portId": 425,
+      //     "remarkTypes": {
+      //       "id": 2,
+      //       "name": "Port closure",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "remarkStatus": {
+      //       "id": 2,
+      //       "name": "Pending",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "createdOn": "2021-06-16T17:12:34.837Z",
+      //     "lastModifiedBy": {
+      //       "id": 0,
+      //       "name": "RM",
+      //       "internalName": null,
+      //       "displayName": null,
+      //       "code": null,
+      //       "collectionName": null,
+      //       "customNonMandatoryAttribute1": null,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     "lastModifiedOn": "2021-06-16T17:12:34.837Z",
+      //     "id": 4,
+      //     "isDeleted": false,
+      //     "modulePathUrl": null,
+      //     "clientIpAddress": null,
+      //     "userAction": null
+      //   }
+      // ];
       this.triggerClickEvent();
     })
   }
   refreshPortRemark(portRemarkRes) {
-    this.portRemarkList = (portRemarkRes?.payload?.length)? portRemarkRes.payload: [];
+    this.portRemarkList = (portRemarkRes?.payload?.portRemarkDetails)? portRemarkRes.payload.portRemarkDetails: [];
     this.triggerClickEvent();
   }
   
@@ -433,12 +683,12 @@ export class PortPopupComponent implements OnInit {
   <div *ngIf="item?.remarkStatus?.name != 'No Action Taken'" class="change-log">
     <div>Change Log</div>
     <div style="height:70px;max-height: 100px;overflow-y: scroll;">
-      <div *ngFor="let data of item.changeLog" style="margin:5px 0px">
+      <div *ngFor="let data of portRemarkLogs" style="margin:5px 0px">
         <div style="display: flex;align-items: center;">
           <div class="circle-blue"></div>
-          <div class="log-date">{{data.time}}</div>
+          <div class="log-date">{{data?.createdOn | date: 'MMM d, y hh:mm a'}}</div>
         </div>
-        <div class="log-action">{{data.action}}</div>
+        <div class="log-action">Alert marked as {{data?.remarkStatus?.name}} by {{data?.createdBy?.name}}</div>
       </div>
     </div>
   </div>
@@ -453,7 +703,7 @@ export class PortPopupComponent implements OnInit {
 })
 export class PortMenuComponent {
   @Input('item') item;
-  @Input('alerts') alerts;
+  @Input('remarkLogs') remarkLogs;
   @Output('refreshPortRemark') refreshPortRemark = new EventEmitter();
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
   portStatuses = [];
@@ -461,13 +711,36 @@ export class PortMenuComponent {
   public menuClick: boolean = false;
   public selectionChange: boolean = false;
   public theme: boolean = true;
-  constructor(private elem: ElementRef,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase) { }
+  portRemarkLogs: any;
+  constructor(private elem: ElementRef,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) { }
   ngOnInit(){
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.loadMasterLookupData();
   }
   async loadMasterLookupData() {
+    let remarkType = this.item?.remarkTypes?.name;
+    let groupRemarkLog = await this.groupByRemarkLogs();
+    this.portRemarkLogs = (groupRemarkLog[remarkType]?.length)? groupRemarkLog[remarkType]: [];
+
     this.portStatuses = await this.legacyLookupsDatabase.getPortStatuses();
+  }
+  groupByRemarkLogs() {
+    var groupRemarkType = [];
+    var groupRemarkLog = {}
+    return new Promise(resolve=> {
+      this.remarkLogs.map((logs, index)=>{
+        let type = logs.remarkTypes.name;
+        if(!(groupRemarkType.includes(type))) {
+            groupRemarkType.push(type);
+            groupRemarkLog[type] = [logs];
+        } else {
+            groupRemarkLog[type].push(logs);
+        }
+        if(this.remarkLogs.length == index+1) {
+          resolve(groupRemarkLog);
+        }
+      });
+    });
   }
   openMenu() {
     this.menuTrigger.openMenu();
@@ -517,7 +790,14 @@ export class PortMenuComponent {
 
   }
   updatePortRemark(status) {
-    this.closeMenu();
+    if((status=='Resolved') && (!(this.item?.comments) || (this.item?.comments.trim()==''))) {
+      let warnCommentMsg = "please enter a comment";
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        panelClass: 'confirmation-popup-operator',
+        data:  { message: warnCommentMsg, source: 'hardWarning' }
+      });
+      return;
+    }
       let selectedRemarkStatus = this.portStatuses.find(item=>item.name==status)
       let requestPayload = { 
           "PortId": this.item?.portId,
@@ -546,6 +826,7 @@ export class PortMenuComponent {
       this.selectionChange = false;
       this.portService.putPortRemark(requestPayload).subscribe(data=> {
         console.log(data);
+        this.closeMenu();
         this.refreshPortRemark.emit(data);
       })
     // setTimeout(() => {
