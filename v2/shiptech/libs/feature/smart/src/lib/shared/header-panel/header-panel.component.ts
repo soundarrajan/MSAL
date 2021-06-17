@@ -16,7 +16,10 @@ export class HeaderPanelComponent implements OnInit {
   @Input('showNotifications') showNotifFlag;
   @Input('showLogout') showLogout;
   public nameInitials = "YH";
-  constructor() { }
+  public baseUrl : string;
+  constructor() { 
+    this.baseUrl = new URL(window.location.href).origin;
+  }
 
   ngOnInit() {
   }
