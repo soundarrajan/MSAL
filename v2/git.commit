@@ -1,7 +1,11 @@
-﻿commit 6111c8e9760121f3bca3f9e9d01c7c3c8feec8c9
-Author: Gokul Dhas Simson <gokul.s@Inatech.com>
-Date:   Thu Jun 17 11:24:10 2021 +0530
+﻿commit 65c0fd65c06b4c96c0a7faa0220c5b1d582fe043
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jun 17 09:11:16 2021 +0000
 
-    33136 - alignment fixed, 33139 - Invoice 000 fixed
+    Merged PR 11605: #33085 End of the Voyage details bug fix
+    
+    #33085 End of the Voyage details bug fix
+    
+    Related work items: #33085
 
 branch: master
