@@ -36,7 +36,7 @@
         </div>
 
     </div>
-    <div class="row">
+    <!-- <div class="row">
     	<div class="col-md-4">
             <div class="form_input form_input_needInvoiceReview form-group">
                 <div class="">
@@ -47,7 +47,7 @@
                     </label>
                 </div>
             </div>
-    	</div>
+    	</div> -->
 
         <div class="col-md-4">
             <div class="form_input form_input_isDebunker form-group">
@@ -73,18 +73,7 @@
             </div>
     	</div>
 
-        <div class="col-md-4">
-        	<div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
-        		<label for="needWarningWhenSellerPaymentOnHold" class="simpleLookupLabel" style="max-height: initial;">
-        			{{ CM.app_id + '.NEED_WARNING_WHEN_SELLER_PAYMENT_ON_HOLD' | translate }}
-        		</label>
-        		<div class="input-group form_input form_input_needWarningWhenSellerPaymentOnHold">
-        			<select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HardSoftStop track by item.id" ng-required="true" id="needWarningWhenSellerPaymentOnHold" ng-model="formValues.invoice.needWarningWhenSellerPaymentOnHold"></select>
-        		</div>
-        	</div>
-        </div>
-        <div class="row">
-    	<div class="col-md-4 ">
+        <div class="col-md-4 ">
             <div class="form_input form_input_isNeedForSubmitForApproval form-group">
                 <div class="">
                     <label class="mt-checkbox">
@@ -95,6 +84,18 @@
                 </div>
             </div>
     	</div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
+                    <label for="needWarningWhenSellerPaymentOnHold" class="simpleLookupLabel" style="max-height: initial;">
+                        {{ CM.app_id + '.NEED_WARNING_WHEN_SELLER_PAYMENT_ON_HOLD' | translate }}
+                    </label>
+                    <div class="input-group form_input form_input_needWarningWhenSellerPaymentOnHold">
+                        <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HardSoftStop track by item.id" ng-required="true" id="needWarningWhenSellerPaymentOnHold" ng-model="formValues.invoice.needWarningWhenSellerPaymentOnHold"></select>
+                    </div>
+                </div>
+            </div>
     </div>
 
     </div>
