@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'shiptech-wunderbar',
@@ -7,7 +8,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WunderBarComponent implements OnInit {
-  constructor() {}
+  isQcScreen: boolean = false;
+  constructor(private router: Router) {
+    if (this.router.url.includes('quantity-control/report/')) {
+      this.isQcScreen = true;
+    }
+  }
 
   ngOnInit(): void {}
 }
