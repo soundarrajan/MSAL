@@ -227,14 +227,16 @@ export class SmartOperatorComponent implements OnInit {
       }
     },
     {
-      headerName: 'LSDIS', headerTooltip: 'LSDIS', field: 'lsdis_current_stock', width: 100,
-      headerClass: ['aggrid-text-align-c'],
+      headerName: 'VLSFO', headerTooltip: 'VLSFO', field: 'vlsfo_current_stock', width: 100,
+      headerClass: 'aggrid-text-align-c',
+      cellClass: ['inset-cell aggrid-content-center'],
       cellRendererFramework: AGGridCellRendererComponent,
-      cellClass: ['inset-cell aggrid-content-center '],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
         classArray.push(' aggrid-space');
-        let newClass = params.value === '120 MT' ? 'bg-yellow p-lr-5' : 'inner-box p-lr-5';
+        let newClass = params.value === '120 MT' ? 'bg-yellow p-lr-5 ' :
+
+          'inner-box p-lr-5';
         classArray.push(newClass);
         return { cellClass: classArray.length > 0 ? classArray : null }
       }
@@ -253,16 +255,14 @@ export class SmartOperatorComponent implements OnInit {
       }
     },
     {
-      headerName: 'VLSFO', headerTooltip: 'VLSFO', field: 'vlsfo_current_stock', width: 100,
-      headerClass: 'aggrid-text-align-c',
-      cellClass: ['inset-cell aggrid-content-center'],
+      headerName: 'LSDIS', headerTooltip: 'LSDIS', field: 'lsdis_current_stock', width: 100,
+      headerClass: ['aggrid-text-align-c'],
       cellRendererFramework: AGGridCellRendererComponent,
+      cellClass: ['inset-cell aggrid-content-center '],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
         classArray.push(' aggrid-space');
-        let newClass = params.value === '120 MT' ? 'bg-yellow p-lr-5 ' :
-
-          'inner-box p-lr-5';
+        let newClass = params.value === '120 MT' ? 'bg-yellow p-lr-5' : 'inner-box p-lr-5';
         classArray.push(newClass);
         return { cellClass: classArray.length > 0 ? classArray : null }
       }
@@ -284,7 +284,7 @@ export class SmartOperatorComponent implements OnInit {
     },
     { headerName: 'New Request', headerTooltip: 'New Request', field: 'newrequest', cellClass: 'aggridlink aggrid-vertical-center', width: 120,
       cellRendererFramework: AGGridCellDataComponent, 
-      cellRendererParams: { type: 'newRequest', redirectUrl: `${this.shiptechUrl}/#/edit-request` },
+      cellRendererParams: { type: 'newRequest', redirectUrl: `${this.shiptechUrl}/#/new-request` },
     }
   ];
 
