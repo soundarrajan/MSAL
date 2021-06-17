@@ -1,11 +1,7 @@
-﻿commit aa1fe688526d4fd809099725eb6797a9bb887ecb
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Thu Jun 17 12:24:03 2021 +0000
+﻿commit 41717f74433b714563af7d2f327ab1815eef0025
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Jun 17 15:44:45 2021 +0000
 
-    Merged PR 11620: fix css
-    
-    fix css
-    
-    Related work items: #33148
+    Merged PR 11628: Fixed 33148
 
 branch: master
