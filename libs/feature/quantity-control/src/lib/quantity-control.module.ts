@@ -93,7 +93,6 @@ import { ExportModule } from '@shiptech/core/ui/components/export/export.module'
     AuditLogModule,
     DocumentsModule,
     WunderBarModule,
-    WunderBarQCModule,
     ButtonModule,
     PaginatorModule,
     TabMenuModule,
