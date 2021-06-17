@@ -1,11 +1,11 @@
-﻿commit db5224fc529badf931b4d4cc5ba1a9a3dc7b2515
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jun 17 10:10:30 2021 +0000
+﻿commit aa1fe688526d4fd809099725eb6797a9bb887ecb
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Thu Jun 17 12:24:03 2021 +0000
 
-    Merged PR 11607: #29907 Go to Shiptech application req fixed.
+    Merged PR 11620: fix css
     
-    #29907 Go to Shiptech application req fixed.
+    fix css
     
-    Related work items: #29907
+    Related work items: #33148
 
 branch: master
