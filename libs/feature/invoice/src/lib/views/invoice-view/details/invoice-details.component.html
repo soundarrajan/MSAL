@@ -50,7 +50,7 @@
                       getSupplierInvoiceNumberDateConfig().isMandatory
                     " (ngModelChange)="
                       formValues.sellerInvoiceNo = $event.toUpperCase()
-                    " placeholder="000" (blur)="isFormValid({ useToaster: false })" />
+                    " placeholder="Seller Invoice No" (blur)="isFormValid({ useToaster: false })" />
                   <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                 </mat-form-field>
               </div>
@@ -366,98 +366,105 @@
               <readonly-details [options]="orderDetails"></readonly-details>
               <readonly-details [options]="orderDetails2" style="margin: 0px 15px;"></readonly-details>
             </div>
-            <div class="form-fields">
-              <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
-                <div class="d-flex can-be-disabled">
-                  <mat-form-field class="with-search" appearance="legacy">
-                    <mat-label>Payment Company</mat-label>
-                    <input class="free-text-field" type="text" matInput [matTooltip]="
-                        formValues.orderDetails?.paymentCompany?.name
-                      " [matTooltipPosition]="'above'" matTooltipClass="custom-tooltip"
-                      [(ngModel)]="formValues.orderDetails.paymentCompany" [ngModelOptions]="{ standalone: true }"
-                      [matAutocomplete]="auto1" autocomplete="off" placeholder="Company" required [disabled]="
-                        formValues.status?.name === 'Approved' ? true : false
-                      " />
-                    <mat-autocomplete #auto1="matAutocomplete" class="darkPanelAuto" [ngClass]="{
-                        disabled: formValues.status?.name === 'Approved'
-                      }" [displayWith]="displayFn" (optionSelected)="setPaymentCompany($event.option.value)">
-                      <mat-option *ngFor="let option of filterCompanyList()" [value]="option">
-                        {{ option.name }}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-
-                  <button [ngClass]="{
-                    'search-icon-disabled':
-                      formValues.status && formValues.status?.name === 'Approved'
-                  }" class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector1"
-                    #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
-                    <div class="img">
-                      <ng-template cdkPortal #masterSelector1="cdkPortal">
-                        <shiptech-shared-master-selector (selectedChange)="
-                            selectorCompanySelectionChange($event);
-                            masterSelectorTrigger1.close()
-                          " (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompleteCompany"
-                          [disabled]="disabled" [readonly]="readonly" [entityName]="entityName" [entityId]="entityId"
-                          [vesselId]="vesselId" [headerName]="getHeaderNameSelector1()">
-                        </shiptech-shared-master-selector>
-                      </ng-template>
-                    </div>
-                  </button>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
+                  <div class="d-flex can-be-disabled">
+                    <mat-form-field class="with-search" appearance="legacy">
+                      <mat-label>Payment Company</mat-label>
+                      <input class="free-text-field" type="text" matInput [matTooltip]="
+                          formValues.orderDetails?.paymentCompany?.name
+                        " [matTooltipPosition]="'above'" matTooltipClass="custom-tooltip"
+                        [(ngModel)]="formValues.orderDetails.paymentCompany" [ngModelOptions]="{ standalone: true }"
+                        [matAutocomplete]="auto1" autocomplete="off" placeholder="Company" required [disabled]="
+                          formValues.status?.name === 'Approved' ? true : false
+                        " />
+                      <mat-autocomplete #auto1="matAutocomplete" class="darkPanelAuto" [ngClass]="{
+                          disabled: formValues.status?.name === 'Approved'
+                        }" [displayWith]="displayFn" (optionSelected)="setPaymentCompany($event.option.value)">
+                        <mat-option *ngFor="let option of filterCompanyList()" [value]="option">
+                          {{ option.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <button [ngClass]="{
+                      'search-icon-disabled':
+                        formValues.status && formValues.status?.name === 'Approved'
+                    }" class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector1"
+                      #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
+                      <div class="img">
+                        <ng-template cdkPortal #masterSelector1="cdkPortal">
+                          <shiptech-shared-master-selector (selectedChange)="
+                              selectorCompanySelectionChange($event);
+                              masterSelectorTrigger1.close()
+                            " (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompleteCompany"
+                            [disabled]="disabled" [readonly]="readonly" [entityName]="entityName" [entityId]="entityId"
+                            [vesselId]="vesselId" [headerName]="getHeaderNameSelector1()">
+                          </shiptech-shared-master-selector>
+                        </ng-template>
+                      </div>
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div id="custom-form-field" class="lightTheme can-be-disabled">
-                <mat-form-field class="without-search" appearance="legacy"
-                  [ngClass]="{ 'invalid-field': formErrors.deliveryDate }">
-                  <mat-label>Delivery Date</mat-label>
-                  <input [(ngModel)]="formValues.deliveryDate" name="deliveryDate" #validToDateField="ngModel" matInput
-                    [matDatepicker]="deliveryDate" (focus)="deliveryDate.open()" autocomplete="off" (dateChange)="
-                      formValues.deliveryDate = formatDateForBe(
-                        formValues.deliveryDate
-                      );
-                      triggerChangeFieldsAppSpecific('DeliveryDate')
-                    " placeholder="Delivery Date" [disabled]="formValues.status?.name === 'Approved'" required />
-                  <mat-datepicker-toggle matSuffix [for]="deliveryDate">
-                    <mat-icon matDatepickerToggleIcon class="icon-date">
-                    </mat-icon>
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #deliveryDate></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
-                <div class="d-flex">
-                  <mat-form-field class="with-search" appearance="legacy">
-                    <mat-label>Carrier</mat-label>
-                    <input class="free-text-field" type="text" matInput [matTooltip]="
-                        formValues.orderDetails?.carrierCompany?.name
-                      " [matTooltipPosition]="'above'" matTooltipClass="custom-tooltip"
-                      [(ngModel)]="formValues.orderDetails.carrierCompany" [ngModelOptions]="{ standalone: true }"
-                      [matAutocomplete]="auto2" autocomplete="off" placeholder="Carrier" />
-                    <mat-autocomplete #auto2="matAutocomplete" class="darkPanelAuto" [displayWith]="displayFn"
-                      (optionSelected)="setCarrierCompany($event.option.value)">
-                      <mat-option *ngFor="let option of filterCarrierList()" [value]="option">
-                        {{ option.name }}
-                      </mat-option>
-                    </mat-autocomplete>
+              <div class="col-md-3">
+                <div id="custom-form-field" class="lightTheme can-be-disabled" style="margin: 15px 0px;">
+                  <mat-form-field class="without-search" appearance="legacy"
+                    [ngClass]="{ 'invalid-field': formErrors.deliveryDate }">
+                    <mat-label>Delivery Date</mat-label>
+                    <input [(ngModel)]="formValues.deliveryDate" name="deliveryDate" #validToDateField="ngModel" matInput
+                      [matDatepicker]="deliveryDate" (focus)="deliveryDate.open()" autocomplete="off" (dateChange)="
+                        formValues.deliveryDate = formatDateForBe(
+                          formValues.deliveryDate
+                        );
+                        triggerChangeFieldsAppSpecific('DeliveryDate')
+                      " placeholder="Delivery Date" [disabled]="formValues.status?.name === 'Approved'" required />
+                    <mat-datepicker-toggle matSuffix [for]="deliveryDate">
+                      <mat-icon matDatepickerToggleIcon class="icon-date">
+                      </mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #deliveryDate></mat-datepicker>
                   </mat-form-field>
-
-                  <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector2"
-                    #masterSelectorTrigger2="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
-                    <div class="img">
-                      <ng-template cdkPortal #masterSelector2="cdkPortal">
-                        <shiptech-shared-master-selector (selectedChange)="
-                            selectorCarrierSelectionChange($event);
-                            masterSelectorTrigger2.close()
-                          " (shouldCloseModal)="masterSelectorTrigger2.close()" [selectorType]="autocompleteCarrier"
-                          [disabled]="disabled" [readonly]="readonly" [entityName]="entityName" [entityId]="entityId"
-                          [vesselId]="vesselId" [headerName]="getHeaderNameSelector2()">
-                        </shiptech-shared-master-selector>
-                      </ng-template>
-                    </div>
-                  </button>
                 </div>
               </div>
-            </div>
+
+              <div class="col-md-3">
+                <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
+                  <div class="d-flex">
+                    <mat-form-field class="with-search" appearance="legacy">
+                      <mat-label>Carrier</mat-label>
+                      <input class="free-text-field" type="text" matInput [matTooltip]="
+                          formValues.orderDetails?.carrierCompany?.name
+                        " [matTooltipPosition]="'above'" matTooltipClass="custom-tooltip"
+                        [(ngModel)]="formValues.orderDetails.carrierCompany" [ngModelOptions]="{ standalone: true }"
+                        [matAutocomplete]="auto2" autocomplete="off" placeholder="Carrier" />
+                      <mat-autocomplete #auto2="matAutocomplete" class="darkPanelAuto" [displayWith]="displayFn"
+                        (optionSelected)="setCarrierCompany($event.option.value)">
+                        <mat-option *ngFor="let option of filterCarrierList()" [value]="option">
+                          {{ option.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector2"
+                      #masterSelectorTrigger2="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
+                      <div class="img">
+                        <ng-template cdkPortal #masterSelector2="cdkPortal">
+                          <shiptech-shared-master-selector (selectedChange)="
+                              selectorCarrierSelectionChange($event);
+                              masterSelectorTrigger2.close()
+                            " (shouldCloseModal)="masterSelectorTrigger2.close()" [selectorType]="autocompleteCarrier"
+                            [disabled]="disabled" [readonly]="readonly" [entityName]="entityName" [entityId]="entityId"
+                            [vesselId]="vesselId" [headerName]="getHeaderNameSelector2()">
+                          </shiptech-shared-master-selector>
+                        </ng-template>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>    
 
             <div class="field-textarea">
               <textarea rows="4" cols="50" [disabled]="true" placeholder="Type Front office comments here"
