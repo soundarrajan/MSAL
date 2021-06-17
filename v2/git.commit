@@ -1,11 +1,7 @@
-﻿commit 3df43fffd67017b3e028b91d8740779694aa178b
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 16 22:36:10 2021 +0000
+﻿commit 6111c8e9760121f3bca3f9e9d01c7c3c8feec8c9
+Author: Gokul Dhas Simson <gokul.s@Inatech.com>
+Date:   Thu Jun 17 11:24:10 2021 +0530
 
-    Merged PR 11591: #29704 tableview styles update.
-    
-    #29704 tableview styles update.
-    
-    Related work items: #29704
+    33136 - alignment fixed, 33139 - Invoice 000 fixed
 
 branch: master
