@@ -1,11 +1,11 @@
-﻿commit b09050b629c3640b0b5cff7d4f8bc64deabc0019
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Jun 18 12:17:25 2021 +0000
+﻿commit 75c09c2d5635fa181de190e12ead4fba13629cb1
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Fri Jun 18 12:30:17 2021 +0000
 
-    Merged PR 11659: #29681 : Vessel redelivery info
+    Merged PR 11660: fix css errors | added book trade dropdown
     
-    #29681 : Vessel redelivery info
+    fix css errors | added book trade dropdown
     
-    Related work items: #29681
+    Related work items: #30913, #33345
 
 branch: master
