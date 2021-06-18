@@ -10,6 +10,8 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 export namespace VesselPopupApiPaths{
     export const getVesselBasicInfo = () => `api/Smart/Vessel/getVesselInfo`;
+    export const getVesselRedeliveryInfo = () => `api/Smart/Vessel/getVesselRedeliveryInfo`;
+    export const getVesselSchedule = () => `api/Smart/Vessel/getVesselSchedule`;
 }
 
 @Injectable({
@@ -26,6 +28,22 @@ export class VesselPopupService{
   getVesselBasicInfo(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${VesselPopupApiPaths.getVesselBasicInfo()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  getVesselRedeliveryInfo(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${VesselPopupApiPaths.getVesselRedeliveryInfo()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  getVesselSchedule(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${VesselPopupApiPaths.getVesselSchedule()}`,
       { payload: request }
     );
   }

@@ -1,9 +1,11 @@
-﻿commit 6330a62d2c5997ba645a6ece0365129787fec90e
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jun 18 10:12:23 2021 +0000
+﻿commit b09050b629c3640b0b5cff7d4f8bc64deabc0019
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri Jun 18 12:17:25 2021 +0000
 
-    Merged PR 11653: #33008: Vessel details future requests_ Popup is not displaying on mousehover issue has fixed
+    Merged PR 11659: #29681 : Vessel redelivery info
     
-    Related work items: #33008
+    #29681 : Vessel redelivery info
+    
+    Related work items: #29681
 
 branch: master
