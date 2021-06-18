@@ -28,6 +28,7 @@ export class VesselPopupComponent implements OnInit {
   public shiptechUrl : string = '';
   FutureRequest: any = [];
   scheduleDashboardLabelConfiguration: any;
+  public scheduleList : any = [];
  
   constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService : VesselPopupService) { 
     this.shiptechUrl =  new URL(window.location.href).origin;
@@ -49,6 +50,8 @@ export class VesselPopupComponent implements OnInit {
     });
     this.loadVesselBasicInfo(this.popup_data.vesselId);
     this.loadFutureRequestData();
+    this.loadRedeliveryInfo(this.popup_data.vesselId);
+    this.loadVesselScheduleList(this.popup_data.vesselId);
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.alerts = [
       {
@@ -226,13 +229,49 @@ export class VesselPopupComponent implements OnInit {
     })
   }
 
+  loadRedeliveryInfo(vesselId){
+    if(vesselId != null){
+      let req = { VesselId : vesselId};
+      this.vesselService.getVesselRedeliveryInfo(req).subscribe((res)=>{
+        if(res.payload.length > 0){
+          this.popup_data.vesselExpDate = this.dateFormatter(res.payload[0].expiryDate, '/');
+          this.popup_data.redeliveryDays = res.payload[0].redeliveryDays;
+          this.popup_data.hfo = res.payload[0].hsfoRedeliveryQty;
+          this.popup_data.lshfo = res.payload[0].lsfoRedeliveryQty;
+          this.popup_data.lsmdo = res.payload[0].lsmdoRedeliveryQty;
+          this.popup_data.mdo = res.payload[0].mdoRedeliveryQty;
+          this.popup_data.mgo = res.payload[0].mgoRedeliveryQty;
+          this.popup_data.lsmgo = res.payload[0].lsmgoRedeliveryQty;   
+
+          this.triggerClickEvent();     
+        }
+      })
+    }
+  }
+
+  loadVesselScheduleList(vesselId){
+    // if(vesselId != null){
+    //   let req = { Vessel_Imo : vesselId};
+    //   this.vesselService.getVesselSchedule(req).subscribe((res)=>{
+    //     if(res.payload.length > 0){
+    //       this.scheduleList = res.payload[0];
+
+    //       this.triggerClickEvent();     
+    //     }
+    //   })
+    // }
+  }
+
   triggerClickEvent() {
     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
       titleEle.click();
   }
 
-  dateFormatter(params) {
-    return moment(params.value).format('YYYY-MM-DD HH:mm');
+  dateFormatter(params, type?) {
+    if(type == '/')
+      return moment(params).format('DD/MM/YYYY');
+    else
+      return moment(params).format('YYYY-MM-DD HH:MM');
   }
 
   public changeDefault() {
@@ -254,13 +293,14 @@ export class VesselPopupComponent implements OnInit {
       this.localService.getCountriesList().subscribe(res => {
         selectedPort = res.filter(item => item.LocationName.toLowerCase() == portName.toLowerCase());
         data = {
-          position: 0,
-          port_view: 'higher-warning-view',//selectedPort[0].flag,
-          name: selectedPort[0].LocationName,
-          earliestTradingTime: '31 Days',
-          latestTradingTime: '2 Days',
-          avlProdCategory: ['HSFO', 'ULSFO', 'LSDIS'],
-          notavlProdCategory: ['DIS'],
+          locationId: selectedPort[0].locationId,
+          position: 1,
+          port_view: "standard-view",//pData.flag,
+          name: selectedPort[0].locationName,
+          earliestTradingTime: '',
+          latestTradingTime: '',
+          avlProdCategory: [],
+          //notavlProdCategory: ['DIS'],
           destination: 'Marseille',
           eta1: '2020-04-13 10:00',
           eta2: '2020-04-14 10:00',
