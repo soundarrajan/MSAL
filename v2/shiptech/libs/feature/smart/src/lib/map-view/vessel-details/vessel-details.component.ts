@@ -74,7 +74,7 @@ export class VesselDetailsComponent implements OnInit {
         this.vesselList = [];
         this.vesselList = vesselRes.map(vesselItem=> {
           let obj = tenantConfRes.find(imoItem => imoItem.id === vesselItem.id);
-          return {...vesselItem, imono:obj.name }
+          return obj? {...vesselItem, imono:obj.name }: false;
         })
         console.log(this.vesselList);
 

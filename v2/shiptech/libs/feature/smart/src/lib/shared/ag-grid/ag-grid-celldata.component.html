@@ -64,7 +64,7 @@
   <div *ngIf="params.type=='info-with-popup-multiple-values'">
     <div style="display:flex;flex-wrap:wrap;" >
       <div><span class="info-blue" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverTitle1"
-      (mouseenter)="toggleMenu($event);" (mouseleave)="toggleMenu2();" >i</span>{{params.value}}</div>
+      (mouseenter)="menuClick && toggleMenu($event);" (mouseleave)="!menuClick && toggleMenu2();" (click)="triggerOnClick($event)">i</span>{{params.value}}</div>
     </div> 
   </div>
     <mat-menu class="port-future-req-popup" #hoverTitle1="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">

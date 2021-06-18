@@ -1,9 +1,9 @@
-﻿commit c26329a76c46d185a8baf8a19bbb9bf0bccd206d
+﻿commit 6330a62d2c5997ba645a6ece0365129787fec90e
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jun 18 09:35:56 2021 +0000
+Date:   Fri Jun 18 10:12:23 2021 +0000
 
-    Merged PR 11648: #32403: Bunker plan Request: Suggested Qty issue has fixed in future request sections
+    Merged PR 11653: #33008: Vessel details future requests_ Popup is not displaying on mousehover issue has fixed
     
-    Related work items: #32403
+    Related work items: #33008
 
 branch: master
