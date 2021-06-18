@@ -1068,7 +1068,7 @@ export class PortPopupComponent implements OnInit {
   <div class="comments">
                             <div>Description</div>
                             <mat-form-field appearance="fill">
-                              <textarea matInput disabled [value]="item.remarkDescriptions"></textarea>
+                              <textarea matInput disabled [value]="item?.remarkDescriptions"></textarea>
                             </mat-form-field>
                           </div>
   <div class="status">
@@ -1084,7 +1084,7 @@ export class PortPopupComponent implements OnInit {
     class="comments">
     <div>Comments</div>
     <mat-form-field appearance="fill">
-      <textarea style="caret-color:#fff !important;" matInput [value]="item.remarkComments" [(ngModel)]="item.comments"
+      <textarea style="caret-color:#fff !important;" matInput [(ngModel)]="item.remarkComments"
         (click)="$event.stopPropagation();"></textarea>
     </mat-form-field>
   </div>
@@ -1198,7 +1198,7 @@ export class PortMenuComponent {
 
   }
   updatePortRemark(status) {
-    if((status=='Resolved') && (!(this.item?.comments) || (this.item?.comments.trim()==''))) {
+    if((status=='Resolved') && (!(this.item?.remarkComments) || (this.item?.remarkComments.trim()==''))) {
       let warnCommentMsg = "please enter a comment";
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         panelClass: 'confirmation-popup-operator',
@@ -1226,7 +1226,7 @@ export class PortMenuComponent {
                 "name": this.item?.remarkSeverity?.name
               },
               "RemarkDescriptions": this.item?.remarkDescriptions,
-              "RemarkComments": this.item?.comments,
+              "RemarkComments": this.item?.remarkComments,
               "IsDeleted" : 0
             }
           ]
