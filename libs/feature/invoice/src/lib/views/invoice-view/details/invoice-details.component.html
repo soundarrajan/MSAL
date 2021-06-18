@@ -97,7 +97,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="custom-form-field-with-search lightTheme"
+            <div class="col-md-3 custom-form-field-with-search lightTheme"
               style="margin-top: 8px !important; padding-left: 15px;">
               <div class="d-flex">
                 <mat-form-field class="with-search" [ngClass]="{
@@ -387,7 +387,7 @@
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>
-  
+
                     <button [ngClass]="{
                       'search-icon-disabled':
                         formValues.status && formValues.status?.name === 'Approved'
@@ -446,7 +446,7 @@
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>
-  
+
                     <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector2"
                       #masterSelectorTrigger2="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
                       <div class="img">
@@ -464,7 +464,7 @@
                   </div>
                 </div>
               </div>
-            </div>    
+            </div>
 
             <div class="field-textarea">
               <textarea rows="4" cols="50" [disabled]="true" placeholder="Type Front office comments here"
