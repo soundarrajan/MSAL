@@ -133,7 +133,7 @@ export class PortPopupComponent implements OnInit {
     this.remarkTypes = await this.legacyLookupsDatabase.getPortRemarks();
     this.portSeverities = await this.legacyLookupsDatabase.getPortSeverities();
     this.portStatuses = await this.legacyLookupsDatabase.getPortStatuses();
-    // this.severity = this.portSeverities.find(item=>item.id==1);
+    this.severity = this.portSeverities.find(item=>item.id==1);
     console.log(this.remarkTypes);
     
   }
@@ -350,6 +350,414 @@ export class PortPopupComponent implements OnInit {
     }
     this.portService.loadPortRemark(requestPayload).subscribe(data=> {
       console.log(data);
+      // data.payload = {
+      //   "portRemarkDetails": [
+      //     {
+      //       "portId": 425,
+      //       "remarkTypes": {
+      //         "id": 1,
+      //         "name": "Market price variation",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkStatus": {
+      //         "id": 2,
+      //         "name": "Pending",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkSeverity": {
+      //         "id": 2,
+      //         "name": "Medium",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkDescriptions": "Sample Description pending",
+      //       "remarkComments": "Sample Comments  pending",
+      //       "createdBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdOn": "2021-06-16T17:07:48.613Z",
+      //       "lastModifiedBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "lastModifiedOn": "2021-06-16T17:07:48.613Z",
+      //       "id": 1,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     {
+      //       "portId": 425,
+      //       "remarkTypes": {
+      //         "id": 2,
+      //         "name": "Port closure",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkStatus": {
+      //         "id": 2,
+      //         "name": "Pending",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkSeverity": {
+      //         "id": 2,
+      //         "name": "Medium",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkDescriptions": "Sample Description pending",
+      //       "remarkComments": "Sample Comments  pending",
+      //       "createdBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdOn": "2021-06-16T17:12:34.837Z",
+      //       "lastModifiedBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "lastModifiedOn": "2021-06-16T17:12:34.837Z",
+      //       "id": 2,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     }
+      //   ],
+      //   "portRemarkLogs": [
+      //     {
+      //       "portId": 425,
+      //       "remarkTypes": {
+      //         "id": 1,
+      //         "name": "Market price variation",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkStatus": {
+      //         "id": 2,
+      //         "name": "Pending",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdOn": "2021-06-16T17:07:48.613Z",
+      //       "lastModifiedBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "lastModifiedOn": "2021-06-16T17:07:48.613Z",
+      //       "id": 1,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     {
+      //       "portId": 425,
+      //       "remarkTypes": {
+      //         "id": 2,
+      //         "name": "Port closure",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkStatus": {
+      //         "id": 2,
+      //         "name": "Pending",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdOn": "2021-06-16T17:08:41.537Z",
+      //       "lastModifiedBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "lastModifiedOn": "2021-06-16T17:08:41.537Z",
+      //       "id": 2,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     {
+      //       "portId": 425,
+      //       "remarkTypes": {
+      //         "id": 2,
+      //         "name": "Port closure",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkStatus": {
+      //         "id": 3,
+      //         "name": "Resolved",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdOn": "2021-06-16T17:09:22.233Z",
+      //       "lastModifiedBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "lastModifiedOn": "2021-06-16T17:09:22.233Z",
+      //       "id": 3,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     },
+      //     {
+      //       "portId": 425,
+      //       "remarkTypes": {
+      //         "id": 2,
+      //         "name": "Port closure",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "remarkStatus": {
+      //         "id": 2,
+      //         "name": "Pending",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "createdOn": "2021-06-16T17:12:34.837Z",
+      //       "lastModifiedBy": {
+      //         "id": 0,
+      //         "name": "RM",
+      //         "internalName": null,
+      //         "displayName": null,
+      //         "code": null,
+      //         "collectionName": null,
+      //         "customNonMandatoryAttribute1": null,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       "lastModifiedOn": "2021-06-16T17:12:34.837Z",
+      //       "id": 4,
+      //       "isDeleted": false,
+      //       "modulePathUrl": null,
+      //       "clientIpAddress": null,
+      //       "userAction": null
+      //     }
+      //   ]
+      // };
       this.portRemarkList = data?.payload?.portRemarkDetails;
       this.portRemarkLogs = data?.payload?.portRemarkLogs;
       // this.portRemarkLogs = [
@@ -617,8 +1025,8 @@ export class PortPopupComponent implements OnInit {
   closeMenu() {
     this.selectedType = "";
     this.description = "";
-    this.severity = "";
-    // this.severity = 1;
+    // this.severity = "";
+    this.severity = this.portSeverities.find(item=>item.id==1);
     this.selectionChange = false;
     this.newRemarksMenuTrigger.closeMenu();
   }
