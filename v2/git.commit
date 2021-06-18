@@ -1,9 +1,9 @@
-﻿commit e7f9001301ff4b90578c99ad7277513b5101e665
+﻿commit 8d692aa6238fd91f259ec685f8bb7095a3cd5bad
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jun 18 08:02:41 2021 +0000
+Date:   Fri Jun 18 08:30:40 2021 +0000
 
-    Merged PR 11641: #29771 - default severity be high and display the icon on the header as per the severity selected changes has done
+    Merged PR 11644: #32913: Future requests_ The cancelled requests are showing in the future requests section issue has fixed
     
-    Related work items: #29771
+    Related work items: #32913
 
 branch: master

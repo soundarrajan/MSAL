@@ -1084,7 +1084,7 @@ export class PortPopupComponent implements OnInit {
     class="comments">
     <div>Comments</div>
     <mat-form-field appearance="fill">
-      <textarea style="caret-color:#fff !important;" matInput [(ngModel)]="item.comments"
+      <textarea style="caret-color:#fff !important;" matInput [value]="item.remarkComments" [(ngModel)]="item.comments"
         (click)="$event.stopPropagation();"></textarea>
     </mat-form-field>
   </div>
