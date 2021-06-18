@@ -174,6 +174,16 @@ export class VesselPopupComponent implements OnInit {
               "FilterOperator": 0
             },
             {
+              "columnValue": "ProductStatus_DisplayName",
+              "ColumnType": "Text",
+              "isComputedColumn": false,
+              "ConditionValue": "!=",
+              "Values": [
+                  "cancelled"
+              ],
+              "FilterOperator": 0
+            },
+            {
                 "columnValue": "vesselId",
                 "ColumnType": "Text",
                 "isComputedColumn": false,
