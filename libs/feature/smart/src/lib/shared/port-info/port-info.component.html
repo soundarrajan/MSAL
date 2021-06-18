@@ -15,12 +15,14 @@
       </mat-expansion-panel-header>
       <div class="panel-body" style="height: 368px;">
         <div style="height: 100%;width: 100%;">
-          <ag-grid-angular id="vesselArrivalsGrid" style="width:100%;height:100%" [gridOptions]="gridOptions"
+          <ag-grid-angular id="vesselArrivalsGrid" style="width:100%;height:100%" 
+          [rowData] = "rowData"
+          [gridOptions]="gridOptions"
             class="ag-theme-balham-dark"></ag-grid-angular>
         </div>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel #commentpanel
+    <!-- <mat-expansion-panel #commentpanel
       [ngClass]="{'fullheight':expandComments}" hideToggle="true" (closed)="expandComments = false">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -44,7 +46,7 @@
         <app-comments *ngIf="commentpanel.expanded"></app-comments>
       </div>
 
-    </mat-expansion-panel>
+    </mat-expansion-panel> -->
   </mat-accordion>
 </div>
 <!--------------->
