@@ -4723,7 +4723,7 @@ label {
 		.comments {
 			color: $text_color_title;
 			textarea {
-				color: $text_color_content;
+				color: $text_color_content !important;
 			}
 			.mat-form-field-flex {
 				background: $dark-l2;
