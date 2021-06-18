@@ -519,7 +519,7 @@ export class NotesLogComponent implements OnInit {
       id: 0,
       note: '',
       createdBy: createdBy,
-      createdAt: this.formatDateForBe(new Date()),
+      createdAt: new Date(),
       lastModifiedAt: null
     };
 
@@ -529,9 +529,7 @@ export class NotesLogComponent implements OnInit {
   }
 
   updateNotes(event, key) {
-    this.formValues.deliveryNotes[key].createdAt = _.cloneDeep(
-      this.formatDateForBe(new Date())
-    );
+    this.formValues.deliveryNotes[key].createdAt = _.cloneDeep(new Date());
     this.changeDetectorRef.detectChanges();
 
     // if the blur was because of outside focus
@@ -598,10 +596,15 @@ export class NotesLogComponent implements OnInit {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      // let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      //let newDate = date.toDate();
+      var elem = new Date(date);
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+        formattedDate = `${moment(elem).format('ddd')} ${formattedDate}`;
+      }
+      if (formattedDate.endsWith('00:00')) {
+        formattedDate = formattedDate.split('00:00')[0];
       }
       return formattedDate;
     }
