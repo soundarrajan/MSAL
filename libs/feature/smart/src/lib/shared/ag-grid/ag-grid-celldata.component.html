@@ -39,7 +39,7 @@
           <hr>
           <div class="row">
             <div class="col-6" style="color: #f4f7fa;">suggested Qty</div>
-            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.suggestedQuantity}} {{params?.data?.uomName}}</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{(params?.data?.suggestedQuantity && params.data.suggestedQuantity != -1)? (params.data.suggestedQuantity+' MT'): 'N/A'}}</div>
           </div>
         </div>
     </ng-template>
@@ -87,7 +87,8 @@
               <td>{{params?.data?.productName}}</td>
               <td>{{params?.data?.maxQuantity +' '+ params?.data?.uomName}}</td>
               <td>{{params?.data?.requestDate | date: 'dd/MM/yyyy HH:mm'}}</td>
-              <td>{{params?.data?.suggestedQuantity +' '+ params?.data?.uomName}}</td>
+              <!-- <td>{{params?.data?.suggestedQuantity +' '+ params?.data?.uomName}}</td> -->
+              <td>{{(params?.data?.suggestedQuantity && params.data.suggestedQuantity!=-1)? (params?.data?.suggestedQuantity+' MT'): 'N/A'}}</td>
             </tr>
             <!-- <tr class="port-tablevalues">
               <td>RMK5005</td>
