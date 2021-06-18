@@ -298,7 +298,7 @@
                   </div>
                   <div style="flex:0 0 20%;display: flex;flex-direction: column;align-items: self-start;">
                     <div class="label">Redelivery</div>
-                    <div class="value">10 Days</div>
+                    <div class="value">{{popup_data.redeliveryDays}} Days</div>
                   </div>
                 </div>
               </div>
@@ -312,15 +312,6 @@
                     </div>
                     <div class="name">
                       HFO
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="value">
-                      {{popup_data.lshfo}}
-                      <span class="unit">MT</span>
-                    </div>
-                    <div class="name">
-                      LSHFO
                     </div>
                   </div>
                   <div class="col-3">
@@ -359,6 +350,15 @@
                       LSMGO
                     </div>
                   </div>
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.lshfo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      LSHFO
+                    </div>
+                  </div>
                 </div>
               </div>
             </mat-expansion-panel>
@@ -374,7 +374,7 @@
               </mat-expansion-panel-header>
               <div *ngIf="fifth.expanded" class="schedule">
 
-                <div class="row">
+                <div class="row" *ngFor="let schedule of scheduleList">
                   <div class="col-3" style="line-height: 9px;display: flex;">
                     <div class="grey">
                       <img src="./assets/customicons/location.svg" alt="location">
@@ -400,7 +400,7 @@
                   <span class="col-1 icon-seperator pd-0">|</span>
                   <div class="days">-</div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-3" style="line-height: 9px;display: flex;">
                     <div class="grey">
                       <img src="./assets/customicons/location.svg" alt="location">
@@ -411,10 +411,10 @@
                       <img src="./assets/customicons/location-w.svg" alt="location">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
-                    </div>
+                    </div> -->
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
-                    <div class="caption-details-port current-location" (click)="openPort('Daesan')" matTooltip="Daesan">
+                    <!-- <div class="caption-details-port current-location" (click)="openPort('Daesan')" matTooltip="Daesan">
                       Daesan</div>
                   </div>
                   <span class="col-1 icon-seperator">|</span>
@@ -438,11 +438,11 @@
                       <img src="./assets/customicons/location-w.svg" alt="location">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
-                    </div>
+                    </div> -->
 
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
-                    <div class="caption-details-port" (click)="openPort('Loke')" matTooltip="Loke">
+                    <!-- <div class="caption-details-port" (click)="openPort('Loke')" matTooltip="Loke">
                       Loke </div>
                   </div>
                   <span class="col-1 icon-seperator">|</span>
@@ -465,11 +465,11 @@
                       <img src="./assets/customicons/location-w.svg" alt="location">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
-                    </div>
+                    </div> -->
 
                     <!-- </div>
                   <div class="col-2 pd-0 "> -->
-                    <div class="caption-details-port" (click)="openPort('Cristobal')" matTooltip="Cristobal">Cristobal
+                    <!-- <div class="caption-details-port" (click)="openPort('Cristobal')" matTooltip="Cristobal">Cristobal
                     </div>
                   </div>
                   <span class="col-1 icon-seperator">|</span>
@@ -481,7 +481,7 @@
                   </div>
                   <span class="col-1 icon-seperator pd-0">|</span>
                   <div class="days">10 Days</div>
-                </div>
+                </div> -->
                 <div class="row">
                   <div class="col-3" style="display: flex;">
                     <img class="grey" src="./assets/customicons/pin.svg" style="margin-top: -8px;"
