@@ -1,7 +1,9 @@
-﻿commit 41717f74433b714563af7d2f327ab1815eef0025
+﻿commit 5c371da74d43fb4c15a1c71ff29388fe2c14f671
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jun 17 15:44:45 2021 +0000
+Date:   Fri Jun 18 06:10:16 2021 +0000
 
-    Merged PR 11628: Fixed 33148
+    Merged PR 11635: Fixed date format for createdAt  from notes section in delivery screen
+    
+    Fixed date format for createdAt  from notes section in delivery screen
 
 branch: master
