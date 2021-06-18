@@ -1,9 +1,9 @@
-﻿commit 5c371da74d43fb4c15a1c71ff29388fe2c14f671
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Jun 18 06:10:16 2021 +0000
+﻿commit e7f9001301ff4b90578c99ad7277513b5101e665
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Jun 18 08:02:41 2021 +0000
 
-    Merged PR 11635: Fixed date format for createdAt  from notes section in delivery screen
+    Merged PR 11641: #29771 - default severity be high and display the icon on the header as per the severity selected changes has done
     
-    Fixed date format for createdAt  from notes section in delivery screen
+    Related work items: #29771
 
 branch: master
