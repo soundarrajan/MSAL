@@ -1,9 +1,11 @@
-﻿commit b7650392decd7e6acab1493c76bc18a6e54a0206
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jun 18 13:19:31 2021 +0000
+﻿commit 9f562c0036df93e7ca411c24a5c7c9a31a0bb4e4
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri Jun 18 13:28:40 2021 +0000
 
-    Merged PR 11663: #29771 - comment valiue bind and description text area color issue has fixed
+    Merged PR 11664: #29751 : vessel arrivals req
     
-    Related work items: #29771
+    #29751 : vessel arrivals req
+    
+    Related work items: #29751
 
 branch: master
