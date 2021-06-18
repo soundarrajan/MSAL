@@ -1,11 +1,9 @@
-﻿commit f4bb88785a7f995cb44111e4a804d6afcdce398f
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Fri Jun 18 12:40:56 2021 +0000
+﻿commit b7650392decd7e6acab1493c76bc18a6e54a0206
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Jun 18 13:19:31 2021 +0000
 
-    Merged PR 11662: disabled trade book dropdown
+    Merged PR 11663: #29771 - comment valiue bind and description text area color issue has fixed
     
-    disabled trade book dropdown
-    
-    Related work items: #33345
+    Related work items: #29771
 
 branch: master
