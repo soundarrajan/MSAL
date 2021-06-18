@@ -8051,15 +8051,20 @@ cursor:pointer;
 }
 // Ports agent info panel
 .agents-info-panel{
-		padding-left: 12px;
-		color: #278CE5;
-		font-size: 12px;
-		word-break: break-all;
-        text-align: left;
-		.link{
-			display: -webkit-inline-box;
-			width: 250px;
-			text-decoration-line: underline !important;
-		}
-       
+	padding-left: 12px;
+	color: #278CE5;
+	font-size: 12px;
+	word-break: break-all;
+	text-align: left;
+	.link{
+		display: -webkit-inline-box;
+		width: 250px;
+		text-decoration-line: underline !important;
 	}
+       
+}
+.p-id-divider{
+	color:#54617A; 
+	margin-left:10px;
+	margin-right:10px;
+}

@@ -58,11 +58,14 @@
                             <div class="name float-left" [matTooltip]="item?.createdBy?.displayName" matTooltipShowDelay="700">
                               <div class="truncate-180">{{item?.createdBy?.displayName}}</div>
                             </div>
-                            <div class="date float-left" [matTooltip]="item?.plan_id" matTooltipShowDelay="700">
+                            <!-- <div class="date float-left" [matTooltip]="item?.plan_id" matTooltipShowDelay="700">
                               <div class="truncate-180">{{item?.plan_id}}</div>
                             </div> | 
                             <div class="date ml-auto">{{item.created_date | date: 'dd/MM/yyyy HH:mm'}}
-                              <!-- <i class="fas fa-chevron-down"></i> -->
+                              <!- <i class="fas fa-chevron-down"></i> ->
+                            </div> -->
+                            <div class="date ml-auto"><span class="p-id">Plan ID:</span> {{item?.plan_id}}<span class="p-id-divider">|</span>{{item.created_date | date: 'dd MMM yyyy HH:mm'}}
+                              <i class="fas fa-chevron-down"></i>
                             </div>
                           </div>
                           <div class="row pl5">
