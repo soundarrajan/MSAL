@@ -246,16 +246,25 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   toggleMenu(event) {
     //onenter
-    this.menuTrigger.openMenu();
+    // this.menuTrigger.openMenu();
     var overlay = document.querySelector(".cdk-overlay-container");
     overlay.classList.add("removeOverlay");
   }
 
   toggleMenu2() {
     //onleave
+    this.menuClick = false;
     this.menuTrigger.closeMenu();
     var overlay = document.querySelector(".cdk-overlay-container");
-    overlay.classList.remove("removeOverlay");
+    overlay?.classList.remove("removeOverlay");
+  }
+
+  triggerOnClick(event) {
+    //onclick
+    var overlay = document.querySelector('.cdk-overlay-container');
+    overlay.classList.remove('removeOverlay');
+    this.menuClick = true;
+    this.menuTrigger.openMenu();
   }
 
   toggleMenuInfo(event, data) {//onenter
@@ -588,6 +597,7 @@ export class HoverMenuComponent {
 
   @ViewChild("menuTrigger") menuTrigger: MatMenuTrigger;
   public theme: boolean = true;
+  menuClick: boolean;
   constructor(private elem: ElementRef, private localService: LocalService) {}
 
   ngOnInit() {
