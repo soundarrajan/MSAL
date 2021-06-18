@@ -117,8 +117,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
         $scope.downloadDocument = function(rowId, docName, content) {
             var payload = {
                 "id": rowId,
-                "name": docName,
-                "content": content
+                "name": docName
             }
             Factory_Master.get_document_file(
                 {

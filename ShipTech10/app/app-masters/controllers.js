@@ -991,23 +991,34 @@
                     }
                     $scope.formValues.company = newCompany;
                 }
-
+                console.log($scope.formValues);
+                console.log($rootScope.tabData);
+                console.log($rootScope.listOfVesselTypes);
                 _.forEach(types, function(type) {
                     $scope.formValues[dataSrcs[type]] = [];
                     for (let i = 0; i < $rootScope.tabData[type].length; i++) {
-                      //  console.log($rootScope.tabData[type][i]);
+                        console.log($rootScope.tabData[type][i]);
                         setAllChild($rootScope.tabData[type][i], dataSrcs[type]);
-                        if (type == 'vessel_access') {
-                            let vesselType = $rootScope.tabData[type][i];
-                            let result = [];
-                            result = _.filter($scope.formValues[dataSrcs[type]], function (object) {
-                                return object.name != vesselType.name;
-                            });
-                            $scope.formValues[dataSrcs[type]] = angular.copy(result);
-                        }
                     }
                 });
-
+                if ($scope.formValues.accessVessels && $rootScope.listOfVesselTypes) {
+                    for (let i = 0; i < $rootScope.listOfVesselTypes.length; i++) {
+                        let vesselType = $rootScope.listOfVesselTypes[i];
+                        let checkIfIsVesselType = _.filter($scope.formValues.accessVessels, function(object) {
+                            return object.name == vesselType.name && object.id == vesselType.id;
+                        });
+                        if (checkIfIsVesselType.length) {
+                            let result = [];
+                            result = _.filter($scope.formValues.accessVessels, function (object) {
+                                return object.name != vesselType.name;
+                            });
+                            $scope.formValues.accessVessels = result;
+                            console.log($scope.formValues);
+                        }
+                    }
+                           
+                }
+               
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
