@@ -1,11 +1,11 @@
-﻿commit 75c09c2d5635fa181de190e12ead4fba13629cb1
+﻿commit f4bb88785a7f995cb44111e4a804d6afcdce398f
 Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Fri Jun 18 12:30:17 2021 +0000
+Date:   Fri Jun 18 12:40:56 2021 +0000
 
-    Merged PR 11660: fix css errors | added book trade dropdown
+    Merged PR 11662: disabled trade book dropdown
     
-    fix css errors | added book trade dropdown
+    disabled trade book dropdown
     
-    Related work items: #30913, #33345
+    Related work items: #33345
 
 branch: master
