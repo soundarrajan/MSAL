@@ -1,9 +1,9 @@
-﻿commit 656d500e3c5f48f212f8f1e99c5173c79cb58f38
+﻿commit c26329a76c46d185a8baf8a19bbb9bf0bccd206d
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jun 18 09:20:44 2021 +0000
+Date:   Fri Jun 18 09:35:56 2021 +0000
 
-    Merged PR 11647: #32791: Bunker plan: View Comments new chnages has done
+    Merged PR 11648: #32403: Bunker plan Request: Suggested Qty issue has fixed in future request sections
     
-    Related work items: #32791
+    Related work items: #32403
 
 branch: master
