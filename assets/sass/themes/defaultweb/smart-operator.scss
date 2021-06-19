@@ -2445,7 +2445,7 @@ label {
 
 #accordion-container-dark {
 	height: 80vh;
-	overflow: scroll;
+	// overflow: scroll;
 	.panel-body {
 		height: 100%;
 		margin-top: 2px;
@@ -2484,7 +2484,7 @@ label {
 		.mat-expansion-panel-content {
 			padding: 0 10px;
 			// max-height: 62vh;
-			overflow-y: scroll;
+			// overflow-y: scroll;
 		}
 		.mat-expansion-panel-body {
 			padding: 0px 0px 10px;
@@ -4253,7 +4253,7 @@ label {
 			border-radius: 0px 0px 8px 8px;
 			.fuel-info-footer {
 				max-height: 120px;
-				// overflow-y: scroll;
+				overflow-y: scroll;
 				//border-top: 2px solid rgba(13, 18, 24, 0.2);
 				text-align: center;
 				width: 100%;
@@ -4261,6 +4261,16 @@ label {
 				border-radius: 0px 0px 8px 8px;
 				padding-top: 4px;
 				margin: 0 !important;
+				&::-webkit-scrollbar {
+					width: 4px;
+					height: 4px;
+				}
+				&::-webkit-scrollbar-thumb {
+							background-color: $dark3;
+				}
+				&::-webkit-scrollbar-track {
+							background-color: transparent;
+				}
 			}
 			.col-3 {
 				text-align: center;
@@ -4284,6 +4294,7 @@ label {
 				padding-top: 2px;
 				margin: 2px;
 				font-weight: bold;
+				overflow-wrap: break-word;
 				//color: $text_color_content;
 				&.higher-warning-border {
 					border: 0.5px solid $popup_red;
@@ -4381,8 +4392,18 @@ label {
 		}
 		.schedule {
 			max-height: 134px;
-			overflow-y: hidden;
+			overflow-y: scroll;
 			overflow-x: hidden;
+			&::-webkit-scrollbar {
+				width: 4px;
+				height: 4px;
+			}
+			&::-webkit-scrollbar-thumb {
+						background-color: $dark3;
+			}
+			&::-webkit-scrollbar-track {
+						background-color: transparent;
+			}
 			.row {
 				display: flex;
 			}
@@ -4402,6 +4423,7 @@ label {
 				//color: $text_color_content;
 				padding: 0px 5px;
 				transform: rotate(0.08deg);
+				padding-bottom: 10px;
 			}
 			.white {
 				display: none;
@@ -6310,7 +6332,7 @@ label {
 						height: 4px;
 			}
 			&::-webkit-scrollbar-thumb {
-						background-color: $dark4;
+						background-color: $dark3;
 			}
 			&::-webkit-scrollbar-track {
 						background-color: transparent;
