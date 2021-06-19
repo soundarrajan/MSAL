@@ -4,6 +4,7 @@ import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { PortPopupService } from '../../services/port-popup.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-port-info',
@@ -28,8 +29,8 @@ export class PortInfoComponent implements OnInit {
       headerHeight: 48,
       rowHeight: 32,
       defaultColDef: {
-        filter: false,
-        sortable: false,
+        filter: true,
+        sortable: true,
         resizable: false
       },
       rowSelection: 'single',
@@ -81,11 +82,15 @@ export class PortInfoComponent implements OnInit {
   }
   private columnDefs = [
     // { headerName: 'ETA', headerTooltip: 'ETA', field: 'eta', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
-    { headerName: 'Vessel Name', field: 'vesselName', headerTooltip: 'Vessel Name', width: 90, cellClass: ['dark-cell aggrid-content-c'], headerClass: ['header-border-right'] },
-    { headerName: 'ETA', field: 'eta', headerTooltip: 'ETA', width: 80, cellClass: ['aggrid-content-c'] },
-    { headerName: 'ETD', field: 'etd', headerTooltip: 'ETD', width: 80, cellClass: ['aggrid-content-c'] },
-    { headerName: 'Days', field: 'etaDays', headerTooltip: 'Days', width: 80, cellClass: ['aggrid-content-c'] },
-    { headerName: 'Days', field: 'etdDays', headerTooltip: 'Days', width: 80, cellClass: ['aggrid-content-c'] },
+    { headerName: 'Vessel Name', field: 'vesselName', headerTooltip: 'Vessel Name', width: 90, cellClass: ['dark-cell aggrid-content-c'], headerClass: ['header-border-right'], cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'ETA', field: 'eta', headerTooltip: 'ETA', width: 80, cellClass: ['aggrid-content-c'],
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date' }}
+    },
+    { headerName: 'Days', field: 'etaDays', headerTooltip: 'Days', width: 80, cellClass: ['aggrid-content-c'],cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'ETD', field: 'etd', headerTooltip: 'ETD', width: 80, cellClass: ['aggrid-content-c'] ,
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date' }}
+    },
+    { headerName: 'Days', field: 'etdDays', headerTooltip: 'Days', width: 80, cellClass: ['aggrid-content-c'],cellRendererFramework: AGGridCellRendererComponent },
     { headerName: '', field: 'blank' }
 
   ];
