@@ -334,13 +334,71 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
   }
 
-  toggleMenu3Input(event) { //onclick
+  toggleMenu3Input(event,field) { //onclick
     this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
+    let requestExists = 0;
+    
     if(this.bplanType == 'C'){
-      this.menuClick = true;
-      this.inputMenuTrigger.openMenu();
-      if (document.getElementById('inputValue')) {
-        document.getElementById('inputValue').focus();
+      //warning if previous ports have a request ID present
+      let bPlanData = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData);
+      if(this.params.data.detail_no){
+
+        let detail_no = this.params.data.detail_no;
+          for( let i=0; i<=detail_no ; i++){
+            switch(field){
+              case 'hsfo_min_sod' : {
+                                      if(bPlanData[i]?.request_id_hsfo != ""){
+                                        requestExists = 1; 
+                                        return requestExists ;
+                                      }
+                                      break;
+                                    }
+              case 'eca_min_sod' :{
+                                    if(bPlanData[i]?.request_id_lsdis != "" || bPlanData[i]?.request_id_ulsfo != ""){
+                                      requestExists = 1; 
+                                      return requestExists ;
+                                    }
+                                    break;
+                                  }
+              default :{
+                          if(bPlanData[i]?.request_id_hsdis != "" || bPlanData[i]?.request_id_hsfo != "" || bPlanData[i]?.request_id_lsdis != "" || bPlanData[i]?.request_id_ulsfo != ""){
+                            requestExists = 1; 
+                            return requestExists ;
+                          }
+                          break;
+                        }
+            }
+          }
+
+          if(requestExists === 1){
+            const confirmMessage = 'Please note that there is a request in Shiptech for a prior call which BOPS will only modify next time the plan optimized, and the trader may nominate it before if no action is taken. In case it needs to be adjusted or cancelled please do so or advise responsible party.';
+              const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
+                data:  { message: confirmMessage }
+              });
+
+              dialogRef.afterClosed().subscribe(result => {
+                console.log(result);
+                if(result) {
+                  this.menuClick = true;
+                  this.inputMenuTrigger.openMenu();
+                    if (document.getElementById('inputValue')) {
+                      document.getElementById('inputValue').focus();
+                    }
+                } 
+                else {
+                
+                }
+              });
+          }
+          else{
+            this.menuClick = true;
+            this.inputMenuTrigger.openMenu();
+              if (document.getElementById('inputValue')) {
+                document.getElementById('inputValue').focus();
+              }
+          }
+          
       }
     }
   }
