@@ -164,7 +164,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsfo_estimated_lift' :{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_hsfo && !params.data?.request_id_hsfo){
+                                    if(params.data?.order_id_hsfo ){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
@@ -178,7 +178,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'ulsfo_estimated_lift':{
                                       var classArray: string[] = ['pd-6'];
                                       let newClass;
-                                      if(params.data?.order_id_ulsfo && !params.data?.request_id_ulsfo){
+                                      if(params.data?.order_id_ulsfo ){
                                         newClass = 'aggrid-link-bplan aggrid-red-cell'
                                         classArray.push(newClass);
                                       }
@@ -192,7 +192,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'lsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_lsdis && !params.data?.request_id_lsdis){
+                                    if(params.data?.order_id_lsdis ){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
@@ -206,7 +206,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                         let newClass;
-                                        if(params.data?.order_id_hsdis && !params.data?.request_id_hsdis){
+                                        if(params.data?.order_id_hsdis ){
                                           newClass = 'aggrid-link-bplan aggrid-red-cell'
                                           classArray.push(newClass);
                                         }
