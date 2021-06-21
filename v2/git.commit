@@ -1,11 +1,9 @@
-﻿commit 48369bba8238f9b37c9fdf8483ee3a5f261a41b2
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jun 21 10:22:17 2021 +0000
+﻿commit 877332258ad39d0c566808ddcc860a9b85aa0428
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jun 21 13:07:21 2021 +0000
 
-    Merged PR 11692: #29681 #29751 style updates.
+    Merged PR 11699: #29774: Port details: View BOPS Prices FE UI and API integration has done
     
-    #29681 #29751 style updates.
-    
-    Related work items: #29681, #29751
+    Related work items: #29774
 
 branch: master
