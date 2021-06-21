@@ -298,7 +298,7 @@
                   </div>
                   <div style="flex:0 0 20%;display: flex;flex-direction: column;align-items: self-start;">
                     <div class="label">Redelivery</div>
-                    <div class="value">{{popup_data.redeliveryDays}} Days</div>
+                    <div class="value">{{popup_data.redeliveryDays}}</div>
                   </div>
                 </div>
               </div>
@@ -368,13 +368,13 @@
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   <div>Vessel schedule list</div>
-                  <div class="count">5
+                  <div class="count">{{scheduleCount}}
                   </div>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div *ngIf="fifth.expanded" class="schedule">
 
-                <div class="row" *ngFor="let schedule of scheduleList">
+                <div class="row" *ngFor="let schedule of scheduleList[scheduleCount-1]">
                   <div class="col-3" style="line-height: 9px;display: flex;">
                     <div class="grey">
                       <img src="./assets/customicons/location.svg" alt="location">
@@ -388,17 +388,17 @@
                     </div>
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
-                    <div class="caption-details-port" (click)="openPort('Zhoushan')" matTooltip="Zhoushan">Zhoushan
+                    <div class="caption-details-port" (click)="openPort('Zhoushan')" matTooltip="schedule.vesselPorts">{{schedule.vesselPorts}}
                     </div>
                   </div>
                   <span class="col-1 icon-seperator">|</span>
                   <div class="col-5 pd-0">
                     <div class="caption-header">ETA:
-                      <span class="caption-details" matTooltip="2020-04-14 10:00">2020-04-14 10:00</span>
+                      <span class="caption-details" matTooltip="schedule.eta">{{schedule.eta}}</span>
                     </div>
                   </div>
                   <span class="col-1 icon-seperator pd-0">|</span>
-                  <div class="days">-</div>
+                  <div class="days">{{schedule.daysLeft}} Days</div>
                 </div>
                 <!-- <div class="row">
                   <div class="col-3" style="line-height: 9px;display: flex;">

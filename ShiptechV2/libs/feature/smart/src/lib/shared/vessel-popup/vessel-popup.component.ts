@@ -29,7 +29,7 @@ export class VesselPopupComponent implements OnInit {
   FutureRequest: any = [];
   scheduleDashboardLabelConfiguration: any;
   public scheduleList : any = [];
- 
+  public  scheduleCount : number = 0;
   constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService : VesselPopupService) { 
     this.shiptechUrl =  new URL(window.location.href).origin;
   }
@@ -231,11 +231,11 @@ export class VesselPopupComponent implements OnInit {
 
   loadRedeliveryInfo(vesselId){
     if(vesselId != null){
-      let req = { VesselId : vesselId};
+      let req = { VesselId : vesselId}; //VesselId : 2805
       this.vesselService.getVesselRedeliveryInfo(req).subscribe((res)=>{
         if(res.payload.length > 0){
           this.popup_data.vesselExpDate = this.dateFormatter(res.payload[0].expiryDate, '/');
-          this.popup_data.redeliveryDays = res.payload[0].redeliveryDays;
+          this.popup_data.redeliveryDays = res.payload[0].redeliveryDays ? res.payload[0].redeliveryDays + ' Days' : "";
           this.popup_data.hfo = res.payload[0].hsfoRedeliveryQty;
           this.popup_data.lshfo = res.payload[0].lsfoRedeliveryQty;
           this.popup_data.lsmdo = res.payload[0].lsmdoRedeliveryQty;
@@ -251,11 +251,14 @@ export class VesselPopupComponent implements OnInit {
 
   loadVesselScheduleList(vesselId){
     // if(vesselId != null){
-    //   let req = { Vessel_Imo : vesselId};
+    //   let req = { VesselImo : 'SDMLG1014' }//vesselId};
     //   this.vesselService.getVesselSchedule(req).subscribe((res)=>{
     //     if(res.payload.length > 0){
-    //       this.scheduleList = res.payload[0];
-
+    //       this.scheduleCount = res.payload[0].count;
+    //       this.scheduleList = res.payload;
+    //       this.scheduleList.forEach(element => {
+    //         element.eta = this.dateFormatter(element.eta);
+    //       });
     //       this.triggerClickEvent();     
     //     }
     //   })
@@ -268,10 +271,14 @@ export class VesselPopupComponent implements OnInit {
   }
 
   dateFormatter(params, type?) {
-    if(type == '/')
-      return moment(params).format('DD/MM/YYYY');
-    else
-      return moment(params).format('YYYY-MM-DD HH:MM');
+    if(params == null)
+    return "";
+    else{
+      if(type == '/')
+        return moment(params).format('DD/MM/YYYY');
+      else
+        return moment(params).format('YYYY-MM-DD HH:MM');
+    }
   }
 
   public changeDefault() {
