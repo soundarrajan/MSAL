@@ -315,7 +315,7 @@
                       <!-- Single Panel Start -->
                       <ng-container *ngFor="let BopsPriceObj of portBopsPrice | keyvalue">
                         <!-- quoteDateCost is not looping array object. So we just skip this quoteDateCost prop-->
-                        <mat-expansion-panel hideToggle="true" [expanded]="true" *ngIf="BopsPriceObj.key!=='quoteDateCost' && BopsPriceObj?.value.length">
+                        <mat-expansion-panel hideToggle="true" [expanded]="true" *ngIf="BopsPriceObj.key!=='quoteDateCost'">
                           <mat-expansion-panel-header collapsedHeight="25px" expandedHeight="25px">
                             <mat-panel-title>
                               <table class="header-table">
@@ -361,41 +361,50 @@
                           </mat-expansion-panel-header>
 
                           <table class="sub-table">
-                            <tr style="display: flex;justify-content: center;align-items: center;" *ngFor="let BopsPrice of BopsPriceObj?.value">
-                              <td style="flex:0 0 10%;">
-                              </td>
-                              <td style="flex:0 0 18%;">
-                                <div>{{BopsPrice?.productGrade}}</div>
-                              </td>
-                              <div class="icon-seperator">|</div>
-                              <td style="flex:0 0 18%;">
-                                <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                  <div>{{BopsPrice?.todaysPrice}}</div>
-                                </div>
-                              </td>
-                              <td style="flex:0 0 15%;">
-                                <div class="d-flex align-items-center">
-                                  <div class="d-flex align-items-center">
-                                    <mat-icon [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
-                                    <div [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.todaysPriceDiff}}</div>
+                            <ng-container *ngIf="BopsPriceObj?.value?.length; else NoRowFound">
+                              <tr style="display: flex;justify-content: center;align-items: center;" *ngFor="let BopsPrice of BopsPriceObj?.value">
+                                <td style="flex:0 0 10%;">
+                                </td>
+                                <td style="flex:0 0 18%;">
+                                  <div>{{BopsPrice?.productGrade}}</div>
+                                </td>
+                                <div class="icon-seperator">|</div>
+                                <td style="flex:0 0 18%;">
+                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                    <div>{{BopsPrice?.todaysPrice}}</div>
                                   </div>
-                                </div>
-                              </td>
-                              <div class="icon-seperator">|</div>
-                              <td style="flex:0 0 18%;">
-                                <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                  <div>{{BopsPrice?.yesterdayPrice}}</div>
-                                </div>
-                              </td>
-                              <td style="flex:0 0 15%;">
-                                <div class="d-flex align-items-center">
+                                </td>
+                                <td style="flex:0 0 15%;">
                                   <div class="d-flex align-items-center">
-                                    <mat-icon [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
-                                    <div [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.yesterdayPriceDiff}}</div>
+                                    <div class="d-flex align-items-center">
+                                      <mat-icon [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
+                                      <div [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.todaysPriceDiff}}</div>
+                                    </div>
                                   </div>
-                                </div>
-                              </td>
-                            </tr>
+                                </td>
+                                <div class="icon-seperator">|</div>
+                                <td style="flex:0 0 18%;">
+                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                    <div>{{BopsPrice?.yesterdayPrice}}</div>
+                                  </div>
+                                </td>
+                                <td style="flex:0 0 15%;">
+                                  <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                      <mat-icon [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
+                                      <div [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.yesterdayPriceDiff}}</div>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            </ng-container>
+                            <ng-template #NoRowFound>
+                              <tr style="display: flex;justify-content: center;align-items: center;">
+                                <td style="flex:0 0 80%;" class="text-center">
+                                  No row found
+                                </td>
+                              </tr>
+                            </ng-template>
                             <!-- <tr style="display: flex;justify-content: center;">
                               <td style="flex:0 0 10%;">
                               </td>
@@ -444,9 +453,12 @@
                     <div style="flex: 40%;">
                       Price as on:
                     </div>
-                    <div class="date" style="flex: 60%;">
+                    <div class="date" style="flex: 60%;" *ngIf="(portBopsPrice?.quoteDateCost[0]?.priceAsOn.indexOf('0001')==-1); else NotAvailable">
                       {{portBopsPrice?.quoteDateCost[0]?.priceAsOn | date: 'dd/MM/yyyy'}}
                     </div>
+                    <ng-template #NotAvailable>
+                      <div class="date" style="flex: 60%;">N/A</div>
+                    </ng-template>
                   </div>
                   <div style="display: flex;align-items: center;padding: 5px 10px 10px 10px;">
                     <div>
