@@ -1,8 +1,8 @@
-﻿commit 877332258ad39d0c566808ddcc860a9b85aa0428
+﻿commit 69049f432acff169a41bd9db58916b0b303f6bdf
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jun 21 13:07:21 2021 +0000
+Date:   Mon Jun 21 13:30:49 2021 +0000
 
-    Merged PR 11699: #29774: Port details: View BOPS Prices FE UI and API integration has done
+    Merged PR 11700: #29774 - no row found case handled for all bops prices in port popup has done
     
     Related work items: #29774
 
