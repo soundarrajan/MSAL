@@ -2446,6 +2446,9 @@ label {
 #accordion-container-dark {
 	height: 80vh;
 	// overflow: scroll;
+	.ag-body-horizontal-scroll{
+		margin-bottom: -20px;
+	}
 	.panel-body {
 		height: 100%;
 		margin-top: 2px;
