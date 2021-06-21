@@ -37,7 +37,7 @@
   }
 }
 
-.create-new-formula-modal-top .mat-raised-button.cancel-button {
+/* .create-new-formula-modal-top .mat-raised-button.cancel-button {
   background: white !important;
   border: 1px solid #364150;
   box-sizing: border-box;
@@ -46,7 +46,7 @@
   .mat-button-wrapper {
     color: black !important;
   }
-}
+} */
 
 .mat-dialog-container {
   padding: 15px !important;
@@ -87,6 +87,7 @@
 }
 
 .pricing-formula-tab{
+  cursor: pointer;
   //background: #ffffff;
   font-style: normal;
   font-weight: 500;
@@ -347,6 +348,7 @@
   border-radius: 4px;
   margin-top: 10px;
   padding: 5px;
+  margin-bottom: 50px;
 }
 
 .pricing-container {
@@ -671,7 +673,7 @@ mat-form-field {
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
   border-radius: 4px;
-  margin-top: 15px;
+  //margin-top: 15px;
 }
 
 .specific-date-table thead tr {
@@ -713,7 +715,7 @@ mat-form-field {
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
   border-radius: 4px;
-  margin-top: 15px;
+  //margin-top: 15px;
 }
 
 .quantity-based-table thead tr {
@@ -765,4 +767,32 @@ mat-form-field {
 
 .mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label {
   background-color: unset !important;
+}
+
+.new-formula-button{
+    cursor: pointer;
+    width: 119px;
+    height: 30px;
+    color: #fff!important;
+    padding: 5px 8px!important;
+    background-color: #00AAE2 !important;
+    text-align: center;
+    overflow: hidden!important;
+    border: none;
+    border-radius: 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap!important;
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0 5px!important;
+    &.cancel-button{
+      color: #364150 !important;
+      border: 1px solid #364150;
+      background: #FFFFFF !important;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+    }
 }

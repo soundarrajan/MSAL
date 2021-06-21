@@ -8,6 +8,7 @@ import { WarningComponent } from '../../shared/warning/warning.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { VesselInfoComponent} from '../../shared/vessel-info/vessel-info.component';
+import { GeneratePlanAction, ImportGsisAction, SendPlanAction} from './../../store/bunker-plan/bunkering-plan.action';
 
 @Component({
   selector: 'app-vessel-details',
@@ -46,7 +47,7 @@ export class VesselDetailsComponent implements OnInit {
 
     this.vesselView = this.vesselData.vesselView;
     this.vesselName = this.vesselData.name;
-
+    this.store.dispatch(new saveVesselDataAction({'vesselRef': this.vesselData}));
   }
 
   getBunkerUserMode() {
@@ -73,16 +74,16 @@ export class VesselDetailsComponent implements OnInit {
         this.vesselList = [];
         this.vesselList = vesselRes.map(vesselItem=> {
           let obj = tenantConfRes.find(imoItem => imoItem.id === vesselItem.id);
-          return {...vesselItem, imono:obj.name }
+          return obj? {...vesselItem, imono:obj.name }: false;
         })
         console.log(this.vesselList);
-        
+
       })
 
     })
-   
+
   }
-  
+
   selectedUserRoleFn(role1: any, role2: any) {
     if(!role2) {
       return role1.default;
@@ -90,25 +91,24 @@ export class VesselDetailsComponent implements OnInit {
       return (role2.name == role1.name)
     }
   }
-  
+
   loadBunkerPlan(event) {
     this.previousUserRole = this.selectedUserRole;
     this.selectedUserRole = event.value;
     console.log(this.selectedRole);
-    
+
     this.LoadBunkerPlanByRole();
   }
-  
+
   LoadBunkerPlanByRole() {
     var _this = this;
     const confirmMessage = this.selectedUserRole?.name == 'Vessel'? 'Are you sure to switch your role to Vessel?' : 'Are you sure to switch your role to Operator?'
     console.log('LoadBunkerPlanByRole service', this.selectedUserRole);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
-      panelClass: 'bunkerplan-role-confirm',
+      panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
       data:  { message: confirmMessage }
     });
-    
+
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if(result) {
@@ -130,7 +130,7 @@ export class VesselDetailsComponent implements OnInit {
       this.changeUserRole.next(this.selectedUserRole);
     });
 
-    
+
 
   }
 
@@ -138,7 +138,7 @@ export class VesselDetailsComponent implements OnInit {
     let vesselId = this.vesselData?.vesselId
     this.localService.checkVesselHasNewPlan(vesselId).subscribe((data)=> {
       console.log('vessel has new plan',data);
-      data = (data.payload?.length)? (data.payload)[0]: data.payload; 
+      data = (data.payload?.length)? (data.payload)[0]: data.payload;
       if(data.planCount>0)
       this.vesselWarningConfirmation();
     })
@@ -147,8 +147,7 @@ export class VesselDetailsComponent implements OnInit {
   vesselWarningConfirmation() {
     const warningMessage = 'A plan has been received from the vessel but this has not yet been imported. Please generate a new plan to import the latest input from the vessel. When the latest input from the vessel has been imported you can play the role of vessel'
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
-      panelClass: 'bunkerplan-role-confirm',
+      panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
       data:  { message: warningMessage, source: 'vesselHardWarning' }
     });
 
@@ -161,15 +160,15 @@ export class VesselDetailsComponent implements OnInit {
       }
     });
   }
-  
+
   onDefaultViewChange(event:MatCheckboxChange) {
     console.log(event.checked);
-    
+
   }
 
   dontSendPlanReminder(event:MatCheckboxChange) {
     console.log(event.checked);
-    
+
   }
 
   closePanel() {
@@ -193,10 +192,15 @@ export class VesselDetailsComponent implements OnInit {
 
       })
     }
+    this.store.dispatch(new GeneratePlanAction(0));
+    this.store.dispatch(new ImportGsisAction(0));
+    this.store.dispatch(new SendPlanAction(0));
   }
   vesselChange(event) {
     this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
-    this.vesselName = event.displayName;
+    if(event.displayName){
+      this.vesselName = event?.displayName;
+    }
     // this.vesselView = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
     //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
     // this.changeVessel.emit(event);

@@ -1,203 +1,685 @@
 <div id="table-view">
   <!-- HEADER -->
-  <section class="header-container">
-    <div class="section1 ">
-      <!-- #region Search Box -->
-      <div class="search-vessel">
-        <app-search-vessel (changeVessel)="changeVessel($event)" (clearVessel)="changeVessel($event)" [vesselData]="" [vesselList]="vesselList"></app-search-vessel>
-      </div>
-      <!-- <div id="dark-search-box" class="align-items-center">
-        <button mat-icon-button style="margin: -5px;">
-          <mat-icon id="searchIcon" matPrefix>search</mat-icon>
-        </button>
-        <div class="br" style="margin: -5px;">
-          <input id="vesselSearch" type="text" placeholder="Search">
+  <mat-tab-group class="mat-main-tab custom-header-tabs-v2">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="custom-label-holder">
+          <div class="custom-tab-ui"></div>
+          <div class="custom-label">Vessel Info</div>
         </div>
-        <button mat-icon-button style="margin: -5px;">
-          <img id="filter-icon" src="./assets/customicons/filter.svg" alt="Filter Icon">
-        </button>
-      </div> -->
-      <!-- #endregion Search Box -->
-      <!-- CHIP LIST -->
-      <div id="chip-wrapper" class="m-l-8  chip-v2">
-        <mat-chip-list>
-          <!-- Single Chip Start -->
-          <mat-chip class="" matTooltip="My Vessels" [matTooltipShowDelay]="500" [ngClass]="{ 'active-chip' : isValue == 1 ,'inactive-chip':isValue !=1 }" (click)="toggle1()" >
-            <div class="truncate-f85 mx-auto text-center">
-              My Vessels
-            </div>
-            <div matSuffix class="chip-circle">
-              <i id="pin" class="fas fa-thumbtack rotate-45"></i>
-            </div>
-          </mat-chip>
-          <!-- Single Chip End -->
-          <!-- Single Chip Start -->
-          <mat-chip class="" matTooltip="Unmanageable Vessels" [matTooltipShowDelay]="500" [ngClass]="{ 'active-chip' : isValue == 2, 'inactive-chip':isValue !=2 }" (click)="toggle2()">
-            <div class="truncate-f85 mx-auto text-center">
-              Unmanageable Vessels
-            </div>
-            <div matSuffix class="chip-circle">
-              <i id="pin" class="fas fa-thumbtack rotate-45"></i>
-            </div>
-          </mat-chip>
-          <!-- Single Chip End -->
-            <!-- Single Chip Start -->
-            <mat-chip class="" matTooltip="Outstanding Requests" [matTooltipShowDelay]="500" [ngClass]="{ 'active-chip' : isValue == 3, 'inactive-chip': isValue !=3 }" (click)="toggle3()">
-              <div class="truncate-f85 mx-auto text-center">
-                Outstanding Requests
+      </ng-template>
+      <!-- HEADER -->
+      <section
+        class="secondary-header-container"
+        style="background-color: #2f3845"
+      >
+        <div class="" style="display: inline-block " class="chip-v3">
+          <!-- CHIP LIST -->
+          <div id="chip-wrapper" class="m-l-8 chip-v2 ">
+            <mat-chip-list>
+              <!-- Single Chip Start -->
+              <!-- <mat-chip
+                class=""
+                matTooltip="My Vessels"
+                [matTooltipShowDelay]="500"
+                [ngClass]="{
+                  'active-chip': isValue == 1,
+                  'inactive-chip': isValue != 1
+                }"
+                (click)="toggle1()"
+              >
+                <div class="truncate-f85 mx-auto text-center">My Vessels</div>
+                <div matSuffix class="chip-circle">
+                  <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+                </div>
+              </mat-chip> -->
+              <!-- Single Chip End -->
+               <!-- Single Chip Start -->
+               <!-- <mat-chip
+               class=""
+               matTooltip="European Region"
+               [matTooltipShowDelay]="500"
+               [ngClass]="{
+                 'active-chip': isValue == 2,
+                 'inactive-chip': isValue != 2
+               }"
+               (click)="toggle2()"
+             >
+               <div class="truncate-f85 mx-auto text-center">European Region</div>
+               <div matSuffix class="chip-circle">
+                 <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+               </div>
+             </mat-chip> -->
+             <!-- Single Chip End -->
+              <!-- Single Chip Start -->
+               
+              <!-- Single Chip End -->
+              <!-- Single Chip Start -->
+              <!-- <mat-chip
+                class=""
+                matTooltip="N.American Region"
+                [matTooltipShowDelay]="500"
+                [ngClass]="{
+                  'active-chip': isValue == 3,
+                  'inactive-chip': isValue != 3
+                }"
+                (click)="toggle3()"
+              >
+                <div class="truncate-f85 mx-auto text-center">
+                  N.American Region
+                </div>
+                <div matSuffix class="chip-circle">
+                  <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+                </div>
+              </mat-chip> -->
+              <!-- Single Chip End -->
+
+              <!-- More Icon Chip Start -->
+              <!-- <mat-chip
+                class="icon-chip text-center"
+                matTooltip="Expand Filters"
+                [matTooltipShowDelay]="500"
+              >
+                <div class="mx-auto d-block">
+                  <i class="fas fa-ellipsis-h"></i>
+                </div>
+              </mat-chip>
+              More Icon Chip End -->
+            </mat-chip-list> -->
+          </div>
+        </div>
+
+        <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab">
+          <mat-tab >
+            <ng-template mat-tab-label>
+              <div class="custom-label-holder" >
+                <div class="custom-tab-ui"></div>
+                <div class="custom-label" matTooltip="All my Vessels" >All my Vessels</div>
               </div>
-              <div matSuffix class="chip-circle">
-                <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+            </ng-template>
+            <section id="smart-operator-grid">
+              <div
+                class="smart-operatorr-content"
+                style="position: relative; width: 100%; height: 100%"
+              >
+                <ag-grid-angular
+                  id="tableviewGrid"
+                  style="width: 100%; height: calc(100vh - 135px)"
+                  [rowData]="rowData1"
+                  [gridOptions]="gridOptions"
+                  class="ag-theme-balham-dark ag-table-view"
+                ></ag-grid-angular>
               </div>
-            </mat-chip>
-            <!-- Single Chip End -->
+            </section>
+          </mat-tab>
+          <mat-tab >
+            <ng-template mat-tab-label>
+              <div class="custom-label-holder">
+                <div class="custom-tab-ui"></div>
+                <div class="custom-label truncate-f85" style="padding-left: 20px;" matTooltip="Unmanageable">Unmanageable</div>
+              </div>
+            </ng-template>
+            <section id="smart-operator-grid">
+              <div
+                class="smart-operatorr-content"
+                style="position: relative; width: 100%; height: 100%"
+              >
+                <ag-grid-angular
+                  id="tableviewGrid"
+                  style="width: 100%; height: calc(100vh - 135px)"
+                  [rowData]="rowData2"
+                  [gridOptions]="gridOptions1"
+                  class="ag-theme-balham-dark ag-table-view"
+                ></ag-grid-angular>
+              </div>
+            </section>
+          </mat-tab>
+          <mat-tab >
+            <ng-template mat-tab-label>
+              <div class="custom-label-holder">
+                <div class="custom-tab-ui"></div>
+                <div class="custom-label truncate-f85" style="padding-left: 20px;" matTooltip="Future Request">Future Request</div>
+              </div>
+            </ng-template>
+            <section id="smart-operator-grid">
+              <div
+                class="smart-operatorr-content"
+                style="position: relative; width: 100%; height: 100%"
+              >
+                <ag-grid-angular
+                  id="tableviewGrid"
+                  style="width: 100%; height: calc(100vh - 135px)"
+                  [rowData]="rowData3"
+                  [gridOptions]="gridOptions2"
+                  class="ag-theme-balham-dark ag-table-view"
+                ></ag-grid-angular>
+              </div>
+            </section>
+          </mat-tab>
 
-          <!-- More Icon Chip Start -->
-          <mat-chip class="icon-chip text-center" matTooltip="Expand Filters" [matTooltipShowDelay]="500">
-            <div class="mx-auto d-block">
-              <i class="fas fa-ellipsis-h"></i>
+        </mat-tab-group>
+      </section>
+      <!-- GRID -->
+
+      <!-- Footer -->
+      <section id="bottom-pagination">
+        <div class="float-left plr-4">
+          Total Results:
+          <span>{{ rowCount }}</span>
+        </div>
+
+        <div class="mx-auto" id="pages">
+          <div style="display: flex; justify-content: center">
+            <ul class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">1</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">2</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">3</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">....</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">11</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">12</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">13</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="float-right" id="right-column">
+          <div id="goto-page" class="float-right plr-4">
+            Go to page
+            <mat-form-field
+              style="width: 40px; margin: 0 5px; padding-right: 10px"
+              class="mat-field-alignment"
+            >
+              <input matInput />
+            </mat-form-field>
+            <button mat-button class="page-button">Go</button>
+          </div>
+          <div id="show-rows" class="float-right pr-2">
+            <span>Show</span>
+            <span>
+              <mat-form-field
+                style="width: 35px; margin: 0 10px"
+                class="mat-field-alignment"
+              >
+                <mat-select [value]="20">
+                  <mat-option [value]="10"> 10 </mat-option>
+                  <mat-option [value]="20"> 20 </mat-option>
+                  <mat-option [value]="30"> 30 </mat-option>
+                  <mat-option [value]="40"> 40 </mat-option>
+                  <mat-option [value]="50"> 50 </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span>Rows</span>
+          </div>
+        </div>
+      </section>
+      <!-- <section class="header-container" style="background-color: #2f3845">
+        <div class="section1">
+          #region Search Box -->
+          <!-- <div class="search-vessel">
+            <app-search-vessel (changeVessel)="changeVessel($event)" (clearVessel)="changeVessel($event)" [vesselData]="" [vesselList]="vesselList"></app-search-vessel>
+          </div> -->
+          <!-- <div id="dark-search-box" class="align-items-center">
+            <button mat-icon-button style="margin: -5px;">
+              <mat-icon id="searchIcon" matPrefix>search</mat-icon>
+            </button>
+            <div class="br" style="margin: -5px;">
+              <input id="vesselSearch" type="text" placeholder="Search">
             </div>
-          </mat-chip>
-          <!-- More Icon Chip End -->
+            <button mat-icon-button style="margin: -5px;">
+              <img id="filter-icon" src="../../../assets/customicons/filter.svg" alt="Filter Icon">
+            </button>
+          </div> -->
+          <!-- #endregion Search Box -->
+          <!-- CHIP LIST -->
+          <!-- <div id="chip-wrapper" class="m-l-8 chip-v2">
+            <mat-chip-list> -->
+              <!-- Single Chip Start -->
+              <!-- <mat-chip
+                class=""
+                matTooltip="My Vessels"
+                [matTooltipShowDelay]="500"
+                [ngClass]="{
+                  'active-chip': isValue == 1,
+                  'inactive-chip': isValue != 1
+                }"
+                (click)="toggle1()"
+              >
+                <div class="truncate-f85 mx-auto text-center">My Vessels</div>
+                <div matSuffix class="chip-circle">
+                  <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+                </div>
+              </mat-chip> -->
+              <!-- Single Chip End -->
+              <!-- Single Chip Start -->
+              <!--   -->
+              <!-- Single Chip End -->
+              <!-- Single Chip Start -->
+              <!-- <mat-chip
+                class=""
+                matTooltip="Outstanding Requests"
+                [matTooltipShowDelay]="500"
+                [ngClass]="{
+                  'active-chip': isValue == 3,
+                  'inactive-chip': isValue != 3
+                }"
+                (click)="toggle3()"
+              >
+                <div class="truncate-f85 mx-auto text-center">
+                  Outstanding Requests
+                </div>
+                <div matSuffix class="chip-circle">
+                  <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+                </div>
+              </mat-chip> -->
+              <!-- Single Chip End -->
 
-        </mat-chip-list>
-      </div>
-    </div>
-    <div class="section2">
-      <div style="color:white; display:flex;align-items: center;">
-        <span>ETA Date:</span>
-        <span class="from-to-label">From</span>
-        <span>
-          <mat-form-field id="datePicker" style="width:150px" class="aggriddate-picker">
-            <input id="validFrom" class="text-center" style="width:100%" matInput [matDatepicker]="picker1"
-              [formControl]="date" />
-            <mat-datepicker-toggle matSuffix [for]="picker1">
-              <mat-icon matDatepickerToggleIcon svgIcon="data-picker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker [startAt]="date" #picker1 panelClass="datepicker-darktheme"></mat-datepicker>
-          </mat-form-field>
-        </span>
-        <div style="margin: 0px 10px;color:rgba(143, 155, 171, 0.2)"> |</div>
-        <span class="from-to-label">To</span>
-        <span>
-          <mat-form-field id="datePicker" style="width:150px" class="aggriddate-picker">
-            <input id="validTo" class="text-center" style="width:100%" matInput [matDatepicker]="picker"
-              [formControl]="date" />
-            <mat-datepicker-toggle matSuffix [for]="picker">
-              <mat-icon matDatepickerToggleIcon svgIcon="data-picker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #picker panelClass="datepicker-darktheme"></mat-datepicker>
-          </mat-form-field>
-        </span>
-      </div>
-    </div>
+              <!-- More Icon Chip Start -->
+              <!-- <mat-chip
+                class="icon-chip text-center"
+                matTooltip="Expand Filters"
+                [matTooltipShowDelay]="500"
+              >
+                <div class="mx-auto d-block">
+                  <i class="fas fa-ellipsis-h"></i>
+                </div>
+              </mat-chip> -->
+              <!-- More Icon Chip End -->
+            <!-- </mat-chip-list>
+          </div>
+        </div> -->
+        <!-- <div class="section2">
+          <div style="color:white; display:flex;align-items: center;">
+            <span>ETA Date:</span>
+            <span class="from-to-label">From</span>
+            <span>
+              <mat-form-field id="datePicker" style="width:150px" class="aggriddate-picker">
+                <input id="validFrom" class="text-center" style="width:100%" matInput [matDatepicker]="picker1"
+                  [formControl]="date" />
+                <mat-datepicker-toggle matSuffix [for]="picker1">
+                  <mat-icon matDatepickerToggleIcon svgIcon="data-picker"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker [startAt]="date" #picker1 panelClass="datepicker-darktheme"></mat-datepicker>
+              </mat-form-field>
+            </span>
+            <div style="margin: 0px 10px;color:rgba(143, 155, 171, 0.2)"> |</div>
+            <span class="from-to-label">To</span>
+            <span>
+              <mat-form-field id="datePicker" style="width:150px" class="aggriddate-picker">
+                <input id="validTo" class="text-center" style="width:100%" matInput [matDatepicker]="picker"
+                  [formControl]="date" />
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon svgIcon="data-picker"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker panelClass="datepicker-darktheme"></mat-datepicker>
+              </mat-form-field>
+            </span>
+          </div>
+        </div>
+     -->
+        <!-- <div id="display" class="m-l-r-5">
+          <mat-checkbox class="label dark-checkbox noborder" [checked]="true">Display</mat-checkbox>
+          <span class="value m-l-r-5" style="vertical-align: middle;">Cancelled</span>
+        </div> -->
+        <!-- <div style="display: flex; align-items: center">
+          <div class="section3"> -->
+            <!-- mat-tab-group2 -->
+            
+            <!-- <mat-tab-group mat-align-tabs="end" class="secondary-tab">
+              <mat-tab label="First">Content 1</mat-tab>
+              <mat-tab label="Second">Content 2</mat-tab>
+              <mat-tab label="Third">Content 3</mat-tab>
+            </mat-tab-group>
+            
+          </div>
+        </div>
+      </section> -->
+      <!-- GRID -->
+      <!-- <section id="smart-operator-grid">
+        <div
+          class="smart-operatorr-content"
+          style="position: relative; width: 100%; height: 100%"
+        >
+          <ag-grid-angular
+            id="tableviewGrid"
+            style="width: 100%; height: calc(100vh - 135px)"
+            [gridOptions]="gridOptions"
+            class="ag-theme-balham-dark ag-table-view"
+          ></ag-grid-angular>
+        </div>
+      </section> -->
 
-    <div id="display" class="m-l-r-5">
-      <mat-checkbox class="label dark-checkbox noborder" [checked]="true">Display</mat-checkbox>
-      <span class="value m-l-r-5" style="vertical-align: middle;">Cancelled</span>
-    </div>
-    <div style="display: flex;align-items: center;">
-    <div style="border: solid 1.5px #2F3845;height: 41px;"> </div>
-    <div class="section3">
-      <!-- TOGGLE VIEW -->
-      <div id="toggleButtons">
-        <mat-chip-list>
-          <mat-chip class="toggle-active-chip" style="margin-right:-5px;z-index: 1;">Table View</mat-chip>
-          <mat-chip class="toggle-inactive-chip" style="margin-left:0px;cursor: pointer;"
-            (click)="this.showTableViewEmit.emit()">Map View</mat-chip>
-        </mat-chip-list>
-      </div>
-    </div>
-  </div>
-  </section>
-  <!-- GRID -->
-  <section id="smart-operator-grid">
-    <div class="smart-operatorr-content" style="position: relative;width: 100%;height: 100%;">
-      <ag-grid-angular id="tableviewGrid" style="width: 100%; height:calc( 100vh - 135px )" [gridOptions]="gridOptions"
-        class="ag-theme-balham-dark ag-table-view"></ag-grid-angular>
-    </div>
-  </section>
+      <!-- Footer -->
+      <!-- <section id="bottom-pagination">
+        <div class="float-left plr-4">
+          Total Results:
+          <span>{{ rowCount }}</span>
+        </div>
 
-  <!-- Footer -->
-  <section id="bottom-pagination">
+        <div class="mx-auto" id="pages">
+          <div style="display: flex; justify-content: center">
+            <ul class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">1</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">2</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">3</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">....</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">11</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">12</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">13</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-    <div class="float-left plr-4">
-      Total Results:
-      <span>{{rowCount}}</span>
-    </div>
+        <div class="float-right" id="right-column">
+          <div id="goto-page" class="float-right plr-4">
+            Go to page
+            <mat-form-field
+              style="width: 40px; margin: 0 5px; padding-right: 10px"
+              class="mat-field-alignment"
+            >
+              <input matInput />
+            </mat-form-field>
+            <button mat-button class="page-button">Go</button>
+          </div>
+          <div id="show-rows" class="float-right pr-2">
+            <span>Show</span>
+            <span>
+              <mat-form-field
+                style="width: 35px; margin: 0 10px"
+                class="mat-field-alignment"
+              >
+                <mat-select [value]="20">
+                  <mat-option [value]="10"> 10 </mat-option>
+                  <mat-option [value]="20"> 20 </mat-option>
+                  <mat-option [value]="30"> 30 </mat-option>
+                  <mat-option [value]="40"> 40 </mat-option>
+                  <mat-option [value]="50"> 50 </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span>Rows</span>
+          </div>
+        </div>
+      </section> -->
+    </mat-tab>
+   
+    <mat-tab class="custom-header-tabs-v2">
+      <ng-template mat-tab-label>
+        <div class="custom-label-holder">
+          <div class="custom-tab-ui"></div>
+          <div class="custom-label">Report</div>
+        </div>
+      </ng-template>
 
-    <div class="mx-auto" id="pages">
-      <div style="display: flex; justify-content: center;">
-        <ul class="nav nav-pills">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fas fa-chevron-left"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#">1</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">2</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">3</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">....</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">11</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">12</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">13</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fas fa-chevron-right"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+      <section
+        class="secondary-header-container"
+        style="background-color: #2f3845"
+      >
+        <div class="" style="display: inline-block " class="chip-v3">
+          <!-- CHIP LIST -->
+          <div id="chip-wrapper" class="m-l-8 chip-v2 ">
+            <mat-chip-list>
+              <!-- Single Chip Start -->
+              <mat-chip
+                class=""
+                matTooltip="My Vessels"
+                [matTooltipShowDelay]="500"
+                [ngClass]="{
+                  'active-chip': isValue == 1,
+                  'inactive-chip': isValue != 1
+                }"
+                (click)="toggle1()"
+              >
+                <div class="truncate-f85 mx-auto text-center">My Vessels</div>
+                <div matSuffix class="chip-circle">
+                  <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+                </div>
+              </mat-chip>
+              <!-- Single Chip End -->
+              <!-- Single Chip Start -->
+               
+              <!-- Single Chip End -->
+              <!-- Single Chip Start -->
+              <mat-chip
+                class=""
+                matTooltip="N.American Region"
+                [matTooltipShowDelay]="500"
+                [ngClass]="{
+                  'active-chip': isValue == 3,
+                  'inactive-chip': isValue != 3
+                }"
+                (click)="toggle3()"
+              >
+                <div class="truncate-f85 mx-auto text-center">
+                  N.American Region
+                </div>
+                <div matSuffix class="chip-circle">
+                  <i id="pin" class="fas fa-thumbtack rotate-45"></i>
+                </div>
+              </mat-chip>
+              <!-- Single Chip End -->
 
-    <div class="float-right" id="right-column">
-      <div id="goto-page" class="float-right plr-4 ">
-        Go to page
-        <mat-form-field style="width: 40px; margin: 0 5px; padding-right: 10px; " class="mat-field-alignment">
-          <input matInput>
-        </mat-form-field>
-        <button mat-button class="page-button">Go</button>
-      </div>
-      <div id="show-rows" class="float-right pr-2">
-        <span>Show</span>
-        <span>
-          <mat-form-field style="width: 35px; margin: 0 10px;" class="mat-field-alignment">
-            <mat-select [value]="20">
-              <mat-option [value]="10">
-                10
-              </mat-option>
-              <mat-option [value]="20">
-                20
-              </mat-option>
-              <mat-option [value]="30">
-                30
-              </mat-option>
-              <mat-option [value]="40">
-                40
-              </mat-option>
-              <mat-option [value]="50">
-                50
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </span>
-        <span>Rows</span>
-      </div>
-    </div>
+              <!-- More Icon Chip Start -->
+              <mat-chip
+                class="icon-chip text-center"
+                matTooltip="Expand Filters"
+                [matTooltipShowDelay]="500"
+              >
+                <div class="mx-auto d-block">
+                  <i class="fas fa-ellipsis-h"></i>
+                </div>
+              </mat-chip>
+              <!-- More Icon Chip End -->
+            </mat-chip-list>
+          </div>
+        </div>
 
-  </section>
+        <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab">
+          <mat-tab   >
+            <ng-template mat-tab-label  >
+              <div class="custom-label-holder">
+                <div class="custom-tab-ui"></div>
+                <div class="custom-label">BDN Details</div>
+              </div>
+            </ng-template>
+            <section id="smart-operator-grid">
+              <div
+                class="smart-operatorr-content"
+                style="position: relative; width: 100%; height: 100%"
+              >
+                <ag-grid-angular
+                  id="tableviewGrid"
+                  style="width: 100%; height: calc(100vh - 135px)"
+                  [gridOptions]="gridOptions"
+                  class="ag-theme-balham-dark ag-table-view"
+                ></ag-grid-angular>
+              </div>
+            </section>
+          </mat-tab>
+          <mat-tab (click)="toggle1()" >
+            <ng-template mat-tab-label>
+              <div class="custom-label-holder">
+                <div class="custom-tab-ui"></div>
+                <div class="custom-label">Order Details</div>
+              </div>
+            </ng-template>
+            <section id="smart-operator-grid">
+              <div
+                class="smart-operatorr-content"
+                style="position: relative; width: 100%; height: 100%"
+              >
+                <ag-grid-angular
+                  id="tableviewGrid"
+                  style="width: 100%; height: calc(100vh - 135px)"
+                  [gridOptions]="gridOptions"
+                  class="ag-theme-balham-dark ag-table-view"
+                ></ag-grid-angular>
+              </div>
+            </section>
+          </mat-tab>
+        </mat-tab-group>
+      </section>
+      <!-- GRID -->
+
+      <!-- Footer -->
+      <section id="bottom-pagination">
+        <div class="float-left plr-4">
+          Total Results:
+          <span>{{ rowCount }}</span>
+        </div>
+
+        <div class="mx-auto" id="pages">
+          <div style="display: flex; justify-content: center">
+            <ul class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">1</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">2</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">3</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">....</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">11</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">12</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">13</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="float-right" id="right-column">
+          <div id="goto-page" class="float-right plr-4">
+            Go to page
+            <mat-form-field
+              style="width: 40px; margin: 0 5px; padding-right: 10px"
+              class="mat-field-alignment"
+            >
+              <input matInput />
+            </mat-form-field>
+            <button mat-button class="page-button">Go</button>
+          </div>
+          <div id="show-rows" class="float-right pr-2">
+            <span>Show</span>
+            <span>
+              <mat-form-field
+                style="width: 35px; margin: 0 10px"
+                class="mat-field-alignment"
+              >
+                <mat-select [value]="20">
+                  <mat-option [value]="10"> 10 </mat-option>
+                  <mat-option [value]="20"> 20 </mat-option>
+                  <mat-option [value]="30"> 30 </mat-option>
+                  <mat-option [value]="40"> 40 </mat-option>
+                  <mat-option [value]="50"> 50 </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span>Rows</span>
+          </div>
+        </div>
+      </section>
+    </mat-tab>
+
+    <mat-tab disabled>
+      <ng-template mat-tab-label>
+        <div
+          style="
+            border: solid 3px #3d4758;
+            margin-top: -8px;
+            border-right: 0px;
+            margin-right: 10px;
+            height: 41px;
+          "
+        ></div>
+        <div
+          class="section3 header-container"
+          style="margin-top: -10px; background-color: #2f3845"
+        >
+          <!-- TOGGLE VIEW -->
+          <div id="toggleButtons" class="m-r-21">
+            <mat-chip-list>
+              <mat-chip
+                class="toggle-active-chip"
+                style="margin-right: -5px; z-index: 1"
+                >Table View</mat-chip
+              >
+              <mat-chip
+                class="toggle-inactive-chip"
+                style="margin-left: 0px; cursor: pointer"
+                (click)="this.showTableViewEmit.emit()"
+                >Map View</mat-chip
+              >
+            </mat-chip-list>
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </div>

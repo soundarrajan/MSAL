@@ -43,7 +43,14 @@ export class PriceTenantFormatDirective implements OnInit {
       if(this.pricePrecision == 0) {
         this.el.value = plainNumber;
       } else{
-        this.el.value = this._decimalPipe.transform(plainNumber, '1.' + this.pricePrecision + '-' + this.pricePrecision);
+          var numberPrecision = this.tenantService.pricePrecision;
+          if((<any>this.el).attributes.precision) {
+              var precision = (<any>this.el).attributes.precision.value;
+              if(precision) {
+                numberPrecision = precision;
+              }
+          }
+        this.el.value = this._decimalPipe.transform(plainNumber, '1.' + numberPrecision + '-' + numberPrecision);
       }
     }
   } 

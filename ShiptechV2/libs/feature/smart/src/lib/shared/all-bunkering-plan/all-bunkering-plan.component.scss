@@ -10,6 +10,13 @@
 .plan-status {
     .mat-select-value {
         color: #fff !important;
+    }       
+}
+.view-all-bunker-header {
+    .custom-date-picker {
+        .from-to-value {
+            max-width: 55% !important;
+            width: 100% !important;
+        }
     }
-       
-    }
+}

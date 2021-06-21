@@ -1,3 +1,84 @@
 .icon-date {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik05Ljc0OTk2IDUuODUwMUg4LjQ0OTk1VjcuMTUwMTFIOS43NDk5NlY1Ljg1MDFaIiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNNy4xNDk5OCA1Ljg1MDFINS44NDk5OFY3LjE1MDExSDcuMTQ5OThWNS44NTAxWiIgZmlsbD0iIzM2NDE1MCIvPg0KPHBhdGggZD0iTTQuNTUwMDIgNS44NTAxSDMuMjVWNy4xNTAxMUg0LjU1MDAyVjUuODUwMVoiIGZpbGw9IiMzNjQxNTAiLz4NCjxwYXRoIGQ9Ik0xMS4wNSAxLjMwMDAxSDEwLjRWMEg5LjA5OTk4VjEuMzAwMDFIMy44OTk5N1YwSDIuNTk5OTZWMS4zMDAwMUgxLjk0OTk3QzEuMjI4NDcgMS4zMDAwMSAwLjY1NjQ4NCAxLjg4NTAxIDAuNjU2NDg0IDIuNjAwMDJMMC42NDk5NjMgMTEuN0MwLjY0OTk2MyAxMi40MTUgMS4yMjg0NyAxMyAxLjk0OTk3IDEzSDExLjA1QzExLjc2NSAxMyAxMi4zNSAxMi40MTUgMTIuMzUgMTEuN1YyLjU5OTk5QzEyLjM1IDEuODg1MDEgMTEuNzY1IDEuMzAwMDEgMTEuMDUgMS4zMDAwMVpNMTEuMDUgMTEuN0gxLjk0OTk3VjQuNTQ5OTlIMTEuMDVWMTEuN1oiIGZpbGw9IiMzNjQxNTAiLz4NCjwvc3ZnPg0K');
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik05Ljc0OTk2IDUuODUwMUg4LjQ0OTk1VjcuMTUwMTFIOS43NDk5NlY1Ljg1MDFaIiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNNy4xNDk5OCA1Ljg1MDFINS44NDk5OFY3LjE1MDExSDcuMTQ5OThWNS44NTAxWiIgZmlsbD0iIzM2NDE1MCIvPg0KPHBhdGggZD0iTTQuNTUwMDIgNS44NTAxSDMuMjVWNy4xNTAxMUg0LjU1MDAyVjUuODUwMVoiIGZpbGw9IiMzNjQxNTAiLz4NCjxwYXRoIGQ9Ik0xMS4wNSAxLjMwMDAxSDEwLjRWMEg5LjA5OTk4VjEuMzAwMDFIMy44OTk5N1YwSDIuNTk5OTZWMS4zMDAwMUgxLjk0OTk3QzEuMjI4NDcgMS4zMDAwMSAwLjY1NjQ4NCAxLjg4NTAxIDAuNjU2NDg0IDIuNjAwMDJMMC42NDk5NjMgMTEuN0MwLjY0OTk2MyAxMi40MTUgMS4yMjg0NyAxMyAxLjk0OTk3IDEzSDExLjA1QzExLjc2NSAxMyAxMi4zNSAxMi40MTUgMTIuMzUgMTEuN1YyLjU5OTk5QzEyLjM1IDEuODg1MDEgMTEuNzY1IDEuMzAwMDEgMTEuMDUgMS4zMDAwMVpNMTEuMDUgMTEuN0gxLjk0OTk3VjQuNTQ5OTlIMTEuMDVWMTEuN1oiIGZpbGw9IiMzNjQxNTAiLz4NCjwvc3ZnPg0K');
+}
+
+.can-be-disabled .mat-form-field-disabled {
+  background-color: #eeeeee !important;
+  pointer-events: none;
+}
+
+.bankAccountNo {
+  margin: 15px 15px 0px 0px !important;
+}
+.expand-icon::before {
+  cursor: pointer;
+  content: url(./../../../../../../../../assets/layout/images/pages/expand.svg);
+}
+
+.collapse-icon::before {
+  cursor: pointer;
+  content: url(./../../../../../../../../assets/layout/images/pages/collapse.svg);
+}
+
+.header-details {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252a32;
+}
+
+.no-padding {
+  padding-left: unset !important;
+  padding-right: unset !important;
+}
+
+.related-inv-section {
+  display: inline-flex;
+}
+
+.general-information-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important;
+}
+
+.general-information-select-container.mat-select-panel {
+  position: relative;
+  top: 26px;
+  background: #37414f !important;
+}
+
+.general-information-select-container .mat-option {
+  height: 20px !important;
+  padding: 15px;
+  color: white !important;
+}
+
+.general-information-select-container.mat-select-panel
+  .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: white !important;
+  background-color: #37414f !important;
+}
+
+.general-information-select-container.mat-select-panel
+  .mat-option.mat-selected.mat-active,
+.general-information-select-container.mat-select-panel .mat-option.mat-active {
+  color: #37414f !important;
+  background: #fff !important;
+}
+
+.mat-form-field-disabled {
+  background-color: #eeeeee !important;
+}
+
+.border_line {
+  border-right: 1px solid #97989b;
+  height: 45px;
+  position: relative;
+  top: 6px;
+}
+
+.search-icon-disabled {
+  background-color: #eeeeee !important;
 }

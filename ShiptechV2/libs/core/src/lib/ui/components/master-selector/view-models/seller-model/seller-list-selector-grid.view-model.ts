@@ -113,7 +113,7 @@ export class SellerListSelectorGridViewModel extends BaseGridViewModel {
     suppressPaste: true,
     lockPosition: true,
     lockVisible: true,
-    cellClass: 'cell-border-green'
+    cellClass: 'cell-border-green checkboxCenter'
   };
 
   idCol: ITypedColDef<IPhysicalSupplierListDto, number> = {

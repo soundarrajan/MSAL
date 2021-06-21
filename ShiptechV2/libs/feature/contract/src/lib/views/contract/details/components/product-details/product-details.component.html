@@ -1,74 +1,115 @@
-<div class="col-md-12 contract-section selected-product-container" style="margin-left: 0px;">
+<div
+  class="col-md-12 contract-section selected-product-container"
+  style="margin-left: 0px;margin-bottom:10px; padding-bottom:10px;min-height: 500px;"
+>
   <div class="col-md-12 no-padding d-flex" style="top: 10px;">
     <div class="header-product-details col-md-2 no-padding">
-        Product details
+      Product details
     </div>
-    <div class="contract-details-info col-md-10 no-padding" style="text-align: right;">
+    <div
+      class="contract-details-info col-md-10 no-padding"
+      style="text-align: right;"
+    >
       <span>
         Main location
         <span class="location-contract-info">
-          {{ formValues.products[selectedTabIndex] && formValues.products[selectedTabIndex].location ? formValues.products[selectedTabIndex].location.name : ''}}
+          {{
+            formValues.products[selectedTabIndex] &&
+            formValues.products[selectedTabIndex].location
+              ? formValues.products[selectedTabIndex].location.name
+              : ''
+          }}
         </span>
       </span>
       <span>
         Main product
         <span class="product-contract-info">
-          {{ formValues.products[selectedTabIndex] && formValues.products[selectedTabIndex].product ? formValues.products[selectedTabIndex].product.name : ''}}
+          {{
+            formValues.products[selectedTabIndex] &&
+            formValues.products[selectedTabIndex].product
+              ? formValues.products[selectedTabIndex].product.name
+              : ''
+          }}
         </span>
       </span>
     </div>
   </div>
   <div class="col-md-12 allowed-locations-section no-padding">
-    <div [ngClass]="{'allowed-locations-container': !expandAllowLocations, 'allowed-locations-container-expand': expandAllowLocations}">
+    <div
+      [ngClass]="{
+        'allowed-locations-container': !expandAllowLocations,
+        'allowed-locations-container-expand': expandAllowLocations
+      }"
+    >
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list-modal-container">
-            Allowed Locations
+          Allowed Locations
         </div>
-        <div *ngIf="formValues.status && formValues.status.name == 'Confirmed'"  class="edit-allow-locations">
-        </div>
-        <div *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"  [matMenuTriggerFor]="menuAllowedLocations" class="edit-allow-locations">
-        </div>
-        <mat-menu #menuAllowedLocations="matMenu" class="allowed-locations-modal ">
+        <div
+          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"
+          class="edit-allow-locations"
+        ></div>
+        <div
+          *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"
+          [matMenuTriggerFor]="menuAllowedLocations"
+          class="edit-allow-locations"
+        ></div>
+        <mat-menu
+          #menuAllowedLocations="matMenu"
+          class="allowed-locations-modal "
+        >
           <div style="height: 265px;">
-            <div class="col-md-12 header-container-company">
-              <div class="select-company-container col-md-10">
-                <span class="search-company-lookup">
-                </span>
-                <input matInput 
-                      placeholder="Type allowed location"
-                      class="search-company-input"
-                      autocomplete="off"
-                      [formControl]="allowedLocationSearch"
-                      (click)="$event.stopPropagation();$event.preventDefault();">
-              </div>
-            </div>
             <div class="col-md-12 row company-container-header header-allowed">
               <div class="header-allowed-name">
                 Allowed locations
               </div>
             </div>
-            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let location of filteredAllowedLocationOptions | async">
+            <div class="col-md-12 header-container-hcompany">
+              <div class="select-company-container col-md-10">
+                <span class="search-company-lookup"> </span>
+                <input
+                  matInput
+                  placeholder="Type allowed location"
+                  class="search-company-input"
+                  autocomplete="off"
+                  [formControl]="allowedLocationSearch"
+                  (click)="$event.stopPropagation(); $event.preventDefault()"
+                />
+              </div>
+            </div>
+            <div
+              (click)="$event.stopPropagation()"
+              class="col-md-12 contract-no-padding allowed-locations-line"
+              *ngFor="let location of filteredAllowedLocationOptions | async"
+            >
               <mat-checkbox [(ngModel)]="location.isSelected">
-                {{location.name}}
+                {{ location.name }}
               </mat-checkbox>
             </div>
-          </div>     
-          <div class="saveBtn">
-            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-            style="float: right;"
-            pButton
-            (click)="saveAllowedLocations(selectedTabIndex)"
-            type="button"></button>
+          </div>
+          <div class="saveProducts">
+            <button
+              class="ui-button-info mr-1 btn-i-blue-color"
+              label="Save"
+              style="float: right;"
+              pButton
+              (click)="saveAllowedLocations(selectedTabIndex)"
+              type="button"
+            ></button>
           </div>
         </mat-menu>
       </div>
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list" *ngIf="formValues.products">
-          <ng-container  *ngFor="let allowedLocation of formValues.products[selectedTabIndex].allowedLocations">
+          <ng-container
+            *ngFor="
+              let allowedLocation of formValues.products[selectedTabIndex]
+                .allowedLocations
+            "
+          >
             <span class="allow-location">
-              <span class="dot-allow-location">
-              </span>
-              {{allowedLocation.name}}
+              <span class="dot-allow-location"> </span>
+              {{ allowedLocation.name }}
             </span>
           </ng-container>
         </div>
@@ -78,57 +119,85 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12 allowed-locations-section no-padding" *ngIf="contractConfiguration && !contractConfiguration.hideAllowedProduct">
-    <div [ngClass]="{'allowed-locations-container': !expandAllowProducts, 'allowed-locations-container-expand': expandAllowProducts}">
+  <div
+    class="col-md-12 allowed-locations-section no-padding"
+    *ngIf="contractConfiguration && !contractConfiguration.hideAllowedProduct"
+  >
+    <div
+      [ngClass]="{
+        'allowed-locations-container': !expandAllowProducts,
+        'allowed-locations-container-expand': expandAllowProducts
+      }"
+    >
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list-modal-container">
-            Allowed products
+          Allowed products
         </div>
-        <div *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menuAllowedProducts" class="edit-allow-locations">
-        </div>
-        <div  *ngIf="formValues.status && formValues.status.name == 'Confirmed'" class="edit-allow-locations">
-        </div>
-        <mat-menu #menuAllowedProducts="matMenu" class="allowed-locations-modal ">
+        <div
+          *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"
+          [matMenuTriggerFor]="menuAllowedProducts"
+          class="edit-allow-locations"
+        ></div>
+        <div
+          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"
+          class="edit-allow-locations"
+        ></div>
+        <mat-menu
+          #menuAllowedProducts="matMenu"
+          class="allowed-locations-modal "
+        >
           <div style="height: 265px;">
-            <div class="col-md-12 header-container-company">
-              <div class="select-company-container col-md-10">
-                <span class="search-company-lookup">
-                </span>
-                <input matInput 
-                      placeholder="Type allowed product"
-                      class="search-company-input"
-                      autocomplete="off"
-                      [formControl]="allowedProductSearch"
-                      (click)="$event.stopPropagation();$event.preventDefault();">
-              </div>
-            </div>
             <div class="col-md-12 row company-container-header header-allowed">
               <div class="header-allowed-name">
                 Allowed products
               </div>
             </div>
-            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-locations-line"  *ngFor="let product of filteredAllowedProductOptions | async">
+            <div class="col-md-12 header-container-hcompany">
+              <div class="select-company-container col-md-10">
+                <span class="search-company-lookup"> </span>
+                <input
+                  matInput
+                  placeholder="Type allowed product"
+                  class="search-company-input"
+                  autocomplete="off"
+                  [formControl]="allowedProductSearch"
+                  (click)="$event.stopPropagation(); $event.preventDefault()"
+                />
+              </div>
+            </div>
+            <div
+              (click)="$event.stopPropagation()"
+              class="col-md-12 contract-no-padding allowed-locations-line"
+              *ngFor="let product of filteredAllowedProductOptions | async"
+            >
               <mat-checkbox [(ngModel)]="product.isSelected">
-                {{product.name}}
+                {{ product.name }}
               </mat-checkbox>
             </div>
           </div>
-          <div class="saveBtn">
-            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-            style="float: right;"
-            pButton
-            (click)="saveAllowedProducts(selectedTabIndex)"
-            type="button"></button>
+          <div class="saveProducts">
+            <button
+              class="ui-button-info mr-1 btn-i-blue-color"
+              label="Save"
+              style="float: right;"
+              pButton
+              (click)="saveAllowedProducts(selectedTabIndex)"
+              type="button"
+            ></button>
           </div>
         </mat-menu>
       </div>
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list" *ngIf="formValues.products">
-          <ng-container  *ngFor="let allowedProduct of formValues.products[selectedTabIndex].allowedProducts">
+          <ng-container
+            *ngFor="
+              let allowedProduct of formValues.products[selectedTabIndex]
+                .allowedProducts
+            "
+          >
             <span class="allow-location">
-              <span class="dot-allow-location">
-              </span>
-              {{allowedProduct.name}}
+              <span class="dot-allow-location"> </span>
+              {{ allowedProduct.name }}
             </span>
           </ng-container>
         </div>
@@ -139,229 +208,417 @@
     </div>
   </div>
   <div class="col-md-12 no-padding contract-section d-flex">
-    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field product-details"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <div class="d-flex">
         <mat-form-field class="with-search" appearance="legacy">
           <mat-label>Spec Group</mat-label>
           <mat-select
-              [(ngModel)]="formValues.products[selectedTabIndex].specGroup"
-              placeholder="Spec Group"
-              [disableOptionCentering]="true"
-              panelClass="general-info-select-container"
-              [compareWith]="compareUomObjects"
-              [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
+            [(ngModel)]="formValues.products[selectedTabIndex].specGroup"
+            placeholder="Spec Group"
+            [disableOptionCentering]="true"
+            panelClass="general-info-select-container"
+            [compareWith]="compareUomObjects"
+            [disabled]="
+              formValues.status && formValues.status.name == 'Confirmed'
+            "
+          >
             <ng-container *ngIf="formValues.products[selectedTabIndex].product">
-              <mat-option *ngFor="let option of productSpecGroup[formValues.products[selectedTabIndex].product.id]" [value]="option">
-                {{option.name}}
-            </mat-option>
+              <mat-option
+                *ngFor="
+                  let option of productSpecGroup[
+                    formValues.products[selectedTabIndex].product.id
+                  ]
+                "
+                [value]="option"
+              >
+                {{ option.name }}
+              </mat-option>
             </ng-container>
-        </mat-select>
+          </mat-select>
         </mat-form-field>
-        <div [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}"
-           class="search-icon" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : openSpecGroupPopUp(formValues.products[selectedTabIndex])">
+        <div
+          [ngClass]="{
+            'search-icon-disabled':
+              formValues.status && formValues.status.name == 'Confirmed'
+          }"
+          class="search-icon"
+          (click)="
+            formValues.status && formValues.status.name == 'Confirmed'
+              ? ''
+              : openSpecGroupPopUp(formValues.products[selectedTabIndex])
+          "
+        >
           <div class="img"></div>
         </div>
       </div>
     </div>
-    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field product-details"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <div class="d-flex">
-          <mat-form-field class="with-search" appearance="legacy">
-              <mat-label>Supplier</mat-label>
-              <input class="free-text-field"
-                    [(ngModel)]="formValues.products[selectedTabIndex].physicalSupplier"
-                    type="text"
-                    matInput
-                    [matAutocomplete]="auto1"
-                    placeholder="Supplier"
-                    [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-              <mat-autocomplete #auto1="matAutocomplete"
-                                  class="darkPanelAuto"
-                                  [displayWith]="displayFn">
-                  <mat-option *ngFor="let physicalSupplier of filterPhysicalSupplierList()"
-                          [value]="physicalSupplier">
-                      {{physicalSupplier.name}}
-                  </mat-option>
-              </mat-autocomplete>
-          </mat-form-field>
-          <button class="search-icon"
-            (click)="openSupplier()"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-            [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}"
-              appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
-              <div class="img">
-                <ng-template cdkPortal #masterSelector1="cdkPortal" >
-                    <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
-                                                    [disabled]="disabled"
-                                                    [readonly]="readonly"
-                                                    [entityName]="entityName"
-                                                    [entityId]="entityId"
-                                                    [vesselId]="vesselId"
-                                                    [headerName]="getHeaderNameSelector1()"
-                    ></shiptech-shared-master-selector>
-                </ng-template>
-              </div>
-          </button>
+        <mat-form-field class="with-search" appearance="legacy">
+          <mat-label>Supplier</mat-label>
+          <input
+            class="free-text-field"
+            [(ngModel)]="formValues.products[selectedTabIndex].physicalSupplier"
+            type="text"
+            matInput
+            [matAutocomplete]="auto1"
+            placeholder="Supplier"
+            [disabled]="
+              formValues.status && formValues.status.name == 'Confirmed'
+            "
+          />
+          <mat-autocomplete
+            #auto1="matAutocomplete"
+            class="darkPanelAuto"
+            [displayWith]="displayFn"
+          >
+            <mat-option
+              *ngFor="let physicalSupplier of filterPhysicalSupplierList()"
+              [value]="physicalSupplier"
+            >
+              {{ physicalSupplier.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button
+          class="search-icon"
+          (click)="openSupplier()"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+          [ngClass]="{
+            'search-icon-disabled':
+              formValues.status && formValues.status.name == 'Confirmed'
+          }"
+          appMasterSelectorTrigger
+          [masterSelector]="masterSelector1"
+          #masterSelectorTrigger1="masterSelectorTrigger"
+          [header]="getHeaderNameSelector1()"
+        >
+          <div class="img">
+            <ng-template cdkPortal #masterSelector1="cdkPortal">
+              <shiptech-shared-master-selector
+                (selectedChange)="
+                  selectorPhysicalSupplierSelectionChange($event);
+                  masterSelectorTrigger1.close()
+                "
+                (shouldCloseModal)="masterSelectorTrigger1.close()"
+                [selectorType]="autocompletePhysicalSupplier"
+                [disabled]="disabled"
+                [readonly]="readonly"
+                [entityName]="entityName"
+                [entityId]="entityId"
+                [vesselId]="vesselId"
+                [headerName]="getHeaderNameSelector1()"
+              ></shiptech-shared-master-selector>
+            </ng-template>
+          </div>
+        </button>
       </div>
     </div>
-    <div class="custom-form-field product-details"
-        [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search"
-          [ngClass]="{'date-invalid': isDealDateInvalid , 'date-valid': !isDealDateInvalid}"
-          appearance="legacy">
+    <div
+      class="custom-form-field product-details"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field
+        class="without-search"
+        [ngClass]="{
+          'date-invalid': isDealDateInvalid,
+          'date-valid': !isDealDateInvalid
+        }"
+        appearance="legacy"
+      >
         <mat-label>Deal Date</mat-label>
-        <input [(ngModel)]="formValues.products[selectedTabIndex].dealDate"
-              #validToDateField="ngModel"
-              matInput
-              [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-              [matDatepicker]="dealDate"
-              (focus)="dealDate.open()"
-              autocomplete="off"
-              placeholder="Deal Date"
-              (dateInput)="onChange($event, 'dealDate')"
-              (dateChange)="formValues.products[selectedTabIndex].dealDate = formatDateForBe(formValues.products[selectedTabIndex].dealDate)">
-              <mat-datepicker-toggle matSuffix [for]="dealDate">
-                <mat-icon matDatepickerToggleIcon class="icon-date">
-                </mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #dealDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+        <input
+          [(ngModel)]="formValues.products[selectedTabIndex].dealDate"
+          #validToDateField="ngModel"
+          matInput
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+          [matDatepicker]="dealDate"
+          (focus)="dealDate.open()"
+          autocomplete="off"
+          placeholder="Deal Date"
+          (dateInput)="onChange($event, 'dealDate')"
+          (dateChange)="
+            formValues.products[selectedTabIndex].dealDate = formatDateForBe(
+              formValues.products[selectedTabIndex].dealDate
+            )
+          "
+        />
+        <mat-datepicker-toggle matSuffix [for]="dealDate">
+          <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker
+          #dealDate
+          [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+        ></mat-datepicker>
       </mat-form-field>
     </div>
   </div>
-  <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
+  <div
+    class="header-product-details col-md-12 no-padding"
+    style="margin-top: 10px; margin-bottom:15px;"
+  >
     Product conversion factors
   </div>
-  <div class="col-md-12 no-padding">
-    <table class="product-details-table table table-stripped table-hover" style="width:100%">
+  <div class="col-md-12 no-padding ">
+    <table
+      class="product-details-table table table-stripped table-hover"
+      style="width:100%"
+    >
       <thead>
         <tr>
-            <td class="padding" style="width:20%">
-              <b>Product</b>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>Mass Uom</b>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>Volume Uom</b>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>Conversion factor</b>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>Conversion value</b>
-            </td>
+          <td class="padding" style="width:20%">
+            <b>Product</b>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>Mass Uom</b>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>Volume Uom</b>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>Conversion factor</b>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>Conversion value</b>
+          </td>
         </tr>
       </thead>
-      <tbody>
-          <ng-container  *ngFor="let conversionFactor of formValues.products[selectedTabIndex].conversionFactors">
+    </table>
+    <div class="table-ftix-head">
+      <table
+        class="product-details-table table table-stripped table-hover "
+        style="width:100%"
+      >
+        <tbody>
+          <ng-container
+            *ngFor="
+              let conversionFactor of formValues.products[selectedTabIndex]
+                .conversionFactors
+            "
+          >
             <tr *ngIf="!conversionFactor.isDeleted">
-              <td class="padding-left"  style="width:20%">
-                {{conversionFactor.product.name}}
+              <td class="padding-left" style="width:20%">
+                {{ conversionFactor.product.name }}
               </td>
-              <td  style="width:20%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id == 1"
-                    class="without-search conversion-factor-dropdown-component" appearance="legacy">
+              <td style="width:20%">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    *ngIf="
+                      conversionFactor.contractConversionFactorOptions.id == 1
+                    "
+                    class="without-search conversion-factor-dropdown-component"
+                    appearance="legacy"
+                  >
                     <mat-select
-                        [disableOptionCentering]="true"
-                        panelClass="general-info-select-container"
-                        [disabled]="true">
-                        <mat-option *ngFor="let option of []" [value]="option">
-                            {{option.name}}
-                        </mat-option>
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [disabled]="true"
+                    >
+                      <mat-option *ngFor="let option of []" [value]="option">
+                        {{ option.name }}
+                      </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <mat-form-field  *ngIf="conversionFactor.contractConversionFactorOptions.id != 1"
-                    class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                  <mat-form-field
+                    *ngIf="
+                      conversionFactor.contractConversionFactorOptions.id != 1
+                    "
+                    class="without-search conversion-factor-dropdown-component"
+                    appearance="legacy"
+                  >
                     <mat-select
-                        [(ngModel)]="conversionFactor.massUom"
-                        [disableOptionCentering]="true"
-                        panelClass="general-info-select-container"
-                        [compareWith]="compareUomObjects"
-                        (selectionChange)="saveConversionFactors(conversionFactor, false)"
-                        [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || conversionFactor.contractConversionFactorOptions.id == 4 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
-                        <mat-option *ngFor="let option of uomMassList" [value]="option">
-                            {{option.name}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </td>
-              <td  style="width:20%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id == 1"
-                    class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                    <mat-select
-                          [disableOptionCentering]="true"
-                          panelClass="general-info-select-container"
-                          [disabled]="true">
-                        <mat-option *ngFor="let option of []" [value]="option">
-                            {{option.name}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id != 1"
-                    class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                    <mat-select
-                          [(ngModel)]="conversionFactor.volumeUom"
-                          [disableOptionCentering]="true"
-                          panelClass="general-info-select-container"
-                          [compareWith]="compareUomObjects"
-                          (selectionChange)="saveConversionFactors(conversionFactor, false)"
-                          [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || conversionFactor.contractConversionFactorOptions.id == 4 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
-                        <mat-option *ngFor="let option of uomVolumeList" [value]="option">
-                            {{option.name}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </td>
-              <td  style="width:20%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                    <mat-select
-                          [(ngModel)]="conversionFactor.contractConversionFactorOptions"
-                          [disableOptionCentering]="true"
-                          panelClass="general-info-select-container"
-                          [compareWith]="compareUomObjects"
-                          (selectionChange)="saveConversionFactors(conversionFactor, true)"
-                          [disabled]="formValues.hasInvoicedOrder">
-                        <mat-option *ngFor="let option of contractConversionFactorOptions" [value]="option">
-                            {{option.name}}
-                        </mat-option>
+                      [(ngModel)]="conversionFactor.massUom"
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareUomObjects"
+                      (selectionChange)="
+                        saveConversionFactors(conversionFactor, false)
+                      "
+                      [disabled]="
+                        conversionFactor.contractConversionFactorOptions.id ==
+                          3 ||
+                        conversionFactor.contractConversionFactorOptions.id ==
+                          4 ||
+                        (formValues.hasInvoicedOrder &&
+                          conversionFactor.contractConversionFactorOptions.id ==
+                            2)
+                      "
+                    >
+                      <mat-option
+                        *ngFor="let option of uomMassList"
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
               </td>
               <td style="width:20%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id == 1"
-                    class="without-search" appearance="legacy">
-                    <input
-                        matInput
-                        autocomplete="off"
-                        [disabled]="true">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    *ngIf="
+                      conversionFactor.contractConversionFactorOptions.id == 1
+                    "
+                    class="without-search conversion-factor-dropdown-component"
+                    appearance="legacy"
+                  >
+                    <mat-select
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [disabled]="true"
+                    >
+                      <mat-option *ngFor="let option of []" [value]="option">
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
-                  <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id != 1"
-                    class="without-search" appearance="legacy">
-                    <input
-                        [(ngModel)]="conversionFactor.value"
-                        matInput
-                        autocomplete="off"
-                        (blur)="saveConversionFactors(conversionFactor, false)"
-                        [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || conversionFactor.contractConversionFactorOptions.id == 4 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
+                  <mat-form-field
+                    *ngIf="
+                      conversionFactor.contractConversionFactorOptions.id != 1
+                    "
+                    class="without-search conversion-factor-dropdown-component"
+                    appearance="legacy"
+                  >
+                    <mat-select
+                      [(ngModel)]="conversionFactor.volumeUom"
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareUomObjects"
+                      (selectionChange)="
+                        saveConversionFactors(conversionFactor, false)
+                      "
+                      [disabled]="
+                        conversionFactor.contractConversionFactorOptions.id ==
+                          3 ||
+                        conversionFactor.contractConversionFactorOptions.id ==
+                          4 ||
+                        (formValues.hasInvoicedOrder &&
+                          conversionFactor.contractConversionFactorOptions.id ==
+                            2)
+                      "
+                    >
+                      <mat-option
+                        *ngFor="let option of uomVolumeList"
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
-              </div>
+                </div>
               </td>
-
+              <td style="width:20%">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    class="without-search conversion-factor-dropdown-component"
+                    appearance="legacy"
+                  >
+                    <mat-select
+                      [(ngModel)]="
+                        conversionFactor.contractConversionFactorOptions
+                      "
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareUomObjects"
+                      (selectionChange)="
+                        saveConversionFactors(conversionFactor, true)
+                      "
+                      [disabled]="formValues.hasInvoicedOrder"
+                    >
+                      <mat-option
+                        *ngFor="let option of contractConversionFactorOptions"
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width:20%">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    *ngIf="
+                      conversionFactor.contractConversionFactorOptions.id == 1
+                    "
+                    class="without-search"
+                    appearance="legacy"
+                  >
+                    <input matInput autocomplete="off" [disabled]="true" />
+                  </mat-form-field>
+                  <mat-form-field
+                    *ngIf="
+                      conversionFactor.contractConversionFactorOptions.id != 1
+                    "
+                    class="without-search"
+                    appearance="legacy"
+                  >
+                    <input
+                      [(ngModel)]="conversionFactor.value"
+                      matInput
+                      autocomplete="off"
+                      (blur)="saveConversionFactors(conversionFactor, false)"
+                      [disabled]="
+                        conversionFactor.contractConversionFactorOptions.id ==
+                          3 ||
+                        conversionFactor.contractConversionFactorOptions.id ==
+                          4 ||
+                        (formValues.hasInvoicedOrder &&
+                          conversionFactor.contractConversionFactorOptions.id ==
+                            2)
+                      "
+                    />
+                  </mat-form-field>
+                </div>
+              </td>
             </tr>
           </ng-container>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-<div>
-<ngx-spinner
-bdColor="rgba(51,51,51,0.8)"
-size="medium"
-color="#fff"
-type="ball-spin-clockwise-fade">
-</ngx-spinner>
+  <div>
+    <ngx-spinner
+      bdColor="rgba(51,51,51,0.8)"
+      size="medium"
+      color="#fff"
+      type="ball-spin-clockwise-fade"
+    >
+    </ngx-spinner>
+  </div>
+</div>

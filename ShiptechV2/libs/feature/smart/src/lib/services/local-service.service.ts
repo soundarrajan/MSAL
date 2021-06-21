@@ -45,6 +45,9 @@ export namespace GetProcurementApiPaths {
 export namespace AuditLogApiPaths {
     export const getAuditLog = () => `api/admin/audit/get`;
   }
+export namespace GetUnmanagedVesselsApiPath{
+    export const getUnmanagedVessels = ()=> 'api/BOPS/bunkerplan/getUnmanageableVessels';
+} 
 
 @Injectable({
     providedIn: 'root'
@@ -617,12 +620,35 @@ export class LocalService {
     }
     // getOutstandRequestData to put current ROB row detail on vessel role
     @ObservableException()
-    getOutstandRequestData(request: any): Observable<any> {
+    getOutstandRequestData(request: any, ColorCode?: any): Observable<any> {
       return this.http.post<any>(
         `${this._apiUrlProcure}/${GetProcurementApiPaths.GetProcurementRequest()}`,
         request
-      );
+      )
+      .pipe(map(items => {
+          (items.payload).map(item => {
+            console.log(item);
+                if(ColorCode) {
+                    item.requestStatus['colorCode'] = ColorCode.find(code=> 
+                        (code.id == item.requestStatus?.id) && (code.transactionTypeId == item.requestStatus?.transactionTypeId))
+                    return item;
+                } else {
+                    return item;
+                }
+            })
+            return items;
+        }
+        ));
     }
+
+
+ @ObservableException()
+getUnmanagedVessels(request: any): Observable<any> {
+  return this.http.post<any>(
+    `${this._apiUrl}/${GetUnmanagedVesselsApiPath.getUnmanagedVessels()}`,
+    { payload: request }
+  )
+}
 
     // public getVesselByName(vesselName): Observable<any> {
     //     console.log(vesselName)

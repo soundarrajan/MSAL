@@ -112,16 +112,16 @@ export class MapPanelComponent implements OnInit {
     this.list = [];
     //Make a list of vesselname and vessel ID
     this.vesselList.forEach(vessel => {
-      this.filterList.push({ type: 'V', id: vessel.VesselIMONO, name: vessel.VesselName });
-      this.vList.push({ type: 'V', id: vessel.VesselIMONO, name: vessel.VesselName });
-      this.filterList.push({ type: 'V', id: vessel.VesselIMONO, name: vessel.VesselIMONO });
+      this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
+      this.vList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
+     // this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
     });
     // this.vesselList.forEach(vessel => {
     //   this.filterList.push({ type: 'V', id: vessel.VesselIMONO, name: vessel.VesselIMONO });
     // });
     this.portList.forEach(port => {
-      this.filterList.push({ type: 'P', id: port.Id, name: port.LocationName });
-      this.pList.push({ type: 'P', id: port.Id, name: port.LocationName });
+      this.filterList.push({ type: 'P', id: port.locationId, name: port.locationName });
+      this.pList.push({ type: 'P', id: port.locationId, name: port.locationName });
     });
 
   }
@@ -138,14 +138,14 @@ export class MapPanelComponent implements OnInit {
     }
     if (this.selectedType == 'V') {
       console.log(this.searchControl.value + '')
-      let vessel = this.vesselList.filter(element => (element.VesselIMONO == this.searchControl.value) ||
-        (element.VesselName.toLowerCase() == this.searchControl.value.toString().toLowerCase()));
+      let vessel = this.vesselList.filter(element => (element.vesselId == this.searchControl.value) ||
+      (element.vesselName.toLowerCase() == this.searchControl.value.toString().toLowerCase()));
       if (vessel.length > 0) {
         this.changeVessel.emit(vessel[0]);
       }
     }
     else {
-      let port = this.portList.filter(element => (element.Id == this.searchControl.value));
+      let port = this.portList.filter(element => (element.locationId == this.searchControl.value));
       if (port.length > 0) {
         this.changePort.emit(port[0]);
       }

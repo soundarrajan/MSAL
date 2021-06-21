@@ -22,6 +22,7 @@ import TileJSON from 'ol/source/TileJSON';
 import TileLayer from 'ol/layer/Tile';
 // import olms from 'ol-mapbox-style';
 import FullScreen from 'ol/control/FullScreen';
+import { MapViewService } from '../../services/map-view.service';
 
 
 @Component({
@@ -122,37 +123,40 @@ export class OlMapComponent implements OnInit {
   public filterData = [
     {
       name: 'All My Vessels',
-      count: '200',
+      count: '0',
       color: '#5780A6',
       lonlat: []
     },
     {
       name: 'Unmanageable Vessels',
-      count: '50',
+      count: '0',
       color: '#5780A6',
       lonlat: []
     },
     {
       name: 'European Region',
-      count: '15',
+      count: '0',
       color: '#5780A6',
-      lonlat: [1698859.9306153469, 6262837.730208559]
+      // lonlat: [1698859.9306153469, 6262837.730208559],
+      lonlat: []
     },
     {
       name: 'N.America Region',
       count: '0',
       color: '#5780A6',
-      lonlat: [-11529522.794165753, 5795972.288921478]
+      // lonlat: [-11529522.794165753, 5795972.288921478],
+      lonlat: []
     },
     {
       name: 'Asia Region',
       count: '0',
       color: '#5780A6',
-      lonlat: [10143642.22417868, 7066005.284367598]
+      // lonlat: [10143642.22417868, 7066005.284367598],
+      lonlat: []
     }
   ];
 
-  //Layers 
+  //Layers
   // Global Map
   private mapLayer = new OlVectorLayer({
     source: new OlVectorSource({
@@ -204,7 +208,7 @@ export class OlMapComponent implements OnInit {
     },
   });
 
-  // private mapLayer = 
+  // private mapLayer =
   // new TileLayer({
   //   source: new TileJSON({
   //     url: 'https://api.maptiler.com/maps/topo/tiles.json?key=PAYU1Mctev9jZaYj5AGF',
@@ -248,7 +252,7 @@ export class OlMapComponent implements OnInit {
   private portHoverPopupOverlay;
   private hoverCircleEffectOverlay;
 
-  constructor(private localService: LocalService, public dialog: MatDialog, private logger: LoggerService) {
+  constructor(private localService: LocalService, public dialog: MatDialog, private logger: LoggerService, private mapService: MapViewService) {
     this.logger.logInfo('OlMapComponent-ngOnInit()', new Date());
   }
 
@@ -284,7 +288,7 @@ export class OlMapComponent implements OnInit {
         let feature2 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "port-on-route");//Port Icon on Route
 
         feature2.forEach(element => {
-          if (this.showPortList[0].name == element.getProperties().data.LocationName)
+          if (this.showPortList[0].name == element.getProperties().data.locationName)
             element.setStyle(this.getPortGlowStyle(element.getProperties().data.flag));
           else
             element.setStyle(this.getPortGlowStyle(-1));
@@ -305,7 +309,7 @@ export class OlMapComponent implements OnInit {
 
 
         feature5.forEach(element => {
-          if (this.showPortList[0].name == element.getProperties().data.LocationName)
+          if (this.showPortList[0].name == element.getProperties().data.locationName)
             element.setStyle(this.getNextPortStyle('amber'));
           else
             element.setStyle(this.getNextPortStyle('grey'));
@@ -329,10 +333,23 @@ export class OlMapComponent implements OnInit {
   ngAfterViewInit() {
     this.loadMap();
     this.loadEventListeners();
-    this.loadVessels(false);
+    this.mapService.getVesselsListForMap(" ").subscribe((res: any) => {
+      if(res.payload != undefined){
+        this.vesselList = res.payload;
+        this.loadVessels(" ");
+        let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+        titleEle.click();
+      }
+    });
     this.setCenter();
     this.portMakersLayer.setVisible(true);
-    this.loadPorts();
+    this.mapService.getLocationsListForMap(" ").subscribe(res => {
+      if (res.payload != undefined) {
+        this.portList = res.payload;
+        this.loadPorts(" ");
+      }
+    })
+    this.loadFilterData();
 
     // this.loadRoute();
 
@@ -389,16 +406,16 @@ export class OlMapComponent implements OnInit {
       controls: [],
       target: this.olmapElement.nativeElement,
       view: mapView,
-      // interactions: olinteraction      
+      // interactions: olinteraction
     });
     this.localService.themeChange.subscribe(value => {
       this.theme = value;
-      // if(!this.theme && !this.lightclick){ 
+      // if(!this.theme && !this.lightclick){
       //   this.mapLayer_click_dark_layer.setOpacity(1);
-      // }  
+      // }
       if (!this.theme) {
         this.mapLayer.setOpacity(0);//dark
-        
+
         if(this.showVesselPop || this.showPortList.length>0)
         this.setMapOpacity(0.5);
         // this.map.removeLayer(this.mapLayer);
@@ -421,7 +438,7 @@ export class OlMapComponent implements OnInit {
         }
       }
       else {
-        
+
         this.mapLayer1.setOpacity(0);
         if(this.showVesselPop || this.showPortList.length>0)
         this.setMapOpacity(0.3);
@@ -451,78 +468,103 @@ export class OlMapComponent implements OnInit {
     }
   }
 
+  createVesselMakeSrs(vessels: any, showVesselGlow: boolean = false)
+  {
+    let vesselMakesrs = [];
+    this.getCurrentTime();
+    for (let vesselDetail of vessels) {
+      let marker = new OlFeature({
+        id: 'ST' + vesselDetail.vesselId, type: 'vessel', data: vesselDetail,
+        geometry: new OlPoint(fromLonLat([vesselDetail.vesselLongitude, vesselDetail.vesselLatitude]))
+      });
+      marker.setStyle(this.getVesselStyle(vesselDetail));
+      vesselMakesrs.push(marker);
 
+      //Vessel Glow
+      if (showVesselGlow) {
+        let vesselGlow = new OlFeature({
+          id: 'STG' + vesselDetail.vesselId, type: 'vessel-glow', data: vesselDetail,
+          geometry: new OlPoint(fromLonLat([vesselDetail.vesselLongitude, vesselDetail.vesselLatitude])),
+        });
+        vesselGlow.setStyle(this.getVesselGlowStyle('blue'));
+        vesselMakesrs.push(vesselGlow);
+      }
+    }
+    if (vesselMakesrs.length > 0) {
+      this.vesselMakersLayer.getSource().addFeatures(vesselMakesrs);
+      this.setCenter();
+    }
+  }
   private loadVessels(filter) {
     this.isLoading = true;
     this.vesselMakersLayer.getSource().clear();
-    if (!filter) {
-      this.localService.getVesselsList().subscribe((res: any) => {
-        this.vesselList = res;
-        let vesselMakesrs = [];
-        this.getCurrentTime();
-        for (let vesselDetail of res) {
-          let marker = new OlFeature({
-            id: 'ST' + vesselDetail.ShiptechVesselId, type: 'vessel', data: vesselDetail,
-            geometry: new OlPoint(fromLonLat([vesselDetail.CurrentLocation.Longitude, vesselDetail.CurrentLocation.Latitude]))
-          });
-          marker.setStyle(this.getVesselStyle(vesselDetail));
-          vesselMakesrs.push(marker);
-        }
-        if (vesselMakesrs.length > 0) {
-          this.vesselMakersLayer.getSource().addFeatures(vesselMakesrs);
-          //this.setCenter();
-        }
-      });
+    if (filter == " ") {
+      this.createVesselMakeSrs(this.vesselList);
+    }
+    else if (filter == "Unmanageable Vessels") {
+      this.createVesselMakeSrs(this.vesselList.filter(item => item.isUnmanagable == 1), true);
     }
     else {
-      this.localService.getVesselsList_red().subscribe((res: any) => {
-        let vesselMakesrs = [];
-        this.getCurrentTime();
-        for (let vesselDetail of res) {
-          vesselDetail.ColorFlag = 1;
-          if (vesselDetail.ROB.Color.indexOf('red') > 0) {
-            let marker = new OlFeature({
-              id: 'ST' + vesselDetail.ShiptechVesselId, type: 'vessel', data: vesselDetail,
-              geometry: new OlPoint(fromLonLat([vesselDetail.CurrentLocation.Longitude, vesselDetail.CurrentLocation.Latitude]))
-            });
-            marker.setStyle(this.getVesselStyle(vesselDetail));
-            vesselMakesrs.push(marker);
-
-            //Vessel Glow
-            let vesselGlow = new OlFeature({
-              id: 'STG' + vesselDetail.ShiptechVesselId, type: 'vessel-glow', data: vesselDetail,
-              geometry: new OlPoint(fromLonLat([vesselDetail.CurrentLocation.Longitude, vesselDetail.CurrentLocation.Latitude])),
-            });
-            vesselGlow.setStyle(this.getVesselGlowStyle('red'));
-            vesselMakesrs.push(vesselGlow);
-          }
-        }
-        if (vesselMakesrs.length > 0) {
-          this.vesselMakersLayer.getSource().addFeatures(vesselMakesrs);
-          this.setCenter();
-        }
-        // this.isLoading=false;                  
-      });
+      this.createVesselMakeSrs(this.vesselList.filter(item => item.regionName == filter), true);
     }
   }
 
-
-  loadPorts() {
-    this.localService.getCountriesList().subscribe(res => {
-      if (res != undefined) {
-        this.portList = res;
-        let portMakesrs = [];
+  createPortMakeSrs(ports : any ){
+    let portMakesrs = [];
         this.getCurrentTime();
-        for (let port of res) {
+        for (let port of ports) {
           let marker = new OlFeature({
-            id: 'PID' + port.Id, type: 'port', data: port,
-            geometry: new OlPoint(fromLonLat([port.Longitude, port.Latitude]))
+            id: 'PID' + port.locationId, type: 'port', data: port,
+            geometry: new OlPoint(fromLonLat([port.locationLongitude, port.locationLatitude]))
           });
-          marker.setStyle(this.getPortStyle((port.LocationName.toUpperCase()), port.IsMajorPort, port.flag));
+          marker.setStyle(this.getPortStyle((port.locationName.toUpperCase()), port.isMajorLocation, port.flag));
           portMakesrs.push(marker);
         }
         if (portMakesrs.length > 0)
           this.portMakersLayer.getSource().addFeatures(portMakesrs);
+  }
+
+  loadPorts(filter) {
+    this.portMakersLayer.getSource().clear();
+    if(filter == " " || filter == "Unmanageable Vessels"){
+      this.createPortMakeSrs(this.portList);
+    }
+    else {
+      this.createPortMakeSrs(this.portList.filter(item => item.regionName == filter));
+    }   
+
+  }
+
+  loadFilterData(){
+    this.mapService.getRegionFiltersForMap(" ").subscribe(res => {
+      if (res.payload != undefined) {
+        let portMakesrs = [];
+        this.getCurrentTime();
+        res.payload.forEach(filter => {
+          switch(filter.regionName ){
+            case 'My Vessels' :{
+                                  this.filterData[0].count = filter.vesselsCount
+                                  break;
+                                }
+            case 'Unmanagable Vessels':{
+                                          this.filterData[1].count = filter.vesselsCount
+                                          break;
+                                        }
+            case 'Europe':{
+                            this.filterData[2].count = filter.vesselsCount
+                            break;
+                          }
+            case 'North America':{
+                                    this.filterData[3].count = filter.vesselsCount
+                                    break;
+                                  }
+            case 'Asia':{
+                          this.filterData[4].count = filter.vesselsCount
+                          break;
+                        }
+            
+          }
+        })
       }
     });
   }
@@ -534,9 +576,9 @@ export class OlMapComponent implements OnInit {
         anchor: [0.47, 0.47],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
-          vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
-        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/customicons/vessel/hover-red.svg" : "./assets/customicons/vessel/hover-blue.svg",
+        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
+          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
+        src: "./assets/customicons/vessel/hover-blue.svg"//vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/customicons/vessel/hover-red.svg" : "./assets/customicons/vessel/hover-blue.svg",
       }))
     });
     return iconStyle;
@@ -550,7 +592,7 @@ export class OlMapComponent implements OnInit {
         anchor: [0.8, 0.8],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        src: './assets/customicons/port/hover' + (portDetail.flag == 'higher-warning-view' ? '-red' : (portDetail.flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg', //portType -major:minor
+        src: './assets/customicons/port/hover' +  '-blue' + '.svg'//+ (portDetail.flag == 'higher-warning-view' ? '-red' : (portDetail.flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg', //portType -major:minor
       }))
     });
     return iconStyle;
@@ -562,14 +604,14 @@ export class OlMapComponent implements OnInit {
       image: new Icon(({
         anchor: [0.47, 0.47],
         anchorOrigin: 'bottom-left',
-        // anchorXUnits: 'pixels',           
+        // anchorXUnits: 'pixels',
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
-          vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
+        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
+          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
         // src: "http://cdn.mapmarker.io/api/v1/pin?text=P&size=50&hoffset=1",
         // src: vesselDetail.ColorFlag == 0 ? "./assets/icon/ROB_blue.svg" : vesselDetail.ColorFlag == 1 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_amber.svg",
-        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
+        src: "./assets/customicons/vessel/ROB_blue.svg"//vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
       }))
     });
     return iconStyle;
@@ -580,12 +622,12 @@ export class OlMapComponent implements OnInit {
       image: new Icon(({
         anchor: [0.47, 0.47],
         anchorOrigin: 'bottom-left',
-        // anchorXUnits: 'pixels', 
+        // anchorXUnits: 'pixels',
         zIndex: Infinity,
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
-          vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
+        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
+          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
         src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
 
         // src: "./assets/icon/ROB_red.svg",
@@ -603,8 +645,8 @@ export class OlMapComponent implements OnInit {
         anchorOrigin: 'bottom-left',
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
-          vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
+        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
+          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
         src: "./assets/customicons/vessel/vessel_grey.svg"
       }))
     });
@@ -731,13 +773,13 @@ export class OlMapComponent implements OnInit {
   private getPortStyle(name, isMajorPort, flag): Style {
     var iconStyle = new Style({
       image: new Icon(({
-        src: './assets/customicons/port/' + (isMajorPort ? 'major' : 'minor') + '-port' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
+        src: './assets/customicons/port/' + (isMajorPort == 1? 'major' : 'minor') + '-port' + '-blue' + '.png',//(flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
         rotation: 0,
         anchor: [1, 1],
         // scale: -1,
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        scale: isMajorPort ? 0.3 : 0.1
+        scale: isMajorPort == 1? 0.3 : 0.1
       })),
       // text: new Text({
       //   offsetY: 10,
@@ -759,7 +801,7 @@ export class OlMapComponent implements OnInit {
   private loadEventListeners() {
     let hoverItems: any;
     //EVENTS
-    //MAP - pointermove 
+    //MAP - pointermove
     this.map.on('pointermove', (event) => {
       if (hoverItems != null && hoverItems.length > 0)
         this.resetHoverItems(hoverItems);
@@ -768,31 +810,36 @@ export class OlMapComponent implements OnInit {
       var coordinates = event.coordinate;
       if (hit) {
         hoverItems = this.map.getFeaturesAtPixel(pixel);
-        if (hoverItems[0].get('type') == 'vessel') {
+        if (hoverItems[0].get('type') == 'vessel' || hoverItems[0].get('type') == 'vessel-glow') {
           //  hoverItems[0].setStyle(this.getVesselStyle1(hoverItems[0].get('data')));
           this.map.getViewport().style.cursor = this.displayRoute ? '' : 'pointer';
           var coordinates = event.coordinate;
-          this.hoverVesselName = hoverItems[0].get('data').VesselName;
-          this.hoverVesselColor = hoverItems[0].get('data').ROB.Color.indexOf('red') > 0 ? 'red' :
-            hoverItems[0].get('data').ROB.Color.indexOf('orange') > 0 ? 'yellow' : 'blue';
+          this.hoverVesselName = hoverItems[0].get('data').vesselName;
+          this.hoverVesselColor = 'blue'//hoverItems[0].get('data').ROB.Color.indexOf('red') > 0 ? 'red' :
+            //hoverItems[0].get('data').ROB.Color.indexOf('orange') > 0 ? 'yellow' : 'blue';
           // this.view = hoverItems[0].get('data').ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
           // hoverItems[0].get('data').ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
           this.map.getViewport().style.cursor = this.displayRoute ? '' : 'pointer';
           // this.vesselHoverPopupOverlay.setPosition(hoverItems[0].get('geometry').flatCoordinates);
-          hoverItems[0].setStyle(this.getHoverVesselCircle(hoverItems[0].get('data')));
+          if(hoverItems[0].get('type') != 'vessel-glow')
+            hoverItems[0].setStyle(this.getHoverVesselCircle(hoverItems[0].get('data')));
           this.vesselHoverPopupOverlay.setPosition(coordinates);
           this.portHoverPopupOverlay.setPosition(undefined);
           this.hoverCircleEffectOverlay.setPosition(undefined);
+          let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
 
         }
         else if (hoverItems[0].get('type') == 'port') {
-          this.hoverPortName = hoverItems[0].get('data').LocationName
+          this.hoverPortName = hoverItems[0].get('data').locationName
           this.map.getViewport().style.cursor = this.displayRoute ? '' : 'pointer';
-          this.hoverPopupColor = hoverItems[0].get('data').flag == 'minor-warning-view' ? 'yellow' : (hoverItems[0].get('data').flag == 'higher-warning-view') ? 'red' : 'blue';
+          this.hoverPopupColor = 'blue'//hoverItems[0].get('data').flag == 'minor-warning-view' ? 'yellow' : (hoverItems[0].get('data').flag == 'higher-warning-view') ? 'red' : 'blue';
           hoverItems[0].setStyle(this.getHoverPortCircle(hoverItems[0].get('data')));
           this.portHoverPopupOverlay.setPosition(coordinates);
           this.vesselHoverPopupOverlay.setPosition(undefined);
           this.hoverCircleEffectOverlay.setPosition(undefined);
+          let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
 
         }
         else if (hoverItems[0].get('type') == 'port-on-route' || hoverItems[0].get('type') == 'next-port' || hoverItems[0].get('type') == 'vessel-on-route') {
@@ -816,7 +863,7 @@ export class OlMapComponent implements OnInit {
       }
     });
 
-    //MAP - click 
+    //MAP - click
     this.map.on('click', (evt) => {
       var coordinates = evt.coordinate;
       // console.log(coordinates)
@@ -832,22 +879,22 @@ export class OlMapComponent implements OnInit {
         // this.routePopupOverlay.setPosition(evt.coordinate);
         // console.log(evt.coordinate)
 
-        if (items[0].get('type') == 'vessel') {
+        if (items[0].get('type') == 'vessel' || items[0].get('type') =='vessel-glow') {
           if (!this.displayRoute) {
             this.logger.logInfo('OlMapComponent-vesselClick', new Date());
             if (this.showPortList.length != 3) {
               this.isLoading = true;
               this.highIntensity = false;
               this.setdata(items[0].get('data'));
-              if(this.theme){                
+              if(this.theme){
                 this.setMapOpacity(0.4);
               }
               else{
                 this.lightclick=true;
                 this.mapLayer_click_dark_layer.setOpacity(1);
                 // this.setMapOpacity(0.5);
-              }  
-                
+              }
+
                //this.setMapOpacity(0.3);
               this.vesselPopupIsVisible = true;
               let flag;
@@ -911,14 +958,14 @@ export class OlMapComponent implements OnInit {
             //this.showVesselPop = false;
             this.vesselMakersLayer.setOpacity(0.3);
             this.portMakersLayer.setOpacity(0.3);
-            if(this.theme){                
+            if(this.theme){
               this.setMapOpacity(0.4);
             }
             else{
               this.lightclick=true;
               this.mapLayer_click_dark_layer.setOpacity(1);
               // this.setMapOpacity(0.5);
-            }  
+            }
           }
           this.clickedPort = "";
           var e = document.getElementsByClassName("ol-popup");
@@ -942,7 +989,7 @@ export class OlMapComponent implements OnInit {
           });
 
           feature2.forEach(element => {
-            if (items[0].get('data').LocationName != element.getProperties().data.LocationName)
+            if (items[0].get('data').locationName != element.getProperties().data.locationName)
               element.setStyle(this.getPortGlowStyle(-1));
             else
               element.setStyle(this.getPortGlowStyle(element.getProperties().data.flag));
@@ -957,7 +1004,7 @@ export class OlMapComponent implements OnInit {
           });
 
           feature5.forEach(element => {
-            if (items[0].get('data').LocationName != element.getProperties().data.LocationName)
+            if (items[0].get('data').locationName != element.getProperties().data.locationName)
               element.setStyle(this.getNextPortStyle('grey'));
             else
               element.setStyle(this.getNextPortStyle('amber'));
@@ -1015,7 +1062,7 @@ export class OlMapComponent implements OnInit {
       this.showBplan(false);
 
     });
-    //MAP - singleclick 
+    //MAP - singleclick
     this.map.on('singleclick', function (event) {
       var coordinate = event.coordinate;
     });
@@ -1047,7 +1094,7 @@ export class OlMapComponent implements OnInit {
         val.setStyle(this.getVesselStyle(val.get('data')));
       if (val.get('type') == 'port') {
         let port = val.get('data');
-        val.setStyle(this.getPortStyle((port.LocationName.toUpperCase()), port.IsMajorPort, port.flag));
+        val.setStyle(this.getPortStyle((port.locationName.toUpperCase()), port.isMajorLocation, port.flag));
       }
     }
     var e = document.getElementsByClassName("ol-hover-popup");
@@ -1062,35 +1109,45 @@ export class OlMapComponent implements OnInit {
     this.vesselMakersLayer.setOpacity(1);
     this.showVesselPop = false;
     this.showLocationPop = false;
+    this.selectedFillterTag = null;
     if (item != null) {
       switch (item.name) {
         case 'All My Vessels': {
           this.selectedFillterTag = null;
-          this.loadVessels(false);
+          this.loadVessels(" ");
+          this.loadPorts(" ")
           this.setCenter();
           break;
         }
         case 'Unmanageable Vessels': {
-          this.selectedFillterTag = this.selectedFillterTag != item.name ? item.name : null;
-          if (this.selectedFillterTag)
-            this.loadVessels(true)
-          else
-            this.loadVessels(false);
+          this.selectedFillterTag = item.name;
+          this.loadVessels('Unmanageable Vessels')
+          this.loadPorts('Unmanageable Vessels')
+          this.setCenter();
           break;
         }
         case 'European Region': {
-          this.flyTo(item.lonlat, () => { this.isLoading = false }, 4.2);
-          this.loadVessels(false);
+          this.selectedFillterTag = item.name;
+          //this.flyTo(item.lonlat, () => { this.isLoading = false }, 4.2);
+          this.loadVessels('Europe');
+          this.loadPorts('Europe')
+          this.setCenter();
           break;
         }
         case 'N.America Region': {
-          this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
-          this.loadVessels(false);
+          this.selectedFillterTag = item.name;
+          //this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
+          this.loadVessels('North America');
+          this.loadPorts('North America')
+          this.setCenter();
           break;
         }
         case 'Asia Region': {
-          this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
-          this.loadVessels(false);
+          this.selectedFillterTag = item.name;
+          //this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
+          this.loadVessels('Asia');
+          this.loadPorts('Asia');
+          this.setCenter();
           break;
         }
       }
@@ -1098,51 +1155,43 @@ export class OlMapComponent implements OnInit {
     else
       this.selectedFillterTag = null;
 
-
-    // if (item != null && item.name != "All My Vessels") {
-    //   this.selectedFillterTag = this.selectedFillterTag != item.name ? item.name : null;
-    // }
-    // else
-    //   this.selectedFillterTag = null;
-
-    // if (this.selectedFillterTag)
-    //   this.loadVessels(true)
-    // else
-    //   this.loadVessels(false);
   }
 
   //Events - start
 
   setdata(vData) {
-    this.vessel_view = vData.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
-      vData.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
+    this.vessel_view = 'standard-view'//vData.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
+      //vData.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
     this.routeData = vData;
     this.vesselPopData = {
       vesselView: this.vessel_view,
-      name: vData.VesselName,
-      id: 1,
-      destination: 'Marseille',
-      eta1: '2020-04-13 10:00',
-      eta2: '2020-04-14 10:00',
-      next_destination: 'Catania',
+      name: vData.vesselName,
+      id: vData.vesselId,
+      destination: '',
+      eta1: '',
+      eta2: '',
+      next_destination: '',
+      voyageDetailId: '',
       voyageStatus: 'Laden',
-      vesselId: '1',
-      vesselExpDate: '12/06/2020',
+      vesselId: vData.vesselId,
+      vesselExpDate: '',
+      redeliveryDays: '',
       vesselType: 'LR1',
       bunkeringStatus: 'Created',
-      serviceId: '271',
-      deptId: 'MLAS',
-      ownership: 'Chartered',
-      hsfo: '468',
-      dogo: '600',
-      ulsfo: '120',
-      vlsfo: '364',
-      hfo: '58',
-      lshfo: '120',
-      mdo: '10',
-      lsmdo: '20',
-      mgo: '10',
-      lsmgo: '10',
+      serviceId: '',
+      deptId: '',
+      ownership: '',
+      hsfo: '',
+      lsdis: '',
+      dis: '',
+      ulsfo: '',
+      vlsfo: '',
+      hfo: '',
+      lshfo: '',
+      mdo: '',
+      lsmdo: '',
+      mgo: '',
+      lsmgo: '',
       notificationsCount: 6,
       messagesCount: 2,
       routeAvailable: true
@@ -1171,26 +1220,27 @@ export class OlMapComponent implements OnInit {
     //   "end_location_id": vData.EndLocation.LocationId
     // }
 
-    var lonlat = fromLonLat([vData.CurrentLocation.Longitude, vData.CurrentLocation.Latitude]);
+    var lonlat = fromLonLat([vData.vesselLongitude, vData.vesselLatitude]);
     this.flyTo(lonlat, () => { this.isLoading = false }, 3);
 
     //this.drawRoute(vData, locations);
-    //this.showLocationPop = false; 
+    //this.showLocationPop = false;
     //this.routeLayer.getSource().clear(); //to clear the route
     this.showVesselPop = true;
   }
 
   setPortData(pData) {
-    if (!((this.showPortList.filter(port => port.name == pData.LocationName)).length > 0)) {
+    if (!((this.showPortList.filter(port => port.name == pData.locationName)).length > 0)) {
       let count = this.showPortList.length;
       this.portPopData = {
+        locationId: pData.locationId,
         position: 1,
-        port_view: pData.flag,
-        name: pData.LocationName,
-        earliestTradingTime: '31 Days',
-        latestTradingTime: '2 Days',
-        avlProdCategory: ['HSFO', 'ULSFO', 'LSDIS'],
-        notavlProdCategory: ['DIS'],
+        port_view: "standard-view",//pData.flag,
+        name: pData.locationName,
+        earliestTradingTime: '',
+        latestTradingTime: '',
+        avlProdCategory: [],
+        //notavlProdCategory: ['DIS'],
         destination: 'Marseille',
         eta1: '2020-04-13 10:00',
         eta2: '2020-04-14 10:00',
@@ -1215,8 +1265,8 @@ export class OlMapComponent implements OnInit {
         lsmgo: '10',
         notificationsCount: 6,
         messagesCount: 2,
-        latitude: pData.Latitude,
-        longitude: pData.Longitude,
+        latitude: pData.locationLatitude,
+        longitude: pData.locationLongitude,
       }
       if (count >= this.showPortCount) {
         this.showPortList.splice(0, 1)
@@ -1271,7 +1321,7 @@ export class OlMapComponent implements OnInit {
       let temp = [];
       for (var i = 0; i < res.length; i++) {
         if (res[i].RouteJson !== undefined && res[i].RouteJson !== null)
-          if ((res[i].StartLocation === res[i].VesselName)) {
+          if ((res[i].StartLocation === res[i].vesselName)) {
             dottedLine = true;
           }
         var routes = JSON.parse(res[i].RouteJson);
@@ -1328,15 +1378,15 @@ export class OlMapComponent implements OnInit {
       e[i].remove();
     }
     // if (data.LocationName == 'Loke' || data.LocationName == 'NEW YORK' || data.LocationName == 'CRISTOBAL') {
-    this.clickedPort = data.LocationName;
+    this.clickedPort = data.locationName;
     var element = document.createElement('div');
     element.classList.add("ol-popup");
-    if (data.LocationName == 'CRISTOBAL') {
+    if (data.locationName == 'CRISTOBAL') {
       element.innerHTML = `<div class="popup-content">
-      <div style="white-space:nowrap;display:flex;align-items:center;"> 
+      <div style="white-space:nowrap;display:flex;align-items:center;">
       <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
       </span>
-      <span class="days"> 3 Days </span> <span style="padding:0px 5px;font-weight:500;">to</span> <span class="days">${data.LocationName}</span> </div>
+      <span class="days"> 3 Days </span> <span style="padding:0px 5px;font-weight:500;">to</span> <span class="days">${data.locationName}</span> </div>
         <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
         <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
         <div class="strategic-port"><img style="padding:0px 5px;" src="./assets/customicons/strategic-port.svg" >Strategic Port</div>
@@ -1344,10 +1394,10 @@ export class OlMapComponent implements OnInit {
     }
     else {
       element.innerHTML = `<div class="popup-content">
-      <div style="white-space:nowrap;display:flex;align-items:center;"> 
+      <div style="white-space:nowrap;display:flex;align-items:center;">
       <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
       </span>
-      <span class="days"> 3 Days </span> <span style="padding:0px 5px;font-weight:500;">to</span> <span class="days">${data.LocationName}</span> </div>
+      <span class="days"> 3 Days </span> <span style="padding:0px 5px;font-weight:500;">to</span> <span class="days">${data.locationName}</span> </div>
         <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
         <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
           </div>`;
@@ -1364,16 +1414,16 @@ export class OlMapComponent implements OnInit {
     // }
   }
   createHoverPopup(data, coordinates) {
-    if (this.clickedPort != data.LocationName) {
-      // if (data.LocationName == 'Loke' || data.LocationName == 'NEW YORK' || data.LocationName == 'CRISTOBAL') {
+    if (this.clickedPort != data.locationName) {
+      // if (data.locationName == 'Loke' || data.locationName == 'NEW YORK' || data.locationName == 'CRISTOBAL') {
       var element = document.createElement('div');
       element.classList.add("ol-hover-popup");
-      if (data.LocationName == 'CRISTOBAL') {
+      if (data.locationName == 'CRISTOBAL') {
         element.innerHTML = `<div class="popup-content">
-        <div style="white-space:nowrap;display:flex;align-items:center;"> 
+        <div style="white-space:nowrap;display:flex;align-items:center;">
         <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
         </span>
-        <span class="days"> 3 Days </span> <span style="padding:0px 5px;">to</span> <span class="days">${data.LocationName}</span> </div>
+        <span class="days"> 3 Days </span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
           <div style="line-height: 23px;padding:0px 2px;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
           <div style="line-height: 23px;padding:0px 2px;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
           <div class="strategic-port"><img style="padding:0px 5px;" src="./assets/customicons/strategic-port.svg" >Strategic Port</div>
@@ -1381,10 +1431,10 @@ export class OlMapComponent implements OnInit {
       }
       else {
         element.innerHTML = `<div class="popup-content">
-        <div style="white-space:nowrap;display:flex;align-items:center;"> 
+        <div style="white-space:nowrap;display:flex;align-items:center;">
         <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
         </span>
-        <span class="days"> 3 Days </span> <span style="padding:0px 5px;">to</span> <span class="days">${data.LocationName}</span> </div>
+        <span class="days"> 3 Days </span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
           <div style="line-height: 23px;padding:0px 2px;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
           <div style="line-height: 23px;padding:0px 2px;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
             </div>`;
@@ -1413,7 +1463,7 @@ export class OlMapComponent implements OnInit {
   }
 
   /**
-  * 
+  *
   * @param pathArr : array of coordinates for route
   * @param linestyle : style path like solid, dotted and small dotted lines
   */
@@ -1432,7 +1482,7 @@ export class OlMapComponent implements OnInit {
           })
         });
       }
-      else if (vesselInfo.CurrentLocation.Longitude == item.lon && vesselInfo.CurrentLocation.Latitude == item.lat) {
+      else if (vesselInfo.vesselLongitude == item.lon && vesselInfo.vesselLatitude == item.lat) {
         linestyle = new Style({
           stroke: new Stroke({
             color: this.strokeColor,
@@ -1467,16 +1517,16 @@ export class OlMapComponent implements OnInit {
 
     //Vessel Glow
     let vesselGlow = new OlFeature({
-      id: 'STG' + vesselInfo.ShiptechVesselId, type: 'vessel-glow', data: vesselInfo,
-      geometry: new OlPoint(fromLonLat([vesselInfo.CurrentLocation.Longitude, vesselInfo.CurrentLocation.Latitude])),
+      id: 'STG' + vesselInfo.vesselId, type: 'vessel-glow', data: vesselInfo,
+      geometry: new OlPoint(fromLonLat([vesselInfo.vesselLongitude, vesselInfo.vesselLatitude])),
     });
     vesselGlow.setStyle(this.getVesselGlowStyle('amber'));
     featureRoutes.push(vesselGlow)
 
 
     let vesselmarker = new OlFeature({
-      id: 'STD' + vesselInfo.ShiptechVesselId, type: 'vessel-on-route', data: vesselInfo,
-      geometry: new OlPoint(fromLonLat([vesselInfo.CurrentLocation.Longitude, vesselInfo.CurrentLocation.Latitude])),
+      id: 'STD' + vesselInfo.vesselId, type: 'vessel-on-route', data: vesselInfo,
+      geometry: new OlPoint(fromLonLat([vesselInfo.vesselLongitude, vesselInfo.vesselLatitude])),
     });
     vesselmarker.setStyle(this.getVesselStyle(vesselInfo));
     featureRoutes.push(vesselmarker);
@@ -1489,7 +1539,7 @@ export class OlMapComponent implements OnInit {
       if (res != undefined) {
         for (let port of res) {
           if (ind == 0) {
-            if (port.LocationName == routes.StartLocation) {
+            if (port.locationName == routes.StartLocation) {
               let portGlow = new OlFeature({
                 id: 'PI' + routes.id, type: 'port-on-route', data: port,
                 geometry: new OlPoint(fromLonLat([routes.StartLocationLongitude, routes.StartLocationLatitude])),
@@ -1505,7 +1555,7 @@ export class OlMapComponent implements OnInit {
               featureRoutes.push(portMarker);
             }
           }
-          if (port.LocationName == routes.NextLocation) {
+          if (port.locationName == routes.NextLocation) {
             portData = port;
             if (this.nextPortIndex == ind) {
               let portGlow = new OlFeature({
@@ -1562,7 +1612,7 @@ export class OlMapComponent implements OnInit {
   }
 
   /**
-  * 
+  *
   * @param clat : Current/vessel location latitude
   * @param clon : Current/vessel location longitude
   * @param elat : End location latitude
@@ -1686,9 +1736,9 @@ export class OlMapComponent implements OnInit {
     this.displayRoute = value;
     this.localService.setRouteFlag(value);
     var locations = {
-      "start_location_name": this.routeData.StartLocation.LocationName,
+      "start_location_name": this.routeData.StartLocation.locationName,
       "start_location_id": this.routeData.StartLocation.LocationId,
-      "end_location_name": this.routeData.EndLocation.LocationName,
+      "end_location_name": this.routeData.EndLocation.locationName,
       "end_location_id": this.routeData.EndLocation.LocationId
     }
     this.drawRoute(this.routeData, locations);

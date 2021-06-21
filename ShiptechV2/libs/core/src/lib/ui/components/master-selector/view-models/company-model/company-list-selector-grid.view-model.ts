@@ -32,10 +32,12 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { CompanyListColumns, CompanyListColumnServerKeys, CompanyListColumnsLabels } from './company-list.columns';
+import {
+  CompanyListColumns,
+  CompanyListColumnServerKeys,
+  CompanyListColumnsLabels
+} from './company-list.columns';
 import { ICompanyListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-
-
 
 function model(prop: keyof ICompanyListDto): keyof ICompanyListDto {
   return prop;
@@ -134,7 +136,6 @@ export class CompanyListSelectorGridViewModel extends BaseGridViewModel {
     flex: 1
   };
 
-  
   displayNameCol: ITypedColDef<ICompanyListDto, IDisplayLookupDto> = {
     headerName: CompanyListColumnsLabels.displayName,
     colId: CompanyListColumns.displayName,
@@ -278,13 +279,6 @@ export class CompanyListSelectorGridViewModel extends BaseGridViewModel {
     width: 150
   };
 
-
-
-
-
-
-
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -307,7 +301,7 @@ export class CompanyListSelectorGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): ITypedColDef[] {
     return [
       this.selectCol,
-      this.idCol,
+      // this.idCol,
       this.nameCol,
       this.displayNameCol,
       this.parentCol,
@@ -327,14 +321,14 @@ export class CompanyListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const filters: ServerQueryFilter[] = [];
     this.mastersListApiService
-        .getCompanyList({
+      .getCompanyList({
         ...transformLocalToServeGridInfo(
           this.gridApi,
           params,

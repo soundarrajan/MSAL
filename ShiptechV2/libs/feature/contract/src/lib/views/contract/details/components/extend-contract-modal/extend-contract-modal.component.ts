@@ -411,6 +411,7 @@ export class ExtendContractModalComponent implements OnInit{
   formValues: any;
   switchTheme; //false-Light Theme, true- Dark Theme
   isEffectiveFromDateInvalid: boolean;
+  scheduleDashboardLabelConfiguration: any;
   constructor(
     public dialogRef: MatDialogRef<ExtendContractModalComponent>,
     private ren: Renderer2,
@@ -467,21 +468,12 @@ export class ExtendContractModalComponent implements OnInit{
           this.toastr.error(result);
         } else {
           this.toastr.success('Contract extended!');
-          this.contractService
-            .loadContractDetails(this.formValues.id)
-            .pipe(
-              finalize(() => {
-                this.spinner.hide();
-              })
-            )
-            .subscribe((data: any) => {
-              this.formValues = _.merge(this.formValues, data);
-              console.log(this.formValues);
-              this.dialogRef.close(this.formValues);
-            });
+          this.formValues.status = result;
+          this.dialogRef.close(this.formValues);
         }
      });
   }
+
 
   onChange($event, field) {
     if ($event.value) {

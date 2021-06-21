@@ -1,59 +1,89 @@
-
 <div class="row col-md-12 create-new-formula-modal-top">
-  <div class="col-md-12">
-    <a (click)="closeClick()" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button create-new-formula-close-button" role="button">
+  <!-- <div class="col-md-12">
+    <a
+      (click)="closeClick()"
+      class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button create-new-formula-close-button"
+      role="button"
+    >
       <span class="pi pi-times cl-content"></span>
     </a>
-  </div>
+  </div> -->
   <div class="col-md-12">
     <div style="float: left;" class="header-create-new-formula">
       Pricing Details
     </div>
     <div  style="float: right;">
-      <button  type="button" mat-raised-button class="new-formula-button cancel-button" (click)="cancelFormula()">
+      <button  type="button" class="new-formula-button cancel-button" (click)="cancelFormula()">
         Cancel
       </button>  
-      <button  type="button" mat-raised-button class="new-formula-button"
+      <button  type="button" class="new-formula-button"
         (click)="saveFormula()"
-        [disabled]="!formValues.isEditable">
+        [disabled]="!formValues.isEditable"
+      >
         Save
-      </button>    
+      </button>
     </div>
   </div>
 </div>
 <div mat-dialog-content>
   <div class="row d-flex col-md-12">
-    <div class="col-md-6 pricing-formula-tab" style="display: flex;justify-content: flex-start;">
+    <div
+      class="col-md-6 pricing-formula-tab"
+      style="display: flex;justify-content: flex-start;"
+    >
       <div class="pricing-formula-tab-header col-md-12">
-        <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Pricing formula', 
-          'unselected-tab': selectedFormulaTab != 'Pricing formula'}"
-          (click)="selectedFormulaTab = 'Pricing formula'; initialized = 1">
+        <div
+          [ngClass]="{
+            'selected-tab': selectedFormulaTab == 'Pricing formula',
+            'unselected-tab': selectedFormulaTab != 'Pricing formula'
+          }"
+          (click)="selectedFormulaTab = 'Pricing formula'; initialized = 1"
+        >
           <div class="value">Pricing formula</div>
         </div>
         <div class="border_line"></div>
-        <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Pricing schedule', 
-          'unselected-tab': selectedFormulaTab != 'Pricing schedule'}"
-          (click)="selectedFormulaTab = 'Pricing schedule';  initialized = 2; setPricingType()">
+        <div
+          [ngClass]="{
+            'selected-tab': selectedFormulaTab == 'Pricing schedule',
+            'unselected-tab': selectedFormulaTab != 'Pricing schedule'
+          }"
+          (click)="
+            selectedFormulaTab = 'Pricing schedule';
+            initialized = 2;
+            setPricingType();
+            setHolidayRules()
+          "
+        >
           <div class="value">Pricing schedule</div>
         </div>
         <div class="border_line"></div>
-        <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Discount rules',
-          'unselected-tab': selectedFormulaTab != 'Discount rules'}"
-          (click)="selectedFormulaTab = 'Discount rules'; initialized = 3">
+        <div
+          [ngClass]="{
+            'selected-tab': selectedFormulaTab == 'Discount rules',
+            'unselected-tab': selectedFormulaTab != 'Discount rules'
+          }"
+          (click)="selectedFormulaTab = 'Discount rules'; initialized = 3"
+        >
           <div class="value">Discount rules</div>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 100% !important;">
+      <div
+        class="custom-form-field"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        style="width: 100% !important;"
+      >
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Formula Name</mat-label>
-          <input matInput
-              [(ngModel)]="formValues.name"
-              placeholder="Formula Name"
-              autocomplete="off"
-              [disabled]="!formValues.isEditable">
-          </mat-form-field>
+          <input
+            matInput
+            [(ngModel)]="formValues.name"
+            placeholder="Formula Name"
+            autocomplete="off"
+            [disabled]="!formValues.isEditable"
+          />
+        </mat-form-field>
       </div>
     </div>
   </div>
@@ -61,22 +91,35 @@
     <div class="col-md-12">
       <div class="pricing-type-container">
         <div class="col-md-12 pricing-container">
-          <div class="pricing-container-formula-list row col-md-6 no-padding" style="margin-top: 15px;">
+          <div
+            class="pricing-container-formula-list row col-md-6 no-padding"
+            style="margin-top: 15px;"
+          >
             <div class="col-md-12 pricing-container-formula-list-header">
               Pricing Type
             </div>
             <div class="col-md-12">
               <mat-radio-group
-              [(ngModel)]="formValues.formulaType.id"
-              (ngModelChange)="setFormulaTypeSelected(formValues.formulaType.id)"
-              class="pricing-container-radio-group">
-              <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of formulaTypeList" [value]="option.id">
-                {{option.name}}
-              </mat-radio-button>
-            </mat-radio-group>
+                [(ngModel)]="formValues.formulaType.id"
+                (ngModelChange)="
+                  setFormulaTypeSelected(formValues.formulaType.id)
+                "
+                class="pricing-container-radio-group"
+              >
+                <mat-radio-button
+                  class="pricing-container-radio-button"
+                  *ngFor="let option of formulaTypeList"
+                  [value]="option.id"
+                >
+                  {{ option.name }}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
           </div>
-          <div class="row" *ngIf="formValues.formulaType && formValues.formulaType.id == 1">
+          <div
+            class="row"
+            *ngIf="formValues.formulaType && formValues.formulaType.id == 1"
+          >
             <shiptech-pricing-formula-simple
               [model]="formValues"
               [formulaFlatPercentageList]="formulaFlatPercentageList"
@@ -84,10 +127,14 @@
               [marketPriceList]="marketPriceList"
               [systemInstumentList]="systemInstumentList"
               [uomList]="uomList"
-              [hasInvoicedOrder]="hasInvoicedOrder">
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-pricing-formula-simple>
           </div>
-          <div class="row" *ngIf="formValues.formulaType && formValues.formulaType.id == 2">
+          <div
+            class="row"
+            *ngIf="formValues.formulaType && formValues.formulaType.id == 2"
+          >
             <shiptech-pricing-formula-complex
               [model]="formValues"
               [formulaFlatPercentageList]="formulaFlatPercentageList"
@@ -99,18 +146,26 @@
               [formulaOperationList]="formulaOperationList"
               [formulaFunctionList]="formulaFunctionList"
               [marketPriceTypeList]="marketPriceTypeList"
-              [hasInvoicedOrder]="hasInvoicedOrder">
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-pricing-formula-complex>
           </div>
-          <div style="margin-top: 15px" class="col-md-12 no-padding" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-            <mat-form-field appearance="outline" class="custom-form-field-comments">
-                <mat-label>Comments</mat-label>
-                <textarea  
-                    [(ngModel)]="formValues.comments"
-                    matInput
-                    autocomplete="off"
-                    [disabled]="!formValues.isEditable"
-                    ></textarea>
+          <div
+            style="margin-top: 15px"
+            class="col-md-12 no-padding"
+            [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="custom-form-field-comments"
+            >
+              <mat-label>Comments</mat-label>
+              <textarea
+                [(ngModel)]="formValues.comments"
+                matInput
+                autocomplete="off"
+                [disabled]="!formValues.isEditable"
+              ></textarea>
             </mat-form-field>
           </div>
         </div>
@@ -121,75 +176,119 @@
     <div class="col-md-12">
       <div class="pricing-type-container">
         <div class="col-md-12 pricing-container">
-          <div class="pricing-container-formula-list row col-md-10 no-padding" style="margin-top: 15px;">
+          <div
+            class="pricing-container-formula-list row col-md-10 no-padding"
+            style="margin-top: 15px;"
+          >
             <div class="col-md-12 pricing-container-formula-list-header">
               Event Type
             </div>
             <div class="col-md-12">
               <mat-radio-group
-              [(ngModel)]="formValues.pricingSchedule.id"
-              (ngModelChange)="clearSchedules(formValues.pricingSchedule.id)"
-              class="pricing-container-radio-group">
-              <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of pricingScheduleList" [value]="option.id">
-                {{option.name}}
-              </mat-radio-button>
-            </mat-radio-group>
+                [(ngModel)]="formValues.pricingSchedule.id"
+                (ngModelChange)="clearSchedules(formValues.pricingSchedule.id)"
+                class="pricing-container-radio-group"
+              >
+                <mat-radio-button
+                  class="pricing-container-radio-button"
+                  *ngFor="let option of pricingScheduleList"
+                  [value]="option.id"
+                >
+                  {{ option.name }}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
           </div>
-          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 4">
-            <shiptech-date-range class="row" 
-              [model]="formValues" 
-              [hasInvoicedOrder]="hasInvoicedOrder">
+          <div
+            *ngIf="
+              formValues.pricingSchedule && formValues.pricingSchedule.id == 4
+            "
+          >
+            <shiptech-date-range
+              class="row"
+              [model]="formValues"
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-date-range>
           </div>
-          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 5">
-            <shiptech-specific-dates class="row" 
+          <div
+            *ngIf="
+              formValues.pricingSchedule && formValues.pricingSchedule.id == 5
+            "
+          >
+            <shiptech-specific-dates
+              class="row"
               [model]="formValues"
-              [hasInvoicedOrder]="hasInvoicedOrder">
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-specific-dates>
           </div>
-          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 8">
-            <shiptech-event-based-continuous class="row" [model]="formValues"
+          <div
+            *ngIf="
+              formValues.pricingSchedule && formValues.pricingSchedule.id == 8
+            "
+          >
+            <shiptech-event-based-continuous
+              class="row"
+              [model]="formValues"
               [pricingSchedulePeriodList]="pricingSchedulePeriodList"
               [eventList]="eventList"
               [dayOfWeekList]="dayOfWeekList"
               [holidayRuleList]="holidayRuleList"
-              [hasInvoicedOrder]="hasInvoicedOrder">
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-event-based-continuous>
           </div>
-          <div  *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 7">
+          <div
+            *ngIf="
+              formValues.pricingSchedule && formValues.pricingSchedule.id == 7
+            "
+          >
             <shiptech-event-based-extended
               class="row"
               [model]="formValues"
               [businessCalendarList]="businessCalendarList"
               [eventList]="eventList"
               [formulaEventIncludeList]="formulaEventIncludeList"
-              [hasInvoicedOrder]="hasInvoicedOrder">
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-event-based-extended>
           </div>
-          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 6">
-              <shiptech-event-based-simple
-                class="row" 
-                [model]="formValues"
-                [businessCalendarList]="businessCalendarList"
-                [eventList]="eventList"
-                [formulaEventIncludeList]="formulaEventIncludeList"
-                [hasInvoicedOrder]="hasInvoicedOrder">
-              </shiptech-event-based-simple>
+          <div
+            *ngIf="
+              formValues.pricingSchedule && formValues.pricingSchedule.id == 6
+            "
+          >
+            <shiptech-event-based-simple
+              class="row"
+              [model]="formValues"
+              [businessCalendarList]="businessCalendarList"
+              [eventList]="eventList"
+              [formulaEventIncludeList]="formulaEventIncludeList"
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
+            </shiptech-event-based-simple>
           </div>
-          <div style="margin-top: 15px" class="col-md-12 no-padding" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-            <mat-form-field appearance="outline" class="custom-form-field-comments">
-                <mat-label>Comments</mat-label>
-                <textarea  
-                    [(ngModel)]="formValues.comments"
-                    matInput
-                    autocomplete="off"
-                    [disabled]="!formValues.isEditable"
-                    ></textarea>
+          <div
+            style="margin-top: 15px"
+            class="col-md-12 no-padding"
+            [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="custom-form-field-comments"
+            >
+              <mat-label>Comments</mat-label>
+              <textarea
+                [(ngModel)]="formValues.comments"
+                matInput
+                autocomplete="off"
+                [disabled]="!formValues.isEditable"
+              ></textarea>
             </mat-form-field>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   </div>
   <div class="row d-flex col-md-12" *ngIf="initialized == 3">
@@ -197,71 +296,94 @@
       <div class="pricing-type-container">
         <div class="col-md-12 pricing-container">
           <div style="margin-top: 15px;">
-            <div class="col-md-12 pricing-formula-tab" style="display: flex;justify-content: flex-start;">
+            <div
+              class="col-md-12 pricing-formula-tab"
+              style="display: flex;justify-content: flex-start;"
+            >
               <div class="pricing-formula-tab-header col-md-6">
-                <div [ngClass]="{'selected-tab': rules == 1, 
-                        'unselected-tab': rules != 1}"
-                  (click)="rules = 1">
+                <div
+                  [ngClass]="{
+                    'selected-tab': rules == 1,
+                    'unselected-tab': rules != 1
+                  }"
+                  (click)="rules = 1"
+                >
                   <div class="value">Quantity Based</div>
                 </div>
                 <div class="border_line"></div>
-                <div [ngClass]="{'selected-tab': rules == 2, 
-                  'unselected-tab': rules != 2}"
-                  (click)="rules = 2">
+                <div
+                  [ngClass]="{
+                    'selected-tab': rules == 2,
+                    'unselected-tab': rules != 2
+                  }"
+                  (click)="rules = 2"
+                >
                   <div class="value">Product Based</div>
                 </div>
                 <div class="border_line"></div>
-                <div [ngClass]="{'selected-tab': rules == 3,
-                  'unselected-tab': rules != 3}"
-                  (click)="rules = 3">
+                <div
+                  [ngClass]="{
+                    'selected-tab': rules == 3,
+                    'unselected-tab': rules != 3
+                  }"
+                  (click)="rules = 3"
+                >
                   <div class="value">Vessel Location Based</div>
                 </div>
               </div>
             </div>
           </div>
           <div *ngIf="rules == 1">
-            <shiptech-quantity-based [model]="formValues"
+            <shiptech-quantity-based
+              [model]="formValues"
               [formulaFlatPercentageList]="formulaFlatPercentageList"
               [quantityTypeList]="quantityTypeList"
               [formulaPlusMinusList]="formulaPlusMinusList"
               [uomList]="uomList"
-              [hasInvoicedOrder]="hasInvoicedOrder">
-
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-quantity-based>
           </div>
           <div *ngIf="rules == 2">
-            <shiptech-product-based [model]="formValues"
+            <shiptech-product-based
+              [model]="formValues"
               [formulaFlatPercentageList]="formulaFlatPercentageList"
               [quantityTypeList]="quantityTypeList"
               [formulaPlusMinusList]="formulaPlusMinusList"
               [uomList]="uomList"
               [productList]="productList"
-              [hasInvoicedOrder]="hasInvoicedOrder">
-
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-product-based>
           </div>
           <div *ngIf="rules == 3">
-            <shiptech-vessel-location-based [model]="formValues"
+            <shiptech-vessel-location-based
+              [model]="formValues"
               [formulaFlatPercentageList]="formulaFlatPercentageList"
               [quantityTypeList]="quantityTypeList"
               [formulaPlusMinusList]="formulaPlusMinusList"
               [uomList]="uomList"
               [locationList]="locationList"
-              [hasInvoicedOrder]="hasInvoicedOrder">
+              [hasInvoicedOrder]="hasInvoicedOrder"
+            >
             </shiptech-vessel-location-based>
           </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div mat-dialog-actions style="display: none;">
-  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button>
+  <div mat-dialog-actions style="display: none;">
+    <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>
+      Yes
+    </button>
+  </div>
+
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-spin-clockwise-fade"
+  >
+  </ngx-spinner>
 </div>
- 
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-spin-clockwise-fade">
-</ngx-spinner>

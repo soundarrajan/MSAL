@@ -27,13 +27,22 @@ import { DocumentsGridViewModel } from '@shiptech/core/ui/components/documents/v
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
-import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
 import { DocumentViewEditNotesComponent } from '@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
@@ -45,10 +54,23 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
-import { DeliveryInfoForOrder, DeliveryProduct, DeliveryProductDto, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
+import {
+  DeliveryInfoForOrder,
+  DeliveryProduct,
+  DeliveryProductDto,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
@@ -63,7 +85,7 @@ export const PICK_FORMATS = {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
 
@@ -80,13 +102,15 @@ export class PickDateAdapter extends NativeDateAdapter {
   styleUrls: ['./product-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
-              ConfirmationService,
-              {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS}]
+  providers: [
+    OrderListGridViewModel,
+    DialogService,
+    ConfirmationService,
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS }
+  ]
 })
-export class ProductQuantityComponent implements OnInit{
+export class ProductQuantityComponent implements OnInit {
   switchTheme;
   autocompleteProducts: knownMastersAutocomplete;
   physicalSupplierList: any[];
@@ -117,32 +141,33 @@ export class ProductQuantityComponent implements OnInit{
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
-  @Input('formValues') set _setFormValues(formValues) { 
+
+  @Input('formValues') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
   }
 
-  @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) { 
+  @Input('deliveryProductIndex') set _setDeliveryProductIndex(
+    deliveryProductIndex
+  ) {
     if (!deliveryProductIndex) {
       return;
-    } 
+    }
     this.deliveryProductIndex = deliveryProductIndex;
     // if (this.deliveryForm.controls['deliveryProducts'].value[deliveryProductIndex]){
     //   this.deliveryProduct = this.deliveryForm.controls['deliveryProducts'].value[deliveryProductIndex];
     // }
   }
 
-  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) { 
+  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) {
     if (!toleranceLimits) {
       return;
-    } 
+    }
     this.toleranceLimits = toleranceLimits;
   }
 
- 
   private eventsSubscription: Subscription;
   @Input() events: Observable<void>;
   @Input() vesselId: number;
@@ -164,45 +189,72 @@ export class ProductQuantityComponent implements OnInit{
     public format: TenantFormattingService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService
-
   ) {
     this.autocompleteProducts = knownMastersAutocomplete.products;
-    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
+    this.autocompletePhysicalSupplier =
+      knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
   }
 
-  ngOnInit(){  
+  ngOnInit() {
     this.entityName = 'Delivery';
-    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
+    this.eventsSubscription = this.events.subscribe(data =>
+      this.setDeliveryForm(data)
+    );
     this.getQualityMatchList();
     if (this.formValues.temp.deliverysummary) {
-      if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
-        this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+      if (
+        this.formValues.deliveryProducts[this.deliveryProductIndex] &&
+        !this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .quantityHeader
+      ) {
+        this.formValues.deliveryProducts[
+          this.deliveryProductIndex
+        ].quantityHeader = {};
       }
-      this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
-                              this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
+      this.formQuantityHeaders(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .orderProductId,
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .quantityHeader.ccaiDelivered
+      );
     }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex] &&
+      !this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .quantityHeader
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].quantityHeader = {};
     }
     this.changeDetectorRef.detectChanges();
   }
-  setDeliveryForm(form){
+  setDeliveryForm(form) {
     if (!form) {
       return;
     }
     this.formValues = form;
     if (this.formValues.temp.deliverysummary) {
       if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
-        if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
-          this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+        if (
+          !this.formValues.deliveryProducts[this.deliveryProductIndex]
+            .quantityHeader
+        ) {
+          this.formValues.deliveryProducts[
+            this.deliveryProductIndex
+          ].quantityHeader = {};
         }
       }
       if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
-        this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
-          this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
+        this.formQuantityHeaders(
+          this.formValues.deliveryProducts[this.deliveryProductIndex]
+            .orderProductId,
+          this.formValues.deliveryProducts[this.deliveryProductIndex]
+            .quantityHeader.ccaiDelivered
+        );
       }
-    // this.changeDetectorRef.detectChanges();          
+      // this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -210,53 +262,56 @@ export class ProductQuantityComponent implements OnInit{
     this.qualityMatchList = await this.legacyLookupsDatabase.getQualityMatchList();
   }
 
-
-
   formQuantityHeaders(orderProdId, ccaiDelivered) {
     if (typeof this.formValues.temp.deliverysummary.products == 'undefined') {
       this.formValues.temp.deliverysummary.products = [];
     }
     // returns index based on prodId
-    this.formValues.temp.deliverysummary.products.forEach((summaryProd, idx) => {
-      if (summaryProd.id == orderProdId) {
-        if (!ccaiDelivered) {
+    this.formValues.temp.deliverysummary.products.forEach(
+      (summaryProd, idx) => {
+        if (summaryProd.id == orderProdId) {
+          if (!ccaiDelivered) {
             summaryProd.ccaiDelivered = '';
             summaryProd.ccaiVariance = '';
-        } else {
+          } else {
             summaryProd.ccaiDelivered = ccaiDelivered;
-            summaryProd.ccaiVariance = this.calculatCccaiVariance(summaryProd.ccai, summaryProd.ccaiDelivered);
+            summaryProd.ccaiVariance = this.calculatCccaiVariance(
+              summaryProd.ccai,
+              summaryProd.ccaiDelivered
+            );
+          }
+          this.prodOrderInTemp = idx;
         }
-        this.prodOrderInTemp = idx;
       }
-   });
+    );
   }
 
   calculatCccaiVariance(offered, delivered) {
     if (offered && delivered) {
-        return offered - delivered;
+      return offered - delivered;
     }
     return;
   }
 
   setQualityMatch(bdn, survey, min, max) {
-      if (typeof bdn == 'string' && bdn == '' || bdn == null) {
-          return;
-      }
-      if (typeof survey == 'string' && survey == '' || survey == null) {
-          return;
-      }
-      if (isNaN(bdn)) {
-          return;
-      }
-      if (isNaN(survey)) {
-          return;
-      }
-      let variance = survey - bdn;
-      // logic -> passed for exact match, failed otherwise
-      if (variance == 0) {
-          return this.qualityMatchList[0];
-      }
-      return this.qualityMatchList[1];
+    if ((typeof bdn == 'string' && bdn == '') || bdn == null) {
+      return;
+    }
+    if ((typeof survey == 'string' && survey == '') || survey == null) {
+      return;
+    }
+    if (isNaN(bdn)) {
+      return;
+    }
+    if (isNaN(survey)) {
+      return;
+    }
+    let variance = survey - bdn;
+    // logic -> passed for exact match, failed otherwise
+    if (variance == 0) {
+      return this.qualityMatchList[0];
+    }
+    return this.qualityMatchList[1];
   }
 
   // Only Number
@@ -272,6 +327,4 @@ export class ProductQuantityComponent implements OnInit{
       return false;
     }
   }
-
-  
 }

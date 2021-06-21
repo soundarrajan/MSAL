@@ -1,44 +1,216 @@
 .label-for-invoice {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
-    position: relative;
-    top: -8px;
-    left: 5px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
 }
 
 .label-for-invoice-revert {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
-    position: relative;
-    top: -8px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-wrapper {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.hr {
+    display: block;
+    width: 88%;
+    height: 1px;
+    background: #555555;
+    margin: 4px auto;
 }
 
 .accept-invoice {
-    position: relative;
-    top: -4px;
 }
 
 .revert-invoice {
-    position: relative;
-    left: -3px;
 }
 
 .reject-invoice {
-    position: relative;
-    top: -5px;
-    width: 15px;
 }
 
-button{
-  &:disabled{
+button {
+  &:disabled {
     color: grey !important;
   }
+}
+
+.container-fluid-invoice {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.bdn-container {
+  background-color: white;
+}
+
+.delivery-products-container {
+  background: #fcfcfc;
+}
+
+.container-delivery-screen {
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.split-deliveries:before {
+  content: url(/assets/layout/images/pages/splitDeliveries.svg);
+}
+
+.raise-claim:before {
+  content: url(/assets/layout/images/pages/raiseClaim.svg);
+}
+
+.label-for-contract-menu {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  position: relative;
+  top: -5px;
+  left: 5px;
+}
+
+.label-for-contract-menu-undo {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  position: relative;
+  top: -8px;
+  left: 5px;
+}
+
+#raise-claim {
+  position: relative;
+  width: 39px;
+  height: 39px;
+  left: 2px;
+}
+
+.save-button {
+  background: #00aae2;
+  border-radius: 3px;
+}
+
+.btn-i-blue-color {
+  color: #ffffff !important;
+  background: #00aae2 !important;
+  border-radius: 3px !important;
+  margin-right: 10px;
+  height: 30px;
+  min-width: 85px;
+  font-size: 12px !important;
+  border: 1px solid #3f8efc;
+}
+
+.cancel-contract {
+  position: relative;
+  top: -2px !important;
+}
+
+.cust-btn {
+  cursor: pointer;
+  border: 1px solid #cccccc !important;
+  width: 100px;
+  height: 30px;
+  margin: 0px 5px;
+  background: #eee !important;
+  color: black !important;
+}
+
+.cust-btn:hover,
+.cust-btn:active,
+.cust-btn:focus {
+  border: 1px solid #cccccc !important;
+  background: #eee !important;
+  color: black !important;
+}
+
+.invoice-container {
+  margin-top: 90px !important;
+}
+
+.container-fluid-contract {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.bdn-container {
+  background-color: white;
+}
+
+.delivery-products-container {
+  background: #fcfcfc;
+}
+
+.container-delivery-screen {
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.split-deliveries:before {
+  content: url(/assets/layout/images/pages/splitDeliveries.svg);
+}
+
+.raise-claim:before {
+  content: url(/assets/layout/images/pages/raiseClaim.svg);
+}
+
+.label-for-contract-menu {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  position: relative;
+  top: -5px;
+  left: 5px;
+}
+
+.back-office-container {
+  position: relative;
+  top: -5px;
+}
+
+.more-buttons::before {
+  content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDIxIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8ZWxsaXBzZSBjeD0iMi4zODU0MSIgY3k9IjIuNzg4NDgiIHJ4PSIyLjM4NTQxIiByeT0iMi40MjY2NiIgZmlsbD0iIzM2NDE1MCIvPg0KPGVsbGlwc2UgY3g9IjEwLjAwNjUiIGN5PSIyLjc4ODQ4IiByeD0iMi4zODU0MSIgcnk9IjIuNDI2NjYiIGZpbGw9IiMzNjQxNTAiLz4NCjxlbGxpcHNlIGN4PSIxNy42Mjc2IiBjeT0iMi43ODg0OCIgcng9IjIuMzg1NDEiIHJ5PSIyLjQyNjY2IiBmaWxsPSIjMzY0MTUwIi8+DQo8L3N2Zz4NCg==');
+}
+
+.more-buttons {
+  width: 25px;
+  height: 25px;
+  position: relative;
+}
+
+.dotted-button-container {
+  width: 36px !important;
+  height: 26.47px !important;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: unset !important;
+  margin-right: 10px;
+  margin-left: 10px;
+  top: 2px;
 }

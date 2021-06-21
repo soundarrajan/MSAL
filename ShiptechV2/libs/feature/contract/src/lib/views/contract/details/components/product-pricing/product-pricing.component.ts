@@ -27,17 +27,35 @@ import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/b
 import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
-import { DeliveryInfoForOrder, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  DeliveryInfoForOrder,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
@@ -46,13 +64,22 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import _ from 'lodash';
-import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NgxMatNativeDateAdapter,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
@@ -64,8 +91,6 @@ import { CreateNewFormulaModalComponent } from '../create-new-formula-modal/crea
 import { throws } from 'assert';
 import { FormulaHistoryModalComponent } from '../formula-history-modal/formula-history-modal.component';
 
-
-
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
     dateInput: 'YYYY-MM-DD HH:mm'
@@ -74,18 +99,16 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     dateInput: 'YYYY-MM-DD HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
 
-
-  
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   },
   parse: {
     dateInput: 'DD MMM YYYY'
@@ -98,15 +121,15 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
     let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -117,8 +140,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -127,23 +150,20 @@ export class PickDateAdapter extends NativeDateAdapter {
     let date = elem.toDate();
     return value ? date : null;
   }
-
 }
 
-
-
 export interface NgxMatMomentDateAdapterOptions {
-
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<NgxMatMomentDateAdapterOptions>(
-  'MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
-    providedIn: 'root',
-    factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
-  });
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+  NgxMatMomentDateAdapterOptions
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+  providedIn: 'root',
+  factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+});
 
 export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
   return {
@@ -162,19 +182,21 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
 @Injectable()
 export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _localeData: {
-    firstDayOfWeek: number,
-    longMonths: string[],
-    shortMonths: string[],
-    dates: string[],
-    longDaysOfWeek: string[],
-    shortDaysOfWeek: string[],
-    narrowDaysOfWeek: string[]
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
   };
 
-  constructor(@Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
-              @Optional() @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
-              private _options?: NgxMatMomentDateAdapterOptions) {
-
+  constructor(
+    @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+    @Optional()
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    private _options?: NgxMatMomentDateAdapterOptions
+  ) {
     super();
     this.setLocale(dateLocale || moment.locale());
   }
@@ -187,10 +209,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
       longMonths: momentLocaleData.months(),
       shortMonths: momentLocaleData.monthsShort(),
-      dates: range(31, (i) => this.createDate(2017, 0, i + 1).format('D')),
+      dates: range(31, i => this.createDate(2017, 0, i + 1).format('D')),
       longDaysOfWeek: momentLocaleData.weekdays(),
       shortDaysOfWeek: momentLocaleData.weekdaysShort(),
-      narrowDaysOfWeek: momentLocaleData.weekdaysMin(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin()
     };
   }
 
@@ -212,7 +234,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
-    return style === 'long' ? this._localeData.longMonths : this._localeData.shortMonths;
+    return style === 'long'
+      ? this._localeData.longMonths
+      : this._localeData.shortMonths;
   }
 
   getDateNames(): string[] {
@@ -247,14 +271,18 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   createDate(year: number, month: number, date: number): Moment {
     if (month < 0 || month > 11) {
-      throw Error(`Invalid month index "${month}". Month index has to be between 0 and 11.`);
+      throw Error(
+        `Invalid month index "${month}". Month index has to be between 0 and 11.`
+      );
     }
 
     if (date < 1) {
       throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
     }
 
-    const result = this._createMoment({ year, month, date }).locale(this.locale);
+    const result = this._createMoment({ year, month, date }).locale(
+      this.locale
+    );
     if (!result.isValid()) {
       throw Error(`Invalid date "${date}" for month with index "${month}".`);
     }
@@ -271,8 +299,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -289,14 +317,14 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     let formattedDate = moment(date).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -331,8 +359,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       let currentFormat = PICK_FORMATS.display.dateInput;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -373,7 +401,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     date.hours(value);
   }
   setMinute(date: Moment, value: number): void {
-    date.minutes(value)
+    date.minutes(value);
   }
   setSecond(date: Moment, value: number): void {
     date.seconds(value);
@@ -382,9 +410,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _createMoment(
     date: MomentInput,
     format?: MomentFormatSpecification,
-    locale?: string,
+    locale?: string
   ): Moment {
-    const { strict, useUtc }: NgxMatMomentDateAdapterOptions = this._options || {};
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions =
+      this._options || {};
 
     return useUtc
       ? moment.utc(date, format, locale, strict)
@@ -397,20 +426,22 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./product-pricing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
-              ConfirmationService,
-              {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
-              {
-                provide: NgxMatDateAdapter,
-                useClass: CustomNgxDatetimeAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
-              { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
+  providers: [
+    OrderListGridViewModel,
+    DialogService,
+    ConfirmationService,
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    {
+      provide: NgxMatDateAdapter,
+      useClass: CustomNgxDatetimeAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+  ]
 })
 export class ProductPricing extends DeliveryAutocompleteComponent
-  implements OnInit{
+  implements OnInit {
   [x: string]: any;
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
@@ -432,10 +463,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   @ViewChildren('locationMenuTrigger') locationMenuTrigger;
   @ViewChildren('productMenuTrigger') productMenuTrigger;
 
-
-
   productMasterList: any;
-  expandLocationProductPopUp =  false;
+  expandLocationProductPopUp = false;
   locationMasterSearchList: any[];
   searchLocationInput: any;
   expandCompanyPopUp: any;
@@ -494,8 +523,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   EnableBargeCostDetails: boolean;
   openedScreenLoaders: number = 0;
 
-
-
   get entityId(): number {
     return this._entityId;
   }
@@ -513,35 +540,39 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
+
   @Input() vesselId: number;
-  @Input('additionalCostForLocation') set _setAdditionalCostForLocation(additionalCostForLocation) {
+  @Input('additionalCostForLocation') set _setAdditionalCostForLocation(
+    additionalCostForLocation
+  ) {
     if (!additionalCostForLocation) {
       return;
     }
     this.additionalCostForLocation = additionalCostForLocation;
   }
 
-
-  @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) { 
+  @Input('contractProductIndex') set _setContractProductIndex(
+    contractProductIndex
+  ) {
     if (!contractProductIndex) {
       return;
-    } 
+    }
     this.selectedTabIndex = contractProductIndex;
     if (this.formValues && this.formValues.products[contractProductIndex]) {
-      this.selectedVal = this.formValues.products[contractProductIndex].isFormula ? 'formula' : 'fixed';
+      this.selectedVal = this.formValues.products[contractProductIndex]
+        .isFormula
+        ? 'formula'
+        : 'fixed';
     }
-
   }
 
-  @Input('uomList') set _setUomList(uomList) { 
+  @Input('uomList') set _setUomList(uomList) {
     if (!uomList) {
       return;
-    } 
+    }
     this.uomList = uomList;
   }
 
-  
   @Input('entityCopied') set _setEntityCopied(entityCopied) {
     if (!entityCopied) {
       return;
@@ -549,219 +580,231 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.entityCopied = entityCopied;
   }
 
-
-  @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) { 
+  @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) {
     if (!formulaTypeList) {
       return;
-    } 
+    }
     this.formulaTypeList = formulaTypeList;
   }
 
-  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) { 
+  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) {
     if (!marketPriceList) {
       return;
-    } 
+    }
     this.marketPriceList = marketPriceList;
   }
 
-  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(formulaPlusMinusList) { 
+  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(
+    formulaPlusMinusList
+  ) {
     if (!formulaPlusMinusList) {
       return;
-    } 
+    }
     this.formulaPlusMinusList = formulaPlusMinusList;
   }
 
-  @Input('systemInstumentList') set _setSystemInstumentList(systemInstumentList) { 
+  @Input('systemInstumentList') set _setSystemInstumentList(
+    systemInstumentList
+  ) {
     if (!systemInstumentList) {
       return;
-    } 
+    }
     this.systemInstumentList = systemInstumentList;
   }
 
-  @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(formulaFlatPercentageList) { 
+  @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(
+    formulaFlatPercentageList
+  ) {
     if (!formulaFlatPercentageList) {
       return;
-    } 
+    }
     this.formulaFlatPercentageList = formulaFlatPercentageList;
   }
 
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
     if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
-      this.selectedVal = this.formValues.products[this.selectedTabIndex].isFormula ? 'formula' : 'fixed';
+      this.selectedVal = this.formValues.products[this.selectedTabIndex]
+        .isFormula
+        ? 'formula'
+        : 'fixed';
       //this.formatAdditionalCostValue();
       this.formatPrice();
     }
-
   }
 
-  @Input('additionalCostsComponentTypes') set _setAdditionalCostsComponentTypes(additionalCostsComponentTypes) { 
+  @Input('additionalCostsComponentTypes') set _setAdditionalCostsComponentTypes(
+    additionalCostsComponentTypes
+  ) {
     if (!additionalCostsComponentTypes) {
       return;
-    } 
+    }
     this.additionalCostsComponentTypes = additionalCostsComponentTypes;
   }
 
-  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
+  @Input('generalTenantSettings') set _setGeneralTenantSettings(
+    generalTenantSettings
+  ) {
     if (!generalTenantSettings) {
       return;
-    } 
+    }
     this.generalTenantSettings = generalTenantSettings;
   }
 
-
-  @Input('currencyList') set _setCurrencyList(currencyList) { 
+  @Input('currencyList') set _setCurrencyList(currencyList) {
     if (!currencyList) {
       return;
-    } 
+    }
     this.currencyList = currencyList;
   }
 
-  @Input('formulaOperationList') set _setFormulaOperationList(formulaOperationList) { 
+  @Input('formulaOperationList') set _setFormulaOperationList(
+    formulaOperationList
+  ) {
     if (!formulaOperationList) {
       return;
-    } 
+    }
     this.formulaOperationList = formulaOperationList;
   }
-  
 
-  @Input('formulaFunctionList') set _setFormulaFunctionList(formulaFunctionList) { 
+  @Input('formulaFunctionList') set _setFormulaFunctionList(
+    formulaFunctionList
+  ) {
     if (!formulaFunctionList) {
       return;
-    } 
+    }
     this.formulaFunctionList = formulaFunctionList;
   }
 
-  @Input('marketPriceTypeList') set _setMarketPriceTypeList(marketPriceTypeList) { 
+  @Input('marketPriceTypeList') set _setMarketPriceTypeList(
+    marketPriceTypeList
+  ) {
     if (!marketPriceTypeList) {
       return;
-    } 
+    }
     this.marketPriceTypeList = marketPriceTypeList;
   }
 
-
-  @Input('pricingScheduleList') set _setPricingScheduleList(pricingScheduleList) { 
+  @Input('pricingScheduleList') set _setPricingScheduleList(
+    pricingScheduleList
+  ) {
     if (!pricingScheduleList) {
       return;
-    } 
+    }
     this.pricingScheduleList = pricingScheduleList;
   }
 
-  @Input('holidayRuleList') set _setHolidayRuleList(holidayRuleList) { 
+  @Input('holidayRuleList') set _setHolidayRuleList(holidayRuleList) {
     if (!holidayRuleList) {
       return;
-    } 
+    }
     this.holidayRuleList = holidayRuleList;
   }
 
-  @Input('pricingSchedulePeriodList') set _setPricingSchedulePeriodList(pricingSchedulePeriodList) { 
+  @Input('pricingSchedulePeriodList') set _setPricingSchedulePeriodList(
+    pricingSchedulePeriodList
+  ) {
     if (!pricingSchedulePeriodList) {
       return;
-    } 
+    }
     this.pricingSchedulePeriodList = pricingSchedulePeriodList;
   }
 
-  @Input('eventList') set _setEventList(eventList) { 
+  @Input('eventList') set _setEventList(eventList) {
     if (!eventList) {
       return;
-    } 
+    }
     this.eventList = eventList;
   }
-  
-    
-  @Input('dayOfWeekList') set _setDayOfWeekListt(dayOfWeekList) { 
+
+  @Input('dayOfWeekList') set _setDayOfWeekListt(dayOfWeekList) {
     if (!dayOfWeekList) {
       return;
-    } 
+    }
     this.dayOfWeekList = dayOfWeekList;
   }
 
-      
-  @Input('businessCalendarList') set _setBusinessCalendarList(businessCalendarList) { 
+  @Input('businessCalendarList') set _setBusinessCalendarList(
+    businessCalendarList
+  ) {
     if (!businessCalendarList) {
       return;
-    } 
+    }
     this.businessCalendarList = businessCalendarList;
   }
 
-        
-  @Input('formulaEventIncludeList') set _setFormulaEventIncludeList(formulaEventIncludeList) { 
+  @Input('formulaEventIncludeList') set _setFormulaEventIncludeList(
+    formulaEventIncludeList
+  ) {
     if (!formulaEventIncludeList) {
       return;
-    } 
+    }
     this.formulaEventIncludeList = formulaEventIncludeList;
   }
 
-          
-  @Input('quantityTypeList') set _setQuantityTypeList(quantityTypeList) { 
+  @Input('quantityTypeList') set _setQuantityTypeList(quantityTypeList) {
     if (!quantityTypeList) {
       return;
-    } 
+    }
     this.quantityTypeList = quantityTypeList;
   }
 
-  
-  @Input('productList') set _setProductList(productList) { 
+  @Input('productList') set _setProductList(productList) {
     if (!productList) {
       return;
-    } 
+    }
     this.productList = productList;
   }
 
-
-  @Input('locationList') set _setLocationList(locationList) { 
+  @Input('locationList') set _setLocationList(locationList) {
     if (!locationList) {
       return;
-    } 
+    }
     this.locationList = locationList;
   }
-  
-  @Input('contractFormulaList') set _setContractFormulaList(contractFormulaList) { 
+
+  @Input('contractFormulaList') set _setContractFormulaList(
+    contractFormulaList
+  ) {
     if (!contractFormulaList) {
       return;
-    } 
+    }
     this.contractFormulaList = contractFormulaList;
   }
 
-  @Input('additionalCostList') set _setAdditionalCostListt(additionalCostList) { 
+  @Input('additionalCostList') set _setAdditionalCostListt(additionalCostList) {
     if (!additionalCostList) {
       return;
-    } 
+    }
     this.additionalCostList = additionalCostList;
   }
 
-  @Input('costTypeList') set _setCostTypeList(costTypeList) { 
+  @Input('costTypeList') set _setCostTypeList(costTypeList) {
     if (!costTypeList) {
       return;
-    } 
+    }
     this.costTypeList = costTypeList;
   }
 
-  @Input('buttonClicked1') set _setButtonClicked1(buttonClicked1) { 
+  @Input('buttonClicked1') set _setButtonClicked1(buttonClicked1) {
     if (!buttonClicked1) {
       return;
-    } 
+    }
     this.buttonClicked1 = buttonClicked1;
   }
 
-
-
-
-  
   index = 0;
   expandLocationPopUp = false;
-  array = [0,1,2,3,4,5,6,7,8,9,10];
+  array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
   @Input() eventsSaveButton: Observable<void>;
   @Input() eventsEntityCopied: Observable<void>;
 
   priceFormat: any;
-
-
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -777,12 +820,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
-    public dialog: MatDialog, 
+    iconRegistry: MatIconRegistry,
+    public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
-    private overlayContainer: OverlayContainer) {
+    private overlayContainer: OverlayContainer
+  ) {
     super(changeDetectorRef);
     this.autocompletePhysicalSupplier = knownMastersAutocomplete.formula;
     this.dateFormats.display.dateInput = this.format.dateFormat;
@@ -792,36 +836,53 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
     this.autocompleteFormula = knownMastersAutocomplete.formula;
-    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
-    this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
-    this.priceFormat = '1.' + this.tenantService.pricePrecision + '-' + this.tenantService.pricePrecision;
-
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
+    this.amountFormat =
+      '1.' +
+      this.tenantService.amountPrecision +
+      '-' +
+      this.tenantService.amountPrecision;
+    this.priceFormat =
+      '1.' +
+      this.tenantService.pricePrecision +
+      '-' +
+      this.tenantService.pricePrecision;
   }
 
-  ngOnInit(){  
+  ngOnInit() {
     this.entityName = 'Contract';
-    this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
-    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
-    this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe((data) => this.setEntityCopied(data));
-
+    this.eventsSubscription = this.events.subscribe(data =>
+      this.setContractForm(data)
+    );
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe(data =>
+      this.setRequiredFields(data)
+    );
+    this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe(
+      data => this.setEntityCopied(data)
+    );
   }
 
   setEntityCopied(data) {
     this.entityCopied = data;
-
- }
+  }
 
   setContractForm(form) {
     this.formValues = form;
     console.log(this.formValues);
     if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
-      this.selectedVal = this.formValues.products[this.selectedTabIndex].isFormula ? 'formula' : 'fixed';
+      this.selectedVal = this.formValues.products[this.selectedTabIndex]
+        .isFormula
+        ? 'formula'
+        : 'fixed';
       this.formatAdditionalCostValue();
       this.formatPrice();
     }
   }
 
-  
   setRequiredFields(data) {
     this.buttonClicked = data;
     //this.changeDetectorRef.detectChanges();
@@ -843,48 +904,48 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (!this.formValues.products[selectedTabIndex].formula) {
       const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
         width: '80%',
-        data:  {
-          'formValues': null,
-          'selectedTabIndex': this.selectedTabIndex,
-          'formulaTypeList': this.formulaTypeList,
-          'systemInstumentList': this.systemInstumentList,
-          'marketPriceList': this.marketPriceList,
-          'formulaPlusMinusList': this.formulaPlusMinusList,
-          'formulaFlatPercentageList': this.formulaFlatPercentageList,
-          'uomList': this.uomList,
-          'currencyList': this.currencyList,
-          'formulaOperationList': this.formulaOperationList,
-          'formulaFunctionList': this.formulaFunctionList,
-          'marketPriceTypeList': this.marketPriceTypeList,
-          'pricingScheduleList': this.pricingScheduleList,
-          'holidayRuleList': this.holidayRuleList,
-          'pricingSchedulePeriodList': this.pricingSchedulePeriodList,
-          'eventList': this.eventList,
-          'dayOfWeekList': this.dayOfWeekList,
-          'businessCalendarList': this.businessCalendarList,
-          'formulaEventIncludeList': this.formulaEventIncludeList,
-          'quantityTypeList': this.quantityTypeList,
-          'productList': this.productList,
-          'locationList': this.locationList,
-          'hasInvoicedOrder': this.formValues.hasInvoicedOrder
+        data: {
+          formValues: null,
+          selectedTabIndex: this.selectedTabIndex,
+          formulaTypeList: this.formulaTypeList,
+          systemInstumentList: this.systemInstumentList,
+          marketPriceList: this.marketPriceList,
+          formulaPlusMinusList: this.formulaPlusMinusList,
+          formulaFlatPercentageList: this.formulaFlatPercentageList,
+          uomList: this.uomList,
+          currencyList: this.currencyList,
+          formulaOperationList: this.formulaOperationList,
+          formulaFunctionList: this.formulaFunctionList,
+          marketPriceTypeList: this.marketPriceTypeList,
+          pricingScheduleList: this.pricingScheduleList,
+          holidayRuleList: this.holidayRuleList,
+          pricingSchedulePeriodList: this.pricingSchedulePeriodList,
+          eventList: this.eventList,
+          dayOfWeekList: this.dayOfWeekList,
+          businessCalendarList: this.businessCalendarList,
+          formulaEventIncludeList: this.formulaEventIncludeList,
+          quantityTypeList: this.quantityTypeList,
+          productList: this.productList,
+          locationList: this.locationList,
+          hasInvoicedOrder: this.formValues.hasInvoicedOrder
         }
-      }); 
+      });
       dialogRef.afterClosed().subscribe(result => {
         console.log('RESULT');
         if (result) {
           this.formValues.products[this.selectedTabIndex].formula = {
-            'id': result.id,
-            'name': result.name
-          }
-          this.updateConversionFactor(this.formValues.products[this.selectedTabIndex].formula);
+            id: result.id,
+            name: result.name
+          };
+          this.updateConversionFactor(
+            this.formValues.products[this.selectedTabIndex].formula
+          );
           this.changeDetectorRef.detectChanges();
         }
-      });       
-    } 
-  
+      });
+    }
   }
 
-  
   getHeaderNameSelector1(): string {
     switch (this._autocompleteType) {
       case knownMastersAutocomplete.formula:
@@ -894,29 +955,37 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
   }
 
-  selectorFormulaSelectionChange(
-    selection: IDisplayLookupDto
-  ): void {
+  selectorFormulaSelectionChange(selection: IDisplayLookupDto): void {
     if (selection === null || selection === undefined) {
       this.formValues.products[this.selectedTabIndex].formula = '';
     } else {
       const obj = {
-        'id': selection.id,
-        'name': selection.name
+        id: selection.id,
+        name: selection.name
       };
-      this.formValues.products[this.selectedTabIndex].formula = obj; 
-      this.updateConversionFactor(this.formValues.products[this.selectedTabIndex].formula);
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.products[this.selectedTabIndex].formula = obj;
+      this.updateConversionFactor(
+        this.formValues.products[this.selectedTabIndex].formula
+      );
+      this.changeDetectorRef.detectChanges();
       console.log(this.formValues.products[this.selectedTabIndex]);
     }
   }
 
   filterContractFormulaList() {
     if (this.formValues.products[this.selectedTabIndex].formula) {
-      const filterValue = this.formValues.products[this.selectedTabIndex].formula.name ? this.formValues.products[this.selectedTabIndex].formula.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].formula.toLowerCase();
-      console.log(filterValue);
-      if (this.contractFormulaList) {
-        return this.contractFormulaList.filter(option => option.name.toLowerCase().includes(filterValue))
+      const filterValue = this.formValues.products[this.selectedTabIndex]
+        .formula.name
+        ? this.formValues.products[
+            this.selectedTabIndex
+          ].formula.name.toLowerCase()
+        : this.formValues.products[this.selectedTabIndex].formula.toLowerCase();
+
+        if (this.contractFormulaList) {
+        return this.contractFormulaList
+          .filter(option =>
+            option.name.toLowerCase().includes(filterValue.trim())
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -930,88 +999,111 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     return value && value.name ? value.name : '';
   }
 
-
   removeFormula(selectedTabIndex) {
     this.formValues.products[selectedTabIndex].formula = null;
   }
 
   viewFormula(selectedTabIndex) {
-    let formulaId = this.formValues.products[selectedTabIndex].formula ? this.formValues.products[selectedTabIndex].formula.id : null;
+    let formulaId = this.formValues.products[selectedTabIndex].formula
+      ? this.formValues.products[selectedTabIndex].formula.id
+      : null;
     if (!formulaId) {
       return;
     }
     this.spinner.show();
     this.contractService
-    .getFormulaId(formulaId)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        if (this.entityCopied) {
-          response.isEditable = false;
-        }
-        const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
-          width: '80%',
-          data:  {
-            'formValues': response,
-            'selectedTabIndex': this.selectedTabIndex,
-            'formulaTypeList': this.formulaTypeList,
-            'systemInstumentList': this.systemInstumentList,
-            'marketPriceList': this.marketPriceList,
-            'formulaPlusMinusList': this.formulaPlusMinusList,
-            'formulaFlatPercentageList': this.formulaFlatPercentageList,
-            'uomList': this.uomList,
-            'currencyList': this.currencyList,
-            'formulaOperationList': this.formulaOperationList,
-            'formulaFunctionList': this.formulaFunctionList,
-            'marketPriceTypeList': this.marketPriceTypeList,
-            'pricingScheduleList': this.pricingScheduleList,
-            'holidayRuleList': this.holidayRuleList,
-            'pricingSchedulePeriodList': this.pricingSchedulePeriodList,
-            'eventList': this.eventList,
-            'dayOfWeekList': this.dayOfWeekList,
-            'businessCalendarList': this.businessCalendarList,
-            'formulaEventIncludeList': this.formulaEventIncludeList,
-            'quantityTypeList': this.quantityTypeList,
-            'productList': this.productList,
-            'locationList': this.locationList,
-            'hasInvoicedOrder': this.formValues.hasInvoicedOrder
+      .getFormulaId(formulaId)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          if (this.entityCopied) {
+            response.isEditable = false;
           }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.formValues.products[this.selectedTabIndex].formula = {
-              'id': result.id,
-              'name': result.name
+          const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
+            width: '80%',
+            data: {
+              formValues: response,
+              selectedTabIndex: this.selectedTabIndex,
+              formulaTypeList: this.formulaTypeList,
+              systemInstumentList: this.systemInstumentList,
+              marketPriceList: this.marketPriceList,
+              formulaPlusMinusList: this.formulaPlusMinusList,
+              formulaFlatPercentageList: this.formulaFlatPercentageList,
+              uomList: this.uomList,
+              currencyList: this.currencyList,
+              formulaOperationList: this.formulaOperationList,
+              formulaFunctionList: this.formulaFunctionList,
+              marketPriceTypeList: this.marketPriceTypeList,
+              pricingScheduleList: this.pricingScheduleList,
+              holidayRuleList: this.holidayRuleList,
+              pricingSchedulePeriodList: this.pricingSchedulePeriodList,
+              eventList: this.eventList,
+              dayOfWeekList: this.dayOfWeekList,
+              businessCalendarList: this.businessCalendarList,
+              formulaEventIncludeList: this.formulaEventIncludeList,
+              quantityTypeList: this.quantityTypeList,
+              productList: this.productList,
+              locationList: this.locationList,
+              hasInvoicedOrder: this.formValues.hasInvoicedOrder
             }
-            this.changeDetectorRef.detectChanges();
-          }
-        });
-      }
-    });
-
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              this.formValues.products[this.selectedTabIndex].formula = {
+                id: result.id,
+                name: result.name
+              };
+              this.changeDetectorRef.detectChanges();
+            }
+          });
+        }
+      });
   }
 
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => {
     return 0;
-  }
-
-
+  };
 
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
   }
 
   compareAdditionalCostObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.additionalCostid == object2.id;
+    if (
+      object1 &&
+      object2 &&
+      object1.additionalCostid &&
+      object2.id &&
+      object1.locationid &&
+      object2.locationid
+    ) {
+      return (
+        object1 &&
+        object2 &&
+        object1.additionalCostid == object2.id &&
+        object1.locationid == object2.locationid
+      );
+    } else if (
+      object1 &&
+      object2 &&
+      object1.additionalCostid &&
+      object2.id &&
+      !object1.locationid &&
+      !object2.locationid
+    ) {
+      return object1 && object2 && object1.additionalCostid == object2.id;
+    }
   }
 
-  
   doFiltering(addCostCompTypes, cost, currentCost) {
     var costType = null;
     addCostCompTypes.forEach((v, k) => {
@@ -1056,26 +1148,34 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   filterCostTypesByAdditionalCost(cost, rowRenderIndex) {
-       
     var currentCost = cost;
     // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
-    if(this.additionalCostsComponentTypes === undefined) {
-        // this.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
-        //     return doFiltering(additionalCostsComponentTypes);
-        // });
-    }else{
-        return this.doFiltering(this.additionalCostsComponentTypes, 0, currentCost);
+    if (this.additionalCostsComponentTypes === undefined) {
+      // this.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
+      //     return doFiltering(additionalCostsComponentTypes);
+      // });
+    } else {
+      return this.doFiltering(
+        this.additionalCostsComponentTypes,
+        0,
+        currentCost
+      );
     }
   }
 
   resetUom(key1, key2) {
     console.log(this.generalTenantSettings);
-    if (this.formValues.products[key1].additionalCosts[key2].costType.name != 'Unit') {
-        this.formValues.products[key1].additionalCosts[key2].uom = null;
+    if (
+      this.formValues.products[key1].additionalCosts[key2].costType.name !=
+      'Unit'
+    ) {
+      this.formValues.products[key1].additionalCosts[key2].uom = null;
     } else {
-        this.formValues.products[key1].additionalCosts[key2].uom = this.generalTenantSettings.tenantFormats.uom;
+      this.formValues.products[key1].additionalCosts[
+        key2
+      ].uom = this.generalTenantSettings.tenantFormats.uom;
     }
-  };
+  }
 
   addNewAdditionalCostLine() {
     if (this.formValues.status && this.formValues.status.name == 'Confirmed') {
@@ -1084,115 +1184,194 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
       this.formValues.products[this.selectedTabIndex].additionalCosts = [];
     }
-    this.formValues.products[this.selectedTabIndex].additionalCosts.push({'id':0, 'currency': this.generalTenantSettings.tenantFormats.currency})
-
+    this.formValues.products[this.selectedTabIndex].additionalCosts.push({
+      id: 0,
+      currency: this.generalTenantSettings.tenantFormats.currency
+    });
   }
 
   removeAdditionalCostLine(key) {
     if (this.formValues.status && this.formValues.status.name == 'Confirmed') {
       return;
     }
-    if (this.formValues.products[this.selectedTabIndex].additionalCosts[key].id) {
-      this.formValues.products[this.selectedTabIndex].additionalCosts[key].isDeleted = true;
+    if (
+      this.formValues.products[this.selectedTabIndex].additionalCosts[key].id
+    ) {
+      this.formValues.products[this.selectedTabIndex].additionalCosts[
+        key
+      ].isDeleted = true;
     } else {
-      this.formValues.products[this.selectedTabIndex].additionalCosts.splice(key, 1);
+      this.formValues.products[this.selectedTabIndex].additionalCosts.splice(
+        key,
+        1
+      );
     }
   }
 
   setDefaultCostType(additionalCost) {
     let defaultCostType;
     this.additionalCostsComponentTypes.forEach((v, k) => {
-        if (v.id == additionalCost.id) {
-            defaultCostType = v.costType;
-        }
+      if (v.id == additionalCost.id) {
+        defaultCostType = v.costType;
+      }
     });
     return defaultCostType;
   }
 
-  setAdditionalCostLine(additionalCost, key1, key2) {
-    let locationId = 0, additionalCostLine;
+  setAdditionalCostLine(line, key1, key2) {
+    let additionalCost = {
+      id: line.additionalCostid ? line.additionalCostid : line.id,
+      name: line.name
+    };
+
+    let locationId = 0,
+      additionalCostLine;
     if (this.formValues.products[key1].location) {
       locationId = this.formValues.products[key1].location.id;
     }
-    
+
     this.additionalCostForLocation[locationId].forEach((v, k) => {
-      if (v.additionalCostid == additionalCost.id) {
+      if (v.additionalCostid == additionalCost.id && v.id == line.id) {
         additionalCostLine = v;
       }
     });
-    this.formValues.products[key1].additionalCosts[key2].costType = additionalCostLine.costType;
-    if (additionalCostLine.amount) {
-      this.formValues.products[key1].additionalCosts[key2].amount = this.amountFormatValue(additionalCostLine.amount);
+    this.formValues.products[key1].additionalCosts[key2].costType =
+      additionalCostLine && additionalCostLine.costType
+        ? additionalCostLine.costType
+        : null;
+    if (additionalCostLine && additionalCostLine.amount) {
+      this.formValues.products[key1].additionalCosts[
+        key2
+      ].amount = this.amountFormatValue(additionalCostLine.amount);
     } else {
       this.formValues.products[key1].additionalCosts[key2].amount = null;
     }
-    this.formValues.products[key1].additionalCosts[key2].uom = additionalCostLine.priceUom;
-    if (additionalCostLine.extrasPercentage) {
-      this.formValues.products[key1].additionalCosts[key2].extras = additionalCostLine.extrasPercentage;
+    if (additionalCostLine && additionalCostLine.uom) {
+      this.formValues.products[key1].additionalCosts[key2].uom =
+        additionalCostLine.priceUom;
+    } else if (
+      this.formValues.products[key1].additionalCosts[key2].costType &&
+      this.formValues.products[key1].additionalCosts[key2].costType.name ==
+        'Unit'
+    ) {
+      this.formValues.products[key1].additionalCosts[
+        key2
+      ].uom = this.generalTenantSettings.tenantFormats.uom;
+    }
+
+    if (additionalCostLine && additionalCostLine.extrasPercentage) {
+      this.formValues.products[key1].additionalCosts[key2].extras =
+        additionalCostLine.extrasPercentage;
     } else {
       this.formValues.products[key1].additionalCosts[key2].extras = null;
     }
-    if (additionalCostLine.currency) {
-      this.formValues.products[key1].additionalCosts[key2].currency = additionalCostLine.currency;
+    if (additionalCostLine && additionalCostLine.currency) {
+      this.formValues.products[key1].additionalCosts[key2].currency =
+        additionalCostLine.currency;
     } else {
-      this.formValues.products[key1].additionalCosts[key2].currency = this.generalTenantSettings.tenantFormats.currency;
+      this.formValues.products[key1].additionalCosts[
+        key2
+      ].currency = this.generalTenantSettings.tenantFormats.currency;
     }
-    this.formValues.products[key1].additionalCosts[key2].comments = additionalCostLine.costDescription;
+    this.formValues.products[key1].additionalCosts[key2].comments =
+      additionalCostLine && additionalCostLine.costDescription
+        ? additionalCostLine.costDescription
+        : null;
 
-     this.formValues.products[key1].additionalCosts[key2].locationAdditionalCostId = additionalCostLine.locationid;
+    this.formValues.products[key1].additionalCosts[
+      key2
+    ].locationAdditionalCostId =
+      additionalCostLine && additionalCostLine.locationid
+        ? additionalCostLine.locationid
+        : null;
 
+    this.formValues.products[key1].additionalCosts[key2].additionalCostid =
+      additionalCostLine && additionalCostLine.additionalCostid
+        ? additionalCostLine.additionalCostid
+        : null;
     console.log(additionalCostLine);
   }
 
   setAdditionalCost(value, key1, key2) {
     console.log(value);
-    this.formValues.products[key1].additionalCosts[key2].additionalCost = {
-      'id': value.additionalCostid,
-      'name': value.name
+    if (value.additionalCostid) {
+      this.formValues.products[key1].additionalCosts[key2].additionalCost = {
+        id: value.additionalCostid,
+        name: value.name,
+        locationid: value.locationid
+      };
+    } else {
+      this.formValues.products[key1].additionalCosts[key2].additionalCost = {
+        id: value.id,
+        name: value.name
+      };
     }
-
   }
 
   setIsAllowingNegativeAmmount(key1, key2) {
-    let additionalCost = this.formValues.products[key1].additionalCosts[key2].additionalCost;
-    let findAdditionalCostComponent = _.find(this.additionalCostsComponentTypes, function(obj) {
+    let additionalCost = this.formValues.products[key1].additionalCosts[key2]
+      .additionalCost;
+    let findAdditionalCostComponent = _.find(
+      this.additionalCostsComponentTypes,
+      function(obj) {
         return obj.id == additionalCost.id;
-    });
+      }
+    );
     if (findAdditionalCostComponent) {
-      this.formValues.products[key1].additionalCosts[key2].isAllowingNegativeAmmount = findAdditionalCostComponent.isAllowingNegativeAmmount;
+      this.formValues.products[key1].additionalCosts[
+        key2
+      ].isAllowingNegativeAmmount =
+        findAdditionalCostComponent.isAllowingNegativeAmmount;
     }
   }
 
   formatAdditionalCostValue() {
     if (this.formValues.products[this.selectedTabIndex].additionalCosts) {
-      for (let i = 0; i < this.formValues.products[this.selectedTabIndex].additionalCosts.length; i++) {
-        this.formValues.products[this.selectedTabIndex].additionalCosts[i].amount = this.amountFormatValue(this.formValues.products[this.selectedTabIndex].additionalCosts[i].amount);
+      for (
+        let i = 0;
+        i <
+        this.formValues.products[this.selectedTabIndex].additionalCosts.length;
+        i++
+      ) {
+        this.formValues.products[this.selectedTabIndex].additionalCosts[
+          i
+        ].amount = this.amountFormatValue(
+          this.formValues.products[this.selectedTabIndex].additionalCosts[i]
+            .amount
+        );
       }
     }
-
   }
 
   formatPrice() {
-    if (this.formValues.products[this.selectedTabIndex].pricePrecision == null) {
-      this.formValues.products[this.selectedTabIndex].pricePrecision = this.tenantService.pricePrecision;
+    if (
+      this.formValues.products[this.selectedTabIndex].pricePrecision == null
+    ) {
+      this.formValues.products[
+        this.selectedTabIndex
+      ].pricePrecision = this.tenantService.pricePrecision;
     }
   }
 
-
-  recomputeProductPricePrecision (productKey) {
+  recomputeProductPricePrecision(productKey) {
     if (this.formValues.products[productKey].price) {
-      this.formValues.products[productKey].price = this.priceFormatValue(this.formValues.products[productKey].price, this.formValues.products[productKey].pricePrecision);
-      
+      this.formValues.products[productKey].price = this.priceFormatValue(
+        this.formValues.products[productKey].price,
+        this.formValues.products[productKey].pricePrecision
+      );
+
       if (!this.formValues.products[productKey].pricePrecision) {
-        (<HTMLInputElement>document.getElementById('price_'+ productKey)).value = this.formValues.products[productKey].price;
+        (<HTMLInputElement>(
+          document.getElementById('price_' + productKey)
+        )).value = this.formValues.products[productKey].price;
       }
 
       this.changeDetectorRef.detectChanges();
     }
   }
-  
+
   amountFormatValue(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -1201,28 +1380,39 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.amountPrecision == 0) {
+      if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.amountFormat);
       }
     }
   }
-
+  roundDown(value, pricePrecision) {
+      var precisionFactor = 1;
+      var response = 0;
+      var intvalue = parseFloat(value);
+      if(pricePrecision == 1) {precisionFactor = 10}
+      if(pricePrecision == 2) {precisionFactor = 100}
+      if(pricePrecision == 3) {precisionFactor = 1000}
+      if(pricePrecision == 4) {precisionFactor = 10000}
+      response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+      return response.toString();
+  }
   priceFormatValue(value, pricePrecision) {
-    if (typeof value == 'undefined') {
-      return null;
-    }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
-    if (isNaN(number)) {
-      return null;
-    }
+      if (typeof value == 'undefined') {
+          return null;
+        }
+        let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+        let number = parseFloat(plainNumber);
+        if (isNaN(number)) {
+            return null;
+        }
     if (number) {
-      if (pricePrecision == 0) {
-        return number;
-      }
-      return this._decimalPipe.transform(number, '1.' + pricePrecision +  '-' + pricePrecision);
+        plainNumber = this.roundDown(plainNumber, pricePrecision);
+      return this._decimalPipe.transform(
+        plainNumber,
+        '1.' + pricePrecision + '-' + pricePrecision
+      );
     }
   }
 
@@ -1230,8 +1420,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     console.log(type);
   }
 
-   // Only Number
-   keyPressNumber(event) {
+  // Only Number
+  keyPressNumber(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (inp == '.' || inp == ',' || inp == '-') {
       return true;
@@ -1244,13 +1434,12 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
   }
 
-
   createRange(min, max) {
     min = parseInt(min);
     max = parseInt(max);
     var input = [];
     for (let i = min; i <= max; i++) {
-        input.push(i);
+      input.push(i);
     }
     return input;
   }
@@ -1260,10 +1449,21 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (!this.formValues.products[this.selectedTabIndex].conversionFactors) {
       return;
     }
-    for (let i = 0; i < this.formValues.products[this.selectedTabIndex].conversionFactors.length; i++) {
-      if (this.formValues.products[this.selectedTabIndex].conversionFactors[i].contractConversionFactorOptions && this.formValues.products[this.selectedTabIndex].conversionFactors[i].contractConversionFactorOptions.id == 4) {
-        let product  = this.formValues.products[this.selectedTabIndex];
-        let conversionFactors = this.formValues.products[this.selectedTabIndex].conversionFactors[i];
+    for (
+      let i = 0;
+      i <
+      this.formValues.products[this.selectedTabIndex].conversionFactors.length;
+      i++
+    ) {
+      if (
+        this.formValues.products[this.selectedTabIndex].conversionFactors[i]
+          .contractConversionFactorOptions &&
+        this.formValues.products[this.selectedTabIndex].conversionFactors[i]
+          .contractConversionFactorOptions.id == 4
+      ) {
+        let product = this.formValues.products[this.selectedTabIndex];
+        let conversionFactors = this.formValues.products[this.selectedTabIndex]
+          .conversionFactors[i];
         let payload = {};
         payload = {
           Payload: {
@@ -1274,56 +1474,62 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         this.openedScreenLoaders += 1;
         this.spinner.show();
         this.contractService
-        .getProdDefaultConversionFactors(payload)
-        .pipe(
-          finalize(() => {
-            this.openedScreenLoaders -= 1;
-            if (!this.openedScreenLoaders) {
+          .getProdDefaultConversionFactors(payload)
+          .pipe(
+            finalize(() => {
+              this.openedScreenLoaders -= 1;
+              if (!this.openedScreenLoaders) {
+                this.spinner.hide();
+              }
+            })
+          )
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
               this.spinner.hide();
-            }
-          })
-        )
-        .subscribe((response: any) => {
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-            this.spinner.hide();
-          } else {
-            console.log(response);
-            if (response) {
-              conversionFactors.value = response.value;
-              conversionFactors.massUom = response.massUom;
-              conversionFactors.volumeUom = response.volumeUom;
-              if (conversionFactors.contractProductId) {
-                this.openedScreenLoaders +=1;
-                let conversionFactorsList = [];
-                conversionFactorsList.push(conversionFactors);
-                payload = { Payload: conversionFactorsList };
-               // this.spinner.show();
-                this.contractService
-                  .saveConversionFactorsForContractProduct(payload)
-                  .pipe(
-                    finalize(() => {
-                      this.openedScreenLoaders -= 1;
-                      if (!this.openedScreenLoaders) {
+            } else {
+              console.log(response);
+              if (response) {
+                conversionFactors.value = response.value;
+                conversionFactors.massUom = response.massUom;
+                conversionFactors.volumeUom = response.volumeUom;
+                if (conversionFactors.contractProductId) {
+                  this.openedScreenLoaders += 1;
+                  let conversionFactorsList = [];
+                  conversionFactorsList.push(conversionFactors);
+                  payload = { Payload: conversionFactorsList };
+                  // this.spinner.show();
+                  this.contractService
+                    .saveConversionFactorsForContractProduct(payload)
+                    .pipe(
+                      finalize(() => {
+                        this.openedScreenLoaders -= 1;
+                        if (!this.openedScreenLoaders) {
+                          this.spinner.hide();
+                        }
+                      })
+                    )
+                    .subscribe((response: any) => {
+                      if (typeof response == 'string') {
+                        this.toastr.error(response);
                         this.spinner.hide();
+                      } else if (response) {
+                        let res = response[0];
+                        this.formValues.products[
+                          this.selectedTabIndex
+                        ].convFactorMassUom = res.massUom;
+                        this.formValues.products[
+                          this.selectedTabIndex
+                        ].convFactorValue = res.value;
+                        this.formValues.products[
+                          this.selectedTabIndex
+                        ].convFactorVolumeUom = res.volumeUom;
                       }
-                    })
-                  )
-                  .subscribe((response: any) => {
-                    if (typeof response == 'string') {
-                      this.toastr.error(response);
-                      this.spinner.hide();
-                    } else if (response) {
-                      let res = response[0];
-                      this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
-                      this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
-                      this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
-                    }
-                  });
+                    });
+                }
               }
             }
-          }
-        });
+          });
       }
     }
   }
@@ -1331,41 +1537,37 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   openFormulaHistory(productId) {
     console.log(this._entityId);
     let payload = {
-      ContractId :  this._entityId,
-      ContractProductId : productId
+      ContractId: this._entityId,
+      ContractProductId: productId
     };
     this.spinner.show();
     this.contractService
-    .getContractFormulas(payload)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        console.log(response);
-        if (response) {
-          const dialogRef = this.dialog.open(FormulaHistoryModalComponent, {
-            width: '80%',
-            data:  {
-              'formulaHistoryDataResponse': response
-            }
-          });
+      .getContractFormulas(payload)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          if (response) {
+            const dialogRef = this.dialog.open(FormulaHistoryModalComponent, {
+              width: '80%',
+              data: {
+                formulaHistoryDataResponse: response
+              }
+            });
 
-          dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-          });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+            });
+          }
         }
-      }
-    });
+      });
   }
-    
 
-  ngAfterViewInit(): void {
-  
-  }
+  ngAfterViewInit(): void {}
 }
-

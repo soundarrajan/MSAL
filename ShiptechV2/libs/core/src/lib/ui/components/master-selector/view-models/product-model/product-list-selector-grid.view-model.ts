@@ -32,10 +32,12 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { ProductListColumns, ProductListColumnServerKeys, ProductListColumnsLabels } from './product-list.columns';
+import {
+  ProductListColumns,
+  ProductListColumnServerKeys,
+  ProductListColumnsLabels
+} from './product-list.columns';
 import { IProductListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-
-
 
 function model(prop: keyof IProductListDto): keyof IProductListDto {
   return prop;
@@ -71,7 +73,7 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
   }
   _entityName: string;
   _entityId: number;
-  _producTypeId:number;
+  _producTypeId: number;
 
   public searchText: string;
   public defaultColFilterParams = {
@@ -256,7 +258,6 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -276,9 +277,8 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   getColumnsDefs(): ITypedColDef[] {
-    return [
+    const columns = [
       this.selectCol,
-      this.idCol,
       this.productNameCol,
       this.codeCol,
       this.displayNameCol,
@@ -294,20 +294,27 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
       this.lastModifiedOnCol,
       this.materialCol
     ];
+
+    // Removes id column in invoices screen;
+    if (!window.location.href.includes('/invoices/')) {
+      columns.splice(1, 0, this.idCol);
+    }
+
+    return columns;
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     let filters: ServerQueryFilter[] = [];
     if (this.producTypeId) {
-      filters =  [
+      filters = [
         {
           columnName: 'productTypeId',
-          value: this.producTypeId.toString(),
+          value: this.producTypeId.toString()
         }
       ];
     }

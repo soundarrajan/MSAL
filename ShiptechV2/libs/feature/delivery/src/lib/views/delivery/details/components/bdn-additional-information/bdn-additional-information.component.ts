@@ -29,13 +29,22 @@ import { DocumentsGridViewModel } from '@shiptech/core/ui/components/documents/v
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
-import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
 import { DocumentViewEditNotesComponent } from '@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
@@ -47,10 +56,24 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
-import { DeliveryInfoForOrder, DeliveryProduct, DeliveryProductDto, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import {
+  DeliveryInfoForOrder,
+  DeliveryProduct,
+  DeliveryProductDto,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
@@ -62,11 +85,14 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
-import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { Optional } from '@ag-grid-enterprise/all-modules';
-
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -76,7 +102,7 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     dateInput: 'YYYY-MM-DD HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
 
@@ -85,7 +111,7 @@ export const PICK_FORMATS = {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   },
   parse: {
     dateInput: 'DD MMM YYYY'
@@ -98,15 +124,15 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
     let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -117,8 +143,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -127,22 +153,20 @@ export class PickDateAdapter extends NativeDateAdapter {
     let date = elem.toDate();
     return value ? date : null;
   }
-
 }
 
-
 export interface NgxMatMomentDateAdapterOptions {
-
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<NgxMatMomentDateAdapterOptions>(
-  'MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
-    providedIn: 'root',
-    factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
-  });
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+  NgxMatMomentDateAdapterOptions
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+  providedIn: 'root',
+  factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+});
 
 export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
   return {
@@ -161,19 +185,21 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
 @Injectable()
 export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _localeData: {
-    firstDayOfWeek: number,
-    longMonths: string[],
-    shortMonths: string[],
-    dates: string[],
-    longDaysOfWeek: string[],
-    shortDaysOfWeek: string[],
-    narrowDaysOfWeek: string[]
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
   };
 
-  constructor(@Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
-              @Optional() @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
-              private _options?: NgxMatMomentDateAdapterOptions) {
-
+  constructor(
+    @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+    @Optional()
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    private _options?: NgxMatMomentDateAdapterOptions
+  ) {
     super();
     this.setLocale(dateLocale || moment.locale());
   }
@@ -186,10 +212,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
       longMonths: momentLocaleData.months(),
       shortMonths: momentLocaleData.monthsShort(),
-      dates: range(31, (i) => this.createDate(2017, 0, i + 1).format('D')),
+      dates: range(31, i => this.createDate(2017, 0, i + 1).format('D')),
       longDaysOfWeek: momentLocaleData.weekdays(),
       shortDaysOfWeek: momentLocaleData.weekdaysShort(),
-      narrowDaysOfWeek: momentLocaleData.weekdaysMin(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin()
     };
   }
 
@@ -211,7 +237,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
-    return style === 'long' ? this._localeData.longMonths : this._localeData.shortMonths;
+    return style === 'long'
+      ? this._localeData.longMonths
+      : this._localeData.shortMonths;
   }
 
   getDateNames(): string[] {
@@ -246,14 +274,18 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   createDate(year: number, month: number, date: number): Moment {
     if (month < 0 || month > 11) {
-      throw Error(`Invalid month index "${month}". Month index has to be between 0 and 11.`);
+      throw Error(
+        `Invalid month index "${month}". Month index has to be between 0 and 11.`
+      );
     }
 
     if (date < 1) {
       throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
     }
 
-    const result = this._createMoment({ year, month, date }).locale(this.locale);
+    const result = this._createMoment({ year, month, date }).locale(
+      this.locale
+    );
     if (!result.isValid()) {
       throw Error(`Invalid date "${date}" for month with index "${month}".`);
     }
@@ -270,8 +302,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -288,14 +320,14 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     let formattedDate = moment(date).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -330,8 +362,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       let currentFormat = PICK_FORMATS.display.dateInput;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -371,7 +403,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     date.hours(value);
   }
   setMinute(date: Moment, value: number): void {
-    date.minutes(value)
+    date.minutes(value);
   }
   setSecond(date: Moment, value: number): void {
     date.seconds(value);
@@ -380,9 +412,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _createMoment(
     date: MomentInput,
     format?: MomentFormatSpecification,
-    locale?: string,
+    locale?: string
   ): Moment {
-    const { strict, useUtc }: NgxMatMomentDateAdapterOptions = this._options || {};
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions =
+      this._options || {};
 
     return useUtc
       ? moment.utc(date, format, locale, strict)
@@ -390,27 +423,29 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   }
 }
 
-
 @Component({
   selector: 'shiptech-bdn-additional-information',
   templateUrl: './bdn-additional-information.component.html',
   styleUrls: ['./bdn-additional-information.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
-              ConfirmationService,
-              {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
-              {
-                provide: NgxMatDateAdapter,
-                useClass: CustomNgxDatetimeAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
-              { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
+  providers: [
+    OrderListGridViewModel,
+    DialogService,
+    ConfirmationService,
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    {
+      provide: NgxMatDateAdapter,
+      useClass: CustomNgxDatetimeAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+  ]
 })
-export class BdnAdditionalInformationComponent extends DeliveryAutocompleteComponent
-  implements OnInit{
+export class BdnAdditionalInformationComponent
+  extends DeliveryAutocompleteComponent
+  implements OnInit {
   @Input() data;
   switchTheme;
   deliverySettings: any;
@@ -423,62 +458,59 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   pumpingRateUom: any;
   simpleSource: any;
 
-  @Input('sampleSource') set _setSimpleSource(simpleSource) { 
+  @Input('sampleSource') set _setSimpleSource(simpleSource) {
     if (!simpleSource) {
       return;
-    } 
+    }
     this.simpleSource = simpleSource;
   }
 
-  @Input('satisfactionLevel') set _setSatisfactionLevel(satisfactionLevel) { 
+  @Input('satisfactionLevel') set _setSatisfactionLevel(satisfactionLevel) {
     if (!satisfactionLevel) {
       return;
-    } 
+    }
     this.satisfactionLevel = satisfactionLevel;
   }
-  
-  @Input('deliveryFeedback') set _setDeliveryFeedback(deliveryFeedback) { 
+
+  @Input('deliveryFeedback') set _setDeliveryFeedback(deliveryFeedback) {
     if (!deliveryFeedback) {
       return;
-    } 
+    }
     this.deliveryFeedback = deliveryFeedback;
   }
 
-  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) {
     if (!pumpingRateUom) {
       return;
-    } 
+    }
     this.pumpingRateUom = pumpingRateUom;
   }
 
-  
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
     this.changeDetectorRef.detectChanges();
   }
-  
-  @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
+
+  @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) {
     if (!finalQuantityRules) {
       return;
-    } 
+    }
     this.finalQuantityRules = finalQuantityRules;
     this.changeDetectorRef.detectChanges();
   }
 
-  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) { 
+  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) {
     if (!toleranceLimits) {
       return;
-    } 
+    }
     this.toleranceLimits = toleranceLimits;
     this.changeDetectorRef.detectChanges();
   }
 
-  states: string[] = [
-    'Alabama', 'Alaska', 'Arizona', 'Arkansas'
-  ];
+  states: string[] = ['Alabama', 'Alaska', 'Arizona', 'Arkansas'];
   private eventsSubscription: Subscription;
   @Input() events: Observable<void>;
 
@@ -503,17 +535,16 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     private spinner: NgxSpinnerService,
     private tenantSettingsService: TenantSettingsService,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
-    iconRegistry: MatIconRegistry, 
+    iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
-
   ) {
     super(changeDetectorRef);
     this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
-                          IDeliveryTenantSettings
-                        >(TenantSettingsModuleName.Delivery);
+      IDeliveryTenantSettings
+    >(TenantSettingsModuleName.Delivery);
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
-                      IGeneralTenantSettings
-                    >(TenantSettingsModuleName.General);
+      IGeneralTenantSettings
+    >(TenantSettingsModuleName.General);
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
@@ -521,13 +552,15 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
   }
 
-  ngOnInit(){  
-    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
+  ngOnInit() {
+    this.eventsSubscription = this.events.subscribe(data =>
+      this.setDeliveryForm(data)
+    );
     this.getDeliveryFeedbackList();
     //this.getTimeBetweenDates(this.formValues.bargePumpingRateStartTime, this.formValues.bargePumpingRateEndTime);
   }
 
-  setDeliveryForm(form){
+  setDeliveryForm(form) {
     if (!form) {
       return;
     }
@@ -546,7 +579,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
 
   onChange($event, field) {
     if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm') }+00:00`;
+      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm')}+00:00`;
       if (field == 'bargePumpingRateStartTime') {
         this.isBargePumpingRateStartTimeInvalid = false;
       } else if (field == 'bargePumpingRateEndTime') {
@@ -561,20 +594,26 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       this.toastr.error('Please enter the correct format');
     }
 
-    let bargePumpingRateEndTime = this.formatDateForBe(this.formValues.bargePumpingRateEndTime);
-    let bargePumpingRateStartTime = this.formatDateForBe(this.formValues.bargePumpingRateStartTime);
+    let bargePumpingRateEndTime = this.formatDateForBe(
+      this.formValues.bargePumpingRateEndTime
+    );
+    let bargePumpingRateStartTime = this.formatDateForBe(
+      this.formValues.bargePumpingRateStartTime
+    );
 
-
-    if (moment.utc(bargePumpingRateEndTime).isBefore(moment.utc(bargePumpingRateStartTime))) {
+    if (
+      moment
+        .utc(bargePumpingRateEndTime)
+        .isBefore(moment.utc(bargePumpingRateStartTime))
+    ) {
       let errorMessage = 'Pumping Start must be lower or equal to Pumping End.';
       this.isBargePumpingRateStartTimeInvalid = true;
       this.isBargePumpingRateEndTimeInvalid = true;
       this.toastr.error(errorMessage);
-    }  else {
+    } else {
       this.isBargePumpingRateStartTimeInvalid = false;
       this.isBargePumpingRateEndTimeInvalid = false;
     }
-    
   }
 
   formatDateForBe(value) {
@@ -582,8 +621,8 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       return value;
     }
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm') }+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm')}+00:00`;
     } else {
       return null;
     }
@@ -603,17 +642,17 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     if (endDate < startDate) {
       timeBetween = Math.abs(startDate.getTime() - endDate.getTime());
     }
-    minutes = 0.001 * timeBetween / 60;
+    minutes = (0.001 * timeBetween) / 60;
     mins = minutes % 60;
     hours = (minutes - mins) / 60;
-    hours = hours < 10 ? `0${ hours}` : hours;
-    mins = mins < 10 ? `0${ mins}` : mins;
-    var result = `${hours }:${ mins}`;
+    hours = hours < 10 ? `0${hours}` : hours;
+    mins = mins < 10 ? `0${mins}` : mins;
+    var result = `${hours}:${mins}`;
     if (result.indexOf('NaN') != -1) {
       result = null;
     }
     if (endDate < startDate) {
-      this.formValues.pumpingDuration = `-${ result}`;
+      this.formValues.pumpingDuration = `-${result}`;
       return;
     }
     this.formValues.pumpingDuration = result;
@@ -634,43 +673,58 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     if (endDate < startDate) {
       timeBetween = Math.abs(startDate.getTime() - endDate.getTime());
     }
-    minutes = 0.001 * timeBetween / 60;
+    minutes = (0.001 * timeBetween) / 60;
     mins = minutes % 60;
     hours = (minutes - mins) / 60;
-    hours = hours < 10 ? `0${ hours}` : hours;
-    mins = mins < 10 ? `0${ mins}` : mins;
-    var result = `${hours }:${ mins}`;
+    hours = hours < 10 ? `0${hours}` : hours;
+    mins = mins < 10 ? `0${mins}` : mins;
+    var result = `${hours}:${mins}`;
     if (result.indexOf('NaN') != -1) {
       result = null;
     }
     if (endDate < startDate) {
-      this.formValues.bargeDelay = `-${ result}`;
+      this.formValues.bargeDelay = `-${result}`;
       return;
     }
     this.formValues.bargeDelay = result;
-
   }
 
   calculatePumpingRate(timeString, prodIndex) {
-    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined' || !this.formValues.deliveryProducts.length) {
-        return;
+    if (
+      typeof timeString == 'undefined' ||
+      typeof this.formValues.deliveryProducts == 'undefined' ||
+      !this.formValues.deliveryProducts.length
+    ) {
+      return;
     }
-    if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
-        return;
+    if (
+      typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom ==
+        'undefined' ||
+      this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null ||
+      this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null
+    ) {
+      return;
     }
     if (typeof this.formValues.pumpingRate == 'undefined') {
-        this.formValues.pumpingRate = '';
-        this.formValues.pumpingRateUom = '';
+      this.formValues.pumpingRate = '';
+      this.formValues.pumpingRateUom = '';
     }
-    var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
-    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    var pumpingTime =
+      (parseInt(timeString.split(':')[0]) * 60 +
+        parseInt(timeString.split(':')[1])) /
+      60;
+    this.formValues.pumpingRate =
+      this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount /
+      pumpingTime;
     this.pumpingRateUom.forEach((val, key) => {
-      if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
+      if (
+        val.name.split('/')[0] ==
+        this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name
+      ) {
         this.formValues.pumpingRateUom = val;
       }
     });
-  };
-
+  }
 
   addSampleSources() {
     if (this.formValues.deliveryStatus.name == 'Verified') {
@@ -680,9 +734,11 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       this.formValues.sampleSources = [];
     }
     let firstSampleSourceOption = this.simpleSource[0];
-    this.formValues.sampleSources.push({'id':0, 'sampleSource': firstSampleSourceOption});
+    this.formValues.sampleSources.push({
+      id: 0,
+      sampleSource: firstSampleSourceOption
+    });
   }
-
 
   removeSampleSources(key) {
     if (this.formValues.deliveryStatus.name == 'Verified') {
@@ -697,7 +753,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
 
   // Only AlphaNumeric
   keyPressAlphaNumeric(event) {
-
     var inp = String.fromCharCode(event.keyCode);
 
     if (/[a-zA-Z0-9]/.test(inp)) {
@@ -707,12 +762,8 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       return false;
     }
   }
- 
-  
 
   ngAfterViewInit(): void {
-  this.addSampleSources();
+    this.addSampleSources();
   }
-
-  
 }
