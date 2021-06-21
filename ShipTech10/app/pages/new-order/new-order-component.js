@@ -2252,7 +2252,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.additionalCostRowPriceChanged = function(additionalCost, initiatorName) {
             if(initiatorName == 'input') {
                 let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
-                let acIdx = product.additionalCosts.indexOf(additionalCost);
                 additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                 ctrl.evaluateAdditionalCostList();
             }
@@ -2261,7 +2260,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.additionalCostRowExtrasChanged = function(additionalCost, initiatorName) {
             if(initiatorName == 'input') {
                 let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
-                let acIdx = product.additionalCosts.indexOf(additionalCost);
                 additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                 ctrl.evaluateAdditionalCostList();
             }
@@ -3442,7 +3440,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
             let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
             if (additionalCost.costType.name == 'Unit') {
-                ctrl.setDefaultUomForAdditionalCost(additionalCost, product);
+                if (additionalCost.isAllProductsCost) {
+                    additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
+                } else {
+                    ctrl.setDefaultUomForAdditionalCost(additionalCost, product);
+                }
                 additionalCost.disabledApplicableFor = false;
             }
 
