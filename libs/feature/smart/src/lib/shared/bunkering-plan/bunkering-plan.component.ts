@@ -7,13 +7,13 @@ import { Store } from '@ngxs/store';
 import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view-model/bunkering-plan.column';
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
-import { SaveBunkeringPlanAction,AddCurrentBunkeringPlanAction,UpdateCurrentROBAction,UpdateBplanTypeAction } from '../../store/bunker-plan/bunkering-plan.action';
-import { SaveBunkeringPlanState,AddCurrentBunkeringPlanState,SaveCurrentROBState} from '../../store/bunker-plan/bunkering-plan.state';
-import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
+import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction,UpdateCurrentROBAction,UpdateBplanTypeAction, GeneratePlanProgressAction } from '../../store/bunker-plan/bunkering-plan.action';
+import { SaveBunkeringPlanState, SaveCurrentROBState, UpdateBplanTypeState, GeneratePlanState} from '../../store/bunker-plan/bunkering-plan.state';
+import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { Observable,BehaviorSubject } from 'rxjs';
+import { Observable,Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bunkering-plan',
@@ -34,10 +34,11 @@ export class BunkeringPlanComponent implements OnInit {
   public latestPlanId: any;
   public editableCell : boolean;
   public type : any;
-  public dialogRef: MatDialogRef<NoDataComponent>;
+  public dialogRef: MatDialogRef<WarningoperatorpopupComponent>;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
   @Output() loadBplan = new EventEmitter();
+  @Output() isCellClicked?:EventEmitter<any> = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
   @Input('planId') 
   public set planId(v : string) {
@@ -57,12 +58,14 @@ export class BunkeringPlanComponent implements OnInit {
     this.store.dispatch(new UpdateBplanTypeAction(this.type));
   };
   @Input('selectedUserRole')selectedUserRole;
+  @Input() changeROB : Observable<void>;
+  private eventSub : Subscription;
   // @Select(UserProfileState.username) username$: Observable<string>;
   // private _username$: BehaviorSubject<string>;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store,
               public dialog: MatDialog) 
-    {   
-      
+    {
+    let _this = this;   
     // this._username$ = new BehaviorSubject<string>('');
     // this.username$.subscribe(onchange:{this._username$ in })
     this.gridOptions = <GridOptions>{
@@ -94,6 +97,9 @@ export class BunkeringPlanComponent implements OnInit {
         this.gridOptions.api.showLoadingOverlay();
         
       },
+      onCellClicked: function (params) {
+        _this.isCellClicked.emit(params);
+      },
       onCellValueChanged: ($event) => {
       },
       onColumnResized: function (params) {
@@ -110,6 +116,8 @@ export class BunkeringPlanComponent implements OnInit {
   
   ngOnInit() {
     this.editableCell = (this.type == 'C'&& this.selectedUserRole?.id === 1) ? true : false;
+    if(this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C')
+    this.eventSub = this.changeROB.subscribe((column)=> this.calculateSOA(column));
   }
   
   columnDefs = [
@@ -135,11 +143,7 @@ export class BunkeringPlanComponent implements OnInit {
         },
         {
           headerName: BunkeringPlanColumnsLabels.PortCode, headerTooltip: BunkeringPlanColumnsLabels.PortCode, field: 'port_id', width: 96, cellRendererFramework: AGGridCellDataComponent,
-         cellClassRules: {
-            'light-cell': function (params) {
-              return params?.data?.is_last_port == 'Y';
-            }
-          },cellRendererParams: (params) =>{
+         cellRendererParams: (params) =>{
            return { type: this.type == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
           },
           cellClass: ['dark-cell aggrid-content-center'], headerClass: [' aggrid-colum-splitter-left aggrid-text-align-c']
@@ -398,7 +402,8 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-      let req = { shipId : this.vesselData?.vesselId, planId : this.latestPlanId }
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    let req = { shipId : vesseldata.vesselRef.id, planId : this.latestPlanId }
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
@@ -408,7 +413,6 @@ export class BunkeringPlanComponent implements OnInit {
         let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
         titleEle.click();
         if(this.type == 'C'){
-          this.addBplanToStoreForCalculations(this.bPlanData);
           this.addBplanToStoreForSaveFunction(this.bPlanData);
         }
         
@@ -416,110 +420,75 @@ export class BunkeringPlanComponent implements OnInit {
       
   }
 
-  addBplanToStoreForCalculations(params){
-    let data = [];
-    params.forEach(bPlan =>{  
-      data.push({
-        // business_address: bPlan.business_address,
-        // clientIpAddress: bPlan.clientIpAddress,
-        detail_no: bPlan.detail_no,
-        // eca_estimated_consumption: bPlan.eca_estimated_consumption,
-        // eca_min_sod: bPlan.eca_min_sod,
-        // eca_reserve: bPlan.eca_reserve,
-        // eca_safe_port: bPlan.eca_safe_port,
-        // eca_sod_comment: bPlan.eca_sod_comment,
-        // gsis_id: bPlan.gsis_id,
-        // hsdis_estimated_lift: bPlan.hsdis_estimated_lift,
-        hsfo05_stock: bPlan.hsfo05_stock,
-        // hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
-        // hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
-        // hsfo_estimated_lift: bPlan.hsfo_estimated_lift,
-        // hsfo_max_lift: bPlan.hsfo_max_lift,
-        // hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
-        // hsfo_min_sod: bPlan.hsfo_min_sod,
-        // hsfo_reserve: bPlan.hsfo_reserve,
-        // hsfo_safe_port: bPlan.hsfo_safe_port,
-        // hsfo_soa: bPlan.hsfo_soa,
-        // hsfo_sod_comment: bPlan.hsfo_sod_comment,
-        // is_end_of_service: bPlan.is_end_of_service,
-        // is_min_soa: bPlan.is_min_soa,
-        // is_new_port: bPlan.is_new_port,
-        // location_id: bPlan.location_id,
-        // location_name: bPlan.location_name,
-        // lsdis_as_eca: bPlan.lsdis_as_eca,
-        // lsdis_est_consumption_color: bPlan.lsdis_est_consumption_color,
-        // lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
-        // lsdis_estimated_lift: bPlan.lsdis_estimated_lift,
-        // lsdis_max_lift: bPlan.lsdis_max_lift,
-        // lsdis_max_lift_color: bPlan.lsdis_max_lift_color,
-        // lsdis_reserve: bPlan.lsdis_reserve,
-        // lsdis_safe_port: bPlan.lsdis_safe_port,
-        // lsdis_soa: bPlan.lsdis_soa,
-        // max_sod: bPlan.max_sod,
-        // max_sod_comment: bPlan.max_sod_comment,
-        // min_soa_comment: bPlan.min_soa_comment,
-        // min_sod: bPlan.min_sod,
-        // min_sod_comment: bPlan.min_sod_comment,
-        // modulePathUrl: bPlan.modulePathUrl,
-        // mpo_ulsfo_estimated_lift: bPlan.mpo_ulsfo_estimated_lift,
-        // mpo_ulsfo_soa: bPlan.mpo_ulsfo_soa,
-        // op_updated_columns: bPlan.op_updated_columns,
-        // operator_ack: bPlan.operator_ack,
-        // order_id_hsdis: bPlan.order_id_hsdis,
-        // order_id_hsfo: bPlan.order_id_hsfo,
-        // order_id_lsdis: bPlan.order_id_lsdis,
-        // order_id_ulsfo: bPlan.order_id_ulsfo,
-        // plan_id: bPlan.plan_id,
-        // port_id: bPlan.port_id,
-        // redelivery_port: bPlan.redelivery_port,
-        // request_id_hsdis: bPlan.request_id_hsdis,
-        // request_id_hsfo: bPlan.request_id_hsfo,
-        // request_id_lsdis: bPlan.request_id_lsdis,
-        // request_id_ulsfo: bPlan.request_id_ulsfo,
-        // service_code: bPlan.service_code,
-        // ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
-        // ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
-        // ulsfo_max_lift: bPlan.ulsfo_max_lift,
-        // ulsfo_max_lift_color: bPlan.ulsfo_max_lift_color,
-        // ulsfo_soa: bPlan.ulsfo_soa,
-        // userAction: bPlan.userAction,
-        // vessel_ack: bPlan.vessel_ack,
-        // voyage_detail_id: bPlan.voyage_detail_id
-      }) ;
-
-    })
-    this.store.dispatch(new AddCurrentBunkeringPlanAction(data));
-  }
   addBplanToStoreForSaveFunction(params){
     let data = [];
     params.forEach(bPlan =>{  
       data.push({
-          plan_id: bPlan.plan_id,
-          detail_no: bPlan.detail_no,
-          port_id: bPlan.port_id,
-          service_code: bPlan.service_code,
-          operator_ack: bPlan.operator_ack,
-          hsfo_max_lift: bPlan.hsfo_max_lift,
-          hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
-          hsfo_safe_port: bPlan.hsfo_safe_port,
-          eca_estimated_consumption: bPlan.eca_estimated_consumption,
-          eca_safe_port: bPlan.eca_safe_port,
-          ulsfo_max_lift: bPlan.ulsfo_max_lift,
-          lsdis_max_lift: bPlan.lsdis_max_lift,
-          lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
-          lsdis_safe_port: bPlan.lsdis_safe_port,
-          hsfo_min_sod: bPlan.hsfo_min_sod,
-          eca_min_sod: bPlan.eca_min_sod,
-          min_sod: bPlan.min_sod,
-          max_sod: bPlan.max_sod,
-          hsdis_estimated_lift: bPlan.hsdis_estimated_lift,
-          business_address: bPlan.business_address,
-          is_min_soa: bPlan.is_min_soa,
-          min_soa_comment: bPlan.min_soa_comment,
-          min_sod_comment: bPlan.min_sod_comment,
-          hsfo_sod_comment: bPlan.hsfo_sod_comment,
-          eca_sod_comment: bPlan.eca_sod_comment,
-          max_sod_comment: bPlan.max_sod_comment
+        business_address: bPlan.business_address,
+        clientIpAddress: bPlan.clientIpAddress,
+        detail_no: bPlan.detail_no,
+        eca_estimated_consumption: bPlan.eca_estimated_consumption,
+        eca_min_sod: bPlan.eca_min_sod,
+        eca_reserve: bPlan.eca_reserve,
+        eca_safe_port: bPlan.eca_safe_port,
+        eca_sod_comment: bPlan.eca_sod_comment,
+        gsis_id: bPlan.gsis_id,
+        hsdis_estimated_lift: bPlan.hsdis_estimated_lift,
+        hsfo05_stock: bPlan.hsfo05_stock,
+        hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
+        hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
+        hsfo_estimated_lift: bPlan.hsfo_estimated_lift,
+        hsfo_max_lift: bPlan.hsfo_max_lift,
+        hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
+        hsfo_min_sod: bPlan.hsfo_min_sod,
+        hsfo_reserve: bPlan.hsfo_reserve,
+        hsfo_safe_port: bPlan.hsfo_safe_port,
+        hsfo_soa: bPlan.hsfo_soa,
+        hsfo_sod_comment: bPlan.hsfo_sod_comment,
+        is_end_of_service: bPlan.is_end_of_service,
+        is_min_soa: bPlan.is_min_soa,
+        is_new_port: bPlan.is_new_port,
+        location_id: bPlan.location_id,
+        location_name: bPlan.location_name,
+        lsdis_as_eca: bPlan.lsdis_as_eca,
+        lsdis_est_consumption_color: bPlan.lsdis_est_consumption_color,
+        lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
+        lsdis_estimated_lift: bPlan.lsdis_estimated_lift,
+        lsdis_max_lift: bPlan.lsdis_max_lift,
+        lsdis_max_lift_color: bPlan.lsdis_max_lift_color,
+        lsdis_reserve: bPlan.lsdis_reserve,
+        lsdis_safe_port: bPlan.lsdis_safe_port,
+        lsdis_soa: bPlan.lsdis_soa,
+        max_sod: bPlan.max_sod,
+        max_sod_comment: bPlan.max_sod_comment,
+        min_soa_comment: bPlan.min_soa_comment,
+        min_sod: bPlan.min_sod,
+        min_sod_comment: bPlan.min_sod_comment,
+        modulePathUrl: bPlan.modulePathUrl,
+        mpo_ulsfo_estimated_lift: bPlan.mpo_ulsfo_estimated_lift,
+        mpo_ulsfo_soa: bPlan.mpo_ulsfo_soa,
+        op_updated_columns: bPlan.op_updated_columns,
+        operator_ack: bPlan.operator_ack,
+        order_id_hsdis: bPlan.order_id_hsdis,
+        order_id_hsfo: bPlan.order_id_hsfo,
+        order_id_lsdis: bPlan.order_id_lsdis,
+        order_id_ulsfo: bPlan.order_id_ulsfo,
+        plan_id: bPlan.plan_id,
+        port_id: bPlan.port_id,
+        redelivery_port: bPlan.redelivery_port,
+        request_id_hsdis: bPlan.request_id_hsdis,
+        request_id_hsfo: bPlan.request_id_hsfo,
+        request_id_lsdis: bPlan.request_id_lsdis,
+        request_id_ulsfo: bPlan.request_id_ulsfo,
+        service_code: bPlan.service_code,
+        ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
+        ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
+        ulsfo_max_lift: bPlan.ulsfo_max_lift,
+        ulsfo_max_lift_color: bPlan.ulsfo_max_lift_color,
+        ulsfo_soa: bPlan.ulsfo_soa,
+        userAction: bPlan.userAction,
+        vessel_ack: bPlan.vessel_ack,
+        voyage_detail_id: bPlan.voyage_detail_id
       }) ;
 
     })
@@ -553,17 +522,18 @@ export class BunkeringPlanComponent implements OnInit {
   toggleSave() {
     this.gridSaved = true;
     this.gridChanged = false;
-    this.getRecalculatedHsfoCurrentStock();
+   //this.getRecalculatedHsfoCurrentStock();
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
     let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData);
+    let storeVesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
     console.log('data from store', dataFromStore);
 
     
     let req = {
        action : "save",
        user_id : "default@inatech.com",//this.username$ ,
-       ship_id: this.vesselData?.vesselId,
-       plan_id: this.latestPlanId,
+       ship_id: storeVesselData.vesselId,
+       plan_id: storeVesselData.planId,
        hsfo_current_stock: currentROBObj['3.5 QTY'] ? currentROBObj['3.5 QTY']: 0,
        vlsfo_current_stock: currentROBObj['0.5 QTY']? currentROBObj['0.5 QTY']: 0,
        ulsfo_current_stock: currentROBObj?.ULSFO,
@@ -571,9 +541,9 @@ export class BunkeringPlanComponent implements OnInit {
        hsdis_current_stock: currentROBObj?.HSDIS,
        plan_details: dataFromStore,
        is_vessel_role_played: this.selectedUserRole == 1 ? 1 : 0, 
-       generate_new_plan: 1,
-       import_gsis: 1,
-       send_plan: 1, 
+       generate_new_plan: this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
+       import_gsis: this.store.selectSnapshot(GeneratePlanState.getImportGsis),
+       send_plan: this.store.selectSnapshot(GeneratePlanState.getSendPlan), 
     }
     console.log('Request', req);
     let isHardValidated = this.checkBunkerPlanValidations(dataFromStore);
@@ -581,11 +551,12 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('Save status',data);
         if(data?.isSuccess == true){
-          const dialogRef = this.dialog.open(NoDataComponent, {
+          const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
             width: '350px',
-            panelClass: 'confirmation-popup',
+            panelClass: 'confirmation-popup-operator',
             data : {message: 'Plan Details updated successfully'}
           });
+          this.store.dispatch(new GeneratePlanProgressAction(data.payload.gen_in_progress))
         }
       })
     }
@@ -594,26 +565,38 @@ export class BunkeringPlanComponent implements OnInit {
 
   getRecalculatedHsfoCurrentStock(){
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB)
-    let hsfo05_stock = this.store.selectSnapshot(AddCurrentBunkeringPlanState.getCBPhsfo05_stock);
-    if(currentROBObj['3.5 QTY'] > hsfo05_stock){
-      let hsfo = currentROBObj['3.5 QTY'];
-      let newHsfo = hsfo - hsfo05_stock;
-      this.store.dispatch(new UpdateCurrentROBAction(newHsfo,'3.5 QTY'));
-    }  
-    else if(currentROBObj['3.5 QTY'] == null){
-      let newHsfo = 0;
-      this.store.dispatch(new UpdateCurrentROBAction(newHsfo,'3.5 QTY'));
+    let hsfo05_stock = this.store.selectSnapshot(SaveBunkeringPlanState.getCBPhsfo05_stock);
+    // HSFO Recalculation
+    if( currentROBObj['3.5 QTY'] > 0){
+      if(currentROBObj['3.5 QTY'] > hsfo05_stock){
+        let hsfo = currentROBObj['3.5 QTY'];
+        let newHsfo = hsfo - hsfo05_stock;
+        this.store.dispatch(new UpdateCurrentROBAction(newHsfo,'3.5 QTY'));
+      }  
+      else if(currentROBObj['3.5 QTY'] < hsfo05_stock){
+        let newHsfo = 0;
+        this.store.dispatch(new UpdateCurrentROBAction(newHsfo,'3.5 QTY'));
+      }
+      else{
+        this.store.dispatch(new UpdateCurrentROBAction(currentROBObj['3.5 QTY'],'3.5 QTY'));
+      }
+   }  
+   // VLSFO Recalculation
+   if( currentROBObj['0.5 QTY'] > 0){
+      if(currentROBObj['0.5 QTY'] > hsfo05_stock){
+        let vlsfo = currentROBObj['0.5 QTY'];
+        let newVlsfo = vlsfo - hsfo05_stock;
+        this.store.dispatch(new UpdateCurrentROBAction(newVlsfo,'0.5 QTY'));
+      }
+      else if(currentROBObj['0.5 QTY'] < hsfo05_stock){
+        let newVlsfo = currentROBObj['3.5 QTY'];
+        this.store.dispatch(new UpdateCurrentROBAction(newVlsfo,'0.5 QTY'));
+      }
+      else{
+        this.store.dispatch(new UpdateCurrentROBAction(currentROBObj['0.5 QTY'],'0.5 QTY'));
+      } 
     }
-        
-    if(currentROBObj['0.5 QTY'] > hsfo05_stock){
-      let vlsfo = currentROBObj['0.5 QTY'];
-      let newVlsfo = vlsfo - hsfo05_stock;
-      this.store.dispatch(new UpdateCurrentROBAction(newVlsfo,'0.5 QTY'));
-    }
-    else if(currentROBObj['0.5 QTY'] == null){
-      let newVlsfo = 0;
-      this.store.dispatch(new UpdateCurrentROBAction(newVlsfo,'0.5 QTY'));
-    }    
+       
   }
 
   checkBunkerPlanValidations(data){
@@ -624,48 +607,58 @@ export class BunkeringPlanComponent implements OnInit {
     if(isValidBusinessAddress == 'N'){
       let id = data.findIndex(data => data?.business_address=='' && data?.operator_ack == 1)
       let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: 'Please select/enter a valid Business Address for port',id: port_id}
       });
       isHardValidation = 1;
       return isHardValidation;
     }
     // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
-    // let isValidMinEcaSod = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod) == -1 ? 'Y':'N';
-    // if(isValidMinEcaSod == 'N'){
-    //   let id = data.findIndex(params => (params?.eca_min_sod + params?.hsfo_min_sod) > params?.max_sod);
-    //   let port_id = data[id].port_id;
-    //   const dialogRef = this.dialog.open(NoDataComponent, {
-    //     width: '350px',
-    //     panelClass: 'confirmation-popup',
-    //     data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id}
-    //   });
-    //   isHardValidation = 1;
-    //   return isHardValidation;
-    // }
+    let isValidMinEcaSod = data.findIndex(params => {
+      let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
+      return  sum > parseInt(params?.max_sod) ;
+    });
+    isValidMinEcaSod = isValidMinEcaSod < 0 ? 'Y':'N'
+    if(isValidMinEcaSod == 'N'){
+      let id = data.findIndex(params => {
+        let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
+        return  sum > parseInt(params?.max_sod) ;
+      });
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup-operator',
+        data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
     //ECA est cons. validation : ECA Est consumption < LSDIS Est consumption
     let isValidEcaEstCons = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption) == -1 ? 'Y':'N';
     if(isValidEcaEstCons == 'N'){
       let id = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption)
       let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: 'The ECA Estimated Consumption should not be smaller than LSDIS Estimated Consumption for port ', id: port_id}
       });
       isHardValidation = 1;
       return isHardValidation;
     }
     // max SOD validation : Total max SOD< Total min SOD 
-    let isValidMaxSod = data.findIndex(data => data?.max_sod < data?.min_sod) == -1 ? 'Y':'N';
+    let isValidMaxSod = data.findIndex(data => {
+        return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+      });
+      isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
     if(isValidMaxSod == 'N'){
       let id = data.findIndex(data => data?.max_sod < data?.min_sod)
       let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
       });
       isHardValidation = 1;
@@ -676,9 +669,9 @@ export class BunkeringPlanComponent implements OnInit {
     if(isValidHsfoSod =='N'){
       let id = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity)
       let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: `The minimum HSFO SOD cannot exceed the Total HSFO tank capacity (${currentROBObj.hsfoTankCapacity}) for port `, id: port_id}
       });
       isHardValidation = 1;
@@ -690,9 +683,9 @@ export class BunkeringPlanComponent implements OnInit {
       let id = data.findIndex(data => data?.eca_min_sod > (currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity))
       let port_id = data[id].port_id;
       let capacity = currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity;
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: `The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity of ${capacity} for port `, id: port_id}
       });
       isHardValidation = 1;
@@ -702,9 +695,9 @@ export class BunkeringPlanComponent implements OnInit {
     //1. Current HSFO Qty > HSFO Tank Capacity
     let isValidHsfoStock = (currentROBObj['3.5 QTY'] + currentROBObj['0.5 QTY']) > currentROBObj?.hsfoTankCapacity ? 'N':'Y';
     if(isValidHsfoStock == 'N'){
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `}
       });
       isHardValidation = 1;
@@ -713,9 +706,9 @@ export class BunkeringPlanComponent implements OnInit {
     //2. Current ULSFO Qty > ULSFO Tank Capacity
     let isValidUlsfoStock = currentROBObj.ULSFO > currentROBObj?.ulsfoTankCapacity ? 'N':'Y';
     if(isValidUlsfoStock == 'N'){
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: `Current ULSFO Qty should be less than ULSFO Tank Capacity ${currentROBObj.ulsfoTankCapacity} `}
       });
       isHardValidation = 1;
@@ -724,9 +717,9 @@ export class BunkeringPlanComponent implements OnInit {
     //3. Current LSDIS Qty > LSDIS Tank Capacity
     let isValidLsdisStock = currentROBObj.LSDIS > currentROBObj?.lsdisTankCapacity ? 'N':'Y';
     if(isValidLsdisStock == 'N'){
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: `Current LSDIS Qty should be less than LSDIS Tank Capacity ${currentROBObj.lsdisTankCapacity} `}
       });
       isHardValidation = 1;
@@ -735,9 +728,9 @@ export class BunkeringPlanComponent implements OnInit {
     //4. Current HSDIS Qty > HSDIS Tank Capacity
     let isValidHsdisStock = currentROBObj.HSDIS > currentROBObj?.hsdisTankCapacity ? 'N':'Y';
     if(isValidHsdisStock == 'N'){
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: `Current HSDIS Qty should be less than HSDIS Tank Capacity ${currentROBObj.hsdisTankCapacity} `}
       });
       isHardValidation = 1;
@@ -748,6 +741,7 @@ export class BunkeringPlanComponent implements OnInit {
   }
 
   triggerRefreshGrid(role){
+    this.rowData = JSON.parse(JSON.stringify(this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)))
     if(role?.id == 1 && this.type == 'C')
       this.editableCell = true;
     else
@@ -757,7 +751,7 @@ export class BunkeringPlanComponent implements OnInit {
       this.selectedUserRole = role?.id;
       var event = {force : true}
       if(this.type == 'C')
-        this.gridOptions.api.refreshCells(event);
+      this.gridOptions.api.setRowData(this.rowData);
   }
   triggerChangeEvent() {
     this.gridChanged = true;
@@ -773,4 +767,73 @@ export class BunkeringPlanComponent implements OnInit {
     //   update: [data]
     // })
   }
+
+  calculateSOA(column){
+    if(this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C'){
+      let currentROB = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
+      let rowData2 = this.rowData;
+      switch(column){
+        case 'LSDIS' :{
+                        let currentRobLsdis = currentROB.LSDIS == null? 0 : currentROB.LSDIS;
+                        for( let i = 0; i < rowData2.length ; i++){
+                          //For Port 0
+                          if(i==0){
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].lsdis_soa = currentRobLsdis - rowData2[i].lsdis_estimated_consumption - lsdisAsEca;
+                          }
+                          //For Port 1 to N 
+                          else{
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].lsdis_soa = rowData2[i-1].lsdis_soa - rowData2[i].lsdis_estimated_consumption - lsdisAsEca + rowData2[i-1].lsdis_estimated_lift;
+
+                          }
+                          this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no));
+                        }
+                        if(this.gridOptions.api)
+                          this.gridOptions.api.setRowData(rowData2);
+                        break;
+                      }
+        case 'ULSFO' :{
+                        let currentRobUslfo = currentROB.ULSFO == null ? 0 :currentROB.ULSFO;
+                        for( let i = 0; i < rowData2.length ; i++){
+                          //For Port 0
+                          if(i==0){
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].ulsfo_soa = currentRobUslfo - (rowData2[i].eca_estimated_consumption - rowData2[i].lsdis_estimated_consumption) + lsdisAsEca 
+                          }
+                          //For Port 1 to N 
+                          else{
+                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
+                            rowData2[i].ulsfo_soa = rowData2[i-1].ulsfo_soa - (rowData2[i-1].eca_estimated_consumption - rowData2[i].lsdis_estimated_consumption) + lsdisAsEca + rowData2[i-1].ulsfo_estimated_lift ;
+                          }
+                          this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
+                        }
+                        if(this.gridOptions.api)
+                          this.gridOptions.api.setRowData(rowData2);
+                        break;
+                      }
+        case '0.5 QTY':
+        case '3.5 QTY': { 
+                          let currentRobHsfo = currentROB['3.5 QTY'] == null ? 0 :currentROB['3.5 QTY'];
+                          let currentRobVlsfo = currentROB['0.5 QTY'] == null ? 0 :currentROB['0.5 QTY'];                       
+                          for (let i = 0 ; i < rowData2.length ; i++ ){
+                            //For Port 0
+                            if(i == 0){
+                              let estdConsHsfo = parseInt(rowData2[i].hsfo_estimated_consumption);
+                              rowData2[i].hsfo_soa = currentRobHsfo + currentRobVlsfo - estdConsHsfo;
+                            }
+                            //For Port 1 to N 
+                            else{
+                              rowData2[i].hsfo_soa = rowData2[i-1].hsfo_estimated_lift + rowData2[i-1].hsfo_soa - rowData2[i].hsfo_estimated_consumption;
+                            } 
+                            this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no))
+                          }
+                          if(this.gridOptions.api)
+                            this.gridOptions.api.setRowData(rowData2);
+                          break;
+                        }
+      }
+    }
+  }
+    
 }

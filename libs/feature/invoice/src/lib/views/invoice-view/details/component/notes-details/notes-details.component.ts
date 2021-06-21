@@ -411,7 +411,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 export class NotesDetailsComponent implements OnInit {
   baseOrigin: string;
   switchTheme: any;
-  expandInvoiceNotes: boolean = false;
+  expandInvoiceNotes: boolean = true;
   formValues: any;
   @Select(UserProfileState.displayName) displayName$;
   @Select(UserProfileState.username) username$;

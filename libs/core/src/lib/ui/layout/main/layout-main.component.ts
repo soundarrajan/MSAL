@@ -46,6 +46,7 @@ export class LayoutMainComponent implements AfterViewInit {
   isEmailTemplateEditor: boolean = false;
   moduleLoaded: any;
   isDelivery: boolean = false;
+  isInvoicesplitview: boolean = false;
 
   constructor(private router: Router) {
     this.isDelivery = false;
@@ -53,6 +54,9 @@ export class LayoutMainComponent implements AfterViewInit {
       this.isEmailTemplateEditor = true;
     }
     if (this.router.url.includes('delivery') || this.router.url.includes('contract') || this.router.url.includes('invoices/edit')) {
+        this.isDelivery = true;
+    }
+    if (this.router.url.includes('split-view')) {
       this.isDelivery = true;
     }
   }

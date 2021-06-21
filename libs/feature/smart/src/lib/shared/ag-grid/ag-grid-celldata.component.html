@@ -1,9 +1,16 @@
 <div *ngIf="params.type==='newRequest'">
-    <div class="aggrid-content-center new-request">
-      <span class="plus-icon"> + </span>
-      <span class="content"> New Request </span>
+    <div class="content aggrid-content-center">
+      <a href="{{params.redirectUrl}}/{{params?.data?.voyageDetailId}}" target="_blank">New Request</a>
     </div>
   </div>
+
+  <div  *ngIf="params.type =='vesselName'">
+    <div [ngClass]="params.cellClass" matTooltip="{{params.value}}">
+    <a href="{{shiptechUrl}}/#/masters/vessel/edit/{{params?.data?.vesselId}}"  target="_blank" rel="noopener">{{params.value}}</a>
+  </div>
+</div>
+
+<div *ngIf="this?.params?.type =='Data-date'" [ngClass]="params.cellClass" matTooltip="{{params.value | date: 'dd/MM/yyyy hh:mm'}}" style="margin:0px">{{params.value | date: 'dd/MM/yyyy HH:MM'}}</div>
   
   <div *ngIf="params.type=='multiple-values'">
     <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">
@@ -32,7 +39,7 @@
           <hr>
           <div class="row">
             <div class="col-6" style="color: #f4f7fa;">suggested Qty</div>
-            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.suggestedQuantity}} {{params?.data?.uomName}}</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{(params?.data?.suggestedQuantity && params.data.suggestedQuantity != -1)? (params.data.suggestedQuantity+' MT'): 'N/A'}}</div>
           </div>
         </div>
     </ng-template>
@@ -46,13 +53,59 @@
   </div>
   <div *ngIf="params.type=='request-link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
-      <a href="{{params.redirectUrl}}/{{params?.data?.requestId}}">{{params.value}}</a>
+      <a href="{{params.redirectUrl}}/{{params?.data?.requestId}}" target="_blank">{{params.value}}</a>
     </div>
   </div>
   
   <div *ngIf="params.type=='popup-multiple-values'">
-  <hover-menu #menu [items]="params.value"></hover-menu>
+  <hover-menu #menu [items]="params?.value"></hover-menu>
   </div>
+
+  <div *ngIf="params.type=='info-with-popup-multiple-values'">
+    <div style="display:flex;flex-wrap:wrap;" >
+      <div><span class="info-blue" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverTitle1"
+      (mouseenter)="menuClick && toggleMenu($event);" (mouseleave)="!menuClick && toggleMenu2();" (click)="triggerOnClick($event)">i</span>{{params.value}}</div>
+    </div> 
+  </div>
+    <mat-menu class="port-future-req-popup" #hoverTitle1="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
+       <div class="port-future-req" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
+          <div class="row">
+            <span class=" col-6 main-header">Port of {{params.value}}</span>
+            <span class=" col-6 right-align">ETA : {{params?.data?.eta | date: 'dd/MM/yyyy'}}</span>
+          </div>   
+          <div class="line"></div>
+          <div>product Details</div>
+    
+          <table>
+            <tr class="port-table-heading">
+              <th>Fuel Type</th>
+              <th>Req.Qty</th>
+              <th>Req Date</th>
+              <th>Sugg. Qty</th>
+            </tr>
+            <tr class="port-tablevalues">
+              <td>{{params?.data?.productName}}</td>
+              <td>{{params?.data?.maxQuantity +' '+ params?.data?.uomName}}</td>
+              <td>{{params?.data?.requestDate | date: 'dd/MM/yyyy HH:mm'}}</td>
+              <!-- <td>{{params?.data?.suggestedQuantity +' '+ params?.data?.uomName}}</td> -->
+              <td>{{(params?.data?.suggestedQuantity && params.data.suggestedQuantity!=-1)? (params?.data?.suggestedQuantity+' MT'): 'N/A'}}</td>
+            </tr>
+            <!-- <tr class="port-tablevalues">
+              <td>RMK5005</td>
+              <td>350 MT</td>
+              <td>12/09/2020 12:45</td>
+              <td>340 MT</td>
+            </tr> -->
+          </table>
+          <div class="line"></div>
+          <div>Request details</div>
+          <div>
+            <span class="subheader-data">Created by:</span>
+            <span class="subheader-value"> {{params?.data?.createdByName}} {{params?.data?.createdOn | date: 'dd/MM/yyyy'}}</span>
+          </div> 
+        </div>
+      
+      </mat-menu>
   
   
   <div *ngIf="params.type=='edit'">
@@ -75,7 +128,7 @@
   </div>
   
   <div *ngIf="params.type=='disable-with-popup'">
-    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event);restrictionForPrevBplan($event)"
+    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event,params.colDef?.field);restrictionForPrevBplan($event)"
       (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);">
       <input disabled style="z-index: 1050;" [matMenuTriggerFor]="inputDisabledMenu" [matMenuTriggerData]="params.value"
         #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
@@ -113,7 +166,7 @@
   </mat-menu>
   
   <div *ngIf="params.type=='edit-with-popup'">
-    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event)"
+    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event,params.colDef?.field)"
       (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);">
       <input disabled style="z-index: 1050;" #inp [matMenuTriggerFor]="inputEditMenu" [matMenuTriggerData]="params.value"
         #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
@@ -260,7 +313,7 @@
       {{params.value}}</div>
   </div>
   
-  <div class="port-cell" *ngIf="params.type=='port'" style="display:flex;">
+  <div class="port-cell" *ngIf="params.type=='port'" style="display:flex;" [ngClass]="{'highlight': params?.data?.is_end_of_service =='Y','end-of-voyage':params?.data?.is_last_port == 'Y'}">
     <div style="width:15px;">
       <mat-checkbox #check [ngClass]="{'cell-checkbox':!check.checked}" [(ngModel)]="params.data.createReqFlag"
         (change)="portClicked({event:$event, param: params})">
@@ -269,7 +322,8 @@
     <div matTooltip="{{params.value}}" style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 45px;">
       {{params.value}}
     </div>
-    <div >
+    <div class="red-indication" *ngIf="params.data?.redelivery_port">.</div>
+    <div style="width:15px;">
       <div class="info-i" (click)="toggleMenu3Info($event)" 
         (mouseenter)="!menuClick  && toggleMenuInfo($event,params.value);"
         (mouseleave)="!menuClick  && toggleMenu2Info();">
@@ -281,38 +335,33 @@
   
     </div>
   </div>
-  <li *ngIf="params.data?.redelivery_port" style="width:15px;" style="color:red;margin-bottom:11px;"> </li>
-  <mat-menu  #infoPopup="matMenu" xPosition="after" class="common">
+  <mat-menu  #infoPopup="matMenu" xPosition="after" class="common port-deptails-popup">
     <ng-template matMenuContent let-data="data">
       <div class="info_popup" [ngClass]="{'light-theme':!theme}">
         <div class="row info-header">
           <div>
             Port of {{params.data.location_name}} ({{params.data.port_id}})
           </div>
-          <div *ngIf="params.data?.redelivery_port">
-            <ul style="padding-right:65px;padding-left:10px; margin: 3px 4px 6px;">
-            <li><span class="sub-content-title">Port for Redelivery</span></li>
-            </ul>
-          </div>  
-          <div class="line"></div>
           <div (click)="cancelMenu()">
             <mat-icon class="close">close</mat-icon>
           </div>
         </div>
+        <div  *ngIf="params.data?.redelivery_port"><i class="fa fa-circle redelivery-indication" aria-hidden="true"></i> <span class="redelivery-info">Port for Redelivery</span></div>
+      <div class="line"></div>
         <div class="row info-content">
-          <div>
+          <div  class="sub-header" >
             Vessel arrival details
           </div>
           <div>
             <ul style="padding-left: 14px;vertical-align: middle; margin: 6px 0px 0px;">
-              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value">{{params.data.eta_date}} | {{etaDays}} days</span></li>
-              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value">{{params.data.etd_date}} | {{etdDays}} days</span></li>
+              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value">{{params.data.eta_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{etaDays}} Days</span></li>
+              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value">{{params.data.etd_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{etdDays}} Days</span></li>
             </ul>
           </div>
         </div>
         <div class="line"></div>
         <div class="row info-content">
-          <div>
+          <div class="sub-header">
             Reserve Rule - excluding unpumpables
           </div>
           <div class="chip">
@@ -349,7 +398,7 @@
         </div>
         <div class="line"></div>
         <div class="row info-content">
-          <div >
+          <div class="sub-header">
             Service details
           </div>
           <div>
@@ -361,12 +410,12 @@
         </div>
         <div class="line"></div>
         <div class="row info-content">
-          <div>
+          <div class="sub-header">
             Voyage details
           </div>
           <div>
             <ul style="padding-right:65px;padding-left:10px; margin: 6px 0px 0px;">
-              <li><span class="sub-content-title">End of Voyage: </span><span class="sub-content-value">{{params.data?.is_end_of_voyage=='N'?'NO':'YES'}}</span></li>
+              <li><span class="sub-content-title">End of Voyage: </span><span class="sub-content-value">{{params.data?.is_last_port=='N'?'NO':'YES'}}</span></li>
             </ul>
           </div>
         </div>

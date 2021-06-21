@@ -32,12 +32,19 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { IPhysicalSupplierListDto, IProductListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-import { PhysicalSupplierListColumns, PhysicalSupplierListColumnServerKeys, PhysicalSupplierListColumnsLabels } from './physical-supplier-list.columns';
+import {
+  IPhysicalSupplierListDto,
+  IProductListDto
+} from '@shiptech/core/delivery-api/masters-list/masters-list-response';
+import {
+  PhysicalSupplierListColumns,
+  PhysicalSupplierListColumnServerKeys,
+  PhysicalSupplierListColumnsLabels
+} from './physical-supplier-list.columns';
 
-
-
-function model(prop: keyof IPhysicalSupplierListDto): keyof IPhysicalSupplierListDto {
+function model(
+  prop: keyof IPhysicalSupplierListDto
+): keyof IPhysicalSupplierListDto {
   return prop;
 }
 
@@ -139,8 +146,11 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     minWidth: 250,
     flex: 2
   };
-  
-  defaultPaymentTermCol: ITypedColDef<IPhysicalSupplierListDto, IDisplayLookupDto> = {
+
+  defaultPaymentTermCol: ITypedColDef<
+    IPhysicalSupplierListDto,
+    IDisplayLookupDto
+  > = {
     headerName: PhysicalSupplierListColumnsLabels.defaultPaymentTerm,
     colId: PhysicalSupplierListColumns.defaultPaymentTerm,
     field: model('defaultPaymentTerm'),
@@ -197,7 +207,10 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     flex: 2
   };
 
-  defaultIncotermCol: ITypedColDef<IPhysicalSupplierListDto, IDisplayLookupDto> = {
+  defaultIncotermCol: ITypedColDef<
+    IPhysicalSupplierListDto,
+    IDisplayLookupDto
+  > = {
     headerName: PhysicalSupplierListColumnsLabels.defaultIncoterm,
     colId: PhysicalSupplierListColumns.defaultIncoterm,
     field: model('defaultIncoterm'),
@@ -247,7 +260,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     field: model('surveyor'),
     valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
-  
+
   bargeCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.barge,
     colId: PhysicalSupplierListColumns.barge,
@@ -310,7 +323,10 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     flex: 2
   };
 
-  lastModifiedByCol: ITypedColDef<IPhysicalSupplierListDto, IDisplayLookupDto> = {
+  lastModifiedByCol: ITypedColDef<
+    IPhysicalSupplierListDto,
+    IDisplayLookupDto
+  > = {
     headerName: PhysicalSupplierListColumnsLabels.lastModifiedBy,
     colId: PhysicalSupplierListColumns.lastModifiedBy,
     field: model('lastModifiedBy'),
@@ -340,11 +356,6 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     }
   };
 
-
-
-
-
-
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -364,9 +375,8 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
   }
 
   getColumnsDefs(): ITypedColDef[] {
-    return [
+    const columns = [
       this.selectCol,
-      this.idCol,
       this.physicalSupplierNameCol,
       this.displayNameCol,
       this.defaultPaymentTermCol,
@@ -393,19 +403,27 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
       this.lastModifiedOnCol,
       this.hasNoMoreChildrenCol
     ];
+
+    // Removes id column in invoices screen;
+    if (!window.location.href.includes('/invoices/')) {
+      columns.splice(1, 0, this.idCol);
+    }
+
+    return columns;
   }
 
   public onSearch(value: string): void {
-    this.searchText = value;
+    this.searchText = value.trim();
     this.gridApi.purgeServerSideCache();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-      const filters: ServerQueryFilter[] = [
-        {
-          columnName: 'CounterpartyTypes',
-          value: '1'
-        }];
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: 'CounterpartyTypes',
+        value: '1'
+      }
+    ];
     this.mastersListApiService
       .getPhysicalSupplierList({
         ...transformLocalToServeGridInfo(

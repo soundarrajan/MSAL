@@ -1,5 +1,5 @@
 import { ISaveVesselData } from './../shared-model/vessel-data-model';
-import { SaveBunkeringPlanModel, AddCurrentBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
+import { SaveBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
 
   
 export class SaveBunkeringPlanAction{
@@ -21,22 +21,6 @@ export class SaveScrubberReadyAction{
 
 export class UpdateBunkeringPlanAction{
   static readonly type = '[BplanData] Update' ;
-
-  constructor(public payload: any, public type: string, public detail_no: number){
-
-  }
-}
-
-export class AddCurrentBunkeringPlanAction{
-  static readonly type = '[CurrentBplanData] Add';
-
-  constructor(public payload: AddCurrentBunkeringPlanModel[]){
-
-  }
-}
-
-export class UpdateCurrentBunkeringPlanAction{
-  static readonly type = '[CurrentBplanData] Update' ;
 
   constructor(public payload: any, public type: string, public detail_no: number){
 
@@ -78,6 +62,46 @@ export class GeneratePlanAction{
   static readonly type = '[Plan] Generate';
 
   constructor(public value: any){
+
+  }
+}
+
+export class GeneratePlanProgressAction{
+  static readonly type = '[Plan] GenerateProgress';
+
+  constructor(public value: any){
+
+  }
+}
+
+export class ImportGsisAction{
+  static readonly type = '[Plan] Import GSIS';
+
+  constructor(public value:any){
+
+  }
+}
+
+export class ImportGsisProgressAction{
+  static readonly type = '[Plan] Import GSIS Progress';
+
+  constructor(public value:any){
+
+  }
+}
+
+export class SendPlanAction{
+  static readonly type = '[Plan] Import GSIS';
+
+  constructor(public value:any){
+
+  }
+}
+
+export class newVesselPlanAvailableAction{
+  static readonly type = '[Plan] newVesselPlanAvailable';
+
+  constructor(public value:any){
 
   }
 }

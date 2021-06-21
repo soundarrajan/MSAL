@@ -457,3 +457,9 @@
 //   opacity: 0.5;
 //   background-color: black;
 // }
+
+.table-with-scroll{
+  border: 1px solid #E0E1E4;
+  overflow-y: auto;
+  height: 220px;
+}

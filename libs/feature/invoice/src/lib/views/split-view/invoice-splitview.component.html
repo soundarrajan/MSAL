@@ -1,0 +1,56 @@
+<div class="top-bar w-100 st-main-content-menu no-print">
+    <div class="current-invoice">
+        Invoice {{currentInvoice}}
+    </div>
+    <div class="invoice-navigator">
+        <div class="previous"  >
+            <span>Previous</span>
+            <a *ngIf="previousInvoice !== false" (click)="setCurrentInvoice(this.invoiceIds[previousInvoice])"> <i class="fa fa-angle-left"></i> {{this.invoiceIds[previousInvoice]}}</a>
+        </div>
+        <div class="next">
+            <span>Next</span>
+            <a *ngIf="nextInvoice !== false" (click)="setCurrentInvoice(this.invoiceIds[nextInvoice])">{{this.invoiceIds[nextInvoice]}} <i class="fa fa-angle-right"></i></a>
+        </div>
+    </div>
+    <div class="screen-actions">
+        <a class="ui-custom-button approve" *ngIf="canApprove && !noMoreInvoices" (click)="approveInvoiceItem()">
+            Approve
+        </a>   
+        <a class="ui-custom-button reject ml-2" *ngIf="canReject && !noMoreInvoices" (click)="rejectInvoiceItem()">
+            Reject
+        </a>   
+    </div>
+</div>
+<div class="row split-view-wrapper">
+    <div class="col-sm-12 p-4 text-center bg-white font-bold" *ngIf="noMoreInvoices">
+        No more invoices left
+    </div>
+
+    <div class="col-sm-6" *ngIf="!noMoreInvoices">
+        <div class="inner-content d-flex">
+            <div class="section-header">
+                <div class="section-title ml-2 p-2 mb-2">Details</div>
+            </div>
+            <shiptech-invoice-detail *ngIf="detailFormvalues" #invoiceDetails
+            [detailFormvalues]='detailFormvalues'></shiptech-invoice-detail>
+        </div>
+    </div>
+    <div class="col-sm-6" *ngIf="!noMoreInvoices">
+        <div class="inner-content d-flex">
+            <div class="section-header">
+                <div class="section-title ml-2 p-2 mb-2">Physical Invoice</div>
+            </div>
+            <div class="pdf-viewer-wrapper">
+                <pdf-viewer *ngIf="!noPdfAvailable" [src]="pdfSrc"
+                [render-text]="true"
+                style="display: block;"
+                ></pdf-viewer>
+
+                <div *ngIf="noPdfAvailable" class="p-4 text-center">
+                    No Document to display
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -4,6 +4,11 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { LocalService } from '../../services/local-service.service';
+import { Store, Select } from "@ngxs/store";
+import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
+import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
+import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search-vessel',
@@ -11,6 +16,9 @@ import { LocalService } from '../../services/local-service.service';
   styleUrls: ['./search-vessel.component.scss']
 })
 export class SearchVesselComponent implements OnInit, OnChanges {
+
+  @Select(SaveBunkeringPlanState.getVesselData) vesselData$: Observable<ISaveVesselData>;
+  vesselRef: any;
 
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
@@ -26,12 +34,32 @@ export class SearchVesselComponent implements OnInit, OnChanges {
   filteredOptions: Observable<string[]>;
   toggleFlag: boolean;
   public theme:boolean = true;
-  constructor(private localService: LocalService) { }
-
+  constructor(private store: Store, private localService: LocalService, private route: ActivatedRoute) {
+    this.vesselData$.subscribe(data=> {
+      this.vesselRef = data?.vesselRef;
+    });
+  }
+  
   ngOnInit() {
     this.localService.themeChange.subscribe(value => this.theme = value);
-    this.searchVesselControl.setValue(this.vesselData && this.vesselData.id ? this.vesselData.id : "");
-    this.selectedValue = this.vesselData && this.vesselData.id ? this.vesselData.id : "";
+    //Get vessel list from route resolver to make default vessel on init
+    this.route.data.subscribe(data => {
+      console.log(data);
+      this.vesselList = data?.vesselListWithImono;
+    });
+
+    this.vesselRef = (this.vesselRef)? this.vesselRef: this.vesselData;
+
+    if(this.vesselRef?.imono) {
+      this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "");
+      this.selectedValue = this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "";
+    } else {
+    //get imono detail by using vessel id to update in vessel search
+    let selectedVesselId = this.vesselRef?.vesselId;
+    this.vesselRef = this.vesselList.find(element => (element.id == selectedVesselId));
+    this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "");
+    this.selectedValue = this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "";
+    }
     this.filteredOptions = this.searchVesselControl.valueChanges.pipe(
       // startWith(''),
       map(value => this._filter(value))
@@ -60,7 +88,7 @@ export class SearchVesselComponent implements OnInit, OnChanges {
 
   toggleVesselList($event, trigger: MatAutocompleteTrigger) {
 
-    event.stopPropagation();
+    $event.stopPropagation();
     //toggleFlag=false--->menu is already closed
     //toggleFlag=true--->menu is already open
     if (!this.toggleFlag) {
@@ -109,6 +137,7 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     let vessel = this.vesselList.filter(element => (element.imono == this.searchVesselControl.value) ||
       (element.imono.toLowerCase() == this.searchVesselControl.value.toLowerCase()));
     if (vessel.length > 0)
+      this.store.dispatch(new saveVesselDataAction({'vesselRef': vessel[0]}));
       this.changeVessel.emit(vessel[0]);
   }
 

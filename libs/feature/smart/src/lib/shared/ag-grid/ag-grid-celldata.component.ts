@@ -7,11 +7,11 @@ import { MatInput } from '@angular/material/input';
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs'
 import moment  from 'moment';
 import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from "../../store/bunker-plan/bunkering-plan.action";
-import { UpdateBplanTypeState } from "../../store/bunker-plan/bunkering-plan.state";
-import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
+import { UpdateBplanTypeState, SaveBunkeringPlanState } from "../../store/bunker-plan/bunkering-plan.state";
+import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 const today = new Date();
 
 @Component({
@@ -68,8 +68,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
     this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
   }
-    this.setCellClass(params);
-    
+  this.setCellClass(params);
+  
   }
 
   refresh(): boolean {
@@ -164,7 +164,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsfo_estimated_lift' :{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_hsfo && !params.data?.request_id_hsfo){
+                                    if(params.data?.order_id_hsfo ){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
@@ -178,7 +178,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'ulsfo_estimated_lift':{
                                       var classArray: string[] = ['pd-6'];
                                       let newClass;
-                                      if(params.data?.order_id_ulsfo && !params.data?.request_id_ulsfo){
+                                      if(params.data?.order_id_ulsfo ){
                                         newClass = 'aggrid-link-bplan aggrid-red-cell'
                                         classArray.push(newClass);
                                       }
@@ -192,7 +192,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'lsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_lsdis && !params.data?.request_id_lsdis){
+                                    if(params.data?.order_id_lsdis ){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
@@ -206,7 +206,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                         let newClass;
-                                        if(params.data?.order_id_hsdis && !params.data?.request_id_hsdis){
+                                        if(params.data?.order_id_hsdis ){
                                           newClass = 'aggrid-link-bplan aggrid-red-cell'
                                           classArray.push(newClass);
                                         }
@@ -245,6 +245,28 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   @ViewChild('inputMenuTrigger') inputMenuTrigger: MatMenuTrigger;
 
 
+  toggleMenu(event) {
+    //onenter
+    // this.menuTrigger.openMenu();
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay.classList.add("removeOverlay");
+  }
+
+  toggleMenu2() {
+    //onleave
+    this.menuClick = false;
+    this.menuTrigger.closeMenu();
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay?.classList.remove("removeOverlay");
+  }
+
+  triggerOnClick(event) {
+    //onclick
+    var overlay = document.querySelector('.cdk-overlay-container');
+    overlay.classList.remove('removeOverlay');
+    this.menuClick = true;
+    this.menuTrigger.openMenu();
+  }
 
   toggleMenuInfo(event, data) {//onenter
     this.infomenuTrigger.openMenu();
@@ -312,13 +334,71 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
   }
 
-  toggleMenu3Input(event) { //onclick
+  toggleMenu3Input(event,field) { //onclick
     this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
-    if(this.bplanType != 'P'){
-      this.menuClick = true;
-      this.inputMenuTrigger.openMenu();
-      if (document.getElementById('inputValue')) {
-        document.getElementById('inputValue').focus();
+    let requestExists = 0;
+    
+    if(this.bplanType == 'C'){
+      //warning if previous ports have a request ID present
+      let bPlanData = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData);
+      if(this.params.data.detail_no){
+
+        let detail_no = this.params.data.detail_no;
+          for( let i=0; i<=detail_no ; i++){
+            switch(field){
+              case 'hsfo_min_sod' : {
+                                      if(bPlanData[i]?.request_id_hsfo != ""){
+                                        requestExists = 1; 
+                                        return requestExists ;
+                                      }
+                                      break;
+                                    }
+              case 'eca_min_sod' :{
+                                    if(bPlanData[i]?.request_id_lsdis != "" || bPlanData[i]?.request_id_ulsfo != ""){
+                                      requestExists = 1; 
+                                      return requestExists ;
+                                    }
+                                    break;
+                                  }
+              default :{
+                          if(bPlanData[i]?.request_id_hsdis != "" || bPlanData[i]?.request_id_hsfo != "" || bPlanData[i]?.request_id_lsdis != "" || bPlanData[i]?.request_id_ulsfo != ""){
+                            requestExists = 1; 
+                            return requestExists ;
+                          }
+                          break;
+                        }
+            }
+          }
+
+          if(requestExists === 1){
+            const confirmMessage = 'Please note that there is a request in Shiptech for a prior call which BOPS will only modify next time the plan optimized, and the trader may nominate it before if no action is taken. In case it needs to be adjusted or cancelled please do so or advise responsible party.';
+              const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
+                data:  { message: confirmMessage }
+              });
+
+              dialogRef.afterClosed().subscribe(result => {
+                console.log(result);
+                if(result) {
+                  this.menuClick = true;
+                  this.inputMenuTrigger.openMenu();
+                    if (document.getElementById('inputValue')) {
+                      document.getElementById('inputValue').focus();
+                    }
+                } 
+                else {
+                
+                }
+              });
+          }
+          else{
+            this.menuClick = true;
+            this.inputMenuTrigger.openMenu();
+              if (document.getElementById('inputValue')) {
+                document.getElementById('inputValue').focus();
+              }
+          }
+          
       }
     }
   }
@@ -359,15 +439,58 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     var overlay = document.querySelector('.cdk-overlay-container');
     if (overlay)
       overlay.classList.remove('removeOverlay');
-    this.menuClick = true;
-    this.inputMenuTrigger.openMenu();
-    if ((event.pageY + 201 > (window.innerHeight + event.offsetY))) {
-      setTimeout(() => {
-        const panels = document.querySelector('.edit-checkbox-menu');
-        if (panels)
-          panels.classList.add('hover-popup-pos');
-      }, 0);
-    }
+    
+      let requestExists = 0;
+      //min SOA  warning if previous ports have a request ID present
+      let bPlanData = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData);
+        if(this.params.data.detail_no){
+
+          let detail_no = this.params.data.detail_no;
+            for( let i=0; i<detail_no ; i++){
+              if(bPlanData[i]?.request_id_hsdis != "" || bPlanData[i]?.request_id_hsfo != "" || bPlanData[i]?.request_id_lsdis != "" || bPlanData[i]?.request_id_ulsfo != ""){
+                requestExists = 1; 
+                return requestExists ;
+              }
+            }
+
+            if(requestExists === 1){
+              const confirmMessage = 'Please note that there is a request in Shiptech for a prior call which BOPS will only modify next time the plan optimized, and the trader may nominate it before if no action is taken. In case it needs to be adjusted or cancelled please do so or advise responsible party.';
+                const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                  panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
+                  data:  { message: confirmMessage }
+                });
+
+                dialogRef.afterClosed().subscribe(result => {
+                  console.log(result);
+                  if(result) {
+                    this.menuClick = true;
+                    this.inputMenuTrigger.openMenu();
+                    if ((event.pageY + 201 > (window.innerHeight + event.offsetY))) {
+                      setTimeout(() => {
+                        const panels = document.querySelector('.edit-checkbox-menu');
+                        if (panels)
+                          panels.classList.add('hover-popup-pos');
+                      }, 0);
+                    }
+                  } 
+                  else {
+                  
+                  }
+                });
+            }
+            else{
+              this.menuClick = true;
+              this.inputMenuTrigger.openMenu();
+              if ((event.pageY + 201 > (window.innerHeight + event.offsetY))) {
+                setTimeout(() => {
+                  const panels = document.querySelector('.edit-checkbox-menu');
+                  if (panels)
+                    panels.classList.add('hover-popup-pos');
+                }, 0);
+              }
+            }
+            
+        }
 
   }
   getComments(column){
@@ -485,9 +608,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   restrictionForPrevBplan(event){
     this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
     if(this.bplanType =='P'){
-      const dialogRef = this.dialog.open(NoDataComponent, {
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup',
+        panelClass: 'confirmation-popup-operator',
         data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
       });
     }
@@ -555,53 +678,47 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
 }
 @Component({
-  selector: 'hover-menu',
+  selector: "hover-menu",
   template: `
-  <div *ngIf="items" style="display:flex;flex-wrap:wrap;" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverTitle"
-  (mouseenter)="toggleMenu($event);" (mouseleave)="toggleMenu2();">
-  <div *ngFor="let item of items" class="aggrid-content-center dark-multiple-text" >
-  <div class=" aggrid-text-resizable"  >{{item}}</div>
-          </div>
-          <mat-menu class="outstanding-req-menu" #hoverTitle="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
-          <div class="hover-tooltip" *ngFor="let item of items" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
-              <table>
-                <tr class="hover-title">
-                  <td>{{item}}</td>
-                  <td class="hover-value">350 BBLS</td>
-                </tr>
-                <tr class="hover-title">
-                  <td>Request Date</td>
-                  <td class="hover-value">12/09/2020</td>
-                </tr>
-              </table>
-          </div>
-        </mat-menu>
-</div>
-  
-  `
+    <div
+      *ngIf="items"
+      style="display:flex;flex-wrap:wrap;"
+      
+    >
+      <div
+        *ngFor="let item of items"
+        class="aggrid-content-center dark-multiple-text"
+      >
+        <div class=" aggrid-text-resizable">{{ item }}</div>
+      </div>
+         </div>
+  `,
 })
 export class HoverMenuComponent {
-  @Input('items') items;
+  @Input("items") items;
 
-  @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
-  public theme:boolean = true;
-  constructor(private elem: ElementRef,private localService: LocalService) { }
+  @ViewChild("menuTrigger") menuTrigger: MatMenuTrigger;
+  public theme: boolean = true;
+  menuClick: boolean;
+  constructor(private elem: ElementRef, private localService: LocalService) {}
 
-  ngOnInit(){
-    this.localService.themeChange.subscribe(value => this.theme = value);
+  ngOnInit() {
+    console.log(this.items);
+    
+    this.localService.themeChange.subscribe((value) => (this.theme = value));
   }
 
-  toggleMenu(event) {//onenter
+  toggleMenu(event) {
+    //onenter
     this.menuTrigger.openMenu();
-    var overlay = document.querySelector('.cdk-overlay-container');
-    overlay.classList.add('removeOverlay');
-
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay.classList.add("removeOverlay");
   }
 
-  toggleMenu2() {//onleave
+  toggleMenu2() {
+    //onleave
     this.menuTrigger.closeMenu();
-    var overlay = document.querySelector('.cdk-overlay-container');
-    overlay.classList.remove('removeOverlay');
-
+    var overlay = document.querySelector(".cdk-overlay-container");
+    overlay.classList.remove("removeOverlay");
   }
 }

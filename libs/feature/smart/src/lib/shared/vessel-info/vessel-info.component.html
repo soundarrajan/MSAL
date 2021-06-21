@@ -11,8 +11,8 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('2050-01-01')==-1) && (bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
-        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('2050-01-01')>-1) || ((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1) || !(bunkerPlanHeaderDetail?.scrubberDate)">N/A</td>
+        <td class="value" *ngIf="scrubberDate">{{scrubberDate | enUsDatePipe | date: 'dd/MM/yyyy'}}</td>
+        <td class="value" *ngIf="!scrubberDate">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
         <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
@@ -81,11 +81,11 @@
                           </tr>
                           <tr>
                             <th scope="row">Current ROB</th>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock  | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event,$event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock  | number : '1.0-0'): 0}}</div></td>
+                            <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" (input)="ROBOnChange($event,$event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" (input)="ROBOnChange($event,$event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" (input)="ROBOnChange($event,$event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" (input)="ROBOnChange($event,$event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
                           </tr>
                           <tr>
                             <th scope="row">MSPS</th>
@@ -178,7 +178,7 @@
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
-          <div style="flex: 0 0 17%;">Comments</div>
+          <div style="flex: 0 0 17%;">Comments({{totalCommentCount}})</div>
           <div style="flex:0 0 80%;display: flex;align-items: center;justify-content: flex-end;">
             <ng-container *ngIf="commentpanel.expanded">
               <div style="text-align: center;">
@@ -196,13 +196,13 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-comments *ngIf="commentpanel.expanded"></app-comments>
+        <app-comments *ngIf="commentpanel.expanded" (ShowCommentCount)="TotalCommentCount($event)"></app-comments>
       </div>
 
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
       id="current-bunker-plan" hideToggle="true" [expanded]="statusCurrBPlan"
-      (closed)="currentBplan.gridChanged && togglecurrentBPlan(panel)">
+      (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel)">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -211,12 +211,17 @@
             <div style="flex:0 0 80%;display: flex;align-items: center;">
               <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID :
               </span><span class="content">{{this.planId}}</span></div>
-              <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">Plan
-                  Date :
-                </span><span class="content">{{this.planDate}}</span></div>
-                <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">
-                  Status :
-                </span><span [ngClass]="this.statusCurr == undefined?'content': (this.statusCurr =='INVALID'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{this.statusCurr}}</span></div>
+              <div id="plan-date"  class="border-leftside" style="flex:0 0 13%;text-align: center;">
+                <span class="title">Plan Date :</span>
+                <span class="content">{{this.planDate}}</span>
+              </div>
+              <div style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
+                  <span class="title">Status : </span>
+                <span *ngIf="this.statusCurr != ''" [ngClass]="[this.statusCurr =='Invalid'? 'invalid-status' : 'valid-status']">{{this.statusCurr}}</span>
+                </div>
+              </div>
+
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
                   style="display: flex;flex: 0 0 40%;justify-content: space-between;padding: 0px 5px;">
@@ -231,8 +236,10 @@
                     (click)="$event.stopPropagation()"> 
                     <a (click)="createRequest()">Create Request </a>
                   </div>
-                  <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
-                    GSIS</button>
+                  <!-- <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
+                    GSIS</button> -->
+                    <div style="position: relative; margin-left: 50%;"> <mat-checkbox [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div class="import-gsis"> Import GSIS</div>
                 </div>
                 <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
                   class="border-rightside">
@@ -261,6 +268,7 @@
         <app-bunkering-plan *ngIf="panel.expanded && loadBplan" [isExpanded]="expandBplan"
           (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData"
+          [changeROB]="this.currentROBChange.asObservable()"
           (voyage_detail)="getVoyageDetail($event)">
         </app-bunkering-plan>
       </div>
@@ -277,15 +285,19 @@
                 <span class="title">Plan ID :</span>
                 <span class="content">{{this.prevPlanId}}</span>
               </div>
-              <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
+              <div id="plan-date" class="border-leftside" style="flex:0 0 13%;text-align: center;">
                 <span class="title">Plan Date :</span>
                 <span class="content">{{this.prevPlanDate}}</span>
               </div>
-              <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
-                <span class="title">Status : </span>
-                <span [ngClass]="this.statusPrev == undefined?'content' : (this.statusPrev =='INVALID'? 'content content_invalid' : ' content content_valid')" style="padding: 3% 16% !important; ">{{this.statusPrev}}</span>
+              <div style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
+                  <span class="title">Status : </span>
+                  <span *ngIf="this.statusPrev != ''" [ngClass]="[this.statusPrev =='Invalid'? 'invalid-status' : 'valid-status']">{{this.statusPrev}}</span>
+                </div>
               </div>
             </div>
+
+
             <ng-container *ngIf="panel1.expanded">
               <div style="flex:0 0 4%;text-align: center;">
                 <div  *ngIf="!expandPrevBPlan; else collapseBlock"  (click)="togglePrevBPlan($event)" class="expand-accordion-icon hand"></div>

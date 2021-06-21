@@ -1,49 +1,99 @@
-<div class="col-md-12 contract-section selected-product-container" style="margin-left: 0px;">
+<div
+  class="col-md-12 contract-section selected-product-container"
+  style="margin-left: 0px; min-height:510px; padding-bottom: 10px;"
+>
   <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
     <div class="header-product-details col-md-2 no-padding">
       Product pricing
     </div>
   </div>
   <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
-    <div class="col-md-6 no-padding-left" >
+    <div class="col-md-6 no-padding-left">
       <div id="custom-contract-btn-toggle-v2">
-        <mat-button-toggle-group 
-          [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
-          #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
+        <mat-button-toggle-group
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+          #group="matButtonToggleGroup"
+          [value]="selectedVal"
+          (change)="onValChange(group.value)"
+        >
           <mat-button-toggle value="formula">
-            <span *ngIf="selectedVal == 'formula'" class="toggle-icon"></span> 
+            <span *ngIf="selectedVal == 'formula'" class="toggle-icon"></span>
             Formula based
           </mat-button-toggle>
           <mat-button-toggle value="fixed">
-            <span  *ngIf="selectedVal == 'fixed'" class="toggle-icon"></span> 
+            <span *ngIf="selectedVal == 'fixed'" class="toggle-icon"></span>
             Fixed
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
     </div>
-    <div class="col-md-6" style="display: flex;align-items: center;justify-content: flex-end;">
-    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info" style="float:left;padding-right: 0px !important;display: flex;
-    align-items: center;">
-      <span style="display: flex;align-items: center;">
-        <a *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="create-new-formula-icon" (click)="createNewFormulaPopup(selectedTabIndex)"></a>
-      </span>
-      <span *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="location-contract-info" style="margin-right:0 !important">
-        Create new formula
-      </span>
-      <span *ngIf="formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name" class="disabled-formula">
-      </span>
-    </div>
-    <div class="divider" *ngIf="formValues.products[selectedTabIndex].isFormula"></div>
-    <div class="" style="display: flex;align-items: center;">
-      <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="formula-history">
-        <div class="formula-icon"></div>
-        <div style="float: right;" >
-          <a class="formula-history-name" (click)="openFormulaHistory(formValues.products[selectedTabIndex].id)">
-            Formula History
-          </a>
+    <div
+      class="col-md-6"
+      style="display: flex;align-items: center;justify-content: flex-end;"
+    >
+      <div
+        *ngIf="formValues.products[selectedTabIndex].isFormula"
+        class="contract-details-info"
+        style="float:left;padding-right: 0px !important;display: flex;
+    align-items: center;"
+      >
+        <span style="display: flex;align-items: center;">
+          <a
+            *ngIf="
+              !(
+                formValues.products[selectedTabIndex].formula &&
+                formValues.products[selectedTabIndex].formula.name
+              )
+            "
+            class="create-new-formula-icon"
+            (click)="createNewFormulaPopup(selectedTabIndex)"
+          ></a>
+        </span>
+        <span
+          *ngIf="
+            !(
+              formValues.products[selectedTabIndex].formula &&
+              formValues.products[selectedTabIndex].formula.name
+            )
+          "
+          class="location-contract-info"
+          style="margin-right:0 !important"
+        >
+          Create new formula
+        </span>
+        <span
+          *ngIf="
+            formValues.products[selectedTabIndex].formula &&
+            formValues.products[selectedTabIndex].formula.name
+          "
+          class="disabled-formula"
+        >
+        </span>
+      </div>
+      <div
+        class="divider"
+        *ngIf="formValues.products[selectedTabIndex].isFormula"
+      ></div>
+      <div class="" style="display: flex;align-items: center;">
+        <div
+          *ngIf="formValues.products[selectedTabIndex].isFormula"
+          class="formula-history"
+        >
+          <div class="formula-icon"></div>
+          <div style="float: right;">
+            <a
+              class="formula-history-name"
+              (click)="
+                openFormulaHistory(formValues.products[selectedTabIndex].id)
+              "
+            >
+              Formula History
+            </a>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
   <!-- <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
@@ -55,94 +105,149 @@
       </div>
     </div>
   </div> -->
-  <div *ngIf="formValues.products[selectedTabIndex].fixedPrice" class="col-md-12 no-padding d-flex" style="flex-wrap: wrap;margin-top: 10px;">
-    
-    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme, 'price-fixed': !formValues.products[selectedTabIndex].isFormula, 'formula-description': formValues.products[selectedTabIndex].isFormula}">
+  <div
+    *ngIf="formValues.products[selectedTabIndex].fixedPrice"
+    class="col-md-12 no-padding d-flex"
+    style="flex-wrap: wrap;margin-top: 10px;"
+  >
+    <div
+      class="custom-form-field"
+      [ngClass]="{
+        darkTheme: switchTheme,
+        lightTheme: !switchTheme,
+        'price-fixed': !formValues.products[selectedTabIndex].isFormula,
+        'formula-description': formValues.products[selectedTabIndex].isFormula
+      }"
+    >
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Price Precision</mat-label>
-        <mat-select 
-            [(ngModel)]="formValues.products[selectedTabIndex].pricePrecision"
-            placeholder="Price Precision"
-            [disableOptionCentering]="true"
-            panelClass="price-precision-select-container"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-            (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)">
-            <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
-              {{option}}
+        <mat-select
+          [(ngModel)]="formValues.products[selectedTabIndex].pricePrecision"
+          placeholder="Price Precision"
+          [disableOptionCentering]="true"
+          panelClass="price-precision-select-container"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+          (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)"
+        >
+          <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
+            {{ option }}
           </mat-option>
-      </mat-select>
+        </mat-select>
       </mat-form-field>
     </div>
-    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
+    <div
+      class="custom-form-field product-details"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field class="without-search" appearance="legacy" [ngClass]="{ 'required-field': buttonClicked }">
         <mat-label>Price</mat-label>
-        <input  
+        <input
           [(ngModel)]="formValues.products[selectedTabIndex].price"
-          [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
           (keypress)="keyPressNumber($event)"
-          matInput 
+          matInput
           autocomplete="off"
           placeholder="Price"
           priceFormat
-          id="price_{{selectedTabIndex}}"
-          [pricePrecision]="formValues.products[selectedTabIndex].pricePrecision"
-          required>
+          id="price_{{ selectedTabIndex }}"
+          [pricePrecision]="
+            formValues.products[selectedTabIndex].pricePrecision
+          "
+          required
+        />
       </mat-form-field>
     </div>
-    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field product-details"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Currency</mat-label>
-        <mat-select 
-            [(ngModel)]="formValues.products[selectedTabIndex].currency"
-            placeholder="Currency"
-            [disableOptionCentering]="true"
-            panelClass="general-info-select-container"
-            [compareWith]="compareUomObjects"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-            <mat-option *ngFor="let option of currencyList" [value]="option">
-              {{option.name}}
+        <mat-select
+          [(ngModel)]="formValues.products[selectedTabIndex].currency"
+          placeholder="Currency"
+          [disableOptionCentering]="true"
+          panelClass="general-info-select-container"
+          [compareWith]="compareUomObjects"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+        >
+          <mat-option *ngFor="let option of currencyList" [value]="option">
+            {{ option.name }}
           </mat-option>
-      </mat-select>
+        </mat-select>
       </mat-form-field>
     </div>
-    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field product-details"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Uom</mat-label>
-        <mat-select 
-            [(ngModel)]="formValues.products[selectedTabIndex].priceUom"
-            placeholder="Uom"
-            [disableOptionCentering]="true"
-            panelClass="general-info-select-container"
-            [compareWith]="compareUomObjects"
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
-            <mat-option *ngFor="let option of uomList" [value]="option">
-              {{option.name}}
+        <mat-select
+          [(ngModel)]="formValues.products[selectedTabIndex].priceUom"
+          placeholder="Uom"
+          [disableOptionCentering]="true"
+          panelClass="general-info-select-container"
+          [compareWith]="compareUomObjects"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+        >
+          <mat-option *ngFor="let option of uomList" [value]="option">
+            {{ option.name }}
           </mat-option>
-      </mat-select>
+        </mat-select>
       </mat-form-field>
     </div>
   </div>
-  <div  *ngIf="formValues.products[selectedTabIndex].isFormula && formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name" class="col-md-12 no-padding d-flex" style="margin-top: 10px;" >
+  <div
+    *ngIf="
+      formValues.products[selectedTabIndex].isFormula &&
+      formValues.products[selectedTabIndex].formula &&
+      formValues.products[selectedTabIndex].formula.name
+    "
+    class="col-md-12 no-padding d-flex"
+    style="margin-top: 10px;"
+  >
     <div class="formula-container col-md-12 no-padding">
       <div class="formula-header col-md-12">
-         Formula Name
+        Formula Name
       </div>
       <div class="col-md-12 d-flex formula-name">
-        <div class="col-md-6 no-padding">{{formValues.products[selectedTabIndex].formula.name}}</div>
+        <div class="col-md-6 no-padding">
+          {{ formValues.products[selectedTabIndex].formula.name }}
+        </div>
         <div class="col-md-6 no-padding" style="text-align: end;">
           <div style="bottom: 5px;position: relative;">
             <span style="margin-right: 5px;">
-              <a class="remove-formula-icon" (click)="formValues.status && formValues.status.name == 'Confirmed' ? '' : removeFormula(selectedTabIndex)">
+              <a
+                class="remove-formula-icon"
+                (click)="
+                  formValues.status && formValues.status.name == 'Confirmed'
+                    ? ''
+                    : removeFormula(selectedTabIndex)
+                "
+              >
               </a>
               <span>
                 Remove
               </span>
             </span>
             <span>
-              <a (click)="viewFormula(selectedTabIndex)" class="view-formula-icon" style="position: relative; top: 3px;">
+              <a
+                (click)="viewFormula(selectedTabIndex)"
+                class="view-formula-icon"
+                style="position: relative; top: 3px;"
+              >
               </a>
               <span>
-                View formula 
+                View formula
               </span>
             </span>
           </div>
@@ -150,54 +255,91 @@
       </div>
     </div>
   </div>
-  <div  *ngIf="formValues.products[selectedTabIndex].isFormula" class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
-    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 100% !important; margin: 0px  !important;">
+  <div
+    *ngIf="formValues.products[selectedTabIndex].isFormula"
+    class="col-md-12 no-padding d-flex"
+    style="margin-top: 10px;"
+  >
+    <div
+      class="custom-form-field product-details"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      style="width: 100% !important; margin: 0px  !important;"
+    >
       <div class="d-flex">
-          <mat-form-field class="with-search" appearance="legacy">
-              <mat-label>Type formula name</mat-label>
-              <input class="free-text-field" 
-                      type="text"
-                      matInput 
-                      [(ngModel)]="formValues.products[selectedTabIndex].formula"
-                      [matAutocomplete]="auto1"
-                      placeholder="Type formula name"
-                      [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-                      >
-              <mat-autocomplete #auto1="matAutocomplete" 
-                                  class="darkPanelAuto"
-                                  [displayWith]="displayFn"
-                                  (optionSelected)="updateConversionFactor($event.option.value)">
-                  <mat-option *ngFor="let formula of filterContractFormulaList()" 
-                          [value]="formula">
-                      {{formula.name}}
-                  </mat-option>
-              </mat-autocomplete>
-          </mat-form-field>
-          <button class="search-icon"
-              [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
-              [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}" 
-              appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
+        <mat-form-field class="with-search" appearance="legacy">
+          <mat-label>Type formula name</mat-label>
+          <input
+            class="free-text-field"
+            type="text"
+            matInput
+            [(ngModel)]="formValues.products[selectedTabIndex].formula"
+            [matAutocomplete]="auto1"
+            placeholder="Type formula name"
+            [disabled]="
+              formValues.status && formValues.status.name == 'Confirmed'
+            "
+          />
+          <mat-autocomplete
+            #auto1="matAutocomplete"
+            class="darkPanelAuto"
+            [displayWith]="displayFn"
+            (optionSelected)="updateConversionFactor($event.option.value)"
+          >
+            <mat-option
+              *ngFor="let formula of filterContractFormulaList()"
+              [value]="formula"
+            >
+              {{ formula.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button
+          class="search-icon"
+          [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+          "
+          [ngClass]="{
+            'search-icon-disabled':
+              formValues.status && formValues.status.name == 'Confirmed'
+          }"
+          appMasterSelectorTrigger
+          [masterSelector]="masterSelector1"
+          #masterSelectorTrigger1="masterSelectorTrigger"
+          [header]="getHeaderNameSelector1()"
+        >
           <div class="img">
-              <ng-template cdkPortal #masterSelector1="cdkPortal" >
-                  <shiptech-shared-master-selector (selectedChange)="selectorFormulaSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
-                                                  [disabled]="disabled"
-                                                  [readonly]="readonly"
-                                                  [entityName]="entityName"
-                                                  [entityId]="_entityId"
-                                                  [vesselId]="vesselId"
-                                                  [headerName]="getHeaderNameSelector1()"
-                  ></shiptech-shared-master-selector>
-              </ng-template> 
+            <ng-template cdkPortal #masterSelector1="cdkPortal">
+              <shiptech-shared-master-selector
+                (selectedChange)="
+                  selectorFormulaSelectionChange($event);
+                  masterSelectorTrigger1.close()
+                "
+                (shouldCloseModal)="masterSelectorTrigger1.close()"
+                [selectorType]="autocompletePhysicalSupplier"
+                [disabled]="disabled"
+                [readonly]="readonly"
+                [entityName]="entityName"
+                [entityId]="_entityId"
+                [vesselId]="vesselId"
+                [headerName]="getHeaderNameSelector1()"
+              ></shiptech-shared-master-selector>
+            </ng-template>
           </div>
-          </button>
+        </button>
       </div>
     </div>
   </div>
-  <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
+  <div
+    class="header-product-details col-md-12 no-padding"
+    style="margin-top: 10px; margin-bottom:15px;"
+  >
     Product additional costs
   </div>
-  <div class="col-md-12 d-flex no-padding">
-    <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%">
+  <div class="col-md-12  no-padding ">
+    <table
+      class="product-additional-costs-table table table-stripped table-hover"
+      style="width:100%; margin-top:0px"
+    >
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
@@ -226,134 +368,302 @@
           </td>
         </tr>
       </thead>
-      <tbody>
-
-          <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
+    </table>
+    <div class="table-fix-head col-md-12 no-padding ">
+      <table
+        class="product-additional-costs-table table table-stripped table-hover"
+        style="width:100%; margin-top:0px"
+      >
+        <tbody>
+          <ng-container
+            *ngFor="
+              let additionalCost of formValues.products[selectedTabIndex]
+                .additionalCosts | keyvalue: originalOrder
+            "
+          >
             <tr *ngIf="!additionalCost.value.isDeleted">
-              <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-                <a class="remove-icon" style="margin-left: 10px;" (click)="removeAdditionalCostLine(additionalCost.key)"></a>
+              <td class="padding" style="width: 30px !important">
+                <a
+                  class="remove-icon"
+                  (click)="removeAdditionalCostLine(additionalCost.key)"
+                ></a>
               </td>
-              <td  style="width:15%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field name="Item Name" 
-                      class="without-search conversion-factor-dropdown-component " 
-                      [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.additionalCost)}"
-                      appearance="legacy">
-                    <mat-select 
-                            [(ngModel)]="additionalCost.value.additionalCost"
-                            (selectionChange)="setAdditionalCost($event.value, selectedTabIndex, additionalCost.key);
-                            setAdditionalCostLine(additionalCost.value.additionalCost, selectedTabIndex, additionalCost.key);                             setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
-                            [disableOptionCentering]="true"
-                            panelClass="general-info-select-container"
-                            [compareWith]="compareAdditionalCostObjects"
-                            [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')">
-                        <mat-option *ngFor="let option of  additionalCostForLocation[formValues.products[selectedTabIndex].location.id]" [value]="option">
-                            {{option.name}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </td> 
-              <td  style="width:15%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search conversion-factor-dropdown-component" 
+              <td style="width:15%">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    name="Item Name"
+                    class="without-search conversion-factor-dropdown-component "
+                    [ngClass]="{
+                      'required-field':
+                        buttonClicked && !additionalCost.value.additionalCost
+                    }"
                     appearance="legacy"
-                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.costType)}">
-                    <mat-select 
-                            [(ngModel)]="additionalCost.value.costType"
-                            (selectionChange)="resetUom(selectedTabIndex, additionalCost.key)"
-                            [disableOptionCentering]="true"
-                            panelClass="general-info-select-container"
-                            [compareWith]="compareUomObjects"
-                            [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')">
-                        <mat-option *ngFor="let option of filterCostTypesByAdditionalCost(additionalCost.value.additionalCost ? additionalCost.value.additionalCost.id : 0, 0)" [value]="option">
-                            {{option.name}}
+                  >
+                    <mat-select
+                      [(ngModel)]="additionalCost.value.additionalCost"
+                      (selectionChange)="
+                        setAdditionalCost(
+                          $event.value,
+                          selectedTabIndex,
+                          additionalCost.key
+                        );
+                        setAdditionalCostLine(
+                          $event.value,
+                          selectedTabIndex,
+                          additionalCost.key
+                        );
+                        setIsAllowingNegativeAmmount(
+                          selectedTabIndex,
+                          additionalCost.key
+                        )
+                      "
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareAdditionalCostObjects"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId ||
+                        (formValues.status &&
+                          formValues.status.name == 'Confirmed')
+                      "
+                    >
+                      <ng-container
+                        *ngFor="
+                          let option of additionalCostForLocation[
+                            formValues.products[selectedTabIndex].location.id
+                          ]
+                        "
+                      >
+                        <mat-option
+                          *ngIf="option.isDeleted"
+                          [value]="option"
+                          style="display: none;"
+                        >
+                          {{ option.name }}
                         </mat-option>
+                        <mat-option *ngIf="!option.isDeleted" [value]="option">
+                          {{ option.name }}
+                        </mat-option>
+                      </ng-container>
                     </mat-select>
                   </mat-form-field>
                 </div>
-              </td> 
+              </td>
               <td style="width:15%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search" 
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    class="without-search conversion-factor-dropdown-component"
                     appearance="legacy"
-                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount && additionalCost.value.costType && additionalCost.value.costType.id != 4 && additionalCost.value.costType.id != 5) }">
-                    <input  
-                        [(ngModel)]="additionalCost.value.amount"
-                        matInput 
-                        amountFormat
-                        autocomplete="off"
-                        (keypress)="keyPressNumber($event)"
-                        [disabled]="additionalCost.value.locationAdditionalCostId || (additionalCost.value.costType && (additionalCost.value.costType.id == 4 || additionalCost.value.costType.id == 5)) 
-                              || (formValues.status && formValues.status.name == 'Confirmed')">
-                  </mat-form-field>
-                </div>
-              </td>
-              <td  style="width:15%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                    <mat-select 
-                            [(ngModel)]="additionalCost.value.uom"
-                            [disableOptionCentering]="true"
-                            panelClass="general-info-select-container"
-                            [compareWith]="compareUomObjects"
-                            [disabled]="additionalCost.value.locationAdditionalCostId || (additionalCost.value.costType && additionalCost.value.costType.name != 'Unit')
-                              || (formValues.status && formValues.status.name == 'Confirmed')">
-                        <mat-option *ngFor="let option of uomList" [value]="option">
-                            {{option.name}}
-                        </mat-option>
+                    [ngClass]="{
+                      'required-field':
+                        buttonClicked && !additionalCost.value.costType
+                    }"
+                  >
+                    <mat-select
+                      [(ngModel)]="additionalCost.value.costType"
+                      (selectionChange)="
+                        resetUom(selectedTabIndex, additionalCost.key)
+                      "
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareUomObjects"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId ||
+                        (formValues.status &&
+                          formValues.status.name == 'Confirmed')
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let option of filterCostTypesByAdditionalCost(
+                            additionalCost.value.additionalCost
+                              ? additionalCost.value.additionalCost.id
+                              : 0,
+                            0
+                          )
+                        "
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-              </td> 
+              </td>
               <td style="width:15%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search" appearance="legacy">
-                    <input  
-                        [(ngModel)]="additionalCost.value.extras"
-                        matInput 
-                        autocomplete="off"
-                        [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    class="without-search"
+                    appearance="legacy"
+                    [ngClass]="{
+                      'required-field':
+                        buttonClicked &&
+                        !additionalCost.value.amount &&
+                        additionalCost.value.costType &&
+                        additionalCost.value.costType.id != 4 &&
+                        additionalCost.value.costType.id != 5
+                    }"
+                  >
+                    <input
+                      [(ngModel)]="additionalCost.value.amount"
+                      matInput
+                      amountFormat
+                      autocomplete="off"
+                      (keypress)="keyPressNumber($event)"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId ||
+                        (additionalCost.value.costType &&
+                          (additionalCost.value.costType.id == 4 ||
+                            additionalCost.value.costType.id == 5)) ||
+                        (formValues.status &&
+                          formValues.status.name == 'Confirmed')
+                      "
+                    />
                   </mat-form-field>
                 </div>
               </td>
-              <td  style="width:15%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
-                    <mat-select 
-                            [(ngModel)]="additionalCost.value.currency"
-                            [disableOptionCentering]="true"
-                            panelClass="general-info-select-container"
-                            [compareWith]="compareUomObjects"
-                            [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')">
-                        <mat-option *ngFor="let option of currencyList" [value]="option">
-                            {{option.name}}
-                        </mat-option>
+              <td style="width:15%">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    class="without-search conversion-factor-dropdown-component"
+                    appearance="legacy"
+                  >
+                    <mat-select
+                      [(ngModel)]="additionalCost.value.uom"
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareUomObjects"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId ||
+                        (additionalCost.value.costType &&
+                          additionalCost.value.costType.name != 'Unit') ||
+                        (formValues.status &&
+                          formValues.status.name == 'Confirmed')
+                      "
+                    >
+                      <mat-option
+                        *ngFor="let option of uomList"
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-              </td> 
+              </td>
               <td style="width:15%">
-                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
                   <mat-form-field class="without-search" appearance="legacy">
-                    <input  
-                        [(ngModel)]="additionalCost.value.comments"
-                        matInput 
-                        [disabled]="additionalCost.value.locationAdditionalCostId || (formValues.status && formValues.status.name == 'Confirmed')"
-                        autocomplete="off">
+                    <input
+                      [(ngModel)]="additionalCost.value.extras"
+                      matInput
+                      autocomplete="off"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId ||
+                        (formValues.status &&
+                          formValues.status.name == 'Confirmed')
+                      "
+                    />
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width:15%">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    class="without-search conversion-factor-dropdown-component"
+                    appearance="legacy"
+                  >
+                    <mat-select
+                      [(ngModel)]="additionalCost.value.currency"
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareUomObjects"
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId ||
+                        (formValues.status &&
+                          formValues.status.name == 'Confirmed')
+                      "
+                    >
+                      <mat-option
+                        *ngFor="let option of currencyList"
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width:15%">
+                <div
+                  class="custom-form-field conversion-factor-info"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input
+                      [(ngModel)]="additionalCost.value.comments"
+                      matInput
+                      [disabled]="
+                        additionalCost.value.locationAdditionalCostId ||
+                        (formValues.status &&
+                          formValues.status.name == 'Confirmed')
+                      "
+                      autocomplete="off"
+                    />
                   </mat-form-field>
                 </div>
               </td>
             </tr>
           </ng-container>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-<div>
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-spin-clockwise-fade">
-</ngx-spinner>
-  
+  <div>
+    <ngx-spinner
+      bdColor="rgba(51,51,51,0.8)"
+      size="medium"
+      color="#fff"
+      type="ball-spin-clockwise-fade"
+    >
+    </ngx-spinner>
+  </div>
+</div>

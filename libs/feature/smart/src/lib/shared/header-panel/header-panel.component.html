@@ -1,10 +1,10 @@
 <div class="st-header-navbar header-navbar" style="display: flex;align-items: center;position: sticky;">
   <div class="logo">
-    <a href="javascript:;">
+    <a href="{{baseUrl}}" target="_blank" >
       <img class="img-fluid" src="assets/customicons/burger_menu.svg" alt="Shiptech Logo"
         style="padding-right: 1rem !important;" />
     </a>
-    <a>
+    <a href="{{baseUrl}}" target="_blank">
       <img class="img-fluid" src="assets/customicons/shiptech-logo.svg" alt="Shiptech Logo" style="padding-top: 5px;" />
     </a>
   </div>
@@ -30,7 +30,7 @@
       <img src="assets/customicons/notif.svg" alt="Help" class="header-icon-group hand" title="Help">
       <div class="notif-count">4</div>
     </div>
-    <div (click)="toggleLogoutFlag()" class="header-icon-group nav-user-bg" title="Profile">{{nameInitials | uppercase}}</div>
+    <!-- <div (click)="toggleLogoutFlag()" class="header-icon-group nav-user-bg" title="Profile">{{nameInitials | uppercase}}</div> -->
   </div>
 
 

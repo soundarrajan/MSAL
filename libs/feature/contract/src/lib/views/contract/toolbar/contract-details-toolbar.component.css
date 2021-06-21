@@ -1,44 +1,44 @@
 .delivery-header {
-    position: relative;
-    top: 20px;
+  position: relative;
+  top: 20px;
 }
 
 .ui-tabmenu .ui-tabmenu-nav {
-    background-color: unset !important;
-    background: unset !important;
+  background-color: unset !important;
+  background: unset !important;
 }
 .st-breadcrumbs-progress-bar .page-breadcrumb {
-    /* width: 100%; */
-    padding: 0;
+  /* width: 100%; */
+  padding: 0;
 }
 
 .page-bar .page-breadcrumb {
-    display: inline-block;
-    float: right;
-    padding: 8px;
-    margin: 0;
-    list-style: none;
+  display: inline-block;
+  float: right;
+  padding: 8px;
+  margin: 0;
+  list-style: none;
 }
 
-  /* Breadcrumbs */
+/* Breadcrumbs */
 
-  .page-bar {
-    background-color: #364150;
-    margin-bottom: 0;
-    /*height: 57px;*/
-    margin: 0 -20px;
-    /* z-index: 9999; */
-    position: relative;
+.page-bar {
+  background-color: #364150;
+  margin-bottom: 0;
+  /*height: 57px;*/
+  margin: 0 -20px;
+  /* z-index: 9999; */
+  position: relative;
 }
 
 /* class used for pulling breadgrumbs container over logo/menu */
 
 .page-bar.no-top-margin {
-    margin-top: -42px;
+  margin-top: -42px;
 }
 
 .breadcrumbs-container {
-    /*    z-index: 1000;
+  /*    z-index: 1000;
 position: fixed;
 left: 10px;
 right: 0;
@@ -46,256 +46,287 @@ border: 1px solid red;*/
 }
 
 .page-breadcrumb a.disabled {
-    pointer-events: none;
+  pointer-events: none;
 }
 
-.page-bar .page-breadcrumb>li>a, .page-bar .page-breadcrumb>li>i {
-    color: White;
-    font-size: 80%;
+.page-bar .page-breadcrumb > li > a,
+.page-bar .page-breadcrumb > li > i {
+  color: White;
+  font-size: 80%;
 }
 
-.page-bar .dropdown-toggle>i {
-    color: White;
-    vertical-align: middle;
-    width: 50px;
+.page-bar .dropdown-toggle > i {
+  color: White;
+  vertical-align: middle;
+  width: 50px;
 }
 
 .page-bar .btn-group {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .page-bar .layout-button a {
-    color: White;
-    font-size: 22px;
-    padding-top: 3px;
+  color: White;
+  font-size: 22px;
+  padding-top: 3px;
 }
 
 .page-bar .page-toolbar {
-    /*   position: absolute;
+  /*   position: absolute;
 left: 500px;
 right: 80px;
 float: none;*/
 }
 
 .page-sidebar-closed .page-bar .page-toolbar {
-    /* left: 250px;*/
+  /* left: 250px;*/
 }
 
-.page-bar>.page-breadcrumb {
-    /*margin-left: 14px;*/
-    margin-top: 10px;
+.page-bar > .page-breadcrumb {
+  /*margin-left: 14px;*/
+  margin-top: 10px;
 }
 
-.page-quick-sidebar-open .page-header .page-bar .dropdown-quick-sidebar-toggler>.dropdown-toggle i:before {
-    content: "\f106";
+.page-quick-sidebar-open
+  .page-header
+  .page-bar
+  .dropdown-quick-sidebar-toggler
+  > .dropdown-toggle
+  i:before {
+  content: '\f106';
 }
 
 .st-breadcrumbs-pins {
-    color: White;
-    font-size: 75%;
+  color: White;
+  font-size: 75%;
 }
 
 .st-breadcrumbs-pins .page-breadcrumb {
-    /* display: table;
+  /* display: table;
 width: 100%;
 table-layout: fixed;*/
-    float: right;
+  float: right;
 }
 
 .st-breadcrumbs-pins .page-breadcrumb li {
-    /*text-transform: uppercase;*/
-    vertical-align: middle;
-    text-align: center;
-    margin: 0 20px 0 10px;
+  /*text-transform: uppercase;*/
+  vertical-align: middle;
+  text-align: center;
+  margin: 0 20px 0 10px;
 }
 
 .st-breadcrumbs-pins a {
-    color: White !important;
-    font-size: 100%;
+  color: White !important;
+  font-size: 100%;
 }
 
 .st-breadcrumbs-pins .tear {
-    width: 20px;
-    height: 20px;
-    margin: 0 auto;
-    border-radius: 80% 0 55% 50% / 55% 0 80% 50% !important;
-    border: 3px solid;
-    transform: rotate(135deg);
-    /*float: left;*/
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  border-radius: 80% 0 55% 50% / 55% 0 80% 50% !important;
+  border: 3px solid;
+  transform: rotate(135deg);
+  /*float: left;*/
 }
 
 .st-breadcrumbs-pins .tear span {
-    transform: rotate(-135deg);
-    display: block;
-    font-size: 13px;
-    color: white;
-    width: 31px;
-    text-align: center;
-    margin-left: -28px;
-    margin-top: -20px;
-    border: 1px solid #fff;
+  transform: rotate(-135deg);
+  display: block;
+  font-size: 13px;
+  color: white;
+  width: 31px;
+  text-align: center;
+  margin-left: -28px;
+  margin-top: -20px;
+  border: 1px solid #fff;
 }
 
 .st-breadcrumbs-pins .page-breadcrumb li:last-child {
-    margin-right: 9px;
+  margin-right: 9px;
 }
 
 .st-breadcrumbs-pins .tear-info {
-    border-color: #44a9fe;
-    background-color: #44a9fe;
+  border-color: #44a9fe;
+  background-color: #44a9fe;
 }
 
 .st-breadcrumbs-pins .tear-warning {
-    border-color: #fada25;
-    background-color: #fada25;
+  border-color: #fada25;
+  background-color: #fada25;
 }
 
 .st-breadcrumbs-pins .tear-danger {
-    border-color: #ff0000;
-    background-color: #ff0000;
+  border-color: #ff0000;
+  background-color: #ff0000;
 }
 
 .st-breadcrumbs-pins .tear-green-dark {
-    border-color: #09944a;
-    background-color: #09944a;
+  border-color: #09944a;
+  background-color: #09944a;
 }
 
 .st-breadcrumbs-pins .tear-default {
-    border-color: #808080;
-    background-color: #808080;
+  border-color: #808080;
+  background-color: #808080;
 }
 
 .st-breadcrumbs-pins .tear-green-light {
-    border-color: #99cc82;
-    background-color: #99cc82;
+  border-color: #99cc82;
+  background-color: #99cc82;
 }
 
-.st-breadcrumbs-pins li>div.caption {
-    font-size: 12px;
-    font-weight: 600;
+.st-breadcrumbs-pins li > div.caption {
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .st-breadcrumbs-pins .center-line {
-    padding-top: 5px;
+  padding-top: 5px;
 }
 
 .st-breadcrumbs-pins li.refresh-icon {
-    vertical-align: middle;
-    text-align: right;
-    /*height: 40px;*/
-    width: 30px;
+  vertical-align: middle;
+  text-align: right;
+  /*height: 40px;*/
+  width: 30px;
 }
 
-.page-bar .page-breadcrumb>li>a, .page-bar .page-breadcrumb>li>span {
-    color: white;
-    padding: 22px 22px 21.5px 22px;
-    font-size: 12px;
+.page-bar .page-breadcrumb > li > a,
+.page-bar .page-breadcrumb > li > span {
+  color: white;
+  padding: 22px 22px 21.5px 22px;
+  font-size: 12px;
 }
-.st-breadcrumbs-progress-bar .page-breadcrumb>li>a {
-    display: block;
+.st-breadcrumbs-progress-bar .page-breadcrumb > li > a {
+  display: block;
 }
 
-.page-toolbar .page-breadcrumb>li>span {
-    text-transform: uppercase;
-    font-weight: bold;
+.page-toolbar .page-breadcrumb > li > span {
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .st-breadcrumbs-progress-bar .page-breadcrumb {
-    /*    display: table;
+  /*    display: table;
     table-layout: fixed;*/
-    /* width: 100%; */
-    padding: 0;
+  /* width: 100%; */
+  padding: 0;
 }
 
 .st-breadcrumbs-progress-bar .page-breadcrumb li {
-    text-transform: uppercase;
-    background: #c1c3c7;
-    color: White;
-    margin-right: -5px;
-    /*display: table-cell;*/
+  text-transform: uppercase;
+  background: #c1c3c7;
+  color: White;
+  margin-right: -5px;
+  /*display: table-cell;*/
 }
 .st-breadcrumbs-progress-bar .page-breadcrumb li span {
-    display: block;
+  display: block;
 }
 
 .st-breadcrumbs-progress-bar .page-breadcrumb .btn {
-    cursor: default;
+  cursor: default;
 }
 
 .st-breadcrumbs-progress-bar .page-breadcrumb .badge {
-    background: White;
-    color: #d1d8dd;
-    font-weight: 600;
-    font-size: 15px !important;
-    height: 25px;
-    width: 25px;
-    padding: 4px 6px 2px 6px;
-    margin-right: 10px;
+  background: White;
+  color: #d1d8dd;
+  font-weight: 600;
+  font-size: 15px !important;
+  height: 25px;
+  width: 25px;
+  padding: 4px 6px 2px 6px;
+  margin-right: 10px;
 }
 
 .st-breadcrumbs-progress-bar .page-breadcrumb .btn-fit-height {
-    /*padding: 18px 18px 17.5px 18px;*/
-    font-weight: 600;
-    padding: 0;
-    /*border-right: 1px solid #fff;*/
-    display: table-cell;
+  /*padding: 18px 18px 17.5px 18px;*/
+  font-weight: 600;
+  padding: 0;
+  /*border-right: 1px solid #fff;*/
+  display: table-cell;
 }
 
 .st-breadcrumbs-progress-bar li.st-progress-bar-current {
-    background: #337ab7;
-    color: White;
+  background: #337ab7;
+  color: White;
 }
 
 .page-bar .dropdown-quick-sidebar-toggler .btn {
-    padding: 6px 4px!important;
+  padding: 6px 4px !important;
 }
 
 .st-breadcrumbs-progress-bar li.st-progress-bar-current .badge {
-    background: white;
-    color: Black;
+  background: white;
+  color: Black;
 }
 
 .st-breadcrumbs-progress-bar li.st-progress-bar-next {
-    /*padding-left: 5px !important;*/
-    background: #b8bbbe;
-    color: #337ab7;
+  /*padding-left: 5px !important;*/
+  background: #b8bbbe;
+  color: #337ab7;
 }
 
 .st-breadcrumbs-progress-bar li.st-progress-bar-next .badge {
-    background: #337ab7;
-    color: White;
+  background: #337ab7;
+  color: White;
 }
 
 /* End Breadcrumbs*/
 
 .navigationBar-previous {
-    background: #4B77BE !important;
+  background: #4b77be !important;
 }
 
 /* TOP NAVIGATION COMPONENT */
 
 .navigationBar-active {
-    background: #B3B4B7 !important;
+  background: #b3b4b7 !important;
 }
-.navigationBar-active a, .navigationBar-active span{
-     color: #4B77BE !important;
+.navigationBar-active a,
+.navigationBar-active span {
+  color: #4b77be !important;
 }
 
 .navigationBar-previous {
-    background: #4B77BE !important;
+  background: #4b77be !important;
 }
 
-
-.navigationBar-active:hover, .navigationBar-previous:hover, .navigationBar-next:hover {
-    background: #578EBE !important;
+.navigationBar-active:hover,
+.navigationBar-previous:hover,
+.navigationBar-next:hover {
+  background: #578ebe !important;
 }
 
 /* TOP NAVIGATION COMPONENT */
 
-a.breadcrumb-a:active, a.breadcrumb-a:focus, a.breadcrumb-a:hover {
-    text-decoration: underline;
+a.breadcrumb-a:active,
+a.breadcrumb-a:focus,
+a.breadcrumb-a:hover {
+  text-decoration: underline;
 }
 
 .contract-topbar {
-    width: calc(100% - 220px) !important;
+  width: calc(100% - 250px) !important;
+}
+.h-40 {
+  height: 40px;
+}
+
+.current-page {
+  background-color: #eeeeee !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-bottom: 3px solid #1fbbe6 !important;
+  padding-top: 5px !important;
+}
+
+.toolbar-fixed{
+    position: fixed;
+    z-index: 9;
+    width: 100%;
+    left: 20px;
+    top:40px
 }

@@ -1,7 +1,10 @@
-
 <div class="row split-delivery-modal-top">
   <div class="col-md-12">
-    <a (click)="closeClick()" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button split-delivery-close-button" role="button">
+    <a
+      (click)="closeClick()"
+      class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button split-delivery-close-button"
+      role="button"
+    >
       <span class="pi pi-times cl-content"></span>
     </a>
   </div>
@@ -9,82 +12,123 @@
     Split delivery
   </div>
   <div class="col-md-3">
-    <button  type="button" mat-raised-button 
-          [disabled]="disabledSplitBtn"
-          (click)="splitDelivery()">
+    <button
+      type="button"
+      mat-raised-button
+      [disabled]="disabledSplitBtn"
+      (click)="splitDelivery()"
+    >
       Save
-    </button>    
+    </button>
   </div>
 </div>
 <div mat-dialog-content>
-    <div class="row" *ngFor="let product of formValues.splitDelivery.items | keyvalue">
-        <div class="col-md-12 product-header-name">
-            <span class="caption-subject"> {{ product.value.name}} </span>
-        </div>
-        <div class="col-md-6 remove-padding">
-            <div class="custom-form-field-split-delivery" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-              <div class="split-field">
-                  <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
-                      <mat-label>Initial Confirmed Amount</mat-label>
-                      <input [(ngModel)]="product.value.initialConfirmedAmount"
-                              matInput 
-                              class="text-ellipsis"
-                              name="product_{{ product.key + 1 }}_initialConfirmedAmount"
-                              autocomplete="off" 
-                              placeholder="Initial Confirmed Amount"
-                              quantityFormat
-                              (keypress)="keyPressNumber($event)"
-                              disabled>
-                  </mat-form-field>
-                  <mat-form-field style="width: 36%" 
-                                  appearance="legacy">
-                      <mat-select disableRipple 
-                              [(ngModel)]="product.value.initialConfirmedUom"
-                              [compareWith]="compareUomObjects"
-                              [disableOptionCentering]="true"
-                              panelClass="delivery-product-select-container"
-                              disabled>
-                          <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
-                      </mat-select>
-                  </mat-form-field>
-              </div>
-          </div>
-        </div>
-        <div class="col-md-6 remove-padding">
-          <div class="custom-form-field-split-delivery" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-            <div class="split-field"  [ngClass]="{'invalid-input-split-delivery': splitDeliveryInLimit[product.key] != null && !splitDeliveryInLimit[product.key]}">
-                <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
-                    <mat-label>Remaining Confirmed Amount</mat-label>
-                    <input
-                            [(ngModel)]="product.value.remainingConfirmedAmount" 
-                            matInput 
-                            class="text-ellipsis"
-                            name="product_{{ product.key + 1 }}_remainingConfirmedAmount"
-                            autocomplete="off" 
-                            placeholder="Remaining Confirmed Amount"
-                            (ngModelChange)="
-                            splitDeliveryInLimit[product.key] = product.value.remainingConfirmedAmount <= product.value.orderLimit;
-                            disabledSplitBtn = disabledSplitDelivery(splitDeliveryInLimit)"
-                            quantityFormat
-                            (keypress)="keyPressNumber($event)">
-                </mat-form-field>
-                <mat-form-field style="width: 36%" 
-                                appearance="legacy">
-                    <mat-select disableRipple 
-                            [(ngModel)]="product.value.remainingConfirmedUom"
-                            [compareWith]="compareUomObjects"
-                            [disableOptionCentering]="true"
-                            panelClass="delivery-product-select-container"
-                            disabled>
-                        <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-          </div>
+  <div
+    class="row"
+    *ngFor="let product of formValues.splitDelivery.items | keyvalue"
+  >
+    <div class="col-md-12 product-header-name">
+      <span class="caption-subject"> {{ product.value.name }} </span>
+    </div>
+    <div class="col-md-6 remove-padding">
+      <div
+        class="custom-form-field-split-delivery"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
+        <div class="split-field">
+          <mat-form-field
+            class="without-search long-label-field"
+            style="width: 64%;border: none;"
+            appearance="legacy"
+          >
+            <mat-label>Initial Confirmed Amount</mat-label>
+            <input
+              [(ngModel)]="product.value.initialConfirmedAmount"
+              matInput
+              class="text-ellipsis"
+              name="product_{{ product.key + 1 }}_initialConfirmedAmount"
+              autocomplete="off"
+              placeholder="Initial Confirmed Amount"
+              quantityFormat
+              (keypress)="keyPressNumber($event)"
+              disabled
+            />
+          </mat-form-field>
+          <mat-form-field style="width: 36%" appearance="legacy">
+            <mat-select
+              disableRipple
+              [(ngModel)]="product.value.initialConfirmedUom"
+              [compareWith]="compareUomObjects"
+              [disableOptionCentering]="true"
+              panelClass="delivery-product-select-container"
+              disabled
+            >
+              <mat-option *ngFor="let uom of uoms" [value]="uom">{{
+                uom.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </div>
+    <div class="col-md-6 remove-padding">
+      <div
+        class="custom-form-field-split-delivery"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
+        <div
+          class="split-field"
+          [ngClass]="{
+            'invalid-input-split-delivery':
+              splitDeliveryInLimit[product.key] != null &&
+              !splitDeliveryInLimit[product.key]
+          }"
+        >
+          <mat-form-field
+            class="without-search long-label-field"
+            style="width: 64%;border: none;"
+            appearance="legacy"
+          >
+            <mat-label>Remaining Confirmed Amount</mat-label>
+            <input
+              [(ngModel)]="product.value.remainingConfirmedAmount"
+              matInput
+              class="text-ellipsis"
+              name="product_{{ product.key + 1 }}_remainingConfirmedAmount"
+              autocomplete="off"
+              placeholder="Remaining Confirmed Amount"
+              (ngModelChange)="
+                splitDeliveryInLimit[product.key] =
+                  product.value.remainingConfirmedAmount <=
+                  product.value.orderLimit;
+                disabledSplitBtn = disabledSplitDelivery(splitDeliveryInLimit)
+              "
+              quantityFormat
+              (keypress)="keyPressNumber($event)"
+            />
+          </mat-form-field>
+          <mat-form-field style="width: 36%" appearance="legacy">
+            <mat-select
+              disableRipple
+              [(ngModel)]="product.value.remainingConfirmedUom"
+              [compareWith]="compareUomObjects"
+              [disableOptionCentering]="true"
+              panelClass="delivery-product-select-container"
+              disabled
+            >
+              <mat-option *ngFor="let uom of uoms" [value]="uom">{{
+                uom.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div mat-dialog-actions style="display: none;">
-  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button>
+  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>
+    Yes
+  </button>
 </div>

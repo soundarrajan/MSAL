@@ -26,6 +26,7 @@ export namespace MastersApiPaths {
   export const getSystemInstumentList = () => `api/masters/systeminstruments/list`;
   export const getCurrencyList = () => `api/masters/currencies/list`;
   export const getFormulaList = () => `api/masters/formulas/list`;
+  export const getPaymentTermList = () => `api/masters/paymentterm/list`;
 
 
 }
@@ -47,6 +48,18 @@ export class MastersListApiService
 
 
   
+  @ObservableException()
+  getProducts(
+    request: any
+  ): Observable<IProductListRequest> {
+    return this.http.post<IProductListResponse>(
+      `${this._apiUrl}/${MastersApiPaths.getProductList()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body),
+      catchError((body: any) => of('Error, could not load the product list'))
+    );
+  }
   @ObservableException()
   getProductList(
     request: IProductListRequest
@@ -112,6 +125,20 @@ export class MastersListApiService
       catchError(() => of('Error, could not load the currency list'))
     );
   }
+
+  @ObservableException()
+  getPaymentTermList
+  (
+    request: any
+  ): Observable<any> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getPaymentTermList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the payment list'))
+    );
+  }
+
+
 
   @ObservableException()
   getFormulaList(

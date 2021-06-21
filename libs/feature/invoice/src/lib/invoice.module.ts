@@ -46,6 +46,7 @@ import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invo
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { InvoiceDetailComponent } from './views/invoice-view/details/invoice-details.component';
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
+import { InvoiceSplitviewComponent } from './views/split-view/invoice-splitview.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
 import { AddProductDetailsComponent} from './views/invoice-view/details/component/add-product/add-product.component';
@@ -53,6 +54,7 @@ import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolv
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
 import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AdditionalCostModalComponent } from './views/invoice-view/details/component/additional-cost-modal/additional-cost-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProductDetailsComponent } from './views/invoice-view/details/component/product-details/product-details.component';
@@ -112,6 +114,7 @@ import { GeneralSettingsRouteResolver } from './views/invoice-view/details/gener
 import { ContractService } from '../../../contract/src/lib/services/contract.service';
 
 import { NotesDetailsComponent } from './views/invoice-view/details/component/notes-details/notes-details.component';
+import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/details/schedule-dashboard-labels-route.resolver';
 
 @NgModule({
   imports: [
@@ -151,6 +154,7 @@ import { NotesDetailsComponent } from './views/invoice-view/details/component/no
     ExportModule,
     MasterSelectorModule,
     BreadcrumbsModule,
+    PdfViewerModule,
     MatMenuModule,
     PanelModule,
     MatTooltipModule,
@@ -214,6 +218,7 @@ import { NotesDetailsComponent } from './views/invoice-view/details/component/no
     InvoiceListComponent,
     InvoiceCompleteListComponent,
     InvoiceViewComponent,
+    InvoiceSplitviewComponent,
     InvoiceDetailComponent,
     RelatedInvoiceComponent,
     AddProductDetailsComponent,
@@ -253,6 +258,7 @@ import { NotesDetailsComponent } from './views/invoice-view/details/component/no
     DecimalPipe,
     StaticListsRouteResolver,
     GeneralSettingsRouteResolver,
+    ScheduleDashboardLabelsRouteResolver,
     ContractService,
   ],
   entryComponents:[

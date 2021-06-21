@@ -6,7 +6,7 @@ import { fromLonLat } from 'ol/proj';
 import { WarningComponent } from '../../shared/warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-
+import { SmartOperatorComponent } from '../../shared/smart-operator/smart-operator.component';
 @Component({
   selector: 'app-map-view-home',
   templateUrl: './map-view-home.component.html',
@@ -16,6 +16,7 @@ export class MapViewHomeComponent implements OnInit {
 
   @ViewChild(OlMapComponent) olmap;
   @ViewChild(VesselDetailsComponent) vesselDetail;
+  @ViewChild(SmartOperatorComponent) tableView;
   public themeDark = true;//dark theme
   public portData;
   public showTable: boolean;
@@ -104,13 +105,13 @@ export class MapViewHomeComponent implements OnInit {
     this.olmap.vesselPopData = {
       name: event.displayName,
       vesselView: view,
-      id: event.displayName,
+      id: event.vesselId,
       destination: 'Marseille',
       eta1: '2020-04-13 10:00',
       eta2: '2020-04-14 10:00',
       next_destination: 'Catania',
       voyageStatus: 'Laden',
-      vesselId: '1YM',
+      vesselId: event.vesselId,
       vesselExpDate: '12/06/2020',
       vesselType: 'LR1',
       bunkeringStatus: 'Created',
@@ -138,7 +139,7 @@ export class MapViewHomeComponent implements OnInit {
       "end_location_id": event.EndLocation.LocationId
     }
 
-    var lonlat = fromLonLat([event.CurrentLocation.Longitude, event.CurrentLocation.Latitude]);
+    var lonlat = fromLonLat([event.vesselLongitude, event.vesselLatitude]);
     this.olmap.flyTo(lonlat, () => { this.olmap.isLoading = false }, 3);
     this.localService.setVesselPopupData(this.olmap.vesselPopData);
   }

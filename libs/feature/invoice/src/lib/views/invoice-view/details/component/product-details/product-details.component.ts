@@ -27,16 +27,34 @@ import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/b
 import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
-import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  IDisplayLookupDto,
+  IOrderLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
-import { DeliveryInfoForOrder, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  DeliveryInfoForOrder,
+  IDeliveryInfoForOrderDto,
+  OrderInfoDetails
+} from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter
+} from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
@@ -45,12 +63,21 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import _ from 'lodash';
-import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NgxMatNativeDateAdapter,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
@@ -61,8 +88,6 @@ import { throws } from 'assert';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
 
-
-
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
     dateInput: 'YYYY-MM-DD HH:mm'
@@ -71,18 +96,16 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     dateInput: 'YYYY-MM-DD HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
 
-
-  
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   },
   parse: {
     dateInput: 'DD MMM YYYY'
@@ -95,15 +118,15 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
     let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -114,8 +137,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -124,23 +147,20 @@ export class PickDateAdapter extends NativeDateAdapter {
     let date = elem.toDate();
     return value ? date : null;
   }
-
 }
 
-
-
 export interface NgxMatMomentDateAdapterOptions {
-
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<NgxMatMomentDateAdapterOptions>(
-  'MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
-    providedIn: 'root',
-    factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
-  });
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+  NgxMatMomentDateAdapterOptions
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+  providedIn: 'root',
+  factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+});
 
 export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
   return {
@@ -159,19 +179,21 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
 @Injectable()
 export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _localeData: {
-    firstDayOfWeek: number,
-    longMonths: string[],
-    shortMonths: string[],
-    dates: string[],
-    longDaysOfWeek: string[],
-    shortDaysOfWeek: string[],
-    narrowDaysOfWeek: string[]
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
   };
 
-  constructor(@Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
-              @Optional() @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
-              private _options?: NgxMatMomentDateAdapterOptions) {
-
+  constructor(
+    @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+    @Optional()
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    private _options?: NgxMatMomentDateAdapterOptions
+  ) {
     super();
     this.setLocale(dateLocale || moment.locale());
   }
@@ -184,10 +206,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
       longMonths: momentLocaleData.months(),
       shortMonths: momentLocaleData.monthsShort(),
-      dates: range(31, (i) => this.createDate(2017, 0, i + 1).format('D')),
+      dates: range(31, i => this.createDate(2017, 0, i + 1).format('D')),
       longDaysOfWeek: momentLocaleData.weekdays(),
       shortDaysOfWeek: momentLocaleData.weekdaysShort(),
-      narrowDaysOfWeek: momentLocaleData.weekdaysMin(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin()
     };
   }
 
@@ -209,7 +231,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
-    return style === 'long' ? this._localeData.longMonths : this._localeData.shortMonths;
+    return style === 'long'
+      ? this._localeData.longMonths
+      : this._localeData.shortMonths;
   }
 
   getDateNames(): string[] {
@@ -244,14 +268,18 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 
   createDate(year: number, month: number, date: number): Moment {
     if (month < 0 || month > 11) {
-      throw Error(`Invalid month index "${month}". Month index has to be between 0 and 11.`);
+      throw Error(
+        `Invalid month index "${month}". Month index has to be between 0 and 11.`
+      );
     }
 
     if (date < 1) {
       throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
     }
 
-    const result = this._createMoment({ year, month, date }).locale(this.locale);
+    const result = this._createMoment({ year, month, date }).locale(
+      this.locale
+    );
     if (!result.isValid()) {
       throw Error(`Invalid date "${date}" for month with index "${month}".`);
     }
@@ -268,8 +296,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -286,14 +314,14 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     let formattedDate = moment(date).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -328,8 +356,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       let currentFormat = PICK_FORMATS.display.dateInput;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -370,7 +398,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     date.hours(value);
   }
   setMinute(date: Moment, value: number): void {
-    date.minutes(value)
+    date.minutes(value);
   }
   setSecond(date: Moment, value: number): void {
     date.seconds(value);
@@ -379,9 +407,10 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   private _createMoment(
     date: MomentInput,
     format?: MomentFormatSpecification,
-    locale?: string,
+    locale?: string
   ): Moment {
-    const { strict, useUtc }: NgxMatMomentDateAdapterOptions = this._options || {};
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions =
+      this._options || {};
 
     return useUtc
       ? moment.utc(date, format, locale, strict)
@@ -395,20 +424,22 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./product-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
-              ConfirmationService,
-              {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
-              {
-                provide: NgxMatDateAdapter,
-                useClass: CustomNgxDatetimeAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
-              { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
+  providers: [
+    OrderListGridViewModel,
+    DialogService,
+    ConfirmationService,
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    {
+      provide: NgxMatDateAdapter,
+      useClass: CustomNgxDatetimeAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+  ]
 })
 export class ProductDetailsComponent extends DeliveryAutocompleteComponent
-implements OnInit {
+  implements OnInit {
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
   amountFormat: string;
@@ -423,12 +454,13 @@ implements OnInit {
   _entityId: number;
   autocompleteInvoiceProduct: knownMastersAutocomplete;
   uomList: any;
+  isPricingDateEditable: boolean;
   currencyList: any;
   physicalSupplierList: any;
   type: any;
-  expandAddTransactionListPopUp: boolean =  false;
+  expandAddTransactionListPopUp: boolean = false;
   displayedColumns: string[] = ['product', 'delivery'];
-  @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() productDetailChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() costDetailsChanged: EventEmitter<any> = new EventEmitter<any>();
 
   deliveriesToBeInvoicedList: any = [];
@@ -437,7 +469,6 @@ implements OnInit {
   filteredProductOptions: Observable<string[]>;
   @ViewChild('productMenuTrigger') productMenuTrigger: MatMenuTrigger;
   eventsFormValuesSubscription: any;
-
 
   get entityId(): number {
     return this._entityId;
@@ -456,47 +487,51 @@ implements OnInit {
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
+
   @Input() vesselId: number;
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
   }
+  @Input('isPricingDateEditable') set _setisPricingDateEditable(
+    isPricingDateEditable
+  ) {
+    this.isPricingDateEditable = isPricingDateEditable;
+  }
 
-  @Input('productList') set _setProductList(productList) { 
+  @Input('productList') set _setProductList(productList) {
     if (!productList) {
       return;
-    } 
+    }
     this.productList = productList;
   }
 
-  @Input('uomList') set _setUomList(uomList) { 
+  @Input('uomList') set _setUomList(uomList) {
     if (!uomList) {
       return;
-    } 
+    }
     this.uomList = uomList;
   }
 
-  @Input('currencyList') set _setCurrencyList(currencyList) { 
+  @Input('currencyList') set _setCurrencyList(currencyList) {
     if (!currencyList) {
       return;
-    } 
+    }
     this.currencyList = currencyList;
   }
-  
-  @Input('physicalSupplierList') set _setPhysicalSupplierList(physicalSupplierList) { 
+
+  @Input('physicalSupplierList') set _setPhysicalSupplierList(
+    physicalSupplierList
+  ) {
     if (!physicalSupplierList) {
       return;
-    } 
+    }
     this.physicalSupplierList = physicalSupplierList;
   }
   productDetailsExpandArray = [];
   @Input() eventsFormValues: Observable<void>;
-
-
-
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -511,16 +546,18 @@ implements OnInit {
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
-    public dialog: MatDialog, 
+    iconRegistry: MatIconRegistry,
+    public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
     private overlayContainer: OverlayContainer,
-    private invoiceService: InvoiceDetailsService) {
+    private invoiceService: InvoiceDetailsService
+  ) {
     super(changeDetectorRef);
     this.autocompleteInvoiceProduct = knownMastersAutocomplete.products;
-    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
+    this.autocompletePhysicalSupplier =
+      knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
@@ -531,26 +568,26 @@ implements OnInit {
     this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
     this.priceFormat = '1.' + this.tenantService.pricePrecision + '-' + this.tenantService.pricePrecision;
-
   }
 
   ngOnInit(): void {
-    this.eventsFormValuesSubscription = this.eventsFormValues.subscribe((data) => this.setFormValues(data));
-
+    this.eventsFormValuesSubscription = this.eventsFormValues.subscribe(data =>
+      this.setFormValues(data)
+    );
   }
 
   setFormValues(data) {
     this.formValues = this.formValues;
   }
 
-
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => {
     return 0;
-  }
+  };
 
-  ngAfterViewInit(): void {
-  
-  }
+  ngAfterViewInit(): void { }
 
   openDeliveryLink(deliveryId) {
     return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
@@ -558,7 +595,6 @@ implements OnInit {
 
   openContractLink(contractId) {
     return `${this.baseOrigin}/v2/contracts/contract/${contractId}/details`;
-
   }
 
   quantityFormatValue(value) {
@@ -571,16 +607,46 @@ implements OnInit {
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if (this.tenantService.quantityPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
       }
     }
   }
+  roundDown(value, pricePrecision) {
+      var precisionFactor = 1;
+      var response = 0;
+      var intvalue = parseFloat(value);
+      if(pricePrecision == 1) {precisionFactor = 10}   
+      if(pricePrecision == 2) {precisionFactor = 100}   
+      if(pricePrecision == 3) {precisionFactor = 1000}   
+      if(pricePrecision == 4) {precisionFactor = 10000}   
+      response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+      return response.toString();
+  }
+  priceFormatValue(value, pricePrecision) {
+      if (typeof value == 'undefined' || value == null) {
+          return null;
+        }
+        let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+        let number = parseFloat(plainNumber);
+        if (isNaN(number)) {
+            return null;
+    }
+    var productPricePrecision = this.tenantService.pricePrecision;
+    if (pricePrecision !== null) {
+        productPricePrecision = pricePrecision;
+    }
+    this.priceFormat = '1.' + productPricePrecision + '-' + productPricePrecision;
+    if (plainNumber) {
+        plainNumber = this.roundDown(plainNumber, pricePrecision);
+        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+    }
+  }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined' || value == null) {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -589,7 +655,7 @@ implements OnInit {
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.amountPrecision == 0) {
+      if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.amountFormat);
@@ -610,7 +676,6 @@ implements OnInit {
     }
   }
 
-
   getHeaderNameSelector1(): string {
     switch (this._autocompleteType) {
       case knownMastersAutocomplete.invoiceProduct:
@@ -628,20 +693,24 @@ implements OnInit {
       this.formValues.productDetails[line].invoicedProduct = null;
     } else {
       const obj = {
-        'id': selection.id,
-        'name': selection.name
+        id: selection.id,
+        name: selection.name
       };
-      this.formValues.productDetails[line].invoicedProduct = obj; 
+      this.formValues.productDetails[line].invoicedProduct = obj;
       console.log(this.formValues.productDetails[line]);
-      this.changeDetectorRef.detectChanges();   
+      this.changeDetectorRef.detectChanges();
     }
   }
 
   filterInvoiceProductLine(value) {
     if (value) {
-      const  filterValue = value.toLowerCase();
+      const filterValue = value.toLowerCase();
       if (this.productList) {
-        return this.productList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.productList
+          .filter(
+            option =>
+              option.name.toLowerCase().indexOf(filterValue.trim()) === 0
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -651,28 +720,29 @@ implements OnInit {
     }
   }
 
-  selectPhysicalSupplierLine(
-    selection: IDisplayLookupDto,
-    line
-  ): void {
+  selectPhysicalSupplierLine(selection: IDisplayLookupDto, line): void {
     if (selection === null || selection === undefined) {
       this.formValues.productDetails[line].physicalSupplierCounterparty = null;
     } else {
       const obj = {
-        'id': selection.id,
-        'name': selection.name
+        id: selection.id,
+        name: selection.name
       };
-      this.formValues.productDetails[line].physicalSupplierCounterparty = obj; 
+      this.formValues.productDetails[line].physicalSupplierCounterparty = obj;
       console.log(this.formValues.productDetails[line]);
-      this.changeDetectorRef.detectChanges();   
+      this.changeDetectorRef.detectChanges();
     }
   }
 
   filterPhysicalSupplierLine(value) {
     if (value) {
-      const  filterValue = value.toLowerCase();
+      const filterValue = value.toLowerCase();
       if (this.physicalSupplierList) {
-        return this.physicalSupplierList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.physicalSupplierList
+          .filter(
+            option =>
+              option.name.toLowerCase().indexOf(filterValue.trim()) === 0
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -688,21 +758,21 @@ implements OnInit {
 
   selectInvoiceProductLine(value, line) {
     this.formValues.productDetails[line].invoicedProduct = value;
-    this.changeDetectorRef.detectChanges(); 
+    this.changeDetectorRef.detectChanges();
   }
 
   selectorPhysicalSupplierSelectionChange(value, line) {
     this.formValues.productDetails[line].physicalSupplierCounterparty = value;
-    this.changeDetectorRef.detectChanges(); 
+    this.changeDetectorRef.detectChanges();
   }
 
   formatDate(date?: any) {
-    if (date) {    
+    if (date) {
       let currentFormat = this.format.dateFormat;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
@@ -710,7 +780,7 @@ implements OnInit {
       let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
       }
       return formattedDate;
     }
@@ -723,22 +793,42 @@ implements OnInit {
     this.calculateGrand(this.formValues);
     this.type = type;
     if (this.type == 'product') {
-        let product = this.formValues.productDetails[currentRowIndex];
-        if (typeof product.product != 'undefined' && typeof product.invoiceQuantityUom != 'undefined' && typeof product.invoiceRateUom !== 'undefined') {
-            if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /* || typeof(product.invoiceAmount) == 'undefined'*/) {
-                return;
-            };
-            this.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, product.orderProductId ? product.orderProductId : product.id, currentRowIndex);
-
-           
+      let product = this.formValues.productDetails[currentRowIndex];
+      if (
+        typeof product.product != 'undefined' &&
+        typeof product.invoiceQuantityUom != 'undefined' &&
+        typeof product.invoiceRateUom !== 'undefined'
+      ) {
+        if (
+          product.invoiceQuantityUom == null ||
+          product.invoiceRateUom ==
+          null /* || typeof(product.invoiceAmount) == 'undefined'*/
+        ) {
+          return;
         }
-        // recalculatePercentAdditionalCosts(formValues);
+        this.getUomConversionFactor(
+          product.product.id,
+          1,
+          product.invoiceQuantityUom.id,
+          product.invoiceRateUom.id,
+          product.contractProductId,
+          product.orderProductId ? product.orderProductId : product.id,
+          currentRowIndex
+        );
+      }
+      // recalculatePercentAdditionalCosts(formValues);
     }
-
-
   }
 
-  getUomConversionFactor(ProductId, Quantity, FromUomId, ToUomId, contractProductId, orderProductId, currentRowIndex) {
+  getUomConversionFactor(
+    ProductId,
+    Quantity,
+    FromUomId,
+    ToUomId,
+    contractProductId,
+    orderProductId,
+    currentRowIndex
+  ) {
     let conversionFactor = 1;
     let productId = ProductId;
     let quantity = Quantity;
@@ -756,73 +846,116 @@ implements OnInit {
     };
     if (toUomId == fromUomId) {
       conversionFactor = 1;
-      this.formValues.productDetails[currentRowIndex].invoiceAmount = this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceQuantity) * (this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
-      this.formValues.productDetails[currentRowIndex].difference = parseFloat(this.formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(this.formValues.productDetails[currentRowIndex].estimatedAmount);
+      this.formValues.productDetails[currentRowIndex].invoiceAmount =
+        this.convertDecimalSeparatorStringToNumber(
+          this.formValues.productDetails[currentRowIndex].invoiceQuantity
+        ) *
+        (this.convertDecimalSeparatorStringToNumber(
+          this.formValues.productDetails[currentRowIndex].invoiceRate
+        ) *
+          conversionFactor);
+      this.formValues.productDetails[currentRowIndex].difference =
+        parseFloat(
+          this.formValues.productDetails[currentRowIndex].invoiceAmount
+        ) -
+        parseFloat(
+          this.formValues.productDetails[currentRowIndex].estimatedAmount
+        );
       this.calculateGrand(this.formValues);
       if (this.formValues.productDetails[currentRowIndex]) {
-        this.calculateProductRecon(this.formValues.productDetails[currentRowIndex]);
+        this.calculateProductRecon(
+          this.formValues.productDetails[currentRowIndex]
+        );
       }
-
     }
     if (!productId || !toUomId || !fromUomId) {
-        return;
+      return;
     }
 
     this.invoiceService
-    .getUomConversionFactor(data)
-    .pipe(
-        finalize(() => {
-
-        })
-    )
-    .subscribe((result: any) => {
+      .getUomConversionFactor(data)
+      .pipe(finalize(() => { }))
+      .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
         } else {
           console.log(result);
           conversionFactor = result;
-          this.formValues.productDetails[currentRowIndex].invoiceAmount = this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceQuantity) * (this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
-          this.formValues.productDetails[currentRowIndex].difference = parseFloat(this.formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(this.formValues.productDetails[currentRowIndex].estimatedAmount);
+          this.formValues.productDetails[currentRowIndex].invoiceAmount =
+            this.convertDecimalSeparatorStringToNumber(
+              this.formValues.productDetails[currentRowIndex].invoiceQuantity
+            ) *
+            (this.convertDecimalSeparatorStringToNumber(
+              this.formValues.productDetails[currentRowIndex].invoiceRate
+            ) *
+              conversionFactor);
+          this.formValues.productDetails[currentRowIndex].difference =
+            parseFloat(
+              this.formValues.productDetails[currentRowIndex].invoiceAmount
+            ) -
+            parseFloat(
+              this.formValues.productDetails[currentRowIndex].estimatedAmount
+            );
           this.calculateGrand(this.formValues);
           if (this.formValues.productDetails[currentRowIndex]) {
-            this.calculateProductRecon(this.formValues.productDetails[currentRowIndex]);
+            this.calculateProductRecon(
+              this.formValues.productDetails[currentRowIndex]
+            );
           }
-
-
         }
-    });
-
-  };
+      });
+  }
 
   calculateGrand(formValues) {
-    if (!formValues.invoiceSummary) {
-        formValues.invoiceSummary = {};
-    }
-    // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
-    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
-    formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
-    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
-    formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
-    formValues.invoiceSummary.netPayable = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions);
-    this.changeDetectorRef.detectChanges();
-    this.amountChanged.emit(true);
-    console.log(formValues);
+    // if (!formValues.invoiceSummary) {
+    //   formValues.invoiceSummary = {};
+    // }
+    // // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
+    // formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(
+    //   formValues
+    // );
+    // formValues.invoiceSummary.invoiceAmountGrandTotal -=
+    //   formValues.invoiceSummary.provisionalInvoiceAmount;
+    // formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(
+    //   formValues
+    // );
+    // formValues.invoiceSummary.totalDifference =
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.invoiceAmountGrandTotal
+    //   ) -
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.estimatedAmountGrandTotal
+    //   );
+    // formValues.invoiceSummary.netPayable =
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.invoiceAmountGrandTotal
+    //   ) -
+    //   this.convertDecimalSeparatorStringToNumber(
+    //     formValues.invoiceSummary.deductions
+    //   );
+    // this.changeDetectorRef.detectChanges();
+    this.productDetailChanged.emit(this.formValues.productDetails);
+    // console.log(formValues);
   }
 
   calculateInvoiceGrandTotal(formValues) {
     let grandTotal = 0;
     formValues.productDetails.forEach((v, k) => {
-        if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
-            grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
-        }
+      if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
+        grandTotal =
+          grandTotal +
+          this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+      }
     });
     formValues.costDetails.forEach((v, k) => {
-        if (!v.isDeleted) {
-            if (typeof v.invoiceTotalAmount != 'undefined') {
-                grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
-            }
+      if (!v.isDeleted) {
+        if (typeof v.invoiceTotalAmount != 'undefined') {
+          grandTotal =
+            grandTotal +
+            this.convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
         }
+      }
     });
     return grandTotal;
   }
@@ -834,11 +967,11 @@ implements OnInit {
         grandTotal = grandTotal + v.estimatedAmount;
       }
     });
-    
+
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
         if (typeof v.estimatedAmount != 'undefined') {
-            grandTotal = grandTotal + v.estimatedAmount;
+          grandTotal = grandTotal + v.estimatedAmount;
         }
       }
     });
@@ -849,18 +982,23 @@ implements OnInit {
     var numberToReturn = number;
     var decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
-        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
-          if (number.indexOf(',') > number.indexOf('.')) {
-            decimalSeparator = ',';
-            thousandsSeparator = '.';
-          } else {
-            thousandsSeparator = ',';
-            decimalSeparator = '.';
-          }
-          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+      if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+        if (number.indexOf(',') > number.indexOf('.')) {
+          decimalSeparator = ',';
+          thousandsSeparator = '.';
         } else {
-          numberToReturn = parseFloat(number);
+          thousandsSeparator = ',';
+          decimalSeparator = '.';
         }
+        numberToReturn =
+          parseFloat(
+            number
+              .split(decimalSeparator)[0]
+              .replace(new RegExp(thousandsSeparator, 'g'), '')
+          ) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+      } else {
+        numberToReturn = parseFloat(number);
+      }
     }
     if (isNaN(numberToReturn)) {
       numberToReturn = 0;
@@ -876,36 +1014,29 @@ implements OnInit {
       return false;
     }
     this.invoiceService
-    .calculateProductRecon(product)
-    .pipe(
-        finalize(() => {
-
-        })
-    )
-    .subscribe((result: any) => {
+      .calculateProductRecon(product)
+      .pipe(finalize(() => { }))
+      .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
         } else {
-          var obj;
-          if (result.data == 1) {
-            obj = {
+          if (result == 1) {
+            product.reconStatus = {
               id: 1,
               name: 'Matched'
             };
           } else {
-            obj = {
+            product.reconStatus = {
               id: 2,
               name: 'Unmatched'
             };
           }
-          product.reconStatus = obj;
+          console.log(this.formValues);
           this.changeDetectorRef.detectChanges();
         }
-    });
-
+      });
   }
-
 
   removeProductDetailLine(key) {
     if (this.formValues.productDetails[key].id) {
@@ -913,42 +1044,54 @@ implements OnInit {
     } else {
       this.formValues.productDetails.splice(key, 1);
     }
-    this.productDetailsExpandArray[key] =  false;
+    this.productDetailsExpandArray[key] = false;
   }
 
   addTransaction() {
     this.productMenuTrigger.closeMenu();
     this.deliveriesToBeInvoicedList = [];
-    let payload = {"Payload":
-        {"Order":null,
-        "PageFilters":
-            {"Filters":[]},
-        "SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.formValues.orderDetails ? this.formValues.orderDetails.order.id : ''}],"SearchText":null,"Pagination":{"Skip":0,"Take":999999}}};
+    let payload = {
+      Payload: {
+        Order: null,
+        PageFilters: { Filters: [] },
+        SortList: { SortList: [] },
+        Filters: [
+          {
+            ColumnName: 'Order_Id',
+            Value: this.formValues.orderDetails
+              ? this.formValues.orderDetails.order.id
+              : ''
+          }
+        ],
+        SearchText: null,
+        Pagination: { Skip: 0, Take: 999999 }
+      }
+    };
     this.spinner.show();
     this.invoiceService
-    .addTransaction(payload)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((result: any) => {
-      if (typeof result == 'string') {
-        this.spinner.hide();
-        this.toastr.error(result);
-      } else {
-        this.deliveriesToBeInvoicedList = result;
-        this.productMenuTrigger.openMenu();
-        this.changeDetectorRef.detectChanges();
-      }
-
-    });
-    
+      .addTransaction(payload)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.deliveriesToBeInvoicedList = result;
+          this.productMenuTrigger.openMenu();
+          this.changeDetectorRef.detectChanges();
+        }
+      });
   }
 
   searchProducts(value: string): void {
-    let filterProducts = this.deliveriesToBeInvoicedList.filter((option) => option.product.name.toLowerCase().includes(value));
-    this.deliveriesToBeInvoicedList = [ ... filterProducts];
+    let filterProducts = this.deliveriesToBeInvoicedList.filter(option =>
+      option.product.name.toLowerCase().includes(value)
+    );
+    this.deliveriesToBeInvoicedList = [...filterProducts];
     this.changeDetectorRef.detectChanges();
   }
 
@@ -985,14 +1128,14 @@ implements OnInit {
         estimatedExtras: rowData.estimatedExtra,
         // invoiceExtras: rowData.estimatedExtra,
         estimatedExtrasAmount: rowData.estimatedExtraAmount
-    };
+      };
     }
 
     if (rowData.delivery) {
       rowData.product.productId = rowData.product.id;
       transactionstobeinvoiced_dtRow = {
         amountInInvoice: '',
-        deliveryNo: rowData.delivery.name,
+        deliveryId: rowData.delivery.id,
         agreementType: rowData.agreementType,
         deliveryProductId: rowData.deliveryProductId,
         invoicedProduct: rowData.invoicedProduct,
@@ -1012,7 +1155,7 @@ implements OnInit {
         invoiceAmountCurrency: {},
         invoiceQuantity: '',
         invoiceQuantityUom: {},
-        invoiceRate: '',
+        invoiceRate: 0,
         invoiceRateUom: rowData.invoiceRateUom,
         invoiceRateCurrency: this.formValues.invoiceRateCurrency,
         isDeleted: rowData.isDeleted,
@@ -1022,8 +1165,8 @@ implements OnInit {
         estimatedRateUom: rowData.estimatedRateUom,
         pricingScheduleName: rowData.pricingScheduleName,
         reconStatus: {
-          id: 1,
-          name: 'Matched',
+          id: 2,
+          name: 'Unmatched',
           code: '',
           collectionName: null
         }
@@ -1049,13 +1192,18 @@ implements OnInit {
     if (rowData.delivery) {
       alreadyExists = false;
       this.formValues.productDetails.forEach((val, idx) => {
-        if (rowData.deliveryProductId == val.deliveryProductId && !val.isDeleted) {
+        if (
+          rowData.deliveryProductId == val.deliveryProductId &&
+          !val.isDeleted
+        ) {
           alreadyExists = true;
         }
       });
       if (!alreadyExists) {
-        transactionstobeinvoiced_dtRow.invoiceQuantity = transactionstobeinvoiced_dtRow.deliveryQuantity;
-        transactionstobeinvoiced_dtRow.invoiceQuantityUom = transactionstobeinvoiced_dtRow.deliveryQuantityUom;
+        transactionstobeinvoiced_dtRow.invoiceQuantity =
+          transactionstobeinvoiced_dtRow.deliveryQuantity;
+        transactionstobeinvoiced_dtRow.invoiceQuantityUom =
+          transactionstobeinvoiced_dtRow.deliveryQuantityUom;
         this.formValues.productDetails.push(transactionstobeinvoiced_dtRow);
       } else {
         this.toastr.error('Selected product already exists');
@@ -1064,7 +1212,4 @@ implements OnInit {
     this.selectedProductLine = null;
     this.changeDetectorRef.detectChanges();
   }
-
-
-
 }

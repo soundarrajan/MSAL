@@ -3,7 +3,7 @@ import {ICellEditorAngularComp} from '@ag-grid-community/angular';
 import { Store } from '@ngxs/store';
 import { UpdateBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
 import { SaveBunkeringPlanState } from '../../store/bunker-plan/bunkering-plan.state';
-import { NoDataComponent } from '../../shared/no-data-popup/no-data-popup.component';
+import { WarningoperatorpopupComponent } from '../../shared/warningoperatorpopup/warningoperatorpopup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 
 
@@ -17,7 +17,10 @@ const KEY_TAB = 9;
     template: ` <div *ngIf="params.type=='edit'">
     <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
         (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
-  </div>
+    <span *ngIf="showInfoIcon == true">
+          <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
+    </span>
+    </div>
   <div *ngIf="params.type=='edit-business-address'">
     <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
         (keydown)="triggerChangeEvent();" ></div>
@@ -31,7 +34,8 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
     public isChecked;
     private cancelBeforeStart: boolean = false;
     public highlightAllOnFocus: boolean = true;
-    public dialogRef: MatDialogRef<NoDataComponent>;
+    public showInfoIcon : boolean = false;
+    public dialogRef: MatDialogRef<WarningoperatorpopupComponent>;
     @Input('bplanType') 
     public set bplanType(v : any) {
       this.bplanType = v;
@@ -89,9 +93,9 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
         isSafePortRestricted = this.checkSafePortRestriction(this.params?.colDef?.field, this.params?.data?.detail_no);
           if(isSafePortRestricted === 'Y'){
             this.value = 0;
-            const dialogRef = this.dialog.open(NoDataComponent, {
+            const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
               width: '350px',
-              panelClass: 'confirmation-popup',
+              panelClass: 'confirmation-popup-operator',
               data : {message: 'You should enter only one safe port value for each product type'}
             });
           }
@@ -102,6 +106,16 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
             return '';
           }
           
+      }
+      if(this.params.colDef?.field == 'lsdis_estimated_consumption' || this.params.colDef?.field == 'eca_estimated_consumption'){
+        if(this.params.data){
+          if(this.params.data.lsdis_as_eca > 0){
+            this.showInfoIcon = true;
+          }
+          else
+            this.showInfoIcon = false;
+        }
+
       }
         this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
         return this.value;

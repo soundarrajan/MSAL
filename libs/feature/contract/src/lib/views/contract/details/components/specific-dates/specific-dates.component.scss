@@ -462,3 +462,9 @@
 .collapse-icon-for-calendar-option::before {
   content: url(../../../../../../../../../../assets/layout/images/pages/collapse.svg);
 }
+
+.table-with-scroll{
+  border: 1px solid #E0E1E4;
+  overflow-y: auto;
+  height: 220px;
+}

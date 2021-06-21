@@ -1,12 +1,16 @@
 <div class="col-md-12 row bdn-additional-information-header">
-  <div class="col-md-6  bdn-additional-information-header bdn-additional-information-container">
-      BDN Additional Information
+  <div
+    class="col-md-6  bdn-additional-information-header bdn-additional-information-container"
+  >
+    BDN Additional Information
   </div>
-  <div class="col-md-4  bdn-additional-information-header feedback-information-container">
+  <div
+    class="col-md-4  bdn-additional-information-header feedback-information-container"
+  >
     Chief Engineer Feedback
   </div>
   <div class="col-md-2 satisfaction-level-header">
-     Satisfaction level
+    Satisfaction level
   </div>
   <!-- <div class="col-md-4 sample-details-header">
     Sample Details
@@ -15,78 +19,149 @@
 <div class="col-md-12 row  bdn-additional-information">
   <div class="col-md-6 bdn-additional-information-container">
     <div class="hidden">
-      {{getTimeBetweenBerthinAndBargeDates(formValues.berthingTime, formValues.bargeAlongside)}}
+      {{
+        getTimeBetweenBerthinAndBargeDates(
+          formValues.berthingTime,
+          formValues.bargeAlongside
+        )
+      }}
     </div>
-    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field bdn-additional-info"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Barge delay</mat-label>
-        <input  [(ngModel)]="formValues.bargeDelay"
-              matInput 
-              autocomplete="off"
-              placeholder="Barge delay"
-              disabled>
+        <input
+          [(ngModel)]="formValues.bargeDelay"
+          matInput
+          autocomplete="off"
+          placeholder="Barge delay"
+          disabled
+        />
       </mat-form-field>
     </div>
-    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid':isBargePumpingRateStartTimeInvalid, 'date-valid':!isBargePumpingRateStartTimeInvalid}">
+    <div
+      class="custom-form-field bdn-additional-info"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field
+        class="without-search"
+        appearance="legacy"
+        [ngClass]="{
+          'date-invalid': isBargePumpingRateStartTimeInvalid,
+          'date-valid': !isBargePumpingRateStartTimeInvalid
+        }"
+      >
         <mat-label>Pumping start</mat-label>
-        <input [(ngModel)]="formValues.bargePumpingRateStartTime" 
-              matInput 
-              [ngxMatDatetimePicker]="bargePumpingRateStartTime"
-              (focus)="bargePumpingRateStartTime.open()"
-              autocomplete="off"
-              placeholder="Pumping start"
-              (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
-              (dateChange)="formValues.bargePumpingRateStartTime = formatDateForBe(formValues.bargePumpingRateStartTime)">
-              <button mat-icon-button matSuffix (click)="bargePumpingRateStartTime.open(); $event.stopPropagation();">
-                <mat-icon  class="icon-date">
-                </mat-icon>
-              </button>      
-              <ngx-mat-datetime-picker #bargePumpingRateStartTime></ngx-mat-datetime-picker>
+        <input
+          [(ngModel)]="formValues.bargePumpingRateStartTime"
+          matInput
+          [ngxMatDatetimePicker]="bargePumpingRateStartTime"
+          (focus)="bargePumpingRateStartTime.open()"
+          autocomplete="off"
+          placeholder="Pumping start"
+          (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
+          (dateChange)="
+            formValues.bargePumpingRateStartTime = formatDateForBe(
+              formValues.bargePumpingRateStartTime
+            )
+          "
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="bargePumpingRateStartTime.open(); $event.stopPropagation()"
+        >
+          <mat-icon class="icon-date"> </mat-icon>
+        </button>
+        <ngx-mat-datetime-picker
+          #bargePumpingRateStartTime
+        ></ngx-mat-datetime-picker>
       </mat-form-field>
     </div>
-    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid':isBargePumpingRateEndTimeInvalid, 'date-valid':!isBargePumpingRateEndTimeInvalid}">
+    <div
+      class="custom-form-field bdn-additional-info"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field
+        class="without-search"
+        appearance="legacy"
+        [ngClass]="{
+          'date-invalid': isBargePumpingRateEndTimeInvalid,
+          'date-valid': !isBargePumpingRateEndTimeInvalid
+        }"
+      >
         <mat-label>Pumping end</mat-label>
-        <input [(ngModel)]="formValues.bargePumpingRateEndTime" 
-              matInput 
-              [ngxMatDatetimePicker]="bargePumpingRateEndTime" 
-              (focus)="bargePumpingRateEndTime.open()"
-              autocomplete="off"
-              placeholder="Pumping end"
-              (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
-              (dateChange)="formValues.bargePumpingRateEndTime = formatDateForBe(formValues.bargePumpingRateEndTime);">
-              <button mat-icon-button matSuffix (click)="bargePumpingRateEndTime.open(); $event.stopPropagation();">
-                <mat-icon  class="icon-date">
-                </mat-icon>
-              </button>      
-              <ngx-mat-datetime-picker #bargePumpingRateEndTime></ngx-mat-datetime-picker>
+        <input
+          [(ngModel)]="formValues.bargePumpingRateEndTime"
+          matInput
+          [ngxMatDatetimePicker]="bargePumpingRateEndTime"
+          (focus)="bargePumpingRateEndTime.open()"
+          autocomplete="off"
+          placeholder="Pumping end"
+          (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
+          (dateChange)="
+            formValues.bargePumpingRateEndTime = formatDateForBe(
+              formValues.bargePumpingRateEndTime
+            )
+          "
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="bargePumpingRateEndTime.open(); $event.stopPropagation()"
+        >
+          <mat-icon class="icon-date"> </mat-icon>
+        </button>
+        <ngx-mat-datetime-picker
+          #bargePumpingRateEndTime
+        ></ngx-mat-datetime-picker>
       </mat-form-field>
     </div>
-    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field bdn-additional-info"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <div class="hidden">
-        {{getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime)}}
+        {{
+          getTimeBetweenDates(
+            formValues.bargePumpingRateStartTime,
+            formValues.bargePumpingRateEndTime
+          )
+        }}
       </div>
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Pumping duration</mat-label>
-        <input  [(ngModel)]="formValues.pumpingDuration"
-              matInput 
-              type="text"
-              autocomplete="off"
-              placeholder="Pumping duration"
-              disabled>
+        <input
+          [(ngModel)]="formValues.pumpingDuration"
+          matInput
+          type="text"
+          autocomplete="off"
+          placeholder="Pumping duration"
+          disabled
+        />
       </mat-form-field>
     </div>
-    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div
+      class="custom-form-field bdn-additional-info"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <mat-form-field class="without-search with-labels" appearance="legacy">
         <mat-label>Pumping rate (MT/hr)</mat-label>
-        <input  [(ngModel)]="formValues.pumpingRate"
-              matInput 
-              autocomplete="off"
-              placeholder="Pumping rate (MT/hr)"
-              disabled>
+        <input
+          [(ngModel)]="formValues.pumpingRate"
+          matInput
+          autocomplete="off"
+          placeholder="Pumping rate (MT/hr)"
+          disabled
+        />
         <div matSuffix class="d-flex" style="display:flex;align-items: center;">
-          <div class="label">{{formValues.pumpingRateUom ? formValues.pumpingRateUom.name : ''}}</div>
+          <div class="label">
+            {{
+              formValues.pumpingRateUom ? formValues.pumpingRateUom.name : ''
+            }}
+          </div>
         </div>
       </mat-form-field>
     </div>
@@ -97,20 +172,28 @@
         Letter of protest
       </div>
       <div class="col-md-6">
-        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div
+          class="custom-form-field-select"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
           <div class="feedback-component">
             <div class="block col-md-12">
-                <div class="inline-dropdown">
-                  <mat-select [disableOptionCentering]="true"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      panelClass="bdn-additional-select-container"
-                      [(ngModel)]="formValues.feedback.hasLetterOfProtest" 
-                      [compareWith]="compareUomObjects">
-                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                  </mat-select>
-                </div>
+              <div class="inline-dropdown">
+                <mat-select
+                  [disableOptionCentering]="true"
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                  panelClass="bdn-additional-select-container"
+                  [(ngModel)]="formValues.feedback.hasLetterOfProtest"
+                  [compareWith]="compareUomObjects"
+                >
+                  <mat-option
+                    *ngFor="let option of deliveryFeedback"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
           </div>
         </div>
@@ -121,20 +204,28 @@
         Delivered as scheduled
       </div>
       <div class="col-md-6">
-        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div
+          class="custom-form-field-select"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
           <div class="feedback-component">
             <div class="block col-md-12">
-                <div class="inline-dropdown">
-                  <mat-select [disableOptionCentering]="true"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      panelClass="bdn-additional-select-container"
-                      [(ngModel)]="formValues.feedback.deliveredAsScheduled" 
-                      [compareWith]="compareUomObjects">
-                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                  </mat-select>
-                </div>
+              <div class="inline-dropdown">
+                <mat-select
+                  [disableOptionCentering]="true"
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                  panelClass="bdn-additional-select-container"
+                  [(ngModel)]="formValues.feedback.deliveredAsScheduled"
+                  [compareWith]="compareUomObjects"
+                >
+                  <mat-option
+                    *ngFor="let option of deliveryFeedback"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
           </div>
         </div>
@@ -145,20 +236,30 @@
         Requested qty fully delivered
       </div>
       <div class="col-md-6">
-        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div
+          class="custom-form-field-select"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
           <div class="feedback-component">
             <div class="block col-md-12">
-                <div class="inline-dropdown">
-                  <mat-select [disableOptionCentering]="true"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      panelClass="bdn-additional-select-container"
-                      [(ngModel)]="formValues.feedback.requestedQuantityFullyDelivered" 
-                      [compareWith]="compareUomObjects">
-                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                  </mat-select>
-                </div>
+              <div class="inline-dropdown">
+                <mat-select
+                  [disableOptionCentering]="true"
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                  panelClass="bdn-additional-select-container"
+                  [(ngModel)]="
+                    formValues.feedback.requestedQuantityFullyDelivered
+                  "
+                  [compareWith]="compareUomObjects"
+                >
+                  <mat-option
+                    *ngFor="let option of deliveryFeedback"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
           </div>
         </div>
@@ -169,20 +270,28 @@
         Filter Clogging
       </div>
       <div class="col-md-6">
-        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div
+          class="custom-form-field-select"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
           <div class="feedback-component">
             <div class="block col-md-12">
-                <div class="inline-dropdown">
-                  <mat-select [disableOptionCentering]="true"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      panelClass="bdn-additional-select-container"
-                      [(ngModel)]="formValues.feedback.filterClogging" 
-                      [compareWith]="compareUomObjects">
-                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                  </mat-select>
-                </div>
+              <div class="inline-dropdown">
+                <mat-select
+                  [disableOptionCentering]="true"
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                  panelClass="bdn-additional-select-container"
+                  [(ngModel)]="formValues.feedback.filterClogging"
+                  [compareWith]="compareUomObjects"
+                >
+                  <mat-option
+                    *ngFor="let option of deliveryFeedback"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
           </div>
         </div>
@@ -193,20 +302,28 @@
         Purifier Problems
       </div>
       <div class="col-md-6">
-        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div
+          class="custom-form-field-select"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
           <div class="feedback-component">
             <div class="block col-md-12">
-                <div class="inline-dropdown">
-                  <mat-select [disableOptionCentering]="true"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      panelClass="bdn-additional-select-container"
-                      [(ngModel)]="formValues.feedback.purifierProblems" 
-                      [compareWith]="compareUomObjects">
-                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                  </mat-select>
-                </div>
+              <div class="inline-dropdown">
+                <mat-select
+                  [disableOptionCentering]="true"
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                  panelClass="bdn-additional-select-container"
+                  [(ngModel)]="formValues.feedback.purifierProblems"
+                  [compareWith]="compareUomObjects"
+                >
+                  <mat-option
+                    *ngFor="let option of deliveryFeedback"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
           </div>
         </div>
@@ -217,20 +334,28 @@
         Combustion Problems
       </div>
       <div class="col-md-6">
-        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div
+          class="custom-form-field-select"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
           <div class="feedback-component">
             <div class="block col-md-12">
-                <div class="inline-dropdown">
-                  <mat-select [disableOptionCentering]="true"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      panelClass="bdn-additional-select-container"
-                      [(ngModel)]="formValues.feedback.combustionProblem" 
-                      [compareWith]="compareUomObjects">
-                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                  </mat-select>
-                </div>
+              <div class="inline-dropdown">
+                <mat-select
+                  [disableOptionCentering]="true"
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                  panelClass="bdn-additional-select-container"
+                  [(ngModel)]="formValues.feedback.combustionProblem"
+                  [compareWith]="compareUomObjects"
+                >
+                  <mat-option
+                    *ngFor="let option of deliveryFeedback"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
           </div>
         </div>
@@ -239,52 +364,76 @@
   </div>
   <div class="col-md-2 satisfaction-level-container">
     <div class="col-md-12 row">
-      <div class="custom-form-field satisfaction-level-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <div
+        class="custom-form-field satisfaction-level-info"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Agent coordination</mat-label>
-          <mat-select [disableOptionCentering]="true"
-                      panelClass="bdn-additional-select-container"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      [(ngModel)]="formValues.feedback.agentCoordination" 
-                      [compareWith]="compareUomObjects"
-                      placeholder="Agent coordination">
-              <mat-option *ngFor="let option of satisfactionLevel" [value]="option">
-                  {{option.name}}
-              </mat-option>
+          <mat-select
+            [disableOptionCentering]="true"
+            panelClass="bdn-additional-select-container"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+            [(ngModel)]="formValues.feedback.agentCoordination"
+            [compareWith]="compareUomObjects"
+            placeholder="Agent coordination"
+          >
+            <mat-option
+              *ngFor="let option of satisfactionLevel"
+              [value]="option"
+            >
+              {{ option.name }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
     <div class="col-md-12 row">
-      <div class="custom-form-field satisfaction-level-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <div
+        class="custom-form-field satisfaction-level-info"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Bunker Operator</mat-label>
-          <mat-select [disableOptionCentering]="true"
-                      panelClass="bdn-additional-select-container"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      [(ngModel)]="formValues.feedback.bunkerOperator" 
-                      [compareWith]="compareUomObjects"
-                      placeholder="Bunker Operator">
-              <mat-option *ngFor="let option of satisfactionLevel" [value]="option">
-                  {{option.name}}
-              </mat-option>
+          <mat-select
+            [disableOptionCentering]="true"
+            panelClass="bdn-additional-select-container"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+            [(ngModel)]="formValues.feedback.bunkerOperator"
+            [compareWith]="compareUomObjects"
+            placeholder="Bunker Operator"
+          >
+            <mat-option
+              *ngFor="let option of satisfactionLevel"
+              [value]="option"
+            >
+              {{ option.name }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
     <div class="col-md-12 row">
-      <div class="custom-form-field satisfaction-level-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <div
+        class="custom-form-field satisfaction-level-info"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Surveyor</mat-label>
-          <mat-select [disableOptionCentering]="true"
-                      panelClass="bdn-additional-select-container"
-                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      [(ngModel)]="formValues.feedback.surveyor" 
-                      [compareWith]="compareUomObjects"
-                      placeholder="Surveyor">
-              <mat-option *ngFor="let option of satisfactionLevel" [value]="option">
-                  {{option.name}}
-              </mat-option>
+          <mat-select
+            [disableOptionCentering]="true"
+            panelClass="bdn-additional-select-container"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+            [(ngModel)]="formValues.feedback.surveyor"
+            [compareWith]="compareUomObjects"
+            placeholder="Surveyor"
+          >
+            <mat-option
+              *ngFor="let option of satisfactionLevel"
+              [value]="option"
+            >
+              {{ option.name }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -330,9 +479,9 @@
                 <td wclass="padding" style="width:40%">
                     <div class="custom-form-field sample-details-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                         <mat-form-field class="without-search" appearance="legacy">
-                          <input  
+                          <input
                               [(ngModel)]="sampleDetail.value.sealNumber"
-                              matInput 
+                              matInput
                               (keypress)="keyPressAlphaNumeric($event)"
                               [disabled]="formValues.deliveryStatus.name == 'Verified'"
                               autocomplete="off">
@@ -345,56 +494,83 @@
       </table>
     </div>
   </div> -->
-  
 </div>
 
 <div class="col-md-12 row  sample-details">
   <div class="custom-border"></div>
-<div class="col-md-12 sample-details-header">
+  <div class="col-md-12 sample-details-header">
     Sample Details
- </div>
- <div class="col-md-12 sample-details-container">
+  </div>
+  <div class="col-md-12 sample-details-container">
     <div class="col-md-12 sample-details-header-container">
       <div class="sample-details-options">
         <div class="sampleDetails-add">
           <a class="add-sample-details-icon" (click)="addSampleSources()"></a>
         </div>
         <div class="sampleDetails-select">
-          
-          <ng-container  *ngFor="let sampleDetail of formValues.sampleSources | keyvalue">
-            <div class="sampleDetails-addRemove">
+          <ng-container
+            *ngFor="let sampleDetail of formValues.sampleSources | keyvalue"
+          >
+            <div
+              class="sampleDetails-addRemove"
+              *ngIf="!sampleDetail.value.isDeleted"
+            >
               <div class="divider"></div>
-            <a class="remove-sample-details-icon" (click)="removeSampleSources(sampleDetail.key)"></a>
-            <div class="sampleDetails-options">
-              
-           <div class="custom-form-field sample-details-info select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-              <mat-form-field class="without-search sample-details-component" appearance="legacy">
-                <mat-select [disableOptionCentering]="true"
-                            [(ngModel)]="sampleDetail.value.sampleSource"
-                            panelClass="bdn-additional-select-container"
-                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                            [compareWith]="compareUomObjects">
-                    <mat-option *ngFor="let option of simpleSource" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <a
+                class="remove-sample-details-icon"
+                (click)="removeSampleSources(sampleDetail.key)"
+              ></a>
+              <div class="sampleDetails-options">
+                <div
+                  class="custom-form-field sample-details-info select"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field
+                    class="without-search sample-details-component"
+                    appearance="legacy"
+                  >
+                    <mat-select
+                      [disableOptionCentering]="true"
+                      [(ngModel)]="sampleDetail.value.sampleSource"
+                      panelClass="bdn-additional-select-container"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                      [compareWith]="compareUomObjects"
+                    >
+                      <mat-option
+                        *ngFor="let option of simpleSource"
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="dash-line"></div>
+                <div
+                  class="custom-form-field sample-details-info input"
+                  style="margin-right: 0;
+            padding-left: 20px;"
+                  [ngClass]="{
+                    darkTheme: switchTheme,
+                    lightTheme: !switchTheme
+                  }"
+                >
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input
+                      [(ngModel)]="sampleDetail.value.sealNumber"
+                      matInput
+                      (keypress)="keyPressAlphaNumeric($event)"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                      [placeholder]="sampleDetail.value.sealNumber ? '' : 'Value'"
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
-            <div class="dash-line"></div>
-            <div class="custom-form-field sample-details-info input" style="margin-right: 0;
-            padding-left: 20px;" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-              <mat-form-field class="without-search" appearance="legacy">
-                <input  
-                    [(ngModel)]="sampleDetail.value.sealNumber"
-                    matInput 
-                    (keypress)="keyPressAlphaNumeric($event)"
-                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                    placeholder="Value"
-                    autocomplete="off">
-              </mat-form-field>
-          </div>
-          </div>
-        </div>
           </ng-container>
         </div>
       </div>
@@ -436,9 +612,9 @@
                 <td wclass="padding" style="width:40%">
                     <div class="custom-form-field sample-details-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                         <mat-form-field class="without-search" appearance="legacy">
-                          <input  
+                          <input
                               [(ngModel)]="sampleDetail.value.sealNumber"
-                              matInput 
+                              matInput
                               (keypress)="keyPressAlphaNumeric($event)"
                               [disabled]="formValues.deliveryStatus.name == 'Verified'"
                               autocomplete="off">

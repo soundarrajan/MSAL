@@ -23,15 +23,10 @@ export class StaticListsRouteResolver implements Resolve<any> {
     private appErrorHandler: AppErrorHandler,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private invoiceService: InvoiceDetailsService
-
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): any{
-    const ContractIdParam =
-      route.params[KnownInvoiceRoutes.InvoiceIdParam];
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    const ContractIdParam = route.params[KnownInvoiceRoutes.InvoiceIdParam];
     const contractId = Number(ContractIdParam ?? 0);
 
     if (!Number.isInteger(contractId)) {
@@ -40,8 +35,15 @@ export class StaticListsRouteResolver implements Resolve<any> {
         KnownInvoiceRoutes.InvoiceIdParam
       ]);
     }
-    return  this.invoiceService.getStaticLists(['Product', 'Uom', 'Currency', 'Supplier', 'CostType', 'Customer']);;
-
+    return this.invoiceService.getStaticLists([
+      'Product',
+      'Uom',
+      'Currency',
+      'Supplier',
+      'CostType',
+      'Customer',
+      'InvoiceCustomStatus',
+      'PaymentStatus'
+    ]);
   }
-
 }

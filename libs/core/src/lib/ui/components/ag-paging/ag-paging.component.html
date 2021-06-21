@@ -1,9 +1,9 @@
 <ul class="pager">
-  <!-- <li [class.disabled]="!canPrevious()">
+  <li [class.disabled]="!canPrevious()">
     <a role="button" class="arrowicon" aria-label="go to previous page" href="javascript:void(0)" (click)="prevPage()">
       <i class="{{ pagerLeftArrowIcon }}"></i>
     </a>
-  </li> -->
+  </li>
   <p-spinner *ngIf="useInputAsPageSelect"
              [size]="2"
              [formControl]="formControl"
@@ -16,10 +16,9 @@
       </a>
     </li>
   </ng-container>
-  <!-- <li [class.disabled]="!canNext()">
+  <li [class.disabled]="!canNext()">
     <a role="button" class="arrowicon" aria-label="go to next page" href="javascript:void(0)" (click)="nextPage()">
       <i class="{{ pagerRightArrowIcon }}"></i>
     </a>
-  </li> -->
+  </li>
 </ul>
-<div class="goButton">Go</div>

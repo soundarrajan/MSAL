@@ -1,59 +1,103 @@
 <div class="col-md-12 row delivery-products-group">
   <div class="col-md-12" style="padding-left: 0;">
     <div class="product-details-header" style="padding-top: 0;">
-        Product details
+      Product details
     </div>
   </div>
   <a class="add-product-dropdown-icon" (click)="addNewProduct()"></a>
-  <div class="product-tabs" *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length">
-     <div class="addded-product" *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue" style="display: inline-flex; margin-right: 10px;">
-      <div *ngIf="formValues.deliveryProducts.length > 1" class="remove-icon" (click)="deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)"></div>   
-      <div (click)="selectProduct(deliveryProduct.key)"  
-            class="product-tab" 
-            [ngClass]="{'not-selected-product-container': deliveryProduct.key != selectedProduct}">
-            <div class="bootstrap-tagsinput"> 
-                <span class="tag label border-default">
-                  <!-- <div (click)="deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)" class="remove-product-container">
+  <div
+    class="product-tabs"
+    *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length"
+  >
+    <div
+      class="addded-product"
+      *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue"
+      style="display: inline-flex; margin-right: 10px;"
+    >
+      <div
+        *ngIf="formValues.deliveryProducts.length > 1"
+        class="remove-icon"
+        (click)="
+          deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)
+        "
+      ></div>
+      <div
+        (click)="selectProduct(deliveryProduct.key)"
+        class="product-tab"
+        [ngClass]="{
+          'not-selected-product-container':
+            deliveryProduct.key != selectedProduct
+        }"
+      >
+        <div class="bootstrap-tagsinput">
+          <span class="tag label border-default">
+            <!-- <div (click)="deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)" class="remove-product-container">
                     <a class="remove-line"></a>
                   </div> -->
-                  {{deliveryProduct.value.product.name}}
-                </span>
-            </div>
+            {{ deliveryProduct.value.product.name }}
+          </span>
         </div>
-        <div class="divider" *ngIf="deliveryProduct.key < formValues.deliveryProducts.length - 1"></div>
       </div>
+      <div
+        class="divider"
+        *ngIf="deliveryProduct.key < formValues.deliveryProducts.length - 1"
+      ></div>
+    </div>
   </div>
   <div *ngIf="!hideDropdown" class="select-product">
-    <mat-form-field  class="custom-select" appearance="fill" (click)="openAddProductSelect()">
+    <mat-form-field
+      class="custom-select"
+      appearance="fill"
+      (click)="openAddProductSelect()"
+    >
       <mat-label>Add product</mat-label>
-      <mat-select [disableOptionCentering]="true" 
-                  #mySelect
-                  panelClass="{{!expandProductPopUp ? 'select-product-container' : 'expand-select-product-container'}}"
-                  [(ngModel)]="selectedProductToAddInDelivery"
-                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                  (selectionChange)="addSelectedProductInDelivery(selectedProductToAddInDelivery)">
+      <mat-select
+        [disableOptionCentering]="true"
+        #mySelect
+        panelClass="{{
+          !expandProductPopUp
+            ? 'select-product-container'
+            : 'expand-select-product-container'
+        }}"
+        [(ngModel)]="selectedProductToAddInDelivery"
+        [disabled]="formValues.deliveryStatus.name == 'Verified'"
+        (selectionChange)="
+          addSelectedProductInDelivery(selectedProductToAddInDelivery)
+        "
+      >
         <div class="col-md-12 header-container-product">
           <div class="search-product-container col-md-10">
-            <span class="search-product-lookup">
-            </span>
-            <input matInput 
-                  [(ngModel)]="searchProductInput"
-                  placeholder="Search all and select a product"
-                  class="search-product-input"
-                  (input)="search($event.target.value)">
+            <span class="search-product-lookup"> </span>
+            <input
+              matInput
+              [(ngModel)]="searchProductInput"
+              placeholder="Search all and select a product"
+              class="search-product-input"
+              (input)="search($event.target.value)"
+            />
           </div>
           <div class="col-md-2">
-              <img [ngClass]="{'expand-img': expandProductPopUp}" (click)="expandProductPopUp = !expandProductPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+            <img
+              [ngClass]="{ 'expand-img': expandProductPopUp }"
+              (click)="expandProductPopUp = !expandProductPopUp"
+              alt="Shiptech"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+            />
           </div>
         </div>
-        <table *ngIf="formValues.temp.deliverySummaryProducts" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="formValues.temp.deliverySummaryProducts">
+        <table
+          *ngIf="formValues.temp.deliverySummaryProducts"
+          class="delivery-products-pop-up col-md-12 no-padding"
+          mat-table
+          [dataSource]="formValues.temp.deliverySummaryProducts"
+        >
           <!-- Product Column -->
           <ng-container matColumnDef="product">
-            <th mat-header-cell *matHeaderCellDef> Products in order </th>
-            <td mat-cell *matCellDef="let element"> 
+            <th mat-header-cell *matHeaderCellDef>Products in order</th>
+            <td mat-cell *matCellDef="let element">
               <mat-option [value]="element">
-                <mat-radio-button [value]="element">   
-                  {{element.product.name}} 
+                <mat-radio-button [value]="element">
+                  {{ element.product.name }}
                 </mat-radio-button>
               </mat-option>
             </td>
@@ -61,48 +105,60 @@
 
           <!-- Product type Column -->
           <ng-container matColumnDef="productType">
-            <th mat-header-cell *matHeaderCellDef> Type </th>
-            <td mat-cell *matCellDef="let element"> 
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let element">
               <mat-option>
-                {{element.productType.name}} 
+                {{ element.productType.name }}
               </mat-option>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </mat-select>
     </mat-form-field>
   </div>
 </div>
-<div *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length"> 
-  <div  *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue">
-    <div *ngIf="deliveryProduct.key == selectedProduct" class="product-container" style="padding-bottom: 20px;">
+<div *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length">
+  <div *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue">
+    <div
+      *ngIf="deliveryProduct.key == selectedProduct"
+      class="product-container"
+      style="padding-bottom: 20px;"
+    >
       <div class="bottom-border"></div>
-      <shiptech-delivery-product [formValues]="formValues"
-                                [deliveryProductIndex]="deliveryProduct.key"
-                                [conversionInfoData]="conversionInfoData"
-                                [buttonClicked]="buttonClicked"
-                                [uoms]="uoms"
-                                [pumpingRateUom]="pumpingRateUom"
-                                [uomVolume]="uomVolume"
-                                [uomMass]="uomMass"
-                                [quantityCategory]="quantityCategory"
-                                [finalQuantityRules]="finalQuantityRules"
-                                [toleranceLimits]="toleranceLimits"
-                                [events]="deliveryFormSubject.asObservable()"
-                                [events1]="conversionDataInfoSubject.asObservable()"
-                                [events2]="requiredInfoSubject.asObservable()">
+      <shiptech-delivery-product
+        [formValues]="formValues"
+        [deliveryProductIndex]="deliveryProduct.key"
+        [conversionInfoData]="conversionInfoData"
+        [buttonClicked]="buttonClicked"
+        [uoms]="uoms"
+        [pumpingRateUom]="pumpingRateUom"
+        [uomVolume]="uomVolume"
+        [uomMass]="uomMass"
+        [quantityCategory]="quantityCategory"
+        [finalQuantityRules]="finalQuantityRules"
+        [toleranceLimits]="toleranceLimits"
+        [events]="deliveryFormSubject.asObservable()"
+        [events1]="conversionDataInfoSubject.asObservable()"
+        [events2]="requiredInfoSubject.asObservable()"
+      >
       </shiptech-delivery-product>
-      <shiptech-product-quality  [formValues]="formValues"
-                                [deliveryProductIndex]="deliveryProduct.key"
-                                [events]="deliveryFormSubject.asObservable()"
-                                [events2]="requiredInfoSubject.asObservable()">
+      <shiptech-product-quality
+        [formValues]="formValues"
+        [deliveryProductIndex]="deliveryProduct.key"
+        [events]="deliveryFormSubject.asObservable()"
+        [events2]="requiredInfoSubject.asObservable()"
+        [buttonClicked]="buttonClicked"
+        [events2]="requiredInfoSubject.asObservable()"
+      >
       </shiptech-product-quality>
-      <shiptech-product-quantity *ngIf="formValues.temp.isShowQuantityReconciliationSection"
-                                [formValues]="formValues"
-                                [deliveryProductIndex]="deliveryProduct.key"
-                                [events]="deliveryFormSubject.asObservable()">
+      <shiptech-product-quantity
+        *ngIf="formValues.temp.isShowQuantityReconciliationSection"
+        [formValues]="formValues"
+        [deliveryProductIndex]="deliveryProduct.key"
+        [events]="deliveryFormSubject.asObservable()"
+      >
       </shiptech-product-quantity>
     </div>
   </div>
@@ -111,5 +167,6 @@
   bdColor="rgba(51,51,51,0.8)"
   size="medium"
   color="#fff"
-  type="ball-spin-clockwise-fade">
+  type="ball-spin-clockwise-fade"
+>
 </ngx-spinner>

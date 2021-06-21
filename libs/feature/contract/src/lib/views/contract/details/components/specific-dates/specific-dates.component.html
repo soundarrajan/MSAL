@@ -14,7 +14,7 @@
       </mat-form-field>
   </div>
 </div>
-<div class="col-md-12">
+<div class="col-md-12" style="margin-top: 15px;">
   <table class="specific-date-table table table-stripped table-hover" style="width:100%">
     <thead>
       <tr>
@@ -29,51 +29,55 @@
         </td>
       </tr>
     </thead>
-    <tbody>
-        <ng-container  *ngFor="let specificDate of formValues.pricingScheduleOptionSpecificDate.dates | keyvalue : originalOrder">
-          <tr *ngIf="!specificDate.value.isDeleted">
-            <td class="padding" style="width: 30px;">
-              <a class="remove-icon" (click)="!formValues.isEditable ? '' : removeSpecificDateLine(specificDate.key)" style="left: 10px;" ></a>
-            </td>
-            <td  style="width:45%">
-              <div class="custom-form-field specific-date-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"  style="width: 40% !important">
-                <mat-form-field class="without-search" 
-                    appearance="legacy">
-                  <mat-label>Date</mat-label>
-                  <input [(ngModel)]="specificDate.value.date" 
+  </table>  
+  <div class="table-with-scroll">
+    <table class="specific-date-table table table-stripped table-hover" style="width:100%">
+      <tbody>
+          <ng-container  *ngFor="let specificDate of formValues.pricingScheduleOptionSpecificDate.dates | keyvalue : originalOrder">
+            <tr *ngIf="!specificDate.value.isDeleted">
+              <td class="padding" style="width: 30px;">
+                <a class="remove-icon" (click)="!formValues.isEditable ? '' : removeSpecificDateLine(specificDate.key)" style="left: 10px;" ></a>
+              </td>
+              <td  style="width:45%">
+                <div class="custom-form-field specific-date-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"  style="width: 40% !important">
+                  <mat-form-field class="without-search" 
+                      appearance="legacy">
+                    <mat-label>Date</mat-label>
+                    <input [(ngModel)]="specificDate.value.date" 
+                          matInput 
+                          [matDatepicker]="specDate"
+                          (focus)="specDate.open()"
+                          autocomplete="off"
+                          placeholder="Date"
+                          required
+                          [disabled]="!formValues.isEditable"
+                          (dateInput)="onChange($event, 'specDate')"
+                          (dateChange)="specificDate.value.date = formatDateForBe(specificDate.value.date )">
+                          <mat-datepicker-toggle matSuffix [for]="specDate">
+                            <mat-icon matDatepickerToggleIcon class="icon-date">
+                            </mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #specDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </td> 
+              <td style="width:45%">
+                <div class="custom-form-field specific-date-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input  
+                        [(ngModel)]="specificDate.value.comment" 
                         matInput 
-                        [matDatepicker]="specDate"
-                        (focus)="specDate.open()"
                         autocomplete="off"
-                        placeholder="Date"
-                        required
-                        [disabled]="!formValues.isEditable"
-                        (dateInput)="onChange($event, 'specDate')"
-                        (dateChange)="specificDate.value.date = formatDateForBe(specificDate.value.date )">
-                        <mat-datepicker-toggle matSuffix [for]="specDate">
-                          <mat-icon matDatepickerToggleIcon class="icon-date">
-                          </mat-icon>
-                      </mat-datepicker-toggle>
-                      <mat-datepicker #specDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
-                </mat-form-field>
+                        [disabled]="!formValues.isEditable">
+                  </mat-form-field>
               </div>
-            </td> 
-            <td style="width:45%">
-              <div class="custom-form-field specific-date-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                <mat-form-field class="without-search" appearance="legacy">
-                  <input  
-                      [(ngModel)]="specificDate.value.comment" 
-                      matInput 
-                      autocomplete="off"
-                      [disabled]="!formValues.isEditable">
-                </mat-form-field>
-            </div>
-            </td>
-            
-          </tr>
-        </ng-container>
-    </tbody>
-  </table>
+              </td>
+              
+            </tr>
+          </ng-container>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div  class="col-md-12 formula-description-header d-flex" style="margin-top: 15px;">
   <div class="checkbox">
