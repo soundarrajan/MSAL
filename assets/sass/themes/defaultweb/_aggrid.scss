@@ -1,5 +1,5 @@
 @import "@ag-grid-community/all-modules/dist/styles/ag-grid.css";
-@import "@ag-grid-community/all-modules/dist/styles/ag-theme-material.css"; 
+@import "@ag-grid-community/all-modules/dist/styles/ag-theme-material.css";
 @import  "@ag-grid-community/all-modules/dist/styles/ag-theme-balham-dark.css";
 @import 'smart-operator-mixins';
 @import 'smart-operator-variables';
@@ -8,20 +8,20 @@ ag-grid-angular {
     font-family: Roboto !important;
     // ::-webkit-scrollbar {
     //   width: 10px;
-    //   height: 10px;    
+    //   height: 10px;
     // }
-  
-    // ::-webkit-scrollbar-track {    
+
+    // ::-webkit-scrollbar-track {
     //   background-color: transparent;
     // }
-  
+
     ::-webkit-scrollbar-thumb {
       border-radius: 10px;
       background-color: $grey;
     }
-    ::-webkit-scrollbar-corner 
+    ::-webkit-scrollbar-corner
     {background-color: transparent;}
-  
+
     .ag-body-horizontal-scroll-viewport {
         top: -11px;
         height: 15px !important;
@@ -33,7 +33,7 @@ ag-grid-angular {
 .aggrid-basefont{
     color: $chipfont;
     font-weight: 100;
-    
+
 }
 .aggrid-custom-chip {
 min-width: 120px;
@@ -206,13 +206,13 @@ padding: 6px 16px !important;
     .ag-center-cols-viewport {
         overflow-x: hidden !important;
     }
-    
+
 .aggrid-columgroup-splitter-left{
 
     // box-shadow: 3px 0px 0px 0px $dark, -3px 0px 0px 0px $dark !important;
     border-right: solid 2px $dark !important;
     border-left: solid 2px $dark !important;
-    border-right:none;  
+    border-right:none;
     z-index: 10;
 }
 
@@ -351,7 +351,7 @@ padding: 6px 16px !important;
       @include  aggrid-cell-color(#1C4D91);
     }
     &.magenta{
-        @include aggrid-cell-color(#c202c2)    
+        @include aggrid-cell-color(#c202c2)
     }
     &.brown{
         @include aggrid-cell-color(#5f0404)
@@ -447,7 +447,7 @@ padding: 6px 16px !important;
   &.skyblue {
       @include aggrid-rowribbon-imp(#76BBE3);
   }
-  
+
   &.lightamber {
       @include aggrid-rowribbon-imp(#F2994A);
   }
@@ -459,20 +459,20 @@ padding: 6px 16px !important;
 .aggrid-space{
     word-spacing: 6px;
 }
-.aggrid-text-align-r{      
+.aggrid-text-align-r{
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
 
-.aggrid-text-align-l{   
-    text-align: left;   
+.aggrid-text-align-l{
+    text-align: left;
 }
 .aggrid-content-right{
     justify-content: flex-end !important;
 }
-.aggrid-text-align-c{   
-    text-align: center;  
+.aggrid-text-align-c{
+    text-align: center;
     .ag-header-cell-label{
         justify-content: center;
     }
