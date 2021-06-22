@@ -279,9 +279,13 @@ export class DeliveryProductsGroupComponent
     }
     this.formValues = form;
     if (this.formValues.temp.deliverysummary) {
-      this.formValues.temp.deliverySummaryProducts = [
-        ...this.formValues.temp.deliverysummary.products
-      ];
+      // this.formValues.temp.deliverySummaryProducts = [
+      //   ...this.formValues.temp.deliverysummary.products
+      // ];
+      this.formValues.temp.deliverySummaryProducts = [];
+      this.formValues.temp.deliverysummary.products?.forEach(element => {
+        this.formValues.temp.deliverySummaryProducts.push(element);
+      });
     }
     this.deliveryFormSubject.next(this.formValues);
     this.hideDropdown = false;
@@ -1074,9 +1078,13 @@ export class DeliveryProductsGroupComponent
   openAddProductSelect() {
     this.searchProductInput = null;
     if (this.formValues.temp.deliverysummary) {
-      this.formValues.temp.deliverySummaryProducts = [
-        ...this.formValues.temp.deliverysummary.products
-      ];
+      // this.formValues.temp.deliverySummaryProducts = [
+      //   ...this.formValues.temp.deliverysummary.products
+      // ];
+      this.formValues.temp.deliverySummaryProducts = [];
+      this.formValues.temp.deliverysummary.products?.forEach(element => {
+        this.formValues.temp.deliverySummaryProducts.push(element);
+      });
       this.changeDetectorRef.detectChanges();
     }
     this.mySelect.close();
