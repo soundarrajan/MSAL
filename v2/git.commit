@@ -1,7 +1,9 @@
-﻿commit fa714e6c1f865dba4db9537901494c304d056584
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Tue Jun 22 12:40:52 2021 +0530
+﻿commit 601ed14576585e292eb8c476e72ec56e7fd09248
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Jun 22 08:53:11 2021 +0000
 
-    Header Sections CSS Issue
+    Merged PR 11721: Fixed 33444 and 33449
+    
+    Fixed 33444 and 33449
 
 branch: master
