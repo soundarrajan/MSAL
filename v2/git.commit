@@ -1,7 +1,7 @@
-﻿commit 21524cb9e75b9b604b51d006bc6314b88a12f684
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue Jun 22 11:07:44 2021 +0530
+﻿commit fa714e6c1f865dba4db9537901494c304d056584
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Tue Jun 22 12:40:52 2021 +0530
 
-    Replace spread operator with foreach. #33435
+    Header Sections CSS Issue
 
 branch: master
