@@ -1,9 +1,7 @@
-﻿commit 69049f432acff169a41bd9db58916b0b303f6bdf
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jun 21 13:30:49 2021 +0000
+﻿commit f7a9179ed87c8a02b2e72d2f4fe62a0ccc9c977c
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Tue Jun 22 07:54:44 2021 +0530
 
-    Merged PR 11700: #29774 - no row found case handled for all bops prices in port popup has done
-    
-    Related work items: #29774
+    Audi-log Date format
 
 branch: master

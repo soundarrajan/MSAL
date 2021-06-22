@@ -82,6 +82,9 @@ export class AuditLogComponent implements OnInit {
     let requestPayload = {"Filters":[{ColumnName: "BusinessId", Value: businessId}, {ColumnName: "Transaction", Value: planID}],"Pagination":{"Take":25,"Skip":0},"PageFilters":{"Filters":[{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":">=","Values":[this.defaultFromDate],dateType: "server","FilterOperator":0},{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":"<=","Values":[this.selectedToDate],dateType: "server","FilterOperator":1}]},"SortList":{"SortList":[]}};
      this.localService.getAuditLog(requestPayload).subscribe((data: any) => {
      this.rowData = data.payload;
+     this.rowData.forEach((item: any) => {
+     item.date = moment(item.date).format('MM/DD/YYYY HH:mm');
+    });
      console.log(this.rowData);
      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
      titleEle.click();
