@@ -23,15 +23,10 @@ export class StaticListsRouteResolver implements Resolve<any> {
     private appErrorHandler: AppErrorHandler,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private contractService: ContractService
-
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): any{
-    const ContractIdParam =
-      route.params[KnownContractRoutes.ContractIdParam];
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    const ContractIdParam = route.params[KnownContractRoutes.ContractIdParam];
     const contractId = Number(ContractIdParam ?? 0);
 
     if (!Number.isInteger(contractId)) {
@@ -40,14 +35,41 @@ export class StaticListsRouteResolver implements Resolve<any> {
         KnownContractRoutes.ContractList
       ]);
     }
-    return  this.contractService.getStaticLists(['Company','Seller', 'PaymentTerm', 
-      'Incoterm', 'ApplyTo', 'ContractualQuantityOption', 'Uom', 'UomMass', 'UomVolume', 'ContractConversionFactorOptions'
-      , 'SpecParameter', 'FormulaType', 'SystemInstrument', 'MarketPriceType'
-      , 'FormulaPlusMinus', 'FormulaFlatPercentage', 'Currency',
-      'FormulaOperation', 'FormulaFunction', 'MarketPriceType', 'PricingSchedule', 'HolidayRule',
-      'PricingSchedulePeriod', 'Event', 'DayOfWeek', 'BusinessCalendar', 'FormulaEventInclude',
-      'QuantityType', 'Product', 'Location', 'AdditionalCost', 'CostType', 'Customer']);
-
+    return this.contractService.getStaticLists([
+      'Company',
+      'Seller',
+      'PaymentTerm',
+      'Incoterm',
+      'ApplyTo',
+      'ContractualQuantityOption',
+      'Uom',
+      'UomMass',
+      'UomVolume',
+      'ContractConversionFactorOptions',
+      'SpecParameter',
+      'FormulaType',
+      'SystemInstrument',
+      'MarketPriceType',
+      'FormulaPlusMinus',
+      'FormulaFlatPercentage',
+      'Currency',
+      'FormulaOperation',
+      'FormulaFunction',
+      'MarketPriceType',
+      'PricingSchedule',
+      'HolidayRule',
+      'PricingSchedulePeriod',
+      'Event',
+      'DayOfWeek',
+      'BusinessCalendar',
+      'FormulaEventInclude',
+      'ContractTradeBook',
+      'QuantityType',
+      'Product',
+      'Location',
+      'AdditionalCost',
+      'CostType',
+      'Customer'
+    ]);
   }
-
 }
