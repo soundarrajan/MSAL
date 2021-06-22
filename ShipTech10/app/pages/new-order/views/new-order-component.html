@@ -1265,7 +1265,7 @@
                                             <span class="input-group-addon" data-toggle="modal" href="#lookup"
                                                   ng-click="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
                                                   ng-disabled="$ctrl.disabledProduct[product.id]">
-                                                <a class=" btn default" href=""
+                                                <a class=" btn default" href="" ng-click="$ctrl.currentProductIdx = $index"
                                                    ng-disabled="$ctrl.disabledProduct[product.id]">
                                                     <i class="fa fa-search"></i>
                                                 </a>
@@ -2202,7 +2202,7 @@
     <lookup-dialog aria-hidden="true" class="modal fade in" data-width="80%" id="lookup" lookup-type="$ctrl.lookupType"
         on-buyer-select="$ctrl.selectBuyer(buyer)" on-company-select="$ctrl.selectCompany(company)"
         on-location-select="$ctrl.selectPort(location)" on-payment-term-select="$ctrl.selectPaymntTerm(paymentTerm)"
-        on-product-select="$ctrl.selectProduct(product)" on-service-select="$ctrl.selectService(service)"
+        on-product-select="$ctrl.selectProduct(product, $ctrl.currentProductIdx)" on-service-select="$ctrl.selectService(service)"
         on-vessel-select="$ctrl.selectVessel(vessel)"></lookup-dialog>
     <sellers-dialog aria-hidden="true" class="modal fade in sellers-dialog" data-width="90%" id="agents"
         on-seller-select="$ctrl.selectCounterparty(sellerId)" seller-types="$ctrl.counterpartyTypeId"></sellers-dialog>
