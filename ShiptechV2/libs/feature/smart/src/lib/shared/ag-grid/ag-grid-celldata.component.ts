@@ -620,7 +620,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       let url;
       switch(params.colDef.field){
         case 'hsfo_estimated_lift' : { 
-                                          if(params.data?.order_id_hsfo && !params.data?.request_id_hsfo)
+                                          if(params.data?.order_id_hsfo)
                                             url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_hsfo}`;
                                           
                                           else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo)
@@ -631,7 +631,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                         
                                           break;
                                      }
-        case 'ulsfo_estimated_lift' : { if(params.data?.order_id_ulsfo && !params.data?.request_id_ulsfo)
+        case 'ulsfo_estimated_lift' : { if(params.data?.order_id_ulsfo)
                                           url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_ulsfo}`;
                                         
                                         else if(params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo)
@@ -642,7 +642,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                       
                                         break;
                                       }
-        case 'lsdis_estimated_lift': {  if(params.data?.order_id_lsdis && !params.data?.request_id_lsdis)
+        case 'lsdis_estimated_lift': {  if(params.data?.order_id_lsdis)
                                           url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_lsdis}`;
                                         
                                         else if(params.data?.request_id_lsdis && !params.data?.order_id_lsdis)
@@ -653,7 +653,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                       
                                         break;
                                       }
-        case 'hsdis_estimated_lift': {  if(params.data?.order_id_hsdis && !params.data?.request_id_hsdis)
+        case 'hsdis_estimated_lift': {  if(params.data?.order_id_hsdis)
                                           url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_hsdis}`;
                                         
                                         else if(params.data?.request_id_hsdis && !params.data?.order_id_hsdis)
