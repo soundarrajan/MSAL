@@ -60,7 +60,7 @@ export class PortInfoComponent implements OnInit {
 
   loadVesselArrivalDetails(locationId){
     if(locationId != null){
-      let req = { LocationId : 37}//locationId};
+      let req = { LocationId : locationId};
       this.portService.getVesselArrivalDetails(req).subscribe((res: any)=>{
         if(res.payload.length > 0){
           this.rowData = res.payload;
