@@ -1,12 +1,9 @@
-﻿commit 1e21d424b0e640df2082db61381527e4f91cc9dc
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Tue Jun 22 13:18:25 2021 +0000
+﻿commit a2abe89af10329c4652f58f4a9dcd940871ba1a5
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Jun 22 13:23:22 2021 +0000
 
-    Merged PR 11742: finish 30913/33386
+    Merged PR 11743: Removed trade book mapping from contract screen
     
-    On hold
-    finish 30913/33386
-    
-    Related work items: #30913, #33386
+    Removed trade book mapping from contract screen
 
 branch: master
