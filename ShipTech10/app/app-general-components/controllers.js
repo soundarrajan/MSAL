@@ -767,7 +767,9 @@
             	var plain_text = function(cellValue, options, rowObject) {
             		if (typeof(cellValue) == "string") {
             			if (cellValue) {
-		            		return cellValue.replace(/<.*?>/g, '');
+                            return $filter("decodeReadOnly")(cellValue);
+                            // return decodeHtmlEntity(cellValue);
+		            		// return cellValue.replace(/<.*?>/g, '');
             			}
             		}
             		if (cellValue == null) {
