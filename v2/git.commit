@@ -1,11 +1,7 @@
-﻿commit 58eae3aad9395deb8567737dff21e70446e72811
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Wed Jun 23 14:19:43 2021 +0000
+﻿commit 940cb4d957b8446d98d3b163817ad629e8bb81f6
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Wed Jun 23 20:56:54 2021 +0530
 
-    Merged PR 11788: fix css
-    
-    fix css
-    
-    Related work items: #33523
+    Fix split delivery creation js issue fix. #33435
 
 branch: master
