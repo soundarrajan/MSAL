@@ -96,6 +96,23 @@
   }
 }
 
+.related-invoice-details-wrapper {
+  .ag-body-horizontal-scroll-viewport {
+      top: 0px !important;
+  }
+
+  .ag-theme-material {
+    overflow: auto !important;
+  }
+
+  .ag-scroller-corner {
+    display:none !important;
+  }
+  .ag-floating-bottom {
+    overflow-y: hidden !important;
+  }
+}
+
 .mat-menu-panel.invoice-mat-menu-panel, .mat-menu-panel.delivery-mat-menu-panel {
   background: #364150 !important;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;

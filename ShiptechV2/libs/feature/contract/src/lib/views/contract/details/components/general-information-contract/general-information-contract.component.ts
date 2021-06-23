@@ -467,6 +467,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   initialCompanyList: any;
   generalConfiguration: any;
   customerList: any;
+  tradeBookList: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -495,6 +496,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (!formValues) {
       return;
     }
+
     this.formValues = formValues;
     this.selectedVal = this.formValues.evergreen ? 'evergreen' : 'dateSpecific';
   }
@@ -504,6 +506,12 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       return;
     }
     this.applyToList = applyToList;
+  }
+  @Input('tradeBookList') set _setTradeBookList(tradeBookList) {
+    if (!tradeBookList) {
+      return;
+    }
+    this.tradeBookList = tradeBookList;
   }
 
   @Input('sellerList') set _setSellerList(sellerList) {

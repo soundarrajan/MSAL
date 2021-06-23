@@ -372,10 +372,12 @@
                   </div>
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <div *ngIf="fifth.expanded" class="schedule">
+              <div *ngIf="fifth.expanded && this.scheduleList" class="schedule">
 
-                <div class="row" *ngFor="let schedule of scheduleList[scheduleCount-1]">
+                <div class="row" *ngFor="let schedule of scheduleList; let i = index">
+                  
                   <div class="col-3" style="line-height: 9px;display: flex;">
+                    <ng-container *ngIf="i < scheduleCount-1">
                     <div class="grey">
                       <img src="./assets/customicons/location.svg" alt="location">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
@@ -386,15 +388,22 @@
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
+                  </ng-container>
+                  <ng-container *ngIf="i == scheduleCount-1">
+                    <img class="grey" src="./assets/customicons/pin.svg" style="margin-top: -8px;"
+                      alt="pin-icon">
+                    <img class="white" src="./assets/customicons/pin-w.svg" style="margin-top: -8px;"
+                      alt="pin-icon">
+                  </ng-container>
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
-                    <div class="caption-details-port" (click)="openPort('Zhoushan')" matTooltip="schedule.vesselPorts">{{schedule.vesselPorts}}
+                    <div class="caption-details-port" (click)="openPort(schedule.vesselPorts,schedule.locationId)" matTooltip="{{schedule.vesselPorts}}">{{schedule.vesselPorts}}
                     </div>
                   </div>
                   <span class="col-1 icon-seperator">|</span>
                   <div class="col-5 pd-0">
                     <div class="caption-header">ETA:
-                      <span class="caption-details" matTooltip="schedule.eta">{{schedule.eta}}</span>
+                      <span class="caption-details" matTooltip="{{schedule.eta}}">{{schedule.eta}}</span>
                     </div>
                   </div>
                   <span class="col-1 icon-seperator pd-0">|</span>
@@ -482,15 +491,15 @@
                   <span class="col-1 icon-seperator pd-0">|</span>
                   <div class="days">10 Days</div>
                 </div> -->
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-3" style="display: flex;">
                     <img class="grey" src="./assets/customicons/pin.svg" style="margin-top: -8px;"
                       alt="pin-icon">
                     <img class="white" src="./assets/customicons/pin-w.svg" style="margin-top: -8px;"
-                      alt="pin-icon">
+                      alt="pin-icon"> -->
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
-                    <div class="caption-details-port" (click)="openPort('New York')" matTooltip="New York">NewYork</div>
+                    <!-- <div class="caption-details-port" (click)="openPort('New York', 1)" matTooltip="New York">NewYork</div>
                   </div>
                   <span class="col-1 icon-seperator">|</span>
                   <div class="col-5 pd-0">
@@ -500,7 +509,7 @@
                   </div>
                   <span class="col-1 icon-seperator pd-0">|</span>
                   <div class="days">15 Days</div>
-                </div>
+                </div> -->
               </div>
 
             </mat-expansion-panel>

@@ -695,7 +695,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (
         !this.formValues.status ||
         this.formValues.status.name === 'New' ||
-        this.formValues.status.name === 'Cancelled'
+        this.formValues.status.name === 'Cancelled' ||
+        this.formValues.status.name === 'Discrepancy'
       ) {
         this.paidAmmoutDisabled = true;
       }
