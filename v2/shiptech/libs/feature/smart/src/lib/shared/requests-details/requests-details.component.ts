@@ -22,7 +22,7 @@ export class RequestsDetailsComponent implements OnInit {
   public rowCount: Number;
   public date = new FormControl(new Date());
   currentDate = new Date();
-  selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-3));
+  selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
   selectedToDate: Date = new Date();
 
   public RequestDetails : any = [];
