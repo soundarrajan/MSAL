@@ -31,11 +31,11 @@
 }
 
 .hr {
-    display: block;
-    width: 88%;
-    height: 1px;
-    background: #555555;
-    margin: 4px auto;
+  display: block;
+  width: 88%;
+  height: 1px;
+  background: #555555;
+  margin: 4px auto;
 }
 
 .accept-invoice {
@@ -145,7 +145,7 @@ button {
 .cust-btn:focus {
   border: 1px solid #cccccc !important;
   background: #eee !important;
-  color: black !important;
+  // color: black !important;
 }
 
 .invoice-container {

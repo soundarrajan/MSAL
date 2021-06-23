@@ -15,6 +15,7 @@ export namespace PortPopupApiPaths{
     export const getPortBasicInfo = () => `api/Smart/Port/getPortBasicInfo`;
     export const getPortRemark = () => `api/Smart/Port/getPortRemarksList`;
     export const putPortRemark = () => `api/Smart/Port/create`;
+    export const getPortBopsPrice = () => `api/Smart/Port/getbopsprice`;
     export const getVesselArrivalDetails = () => `api/Smart/Port/getVesselArrivalDetail`;
 }
 
@@ -51,22 +52,32 @@ export class PortPopupService{
       { payload: request }
     );
   }
-  
+  @ObservableException()
   getOtherDetails(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${PortPopupApiPaths.getOtherDetails()}`,
       { payload: request }
     );
   }
+  @ObservableException()
   putPortRemark(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${PortPopupApiPaths.putPortRemark()}`,
       { payload: request }
     );
   }
+  @ObservableException()
   loadPortRemark(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${PortPopupApiPaths.getPortRemark()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  getPortBopsPrice(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${PortPopupApiPaths.getPortBopsPrice()}`,
       { payload: request }
     );
   }
