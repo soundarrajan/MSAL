@@ -1,11 +1,9 @@
-﻿commit a58f591cc971c387aee96d2efd5dd4f530dc4369
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 23 12:25:50 2021 +0000
+﻿commit 3f52583f7a7f9e1d5cf9f6ed5ae5d6f04c84e16c
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Wed Jun 23 12:32:46 2021 +0000
 
-    Merged PR 11780: #29676 : Vessel details: View Vessel Schedule list
+    Merged PR 11782: 32104: bug fix
     
-    #29676 : Vessel details: View Vessel Schedule list
-    
-    Related work items: #29676
+    fixed typo
 
 branch: master
