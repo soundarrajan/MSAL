@@ -57,6 +57,7 @@ export class PortPopupComponent implements OnInit {
   portRemarkList: any = [];
   public shiptechUrl : string;
   portRemarkLogs: any;
+  portBopsPrice: any;
 
   constructor(private logger: LoggerService,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) {
     this.shiptechUrl =  new URL(window.location.href).origin;
@@ -177,6 +178,9 @@ export class PortPopupComponent implements OnInit {
     }
     if(this.second?.expanded || expandRef=='second') {
       this.loadPortRemarks();
+    }
+    if(this.fourth?.expanded || expandRef=='fourth') {
+      this.loadBopsPrice();
     }
 
     // if (this.second.expanded && !this.third.expanded && !this.fourth.expanded && !this.fifth.expanded && !this.sixth.expanded) {
@@ -1016,6 +1020,117 @@ export class PortPopupComponent implements OnInit {
   refreshPortRemark(portRemarkRes) {
     this.portRemarkList = (portRemarkRes?.payload?.portRemarkDetails)? portRemarkRes.payload.portRemarkDetails: [];
     this.triggerClickEvent();
+  }
+  loadBopsPrice() {
+    let requestPayload = {
+      "PortId": this.popup_data?.locationId
+    }
+    // let portBopsPrice = {
+    //   "payload": {
+    //     "hsfo": [
+    //       {
+    //         "productType": "HSFO",
+    //         "productGrade": "DMA01",
+    //         "todaysPrice": 518,
+    //         "todaysPriceIndex": "Green",
+    //         "todaysPriceDiff": 0,
+    //         "yesterdayPrice": 518,
+    //         "yesterdayPriceIndex": "Green",
+    //         "yesterdayPriceDiff": 0
+    //       },
+    //       {
+    //         "productType": "HSFO",
+    //         "productGrade": "RMD8005",
+    //         "todaysPrice": 482.25,
+    //         "todaysPriceIndex": "Green",
+    //         "todaysPriceDiff": 0,
+    //         "yesterdayPrice": 482.25,
+    //         "yesterdayPriceIndex": "Green",
+    //         "yesterdayPriceDiff": 0
+    //       },
+    //       {
+    //         "productType": "HSFO",
+    //         "productGrade": "RME18005",
+    //         "todaysPrice": 482.25,
+    //         "todaysPriceIndex": "Green",
+    //         "todaysPriceDiff": 0,
+    //         "yesterdayPrice": 482.25,
+    //         "yesterdayPriceIndex": "Green",
+    //         "yesterdayPriceDiff": 0
+    //       },
+    //       {
+    //         "productType": "HSFO",
+    //         "productGrade": "RMG38005",
+    //         "todaysPrice": 482.25,
+    //         "todaysPriceIndex": "Green",
+    //         "todaysPriceDiff": 0,
+    //         "yesterdayPrice": 482.25,
+    //         "yesterdayPriceIndex": "Green",
+    //         "yesterdayPriceDiff": 0
+    //       },
+    //       {
+    //         "productType": "HSFO",
+    //         "productGrade": "RMG50005",
+    //         "todaysPrice": 482.25,
+    //         "todaysPriceIndex": "Green",
+    //         "todaysPriceDiff": 0,
+    //         "yesterdayPrice": 482.25,
+    //         "yesterdayPriceIndex": "Green",
+    //         "yesterdayPriceDiff": 0
+    //       }
+    //     ],
+    //     "ulsfo": [
+    //       {
+    //         "productType": "ULSFO",
+    //         "productGrade": "RMK1000",
+    //         "todaysPrice": 328.25,
+    //         "todaysPriceIndex": "Green",
+    //         "todaysPriceDiff": 0,
+    //         "yesterdayPrice": 328.25,
+    //         "yesterdayPriceIndex": "Green",
+    //         "yesterdayPriceDiff": 0
+    //       }
+    //     ],
+    //     "lsdis": [],
+    //     "hsdis": [
+    //       {
+    //         "productType": "HSDIS",
+    //         "productGrade": "RMK500",
+    //         "todaysPrice": 328.25,
+    //         "todaysPriceIndex": "Green",
+    //         "todaysPriceDiff": 0,
+    //         "yesterdayPrice": 328.25,
+    //         "yesterdayPriceIndex": "Green",
+    //         "yesterdayPriceDiff": 0
+    //       }
+    //     ],
+    //     "quoteDateCost": [
+    //       {
+    //         "priceAsOn": "2022-05-31T00:00:00Z",
+    //         "bargeChargeIncluded": false
+    //       }
+    //     ]
+    //   },
+    //   "deletedCount": 0,
+    //   "modifiedCount": 0,
+    //   "matchedCount": 0,
+    //   "isAcknowledged": false,
+    //   "isModifiedCountAvailable": false,
+    //   "upsertedId": 0,
+    //   "status": 0,
+    //   "isSuccess": true,
+    //   "message": "",
+    //   "error": null,
+    //   "errorMessage": "Successful"
+    // }
+    // this.portBopsPrice = portBopsPrice.payload;
+    // this.triggerClickEvent();
+    this.portService.getPortBopsPrice(requestPayload).subscribe(data=> {
+      console.log(data);
+      this.portBopsPrice = data?.payload;
+      this.triggerClickEvent();
+    })
+
   }
   
   triggerClickEvent() {

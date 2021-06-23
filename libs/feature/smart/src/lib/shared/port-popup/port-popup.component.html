@@ -294,10 +294,10 @@
               </div>
             </mat-expansion-panel>
             <mat-expansion-panel #fourth id="bops-prices" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
+              (opened)="changeDefault('fourth')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
                   BOPS Prices
                 </mat-panel-title>
               </mat-expansion-panel-header>
@@ -313,505 +313,159 @@
                   <div *ngIf="fourth.expanded" class="price-header-height">
                     <mat-accordion class="price-container" multi="true">
                       <!-- Single Panel Start -->
-                      <mat-expansion-panel hideToggle="true" [expanded]="true">
-                        <mat-expansion-panel-header collapsedHeight="25px" expandedHeight="25px">
-                          <mat-panel-title>
-                            <table class="header-table">
+                      <ng-container *ngFor="let BopsPriceObj of portBopsPrice | keyvalue">
+                        <!-- quoteDateCost is not looping array object. So we just skip this quoteDateCost prop-->
+                        <mat-expansion-panel hideToggle="true" [expanded]="true" *ngIf="BopsPriceObj.key!=='quoteDateCost'">
+                          <mat-expansion-panel-header collapsedHeight="25px" expandedHeight="25px">
+                            <mat-panel-title>
+                              <table class="header-table">
+                                <tr style="display: flex;justify-content: center;align-items: center;">
+                                  <td style="flex:0 0 10%;">
+                                    <img class="expand-popup-icon" src="../../../assets/customicons/expand-popup.svg"
+                                      alt="icon">
+                                  </td>
+                                  <td style="flex:0 0 18%;">
+                                    <div>{{BopsPriceObj.key | uppercase}}</div>
+                                  </td>
+                                  <!-- <div class="icon-seperator">|</div> -->
+                                  <td style="flex:0 0 18%;">
+                                    <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                      <!-- <div>$489.00</div> -->
+                                    </div>
+                                  </td>
+                                  <td style="flex:0 0 15%;">
+                                    <div class="d-flex align-items-center">
+                                      <!-- <div class="d-flex align-items-center">
+                                        <mat-icon class="red red-down">arrow_drop_down</mat-icon>
+                                        <div class="red">1.5</div>
+                                      </div> -->
+                                    </div>
+                                  </td>
+                                  <!-- <div class="icon-seperator">|</div> -->
+                                  <td style="flex:0 0 18%;">
+                                    <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                      <!-- <div>$489.00</div> -->
+                                    </div>
+                                  </td>
+                                  <td style="flex:0 0 15%;">
+                                    <div class="d-flex align-items-center">
+                                      <div class="d-flex align-items-center">
+                                        <!-- <mat-icon class="green green-down">arrow_drop_down</mat-icon>
+                                        <div class="green">1.5</div> -->
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+
+                          <table class="sub-table">
+                            <ng-container *ngIf="BopsPriceObj?.value?.length; else NoRowFound">
+                              <tr style="display: flex;justify-content: center;align-items: center;" *ngFor="let BopsPrice of BopsPriceObj?.value">
+                                <td style="flex:0 0 10%;">
+                                </td>
+                                <td style="flex:0 0 18%;">
+                                  <div>{{BopsPrice?.productGrade}}</div>
+                                </td>
+                                <div class="icon-seperator">|</div>
+                                <td style="flex:0 0 18%;">
+                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                    <div>{{BopsPrice?.todaysPrice}}</div>
+                                  </div>
+                                </td>
+                                <td style="flex:0 0 15%;">
+                                  <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                      <mat-icon [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
+                                      <div [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.todaysPriceDiff}}</div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <div class="icon-seperator">|</div>
+                                <td style="flex:0 0 18%;">
+                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                    <div>{{BopsPrice?.yesterdayPrice}}</div>
+                                  </div>
+                                </td>
+                                <td style="flex:0 0 15%;">
+                                  <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                      <mat-icon [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
+                                      <div [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.yesterdayPriceDiff}}</div>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            </ng-container>
+                            <ng-template #NoRowFound>
                               <tr style="display: flex;justify-content: center;align-items: center;">
-                                <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
-                                    alt="icon">
-                                </td>
-                                <td style="flex:0 0 18%;">
-                                  <div>HSFO</div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$489.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                      <div class="red">1.5</div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$489.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                      <div class="green">1.5</div>
-                                    </div>
-                                  </div>
+                                <td style="flex:0 0 80%;" class="text-center">
+                                  No row found
                                 </td>
                               </tr>
-                            </table>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-
-                        <table class="sub-table">
-                          <tr style="display: flex;justify-content: center;align-items: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>RMG38005</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$485.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
+                            </ng-template>
+                            <!-- <tr style="display: flex;justify-content: center;">
+                              <td style="flex:0 0 10%;">
+                              </td>
+                              <td style="flex:0 0 18%;">
+                                <div>RMG18005</div>
+                              </td>
+                              <div class="icon-seperator">|</div>
+                              <td style="flex:0 0 18%;">
+                                <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                  <div>$482.00</div>
                                 </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$485.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
+                              </td>
+                              <td style="flex:0 0 15%;">
                                 <div class="d-flex align-items-center">
-                                  <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                  <div class="green">1.5</div>
+                                  <div class="d-flex align-items-center">
+                                    <mat-icon class="green green-down">arrow_drop_down</mat-icon>
+                                    <div class="green">3.5</div>
+                                  </div>
                                 </div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr style="display: flex;justify-content: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>RMG18005</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$482.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
+                              </td>
+                              <div class="icon-seperator">|</div>
+                              <td style="flex:0 0 18%;">
+                                <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                  <div>$482.00</div>
+                                </div>
+                              </td>
+                              <td style="flex:0 0 15%;">
                                 <div class="d-flex align-items-center">
-                                  <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                  <div class="green">3.5</div>
+                                  <div class="d-flex align-items-center">
+                                    <mat-icon class="green green-down">arrow_drop_down</mat-icon>
+                                    <div class="green">3.5</div>
+                                  </div>
                                 </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$482.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                  <div class="green">3.5</div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </table>
-                      </mat-expansion-panel>
+                              </td>
+                            </tr> -->
+                          </table>
+                        </mat-expansion-panel>
+                      </ng-container>
                       <!-- Single Panel End -->
 
-                      <!-- Single Panel Start -->
-                      <mat-expansion-panel hideToggle="true" [expanded]="true">
-                        <mat-expansion-panel-header collapsedHeight="25px" expandedHeight="25px">
-                          <mat-panel-title>
-                            <table class="header-table">
-                              <tr style="display: flex;justify-content: center;">
-                                <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
-                                    alt="icon">
-                                </td>
-                                <td style="flex:0 0 18%;">
-                                  <div>ULSFO</div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$532.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                      <div class="green">0.5</div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$532.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                      <div class="green">0.5</div>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-
-                        <table class="sub-table">
-                          <tr style="display: flex;justify-content: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>RMD8001</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$531.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$531.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr style="display: flex;justify-content: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>RMD8005L</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr style="display: flex;justify-content: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>RMG18001</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </table>
-                      </mat-expansion-panel>
-                      <!-- Single Panel End -->
-
-                      <!-- Single Panel Start -->
-                      <mat-expansion-panel hideToggle="true" [expanded]="true">
-                        <mat-expansion-panel-header collapsedHeight="25px" expandedHeight="25px">
-                          <mat-panel-title>
-                            <table class="header-table">
-                              <tr style="display: flex;justify-content: center;">
-                                <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
-                                    alt="icon">
-                                </td>
-                                <td style="flex:0 0 18%;">
-                                  <div>LSDIS</div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$489.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                      <div class="red">1.5</div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$489.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                      <div class="red">1.5</div>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-
-                        <table class="sub-table">
-                          <tr style="display: flex;justify-content: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>DMA01</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                  <div class="green">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                  <div class="green">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </table>
-                      </mat-expansion-panel>
-                      <!-- Single Panel End -->
-
-                      <!-- Single Panel Start -->
-                      <mat-expansion-panel hideToggle="true" [expanded]="true">
-                        <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
-                          <mat-panel-title>
-                            <table class="header-table">
-                              <tr style="display: flex;justify-content: center;">
-                                <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
-                                    alt="icon">
-                                </td>
-                                <td style="flex:0 0 18%;">
-                                  <div>HSFO 0.5</div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$489.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                      <div class="red">1.5</div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <div class="icon-seperator">|</div>
-                                <td style="flex:0 0 18%;">
-                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                    <div>$489.00</div>
-                                  </div>
-                                </td>
-                                <td style="flex:0 0 15%;">
-                                  <div class="d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                      <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                      <div class="red">1.5</div>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-
-                        <table class="sub-table">
-                          <tr style="display: flex;justify-content: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>DMA</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="red red-down">arrow_drop_down</mat-icon>
-                                  <div class="red">1.5</div>
-                                </div>
-                              </div>
-                          </tr>
-                          <tr style="display: flex;justify-content: center;">
-                            <td style="flex:0 0 10%;">
-                            </td>
-                            <td style="flex:0 0 18%;">
-                              <div>DMB</div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                  <div class="green">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                            <div class="icon-seperator">|</div>
-                            <td style="flex:0 0 18%;">
-                              <div class="d-flex align-items-center" style="justify-content:flex-end;">
-                                <div>$489.00</div>
-                              </div>
-                            </td>
-                            <td style="flex:0 0 15%;">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <mat-icon class="green green-down">arrow_drop_down</mat-icon>
-                                  <div class="green">1.5</div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </table>
-                      </mat-expansion-panel>
-                      <!-- Single Panel End -->
                     </mat-accordion>
                   </div>
                 </div>
                 <div *ngIf="fourth.expanded" class="price-footer">
-                  <div style="display: flex;align-items: center;padding: 10px 10px 5px 10px;">
+                  <div style="display: flex;align-items: center;padding: 0px 5px 5px 10px;">
                     <div style="flex: 40%;">
                       Price as on:
                     </div>
-                    <div class="date" style="flex: 60%;">
-                      10/09/2018
+                    <div class="date" style="flex: 60%;" *ngIf="(portBopsPrice?.quoteDateCost[0]?.priceAsOn.indexOf('0001')==-1); else NotAvailable">
+                      {{portBopsPrice?.quoteDateCost[0]?.priceAsOn | date: 'dd/MM/yyyy'}}
                     </div>
+                    <ng-template #NotAvailable>
+                      <div class="date" style="flex: 60%;">N/A</div>
+                    </ng-template>
                   </div>
-                  <div style="display: flex;align-items: center;;padding: 5px 10px 10px 10px;">
+                  <div style="display: flex;align-items: center;padding: 5px 10px 10px 10px;">
                     <div>
                       Barge Charges included:
                     </div>
                     <div style="margin-left: 20px;" class="yes-or-no">
-                      <span class="yes">YES</span>
+                      <span class="yes">{{portBopsPrice?.quoteDateCost[0]?.bargeChargeIncluded? 'YES': 'NO'}}</span>
                     </div>
                   </div>
                 </div>
