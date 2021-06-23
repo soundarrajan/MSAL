@@ -73,6 +73,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                 }
             });
         };
+        
         $scope.roundDown = (value, pricePrecision) => {
             var precisionFactor = 1;
             var response = 0;
