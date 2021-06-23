@@ -3981,16 +3981,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     return;
                 }
                 // from vessel
-                if (ctrl.autoPopulateLabFrom.id == 2 && source == 'vessel') {
+                if (ctrl.autoPopulateLabFrom.id == 2 && source == 'vessel' && ctrl.data.status==null) {
                     ctrl.data.lab = data;
                 }
                 // from location
-                if (ctrl.autoPopulateLabFrom.id == 3 && source == 'location') {
+                if (ctrl.autoPopulateLabFrom.id == 3 && source == 'location' && ctrl.data.status==null) {
                     ctrl.data.lab = data;
                 }
             }
             // 2. if field == surveyor, check if source == location and it has default lab
-            if (field == 'surveyor') {
+            if (field == 'surveyor' && ctrl.data.status==null) {
                 if (source == 'location') {
                     ctrl.data.surveyorCounterparty = data;
                 }
