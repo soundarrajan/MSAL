@@ -30,6 +30,7 @@ export class VesselPopupComponent implements OnInit {
   scheduleDashboardLabelConfiguration: any;
   public scheduleList : any = [];
   public  scheduleCount : number = 0;
+  public vesselList : any[];
   constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService : VesselPopupService) { 
     this.shiptechUrl =  new URL(window.location.href).origin;
   }
@@ -47,6 +48,10 @@ export class VesselPopupComponent implements OnInit {
     this.route.data.subscribe(data => {
       console.log(data);
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+    });
+    this.route.data.subscribe(data => {
+      console.log(data);
+      this.vesselList = data?.vesselListWithImono;
     });
     this.loadVesselBasicInfo(this.popup_data.vesselId);
     this.loadFutureRequestData();
@@ -250,19 +255,20 @@ export class VesselPopupComponent implements OnInit {
   }
 
   loadVesselScheduleList(vesselId){
-    // if(vesselId != null){
-    //   let req = { VesselImo : 'SDMLG1014' }//vesselId};
-    //   this.vesselService.getVesselSchedule(req).subscribe((res)=>{
-    //     if(res.payload.length > 0){
-    //       this.scheduleCount = res.payload[0].count;
-    //       this.scheduleList = res.payload;
-    //       this.scheduleList.forEach(element => {
-    //         element.eta = this.dateFormatter(element.eta);
-    //       });
-    //       this.triggerClickEvent();     
-    //     }
-    //   })
-    // }
+    if(vesselId != null){
+      let selectedVessel = this.vesselList.find(vessel => vessel.id == vesselId)
+      let req = { VesselImo : selectedVessel.imono};//'SDMLG1014' };
+      this.vesselService.getVesselSchedule(req).subscribe((res)=>{
+        if(res.payload.length > 0){
+          this.scheduleCount = res.payload[0].count;
+          this.scheduleList = res.payload;
+          this.scheduleList.forEach(element => {
+            element.eta = this.dateFormatter(element.eta);
+          });
+          this.triggerClickEvent();     
+        }
+      })
+    }
   }
 
   triggerClickEvent() {
@@ -289,7 +295,7 @@ export class VesselPopupComponent implements OnInit {
     //   this.defaultView = false;
   }
 
-  public openPort(portName) {
+  public openPort(portName, portId) {
     let portPopupData;
     let selectedPort;
     let data;
@@ -297,43 +303,43 @@ export class VesselPopupComponent implements OnInit {
     this.localService.portPopUpDetails.subscribe(res => portPopupData = res);
     this.localService.isRouteOpen.subscribe(flag => routeOpen = flag);
     if (routeOpen || (!routeOpen && !((portPopupData.filter(port => port.name.toLowerCase() == portName.toLowerCase())).length > 0))) {
-      this.localService.getCountriesList().subscribe(res => {
-        selectedPort = res.filter(item => item.LocationName.toLowerCase() == portName.toLowerCase());
+      // this.mapService.getLocationsListForMap("").subscribe(res => {
+      //  selectedPort = res.payload.filter(item => item.locationName.toLowerCase() == portName.toLowerCase());
         data = {
-          locationId: selectedPort[0].locationId,
+          locationId: portId,
           position: 1,
           port_view: "standard-view",//pData.flag,
-          name: selectedPort[0].locationName,
+          name: portName,//selectedPort[0].locationName,
           earliestTradingTime: '',
           latestTradingTime: '',
           avlProdCategory: [],
           //notavlProdCategory: ['DIS'],
-          destination: 'Marseille',
-          eta1: '2020-04-13 10:00',
-          eta2: '2020-04-14 10:00',
-          next_destination: 'Catania',
-          voyageStatus: 'Laden',
-          vesselId: '1YM',
-          vesselExpDate: '12/06/2020',
-          vesselType: 'LR1',
-          bunkeringStatus: 'Created',
-          serviceId: '271',
-          deptId: 'MLAS',
-          ownership: 'Chartered',
-          hsfo: '468',
-          dogo: '600',
-          ulsfo: '120',
-          vlsfo: '364',
-          hfo: '58',
-          lshfo: '120',
-          mdo: '10',
-          lsmdo: '20',
-          mso: '10',
-          lsmgo: '10',
+          // destination: 'Marseille',
+          // eta1: '2020-04-13 10:00',
+          // eta2: '2020-04-14 10:00',
+          // next_destination: 'Catania',
+          // voyageStatus: 'Laden',
+          // vesselId: '1YM',
+          // vesselExpDate: '12/06/2020',
+          // vesselType: 'LR1',
+          // bunkeringStatus: 'Created',
+          // serviceId: '271',
+          // deptId: 'MLAS',
+          // ownership: 'Chartered',
+          // hsfo: '468',
+          // dogo: '600',
+          // ulsfo: '120',
+          // vlsfo: '364',
+          // hfo: '58',
+          // lshfo: '120',
+          // mdo: '10',
+          // lsmdo: '20',
+          // mso: '10',
+          // lsmgo: '10',
           notificationsCount: 6,
           messagesCount: 2,
-          latitude: selectedPort[0].locationLatitude,
-          longitude: selectedPort[0].locationLongitude,
+          latitude: 0,//selectedPort[0].locationLatitude,
+          longitude: 0,//selectedPort[0].locationLongitude,
         }
         if (!routeOpen) {
           if (portPopupData.length >= 2) {
@@ -357,7 +363,7 @@ export class VesselPopupComponent implements OnInit {
         }
         this.localService.setPortPopupData(portPopupData);
         this.localService.setOpenPortPopupCount(portPopupData.length);
-      });
+      // });
     }
   }
   private columnDefs = [
