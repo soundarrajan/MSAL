@@ -29,7 +29,7 @@
 							typeahead-wait-ms="100" id="Product_{{$index}}_tank_Product" ng-required="true"
 							name="tank_Product" autocomplete="off" typeahead-no-result="noResults"
 							typeahead-editable="false"/>
-						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Tank Product', 'formValues.vesselProducts.product.'+$index,'',$index,'Product_'+ $index+'_tank_Product', '','');" ng-init="modal = false">
+						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Tank Product', 'product', 'formValues.vesselProducts', $index,'Product_tank_Product', '','');" ng-init="modal = false">
 							<a class=" btn default">
 								<i class="fa fa-search"></i>
 							</a>
