@@ -89,6 +89,13 @@
 //     overflow: unset !important;
 // }
 
+.delivery-mat-menu-panel {
+  overflow: unset !important;
+  .mat-menu-item {
+    overflow: unset !important;
+  }
+}
+
 .related-invoice-details-wrapper {
   .ag-body-horizontal-scroll-viewport {
       top: 0px !important;

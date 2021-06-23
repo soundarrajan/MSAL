@@ -1,9 +1,11 @@
-﻿commit dbd8b12e9779f8f6ea47841bfcbdb80fa0775709
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Wed Jun 23 12:39:21 2021 +0000
+﻿commit 58eae3aad9395deb8567737dff21e70446e72811
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Wed Jun 23 14:19:43 2021 +0000
 
-    Merged PR 11784: 33529-bugFix
+    Merged PR 11788: fix css
     
-    33529-bugFix
+    fix css
+    
+    Related work items: #33523
 
 branch: master
