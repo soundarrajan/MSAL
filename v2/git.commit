@@ -1,11 +1,11 @@
-﻿commit 7298d20c5ef22979c1d52a11e6837f6e9bd116c8
+﻿commit a58f591cc971c387aee96d2efd5dd4f530dc4369
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 23 07:10:11 2021 +0000
+Date:   Wed Jun 23 12:25:50 2021 +0000
 
-    Merged PR 11760: #32477 Redirection for conf/lift field.
+    Merged PR 11780: #29676 : Vessel details: View Vessel Schedule list
     
-    #32477 Redirection for conf/lift field.
+    #29676 : Vessel details: View Vessel Schedule list
     
-    Related work items: #32477
+    Related work items: #29676
 
 branch: master
