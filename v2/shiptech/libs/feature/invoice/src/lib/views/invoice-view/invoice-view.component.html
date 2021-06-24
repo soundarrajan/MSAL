@@ -10,7 +10,7 @@
       </button>
       <button [disabled]="saveDisabled" *ngIf="!isConfirm" class="ui-button-info mr-1" type="button"
         [ngClass]="{'btn-i-blue-color': !saveDisabled, 'cust-btn': saveDisabled}" (click)="invoiceOptions('approve')">
-        <span class="btn-text">Aprrove</span>
+        <span class="btn-text">Approve</span>
       </button>
       <button class="dotted-button-container" mat-icon-button [matMenuTriggerFor]="menu"
         aria-label="Example icon-button with a menu">

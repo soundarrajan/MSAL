@@ -1,12 +1,7 @@
-﻿commit fd6df6435a709b9c1871b6283dc20f8d005919e2
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Thu Jun 24 11:36:37 2021 +0000
+﻿commit 0c2f6a9b835d3e2d818731442a94df7ae1d58cf4
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Thu Jun 24 15:10:36 2021 +0300
 
-    Merged PR 11817: Fix css
-    
-    Disable order number
-    Fix complex price css
-    
-    Related work items: #33492, #33512
+    Fixed 33520 and 33449
 
 branch: master
