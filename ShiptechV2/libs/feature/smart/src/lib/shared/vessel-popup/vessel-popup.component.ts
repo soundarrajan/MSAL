@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { GridOptions } from '@ag-grid-community/core';
@@ -13,7 +13,8 @@ import moment from 'moment';
 @Component({
   selector: 'app-vessel-popup',
   templateUrl: './vessel-popup.component.html',
-  styleUrls: ['./vessel-popup.component.scss']
+  styleUrls: ['./vessel-popup.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class VesselPopupComponent implements OnInit {
 
@@ -122,7 +123,7 @@ export class VesselPopupComponent implements OnInit {
       defaultColDef: {
         filter: false,
         sortable: false,
-        resizable: false
+        resizable: true
       },
       rowSelection: 'single',
       onGridReady: (params) => {
@@ -133,6 +134,9 @@ export class VesselPopupComponent implements OnInit {
           this.gridOptions.api.setRowData(futureRequestData);
           this.triggerClickEvent();
         }
+      },
+      onGridSizeChanged: function (params) {
+        params.columnApi.autoSizeAllColumns();
       },
     };
   }
@@ -403,11 +407,11 @@ export class VesselPopupComponent implements OnInit {
         let cellStyle = {};
         let status = params?.data?.requestStatus?.displayName;
         classArray.push('aggrid-content-center');
-        classArray.push('custom-chip small-chip');
+        classArray.push('custom-chip small-chip w-100-important');
 
         let colorCode = params?.data?.requestStatus?.colorCode;
         if(colorCode?.code) {
-          cellStyle = {background: colorCode.code};
+          cellStyle = {'background': colorCode.code};
         }
         // let newClass = status === 'Stemmed' ? 'custom-chip small-chip darkgreen' :
         // status === 'Validated' ? 'custom-chip small-chip amber' :
