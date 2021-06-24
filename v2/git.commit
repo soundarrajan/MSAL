@@ -1,8 +1,8 @@
-﻿commit ee8d5aa2f59c7157b1a1a96670ede843aa34529c
+﻿commit 24c3b7799fd1127443fa2943c35f5530646ad1eb
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jun 24 07:18:01 2021 +0000
+Date:   Thu Jun 24 07:26:50 2021 +0000
 
-    Merged PR 11797: #33009: Vessel details future requests status alignment issue has fixed.
+    Merged PR 11798: #33009: Vessel details future requests status css  alignment issue has fixed
     
     Related work items: #33009
 

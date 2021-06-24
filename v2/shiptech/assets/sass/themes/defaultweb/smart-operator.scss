@@ -1406,7 +1406,9 @@ label {
 	font-weight: lighter;
 	&.small-chip {
 		// width: 50px !important;
+		
 		width: auto !important;
+		padding: 5px !important;
 		height: 15px !important;
 		line-height: 10px;
 		color: #FFFFFF;
