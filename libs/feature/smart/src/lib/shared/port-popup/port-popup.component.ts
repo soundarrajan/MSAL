@@ -1216,7 +1216,7 @@ export class PortPopupComponent implements OnInit {
     </div>
   </div>
   <div class="actions">
-    <button mat-button class="cancel" (click)="cancelMenu()">CANCEL</button>
+    <button mat-button class="cancel" (click)="cancelMenu();$event.stopPropagation();">CANCEL</button>
     <button mat-raised-button [ngClass]="{'active':selectionChange}" class="save"
       (click)="updatePortRemark(statusDropdown.value)">SAVE</button>
   </div>
@@ -1229,14 +1229,17 @@ export class PortMenuComponent {
   @Input('remarkLogs') remarkLogs;
   @Output('refreshPortRemark') refreshPortRemark = new EventEmitter();
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
+  @ViewChild('statusDropdown') statusDropdown;
   portStatuses = [];
   public menuFlag: boolean = false;
   public menuClick: boolean = false;
   public selectionChange: boolean = false;
   public theme: boolean = true;
   portRemarkLogs: any;
+  portRemarkStatusTemp: string = '';
   constructor(private elem: ElementRef,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) { }
   ngOnInit(){
+    this.portRemarkStatusTemp = this.item?.remarkStatus?.name;
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.loadMasterLookupData();
   }
@@ -1271,6 +1274,9 @@ export class PortMenuComponent {
 
   }
   closeMenu() {
+    this.item.remarkComments = '';
+    this.item.remarkStatus = this.portStatuses.find(item=>item.name==this.portRemarkStatusTemp);
+    this.statusDropdown.value = this.item.remarkStatus?.name;
     this.menuTrigger.closeMenu();
     this.selectionChange = false;
     this.menuClick = false;
