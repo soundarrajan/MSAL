@@ -1,9 +1,9 @@
-﻿commit 24c3b7799fd1127443fa2943c35f5530646ad1eb
+﻿commit 21db820f8db6b0f2bbf764bce2fe6edee43105ad
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jun 24 07:26:50 2021 +0000
+Date:   Thu Jun 24 08:32:31 2021 +0000
 
-    Merged PR 11798: #33009: Vessel details future requests status css  alignment issue has fixed
+    Merged PR 11799: Bug 33469: Port Remarks_After the cancel operation, The unsaved values are retaining issue has fixed
     
-    Related work items: #33009
+    Related work items: #33469
 
 branch: master
