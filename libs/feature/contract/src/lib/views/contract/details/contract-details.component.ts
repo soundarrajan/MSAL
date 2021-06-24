@@ -274,57 +274,57 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.paymentTermList = this.setListFromStaticLists('PaymentTerm');
       this.incotermList = this.setListFromStaticLists('Incoterm');
       this.applyToList = this.setListFromStaticLists('ApplyTo');
-      this.tradeBookList = this.setListFromStaticLists("ContractTradeBook");
+      this.tradeBookList = this.setListFromStaticLists('ContractTradeBook');
       this.contractualQuantityOptionList = this.setListFromStaticLists(
         'ContractualQuantityOption'
-        );
-        this.uomMassList = this.setListFromStaticLists('UomMass');
-        this.uomVolumeList = this.setListFromStaticLists('UomVolume');
-        this.contractConversionFactorOptions = this.setListFromStaticLists(
-          'ContractConversionFactorOptions'
-          );
-          this.specParameterList = this.setListFromStaticLists('SpecParameter');
-          this.formulaTypeList = this.setListFromStaticLists('FormulaType');
-          this.systemInstumentList = this.setListFromStaticLists(
-            'SystemInstrument'
-            );
-            this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
-            this.formulaPlusMinusList = this.setListFromStaticLists(
-              'FormulaPlusMinus'
-              );
-              this.formulaFlatPercentageList = this.setListFromStaticLists(
-                'FormulaFlatPercentage'
-                );
-                this.currencyList = this.setListFromStaticLists('Currency');
-                this.formulaOperationList = this.setListFromStaticLists(
-                  'FormulaOperation'
-                  );
-                  this.formulaFunctionList = this.setListFromStaticLists('FormulaFunction');
-                  this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
-                  this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
-                  this.holidayRuleList = this.setListFromStaticLists('HolidayRule');
-                  this.pricingSchedulePeriodList = this.setListFromStaticLists(
-                    'PricingSchedulePeriod'
-                    );
-                    this.eventList = this.setListFromStaticLists('Event');
-                    this.dayOfWeekList = this.setListFromStaticLists('DayOfWeek');
-                    this.businessCalendarList = this.setListFromStaticLists(
-                      'BusinessCalendar'
-                      );
-                      this.formulaEventIncludeList = this.setListFromStaticLists(
-                        'FormulaEventInclude'
-                        );
-                        this.quantityTypeList = this.setListFromStaticLists('QuantityType');
-                        this.productList = this.setListFromStaticLists('Product');
-                        this.locationList = this.setListFromStaticLists('Location');
-                        this.additionalCostList = this.setListFromStaticLists('AdditionalCost');
-                        this.costTypeList = this.setListFromStaticLists('CostType');
-                        this.customerList = this.setListFromStaticLists('Customer');
+      );
+      this.uomMassList = this.setListFromStaticLists('UomMass');
+      this.uomVolumeList = this.setListFromStaticLists('UomVolume');
+      this.contractConversionFactorOptions = this.setListFromStaticLists(
+        'ContractConversionFactorOptions'
+      );
+      this.specParameterList = this.setListFromStaticLists('SpecParameter');
+      this.formulaTypeList = this.setListFromStaticLists('FormulaType');
+      this.systemInstumentList = this.setListFromStaticLists(
+        'SystemInstrument'
+      );
+      this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
+      this.formulaPlusMinusList = this.setListFromStaticLists(
+        'FormulaPlusMinus'
+      );
+      this.formulaFlatPercentageList = this.setListFromStaticLists(
+        'FormulaFlatPercentage'
+      );
+      this.currencyList = this.setListFromStaticLists('Currency');
+      this.formulaOperationList = this.setListFromStaticLists(
+        'FormulaOperation'
+      );
+      this.formulaFunctionList = this.setListFromStaticLists('FormulaFunction');
+      this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
+      this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
+      this.holidayRuleList = this.setListFromStaticLists('HolidayRule');
+      this.pricingSchedulePeriodList = this.setListFromStaticLists(
+        'PricingSchedulePeriod'
+      );
+      this.eventList = this.setListFromStaticLists('Event');
+      this.dayOfWeekList = this.setListFromStaticLists('DayOfWeek');
+      this.businessCalendarList = this.setListFromStaticLists(
+        'BusinessCalendar'
+      );
+      this.formulaEventIncludeList = this.setListFromStaticLists(
+        'FormulaEventInclude'
+      );
+      this.quantityTypeList = this.setListFromStaticLists('QuantityType');
+      this.productList = this.setListFromStaticLists('Product');
+      this.locationList = this.setListFromStaticLists('Location');
+      this.additionalCostList = this.setListFromStaticLists('AdditionalCost');
+      this.costTypeList = this.setListFromStaticLists('CostType');
+      this.customerList = this.setListFromStaticLists('Customer');
 
-                        var defaultUom = this.generalTenantSettings.tenantFormats.uom;
-                        var defaultQuantityType = this.contractualQuantityOptionList[0];
-                        let firstEntry = {
-                          contractualQuantityOption: defaultQuantityType,
+      var defaultUom = this.generalTenantSettings.tenantFormats.uom;
+      var defaultQuantityType = this.contractualQuantityOptionList[0];
+      let firstEntry = {
+        contractualQuantityOption: defaultQuantityType,
         minContractQuantity: null,
         maxContractQuantity: null,
         convertedMaxContractQuantity: null,
@@ -444,6 +444,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.formValues.createdBy = null;
           this.formValues.hasInvoicedOrder = false;
           this.entityCopied = true;
+          this.statusColorCode = '#9E9E9E';
           this.eventsSubject5.next(true);
           console.log(this.formValues);
           this.changeDetectorRef.detectChanges();
