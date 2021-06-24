@@ -258,7 +258,7 @@
           [(ngModel)]="formValues.order"
           [matAutocomplete]="auto"
           placeholder="Order Number"
-          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          [disabled]="formValues.deliveryStatus.name == 'Verified' || entityId != 0"
           required
         />
         <mat-autocomplete
@@ -276,9 +276,9 @@
         </mat-autocomplete>
       </mat-form-field>
       <button
-        [disabled]="formValues.deliveryStatus.name == 'Verified'"
+        [disabled]="formValues.deliveryStatus.name == 'Verified' || entityId != 0"
         [ngClass]="{
-          'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'
+          'search-icon-disabled': formValues.deliveryStatus.name == 'Verified' || entityId != 0
         }"
         class="search-icon"
         appMasterSelectorTrigger
