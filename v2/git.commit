@@ -1,7 +1,9 @@
-﻿commit 940cb4d957b8446d98d3b163817ad629e8bb81f6
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Wed Jun 23 20:56:54 2021 +0530
+﻿commit ee8d5aa2f59c7157b1a1a96670ede843aa34529c
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Jun 24 07:18:01 2021 +0000
 
-    Fix split delivery creation js issue fix. #33435
+    Merged PR 11797: #33009: Vessel details future requests status alignment issue has fixed.
+    
+    Related work items: #33009
 
 branch: master
