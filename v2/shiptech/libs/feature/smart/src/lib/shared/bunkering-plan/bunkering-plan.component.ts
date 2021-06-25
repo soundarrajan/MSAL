@@ -156,7 +156,7 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-columgroup-splitter-left aggrid-text-align-c '],
           children: [
             {
-              headerName: BunkeringPlanColumnsLabels.HsfoMaxLift, field: 'hsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.HsfoMaxLift, width: 50,
+              headerName: BunkeringPlanColumnsLabels.HsfoMaxLift, field: 'hsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.HsfoMaxLift, width: 80,
               cellClass: (params)=>{
                 let cellClass = '';
                 if (this.type == 'C') 
