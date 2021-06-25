@@ -1,7 +1,7 @@
-﻿commit fa31e9b36f9d125d0da2d366e6fcf3d2f58133d7
+﻿commit 4cd15a322d39b84f42456b9794255ea58a91973a
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jun 25 15:56:14 2021 +0300
+Date:   Fri Jun 25 16:19:20 2021 +0300
 
-    Fixed 33599
+    Fixed 404 not found
 
 branch: master
