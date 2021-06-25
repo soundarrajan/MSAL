@@ -3756,7 +3756,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
             if(ctrl.requestTenantSettings.isRequestOperatorMandatory) {
 
-                if(ctrl.request.OperatorEmail !== "") {
+                if(ctrl.request.operatorEmail !== "") {
                     return false;
                 }
 
