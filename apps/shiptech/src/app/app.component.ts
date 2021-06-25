@@ -56,8 +56,6 @@ export class AppComponent {
     });
     this.loaderService.isLoading.subscribe(v => {
       if (v) {
-        console.log('SEND VALUE');
-        console.log((<any>window).lastCall - (<any>window).firstCall);
         if (!isNaN((<any>window).lastCall - (<any>window).firstCall)) {
           this.myMonitoringService.logMetric(
             window.location.href,
