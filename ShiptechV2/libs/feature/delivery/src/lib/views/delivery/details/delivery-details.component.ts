@@ -103,7 +103,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   @Select(UserProfileState.username) username$: Observable<string>;
   entityId: string;
   entityName: string;
-  isLoading: boolean;
+  isLoading: boolean = false;
   orderNumberOptions: any;
   eventsSubject: Subject<any> = new Subject<any>();
   eventsSubject2: Subject<any> = new Subject<any>();
@@ -301,7 +301,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.uomVolume = data.uomVolume;
       this.sampleSource = data.sampleSource;
       if (this.formValues.order && this.formValues.order.id) {
-        this.isLoading = true;
+        // this.isLoading = true;
         this.openedScreenLoaders = 0;
         this.getDeliveryOrderSummary(this.formValues.order.id);
         this.getRelatedDeliveries(this.formValues.order.id);
@@ -1649,7 +1649,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.toastrService.error(result);
           } else {
             this.spinner.hide();
-            this.isLoading = true;
+            //this.isLoading = true;
             this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
