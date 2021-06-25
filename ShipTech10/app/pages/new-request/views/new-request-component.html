@@ -118,7 +118,7 @@
                 </div>
                 <div class="caption">
                     <span class="caption-subject">
-                        Vessel Details			
+                        Vessel Details
                         <span  ng-if="$ctrl.request.vesselDetails.vessel.is2MDelivery==1" class="entity-status ng-binding ng-scope" style="color:red">
                             2M DELIVERY
                         </span>
@@ -131,7 +131,7 @@
                         </span> -->
                        </span>
                 </div>
-            </div>			 
+            </div>
            <!-- operatorBy: {{$ctrl.request.operatorBy}} -->
             <div class="portlet-body" ng-controller="Controller_Master as CM">
                 <form id="vesselDetails" class="form-inline st-new-request-form collapse in" name="forms.vesselDetailsForm" novalidate autocomplete="off">
@@ -143,7 +143,7 @@
                             <div ng-if="$ctrl.vesselDetailsFields.Vessel.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "Vessel","masterSource": "Vessel"})' data-html="true" tooltip data-original-title="{{ $ctrl.defaultProductsTooltip() }}">
                                 <div class="row">
                                     <label class="control-label col-md-5">
-                                        {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }}    
+                                        {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }}
                                         <span ng-if="$ctrl.request.vesselDetails.vessel.vesselToWatchFlag">
                                             <i class="fa fa-flag vesselToWatchFlag"></i>
                                         </span>
@@ -172,7 +172,7 @@
                                         <span ng-init="$ctrl.options.VesselWithImo = options.VesselWithImo" ng-if="$ctrl.options.VesselWithImo"></span>
                                         <div class="input-group col-md-7">
                                             <input decode-input-format ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" id="id_{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" placeholder="{{ $ctrl.vesselDetailsFields.VesselImoNo.placeholder }}" uib-typeahead="vesselimo as vesselimo.name for vesselimo in options.VesselWithImo | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vesselImoNo" required>
-									  
+
                                             <span ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" class="input-group-addon" ng-click="triggerModal('general', 'masters_vessellist', $ctrl.vesselDetailsFields.VesselImoNo.caption | translate, '$ctrl.request.vesselDetails.vesselImoNo','','',$ctrl.vesselDetailsFields.VesselImoNo.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                                 <i class="fa fa-search"></i>
                                             </span>
@@ -186,7 +186,7 @@
                                         <label class="control-label col-md-5">
                                             {{ $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate }}
                                             <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
-                                        </label>                                      
+                                        </label>
                                         <div class="form-group-sm00">
                                             <div class="input-group col-md-7">
                                                 <input ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectService($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.service.name" required>
@@ -203,7 +203,7 @@
                                 <div class="row">
                                     <label class="control-label col-md-5">
                                         {{ $ctrl.vesselDetailsFields.Chartered.caption | translate }}
-													 
+
                                     </label>
                                     <div class="form-group-sm">
                                         <div class="input-group col-md-7 row">
@@ -215,7 +215,7 @@
                                     </div>
                                 </div>
                             </div>
-							  
+
                             <span ng-if="$ctrl.requestTenantSettings.displayOfCompany.id == 1">
                                 <div ng-if="$ctrl.vesselDetailsFields.Company.visible" class="col-md-4">
                                     <div class="row">
@@ -250,7 +250,7 @@
                                     </div>
                                 </div>
                             </div>
-							  
+
                             <div class="col-md-4" data-html="true" ng-hide="$ctrl.requestTenantSettings.isRequestOperatorHidden">
                                 <div class="row">
                                     <label class="control-label col-md-5">
@@ -259,7 +259,7 @@
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>
-                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" ng-required="$ctrl.requestTenantSettings.isRequestOperatorMandatory">
+                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" ng-required="$ctrl.isOperatorRequired()">
                                             <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                                 <i class="fa fa-search"></i>
                                             </span>
@@ -267,10 +267,26 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Operator email -->
+                            <div class="col-md-4 " ng-hide="$ctrl.requestTenantSettings.isRequestOperatorHidden">
+                                <div class="row">
+                                    <label class="control-label col-md-5">
+                                        {{ "PAGES.NEW_REQUEST.OPERATOR_EMAIL" | translate }}
+                                    </label>
+                                    <div class="form-group-sm00">
+                                        <div class="input-group col-md-7">
+                                            <input disabled name="operator_email" id="id_operator_email" placeholder="Operator Email" class="form-control " ng-model="$ctrl.request.OperatorEmail" >
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-md-4 " ng-hide="$ctrl.requestTenantSettings.isRequestPoNumberHidden">
                                 <div class="row">
                                     <label class="control-label col-md-5">
-                                        {{ "PAGES.NEW_REQUEST.PO_NUMBER" | translate }} 
+                                        {{ "PAGES.NEW_REQUEST.PO_NUMBER" | translate }}
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7">
@@ -303,11 +319,11 @@
                         </span>
                     </div>
                 </div>
-									 
+
                 <div class="portlet-body" style="padding: 15px;">
 
                     <form id="charteringDetails" class="form-inline st-new-request-form collapse in" novalidate autocomplete="off">
-						   
+
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="row">
@@ -578,8 +594,8 @@
                                             </div>
                                         </div>
                                     </div>
-									  
-								  
+
+
                                     <div class="col-md-3 label-list">
                                         <span ng-repeat="location in $ctrl.request.locations track by $index" class="tag label label-info" ng-if="!location.isDeleted && location.location !== null" data-original-title=" {{ location.location.name }}">
                                             <a ng-click="$ctrl.deleteLocation(location)" ng-disabled="$ctrl.disableAllFields">
@@ -928,7 +944,7 @@
                                                     <span>
                                                         <span>{{ column.caption | translate }} </span>
                                                         <span ng-show="column.caption=='PAGES.NEW_REQUEST.PRODUCT' || column.caption=='PAGES.NEW_REQUEST.PRODUCT_TYPE' || column.caption=='PAGES.NEW_REQUEST.SPEC_GROUP' || column.caption=='PAGES.NEW_REQUEST.MIN_QTY'|| column.caption=='PAGES.NEW_REQUEST.MAX_QTY'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
-                                                    </span> 
+                                                    </span>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -1180,8 +1196,8 @@
 
         <select-contract contracts="$ctrl.contracts" contract-has-product="$ctrl.contractHasProduct" selected-contracts="$ctrl.selectedContracts"></select-contract>
     </div>
-    
-    
+
+
     <div class="portlet light" style="background: #eeeeee">
         <div class="portlet-body">
             <div class="row">
@@ -1263,9 +1279,9 @@
                                             <span>  Force Request on BOPS</span>
                                             <label class="mt-checkbox mt-checkbox-outline">
                                                 <input name="{{ $ctrl.vesselDetailsFields.Chartered.name }}" id="id_{{ $ctrl.vesselDetailsFields.Chartered.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Chartered.placeholder }}" type="checkbox" ng-checked="($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" disabled>
-                                                
+
                                             </label>
-                                            
+
                                     </div> -->
                                     <div class="col-12">
                                         <label class="control-label col-md-2">
@@ -1277,7 +1293,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -1293,7 +1309,7 @@
             <clc-table-list style="max-width: calc(100vw - 50px);padding-left: 15px;" id="'min_quantity_to_reach'" app="'procurement'" screen="'min_quantity_to_reach'" controls="'[entries, columns, info, pager]'"></clc-table-list>
         </div>
     </div>
-								   
+
     <div class="portlet light" ng-if="$ctrl.request">
         <div class="portlet-title">
             <div class="tools">

@@ -27,9 +27,9 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
 
-        
+
         <div class="col-md-4">
             <div class="form-group  row">
                 <div class="form_input form_input_areTermsAndConditionsAvailable">
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-		
+
 		<div class="col-md-4">
 	        <div class="form-group row">
 	            <label for="averageSurveyorCost" class="contractOrderCreationTolerance_label">
@@ -54,8 +54,8 @@
 	                <input type="number" name="contractOrderCreationTolerance" required class="form-control contractOrderCreationTolerance" ng-model="formValues.contract.contractOrderCreationTolerance" ng-class="CM.invalid_form ? 'ng-touched' : ''"/>
 	            </div>
 	        </div>
-		</div>        
-         
+		</div>
+
     </div>
 <div class="row">
 	<div class="col-sm-4">
@@ -81,7 +81,21 @@
                 </div>
             </div>
         </div>
-    </div>	
+    </div>
+
+    <!-- Show hide trade book -->
+	<div class="col-sm-4">
+		<div class="form-group row">
+	        <label for="displayAgreementType" class="displayAgreementType">
+	            <!-- {{ CM.app_id + '.DISPLAY_TRADE_BOOK' | translate }} -->
+                Display trade book
+	            <span class="orange-txt">*</span>
+	        </label>
+	        <div class="input-group form_input form_input_displayAgreementType">
+	            <select class="form-control contractOrderCreationTolerance" name="displayTradeBook" id="displayTradeBook" ng-model="formValues.contract.agreementTypeDisplay"  ng-options="item as item.name for item in CM.listsCache.ShowHide  track by item.id "></select>
+	        </div>
+        </div>
+	</div>
 </div>
 
 	<div class="row">
@@ -103,7 +117,7 @@
 				</table>
 			</div>
 		</div>
-	
+
 	</div>
 
 

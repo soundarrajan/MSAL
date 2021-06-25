@@ -79,6 +79,7 @@
             "NEW_REQUEST": {
                   "VESSEL": "Vessel",
                   "PO_NUMBER" : "PO Number",
+                  "OPERATOR_EMAIL": "Operator Email",
 				"SUGGESTEDLIFT":"Suggested Lift",
 				"PRETEST":"Pre-Test",
 				"EXPECTEDPRICE":"Expected Price",
@@ -146,7 +147,7 @@
                   "FORCE_REQUESTBP":"Force Request on BOPS",
                   "PONUMBER":"PONumber",
                   "TERMINAL":"Terminal"
-            
+
                 },
             "VIEW_RFQ": {
                   "RFQ_ID": "RFQ ID",
@@ -278,7 +279,7 @@
                   "VESSEL": "Vessel",
                   "PRICEPRECISION" : "Price precision",
 				  "PRE_TEST_LABS": "Pre Test Labs",
-				  "CUSTOMER": "Customer",             
+				  "CUSTOMER": "Customer",
                   "VESSEL_IMO_NO": "IMO",
                   "SERVICE_CODE": "Service Code",
                   "EMAIL_COMMENTS": "Email Comments",
@@ -561,11 +562,11 @@
       "masters": {
 			"LOCATION_PRODUCT_TYPES" : "Bunkerable Port",
 			"INVOICE_REMINDER_EMAIL" : "Invoice reminder email",
-			"CONTRACT_TERMS_AND_CONDITIONS" : "Contract terms and conditions",			
+			"CONTRACT_TERMS_AND_CONDITIONS" : "Contract terms and conditions",
 			"VESSEL_OWNER_EMAIL" : "Vessel Owner Email",
 			"LOCATION_HSFO_05_GRADES" : "HSFO 0.5 Grades",
 			"LOCATION_DISTILLATE_GRADES" : "Distillate Fuel Grade",
-			"LOCATION_HSFO_35_GRADES" : "HSFO 3.5 Grade",      	
+			"LOCATION_HSFO_35_GRADES" : "HSFO 3.5 Grade",
             "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
             "SUBDEPARTMENT" : "Sub Department",
             "CUSTOMER" : "Customer",
@@ -1158,6 +1159,7 @@
             "HIDE_CONTRACT_REFERENCED_FORMULAS": "Hide contract referenced formulas",
             "IS_NEED_FOR_SUBMIT_FOR_APPROVAL": "Is need for submit for approval",
             "HIDE_ALLOWED_PRODUCT": "Hide Allowed Product",
+            "DISPLAY_TRADE_BOOK": "Display Trade book",
             "NEGOTIATION_DISPLAY_DECIMAL": "Decimal",
             "DISPLAY_OF_COMPANY": "Display of company",
             "DEFAULT_SPOT_AGREEMENT_TYPE": "Default spot agreement type",
