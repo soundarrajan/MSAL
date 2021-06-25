@@ -50,6 +50,7 @@ import { FilterCommentByParticipantPipe } from './pipes/filterCommentPipe/filter
 import { GroupByParticipantPipe } from './pipes/groupByParticipantPipe/group-by-participant.pipe';
 import { EnUsDatePipePipe } from './pipes/EnUsDatePipe/en-us-date-pipe.pipe';
 import { WarningoperatorpopupComponent } from './warningoperatorpopup/warningoperatorpopup.component';
+import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
@@ -58,7 +59,8 @@ import { WarningoperatorpopupComponent } from './warningoperatorpopup/warningope
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
     DatePickerFromToComponent,
-    FilterPipe, AllBunkeringPlanComponent,NoDataComponent, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, WarningoperatorpopupComponent],
+    FilterPipe, AllBunkeringPlanComponent,NoDataComponent, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, WarningoperatorpopupComponent,
+    UtcDatePipePipe],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -75,7 +77,7 @@ import { WarningoperatorpopupComponent } from './warningoperatorpopup/warningope
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
     CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent,
-    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, AllBunkeringPlanComponent,NoDataComponent, WarningoperatorpopupComponent],
+    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, AllBunkeringPlanComponent,NoDataComponent, WarningoperatorpopupComponent,UtcDatePipePipe],
   providers: [LocalService, LoggerService, AuthGaurdService, BunkeringPlanComponent],
   entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent,WarningoperatorpopupComponent]
 })
