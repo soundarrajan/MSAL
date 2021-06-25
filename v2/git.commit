@@ -1,11 +1,7 @@
-﻿commit ea70bee0e01b1656a0e0c32933f380d70e6be0aa
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Jun 25 12:15:34 2021 +0000
+﻿commit fa31e9b36f9d125d0da2d366e6fcf3d2f58133d7
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Fri Jun 25 15:56:14 2021 +0300
 
-    Merged PR 11849: #33251 Hsfo Max lift width size change.
-    
-    #33251 Hsfo Max lift width size change.
-    
-    Related work items: #33251
+    Fixed 33599
 
 branch: master
