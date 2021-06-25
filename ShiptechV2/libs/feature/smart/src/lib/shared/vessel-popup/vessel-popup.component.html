@@ -102,7 +102,7 @@
                   <span class="icon-seperator">|</span>
                   <div class="col-4" style="padding-right: 0px;">
                     <div class="caption-header">ETA</div>
-                    <div class="caption-details">{{popup_data.eta1 | utcDatePipe}}</div>
+                    <div class="caption-details" matTooltip="{{popup_data.eta1 | utcDatePipe}}">{{popup_data.eta1 | utcDatePipe}}</div>
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link" style="line-height: 22px;">
@@ -124,7 +124,7 @@
                   <span class="icon-seperator">|</span>
                   <div class="col-4" style="padding-right: 0px;">
                     <div class="caption-header">ETA</div>
-                    <div class="caption-details" >{{popup_data.eta2  | utcDatePipe}}</div>
+                    <div class="caption-details" matTooltip="{{popup_data.eta2  | utcDatePipe}}" >{{popup_data.eta2  | utcDatePipe}}</div>
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link">
@@ -403,7 +403,7 @@
                   <span class="col-1 icon-seperator">|</span>
                   <div class="col-5 pd-0">
                     <div class="caption-header">ETA:
-                      <span class="caption-details">{{schedule.eta | utcDatePipe}}</span>
+                      <span class="caption-details" matTooltip="{{schedule.eta | utcDatePipe}}">{{schedule.eta | utcDatePipe}}</span>
                     </div>
                   </div>
                   <span class="col-1 icon-seperator pd-0">|</span>

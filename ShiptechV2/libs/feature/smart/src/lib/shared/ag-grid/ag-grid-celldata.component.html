@@ -10,9 +10,16 @@
   </div>
 </div>
 
-<div *ngIf="this?.params?.type =='Data-date'" [ngClass]="params.cellClass" matTooltip="{{params.value | date: 'dd/MM/yyyy hh:mm'}}" style="margin:0px">{{params.value | date: 'dd/MM/yyyy HH:MM'}}</div>
-  
-  <div *ngIf="params.type=='multiple-values'">
+<div *ngIf="this?.params?.type =='Data-date' && this?.params?.value != '1900-01-01T00:00:00Z'" [ngClass]="params.cellClass" matTooltip="{{params.value | utcDatePipe | date: 'dd/MM/yyyy HH:mm'}}" style="margin:0px">{{params.value | utcDatePipe | date: 'dd/MM/yyyy HH:mm'}}</div>
+<!--   
+<div *ngIf="params.type=='edit-disabled-with-info'">
+  <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.value></div>
+    <span *ngIf="this.params?.data?.lsdis_as_eca == 0">
+      <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
+    </span>  
+</div>   -->
+
+<div *ngIf="params.type=='multiple-values'">
     <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">
       <div *ngFor="let item of params.value" class="aggrid-content-center multiple-text w-auto">
         <!-- <ng-container *ngIf="toggleTooltip==true"> -->
