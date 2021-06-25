@@ -102,7 +102,7 @@
                   <span class="icon-seperator">|</span>
                   <div class="col-4" style="padding-right: 0px;">
                     <div class="caption-header">ETA</div>
-                    <div class="caption-details" matTooltip={{popup_data.eta1}}>{{popup_data.eta1}}</div>
+                    <div class="caption-details">{{popup_data.eta1 | utcDatePipe}}</div>
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link" style="line-height: 22px;">
@@ -119,12 +119,12 @@
                   </div>
                   <div class="col-3" style="padding-right: 0px;">
                     <div class="caption-header">Next Destination</div>
-                    <div class="caption-details" matTooltip={{popup_data.eta}}>{{popup_data.next_destination}}</div>
+                    <div class="caption-details" matTooltip={{popup_data.next_destination}}>{{popup_data.next_destination}}</div>
                   </div>
                   <span class="icon-seperator">|</span>
                   <div class="col-4" style="padding-right: 0px;">
                     <div class="caption-header">ETA</div>
-                    <div class="caption-details" matTooltip={{popup_data.eta2}}>{{popup_data.eta2}}</div>
+                    <div class="caption-details" >{{popup_data.eta2  | utcDatePipe}}</div>
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link">
@@ -290,7 +290,7 @@
                   </div>
                   <div style="flex:0 0 25%;display: flex;flex-direction: column;align-items: self-start;">
                     <div class="label">Vessel Expiry Date</div>
-                    <div class="value">{{popup_data.vesselExpDate}}</div>
+                    <div class="value">{{popup_data.vesselExpDate |date: "dd/MM/yyyy"}}</div>
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div>
@@ -403,7 +403,7 @@
                   <span class="col-1 icon-seperator">|</span>
                   <div class="col-5 pd-0">
                     <div class="caption-header">ETA:
-                      <span class="caption-details" matTooltip="{{schedule.eta}}">{{schedule.eta}}</span>
+                      <span class="caption-details">{{schedule.eta | utcDatePipe}}</span>
                     </div>
                   </div>
                   <span class="col-1 icon-seperator pd-0">|</span>
