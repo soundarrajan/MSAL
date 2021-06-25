@@ -66,6 +66,9 @@ export class AuditLogComponent implements OnInit {
       },
       onGridSizeChanged: function (params) {
         params.api.sizeColumnsToFit();
+      },
+      onDisplayedColumnsChanged: function (params){
+        params.api.sizeColumnsToFit();
       }
     };
   }
