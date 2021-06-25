@@ -301,7 +301,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.uomVolume = data.uomVolume;
       this.sampleSource = data.sampleSource;
       if (this.formValues.order && this.formValues.order.id) {
-        //this.isLoading = true;
+        this.isLoading = true;
         this.openedScreenLoaders = 0;
         this.getDeliveryOrderSummary(this.formValues.order.id);
         this.getRelatedDeliveries(this.formValues.order.id);
@@ -1648,7 +1648,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.toastrService.error(result);
           } else {
-            //this.isLoading = true;
+            this.spinner.hide();
+            this.isLoading = true;
             this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
@@ -1658,9 +1659,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 result,
                 KnownDeliverylRoutes.DeliveryDetails
               ])
-              .then(() => {
-                this.spinner.hide();
-              });
+              .then(() => {});
           }
         });
     } else {
