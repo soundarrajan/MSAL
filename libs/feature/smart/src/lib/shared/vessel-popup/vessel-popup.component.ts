@@ -154,8 +154,8 @@ export class VesselPopupComponent implements OnInit {
           this.popup_data.ownership = res.payload[0].ownership;
           this.popup_data.destination = res.payload[0].destination;
           this.popup_data.next_destination = res.payload[0].nextDestination;
-          this.popup_data.eta1 = this.dateFormatter(res.payload[0].destinationEta);
-          this.popup_data.eta2 = this.dateFormatter(res.payload[0].nextDestinationEta);
+          this.popup_data.eta1 = res.payload[0].destinationEta;
+          this.popup_data.eta2 = res.payload[0].nextDestinationEta;
           this.popup_data.hsfo = res.payload[0].hsfo_current_stock;
           this.popup_data.ulsfo = res.payload[0].ulsfo_current_stock;
           this.popup_data.vlsfo = res.payload[0].vlsfo_current_stock;
@@ -243,7 +243,7 @@ export class VesselPopupComponent implements OnInit {
       let req = { VesselId : vesselId}; //VesselId : 2805
       this.vesselService.getVesselRedeliveryInfo(req).subscribe((res)=>{
         if(res.payload.length > 0){
-          this.popup_data.vesselExpDate = this.dateFormatter(res.payload[0].expiryDate, '/');
+          this.popup_data.vesselExpDate = res.payload[0].expiryDate;
           this.popup_data.redeliveryDays = res.payload[0].redeliveryDays ? res.payload[0].redeliveryDays + ' Days' : "";
           this.popup_data.hfo = res.payload[0].hsfoRedeliveryQty;
           this.popup_data.lshfo = res.payload[0].lsfoRedeliveryQty;
@@ -266,9 +266,6 @@ export class VesselPopupComponent implements OnInit {
         if(res.payload.length > 0){
           this.scheduleCount = res.payload[0].count;
           this.scheduleList = res.payload;
-          this.scheduleList.forEach(element => {
-            element.eta = this.dateFormatter(element.eta);
-          });
           this.triggerClickEvent();     
         }
       })
@@ -278,17 +275,6 @@ export class VesselPopupComponent implements OnInit {
   triggerClickEvent() {
     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
       titleEle.click();
-  }
-
-  dateFormatter(params, type?) {
-    if(params == null)
-    return "";
-    else{
-      if(type == '/')
-        return moment(params).format('DD/MM/YYYY');
-      else
-        return moment(params).format('YYYY-MM-DD HH:MM');
-    }
   }
 
   public changeDefault() {
