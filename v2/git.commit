@@ -1,10 +1,10 @@
-﻿commit 2df121e86e0f904ba2a4e98a1915894aae6dbf0f
+﻿commit 89920f3cb95b7530c501f6a4ecf2738152ba7af0
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sat Jun 26 22:06:08 2021 +0000
+Date:   Sat Jun 26 22:40:09 2021 +0000
 
-    Merged PR 11862: Blocker fix for maerskqc.
+    Merged PR 11863: #33524 :error fix while clicking on view all bplan
     
-    Blocker fix for maerskqc.
+    #33524 :error fix while clicking on view all bplan
     
     Related work items: #33524
 
