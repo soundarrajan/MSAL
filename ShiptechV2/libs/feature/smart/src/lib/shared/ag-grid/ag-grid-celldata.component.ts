@@ -439,7 +439,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     var overlay = document.querySelector('.cdk-overlay-container');
     if (overlay)
       overlay.classList.remove('removeOverlay');
-      
+    
+    this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
     if(this.bplanType == 'C'){
       // let requestExists = 0;
       // //min SOA  warning if previous ports have a request ID present
