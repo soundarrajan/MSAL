@@ -262,7 +262,7 @@ export class VesselInfoComponent implements OnInit {
       this.planId = this.currPlanIdDetails?.planId;
       if(this.planId != null){
         this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
-        this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'Invalid' : 'Valid';
+        this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'InValid' : 'Valid';
         this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
       }
       else {
@@ -296,7 +296,7 @@ export class VesselInfoComponent implements OnInit {
           else{
               this.statusPrevBPlan = false;
           }
-        this.statusPrev = this.prevPlanIdDetails?.isPlanInvalid === 'Y' ? 'Invalid' : 'Valid';
+        this.statusPrev = this.prevPlanIdDetails?.isPlanInvalid === 'Y' ? 'InValid' : 'Valid';
         this.prevPlanDate = moment(this.prevPlanIdDetails?.planDate).format('DD/MM/YYYY');
       }
       else{

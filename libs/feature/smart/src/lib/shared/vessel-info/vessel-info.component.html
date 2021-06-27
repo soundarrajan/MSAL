@@ -218,7 +218,7 @@
               <div style="flex:0 0 13%;display: flex;align-items: center;">
                 <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
                   <span class="title">Status : </span>
-                <span *ngIf="this.statusCurr != ''" [ngClass]="[this.statusCurr =='Invalid'? 'invalid-status' : 'valid-status']">{{this.statusCurr}}</span>
+                <span *ngIf="this.statusCurr != ''" [ngClass]="[this.statusCurr =='InValid'? 'invalid-status' : 'valid-status']">{{this.statusCurr}}</span>
                 </div>
               </div>
 
@@ -292,7 +292,7 @@
               <div style="flex:0 0 13%;display: flex;align-items: center;">
                 <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
                   <span class="title">Status : </span>
-                  <span *ngIf="this.statusPrev != ''" [ngClass]="[this.statusPrev =='Invalid'? 'invalid-status' : 'valid-status']">{{this.statusPrev}}</span>
+                  <span *ngIf="this.statusPrev != ''" [ngClass]="[this.statusPrev =='InValid'? 'invalid-status' : 'valid-status']">{{this.statusPrev}}</span>
                 </div>
               </div>
             </div>
