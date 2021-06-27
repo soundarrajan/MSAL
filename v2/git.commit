@@ -1,11 +1,11 @@
-﻿commit 9e556f16f26b6d461b25cbe6e9da3031e5b540c3
+﻿commit fa781f966e289b3695c1fe735a715951d4e931ab
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sun Jun 27 19:46:09 2021 +0000
+Date:   Sun Jun 27 20:13:42 2021 +0000
 
-    Merged PR 11866: InValid plan formatting of font.
+    Merged PR 11867: #33526 scroll bug fix.
     
-    InValid plan formatting of font.
+    #33526 scroll bug fix.
     
-    Related work items: #29780
+    Related work items: #33526
 
 branch: master
