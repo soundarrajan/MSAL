@@ -49,7 +49,7 @@
 
 </div>
 <!-- BUNKERING PLANS -->
-<div *ngIf="bunkerPlanLogDetail.length > 0" id="accordion-container-dark">  
+<div *ngIf="bunkerPlanLogDetail.length > 0" id="accordion-container-dark-view-all">  
   <mat-accordion multi="false">
     <mat-expansion-panel #panel *ngFor="let item of bunkerPlanLogDetail | filter: inputModel" hideToggle="true" id="bunker-plan"
       [ngClass]="{'fullheight':item.expanded}" [expanded]="false" (opened)="item.expanded = true"
