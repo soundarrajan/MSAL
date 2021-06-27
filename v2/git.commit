@@ -1,11 +1,11 @@
-﻿commit 2351bda0929f838835cfa5d0c792ba812a276fd3
+﻿commit 9e556f16f26b6d461b25cbe6e9da3031e5b540c3
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sun Jun 27 19:33:45 2021 +0000
+Date:   Sun Jun 27 19:46:09 2021 +0000
 
-    Merged PR 11865: Operator editable fields handling
+    Merged PR 11866: InValid plan formatting of font.
     
-    Operator editable fields handling
+    InValid plan formatting of font.
     
-    Related work items: #33187
+    Related work items: #29780
 
 branch: master
