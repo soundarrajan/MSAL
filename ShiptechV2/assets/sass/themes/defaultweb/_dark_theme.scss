@@ -1155,7 +1155,7 @@ $denim: #5780A6;
 			color: $theme-font;
 		}
 	}
-	#accordion-container-dark {
+	#accordion-container-dark,#accordion-container-dark-view-all,#accordion-container-dark-port-info {
 		.mat-accordion {
 			.mat-expansion-panel {
 				background: $basecolor-l2;
