@@ -1,11 +1,11 @@
-﻿commit 89920f3cb95b7530c501f6a4ecf2738152ba7af0
+﻿commit 714b375bdc69aa718566fdd8a9b7fff854d35928
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sat Jun 26 22:40:09 2021 +0000
+Date:   Sun Jun 27 19:12:44 2021 +0000
 
-    Merged PR 11863: #33524 :error fix while clicking on view all bplan
+    Merged PR 11864: Handling empty plan id in getBunkerPlanDetails api
     
-    #33524 :error fix while clicking on view all bplan
+    Handling empty plan id in getBunkerPlanDetails api
     
-    Related work items: #33524
+    Related work items: #29780
 
 branch: master
