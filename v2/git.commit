@@ -1,11 +1,11 @@
-﻿commit 714b375bdc69aa718566fdd8a9b7fff854d35928
+﻿commit 2351bda0929f838835cfa5d0c792ba812a276fd3
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sun Jun 27 19:12:44 2021 +0000
+Date:   Sun Jun 27 19:33:45 2021 +0000
 
-    Merged PR 11864: Handling empty plan id in getBunkerPlanDetails api
+    Merged PR 11865: Operator editable fields handling
     
-    Handling empty plan id in getBunkerPlanDetails api
+    Operator editable fields handling
     
-    Related work items: #29780
+    Related work items: #33187
 
 branch: master
