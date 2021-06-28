@@ -902,7 +902,7 @@
                                                                for="{{ $ctrl.nominationFields.surveyorCounterparty.name }}">
                                                             {{ $ctrl.nominationFields.surveyorCounterparty.caption |
                                                             translate }}
-                                                            <span class="orange-txt" ng-if="$ctrl.isSurveyorMandatory">
+                                                            <span class="orange-txt" ng-if="$ctrl.isSurveyorMandatory || $ctrl.checkBQSFromProducts()">
                                                                 *
                                                             </span>
                                                         </label>
@@ -915,7 +915,7 @@
                                                                    ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
                                                                    ng-model="$ctrl.data.surveyorCounterparty.name"
                                                                    decode-input-format
-                                                                   ng-required="$ctrl.isSurveyorMandatory"
+                                                                   ng-required="$ctrl.isSurveyorMandatory || $ctrl.hasBQSCheckedInProducts"
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.data.surveyorCounterparty = $ctrl.setTypeahedVal($ctrl.data.surveyorCounterparty, $item, false)"
@@ -1221,6 +1221,9 @@
                                     <th>
                                         Overwrite Conversion Factor
                                     </th>
+                                    <th ng-if="!$ctrl.isSurveyorMandatory">
+                                        BQS
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1395,7 +1398,8 @@
                                                    format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                    id="product_confirmedQuantity_{{ $index }}"
                                                    name="{{ $ctrl.productColumns.confirmedQuantity.name }}"
-                                                   ng-blur="$ctrl.productUomChanged(product, false); $ctrl.confirmQuantityChanged('input', product)"
+                                                   ng-blur="$ctrl.productUomChanged(product, false); $ctrl.confirmQuantityChanged('input', product);
+                                                   $ctrl.checkBQSCheckbox(product)"
                                                    ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                    ng-model="product.confirmedQuantity"
                                                    ng-required="$ctrl.requiredAndDisabledRules('required', 'confirmedQty', product.status.id)"
@@ -1703,6 +1707,19 @@
                                                            ng-model="product.overrideConversionFactor" type="checkbox"
                                                            ng-disabled="$ctrl.disabledProduct[product.id]"
                                                            ng-change="$ctrl.overrideConversion(product, $index)">
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td ng-if="!$ctrl.isSurveyorMandatory">
+<!--                                         {{$ctrl.data.is2MDelivery}}
+ --><!--                                         {{product.productTypeMOTGroup}}
+ -->                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <label class="mt-checkbox">
+                                                    <input id="product_isBqs_{{ $index }}" name="product_{{ $index }}_isBqs" ng-model="product.isBqs"
+                                                        type="checkbox">
                                                     <span></span>
                                                 </label>
                                             </div>

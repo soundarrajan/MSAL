@@ -1678,6 +1678,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ctrl.data.vesselImoNo = data.imoNo;
                     if (data.defaultService) {
                         ctrl.data.service = data.defaultService;
+                        ctrl.selectService(ctrl.data.service.id);
+
                     }
                     // if(data.buyer) {
                     //    ctrl.data.buyer = data.buyer;
@@ -1757,6 +1759,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             listsModel.getProductTypeByProduct(product.id).then((server_data) => {
                 console.log('test');
 	            newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
+                newProduct.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 	            newProduct.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
                 // newProduct.specGroups = server_data.data.payload;
             });
@@ -1829,6 +1832,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.service.name = data.name;
                 ctrl.data.service.code = data.code;
                 ctrl.data.service.id = data.id;
+                ctrl.data.is2MDelivery = data.is2MDelivery;
             });
         };
         ctrl.selectBuyer = function(buyer) {
@@ -2096,6 +2100,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ctrl.lookupField.specGroup = product.defaultSpecGroup;
 		            listsModel.getProductTypeByProduct(product.id).then((server_data) => {
 			            ctrl.lookupField.productType = product.productType;
+                        ctrl.lookupField.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 			            ctrl.lookupField.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
 		            });
                     // ctrl.lookupField.productType = product.productType;
@@ -2457,9 +2462,36 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         function setConvertedQty(prod) {
             lookupModel.getConvertedUOM(prod.product.id, 1, prod.quantityUom.id, ctrl.data.products[0].quantityUom.id).then((server_data) => {
                 prod.confirmedQtyProdZ = server_data.payload;
+                ctrl.checkBQSConversionCheckbox(prod);
             }).catch((e) => {
                 throw 'Unable to get the uom.';
             });
+        }
+
+
+        ctrl.checkBQSConversionCheckbox = function(product) {
+           if (ctrl.data.is2MDelivery) {
+                console.log(product);
+                if (product.isBqsChanged) {
+                    return;
+                }
+
+               if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSFO' || product.productTypeMOTGroup.name == 'IFO')) {
+                    if (parseFloat(product.confirmedQtyProdZ) > 200) {
+                        product.isBqs = true;
+                        if (!product.id) {
+                            product.isBqsChanged = true;
+                        }
+                    }
+                } else  if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSDIS' || product.productTypeMOTGroup.name == 'DIS')) {
+                    if (parseFloat(product.confirmedQtyProdZ) > 50) {
+                        product.isBqs = true;
+                        if (!product.id) {
+                            product.isBqsChanged = true;
+                        }
+                    }
+               } 
+           }
         }
         ctrl.updateModelProperty = function(model, property, value) {
             model[property] = value;
@@ -4757,6 +4789,48 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }
                 });
             }
+        }
+
+        ctrl.checkBQSCheckbox = function(product) {
+            if (ctrl.data.is2MDelivery) {
+                console.log(product);
+                if (product.isBqsChanged) {
+                    return;
+                }
+
+                if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSFO' || product.productTypeMOTGroup.name == 'IFO')) {
+                    if (parseFloat(product.confirmedQuantity) > 200) {
+                        product.isBqs = true;
+                        if (!product.id) {
+                            product.isBqsChanged = true;
+                        }
+                    }
+                } else  if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSDIS' || product.productTypeMOTGroup.name == 'DIS')) {
+                    if (parseFloat(product.confirmedQuantity) > 50) {
+                        product.isBqs = true;
+                        if (!product.id) {
+                            product.isBqsChanged = true;
+                        }
+                    }
+                } 
+            }
+        }
+
+
+        ctrl.checkBQSFromProducts = function() {
+            let isSurveyorMandatory = false;
+            ctrl.hasBQSCheckedInProducts =  false;
+            if (ctrl.data.products) {
+                for (let i = 0; i < ctrl.data.products.length; i++) {
+                    if (ctrl.data.products[i].isBqs) {
+                        if (ctrl.data.id) {
+                            ctrl.hasBQSCheckedInProducts =  true;
+                        }
+                        return true;
+                    }
+                }
+            }
+
         }
     }
 ]);
