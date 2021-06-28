@@ -1,11 +1,7 @@
-﻿commit 20ac9a82aa12da962d522018f976c51ec8efd373
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jun 28 12:41:15 2021 +0000
+﻿commit f055d8d38e59a04f9b405216636b5e4a4c991201
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Mon Jun 28 20:18:02 2021 +0530
 
-    Merged PR 11889: #33190 indication of Invalid Current Bunkering
-    
-    #33190 indication of Invalid Current Bunkering
-    
-    Related work items: #33190
+    BDN Reports, Order Reports
 
 branch: master

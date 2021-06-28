@@ -1,6 +1,6 @@
 <div id="table-view">
   <!-- HEADER -->
-  <mat-tab-group class="mat-main-tab custom-header-tabs-v2">
+  <mat-tab-group class="mat-main-tab custom-header-tabs-v2" (selectedTabChange)="getReporttaborelse($event)">
     <mat-tab>
       <ng-template mat-tab-label>
         <div class="custom-label-holder">
@@ -85,7 +85,7 @@
                 </div>
               </mat-chip>
               More Icon Chip End -->
-            </mat-chip-list> -->
+            </mat-chip-list> 
           </div>
         </div>
 
@@ -451,18 +451,29 @@
       </section> -->
     </mat-tab>
    
-    <mat-tab class="custom-header-tabs-v2">
+    <mat-tab  class="custom-header-tabs-v2">
       <ng-template mat-tab-label>
-        <div class="custom-label-holder">
-          <div class="custom-tab-ui"></div>
-          <div class="custom-label">Report</div>
+        <div class="row">
+          <div class="col-8">
+            <div class="custom-label-holder">
+              <div class="custom-tab-ui"></div>
+              <div class="custom-label">Report</div>
+            </div>
+          </div>
+         
         </div>
-      </ng-template>
+        
 
+       
+      </ng-template>
+     
       <section
         class="secondary-header-container"
         style="background-color: #2f3845"
       >
+
+      
+
         <div class="" style="display: inline-block " class="chip-v3">
           <!-- CHIP LIST -->
           <div id="chip-wrapper" class="m-l-8 chip-v2 ">
@@ -478,7 +489,7 @@
                 }"
                 (click)="toggle1()"
               >
-                <div class="truncate-f85 mx-auto text-center">My Vessels</div>
+                <div class="truncate-f85 mx-auto text-center">Default</div>
                 <div matSuffix class="chip-circle">
                   <i id="pin" class="fas fa-thumbtack rotate-45"></i>
                 </div>
@@ -488,7 +499,7 @@
                
               <!-- Single Chip End -->
               <!-- Single Chip Start -->
-              <mat-chip
+              <!-- <mat-chip
                 class=""
                 matTooltip="N.American Region"
                 [matTooltipShowDelay]="500"
@@ -504,7 +515,7 @@
                 <div matSuffix class="chip-circle">
                   <i id="pin" class="fas fa-thumbtack rotate-45"></i>
                 </div>
-              </mat-chip>
+              </mat-chip> -->
               <!-- Single Chip End -->
 
               <!-- More Icon Chip Start -->
@@ -522,8 +533,8 @@
           </div>
         </div>
 
-        <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab">
-          <mat-tab   >
+        <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab" (selectedTabChange)="gettabvalue($event)">
+          <mat-tab   (click)="getBdnReport(selectedFromDate, selectedToDate)">
             <ng-template mat-tab-label  >
               <div class="custom-label-holder">
                 <div class="custom-tab-ui"></div>
@@ -538,9 +549,13 @@
                 <ag-grid-angular
                   id="tableviewGrid"
                   style="width: 100%; height: calc(100vh - 135px)"
-                  [gridOptions]="gridOptions"
+                  [gridOptions]="gridBdnReportOptions"
+                  [defaultColDef]="defaultColDef"
+                  [rowSelection]="rowSelection"
+                  [suppressRowClickSelection]="true"
                   class="ag-theme-balham-dark ag-table-view"
                 ></ag-grid-angular>
+                
               </div>
             </section>
           </mat-tab>
@@ -556,12 +571,12 @@
                 class="smart-operatorr-content"
                 style="position: relative; width: 100%; height: 100%"
               >
-                <ag-grid-angular
-                  id="tableviewGrid"
-                  style="width: 100%; height: calc(100vh - 135px)"
-                  [gridOptions]="gridOptions"
-                  class="ag-theme-balham-dark ag-table-view"
-                ></ag-grid-angular>
+              <ag-grid-angular
+              id="tableviewGrid"
+              style="width: 100%; height: calc(100vh - 135px)"
+              [gridOptions]="gridOrderDetailsOptions"
+              class="ag-theme-balham-dark customback ag-table-view"
+            ></ag-grid-angular>
               </div>
             </section>
           </mat-tab>
@@ -570,7 +585,7 @@
       <!-- GRID -->
 
       <!-- Footer -->
-      <section id="bottom-pagination">
+      <!-- <section id="bottom-pagination">
         <div class="float-left plr-4">
           Total Results:
           <span>{{ rowCount }}</span>
@@ -644,7 +659,45 @@
             <span>Rows</span>
           </div>
         </div>
-      </section>
+      </section> -->
+    </mat-tab>
+    <mat-tab disabled style="left: 750px !important;" *ngIf="EnableReportDate">
+      <ng-template mat-tab-label>
+      
+        <div class="dark-wrapper from-to-data row col-12">
+          <div class="col-9 row" style="border-left: solid #54617A 3px;">
+            <div class="label col-2" style="top: 7px;">Delivery Date:
+      
+            </div>
+            <div class="col-10">
+              <shiptech-date-picker-from-to [selectedFromDate]="selectedFromDate" [selectedToDate]="selectedToDate"
+                (onDateChange)="onDateChange($event)">
+              </shiptech-date-picker-from-to>
+            </div>
+      
+          </div>
+          <div class="col-3 row" *ngIf="Enabledbdnreports" >
+            <div class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
+              <i class="far fa-file-excel" (click)="ExcelReportsdownload('bdnReports')"></i>
+            </div>
+            <div class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
+              <i class="fa fa-download" (click)="onBtExport()" aria-hidden="true"></i>
+            </div>
+          </div>
+
+          <div class="col-3" *ngIf="!Enabledbdnreports" >
+            <div class="row col-12">
+              <div class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
+                <i class="far fa-file-excel" (click)="ExcelReportsdownload('OrderReports')"></i>
+              </div>
+             
+            </div>
+          </div>
+      
+      
+      
+        </div>
+      </ng-template>
     </mat-tab>
 
     <mat-tab disabled>

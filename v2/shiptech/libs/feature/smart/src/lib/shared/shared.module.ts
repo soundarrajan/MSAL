@@ -13,6 +13,7 @@ import { SmartOperatorComponent } from './smart-operator/smart-operator.componen
 import { VesselDetailsComponent } from './vessel-details/vessel-details.component';
 import { AgGridModule } from '@ag-grid-community/angular';
 import { AGGridCellRendererComponent } from './ag-grid/ag-grid-cell-renderer.component';
+import { AGGridDownloadFileComponent } from './ag-grid/ag-grid-download-file.component'
 import { AGGridCellDataComponent ,HoverMenuComponent} from './ag-grid/ag-grid-celldata.component';
 import { AgGridInputCellEditor} from './ag-grid/ag-grid-input-cell-editor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -54,7 +55,7 @@ import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
-    AGGridCellRendererComponent, AGGridCellDataComponent, AgGridInputCellEditor, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
+    AGGridCellRendererComponent, AGGridDownloadFileComponent, AGGridCellDataComponent, AgGridInputCellEditor, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
     HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
@@ -71,7 +72,7 @@ import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
     FormsModule,
     OwlDateTimeModule, OwlNativeDateTimeModule,
     MatDatepickerModule,
-    AgGridModule.withComponents([AGGridCellRendererComponent, AGGridCellDataComponent, AgGridInputCellEditor])
+    AgGridModule.withComponents([AGGridCellRendererComponent,AGGridDownloadFileComponent, AGGridCellDataComponent, AgGridInputCellEditor])
   ],
   exports: [ReactiveFormsModule, FormsModule, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, HeaderPanelComponent,
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
