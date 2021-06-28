@@ -1,7 +1,9 @@
-﻿commit 5716ee6bba3bab19fe94c478bb498a96c0853e02
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Jun 28 18:12:35 2021 +0300
+﻿commit f5978a5624a8e385908ea31d6c1ab12e92b13641
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jun 28 15:56:21 2021 +0000
 
-    Fixed contract trade book mapping
+    Merged PR 11896: Requirement 29672: Vessel details: View Vessel Alerts and Requirement 29737: Table view: View Future Requests has done
+    
+    Related work items: #29672, #29737
 
 branch: master
