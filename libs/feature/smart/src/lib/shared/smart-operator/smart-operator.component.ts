@@ -9,6 +9,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { SearchVesselComponent } from '../search-vessel/search-vessel.component';
 import { LocalService } from '../../services/local-service.service';
 import { VesselDetailsComponent } from '../vessel-details/vessel-details.component';
+import { RequestsDetailsComponent } from "./../requests-details/requests-details.component";
 import { VesselPopupService } from '../../services/vessel-popup.service';
 import moment from 'moment';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
@@ -663,6 +664,78 @@ export class SmartOperatorComponent implements OnInit {
   //     this.gridOptions.api.setRowData(this.isValue == 1 ? this.rowData1 : this.isValue == 2 ? this.rowData2 : this.rowData3);
   //   }
   // }
+
+  columnDefs = [
+    {
+      headerName: 'Request ID', headerTooltip: 'Request ID', 
+      field: 'requestId', width: 100, headerClass: ['aggrid-text-align-c'],
+      filter: 'text',
+      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererParams: { type: 'request-link', redirectUrl: `${this.shiptechUrl}/#/edit-request` },
+      cellStyle: params => {
+        let colorCode = params?.data?.requestStatus?.colorCode;
+        if(colorCode?.code) {
+          return {'box-shadow': `inset 4px 0px 0px -1px ${colorCode.code}`};
+        }
+        return null;
+      },
+      cellClass: function (params) {
+        var classArray: string[] = ['aggrid-link', 'aggrid-content-c', 'aggrid-left-ribbon'];
+        let status = params?.data?.requestStatus?.displayName;
+        return classArray.length > 0 ? classArray : null
+      }
+    },
+    { headerName: 'Service', field: 'serviceName', filter: 'text', headerTooltip: 'Service', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 100 },
+    { headerName: 'Vessel ID', field: 'vesselId', filter: 'text', headerTooltip: 'Vessel ID', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 100 },
+    { headerName: 'Vessel Name', field: 'vesselName', filter: 'text', headerTooltip: 'Vessel Name', 
+      headerClass: ['aggrid-text-align-c'], 
+      cellClass: ['aggrid-content-center'], width: 100,
+      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererParams: { type: 'vesselName', redirectUrl: `${this.shiptechUrl}/#/new-request` }
+    },
+    { 
+      headerName: 'New Request', headerTooltip: 'New Request', field: 'newrequest', cellClass: 'aggridlink aggrid-vertical-center', width: 100,
+      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererParams: { type: 'newRequest', redirectUrl: `${this.shiptechUrl}/#/new-request` },
+    },
+    { headerName: 'Port', headerTooltip: 'Port', field: 'locationName', filter: 'text', width: 100, cellClass: ['aggrid-content-c aggrid-column-splitter-left'] },
+    { headerName: 'ETA', headerTooltip: 'ETA', field: 'eta', filter: 'date', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    { headerName: 'ETD', headerTooltip: 'ETD', field: 'etd', filter: 'date', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    {
+      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', width: 160, field: 'productName', filter: 'text', cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' }, cellClass: ['aggrid-content-c aggrid-column-splitter-left'],
+      valueGetter: function (params) {
+        if(params?.data?.productName) {
+          return [params.data.productName];
+        } else {
+          return []
+        }
+      }
+    },
+    { headerName: 'Trader', field: 'buyerName', filter: 'text', headerTooltip: 'Trader', width: 100, cellClass: ['aggrid-content-c aggrid-column-splitter-left'] },
+    { headerName: 'Operator', field: 'operatorByName', filter: 'text', headerTooltip: 'Operator', width: 100, cellClass: ['aggrid-content-c'] },
+    {
+      headerName: 'Status', field: 'requestStatus.displayName', filter: 'text', 
+      headerTooltip: 'Status', 
+      cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], 
+      cellClass: ['aggrid-content-center'],
+      cellRendererParams: function (params) {
+        var classArray: string[] = [];
+        let cellStyle = {};
+        let status = params?.data?.requestStatus?.displayName;
+        classArray.push('aggrid-content-center');
+        classArray.push('custom-chip');
+
+        let colorCode = params?.data?.requestStatus?.colorCode;
+        if(colorCode?.code) {
+          cellStyle = {background: colorCode.code};
+        }
+        return { cellClass: classArray.length > 0 ? classArray : null, cellStyle: cellStyle }
+      }
+    },
+    // { headerName: 'Request Type', headerTooltip: 'Request Type', field: 'requestTypeName', width: 110, cellClass: ['aggrid-content-c'] },
+    { headerName: 'Created by', headerTooltip: 'Created by', field: 'createdByName', filter: 'text', width: 110, cellClass: ['aggrid-content-c'] },
+  ];
+  
   toggle1() {
     this.isValue = 1;
     this.gridOptions.api.setColumnDefs(this.columnDefs_myvessels);
