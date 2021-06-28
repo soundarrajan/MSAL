@@ -534,7 +534,7 @@
         </div>
 
         <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab" (selectedTabChange)="gettabvalue($event)">
-          <mat-tab   (click)="getBdnReport()">
+          <mat-tab   (click)="getBdnReport(selectedFromDate, selectedToDate)">
             <ng-template mat-tab-label  >
               <div class="custom-label-holder">
                 <div class="custom-tab-ui"></div>
