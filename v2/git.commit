@@ -1,7 +1,7 @@
-﻿commit f055d8d38e59a04f9b405216636b5e4a4c991201
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Mon Jun 28 20:18:02 2021 +0530
+﻿commit 5716ee6bba3bab19fe94c478bb498a96c0853e02
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Jun 28 18:12:35 2021 +0300
 
-    BDN Reports, Order Reports
+    Fixed contract trade book mapping
 
 branch: master
