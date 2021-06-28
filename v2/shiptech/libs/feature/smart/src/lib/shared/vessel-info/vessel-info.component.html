@@ -215,12 +215,20 @@
                 <span class="title">Plan Date :</span>
                 <span class="content">{{this.planDate}}</span>
               </div>
-              <div style="flex:0 0 13%;display: flex;align-items: center;">
+              <div *ngIf="isLatestPlanInvalid == false" style="flex:0 0 13%;display: flex;align-items: center;">
                 <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
                   <span class="title">Status : </span>
                 <span *ngIf="this.statusCurr != ''" [ngClass]="[this.statusCurr =='InValid'? 'invalid-status' : 'valid-status']">{{this.statusCurr}}</span>
                 </div>
               </div>
+              <div *ngIf="isLatestPlanInvalid == true" style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;"
+                      [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
+                      (click)="$event.stopPropagation()"> 
+                      <a style="padding-left:20px"(click)="createRequest()">Create Request </a>
+                </div>
+              </div>
+             
 
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
@@ -231,15 +239,20 @@
                     <img class="activePlus" src="./assets/customicons/plus-noborder-white.svg" alt="create">
                     <span class="createReq">Create Request</span>
                   </button> -->
-                  <div class="border-rightside" style="padding-right: 5px;"
+                  <div *ngIf="isLatestPlanInvalid == false" class="border-rightside" style="padding-right: 5px;"
                     [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
                     (click)="$event.stopPropagation()"> 
                     <a (click)="createRequest()">Create Request </a>
                   </div>
+                  <div *ngIf="isLatestPlanInvalid == true" style="padding-right: 5px;"> 
+                    <div class="newplan-notification" style="width: 180px;margin-top: 8px !important;"><span class="newplan-notification-icon"></span>Latest Bunkering Plan is invalid</div>
+                  </div>
                   <!-- <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
                     GSIS</button> -->
-                    <div style="position: relative; margin-left: 50%;"> <mat-checkbox [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
-                    <div class="import-gsis"> Import GSIS</div>
+                    <div *ngIf="isLatestPlanInvalid == false"style="position: relative; margin-left: 50%;"> <mat-checkbox [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div *ngIf="isLatestPlanInvalid == false"class="import-gsis"> Import GSIS</div>
+                    <div *ngIf="isLatestPlanInvalid == true"style="margin-left: 90px;margin-top: 5px;"> <mat-checkbox [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div *ngIf="isLatestPlanInvalid == true" style="margin-top: 5px;" class="import-gsis"> Import GSIS</div>
                 </div>
                 <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
                   class="border-rightside">

@@ -1,11 +1,11 @@
-﻿commit 305f8dcd1ca49d9dae44c5eddbd81f79b16b5877
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Mon Jun 28 12:00:31 2021 +0000
+﻿commit 20ac9a82aa12da962d522018f976c51ec8efd373
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jun 28 12:41:15 2021 +0000
 
-    Merged PR 11885: 33434#bugfix
+    Merged PR 11889: #33190 indication of Invalid Current Bunkering
     
-    33434#bugfix
+    #33190 indication of Invalid Current Bunkering
     
-    Cherry-picked from commit `b931d156`.
+    Related work items: #33190
 
 branch: master

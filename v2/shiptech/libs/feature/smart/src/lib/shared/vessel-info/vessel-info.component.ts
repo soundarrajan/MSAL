@@ -79,6 +79,7 @@ export class VesselInfoComponent implements OnInit {
   public scrubberDate : any;
   currentROBChange: Subject<void> = new Subject<void>();
   subscription: Subscription;
+  public isLatestPlanInvalid : boolean = false;
  
 
   constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
@@ -264,6 +265,7 @@ export class VesselInfoComponent implements OnInit {
         this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
         this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'InValid' : 'Valid';
         this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
+        this.isLatestPlanInvalid = this.currPlanIdDetails.isLatestPlanInvalid === 'Y' ? true : false;
       }
       else {
         this.statusCurrBPlan = false;
