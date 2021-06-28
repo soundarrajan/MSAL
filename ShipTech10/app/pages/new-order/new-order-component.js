@@ -2472,23 +2472,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.checkBQSConversionCheckbox = function(product) {
            if (ctrl.data.is2MDelivery) {
                 console.log(product);
-                if (product.isBqsChanged) {
-                    return;
-                }
-
                if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSFO' || product.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(product.confirmedQtyProdZ) > 200) {
                         product.isBqs = true;
-                        if (!product.id) {
-                            product.isBqsChanged = true;
-                        }
+                      
                     }
                 } else  if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSDIS' || product.productTypeMOTGroup.name == 'DIS')) {
                     if (parseFloat(product.confirmedQtyProdZ) > 50) {
                         product.isBqs = true;
-                        if (!product.id) {
-                            product.isBqsChanged = true;
-                        }
+                       
                     }
                } 
            }
@@ -4792,6 +4784,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         ctrl.checkBQSCheckbox = function(product) {
+            if (product.id) {
+                return;
+            }
             if (ctrl.data.is2MDelivery) {
                 console.log(product);
                 if (product.isBqsChanged) {
