@@ -1,8 +1,8 @@
-﻿commit f41c2548460b04c72ace5aa165191075ecaaed1d
+﻿commit c233cf5c084a49496c215e12d9851a746e1577ca
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jun 28 16:17:55 2021 +0000
+Date:   Mon Jun 28 16:52:50 2021 +0000
 
-    Merged PR 11897: #29672: Vessel details: View Vessel Alerts refresh flow handled after update vessel alert
+    Merged PR 11898: #29672: Vessel details: View Vessel Alerts response update payload handled
     
     Related work items: #29672
 

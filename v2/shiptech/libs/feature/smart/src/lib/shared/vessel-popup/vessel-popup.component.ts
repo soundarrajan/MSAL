@@ -299,8 +299,11 @@ export class VesselPopupComponent implements OnInit {
       this.loadVesselAlertList();
     }
   }
-  refreshVesselAlert() {
-    this.loadVesselAlertList();
+  refreshVesselAlert(data) {
+    // this.loadVesselAlertList();
+      let VesselAlertData = data?.payload;
+      this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
+      this.VesselAlertLogs = VesselAlertData?.vesselAlertLogs;
   }
   loadVesselAlertList() {
     let requestPayload = {
