@@ -16,12 +16,12 @@ export interface IPortGrade {
   'DIS': string[];
 }
 export interface IPortProduct {
-  "productType": string;
+  "ProductId": string;
   "bopsProductType": string;
-  "maxTransferRate": string;
+  "MaxPumpRate": string;
   "minSupplyQty": string;
   "maxSupplyQty": string;
-  "lowestGradeProductName": string;
+  "LowestGrade": string;
 }
 @Component({
   selector: 'app-port-popup',
@@ -192,16 +192,16 @@ export class PortPopupComponent implements OnInit {
 
   private columnDefs = [
 
-    { headerName: 'Product ID', field: 'productType', headerTooltip: 'Product ID', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['font-bold aggrid-content-c '] },
+    { headerName: 'Product ID', field: 'ProductId', headerTooltip: 'Product ID', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['font-bold aggrid-content-c '] },
     { 
       headerName: 'Max Pump.Rate', 
-      field: 'maxTransferRate', 
+      field: 'MaxPumpRate', 
       headerTooltip: 'Max Pump.Rate', 
       width: 70, 
       cellClass: ['aggrid-text-align-r '], 
       cellRendererFramework: AGGridCellRendererComponent,
       valueGetter: (params) => {
-        return params?.data?.productType+' mt/h'
+        return params?.data?.ProductId+' mt/h'
       }
     },
     { headerName: 'Min Supply Qty',
@@ -224,7 +224,7 @@ export class PortPopupComponent implements OnInit {
         return params?.data?.maxSupplyQty+' mt'
       }
     },
-    { headerName: 'Lowest Grade', field: 'lowestGradeProductName', headerTooltip: 'Lowest Grade', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c'] }
+    { headerName: 'Lowest Grade', field: 'LowestGrade', headerTooltip: 'Lowest Grade', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c'] }
   ];
 
   // private rowData = [
