@@ -193,10 +193,10 @@
                   <div>Vessel Alerts</div>
                   <div class="alerts-count">
                     <div class="red-alerts">
-                      <div>2</div>
+                      <div>{{VesselAlertList | countByPriority: 'alertColorFlag_Name': 'red'}}</div>
                     </div>
                     <div class="amber-alerts">
-                      <div>3</div>
+                      <div>{{VesselAlertList | countByPriority: 'alertColorFlag_Name': 'amber'}}</div>
                     </div>
                   </div>
                 </mat-panel-title>
@@ -204,38 +204,39 @@
               <div>
 
                 <div class="alerts-container">
-                  <div class="single-alert" *ngFor="let item of alerts">
-                    <div *ngIf="!item.isDeleted">
+                  <ng-container *ngIf="VesselAlertList?.length; else NotAvailable"></ng-container>
+                  <div class="single-alert" *ngFor="let item of VesselAlertList">
+                    <div *ngIf="!(item.isDeleted)">
                       <!-- Single Alert Start -->
                       <div class="alert-notif">
                         <div class="alert-title">
                           <div class="d-flex align-items-center">
-                            <ng-container [ngSwitch]="item.priority">
-                              <img *ngSwitchCase="1" class="icon" src="./assets/customicons/red-warning-o.svg"
+                            <ng-container [ngSwitch]="item.alertColorFlag_Name">
+                              <img *ngSwitchCase="'Red'" class="icon" src="./assets/customicons/red-warning-o.svg"
                                 alt="warning-icon">
-                              <img *ngSwitchCase="2" class="icon" src="./assets/customicons/amber-warning-o.svg"
+                              <img *ngSwitchCase="'Amber'" class="icon" src="./assets/customicons/amber-warning-o.svg"
                                 alt="warning-icon">
-                              <img *ngSwitchCase="3" class="icon" src="./assets/customicons/green-warning-o.svg"
+                              <img *ngSwitchDefault class="icon" src="./assets/customicons/green-warning-o.svg"
                                 alt="warning-icon">
                             </ng-container>
-                            <div>{{item.alert}}</div>
+                            <div>{{item?.alertTypes?.name}}</div>
                           </div>
                           <div class="alert-action">
-                            <ng-container *ngIf="item.status!='Pending' && item.status!='Resolved'"
+                            <ng-container *ngIf="item?.alertStatus?.name!='Pending' && item?.alertStatus?.name!='Resolved'"
                               class="alert-action">
-                              <div style="flex: 0 0 78%;text-align: center;">{{item.status}}</div>
+                              <div style="flex: 0 0 78%;text-align: center;">{{item?.alertStatus?.name}}</div>
                             </ng-container>
-                            <ng-container *ngIf="item.status=='Pending'" class="alert-status">
+                            <ng-container *ngIf="item?.alertStatus?.name=='Pending'" class="alert-status">
                               <img style="flex: 0 0 22%;" class="status-icon"
                                 src="./assets/customicons/seen-icon.svg" alt="seen-icon">
                               <div style="flex: 0 0 56%;">Pending</div>
                             </ng-container>
-                            <ng-container *ngIf="item.status=='Resolved'" class="alert-status">
+                            <ng-container *ngIf="item?.alertStatus?.name=='Resolved'" class="alert-status">
                               <img style="flex: 0 0 22%;" class="tick-icon" src="./assets/customicons/tick.svg"
                                 alt="tick-icon">
                               <div style="flex: 0 0 56%;">Resolved</div>
                             </ng-container>
-                            <vessel-menu #menu [item]="item" [alerts]="alerts"></vessel-menu>
+                            <vessel-menu #menu [item]="item" [alerts]="VesselAlertList" [changeLog]="VesselAlertLogs"></vessel-menu>
                             <!-- <mat-icon class="dropdown-icon" [ngClass]="{'active':!menuClick}" style="z-index: 1050;" [matMenuTriggerFor]="clickalertsmenu"
                               [matMenuTriggerData]="menuData" #menuTrigger="matMenuTrigger"
                               (mouseenter)="!menuClick && toggleMenu($event,{data: item.alert,priority:item.priority, status:item.status, changeLog:item.changeLog,comments:item.comments});"
@@ -248,6 +249,9 @@
                       <!-- Single Alert End -->
                     </div>
                   </div>
+                  <ng-template #NotAvailable>
+                    <div class="text-center" style="font-size: 12px;">No Rows To Show</div>
+                  </ng-template>
                 </div>
               </div>
             </mat-expansion-panel>
