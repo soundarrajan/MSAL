@@ -26,7 +26,7 @@
         <!-- <ng-container *ngTemplateOutlet="hoverPopup"></ng-container> -->
       <!-- </ng-container> -->
       <span class="aggrid-text-resizable" *ngIf="(params?.gridTable)=='future-request'" [matMenuTriggerFor]="popoverTooltip" [matMenuTriggerData]="params.value" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()" (mouseleave)="trigger.closeMenu()">{{params.value}}</span> <!-- (mouseleave)="trigger.closeMenu()"-->
-      <span [matTooltip]="item" class="aggrid-text-resizable" *ngIf="!(params?.gridTable)">{{params.value}}</span>
+      <span [matTooltip]="params.value" class="aggrid-text-resizable" *ngIf="!(params?.gridTable)">{{params.value}}</span>
     </div>
   </div>
 </div>
