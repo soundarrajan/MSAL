@@ -647,11 +647,11 @@
                                                         </div>
                                                     </div>
                                                     <!-- end disabled ETA -->
-
+													
                                                     <!-- enabled ETA -->
                                                     <div class="form-group-sm00" ng-if="$ctrl.etaEnabled[locationIdx]">
                                                         <div class="input-group col-md-8 col-sm-12">
-
+																  
                                                             <input ng-model="$ctrl.request.locations[locationIdx].eta"
                                                                    ng-disabled="$ctrl.disableAllFields"
                                                                    ng-change="$ctrl.etaChanged(location, locationIdx); $ctrl.validateRequestDateFields(location, locationIdx)"
@@ -673,7 +673,7 @@
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-
+																  
                                                             <input ng-model="$ctrl.request.locations[locationIdx].etb"
                                                                    ng-disabled="$ctrl.disableAllFields"
                                                                    ng-change="$ctrl.validateRequestDateFields(location, locationIdx)"
@@ -695,7 +695,7 @@
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-
+																  
                                                             <input ng-model="$ctrl.request.locations[locationIdx].etd"
                                                                    ng-disabled="$ctrl.disableAllFields"
                                                                    ng-change="$ctrl.validateRequestDateFields(location, locationIdx)"
@@ -720,7 +720,7 @@
 
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-
+																  
                                                             <input ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
                                                                    ng-model="$ctrl.request.locations[locationIdx].recentEta"
                                                                    ng-disabled="$ctrl.disableAllFields"
@@ -834,7 +834,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.productInfoFields.Buyer.caption | translate }}
-                                                        <span  style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+                                                        <span  style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>                                                       
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
@@ -899,17 +899,17 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4" ng-hide="$ctrl.requestTenantSettings.isRequestTerminalHidden">
+                                            <div class="col-md-4" ng-hide="$ctrl.requestTenantSettings.isRequestTerminalHidden"> 
                                                 <div class="row">
                                                     <!-- {{location}} -->
                                                     <label class="control-label col-md-4">
-                                                        {{ 'PAGES.NEW_REQUEST.TERMINAL' | translate }}
+                                                        {{ 'PAGES.NEW_REQUEST.TERMINAL' | translate }}  
                                                     </label>
                                                     <!-- ng-options="item as item.name for item in CM.listsCache.Uom track by item.id " -->
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal[$index] track by terminal.terminalCode"
-                                                                    ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
+                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal[$index] track by terminal.terminalCode" 
+                                                            ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -933,23 +933,23 @@
                                                         </a>
                                                     </span>
                                                 </th>
-                                                <th id="generatedThId200"></th>
+                                                <th id="generatedThId200"></th>                                                
                                                 <th id="generatedThId201" ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible && column.caption != 'PAGES.NEW_REQUEST.CONTRACT_ID' && $ctrl.tenantSettings.shiptechLite">
                                                     <span>
-                                                        <span>{{ column.caption | translate }} </span>
+                                                        <span>{{ column.caption | translate }} </span> 
                                                         <span ng-show="column.caption=='PAGES.NEW_REQUEST.PRODUCT' || column.caption=='PAGES.NEW_REQUEST.PRODUCT_TYPE' || column.caption=='PAGES.NEW_REQUEST.SPEC_GROUP' || column.caption=='PAGES.NEW_REQUEST.MIN_QTY'|| column.caption=='PAGES.NEW_REQUEST.MAX_QTY'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
-                                                    </span>
+                                                    </span>  
                                                 </th>
                                                 <th id="generatedThId201" ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite">
                                                     <span>
-                                                        <span>{{ column.caption | translate }} </span>
+                                                        <span>{{ column.caption | translate }} </span> 
                                                         <span ng-show="column.caption=='PAGES.NEW_REQUEST.PRODUCT' || column.caption=='PAGES.NEW_REQUEST.PRODUCT_TYPE' || column.caption=='PAGES.NEW_REQUEST.SPEC_GROUP' || column.caption=='PAGES.NEW_REQUEST.MIN_QTY'|| column.caption=='PAGES.NEW_REQUEST.MAX_QTY'"  style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
-                                                    </span>
+                                                    </span>                                      
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-
+                                      
                                             <tr ng-repeat="(productIdx,product) in location.products  " ng-if="!product.isDeleted" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
 
                                                 <td>
@@ -984,15 +984,19 @@
                                                                ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI;">
 
                                                         <span class="input-group-addon {{(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) ? 'disabled' : ''}}" ng-click="triggerModal('general', 'masters_productlist', '' , '$ctrl.location[' + locationIdx + '].products[' +  productIdx + ']','','', $ctrl.productInfoColumns.Product.name ); $ctrl.requestProductDataOnChange = {'product':product.uniqueIdUI, 'location': locationIdx}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
-                                                            <i class="fa fa-search"></i>
+                                                            <i class="fa fa-search"></i>                                                          
+                                                        </span>
+                                                       
+                                                        <span class="input-group-addon" >
+                                                            <i class="fa fa-pencil-square-o" ng-if="!adminConfiguration.master.isVesselBopsDetailsVisible && product.productStatus.name !== 'Cancelled'"  ng-click="openMinQtyToReach(productIdx, $ctrl.request.locations[locationIdx],locationIdx)"></i> 
                                                         </span>
                                                     </div>
                                                 </td>
-                                                <td ng-if="$ctrl.productInfoColumns.ProductType.visible" style="width:8%">
+                                                <td ng-if="$ctrl.productInfoColumns.ProductType.visible" style="width:8%">                         
                                                     <input decode-input-format type="text" name="ProductType" id="product_ProductType_{{ $index }}" class="form-control input-sm" ng-model="product.productType.name" ng-disabled="true">
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.ProductCategory.visible" style="width:11%;min-width: 120px;">
-                                                    <select ng-options="productCategory as productCategory.name for productCategory in $ctrl.lists.ProductCategory track by productCategory.id" ng-model="product.productCategory" id="product_productCategory_{{ $index }}" class="form-control" data-original-title="{{ product.productCategory.name }}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields"></select>
+                                                    <select ng-options="productCategory as productCategory.name for productCategory in $ctrl.lists.ProductCategory track by productCategory.id" ng-model="product.productCategory" id="product_productCategory_{{ $index }}" class="form-control" data-original-title="{{ product.productCategory.name }}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields"></select>                                                   
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.SpecGroup.visible" style="width:11%;min-width: 150px;">
                                                     <select name="Spec Group" ng-options="specGroup as specGroup.name for specGroup in product.specGroups | decodeReadOnly track by specGroup.id" ng-model="product.specGroup" class="form-control pull-left" ng-required="product.product !== null && product.productStatus.name !== 'Cancelled' && $ctrl.specGroupIsRequired" data-original-title="{{ product.specGroup.name }}" style="width: calc(100% - 20px);" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_specGroup_{{ $index }}"></select>
@@ -1015,11 +1019,11 @@
                                                 </td>
 
                                                 <td ng-if="$ctrl.productInfoColumns.MinQty.visible" style="width:8%;min-width: 95px;">
-                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MinQuantity_{{$index}}" id="product_MinQuantity_{{$index}}" class="form-control input-sm" ng-model="product.minQuantity" max="{{ product.maxQuantity }}" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']; $ctrl.minQtyBlur(product)" data-original-title="{{ product.minQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
-                                                </td>
+                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MinQuantity_{{$index}}" id="product_MinQuantity_{{$index}}" class="form-control input-sm" ng-model="product.minQuantity" max="{{ product.maxQuantity }}" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']; $ctrl.minQtyBlur(product)" data-original-title="{{ product.minQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" >
+                                                </td>                                              
                                                 <td ng-if="$ctrl.productInfoColumns.MaxQty.visible" style="width:8%;min-width: 95px;">
-                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MaxQuantity_{{$index}}" id="product_MaxQuantity_{{$index}}" class="form-control input-sm" ng-model="product.maxQuantity" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-min="{{ product.minQuantity }}" data-original-title="{{ product.maxQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity'];" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
-                                                </td>
+                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MaxQuantity_{{$index}}" id="product_MaxQuantity_{{$index}}" class="form-control input-sm" ng-model="product.maxQuantity" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-min="{{ product.minQuantity }}" data-original-title="{{ product.maxQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity'];" >
+                                                 </td>                                            
                                                 <td ng-hide="$ctrl.requestTenantSettings.isRequestSuggestedLiftHidden" style="width:8%;min-width: 95px;">
                                                     <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="suggestedLift_{{$index}}" id="product_suggestedLift_{{$index}}" class="form-control input-sm" ng-model="product.suggestedLift" data-original-title="{{ product.suggestedLift }}" ng-disabled="true" ng-required="$ctrl.requestTenantSettings.isRequestSuggestedLiftMandatory">
                                                 </td>
@@ -1044,23 +1048,23 @@
                                                         <div class="input-group">
                                                             <label class="mt-checkbox" style="margin-left: 35px !important">
                                                                 <input id="product_preTest"
-                                                                       ng-model="product.isPretestRequired"
+                                                                       ng-model="product.isPretestRequired" 
                                                                        type="checkbox" ng-required="$ctrl.requestTenantSettings.isRequestPreTestMandatory">
                                                                 <span></span>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <!--                                                 <td ng-if="$ctrl.productInfoColumns.Reason.visible" style="width:35%;min-width: 100px;">
-
-                                                                            <select ng-options="reason as reason.name for reason in $ctrl.lists.Reason | decodeReadOnly track by reason.id" ng-model="product.reason" class="form-control" ng-required="product.product !== null" data-original-title="{{ product.reason.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
-                                                                        </td> -->
+<!--                                                 <td ng-if="$ctrl.productInfoColumns.Reason.visible" style="width:35%;min-width: 100px;">
+                                                
+                                                    <select ng-options="reason as reason.name for reason in $ctrl.lists.Reason | decodeReadOnly track by reason.id" ng-model="product.reason" class="form-control" ng-required="product.product !== null" data-original-title="{{ product.reason.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
+                                                </td> -->
                                                 <td ng-hide="$ctrl.requestTenantSettings.isRequestExpectedPriceHidden" style="width:8%;min-width: 95px;">
                                                     <input type="text" format="number:{{ $ctrl.numberPrecision.amountPrecision }}" name="expectedPrice_{{$index}}" id="product_expectedPrice_{{$index}}" class="form-control input-sm" ng-model="product.expectedPrice" data-original-title="{{ product.expectedPrice }}" ng-disabled="true" ng-required="$ctrl.requestTenantSettings.isRequestExpectedPriceMandatory">
-                                                </td>
+                                                </td>                                                
                                                 <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" style="width:10%">
                                                     {{ product.productStatus.displayName ? product.productStatus.displayName: product.productStatus.name }}
-                                                </td>
+                                                </td>	
                                                 <td style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
                                                         <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption" data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
@@ -1071,7 +1075,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-
+																												 
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1079,111 +1083,10 @@
                                 </form>
                             </div>
                             <!-- <div class="col-md-12" ng-init="$index1 = $index">
-        <span ng-switch-when="minQuantityReachGroup" >
-            <span ng-include="'pages/new-request/views/minQuantityRequest.html'"></span>
-        </span>
-    </div> -->
-                            <!--Start Min Quantity to Reach -->
-                            <div class="portlet light" ng-hide="$ctrl.requestTenantSettings.isRequestMinimumQuantityToReachHidden">
-                                <div class="portlet-title">
-                                    <div class="tools">
-                                        <a class="collapse" data-original-title="" title=""></a>
-                                    </div>
-                                    <div class="caption">
-                                        <span class="caption-subject">
-                                            Min Quantity to Reach
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="portlet-body custom-hardcoded-table ng-scope">
-                                    <table class="table-body" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <td style="width:2%"></td>
-                                                <td style="width:2%">
-                                                    <span class="insert"
-                                                          ng-click="$ctrl.request.minimumQuantitiesToReach  ? $ctrl.request.minimumQuantitiesToReach.push({id:0}) : $ctrl.request.minimumQuantitiesToReach=[{id:0}]"></span>
-                                                </td>
-                                                <td style="width:12%">
-                                                    <b>
-                                                        Port
-                                                    </b>
-                                                </td>
-                                                <td style="width:12%">
-                                                    <b>
-                                                        ETA
-                                                    </b>
-                                                </td>
-                                                <td style="width:12%">
-                                                    <b>
-                                                        Qty without Pre test
-                                                    </b>
-                                                </td>
-                                                <td style="width:12%">
-                                                    <b>
-                                                        Qty with Pre test
-                                                    </b>
-                                                </td>
-                                                <td style="width:12%">
-                                                    <b>
-                                                        Estimated Price
-                                                    </b>
-                                                </td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="(key, value) in $ctrl.request.minimumQuantitiesToReach" ng-if="value.isDeleted != true"
-                                                class="ng-scope">
-                                                <td style="width:2%">
-                                                    <span class="remove" style="display: block;pointer-events: all; opacity: 1"
-                                                          ng-click="value.id == 0 ? $ctrl.request.minimumQuantitiesToReach.splice(key,1) : value.isDeleted = true"></span>
-                                                </td>
-                                                <td style="width:2%">
-                                                    <span class="insert" ng-click="$ctrl.request.minimumQuantitiesToReach.push({id:0})"></span>
-                                                </td>
-
-                                                <td style="width:12%">
-                                                    <div class="input-group"  tooltip tooltiptrigger="hover">
-                                                        <input type="text" decode-input-format name="Port" class="form-control"
-                                                               ng-model="value.PortId[0].name" />
-                                                        <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedulesSingleselect(key)" href="#route_schedule_mintoreach" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
-                                                            <i class="fa fa-search"></i>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td style="width:12%">
-                                                    <!-- <input type="text" decode-input-format name="ETA" class="form-control"
-                                ng-controller="Controller_Master as CM" /> -->
-                                                    <label class="control-label ">
-                                                        {{ value.Eta}}
-                                                    </label>
-                                                </td>
-                                                <td style="width:12%">
-                                                    <input type="text" class="form-control" decode-input-format
-                                                           ng-model="value.MinQtyToReach"
-                                                           format='number:{{ tenantSetting.defaultValues.amountPrecision }}'
-                                                           ng-change="$ctrl.validateQtyPretest(value.MinQtyToReach, value.MinQtyToReachPretest)"
-                                                           required/>
-                                                </td>
-                                                <td style="width:12%">
-
-                                                    <input type="text" class="form-control" ng-required="true" decode-input-format
-                                                           ng-model="value.MinQtyToReachPretest"
-                                                           format='number:{{ tenantSetting.defaultValues.amountPrecision }}'
-                                                           ng-change="$ctrl.validateQtyPretest(value.MinQtyToReach, value.MinQtyToReachPretest)"
-                                                           />
-                                                </td>
-                                                <td style="width:12%">
-                                                    <label class="control-label ">
-                                                        {{value.EstimatedPrice}}
-                                                    </label>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- END Min Quantity to Reach -->
+                                <span ng-switch-when="minQuantityReachGroup" >
+                                    <span ng-include="'pages/new-request/views/minQuantityRequest.html'"></span>
+                                </span>
+                            </div> -->
                         </span>
                     </div>
                     <div class="clearfix"></div>

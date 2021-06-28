@@ -39,7 +39,7 @@
         $rootScope.TempadditionalCosts = [];
         $scope.vm = this;
         $scope.preferredContacts = [];
-
+ 
         $controller('ScreenLayout_Controller', {
             $scope: $scope
         });
@@ -1975,8 +1975,8 @@
             console.log("returnresult", returnresult)
         }
         $scope.SaveAdditionalCostDetValidation = function () {
-
-
+            
+           
             var returnresult = false;
 
             if ($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length > 0) {
@@ -3356,7 +3356,7 @@
             }
             return true;
         };
-        vm.getOptions = function(field, fromListsCache) {
+        vm.getOptions = function(field, fromListsCache) {        
             // Move this somewhere nice and warm
             var objectByString = function(obj, string) {
                 if (string.includes('.')) {
@@ -3459,7 +3459,7 @@
                         $scope.optionsCache[field.Name] = JSON.stringify(field);
                         Factory_Master.get_master_list(app_id, screen_id, field, (callback) => {
                             if (callback) {
-
+                              
                                 $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
                                 if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
                                     vm.checkSpecGroup(field);
@@ -4030,7 +4030,7 @@
 	                            selectDefaultAgent(id, index);
 	                        }
 	                    });
-	                } else if (id == "locationProductTypes") {
+	                } else if (id == "locationProductTypes") {	                
 	                    $.each(values, function(index, value) {
 	                        if (index > 2) {
 	                            $(this).hide();
@@ -5295,7 +5295,7 @@
                     name: rowData.name,
                     isContractReference: rowData.isContractReference
                 };
-            }
+            } 
             else if (element.screen == 'bunkerableport' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
                 // id from row data is order in table, actual locationId is in rowData.locationId
@@ -5474,7 +5474,7 @@
             else
                 $scope.formValues.vesselProducts[index]['vesselProductTanks']=([newItem]);
         }
-        ///shouldn't be allowed to select the same product type twice
+        ///shouldn't be allowed to select the same product type twice  
         $scope.addVesselProductType=function(key,productTypeId){
             for(var i=0; $scope.formValues.vesselProducts.length>i;i++){
                 if(!$scope.formValues.vesselProducts[i].isDeleted && key!=i)
@@ -5484,7 +5484,7 @@
                         $scope.formValues.vesselProducts[key].productType=null;
                         return toastr.error('Selected productType already exists');;
                     }
-                }
+                }               
             }
         }
         $scope.addnewTankProduct = function(index){
@@ -7583,38 +7583,6 @@
             });
         };
 
-        /* Request.Product - Min Qty to Reach */
-        $scope.openMinQtyToReach = function(productIdx, currProd,  prodIdx) {
-            // console.log('temp_test currProd, prodIdx');
-            // console.log(currProd);
-            // console.log(prodIdx);
-            // console.log(productIdx);
-            // //return;
-            // // Following are to be changed. In prog item.
-            // $scope.CurrentProductKey = prodIdx;
-            // currProd.minQtyToReach.push({});
-            // if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
-            // {
-            //     // console.log("1111111111", $scope.formValues.additionalCosts);
-            //     // console.log("1111111111", $rootScope.RootTempadditionalCosts);
-            //     if($rootScope.RootTempadditionalCosts == undefined) {
-            //         $rootScope.RootTempadditionalCosts = angular.copy($scope.formValues.additionalCosts);
-            //     }
-            // }
-            // if(currProd.minQtyToReach == undefined ) {
-            //     currProd.minQtyToReach = [];
-            //     currProd.minQtyToReach.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency}); // temp_test
-            // }
-
-            tpl = $templateCache.get('app-general-components/views/modal_RequestMinimumQuantityToReach.html');
-            $scope.modalInstance = $uibModal.open({
-                template: tpl,
-                size: 'full',
-                appendTo: angular.element(document.getElementsByClassName('page-container')),
-                windowTopClass: 'fullWidthModal',
-                scope: $scope // passed current scope to the modal
-            });
-        };
 
         $scope.createLocationPreferredSellerProductsPayload = function(reloadTable) {
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.currentPage) {
@@ -7761,7 +7729,7 @@
                 var isvalidbargecostdetails = true;
                 var isvalidminmaxqty = true;
                 var FormvalueLength = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length -1;
-
+                
                 for(let k = 0; k < $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length; k++)
                 {
                     let v = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails[k];
@@ -10029,8 +9997,8 @@
             if($scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].id!=undefined){
                 $scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].isDeleted = true;
             }else{
-                $scope.formValues.vesselProducts[vpKey].vesselProductTanks.splice(vptKey, 1);
-            }
+                $scope.formValues.vesselProducts[vpKey].vesselProductTanks.splice(vptKey, 1);             
+            }           
         }
 
         $scope.addnewLocationProduct = () => {
@@ -10082,7 +10050,7 @@
 
         $scope.bargeCostSequenceChange = (currentadditionalCostsdetails, key, value) => {
             if($scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1]) {
-                $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1].qtyFrom = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key].qtyTo;
+                $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1].qtyFrom = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key].qtyTo;         
             }
         }
         $scope.bargeCostSequenceUomChange = (currentadditionalCostsdetails) => {
@@ -10091,12 +10059,12 @@
                     v.priceUom = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[0].priceUom;
                 }
             })
-        }
+        }   
         $scope.bargeCostSequenceQtyToInvalid = (currentadditionalCostsdetails, key, value) => {
             var qtyTo = convertDecimalSeparatorStringToNumber(value.qtyTo);
             var qtyFrom = convertDecimalSeparatorStringToNumber(value.qtyFrom);
             if($scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1]) {
-                nextQtyTo = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1].qtyTo;
+                nextQtyTo = $scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1].qtyTo;         
             } else {
                 nextQtyTo = false;
             }
@@ -10110,7 +10078,7 @@
                 return true;
             }
             return false;
-        }
+        }  
 
     }
 ]);

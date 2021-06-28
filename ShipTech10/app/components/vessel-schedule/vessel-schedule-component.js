@@ -1,5 +1,5 @@
-angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$state', '$timeout', '$filter', '$tenantSettings', 'STATE', 'MOCKUP_MAP', 'LOOKUP_TYPE', 'uiApiModel', 'lookupModel',
-    function($scope, $state, $timeout, $filter, $tenantSettings, STATE, MOCKUP_MAP, LOOKUP_TYPE, uiApiModel, lookupModel) {
+angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$rootScope', '$state', '$timeout', '$filter', '$tenantSettings', 'STATE', 'MOCKUP_MAP', 'LOOKUP_TYPE', 'uiApiModel', 'lookupModel',
+    function($scope,$rootScope, $state, $timeout, $filter, $tenantSettings, STATE, MOCKUP_MAP, LOOKUP_TYPE, uiApiModel, lookupModel) {
         $scope.state = $state;
         $scope.STATE = STATE;
         let ctrl = this;
@@ -24,9 +24,13 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             ctrl.EnableSingleSelect = EnableSingleselect;
             if(Page == 'NewOrder'){
                 ctrl.isvoyagePortchangeEnabled = true;
+            }else if(Page == "NewRequest"){
+                ctrl.isvoyagePortchangeEnabled = false;
+                ctrl.islocationPortEnabled = false;
             }
             else{
                 ctrl.isvoyagePortchangeEnabled = false;
+                ctrl.islocationPortEnabled = true; 
             }
         // $scope.accessSelection = value;
  	       if (value == 0) {
@@ -111,6 +115,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
         
 
         $scope.selectedLocationsSingle = function(index){
+            ctrl.indexVoyage=index;
             ctrl.selectedLocationsSingle = [];
             ctrl.selectedLocationsSingle[index] = true;
         };
@@ -135,8 +140,13 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             });
             ctrl.selectedLocations = [];
         };
+        ctrl.confirmPortSelection = function () {
+            var index = ctrl.indexVoyage;
+            ctrl.selectedPortMinQty = ctrl.data1[index];
+            $rootScope.$broadcast('getSelectedPortMinQty', ctrl.selectedPortMinQty, false, 'NewRequestMinQty');
+        };
         ctrl.confirmVesselSchedulesSelection = function() {
-           
+
             let selectedLocations = [];
             angular.forEach(ctrl.selectedLocations, (value, key) => {
                 if (value) {

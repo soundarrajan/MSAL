@@ -1,0 +1,140 @@
+                    <!--Start Min Quantity to Reach -->
+                    <!-- <div> -->
+                        <div id="modal_close_bar"><button type="button" class="close" ng-click="PopupprettyCloseModal()" aria-hidden="true"></button></div>
+                        <br>
+                        <div class="portlet light" >
+                            <div class="portlet-title">
+                                <div class="caption-subject pull-left">
+                                    Min Quantity to Reach
+                                </div>
+                                <div class="caption-subject pull-right">
+                                    <a ng-click="saveMinimumQuantityToReach();" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope pull-right">
+                                        <span class="ladda-label ng-binding">
+                                            Save
+                                        </span>
+                                    </a>   
+                                </div>
+                               
+                            </div>
+                            <div class="portlet-body custom-hardcoded-table ng-scope">
+                                <table class="table-body" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <td style="width:2%"></td>
+                                            <td style="width:2%">
+                                                <span class="insert"
+                                                    ng-click="$ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach  ? $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.push({id:0}) : $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach=[{id:0}]"></span>
+                                            </td>
+                                            <td style="width:12%">
+                                                <b>
+                                                    Port
+                                                </b>
+                                            </td>
+                                            <td style="width:12%">
+                                                <b>
+                                                    ETA
+                                                </b>
+                                            </td>
+                                            <td style="width:12%">
+                                                <b>
+                                                    Qty with Pre test
+                                                </b>
+                                            </td>
+                                            <td style="width:12%">
+                                                <b>
+                                                    Qty without Pre test
+                                                </b>
+                                            </td>
+                                            <td style="width:12%">
+                                                <b>
+                                                    Estimated Price
+                                                </b>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="(key, value) in $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach" ng-if="value.isDeleted != true"
+                                            class="ng-scope">
+                                            <td style="width:2%">
+                                                    <span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="deleteMinimumQuantityToReach(key)"></span>
+                                            </td>
+                                            <td style="width:2%">
+                                                <span class="insert" ng-click="$ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.push({id:0,port:{id: 0,name: '',},portid:0,eta:null,isDeleted:false})"></span>
+                                            </td>                                           
+                                            <td style="width:12%">
+                                                <div class="input-group"  tooltip tooltiptrigger="hover">
+                                                <input id="Port{{key}}" ng-change="$ctrl.changeValue('Port{{key}}')" type="text"  class="form-control" decode-input-format name="Port"  ng-model="value.port.name" uib-typeahead="item as item.locationName for item in $ctrl.data1 | typeaheadCustomFilter:$viewValue:'locationName'" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" typeahead-on-select="$ctrl.selectedPortOnChange(value.port.name,key)" autocomplete="off" />
+                                                    <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedulesSingleselect(key)" href="#route_schedule_mintoreach" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
+                                                        <i class="fa fa-search"></i>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td style="width:12%">
+                                                <div class="input-group" style="width: 100%;">
+                                                            <input ng-model="value.eta"            
+                                                                   name="{{ key }}_etaMQTR"
+                                                                   id="{{ key }}_etaMQTR"   
+                                                                   new-date-picker
+                                                                   ng-required="true"
+                                                                   picker-type="date"
+                                                                   class="form-control date-mask new-date-picker"
+                                                                   ng-change="$ctrl.validateEtaDateFields({{key}}, value.eta)"
+                                                            />
+                                                </div>
+                                            </td>
+                                            <td style="width:12%">
+                                                <div class="input-group" style="width: 100%;">
+                                                    <input id="minQtyToReachPretest{{key}}" ng-change="$ctrl.changeValue('minQtyToReachPretest{{key}}')"  name="minQtyToReachPretest{{key}}" type="text" class="form-control"
+                                                    ng-model="value.minQtyToReachPretest" 
+                                                    format="number:{{ tenantSetting.defaultValues.quantityPrecision }}"                             
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td style="width:12%">
+                                                <div class="input-group" style="width: 100%;">
+                                                    <input id="minQtyToReach{{key}}" ng-change="$ctrl.changeValue('minQtyToReach{{key}}')" name="minQtyToReach"  type="text" class="form-control" 
+                                                    ng-model="value.minQtyToReach"
+                                                    format="number:{{ tenantSetting.defaultValues.quantityPrecision }}"                              
+                                                    />
+                                                </div>
+                                            </td>
+                                            
+                                            <td style="width:12%">
+                                                <div class="input-group" style="width: 100%;">
+                                                <label class="control-label ">
+                                                    {{value.estimatedPrice}}
+                                                </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <!-- </div> -->
+
+                    <!-- END Min Quantity to Reach -->
+
+        <div aria-labelledby="mySmallModalLabel"
+	     class="MinQtytoReachModalConfirmation confirmModal1 fade bs-modal hide"
+	      role="dialog"
+	     style="transform: translateY(90px);" tabindex="-1">
+	    <div class="modal-dialog modal-sm" style="width: 500px;" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+	            </div>
+	            <div class="modal-body">
+	                {{confirmModalData.message}}
+	            </div>
+	            <div class="modal-footer">
+	                <button class="btn btn-default" data-dismiss="modal" type="button">No</button>
+	                <button class="btn btn-default  btn-outline orange confirmAction1" data-dismiss="modal" type="button">
+	                    Yes
+	                </button>
+	            </div>
+	        </div>
+	    </div>
+    </div>

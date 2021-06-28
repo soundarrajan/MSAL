@@ -49,6 +49,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.requestId = $stateParams.requestId;
         ctrl.showAllContracts = false;
         $scope.forms = {};
+        $scope.etaDatevalid=false;
         ctrl.tableLength = {};
         $scope.portsModal = false;
         ctrl.isReadonlyForm = false;
@@ -84,7 +85,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             $rootScope.defaultSelectedBestContracts = [];
 
         }
-
+   
         if (!ctrl.numberPrecision) {
         	ctrl.numberPrecision = {};
             ctrl.numberPrecision.quantityPrecision = 3;
@@ -886,34 +887,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             return response;
         };
-        ctrl.validateQtyPretest = function(min, max) {
 
-            if(typeof min == 'string') {
-                min = parseFloat(min);
-            }
-            if(typeof max == 'string') {
-                max = parseFloat(max);
-            }
-            var response = {
-                MinQtyToReach: min,
-                MinQtyToReachPretest: max
-            };
-            if (isNaN(min)) {
-                min = null;
-            }
-            if (isNaN(max)) {
-                max = null;
-            }
-            if (min && min > max) {
-                response.MinQtyToReachPretest = null;
-            }
-            if (max && min > max) {
-                response.MinQtyToReach = null;
-            }
-            if (min && max && min > max) {
-                toastr.error('Quantity without Pretest should be greater than Quantity with Pretest');
-            }
-        };
 
 
         ctrl.saveRequest = function() {
@@ -2620,13 +2594,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 let Minquantitytoreach  = {
                     PortId: [
                         {
-                            id: locations[0].vesselVoyageDetailId,
-                            code: locations[0].voyageCode,
-                            name: locations[0].locationName
+                            code: locations[0].product[0].minimumQuantitiesToReach[0].code,
                         }
                     ],
-                    Eta:locations[0].eta,
-                    EstimatedPrice:100
+                    Eta: locations[0].product[0].minimumQuantitiesToReach[0].Eta,
+                    MinQtyToReach: locations[0].product[0].minimumQuantitiesToReach[0].MinQtyToReach,
+                    MinQtyToReachPretest: locations[0].product[0].minimumQuantitiesToReach[0].MinQtyToReachPretest,
+                    EstimatedPrice: locations[0].product[0].minimumQuantitiesToReach[0].EstimatedPrice
                 };
 
                 ctrl.request.minimumQuantitiesToReach[ctrl.CurrentSelectRow] = Minquantitytoreach;
@@ -3144,7 +3118,40 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
 
         ctrl.requestDateFieldsErrors = {};
+        ctrl.validateEtaDateFields = function(key,etadate,elm) {
+            function toggleInvalid(elm, action) {
+                if (action === 'add') {
+                    $(`#${ elm }_dateinput`).parent().find('input').addClass('invalidEta');
+                    $(`#${ elm }_dateinput`).addClass('invalidEta');
+                }
+                if (action === 'remove') {
+                    $(`#${ elm }_dateinput`).parent().find('input').removeClass('invalidEta');
+                    $(`#${ elm }_dateinput`).removeClass('invalidEta');
+                }
+            }
+            let hasError = false;
+            let errorMessage = '';
+            if (ctrl.request.locations[ctrl.selectedLocationIdx].eta != null, etadate != null) {
+                if (moment.utc(etadate).isBefore(moment.utc(ctrl.request.locations[ctrl.selectedLocationIdx].eta))) {
+                    errorMessage = 'MinQtyToReach ETA date must be greater than to InitialETA.';
+                    toastr.error(errorMessage);
+                    toggleInvalid(`${key }_etaMQTR`, 'add');
+                    ctrl.requestDateFieldsErrors[`${key }eta`] = errorMessage;
+                    hasError = true;
+                    $scope.etaDatevalid=true;
+                } else if (ctrl.request.locations[ctrl.selectedLocationIdx].eta) {
+                    toggleInvalid(`${key }_etaMQTR`, 'remove');
+                    ctrl.requestDateFieldsErrors[`${key }eta`] = null;
+                    $scope.etaDatevalid=false;
+                }
+            }
 
+            if (hasError) {
+                toggleInvalid(`${key }_etaMQTR`, 'add');
+            } else if (ctrl.request.locations[ctrl.selectedLocationIdx].eta) {
+                toggleInvalid(`${key }_etaMQTR`, 'remove');
+            }
+        };
         ctrl.validateRequestDateFields = function(location, locationIdx, elm) {
             $timeout(() => {
                 function toggleInvalid(elm, action) {
@@ -4038,12 +4045,219 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
         }
 
+        function IsDataExists(data) {
+            if (data == "" || data == null || data == undefined) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function IsZeroOrHigher(data) {
+            if (data >= 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+          // modal close
+        $scope.prettyCloseModal = function() {
+            let modalStyles = {
+                transition: '0.3s',
+                opacity: '0',
+                transform: 'translateY(-50px)'
+            };
+            let bckStyles = {
+                opacity: '0',
+                transition: '0.3s'
+            };
+            $('[modal-render=\'true\']').css(modalStyles);
+            $('.modal-backdrop').css(bckStyles);
+            setTimeout(() => {
+                if ($scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
+                // $(".modal-scrollable").css("display", "none")
+            }, 500);
+        };
         ctrl.showDestinations = function(locationIdx, event) {
         	console.log(ctrl.request.locations[locationIdx]);
         	console.log(event);
         };
 
+        $scope.$on('getSelectedPortMinQty', (_evt, value,EnableSingleselect,Page) => {
+            ctrl.EnableSingleSelect = EnableSingleselect;
+            if(Page == 'NewRequestMinQty'){
+                if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow].eta==null){
+                    ctrl.request.minimumQuantitiesToReach = [];
+                    ctrl.request.minimumQuantitiesToReach.push({'id':ctrl.CurrentSelectRow,
+                    'eta':null,
+                    'minQtyToReach':undefined,
+                    'minQtyToReachPretest':undefined,
+                    'port':{
+                        'id': null,
+                        'name': null,
+                    }});
+                }else{
+                    ctrl.request.minimumQuantitiesToReach[0]=angular.copy(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow]);
+                }
+                if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>1){
+                    for(let i=0;i<ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length;i++){
+                        if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==value.locationId){
+                            ctrl.request.minimumQuantitiesToReach[0].port.id="";
+                            ctrl.request.minimumQuantitiesToReach[0].eta=null;
+                            break;
+                        }else{
+                            ctrl.request.minimumQuantitiesToReach[0].port.id=value.locationId;
+                            ctrl.request.minimumQuantitiesToReach[0].port.name=value.locationName;
+                            ctrl.request.minimumQuantitiesToReach[0].portid=value.locationId;
+                            break;
+                        }
+                    }
+                }
+                if(value.eta>ctrl.request.locations[ctrl.selectedLocationIdx].eta &&  ctrl.request.minimumQuantitiesToReach[0].port.id!=""){
+                    ctrl.request.minimumQuantitiesToReach[0].eta= value.eta;
+                    ctrl.request.minimumQuantitiesToReach[0].port.id=value.locationId;
+                    ctrl.request.minimumQuantitiesToReach[0].port.name=value.locationName;
+                    ctrl.request.minimumQuantitiesToReach[0].portid=value.locationId;
+                }else{
+                    ctrl.validateEtaDateFields(ctrl.CurrentSelectRow,value.eta,"");
+                    ctrl.request.minimumQuantitiesToReach[0].eta=null;
+                }
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow]=angular.copy(ctrl.request.minimumQuantitiesToReach[0]);
+            }
+        });
+        $scope.deleteMinimumQuantityToReach = function(key) {
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[key]){
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[key].isDeleted = true;
+            }
+            else
+            ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.splice(key, 1);
+        }
+        ctrl.changeValue=function(key){
+            $('#'+key).removeClass('ng-cus-invalidcolor');
+        }
+        ctrl.etaDateChange=function(key,value){
+            if(value>ctrl.request.locations[ctrl.selectedLocationIdx].eta){
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[key].eta=value;
+            }else{
+                ctrl.validateEtaDateFields(ctrl.CurrentSelectRow,portDetails.eta,"");
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[key].eta=null;
+            }
+        }
+        //MinimumQuantitytoReach save
+        $scope.saveMinimumQuantityToReach = function() {
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length > 0 && !$scope.etaDatevalid)
+            {
+                var isvalidminQtyTOReach= true;
+                var isvalidminmaxqty = true;
+                var FormvalueLength = ctrl.CurrentSelectRow;
+                for(let k = 0; k < ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length; k++)
+                {
+                    let v = ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[k];
+                    if(v.isDeleted!=true ){
+                        if(FormvalueLength != k ) {
+                            if(IsZeroOrHigher(v.minQtyToReach) || IsZeroOrHigher(v.minQtyToReachPretest) ||IsDataExists(v.minQtyToReach)  ||IsDataExists(v.minQtyToReachPretest) || IsDataExists(v.eta) || IsDataExists(v.port.id)){
+                                isvalidminQtyTOReach = false;
+                                if(IsDataExists(v.minQtyToReachPretest) ){
+                                    $('#minQtyToReachPretest'+k).addClass('ng-cus-invalidcolor');
+                                }
+                                if(IsDataExists(v.minQtyToReach) ){
+                                    $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
+                                }
+                                if(IsDataExists(v.port.id)){
+                                    $('#Port'+k).addClass('ng-cus-invalidcolor');
+                                }
+                                //ctrl.disableAllFields=true;
+                                break;
+                            }
+                            else if(parseInt(v.minQtyToReachPretest) >= parseInt(v.minQtyToReach)){
+                                $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
+                                isvalidminmaxqty = false;
+                                break;
+                            }
+                            ctrl.request.minimumQuantitiesToReach=angular.copy(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach);
+                        }
+                        else{
+                            if(IsZeroOrHigher(v.minQtyToReach) ||IsZeroOrHigher(v.minQtyToReachPretest) || IsDataExists(v.minQtyToReach) ||IsDataExists(v.minQtyToReachPretest)    || IsDataExists(v.eta) || IsDataExists(v.port.id)){
+                                isvalidminQtyTOReach = false;
+                                if(IsDataExists(v.minQtyToReachPretest)  ){
+                                    $('#minQtyToReachPretest'+k).addClass('ng-cus-invalidcolor');
+                                }
+                                if(IsDataExists(v.minQtyToReach) ){
+                                    $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
+                                }
+                                if(IsDataExists(v.port.id)){
+                                    $('#Port'+k).addClass('ng-cus-invalidcolor');
+                                }
+                                //ctrl.disableAllFields=true;
+                                break;
+                            }
+                            else if(parseInt(v.minQtyToReachPretest) >= parseInt(v.minQtyToReach)){
+                                $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
+                                isvalidminmaxqty = false;
+                                break;
+                            }
+                            else{
+                                ctrl.request.minimumQuantitiesToReach=angular.copy(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach);
+                                $scope.prettyCloseModal();
+                            }
+                        }
+                    }
+                }
+                if(!isvalidminQtyTOReach){
+                    toastr.error('Please fill all required details');
+                    return
+                }
+                if(!isvalidminmaxqty){
+                    toastr.error(' Quantity without Pretest must be great than or equal to Quantity with Pretest ');
+                    return
+                }
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach=angular.copy(ctrl.request.minimumQuantitiesToReach);
+                $scope.prettyCloseModal();
+            }
+        };
+        /*MinimumQuantitytoReach Popup Close Modal start*/
+        $scope.PopupprettyCloseModal = function(){
+            $scope.showModalMinQtyTOReachConfirmation('Do you still want to Cancel MinimumQuantitytoReach?', true, (modalResponse) => {
+                if (modalResponse) {
+                    $scope.prettyCloseModal();
+                }
+            });
+        };
+        $scope.showModalMinQtyTOReachConfirmation = function(message, additionalData, callback) {
 
+            if(ctrl.request.minimumQuantitiesToReach.length == 0){
+                $scope.prettyCloseModal();
+                return;
+            }
+
+            $scope.confirmModalAdditionalData = additionalData;
+            $('.MinQtytoReachModalConfirmation').modal();
+            $('.MinQtytoReachModalConfirmation').removeClass('hide');
+            $('.modal-open.page-overflow .modal-scrollable').css("overflow-x", "hidden !important");
+            $scope.confirmModalData = {
+                message : message
+            };
+
+            $scope.confirmedModal = false;
+            $('.confirmAction1').on('click', () => {
+                if ($scope.confirmedModal) {
+                    return;
+                }
+                else{
+
+                    if($rootScope.RootTempMinQtyToReach != undefined && $rootScope.RootTempMinQtyToReach.length !=0){
+                        ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach = angular.copy($rootScope.RootTempMinQtyToReach);
+                    }
+                }
+
+                $scope.key = -1;
+                $scope.confirmedModal = true;
+               // $scope.$digest()
+                $scope.$apply();
+                return callback($scope.confirmModalAdditionalData);
+            });
+        };
         ctrl.getVesselSchedules = function() {
             ctrl.EnableSingleSelect = false;
         	if (ctrl.request.vesselDetails.vessel) {
@@ -4060,7 +4274,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
 
-                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, true,'NewRequest');
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, true,'NewRequest1');
 	        	}
         	}
         };
@@ -4078,9 +4292,137 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         		}
         	}
         });
+        ctrl.formatDate = function(elem, dateFormat) {
+            if (elem) {
+                var formattedDate = elem;
+                var dateFormat = ctrl.tenantSettings.tenantFormats.dateFormat.name;
+                var hasDayOfWeek = false;
+                if (dateFormat.startsWith('DDD ')) {
+                    hasDayOfWeek = true;
+                    dateFormat = dateFormat.split('DDD ')[1];
+                }
+                let date = Date.parse(elem);
+                date = new Date(date);
+                if (date) {
+                    let utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    // var utc = date.getTime();
+                    if (dateFormat.name) {
+                        dateFormat = dateFormat.name.replace(/d/g, 'D').replace(/y/g, 'Y');
+                    } else {
+                        dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
+                    }
+                    formattedDate = fecha.format(utc, dateFormat);
+                }
+                if (hasDayOfWeek) {
+                    formattedDate = `${moment(elem).format('ddd') } ${ formattedDate}`;
+                }
+                return formattedDate.split('00:00')[0];
+            }
+            else{
+                return null;
+            }
+        };
+        //selected Port on change to fill the eta date
+        ctrl.selectedPortOnChange=function(portDetails,key){
+            ctrl.CurrentSelectRow=key;
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow].eta==null){
+                ctrl.request.minimumQuantitiesToReach = [];
+                ctrl.request.minimumQuantitiesToReach.push({'id':0,
+                'eta':null,
+                'minQtyToReach':undefined,
+                'minQtyToReachPretest':undefined,
+                'port':{
+                    'id': null,
+                    'name': null,
+                }});
+            }else{
+                ctrl.request.minimumQuantitiesToReach[0]=angular.copy(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow]);
+            }
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>0){
+                for(let i=0;i<ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length;i++){
+                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==portDetails.locationId){
+                        ctrl.request.minimumQuantitiesToReach[0].port.id="";
+                        ctrl.request.minimumQuantitiesToReach[0].eta=null;
+                        break;
+                    }else{
+                        ctrl.request.minimumQuantitiesToReach[0].port.id=portDetails.locationId;
+                        ctrl.request.minimumQuantitiesToReach[0].port.name=portDetails.locationName;
+                        ctrl.request.minimumQuantitiesToReach[0].portid=portDetails.locationId;
+                        break;
+                    }
+                }
+            }
+            if( portDetails.eta>ctrl.request.locations[ctrl.selectedLocationIdx].eta && ctrl.request.minimumQuantitiesToReach[0].port.id!=""){
+                ctrl.request.minimumQuantitiesToReach[0].eta=  portDetails.eta;
+            }else{
+                ctrl.validateEtaDateFields(ctrl.CurrentSelectRow,portDetails.eta,"");
+                ctrl.request.minimumQuantitiesToReach[0].eta=null;
+            }
+            
+            ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[key]=angular.copy(ctrl.request.minimumQuantitiesToReach[0]);
+        }
+
+        /* Request.Product - Min Qty to Reach */
+        $scope.openMinQtyToReach = function(productIdx, currProd,locationIdx) {
+            ctrl.selectedLocationIdx=locationIdx;
+            ctrl.selectedProductIdx=productIdx;
+            ctrl.selProductIdx=productIdx+locationIdx;
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx] != undefined)
+            {
+                if($rootScope.RootTempMinQtyToReach == undefined){
+                    $rootScope.RootTempMinQtyToReach = angular.copy(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach);
+                }
+            }
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach!= undefined ){
+                ctrl.request.minimumQuantitiesToReach=ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach;
+            }else{
+                ctrl.request.minimumQuantitiesToReach = [];
+                ctrl.request.minimumQuantitiesToReach.push({'id':0,
+                'createdBy':$rootScope.user,
+                'isDeleted': false,
+                'createdOn': moment().format(),
+                'eta':null,
+                'minQtyToReach':null,
+                'minQtyToReachPretest':null,
+                'port':{
+                    'id': null,
+                    'name': null,
+                }});
+            }
+            //lookup autoComplete list data load
+            lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, {
+                ColumnName: 'Id',
+                OperationType: 0,
+                ValueType: 5,
+                Value: ctrl.request.vesselDetails.vessel.id
+            }).then((data) => {
+                ctrl.data = data.payload;
+                ctrl.data1 = angular.copy(data.payload);
+                $.each(ctrl.data, (k, v) => {
+                    v.eta = $scope.formatDate(v.eta);
+                    v.etb = $scope.formatDate(v.etb);
+                    v.etd = $scope.formatDate(v.etd);
+                });
+                destroyDataTable();
+                $timeout(() => {
+                    ctrl.table = SimpleDatatable.init({
+                        selector: '.simple-datatable',
+                        order: [
+                            [ 0, 'asc' ]
+                        ]
+                    });
+                });
+            });
+            tpl = $templateCache.get('app-general-components/views/modal_RequestMinimumQuantityToReach.html');
+            $scope.modalInstance = $uibModal.open({
+                template: tpl,
+                size: 'full',
+                appendTo: angular.element(document.getElementsByClassName('page-container')),
+                windowTopClass: 'fullWidthModal',
+                scope: $scope // passed current scope to the modal
+            });
+        };
     }
-
-
 ]);
 angular.module('shiptech.pages').component('newRequest', {
     templateUrl: 'pages/new-request/views/new-request-component.html',

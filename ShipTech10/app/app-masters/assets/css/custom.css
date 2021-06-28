@@ -358,6 +358,12 @@ input[ng-invalid="true"]{
     border-color: red!important;
 }
 
+.ng-cus-invalidcolor{
+    border-color: red!important; 
+}
+input.invalidEta {
+    border: 1px solid red !important;
+}
 /*input.ng-invalid, select.ng-invalid, button.ng-invalid, button.grey.ng-invalid,.dynamic_form_editor input.ng-invalid ~ .formatted-date {
     border-color: #e73d4a!important;
 }*/
