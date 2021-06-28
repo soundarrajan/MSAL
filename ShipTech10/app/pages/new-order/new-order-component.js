@@ -1759,7 +1759,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             listsModel.getProductTypeByProduct(product.id).then((server_data) => {
                 console.log('test');
 	            newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
-                newProduct.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
+                newProduct.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 	            newProduct.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
                 // newProduct.specGroups = server_data.data.payload;
             });
@@ -2100,7 +2100,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ctrl.lookupField.specGroup = product.defaultSpecGroup;
 		            listsModel.getProductTypeByProduct(product.id).then((server_data) => {
 			            ctrl.lookupField.productType = product.productType;
-                        ctrl.lookupField.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
+                        ctrl.lookupField.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 			            ctrl.lookupField.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
 		            });
                     // ctrl.lookupField.productType = product.productType;
@@ -2472,12 +2472,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.checkBQSConversionCheckbox = function(product) {
            if (ctrl.data.is2MDelivery) {
                 console.log(product);
-               if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSFO' || product.productTypeMOTGroup.name == 'IFO')) {
+               if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(product.confirmedQtyProdZ) > 200) {
                         product.isBqs = true;
                       
                     }
-                } else  if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSDIS' || product.productTypeMOTGroup.name == 'DIS')) {
+                } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
                     if (parseFloat(product.confirmedQtyProdZ) > 50) {
                         product.isBqs = true;
                        
@@ -4793,14 +4793,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     return;
                 }
 
-                if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSFO' || product.productTypeMOTGroup.name == 'IFO')) {
+                if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(product.confirmedQuantity) > 200) {
                         product.isBqs = true;
                         if (!product.id) {
                             product.isBqsChanged = true;
                         }
                     }
-                } else  if (product.productTypeMOTGroup && (product.productTypeMOTGroup.name == 'LSDIS' || product.productTypeMOTGroup.name == 'DIS')) {
+                } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
                     if (parseFloat(product.confirmedQuantity) > 50) {
                         product.isBqs = true;
                         if (!product.id) {
