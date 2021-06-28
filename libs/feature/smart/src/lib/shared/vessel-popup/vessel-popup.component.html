@@ -238,10 +238,9 @@
                             </ng-container>
                             <vessel-menu #menu 
                               [item]="item" 
-                              (refreshVesselAlert)="refreshVesselAlert()" 
+                              (refreshVesselAlert)="refreshVesselAlert($event)" 
                               [alerts]="VesselAlertList" 
-                              [changeLog]="VesselAlertLogs"
-                            >
+                              [changeLog]="VesselAlertLogs">
                           </vessel-menu>
                             <!-- <mat-icon class="dropdown-icon" [ngClass]="{'active':!menuClick}" style="z-index: 1050;" [matMenuTriggerFor]="clickalertsmenu"
                               [matMenuTriggerData]="menuData" #menuTrigger="matMenuTrigger"
