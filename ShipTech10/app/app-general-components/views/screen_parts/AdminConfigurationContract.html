@@ -86,13 +86,13 @@
     <!-- Show hide trade book -->
 	<div class="col-sm-4">
 		<div class="form-group row">
-	        <label for="displayAgreementType" class="displayAgreementType">
+	        <label for="displayTradeBook" class="displayTradeBook">
 	            <!-- {{ CM.app_id + '.DISPLAY_TRADE_BOOK' | translate }} -->
                 Display trade book
 	            <span class="orange-txt">*</span>
 	        </label>
-	        <div class="input-group form_input form_input_displayAgreementType">
-	            <select class="form-control contractOrderCreationTolerance" name="displayTradeBook" id="displayTradeBook" ng-model="formValues.contract.agreementTypeDisplay"  ng-options="item as item.name for item in CM.listsCache.ShowHide  track by item.id "></select>
+	        <div class="input-group form_input form_input_displayTradeBook">
+	            <select class="form-control contractOrderCreationTolerance" name="displayTradeBook" id="displayTradeBook" ng-model="formValues.contract.displayTradeBook"  ng-options="item as item.name for item in CM.listsCache.ShowHide  track by item.id "></select>
 	        </div>
         </div>
 	</div>
