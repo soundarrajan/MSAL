@@ -1,11 +1,11 @@
-﻿commit fa781f966e289b3695c1fe735a715951d4e931ab
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sun Jun 27 20:13:42 2021 +0000
+﻿commit def1e0feb2f7cb49115dad9ba0707c33c3b48dd2
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Mon Jun 28 04:54:27 2021 +0000
 
-    Merged PR 11867: #33526 scroll bug fix.
+    Merged PR 11868: 33527: changed label text
     
-    #33526 scroll bug fix.
+    33527: changed label text
     
-    Related work items: #33526
+    Cherry-picked from commit `861be512`.
 
 branch: master
