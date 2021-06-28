@@ -4823,9 +4823,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (ctrl.data.products) {
                 for (let i = 0; i < ctrl.data.products.length; i++) {
                     if (ctrl.data.products[i].isBqs) {
-                        if (ctrl.data.id) {
-                            ctrl.hasBQSCheckedInProducts =  true;
-                        }
+                        ctrl.hasBQSCheckedInProducts =  true;
                         return true;
                     }
                 }
