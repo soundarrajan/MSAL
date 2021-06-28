@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Inject,ViewChild, Input } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
+import { AGGridDownloadFileComponent } from '../ag-grid/ag-grid-download-file.component';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -10,7 +11,12 @@ import { LocalService } from '../../services/local-service.service';
 import { VesselDetailsComponent } from '../vessel-details/vessel-details.component';
 import { VesselPopupService } from '../../services/vessel-popup.service';
 import moment from 'moment';
+import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
 import { ApiCall } from '@shiptech/core/utils/decorators/api-call.decorator';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { FileSaverService } from 'ngx-filesaver';
+import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
+import { IDocumentsApiService } from '@shiptech/core/services/masters-api/documents-api.service.interface';
 @Component({
   selector: 'app-smart-operator',
   templateUrl: './smart-operator.component.html',
@@ -19,12 +25,18 @@ import { ApiCall } from '@shiptech/core/utils/decorators/api-call.decorator';
 export class SmartOperatorComponent implements OnInit {
   isValue: number = 3 ;
   public gridOptions: GridOptions;
+  gridOrderDetailsOptions: GridOptions;
+  public gridBdnReportOptions: GridOptions;
   public gridOptions1: GridOptions;
   public gridOptions2: GridOptions;
   public colResizeDefault;
   public rowCount: Number;
   rowData: any[];
+  BdnReportsData: any = [];
   public date = new FormControl(new Date());
+  currentDate = new Date();
+  selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
+  selectedToDate: Date = new Date();
   public vesselList = [];
   @Output() showTableViewEmit = new EventEmitter();
   @Output() clickEvent = new EventEmitter();
@@ -34,18 +46,34 @@ export class SmartOperatorComponent implements OnInit {
   public changeVessel;
   public coldefOnClick:any;
     public shiptechUrl : string = '';
+  rowSelection: any;
+  defaultColDef:any;
+  getSelectedbdnreport: any[];
+  EnableReportDate: boolean;
+  OrderDetailsData: any[];
+  Enabledbdnreports: boolean;
   // public paginationPageSize : number = 20;
   // public currentPage : number = 1;
   // public lastPage : number = 99;
   // public activePage : boolean = true; 
   
-  constructor(private localService: LocalService,private vesselService : VesselPopupService,
+  constructor(private localService: LocalService,private vesselService : VesselPopupService, private _FileSaverService: FileSaverService,
+    @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
+    private appErrorHandler: AppErrorHandler,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
       'data-picker',
       sanitizer.bypassSecurityTrustResourceUrl('../assets/customicons/datepicker.svg'));
     
     this.shiptechUrl =  new URL(window.location.href).origin;
+    this.defaultColDef = {
+      sortable: true,
+      filter: true,
+      resizable: true,
+      minWidth: 100,
+      flex: 1,
+    };
+    this.rowSelection = 'multiple';
 
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs_myvessels,
@@ -62,6 +90,7 @@ export class SmartOperatorComponent implements OnInit {
        overlayNoRowsTemplate:
        `<span>Rows are loading...</span>`,
       onGridReady: (params) => {
+       
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
         this.gridOptions.api.setRowData(this.rowData1);
@@ -92,6 +121,92 @@ export class SmartOperatorComponent implements OnInit {
       //   this.gridOptions.api.paginationSetPageSize(Number(this.paginationPageSize));
       //  }
     };
+
+
+    this.gridBdnReportOptions = <GridOptions>{
+      columnDefs: this.columnDefs_BdnReport,
+      animateRows: true,
+      headerHeight: 32,
+      pagination: true,
+      rowHeight: 50,
+      groupHeaderHeight: 40,
+      defaultColDef: {
+        filter: true,
+        sortable: true,
+        resizable: true
+      },
+      rowSelection: 'multiple',
+       overlayNoRowsTemplate:
+       `<span>Rows are loading...</span>`,
+      onGridReady: (params) => {
+
+        this.gridBdnReportOptions.api = params.api;
+        this.gridBdnReportOptions.columnApi = params.columnApi;
+        this.gridBdnReportOptions.api.setRowData(this.BdnReportsData);
+        this.rowCount = this.gridBdnReportOptions.api.getDisplayedRowCount();
+        this.gridBdnReportOptions.api.setColumnDefs(this.columnDefs_BdnReport);
+      },
+      onCellClicked: (params) => { this.coldefOnClick = params.colDef.field; },
+      onColumnResized: function (params) {
+      },
+      onColumnVisible: function (params) {
+      },
+      onColumnPinned: function (params) {
+      },
+      onGridSizeChanged: function (params) {
+        params.api.sizeColumnsToFit();
+      },
+      onRowClicked: (event) =>{
+        
+       },
+      //  onPaginationChanged:(event) =>{
+      //   this.gridOptions.api.paginationSetPageSize(Number(this.paginationPageSize));
+      //  }
+    };
+
+    this.gridOrderDetailsOptions = <GridOptions>{
+      columnDefs: this.columnDefs_OrderDetails,
+      animateRows: true,
+      headerHeight: 32,
+      rowHeight: 50,
+      groupHeaderHeight: 40,
+      pagination: true,
+      defaultColDef: {
+        filter: true,
+        sortable: true,
+        resizable: true
+      },
+      rowSelection: 'multiple',
+       overlayNoRowsTemplate:
+       `<span>Rows are loading...</span>`,
+      onGridReady: (params) => {
+
+        this.gridOrderDetailsOptions.api = params.api;
+        this.gridOrderDetailsOptions.columnApi = params.columnApi;
+        this.gridOrderDetailsOptions.api.setRowData(this.BdnReportsData);
+        this.rowCount = this.gridOrderDetailsOptions.api.getDisplayedRowCount();
+        this.gridOrderDetailsOptions.api.setColumnDefs(this.columnDefs_OrderDetails);
+      },
+      onCellClicked: (params) => { this.coldefOnClick = params.colDef.field; },
+      onColumnResized: function (params) {
+      },
+      onColumnVisible: function (params) {
+      },
+      onColumnPinned: function (params) {
+      },
+      onGridSizeChanged: function (params) {
+        params.api.sizeColumnsToFit();
+      },
+      onRowClicked: (event) =>{
+        
+       },
+      //  onPaginationChanged:(event) =>{
+      //   this.gridOptions.api.paginationSetPageSize(Number(this.paginationPageSize));
+      //  }
+    };
+
+
+
     this.gridOptions1 = <GridOptions>{
       animateRows: true,
       headerHeight: 32,
@@ -109,11 +224,12 @@ export class SmartOperatorComponent implements OnInit {
        overlayNoRowsTemplate:
        `<span> No rows to Display</span>`,
       onGridReady: (params) => {
+
         this.gridOptions1.api = params.api;
         this.gridOptions1.columnApi = params.columnApi;
         this.gridOptions1.api.setColumnDefs(this.columnDefs_unmanageablevessels);
         this.gridOptions.api.sizeColumnsToFit();
-        this.gridOptions1.api.setRowData(this.rowData2);
+        this.gridOptions1.api.setRowData(this.BdnReportsData);
         this.rowCount = this.gridOptions1.api.getDisplayedRowCount();
         this.gridOptions1.api.showLoadingOverlay();
 
@@ -182,6 +298,140 @@ export class SmartOperatorComponent implements OnInit {
      this.loadUnmanageableVessels();
   }
   
+  private columnDefs_OrderDetails = [
+    { headerName: 'Order Number', headerTooltip: 'Order Number', field: 'orderId', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    {
+      headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'vesselName', width: 150,
+      cellClass: function (params) {
+        var classArray: string[] = ['aggridlink aggrid-vertical-center'];
+        let newClass =
+          params.data.severity === '3' ? 'aggrid-left-ribbon mediumred1' :
+            (params.data.severity === '2' ? 'aggrid-left-ribbon mediumamber' :
+              'aggrid-left-ribbon mediumblue1');
+        classArray.push(newClass);
+        return classArray.length > 0 ? classArray : null
+      },
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
+    },
+    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    // { headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    {
+      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'order-multiple-values' }, cellClass: [' aggrid-columgroup-splitter-right aggrid-vertical-center'],
+      valueGetter: function (params) {
+        return params.data.fuelGrade;
+      }
+    },
+    { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'confirmedQuantity', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Price', headerTooltip: 'Price', field: 'price', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Order Value', headerTooltip: 'Order Value', field: 'orderValue', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    {
+      headerName: 'Status', field: 'orderStatus', headerTooltip: 'Status', cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+      cellRendererParams: function (params) {
+        var classArray: string[] = [];
+        classArray.push('aggrid-content-center');
+        let newClass = params.value === 'Stemmed' ? 'custom-chip darkgreen' :
+          params.value === 'Confirmed' ? 'custom-chip darkgreen' :
+          params.value === 'Invoiced' ? 'custom-chip darkgreen' :
+          params.value === 'Delivered' ? 'custom-chip darkgreen' :
+          params.value === 'Cancelled' ? 'custom-chip darkgreen' :
+          params.value === 'PartiallyInvoiced' ? 'custom-chip darkgreen' :
+          params.value === 'PartiallyDelivered' ? 'custom-chip darkgreen' :
+            params.value === 'Inquired' ? 'custom-chip purple' :
+              '';
+        classArray.push(newClass);
+        return { cellClass: classArray.length > 0 ? classArray : null }
+      }
+    },
+
+    { headerName: 'Type', headerTooltip: 'Type', field: 'agreementType', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Dept', headerTooltip: 'Dept', field: 'department', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Sub Dept', headerTooltip: 'Sub Dept', field: 'subDepartment', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Service', headerTooltip: 'Service', field: 'serviceName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Top up Volume', headerTooltip: 'Top up Volume', field: 'topUpVol', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'SOA', headerTooltip: 'SOA', field: 'soa', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']}
+  ]
+
+  private columnDefs_BdnReport = [
+    {
+     headerName: '', 
+     headerCheckboxSelection: true,
+     headerCheckboxSelectionFilteredOnly: true,
+    field: 'fileSelect', 
+    width: 30,
+    checkboxSelection: true,
+    suppressMenu: true,
+    
+
+    editable:true,
+    },
+    { headerName: 'Order ID', headerTooltip: 'Order ID', field: 'orderId', width: 30},
+    { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'deliveredQuantity', width: 100, headerClass: ['aggrid-text-align-r'], cellClass: ' aggrid-vertical-right'},
+    { headerName: 'File Name', headerTooltip: 'File Name', field: 'bdnFileName', 
+    cellRendererFramework: AGGridDownloadFileComponent, 
+    cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }},
+    width: 100, cellClass: 'aggridlink aggrid-vertical-center'},
+  ];
+
+  onDateChange(event) {
+    console.log('selected date  !!!!!!!!!!!!!!', event);
+  this.getBdnReport(event.fromDate, event.toDate);
+  }
+
+  onBtExport() {
+     
+    console.log("sssssss", this.gridBdnReportOptions);
+    this.getSelectedbdnreport = [];
+    this.getSelectedbdnreport = this.gridBdnReportOptions.api.getSelectedRows();
+    this.getSelectedbdnreport.forEach((item: any) => {
+      if(item.bdnFileName !=null){
+        this.downloadDocument(item);
+      }
+      
+     });
+   
+  }
+
+  onPageChange(page: number): void {
+    // this.gridOrderDetailsOptions.api.page = page;
+  }
+
+  ExcelReportsdownload(val: any): void {
+     
+    if(val == 'bdnReports'){
+      this.gridBdnReportOptions.api.exportDataAsExcel({
+        onlySelected: false
+      });
+    }
+    else
+    {
+      this.gridOrderDetailsOptions.api.exportDataAsExcel({
+        onlySelected: false
+      });
+
+    }
+    
+
+  }
+
+  downloadDocument(param: any): void {
+    console.log("00000000000final0000000", param)
+    const request = {
+      Payload: { Id: param.bdnFileID}
+    };
+    this.mastersApi.downloadDocument(request).subscribe(
+      response => {
+        this._FileSaverService.save(response, param.bdnFileName);
+      },
+      () => {
+        this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
+      }
+    );
+}
+
   private columnDefs_myvessels = [
     {
       headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'vesselName', width: 150,
@@ -460,6 +710,73 @@ export class SmartOperatorComponent implements OnInit {
       }
       this.triggerUpdateEvent();
       this.setRowCount(this.gridOptions);
+    })
+  }
+
+  gettabvalue(event){
+     
+    console.log("event.index",event.index)
+    if(event.index == 0){
+      this.Enabledbdnreports = true;
+      this.getBdnReport(this.selectedFromDate, this.selectedToDate);
+    }
+    else{
+      this.Enabledbdnreports = false;
+      this.getOrderDetails(this.selectedFromDate, this.selectedToDate);
+    }
+    
+
+  }
+
+  getReporttaborelse(event){
+    if(event.index == 1){
+      this.EnableReportDate = true;
+      this.Enabledbdnreports = true;
+      
+      this.getBdnReport(this.selectedFromDate, this.selectedToDate);
+    }
+    else{
+
+      this.EnableReportDate = false;
+      
+    }
+
+  }
+  public getOrderDetails(FromDelDate, ToDelDate){
+    // let req = {"FromDelDate":"2020-01-01", "ToDelDate":"2020-01-10"}
+    let req = { IsDefaultDate : 1,FromDelDate: FromDelDate,ToDelDate:ToDelDate};
+    this.vesselService.getOrderDetails(req).subscribe((res)=>{
+      this.OrderDetailsData = [];
+
+      this.OrderDetailsData = res.payload;
+      this.OrderDetailsData.forEach((item: any) => {
+        item.deliveryDate = moment(item.deliveryDate).format('MM/DD/YYYY HH:mm');
+        item.orderDate = moment(item.orderDate).format('MM/DD/YYYY HH:mm');
+       });
+      this.gridOrderDetailsOptions.api.setColumnDefs(this.columnDefs_OrderDetails);
+    this.gridOrderDetailsOptions.api.setRowData(this.OrderDetailsData);
+    this.gridOrderDetailsOptions.api.sizeColumnsToFit();
+    this.rowCount = this.gridOrderDetailsOptions.api.getDisplayedRowCount();
+     
+    })
+  }
+
+  public getBdnReport(FromDelDate, ToDelDate){
+
+    let req = { IsDefaultDate : 1,FromDelDate: FromDelDate,ToDelDate:ToDelDate};
+    // let req = {"FromDelDate":"2020-01-01", "ToDelDate":"2020-01-10"}
+    // {"Payload": {"IsDefaultDate":1,"ToDelDate":"2020-01-28", "FromDelDate":"2020-01-19"}}
+    this.vesselService.getBdnReport(req).subscribe((res)=>{
+      this.BdnReportsData = res.payload;
+      this.BdnReportsData.forEach((item: any) => {
+        item.deliveryDate = moment(item.deliveryDate).format('MM/DD/YYYY HH:mm');
+        item.orderDate = moment(item.orderDate).format('MM/DD/YYYY HH:mm');
+       });
+      this.gridBdnReportOptions.api.setColumnDefs(this.columnDefs_BdnReport);
+    this.gridBdnReportOptions.api.setRowData(this.BdnReportsData);
+    this.gridBdnReportOptions.api.sizeColumnsToFit();
+    this.rowCount = this.gridBdnReportOptions.api.getDisplayedRowCount();
+     
     })
   }
 
