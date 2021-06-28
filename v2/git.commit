@@ -1,7 +1,11 @@
-﻿commit e9c17f312e2dfe19fae458718b70b7aeb83d31f6
-Author: oliu radu <oliuradu@gmail.com>
-Date:   Mon Jun 28 11:56:20 2021 +0300
+﻿commit 305f8dcd1ca49d9dae44c5eddbd81f79b16b5877
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Mon Jun 28 12:00:31 2021 +0000
 
-    added tradebooks in contract page
+    Merged PR 11885: 33434#bugfix
+    
+    33434#bugfix
+    
+    Cherry-picked from commit `b931d156`.
 
 branch: master
