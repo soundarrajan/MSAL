@@ -236,7 +236,13 @@
                                 alt="tick-icon">
                               <div style="flex: 0 0 56%;">Resolved</div>
                             </ng-container>
-                            <vessel-menu #menu [item]="item" [alerts]="VesselAlertList" [changeLog]="VesselAlertLogs"></vessel-menu>
+                            <vessel-menu #menu 
+                              [item]="item" 
+                              (refreshVesselAlert)="refreshVesselAlert()" 
+                              [alerts]="VesselAlertList" 
+                              [changeLog]="VesselAlertLogs"
+                            >
+                          </vessel-menu>
                             <!-- <mat-icon class="dropdown-icon" [ngClass]="{'active':!menuClick}" style="z-index: 1050;" [matMenuTriggerFor]="clickalertsmenu"
                               [matMenuTriggerData]="menuData" #menuTrigger="matMenuTrigger"
                               (mouseenter)="!menuClick && toggleMenu($event,{data: item.alert,priority:item.priority, status:item.status, changeLog:item.changeLog,comments:item.comments});"

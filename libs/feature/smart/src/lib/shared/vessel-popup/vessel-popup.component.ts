@@ -299,7 +299,9 @@ export class VesselPopupComponent implements OnInit {
       this.loadVesselAlertList();
     }
   }
-
+  refreshVesselAlert() {
+    this.loadVesselAlertList();
+  }
   loadVesselAlertList() {
     let requestPayload = {
       "VesselId": this.popup_data?.vesselId
@@ -871,6 +873,7 @@ export class VesselMenuComponent {
   @Input('item') item;
   @Input('alerts') alerts;
   @Input('changeLog') changeLog;
+  @Output() refreshVesselAlert= new EventEmitter(); 
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
   @ViewChild('statusDropdown') statusDropdown;
 
@@ -973,32 +976,30 @@ export class VesselMenuComponent {
       let vesselAlertName = this.item?.alertTypes?.name;
       let selectedAlertStatus = this.VesselAlertStatus.find(item=>item.name==status);
       let requestPayload = {
-        "Payload": {
-          "VesselId": this.item?.vesselId,
-          "VesselAlerts": [
-            {
-              "Id": vesselAlertId,
-              "VesselId": this.item?.vesselId,
-              "AlertTypes": {
-                "id": vesselAlertId,
-                "name": vesselAlertName
-              },
-              "AlertStatus": {
-                "id": selectedAlertStatus?.id,
-                "name": selectedAlertStatus?.name
-              },
-              "AlertColorFlag_Name": "",
-              "AlertComments": this.item?.alertComments,
-              "IsDeleted": 0
-            }
-          ]
-        }
+        "VesselId": this.item?.vesselId,
+        "VesselAlerts": [
+          {
+            "Id": vesselAlertId,
+            "VesselId": this.item?.vesselId,
+            "AlertTypes": {
+              "id": vesselAlertId,
+              "name": vesselAlertName
+            },
+            "AlertStatus": {
+              "id": selectedAlertStatus?.id,
+              "name": selectedAlertStatus?.name
+            },
+            "AlertColorFlag_Name": "",
+            "AlertComments": this.item?.alertComments,
+            "IsDeleted": 0
+          }
+        ]
       }
       this.selectionChange = false;
       this.vesselPopupService.updateVesselAlertList(requestPayload).subscribe(data=> {
         console.log(data);
         this.closeMenu();
-        // this.refreshPortRemark.emit(data);
+        this.refreshVesselAlert.emit(data);
       })
   }
   cancelMenu() {
