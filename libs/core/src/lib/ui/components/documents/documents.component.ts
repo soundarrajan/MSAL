@@ -99,7 +99,7 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   downloadDocument(id: number, name: string): void {
     const request = {
-      Payload: id
+      Payload: {Id:id}
     };
     this.mastersApi.downloadDocument(request).subscribe(
       response => {

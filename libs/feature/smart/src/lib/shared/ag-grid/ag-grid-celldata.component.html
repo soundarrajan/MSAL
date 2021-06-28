@@ -19,6 +19,18 @@
     </span>  
 </div>   -->
 
+<div *ngIf="params.type=='order-multiple-values'">
+  <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">
+    <div class="aggrid-content-center multiple-text w-auto">
+      <!-- <ng-container *ngIf="toggleTooltip==true"> -->
+        <!-- <ng-container *ngTemplateOutlet="hoverPopup"></ng-container> -->
+      <!-- </ng-container> -->
+      <span class="aggrid-text-resizable" *ngIf="(params?.gridTable)=='future-request'" [matMenuTriggerFor]="popoverTooltip" [matMenuTriggerData]="params.value" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()" (mouseleave)="trigger.closeMenu()">{{params.value}}</span> <!-- (mouseleave)="trigger.closeMenu()"-->
+      <span [matTooltip]="item" class="aggrid-text-resizable" *ngIf="!(params?.gridTable)">{{params.value}}</span>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="params.type=='multiple-values'">
     <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">
       <div *ngFor="let item of params.value" class="aggrid-content-center multiple-text w-auto">

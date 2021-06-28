@@ -1,3 +1,9 @@
 export interface IDocumentsDownloadRequest {
-  Payload: number;
+  Payload: IDocumentsDownloadDto;
+}
+
+
+export interface IDocumentsDownloadDto{
+  Id: number;
+ 
 }
