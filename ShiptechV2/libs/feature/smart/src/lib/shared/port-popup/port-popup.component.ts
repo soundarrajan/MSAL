@@ -1249,6 +1249,7 @@ export class PortMenuComponent {
     this.portRemarkLogs = (groupRemarkLog[remarkType]?.length)? groupRemarkLog[remarkType]: [];
 
     this.portStatuses = await this.legacyLookupsDatabase.getPortStatuses();
+    // this.portStatuses.push({name: 'Delete', displayName: 'Delete', id:5})
   }
   groupByRemarkLogs() {
     var groupRemarkType = [];
@@ -1318,6 +1319,18 @@ export class PortMenuComponent {
     this.openMenu();
 
   }
+  deletePortRemark() {
+    let requestPayload = {
+      "PortId": this.item?.portId,
+      "RemarkTypesId" : this.item?.RemarkTypes?.id
+    }
+    this.selectionChange = false;
+    this.portService.DeletePortRemark(requestPayload).subscribe(data=> {
+      console.log(data);
+      this.closeMenu();
+      this.refreshPortRemark.emit(data);
+    })
+  }
   updatePortRemark(status) {
     if((status=='Resolved') && (!(this.item?.remarkComments) || (this.item?.remarkComments.trim()==''))) {
       let warnCommentMsg = "please enter a comment";
@@ -1325,6 +1338,10 @@ export class PortMenuComponent {
         panelClass: 'confirmation-popup-operator',
         data:  { message: warnCommentMsg, source: 'hardWarning' }
       });
+      return;
+    }
+    if(status.toLowerCase() == 'deleted') {
+      this.deletePortRemark();
       return;
     }
       let selectedRemarkStatus = this.portStatuses.find(item=>item.name==status)
@@ -1358,19 +1375,6 @@ export class PortMenuComponent {
         this.closeMenu();
         this.refreshPortRemark.emit(data);
       })
-    // setTimeout(() => {
-    //   this.alerts.forEach((element) => {
-    //     if (element.id == this.item.id) {
-    //       element.status = status;
-    //       element.comments = this.item.comments
-    //       var action = "Alert marked as " + status.toLowerCase() + " by Yusuf Hassan";
-    //       element.changeLog.push({
-    //         time: "MAR 12, 2020 12:43PM",
-    //         action: action
-    //       })
-    //     }
-    //   })
-    // }, 100);
   }
   cancelMenu() {
     this.closeMenu();
