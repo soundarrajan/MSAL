@@ -267,6 +267,10 @@ export class VesselPopupComponent implements OnInit {
   loadVesselScheduleList(vesselId){
     if(vesselId != null){
       let selectedVessel = this.vesselList.find(vessel => vessel.id == vesselId)
+      if(!(selectedVessel?.imono)) {
+          this.triggerClickEvent();     
+          return;
+      };
       let req = { VesselImo : selectedVessel?.imono};//'SDMLG1014' };
       this.vesselService.getVesselSchedule(req).subscribe((res)=>{
         if(res.payload.length > 0){
@@ -301,9 +305,11 @@ export class VesselPopupComponent implements OnInit {
   }
   refreshVesselAlert(data) {
     // this.loadVesselAlertList();
+    // refresh alert list with updated payload
       let VesselAlertData = data?.payload;
       this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
       this.VesselAlertLogs = VesselAlertData?.vesselAlertLogs;
+      this.triggerClickEvent();
   }
   loadVesselAlertList() {
     let requestPayload = {
@@ -652,6 +658,7 @@ export class VesselPopupComponent implements OnInit {
       let VesselAlertData = data?.payload;
       this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
       this.VesselAlertLogs = VesselAlertData?.vesselAlertLogs;
+      this.triggerClickEvent();
     });
   }
 
