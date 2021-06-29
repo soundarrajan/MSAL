@@ -4,7 +4,7 @@ import { BunkeringPlanComponent } from "./../bunkering-plan/bunkering-plan.compo
 import { Select, Selector } from "@ngxs/store";
 import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
 import { ISaveVesselData } from "./../../store/shared-model/vessel-data-model";
-import { Observable, Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-comments',
@@ -107,30 +107,44 @@ export class CommentsComponent implements OnInit {
 
   public loadComments() {
     this.loadBunkerPlanComments();
-    this.loadRequestComments();
+    // this.loadRequestComments();
   }
 
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
     
-    this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
-      console.log('Bunker Plan Comments...', response?.payload);
-      this.BunkerPlanCommentList = response?.payload;
+    // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
+    //   console.log('Bunker Plan Comments...', response?.payload);
+    //   this.BunkerPlanCommentList = response?.payload;
+    //   this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
+    //   this.triggerTitleToBind();
+    // })   
+    let BunkerPlanComment = this.BPService.getBunkerPlanComments(payload);
+    let RequestComment = this.BPService.getRequestComments(payload);
+    forkJoin([BunkerPlanComment, RequestComment]).subscribe(responseList => {
+      this.BunkerPlanCommentList = responseList[0]?.payload;
       this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
-      this.triggerTitleToBind();
-    })   
+      this.RequestCommentList = responseList[1]?.payload;
+      this.emitCommentCount();
+    });
   }
-  loadRequestComments() {
-    let payload = this.vesselRef?.vesselId; //3524
-    this.BPService.getRequestComments(payload).subscribe((response)=> {
-      console.log('Request Comments...', response?.payload);
-      this.RequestCommentList = response?.payload;
-      this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
-      +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
+  emitCommentCount() {
+    this.totalCommentCount = ((this.BunkerPlanCommentList?.length)? this.BunkerPlanCommentList.length: 0)
+      +((this.RequestCommentList?.length)? this.RequestCommentList.length: 0);
       this.ShowCommentCount.emit(this.totalCommentCount);
       this.triggerTitleToBind();
-    })
   }
+  // loadRequestComments() {
+  //   let payload = this.vesselRef?.vesselId; //3524
+  //   this.BPService.getRequestComments(payload).subscribe((response)=> {
+  //     console.log('Request Comments...', response?.payload);
+  //     this.RequestCommentList = response?.payload;
+  //     this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
+  //     +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
+  //     this.ShowCommentCount.emit(this.totalCommentCount);
+  //     this.triggerTitleToBind();
+  //   })
+  // }
 
   RetainOriginalBPComment(participant) {
     //retain all BP comments once filter get reset
@@ -204,6 +218,8 @@ export class CommentsComponent implements OnInit {
         this.BunkerPlanCommentList = response?.payload;
         this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
         this.newComment = "";
+        this.emitCommentCount();
+        this.triggerTitleToBind();
       });
 
 
