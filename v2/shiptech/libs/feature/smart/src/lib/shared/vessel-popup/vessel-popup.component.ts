@@ -858,7 +858,7 @@ export class VesselPopupComponent implements OnInit {
         (click)="$event.stopPropagation();"></textarea>
     </mat-form-field>
   </div>
-  <div *ngIf="item.alertStatus.name != 'No Action Taken'" class="change-log">
+  <div *ngIf="changeLogs.length" class="change-log">
     <div>Change Log</div>
     <div style="height:70px;max-height: 100px;overflow-y: scroll;">
       <div *ngFor="let data of changeLogs" style="margin:5px 0px">

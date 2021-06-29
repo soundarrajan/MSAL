@@ -1204,7 +1204,7 @@ export class PortPopupComponent implements OnInit {
         (click)="$event.stopPropagation();"></textarea>
     </mat-form-field>
   </div>
-  <div *ngIf="item?.remarkStatus?.name != 'No Action Taken'" class="change-log">
+  <div *ngIf="portRemarkLogs.length" class="change-log">
     <div>Change Log</div>
     <div style="height:70px;max-height: 100px;overflow-y: scroll;">
       <div *ngFor="let data of portRemarkLogs" style="margin:5px 0px">

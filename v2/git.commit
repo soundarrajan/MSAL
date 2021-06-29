@@ -1,9 +1,9 @@
-﻿commit 66766cd4157fd4ec92a84e733fa2a8a60dbb1001
+﻿commit 53ef612474011980efeb8f5b5141f555abc7145b
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jun 29 15:53:37 2021 +0000
+Date:   Tue Jun 29 16:00:38 2021 +0000
 
-    Merged PR 11957: #33474: Port Remarks_ The changelogs section not dipslaying, when the status modified from Pending/resolved to no action taken issues has fixed
+    Merged PR 11958: #33473: Port Remarks_ The changelogs section not dipslaying, when the status modified from Pending/resolved to no action taken issue has fixed
     
-    Related work items: #33474
+    Related work items: #33473
 
 branch: master
