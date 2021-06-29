@@ -1,9 +1,9 @@
-﻿commit 069e71d235c130c0d577c844d464af4de83c5eee
+﻿commit 66766cd4157fd4ec92a84e733fa2a8a60dbb1001
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jun 29 15:08:35 2021 +0000
+Date:   Tue Jun 29 15:53:37 2021 +0000
 
-    Merged PR 11956: #33433: Bunker plan comments_ The following issues exists in the bunker plan comments section issues has fixed
+    Merged PR 11957: #33474: Port Remarks_ The changelogs section not dipslaying, when the status modified from Pending/resolved to no action taken issues has fixed
     
-    Related work items: #33433
+    Related work items: #33474
 
 branch: master

@@ -1019,6 +1019,7 @@ export class PortPopupComponent implements OnInit {
   }
   refreshPortRemark(portRemarkRes) {
     this.portRemarkList = (portRemarkRes?.payload?.portRemarkDetails)? portRemarkRes.payload.portRemarkDetails: [];
+    this.portRemarkLogs = (portRemarkRes?.payload?.portRemarkLogs)? portRemarkRes.payload.portRemarkLogs: [];
     this.triggerClickEvent();
   }
   loadBopsPrice() {
@@ -1246,8 +1247,13 @@ export class PortMenuComponent {
   async loadMasterLookupData() {
     let remarkType = this.item?.remarkTypes?.name;
     let groupRemarkLog = await this.groupByRemarkLogs();
-    this.portRemarkLogs = (groupRemarkLog[remarkType]?.length)? groupRemarkLog[remarkType]: [];
-
+    if(groupRemarkLog[remarkType]?.length) {
+      let groupRemarkLogData = groupRemarkLog[remarkType];
+      //sort change log in desc based on log created time
+      this.portRemarkLogs = groupRemarkLogData.sort((val1, val2)=> {return new Date(val2.createdOn).valueOf() - new Date(val1.createdOn).valueOf()});
+    } else {
+      this.portRemarkLogs = [];
+    }
     this.portStatuses = await this.legacyLookupsDatabase.getPortStatuses();
     // this.portStatuses.push({name: 'Delete', displayName: 'Delete', id:5})
   }
