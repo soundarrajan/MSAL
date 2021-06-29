@@ -905,6 +905,13 @@ export class VesselMenuComponent {
     let alertTypes = this.item?.alertTypes?.name;
     let groupChangeLog = await this.groupByAlertChangeLogs();
     this.changeLogs = (groupChangeLog[alertTypes]?.length)? groupChangeLog[alertTypes]: [];
+    if(groupChangeLog[alertTypes]?.length) {
+      let groupAlertLogData = groupChangeLog[alertTypes];
+      //sort change log in desc based on log created time
+      this.changeLogs = groupAlertLogData.sort((val1, val2)=> {return new Date(val2.createdOn).valueOf() - new Date(val1.createdOn).valueOf()});
+    } else {
+      this.changeLogs = [];
+    }
 
     this.VesselAlertStatus = await this.legacyLookupsDatabase.getPortStatuses();
   }
