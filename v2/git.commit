@@ -1,11 +1,9 @@
-﻿commit 0e740788e1bf623097207988f1c382f94085239b
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Tue Jun 29 14:51:38 2021 +0000
+﻿commit 069e71d235c130c0d577c844d464af4de83c5eee
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Jun 29 15:08:35 2021 +0000
 
-    Merged PR 11954: added default pagination
+    Merged PR 11956: #33433: Bunker plan comments_ The following issues exists in the bunker plan comments section issues has fixed
     
-    added default pagination
-    
-    Cherry-picked from commit `33893cff`.
+    Related work items: #33433
 
 branch: master

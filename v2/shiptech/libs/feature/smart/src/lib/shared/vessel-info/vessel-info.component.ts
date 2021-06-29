@@ -19,7 +19,7 @@ import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveS
 import { SaveCurrentROBState,GeneratePlanState } from '../../store/bunker-plan/bunkering-plan.state';
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import moment  from 'moment';
-import { Subject, Subscription, Observable } from 'rxjs';
+import { Subject, Subscription, Observable, forkJoin } from 'rxjs';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 
@@ -86,10 +86,10 @@ export class VesselInfoComponent implements OnInit {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
-      //Subscribe only once after getting different object model after 800ms
+      //Subscribe only once after getting different object model after 500ms
       this.subscription = this.vesselData$
       .pipe(
-        debounceTime(800), 
+        debounceTime(500), 
         distinctUntilChanged()
       )
       .subscribe(data=> {
@@ -127,23 +127,35 @@ export class VesselInfoComponent implements OnInit {
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
     
-    this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
-      this.BunkerPlanCommentList = response?.payload;
-      this.loadRequestComments();
-    })   
-  }
-  loadRequestComments() {
-    let payload = this.vesselRef?.vesselId;
-    this.BPService.getRequestComments(payload).subscribe((response)=> {
-      console.log('Request Comments count...', response?.payload);
-      this.RequestCommentList = response?.payload;
-      this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
-      +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
-      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-      titleEle.click();
+    // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
+    //   this.BunkerPlanCommentList = response?.payload;
+    //   this.loadRequestComments();
+    // })   
+
+    // forkjoin http calls to show count of BunkerPlanComment, RequestComment at same time
+    let BunkerPlanComment = this.BPService.getBunkerPlanComments(payload);
+    let RequestComment = this.BPService.getRequestComments(payload);
+    forkJoin([BunkerPlanComment, RequestComment]).subscribe(responseList => {
+      this.BunkerPlanCommentList = responseList[0]?.payload;
+      this.RequestCommentList = responseList[1]?.payload;
       
-    })
+      this.totalCommentCount = ((this.BunkerPlanCommentList?.length)? this.BunkerPlanCommentList.length: 0)
+      +((this.RequestCommentList?.length)? this.RequestCommentList.length: 0);
+      this.triggerTitleToBind();
+    });
   }
+  // loadRequestComments() {
+  //   let payload = this.vesselRef?.vesselId;
+  //   this.BPService.getRequestComments(payload).subscribe((response)=> {
+  //     console.log('Request Comments count...', response?.payload);
+  //     this.RequestCommentList = response?.payload;
+  //     this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
+  //     +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
+  //     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+  //     titleEle.click();
+      
+  //   })
+  // }
   public loadBunkerPlanHeader(event) {
     let vesselId = event.id? event.id: 348;
     this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
@@ -191,6 +203,11 @@ export class VesselInfoComponent implements OnInit {
           this.saveCurrentROB(this.ROBArbitrageData);
         })
       })
+  }
+
+  triggerTitleToBind() {
+    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+    titleEle.click();
   }
 
   saveCurrentROB(ROBArbitrageData){
