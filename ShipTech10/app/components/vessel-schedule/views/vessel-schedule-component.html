@@ -1,61 +1,142 @@
-
-<div id="modal_close_bar">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+<div class="" ng-if="!$ctrl.islocationPortEnabled">
+    <div id="modal_close_bar">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    </div>
+    <div class="clearfix">
+        <div class="col-md-12 general-header color-white">
+            <div class="st-main-content-menu tabbable-line">
+                <form class="form-inline">
+                    <h4 class="pull-left title ">
+                        SELECT  {{$ctrl.ui.vesselSchedule.title |  translate}}
+                    </h4>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable">
+            <thead>
+                <tr>
+                    <th id="generatedThId127" ng-repeat="column in $ctrl.ui.vesselSchedule.columns track by $index">
+                        {{column.caption | translate}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.data track by $index">
+                    <td>
+                        <!-- {{$ctrl.EnableSingleSelect}} -->
+                        <label ng-if="$ctrl.EnableSingleSelect"  class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-model="$ctrl.selectedLocationsSingle[$index]"  ng-click="selectedLocationsSingle($index)"/>
+                            <span></span>
+                        </label>
+                        <label ng-if="!$ctrl.EnableSingleSelect" class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-model="$ctrl.selectedLocations[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        <i class="fa fa-sitemap fa-rotate-270 font-grey-salsa"></i>
+                        {{row.locationName | decodeReadOnly}} 
+                    </td>
+                    <td>{{row.voyageId | decodeReadOnly}}</td>
+                    <td>{{row.eta}}</td>
+                    <td>{{row.etb}}</td>
+                    <td>{{row.etd}}</td>
+                    <td>{{row.portCallId | decodeReadOnly}}</td>
+                    <td>{{row.service.name | decodeReadOnly}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="">
-    <div class="col-md-12 general-header color-white">
-        <div class="st-main-content-menu tabbable-line">
+
+<div class="" ng-if="$ctrl.islocationPortEnabled">
+    <div id="modal_close_bar">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    </div>
+    <div class="modal-header" >
+        <div class="col-md-12 general-header color-white">
             <form class="form-inline">
                 <h4 class="pull-left title ">
-                    SELECT  {{$ctrl.ui.vesselSchedule.title |  translate}}
+                    SELECT PORT
                 </h4>
+                <div class="pull-right">
+                    <div class="input-group st-content-search-box">
+                        <div id="search_box_dum1">
+                            <input type="search" class="form-control" placeholder="Search" ng-model="$ctrl.searchTerm" aria-controls="order_list_table" />
+                        </div>
+                        <span class="input-group-addon" ng-click="search($ctrl.searchTerm);">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <a class="btn btn-sm btn-outline orange" ng-click="$ctrl.confirmPortSelection();search_box=''" data-dismiss="modal">
+                        Select
+                    </a>
+                </div>
                 <div class="clearfix"></div>
             </form>
         </div>
     </div>
-</div>
-<div class="modal-body">
-    <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable">
-        <thead>
-            <tr>
-                <th id="generatedThId127" ng-repeat="column in $ctrl.ui.vesselSchedule.columns track by $index">
-                    {{column.caption | translate}}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="row in $ctrl.data track by $index">
-                <td>
-                    <!-- {{$ctrl.EnableSingleSelect}} -->
-                    <label ng-if="$ctrl.EnableSingleSelect"  class="mt-checkbox mt-checkbox-outline">
-                        <input type="checkbox" ng-model="$ctrl.selectedLocationsSingle[$index]"  ng-click="selectedLocationsSingle($index)"/>
-                        <span></span>
-                    </label>
-                    <label ng-if="!$ctrl.EnableSingleSelect" class="mt-checkbox mt-checkbox-outline">
-                        <input type="checkbox" ng-model="$ctrl.selectedLocations[$index]"/>
-                        <span></span>
-                    </label>
-                </td>
-                <td>
-                    <i class="fa fa-sitemap fa-rotate-270 font-grey-salsa"></i>
-                    {{row.locationName | decodeReadOnly}} 
-                </td>
-                <td>{{row.voyageId | decodeReadOnly}}</td>
-                <td>{{row.eta}}</td>
-                <td>{{row.etb}}</td>
-                <td>{{row.etd}}</td>
-                <td>{{row.portCallId | decodeReadOnly}}</td>
-                <td>{{row.service.name | decodeReadOnly}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="modal-body">
+        <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Location
+                    </th>
+                    <th>
+                        Parent
+                    </th>
+                    <th>
+                        Location Code
+                    </th>
+                    <th>
+                        Country
+                    </th>
+                    <th>
+                        Created By
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in $ctrl.data track by $index">
+                    <td>
+                        <!-- {{$ctrl.EnableSingleSelect}} -->
+                        <label ng-if="$ctrl.EnableSingleSelect"  class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-model="$ctrl.selectedLocationsSingle[$index]"  ng-click="selectedLocationsSingle($index)"/>
+                            <span></span>
+                        </label>
+                        <label ng-if="!$ctrl.EnableSingleSelect" class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" ng-model="$ctrl.selectedLocations[$index]"/>
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        <i class="fa fa-sitemap fa-rotate-270 font-grey-salsa"></i>
+                        {{row.name | decodeReadOnly}} 
+                    </td>
+                    <td>{{row.parent.name | decodeReadOnly}}</td>
+                    <td>{{row.code}}</td>
+                    <td>{{row.country.name}}</td>
+                    <td>{{row.createdBy.name}}</td>
+                    <!-- <td>{{row.portCallId | decodeReadOnly}}</td>
+                    <td>{{row.service.name | decodeReadOnly}}</td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="modal-footer">
     <div class="pull-right">
         <a class="btn btn-outline orange" ng-if="$ctrl.isvoyagePortchangeEnabled" ng-click="$ctrl.confirmVesselSchedulesOrderSelection()" data-dismiss="modal">Add to Order</a>
         <a class="btn btn-outline orange" ng-if="!$ctrl.isvoyagePortchangeEnabled && !$ctrl.islocationPortEnabled" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Request</a>
-        <a class="btn btn-outline orange" ng-if="!$ctrl.isvoyagePortchangeEnabled && $ctrl.islocationPortEnabled" ng-click="$ctrl.confirmPortSelection()" data-dismiss="modal">Select</a>
+        <!-- <a class="btn btn-outline orange" ng-if="!$ctrl.isvoyagePortchangeEnabled && $ctrl.islocationPortEnabled" ng-click="$ctrl.confirmPortSelection()" data-dismiss="modal">Select</a> -->
     </div>
 </div>
 

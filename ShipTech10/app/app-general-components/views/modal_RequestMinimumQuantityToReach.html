@@ -61,11 +61,20 @@
                                             <td style="width:2%">
                                                 <span class="insert" ng-click="$ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.push({id:0,port:{id: 0,name: '',},portid:0,eta:null,isDeleted:false})"></span>
                                             </td>                                           
-                                            <td style="width:12%">
+                                            <td style="width:12%">          
                                                 <div class="input-group"  tooltip tooltiptrigger="hover">
-                                                <input id="Port{{key}}" ng-change="$ctrl.changeValue('Port{{key}}')" type="text"  class="form-control" decode-input-format name="Port"  ng-model="value.port.name" uib-typeahead="item as item.locationName for item in $ctrl.data1 | typeaheadCustomFilter:$viewValue:'locationName'" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" typeahead-on-select="$ctrl.selectedPortOnChange(value.port.name,key)" autocomplete="off" />
-                                                    <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedulesSingleselect(key)" href="#route_schedule_mintoreach" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
-                                                        <i class="fa fa-search"></i>
+                                                    <input id="Port{{key}}" ng-change="$ctrl.changeValue('Port{{key}}')" type="text"  class="form-control" decode-input-format name="Port" 
+                                                    ng-model="value.port.name" uib-typeahead="item as item.name for item in $ctrl.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'" 
+                                                    typeahead-show-hint="true" typeahead-min-length="1" 
+                                                    typeahead-limit="5" typeahead-append-to-body="true" 
+                                                    typeahead-wait-ms="100" 
+                                                    typeahead-on-select="$ctrl.selectedPortOnChange(value.port.name,key)" autocomplete="off" />
+                                                    <span class="input-group-addon" data-toggle="modal" 
+                                                        ng-click="$ctrl.getVesselSchedulesSingleselect(key)" 
+                                                        href="#route_schedule_mintoreach" data-html="true" 
+                                                        tooltip data-original-title="View Vessel Voyage" 
+                                                        ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
+                                                    <i class="fa fa-search"></i>
                                                     </span>
                                                 </div>
                                             </td>
@@ -76,7 +85,7 @@
                                                                    id="{{ key }}_etaMQTR"   
                                                                    new-date-picker
                                                                    ng-required="true"
-                                                                   picker-type="date"
+                                                                   picker-type="dynamic"
                                                                    class="form-control date-mask new-date-picker"
                                                                    ng-change="$ctrl.validateEtaDateFields({{key}}, value.eta)"
                                                             />

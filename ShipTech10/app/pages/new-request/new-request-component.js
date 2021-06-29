@@ -3245,16 +3245,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             });
         };
 
-        ctrl.etaChanged = function(location, locationIdx) {
-            $timeout(() => {
-                if (!location.etb) {
-                    location.etb = location.eta;
-                }
-                if (!location.etd) {
-                    location.etd = location.eta;
-                }
-                location.recentEta = location.eta;
-            });
+        ctrl.etaChanged = function(location, locationIdx) {           
+                $timeout(() => {
+                    if (!location.etb) {
+                        location.etb = location.eta;
+                    }
+                    if (!location.etd) {
+                        location.etd = location.eta;
+                    }
+                    location.recentEta = location.eta;
+                });
             return;
         };
 
@@ -4102,26 +4102,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
                 if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>1){
                     for(let i=0;i<ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length;i++){
-                        if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==value.locationId){
+                        if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==value.id){
                             ctrl.request.minimumQuantitiesToReach[0].port.id="";
-                            ctrl.request.minimumQuantitiesToReach[0].eta=null;
                             break;
                         }else{
-                            ctrl.request.minimumQuantitiesToReach[0].port.id=value.locationId;
-                            ctrl.request.minimumQuantitiesToReach[0].port.name=value.locationName;
-                            ctrl.request.minimumQuantitiesToReach[0].portid=value.locationId;
+                            ctrl.request.minimumQuantitiesToReach[0].port.id=value.id;
+                            ctrl.request.minimumQuantitiesToReach[0].port.name=value.name;
+                            ctrl.request.minimumQuantitiesToReach[0].portid=value.id;
                             break;
                         }
                     }
-                }
-                if(value.eta>ctrl.request.locations[ctrl.selectedLocationIdx].eta &&  ctrl.request.minimumQuantitiesToReach[0].port.id!=""){
-                    ctrl.request.minimumQuantitiesToReach[0].eta= value.eta;
-                    ctrl.request.minimumQuantitiesToReach[0].port.id=value.locationId;
-                    ctrl.request.minimumQuantitiesToReach[0].port.name=value.locationName;
-                    ctrl.request.minimumQuantitiesToReach[0].portid=value.locationId;
-                }else{
-                    ctrl.validateEtaDateFields(ctrl.CurrentSelectRow,value.eta,"");
-                    ctrl.request.minimumQuantitiesToReach[0].eta=null;
                 }
                 ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow]=angular.copy(ctrl.request.minimumQuantitiesToReach[0]);
             }
@@ -4167,7 +4157,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 if(IsDataExists(v.port.id)){
                                     $('#Port'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                //ctrl.disableAllFields=true;
                                 break;
                             }
                             else if(parseInt(v.minQtyToReachPretest) >= parseInt(v.minQtyToReach)){
@@ -4189,7 +4178,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 if(IsDataExists(v.port.id)){
                                     $('#Port'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                //ctrl.disableAllFields=true;
                                 break;
                             }
                             else if(parseInt(v.minQtyToReachPretest) >= parseInt(v.minQtyToReach)){
@@ -4268,7 +4256,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         	}
         };
         ctrl.getVesselSchedulesSingleselect = function(key) {
-
             ctrl.EnableSingleSelect = true;
             ctrl.CurrentSelectRow =key;
         	if (ctrl.request.vesselDetails.vessel) {
@@ -4340,25 +4327,17 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>0){
                 for(let i=0;i<ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length;i++){
-                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==portDetails.locationId){
+                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==portDetails.id){
                         ctrl.request.minimumQuantitiesToReach[0].port.id="";
-                        ctrl.request.minimumQuantitiesToReach[0].eta=null;
                         break;
                     }else{
-                        ctrl.request.minimumQuantitiesToReach[0].port.id=portDetails.locationId;
-                        ctrl.request.minimumQuantitiesToReach[0].port.name=portDetails.locationName;
-                        ctrl.request.minimumQuantitiesToReach[0].portid=portDetails.locationId;
+                        ctrl.request.minimumQuantitiesToReach[0].port.id=portDetails.id;
+                        ctrl.request.minimumQuantitiesToReach[0].port.name=portDetails.name;
+                        ctrl.request.minimumQuantitiesToReach[0].portid=portDetails.id;
                         break;
                     }
                 }
-            }
-            if( portDetails.eta>ctrl.request.locations[ctrl.selectedLocationIdx].eta && ctrl.request.minimumQuantitiesToReach[0].port.id!=""){
-                ctrl.request.minimumQuantitiesToReach[0].eta=  portDetails.eta;
-            }else{
-                ctrl.validateEtaDateFields(ctrl.CurrentSelectRow,portDetails.eta,"");
-                ctrl.request.minimumQuantitiesToReach[0].eta=null;
-            }
-            
+            }           
             ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[key]=angular.copy(ctrl.request.minimumQuantitiesToReach[0]);
         }
 
@@ -4389,30 +4368,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     'name': null,
                 }});
             }
-            //lookup autoComplete list data load
-            lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, {
-                ColumnName: 'Id',
-                OperationType: 0,
-                ValueType: 5,
-                Value: ctrl.request.vesselDetails.vessel.id
-            }).then((data) => {
-                ctrl.data = data.payload;
-                ctrl.data1 = angular.copy(data.payload);
-                $.each(ctrl.data, (k, v) => {
-                    v.eta = $scope.formatDate(v.eta);
-                    v.etb = $scope.formatDate(v.etb);
-                    v.etd = $scope.formatDate(v.etd);
-                });
-                destroyDataTable();
-                $timeout(() => {
-                    ctrl.table = SimpleDatatable.init({
-                        selector: '.simple-datatable',
-                        order: [
-                            [ 0, 'asc' ]
-                        ]
-                    });
-                });
-            });
             tpl = $templateCache.get('app-general-components/views/modal_RequestMinimumQuantityToReach.html');
             $scope.modalInstance = $uibModal.open({
                 template: tpl,

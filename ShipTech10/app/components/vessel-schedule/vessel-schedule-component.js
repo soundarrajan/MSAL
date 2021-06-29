@@ -7,8 +7,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
         ctrl.selectedLocations = [];
         ctrl.EnableSingleSelect = false
         let vesselScheduleEndpoint = MOCKUP_MAP['unrouted.vessel-schedule'];
+        ctrl.searchTerm = null;
         ctrl.$onInit = function() {
-            
+
             
             uiApiModel.get(vesselScheduleEndpoint).then((data) => {
                 ctrl.ui = data;
@@ -20,29 +21,10 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             }
         };
 
-	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page) => {
-            ctrl.EnableSingleSelect = EnableSingleselect;
-            if(Page == 'NewOrder'){
-                ctrl.isvoyagePortchangeEnabled = true;
-            }else if(Page == "NewRequest"){
-                ctrl.isvoyagePortchangeEnabled = false;
-                ctrl.islocationPortEnabled = false;
-            }
-            else{
-                ctrl.isvoyagePortchangeEnabled = false;
-                ctrl.islocationPortEnabled = true; 
-            }
-        // $scope.accessSelection = value;
- 	       if (value == 0) {
-                return false;
-            }
-
-            lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, {
-                ColumnName: 'Id',
-                OperationType: 0,
-                ValueType: 5,
-                Value: value
-            }).then((data) => {
+        $scope.search = function(value) {
+            ctrl.searchTerm =value;
+            debugger;
+            lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, null,{},ctrl.searchTerm ).then((data) => {
                 ctrl.data = data.payload;
                 ctrl.data1 = angular.copy(data.payload);
                 $.each(ctrl.data, (k, v) => {
@@ -60,6 +42,69 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                     });
                 });
             });
+        };
+	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page) => {
+            ctrl.EnableSingleSelect = EnableSingleselect;
+            if(Page == 'NewOrder'){
+                ctrl.isvoyagePortchangeEnabled = true;
+            }else if(Page == "NewRequest"){
+                ctrl.isvoyagePortchangeEnabled = false;
+                ctrl.islocationPortEnabled = false;
+            }
+            else{
+                ctrl.isvoyagePortchangeEnabled = false;
+                ctrl.islocationPortEnabled = true; 
+            }
+        // $scope.accessSelection = value;
+ 	       if (value == 0) {
+                return false;
+             }
+
+            if(ctrl.islocationPortEnabled){
+                lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, null, {
+                }).then((data) => {
+                    ctrl.data = data.payload;
+                    ctrl.data1 = angular.copy(data.payload);
+                    $.each(ctrl.data, (k, v) => {
+                        v.eta = $scope.formatDate(v.eta);
+                        v.etb = $scope.formatDate(v.etb);
+                        v.etd = $scope.formatDate(v.etd);
+                    });
+                    destroyDataTable();
+                    $timeout(() => {
+                        ctrl.table = SimpleDatatable.init({
+                            selector: '.simple-datatable',
+                            order: [
+                                [ 0, 'asc' ]
+                            ]
+                        });
+                    });
+                });
+            }else{
+                lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, {
+                    ColumnName: 'Id',
+                    OperationType: 0,
+                    ValueType: 5,
+                    Value: value
+                }).then((data) => {
+                    ctrl.data = data.payload;
+                    ctrl.data1 = angular.copy(data.payload);
+                    $.each(ctrl.data, (k, v) => {
+                        v.eta = $scope.formatDate(v.eta);
+                        v.etb = $scope.formatDate(v.etb);
+                        v.etd = $scope.formatDate(v.etd);
+                    });
+                    destroyDataTable();
+                    $timeout(() => {
+                        ctrl.table = SimpleDatatable.init({
+                            selector: '.simple-datatable',
+                            order: [
+                                [ 0, 'asc' ]
+                            ]
+                        });
+                    });
+                });
+            }
         });
         $scope.formatDateToMomentFormat = function(dateFormat) {
             var dbFormat = dateFormat;

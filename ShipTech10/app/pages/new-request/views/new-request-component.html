@@ -987,8 +987,8 @@
                                                             <i class="fa fa-search"></i>                                                          
                                                         </span>
                                                        
-                                                        <span class="input-group-addon" >
-                                                            <i class="fa fa-pencil-square-o" ng-if="!adminConfiguration.master.isVesselBopsDetailsVisible && product.productStatus.name !== 'Cancelled'"  ng-click="openMinQtyToReach(productIdx, $ctrl.request.locations[locationIdx],locationIdx)"></i> 
+                                                        <span class="input-group-addon {{(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) ? 'disabled' : ''}}">
+                                                            <i class="fa fa-pencil-square-o" ng-if="!adminConfiguration.master.isVesselBopsDetailsVisible"  ng-click="openMinQtyToReach(productIdx, $ctrl.request.locations[locationIdx],locationIdx)"></i> 
                                                         </span>
                                                     </div>
                                                 </td>
