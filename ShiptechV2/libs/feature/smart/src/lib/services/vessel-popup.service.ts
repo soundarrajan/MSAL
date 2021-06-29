@@ -44,7 +44,7 @@ export class VesselPopupService{
     );
   } 
 
-  @ObservableException()
+  @ObservableException() 
   getOrderDetails(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${VesselPopupApiPaths.getOrderDetails()}`,

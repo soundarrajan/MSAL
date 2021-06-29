@@ -53,6 +53,7 @@ export class SmartOperatorComponent implements OnInit {
   EnableReportDate: boolean;
   OrderDetailsData: any[];
   Enabledbdnreports: boolean;
+  pagesize: any;
   // public paginationPageSize : number = 20;
   // public currentPage : number = 1;
   // public lastPage : number = 99;
@@ -128,7 +129,7 @@ export class SmartOperatorComponent implements OnInit {
       columnDefs: this.columnDefs_BdnReport,
       animateRows: true,
       headerHeight: 32,
-      pagination: true,
+      paginationPageSize: 10,
       rowHeight: 50,
       groupHeaderHeight: 40,
       defaultColDef: {
@@ -171,7 +172,7 @@ export class SmartOperatorComponent implements OnInit {
       headerHeight: 32,
       rowHeight: 50,
       groupHeaderHeight: 40,
-      pagination: true,
+      paginationPageSize: 10,
       defaultColDef: {
         filter: true,
         sortable: true,
@@ -183,6 +184,8 @@ export class SmartOperatorComponent implements OnInit {
       onGridReady: (params) => {
 
         this.gridOrderDetailsOptions.api = params.api;
+        this.gridBdnReportOptions.api.paginationSetPageSize(10);
+        this.gridBdnReportOptions.paginationPageSize = 10;
         this.gridOrderDetailsOptions.columnApi = params.columnApi;
         this.gridOrderDetailsOptions.api.setRowData(this.BdnReportsData);
         this.rowCount = this.gridOrderDetailsOptions.api.getDisplayedRowCount();
@@ -333,10 +336,10 @@ export class SmartOperatorComponent implements OnInit {
         var classArray: string[] = [];
         classArray.push('aggrid-content-center');
         let newClass = params.value === 'Stemmed' ? 'custom-chip darkgreen' :
-          params.value === 'Confirmed' ? 'custom-chip darkgreen' :
+          params.value === 'Confirmed' ? 'custom-chip darkblue' :
           params.value === 'Invoiced' ? 'custom-chip darkgreen' :
           params.value === 'Delivered' ? 'custom-chip darkgreen' :
-          params.value === 'Cancelled' ? 'custom-chip darkgreen' :
+          params.value === 'Cancelled' ? 'custom-chip red' :
           params.value === 'PartiallyInvoiced' ? 'custom-chip darkgreen' :
           params.value === 'PartiallyDelivered' ? 'custom-chip darkgreen' :
             params.value === 'Inquired' ? 'custom-chip purple' :
@@ -847,8 +850,12 @@ export class SmartOperatorComponent implements OnInit {
        });
       this.gridBdnReportOptions.api.setColumnDefs(this.columnDefs_BdnReport);
     this.gridBdnReportOptions.api.setRowData(this.BdnReportsData);
+    this.gridBdnReportOptions.api.paginationSetPageSize(10);
+    this.pagesize = 10;
+        this.gridBdnReportOptions.paginationPageSize = 10;
     this.gridBdnReportOptions.api.sizeColumnsToFit();
     this.rowCount = this.gridBdnReportOptions.api.getDisplayedRowCount();
+    this.gridBdnReportOptions.api.paginationSetPageSize(Number(10));
      
     })
   }
