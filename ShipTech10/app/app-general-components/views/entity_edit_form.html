@@ -22,15 +22,15 @@
                     </ul>
                 </div>
                 <div  ng-class="type == 'tabs' ? 'tab-content grp_unit' : ''">
-                    <div  class="group_{{ parents.id.replace(' ','_') }} " 
-                    	ng-hide="visible_sections.indexOf(parents.id) < 0 || 
-                    	(CM.shiptechLite && parents.id == 'Energy Calculation Formula') || 
-                    	(parents.id=='customerConfigurations' && !isCustomerCounterparty()) || 
-                    	(parents.id=='locationTerminals' && !isLocationTerminalVisible()) || 
-                    	(parents.id=='portSequence' && isPortSequenceVisible() == false) || 
-                    	(parents.id=='counterpartyBankAccounts' && !isCounterpartyBankAccountAddable()) || 
-                    	( (parents.id=='BOPSDetails' || parents.id=='ProductSpecificDetails')  && !isLocationBopsDetailsVisible()) || 
-                    	((parents.id=='BOPS Details' || parents.id=='VESSEL TANK Details') && isHideVesselBopsDetails)" 
+                    <div  class="group_{{ parents.id.replace(' ','_') }} "
+                    	ng-hide="visible_sections.indexOf(parents.id) < 0 ||
+                    	(CM.shiptechLite && parents.id == 'Energy Calculation Formula') ||
+                    	(parents.id=='customerConfigurations' && !isCustomerCounterparty()) ||
+                    	(parents.id=='locationTerminals' && !isLocationTerminalVisible()) ||
+                    	(parents.id=='portSequence' && isPortSequenceVisible() == false) ||
+                    	(parents.id=='counterpartyBankAccounts' && !isCounterpartyBankAccountAddable()) ||
+                    	( (parents.id=='BOPSDetails' || parents.id=='ProductSpecificDetails')  && !isLocationBopsDetailsVisible()) ||
+                    	((parents.id=='BOPS Details' || parents.id=='VESSEL TANK Details') && isHideVesselBopsDetails)"
                     	data-ng-repeat="parents in formFields" id="tab_{{ $index }}"  ng-class="{ 'tab-pane fade': parents.isTab && type == 'tabs', 'active in': $index == 0 , 'col-md-12': !parents.Columns[0].Value, 'col-md-{{ parents.Columns[0].Value }}': parents.Columns[0].Value }" ng-if="!parents.hidden">
                         <div class="col-md-12 portlet light ">
                             <div class="portlet-title" ng-if="parents.name != 'General' && CM.screen_id != 'formula' && CM.app_id != 'alerts'" ng-controller="Controller_Delivery as CD">
@@ -70,18 +70,18 @@
                                     </div>
                                     <div  ng-if="formValues.sellerRatingLastModifiedBy && formValues.sellerRatingLastModifiedOn" style="margin-left: 10px;">
                                         Rated by
-                                        <span class="created-by-display-name"> 
+                                        <span class="created-by-display-name">
                                         {{ formValues.sellerRatingLastModifiedBy.name}}
                                         </span>
                                         on
-                                        <span class="seller-rating-created-on"> 
+                                        <span class="seller-rating-created-on">
                                          {{ CM.formatDateTime(formValues.sellerRatingLastModifiedOn) }}
                                         </span>
                                     </div>
                                 </div>
                                 <div ng-if="CM.screen_id == 'invoice' && CM.app_id == 'invoices' && parents.name == 'Related Invoices'" class="pull-right">
                                 	<em>Invoices Created : {{formValues.relatedInvoices.length}}</em>
-                                </div>	
+                                </div>
 
                                 <div ng-include="'app-general-components/views/screen_parts/deliveryApp_block_custom_headers.html'"></div>
                                 <div ng-include="'app-general-components/views/screen_parts/invoicesApp_block_custom_headers.html'"></div>
@@ -125,13 +125,19 @@
                                         <span ng-include="'app-invoice/views/treasury-report-currency-panel.html'"></span>
                                     </span>
                                     <!-- {{!( ['vesselAccount', 'isFlowMeterAvailable', 'departments', 'isVesselManagable'].includes(field.Unique_ID) && CM.screen_id == 'vessel' && isHideVesselBopsDetails)}} -->
-                                    <div ng-repeat="field in parents.children" style="min-height: 50px;" ng-switch on="field.Type" class=" col-md-{{ field.Columns[0].Value }} fe_entity edit_form_fields_{{ field.Name.replace('.','_') }}_{{ CM.app_id }} " ng-class="{'clear':field.LastOnRow, 'conditional_hidden':!$eval(field.Conditional)}" data-show="{{ field.ShowOn.split(',')[1] }}" data-dependent="{{ field.ShowOn.split(',')[0] }}" ng-hide="{{field.Hidden}}" 
+                                    <div ng-repeat="(index, field) in parents.children" style="min-height: 50px;" ng-switch on="field.Type" class=" col-md-{{ field.Columns[0].Value }} fe_entity edit_form_fields_{{ field.Name.replace('.','_') }}_{{ CM.app_id }} " ng-class="{'clear':field.LastOnRow, 'conditional_hidden':!$eval(field.Conditional)}" data-show="{{ field.ShowOn.split(',')[1] }}" data-dependent="{{ field.ShowOn.split(',')[0] }}" ng-hide="{{field.Hidden}}"
                                     ng-if="!(CM.screen_id == 'vessel' && !adminConfiguration.master.isVesselBopsDetailsVisible && (field.Unique_ID == 'vesselAccount' || field.Unique_ID == 'isFlowMeterAvailable' || field.Unique_ID == 'departments' || field.Unique_ID == 'isVesselManagable'))">
 
-                                    
-                                        <span ng-switch-when="text"> 
+
+                                        <span ng-switch-when="text">
                                             <span ng-include="'app-general-components/views/controls/text-control.html'"></span>
                                         </span>
+
+                                        <!-- Counterparty roles -->
+                                        <span ng-switch-when="multiselect-with-lookup">
+                                            <span ng-include="'app-general-components/views/controls/multi-select-with-lookup.html'"></span>
+                                        </span>
+
                                         <span ng-switch-when="number">
                                             <span ng-include="'app-general-components/views/controls/number-control.html'"></span>
                                         </span>
@@ -159,7 +165,7 @@
                                         <span ng-switch-when="textareaWithTags">
                                             <span ng-include="'app-general-components/views/controls/textareaWithTags.html'"></span>
                                         </span>
-                                        
+
                                         <span ng-switch-when="multiLookup">
                                             <span ng-include="'app-general-components/views/controls/multiLookup-control.html'"></span>
                                         </span>
@@ -215,15 +221,15 @@
                                         <span ng-switch-when="labTestResultsGroup">
 
                                             <span ng-include="'app-labs/views/components/lab_test_results.html'"></span>
-                                        </span>              
-                                        
+                                        </span>
+
                                         <span ng-switch-when="customerConfigurationsGroup" ng-if="isCustomerCounterparty()">
                                             <span ng-include="'app-general-components/views/screen_parts/masters/counterparty_customer_configuration.html'"></span>
                                         </span>
 
-                                        <div ng-switch-when="portGroup" ng-if ="isPortSequenceVisible()">                                     
+                                        <div ng-switch-when="portGroup" ng-if ="isPortSequenceVisible()">
                                             <span ng-include="'app-general-components/views/screen_parts/masters/portSequence.html'"></span>
-                                        </div> 
+                                        </div>
                                         <span ng-switch-when="counterpartyBankAccounts" ng-if="isCounterpartyBankAccountAddable()">
                                             <span ng-include="'app-general-components/views/screen_parts/masters/counterpartyBankAccounts.html'"></span>
                                         </span>
@@ -274,7 +280,7 @@
                                             <span ng-switch-when="AdminConfigurationGroup">
                                                 <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationGroup.html'"></span>
                                             </span>
-                                            
+
                                             <span ng-switch-when="formulaMaster">
                                                 <span ng-include="'app-general-components/views/screen_parts/formulaScreen.html'"></span>
                                             </span>
@@ -315,7 +321,7 @@
                                             <span ng-switch-when="bdnInformation">
                                                 <span ng-include="'app-general-components/views/screen_parts/delivery/bdnInformation.html'"></span>
                                             </span>
-                                            
+
                                             <span ng-switch-when="chiefEngineerFeedback">
                                                 <span ng-include="'app-general-components/views/screen_parts/delivery/chiefEngineerFeedback.html'"></span>
                                             </span>
@@ -351,7 +357,7 @@
                                             </span>
                                             <span ng-switch-when="InvoiceTotalConversion">
                                                 <span ng-include="'app-invoice/views/invoiceTotalConversion.html'"></span>
-                                            </span>                              
+                                            </span>
                                             <span ng-switch-when="RelatedInvoices">
                                                 <span ng-include="'app-invoice/views/relatedInvoices.html'"></span>
                                             </span>
@@ -370,7 +376,7 @@
                                             <span ng-switch-when="tradebook">
                                                 <span ng-include="'app-general-components/views/screen_parts/admin/tradebook.html'"></span>
                                             </span>
-                                            
+
                                             <span ng-switch-when="LocationBOPSDetails">
                                                 <span ng-include="'app-general-components/views/screen_parts/masters/locationBOPSDetails.html'"></span>
                                             </span>
@@ -380,7 +386,7 @@
                                             <span ng-switch-when="labNotes">
                                                 <span ng-include="'app-general-components/views/screen_parts/labs/labNotes.html'"></span>
                                             </span>
-                                           
+
 
                                             <div ng-switch-default></div>
                                             <div class="clearfix"></div>

@@ -1016,9 +1016,9 @@
                             console.log($scope.formValues);
                         }
                     }
-                           
+
                 }
-               
+
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
@@ -10047,6 +10047,44 @@
 				!$scope.formValues.latestPortTradingTime ? $scope.formValues.latestPortTradingTime = 3 : "";
         	})
         }
+
+
+        $scope.selectCounterpartyType = (item) => {
+
+            // Empty model
+            $scope.formValues.counterpartyTypeAccessModel = null;
+
+            if(typeof $scope.formValues.counterpartyTypeAccess == 'undefined'){
+                $scope.formValues.counterpartyTypeAccess = [];
+            }
+
+            let exists = $scope.formValues.counterpartyTypeAccess.filter(e => e.id === item.id);
+            if(exists.length > 0) {
+                // Already in list
+                toastr.error('This counterparty type already exists!');
+                return
+            }
+
+            $scope.formValues.counterpartyTypeAccess.push(item);
+        }
+
+
+        $scope.removeArrayFromArray = (toRemove = [], originalArray, key = 'id') => {
+            const newList =  originalArray.filter((element) => {
+                if(toRemove.some(x => x.id === element.id)) {
+                    return false;
+                }
+                return true;
+            });
+
+            return newList;
+        }
+
+        $scope.removeCounterpartyType = (item) => {
+            let futureArray = $scope.formValues.counterpartyTypeAccess.filter(e => e.id !== item.id);
+            $scope.formValues.counterpartyTypeAccess = futureArray;
+        }
+
 
         $scope.bargeCostSequenceChange = (currentadditionalCostsdetails, key, value) => {
             if($scope.formValues.additionalCosts[currentadditionalCostsdetails].additionalCostDetails[key+1]) {
