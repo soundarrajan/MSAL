@@ -1,9 +1,7 @@
-﻿commit fb2cc45e42c4fb266039f1f4fb974d09197122f9
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jun 28 19:39:42 2021 +0000
+﻿commit cda5fc826050f3495196eef9629713b736c172cc
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Tue Jun 29 07:15:33 2021 +0530
 
-    Merged PR 11901: #29676 - Page crash blocking issue has fixed and Requirement 33020: port details: Delete port remark has done
-    
-    Related work items: #29676, #33020
+    Bdn Reports, Order Reports
 
 branch: master
