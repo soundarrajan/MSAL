@@ -798,7 +798,7 @@ export class SmartOperatorComponent implements OnInit {
     }
     else{
       this.Enabledbdnreports = false;
-      this.getOrderDetails(this.selectedFromDate, this.selectedToDate);
+      this.getOrderDetails(1, 25, this.selectedFromDate, this.selectedToDate);
     }
     
 
@@ -818,9 +818,9 @@ export class SmartOperatorComponent implements OnInit {
     }
 
   }
-  public getOrderDetails(FromDelDate, ToDelDate){
+  public getOrderDetails(PageNo, PageSize, FromDelDate, ToDelDate){
     // let req = {"FromDelDate":"2020-01-01", "ToDelDate":"2020-01-10"}
-    let req = { IsDefaultDate : 1,FromDelDate: FromDelDate,ToDelDate:ToDelDate};
+    let req = { PageNo : 1, PageSize : 25, FromDelDate: FromDelDate,ToDelDate:ToDelDate};
     this.vesselService.getOrderDetails(req).subscribe((res)=>{
       this.OrderDetailsData = [];
 
