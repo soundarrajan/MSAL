@@ -1255,6 +1255,8 @@ export class PortMenuComponent {
     var groupRemarkType = [];
     var groupRemarkLog = {}
     return new Promise(resolve=> {
+      // return with empty object if remark doesn't contain any changelog
+      if(!(this.remarkLogs?.length)) { resolve(groupRemarkLog); }
       this.remarkLogs.map((logs, index)=>{
         let type = logs.remarkTypes.name;
         if(!(groupRemarkType.includes(type))) {
