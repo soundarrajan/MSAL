@@ -912,6 +912,8 @@ export class VesselMenuComponent {
     var groupAlertType = [];
     var groupChangeLog = {}
     return new Promise(resolve=> {
+      // return with empty object if alert doesn't contain any changelog
+      if(!(this.changeLog?.length)) { resolve(groupChangeLog); }
       this.changeLog.map((logs, index)=>{
         let type = logs.alertTypes?.name;
         if(!(groupAlertType.includes(type))) {
