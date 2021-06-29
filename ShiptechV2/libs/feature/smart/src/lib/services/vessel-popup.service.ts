@@ -39,7 +39,7 @@ export class VesselPopupService{
   @ObservableException()
   getBdnReport(request: any): Observable<any> {
     return this.http.post<any>(
-      `${this._apiUrl}/${VesselPopupApiPaths.getOrderDetails()}`,
+      `${this._apiUrl}/${VesselPopupApiPaths.getBdnReport()}`,
       { payload: request }
     );
   } 
