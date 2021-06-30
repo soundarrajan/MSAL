@@ -3913,7 +3913,7 @@
                     }
                 } // end for
                 if (window.location.href.indexOf('masters/specparameter') != -1 && id == 'claimTypes') {
-                    $scope.checkAutoSaveClaimCheckbox();                         
+                    $scope.checkAutoSaveClaimCheckbox();
                 }
 
                 hideTheChildren();
@@ -4223,7 +4223,7 @@
             } else {
                 $scope.formValues[model].push(data);
                 if (window.location.href.indexOf('masters/specparameter') != -1 && model == 'claimTypes') {
-                    $scope.checkAutoSaveClaimCheckbox();                         
+                    $scope.checkAutoSaveClaimCheckbox();
                 }
                 setTimeout(() => {
                     $scope.initBoostrapTagsInputTooltip();
@@ -10113,8 +10113,8 @@
         }
 
         $scope.removeCounterpartyType = (item) => {
-            let futureArray = $scope.formValues.counterpartyTypeAccess.filter(e => e.id !== item.id);
-            $scope.formValues.counterpartyTypeAccess = futureArray;
+            let futureArray = $scope.formValues.accessCounterpartyTypes.filter(e => e.id !== item.id);
+            $scope.formValues.accessCounterpartyTypes = futureArray;
         }
 
 
