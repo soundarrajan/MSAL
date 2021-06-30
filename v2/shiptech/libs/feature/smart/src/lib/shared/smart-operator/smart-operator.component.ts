@@ -129,7 +129,8 @@ export class SmartOperatorComponent implements OnInit {
       columnDefs: this.columnDefs_BdnReport,
       animateRows: true,
       headerHeight: 32,
-      paginationPageSize: 10,
+     
+      pagination:true,
       rowHeight: 50,
       groupHeaderHeight: 40,
       defaultColDef: {
@@ -170,9 +171,9 @@ export class SmartOperatorComponent implements OnInit {
       columnDefs: this.columnDefs_OrderDetails,
       animateRows: true,
       headerHeight: 32,
+      pagination:true,
       rowHeight: 50,
       groupHeaderHeight: 40,
-      paginationPageSize: 10,
       defaultColDef: {
         filter: true,
         sortable: true,
@@ -184,8 +185,8 @@ export class SmartOperatorComponent implements OnInit {
       onGridReady: (params) => {
 
         this.gridOrderDetailsOptions.api = params.api;
-        this.gridBdnReportOptions.api.paginationSetPageSize(10);
-        this.gridBdnReportOptions.paginationPageSize = 10;
+        // this.gridBdnReportOptions.api.paginationSetPageSize(10);
+        // this.gridBdnReportOptions.paginationPageSize = 10;
         this.gridOrderDetailsOptions.columnApi = params.columnApi;
         this.gridOrderDetailsOptions.api.setRowData(this.BdnReportsData);
         this.rowCount = this.gridOrderDetailsOptions.api.getDisplayedRowCount();
@@ -352,8 +353,8 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Type', headerTooltip: 'Type', field: 'agreementType', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     { headerName: 'Dept', headerTooltip: 'Dept', field: 'department', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     { headerName: 'Sub Dept', headerTooltip: 'Sub Dept', field: 'subDepartment', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Service', headerTooltip: 'Service', field: 'serviceName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Top up Volume', headerTooltip: 'Top up Volume', field: 'topUpVol', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Service', headerTooltip: 'Service', field: 'serviceName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-vertical-center']},
+    { headerName: 'Top up Volume', headerTooltip: 'Top up Volume', field: 'topupValue', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     { headerName: 'SOA', headerTooltip: 'SOA', field: 'soa', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']}
   ]
 
@@ -850,12 +851,12 @@ export class SmartOperatorComponent implements OnInit {
        });
       this.gridBdnReportOptions.api.setColumnDefs(this.columnDefs_BdnReport);
     this.gridBdnReportOptions.api.setRowData(this.BdnReportsData);
-    this.gridBdnReportOptions.api.paginationSetPageSize(10);
-    this.pagesize = 10;
-        this.gridBdnReportOptions.paginationPageSize = 10;
+    // this.gridBdnReportOptions.api.paginationSetPageSize(10);
+    // this.pagesize = 10;
+    //     this.gridBdnReportOptions.paginationPageSize = 10;
     this.gridBdnReportOptions.api.sizeColumnsToFit();
     this.rowCount = this.gridBdnReportOptions.api.getDisplayedRowCount();
-    this.gridBdnReportOptions.api.paginationSetPageSize(Number(10));
+    // this.gridBdnReportOptions.api.paginationSetPageSize(Number(10));
      
     })
   }

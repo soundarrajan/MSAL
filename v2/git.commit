@@ -1,11 +1,7 @@
-﻿commit ad5657a0b2d062ecf9c00149e901c6bf9920d278
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 30 08:40:00 2021 +0000
+﻿commit 1fb6e8abd950ebe5e4e2803f26c415f624958ce1
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Wed Jun 30 17:31:48 2021 +0530
 
-    Merged PR 11975: Handling NaN for soa calc in current bplan.
-    
-    Handling NaN for soa calc in current bplan.
-    
-    Related work items: #33248
+    Bdnreports, Order Reports
 
 branch: master
