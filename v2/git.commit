@@ -1,11 +1,11 @@
-﻿commit f2955a84a1bf2325f50ed56528c517f15c56e726
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Wed Jun 30 13:04:43 2021 +0000
+﻿commit 4c185363e31a5513874bcdf19110d7d6696a3228
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jun 30 13:27:05 2021 +0000
 
-    Merged PR 11995: Unpumpables HSFO05 removed
+    Merged PR 11997: Handling undefined soa while saving to store.
     
-    hsfo 05 value removed for unpumpables
+    Handling undefined soa while saving to store.
     
-    Cherry-picked from commit `1471fd23`.
+    Related work items: #33248
 
 branch: master
