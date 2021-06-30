@@ -4216,6 +4216,18 @@
                 toastr.error('Field is already added!');
             } else {
                 $scope.formValues[model].push(data);
+                if (window.location.href.indexOf('masters/specparameter') != -1 && model == 'claimTypes') {
+                    console.log($scope.formValues[model]);
+                    Factory_Master.get_master_entity(data.id, 'claimtype', 'masters', (response) => {
+                        if (response) {
+                            console.log(response);
+                            if (!response.autoSaveClaim) {
+                                $scope.formValues.isAutoSaveClaimDisabled = true;
+                                $scope.formValues.autoSaveClaim = false;
+                            }
+                        }
+                    });
+                }
                 setTimeout(() => {
                     $scope.initBoostrapTagsInputTooltip();
                 });

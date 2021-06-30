@@ -126,7 +126,7 @@
                                     </span>
                                     <!-- {{!( ['vesselAccount', 'isFlowMeterAvailable', 'departments', 'isVesselManagable'].includes(field.Unique_ID) && CM.screen_id == 'vessel' && isHideVesselBopsDetails)}} -->
                                     <div ng-repeat="(index, field) in parents.children" style="min-height: 50px;" ng-switch on="field.Type" class=" col-md-{{ field.Columns[0].Value }} fe_entity edit_form_fields_{{ field.Name.replace('.','_') }}_{{ CM.app_id }} " ng-class="{'clear':field.LastOnRow, 'conditional_hidden':!$eval(field.Conditional)}" data-show="{{ field.ShowOn.split(',')[1] }}" data-dependent="{{ field.ShowOn.split(',')[0] }}" ng-hide="{{field.Hidden}}"
-                                    ng-if="!(CM.screen_id == 'vessel' && !adminConfiguration.master.isVesselBopsDetailsVisible && (field.Unique_ID == 'vesselAccount' || field.Unique_ID == 'isFlowMeterAvailable' || field.Unique_ID == 'departments' || field.Unique_ID == 'isVesselManagable'))">
+                                    ng-if="!(CM.screen_id == 'vessel' && !adminConfiguration.master.isVesselBopsDetailsVisible && (field.Unique_ID == 'vesselAccount' || field.Unique_ID == 'isFlowMeterAvailable' || field.Unique_ID == 'departments' || field.Unique_ID == 'isVesselManagable'))" ng-style="{ 'margin-left' : (field.Name == 'mandatoryInDelivery') ? '66.6666%' : '0%' }">
 
 
                                         <span ng-switch-when="text">
