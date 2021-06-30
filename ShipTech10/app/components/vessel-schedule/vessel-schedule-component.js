@@ -23,7 +23,6 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
 
         $scope.search = function(value) {
             ctrl.searchTerm =value;
-            debugger;
             lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, null,{},ctrl.searchTerm ).then((data) => {
                 ctrl.data = data.payload;
                 ctrl.data1 = angular.copy(data.payload);

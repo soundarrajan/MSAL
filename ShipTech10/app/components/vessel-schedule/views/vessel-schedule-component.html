@@ -83,6 +83,8 @@
         <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable">
             <thead>
                 <tr>
+                    <td>
+                    </td>
                     <th>
                         Id
                     </th>
@@ -90,10 +92,10 @@
                         Location
                     </th>
                     <th>
-                        Parent
+                        Location Code
                     </th>
                     <th>
-                        Location Code
+                        Parent
                     </th>
                     <th>
                         Country
@@ -117,15 +119,15 @@
                         </label>
                     </td>
                     <td>
-                        <i class="fa fa-sitemap fa-rotate-270 font-grey-salsa"></i>
+                        {{row.id | decodeReadOnly}} 
+                    </td>
+                    <td>
                         {{row.name | decodeReadOnly}} 
                     </td>
-                    <td>{{row.parent.name | decodeReadOnly}}</td>
                     <td>{{row.code}}</td>
+                    <td>{{row.parent.name | decodeReadOnly}}</td>
                     <td>{{row.country.name}}</td>
                     <td>{{row.createdBy.name}}</td>
-                    <!-- <td>{{row.portCallId | decodeReadOnly}}</td>
-                    <td>{{row.service.name | decodeReadOnly}}</td> -->
                 </tr>
             </tbody>
         </table>

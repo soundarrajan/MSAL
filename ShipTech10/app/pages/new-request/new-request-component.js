@@ -4089,7 +4089,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if(Page == 'NewRequestMinQty'){
                 if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow].eta==null){
                     ctrl.request.minimumQuantitiesToReach = [];
-                    ctrl.request.minimumQuantitiesToReach.push({'id':ctrl.CurrentSelectRow,
+                    ctrl.request.minimumQuantitiesToReach.push({'id':0,
                     'eta':null,
                     'minQtyToReach':undefined,
                     'minQtyToReachPretest':undefined,
@@ -4112,6 +4112,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             break;
                         }
                     }
+                }else{
+                    ctrl.request.minimumQuantitiesToReach[0].port.id=value.id;
+                    ctrl.request.minimumQuantitiesToReach[0].port.name=value.name;
+                    ctrl.request.minimumQuantitiesToReach[0].portid=value.id;
                 }
                 ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[ctrl.CurrentSelectRow]=angular.copy(ctrl.request.minimumQuantitiesToReach[0]);
             }

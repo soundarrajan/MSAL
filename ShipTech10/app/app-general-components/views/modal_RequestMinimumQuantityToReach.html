@@ -72,7 +72,7 @@
                                                     <span class="input-group-addon" data-toggle="modal" 
                                                         ng-click="$ctrl.getVesselSchedulesSingleselect(key)" 
                                                         href="#route_schedule_mintoreach" data-html="true" 
-                                                        tooltip data-original-title="View Vessel Voyage" 
+                                                        tooltip data-original-title="View Location" 
                                                         ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                                     <i class="fa fa-search"></i>
                                                     </span>
@@ -95,7 +95,7 @@
                                                 <div class="input-group" style="width: 100%;">
                                                     <input id="minQtyToReachPretest{{key}}" ng-change="$ctrl.changeValue('minQtyToReachPretest{{key}}')"  name="minQtyToReachPretest{{key}}" type="text" class="form-control"
                                                     ng-model="value.minQtyToReachPretest" 
-                                                    format="number:{{ tenantSetting.defaultValues.quantityPrecision }}"                             
+                                                    format="number"                         
                                                     />
                                                 </div>
                                             </td>
@@ -103,7 +103,7 @@
                                                 <div class="input-group" style="width: 100%;">
                                                     <input id="minQtyToReach{{key}}" ng-change="$ctrl.changeValue('minQtyToReach{{key}}')" name="minQtyToReach"  type="text" class="form-control" 
                                                     ng-model="value.minQtyToReach"
-                                                    format="number:{{ tenantSetting.defaultValues.quantityPrecision }}"                              
+                                                    format="number"     
                                                     />
                                                 </div>
                                             </td>
