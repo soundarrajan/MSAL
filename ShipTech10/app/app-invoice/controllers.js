@@ -1801,7 +1801,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                                      val.convertedFinalQuantityAmount = response;
                                 });
                             }
-                           
+
                         });
                     }
                 });
@@ -2317,7 +2317,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     toastr.success(response.message);
                     $rootScope.transportData = response.data;
                     // $location.path('invoices/claims/edit/');
-                    
+
                     localStorage.setItem('createCreditNote', JSON.stringify(response.data));
                     window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_self');
                 } else {
@@ -2648,11 +2648,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                                     formValues.costDetails[index].invoiceRateUom = defaultUomAndCompany.defaultUom;
                                     formValues.costDetails[index].invoiceQuantityUom = defaultUomAndCompany.defaultUom;
 
-                                }                               
+                                }
                             }
-                        }); 
+                        });
                     }
-                });  
+                });
 
             } else {
                 let payload;
@@ -2670,12 +2670,12 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                         if (defaultUomAndCompany) {
                             formValues.costDetails[index].invoiceRateUom = defaultUomAndCompany.defaultUom;
                             formValues.costDetails[index].invoiceQuantityUom = defaultUomAndCompany.defaultUom;
-                        } 
-                       
+                        }
+
                     }
                 });
             }
-            
+
         }
 
 

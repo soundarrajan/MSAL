@@ -75,7 +75,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             toastr.success(response.message);
                             $scope.formValues = response.data;
 
-                           
+
                             // $location.path(vm.app_id + '/claims/edit/');
                         } else {
                             $scope.loaded = true;
@@ -112,7 +112,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             $scope.loaded = true;
                             toastr.success(response.message);
                             $scope.formValues = response.data;
-                            
+
                             // $location.path(vm.app_id + '/claims/edit/');
                         } else {
                             $scope.loaded = true;
@@ -654,10 +654,10 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     }
                                     if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
                                         $scope.formValues = {};
-                                        
+
                                         $scope.formValues.claimsPossibleActions = null;
                                         $scope.formValues.isEditable = true;
-                                        
+
                                         $scope.formValues.orderDetails = response.orderDetails;
                                         $scope.formValues.deliveryDate = response.deliveryDate;
                                         $scope.triggerChangeFields('OrderID', 'orderDetails.order');
@@ -693,8 +693,8 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     if (vm.app_id == 'masters' && vm.screen_id == 'vesseltype') {
                                     	$.each($scope.formValues.robs, function(k,v){
                                     		v.vesselTypeId = null;
-                                    	})	
-                                    }                                    
+                                    	})
+                                    }
 				                    $('#header_action_verify').attr('disabled', 'disabled');
                                     toastr.success('Entity copied');
                                     $scope.$emit('formValues', $scope.formValues);
@@ -709,7 +709,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         	return;
                         }
                         Factory_Master.get_master_entity(
-                           
                            vm.entity_id,
                             vm.screen_id,
                             vm.app_id,
@@ -877,7 +876,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         data = angular.fromJson(localStorage.getItem(`${vm.app_id + vm.screen_id }_newEntity`));
                         localStorage.removeItem(`${vm.app_id + vm.screen_id }_newEntity`);
                         $scope.formValues = data;
-                        
+
                     }
                 }
             }
@@ -1006,7 +1005,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     screenLoader.hideLoader();
                     $scope.screenId = callback.id;
                     delete callback.id;
-                    //  
+                    //
                     $scope.formFields = callback;
                     // multiple layouts
                     if (callback.children) {
@@ -1274,7 +1273,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 			    		}
 		    		];
 		    		$scope.filters = $scope.modal.filters;
-                } 
+                }
 
                 if (clc == 'masters_counterpartylist_subdepartment') {
                     $scope.modal.app = 'masters';
@@ -1294,7 +1293,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 			    		}
 		    		];
 		    		$scope.filters = $scope.modal.filters;
-                } 
+                }
 
                 if (clc == 'Requote') {
                     $scope.modal.app = 'procurement';
@@ -1314,7 +1313,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 			    		}
 		    		];
 		    		$scope.filters = $scope.modal.filters;
-                }                 
+                }
 
                 if (clc == 'Order' || clc == 'OrderNoBDNToVesselEmail') {
                     $scope.modal.app = 'procurement';
@@ -1505,12 +1504,12 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         }
                     ];
                 }
-               
+
                 if (clc=="masters_productlist" && template=="general") {
                     if($scope.formValues.tradeBookMappings != undefined && $scope.formValues.tradeBookMappings.length>0){
                         $scope.modal.filters = $scope.tradeBookfilter;
                         localStorage.setItem("uniqueModalTableIdentifier", "productsInTradeBookMapping");
-                    }                   
+                    }
                 }
                 if (filter == 'price_period_filter') {
                     $scope.modal.filters = [
@@ -1547,7 +1546,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 }
                 if (filter == 'filter__productDefaultSpec') {
                 	if (!$scope.formValues.id && vm.screen_id == "product" && vm.app_id == "masters") {
-                		toastr.warning("You can select Default Spec Group only after saving the product");	
+                		toastr.warning("You can select Default Spec Group only after saving the product");
                 		return false;
                 	}
                     $scope.modal.filters = [
