@@ -717,6 +717,23 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                 screenLoader.hideLoader();
                                 if (callback) {
 	                                $scope.formValues = callback;
+	                                if (vm.app_id == 'masters' && vm.screen_id == 'specparameter') {
+	                                	let claimTypeList = $listsCache.ClaimType;
+					                    let isAutoSaveClaimDisabled = true;
+					                    for (let i = 0; i < $scope.formValues.claimTypes.length; i++) {
+					                        let claimType = $scope.formValues.claimTypes[i];
+					                        let findClaimTypeWithAutoSaveClaimChecked = _.filter(claimTypeList, function(object) {
+					                            return object.id == claimType.id && object.databaseValue == 1;
+					                        });
+					                        if (findClaimTypeWithAutoSaveClaimChecked && findClaimTypeWithAutoSaveClaimChecked.length) {
+					                            isAutoSaveClaimDisabled = false;
+					                            break;
+					                        }
+					                    }
+					                    $scope.formValues.isAutoSaveClaimDisabled = isAutoSaveClaimDisabled;
+					                    console.log($scope.formValues.isAutoSaveClaimDisabled);
+
+	                                }
                                     if(vm.screen_id === 'emaillogs') {
                                         if($scope.formValues.to && typeof $scope.formValues.to === 'string') {
                                             $scope.formValues.to = $scope.formValues.to.replace(/,/g, ';');

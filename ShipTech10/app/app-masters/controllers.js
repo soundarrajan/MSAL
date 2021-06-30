@@ -3910,6 +3910,10 @@
                         }
                     }
                 } // end for
+                if (window.location.href.indexOf('masters/specparameter') != -1 && id == 'claimTypes') {
+                    $scope.checkAutoSaveClaimCheckbox();                         
+                }
+
                 hideTheChildren();
             });
             elt_plus.on('click', () => {
@@ -4217,22 +4221,36 @@
             } else {
                 $scope.formValues[model].push(data);
                 if (window.location.href.indexOf('masters/specparameter') != -1 && model == 'claimTypes') {
-                    console.log($scope.formValues[model]);
-                    Factory_Master.get_master_entity(data.id, 'claimtype', 'masters', (response) => {
-                        if (response) {
-                            console.log(response);
-                            if (!response.autoSaveClaim) {
-                                $scope.formValues.isAutoSaveClaimDisabled = true;
-                                $scope.formValues.autoSaveClaim = false;
-                            }
-                        }
-                    });
+                    $scope.checkAutoSaveClaimCheckbox();                         
                 }
                 setTimeout(() => {
                     $scope.initBoostrapTagsInputTooltip();
                 });
             }
         };
+
+        $scope.checkAutoSaveClaimCheckbox = function() {
+            let claimTypeList = $listsCache.ClaimType;
+            let isAutoSaveClaimDisabled = true;
+            for (let i = 0; i < $scope.formValues.claimTypes.length; i++) {
+                let claimType = $scope.formValues.claimTypes[i];
+                let findClaimTypeWithAutoSaveClaimChecked = _.filter(claimTypeList, function(object) {
+                    return object.id == claimType.id && object.databaseValue == 1;
+                });
+                if (findClaimTypeWithAutoSaveClaimChecked && findClaimTypeWithAutoSaveClaimChecked.length) {
+                    isAutoSaveClaimDisabled = false;
+                    break;
+                }
+            }
+
+            $scope.formValues.isAutoSaveClaimDisabled = isAutoSaveClaimDisabled;
+            if (isAutoSaveClaimDisabled) {
+                $scope.formValues.autoSaveClaim = false;
+                $scope.$digest();
+            }
+
+
+        }
 
         $scope.addTagToMultiInLocationMaster = (model, data) => {
             vm.plusClickedMultilookup = true;
