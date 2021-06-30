@@ -518,8 +518,10 @@
   <div *ngIf="contractConfiguration.tradeBookDisplay.name === 'Show'" class="custom-form-field"
     [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }">
     <mat-form-field class="without-search" appearance="legacy">
-      <mat-label>Trade Book</mat-label>
-      <mat-select [(ngModel)]="formValues.contractTradeBook" [disableOptionCentering]="true"
+      <mat-label>Trade Book </mat-label>
+      <mat-select
+       [matTooltip]="formValues.contractTradeBook?.name" [matTooltipPosition]="'above'" matTooltipClass="custom-tooltip"
+       [disabled]="formValues.status && formValues.status.name == 'Confirmed'" [(ngModel)]="formValues.contractTradeBook" [disableOptionCentering]="true"
         panelClass="general-info-select-container" [compareWith]="compareUomObjects" placeholder="Trade Book">
         <mat-option *ngFor="let tradeBook of tradeBookList" [value]="tradeBook">
           {{ tradeBook.displayName }}
