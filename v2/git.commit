@@ -1,11 +1,11 @@
-﻿commit 73db695f22312ecec46b009c7a62c77a6b5d382c
+﻿commit edb585b4774234561ca9d18a3c9e7f190ee1e5a5
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 30 22:46:44 2021 +0000
+Date:   Wed Jun 30 22:55:43 2021 +0000
 
-    Merged PR 12003: remove Vessel last updated date section.
+    Merged PR 12004: Passing UserId in Save Current bplan api.
     
-    remove Vessel last updated date section.
+    Passing UserId in Save Current bplan api.
     
-    Related work items: #30374
+    Related work items: #33248
 
 branch: master

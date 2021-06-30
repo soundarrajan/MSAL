@@ -535,7 +535,7 @@ export class BunkeringPlanComponent implements OnInit {
     
     let req = {
        action : "save",
-       user_id : "default@inatech.com",//this.username$ ,
+       user_id : this.store.selectSnapshot(UserProfileState.userId),//"default@inatech.com",
        ship_id: storeVesselData.vesselId,
        plan_id: storeVesselData.planId,
        hsfo_current_stock: currentROBObj['3.5 QTY'] ? currentROBObj['3.5 QTY']: 0,
