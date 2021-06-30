@@ -1,11 +1,11 @@
-﻿commit 4c185363e31a5513874bcdf19110d7d6696a3228
+﻿commit 73db695f22312ecec46b009c7a62c77a6b5d382c
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 30 13:27:05 2021 +0000
+Date:   Wed Jun 30 22:46:44 2021 +0000
 
-    Merged PR 11997: Handling undefined soa while saving to store.
+    Merged PR 12003: remove Vessel last updated date section.
     
-    Handling undefined soa while saving to store.
+    remove Vessel last updated date section.
     
-    Related work items: #33248
+    Related work items: #30374
 
 branch: master

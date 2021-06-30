@@ -74,7 +74,7 @@ export class OlMapComponent implements OnInit {
   animationWithState = false;
   map: any;
   mapCenterValues = [10, 10];
-  minZoomLevel = 2;
+  minZoomLevel = 3;
   maxZoomLevel = 12;
   lightclick=false;
   public selectedFillterTag = 'All My Vessels';
@@ -120,6 +120,8 @@ export class OlMapComponent implements OnInit {
   public clickedPort;
   public vesselList = [];
   public portList = [];
+  public isRegionFilterSelected : boolean = false;
+  public regionFilterType : string = '';
   public filterData = [
     {
       name: 'All My Vessels',
@@ -342,11 +344,12 @@ export class OlMapComponent implements OnInit {
       }
     });
     this.setCenter();
-    this.portMakersLayer.setVisible(true);
+    //this.portMakersLayer.setVisible(true);
     this.mapService.getLocationsListForMap(" ").subscribe(res => {
       if (res.payload != undefined) {
         this.portList = res.payload;
         this.loadPorts(" ");
+        this.portMakersLayer.setVisible(false);
       }
     })
     this.loadFilterData();
@@ -1068,18 +1071,51 @@ export class OlMapComponent implements OnInit {
     });
 
     this.map.on('moveend', (evt) => {
-      if (evt.map.getView().getZoom() > 0)
-        this.portMakersLayer.setVisible(true);
-      else
-        this.portMakersLayer.setVisible(false);
+      if(this.isRegionFilterSelected ==false){
+        if (evt.map.getView().getZoom() >= 4 && evt.map.getView().getZoom() <5 ){//Vessels + Major Ports
+          this.portMakersLayer.getSource().clear();
+          let majorPortList = this.portList.filter(port => port.isMajorLocation == 1)
+          this.createPortMakeSrs(majorPortList);
+        } 
+        else if( evt.map.getView().getZoom() >= 5 && evt.map.getView().getZoom() < 6 ){ //Vessels + Major Ports + Minor Ports
+          this.portMakersLayer.getSource().clear();  
+          this.createPortMakeSrs(this.portList);
+        }
+        else if(evt.map.getView().getZoom() >= 6 && evt.map.getView().getZoom() <13 ){//Vessels + Major Ports + Minor Ports without reseting portMakersLayer Source
+          this.portMakersLayer.setVisible(true);
+        }
+        else
+          this.portMakersLayer.setVisible(false); // Vessel only
+      }
+      else{
+        if(evt.map.getView().getZoom() >= 4 && evt.map.getView().getZoom() <5){ //Region Based Vessels + Major ports 
+          this.portMakersLayer.getSource().clear();  
+          let majorPortList = this.portList.filter(port => port.isMajorLocation == 1 && port.regionName == this.regionFilterType)
+          this.createPortMakeSrs(majorPortList);
+        }
+        else if(evt.map.getView().getZoom() >= 5 && evt.map.getView().getZoom() < 6){ //Region Based Vessels + Major Ports + Minor Ports
+          this.portMakersLayer.getSource().clear();
+          this.loadPorts(this.regionFilterType);
+        }
+        else if(evt.map.getView().getZoom() >= 6 && evt.map.getView().getZoom() <13 ){ //Region Based Vessels + Major Ports + Minor Ports
+          this.portMakersLayer.setVisible(true);
+        }
+        else
+          this.portMakersLayer.setVisible(false); // Vessel only
+      }
+      
       this.checkZoomLimit();
     });
 
     this.map.on('movestart', (evt) => {
-      if (evt.map.getView().getZoom() > 0)
-        this.portMakersLayer.setVisible(true);
-      else
-        this.portMakersLayer.setVisible(false);
+      if(this.isRegionFilterSelected == false){
+        if (evt.map.getView().getZoom() >= 3){
+         this.portMakersLayer.setVisible(true);
+        }
+        else
+          this.portMakersLayer.setVisible(false);
+      }
+      
       this.checkZoomLimit();
     });
 
@@ -1115,14 +1151,18 @@ export class OlMapComponent implements OnInit {
         case 'All My Vessels': {
           this.selectedFillterTag = null;
           this.loadVessels(" ");
-          this.loadPorts(" ")
+          this.portMakersLayer.setVisible(false);
+          //this.loadPorts(" ")
+          this.isRegionFilterSelected = false;
           this.setCenter();
           break;
         }
         case 'Unmanageable Vessels': {
           this.selectedFillterTag = item.name;
           this.loadVessels('Unmanageable Vessels')
-          this.loadPorts('Unmanageable Vessels')
+          this.portMakersLayer.setVisible(false);
+          //this.loadPorts('Unmanageable Vessels')
+          this.isRegionFilterSelected = false;
           this.setCenter();
           break;
         }
@@ -1130,7 +1170,9 @@ export class OlMapComponent implements OnInit {
           this.selectedFillterTag = item.name;
           //this.flyTo(item.lonlat, () => { this.isLoading = false }, 4.2);
           this.loadVessels('Europe');
-          this.loadPorts('Europe')
+          //this.loadPorts('Europe')
+          this.regionFilterType = 'Europe';
+          this.isRegionFilterSelected = true;
           this.setCenter();
           break;
         }
@@ -1138,7 +1180,9 @@ export class OlMapComponent implements OnInit {
           this.selectedFillterTag = item.name;
           //this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('North America');
-          this.loadPorts('North America')
+          //this.loadPorts('North America')
+          this.regionFilterType = 'North America';
+          this.isRegionFilterSelected = true;
           this.setCenter();
           break;
         }
@@ -1146,7 +1190,9 @@ export class OlMapComponent implements OnInit {
           this.selectedFillterTag = item.name;
           //this.flyTo(item.lonlat, () => { this.isLoading = false }, 3.5);
           this.loadVessels('Asia');
-          this.loadPorts('Asia');
+          //this.loadPorts('Asia');
+          this.regionFilterType = 'Asia';
+          this.isRegionFilterSelected = true;
           this.setCenter();
           break;
         }
@@ -1649,7 +1695,7 @@ export class OlMapComponent implements OnInit {
       //Maximized to limit
       this.maxZoomLimit = true;
     }
-    else if (this.map.getView().getZoom() <= (3)) {
+    else if (this.map.getView().getZoom() < (4)){ //this.minZoomLevel){
       //Minimized to limit
       this.minZoomLimit = true;
     }
