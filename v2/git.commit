@@ -1,11 +1,11 @@
-﻿commit ee14ffc0b9978cd6cd5b58e96df60132c1849a08
+﻿commit 2157040939d533e2ad0f23dca1ee4b7a30317c0b
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 30 06:58:26 2021 +0000
+Date:   Wed Jun 30 08:27:57 2021 +0000
 
-    Merged PR 11969: SOA frontend calculation changes.
+    Merged PR 11974: Handling default sql date for vessel basic info
     
-    SOA frontend calculation changes.
+    Handling default sql date for vessel basic info
     
-    Related work items: #33248
+    Related work items: #33258
 
 branch: master
