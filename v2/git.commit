@@ -1,7 +1,11 @@
-﻿commit 1fb6e8abd950ebe5e4e2803f26c415f624958ce1
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Wed Jun 30 17:31:48 2021 +0530
+﻿commit a06de9f5d72b93da891d9b5e9266316b3711c089
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Wed Jun 30 12:46:12 2021 +0000
 
-    Bdnreports, Order Reports
+    Merged PR 11988: git change to force detection of pullrequest
+    
+    git change to force detection of pullrequest
+    
+    Related work items: #33821
 
 branch: master
