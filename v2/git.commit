@@ -1,11 +1,11 @@
-﻿commit 2157040939d533e2ad0f23dca1ee4b7a30317c0b
+﻿commit ad5657a0b2d062ecf9c00149e901c6bf9920d278
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 30 08:27:57 2021 +0000
+Date:   Wed Jun 30 08:40:00 2021 +0000
 
-    Merged PR 11974: Handling default sql date for vessel basic info
+    Merged PR 11975: Handling NaN for soa calc in current bplan.
     
-    Handling default sql date for vessel basic info
+    Handling NaN for soa calc in current bplan.
     
-    Related work items: #33258
+    Related work items: #33248
 
 branch: master
