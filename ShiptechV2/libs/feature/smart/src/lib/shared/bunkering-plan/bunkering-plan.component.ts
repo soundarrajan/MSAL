@@ -790,6 +790,7 @@ export class BunkeringPlanComponent implements OnInit {
                             rowData2[i].lsdis_soa = parseInt(rowData2[i-1].lsdis_soa) - parseInt(rowData2[i].lsdis_estimated_consumption) - lsdisAsEca + parseInt(rowData2[i-1].lsdis_estimated_lift);
 
                           }
+                          if(rowData2[i].lsdis_soa)
                           this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no));
                         }
                         if(this.gridOptions.api)
@@ -808,6 +809,7 @@ export class BunkeringPlanComponent implements OnInit {
                           else{
                             rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_soa) - (parseInt(rowData2[i-1].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption)) + lsdisAsEca + parseInt(rowData2[i-1].ulsfo_estimated_lift) ;
                           }
+                          if(rowData2[i].ulsfo_soa) 
                           this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
                         }
                         if(this.gridOptions.api)
@@ -827,7 +829,8 @@ export class BunkeringPlanComponent implements OnInit {
                             //For Port 1 to N 
                             else{
                               rowData2[i].hsfo_soa = parseInt(rowData2[i-1].hsfo_estimated_lift) + parseInt(rowData2[i-1].hsfo_soa) - parseInt(rowData2[i].hsfo_estimated_consumption);
-                            } 
+                            }
+                            if(rowData2[i].hsfo_soa) 
                             this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no));
                           }
                           if(this.gridOptions.api)
