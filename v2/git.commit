@@ -1,11 +1,11 @@
-﻿commit a06de9f5d72b93da891d9b5e9266316b3711c089
-Author: Oliu Radu <radu.oliu@24software.ro>
-Date:   Wed Jun 30 12:46:12 2021 +0000
+﻿commit f2955a84a1bf2325f50ed56528c517f15c56e726
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Wed Jun 30 13:04:43 2021 +0000
 
-    Merged PR 11988: git change to force detection of pullrequest
+    Merged PR 11995: Unpumpables HSFO05 removed
     
-    git change to force detection of pullrequest
+    hsfo 05 value removed for unpumpables
     
-    Related work items: #33821
+    Cherry-picked from commit `1471fd23`.
 
 branch: master
