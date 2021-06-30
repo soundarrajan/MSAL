@@ -416,6 +416,9 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 if (ctrl.template.name === 'Questionnaire - Standard') {
                     ctrl.template.name = 'Standard';
                 }
+                if (ctrl.template.name === 'RequestCancellationToOperator') {
+                    ctrl.template.name = 'Request Cancellation To Operator';
+                }
                 newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId, $rootScope.isPreview).then((data) => {
                     ctrl.email = data.payload;
 
