@@ -780,15 +780,14 @@ export class BunkeringPlanComponent implements OnInit {
         case 'LSDIS' :{
                         let currentRobLsdis = currentROB.LSDIS == null? 0 : currentROB.LSDIS;
                         for( let i = 0; i < rowData2.length ; i++){
+                          let lsdisAsEca = parseInt(rowData2[i].lsdis_as_eca);
                           //For Port 0
                           if(i==0){
-                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
-                            rowData2[i].lsdis_soa = currentRobLsdis - rowData2[i].lsdis_estimated_consumption - lsdisAsEca;
+                            rowData2[i].lsdis_soa = parseInt(currentRobLsdis.toString()) - parseInt(rowData2[i].lsdis_estimated_consumption) - lsdisAsEca;
                           }
                           //For Port 1 to N 
                           else{
-                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
-                            rowData2[i].lsdis_soa = rowData2[i-1].lsdis_soa - rowData2[i].lsdis_estimated_consumption - lsdisAsEca + rowData2[i-1].lsdis_estimated_lift;
+                            rowData2[i].lsdis_soa = parseInt(rowData2[i-1].lsdis_soa) - parseInt(rowData2[i].lsdis_estimated_consumption) - lsdisAsEca + parseInt(rowData2[i-1].lsdis_estimated_lift);
 
                           }
                           this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no));
@@ -800,15 +799,14 @@ export class BunkeringPlanComponent implements OnInit {
         case 'ULSFO' :{
                         let currentRobUslfo = currentROB.ULSFO == null ? 0 :currentROB.ULSFO;
                         for( let i = 0; i < rowData2.length ; i++){
+                          let lsdisAsEca = parseInt(rowData2[i].lsdis_as_eca);
                           //For Port 0
                           if(i==0){
-                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
-                            rowData2[i].ulsfo_soa = currentRobUslfo - (rowData2[i].eca_estimated_consumption - rowData2[i].lsdis_estimated_consumption) + lsdisAsEca 
+                            rowData2[i].ulsfo_soa = parseInt(currentRobUslfo.toString()) - (parseInt(rowData2[i].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption)) + lsdisAsEca 
                           }
                           //For Port 1 to N 
                           else{
-                            let lsdisAsEca = rowData2[i].lsdis_as_eca;
-                            rowData2[i].ulsfo_soa = rowData2[i-1].ulsfo_soa - (rowData2[i-1].eca_estimated_consumption - rowData2[i].lsdis_estimated_consumption) + lsdisAsEca + rowData2[i-1].ulsfo_estimated_lift ;
+                            rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_soa) - (parseInt(rowData2[i-1].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption)) + lsdisAsEca + parseInt(rowData2[i-1].ulsfo_estimated_lift) ;
                           }
                           this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
                         }
@@ -824,11 +822,11 @@ export class BunkeringPlanComponent implements OnInit {
                             //For Port 0
                             if(i == 0){
                               let estdConsHsfo = parseInt(rowData2[i].hsfo_estimated_consumption);
-                              rowData2[i].hsfo_soa = currentRobHsfo + currentRobVlsfo - estdConsHsfo;
+                              rowData2[i].hsfo_soa = parseInt(currentRobHsfo.toString()) + parseInt(currentRobVlsfo.toString()) - estdConsHsfo;
                             }
                             //For Port 1 to N 
                             else{
-                              rowData2[i].hsfo_soa = rowData2[i-1].hsfo_estimated_lift + rowData2[i-1].hsfo_soa - rowData2[i].hsfo_estimated_consumption;
+                              rowData2[i].hsfo_soa = parseInt(rowData2[i-1].hsfo_estimated_lift) + parseInt(rowData2[i-1].hsfo_soa) - parseInt(rowData2[i].hsfo_estimated_consumption);
                             } 
                             this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no))
                           }
