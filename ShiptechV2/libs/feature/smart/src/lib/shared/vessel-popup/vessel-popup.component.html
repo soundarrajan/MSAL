@@ -102,7 +102,7 @@
                   <span class="icon-seperator">|</span>
                   <div class="col-4" style="padding-right: 0px;">
                     <div class="caption-header">ETA</div>
-                    <div class="caption-details" matTooltip="{{popup_data.eta1 | utcDatePipe}}">{{popup_data.eta1 | utcDatePipe}}</div>
+                    <div *ngIf="popup_data?.eta1 > '1900-01-01T00:00:00Z'" class="caption-details" matTooltip="{{popup_data.eta1 | utcDatePipe}}">{{popup_data.eta1 | utcDatePipe}}</div>
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link" style="line-height: 22px;">
@@ -124,7 +124,7 @@
                   <span class="icon-seperator">|</span>
                   <div class="col-4" style="padding-right: 0px;">
                     <div class="caption-header">ETA</div>
-                    <div class="caption-details" matTooltip="{{popup_data.eta2  | utcDatePipe}}" >{{popup_data.eta2  | utcDatePipe}}</div>
+                    <div *ngIf="popup_data?.eta2 > '1900-01-01T00:00:00Z'" class="caption-details" matTooltip="{{popup_data.eta2  | utcDatePipe}}" >{{popup_data.eta2  | utcDatePipe}}</div>
                   </div>
                   <span class="icon-seperator" style="padding: 0px 8px;">|</span>
                   <div class="col-3 pd-0 vessel-master-link">
