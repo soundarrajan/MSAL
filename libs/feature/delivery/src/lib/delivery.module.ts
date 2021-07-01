@@ -150,6 +150,7 @@ import { SampleSourceRouteResolver } from './views/delivery/details/sample-sourc
 import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
 import { TextareaAutoresizeDirective } from './views/delivery/details/directives/textarea-autoresize.directive';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
+import { HtmlDecode }  from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
 
 @NgModule({
   imports: [
@@ -247,6 +248,7 @@ import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/inv
     BreadcrumbsModule
   ],
   declarations: [
+    HtmlDecode,
     MainDeliveryComponent,
     DeliveryListComponent,
     DeliveryDetailsComponent,
