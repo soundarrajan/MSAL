@@ -1,9 +1,9 @@
-﻿commit af68d52ac528be859c6bc908967c6643379a7a7a
+﻿commit 82967748d4a23defba3f79bde4211e5a256d4113
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jul 1 11:09:55 2021 +0000
+Date:   Thu Jul 1 11:58:42 2021 +0000
 
-    Merged PR 12041: Fixed build error
+    Merged PR 12044: Checked if str exists in htmlDecode pipe
     
-    Fixed build error
+    Checked if str exists in htmlDecode pipe
 
 branch: master
