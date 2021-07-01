@@ -126,7 +126,7 @@ export class VesselInfoComponent implements OnInit {
     
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
-    let Reqpayload = { "shipId": this.vesselRef?.vesselId }
+    let Reqpayload = this.vesselRef?.vesselId; 
     // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
     //   this.BunkerPlanCommentList = response?.payload;
     //   this.loadRequestComments();
