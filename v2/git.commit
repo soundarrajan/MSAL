@@ -1,9 +1,9 @@
-﻿commit 2b9e6740e1f187e7b84d138d354dd224bf7b58a4
+﻿commit 33fc8c0bc5998dfadde557405971499195d423d1
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 1 14:29:20 2021 +0000
+Date:   Thu Jul 1 15:13:48 2021 +0000
 
-    Merged PR 12051: #33436: Product Availablity Section_ The following issues exists in the product availablity table issues has fixed
+    Merged PR 12052: #33521: Bunker plan Request: ETA and ETD shown is incorrect issue has fixed
     
-    Related work items: #33436
+    Related work items: #33521
 
 branch: master
