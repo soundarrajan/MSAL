@@ -37,7 +37,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public shiptechPortUrl: string;
   public shiptechUrl: string ;
   public bplanType: any;
-  // public tooltipMessage : string = "";
+  public tooltipMessage : string = "";
   @Input('selectedUserRole') 
   public set selectedUserRole(v : any) {
     this.selectedUserRole = v;
@@ -289,27 +289,24 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.menuClick = true;
 
   }
-  // checkLsdis(field){
-  //   if(field == 'lsdis_estimated_consumption' || field == 'eca_estimated_consumption'){
-  //     if(this.params.data){
-  //       if(this.params.data.lsdis_as_eca == 0){
-  //         this.tooltipMessage = "Estimated consumption of ECA bunker from previous port to this port, is covered by XXX MT low Sulphur distillate."
-  //         return true;
-  //       }
-  //       else{
-  //         this.tooltipMessage = "testing";
-  //         return false;
-  //       }
+  checkLsdis(field){
+    if(field == 'lsdis_estimated_consumption' || field == 'eca_estimated_consumption'){
+      if(this.params?.data){
+        if(this.params?.data?.lsdis_as_eca > 0){
+          this.tooltipMessage = "Estimated consumption of ECA bunker from previous port to this port, is covered by "+ `${this.params.data.lsdis_as_eca}` +" MT low Sulphur distillate."
+          return true;
+        }
+        else{
+          // this.tooltipMessage = "testing";
+          return false;
+        }
           
-  //     }
+      }
 
-  //   }
-  //   if(field==""){
-  //     return 
-  //   }
-  //   else 
-  //     return "test";
-  // }
+    }
+    if(field=="")
+        return false;
+  }
   cancelMenu() {
     this.infomenuTrigger.closeMenu();
     this.menuClick = false;
