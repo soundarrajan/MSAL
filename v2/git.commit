@@ -1,11 +1,9 @@
-﻿commit 3cd1529ef1c24aab7d309f490072400d880c4e9e
+﻿commit 224f9e38fa6e364a969f1c55ffe09cc3d7c80733
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 1 20:26:18 2021 +0000
+Date:   Thu Jul 1 20:44:18 2021 +0000
 
-    Merged PR 12056: #33258 Bunker plan - Tool tips ; message added
+    Merged PR 12057: Ulsfo_SOA calculation correction for save bplan.
     
-    #33258 Bunker plan - Tool tips ; message added
-    
-    Related work items: #33258
+    Ulsfo_SOA calculation correction for save bplan.
 
 branch: master
