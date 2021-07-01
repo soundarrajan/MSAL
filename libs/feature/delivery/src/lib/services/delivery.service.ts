@@ -164,6 +164,14 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
   }
 
   /**
+   * Delete delivery
+   *  @param deliveryId
+   */
+  @ObservableException()
+  deleteDelivery(deliveryId: any) {
+    return this.deliveryApi.deleteDelivery(deliveryId);
+  }
+  /**
    * Get split delivery limits
    *  @param
    */
