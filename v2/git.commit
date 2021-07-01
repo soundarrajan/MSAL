@@ -1,11 +1,11 @@
-﻿commit e3c11dbad87a72bb44fbb7816d8ca351ba2ab431
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Thu Jul 1 06:48:09 2021 +0000
+﻿commit f137b9afa2035a0f7d9e6a0e298c7be59fcbfd9c
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jul 1 08:33:38 2021 +0000
 
-    Merged PR 12014: 33398#bugfix
+    Merged PR 12025: #30374 Zoom in/out for region filter.
     
-    33398#bugfix
+    #30374 Zoom in/out for region filter.
     
-    Cherry-picked from commit `4438901e`.
+    Related work items: #30374
 
 branch: master

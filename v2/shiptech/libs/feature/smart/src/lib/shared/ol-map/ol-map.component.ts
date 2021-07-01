@@ -1108,13 +1108,11 @@ export class OlMapComponent implements OnInit {
     });
 
     this.map.on('movestart', (evt) => {
-      if(this.isRegionFilterSelected == false){
-        if (evt.map.getView().getZoom() >= 3){
+        if (evt.map.getView().getZoom() >= 4){ //on map dragged or moved.
          this.portMakersLayer.setVisible(true);
         }
         else
           this.portMakersLayer.setVisible(false);
-      }
       
       this.checkZoomLimit();
     });
