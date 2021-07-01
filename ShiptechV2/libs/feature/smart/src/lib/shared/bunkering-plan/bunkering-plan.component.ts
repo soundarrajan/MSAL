@@ -156,7 +156,7 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-columgroup-splitter-left aggrid-text-align-c '],
           children: [
             {
-              headerName: BunkeringPlanColumnsLabels.HsfoMaxLift, field: 'hsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.HsfoMaxLift, width: 80,
+              headerName: BunkeringPlanColumnsLabels.HsfoMaxLift, field: 'hsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.HsfoMaxLift, width: 55,
               cellClass: (params)=>{
                 let cellClass = '';
                 if (this.type == 'C') 
@@ -181,7 +181,7 @@ export class BunkeringPlanComponent implements OnInit {
               cellRendererParams : (params) =>{return {type: 'soa-hsfo',context: { componentParent: this }}} 
             },
             {
-              headerName: BunkeringPlanColumnsLabels.HsfoEstdCons, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdCons, field: 'hsfo_estimated_consumption', width: 50,
+              headerName: BunkeringPlanColumnsLabels.HsfoEstdCons, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdCons, field: 'hsfo_estimated_consumption', width: 55,
               cellClass: (params)=>{
                 if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
