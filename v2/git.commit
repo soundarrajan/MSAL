@@ -1,7 +1,11 @@
-﻿commit 01dd5dede5bb67cf52304dad20f8b5abfae50822
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Thu Jul 1 22:09:24 2021 +0530
+﻿commit 443c73cfbafbe6a73a9dd0d3a7b30f70c739325e
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jul 1 19:04:51 2021 +0000
 
-    Search Vessel Code
+    Merged PR 12054: #33526 Bunkering Plan_ The last plan line is not visible ; scroll handled for current bplan expand.
+    
+    #33526 Bunkering Plan_ The last plan line is not visible ; scroll handled for current bplan expand.
+    
+    Related work items: #33526
 
 branch: master
