@@ -33,6 +33,8 @@ export class VesselDetailsComponent implements OnInit {
   selectedRole: any;
   changeUserRole: Subject<void> = new Subject<void>();
   IsVesselhasNewPlan: boolean = false;
+  getVesselListVesselWithImo: any[];
+  getVesselListVesselWithCode: any[];
   constructor(private store: Store, private localService: LocalService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -65,21 +67,13 @@ export class VesselDetailsComponent implements OnInit {
   }
   getVesselList() {
     // load vessel list for vessel search option
-    this.localService.getVesselListImono(false).subscribe((tenantConfRes)=> {
-      console.log('tenantConfRes for vessel imono',tenantConfRes);
-      tenantConfRes = tenantConfRes.items
-      this.localService.getVesselList(false).subscribe((data)=> {
-        console.log('getVesselList',data);
-        let vesselRes = data;
-        this.vesselList = [];
-        this.vesselList = vesselRes.map(vesselItem=> {
-          let obj = tenantConfRes.find(imoItem => imoItem.id === vesselItem.id);
-          return obj? {...vesselItem, imono:obj.name }: false;
-        })
-        console.log(this.vesselList);
-
-      })
-
+    this.localService.getVesselListall(false).subscribe((tenantConfRes)=> {
+      this.getVesselListVesselWithImo = tenantConfRes.find(txn => txn.name =="VesselWithImo").items;
+      this.getVesselListVesselWithCode = tenantConfRes.find(txn => txn.name =="Vessel").items;
+      this.vesselList = this.getVesselListVesselWithCode.map(vesselItem=> {
+            let obj = this.getVesselListVesselWithImo.find(imoItem => imoItem.id === vesselItem.id);
+            return obj? {...vesselItem, imono:obj.name, displayName:vesselItem.name }: false;
+          })
     })
 
   }

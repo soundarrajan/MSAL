@@ -44,7 +44,7 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     this.localService.themeChange.subscribe(value => this.theme = value);
     //Get vessel list from route resolver to make default vessel on init
     this.route.data.subscribe(data => {
-      console.log(data);
+      console.log("0000000000000000", data);
       this.vesselList = data?.vesselListWithImono;
     });
 
@@ -74,7 +74,8 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     if (filterValue == "")
       return;
     else
-    return this.filterList.filter(option => (option.displayName.toLowerCase().indexOf(filterValue) > -1 || option.imono.indexOf(filterValue) > -1));
+   
+    return this.filterList.filter(option => (option.displayName.toLowerCase().indexOf(filterValue) > -1 || option.code.toLowerCase().indexOf(filterValue) > -1));
   }
   clearSearch() {
     this.searchVesselControl.setValue('');
@@ -124,6 +125,7 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     //   // this.filterList.push({ VesselIMONO: vessel.VesselIMONO, VesselName: vessel.VesselIMONO });
     //   this.filterList.push({ VesselIMONO: vessel.imono, displayName: vessel.displayName })
     // })
+    console.log("____________-", this.vesselList);
     this.filterList = [...this.vesselList];
   }
   onVesselSelected(trigger: MatAutocompleteTrigger) {
