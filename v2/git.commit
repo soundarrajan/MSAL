@@ -1,11 +1,9 @@
-﻿commit edb585b4774234561ca9d18a3c9e7f190ee1e5a5
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jun 30 22:55:43 2021 +0000
+﻿commit 9cd40b6f8e98a7dbdb0ca2d4355e1b65a5984ce3
+Author: Anurag Dwivedi <anurag.d@Inatech.com>
+Date:   Thu Jul 1 05:46:32 2021 +0000
 
-    Merged PR 12004: Passing UserId in Save Current bplan api.
+    Merged PR 12009: Alerts
     
-    Passing UserId in Save Current bplan api.
-    
-    Related work items: #33248
+    Related work items: #29904
 
 branch: master
