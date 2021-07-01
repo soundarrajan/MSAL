@@ -17,14 +17,18 @@ const KEY_TAB = 9;
     template: ` <div *ngIf="params.type=='edit'">
     <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
         (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
-    <span *ngIf="showInfoIcon == true">
+    <!-- <span *ngIf="showInfoIcon == true">
           <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
-    </span>
+    </span> -->
     </div>
   <div *ngIf="params.type=='edit-business-address'">
     <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
         (keydown)="triggerChangeEvent();" ></div>
-  </div>`
+  </div>
+  <div *ngIf="params.type=='edit-with-info-icon'">
+  <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
+        (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
+</div>`
 })
 export class AgGridInputCellEditor implements ICellEditorAngularComp {
     public params: any;
@@ -107,16 +111,16 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
           }
           
       }
-      if(this.params.colDef?.field == 'lsdis_estimated_consumption' || this.params.colDef?.field == 'eca_estimated_consumption'){
-        if(this.params.data){
-          if(this.params.data.lsdis_as_eca > 0){
-            this.showInfoIcon = true;
-          }
-          else
-            this.showInfoIcon = false;
-        }
+      // if(this.params.colDef?.field == 'lsdis_estimated_consumption' || this.params.colDef?.field == 'eca_estimated_consumption'){
+      //   if(this.params.data){
+      //     if(this.params.data.lsdis_as_eca > 0){
+      //       this.showInfoIcon = true;
+      //     }
+      //     else
+      //       this.showInfoIcon = false;
+      //   }
 
-      }
+      // }
         this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
         return this.value;
     }
