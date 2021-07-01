@@ -244,7 +244,7 @@ export class BunkeringPlanComponent implements OnInit {
               },
               headerClass: ['aggrid-colum-splitter-left'],
               cellRendererParams: (params) => {             
-                return { type: this.editableCell? 'edit':'edit-disabled', context: { componentParent: this } }
+                return { type: this.editableCell? 'edit-with-info-icon':'edit-with-info-icon', context: { componentParent: this } }
               },
               cellRendererFramework: AGGridCellDataComponent,
               editable : (params) => {return this.editableCell},
@@ -340,7 +340,7 @@ export class BunkeringPlanComponent implements OnInit {
               },
               headerClass: ['aggrid-colum-splitter-left'],
               cellRendererParams: (params) => {             
-                return { type: this.editableCell? 'edit':'edit-disabled', context: { componentParent: this } }
+                return { type: this.editableCell? 'edit-with-info-icon':'edit-with-info-icon', context: { componentParent: this } }
               },
               cellRendererFramework: AGGridCellDataComponent,
               editable : (params) => {return this.editableCell},
@@ -807,7 +807,8 @@ export class BunkeringPlanComponent implements OnInit {
                           }
                           //For Port 1 to N 
                           else{
-                            rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_soa) - (parseInt(rowData2[i-1].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption)) + lsdisAsEca + parseInt(rowData2[i-1].ulsfo_estimated_lift) ;
+                            let estd_Cons = parseInt(rowData2[i-1].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption);
+                            rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_soa) - estd_Cons + lsdisAsEca + parseInt(rowData2[i-1].ulsfo_estimated_lift) ;
                           }
                           if(rowData2[i].ulsfo_soa) 
                           this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
