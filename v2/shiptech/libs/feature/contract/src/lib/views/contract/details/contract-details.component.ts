@@ -445,6 +445,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.formValues.hasInvoicedOrder = false;
           this.statusColorCode = '#9E9E9E';
           this.entityCopied = true;
+          this.statusColorCode = '#9E9E9E';
           this.eventsSubject5.next(true);
           console.log(this.formValues);
           this.changeDetectorRef.detectChanges();

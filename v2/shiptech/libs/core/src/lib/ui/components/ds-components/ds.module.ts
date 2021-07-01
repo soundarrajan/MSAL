@@ -19,7 +19,8 @@ import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.co
 import { TabsComponent } from './tabs/tabs.component';
 import { StAutosearchSelectorComponent } from './st-autosearch-selector/st-autosearch-selector.component';
 import { AmountTenantFormatDirective } from './directives/amount-tenant-format.directive';
-@NgModule({ 
+import { HtmlDecodeReadonly } from '@shiptech/core/pipes/htmlDecode/html-decode-readonly.pipe';
+@NgModule({
   imports: [
     CommonModule,
     FormsModule,
@@ -33,7 +34,7 @@ import { AmountTenantFormatDirective } from './directives/amount-tenant-format.d
       AGGridCellRendererComponent
     ])
   ],
-  exports: [ 
+  exports: [
     TabsComponent,
     MasterChip,
     ReadonlyDetailsComponent,
@@ -41,7 +42,7 @@ import { AmountTenantFormatDirective } from './directives/amount-tenant-format.d
   ],
   declarations: [
     TabsComponent,
-    AGGridCellActionsComponent,    
+    AGGridCellActionsComponent,
     AGGridCellEditableComponent,
     OpsSpecParameterDialog,
     OperationalAmountDialog,
@@ -54,10 +55,9 @@ import { AmountTenantFormatDirective } from './directives/amount-tenant-format.d
     MasterSelectionDialog,
     FooterV2Component,
     StAutosearchSelectorComponent,
-    AmountTenantFormatDirective
+    AmountTenantFormatDirective,
+    HtmlDecodeReadonly
   ],
-  entryComponents:[
-    MasterSelectionDialog
-  ]
+  entryComponents: [MasterSelectionDialog]
 })
 export class DSComponentsModule {}

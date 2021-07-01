@@ -1,0 +1,39 @@
+<div class="row delete-delivery-modal-top">
+  <div class="col-md-12">
+    <a (click)="closeClick()"
+      class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button delete-delivery-close-button"
+      role="button">
+      <span class="pi pi-times cl-content"></span>
+    </a>
+  </div>
+  <div class="col-md-9 delete-delivery-modal-header">
+    Delete delivery
+  </div>
+
+</div>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-md-12">
+      Do you want to delete the delivery?
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div style="float:right;position: relative;">
+        <button type="button" class="delete-delivery-button cancel-button" (click)="closeClick()">
+          No
+        </button>
+        <button type="button" class="delete-delivery-button" (click)="deleteDelivery()">
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions style="display: none;">
+    <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>
+      Yes
+    </button>
+  </div>
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade">
+  </ngx-spinner>

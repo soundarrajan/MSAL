@@ -1,11 +1,9 @@
-﻿commit 9548d50f32616941f404c1971c598c07f5ad475c
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Thu Jul 1 09:22:19 2021 +0000
+﻿commit af68d52ac528be859c6bc908967c6643379a7a7a
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Jul 1 11:09:55 2021 +0000
 
-    Merged PR 12027: 33398#bugfix
+    Merged PR 12041: Fixed build error
     
-    33398#bugfix
-    
-    Cherry-picked from commit `f8e753a6`.
+    Fixed build error
 
 branch: master
