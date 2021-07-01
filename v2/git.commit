@@ -1,9 +1,9 @@
-﻿commit 3369340a2cf68e7b218cd5688dcc87a65d1c92c8
+﻿commit 8f9e20dcc9e06684b91106dd8a7f354d419a2f53
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 1 13:14:14 2021 +0000
+Date:   Thu Jul 1 13:39:48 2021 +0000
 
-    Merged PR 12047: Bug 33469: Port Remarks_After the cancel operation, The unsaved values are retaining issue has fixed
+    Merged PR 12048: #33850: All the remarks are deleted at once issue has fixed
     
-    Related work items: #33469
+    Related work items: #33850
 
 branch: master
