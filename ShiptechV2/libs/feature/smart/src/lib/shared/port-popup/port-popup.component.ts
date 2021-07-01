@@ -1333,7 +1333,7 @@ export class PortMenuComponent {
   deletePortRemark() {
     let requestPayload = {
       "PortId": this.item?.portId,
-      "RemarkTypesId" : this.item?.RemarkTypes?.id
+      "RemarkTypesId" : this.item?.remarkTypes?.id
     }
     this.selectionChange = false;
     this.portService.DeletePortRemark(requestPayload).subscribe(data=> {
