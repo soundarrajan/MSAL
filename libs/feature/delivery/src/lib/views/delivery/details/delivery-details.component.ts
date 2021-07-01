@@ -83,6 +83,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ProductListColumnServerKeys } from '@shiptech/core/ui/components/master-selector/view-models/product-model/product-list.columns';
 import { Title } from '@angular/platform-browser';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { RemoveDeliveryModalComponent } from './components/remove-delivery-modal/remove-delivery-modal.component';
 
 interface DialogData {
   email: string;
@@ -2034,5 +2035,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  deleteDelivery() {
+    const dialogRef = this.dialog.open(RemoveDeliveryModalComponent, {
+      width: '600px',
+      data: {
+        deliveryId: this.formValues.id,
+        relatedDeliveries: this.relatedDeliveries
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 }
