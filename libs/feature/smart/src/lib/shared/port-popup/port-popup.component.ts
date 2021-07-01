@@ -116,13 +116,14 @@ export class PortPopupComponent implements OnInit {
       defaultColDef: {
         filter: false,
         sortable: false,
-        resizable: false
+        resizable: true
       },
       rowSelection: 'single',
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
         this.gridOptions.api.setRowData(this.PortProductList);
+        this.gridOptions.api.setDomLayout('autoHeight');
 
       },
     };
@@ -148,6 +149,7 @@ export class PortPopupComponent implements OnInit {
       this.PortProductList = this.PortProductAvailability?.smartPortProductDtos;
       //apply row data to ag grid
       this.gridOptions.api.setRowData(this.PortProductList);
+      this.gridOptions.api.setDomLayout('autoHeight');
       this.PortGradeList = await this.formatPortGrade(this.PortProductAvailability?.smartPortGradeDtos);
       this.triggerEventToUpdate();
     })
