@@ -1,9 +1,9 @@
-﻿commit 82967748d4a23defba3f79bde4211e5a256d4113
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jul 1 11:58:42 2021 +0000
+﻿commit 3369340a2cf68e7b218cd5688dcc87a65d1c92c8
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Jul 1 13:14:14 2021 +0000
 
-    Merged PR 12044: Checked if str exists in htmlDecode pipe
+    Merged PR 12047: Bug 33469: Port Remarks_After the cancel operation, The unsaved values are retaining issue has fixed
     
-    Checked if str exists in htmlDecode pipe
+    Related work items: #33469
 
 branch: master
