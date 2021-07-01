@@ -11,13 +11,15 @@
 </div>
 
 <div *ngIf="this?.params?.type =='Data-date' && this?.params?.value != '1900-01-01T00:00:00Z'" [ngClass]="params.cellClass" matTooltip="{{params.value | utcDatePipe | date: 'dd/MM/yyyy HH:mm'}}" style="margin:0px">{{params.value | utcDatePipe | date: 'dd/MM/yyyy HH:mm'}}</div>
-<!--   
-<div *ngIf="params.type=='edit-disabled-with-info'">
+  
+<div *ngIf="params.type=='edit-with-info-icon'">
   <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.value></div>
-    <span *ngIf="this.params?.data?.lsdis_as_eca == 0">
-      <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
-    </span>  
-</div>   -->
+     <div *ngIf="checkLsdis(params.colDef?.field)" matTooltip={{this.tooltipMessage}}>
+      <span>
+        <img *ngIf="checkLsdis(params.colDef?.field)" class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
+      </span>
+    </div> 
+</div>  
 
 <div *ngIf="params.type=='order-multiple-values'">
   <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">

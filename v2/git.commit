@@ -1,11 +1,11 @@
-﻿commit 443c73cfbafbe6a73a9dd0d3a7b30f70c739325e
+﻿commit c3d9c62c563f517dc0dd5e565ad7a26d754983b0
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 1 19:04:51 2021 +0000
+Date:   Thu Jul 1 19:49:07 2021 +0000
 
-    Merged PR 12054: #33526 Bunkering Plan_ The last plan line is not visible ; scroll handled for current bplan expand.
+    Merged PR 12055: #33258 Bunker plan - Tool tips
     
-    #33526 Bunkering Plan_ The last plan line is not visible ; scroll handled for current bplan expand.
+    #33258 Bunker plan - Tool tips
     
-    Related work items: #33526
+    Related work items: #33258
 
 branch: master
