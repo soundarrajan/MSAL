@@ -93,6 +93,7 @@ export namespace DeliveryApiPaths {
     `api/delivery/SendLabsTemplateEmail`;
   export const getStaticLists = () => `api/infrastructure/static/lists`;
   export const notesAutoSave = () => `api/delivery/autosave`;
+  export const deleteDelivery = () => `api/delivery/delete`;
 }
 
 @Injectable({
@@ -260,6 +261,25 @@ export class DeliveryApi implements IDeliveryApiService {
     return this.http
       .post<IDeliveryDetailsResponse>(
         `${this._apiUrl}/${DeliveryApiPaths.saveDelivery()}`,
+        { payload: request }
+      )
+      .pipe(
+        map((body: any) => body.upsertedId),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  deleteDelivery(request: any): Observable<IDeliveryDetailsResponse> {
+    return this.http
+      .post<IDeliveryDetailsResponse>(
+        `${this._apiUrl}/${DeliveryApiPaths.deleteDelivery()}`,
         { payload: request }
       )
       .pipe(

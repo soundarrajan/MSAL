@@ -150,6 +150,7 @@ import { SampleSourceRouteResolver } from './views/delivery/details/sample-sourc
 import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
 import { TextareaAutoresizeDirective } from './views/delivery/details/directives/textarea-autoresize.directive';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
+import { RemoveDeliveryModalComponent } from './views/delivery/details/components/remove-delivery-modal/remove-delivery-modal.component';
 
 @NgModule({
   imports: [
@@ -272,14 +273,16 @@ import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/inv
     NumberOnlyDirective,
     TextareaAutoresizeDirective,
     RaiseClaimModalComponent,
-    SplitDeliveryModalComponent
+    SplitDeliveryModalComponent,
+    RemoveDeliveryModalComponent
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
   entryComponents: [
     RaiseClaimComponent,
     RaiseClaimModalComponent,
-    SplitDeliveryModalComponent
+    SplitDeliveryModalComponent,
+    RemoveDeliveryModalComponent
   ],
   exports: [
     MainDeliveryComponent,
