@@ -1162,6 +1162,7 @@ export class PortPopupComponent implements OnInit {
   (mouseleave)="!menuClick && toggleMenu2();" (click)="toggleMenu3($event)"
   (menuClosed)="toggleMenu1($event);">more_vert</mat-icon>
 <mat-menu #clickalertsmenu="matMenu" class="common" xPosition="after">
+<div (click)="$event.stopPropagation();">
 <div class="alert-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
   <div class="warning-header">
     <div style="margin-bottom: 5px;">
@@ -1204,7 +1205,6 @@ export class PortPopupComponent implements OnInit {
         (click)="$event.stopPropagation();"></textarea>
     </mat-form-field>
   </div>
-  
   <div *ngIf="portRemarkLogs?.length" class="change-log">
     <div>Change Log</div>
     <div style="height:70px;max-height: 100px;overflow-y: scroll;">
@@ -1221,6 +1221,7 @@ export class PortPopupComponent implements OnInit {
     <button mat-button class="cancel" (click)="cancelMenu();$event.stopPropagation();">CANCEL</button>
     <button mat-raised-button [ngClass]="{'active':selectionChange}" class="save"
       (click)="updatePortRemark(statusDropdown.value)">SAVE</button>
+  </div>
   </div>
   </div>
 </mat-menu>
@@ -1295,7 +1296,6 @@ export class PortMenuComponent {
       element.classList.remove('active-class');
     });
   }
-
   toggleMenu1(event) {//onmenuclose
     this.selectionChange = false;
     this.menuClick = false;
@@ -1303,6 +1303,7 @@ export class PortMenuComponent {
     panels.forEach((element) => {
       element.classList.remove('active-class');
     });
+    this.closeMenu();
   }
   toggleMenu(event) {//onenter
 
@@ -1328,6 +1329,7 @@ export class PortMenuComponent {
     this.openMenu();
 
   }
+
   deletePortRemark() {
     let requestPayload = {
       "PortId": this.item?.portId,
