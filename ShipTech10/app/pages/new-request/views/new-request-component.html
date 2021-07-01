@@ -255,7 +255,7 @@
                                 <div class="row">
                                     <label class="control-label col-md-5">
                                         {{ 'PAGES.NEW_REQUEST.OPERATOR' | translate }}
-                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
+                                        <span ng-if="$ctrl.isOperatorRequired()" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>
