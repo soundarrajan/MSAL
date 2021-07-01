@@ -7588,6 +7588,13 @@
             });
         };
 
+        if(!$scope.userMasterCustomerTableConfig) {
+            $scope.userMasterCustomerTableConfig = {}
+        }
+
+        
+
+
      /* Location Master - Barge cost details table*/
         $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             var objMapping;
@@ -10151,11 +10158,112 @@
             return false;
         }
 
+
+
+
+
+
+/* USER master customer lookup logic */
+        $scope.openCustomerLookup = () => {
+            $scope.userMasterCustomerTableConfig.skip = 0;
+            $scope.userMasterCustomerTableConfig.take = 25;
+            $scope.userMasterSelectedCustomersIds = "41";
+            var payload = $scope.createUserMasterCustomerPayload(false);
+            $scope.userMasterCustomerTableConfig = {};
+            
+            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`, payload).then((response) => {
+                $scope.userMasterCustomerData = response.data.payload;
+                 $scope.userMasterCustomerDataLength = response.data.matchedCount;
+                tpl = $templateCache.get('app-general-components/views/screen_parts/masters/modal_UserCustomerList.html');
+                $scope.modalInstance = $uibModal.open({
+                    template: tpl,
+                    size: 'full',
+                    appendTo: angular.element(document.getElementsByClassName('page-container')),
+                    windowTopClass: 'fullWidthModal',
+                    scope: $scope // passed current scope to the modal
+                });
+                
+            });  
+        }
+        $scope.createUserMasterCustomerPayload = function(reloadTable) {
+            if (!$scope.userMasterCustomerTableConfig.currentPage) {
+                $scope.userMasterCustomerTableConfig.currentPage = 1;
+            }
+            if (!$scope.userMasterCustomerTableConfig.take) {
+                $scope.userMasterCustomerTableConfig.take = 25;
+            }
+            $scope.userMasterCustomerTableConfig.skip = ($scope.userMasterCustomerTableConfig.currentPage - 1) * $scope.userMasterCustomerTableConfig.take;
+            var payload = {
+                Payload: {
+                    PageFilters: {
+                        Filters: []
+                    },
+                    Filters : [
+                        {
+                            ColumnName: 'CounterpartyTypes',
+                            Value: 4
+                        }
+                    ],
+                    SearchText: $scope.userMasterCustomerTableConfig.searchText,
+                    Pagination: {
+                        Skip: $scope.userMasterCustomerTableConfig.skip,
+                        Take: $scope.userMasterCustomerTableConfig.take
+                    },
+                }
+            };
+            if (reloadTable) {
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`, payload).then((response) => {
+                    $scope.userMasterCustomerData = response.data.payload;                    
+                }); 
+            }
+            return payload;
+        };
+      
+        $scope.addUserMasterCustomerToSelection = (item) => {
+            if(!$scope.formValues.tempCustomerSelection) {
+                $scope.formValues.tempCustomerSelection = [];
+            }
+
+            if (item.isSelected) {
+                obj = {
+                    id : item.id,
+                    name : item.name
+                }
+                $scope.formValues.tempCustomerSelection.push(obj);
+            } else {
+                $.each($scope.formValues.tempCustomerSelection, (k,v) => {
+                    if(!k.isSelected) {
+                        $scope.formValues.tempCustomerSelection.splice(k,1);
+                    }
+                })                
+            }
+        }
+        $scope.saveUserMasterCustomerSelection = () => {
+            console.log($scope.formValues.tempCustomerSelection);
+            $scope.formValues.customer = $scope.formValues.tempCustomerSelection;
+            $scope.formValues.selectedCustomersDisplayName = []
+            $.each($scope.formValues.customer, (k,v) => {
+                $scope.formValues.selectedCustomersDisplayName.push(v.name); 
+            })
+            $scope.formValues.selectedCustomersDisplayName = $scope.formValues.selectedCustomersDisplayName.join(", ")
+            $scope.prettyCloseModal();
+        }
+        $scope.selectAllUserMasterCustomers = (selectState) => {
+            $.each($scope.userMasterCustomerData, (k,v) => {
+                v.isSelected = selectState;
+            })
+        }
+/* END USER master customer lookup logic */
+        
+        
+        
+        
+        
     }
 ]);
 
 $('body').on('click', '.bootstrap-tagsinput .hideTagsChild', function(e) {
-	$(this).parent('.bootstrap-tagsinput').addClass("current");
+    $(this).parent('.bootstrap-tagsinput').addClass("current");
     $(".bootstrap-tagsinput.expanded:not(.current)").removeClass("expanded").children('span.tag[big-child=\'true\']').hide();
     $(".multi_lookup_tags.expanded:not(.current)").removeClass("expanded");
 	$(this).parent('.bootstrap-tagsinput').removeClass("current");

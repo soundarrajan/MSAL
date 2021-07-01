@@ -1140,6 +1140,7 @@
   },
   "admin": {
     "TENANT_CONFIGURATION_ID": "Tenant configuration id",
+    "CUSTOMER": "Customer",
     "DISPLAY_SCHEDULE_BASED_ON": "Display schedule based on",
     "REPORT_VIEWER_URL": "Report viewer url",
     "POWER_BI_WORKSPACE_ID": "Power BI workspace id",

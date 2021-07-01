@@ -1,0 +1,17 @@
+<div class="form-group row" >
+	<label>
+	  {{ CM.app_id + '.CUSTOMER' | translate }}
+	  <span class="orange-txt">
+	      *
+	  </span>
+	</label>
+
+  <div class="input-group form_input">
+	  <input ng-click="openCustomerLookup()" style="pointer-events: none;" decode-input-format ng-model="formValues.selectedCustomersDisplayName" class="form-control" />
+	  <span class="input-group-addon">
+		  <a class=" btn default" ng-click="openCustomerLookup()">
+			  <i class="fa fa-search"></i>
+		  </a>
+	  </span>
+  </div>
+</div>

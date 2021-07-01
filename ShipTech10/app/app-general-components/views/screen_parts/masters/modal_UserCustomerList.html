@@ -1,0 +1,90 @@
+
+
+<div>
+    <div id="modal_close_bar" class="row float_right">
+        <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+    </div>
+    <br>
+    <div class="col-sm-12">
+        <div class="portlet">
+            <div class="portlet-title row">
+            	<div class="col-sm-12">
+	                <div class="caption-subject pull-left">
+	                    Select Customer
+	                </div>
+					<a ng-click="saveUserMasterCustomerSelection();" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope pull-right">
+				        <span class="ladda-label ng-binding">
+							Save
+				        </span>
+				    </a>            		
+					<div class="input-group st-content-search-box pull-right" style="width: 200px;">
+					    <input type="search" class="form-control" ng-model="userMasterCustomerTableConfig.searchText" placeholder="Search" ng-keydown="$event.keyCode === 13 ? createUserMasterCustomerPayload(true) : ''">
+					    <span class="input-group-addon" ng-click="createUserMasterCustomerPayload(true)">
+					        <i class="fa fa-search"></i>
+					    </span>
+					</div>    
+            	</div>
+            </div>
+        </div>
+    </div>
+
+	 <div class="col-sm-12">
+		<div class="custom-hardcoded-table admin" style="max-height: 500px;">
+			<table class="table-body" style="width:100%;min-width:initial">
+				<thead>
+					<tr>
+						<td style="width:5%" class="padding" ng-init="selectAll = false">
+			        		<label class="mt-checkbox mt-checkbox-outline pull-left" >
+			                    <input type="checkbox" ng-model="selectAll" ng-change="selectAllUserMasterCustomers(selectAll)">
+			                    <span></span>
+			                </label>							
+						</td>
+						<td style="width:25%" class="padding">
+							<b>ID</b>
+						</td>                        
+						<td style="width:25%" class="padding">
+							<b>Customer</b>
+						</td>
+						<td style="width:25%" class="padding">
+							<b>Parent</b>				
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key, item) in userMasterCustomerData">
+						<td style="width:5%" class="padding">
+			        		<label class="mt-checkbox mt-checkbox-outline pull-left">
+			                    <input type="checkbox" ng-model="item.isSelected" ng-change="addUserMasterCustomerToSelection(item)">
+			                    <span></span>
+			                </label>							
+						</td>
+						<td style="width:25%" class="padding">{{item.id | decodeReadOnly}}</td>
+						<td style="width:25%" class="padding">{{item.name | decodeReadOnly}}</td>
+						<td style="width:25%" class="padding">{{item.parent.name | decodeReadOnly}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	 	
+	 </div>
+
+   <div class="col-sm-12 ng-binding">
+	   	<br><br>
+		Showing 
+            {{userMasterCustomerTableConfig.skip+1}} 
+        to 
+        {{userMasterCustomerTableConfig.skip}}***{{userMasterCustomerTableConfig.take}}
+            {{userMasterCustomerTableConfig.skip+userMasterCustomerTableConfig.take > userMasterCustomerDataLength ? userMasterCustomerDataLength : userMasterCustomerTableConfig.skip+userMasterCustomerTableConfig.take }}  
+        of 
+            {{userMasterCustomerDataLength}}
+		<div class="notification-pagination ng-binding" ng-init="currentPage = 1">
+			Page
+			<span class="prevPage" ng-disabled="userMasterCustomerTableConfig.currentPage <= 1" ng-click="userMasterCustomerTableConfig.currentPage = userMasterCustomerTableConfig.currentPage-1; createUserMasterCustomerPayload(true)"> &lt; </span>
+			<span class="currentPage ng-binding">{{userMasterCustomerTableConfig.currentPage}}</span>
+			<span class="nextPage" ng-disabled="userMasterCustomerTableConfig.currentPage >= userMasterCustomerDataLength/userMasterCustomerTableConfig.take" ng-click="userMasterCustomerTableConfig.currentPage = userMasterCustomerTableConfig.currentPage+1; createUserMasterCustomerPayload(true)"> &gt; </span>
+			of {{locationPreferredSellerProductsDataPages}}
+		</div>
+	   	<br><br>
+	</div> 
+</div>
+
