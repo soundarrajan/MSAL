@@ -1,10 +1,10 @@
-import { Optional, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
 
 @Pipe({
-  name: 'htmlDecode'
+  name: 'htmlDecodeReadonly'
 })
-export class HtmlDecode implements PipeTransform {
+export class HtmlDecodeReadonly implements PipeTransform {
   transform(str: any, property?: string): any {
     var decode = function(str) {
       return str.replace(/&#(\d+);/g, function(match, dec) {
