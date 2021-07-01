@@ -50,8 +50,8 @@
         <mat-accordion>
           <!-- New Rule Panel Start -->
           <!-- <mat-expansion-panel *ngIf="!isOpen" class="dark-panel" (click)="showhideDeleteRule=false"> -->
-          <mat-expansion-panel class="dark-panel">
-            <mat-expansion-panel-header [collapsedHeight]="newPanelCollapsedHeight"
+          <mat-expansion-panel   class="dark-panel" #createPanelOpen="matExpansionPanel">
+            <mat-expansion-panel-header [collapsedHeight]="newPanelCollapsedHeight" 
               [expandedHeight]="newPanelExpandedHeight" class="p-r-15">
               <mat-panel-title>
                 <div class="panel-circle"></div>
@@ -60,12 +60,13 @@
                 <div class="rule-name">New Alert</div>
 
                 <mat-form-field class="dark-input new-rule" style="width: 450px;">
-                  <input matInput value="" (click)="$event.stopPropagation()">
+                  <input #create matInput autofocus (click)="$event.stopPropagation()" (keydown)="handleSpacebar($event)"  [(ngModel)]="createAlert.title">
                 </mat-form-field>
+                <span class="alerts-error" *ngIf="errors.title && createAlert.title ==''">{{errors.titleMessage}}</span>
               </mat-panel-title>
 
               <div class="panel-action">
-                <button class="blue-btn" mat-stroked-button>+ Create New</button>
+                <button class="blue-btn" mat-stroked-button (click)="createAlertFormSubmit($event,-1)">+ Create New</button>
               </div>
             </mat-expansion-panel-header>
             <!-- Body Content -->
@@ -76,16 +77,18 @@
                   Alert Type:
                 </div>
                 <mat-form-field class="dark-select" style="width: 160px;">
-                  <mat-select #type [value]="newAlert.type" disableOptionCentering
-                    (selectionChange)="selectionChanged($event.value)">
-                    <mat-option value="vessel">Vessel</mat-option>
+                  <mat-select #type [value]="createAlert.ruletype" disableOptionCentering   (click)="selectOpened()"
+                    (selectionChange)="alertTypeChange(createAlert.ruletype)"  [(ngModel)]="createAlert.ruletype">
+                    <mat-option  value="vessel">Vessel</mat-option>
                     <mat-option value="port">Port</mat-option>
                   </mat-select>
                 </mat-form-field>
+                <span class="alerts-error" *ngIf="errors.ruleType && createAlert.ruletype ==''">{{errors.ruleTypeMessage}}</span>
+
               </div>
               <div style="width: 158px; display: flex; align-items: center; justify-content: center;"
                 (mouseover)="showMenu = true;">
-                <mat-slide-toggle labelPosition='before' class="transparent-slider" checked>Status
+                <mat-slide-toggle labelPosition='before' class="transparent-slider" [(ngModel)]="createAlert.isActive" checked>Status
                 </mat-slide-toggle>
 
                 <div id="dark-menu-button">
@@ -99,7 +102,7 @@
                   <div id="dot8" class="whitedot"></div>
                   <div id="dot9" class="whitedot"></div>
 
-                  <div class="menu-panel" *ngIf="showMenu" (click)="showMenu=false;">
+                  <div class="menu-panel" *ngIf="showMenu" (click)="showMenu=false;" >
                     <div class="icon bb-dark">
                       <img src="../../assets/customicons/duplicate.svg" alt="duplicate">
                       <span>Duplicate Rule</span>
@@ -122,57 +125,55 @@
 
             </div>
 
-            <div *ngFor="let rules of newAlert.triggerRule;let i=index" style="padding: 24px 16px 0 16px;">
+            <div *ngFor="let addtrigger of addTriggerRules;let i=index; trackBy: customTriggerTrackBy" style="padding: 24px 16px 0 16px;">
               <div class="row" style="display: flex;">
                 <div class="col-7 pl-0 pr-0" style="flex: 1;min-height: 90px;max-height: 135px;">
                   Trigger Rule
-                  <div class="delete-rule-menu" (mouseover)="showhideDeleteRule=true;">
+                  <div class="delete-rule-menu" (mouseover)="alertAddTags[i].deleteTrigger=true">
                     <span></span>
                     <span></span>
                     <span></span>
                   </div>
 
-                  <div class="delete-rule" *ngIf="showhideDeleteRule" (mouseleave)="showhideDeleteRule=false;">
+                  <div class="delete-rule" *ngIf="alertAddTags[i].deleteTrigger" (click)="addMoreTriggerRule('sub', i)" (mouseleave)="alertAddTags[i].deleteTrigger=false">
                     <div class="delete-icon"></div>
-                    <span>Delete Rule 1</span>
+                    <span>Delete Rule {{i+1}}</span>
                   </div>
                   <div class="rounded-group-box p-r-0" style="font-size: 14px;">
-                    <div>
-                      <div id="rules" class="row">
-                        <div class="icon">
-                          <div class="remove-circle"></div>
-                          <!-- <mat-icon style="font-size: 20px;height: unset; color: rgba(143, 155, 171, 0.5);">
-                            remove_circle
-                          </mat-icon> -->
+                    <div >
+                      <div id="rules" class="row" *ngFor="let admore of addMoreRules[i].tags; let idx = index; trackBy: customTrackBy">
+                        <div class="icon" >
+                          <div class="remove-circle" (click)="addingMoreRules('sub',idx, i)"></div>
                         </div>
                         <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
-                          <mat-select matNativeControl disableOptionCentering>
+                          <mat-select matNativeControl disableOptionCentering [(ngModel)]="alertAddTags[i].addMoreTags[idx]" >
                             <mat-option value="Bunker plan delay">Bunker plan delay</mat-option>
                             <mat-option value="Operating Region">Operating Region</mat-option>
                           </mat-select>
                         </mat-form-field>
                         <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
-                          <mat-select matNativeControl disableOptionCentering>
-                            <mat-option value="less than">less than</mat-option>
+                          <mat-select matNativeControl disableOptionCentering  [(ngModel)]="alertAddTags[i].conditionTags[idx]">
+                            <mat-option   value="less than">less than</mat-option>
                             <mat-option value="greater than">greater than</mat-option>
                             <mat-option value="in">in</mat-option>
                           </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
-                          <input matInput>
+                        <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;"> 
+                          <input matInput  [(ngModel)]="alertAddTags[i].valueTags[idx]">
                         </mat-form-field>
+                        <!-- [(ngModel)]="alertAddTags[i].valueTags"> -->
                       </div>
 
                       <div class="row align-items-center"
                         style="cursor: pointer;padding-top: 5px;line-height: 16px;margin-top: 5px;">
-                        <div class="add-icon">
+                        <div class="add-icon" (click)="addingMoreRules('add',0, i)">
                           <!-- <mat-icon style="font-size: 20px;">add_circle</mat-icon> -->
                         </div>
-                        <div style="margin-left: 10px;">Add more</div>
+                        <div style="margin-left: 10px;" (click)="addingMoreRules('add',0, i)">Add more</div>
                       </div>
                     </div>
-
+                    <span class="alerts-error" *ngIf="errorsAlerts[i].nonEqualConditions">Fill all the values</span>
                   </div>
                 </div>
                 <div class="col-5 pr-0" style="flex: 1;min-height: 90px;max-height: 135px;">
@@ -180,13 +181,9 @@
                   <div class="rounded-group-box">
 
                     <mat-form-field id="text-area" class="dark-select" style="width: 100%;">
-                      <textarea matInput value=""></textarea>
+                      <textarea matInput [(ngModel)]="alertOptions[i].displayMessage"></textarea>
                     </mat-form-field>
-                    <!-- <div style="font-size: 15px;">
-                      For the vessel <span class="keyword">Vessel Name</span>, ROB is lesser than <span
-                        class="keyword">2000
-                        BBL</span>
-                    </div> -->
+                    <span class="alerts-error" *ngIf="errorsAlerts[i].messageAlert && alertOptions[i].displayMessage == ''">Required display message</span>
                   </div>
                 </div>
               </div>
@@ -195,29 +192,29 @@
                 <div>
                   Alert Criticality:
                   <mat-form-field id="alert" class="dark-select" style="width: 175px;">
-                    <img *ngIf="rules.alert=='red'" src="../../assets/customicons/red-alert.svg" alt="alert"
+                    <img *ngIf="alertOptions[i].colorFlag=='red'" src="../../assets/customicons/red-alert.svg" alt="alert"
                       style="padding: 0px 3px;">
-                    <img *ngIf="rules.alert=='yellow'" src="../../assets/customicons/yellow-alert.svg" alt="alert"
+                    <img *ngIf="alertOptions[i].colorFlag== 'yellow'" src="../../assets/customicons/yellow-alert.svg" alt="alert"
                       style="padding: 0px 3px;">
-                    <mat-select #alert matNativeControl disableOptionCentering [(ngModel)]="rules.alert">
-                      <mat-option value="red">
+                    <mat-select #alert matNativeControl disableOptionCentering [(ngModel)]="alertOptions[i].colorFlag">
+                      <mat-option class="red-alert" value="red">
                         Red Alert</mat-option>
-                      <mat-option value="yellow">
+                      <mat-option class="yellow-alert" value="yellow">
                         Yellow Alert</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
 
                 <div style="font-size: 14px; position: relative;">
-                  <mat-checkbox class="blue-checkbox" [checked]="rules.vesselFlag">Flag Vessel</mat-checkbox>
-                  <mat-checkbox class="blue-checkbox" [checked]="rules.email">Email</mat-checkbox>
-                  <mat-checkbox class="blue-checkbox" [checked]="rules.notification">Notification</mat-checkbox>
+                  <mat-checkbox class="blue-checkbox" [checked]="addtrigger.vesselFlag" [(ngModel)]="alertOptions[i].isVessel">Flag Vessel</mat-checkbox>
+                  <mat-checkbox class="blue-checkbox" [checked]="addtrigger.email" [(ngModel)]="alertOptions[i].isEmail">Email</mat-checkbox>
+                  <mat-checkbox class="blue-checkbox" [checked]="addtrigger.notification" [(ngModel)]="alertOptions[i].isNotification">Notification</mat-checkbox>
                 </div>
               </div>
             </div>
 
             <div style="margin-top: 10px;margin-left: 15px;">
-              <button mat-stroked-button class="dark-trans-btn">+ New Trigger Rule</button>
+              <button mat-stroked-button class="dark-trans-btn" (click)="addMoreTriggerRule('add',0)">+ New Trigger Rule</button>
             </div>
             <!-- Body Content -->
           </mat-expansion-panel>
@@ -225,9 +222,9 @@
 
           <!-- Single Panel Start -->
           <!-- <mat-expansion-panel *ngIf="!isOpen || (isOpen && openId==item.id)" class="dark-panel" -->
-          <mat-expansion-panel *ngFor="let item of items" class="dark-panel" #panel
-            [ngClass]="{'green':item.active,'grey':!item.active}" (opened)="panelOpened(item.id)"
-            (closed)="panelClosed()">
+          <mat-expansion-panel *ngFor="let item of alertsList; let i= index " class="dark-panel" #panel
+            [ngClass]="{'green':item.active,'grey':!item.active}" (opened)="updateAlertDetails(i)"  [ngClass]="item.IsActive == 'true' ? 'green' : 'grey'"
+            (closed)="panelClosed()"  (click)="togglePanels(i)"  >
             <mat-expansion-panel-header [collapsedHeight]="panelCollapsedHeight" [expandedHeight]="panelExpandedHeight"
               class="p-r-15">
               <mat-panel-title>
@@ -235,15 +232,15 @@
                 <div class="panel-collapse-indicator" style="width: 17px; margin-right: 10px;"></div>
                 <!-- <img class="panel-collapse-indicator" src="../../assets/customicons/panel-collapse-icon.svg"
                   alt="collapse-icon" style="width: 17px; margin-right: 10px;"> -->
-                {{item.name}}
+                {{item.alertName}}
               </mat-panel-title>
 
               <div class="panel-description">
                 <div>App: Vessel</div>
-                <div class="small-text">Last Updated: 12/04/2019</div>
+                <div class="small-text">Last Updated: {{item.lastUpdatedDate}}</div>
               </div>
               <div class="panel-action">
-                <button class="blue-btn" mat-stroked-button (click)="$event.stopPropagation(); enableUpdate=false;"
+                <button class="blue-btn" mat-stroked-button (click)="createAlertFormSubmit($event,i); enableUpdate=false;"
                   [disabled]="!enableUpdate">Update</button>
               </div>
             </mat-expansion-panel-header>
@@ -256,15 +253,15 @@
                     Alert Type:
                   </div>
                   <mat-form-field class="dark-select" style="width: 160px;">
-                    <mat-select #type [value]="item.type" disableOptionCentering
+                    <mat-select #type [value]="item.type" disableOptionCentering  [(ngModel)]="createAlert.ruletype"
                       (selectionChange)="selectionChanged($event.value)">
-                      <mat-option value="vessel">Vessel</mat-option>
-                      <mat-option value="port">Port</mat-option>
+                      <mat-option *ngIf="createAlert.ruletype == '1'" value="vessel" >Vessel</mat-option>
+                      <mat-option *ngIf="createAlert.ruletype == '2'" value="port" >Port</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
                 <div style="width: 158px; display: flex; align-items: center; justify-content: center;">
-                  <mat-slide-toggle labelPosition='before' class="transparent-slider" checked>Status
+                  <mat-slide-toggle labelPosition='before' class="transparent-slider" [(ngModel)]="createAlert.isActive" checked>Status
                   </mat-slide-toggle>
 
                   <div id="dark-menu-button" (mouseover)="showMenu = true;">
@@ -278,18 +275,18 @@
                     <div id="dot8" class="whitedot"></div>
                     <div id="dot9" class="whitedot"></div>
 
-                    <div class="menu-panel" *ngIf="showMenu" (click)="showMenu=false;">
+                    <div class="menu-panel" *ngIf="showMenu"  (click)="duplicateRule(i)">
                       <div class="icon bb-dark">
                         <img src="../../assets/customicons/duplicate.svg" alt="duplicate">
                         <span>Duplicate Rule</span>
                       </div>
                       <div class="icon bb-dark">
                         <img src="../../assets/customicons/delete-b.svg" alt="delete">
-                        <span>Delete Rule</span>
+                        <span *ngIf="!createAlert.isTenant"  (click)="deleteNotification(item.AlertId,i);$event.stopPropagation()">Delete Rule</span>
                       </div>
                       <div class="icon bb-dark">
                         <img src="../../assets/customicons/new-trigger.svg" alt="trigger">
-                        <span>Add New Trigger</span>
+                        <span (click)="addMoreTriggerRule('add',0)">Add New Trigger</span>
                       </div>
                       <div class="icon">
                         <img src="../../assets/customicons/reset.svg" alt="reset">
@@ -301,23 +298,23 @@
 
               </div>
 
-              <div *ngFor="let rules of item.triggerRule;let i=index" style="padding: 24px 16px 0 16px;">
+              <div *ngFor="let rules of item.triggerRules;let i=index" style="padding: 24px 16px 0 16px;">
                 <div class="row" style="display: flex;">
                   <div class="col-7 pl-0 pr-0" style="flex: 1;min-height: 90px;max-height: 135px;">
                     Trigger Rule {{i+1}}
-                    <div class="delete-rule-menu" (mouseover)="showhideDeleteRule=true;">
+                    <div class="delete-rule-menu" (mouseover)="alertAddTags[i].deleteTrigger=true">
                       <span></span>
                       <span></span>
                       <span></span>
                     </div>
 
-                    <div class="delete-rule" *ngIf="showhideDeleteRule" (mouseleave)="showhideDeleteRule=false;">
+                    <div class="delete-rule" *ngIf="alertAddTags[i].deleteTrigger" (click)="addMoreTriggerRule('sub',i)" (mouseleave)="alertAddTags[i].deleteTrigger=false">
                       <div class="delete-icon"></div>
-                      <span>Delete Rule 1</span>
+                      <span>Delete Rule {{i+1}}</span>
                     </div>
                     <div class="rounded-group-box p-r-0" style="font-size: 14px;">
                       <div>
-                        <div *ngFor="let rule of rules.rule" id="rules" class="row">
+                        <div *ngFor="let admore of addMoreRules[i].tags; let idx = index; trackBy: customTrackBy" id="rules" class="row">
                           <div class="icon">
                             <div class="remove-circle"></div>
                             <!-- <mat-icon style="font-size: 20px;height: unset; color: rgba(143, 155, 171, 0.5);">
@@ -325,39 +322,35 @@
                           </mat-icon> -->
                           </div>
                           <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
-                            <mat-select matNativeControl [value]="rule.rule" disableOptionCentering
-                              (selectionChange)="selectionChanged($event.value)">
-                              <mat-option value="Bunker plan delay">Bunker plan delay</mat-option>
-                              <mat-option value="Operating Region">Operating Region</mat-option>
+                            <mat-select matNativeControl  disableOptionCentering [(ngModel)]="alertAddTags[i].addMoreTags[idx]"
+                              (selectionChange)="selectionChanged($event.value)" >
+                              <mat-option  value="Bunker plan delay">Bunker plan delay</mat-option>
+                              <mat-option   value="Operating Region">Operating Region</mat-option>
+                                
                             </mat-select>
                           </mat-form-field>
                           <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
-                            <mat-select matNativeControl [value]="rule.condition" disableOptionCentering
-                              (selectionChange)="selectionChanged($event.value)">
-                              <mat-option value="less than">less than</mat-option>
-                              <mat-option value="greater than">greater than</mat-option>
-                              <mat-option value="in">in</mat-option>
+                            <mat-select matNativeControl  disableOptionCentering  [(ngModel)]="alertAddTags[i].conditionTags[idx]" 
+                              (selectionChange)="selectionChanged($event.value)" >
+                              <mat-option  value ="less than">less than </mat-option>
+                              <mat-option   value="greater than">greater than</mat-option>
+                              <mat-option  value="in">in</mat-option>
                             </mat-select>
                           </mat-form-field>
 
                           <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
-                            <input matInput [value]="rule.value" (keyup)="selectionChanged($event.value)">
-                            <!-- <mat-select matNativeControl [value]="rule.value" disableOptionCentering
-                            (selectionChange)="selectionChanged($event.value)">
-                            <mat-option value="24 hours">24 hours</mat-option>
-                            <mat-option value="Europe">Europe</mat-option>
-                            <mat-option value="2000 MT">2000 MT</mat-option>
-                          </mat-select> -->
+                            <input matInput  (keyup)="selectionChanged($event.value)" [(ngModel)]="alertAddTags[i].valueTags[idx]" (keydown)="removeValidationMessage(i)" (click)="removeValidationMessage(i)">
+                      
                           </mat-form-field>
                         </div>
 
                         <!-- <div *ngIf="type.value=='vessel'" class="row align-items-center" -->
                         <div class="row align-items-center"
                           style="cursor: pointer;padding-top: 5px;line-height: 16px;margin-top: 5px;">
-                          <div class="add-icon">
+                          <div class="add-icon" (click)="addingMoreRules('add',0, i)">
                             <!-- <mat-icon style="font-size: 20px;">add_circle</mat-icon> -->
                           </div>
-                          <div style="margin-left: 10px;">Add more</div>
+                          <div style="margin-left: 10px;" (click)="addingMoreRules('add',0, i)">Add more</div>
                         </div>
                       </div>
 
@@ -368,7 +361,7 @@
                     <div class="rounded-group-box">
 
                       <mat-form-field id="text-area" class="dark-select" style="width: 100%;">
-                        <textarea matInput value=""></textarea>
+                        <textarea matInput value="">{{rules.displayMessage}}</textarea>
                       </mat-form-field>
                       <!-- <div style="font-size: 15px;">
                       For the vessel <span class="keyword">Vessel Name</span>, ROB is lesser than <span
@@ -383,12 +376,12 @@
                   <div>
                     Alert Criticality:
                     <mat-form-field id="alert" class="dark-select" style="width: 175px;">
-                      <img *ngIf="rules.alert=='red'" src="../../assets/customicons/red-alert.svg" alt="alert"
+                      <img *ngIf="alertOptions[i].colorFlag=='red'" src="../../assets/customicons/red-alert.svg" alt="alert"
                         style="padding: 0px 3px;">
-                      <img *ngIf="rules.alert=='yellow'" src="../../assets/customicons/yellow-alert.svg" alt="alert"
+                      <img *ngIf="alertOptions[i].colorFlag=='yellow'" src="../../assets/customicons/yellow-alert.svg" alt="alert"
                         style="padding: 0px 3px;">
-                      <mat-select #alert matNativeControl disableOptionCentering [(ngModel)]="rules.alert">
-                        <mat-option value="red">
+                      <mat-select #alert matNativeControl disableOptionCentering [(ngModel)]="alertOptions[i].colorFlag">
+                        <mat-option  value="red">
                           Red Alert</mat-option>
                         <mat-option value="yellow">
                           Yellow Alert</mat-option>
@@ -397,15 +390,15 @@
                   </div>
 
                   <div style="font-size: 14px; position: relative;">
-                    <mat-checkbox class="blue-checkbox" [checked]="rules.vesselFlag">Flag Vessel</mat-checkbox>
-                    <mat-checkbox class="blue-checkbox" [checked]="rules.email">Email</mat-checkbox>
-                    <mat-checkbox class="blue-checkbox" [checked]="rules.notification">Notification</mat-checkbox>
+                    <mat-checkbox class="blue-checkbox" [checked]="rules.isVessel">Flag Vessel</mat-checkbox>
+                    <mat-checkbox class="blue-checkbox" [checked]="rules.isEmail">Email</mat-checkbox>
+                    <mat-checkbox class="blue-checkbox" [checked]="rules.isNotification">Notification</mat-checkbox>
                   </div>
                 </div>
               </div>
 
               <div style="margin-top: 10px;margin-left: 15px;">
-                <button mat-stroked-button class="dark-trans-btn">+ New Trigger Rule</button>
+                <button mat-stroked-button class="dark-trans-btn" (click)="addMoreTriggerRule('add',i)" >+ New Trigger Rule</button>
               </div>
               <!-- Body Content -->
             </ng-container>
