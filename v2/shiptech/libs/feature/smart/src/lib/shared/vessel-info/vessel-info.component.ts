@@ -126,7 +126,7 @@ export class VesselInfoComponent implements OnInit {
     
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
-    
+    let Reqpayload = { "shipId": this.vesselRef?.vesselId }
     // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
     //   this.BunkerPlanCommentList = response?.payload;
     //   this.loadRequestComments();
@@ -134,7 +134,7 @@ export class VesselInfoComponent implements OnInit {
 
     // forkjoin http calls to show count of BunkerPlanComment, RequestComment at same time
     let BunkerPlanComment = this.BPService.getBunkerPlanComments(payload);
-    let RequestComment = this.BPService.getRequestComments(payload);
+    let RequestComment = this.BPService.getRequestComments(Reqpayload);
     forkJoin([BunkerPlanComment, RequestComment]).subscribe(responseList => {
       this.BunkerPlanCommentList = responseList[0]?.payload;
       this.RequestCommentList = responseList[1]?.payload;
