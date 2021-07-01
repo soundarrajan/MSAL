@@ -192,16 +192,20 @@ export class PortPopupComponent implements OnInit {
 
   private columnDefs = [
 
-    { headerName: 'Product ID', field: 'ProductId', headerTooltip: 'Product ID', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['font-bold aggrid-content-c '] },
+    { headerName: 'Product ID', field: 'productId', headerTooltip: 'Product ID', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['font-bold aggrid-content-c '] },
     { 
       headerName: 'Max Pump.Rate', 
-      field: 'MaxPumpRate', 
+      field: 'maxPumpRate', 
       headerTooltip: 'Max Pump.Rate', 
       width: 70, 
       cellClass: ['aggrid-text-align-r '], 
       cellRendererFramework: AGGridCellRendererComponent,
       valueGetter: (params) => {
-        return params?.data?.ProductId+' mt/h'
+        if(params?.data?.maxPumpRate) {
+          return params?.data?.maxPumpRate+' mt/h'
+        } else {
+          return 0+' mt/h'
+        }
       }
     },
     { headerName: 'Min Supply Qty',
@@ -211,7 +215,11 @@ export class PortPopupComponent implements OnInit {
       cellClass: ['aggrid-text-align-r '], 
       cellRendererFramework: AGGridCellRendererComponent,
       valueGetter: (params) => {
-        return params?.data?.minSupplyQty+' mt'
+        if(params?.data?.minSupplyQty) {
+          return params?.data?.minSupplyQty+' mt'
+        } else {
+          return 0+' mt'
+        }
       }
     },
     { headerName: 'Max Supply Qty', 
@@ -221,10 +229,14 @@ export class PortPopupComponent implements OnInit {
     cellClass: ['aggrid-text-align-r '], 
     cellRendererFramework: AGGridCellRendererComponent,
       valueGetter: (params) => {
-        return params?.data?.maxSupplyQty+' mt'
+        if(params?.data?.maxSupplyQty) {
+          return params?.data?.maxSupplyQty+' mt'
+        } else {
+          return 0+' mt'
+        }
       }
     },
-    { headerName: 'Lowest Grade', field: 'LowestGrade', headerTooltip: 'Lowest Grade', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c'] }
+    { headerName: 'Lowest Grade', field: 'lowestGrade', headerTooltip: 'Lowest Grade', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c'] }
   ];
 
   // private rowData = [
