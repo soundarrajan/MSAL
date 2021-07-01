@@ -807,7 +807,7 @@ export class BunkeringPlanComponent implements OnInit {
                           }
                           //For Port 1 to N 
                           else{
-                            let estd_Cons = parseInt(rowData2[i-1].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption);
+                            let estd_Cons = parseInt(rowData2[i].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption);
                             rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_soa) - estd_Cons + lsdisAsEca + parseInt(rowData2[i-1].ulsfo_estimated_lift) ;
                           }
                           if(rowData2[i].ulsfo_soa) 
