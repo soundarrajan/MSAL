@@ -26,7 +26,7 @@
           class="typeahead form-control"
           ng-class="{'ng-invalid': $ctrl.request.locations.length == 0}"
           type="text"
-          uib-typeahead="item as item.name for item in removeArrayFromArray(formValues.accessCounterpartyTypes, CM.listsCache.CounterpartyType) | typeaheadCustomFilter:$viewValue:'name'"
+          uib-typeahead="item as item.name for item in removeArrayFromArray(formValues.roles.accessCounterpartyTypes, CM.listsCache.CounterpartyType) | typeaheadCustomFilter:$viewValue:'name'"
           typeahead-on-select="selectCounterpartyType($item)"
           typeahead-wait-ms="100"
           typeahead-show-hint="true"
@@ -42,7 +42,7 @@
     style="display: flex; align-items: center; height: 35px; margin-top:0px; margin-left: 30px"
   >
     <span
-      ng-repeat="item in formValues.accessCounterpartyTypes track by $index"
+      ng-repeat="item in formValues.roles.accessCounterpartyTypes track by $index"
       class="tag label label-info"
       ng-if="!item.isDeleted"
       data-original-title=" {{ item.name }}"

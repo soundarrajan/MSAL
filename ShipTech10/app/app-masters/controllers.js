@@ -1655,7 +1655,8 @@
                 if (vm.app_id == 'admin' && vm.screen_id == 'role') {
                    // console.log($scope.formValues.deepmerge);
                     var roles = $scope.formValues.roles;
-                    roles.accessCounterpartyTypes = $scope.formValues.accessCounterpartyTypes;
+
+                    roles.accessCounterpartyTypes = $scope.formValues.roles.accessCounterpartyTypes;
 
                     $.each(roles.rights, (key, module) => {
                         $.each(module.moduleScreenConfigurations, (key2, screen) => {
@@ -10086,18 +10087,18 @@
             // Empty model
             $scope.formValues.counterpartyTypeAccessModel = null;
 
-            if(typeof $scope.formValues.accessCounterpartyTypes  == 'undefined'){
-                $scope.formValues.accessCounterpartyTypes  = [];
+            if(typeof $scope.formValues.roles.accessCounterpartyTypes  == 'undefined'){
+                $scope.formValues.roles.accessCounterpartyTypes  = [];
             }
 
-            let exists = $scope.formValues.accessCounterpartyTypes.filter(e => e.id === item.id);
+            let exists = $scope.formValues.roles.accessCounterpartyTypes.filter(e => e.id === item.id);
             if(exists.length > 0) {
                 // Already in list
                 toastr.error('This counterparty type already exists!');
                 return
             }
 
-            $scope.formValues.accessCounterpartyTypes.push(item);
+            $scope.formValues.roles.accessCounterpartyTypes.push(item);
         }
 
 
@@ -10113,8 +10114,8 @@
         }
 
         $scope.removeCounterpartyType = (item) => {
-            let futureArray = $scope.formValues.accessCounterpartyTypes.filter(e => e.id !== item.id);
-            $scope.formValues.accessCounterpartyTypes = futureArray;
+            let futureArray = $scope.formValues.roles.accessCounterpartyTypes.filter(e => e.id !== item.id);
+            $scope.formValues.roles.accessCounterpartyTypes = futureArray;
         }
 
 
