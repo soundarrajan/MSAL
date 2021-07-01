@@ -529,10 +529,30 @@ export class LocalService {
         `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
         { payload: request }
       ).pipe(
-          map(txs => txs.find(txn => txn.name == "VesselWithImo"))
+          map(txs => txs.find(txn => txn.name =="VesselWithImo"))
       );
     }
 
+    @ObservableException()
+    getVesselListall(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
+        { payload: request }
+      )
+    }
+
+
+    // // VesselListApiPaths to get vessel imono data
+    // @ObservableException()
+    // getVesselListCode(request: any): Observable<any> {
+    //   return this.http.post<any>(
+    //     `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
+    //     { payload: request }
+    //   ).pipe(
+    //       map(txs => txs.find((txn => txn.name == "Vessel") &&  (txn => txn.name =="VesselWithImo")))
+    //   );
+    // }
+    
     // getBunkerUserRole to get bunker user roles
     @ObservableException()
     getVesselList(request: any=undefined): Observable<any> {
