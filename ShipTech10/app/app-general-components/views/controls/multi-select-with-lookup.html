@@ -1,0 +1,57 @@
+<div class="dynamic_form_editor col-md-12" style="padding: 0px; display: flex">
+  <div
+    class="form-group"
+    style="display: flex; padding: 0px; width: calc(33% - 15px)"
+  >
+    <label class="" style="width: 120px; margin-right: 5px">
+      Counterparty Type Access
+      <span
+        style="
+          color: orange;
+          position: absolute;
+          font-size: 9px;
+          margin-left: 2px;
+        "
+      >
+        *
+      </span>
+    </label>
+    <div style="flex: 1">
+      <div class="input-group col-md-12">
+        <input
+          decode-input-format
+          name="ports"
+          id="id_Ports"
+          ng-model="formValues.counterpartyTypeAccessModel"
+          class="typeahead form-control"
+          ng-class="{'ng-invalid': $ctrl.request.locations.length == 0}"
+          type="text"
+          uib-typeahead="item as item.name for item in removeArrayFromArray(formValues.accessCounterpartyTypes, CM.listsCache.CounterpartyType) | typeaheadCustomFilter:$viewValue:'name'"
+          typeahead-on-select="selectCounterpartyType($item)"
+          typeahead-wait-ms="100"
+          typeahead-show-hint="true"
+          typeahead-min-length="0"
+          typeahead-focus-on-select="false"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="label-list"
+    style="display: flex; align-items: center; height: 35px; margin-top:0px; margin-left: 30px"
+  >
+    <span
+      ng-repeat="item in formValues.accessCounterpartyTypes track by $index"
+      class="tag label label-info"
+      ng-if="!item.isDeleted"
+      data-original-title=" {{ item.name }}"
+    >
+      <a ng-click="removeCounterpartyType(item)">
+        <i class="fa fa-close clickable"></i>
+
+        {{item.name}}
+      </a>
+    </span>
+  </div>
+</div>
