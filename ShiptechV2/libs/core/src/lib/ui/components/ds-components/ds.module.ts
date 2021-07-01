@@ -19,6 +19,7 @@ import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.co
 import { TabsComponent } from './tabs/tabs.component';
 import { StAutosearchSelectorComponent } from './st-autosearch-selector/st-autosearch-selector.component';
 import { AmountTenantFormatDirective } from './directives/amount-tenant-format.directive';
+import { HtmlDecode }  from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
 @NgModule({ 
   imports: [
     CommonModule,
@@ -54,7 +55,8 @@ import { AmountTenantFormatDirective } from './directives/amount-tenant-format.d
     MasterSelectionDialog,
     FooterV2Component,
     StAutosearchSelectorComponent,
-    AmountTenantFormatDirective
+    AmountTenantFormatDirective,
+    HtmlDecode
   ],
   entryComponents:[
     MasterSelectionDialog
