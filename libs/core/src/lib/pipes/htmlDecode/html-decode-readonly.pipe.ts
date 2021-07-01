@@ -11,7 +11,7 @@ export class HtmlDecodeReadonly implements PipeTransform {
         return String.fromCharCode(dec);
       });
     };
-    if (str[property]) {
+    if (str && str[property]) {
       str[property] = decode(_.unescape(str[property]));
       return str;
     }
