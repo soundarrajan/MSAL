@@ -293,7 +293,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     if(field == 'lsdis_estimated_consumption' || field == 'eca_estimated_consumption'){
       if(this.params?.data){
         if(this.params?.data?.lsdis_as_eca > 0){
-          this.tooltipMessage = "Estimated consumption of ECA bunker from previous port to this port, is covered by "+ `${this.params.data.lsdis_as_eca}` +" MT low Sulphur distillate."
+          if(field == 'lsdis_estimated_consumption')
+            this.tooltipMessage = `${this.params.data.lsdis_as_eca}` +" MT. of estimated consumption of low sulphur distillate from previous port to this port, covers ECA consumption"
+          else
+            this.tooltipMessage = "Estimated consumption of ECA bunker from previous port to this port, is covered by "+ `${this.params.data.lsdis_as_eca}` +" MT low Sulphur distillate."
+          
           return true;
         }
         else{
