@@ -846,8 +846,8 @@ export class SmartOperatorComponent implements OnInit {
     this.vesselService.getBdnReport(req).subscribe((res)=>{
       this.BdnReportsData = res.payload;
       this.BdnReportsData.forEach((item: any) => {
-        item.deliveryDate = moment(item.deliveryDate).format('MM/DD/YYYY HH:mm');
-        item.orderDate = moment(item.orderDate).format('MM/DD/YYYY HH:mm');
+        item.deliveryDate = moment(item.deliveryDate).format('MM/DD/YYYY');
+        item.orderDate = moment(item.orderDate).format('MM/DD/YYYY');
        });
       this.gridBdnReportOptions.api.setColumnDefs(this.columnDefs_BdnReport);
     this.gridBdnReportOptions.api.setRowData(this.BdnReportsData);
