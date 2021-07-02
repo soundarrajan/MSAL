@@ -961,6 +961,7 @@ export class VesselMenuComponent {
     panels.forEach((element) => {
       element.classList.remove('active-class');
     });
+    this.closeMenu();
   }
   toggleMenu(event) {//onenter
 
