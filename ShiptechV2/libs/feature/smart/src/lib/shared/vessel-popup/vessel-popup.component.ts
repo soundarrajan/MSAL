@@ -752,7 +752,8 @@ export class VesselPopupComponent implements OnInit {
     {
       headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 80,
       cellRendererFramework: AGGridCellDataComponent, 
-      cellRendererParams: { type: 'popup-multiple-values' }, 
+      // cellRendererParams: { type: 'popup-multiple-values' }, 
+      cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' }, 
       cellClass: ['aggrid-content-center fs-10'],
       valueGetter: function (params) {
         if(params?.data?.productName) {
