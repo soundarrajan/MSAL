@@ -2160,6 +2160,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     quantityModified = true;
                 }
                 data.confirmedQuantity = prodQuantity;
+                ctrl.checkBQSCheckbox(data);
                 ctrl.confirmedQuantityChanged(data);
                 if(quantityModified) {
                     for (let j = 0; j < data.additionalCosts.length; j++) {
@@ -4787,31 +4788,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         ctrl.checkBQSCheckbox = function(product) {
-            if (product.id) {
-                return;
-            }
             if (ctrl.data.is2MDelivery) {
-                console.log(product);
-                if (product.isBqsChanged) {
-                    return;
-                }
-
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(product.confirmedQuantity) > 200) {
                         product.isBqs = true;
-                        if (!product.id) {
-                            product.isBqsChanged = true;
-                        }
+                        return;
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
                     if (parseFloat(product.confirmedQuantity) > 50) {
                         product.isBqs = true;
-                        if (!product.id) {
-                            product.isBqsChanged = true;
-                        }
+                        return;      
                     }
                 } 
             }
+
+            product.isBqs = false;
         }
 
 
