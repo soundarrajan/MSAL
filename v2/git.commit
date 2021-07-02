@@ -1,9 +1,9 @@
-﻿commit b1e7a2b42902394e39b00daa5a6457327d4d0088
+﻿commit 5e17a7006048c7288cf7d121688621617b97ef20
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 2 12:09:18 2021 +0000
+Date:   Fri Jul 2 13:19:29 2021 +0000
 
-    Merged PR 12080: #33847: No request details popup while mouse hovering over the Fuel grade issue has fixed
+    Merged PR 12086: #33061: The Following UI issues exists in Bunker Plan issue has fixed
     
-    Related work items: #33847
+    Related work items: #33061
 
 branch: master
