@@ -1411,7 +1411,7 @@
 
                                                 <select class="bs-select pull-right" id=""
                                                         id="product_quantityUom_{{ $index }}" name=""
-                                                        ng-change="$ctrl.resetContractData($index, true, true)"
+                                                        ng-change="$ctrl.loadOrderScreen = false; $ctrl.resetContractData($index, true, true)"
                                                         ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                         ng-model="product.quantityUom"
                                                         ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"

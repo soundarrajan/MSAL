@@ -796,6 +796,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
 
+            ctrl.loadOrderScreen = true;
+
+
             ctrl.getCustomerConfiguration();
 
             addFirstAdditionalCost();
@@ -1833,6 +1836,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.service.code = data.code;
                 ctrl.data.service.id = data.id;
                 ctrl.data.is2MDelivery = data.is2MDelivery;
+                //ctrl.checkBqsForAllProducts();
             });
         };
         ctrl.selectBuyer = function(buyer) {
@@ -2474,7 +2478,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
 
         ctrl.checkBQSConversionCheckbox = function(product) {
-           if (ctrl.data.is2MDelivery) {
+            if (ctrl.loadOrderScreen) {
+                return;
+            }
+            if (ctrl.data.is2MDelivery) {
                 console.log(product);
                if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(product.confirmedQtyProdZ) > 200) {
@@ -2487,7 +2494,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                        
                     }
                } 
-           }
+            }
         }
         ctrl.updateModelProperty = function(model, property, value) {
             model[property] = value;
@@ -4787,7 +4794,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
         }
 
+        ctrl.checkBqsForAllProducts = function() {
+            for (let i = 0; i < ctrl.data.products.length; i++) {
+                ctrl.checkBQSCheckbox(ctrl.data.products);
+            }
+         }
+
         ctrl.checkBQSCheckbox = function(product) {
+            ctrl.loadOrderScreen = false;
             if (ctrl.data.is2MDelivery) {
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(product.confirmedQuantity) > 200) {
