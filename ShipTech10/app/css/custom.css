@@ -5054,3 +5054,13 @@ table.energyCalculationBlade tr.border-green-jungle {
 #closeOrder {
     width: 96.9%;
 }
+
+.selected-customers .customer-tag {
+    border: 1px solid #c2cad8;
+    padding: 3px;
+    margin-right: 5px;
+    white-space: nowrap;
+    display: block;
+    float: left;
+    margin-top: 5px;
+}

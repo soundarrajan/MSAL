@@ -7588,9 +7588,7 @@
             });
         };
 
-        if(!$scope.userMasterCustomerTableConfig) {
-            $scope.userMasterCustomerTableConfig = {}
-        }
+
 
         
 
@@ -10165,15 +10163,27 @@
 
 /* USER master customer lookup logic */
         $scope.openCustomerLookup = () => {
-            $scope.userMasterCustomerTableConfig.skip = 0;
-            $scope.userMasterCustomerTableConfig.take = 25;
-            $scope.userMasterSelectedCustomersIds = "41";
+            $scope.userMasterSelectedCustomersIdsArray = [];
+            $.each($scope.formValues.accessCustomers, (k,v) => {
+                $scope.userMasterSelectedCustomersIdsArray.push(v.id);
+                v.isSelected = true;
+            })
+            if(!$scope.userMasterCustomerTableConfig) {
+                $scope.userMasterCustomerTableConfig = {}
+            }
+            $scope.userMasterCustomerTableConfig.currentPage = 1;
+            $scope.formValues.tempCustomerSelection = angular.copy($scope.formValues.accessCustomers, $scope.formValues.tempCustomerSelection);
+            $scope.userMasterSelectedCustomersIds = $scope.userMasterSelectedCustomersIdsArray.join(",");
             var payload = $scope.createUserMasterCustomerPayload(false);
-            $scope.userMasterCustomerTableConfig = {};
             
             $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`, payload).then((response) => {
                 $scope.userMasterCustomerData = response.data.payload;
-                 $scope.userMasterCustomerDataLength = response.data.matchedCount;
+                $.each($scope.userMasterCustomerData, (k,v) => {
+                    if($scope.userMasterSelectedCustomersIdsArray.includes(v.id)) {
+                        v.isSelected = true;
+                    }
+                })
+                $scope.userMasterCustomerDataLength = response.data.matchedCount;
                 tpl = $templateCache.get('app-general-components/views/screen_parts/masters/modal_UserCustomerList.html');
                 $scope.modalInstance = $uibModal.open({
                     template: tpl,
@@ -10186,6 +10196,9 @@
             });  
         }
         $scope.createUserMasterCustomerPayload = function(reloadTable) {
+            if(!$scope.userMasterCustomerTableConfig) {
+                $scope.userMasterCustomerTableConfig = {}
+            }
             if (!$scope.userMasterCustomerTableConfig.currentPage) {
                 $scope.userMasterCustomerTableConfig.currentPage = 1;
             }
@@ -10202,6 +10215,10 @@
                         {
                             ColumnName: 'CounterpartyTypes',
                             Value: 4
+                        },
+                        {
+                            ColumnName: 'SelectedCounterpartyIds',
+                            Value: $scope.userMasterSelectedCustomersIds
                         }
                     ],
                     SearchText: $scope.userMasterCustomerTableConfig.searchText,
@@ -10213,39 +10230,48 @@
             };
             if (reloadTable) {
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`, payload).then((response) => {
-                    $scope.userMasterCustomerData = response.data.payload;                    
+                    $scope.userMasterCustomerData = response.data.payload;
+                    $.each($scope.userMasterCustomerData, (k,v) => {
+                        if($scope.userMasterSelectedCustomersIdsArray.includes(v.id)) {
+                            v.isSelected = true;
+                        }
+                    })
+                    $scope.userMasterCustomerDataLength = response.data.matchedCount;                  
                 }); 
             }
             return payload;
         };
       
         $scope.addUserMasterCustomerToSelection = (item) => {
-            if(!$scope.formValues.tempCustomerSelection) {
-                $scope.formValues.tempCustomerSelection = [];
-            }
 
-            if (item.isSelected) {
+            var customerSelectionExists = false;
+            var customerSelectionKey = false;
+            $.each($scope.formValues.tempCustomerSelection, (k,v) => {
+                if(v.id === item.id) {
+                    customerSelectionKey = k;
+                    customerSelectionExists = true;
+                }
+            })    
+            if(customerSelectionExists) {
+                $scope.formValues.tempCustomerSelection[customerSelectionKey].isSelected = item.isSelected;
+            } else {
                 obj = {
                     id : item.id,
+                    isSelected : item.isSelected,
                     name : item.name
                 }
                 $scope.formValues.tempCustomerSelection.push(obj);
-            } else {
-                $.each($scope.formValues.tempCustomerSelection, (k,v) => {
-                    if(!k.isSelected) {
-                        $scope.formValues.tempCustomerSelection.splice(k,1);
-                    }
-                })                
             }
+            console.log($scope.formValues.tempCustomerSelection);
         }
         $scope.saveUserMasterCustomerSelection = () => {
             console.log($scope.formValues.tempCustomerSelection);
-            $scope.formValues.customer = $scope.formValues.tempCustomerSelection;
-            $scope.formValues.selectedCustomersDisplayName = []
-            $.each($scope.formValues.customer, (k,v) => {
-                $scope.formValues.selectedCustomersDisplayName.push(v.name); 
+            $scope.formValues.accessCustomers = [];         
+            $.each($scope.formValues.tempCustomerSelection, (k,v) => {
+                if (v.isSelected) {
+                    $scope.formValues.accessCustomers.push(v);
+                }
             })
-            $scope.formValues.selectedCustomersDisplayName = $scope.formValues.selectedCustomersDisplayName.join(", ")
             $scope.prettyCloseModal();
         }
         $scope.selectAllUserMasterCustomers = (selectState) => {
