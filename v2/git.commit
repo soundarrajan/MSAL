@@ -1,9 +1,11 @@
-﻿commit 356f052d11950c8c964f78a4b1700d70a4a46042
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 2 06:45:36 2021 +0000
+﻿commit 76783221b3fd14fd4180b4a95e3922b5bad114e8
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Fri Jul 2 08:45:38 2021 +0000
 
-    Merged PR 12064: #29675 - reset value while vessel popup closed issue has fixed
+    Merged PR 12068: 33876#bugfix
     
-    Related work items: #29675
+    33876#bugfix
+    
+    Cherry-picked from commit `ecee828a`.
 
 branch: master
