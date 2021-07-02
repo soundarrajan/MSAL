@@ -226,7 +226,7 @@ APP_CONTRACT.config([ '$stateProvider', '$urlRouterProvider', 'CONTRACT_STATE', 
         });
 } ]);
 // ON RUN
-APP_CONTRACT.run([ '$state', '$rootScope', 'CONTRACT_STATE', function($state, $rootScope, CONTRACT_STATE) {
+APP_CONTRACT.run([ '$state', '$rootScope','$window', '$location', 'CONTRACT_STATE', function($state, $rootScope, $window, $location, CONTRACT_STATE) {
     let titleMap = {};
     titleMap[CONTRACT_STATE.SINGLE] = ':screen_id';
     titleMap[CONTRACT_STATE.EDIT] = 'Contracts :: Edit :entity_id';
@@ -241,6 +241,13 @@ APP_CONTRACT.run([ '$state', '$rootScope', 'CONTRACT_STATE', function($state, $r
     // do not edit below
     $rootScope.$on('$includeContentLoaded', () => {
         changeTitle();
+    });
+    $rootScope.$on('$stateChangeStart', (event, fromState, stateParams) => {
+        if(fromState.name === CONTRACT_STATE.EDIT){
+            event.preventDefault();
+            $window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/contracts/contract/'+stateParams.entity_id+'/details'), '_self');
+            // $window.open('http://localhost:9016/v2/contracts/contract/'+stateParams.entity_id+'/details', '_self');
+        }
     });
     $rootScope.$on('$stateChangeSuccess', () => {
         changeTitle();

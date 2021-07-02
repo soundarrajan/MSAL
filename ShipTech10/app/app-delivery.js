@@ -185,7 +185,7 @@ APP_DELIVERY.config([ '$stateProvider', '$urlRouterProvider', 'DELIVERY_STATE', 
 } ]);
 
 // ON RUN
-APP_DELIVERY.run([ '$state', '$rootScope', 'DELIVERY_STATE', function($state, $rootScope, DELIVERY_STATE) {
+APP_DELIVERY.run([ '$state', '$rootScope','$window', '$location', 'DELIVERY_STATE', function($state, $rootScope, $window, $location, DELIVERY_STATE) {
     // if ($state.params.entity_id < 1) { $state.params.status = {} }
 
     let titleMap = {};
@@ -206,6 +206,14 @@ APP_DELIVERY.run([ '$state', '$rootScope', 'DELIVERY_STATE', function($state, $r
     // do not edit below
     $rootScope.$on('$includeContentLoaded', () => {
         changeTitle();
+    });
+
+    $rootScope.$on('$stateChangeStart', (event, fromState, stateParams) => {
+        if(fromState.name === DELIVERY_STATE.EDIT){
+            event.preventDefault();
+            $window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/delivery/delivery/'+stateParams.entity_id+'/details'), '_self');
+            //$window.open('http://localhost:9016/v2/delivery/delivery/'+stateParams.entity_id+'/details', '_self');
+        }
     });
 
     $rootScope.$on('$stateChangeSuccess', () => {
