@@ -36,7 +36,7 @@
         </div>
 
     </div>
-    
+
     <!-- <div class="row">
     	<div class="col-md-4">
             <div class="form_input form_input_needInvoiceReview form-group">
@@ -85,7 +85,7 @@
                 </div>
             </div>
     	</div>
-        
+
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group row" ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
@@ -97,6 +97,18 @@
                     </div>
                 </div>
             </div>
+
+    <!-- sellerInvoiceNumberValidationRequired -->
+        <div class="col-md-4">
+            <div class="form-group row" ng-init='CM.getOptions({"Name": "YesNoOptions", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                <label for="sellerInvoiceNumberValidationRequired" class="simpleLookupLabel" style="max-height: initial;">
+                    {{ CM.app_id + '.SELLER_INVOICE_NUMBER_VALIDATION_REQUIRED' | translate }}
+                </label>
+                <div class="input-group form_input form_input_sellerInvoiceNumberValidationRequired">
+                    <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-required="true" id="sellerInvoiceNumberValidationRequired" ng-model="formValues.invoice.sellerInvoiceNumberValidationRequired"></select>
+                </div>
+            </div>
+        </div>
     </div>
 
     </div>
@@ -104,7 +116,7 @@
     <div class="portlet">
         <div class="portlet-title">
             <span class="caption-subject ">
-                Hide/Unhide Fields 
+                Hide/Unhide Fields
             </span>
         </div>
     </div>
@@ -128,7 +140,7 @@
                     <tbody>
                         <tr>
                             <td class="padding">
-                                Invoice Date 
+                                Invoice Date
                             </td>
                             <td class="padding">
                             </td>

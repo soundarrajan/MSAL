@@ -1265,6 +1265,7 @@
     "Is_Debunker": "Is Debunker",
     "AUTO_APPROVE_MATCHED_INVOICE": "Auto approve matched invoice",
     "NEED_WARNING_WHEN_SELLER_PAYMENT_ON_HOLD": "Need warning when seller payment on hold",
+    "SELLER_INVOICE_NUMBER_VALIDATION_REQUIRED": "Seller Invoice Number Validation required",
     "NEED_FOR_SUBMIT_FOR_APPROVAL": "Need for submit for approval",
     "UPLOAD": "Upload",
     "DOWNLOAD": "Download",
