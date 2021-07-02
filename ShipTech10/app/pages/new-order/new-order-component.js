@@ -1764,6 +1764,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	            newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
                 newProduct.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 	            newProduct.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
+                ctrl.checkBQSCheckbox(newProduct);
                 // newProduct.specGroups = server_data.data.payload;
             });
             payload = { Payload: product.id };
@@ -1836,7 +1837,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.service.code = data.code;
                 ctrl.data.service.id = data.id;
                 ctrl.data.is2MDelivery = data.is2MDelivery;
-                //ctrl.checkBqsForAllProducts();
+                ctrl.checkBqsForAllProducts();
             });
         };
         ctrl.selectBuyer = function(buyer) {
@@ -2109,6 +2110,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 			            ctrl.lookupField.productType = product.productType;
                         ctrl.lookupField.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 			            ctrl.lookupField.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
+                        ctrl.checkBQSCheckbox(ctrl.lookupField);
 		            });
                     // ctrl.lookupField.productType = product.productType;
                     ctrl.lookupField.tempProduct = ctrl.lookupField.product;
@@ -2486,15 +2488,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(product.confirmedQtyProdZ) > 200) {
                         product.isBqs = true;
+                        return;
                       
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
                     if (parseFloat(product.confirmedQtyProdZ) > 50) {
                         product.isBqs = true;
+                        return;
                        
                     }
                } 
             }
+            product.isBqs = false;
         }
         ctrl.updateModelProperty = function(model, property, value) {
             model[property] = value;
@@ -4796,7 +4801,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.checkBqsForAllProducts = function() {
             for (let i = 0; i < ctrl.data.products.length; i++) {
-                ctrl.checkBQSCheckbox(ctrl.data.products);
+                ctrl.checkBQSCheckbox(ctrl.data.products[i]);
             }
          }
 
