@@ -818,6 +818,7 @@ export class VesselPopupComponent implements OnInit {
   (mouseleave)="!menuClick && toggleMenu2();" (click)="toggleMenu3($event)"
   (menuClosed)="toggleMenu1($event);">more_vert</mat-icon>
 <mat-menu #clickalertsmenu="matMenu" class="common" xPosition="after">
+<div (click)="$event.stopPropagation();">
 <div class="alert-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
   <div class="warning-header">
     <div style="margin-bottom: 5px;">
@@ -874,6 +875,7 @@ export class VesselPopupComponent implements OnInit {
     <button mat-button class="cancel" (click)="cancelMenu();$event.stopPropagation();">CANCEL</button>
     <button mat-raised-button [ngClass]="{'active':selectionChange}" class="save"
       (click)="save(statusDropdown?.value);$event.stopPropagation();">SAVE</button>
+  </div>
   </div>
   </div>
 </mat-menu>
@@ -959,6 +961,7 @@ export class VesselMenuComponent {
     panels.forEach((element) => {
       element.classList.remove('active-class');
     });
+    this.closeMenu();
   }
   toggleMenu(event) {//onenter
 
