@@ -1206,7 +1206,7 @@ export class PortPopupComponent implements OnInit {
     <div>Status</div>
     <mat-form-field appearance="fill">
       <mat-select #statusDropdown [value]="item?.remarkStatus?.name" [panelClass]="{'dark-theme':theme,'light-theme':!theme}"
-        (selectionChange)="selectionChange = true" (click)="$event.stopPropagation();">
+        (selectionChange)="checkDirty()" (click)="$event.stopPropagation();">
         <mat-option *ngFor="let status of portStatuses" [value]="status.name">{{status.displayName}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -1216,7 +1216,7 @@ export class PortPopupComponent implements OnInit {
     <div>Comments</div>
     <mat-form-field appearance="fill">
       <textarea style="caret-color:#fff !important;" matInput [(ngModel)]="item.remarkComments"
-        (click)="$event.stopPropagation();"></textarea>
+        (click)="$event.stopPropagation();" (change)="checkDirty()"></textarea>
     </mat-form-field>
   </div>
   <div *ngIf="portRemarkLogs?.length" class="change-log">
@@ -1233,7 +1233,7 @@ export class PortPopupComponent implements OnInit {
   </div>
   <div class="actions">
     <button mat-button class="cancel" (click)="cancelMenu();$event.stopPropagation();">CANCEL</button>
-    <button mat-raised-button [ngClass]="{'active':selectionChange}" class="save"
+    <button mat-raised-button [ngClass]="{'active':selectionChange, 'inactive':!selectionChange}" [disabled]="!selectionChange" class="save"
       (click)="updatePortRemark(statusDropdown.value)">SAVE</button>
   </div>
   </div>
@@ -1254,9 +1254,11 @@ export class PortMenuComponent {
   public theme: boolean = true;
   portRemarkLogs: any;
   portRemarkStatusTemp: string = '';
+  portRemarkCommentTemp: string = '';
   constructor(private elem: ElementRef,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) { }
   ngOnInit(){
     this.portRemarkStatusTemp = this.item?.remarkStatus?.name;
+    this.portRemarkCommentTemp = this.item?.remarkComments;
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.loadMasterLookupData();
   }
@@ -1297,6 +1299,14 @@ export class PortMenuComponent {
     this.menuTrigger.openMenu();
     this.selectionChange = false;
 
+  }
+  checkDirty() {
+    
+    if((this.portRemarkStatusTemp !== this.statusDropdown?.value) || (this.portRemarkCommentTemp !== this.item?.remarkComments)){
+      this.selectionChange = true;
+    } else {
+      this.selectionChange = false;
+    }
   }
   closeMenu() {
     this.item.remarkComments = '';
