@@ -9,11 +9,11 @@
       </div>
       <div class="col-4 pd-0 ">
         <div class="default-view-checkbox">
-          <mat-checkbox class="m-l-r-5" [checked]="defaultView"></mat-checkbox>
-          <div>My Default View</div>
+          <mat-checkbox class="m-l-r-5" (ngModelChange)="CheckDefaultView($event)" [ngModel]="myDefaultView"></mat-checkbox>
+          <div>My Default View tsss</div>
         </div>
       </div>
-      <div style="margin-right:20px;" class="close" title="Close" (click)="closePopup.emit()">
+      <div style="margin-right:20px;" class="close" title="Close" (click)="closePopup.emit();Closepopevnt()">
         <div class ="inactive"></div>
         <div class ="active"></div>
         <!-- <img class="inactive" src="./assets/customicons/close-disable.svg" alt="close-icon">
@@ -185,8 +185,8 @@
             </div>
           </div>
           <mat-accordion>
-            <mat-expansion-panel #second id="alerts" hideToggle="true" [expanded]="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
+            <mat-expansion-panel #second id="alerts" hideToggle="true" [expanded]="viewVesselAlerts" (closed)="changeDefault('VAClose')"
+              (opened)="changeDefault('VAOpen')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -260,8 +260,8 @@
                 </div>
               </div>
             </mat-expansion-panel>
-            <mat-expansion-panel #third id="outstanding-request" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
+            <mat-expansion-panel #third id="outstanding-request" [expanded]="viewFutureRequest" hideToggle="true" (closed)="changeDefault('FRClose')"
+              (opened)="changeDefault('FROpen')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -275,8 +275,8 @@
                   class="ag-theme-balham-dark"></ag-grid-angular>
               </div>
             </mat-expansion-panel>
-            <mat-expansion-panel #fourth id="vessel-redelivery" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
+            <mat-expansion-panel #fourth id="vessel-redelivery" [expanded]="viewVesselRedelivery" hideToggle="true" (closed)="changeDefault('VRClose')"
+              (opened)="changeDefault('VROpen')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -371,8 +371,8 @@
                 </div>
               </div>
             </mat-expansion-panel>
-            <mat-expansion-panel #fifth id="vessel-schedule" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault()">
+            <mat-expansion-panel #fifth id="vessel-schedule" [expanded]="viewVesselSchedule" hideToggle="true" (closed)="changeDefault('VSClose')"
+              (opened)="changeDefault('VSOpen')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">

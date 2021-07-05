@@ -24,21 +24,28 @@ export class VesselPopupComponent implements OnInit {
   public alerts;
   public gridOptions: GridOptions;
   public selectionChange: boolean = false;
-  public defaultView: boolean = true;
+  public myDefaultView: boolean = false;
   public menuClick: boolean = false;
   public changeLog;
   public menuData;
-  public theme:boolean = true;
-  public shiptechUrl : string = '';
+  public theme: boolean = true;
+  public shiptechUrl: string = '';
   FutureRequest: any = [];
   scheduleDashboardLabelConfiguration: any;
-  public scheduleList : any = [];
-  public  scheduleCount : number = 0;
-  public vesselList : any[];
+  public scheduleList: any = [];
+  public scheduleCount: number = 0;
+  public vesselList: any[];
   VesselAlertList: any;
   VesselAlertLogs: any;
-  constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService : VesselPopupService) { 
-    this.shiptechUrl =  new URL(window.location.href).origin;
+  myDefaultViewPayload: any = [];
+  EnableFutureView: boolean;
+  viewFutureRequest: boolean = false;
+  viewVesselRedelivery: boolean;
+  viewVesselSchedule: boolean;
+  viewVesselAlerts: boolean;
+  APImyDefaultView: any = [];
+  constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService: VesselPopupService) {
+    this.shiptechUrl = new URL(window.location.href).origin;
   }
   @Input() status: string = "standard-view";
   @Input('vesselData') popup_data;
@@ -49,7 +56,7 @@ export class VesselPopupComponent implements OnInit {
   @ViewChild('third') third: MatExpansionPanel;
   @ViewChild('fourth') fourth: MatExpansionPanel;
   @ViewChild('fifth') fifth: MatExpansionPanel;
-  
+
   ngOnInit() {
     this.route.data.subscribe(data => {
       console.log(data);
@@ -60,6 +67,7 @@ export class VesselPopupComponent implements OnInit {
       this.vesselList = data?.vesselListWithImono;
     });
     this.loadVesselBasicInfo(this.popup_data.vesselId);
+    this.getmyDefaultview();
     this.loadFutureRequestData();
     this.loadRedeliveryInfo(this.popup_data.vesselId);
     this.loadVesselScheduleList(this.popup_data.vesselId);
@@ -135,8 +143,8 @@ export class VesselPopupComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
-        if(this.FutureRequest?.payload) {
-          let futureRequestData = (this.FutureRequest.payload.length)? this.FutureRequest.payload: [];
+        if (this.FutureRequest?.payload) {
+          let futureRequestData = (this.FutureRequest.payload.length) ? this.FutureRequest.payload : [];
           this.gridOptions.api.setRowData(futureRequestData);
           this.triggerClickEvent();
         }
@@ -150,11 +158,11 @@ export class VesselPopupComponent implements OnInit {
     this.logger.logInfo('VesselPopupComponent-ngAfterViewInit()', new Date());
   }
 
-  loadVesselBasicInfo(vesselId){
-    if(vesselId != null){
-      let req = { VesselId : vesselId};
-      this.vesselService.getVesselBasicInfo(req).subscribe((res)=>{
-        if(res.payload.length > 0){
+  loadVesselBasicInfo(vesselId) {
+    if (vesselId != null) {
+      let req = { VesselId: vesselId };
+      this.vesselService.getVesselBasicInfo(req).subscribe((res) => {
+        if (res.payload.length > 0) {
           this.popup_data.serviceId = res.payload[0].serviceId;
           this.popup_data.deptId = res.payload[0].deptId;
           this.popup_data.ownership = res.payload[0].ownership;
@@ -166,15 +174,144 @@ export class VesselPopupComponent implements OnInit {
           this.popup_data.ulsfo = res.payload[0].ulsfo_current_stock;
           this.popup_data.vlsfo = res.payload[0].vlsfo_current_stock;
           this.popup_data.lsdis = res.payload[0].lsdis_current_stock;
-          this.popup_data.dis = res.payload[0].hsdis_current_stock;  
+          this.popup_data.dis = res.payload[0].hsdis_current_stock;
 
-          this.triggerClickEvent();     
+          this.triggerClickEvent();
         }
       })
     }
   }
 
- 
+  getmyDefaultview() {
+    let req = { "UserId": "186", "Port": "1", "Vesel": "0", "Default_View": "1", "Bunker_Plan": "0" }
+    this.vesselService.getmyDefaultview(req).subscribe((res) => {
+      console.log("55555555555555%%%%%%%%%%%%%", res);
+      if (res.payload.length > 0) {
+        this.myDefaultViewPayload = [];
+        this.myDefaultViewPayload = res.payload[0];
+        debugger;
+        Object.assign(this.APImyDefaultView, this.myDefaultViewPayload);
+
+        if (this.myDefaultViewPayload.defaultView == 0) {
+          this.myDefaultView = true;
+          if (this.myDefaultViewPayload.futureRequest == 1) {
+            this.viewFutureRequest = true;
+          }
+          else if (this.myDefaultViewPayload.vesselRedelivery == 1) {
+            this.viewVesselRedelivery = true;
+          }
+          else if (this.myDefaultViewPayload.vesselSchedule == 1) {
+            this.viewVesselSchedule = true;
+          }
+          else if (this.myDefaultViewPayload.vesselAlerts == 1) {
+            this.viewVesselAlerts = true;
+          }
+        }
+      }
+    })
+  }
+
+  CheckDefaultView(event) {
+    if (event) {
+      this.myDefaultView = true;
+      this.myDefaultViewPayload.defaultView = 0;
+    }
+    else {
+      this.myDefaultView = false;
+      this.myDefaultViewPayload.defaultView = 1;
+    }
+  }
+  public changeDefault(expandRef?: any) {
+    if (this.second?.expanded || expandRef == 'second') {
+      this.loadVesselAlertList();
+    }
+    console.log("+++++++++++++", expandRef);
+    switch (expandRef) {
+      case 'VRClose':
+        this.myDefaultViewPayload.vesselRedelivery = 0;
+        break;
+      case 'VROpen':
+        this.myDefaultViewPayload.vesselRedelivery = 1;
+        break;
+      case 'VAClose':
+        this.myDefaultViewPayload.vesselAlerts = 0;
+        break;
+      case 'VAOpen':
+        this.myDefaultViewPayload.vesselAlerts = 1;
+        break;
+      case 'FROpen':
+        this.myDefaultViewPayload.futureRequest = 1;
+        break;
+      case 'FRClose':
+        this.myDefaultViewPayload.futureRequest = 0;
+        break;
+      case 'VSClose':
+        this.myDefaultViewPayload.vesselSchedule = 0;
+        break;
+      case 'VSOpen':
+        this.myDefaultViewPayload.vesselSchedule = 1;
+        break;
+    }
+
+  }
+
+  Closepopevnt() {
+    let requestPayload = {}
+    if (this.myDefaultView) {
+      requestPayload = {
+        "Payload": {
+          "UserId": "186",
+          "Port": "0",
+          "Vesel": "0",
+          "Bunker_Plan": "0",
+          "DefaultView": "0",
+          "PortRemarks": "0",
+          "ProductAvailability": "0",
+          "BOPSPrice": "0",
+          "PortsAgents": "0",
+          "OtherDetails": "0",
+          "VesselAlerts": this.myDefaultViewPayload.vesselAlerts,
+          "FutureRequest": this.myDefaultViewPayload.futureRequest,
+          "VesselRedelivery": this.myDefaultViewPayload.vesselRedelivery,
+          "VesselSchedule": this.myDefaultViewPayload.vesselSchedule,
+          "CurrentROBandArbitragedetails": "0",
+          "Comments": "0",
+          "CurrentBunkeringPlan": "0",
+          "PreviousBunkeringPlan": "0"
+        }
+      }
+    } else {
+      requestPayload = {
+        "Payload": {
+          "UserId": "186",
+          "Port": "0",
+          "Vesel": "0",
+          "Bunker_Plan": "0",
+          "DefaultView": "1",
+          "PortRemarks": "0",
+          "ProductAvailability": "0",
+          "BOPSPrice": "0",
+          "PortsAgents": "0",
+          "OtherDetails": "0",
+          "VesselAlerts": "0",
+          "FutureRequest": "0",
+          "VesselRedelivery": "0",
+          "VesselSchedule": "0",
+          "CurrentROBandArbitragedetails": "0",
+          "Comments": "0",
+          "CurrentBunkeringPlan": "0",
+          "PreviousBunkeringPlan": "0"
+        }
+      }
+    }
+
+    this.localService.saveDefaultView(requestPayload).subscribe(response => {
+      console.log(response.payload);
+    })
+  }
+
+
+
   loadFutureRequestData() {
     let requestPayload = {
       "Payload": {
@@ -187,7 +324,7 @@ export class VesselPopupComponent implements OnInit {
               "isComputedColumn": false,
               "ConditionValue": "!=",
               "Values": [
-                  "cancelled"
+                "cancelled"
               ],
               "FilterOperator": 0
             },
@@ -197,19 +334,19 @@ export class VesselPopupComponent implements OnInit {
               "isComputedColumn": false,
               "ConditionValue": "!=",
               "Values": [
-                  "cancelled"
+                "cancelled"
               ],
               "FilterOperator": 0
             },
             {
-                "columnValue": "vesselId",
-                "ColumnType": "Text",
-                "isComputedColumn": false,
-                "ConditionValue": "=",
-                "Values": [
-                    this.popup_data?.vesselId
-                ],
-                "FilterOperator": 0
+              "columnValue": "vesselId",
+              "ColumnType": "Text",
+              "isComputedColumn": false,
+              "ConditionValue": "=",
+              "Values": [
+                this.popup_data?.vesselId
+              ],
+              "FilterOperator": 0
             }
           ]
         },
@@ -233,10 +370,10 @@ export class VesselPopupComponent implements OnInit {
     this.localService.getOutstandRequestData(requestPayload, this.scheduleDashboardLabelConfiguration).subscribe(response => {
       console.log(response.payload);
       this.FutureRequest = [];
-      if(response.payload) {
+      if (response.payload) {
         this.FutureRequest = response;
-        if(this.gridOptions?.api) {
-          let futureRequestData = (this.FutureRequest?.payload?.length)? this.FutureRequest.payload: [];
+        if (this.gridOptions?.api) {
+          let futureRequestData = (this.FutureRequest?.payload?.length) ? this.FutureRequest.payload : [];
           this.gridOptions.api.setRowData(futureRequestData);
         }
         this.triggerClickEvent();
@@ -244,11 +381,11 @@ export class VesselPopupComponent implements OnInit {
     })
   }
 
-  loadRedeliveryInfo(vesselId){
-    if(vesselId != null){
-      let req = { VesselId : vesselId}; //VesselId : 2805
-      this.vesselService.getVesselRedeliveryInfo(req).subscribe((res)=>{
-        if(res.payload.length > 0){
+  loadRedeliveryInfo(vesselId) {
+    if (vesselId != null) {
+      let req = { VesselId: vesselId }; //VesselId : 2805
+      this.vesselService.getVesselRedeliveryInfo(req).subscribe((res) => {
+        if (res.payload.length > 0) {
           this.popup_data.vesselExpDate = res.payload[0].expiryDate;
           this.popup_data.redeliveryDays = res.payload[0].redeliveryDays ? res.payload[0].redeliveryDays + ' Days' : "";
           this.popup_data.hfo = res.payload[0].hsfoRedeliveryQty;
@@ -256,27 +393,27 @@ export class VesselPopupComponent implements OnInit {
           this.popup_data.lsmdo = res.payload[0].lsmdoRedeliveryQty;
           this.popup_data.mdo = res.payload[0].mdoRedeliveryQty;
           this.popup_data.mgo = res.payload[0].mgoRedeliveryQty;
-          this.popup_data.lsmgo = res.payload[0].lsmgoRedeliveryQty;   
+          this.popup_data.lsmgo = res.payload[0].lsmgoRedeliveryQty;
 
-          this.triggerClickEvent();     
+          this.triggerClickEvent();
         }
       })
     }
   }
 
-  loadVesselScheduleList(vesselId){
-    if(vesselId != null){
+  loadVesselScheduleList(vesselId) {
+    if (vesselId != null) {
       let selectedVessel = this.vesselList.find(vessel => vessel.id == vesselId)
-      if(!(selectedVessel?.imono)) {
-          this.triggerClickEvent();     
-          return;
+      if (!(selectedVessel?.imono)) {
+        this.triggerClickEvent();
+        return;
       };
-      let req = { VesselImo : selectedVessel?.imono};//'SDMLG1014' };
-      this.vesselService.getVesselSchedule(req).subscribe((res)=>{
-        if(res.payload.length > 0){
+      let req = { VesselImo: selectedVessel?.imono };//'SDMLG1014' };
+      this.vesselService.getVesselSchedule(req).subscribe((res) => {
+        if (res.payload.length > 0) {
           this.scheduleCount = res.payload[0].count;
           this.scheduleList = res.payload;
-          this.triggerClickEvent();     
+          this.triggerClickEvent();
         }
       })
     }
@@ -284,32 +421,28 @@ export class VesselPopupComponent implements OnInit {
 
   triggerClickEvent() {
     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-      titleEle.click();
+    titleEle.click();
   }
 
   dateFormatter(params, type?) {
-    if(params == null)
-    return "";
-    else{
-      if(type == '/')
+    if (params == null)
+      return "";
+    else {
+      if (type == '/')
         return moment(params).format('DD/MM/YYYY');
       else
         return moment(params).format('YYYY-MM-DD HH:MM');
     }
   }
 
-  public changeDefault(expandRef?:any) {
-    if(this.second?.expanded || expandRef=='second') {
-      this.loadVesselAlertList();
-    }
-  }
+
   refreshVesselAlert(data) {
     // this.loadVesselAlertList();
     // refresh alert list with updated payload
-      let VesselAlertData = data?.payload;
-      this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
-      this.VesselAlertLogs = VesselAlertData?.vesselAlertLogs;
-      this.triggerClickEvent();
+    let VesselAlertData = data?.payload;
+    this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
+    this.VesselAlertLogs = VesselAlertData?.vesselAlertLogs;
+    this.triggerClickEvent();
   }
   loadVesselAlertList() {
     let requestPayload = {
@@ -653,7 +786,7 @@ export class VesselPopupComponent implements OnInit {
     // let VesselAlertData = VesselAlertList?.payload;
     // this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
     // this.VesselAlertLogs = VesselAlertData?.vesselAlertLogs;
-    this.vesselService.loadVesselAlertList(requestPayload).subscribe(data=> {
+    this.vesselService.loadVesselAlertList(requestPayload).subscribe(data => {
       console.log(data);
       let VesselAlertData = data?.payload;
       this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
@@ -672,91 +805,93 @@ export class VesselPopupComponent implements OnInit {
     if (routeOpen || (!routeOpen && !((portPopupData.filter(port => port.name.toLowerCase() == portName.toLowerCase())).length > 0))) {
       // this.mapService.getLocationsListForMap("").subscribe(res => {
       //  selectedPort = res.payload.filter(item => item.locationName.toLowerCase() == portName.toLowerCase());
-        data = {
-          locationId: portId,
-          position: 1,
-          port_view: "standard-view",//pData.flag,
-          name: portName,//selectedPort[0].locationName,
-          earliestTradingTime: '',
-          latestTradingTime: '',
-          avlProdCategory: [],
-          //notavlProdCategory: ['DIS'],
-          // destination: 'Marseille',
-          // eta1: '2020-04-13 10:00',
-          // eta2: '2020-04-14 10:00',
-          // next_destination: 'Catania',
-          // voyageStatus: 'Laden',
-          // vesselId: '1YM',
-          // vesselExpDate: '12/06/2020',
-          // vesselType: 'LR1',
-          // bunkeringStatus: 'Created',
-          // serviceId: '271',
-          // deptId: 'MLAS',
-          // ownership: 'Chartered',
-          // hsfo: '468',
-          // dogo: '600',
-          // ulsfo: '120',
-          // vlsfo: '364',
-          // hfo: '58',
-          // lshfo: '120',
-          // mdo: '10',
-          // lsmdo: '20',
-          // mso: '10',
-          // lsmgo: '10',
-          notificationsCount: 6,
-          messagesCount: 2,
-          latitude: 0,//selectedPort[0].locationLatitude,
-          longitude: 0,//selectedPort[0].locationLongitude,
-        }
-        if (!routeOpen) {
-          if (portPopupData.length >= 2) {
-            portPopupData.splice(0, 1);
-            portPopupData.push(data);
-          }
-          else {
-            portPopupData.push(data);
-          }
-          if (portPopupData.length == 1) {
-            portPopupData[0].position = 0;
-          }
-          else if (portPopupData.length == 2) {
-            portPopupData[0].position = 1;
-            portPopupData[1].position = 0;
-          }
-        }
-        else {
-          portPopupData = [];
+      data = {
+        locationId: portId,
+        position: 1,
+        port_view: "standard-view",//pData.flag,
+        name: portName,//selectedPort[0].locationName,
+        earliestTradingTime: '',
+        latestTradingTime: '',
+        avlProdCategory: [],
+        //notavlProdCategory: ['DIS'],
+        // destination: 'Marseille',
+        // eta1: '2020-04-13 10:00',
+        // eta2: '2020-04-14 10:00',
+        // next_destination: 'Catania',
+        // voyageStatus: 'Laden',
+        // vesselId: '1YM',
+        // vesselExpDate: '12/06/2020',
+        // vesselType: 'LR1',
+        // bunkeringStatus: 'Created',
+        // serviceId: '271',
+        // deptId: 'MLAS',
+        // ownership: 'Chartered',
+        // hsfo: '468',
+        // dogo: '600',
+        // ulsfo: '120',
+        // vlsfo: '364',
+        // hfo: '58',
+        // lshfo: '120',
+        // mdo: '10',
+        // lsmdo: '20',
+        // mso: '10',
+        // lsmgo: '10',
+        notificationsCount: 6,
+        messagesCount: 2,
+        latitude: 0,//selectedPort[0].locationLatitude,
+        longitude: 0,//selectedPort[0].locationLongitude,
+      }
+      if (!routeOpen) {
+        if (portPopupData.length >= 2) {
+          portPopupData.splice(0, 1);
           portPopupData.push(data);
         }
-        this.localService.setPortPopupData(portPopupData);
-        this.localService.setOpenPortPopupCount(portPopupData.length);
+        else {
+          portPopupData.push(data);
+        }
+        if (portPopupData.length == 1) {
+          portPopupData[0].position = 0;
+        }
+        else if (portPopupData.length == 2) {
+          portPopupData[0].position = 1;
+          portPopupData[1].position = 0;
+        }
+      }
+      else {
+        portPopupData = [];
+        portPopupData.push(data);
+      }
+      this.localService.setPortPopupData(portPopupData);
+      this.localService.setOpenPortPopupCount(portPopupData.length);
       // });
     }
   }
   private columnDefs = [
     {
-      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 80, 
-      cellRendererFramework: AGGridCellDataComponent, 
+      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 80,
+      cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: { type: 'request-link', redirectUrl: `${this.shiptechUrl}/#/edit-request` },
-      headerClass: ['aggrid-columgroup-dark-splitter'], 
+      headerClass: ['aggrid-columgroup-dark-splitter'],
       cellClass: ['aggrid-content-center aggrid-link fs-11'],
     },
-    { 
+    {
       headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 85,
-      cellRendererFramework: AGGridCellDataComponent, 
-      cellRendererParams: { type: 'info-with-popup-multiple-values', cellClass: 'aggrid-cell-color white', 
-         context: { componentParent: this } }, 
-         cellClass: ['aggrid-blue-editable-cell editable'],
-          headerClass: ['aggrid-colum-splitter-left']
+      cellRendererFramework: AGGridCellDataComponent,
+      cellRendererParams: {
+        type: 'info-with-popup-multiple-values', cellClass: 'aggrid-cell-color white',
+        context: { componentParent: this }
+      },
+      cellClass: ['aggrid-blue-editable-cell editable'],
+      headerClass: ['aggrid-colum-splitter-left']
     },
     {
       headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 80,
-      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererFramework: AGGridCellDataComponent,
       // cellRendererParams: { type: 'popup-multiple-values' }, 
-      cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' }, 
+      cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' },
       cellClass: ['aggrid-content-center fs-10'],
       valueGetter: function (params) {
-        if(params?.data?.productName) {
+        if (params?.data?.productName) {
           return [params.data.productName];
         } else {
           return []
@@ -774,8 +909,8 @@ export class VesselPopupComponent implements OnInit {
         classArray.push('custom-chip small-chip w-100-important');
 
         let colorCode = params?.data?.requestStatus?.colorCode;
-        if(colorCode?.code) {
-          cellStyle = {'background': colorCode.code};
+        if (colorCode?.code) {
+          cellStyle = { 'background': colorCode.code };
         }
         // let newClass = status === 'Stemmed' ? 'custom-chip small-chip darkgreen' :
         // status === 'Validated' ? 'custom-chip small-chip amber' :
@@ -886,7 +1021,7 @@ export class VesselMenuComponent {
   @Input('item') item;
   @Input('alerts') alerts;
   @Input('changeLog') changeLog;
-  @Output() refreshVesselAlert= new EventEmitter(); 
+  @Output() refreshVesselAlert = new EventEmitter();
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
   @ViewChild('statusDropdown') statusDropdown;
 
@@ -896,22 +1031,22 @@ export class VesselMenuComponent {
   public theme: boolean = true;
   VesselAlertStatus = [];
   changeLogs = [];
-  VesselAlertStatusTemp:string = '';
-  constructor(private elem: ElementRef, private localService: LocalService, private vesselPopupService: VesselPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase,  private dialog: MatDialog) { }
-  ngOnInit(){
+  VesselAlertStatusTemp: string = '';
+  constructor(private elem: ElementRef, private localService: LocalService, private vesselPopupService: VesselPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) { }
+  ngOnInit() {
     this.localService.themeChange.subscribe(value => this.theme = value);
-    
+
     this.VesselAlertStatusTemp = this.item?.alertStatus?.name;
     this.loadMasterLookupData();
   }
   async loadMasterLookupData() {
     let alertTypes = this.item?.alertTypes?.name;
     let groupChangeLog = await this.groupByAlertChangeLogs();
-    this.changeLogs = (groupChangeLog[alertTypes]?.length)? groupChangeLog[alertTypes]: [];
-    if(groupChangeLog[alertTypes]?.length) {
+    this.changeLogs = (groupChangeLog[alertTypes]?.length) ? groupChangeLog[alertTypes] : [];
+    if (groupChangeLog[alertTypes]?.length) {
       let groupAlertLogData = groupChangeLog[alertTypes];
       //sort change log in desc based on log created time
-      this.changeLogs = groupAlertLogData.sort((val1, val2)=> {return new Date(val2.createdOn).valueOf() - new Date(val1.createdOn).valueOf()});
+      this.changeLogs = groupAlertLogData.sort((val1, val2) => { return new Date(val2.createdOn).valueOf() - new Date(val1.createdOn).valueOf() });
     } else {
       this.changeLogs = [];
     }
@@ -921,18 +1056,18 @@ export class VesselMenuComponent {
   groupByAlertChangeLogs() {
     var groupAlertType = [];
     var groupChangeLog = {}
-    return new Promise(resolve=> {
+    return new Promise(resolve => {
       // return with empty object if alert doesn't contain any changelog
-      if(!(this.changeLog?.length)) { resolve(groupChangeLog); }
-      this.changeLog.map((logs, index)=>{
+      if (!(this.changeLog?.length)) { resolve(groupChangeLog); }
+      this.changeLog.map((logs, index) => {
         let type = logs.alertTypes?.name;
-        if(!(groupAlertType.includes(type))) {
-            groupAlertType.push(type);
-            groupChangeLog[type] = [logs];
+        if (!(groupAlertType.includes(type))) {
+          groupAlertType.push(type);
+          groupChangeLog[type] = [logs];
         } else {
-            groupChangeLog[type].push(logs);
+          groupChangeLog[type].push(logs);
         }
-        if(this.changeLog.length == index+1) {
+        if (this.changeLog.length == index + 1) {
           resolve(groupChangeLog);
         }
       });
@@ -945,7 +1080,7 @@ export class VesselMenuComponent {
   }
   closeMenu() {
     this.item.alertComments = '';
-    this.item.AlertStatus = this.VesselAlertStatus.find(item=>item.name==this.VesselAlertStatusTemp);
+    this.item.AlertStatus = this.VesselAlertStatus.find(item => item.name == this.VesselAlertStatusTemp);
     this.statusDropdown.value = this.item.AlertStatus?.name;
     this.menuTrigger.closeMenu();
     this.selectionChange = false;
@@ -987,43 +1122,43 @@ export class VesselMenuComponent {
 
   }
   save(status) {
-    if((status=='Resolved') && (!(this.item?.alertComments) || (this.item?.alertComments.trim()==''))) {
+    if ((status == 'Resolved') && (!(this.item?.alertComments) || (this.item?.alertComments.trim() == ''))) {
       let warnCommentMsg = "please enter a comment";
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         panelClass: 'confirmation-popup-operator',
-        data:  { message: warnCommentMsg, source: 'hardWarning' }
+        data: { message: warnCommentMsg, source: 'hardWarning' }
       });
       return;
     }
-      let vesselAlertId = this.item?.alertTypes?.id;
-      let vesselAlertName = this.item?.alertTypes?.name;
-      let selectedAlertStatus = this.VesselAlertStatus.find(item=>item.name==status);
-      let requestPayload = {
-        "VesselId": this.item?.vesselId,
-        "VesselAlerts": [
-          {
-            "Id": vesselAlertId,
-            "VesselId": this.item?.vesselId,
-            "AlertTypes": {
-              "id": vesselAlertId,
-              "name": vesselAlertName
-            },
-            "AlertStatus": {
-              "id": selectedAlertStatus?.id,
-              "name": selectedAlertStatus?.name
-            },
-            "AlertColorFlag_Name": "",
-            "AlertComments": this.item?.alertComments,
-            "IsDeleted": 0
-          }
-        ]
-      }
-      this.selectionChange = false;
-      this.vesselPopupService.updateVesselAlertList(requestPayload).subscribe(data=> {
-        console.log(data);
-        this.closeMenu();
-        this.refreshVesselAlert.emit(data);
-      })
+    let vesselAlertId = this.item?.alertTypes?.id;
+    let vesselAlertName = this.item?.alertTypes?.name;
+    let selectedAlertStatus = this.VesselAlertStatus.find(item => item.name == status);
+    let requestPayload = {
+      "VesselId": this.item?.vesselId,
+      "VesselAlerts": [
+        {
+          "Id": vesselAlertId,
+          "VesselId": this.item?.vesselId,
+          "AlertTypes": {
+            "id": vesselAlertId,
+            "name": vesselAlertName
+          },
+          "AlertStatus": {
+            "id": selectedAlertStatus?.id,
+            "name": selectedAlertStatus?.name
+          },
+          "AlertColorFlag_Name": "",
+          "AlertComments": this.item?.alertComments,
+          "IsDeleted": 0
+        }
+      ]
+    }
+    this.selectionChange = false;
+    this.vesselPopupService.updateVesselAlertList(requestPayload).subscribe(data => {
+      console.log(data);
+      this.closeMenu();
+      this.refreshVesselAlert.emit(data);
+    })
   }
   cancelMenu() {
     this.closeMenu();
