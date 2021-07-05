@@ -39,7 +39,7 @@ export class VesselPopupService{
   @ObservableException()
   getmyDefaultview(request: any): Observable<any>{
     return this.http.post<any>(
-      `http://localhost:62159/${VesselPopupApiPaths.getmyDefaultview()}`,
+      `${this._apiUrl}/${VesselPopupApiPaths.getmyDefaultview()}`,
       { payload: request }
     );
   }
