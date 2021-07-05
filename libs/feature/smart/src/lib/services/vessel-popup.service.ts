@@ -43,27 +43,25 @@ export class VesselPopupService{
       { payload: request }
     );
   }
-  
+
 
   @ObservableException()
   getBdnReport(request: any): Observable<any> {
     return this.http.post<any>(
-      `http://localhost:62159/${VesselPopupApiPaths.getBdnReport()}`,
+      `${this._apiUrl}/${VesselPopupApiPaths.getBdnReport()}`,
       { payload: request }
     );
-  } 
+  }
 
-  @ObservableException() 
-  
+  @ObservableException()
+
   getOrderDetails(request: any): Observable<any> {
-    // `${this._apiUrl}/${VesselPopupApiPaths.getOrderDetails()}`,
     return this.http.post<any>(
-     
-      `http://localhost:62159/${VesselPopupApiPaths.getOrderDetails()}`,
+      `${this._apiUrl}/${VesselPopupApiPaths.getOrderDetails()}`,
       { payload: request }
     );
-  } 
-  
+  }
+
 
   @ObservableException()
   getVesselRedeliveryInfo(request: any): Observable<any> {
