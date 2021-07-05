@@ -7590,7 +7590,7 @@
 
 
 
-        
+
 
 
      /* Location Master - Barge cost details table*/
@@ -10175,7 +10175,7 @@
             $scope.formValues.tempCustomerSelection = angular.copy($scope.formValues.accessCustomers, $scope.formValues.tempCustomerSelection);
             $scope.userMasterSelectedCustomersIds = $scope.userMasterSelectedCustomersIdsArray.join(",");
             var payload = $scope.createUserMasterCustomerPayload(false);
-            
+
             $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`, payload).then((response) => {
                 $scope.userMasterCustomerData = response.data.payload;
                 $.each($scope.userMasterCustomerData, (k,v) => {
@@ -10192,8 +10192,8 @@
                     windowTopClass: 'fullWidthModal',
                     scope: $scope // passed current scope to the modal
                 });
-                
-            });  
+
+            });
         }
         $scope.createUserMasterCustomerPayload = function(reloadTable) {
             if(!$scope.userMasterCustomerTableConfig) {
@@ -10236,12 +10236,12 @@
                             v.isSelected = true;
                         }
                     })
-                    $scope.userMasterCustomerDataLength = response.data.matchedCount;                  
-                }); 
+                    $scope.userMasterCustomerDataLength = response.data.matchedCount;
+                });
             }
             return payload;
         };
-      
+
         $scope.addUserMasterCustomerToSelection = (item) => {
 
             var customerSelectionExists = false;
@@ -10251,7 +10251,7 @@
                     customerSelectionKey = k;
                     customerSelectionExists = true;
                 }
-            })    
+            })
             if(customerSelectionExists) {
                 $scope.formValues.tempCustomerSelection[customerSelectionKey].isSelected = item.isSelected;
             } else {
@@ -10266,7 +10266,7 @@
         }
         $scope.saveUserMasterCustomerSelection = () => {
             console.log($scope.formValues.tempCustomerSelection);
-            $scope.formValues.accessCustomers = [];         
+            $scope.formValues.accessCustomers = [];
             $.each($scope.formValues.tempCustomerSelection, (k,v) => {
                 if (v.isSelected) {
                     $scope.formValues.accessCustomers.push(v);
@@ -10280,11 +10280,17 @@
             })
         }
 /* END USER master customer lookup logic */
-        
-        
-        
-        
-        
+
+
+        $scope.sendLicense = () => {
+            $http.post(`${API.BASE_URL_DATA_MASTERS}/api/masters/vessels/vesselSendLicense`, {
+                Payload: vm.entity_id
+            }).then((response) => {
+                console.log("Response", response);
+            });
+        };
+
+
     }
 ]);
 

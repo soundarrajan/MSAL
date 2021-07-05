@@ -110,7 +110,7 @@
              .page-header.navbar.hoverOnPortCode {
                 z-index: 0 !important;
              }
-            
+
             .page-header.navbar .page-logo {
                 margin-top: 3px;
                 width: 150px;
@@ -1438,19 +1438,19 @@
 
               /* Track */
             .page-quick-sidebar-item::-webkit-scrollbar-track {
-                 box-shadow: inset 0 0 2px grey; 
+                 box-shadow: inset 0 0 2px grey;
                  border-radius: 5px;
             }
 
              /* Handle */
             .page-quick-sidebar-item::-webkit-scrollbar-thumb {
-                background: #f1f1f1; 
+                background: #f1f1f1;
                 border-radius: 10px;
-            }       
+            }
 
               /* Handle on hover */
             .page-quick-sidebar-item::-webkit-scrollbar-thumb:hover {
-                background: #C0C0C0; 
+                background: #C0C0C0;
             }
 
             .page-quick-sidebar .right-menu-content .input-group {
@@ -3095,8 +3095,8 @@ Uncomment to see border around all .col-*
             }
 
             .serviceNameColumn {
-            	width: 98px !important; 
-            	max-width: 98px !important; 
+            	width: 98px !important;
+            	max-width: 98px !important;
             }
 
 
@@ -3106,7 +3106,7 @@ Uncomment to see border around all .col-*
 			    padding: 2px;
 			    overflow: hidden;
 			    display: block;
-			}   
+			}
 			td.calendarDataRowsLabel.serviceName .cellContent, th.calendarDataRowsLabel.serviceName .cellContent{
 				width: 98px!important;
 			    overflow: hidden !important;
@@ -3208,7 +3208,7 @@ Uncomment to see border around all .col-*
 
             #new_order_products td, #new_order_additional_costs td {
                 max-width: 230px
-            } 
+            }
 
             form[name="forms.productsForm"], form[name="forms.additionalCostsForm"] {
                 overflow: auto;
@@ -3516,7 +3516,7 @@ Uncomment to see border around all .col-*
 
             .bladeEntity .blade-column.main-content-column {
                 /*min-height: 100vh;*/
-			    min-height: calc(100vh - 50px);                
+			    min-height: calc(100vh - 50px);
             }
 
             new-request .hideInRequest {
@@ -4045,7 +4045,7 @@ Uncomment to see border around all .col-*
             .dataTables_scrollBody #schedule_calendar_table th:nth-of-type(n+4) {
                 display: none;
             }
-			
+
             .form_input_Vessel input[disabled="disabled"] {
                 cursor: default;
             }
@@ -4160,13 +4160,13 @@ Uncomment to see border around all .col-*
 
             #schedule_calendar_table_wrapper .dataTables_scrollHead {
                 width: 100%!important;
-				overflow-y: scroll !important;	
+				overflow-y: scroll !important;
             }
             #schedule_calendar_table_wrapper .dataTables_scrollBody {
-				overflow-y: scroll !important;	
+				overflow-y: scroll !important;
                 width: 100%!important;
             }
-            
+
 
             .ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td {
                 white-space: nowrap !important;
@@ -4296,12 +4296,12 @@ a[disabled]{
 }
 
 .input-group-btn:not(.disabled):not([disabled]):hover, .input-group-btn:not(.disabled):not([disabled]):hover .btn, .input-group-addon:not(.disabled):not([disabled]):hover {
-	background: #c5cdda; 
+	background: #c5cdda;
 
 }
 
 .input-group-btn:not(.disabled):not([disabled]):hover i, .input-group-addon:not(.disabled):not([disabled]):hover i{
-	color: #fff; 
+	color: #fff;
 }
 
 .input-group-btn a.btn, .input-group-addon a.btn, .input-group-addon button.btn, .input-group-btn button.btn{
@@ -4313,7 +4313,7 @@ a[disabled]{
 }
 
 .form_input .input-group-btn button.btn[disabled] i{
-	color: grey !important; 
+	color: grey !important;
 }
 .dynamic_form_editor .form-group .input-group-addon[disabled] .btn.default {
 	background: #eee;
@@ -4396,7 +4396,7 @@ a[disabled]{
 .groupOfRequestTableTooltip.marketPricePopup{
     transform: translate(-80%, -100%);
 }
- 
+
 .groupOfRequestTableTooltipLastProduct {
     display: block !important;
     position: absolute;
@@ -4510,7 +4510,7 @@ table#new_order_products td {
 #app > div.page-container > div.page-content-wrapper > div > div.fade-in-up.inside_content.ng-scope > ui-view > group-of-requests > div:nth-child(3) > div > div.portlet-body > div.row > div.col-sm-12.legend {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center;
 }
 
 .edit_link_contract_id {
@@ -4567,7 +4567,7 @@ table#new_order_products td {
     top: 1px;
     color: #325187;
     height: 32px;
-    border-left: 1px solid #c2cad8; 
+    border-left: 1px solid #c2cad8;
     background: #fff;
     border: 1px solid #c2cad8;
     border-bottom: none;
@@ -4586,7 +4586,7 @@ table#new_order_products td {
     top: 1px;
     color: #325187;
     height: 32px;
-    border-left: 1px solid #c2cad8; 
+    border-left: 1px solid #c2cad8;
     cursor: pointer;
     background: #fff;
     border: 1px solid #c2cad8;
@@ -4605,14 +4605,14 @@ table#new_order_products td {
     z-index: 1 !important;
     position: absolute !important;
     background: none !important;
-    pointer-events: none;    
+    pointer-events: none;
 	color: transparent;
 }
 
 .bootstrap-datetimepicker-widget {
 	background: none;
 	box-shadow: none;
-    padding: 0 !important;	
+    padding: 0 !important;
 }
 .bootstrap-datetimepicker-widget > * {
 	background: #fff;
@@ -4764,7 +4764,7 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 #schedule_calendar_table .dayColumn span.isSapStrategy {
 	box-shadow: 0px 2px 0px 0px #000 inset,
 				0px 3px 0px 0px #fff inset,
-				0px 5px 0px 0px #000 inset 
+				0px 5px 0px 0px #000 inset
 }
 
 .newStatusColoured.contextmenu {
@@ -4804,7 +4804,7 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
     /*margin-bottom: 5px;*/
     padding: 1px;
 }
-.newStatusColoured.contextmenu .content .voyageDetailSection table td, 
+.newStatusColoured.contextmenu .content .voyageDetailSection table td,
 .newStatusColoured.contextmenu .content .voyageDetailSection table th {
 	padding: 0 5px;
 }
@@ -4812,7 +4812,7 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 .newStatusColoured.contextmenu .content .voyageDetailSection .action-btn{
     float: right;
     padding: 2px 5px;
-    margin: 10px 0;	
+    margin: 10px 0;
 }
 .newStatusColoured.contextmenu .content .cancelBunkerStrategy {
 	display: none;
@@ -4907,7 +4907,7 @@ table.energyCalculationBlade tr.border-green-jungle {
     border-bottom: 1px solid #e6eaec;
 }
 #grid_labTestResults .ui-grid-contents-wrapper{
-	overflow: hidden;	
+	overflow: hidden;
 }
 .multiSelectDestinationPorts {
 	position: absolute;
@@ -5063,4 +5063,9 @@ table.energyCalculationBlade tr.border-green-jungle {
     display: block;
     float: left;
     margin-top: 5px;
+}
+
+.send-license-button-wrapper a {
+    box-shadow: 0px 0px 5px -2px rgb(0 0 0 / 66%) !important;
+    border-radius: 4px !important;
 }
