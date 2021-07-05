@@ -82,6 +82,8 @@ export class SmartOperatorComponent implements OnInit {
       animateRows: true,
       headerHeight: 32,
       rowHeight: 50,
+      pagination: true,
+      paginationPageSize: 25,
       groupHeaderHeight: 40,
       defaultColDef: {
         filter: true,
@@ -129,8 +131,8 @@ export class SmartOperatorComponent implements OnInit {
       columnDefs: this.columnDefs_BdnReport,
       animateRows: true,
       headerHeight: 32,
-     
-      pagination:true,
+      pagination: true,
+      paginationPageSize: 25,
       rowHeight: 50,
       groupHeaderHeight: 40,
       defaultColDef: {
@@ -171,7 +173,8 @@ export class SmartOperatorComponent implements OnInit {
       columnDefs: this.columnDefs_OrderDetails,
       animateRows: true,
       headerHeight: 32,
-      pagination:true,
+      pagination: true,
+      paginationPageSize: 25,
       rowHeight: 50,
       groupHeaderHeight: 40,
       defaultColDef: {
@@ -216,6 +219,8 @@ export class SmartOperatorComponent implements OnInit {
       animateRows: true,
       headerHeight: 32,
       rowHeight: 50,
+      pagination: true,
+      paginationPageSize: 25,
       groupHeaderHeight: 40,
       defaultColDef: {
         filter: true,
