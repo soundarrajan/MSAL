@@ -1995,12 +1995,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 agent = {};
             lookupModel.get(LOOKUP_TYPE.LOCATIONS, locationId).then((server_data) => {
                 location = server_data.payload;
-                ctrl.data.agentCounterparty = {};
-                ctrl.data.agentCounterpartyFreeText = null;
-                if (location.agents.length > 0 && location.agents.some(a => a.isDefault) && location.agents.find(a => a.isDefault).counterpartyId) {
-                    let defaultAgent = location.agents.find(a => a.isDefault);
-                    ctrl.data.agentCounterparty.id = defaultAgent.counterpartyId;
-                    ctrl.data.agentCounterparty.name = defaultAgent.counterpartyName;
+                if(isManualChange) {
+                    ctrl.data.agentCounterparty = {};
+                    ctrl.data.agentCounterpartyFreeText = null;
+                    if (location.agents.length > 0 && location.agents.some(a => a.isDefault) && location.agents.find(a => a.isDefault).counterpartyId) {
+                        let defaultAgent = location.agents.find(a => a.isDefault);
+                        ctrl.data.agentCounterparty.id = defaultAgent.counterpartyId;
+                        ctrl.data.agentCounterparty.name = defaultAgent.counterpartyName;
+                    }
                 }
                 ctrl.data.location = {
                     code: location.code,
