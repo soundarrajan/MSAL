@@ -1764,7 +1764,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	            newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
                 newProduct.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 	            newProduct.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
-                ctrl.checkBQSCheckbox(newProduct);
+                ctrl.loadOrderScreen =  false;
+                ctrl.checkBQSConversionCheckbox(newProduct, parseFloat(newProduct.confirmedQuantity) * newProduct.confirmedQtyProdForBqs);
                 // newProduct.specGroups = server_data.data.payload;
             });
             payload = { Payload: product.id };
@@ -1837,6 +1838,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.service.code = data.code;
                 ctrl.data.service.id = data.id;
                 ctrl.data.is2MDelivery = data.is2MDelivery;
+                ctrl.loadOrderScreen = false;
                 ctrl.checkBqsForAllProducts();
             });
         };
@@ -2112,7 +2114,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 			            ctrl.lookupField.productType = product.productType;
                         ctrl.lookupField.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 			            ctrl.lookupField.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
-                        ctrl.checkBQSCheckbox(ctrl.lookupField);
+                        ctrl.loadOrderScreen = false;
+                        ctrl.checkBQSConversionCheckbox(ctrl.lookupField, parseFloat(ctrl.lookupField.confirmedQuantity) * ctrl.lookupField.confirmedQtyProdForBqs);
 		            });
                     // ctrl.lookupField.productType = product.productType;
                     ctrl.lookupField.tempProduct = ctrl.lookupField.product;
@@ -2465,6 +2468,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
 
+            setConvertedQtyForBqs(product);
+
             // also change unit price uom for additional costs & do conversion calculations
             for (let j = 0; j < ctrl.additionalCosts.length; j++) {
                 addPriceUomChg(ctrl.additionalCosts[j]);
@@ -2474,27 +2479,42 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         function setConvertedQty(prod) {
             lookupModel.getConvertedUOM(prod.product.id, 1, prod.quantityUom.id, ctrl.data.products[0].quantityUom.id).then((server_data) => {
                 prod.confirmedQtyProdZ = server_data.payload;
-                ctrl.checkBQSConversionCheckbox(prod);
+            }).catch((e) => {
+                throw 'Unable to get the uom.';
+            });
+        }
+
+        function setConvertedQtyForBqs(prod) {
+            lookupModel.getConvertedUOM(prod.product.id, 1, prod.quantityUom.id, 5).then((server_data) => {
+                console.log(server_data);
+                prod.confirmedQtyProdForBqs = server_data.payload;
+                if (server_data.payload == 1) {
+                    ctrl.checkBQSCheckbox(prod);
+                } else {
+                    ctrl.checkBQSConversionCheckbox(prod, server_data.payload * parseFloat(prod.confirmedQuantity));
+                }
+
             }).catch((e) => {
                 throw 'Unable to get the uom.';
             });
         }
 
 
-        ctrl.checkBQSConversionCheckbox = function(product) {
+
+        ctrl.checkBQSConversionCheckbox = function(product, confirmedQuantityForBqs) {
             if (ctrl.loadOrderScreen) {
                 return;
             }
             if (ctrl.data.is2MDelivery) {
                 console.log(product);
                if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (parseFloat(product.confirmedQtyProdZ) > 200) {
+                    if (parseFloat(confirmedQuantityForBqs) > 200) {
                         product.isBqs = true;
                         return;
                       
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (parseFloat(product.confirmedQtyProdZ) > 50) {
+                    if (parseFloat(confirmedQuantityForBqs) > 50) {
                         product.isBqs = true;
                         return;
                        
@@ -4803,20 +4823,22 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.checkBqsForAllProducts = function() {
             for (let i = 0; i < ctrl.data.products.length; i++) {
-                ctrl.checkBQSCheckbox(ctrl.data.products[i]);
+                ctrl.checkBQSConversionCheckbox(ctrl.data.products[i], parseFloat(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs);
             }
          }
 
         ctrl.checkBQSCheckbox = function(product) {
-            ctrl.loadOrderScreen = false;
+            if (ctrl.loadOrderScreen) {
+                return;
+            }
             if (ctrl.data.is2MDelivery) {
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (parseFloat(product.confirmedQuantity) > 200) {
+                    if (parseFloat(product.confirmedQuantity) > 200 && (product.quantityUom && product.quantityUom.id == 5)) {
                         product.isBqs = true;
                         return;
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (parseFloat(product.confirmedQuantity) > 50) {
+                    if (parseFloat(product.confirmedQuantity) > 50 && (product.quantityUom && product.quantityUom.id == 5)) {
                         product.isBqs = true;
                         return;      
                     }

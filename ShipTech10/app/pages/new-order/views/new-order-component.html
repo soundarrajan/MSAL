@@ -1343,7 +1343,7 @@
                                                    format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                    id="product_minQuantity_{{ $index }}"
                                                    name="{{ $ctrl.productColumns.minQuantity.name }}"
-                                                   ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']"
+                                                   ng-blur="$ctrl.loadOrderScreen = false;  product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']"
                                                    ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                    ng-model="product.minQuantity"
                                                    ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && product.status && product.status.id != $ctrl.STATUS['Cancelled'].id "
@@ -1353,7 +1353,7 @@
 
                                                 <select class="bs-select pull-right" id=""
                                                         id="product_minQuantityUom_{{ $index }}" name="minQuantityUom"
-                                                        ng-change="$ctrl.productUomChanged(product, false)"
+                                                        ng-change="$ctrl.loadOrderScreen = false; $ctrl.productUomChanged(product, false)"
                                                         ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                         ng-model="product.minMaxQuantityUom"
                                                         ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
@@ -1373,7 +1373,7 @@
                                                    format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                    id="product_maxQuantity_{{ $index }}"
                                                    name="{{ $ctrl.productColumns.maxQuantity.name }}"
-                                                   ng-blur="$ctrl.productUomChanged(product, false); product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity']; $ctrl.defaultMaxQtyFromConfirmed('input', product)"
+                                                   ng-blur="$ctrl.loadOrderScreen = false; $ctrl.productUomChanged(product, false); product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity']; $ctrl.defaultMaxQtyFromConfirmed('input', product)"
                                                    ng-disabled="$ctrl.captureConfirmedQuantity.name == 'Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                    ng-model="product.maxQuantity"
                                                    ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && ( product.status ? product.status.id != $ctrl.STATUS['Cancelled'].id : false) "
@@ -1383,7 +1383,7 @@
                                                  style="max-width: 50px;">
                                                 <select class="bs-select pull-right"
                                                         id="product_maxQuantityUom_{{ $index }}" name="maxQuantityUom"
-                                                        ng-change="$ctrl.productUomChanged(product, false)"
+                                                        ng-change="$ctrl.loadOrderScreen = false; $ctrl.productUomChanged(product, false)"
                                                         ng-disabled="$ctrl.captureConfirmedQuantity.name =='Offer' || product.status.id == $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                         ng-model="product.minMaxQuantityUom"
                                                         ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"
@@ -1398,7 +1398,7 @@
                                                    format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                    id="product_confirmedQuantity_{{ $index }}"
                                                    name="{{ $ctrl.productColumns.confirmedQuantity.name }}"
-                                                   ng-blur="$ctrl.productUomChanged(product, false); $ctrl.confirmQuantityChanged('input', product);
+                                                   ng-blur="$ctrl.loadOrderScreen = false;  $ctrl.productUomChanged(product, false); $ctrl.confirmQuantityChanged('input', product);
                                                    $ctrl.checkBQSCheckbox(product)"
                                                    ng-disabled="product.status.id  === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                    ng-model="product.confirmedQuantity"
