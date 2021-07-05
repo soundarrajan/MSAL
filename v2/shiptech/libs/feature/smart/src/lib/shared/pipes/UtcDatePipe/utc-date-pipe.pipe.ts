@@ -11,6 +11,9 @@ export class UtcDatePipePipe implements PipeTransform {
       let dateTimeArr = dateToFormat.split('T');
       let dateFormat = dateTimeArr.slice(0,1)
       let time = dateTimeArr[1];
+      if(!time) {
+        return dateToFormat;
+      }
       let TimeArr = time.split('Z');
       TimeArr = TimeArr.slice(0,1)
       TimeArr =TimeArr[0].split(":");

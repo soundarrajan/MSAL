@@ -1,7 +1,9 @@
-﻿commit 83c00c77b6086c9e61f3a162d9b7a8de1655e834
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Mon Jul 5 13:50:10 2021 +0530
+﻿commit b40d5c8a12ebb871fc2b6aa5ade834a54583060e
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jul 5 11:34:39 2021 +0000
 
-    Reverting the local url for auth issue.
+    Merged PR 12113: #33910: Order reports: Time in order date & delivery date field remove issue has fixed
+    
+    Related work items: #33910
 
 branch: master
