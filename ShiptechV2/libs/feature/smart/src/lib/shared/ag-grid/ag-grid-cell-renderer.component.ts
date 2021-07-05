@@ -7,7 +7,7 @@ import { LocalService } from '../../services/local-service.service';
     selector: 'ag-grid-cell-renderer',
     template: `
     <div *ngIf="this?.params?.colDef?.filter!=='date'" [ngClass]="params.cellClass" [ngStyle]="params.cellStyle" matTooltip="{{params.value}}" style="margin:0px">{{params.value}}</div>
-    <div *ngIf="this?.params?.colDef?.filter=='date'" [ngClass]="params.cellClass" matTooltip="{{params.value | utcDatePipe | date: 'dd/MM/yyyy'}}" style="margin:0px">{{params.value | date: 'dd/MM/yyyy'}}</div>
+    <div *ngIf="this?.params?.colDef?.filter=='date'" [ngClass]="params.cellClass" matTooltip="{{params.value | utcDatePipe | date: 'dd/MM/yyyy'}}" style="margin:0px">{{params.value | utcDatePipe | date: 'dd/MM/yyyy'}}</div>
     `
 })
 export class AGGridCellRendererComponent implements ICellRendererAngularComp  {

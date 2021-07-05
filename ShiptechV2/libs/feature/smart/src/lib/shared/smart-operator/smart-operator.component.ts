@@ -305,7 +305,8 @@ export class SmartOperatorComponent implements OnInit {
   
   private columnDefs_OrderDetails = [
     { headerName: 'Order Number', headerTooltip: 'Order Number', field: 'orderId', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent, 
+      cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
     {
       headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'vesselName', width: 150,
       cellClass: function (params) {
@@ -319,8 +320,8 @@ export class SmartOperatorComponent implements OnInit {
       },
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
     },
-    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-vertical-center']},
-    { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
     // { headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     {
       headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'order-multiple-values' }, cellClass: [' aggrid-columgroup-splitter-right aggrid-vertical-center'],
