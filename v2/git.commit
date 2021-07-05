@@ -1,7 +1,7 @@
-﻿commit cc1a46154460e587a54a671e1911c413d5ffcf66
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Mon Jul 5 08:59:33 2021 +0530
+﻿commit 83c00c77b6086c9e61f3a162d9b7a8de1655e834
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Mon Jul 5 13:50:10 2021 +0530
 
-    Bdn Reports
+    Reverting the local url for auth issue.
 
 branch: master
