@@ -1,0 +1,64 @@
+<span ng-init="getFilteredCounterpartyTypeList()"></span>
+<div class="form-group form-inline row">
+  <label
+    class="mt-checkbox"
+    ng-repeat="(key, value) in field.options[0]"
+    ng-if="field.options[0]"
+  >
+    <input
+      type="checkbox"
+      name="{{ field.Name }}[]"
+      id="inlineCheckbox{{ field.Name }}"
+      ng-model="dummyModel"
+      dynamic-model="'formValues.' + field.Unique_ID"
+      ng-disabled="($eval(field.Disabled) == true || field.Disabled == true) ? true : false"
+      ng-change="formValues[field.Unique_ID] == true ? triggerChangeFields(field.Name, field.Unique_ID) : '';"
+    />
+    <span></span>
+    {{ value }}
+  </label>
+
+  <span
+    ng-init="options[field.Name] ? return : CM.getOptions(field)"
+    ng-if="!field.options[0]"
+  >
+    <label for="{{ field.Name }}" class="{{ field.Name }}_label">
+      {{ CM.app_id + '.' + field.Label | translate }}
+      <span ng-if="field.Required" class="orange-txt"> * </span>
+    </label>
+
+    <label
+      class="mt-checkbox"
+      ng-repeat="(key, value) in options[field.Name]"
+      ng-if="options[field.Name]"
+      unique-id="{{field.Unique_ID}}"
+    >
+      <input
+        type="checkbox"
+        name="{{ field.Name }}"
+        id="inlineCheckbox{{ value.name }}"
+        data-checklist-model="formValues[field.Unique_ID]"
+        data-checklist-value="value"
+        checklist-comparator=".id"
+        ng-disabled="(($eval(field.Disabled) == true || field.Disabled == true) ? true : false) || disabledCheckbox(field, value)"
+      />
+      <span></span>
+      {{ value.name }}
+    </label>
+    <input
+      type="hidden"
+      ng-model="fake"
+      name="{{ CM.app_id + '.' + field.Label | translate}}"
+      id="{{ field.Name }}"
+      ng-required="!formValues[field.Unique_ID] || formValues[field.Unique_ID].length < 1"
+    />
+  </span>
+</div>
+<span
+  ng-if="CM.entity_id < 1 && options[field.Name] && field.Checked"
+  ng-init="checkDefaults(field.Checked,field.Name,field.Unique_ID) "
+></span>
+<span
+  ng-if="CM.entity_id < 1 && CM.screen_id == 'uom'"
+  ng-init="formValues.isBase = false"
+></span>

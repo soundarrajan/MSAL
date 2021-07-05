@@ -183,7 +183,8 @@
                                         </span>
 
                                         <span ng-switch-when="checkbox">
-                                            <span ng-include="'app-general-components/views/controls/checkbox-control.html'"></span>
+                                            <span ng-if="field.Unique_ID !=='counterpartyTypes'" ng-include="'app-general-components/views/controls/checkbox-control.html'"></span>
+                                            <span ng-if="field.Unique_ID ==='counterpartyTypes'" ng-include="'app-general-components/views/controls/checkbox-counterparty.html'"></span>
                                         </span>
 
                                         <span ng-switch-when="send-license-button">

@@ -3361,6 +3361,7 @@
         };
         vm.getOptions = function(field, fromListsCache) {
             // Move this somewhere nice and warm
+
             var objectByString = function(obj, string) {
                 if (string.includes('.')) {
                     return objectByString(obj[string.split('.', 1)], string.replace(`${string.split('.', 1) }.`, ''));
@@ -10290,6 +10291,51 @@
             });
         };
 
+
+
+        $scope.getFilteredCounterpartyTypeList = () => {
+
+            if(typeof $scope.filteredCounterpartyTypeList !== 'undefined'){
+                return;
+            }
+
+            $http.post(`${API.BASE_URL_DATA_ADMIN}/api/admin/user/CounterpartyTypeAccess`, {
+                Payload: "" // user id is handled in backend.
+            }).then((response) => {
+                // Handle error
+                if(response === false){
+                    $scope.filteredCounterpartyTypeList = "Error";
+                }
+
+                $scope.filteredCounterpartyTypeList = response.data.payload;
+            }).catch(e => {
+                $scope.filteredCounterpartyTypeList = "Error";
+            });
+        }
+
+        $scope.disabledCheckbox = function(field, value) {
+            // Return true or false
+            // True = disabled;
+            // False = allowed;
+
+            if(!field.Unique_ID === "counterpartyTypes"){
+                return false
+            }
+
+            if(!$scope.filteredCounterpartyTypeList){
+                return false;
+            }
+
+            if(typeof $scope.filteredCounterpartyTypeList !== "string"){
+
+                if($scope.filteredCounterpartyTypeList.some(e => e.id === value.id)){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }
 ]);
