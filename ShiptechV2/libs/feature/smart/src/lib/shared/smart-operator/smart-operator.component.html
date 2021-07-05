@@ -632,18 +632,13 @@
               <i class="fa fa-download" (click)="onBtExport()" aria-hidden="true"></i>
             </div>
           </div>
-
-          <div class="col-3" *ngIf="!Enabledbdnreports">
-            <div class="row col-12">
-              <div class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
-                <i class="far fa-file-excel" (click)="ExcelReportsdownload('OrderReports')"></i>
-              </div>
-
+          <div class="col-3 row" *ngIf="!Enabledbdnreports">
+            <div class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
+              <i class="far fa-file-excel" (click)="ExcelReportsdownload('OrderReports')"></i>
+            </div>
+            <div class="createReqEnable col-6">
             </div>
           </div>
-
-
-
         </div>
       </ng-template>
     </mat-tab>
