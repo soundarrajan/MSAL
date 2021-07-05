@@ -42,6 +42,8 @@ export class AuditLogComponent implements OnInit {
       animateRows: true,
       headerHeight: 40,
       rowHeight:40,
+      pagination: true,
+      paginationPageSize: 25,
       groupHeaderHeight: 40,
       defaultColDef: {
         filter: true,

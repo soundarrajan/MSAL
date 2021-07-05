@@ -1,9 +1,9 @@
-﻿commit 0eec5929327beb73ea29528673407d44e846f1e5
+﻿commit c0d66419146fbd3413aba594644a15e29cfd3821
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jul 5 12:32:19 2021 +0000
+Date:   Mon Jul 5 13:09:28 2021 +0000
 
-    Merged PR 12121: #33167: Unmanageable vessel label in the Table view changes updated
+    Merged PR 12124: #33971: No Table Paginator in the table view screens added successfully
     
-    Related work items: #33167
+    Related work items: #33971
 
 branch: master
