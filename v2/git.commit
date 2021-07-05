@@ -1,9 +1,7 @@
-﻿commit 5e17a7006048c7288cf7d121688621617b97ef20
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 2 13:19:29 2021 +0000
+﻿commit 76013040708d71ae3126f930bda836006cc1d9ff
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Mon Jul 5 06:51:48 2021 +0530
 
-    Merged PR 12086: #33061: The Following UI issues exists in Bunker Plan issue has fixed
-    
-    Related work items: #33061
+    BDNReports, Port popup Mydefault View
 
 branch: master

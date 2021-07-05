@@ -42,6 +42,9 @@ export namespace GetCurrentROBApiPaths {
 export namespace GetProcurementApiPaths {
     export const GetProcurementRequest = () => `api/procurement/request/tableView`;
 }
+export namespace saveDefaultViewApiPaths {
+    export const saveDefaultView = () => `api/Smart/MapView/saveDefaultView`;
+}
 export namespace AuditLogApiPaths {
     export const getAuditLog = () => `api/admin/audit/get`;
   }
@@ -661,6 +664,14 @@ export class LocalService {
         ));
     }
 
+    @ObservableException()
+    saveDefaultView(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${saveDefaultViewApiPaths.saveDefaultView()}`,
+        request
+      )
+      
+    }
 
  @ObservableException()
 getUnmanagedVessels(request: any): Observable<any> {

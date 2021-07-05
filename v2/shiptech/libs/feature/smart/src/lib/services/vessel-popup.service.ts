@@ -10,6 +10,7 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 export namespace VesselPopupApiPaths{
     export const getVesselBasicInfo = () => `api/Smart/Vessel/getVesselInfo`;
+    export  const getmyDefaultview = () => `api/Smart/MapView/getDefaultView`
     export const getBdnReport = () => `api/Smart/Reports/getBDNReport`;
     export const getOrderDetails = () => `api/Smart/Reports/getOrderReport`;
     export const getVesselRedeliveryInfo = () => `api/Smart/Vessel/getVesselRedeliveryInfo`;
@@ -35,19 +36,30 @@ export class VesselPopupService{
       { payload: request }
     );
   }
+  @ObservableException()
+  getmyDefaultview(request: any): Observable<any>{
+    return this.http.post<any>(
+      `http://localhost:62159/${VesselPopupApiPaths.getmyDefaultview()}`,
+      { payload: request }
+    );
+  }
+  
 
   @ObservableException()
   getBdnReport(request: any): Observable<any> {
     return this.http.post<any>(
-      `${this._apiUrl}/${VesselPopupApiPaths.getBdnReport()}`,
+      `http://localhost:62159/${VesselPopupApiPaths.getBdnReport()}`,
       { payload: request }
     );
   } 
 
   @ObservableException() 
+  
   getOrderDetails(request: any): Observable<any> {
+    // `${this._apiUrl}/${VesselPopupApiPaths.getOrderDetails()}`,
     return this.http.post<any>(
-      `${this._apiUrl}/${VesselPopupApiPaths.getOrderDetails()}`,
+     
+      `http://localhost:62159/${VesselPopupApiPaths.getOrderDetails()}`,
       { payload: request }
     );
   } 

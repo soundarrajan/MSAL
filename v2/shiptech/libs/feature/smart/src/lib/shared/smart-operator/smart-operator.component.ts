@@ -319,7 +319,7 @@ export class SmartOperatorComponent implements OnInit {
       },
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
     },
-    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-vertical-center']},
     { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
     // { headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     {
@@ -367,11 +367,12 @@ export class SmartOperatorComponent implements OnInit {
     width: 30,
     checkboxSelection: true,
     suppressMenu: true,
-    
-
+    cellStyle: {
+      textAlign: 'center'
+  },
     editable:true,
     },
-    { headerName: 'Order ID', headerTooltip: 'Order ID', field: 'orderId', width: 30},
+    { headerName: 'Order No', headerTooltip: 'Order No', field: 'orderId', width: 30},
     { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
     { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
     { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'deliveredQuantity', width: 100, headerClass: ['aggrid-text-align-r'], cellClass: ' aggrid-vertical-right'},
