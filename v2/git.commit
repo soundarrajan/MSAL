@@ -1,9 +1,9 @@
-﻿commit f60a53db2d6c8a92a7c5014a2eb2ced97586d119
+﻿commit 0eec5929327beb73ea29528673407d44e846f1e5
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jul 5 12:25:31 2021 +0000
+Date:   Mon Jul 5 12:32:19 2021 +0000
 
-    Merged PR 12118: #33902: Port Remarks_ The log is generating for each save, even without any changes issue has fixed
+    Merged PR 12121: #33167: Unmanageable vessel label in the Table view changes updated
     
-    Related work items: #33902
+    Related work items: #33167
 
 branch: master
