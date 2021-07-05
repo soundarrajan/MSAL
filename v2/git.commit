@@ -1,9 +1,7 @@
-﻿commit c0d66419146fbd3413aba594644a15e29cfd3821
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jul 5 13:09:28 2021 +0000
+﻿commit 6e6bfe84b62d32e8561829dd115fc768e83adb28
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Mon Jul 5 20:36:00 2021 +0530
 
-    Merged PR 12124: #33971: No Table Paginator in the table view screens added successfully
-    
-    Related work items: #33971
+    33921 - UI Alignment fix
 
 branch: master
