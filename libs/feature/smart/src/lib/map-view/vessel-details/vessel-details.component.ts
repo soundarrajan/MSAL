@@ -147,11 +147,15 @@ export class VesselDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      if(result) {
-
-      } else {
-        this.selectedUserRole = this.previousUserRole;
-      }
+        let _this = this;
+        setTimeout(() => {
+          _this.selectedRole = _this.bunkerUserRole.find((role)=> (role.name==_this.previousUserRole?.name) );
+          _this.selectedUserRole = _this.selectedRole;
+          // store user role for shared ref
+          this.store.dispatch(new saveVesselDataAction({'userRole': _this.selectedUserRole?.name}));
+          let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
+        }, 500);
     });
   }
 
