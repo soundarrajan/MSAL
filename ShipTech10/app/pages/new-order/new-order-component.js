@@ -156,6 +156,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.isSurveyorMandatory = settings.payload.order.isOrderSurveyorMandatory;
             ctrl.useOrderPhysicalSupplierFlow = _.get(settings, 'payload.order.useOrderPhysicalSupplierFlow.name') === 'Yes';
         });
+
+
         ctrl.$onInit = function() {
             uiApiModel.get(SCREEN_LAYOUTS.NEW_ORDER).then((data) => {
                 ctrl.ui = data;
@@ -4862,6 +4864,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
 
         }
+
+        $(document).ready(function() {
+            $('.page-container').css('display', 'revert');
+            $('.page-content-wrapper').css('display', 'revert');
+
+            console.log($('.page-container'));
+            console.log($('.page-content-wrapper'));
+        });
     }
 ]);
 angular.module('shiptech.pages').component('newOrder', {
