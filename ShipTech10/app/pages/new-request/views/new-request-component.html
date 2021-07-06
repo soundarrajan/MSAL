@@ -258,8 +258,8 @@
                                         <span ng-if="$ctrl.isOperatorRequired()" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                     </label>
                                     <div class="form-group-sm00">
-                                        <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>
-                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" ng-required="$ctrl.isOperatorRequired()">
+                                        <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>                                        
+                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.OperatorBy.name }}" id="id_{{ $ctrl.vesselDetailsFields.OperatorBy.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" ng-required="$ctrl.isOperatorRequired()">
                                             <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                                 <i class="fa fa-search"></i>
                                             </span>

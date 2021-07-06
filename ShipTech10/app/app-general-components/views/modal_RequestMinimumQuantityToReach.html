@@ -13,8 +13,8 @@
                                             Save
                                         </span>
                                     </a>   
-                                </div>
-                               
+                                </div>   
+                                
                             </div>
                             <div class="portlet-body custom-hardcoded-table ng-scope">
                                 <table class="table-body" style="width: 100%;">
@@ -23,7 +23,7 @@
                                             <td style="width:2%"></td>
                                             <td style="width:2%">
                                                 <span class="insert"
-                                                    ng-click="$ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach  ? $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.push({id:0,port:{id: 0,name: '',}}) : $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach=[{id:0,port:{id: 0,name: '',}}]"></span>
+                                                      ng-click="$ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach  ? $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.push({id:0,port:{id: 0,name: '',}}) : $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach=[{id:0,port:{id: 0,name: '',}}]"></span>
                                             </td>
                                             <td style="width:12%">
                                                 <b>
@@ -56,7 +56,12 @@
                                         <tr ng-repeat="(key, value) in $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach" ng-if="value.isDeleted != true"
                                             class="ng-scope">
                                             <td style="width:2%">
-                                                    <span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="deleteMinimumQuantityToReach(key)"></span>
+                                                <span class="remove"
+                                                ng-if="key == $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.length-1" 
+                                                style="display: block;pointer-events: all; opacity: 1" 
+                                                ng-click="value.id == 0 ? $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.splice(key,1) : value.isDeleted = true">
+                                                </span>
+                                                    <!-- <span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="deleteMinimumQuantityToReach(key)"></span> -->
                                             </td>
                                             <td style="width:2%">
                                                 <span class="insert" ng-click="$ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.push({id:0,port:{id: 0,name: '',},portid:0,eta:null,isDeleted:false})"></span>

@@ -80,13 +80,13 @@
         </div>
     </div>
     <div class="modal-body">
-        <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable">
+        <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable tableFixHead" id="lookup_table">
             <thead>
                 <tr>
                     <td>
                     </td>
                     <th>
-                        Id
+                        ID
                     </th>
                     <th>
                         Location
@@ -103,12 +103,23 @@
                     <th>
                         Created By
                     </th>
+                    <th>
+                        Created On
+                    </th>
+                    <th>
+                        Last Modified By
+                    </th>
+                    <th>
+                        Last Modified On
+                    </th>
+                    <th>
+                        Status
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="row in $ctrl.data track by $index">
                     <td>
-                        <!-- {{$ctrl.EnableSingleSelect}} -->
                         <label ng-if="$ctrl.EnableSingleSelect"  class="mt-checkbox mt-checkbox-outline">
                             <input type="checkbox" ng-model="$ctrl.selectedLocationsSingle[$index]"  ng-click="selectedLocationsSingle($index)"/>
                             <span></span>
@@ -128,9 +139,35 @@
                     <td>{{row.parent.name | decodeReadOnly}}</td>
                     <td>{{row.country.name}}</td>
                     <td>{{row.createdBy.name}}</td>
+                    <td ng-controller="Controller_Master as CM">{{ CM.formatDateTime(row.createdOn, null, 'default') }}</td>
+                    <td>{{row.lastModifiedBy.name}}</td>
+                    <td ng-controller="Controller_Master as CM">{{ CM.formatDateTime(row.lastModifiedOn, null, 'default') }}</td>
+                    <td>{{row.isDeleted ? "Inactive" : "Active"}}</td>
                 </tr>
             </tbody>
         </table>
+        <div class="dataTables_info"  role="status" aria-live="polite">
+            Showing {{ $ctrl.tableOptions.paginationStart + 1 }} to {{ Math.min($ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength,$ctrl.tableOptions.totalRows) }} of {{ $ctrl.tableOptions.totalRows }} entries
+        </div>
+        <div class="dataTables_paginate paging_input" >
+            <span class="first paginate_button">
+                First
+            </span>
+            <span class="paginate_page">
+                Page
+            </span>
+            <span class="previous paginate_button"  ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage - 1)">
+                &lt;
+            </span>
+            <input class="paginate_input" type="text" ng-model="$ctrl.tableOptions.currentPage" ng-change="$ctrl.setPage($ctrl.tableOptions.currentPage)" ng-model-options='{ debounce: 1000 }'/>
+            <span class="next paginate_button"  ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage + 1)">
+                &gt;
+            </span>
+            <span class="paginate_of"></span>
+            <span class="last paginate_button" >
+                Last
+            </span>
+        </div>
     </div>
 </div>
 
