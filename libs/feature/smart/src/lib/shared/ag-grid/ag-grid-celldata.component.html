@@ -275,7 +275,7 @@
   </mat-menu>
   
   <div *ngIf="params.type=='checkbox'" [ngClass]="params.cellClass">
-    <mat-checkbox #check class="checkbox" [(ngModel)]="params.data.operator_ack" [checked]="(params.data?.is_new_port == 'Y') || params.data?.operator_ack" (click)="toggleOperAck()"></mat-checkbox>
+    <mat-checkbox #check class="checkbox" [(ngModel)]="isOperatorAck" (click)="toggleOperAck()"></mat-checkbox>
   </div>
   
   <div *ngIf="params.type=='checkbox-with-popup'" [ngClass]="params.cellClass">
