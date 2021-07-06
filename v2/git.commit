@@ -1,7 +1,9 @@
-﻿commit a35880a1017cd927eb12626920cc1d3edc320d23
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Tue Jul 6 09:32:27 2021 +0530
+﻿commit 46558a9b3f9db5f46ad580234f0843d57e9baf16
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Jul 6 05:20:33 2021 +0000
 
-    33921 - UI Fix
+    Merged PR 12133: #33883: BDN reports_ The order and delivery date format issue has fixed
+    
+    Related work items: #33883
 
 branch: master
