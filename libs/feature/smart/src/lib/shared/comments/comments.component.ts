@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
 import { BunkeringPlanComponent } from "./../bunkering-plan/bunkering-plan.component";
 import { Select, Selector } from "@ngxs/store";
@@ -9,7 +9,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
-  styleUrls: ['./comments.component.scss']
+  styleUrls: ['./comments.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CommentsComponent implements OnInit {
 
