@@ -1,9 +1,11 @@
-﻿commit 70fd87731b873c84ab51a5c573ed3807999d4b49
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jul 6 12:04:53 2021 +0000
+﻿commit 3c1e3f39b26abc82a7e2ae21aefa93fa37c6b78d
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue Jul 6 14:18:57 2021 +0000
 
-    Merged PR 12167: #32417: Display message for a new plan from the Vessel role change issue has done
+    Merged PR 12175: #32744 : Bunker plan: View Current Bunkering plan
     
-    Related work items: #32417
+    #32744 : Bunker plan: View Current Bunkering plan
+    
+    Related work items: #32744
 
 branch: master
