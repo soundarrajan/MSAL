@@ -38,6 +38,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public shiptechUrl: string ;
   public bplanType: any;
   public tooltipMessage : string = "";
+  public isOperatorAck : boolean = false;
   @Input('selectedUserRole') 
   public set selectedUserRole(v : any) {
     this.selectedUserRole = v;
@@ -68,6 +69,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.params.data.etd_date = moment(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
     this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
     this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
+
+    //to get Operator Ack.
+    this.isOperatorAck = params.data?.is_new_port == 'Y' ? true : (params.data?.operator_ack == 1 ? true : false) ;
   }
   this.setCellClass(params);
   
@@ -563,6 +567,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   }
 
   toggleOperAck() {
+    if(this.params?.data)
+      this.store.dispatch(new UpdateBunkeringPlanAction( this.isOperatorAck ==  false ?1:0 ,'operator_ack', this.params.data?.detail_no))
     this.params.context.componentParent.toggleOperAck();
   }
   triggerChangeEvent() {
