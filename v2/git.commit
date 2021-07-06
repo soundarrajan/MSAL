@@ -1,9 +1,9 @@
-﻿commit 46558a9b3f9db5f46ad580234f0843d57e9baf16
+﻿commit be83c98bb41c03f6d62a270829f526d7253d350b
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jul 6 05:20:33 2021 +0000
+Date:   Tue Jul 6 06:19:24 2021 +0000
 
-    Merged PR 12133: #33883: BDN reports_ The order and delivery date format issue has fixed
+    Merged PR 12137: #33436: Product Availablity Section table resize option reverted
     
-    Related work items: #33883
+    Related work items: #33436
 
 branch: master
