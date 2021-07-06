@@ -302,9 +302,12 @@ padding: 6px 16px !important;
     &.red {
      @include aggrid-cell-color(#E92B2F);
     }
+    // &.mediumred {
+    //  @include aggrid-cell-color(#E9585B);
+    // }
     &.mediumred {
-     @include aggrid-cell-color(#E9585B);
-    }
+        @include aggrid-cell-color(#c35fc6);
+       }
     &.lightred {
       @include  aggrid-cell-color(#EB5757);
      }

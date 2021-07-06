@@ -88,7 +88,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                               if(params.data?.hsfo_max_lift_color === 'G')
                                 newClass = 'aggrid-cell-color darkgreen';
                               else if(params.data?.hsfo_max_lift_color === 'M')
-                                newClass = 'aggrid-cell-color magenta';
+                                newClass = 'aggrid-cell-color mediumred';
                               else
                                 newClass = 'aggrid-cell-color brown';
 
@@ -102,7 +102,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                               if(params.data?.hsfo_est_consumption_color === 'G')
                                                 newClass = 'aggrid-cell-color darkgreen';
                                               else if(params.data?.hsfo_est_consumption_color === 'M')
-                                                newClass = 'aggrid-cell-color magenta';
+                                                newClass = 'aggrid-cell-color mediumred';
                                               else
                                                 newClass = 'aggrid-cell-color brown';
 
@@ -116,7 +116,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                               if(params.data?.ulsfo_est_consumption_color === 'G')
                                                 newClass = 'aggrid-cell-color darkgreen';
                                               else if(params.data?.ulsfo_est_consumption_color === 'M')
-                                                newClass = 'aggrid-cell-color magenta';
+                                                newClass = 'aggrid-cell-color mediumred';
                                               else
                                                 newClass = 'aggrid-cell-color brown';
 
@@ -130,7 +130,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                       if(params.data?.ulsfo_max_lift_color === 'G')
                                         newClass = 'aggrid-cell-color darkgreen';
                                       else if(params.data?.ulsfo_max_lift_color === 'M')
-                                        newClass = 'aggrid-cell-color magenta';
+                                        newClass = 'aggrid-cell-color mediumred';
                                       else
                                         newClass = 'aggrid-cell-color brown';
 
@@ -144,7 +144,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                     if(params.data?.lsdis_max_lift_color === 'G')
                                       newClass = 'aggrid-cell-color darkgreen';
                                     else if(params.data?.lsdis_max_lift_color === 'M')
-                                      newClass = 'aggrid-cell-color magenta';
+                                      newClass = 'aggrid-cell-color mediumred';
                                     else
                                       newClass = 'aggrid-cell-color brown';
 
@@ -158,7 +158,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                                 if(params.data?.lsdis_est_consumption_color === 'G')
                                                   newClass = 'aggrid-cell-color darkgreen';
                                                 else if(params.data?.lsdis_est_consumption_color === 'M')
-                                                  newClass = 'aggrid-cell-color magenta';
+                                                  newClass = 'aggrid-cell-color mediumred';
                                                 else
                                                   newClass = 'aggrid-cell-color brown';
 
