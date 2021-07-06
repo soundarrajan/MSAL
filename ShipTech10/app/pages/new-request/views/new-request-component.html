@@ -838,7 +838,7 @@
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-                                                            <input decode-input-format name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" uib-typeahead="buyer as buyer.name for buyer in  $ctrl.listsCache.Buyer | typeaheadCustomFilter:$viewValue:'name'" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)" ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' " ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
+                                                            <input decode-input-format name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" typeahead-on-select="$ctrl.captureReasonModal(locationIdx, null, 'REQUEST_LOCATION_BUYER', 'buyer')" uib-typeahead="buyer as buyer.name for buyer in  $ctrl.listsCache.Buyer | typeaheadCustomFilter:$viewValue:'name'" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)" ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' ;" ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
                                                             <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_buyerlist', 'Select Buyer','$ctrl.location[' + $index + '].buyer' ,'','', $$ctrl.productInfoFields.Buyer.name, $ctrl.request.vesselDetails.vessel)" ng-disabled="$ctrl.disableAllFields">
                                                                 <i class="glyphicon glyphicon-search"></i>
                                                             </span>
@@ -928,7 +928,7 @@
                                                 <th id="generatedThId199">
                                                     &nbsp;
                                                     <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
-                                                        <a id="product_addRow_header" ng-click="$ctrl.addEmptyProduct(location.products, true)" ng-disabled="$ctrl.disableAllFields">
+                                                        <a id="product_addRow_header" ng-click="$ctrl.addEmptyProduct(location.products, true, locationIdx)" ng-disabled="$ctrl.disableAllFields">
                                                             <i class="fa fa-plus clickable"></i>
                                                         </a>
                                                     </span>
@@ -954,7 +954,7 @@
 
                                                 <td>
                                                     <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
-                                                        <a id="product_addRow_{{ $index }}" ng-click="$ctrl.addEmptyProduct(location.products, true)" ng-disabled="$ctrl.disableAllFields">
+                                                        <a id="product_addRow_{{ $index }}" ng-click="$ctrl.addEmptyProduct(location.products, true, locationIdx)" ng-disabled="$ctrl.disableAllFields">
                                                             <i class="fa fa-plus clickable"></i>
                                                         </a>
                                                     </span>
@@ -1019,16 +1019,42 @@
                                                 </td>
 
                                                 <td ng-if="$ctrl.productInfoColumns.MinQty.visible" style="width:8%;min-width: 95px;">
-                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MinQuantity_{{$index}}" id="product_MinQuantity_{{$index}}" class="form-control input-sm" ng-model="product.minQuantity" max="{{ product.maxQuantity }}" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']; $ctrl.minQtyBlur(product)" data-original-title="{{ product.minQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" >
+                                                    <input type="text" 
+                                                        format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" 
+                                                        name="MinQuantity_{{$index}}" 
+                                                        id="product_MinQuantity_{{$index}}" 
+                                                        class="form-control input-sm" 
+                                                        ng-model="product.minQuantity" 
+                                                        max="{{ product.maxQuantity }}"
+                                                        ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" 
+                                                        ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']; $ctrl.minQtyBlur(product); $ctrl.captureReasonModal(locationIdx, productIdx, 'REQUEST_PRODUCT_MINQTY', 'minQuantity')"
+                                                        data-original-title="{{ product.minQuantity }}" 
+                                                        ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" >
                                                 </td>                                              
                                                 <td ng-if="$ctrl.productInfoColumns.MaxQty.visible" style="width:8%;min-width: 95px;">
-                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MaxQuantity_{{$index}}" id="product_MaxQuantity_{{$index}}" class="form-control input-sm" ng-model="product.maxQuantity" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-min="{{ product.minQuantity }}" data-original-title="{{ product.maxQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity'];" >
+                                                    <input type="text" 
+                                                        format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" 
+                                                        name="MaxQuantity_{{$index}}" 
+                                                        id="product_MaxQuantity_{{$index}}" 
+                                                        class="form-control input-sm" 
+                                                        ng-model="product.maxQuantity" 
+                                                        ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" 
+                                                        ng-min="{{ product.minQuantity }}" 
+                                                        data-original-title="{{ product.maxQuantity }}" 
+                                                        ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" 
+                                                        ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity']; $ctrl.captureReasonModal(locationIdx, productIdx, 'REQUEST_PRODUCT_MAXQTY', 'maxQuantity')" >
                                                  </td>                                            
                                                 <td ng-hide="$ctrl.requestTenantSettings.isRequestSuggestedLiftHidden" style="width:8%;min-width: 95px;">
                                                     <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="suggestedLift_{{$index}}" id="product_suggestedLift_{{$index}}" class="form-control input-sm" ng-model="product.suggestedLift" data-original-title="{{ product.suggestedLift }}" ng-disabled="true" ng-required="$ctrl.requestTenantSettings.isRequestSuggestedLiftMandatory">
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.Uom.visible" style="width:8%;min-width: 80px;">
-                                                    <select ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly  track by uomItem.id" ng-model="product.uom" class="form-control" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled" data-original-title="{{ product.uom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+                                                    <select ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly  track by uomItem.id" 
+                                                        ng-model="product.uom" 
+                                                        class="form-control" 
+                                                        ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled" 
+                                                        data-original-title="{{ product.uom.name }}" 
+                                                        ng-change="$ctrl.captureReasonModal(locationIdx, productIdx, 'REQUEST_PRODUCT_UOM', 'uom')" 
+                                                        ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                             id="product_uom_{{ $index }}"></select>
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.AgreementType.visible" style="width:12%">
@@ -1317,3 +1343,4 @@
                entity-to-delete="$ctrl.entityToDelete"></sweet-confirm>
 
 <confirm-order-dialog class="modal fade in" id="confirm" aria-hidden="true" data-width="90%" confirmation-product-orders=$ctrl.confirmationProductOrders></confirm-order-dialog>
+<span ng-include="'pages/new-request/views/captureReasonModal.html'"></span>

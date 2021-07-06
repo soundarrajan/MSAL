@@ -5065,6 +5065,18 @@ table.energyCalculationBlade tr.border-green-jungle {
     margin-top: 5px;
 }
 
+.capture-reason-modal {
+    position: fixed;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    background: #fff;
+    padding: 20px;
+    z-index: 9999;
+    box-shadow: 0px 0px 0px 9999px rgb(54 65 80 / 30%);
+}
+
 .send-license-button-wrapper a {
     box-shadow: 0px 0px 5px -2px rgb(0 0 0 / 66%) !important;
     border-radius: 4px !important;

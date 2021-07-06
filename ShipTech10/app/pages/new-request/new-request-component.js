@@ -420,6 +420,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof requestId != 'undefined' && requestId !== null) {
                         newRequestModel.getRequest(requestId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
+                            ctrl.getRequestinitialSnapshot = angular.copy(newRequestData.payload);
                             $.each(ctrl.request.locations, (i, j) => {
                                 if(j.terminal != null && j.terminal.length != 0){
                                     j.terminal.descriptions = j.terminal.name;
@@ -508,6 +509,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 					                ctrl.previewEmailDisabled = true;
 					            }
 					        });
+                            
                         });
                     } else {
                         newRequestModel.getEmptyRequest().then((newRequestData) => {
@@ -1005,6 +1007,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.buttonsDisabled = false;
                         return;
                     }
+                    ctrl.prepareReasonsForSave();
                     screenLoader.showLoader();
                     newRequestModel.updateRequest(ctrl.request).then(
                         (responseData) => {
@@ -1103,7 +1106,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             // }
         };
-        ctrl.addEmptyProduct = function(products, addCancel) {
+        ctrl.addEmptyProduct = function(products, addCancel, locationIdx) {
             let agreementType = tenantService.getAgreementType();
             let uomSelection = tenantService.getUom();
             var product = {
@@ -1140,7 +1143,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     product.screenActions.push(cancelAction);
                 }
             }
+            if(locationIdx) {
+                product.isNew = true;
+            }
             products.push(product);
+            ctrl.captureReasonModal(locationIdx,products.length-1,"REQUEST_PRODUCT", "product");
             // clear product selection
             ctrl.checkedProducts = [];
         };
@@ -1721,7 +1728,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         });
                     }
                     ctrl.request.locations[ctrl.request.locations.length - 1].products = _.orderBy(ctrl.request.locations[ctrl.request.locations.length - 1].products, [ 'productTypeId', 'product.name' ], [ 'asc', 'asc' ]);
-		            _.each(ctrl.request.locations[ctrl.request.locations.length - 1].products, (value, key) => {
+                    ctrl.request.locations[ctrl.request.locations.length - 1].isNew = true;
+                    ctrl.captureReasonModal(ctrl.request.locations.length - 1,null,"REQUEST_LOCATION", "location");
+                    _.each(ctrl.request.locations[ctrl.request.locations.length - 1].products, (value, key) => {
 		                if (value.product) {
 			                if (!value.product.originalName) {
 			                	value.product.originalName = value.product.name;
@@ -2012,6 +2021,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.selectOperator = function(operator) {
             ctrl.request.operatorBy = operator;
+            ctrl.captureReasonModal(null,null,"REQUEST_OPERATOR", "operatorBy");
         };
         ctrl.selectCompany = function(companyId) {
             if (ctrl.companyInLocationIndex != null) {
@@ -2425,7 +2435,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	    			productKey = k;
 	    		}
 	    	});
-
+            ctrl.captureReasonModal(locIdx, productKey, 'REQUEST_PRODUCT_PRODUCTNAME', 'product');
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
 
 				ctrl.request.locations[locIdx].products[productKey].product = server_data.payload;
@@ -2556,6 +2566,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 if (!ctrl.request.vesselDetails.service) {
                     ctrl.request.vesselDetails.service = {};
                 }
+                ctrl.request.vesselDetails.service.name = service.name;
                 ctrl.request.vesselDetails.service.name = service.name;
                 ctrl.request.vesselDetails.service.id = service.id;
                 ctrl.request.vesselDetails.service = service;
@@ -3737,7 +3748,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         return;
                     }
                     if (a.elem[a.elem.length - 1] == 'Operator') {
-                    	ctrl.request.operatorBy = a.val;
+                        ctrl.request.operatorBy = a.val;
+                        ctrl.captureReasonModal(null,null,"REQUEST_OPERATOR", "operatorBy");
                         return;
                     }
                     if (a.elem[a.elem.length - 1] == 'new_location') {
@@ -3759,6 +3771,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                         if (a.elem[a.elem.length - 1] == 'buyer') {
                             var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
+                            ctrl.captureReasonModal(idx, null, 'REQUEST_LOCATION_BUYER', 'buyer');
                             ctrl.request.locations[idx].buyer = a.val;
                         }
                         if (a.elem[a.elem.length - 1] == 'destinationInput') {
@@ -4236,6 +4249,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     toastr.error(' Quantity without Pretest must be great than or equal to Quantity with Pretest ');
                     return
                 }
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach=angular.copy(ctrl.request.minimumQuantitiesToReachs);
+                ctrl.captureReasonModal(ctrl.selectedLocationIdx, ctrl.selectedProductIdx, 'REQUEST_PRODUCT_MTR', 'minimumQuantitiesToReach');
                 $scope.prettyCloseModal();
             }
         };
@@ -4351,6 +4366,180 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 scope: $scope // passed current scope to the modal
             });
         };
+        
+
+
+/* Capture reason for change */
+        ctrl.captureReasonModal = (locationIndex, productIndex, changedFieldName, modelProperty) => {
+            if(ctrl.request.id == 0 || !ctrl.selectedVessel.isVesselManagable) {
+                return false;
+            }
+            fieldChanged = ctrl.checkIfFieldChanged(locationIndex, productIndex, changedFieldName, modelProperty);
+            if (!fieldChanged) {
+                return false
+            }
+
+            ctrl.captureReasonModalData = {};
+            ctrl.captureReasonModalData.changedFieldName = changedFieldName;
+            ctrl.captureReasonModalData.locationIndex = locationIndex;
+            ctrl.captureReasonModalData.productIndex = productIndex;
+            ctrl.captureReasonModalData.field = ctrl.getReasonField(changedFieldName);
+            ctrl.captureReasonModalData.requestLocation = locationIndex !== null ? ctrl.request.locations[locationIndex].location.id : null;
+            ctrl.captureReasonModalData.product = locationIndex !== null && productIndex !== null ? ctrl.request.locations[locationIndex].products[productIndex].product.id : null;
+        }
+        ctrl.getReasonField = (fieldName) => {
+            var foundField = false;
+            $.each(ctrl.listsCache.FieldName, (k,v) => {
+                if (v.name == fieldName) {
+                    foundField = v;
+                }
+            })
+            return foundField;
+        } 
+        ctrl.saveCapturedReason = () => {
+            if(!ctrl.captureReasonModalData.reason) {
+                toastr.error("Please select a reason for change");
+                return;
+            }  
+            if(ctrl.captureReasonModalData.reason.name == "Other" && !ctrl.captureReasonModalData.comments ) {
+                toastr.error("Please select a comment for the reason");
+                return;
+            }  
+
+            if(ctrl.captureReasonModalData.locationIndex == null) {
+                ctrl.request.tempReasons[ctrl.captureReasonModalData.changedFieldName] = ctrl.buildReasonDataStructure();
+            } else {
+
+                if (ctrl.captureReasonModalData.productIndex == null) {
+                    if(!ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].tempReasons) {
+                        ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].tempReasons = {}
+                    }
+                    ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].tempReasons[ctrl.captureReasonModalData.changedFieldName] = ctrl.buildReasonDataStructure();
+                } else {
+                    if (!ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].products[ctrl.captureReasonModalData.productIndex].tempReasons) {
+                        ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].products[ctrl.captureReasonModalData.productIndex].tempReasons = {}
+                    }
+                    ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].products[ctrl.captureReasonModalData.productIndex].tempReasons[ctrl.captureReasonModalData.changedFieldName] = ctrl.buildReasonDataStructure();
+                }
+            }            
+            ctrl.captureReasonModalData = null;
+        } 
+        ctrl.buildReasonDataStructure = (locationI) => {
+            console.log(ctrl.captureReasonModalData);
+            data = {
+                "id": 0,
+                "requestId" : ctrl.request.id,
+                "requestLocation" : ctrl.captureReasonModalData.requestLocation,
+                "product" : ctrl.captureReasonModalData.product,
+                "fieldName" : ctrl.captureReasonModalData.field,
+                "reasonName" : ctrl.captureReasonModalData.reason,
+                "comments" : ctrl.captureReasonModalData.comments
+
+            }
+            return data;
+        }
+
+        ctrl.checkIfFieldChanged = (locationIndex, productIndex, changedFieldName, modelProperty) => {
+            fieldChanged = true;
+            if(locationIndex == null) {
+                if (!ctrl.request.tempReasons) {
+                    ctrl.request.tempReasons = {};
+                }
+                if (typeof(ctrl.getRequestinitialSnapshot[modelProperty]) == "object") {
+                    if (ctrl.request[modelProperty].id == ctrl.getRequestinitialSnapshot[modelProperty].id) {
+                        ctrl.request.tempReasons[changedFieldName] = null;
+                        ctrl.captureReasonModalData = null;
+                        fieldChanged = false;
+                    }
+                } else {
+                    if (ctrl.request[modelProperty] == ctrl.getRequestinitialSnapshot[modelProperty]) {
+                        ctrl.request.tempReasons[changedFieldName] = null;
+                        ctrl.captureReasonModalData = null;
+                        fieldChanged = false;
+                    }                    
+                }
+            } else {
+                if (productIndex == null) {
+                    if(ctrl.request.locations[locationIndex].isNew){ 
+                        ctrl.request.locations[locationIndex].isNew = false;
+                        return true;
+                    }
+                    if(!ctrl.request.locations[locationIndex].id){ return false}
+                    if (!ctrl.request.locations[locationIndex].tempReasons) {
+                        ctrl.request.locations[locationIndex].tempReasons = {};
+                    }
+                    if (typeof(ctrl.getRequestinitialSnapshot.locations[locationIndex][modelProperty]) == "object" ) {
+                        if (ctrl.request.locations[locationIndex][modelProperty].id == ctrl.getRequestinitialSnapshot.locations[locationIndex][modelProperty].id) {
+                            ctrl.request.locations[locationIndex].tempReasons[changedFieldName] = null;
+                            ctrl.captureReasonModalData = null;
+                            fieldChanged = false;
+                        }
+                    } else {
+                        if (ctrl.request.locations[locationIndex][modelProperty] == ctrl.getRequestinitialSnapshot.locations[locationIndex][modelProperty]) {
+                            ctrl.request.locations[locationIndex].tempReasons[changedFieldName] = null;
+                            ctrl.captureReasonModalData = null;
+                            fieldChanged = false;
+                        }                    
+                    }                    
+                } else {
+                    if (!ctrl.request.locations[locationIndex].products[productIndex].tempReasons) {
+                        ctrl.request.locations[locationIndex].products[productIndex].tempReasons = {};
+                    }
+                    if(ctrl.request.locations[locationIndex].products[productIndex].isNew){ 
+                        ctrl.request.locations[locationIndex].products[productIndex].isNew = false;
+                        return true;
+                    }
+                    if(!ctrl.request.locations[locationIndex].products[productIndex].id){ return false}
+                    if (typeof(ctrl.getRequestinitialSnapshot.locations[locationIndex].products[productIndex][modelProperty]) == "object" &&  modelProperty != "minimumQuantitiesToReach") {
+                        if (ctrl.request.locations[locationIndex].products[productIndex][modelProperty].id == ctrl.getRequestinitialSnapshot.locations[locationIndex].products[productIndex][modelProperty].id) {
+                            ctrl.request.locations[locationIndex].products[productIndex].tempReasons[changedFieldName] = null;
+                            ctrl.captureReasonModalData = null;
+                            fieldChanged = false;
+                        }
+                    } else {
+                        if (ctrl.request.locations[locationIndex].products[productIndex][modelProperty] == ctrl.getRequestinitialSnapshot.locations[locationIndex].products[productIndex][modelProperty]) {
+                            ctrl.request.locations[locationIndex].products[productIndex].tempReasons[changedFieldName] = null;
+                            ctrl.captureReasonModalData = null;
+                            fieldChanged = false;
+                        }                    
+                    } 
+                }
+            }
+            return fieldChanged;
+        }
+
+        ctrl.prepareReasonsForSave = () => {
+            if(ctrl.request.tempReasons) {
+                Object.keys(ctrl.request.tempReasons).forEach(key => {
+                    if(ctrl.request.tempReasons[key]) {
+                        ctrl.request.reasons.push(ctrl.request.tempReasons[key]);
+                    }
+                });
+            }
+            $.each(ctrl.request.locations, (k,v) => {
+                if (v.tempReasons) {
+                    Object.keys(v.tempReasons).forEach(key => {
+                        if( v.tempReasons[key] ) {
+                            ctrl.request.reasons.push(v.tempReasons[key]);
+                        }
+                    });                    
+                }
+                $.each(v.products, (k2,v2) => {
+                    if (v2.tempReasons) {
+                        Object.keys(v2.tempReasons).forEach(key => {
+                            if( v2.tempReasons[key] ) {
+                                ctrl.request.reasons.push(v2.tempReasons[key]);
+                            }
+                        });                    
+                    }                    
+                })
+            })
+            
+        }
+
+/* END Capture reason for change */
+
+
     }
 ]);
 angular.module('shiptech.pages').component('newRequest', {

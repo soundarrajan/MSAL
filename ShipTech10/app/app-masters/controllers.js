@@ -10217,6 +10217,7 @@
                     }
                 })
                 $scope.userMasterCustomerDataLength = response.data.matchedCount;
+                $scope.locationPreferredSellerProductsDataPages = Math.ceil($scope.userMasterCustomerDataLength / $scope.userMasterCustomerTableConfig.take);
                 tpl = $templateCache.get('app-general-components/views/screen_parts/masters/modal_UserCustomerList.html');
                 $scope.modalInstance = $uibModal.open({
                     template: tpl,
