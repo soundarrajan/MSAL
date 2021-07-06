@@ -4241,10 +4241,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         /*MinimumQuantitytoReach Popup Close Modal start*/
         $scope.PopupprettyCloseModal = function(){
-            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length == 0){
-                $scope.prettyCloseModal();
-                return;
-            }else{
+            if($rootScope.RootTempMinQtyToReach!==undefined){
                 ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach= angular.copy($rootScope.RootTempMinQtyToReach)
             }
             $scope.prettyCloseModal();
