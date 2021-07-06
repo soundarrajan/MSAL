@@ -36,6 +36,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, null,{},ctrl.searchTerm ).then((data) => {
                 destroyDataTable();
                 ctrl.data = data.payload;
+                ctrl.tableOptions.totalRows = data.matchedCount;
                 ctrl.data1 = angular.copy(data.payload);
                 $timeout(() => {
                 debugger;
@@ -44,7 +45,6 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                     if(ctrl.table) {
                         let info = ctrl.table.page.info();
                         setTableVars(info.length, info.start, angular.copy(ctrl.table.order().slice(0)));
-                        ctrl.tableOptions.totalRows = data.matchedCount;
                         handleTableEvents();
                     }                       
                 });
@@ -70,7 +70,6 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
          * @param {Object} order - sort order of the table.
          */
         function setTableVars(length, start, order) {
-            debugger;
             if (typeof length != 'undefined' && length !== null) {
                 ctrl.tableOptions.pageLength = length;
             }
@@ -106,26 +105,22 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                 });
             });
         };
-        function Getlocation(i){
-            let j=1;
-            if(j==i){
-                lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, null, ctrl.tableOptions.filters,ctrl.searchTerm,ctrl.args).then((data) => {
-                    destroyDataTable();
-                    ctrl.data = data.payload;
-                    ctrl.data1 = angular.copy(data.payload);
-                    j=2;
-                    $timeout(() => {
-                        ctrl.table = initDatatable(true);
-                        // set flag to true if init comes from search
-                        if(ctrl.table) {
-                            let info = ctrl.table.page.info();
-                            setTableVars(info.length, info.start, angular.copy(ctrl.table.order().slice(0)));
-                            ctrl.tableOptions.totalRows = data.matchedCount;
-                            handleTableEvents();
-                        }                       
-                    });
+        function Getlocation(){
+            lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, null, ctrl.tableOptions.filters,ctrl.searchTerm,ctrl.args).then((data) => {
+                destroyDataTable();
+                ctrl.data = data.payload;
+                ctrl.tableOptions.totalRows = data.matchedCount;
+                ctrl.data1 = angular.copy(data.payload);
+                $timeout(() => {
+                    ctrl.table = initDatatable(true);
+                    // set flag to true if init comes from search
+                    if(ctrl.table) {
+                        let info = ctrl.table.page.info();
+                        setTableVars(info.length, info.start, angular.copy(ctrl.table.order().slice(0)));
+                        handleTableEvents();
+                    }                       
                 });
-            }
+            });
         }
 	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page) => {
             ctrl.EnableSingleSelect = EnableSingleselect;
@@ -138,8 +133,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             else{
                 ctrl.isvoyagePortchangeEnabled = false;
                 ctrl.islocationPortEnabled = true; 
-                let i=1;
-                Getlocation(i);
+                Getlocation();
             }
             // $scope.accessSelection = value;
  	       if (value == 0) {
