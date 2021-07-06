@@ -895,9 +895,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.buttonsDisabled = true;
             var valid;
             var validMQTR;
-            if(ctrl.request.operatorBy.name=='') //operator field empty
+            if(ctrl.request.operatorBy && ctrl.request.operatorBy.name == '') //operator field empty
             {
-                ctrl.request.operatorBy=null;  
+                ctrl.request.operatorBy = null;  
             }
             ctrl.isRequiredMinMax(false);
             if (ctrl.request.requestStatus) {
