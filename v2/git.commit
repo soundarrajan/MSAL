@@ -1,9 +1,9 @@
-﻿commit be83c98bb41c03f6d62a270829f526d7253d350b
+﻿commit 86dceea5715372efd71b0b78a7731027a6dd8412
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jul 6 06:19:24 2021 +0000
+Date:   Tue Jul 6 10:57:23 2021 +0000
 
-    Merged PR 12137: #33436: Product Availablity Section table resize option reverted
+    Merged PR 12159: Bug 32791: Bunker plan: View Comments plan id style issue has fixed
     
-    Related work items: #33436
+    Related work items: #32791
 
 branch: master
