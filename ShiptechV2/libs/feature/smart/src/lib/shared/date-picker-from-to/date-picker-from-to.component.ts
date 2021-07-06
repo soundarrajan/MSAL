@@ -1,11 +1,12 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'shiptech-date-picker-from-to',
   templateUrl: './date-picker-from-to.component.html',
-  styleUrls: ['./date-picker-from-to.component.css']
+  styleUrls: ['./date-picker-from-to.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DatePickerFromToComponent implements OnInit {
   
