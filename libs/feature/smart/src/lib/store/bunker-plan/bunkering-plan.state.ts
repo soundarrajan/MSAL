@@ -105,7 +105,10 @@ export class SaveBunkeringPlanState{
     let BPlanDataIndex = BPlanData.findIndex(data => data.detail_no == detail_no)
     switch(type){
 
-
+      case 'operator_ack':{
+                              BPlanData[BPlanDataIndex].operator_ack = payload;
+                              break;
+                            }
       case 'hsfo_max_lift':{
                               BPlanData[BPlanDataIndex].hsfo_max_lift = payload;
                               break;
