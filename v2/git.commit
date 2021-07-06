@@ -1,9 +1,11 @@
-﻿commit 86e3545e1d16023399ebfeae8af331937bd10842
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jul 6 11:35:18 2021 +0000
+﻿commit 5a9b566f22c05a5d07e1189bf686e182902f775f
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue Jul 6 11:42:45 2021 +0000
 
-    Merged PR 12162: #32417: Display message for a new plan from the Vessel issue has fixed
+    Merged PR 12164: #33988 :Operator port inputs table – Op_updated_columns not updating as expected
     
-    Related work items: #32417
+    #33988 :Operator port inputs table – Op_updated_columns not updating as expected
+    
+    Related work items: #33988
 
 branch: master
