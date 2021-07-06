@@ -881,12 +881,44 @@
             }
             return false;
         }
+
+
+        // Deprecate function on 06.07.2021
+        $scope.counterPartyListisValid = () => {
+            // Return boolean
+            // True allow saving;
+            // False don't allow saving;
+            if(vm.app_id == 'masters' && vm.screen_id == 'counterparty'){
+
+                let counterPartyWithoutAccess = '';
+
+                // Checked list
+                $scope.formValues.counterpartyTypes.some(e => {
+
+                    if(!$scope.filteredCounterpartyTypeList.find(j => e.id === j.id)){
+                        // Checked and enabled
+                        counterPartyWithoutAccess += `${e.name} `
+                    }
+                });
+
+                if(counterPartyWithoutAccess){
+                    toastr.info(`You dont have permission to add ${counterPartyWithoutAccess} ${counterPartyWithoutAccess.split(" ").length > 2 ? "types" : "type"} of Counterparty`)
+                    return false;
+                }
+            }
+
+            return true;
+        }
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
             screenLoader.showLoader();
             $('form').addClass('submitted');
             vm.invalid_form = false;
 
 
+            // verify deprecate 06.07.2021
+            // if(!$scope.counterPartyListisValid()){
+            //     return;
+            // }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
@@ -10308,6 +10340,9 @@
                 }
 
                 $scope.filteredCounterpartyTypeList = response.data.payload;
+
+                // Deprecate 06.07.2021
+                // $scope.counterPartyListisValid();
             }).catch(e => {
                 $scope.filteredCounterpartyTypeList = "Error";
             });
