@@ -1,11 +1,9 @@
-﻿commit 5a9b566f22c05a5d07e1189bf686e182902f775f
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jul 6 11:42:45 2021 +0000
+﻿commit 70fd87731b873c84ab51a5c573ed3807999d4b49
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Jul 6 12:04:53 2021 +0000
 
-    Merged PR 12164: #33988 :Operator port inputs table – Op_updated_columns not updating as expected
+    Merged PR 12167: #32417: Display message for a new plan from the Vessel role change issue has done
     
-    #33988 :Operator port inputs table – Op_updated_columns not updating as expected
-    
-    Related work items: #33988
+    Related work items: #32417
 
 branch: master
