@@ -116,7 +116,7 @@ export class PortPopupComponent implements OnInit {
       defaultColDef: {
         filter: false,
         sortable: false,
-        resizable: true
+        resizable: false
       },
       rowSelection: 'single',
       onGridReady: (params) => {
