@@ -1,9 +1,9 @@
-﻿commit 53b0e885ef55bdbc81f8a6560be350a59019c723
+﻿commit 86e3545e1d16023399ebfeae8af331937bd10842
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jul 6 11:13:50 2021 +0000
+Date:   Tue Jul 6 11:35:18 2021 +0000
 
-    Merged PR 12160: #32791: Bunker plan: View Comments header style issue has fixed
+    Merged PR 12162: #32417: Display message for a new plan from the Vessel issue has fixed
     
-    Related work items: #32791
+    Related work items: #32417
 
 branch: master
