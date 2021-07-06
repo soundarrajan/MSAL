@@ -108,7 +108,8 @@ export class VesselInfoComponent implements OnInit {
   ngOnInit() {
     console.log('Vessel Data ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
-
+    
+    this.checkVesselHasNewPlan(this.vesselData);
     this.loadBunkerPlanHeader(this.vesselData);  
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     this.loadBunkerPlanDetails(vesseldata.vesselRef);   
