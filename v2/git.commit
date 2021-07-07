@@ -1,9 +1,11 @@
-﻿commit b353dd29df3acdcca3f404154169a8d0da26a4a7
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jul 7 09:34:52 2021 +0000
+﻿commit 82ffaec33c75760072512b8ffa4b6d60eded1b31
+Author: Oliu Radu <radu.oliu@24software.ro>
+Date:   Wed Jul 7 10:26:46 2021 +0000
 
-    Merged PR 12191: #33954: Port Remarks_ The given comments are not retaining properly has fixed
+    Merged PR 12186: fix order details left container
     
-    Related work items: #33954
+    fix order details left container
+    
+    Related work items: #33955
 
 branch: master
