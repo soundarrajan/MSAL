@@ -1144,7 +1144,12 @@
 }
 
 /** Product Footer - Ends **/
-
+.order-details .order-details-left {
+  .readonly-details-component {
+    width: unset;
+    min-width: 450px;
+  }
+}
 /**** Readonly Details Component Start****/
 .readonly-details-component {
   display: flex;
