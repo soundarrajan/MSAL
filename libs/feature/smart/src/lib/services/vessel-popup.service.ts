@@ -26,6 +26,8 @@ export class VesselPopupService{
 
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_SMART;
+  myDefaultViewPayload: any = [];
+  APImyDefaultView: any = [];
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -43,8 +45,6 @@ export class VesselPopupService{
       { payload: request }
     );
   }
-
-
   @ObservableException()
   getBdnReport(request: any): Observable<any> {
     return this.http.post<any>(
