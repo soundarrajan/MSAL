@@ -167,11 +167,13 @@ export class VesselPopupComponent implements OnInit {
   getDefaultView() {
     let req = { "UserId": this.popup_data.vesselId, "Port": 0, "Vessel": 1, "Default_View": 1, "Bunker_Plan": 0 }
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
-      if (res.payload.length > 0) {
-        this.vesselService.myDefaultViewPayload = [];
+      this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
+      if (res.payload.length > 0) {
+        
         this.vesselService.myDefaultViewPayload = res.payload[0];
-        if (this.vesselService.myDefaultViewPayload == null && this.vesselService.myDefaultViewPayload.length == 0) {
+        
+      }else{
           this.vesselService.myDefaultViewPayload.userId = this.popup_data.VesselId;
           this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 1;
@@ -190,28 +192,26 @@ export class VesselPopupComponent implements OnInit {
           this.vesselService.myDefaultViewPayload.comments = 0;
           this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
           this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
-
-        }
         console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
-        if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
-          if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.vessel == 1) {
-            this.myDefaultView = true;
-            if (this.vesselService.myDefaultViewPayload.futureRequest == 1) {
-              this.viewFutureRequest = true;
-            }
-            else if (this.vesselService.myDefaultViewPayload.vesselRedelivery == 1) {
-              this.viewVesselRedelivery = true;
-            }
-            else if (this.vesselService.myDefaultViewPayload.vesselSchedule == 1) {
-              this.viewVesselSchedule = true;
-            }
-            else if (this.vesselService.myDefaultViewPayload.vesselAlerts == 1) {
-              this.viewVesselAlerts = true;
-            }
+      }
+      if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
+        if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.vessel == 1) {
+          this.myDefaultView = true;
+          if (this.vesselService.myDefaultViewPayload.futureRequest == 1) {
+            this.viewFutureRequest = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.vesselRedelivery == 1) {
+            this.viewVesselRedelivery = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.vesselSchedule == 1) {
+            this.viewVesselSchedule = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.vesselAlerts == 1) {
+            this.viewVesselAlerts = true;
           }
         }
-
       }
+      
     })
 
 
