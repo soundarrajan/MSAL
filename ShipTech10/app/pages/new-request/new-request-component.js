@@ -4249,15 +4249,18 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     toastr.error(' Quantity without Pretest must be great than or equal to Quantity with Pretest ');
                     return
                 }
-                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach=angular.copy(ctrl.request.minimumQuantitiesToReachs);
                 ctrl.captureReasonModal(ctrl.selectedLocationIdx, ctrl.selectedProductIdx, 'REQUEST_PRODUCT_MTR', 'minimumQuantitiesToReach');
                 $scope.prettyCloseModal();
             }
         };
         /*MinimumQuantitytoReach Popup Close Modal start*/
         $scope.PopupprettyCloseModal = function(){
-            if($rootScope.RootTempMinQtyToReach!==undefined){
-                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach= angular.copy($rootScope.RootTempMinQtyToReach)
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>0){
+                for(let i=0;ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>i;i++){
+                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==0 || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].eta==null){
+                        ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.splice(i,1);
+                    }
+                }
             }
             $scope.prettyCloseModal();
         };
@@ -4349,13 +4352,17 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $scope.openMinQtyToReach = function(productIdx, currProd,locationIdx) {
             ctrl.selectedLocationIdx=locationIdx;
             ctrl.selectedProductIdx=productIdx;
-            ctrl.selProductIdx=productIdx+locationIdx;
-            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx] != undefined)
+            ctrl.selProductIdx=productIdx+locationIdx;          
+            if(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach != undefined)
             {
-                    $rootScope.RootTempMinQtyToReach = angular.copy(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach);
+                if($rootScope.RootTempMinQtyToReach==undefined)
+                {
+                    $rootScope.RootTempMinQtyToReach = angular.copy(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach);          
+                }
             }
-            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach!= undefined ){
-                ctrl.request.minimumQuantitiesToReach=ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach;
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach== undefined ){
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach=[];
+                ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.push({'id':0,'port':{'id': 0,'name': '',},'portid':0,'eta':null,'isDeleted':false});
             }
             tpl = $templateCache.get('app-general-components/views/modal_RequestMinimumQuantityToReach.html');
             $scope.modalInstance = $uibModal.open({
