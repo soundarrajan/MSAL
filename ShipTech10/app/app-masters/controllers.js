@@ -10205,6 +10205,7 @@
                 $scope.userMasterSelectedCustomersIdsArray.push(v.id);
                 v.isSelected = true;
             })
+            $scope.userMasterCustomerTableConfig = {}
             if(!$scope.userMasterCustomerTableConfig) {
                 $scope.userMasterCustomerTableConfig = {}
             }

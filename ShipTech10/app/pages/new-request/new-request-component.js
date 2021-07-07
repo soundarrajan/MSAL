@@ -1048,16 +1048,33 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 confirmText: message
             };
         };
-        ctrl.canBeCancelledLocation = function(locationId) {
-            newRequestModel.cancelLocation(locationId).then((data) => {
-                if (data.message) {
-                    toastr.info(data.message, null, { timeOut: 15000 });
+        ctrl.canBeCancelledLocation = function(locationId, payload) {
+            if(!ctrl.reasonProvidedForCancellation) {
+                locationIndex = null;
+                $.each(ctrl.request.locations, (k,v) => {
+                    if (v.id == locationId) {
+                        locationIndex = k;
+                    }
+                })
+                ctrl.captureReasonModal(locationIndex, null, "REQUEST_LOCATION_CANCEL", "locationCancel");
+            } else {
+                ctrl.reasonProvidedForCancellation = false;
+                if(!payload) {
+                    payload = locationId
+                } else {
+                    payload.id = locationId
                 }
-                // for (var i = 0; i < location.products.length; i++) {
-                //     location.products[i].productStatus = ctrl.STATUS['Cancelled'];
-                // }
-                $state.reload();
-            });
+                newRequestModel.cancelLocation(payload).then((data) => {
+                    if (data.message) {
+                        toastr.info(data.message, null, { timeOut: 15000 });
+                    }
+                    // for (var i = 0; i < location.products.length; i++) {
+                    //     location.products[i].productStatus = ctrl.STATUS['Cancelled'];
+                    // }
+                    $state.reload();
+                });
+
+            }
         };
         ctrl.deleteLocation = function(location) {
             // ctrl.confirmLocationDelete = confirm("Are you sure you want to delete " + location.location.name);
@@ -1295,27 +1312,49 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             };
             // $(".confirmModal").modal();
         };
-        ctrl.canBeCancelledProductFromLocation = function(location, productId) {
-            newRequestModel.cancelProduct(productId).then((data) => {
-                $state.reload();
-                for (var i = 0; i < location.products.length; i++) {
-                    if (location.products[i].id == productId) {
-                        location.products[i].productStatus = ctrl.STATUS.Cancelled;
+        ctrl.canBeCancelledProductFromLocation = function(location, productId, payload) {
+            if(!ctrl.reasonProvidedForCancellation) {
+                locationIndex = null;
+                productIndex = null;
+                $.each(ctrl.request.locations, (k,v) => {
+                    if (v.id == location.id) {
+                        locationIndex = k;
+                        $.each(v.products, (k2,v2) => {
+                            if (v2.id == productId) {
+                                productIndex = k2;
+                            }
+                        })
                     }
+                })
+                ctrl.captureReasonModal(locationIndex, productIndex, "REQUEST_PRODUCT_CANCEL", "productCancel");
+            } else {
+                ctrl.reasonProvidedForCancellation = false;
+                if(!payload) {
+                    payload = productId
+                } else {
+                    payload.id = productId
                 }
-                // product.productStatus = ctrl.STATUS['Cancelled'];
-                let existingProductNr = 0;
-                for (var i = 0; i < location.products.length; i++) {
-                    if (location.products[i].isDeleted === false) {
-                        existingProductNr++;
+                newRequestModel.cancelProduct(payload).then((data) => {
+                    $state.reload();
+                    for (var i = 0; i < location.products.length; i++) {
+                        if (location.products[i].id == productId) {
+                            location.products[i].productStatus = ctrl.STATUS.Cancelled;
+                        }
                     }
-                }
-                if (existingProductNr <= 1) {
-                    ctrl.addEmptyProduct(location.products);
-                }
-                ctrl.checkboxes = [];
-                ctrl.selectedContracts = [];
-            });
+                    // product.productStatus = ctrl.STATUS['Cancelled'];
+                    let existingProductNr = 0;
+                    for (var i = 0; i < location.products.length; i++) {
+                        if (location.products[i].isDeleted === false) {
+                            existingProductNr++;
+                        }
+                    }
+                    if (existingProductNr <= 1) {
+                        ctrl.addEmptyProduct(location.products);
+                    }
+                    ctrl.checkboxes = [];
+                    ctrl.selectedContracts = [];
+                });
+            }
         };
         ctrl.deleteProductFromLocation = function(product, location, pIndex, locIndex) {
             // ctrl.confirmProductDelete = confirm("Are you sure you want to delete "+product.product.name+ " from " + location.location.name);
@@ -4392,6 +4431,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.captureReasonModalData.productIndex = productIndex;
             ctrl.captureReasonModalData.field = ctrl.getReasonField(changedFieldName);
             ctrl.captureReasonModalData.requestLocation = locationIndex !== null ? ctrl.request.locations[locationIndex].location.id : null;
+            ctrl.captureReasonModalData.requestLocationId = locationIndex !== null ? ctrl.request.locations[locationIndex].id : null;
+            ctrl.captureReasonModalData.requestProductId = locationIndex !== null && productIndex !== null ? ctrl.request.locations[locationIndex].products[productIndex].id : null;
             ctrl.captureReasonModalData.product = locationIndex !== null && productIndex !== null ? ctrl.request.locations[locationIndex].products[productIndex].product.id : null;
         }
         ctrl.getReasonField = (fieldName) => {
@@ -4429,9 +4470,25 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].products[ctrl.captureReasonModalData.productIndex].tempReasons[ctrl.captureReasonModalData.changedFieldName] = ctrl.buildReasonDataStructure();
                 }
             }            
+            if (ctrl.captureReasonModalData.changedFieldName == "REQUEST_PRODUCT_CANCEL") {
+                ctrl.reasonProvidedForCancellation = true;
+                payload = {
+                    id : ctrl.request.id,
+                    reason : ctrl.buildReasonDataStructure()
+                }
+                ctrl.canBeCancelledProductFromLocation(null, ctrl.captureReasonModalData.requestProductId, payload);                
+            }
+            if (ctrl.captureReasonModalData.changedFieldName == "REQUEST_LOCATION_CANCEL") {
+                ctrl.reasonProvidedForCancellation = true;
+                payload = {
+                    id : ctrl.request.id,
+                    reason : ctrl.buildReasonDataStructure()
+                }
+                ctrl.canBeCancelledLocation(ctrl.captureReasonModalData.requestLocationId, payload);                
+            }            
             ctrl.captureReasonModalData = null;
         } 
-        ctrl.buildReasonDataStructure = (locationI) => {
+        ctrl.buildReasonDataStructure = () => {
             console.log(ctrl.captureReasonModalData);
             data = {
                 "id": 0,
@@ -4448,6 +4505,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         ctrl.checkIfFieldChanged = (locationIndex, productIndex, changedFieldName, modelProperty) => {
             fieldChanged = true;
+            if(changedFieldName == "REQUEST_PRODUCT_CANCEL" || changedFieldName == "REQUEST_LOCATION_CANCEL") {
+                return true;
+            }
             if(locationIndex == null) {
                 if (!ctrl.request.tempReasons) {
                     ctrl.request.tempReasons = {};
@@ -4516,6 +4576,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         }
 
         ctrl.prepareReasonsForSave = () => {
+            if(!ctrl.request.id) {
+                return false;
+            }  
             if(ctrl.request.tempReasons) {
                 Object.keys(ctrl.request.tempReasons).forEach(key => {
                     if(ctrl.request.tempReasons[key]) {
@@ -4535,6 +4598,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if (v2.tempReasons) {
                         Object.keys(v2.tempReasons).forEach(key => {
                             if( v2.tempReasons[key] ) {
+                                if(!v2.tempReasons[key].product) {
+                                    v2.tempReasons[key].product = v2.product.id;
+                                }
                                 ctrl.request.reasons.push(v2.tempReasons[key]);
                             }
                         });                    

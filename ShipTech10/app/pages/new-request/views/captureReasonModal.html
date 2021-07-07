@@ -1,0 +1,33 @@
+<div class="capture-reason-modal" ng-if="$ctrl.captureReasonModalData">
+    <div class="caption-subject">
+        Change {{$ctrl.captureReasonModalData.field.name}}
+    </div>
+    <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <label class="control-label col-md-5">
+                    <b>Reason</b>
+                </label>
+                <div class="form-group-sm00">
+                    <div class="input-group col-md-7">
+                        <select ng-model="$ctrl.captureReasonModalData.reason"  ng-options="reason as reason.name for reason in $ctrl.listsCache.ReasonName track by reason.id" 
+                            class="form-control pull-left">
+                        </select>                        
+                    </div>
+                </div>                
+            </div>
+            <div class="col-sm-12" ng-if="$ctrl.captureReasonModalData.reason.name == 'Other' ">
+                <label class="control-label col-md-5">
+                    <b>Comments</b>
+                </label>
+                <div class="form-group-sm00">
+                    <div class="input-group col-md-7">
+                        <textarea class="form-control" name="reasonComments" ng-model="$ctrl.captureReasonModalData.comments" cols="30" rows="5"></textarea>                      
+                    </div>
+                </div>                
+            </div>            
+        </div>
+    <div class="actions text-right">
+        <a class="btn orange btn-outline float-right" ng-click="$ctrl.saveCapturedReason()"> Save </a>
+    </div>
+</div>
