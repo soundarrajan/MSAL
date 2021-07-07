@@ -1,7 +1,9 @@
-﻿commit 68ff0742852ab6a6326f68db32dda610cd999020
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Jul 7 15:29:56 2021 +0300
+﻿commit 165cd36ddf7b5a555d1f38eb010e50ee211b99c0
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Jul 7 13:08:58 2021 +0000
 
-    Fixed 34022
+    Merged PR 12200: #33969: Port details: View Port remarks issue has fixed
+    
+    Related work items: #33969
 
 branch: master
