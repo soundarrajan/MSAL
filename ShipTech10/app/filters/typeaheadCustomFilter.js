@@ -3,6 +3,13 @@
     'use strict';
 
     angular.module('shiptech.pages').filter('typeaheadCustomFilter', function () {
+
+		function htmlDecode(input) {
+			var doc = new DOMParser().parseFromString(input, "text/html");
+			return doc.documentElement.textContent;
+		  }
+
+
     	return function (items, searchTerm, objProperty) {
     		if (!objProperty) {
     			objProperty = "name";
@@ -15,19 +22,23 @@
 					continue;
 				}
 				if (item[objProperty].toLowerCase().indexOf(searchTerm) == -1) {
-	    			filtered.splice(i,1); 
-    			}
+					// Item doesn't have searchTerm
+	    			filtered.splice(i,1);
+    			} else {
+					// Escape html
+					item.name = htmlDecode(item.name);
+				}
 			}
     		filtered = _.orderBy(filtered, function(item){
 				if (item) {
 					if (item[objProperty]) {
 		    			if (item[objProperty].toLowerCase().indexOf(searchTerm) != -1) {
-			    			return item[objProperty].toLowerCase().indexOf(searchTerm); 
+			    			return item[objProperty].toLowerCase().indexOf(searchTerm);
 		    			}
 					}
 				}
     		}, ['asc']);
-            console.log(filtered);
+
             filtered = _.filter(filtered, function(object) {
                 return typeof(object) !=  "undefined";
             });
@@ -40,7 +51,9 @@
             if (filtered[0].searchString == 'No options available!') {
                 return [];
             }
-    		return filtered.slice(0,10);
+
+			const finalResponse = filtered.slice(0,10);
+    		return finalResponse
     	};
     });
 

@@ -29,14 +29,14 @@ angular
                         let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
                         if (!isNaN(id)) {
                             window.actionLevel = 'Update';
-                        } 
+                        }
                     }
                 }
                 if ($(event.target).parents('li') && ($(event.target).parents('.dropdown-menu.st-extra-buttons').length || $(event.target).parents('.dropdown-menu.pull-right').length)) {
                     window.actionLevel = event.target.outerText.trim();
                 }
 
-            });            
+            });
 
 
             console.log(adalService);
@@ -590,7 +590,7 @@ angular
             }
             */
 
-            
+
             this.settings = {
                 layoutPath: 'assets/layouts/layout',
                 layout: {
@@ -864,7 +864,7 @@ angular.element(document).ready(() => {
 		        // $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
 		        //     Payload: false
 		        // }, function(response){
-		        // })    
+		        // })
 	        	angular.module('shiptech').value('$tenantConfiguration', {});
                 angular.module('shiptech').value('$tenantSettings', {});
                 angular.module('shiptech').value('$listsCache', {});
