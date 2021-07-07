@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Inject,ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Inject,ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { AGGridDownloadFileComponent } from '../ag-grid/ag-grid-download-file.component';
@@ -21,7 +21,8 @@ import { IDocumentsApiService } from '@shiptech/core/services/masters-api/docume
 @Component({
   selector: 'app-smart-operator',
   templateUrl: './smart-operator.component.html',
-  styleUrls: ['./smart-operator.component.scss']
+  styleUrls: ['./smart-operator.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SmartOperatorComponent implements OnInit {
   isValue: number = 3 ;
