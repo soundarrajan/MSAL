@@ -664,7 +664,7 @@ export class LocalService {
         ));
     }
 
-    @ObservableException()
+    @ObservableException()  
     saveDefaultView(request: any): Observable<any> {
       return this.http.post<any>(
         `${this._apiUrl}/${saveDefaultViewApiPaths.saveDefaultView()}`,
