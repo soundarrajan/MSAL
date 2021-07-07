@@ -432,7 +432,7 @@ export class SmartOperatorComponent implements OnInit {
   downloadDocument(param: any): void {
     console.log("00000000000final0000000", param)
     const request = {
-      Payload: { Id: param.bdnFileID}
+      Payload: { Id: param.bdnFileID, name: param.bdnFileName }
     };
     this.mastersApi.downloadDocument(request).subscribe(
       response => {
