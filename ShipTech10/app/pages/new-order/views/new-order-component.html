@@ -1428,7 +1428,7 @@
                                                    id="product_price_{{ $index }}"
                                                    name="{{ $ctrl.productColumns.price.name }}"
                                                    ng-change="$ctrl.productPriceChanged(product)"
-                                                   ng-blur="$ctrl.prodPriceChanged('input', product)"
+                                                   ng-blur="$ctrl.prodPriceChanged('input', product); $ctrl.captureReasonModal($index, 'ORDER_PRODUCT_PRICE', 'price')"
                                                    ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id]"
                                                    ng-model="product.price"
                                                    ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
@@ -2337,3 +2337,5 @@
 <vessel-schedule class="modal fade in requestScreen route_schedule_mintoreach" id="route_schedule_mintoreach"
     aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId"
     on-vessel-schedules-select="$ctrl.selectVesselSchedulesPort(locations)"></vessel-schedule>
+    
+<span ng-include="'pages/new-request/views/captureReasonModal.html'"></span>

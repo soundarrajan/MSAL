@@ -624,6 +624,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         getOrderListForRequest();
         function loadData(data) {
             ctrl.data = data.payload;
+            ctrl.getOrderinitialSnapshot = angular.copy(ctrl.data);
             ctrl.PortLocationEditable = false;
             if(ctrl.data != undefined && ctrl.data != null){
                 if(ctrl.orderId != null && ctrl.data.status != null && ctrl.data.status != undefined){
@@ -3225,6 +3226,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     toastr.error(validActiveSpecGroupMessage);
                     return false;
                 }
+                payload = ctrl.prepareReasonsForSave(payload);
                 orderModel.update(payload).then((responseData) => {
                     ctrl.buttonsDisabled = false;
                     $state.go(STATE.EDIT_ORDER, {
@@ -4865,7 +4867,108 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         }
 
-        $(document).ready(function() {
+        /* Capture reason for change */
+
+        ctrl.captureReasonModal = (productIndex, changedFieldName, modelProperty) => {
+            if(ctrl.data.id == 0) {
+                return false;
+            }
+            fieldChanged = ctrl.checkIfFieldChanged(productIndex, changedFieldName, modelProperty);
+            if (!fieldChanged) {
+                return false
+            }
+
+            ctrl.captureReasonModalData = {};
+            ctrl.captureReasonModalData.changedFieldName = changedFieldName;
+            ctrl.captureReasonModalData.productIndex = productIndex;
+            ctrl.captureReasonModalData.field = ctrl.getReasonField(changedFieldName);
+            ctrl.captureReasonModalData.requestLocation = null;
+            ctrl.captureReasonModalData.product = ctrl.data.products[productIndex].product.id;
+        }
+
+        ctrl.buildReasonDataStructure = (locationI) => {
+            console.log(ctrl.captureReasonModalData);
+            data = {
+                "id": 0,
+                "orderId" : ctrl.data.id,
+                "requestLocation" : ctrl.captureReasonModalData.requestLocation,
+                "product" : ctrl.captureReasonModalData.product,
+                "fieldName" : ctrl.captureReasonModalData.field,
+                "reasonName" : ctrl.captureReasonModalData.reason,
+                "comments" : ctrl.captureReasonModalData.comments
+
+            }
+            return data;
+        }
+
+        ctrl.checkIfFieldChanged = (productIndex, changedFieldName, modelProperty) => {
+            fieldChanged = true;
+            if (!ctrl.data.products[productIndex].tempReasons) {
+                ctrl.data.products[productIndex].tempReasons = {};
+            }
+            if(!ctrl.data.products[productIndex].id){ return false}
+            if (typeof(ctrl.getOrderinitialSnapshot.products[productIndex][modelProperty]) == "object") {
+                if (ctrl.data.products[productIndex][modelProperty].id == ctrl.getOrderinitialSnapshot.products[productIndex][modelProperty].id) {
+                    ctrl.data.products[productIndex].tempReasons[changedFieldName] = null;
+                    ctrl.captureReasonModalData = null;
+                    fieldChanged = false;
+                }
+            } else {
+                if (ctrl.data.products[productIndex][modelProperty] == ctrl.getOrderinitialSnapshot.products[productIndex][modelProperty]) {
+                    ctrl.data.products[productIndex].tempReasons[changedFieldName] = null;
+                    ctrl.captureReasonModalData = null;
+                    fieldChanged = false;
+                }                    
+            } 
+            return fieldChanged;
+        }     
+        
+        ctrl.getReasonField = (fieldName) => {
+            var foundField = false;
+            $.each(ctrl.listsCache.FieldName, (k,v) => {
+                if (v.name == fieldName) {
+                    foundField = v;
+                }
+            })
+            return foundField;
+        } 
+        
+        ctrl.saveCapturedReason = () => {
+            if(!ctrl.captureReasonModalData.reason) {
+                toastr.error("Please select a reason for change");
+                return;
+            }  
+            if(ctrl.captureReasonModalData.reason.name == "Other" && !ctrl.captureReasonModalData.comments ) {
+                toastr.error("Please select a comment for the reason");
+                return;
+            }  
+
+            if (!ctrl.data.products[ctrl.captureReasonModalData.productIndex].tempReasons) {
+                ctrl.data.products[ctrl.captureReasonModalData.productIndex].tempReasons = {}
+            }
+            ctrl.data.products[ctrl.captureReasonModalData.productIndex].tempReasons[ctrl.captureReasonModalData.changedFieldName] = ctrl.buildReasonDataStructure();
+            ctrl.captureReasonModalData = null;
+        }    
+        
+
+        ctrl.prepareReasonsForSave = (payload) => {
+
+            $.each(payload.products, (k,v) => {
+                if (v.tempReasons) {
+                    Object.keys(v.tempReasons).forEach(key => {
+                        if( v.tempReasons[key] ) {
+                            payload.reasons.push(v.tempReasons[key]);
+                        }
+                    });                    
+                }
+            })
+            return payload;
+            
+        }        
+        /* END Capture reason for change */
+
+
+        $(document).ready(function () {
             $('.page-container').css('display', 'revert');
             $('.page-content-wrapper').css('display', 'revert');
 
