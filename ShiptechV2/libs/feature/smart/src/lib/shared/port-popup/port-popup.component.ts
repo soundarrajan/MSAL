@@ -1453,7 +1453,7 @@ export class PortMenuComponent {
     }
   }
   closeMenu() {
-    this.item.remarkComments = '';
+    this.item.remarkComments = this.portRemarkCommentTemp;
     this.item.remarkStatus = this.portStatuses.find(item=>item.name==this.portRemarkStatusTemp);
     this.statusDropdown.value = this.item.remarkStatus?.name;
     this.menuTrigger.closeMenu();
