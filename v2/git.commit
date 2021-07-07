@@ -1,11 +1,11 @@
-﻿commit 24bec249e0309a34c4bedd99573400734c3b2ca3
+﻿commit b0b897317885ba459ad1403c6201e1dbadf45800
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 7 14:09:09 2021 +0000
+Date:   Wed Jul 7 15:02:45 2021 +0000
 
-    Merged PR 12204: #29780 : handling null planID
+    Merged PR 12205: #29684 : Route detail: Vessel Route.
     
-    #29780 : handling null planID
+    #29684 : Route detail: Vessel Route.
     
-    Related work items: #29780
+    Related work items: #29684
 
 branch: master

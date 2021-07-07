@@ -24,6 +24,8 @@ import TileLayer from 'ol/layer/Tile';
 import FullScreen from 'ol/control/FullScreen';
 import { MapViewService } from '../../services/map-view.service';
 import { VesselPopupService } from '../../services/vessel-popup.service';
+import moment from 'moment';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -120,6 +122,7 @@ export class OlMapComponent implements OnInit {
   public strokeColor;
   public clickedPort;
   public vesselList = [];
+  public vesselListWithImo = []
   public portList = [];
   public isRegionFilterSelected : boolean = false;
   public regionFilterType : string = '';
@@ -255,12 +258,16 @@ export class OlMapComponent implements OnInit {
   private portHoverPopupOverlay;
   private hoverCircleEffectOverlay;
 
-  constructor(private localService: LocalService, private vesselService: VesselPopupService, public dialog: MatDialog, private logger: LoggerService, private mapService: MapViewService) {
+  constructor(private localService: LocalService, private routeActive: ActivatedRoute,private vesselService: VesselPopupService, public dialog: MatDialog, private logger: LoggerService, private mapService: MapViewService) {
     this.logger.logInfo('OlMapComponent-ngOnInit()', new Date());
   }
 
   ngOnInit() {
     this.localService.isBunkerPlanEdited.subscribe(value => { this.isBunkerPlanEdited = value });
+    this.routeActive.data.subscribe(data => {
+      console.log(data);
+      this.vesselListWithImo = data?.vesselListWithImono;
+    });
     // this.localService.themeChange.subscribe(value => {
     //   this.theme = value;
     //   if(!this.theme){
@@ -313,7 +320,7 @@ export class OlMapComponent implements OnInit {
 
         feature5.forEach(element => {
           if (this.showPortList[0].name == element.getProperties().data.locationName)
-            element.setStyle(this.getNextPortStyle('amber'));
+            element.setStyle(this.getNextPortStyle('blue'));
           else
             element.setStyle(this.getNextPortStyle('grey'));
 
@@ -754,7 +761,7 @@ export class OlMapComponent implements OnInit {
         scale: 1,
         text: port.toUpperCase(),
         fill: new Fill({
-          color: "#898E97"
+          color: "#d4d4d4"
         })
       })
     });
@@ -985,10 +992,10 @@ export class OlMapComponent implements OnInit {
 
           this.createPopup(items[0].get('data'), coordinates);
           let feature1 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.id == "RL");//Route Line
-          let feature2 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "port-on-route");//Port Icon on Route
           let feature3 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-glow");//Vessel Icon Glow on Route
           let feature4 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-on-route");//Vessel Icon on Route
           let feature5 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "next-port");//Next Port Icon on Route
+          let feature2 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "port-on-route");//Port Icon on Route
 
           feature1.forEach(element => {
             let sty = element.getStyle();
@@ -996,12 +1003,6 @@ export class OlMapComponent implements OnInit {
             element.setStyle(sty);
           });
 
-          feature2.forEach(element => {
-            if (items[0].get('data').locationName != element.getProperties().data.locationName)
-              element.setStyle(this.getPortGlowStyle(-1));
-            else
-              element.setStyle(this.getPortGlowStyle(element.getProperties().data.flag));
-          });
 
           feature3.forEach(element => {
             element.setStyle(this.getVesselGlowStyle('grey'));
@@ -1017,6 +1018,13 @@ export class OlMapComponent implements OnInit {
             else
               element.setStyle(this.getNextPortStyle('amber'));
 
+          });
+
+          feature2.forEach(element => {
+            if (items[0].get('data').locationName != element.getProperties().data.locationName)
+              element.setStyle(this.getPortGlowStyle(-1));
+            else
+              element.setStyle(this.getPortGlowStyle(element.getProperties().data.flag));
           });
 
           this.setPortData(items[0].get('data'));
@@ -1212,7 +1220,7 @@ export class OlMapComponent implements OnInit {
   setdata(vData) {
     this.vessel_view = 'standard-view'//vData.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
       //vData.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
-    this.routeData = vData;
+    this.routeData = '';
     this.vesselPopData = {
       vesselView: this.vessel_view,
       name: vData.vesselName,
@@ -1363,51 +1371,56 @@ export class OlMapComponent implements OnInit {
     this.routeLayer.getSource().clear();
     // this.map.
     // if (data.VesselIMONO == '9301914')
-    this.localService.getSeaRoute(data.VesselIMONO).subscribe((res: any) => {
+    // this.localService.getSeaRoute(data.VesselIMONO).subscribe((res: any) => {
       // this.strokeColor = (this.vessel_view == 'minor-warning-view' ? '#E8AC55' : (this.vessel_view == 'higher-warning-view' ? '#FF7362' : '#66B0D6'));
       let dottedLine = false;
       let startLoc;
       let endLoc;
       let temp = [];
-      for (var i = 0; i < res.length; i++) {
-        if (res[i].RouteJson !== undefined && res[i].RouteJson !== null)
-          if ((res[i].StartLocation === res[i].vesselName)) {
+      let vesselInfo = this.vesselList.find(vessel => vessel.vesselName == data[0].vesselName)
+
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].routeJson !== undefined && data[i].routeJson != "")
+          if ((data[i].startLocation === data[i].vesselName)) {
             dottedLine = true;
           }
-        var routes = JSON.parse(res[i].RouteJson);
-        for (var routeJson of routes.getRouteJson) {
-          var routes = routeJson.routepoints;
-          let lineStringStyleNw;
-          var longPlus = []; var longMinus = [];
-          routes.forEach(x => {
-            temp.push(x);
-            x["lng"] = x["lon"];
-            if (x["lon"] > 0) {
-              longPlus.push(x);
-            } else {
-              longMinus.push(x);
+        var routes = data[i].routeJson == ''? '' :JSON.parse(data[i].routeJson);
+        if(routes){
+          for (var routeJson of routes.getRouteJson) {
+            var routes = routeJson.routepoints;
+            let lineStringStyleNw;
+            var longPlus = []; var longMinus = [];
+            routes.forEach(x => {
+              temp.push(x);
+              x["lng"] = x["lon"];
+              if (x["lon"] > 0) {
+                longPlus.push(x);
+              } else {
+                longMinus.push(x);
+              }
+            });
+  
+            if (longMinus.length > 0) {
+              this.drawVesselRouteLines(longMinus, lineStringStyleNw, vesselInfo, data[i], i);
             }
-          });
-
-          if (longMinus.length > 0) {
-            this.drawVesselRouteLines(longMinus, lineStringStyleNw, data, res[i], i);
+            if (longPlus.length > 0) {
+              this.drawVesselRouteLines(longPlus, lineStringStyleNw, vesselInfo, data[i], i);
+            }
+            //this.createPopup(res[i]);
+  
           }
-          if (longPlus.length > 0) {
-            this.drawVesselRouteLines(longPlus, lineStringStyleNw, data, res[i], i);
-          }
-          //this.createPopup(res[i]);
-
         }
-        if (res[i].StartLocation == locations.start_location_name) {
+        
+        if (data[i].startLocation == locations.start_location_name) {
           startLoc = {
-            geoLocation: new OlPoint(fromLonLat([res[i].StartLocationLatitude, res[i].StartLocationLongitude])),
+            geoLocation: new OlPoint(fromLonLat([data[i].startLocationLatitude, data[i].startLocationLongitude])),
             locationID: locations.start_location_id
           }
           this.addLocationPin(true, startLoc);
         }
-        if (res[i].StartLocation == locations.start_location_name) {
+        if (data[i].startLocation == locations.start_location_name) {
           endLoc = {
-            geoLocation: new OlPoint(fromLonLat([res[i].StartLocationLatitude, res[i].StartLocationLongitude])),
+            geoLocation: new OlPoint(fromLonLat([data[i].startLocationLatitude, data[i].startLocationLongitude])),
             locationID: locations.start_location_id
           }
           this.addLocationPin(false, endLoc);
@@ -1419,7 +1432,7 @@ export class OlMapComponent implements OnInit {
       var lonlat = fromLonLat([temp[z].lon, temp[z].lat]);
       this.flyTo(lonlat, () => { this.isLoading = false }, 2.5)
 
-    });
+    // });
   }
 
   createPopup(data, coordinates) {
@@ -1431,7 +1444,7 @@ export class OlMapComponent implements OnInit {
     this.clickedPort = data.locationName;
     var element = document.createElement('div');
     element.classList.add("ol-popup");
-    if (data.locationName == 'CRISTOBAL') {
+    if (data.locationName == 'CRISTOBAL') { //Bunker strategy port popup
       element.innerHTML = `<div class="popup-content">
       <div style="white-space:nowrap;display:flex;align-items:center;">
       <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
@@ -1443,13 +1456,18 @@ export class OlMapComponent implements OnInit {
           </div>`;
     }
     else {
+      let popupData = this.routeData.find(item => item.nextLocation == data.locationName)
+      let daysLeft = popupData.daysLeft.split('to');
+      let time = moment(popupData.eta).format('HH:mm');
+      popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
+      
       element.innerHTML = `<div class="popup-content">
       <div style="white-space:nowrap;display:flex;align-items:center;">
       <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
       </span>
-      <span class="days"> 3 Days </span> <span style="padding:0px 5px;font-weight:500;">to</span> <span class="days">${data.locationName}</span> </div>
-        <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
-        <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
+      <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
+        <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
+        <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
           </div>`;
     }
 
@@ -1468,7 +1486,7 @@ export class OlMapComponent implements OnInit {
       // if (data.locationName == 'Loke' || data.locationName == 'NEW YORK' || data.locationName == 'CRISTOBAL') {
       var element = document.createElement('div');
       element.classList.add("ol-hover-popup");
-      if (data.locationName == 'CRISTOBAL') {
+      if (data.locationName == 'CRISTOBAL') { //Bunker strategy port popup
         element.innerHTML = `<div class="popup-content">
         <div style="white-space:nowrap;display:flex;align-items:center;">
         <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
@@ -1480,13 +1498,18 @@ export class OlMapComponent implements OnInit {
             </div>`;
       }
       else {
+        let popupData = this.routeData.find(item => item.nextLocation == data.locationName)
+        let daysLeft = popupData.daysLeft.split('to');
+        let time = moment(popupData.eta).format('HH:mm');
+        popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
+        
         element.innerHTML = `<div class="popup-content">
         <div style="white-space:nowrap;display:flex;align-items:center;">
         <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
         </span>
-        <span class="days"> 3 Days </span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
-          <div style="line-height: 23px;padding:0px 2px;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
-          <div style="line-height: 23px;padding:0px 2px;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
+        <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
+          <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
+          <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
             </div>`;
       }
       var overlay = new Overlay({
@@ -1570,7 +1593,7 @@ export class OlMapComponent implements OnInit {
       id: 'STG' + vesselInfo.vesselId, type: 'vessel-glow', data: vesselInfo,
       geometry: new OlPoint(fromLonLat([vesselInfo.vesselLongitude, vesselInfo.vesselLatitude])),
     });
-    vesselGlow.setStyle(this.getVesselGlowStyle('amber'));
+    vesselGlow.setStyle(this.getVesselGlowStyle('blue'));
     featureRoutes.push(vesselGlow)
 
 
@@ -1585,47 +1608,47 @@ export class OlMapComponent implements OnInit {
 
     //Get Port Data
     let portData;
-    this.localService.getCountriesList().subscribe(res => {
-      if (res != undefined) {
-        for (let port of res) {
+    // this.localService.getCountriesList().subscribe(res => {
+    //   if (res != undefined) {
+        for (let port of this.portList) {
           if (ind == 0) {
-            if (port.locationName == routes.StartLocation) {
+            if (port.locationName == routes.startLocation) {
               let portGlow = new OlFeature({
                 id: 'PI' + routes.id, type: 'port-on-route', data: port,
-                geometry: new OlPoint(fromLonLat([routes.StartLocationLongitude, routes.StartLocationLatitude])),
+                geometry: new OlPoint(fromLonLat([routes.startLocationLongitude, routes.startLocationLatitude])),
               });
               portGlow.setStyle(this.getPortGlowStyle(port.flag));
               featureRoutes.push(portGlow);
 
               let portMarker = new OlFeature({
                 id: 'PM' + routes.id, type: 'port-marker', data: port,
-                geometry: new OlPoint(fromLonLat([routes.StartLocationLongitude, routes.StartLocationLatitude])),
+                geometry: new OlPoint(fromLonLat([routes.startLocationLongitude, routes.startLocationLatitude])),
               });
-              portMarker.setStyle(this.getPortMarkerStyle(routes.StartLocation));
+              portMarker.setStyle(this.getPortMarkerStyle(routes.startLocation));
               featureRoutes.push(portMarker);
             }
           }
-          if (port.locationName == routes.NextLocation) {
+          if (port.locationName == routes.nextLocation) {
             portData = port;
             if (this.nextPortIndex == ind) {
               let portGlow = new OlFeature({
                 id: 'NP' + routes.id, type: 'next-port', data: port,
-                geometry: new OlPoint(fromLonLat([routes.NextLocationLongitude, routes.NextLocationLatitude])),
+                geometry: new OlPoint(fromLonLat([routes.nextLocationLongitude, routes.nextLocationLatitude])),
               });
-              portGlow.setStyle(this.getNextPortStyle('amber'));
+              portGlow.setStyle(this.getNextPortStyle('blue'));
               featureRoutes.push(portGlow);
 
               let portMarker = new OlFeature({
                 id: 'PM' + routes.id, type: 'port-marker', data: port,
-                geometry: new OlPoint(fromLonLat([routes.NextLocationLongitude, routes.NextLocationLatitude])),
+                geometry: new OlPoint(fromLonLat([routes.nextLocationLongitude, routes.nextLocationLatitude])),
               });
-              portMarker.setStyle(this.getPortMarkerStyle(routes.NextLocation));
+              portMarker.setStyle(this.getPortMarkerStyle(routes.nextLocation));
               featureRoutes.push(portMarker);
             }
             else {
               let portGlow = new OlFeature({
                 id: 'PI' + routes.id, type: 'port-on-route', data: port,
-                geometry: new OlPoint(fromLonLat([routes.NextLocationLongitude, routes.NextLocationLatitude])),
+                geometry: new OlPoint(fromLonLat([routes.nextLocationLongitude, routes.nextLocationLatitude])),
               });
               portGlow.setStyle(this.getPortGlowStyle(port.flag));
               featureRoutes.push(portGlow);
@@ -1634,9 +1657,9 @@ export class OlMapComponent implements OnInit {
 
             let portMarker = new OlFeature({
               id: 'PM' + routes.id, type: 'port-marker', data: port,
-              geometry: new OlPoint(fromLonLat([routes.NextLocationLongitude, routes.NextLocationLatitude])),
+              geometry: new OlPoint(fromLonLat([routes.nextLocationLongitude, routes.nextLocationLatitude])),
             });
-            portMarker.setStyle(this.getPortMarkerStyle(routes.NextLocation));
+            portMarker.setStyle(this.getPortMarkerStyle(routes.nextLocation));
             featureRoutes.push(portMarker);
             this.routeLayer.getSource().addFeatures(featureRoutes);
             this.routeLayer.setVisible(true);
@@ -1647,8 +1670,8 @@ export class OlMapComponent implements OnInit {
           }
 
         }
-      }
-    });
+      // }
+    // });
 
   }
 
@@ -1785,18 +1808,30 @@ export class OlMapComponent implements OnInit {
   showRoutes(value) {
     this.displayRoute = value;
     this.localService.setRouteFlag(value);
-    var locations = {
-      "start_location_name": this.routeData.StartLocation.locationName,
-      "start_location_id": this.routeData.StartLocation.LocationId,
-      "end_location_name": this.routeData.EndLocation.locationName,
-      "end_location_id": this.routeData.EndLocation.LocationId
+    let selectedVessel;
+    if (this.vesselPopData.vesselId) {
+      selectedVessel = this.vesselListWithImo.find(vessel => vessel.id == this.vesselPopData.vesselId)
+      if (!(selectedVessel?.imono)) {
+        return;
+      };
     }
-    this.drawRoute(this.routeData, locations);
-    this.openRoutes.emit(value);
-    this.showLocationPop = false;
-    this.showPortList = [];
-    this.localService.setPortPopupData(this.showPortList);
-
+    let req = { VesselImo : selectedVessel?.imono};//'9085546' };
+    this.vesselService.getVesselRouteData(req).subscribe((res)=>{
+      this.routeData = res.payload;
+      if(this.routeData.length > 0){
+        var locations = {
+          "start_location_name": this.routeData[0].startLocation,
+          "start_location_id": this.routeData.startLocationId,
+          "end_location_name": this.routeData[0].nextLocation,
+          "end_location_id": this.routeData.nextLocationId
+        }
+        this.drawRoute(this.routeData, locations);
+        this.openRoutes.emit(value);
+        this.showLocationPop = false;
+        this.showPortList = [];
+        this.localService.setPortPopupData(this.showPortList);
+      }
+    }) 
   }
   showPortInfo(value) {
     this.showPortInfoScreen.emit(value);
