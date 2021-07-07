@@ -1,9 +1,11 @@
-﻿commit 165cd36ddf7b5a555d1f38eb010e50ee211b99c0
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jul 7 13:08:58 2021 +0000
+﻿commit 24bec249e0309a34c4bedd99573400734c3b2ca3
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jul 7 14:09:09 2021 +0000
 
-    Merged PR 12200: #33969: Port details: View Port remarks issue has fixed
+    Merged PR 12204: #29780 : handling null planID
     
-    Related work items: #33969
+    #29780 : handling null planID
+    
+    Related work items: #29780
 
 branch: master
