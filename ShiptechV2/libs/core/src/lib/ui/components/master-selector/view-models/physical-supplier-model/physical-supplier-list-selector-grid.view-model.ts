@@ -135,6 +135,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     headerName: PhysicalSupplierListColumnsLabels.name,
     colId: PhysicalSupplierListColumns.name,
     field: model('name'),
+    valueFormatter: params => this.format.htmlDecode(params.value),
     minWidth: 250,
     flex: 2
   };
@@ -143,6 +144,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     headerName: PhysicalSupplierListColumnsLabels.displayName,
     colId: PhysicalSupplierListColumns.displayName,
     field: model('displayName'),
+    valueFormatter: params => this.format.htmlDecode(params.value),
     minWidth: 250,
     flex: 2
   };
@@ -203,6 +205,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     headerName: PhysicalSupplierListColumnsLabels.comments,
     colId: PhysicalSupplierListColumns.comments,
     field: model('comments'),
+    valueFormatter: params => this.format.htmlDecode(params.value),
     minWidth: 250,
     flex: 2
   };
