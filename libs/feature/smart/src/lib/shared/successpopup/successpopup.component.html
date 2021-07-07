@@ -1,0 +1,20 @@
+
+<div class="success-popup">
+    <div class="success-popup-header">
+    
+    <div class="Success-title">
+        <span class="success-icon" ></span><span style="padding-left: 5px;">Success</span>
+    </div>
+    <div class="close-btn">
+        <mat-icon class="icon" (click)="close()">close</mat-icon>
+      </div>
+    </div>
+    <hr class="line-divider">
+    <div class="success-text">{{message}} {{id}}</div>
+    <div class="yes-no">
+     
+      <button mat-raised-button class="blue-button" [mat-dialog-close]="true">
+        <span>Ok</span>
+      </button>
+    </div>
+  </div>

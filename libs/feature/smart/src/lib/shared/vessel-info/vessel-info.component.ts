@@ -18,6 +18,7 @@ import { SaveCurrentROBAction, UpdateCurrentROBAction, GeneratePlanAction, SaveS
          ImportGsisProgressAction, newVesselPlanAvailableAction } from './../../store/bunker-plan/bunkering-plan.action';
 import { SaveCurrentROBState,GeneratePlanState } from '../../store/bunker-plan/bunkering-plan.state';
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
+import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import moment  from 'moment';
 import { Subject, Subscription, Observable, forkJoin } from 'rxjs';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
@@ -556,9 +557,8 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
       if(data?.isSuccess == true){
-        const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-          width: '350px',
-          panelClass: 'confirmation-popup-operator',
+        const dialogRef = this.dialog.open(SuccesspopupComponent, {
+          panelClass: ['success-popup-panel'],
           data: {message : 'Plan will send to vessel in a short while.'}
         });
       }
@@ -593,9 +593,8 @@ export class VesselInfoComponent implements OnInit {
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       // if(data?.isSuccess == true ){
       if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0 && data?.payload[0]?.import_in_progress == 0){
-        const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-          width: '350px',
-          panelClass: 'confirmation-popup-operator',
+        const dialogRef = this.dialog.open(SuccesspopupComponent, {
+          panelClass: ['success-popup-panel'],
           data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
         this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
