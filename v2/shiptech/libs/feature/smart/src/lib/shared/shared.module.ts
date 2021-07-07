@@ -51,6 +51,7 @@ import { FilterCommentByParticipantPipe } from './pipes/filterCommentPipe/filter
 import { GroupByParticipantPipe } from './pipes/groupByParticipantPipe/group-by-participant.pipe';
 import { EnUsDatePipePipe } from './pipes/EnUsDatePipe/en-us-date-pipe.pipe';
 import { WarningoperatorpopupComponent } from './warningoperatorpopup/warningoperatorpopup.component';
+import { SuccesspopupComponent } from './successpopup/successpopup.component';
 import { FutureRequestGridComponent } from './future-request-grid/future-request-grid.component';
 import { CountByPriorityPipe } from './pipes/count-by-priority.pipe';
 import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
@@ -63,6 +64,7 @@ import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
     PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
     DatePickerFromToComponent,
     FilterPipe, AllBunkeringPlanComponent,NoDataComponent, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, WarningoperatorpopupComponent,
+    SuccesspopupComponent,
     UtcDatePipePipe,
     FutureRequestGridComponent, 
     CountByPriorityPipe],
@@ -82,8 +84,8 @@ import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
     CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent,
-    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, AllBunkeringPlanComponent,NoDataComponent, WarningoperatorpopupComponent, UtcDatePipePipe, CountByPriorityPipe],
+    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, AllBunkeringPlanComponent,NoDataComponent, WarningoperatorpopupComponent, UtcDatePipePipe, CountByPriorityPipe, SuccesspopupComponent],
   providers: [LocalService, LoggerService, AuthGaurdService, BunkeringPlanComponent, FutureRequestGridComponent],
-  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent,WarningoperatorpopupComponent]
+  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent,WarningoperatorpopupComponent, SuccesspopupComponent]
 })
 export class SharedModule { }

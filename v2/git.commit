@@ -1,7 +1,11 @@
-﻿commit 69c2d7124176b583766cb097b9b231333f31c4e4
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Wed Jul 7 20:59:59 2021 +0530
+﻿commit 7452d2af1b83853d501873e4561b934b09209e39
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jul 7 19:39:13 2021 +0000
 
-    Order port UI Issue
+    Merged PR 12208: #33169 : Warning template for success messages
+    
+    #33169 : Warning template for success messages
+    
+    Related work items: #33169
 
 branch: master
