@@ -407,8 +407,8 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
       this.currPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
-      this.planId = this.currPlanIdDetails?.planId.toString().trim();
-      if(this.planId != null){
+      this.planId = this.currPlanIdDetails?.planId ? this.currPlanIdDetails?.planId.toString().trim() : '';
+      if(this.planId){
         this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
         this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'InValid' : 'Valid';
         this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
@@ -437,8 +437,8 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
       this.prevPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
-      this.prevPlanId = this.prevPlanIdDetails?.planId.toString().trim();
-      if(this.prevPlanId != null){
+      this.prevPlanId = this.prevPlanIdDetails?.planId ? this.prevPlanIdDetails?.planId.toString().trim() : '';
+      if(this.prevPlanId){
           if(this.currPlanIdDetails?.isPlanInvalid === 'Y'){
               this.statusPrevBPlan = this.prevPlanIdDetails?.isPlanInvalid === 'N' ? true:false ;
           }
