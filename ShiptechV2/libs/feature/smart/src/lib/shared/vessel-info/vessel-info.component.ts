@@ -6,7 +6,7 @@ import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.action";
 import { CommentsComponent } from '../comments/comments.component';
-
+import { VesselPopupService } from '../../services/vessel-popup.service';
 import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
 
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
@@ -80,9 +80,14 @@ export class VesselInfoComponent implements OnInit {
   currentROBChange: Subject<void> = new Subject<void>();
   subscription: Subscription;
   public isLatestPlanInvalid : boolean = false;
+  viewcurrentROBandArbitragedetails: boolean = false;
+  viewcomments: boolean = false;
+  viewcurrentBunkeringPlan: boolean = false;
+  viewpreviousBunkeringPlan: boolean = false;
+  myDefaultView: boolean = false;
  
 
-  constructor(private store: Store, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
+  constructor(private store: Store, iconRegistry: MatIconRegistry,private vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
@@ -106,10 +111,11 @@ export class VesselInfoComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('Vessel Data ',this.vesselData)
+    console.log('Vessel Data11111111111111 ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
     
-    this.checkVesselHasNewPlan(this.vesselData);
+    this.checkVesselHasNewPlan(this.vesselData); 
+    this.getDefaultView();
     this.loadBunkerPlanHeader(this.vesselData);  
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     this.loadBunkerPlanDetails(vesseldata.vesselRef);   
@@ -124,7 +130,130 @@ export class VesselInfoComponent implements OnInit {
     }
     return true;
   }
-    
+  getDefaultView() {
+    let req = { "UserId": this.vesselData.vesselId, "Port": 0, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 1 }
+    this.vesselService.getmyDefaultview(req).subscribe((res) => {
+      this.vesselService.myDefaultViewPayload = [];
+        this.vesselService.APImyDefaultView = [];
+        debugger;
+      if (res.payload.length > 0) {
+        this.vesselService.myDefaultViewPayload = res.payload[0];
+      }
+      else{
+        if (this.vesselService.myDefaultViewPayload.length == 0) {
+          this.vesselService.myDefaultViewPayload.userId = this.vesselData.vesselId;
+          this.vesselService.myDefaultViewPayload.port = 1;
+          this.vesselService.myDefaultViewPayload.vessel = 0;
+          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+          this.vesselService.myDefaultViewPayload.defaultView = 0;
+          this.vesselService.myDefaultViewPayload.portRemarks = 0;
+          this.vesselService.myDefaultViewPayload.productAvailability = 0;
+          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
+          this.vesselService.myDefaultViewPayload.portsAgents = 0;
+          this.vesselService.myDefaultViewPayload.otherDetails = 0;
+          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
+          this.vesselService.myDefaultViewPayload.futureRequest = 0;
+          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
+          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
+          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
+          this.vesselService.myDefaultViewPayload.comments = 0;
+          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
+        }
+      }
+           
+      console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
+      if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
+        if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.port == 1) {
+          this.myDefaultView = true;
+          if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
+            this.viewcurrentROBandArbitragedetails = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.comments == 1) {
+            this.viewcomments = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.currentBunkeringPlan == 1) {
+            this.viewcurrentBunkeringPlan = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.previousBunkeringPlan == 1) {
+            this.viewpreviousBunkeringPlan = true;
+          }
+        }
+      }
+    })
+
+
+  }
+
+  CheckDefaultView(event) {
+    debugger;
+    if (event) {
+      this.myDefaultView = true;
+      this.vesselService.myDefaultViewPayload.defaultView = 1;
+    }
+    else {
+      this.myDefaultView = false;
+      this.viewcurrentROBandArbitragedetails = false;
+      this.viewcomments = false;
+      this.viewcurrentBunkeringPlan = false;
+      this.viewpreviousBunkeringPlan = false;
+      this.vesselService.myDefaultViewPayload.comments = 0;
+      this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
+      this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+      this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
+    }
+  }
+  
+
+  public changeDefault(expandRef?: any) {
+   
+    console.log("+++++++++++++", expandRef);
+    switch (expandRef) {
+      case 'commentsClose':
+        this.viewcomments = false;
+        this.vesselService.myDefaultViewPayload.comments = 0;
+        break;
+      case 'commentsOpen':
+        this.viewcomments = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.comments = 1;
+        }
+        break;
+      case 'currentROBandArbitragedetailsClose':
+        this.viewcurrentROBandArbitragedetails = false;
+        this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
+        break;
+      case 'currentROBandArbitragedetailsOpen':
+        this.viewcurrentROBandArbitragedetails = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 1;
+        }
+        break;
+      case 'currentBunkeringPlanOpen':
+        this.viewcurrentBunkeringPlan = true;
+        this.statusCurrBPlan = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 1;
+        }
+        break;
+      case 'currentBunkeringPlanClose':
+        this.viewcurrentBunkeringPlan = false;
+        this.statusCurrBPlan = false;
+        this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+        break;
+      case 'previousBunkeringPlanClose':
+        this.viewpreviousBunkeringPlan = false;
+        this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
+        break;
+      case 'previousBunkeringPlanOpen':
+        this.viewpreviousBunkeringPlan = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 1;
+        }
+        break;
+    }
+  }
+
   loadBunkerPlanComments() {
     let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
     let Reqpayload = this.vesselRef?.vesselId; 

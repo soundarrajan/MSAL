@@ -17,7 +17,8 @@
       </div>
       <div class="col-4 pd-0 ">
         <div class="default-view-checkbox">
-          <mat-checkbox class="m-l-r-5" [checked]="defaultView"></mat-checkbox>
+          <mat-checkbox class="m-l-r-5" (ngModelChange)="CheckDefaultView($event)" [ngModel]="myDefaultView"></mat-checkbox>
+          <!-- <mat-checkbox class="m-l-r-5" [checked]="defaultView"></mat-checkbox> -->
           <div>My Default View</div>
         </div>
         <!-- <div class="default-view-checkbox">
@@ -107,8 +108,8 @@
             </div>
           </div>
           <mat-accordion>
-            <mat-expansion-panel #second id="alerts" hideToggle="true" [expanded]="true" (closed)="changeDefault()"
-              (opened)="changeDefault('second')">
+            <mat-expansion-panel #second id="alerts" hideToggle="true" [expanded]="viewportRemarks" (closed)="changeDefault('portRemarksClose')"
+              (opened)="changeDefault('portRemarksOpen')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -233,8 +234,8 @@
                 <!-- Add Alert End -->
               </div>
             </mat-expansion-panel>
-            <mat-expansion-panel #third id="product-availability" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault('third')">
+            <mat-expansion-panel #third id="product-availability" hideToggle="true" [expanded]="viewPortProductAvailability"  (closed)="changeDefault('PortProductAvailabilityClose')"
+              (opened)="changeDefault('PortProductAvailabilityOpen')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -293,8 +294,8 @@
                   class="ag-theme-balham-dark"></ag-grid-angular>
               </div>
             </mat-expansion-panel>
-            <mat-expansion-panel #fourth id="bops-prices" hideToggle="true" (closed)="changeDefault()"
-              (opened)="changeDefault('fourth')">
+            <mat-expansion-panel #fourth id="bops-prices" hideToggle="true" [expanded]="viewbopsPrice" (closed)="changeDefault('bopsPriceClose')"
+              (opened)="changeDefault('bopsPriceOpen')">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
                   <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -471,8 +472,8 @@
                 </div>
               </div>
             </mat-expansion-panel>
-            <mat-expansion-panel #fifth id="agents-info" hideToggle="true" (closed)="changeDefault()"
-            (opened)="changeDefault()">
+            <mat-expansion-panel #fifth id="agents-info" hideToggle="true" [expanded]="viewportsAgents" (closed)="changeDefault('portsAgentsOpen')"
+            (opened)="changeDefault('portsAgentsClose')">
             <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
               <mat-panel-title>
                 <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -492,8 +493,8 @@
             </div>
             </div>
           </mat-expansion-panel>
-          <mat-expansion-panel #sixth id="other-port" hideToggle="true" (closed)="changeDefault()"
-          (opened)="changeDefault()">
+          <mat-expansion-panel #sixth id="other-port" hideToggle="true" [expanded]="viewotherDetails" (closed)="changeDefault('otherDetailsClose')"
+          (opened)="changeDefault('otherDetailsOpen')">
           <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
             <mat-panel-title>
               <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
