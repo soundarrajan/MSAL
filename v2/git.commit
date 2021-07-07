@@ -1,7 +1,9 @@
-﻿commit abc3830457d0715835de72d86b55740a543f889b
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Wed Jul 7 07:06:25 2021 +0530
+﻿commit 7b96126cc38e7ed7659c3a3c9d43f6ceb607ffb7
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Jul 7 06:13:51 2021 +0000
 
-    My Default View - Vessel, port, Bunker-plan
+    Merged PR 12180: #33954: Port Remarks_ The given comments are not saving properly has fixed
+    
+    Related work items: #33954
 
 branch: master

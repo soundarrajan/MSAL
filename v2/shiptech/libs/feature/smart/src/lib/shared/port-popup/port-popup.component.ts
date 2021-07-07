@@ -146,7 +146,7 @@ export class PortPopupComponent implements OnInit {
     this.portStatuses = await this.legacyLookupsDatabase.getPortStatuses();
     this.severity = this.portSeverities.find(item=>item.id==1);
     console.log(this.remarkTypes);
-    
+    this.loadPortRemarks();
   }
   getDefaultView() {
     let req = { "UserId": this.popup_data.locationId, "Port": 1, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 0 }
@@ -267,7 +267,8 @@ export class PortPopupComponent implements OnInit {
     if(this.third?.expanded || expandRef=='PortProductAvailabilityClose') {
       this.loadPortProductAvailability();
     }
-    if(this.second?.expanded || expandRef=='portRemarksOpen') {
+    // if(this.second?.expanded || expandRef=='second') {
+    if(this.second?.expanded) {
       this.loadPortRemarks();
     }
     if(this.fourth?.expanded || expandRef=='bopsPriceOpen') {
