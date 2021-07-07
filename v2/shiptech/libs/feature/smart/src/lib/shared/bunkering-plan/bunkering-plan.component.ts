@@ -544,7 +544,7 @@ export class BunkeringPlanComponent implements OnInit {
        lsdis_current_stock: currentROBObj?.LSDIS,
        hsdis_current_stock: currentROBObj?.HSDIS,
        plan_details: dataFromStore,
-       is_vessel_role_played: this.selectedUserRole == 1 ? 1 : 0, 
+       is_vessel_role_played: storeVesselData.userRole == "Vessel" ? 1 : 0,//this.selectedUserRole == 1 ? 1 : 0, 
        generate_new_plan: this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
        import_gsis: this.store.selectSnapshot(GeneratePlanState.getImportGsis),
        send_plan: this.store.selectSnapshot(GeneratePlanState.getSendPlan), 
