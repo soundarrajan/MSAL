@@ -50,7 +50,7 @@ export class AGGridDownloadFileComponent implements ICellRendererAngularComp  {
     downloadDocument(param: any): void {
         console.log("000000000000000000", this.params)
         const request = {
-          Payload: { Id: param.bdnFileID}
+          Payload: { Id: param.bdnFileID , name: param.bdnFileName}
         };
         this.mastersApi.downloadDocument(request).subscribe(
           response => {
