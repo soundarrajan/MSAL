@@ -1,9 +1,11 @@
-﻿commit 7b96126cc38e7ed7659c3a3c9d43f6ceb607ffb7
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jul 7 06:13:51 2021 +0000
+﻿commit b5ac4ac76de526c32ed2eda5fd35e0a81bf356d3
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Wed Jul 7 07:41:46 2021 +0000
 
-    Merged PR 12180: #33954: Port Remarks_ The given comments are not saving properly has fixed
+    Merged PR 12183: 33871#bugfix
     
-    Related work items: #33954
+    33871#bugfix
+    
+    Cherry-picked from commit `eb983551`.
 
 branch: master
