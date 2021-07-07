@@ -2510,11 +2510,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             if (ctrl.data.is2MDelivery) {
                 console.log(product);
-               if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
+                if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
                     if (parseFloat(confirmedQuantityForBqs) > 200) {
                         product.isBqs = true;
                         return;
-                      
+                          
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
                     if (parseFloat(confirmedQuantityForBqs) > 50) {
@@ -2522,9 +2522,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         return;
                        
                     }
-               } 
+                }
+                product.isBqs = false; 
             }
-            product.isBqs = false;
         }
         ctrl.updateModelProperty = function(model, property, value) {
             model[property] = value;
@@ -4847,9 +4847,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         return;      
                     }
                 } 
-            }
+                product.isBqs = false;
+            } 
 
-            product.isBqs = false;
         }
 
 
