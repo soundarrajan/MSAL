@@ -384,6 +384,18 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
           .deliveredVolume
       );
     }
+
+    if (
+      this.formValues.deliveryProducts[this.deliveryProductIndex]
+        .physicalSupplier
+    ) {
+      this.formValues.deliveryProducts[
+        this.deliveryProductIndex
+      ].physicalSupplier.name = this.htmlDecode(
+        this.formValues.deliveryProducts[this.deliveryProductIndex]
+          .physicalSupplier.name
+      );
+    }
     this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
 
@@ -519,6 +531,13 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   async getPhysicalSupplierList() {
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
+    for (let i = 0; i < this.physicalSupplierList.length; i++) {
+      if (this.physicalSupplierList[i].name) {
+        this.physicalSupplierList[i].name = this.htmlDecode(
+          this.physicalSupplierList[i].name
+        );
+      }
+    }
   }
 
   selectorPhysicalSupplierSelectionChange(selection: IDisplayLookupDto): void {
@@ -529,7 +548,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     } else {
       const obj = {
         id: selection.id,
-        name: selection.name
+        name: this.htmlDecode(selection.name)
       };
       this.formValues.deliveryProducts[
         this.deliveryProductIndex
@@ -586,11 +605,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         : this.formValues.deliveryProducts[
             this.deliveryProductIndex
           ].physicalSupplier.toLowerCase();
+
       if (this.physicalSupplierList) {
         return this.physicalSupplierList
-          .filter(
-            option =>
-              option.name.toLowerCase().indexOf(filterValue.trim()) === 0
+          .filter(option =>
+            option.name.toLowerCase().includes(filterValue.trim())
           )
           .slice(0, 10);
       } else {
@@ -1279,5 +1298,15 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       event.preventDefault();
       return false;
     }
+  }
+
+  htmlDecode(str: any): any {
+    var decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+
+    return decode(_.unescape(str));
   }
 }

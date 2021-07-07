@@ -697,14 +697,13 @@
           <mat-form-field class="with-search" appearance="legacy">
             <mat-label>Physical supplier</mat-label>
             <input class="free-text-field" type="text" matInput
-              [disabled]="formValues.deliveryStatus.name == 'Verified'" [ngModel]="
+              [disabled]="formValues.deliveryStatus.name == 'Verified'" [(ngModel)]="
                 formValues.deliveryProducts[deliveryProductIndex]
-                  .physicalSupplier | htmlDecode:'name'
-              " (ngModelChange)="formValues.deliveryProducts[deliveryProductIndex]
-                  .physicalSupplier.name = $event" [matAutocomplete]="auto1" placeholder="Physical supplier" />
+                  .physicalSupplier
+              " [matAutocomplete]="auto1" placeholder="Physical supplier" />
             <mat-autocomplete #auto1="matAutocomplete" class="darkPanelAuto" [displayWith]="displayFn">
               <mat-option *ngFor="let physicalSupplier of filterPhysicalSupplierList()" [value]="physicalSupplier">
-                {{ physicalSupplier.name | htmlDecode}}
+                {{ physicalSupplier.name }}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
