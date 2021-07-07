@@ -1,11 +1,7 @@
-﻿commit b0b897317885ba459ad1403c6201e1dbadf45800
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 7 15:02:45 2021 +0000
+﻿commit 69c2d7124176b583766cb097b9b231333f31c4e4
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Wed Jul 7 20:59:59 2021 +0530
 
-    Merged PR 12205: #29684 : Route detail: Vessel Route.
-    
-    #29684 : Route detail: Vessel Route.
-    
-    Related work items: #29684
+    Order port UI Issue
 
 branch: master
