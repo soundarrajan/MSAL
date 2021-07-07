@@ -17,6 +17,7 @@ export namespace VesselPopupApiPaths{
     export const getVesselSchedule = () => `api/Smart/Vessel/getVesselSchedule`;
     export const getVesselAlertList = () => `api/Smart/Port/getVesselAlertList`;
     export const putVesselAlertList = () => `api/Smart/Port/createVesselAlert`;
+    export const getVesselRouteData = () => `api/Smart/Vessel/getVesselRoute`;
 }
 
 @Injectable({
@@ -95,5 +96,12 @@ export class VesselPopupService{
     );
   }
 
+  @ObservableException()
+  getVesselRouteData(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${VesselPopupApiPaths.getVesselRouteData()}`,
+      { payload: request }
+    );
+  }
 }
 
