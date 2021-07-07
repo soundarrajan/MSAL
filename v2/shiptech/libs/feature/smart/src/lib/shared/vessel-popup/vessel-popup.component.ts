@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, ElementRef, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef, Output, EventEmitter, ViewEncapsulation, HostListener } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { GridOptions } from '@ag-grid-community/core';
@@ -40,9 +40,9 @@ export class VesselPopupComponent implements OnInit {
   myDefaultViewPayload: any = [];
   EnableFutureView: boolean;
   viewFutureRequest: boolean = false;
-  viewVesselRedelivery: boolean;
-  viewVesselSchedule: boolean;
-  viewVesselAlerts: boolean;
+  viewVesselRedelivery: boolean = false;
+  viewVesselSchedule: boolean = false;
+  viewVesselAlerts: boolean = false;
   APImyDefaultView: any = [];
   constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService: VesselPopupService) {
     this.shiptechUrl = new URL(window.location.href).origin;
@@ -58,6 +58,9 @@ export class VesselPopupComponent implements OnInit {
   @ViewChild('fifth') fifth: MatExpansionPanel;
 
   ngOnInit() {
+
+
+
     this.route.data.subscribe(data => {
       console.log(data);
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
@@ -67,11 +70,14 @@ export class VesselPopupComponent implements OnInit {
       this.vesselList = data?.vesselListWithImono;
     });
     this.loadVesselBasicInfo(this.popup_data.vesselId);
-    this.getmyDefaultview();
+    this.getDefaultView();
     this.loadFutureRequestData();
     this.loadRedeliveryInfo(this.popup_data.vesselId);
     this.loadVesselScheduleList(this.popup_data.vesselId);
     this.loadVesselAlertList();
+
+
+
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.alerts = [
       {
@@ -158,6 +164,60 @@ export class VesselPopupComponent implements OnInit {
     this.logger.logInfo('VesselPopupComponent-ngAfterViewInit()', new Date());
   }
 
+  getDefaultView() {
+    let req = { "UserId": this.popup_data.vesselId, "Port": 0, "Vessel": 1, "Default_View": 1, "Bunker_Plan": 0 }
+    this.vesselService.getmyDefaultview(req).subscribe((res) => {
+      if (res.payload.length > 0) {
+        this.vesselService.myDefaultViewPayload = [];
+        this.vesselService.APImyDefaultView = [];
+        this.vesselService.myDefaultViewPayload = res.payload[0];
+        if (this.vesselService.myDefaultViewPayload == null && this.vesselService.myDefaultViewPayload.length == 0) {
+          this.vesselService.myDefaultViewPayload.userId = this.popup_data.VesselId;
+          this.vesselService.myDefaultViewPayload.port = 0;
+          this.vesselService.myDefaultViewPayload.vessel = 1;
+          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+          this.vesselService.myDefaultViewPayload.defaultView = 0;
+          this.vesselService.myDefaultViewPayload.portRemarks = 0;
+          this.vesselService.myDefaultViewPayload.productAvailability = 0;
+          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
+          this.vesselService.myDefaultViewPayload.portsAgents = 0;
+          this.vesselService.myDefaultViewPayload.otherDetails = 0;
+          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
+          this.vesselService.myDefaultViewPayload.futureRequest = 0;
+          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
+          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
+          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
+          this.vesselService.myDefaultViewPayload.comments = 0;
+          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
+
+        }
+        console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
+        if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
+          if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.vessel == 1) {
+            this.myDefaultView = true;
+            if (this.vesselService.myDefaultViewPayload.futureRequest == 1) {
+              this.viewFutureRequest = true;
+            }
+            else if (this.vesselService.myDefaultViewPayload.vesselRedelivery == 1) {
+              this.viewVesselRedelivery = true;
+            }
+            else if (this.vesselService.myDefaultViewPayload.vesselSchedule == 1) {
+              this.viewVesselSchedule = true;
+            }
+            else if (this.vesselService.myDefaultViewPayload.vesselAlerts == 1) {
+              this.viewVesselAlerts = true;
+            }
+          }
+        }
+
+      }
+    })
+
+
+  }
+
+
   loadVesselBasicInfo(vesselId) {
     if (vesselId != null) {
       let req = { VesselId: vesselId };
@@ -182,43 +242,26 @@ export class VesselPopupComponent implements OnInit {
     }
   }
 
-  getmyDefaultview() {
-    let req = { "UserId": "186", "Port": "1", "Vesel": "0", "Default_View": "1", "Bunker_Plan": "0" }
-    this.vesselService.getmyDefaultview(req).subscribe((res) => {
-      console.log("55555555555555%%%%%%%%%%%%%", res);
-      if (res.payload.length > 0) {
-        this.myDefaultViewPayload = [];
-        this.myDefaultViewPayload = res.payload[0];
-        debugger;
-        Object.assign(this.APImyDefaultView, this.myDefaultViewPayload);
 
-        if (this.myDefaultViewPayload.defaultView == 0) {
-          this.myDefaultView = true;
-          if (this.myDefaultViewPayload.futureRequest == 1) {
-            this.viewFutureRequest = true;
-          }
-          else if (this.myDefaultViewPayload.vesselRedelivery == 1) {
-            this.viewVesselRedelivery = true;
-          }
-          else if (this.myDefaultViewPayload.vesselSchedule == 1) {
-            this.viewVesselSchedule = true;
-          }
-          else if (this.myDefaultViewPayload.vesselAlerts == 1) {
-            this.viewVesselAlerts = true;
-          }
-        }
-      }
-    })
-  }
+
 
   CheckDefaultView(event) {
+    debugger;
     if (event) {
       this.myDefaultView = true;
-      this.myDefaultViewPayload.defaultView = 0;
+      this.vesselService.myDefaultViewPayload.defaultView = 1;
     }
     else {
       this.myDefaultView = false;
-      this.myDefaultViewPayload.defaultView = 1;
+      this.viewFutureRequest = false;
+      this.viewVesselRedelivery = false;
+      this.viewVesselSchedule = false;
+      this.viewVesselAlerts = false;
+      this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
+      this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
+      this.vesselService.myDefaultViewPayload.futureRequest = 0;
+      this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
+      this.vesselService.myDefaultViewPayload.defaultView = 0;
     }
   }
   public changeDefault(expandRef?: any) {
@@ -228,90 +271,47 @@ export class VesselPopupComponent implements OnInit {
     console.log("+++++++++++++", expandRef);
     switch (expandRef) {
       case 'VRClose':
-        this.myDefaultViewPayload.vesselRedelivery = 0;
+        this.viewVesselRedelivery = false;
+        this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
         break;
       case 'VROpen':
-        this.myDefaultViewPayload.vesselRedelivery = 1;
+        this.viewVesselRedelivery = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.vesselRedelivery = 1;
+        }
         break;
       case 'VAClose':
-        this.myDefaultViewPayload.vesselAlerts = 0;
+        this.viewVesselAlerts = false;
+        this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
         break;
       case 'VAOpen':
-        this.myDefaultViewPayload.vesselAlerts = 1;
+        this.viewVesselAlerts = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.vesselAlerts = 1;
+        }
         break;
       case 'FROpen':
-        this.myDefaultViewPayload.futureRequest = 1;
+        this.viewFutureRequest = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.futureRequest = 1;
+        }
         break;
       case 'FRClose':
-        this.myDefaultViewPayload.futureRequest = 0;
+        this.viewFutureRequest = false;
+        this.vesselService.myDefaultViewPayload.futureRequest = 0;
         break;
       case 'VSClose':
-        this.myDefaultViewPayload.vesselSchedule = 0;
+        this.viewVesselSchedule = false;
+        this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
         break;
       case 'VSOpen':
-        this.myDefaultViewPayload.vesselSchedule = 1;
+        this.viewVesselSchedule = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.vesselSchedule = 1;
+        }
         break;
     }
-
   }
-
-  Closepopevnt() {
-    let requestPayload = {}
-    if (this.myDefaultView) {
-      requestPayload = {
-        "Payload": {
-          "UserId": "186",
-          "Port": "0",
-          "Vesel": "0",
-          "Bunker_Plan": "0",
-          "DefaultView": "0",
-          "PortRemarks": "0",
-          "ProductAvailability": "0",
-          "BOPSPrice": "0",
-          "PortsAgents": "0",
-          "OtherDetails": "0",
-          "VesselAlerts": this.myDefaultViewPayload.vesselAlerts,
-          "FutureRequest": this.myDefaultViewPayload.futureRequest,
-          "VesselRedelivery": this.myDefaultViewPayload.vesselRedelivery,
-          "VesselSchedule": this.myDefaultViewPayload.vesselSchedule,
-          "CurrentROBandArbitragedetails": "0",
-          "Comments": "0",
-          "CurrentBunkeringPlan": "0",
-          "PreviousBunkeringPlan": "0"
-        }
-      }
-    } else {
-      requestPayload = {
-        "Payload": {
-          "UserId": "186",
-          "Port": "0",
-          "Vesel": "0",
-          "Bunker_Plan": "0",
-          "DefaultView": "1",
-          "PortRemarks": "0",
-          "ProductAvailability": "0",
-          "BOPSPrice": "0",
-          "PortsAgents": "0",
-          "OtherDetails": "0",
-          "VesselAlerts": "0",
-          "FutureRequest": "0",
-          "VesselRedelivery": "0",
-          "VesselSchedule": "0",
-          "CurrentROBandArbitragedetails": "0",
-          "Comments": "0",
-          "CurrentBunkeringPlan": "0",
-          "PreviousBunkeringPlan": "0"
-        }
-      }
-    }
-
-    this.localService.saveDefaultView(requestPayload).subscribe(response => {
-      console.log(response.payload);
-    })
-  }
-
-
-
   loadFutureRequestData() {
     let requestPayload = {
       "Payload": {

@@ -9,6 +9,7 @@ import { PortPopupService } from '../../services/port-popup.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { VesselPopupService } from '../../services/vessel-popup.service';
 
 export interface IPortGrade {
   'HSFO': string[];
@@ -58,8 +59,14 @@ export class PortPopupComponent implements OnInit {
   public shiptechUrl : string;
   portRemarkLogs: any;
   portBopsPrice: any;
+  myDefaultView: boolean = false;
+  viewportRemarks: boolean = false;
+  viewbopsPrice: boolean = false;
+  viewportsAgents: boolean = false;
+  viewotherDetails: boolean = false;
+  viewPortProductAvailability: boolean = false;
 
-  constructor(private logger: LoggerService,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) {
+  constructor(private logger: LoggerService,private vesselService: VesselPopupService,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) {
     this.shiptechUrl =  new URL(window.location.href).origin;
   }
   @Input() status: string = "standard-view";
@@ -87,6 +94,8 @@ export class PortPopupComponent implements OnInit {
       }
     ]
     this.loadPortBasicInfo(this.popup_data.locationId);
+    console.log("Angular Test", this.popup_data);
+    this.getDefaultView();
     this.loadOtherDetails(this.popup_data.locationId);
     this.loadAgentInfo(this.popup_data.locationId);
     this.hsfo = [
@@ -139,6 +148,65 @@ export class PortPopupComponent implements OnInit {
     console.log(this.remarkTypes);
     
   }
+  getDefaultView() {
+    let req = { "UserId": this.popup_data.locationId, "Port": 1, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 0 }
+    this.vesselService.getmyDefaultview(req).subscribe((res) => {
+      this.vesselService.myDefaultViewPayload = [];
+        this.vesselService.APImyDefaultView = [];
+        debugger;
+      if (res.payload.length > 0) {
+        this.vesselService.myDefaultViewPayload = res.payload[0];
+      }
+      else{
+        if (this.vesselService.myDefaultViewPayload.length == 0) {
+          this.vesselService.myDefaultViewPayload.userId = this.popup_data.locationId;
+          this.vesselService.myDefaultViewPayload.port = 1;
+          this.vesselService.myDefaultViewPayload.vessel = 0;
+          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+          this.vesselService.myDefaultViewPayload.defaultView = 0;
+          this.vesselService.myDefaultViewPayload.portRemarks = 0;
+          this.vesselService.myDefaultViewPayload.productAvailability = 0;
+          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
+          this.vesselService.myDefaultViewPayload.portsAgents = 0;
+          this.vesselService.myDefaultViewPayload.otherDetails = 0;
+          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
+          this.vesselService.myDefaultViewPayload.futureRequest = 0;
+          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
+          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
+          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
+          this.vesselService.myDefaultViewPayload.comments = 0;
+          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
+        }
+      }
+      console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
+      if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
+        if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.port == 1) {
+          this.myDefaultView = true;
+          if (this.vesselService.myDefaultViewPayload.portRemarks == 1) {
+            this.viewportRemarks = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.productAvailability == 1) {
+            this.viewPortProductAvailability = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.bopsPrice == 1) {
+            this.viewbopsPrice = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.portsAgents == 1) {
+            this.viewportsAgents = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.otherDetails == 1) {
+            this.viewotherDetails = true;
+          }
+        }
+      }
+    })
+
+
+  }
+
+
+
   loadPortProductAvailability() {
     // let payloadReq = {'LocationId': 37}
     let payloadReq = {'LocationId': this.popup_data.locationId}
@@ -173,17 +241,92 @@ export class PortPopupComponent implements OnInit {
     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
       titleEle.click();
   }
+  CheckDefaultView(event) {
+    debugger;
+    if (event) {
+      this.myDefaultView = true;
+      this.vesselService.myDefaultViewPayload.defaultView = 1;
+    }
+    else {
+      this.myDefaultView = false;
+      this.viewbopsPrice = false;
+      this.viewportRemarks = false;
+      this.viewportsAgents = false;
+      this.viewotherDetails = false;
+      this.viewPortProductAvailability = false;
+      
+      this.vesselService.myDefaultViewPayload.portRemarks = 0;
+      this.vesselService.myDefaultViewPayload.productAvailability = 0;
+      this.vesselService.myDefaultViewPayload.bopsPrice = 0;
+      this.vesselService.myDefaultViewPayload.portsAgents = 0;
+      this.vesselService.myDefaultViewPayload.otherDetails = 0;
+    }
+  }
 
   public changeDefault(expandRef?:any) {
-    if(this.third?.expanded || expandRef=='third') {
+    if(this.third?.expanded || expandRef=='PortProductAvailabilityClose') {
       this.loadPortProductAvailability();
     }
-    if(this.second?.expanded || expandRef=='second') {
+    if(this.second?.expanded || expandRef=='portRemarksOpen') {
       this.loadPortRemarks();
     }
-    if(this.fourth?.expanded || expandRef=='fourth') {
+    if(this.fourth?.expanded || expandRef=='bopsPriceOpen') {
       this.loadBopsPrice();
     }
+    console.log("+++++++++++++", expandRef);
+    switch (expandRef) {
+      case 'bopsPriceClose':
+        this.viewbopsPrice = false;
+        this.vesselService.myDefaultViewPayload.bopsPrice = 0;
+        break;
+      case 'bopsPriceOpen':
+        this.viewbopsPrice = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.bopsPrice = 1;
+        }
+        break;
+      case 'portRemarksClose':
+        this.viewportRemarks = false;
+        this.vesselService.myDefaultViewPayload.portRemarks = 0;
+        break;
+      case 'portRemarksOpen':
+        this.viewportRemarks = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.portRemarks = 1;
+        }
+        break;
+      case 'portsAgentsOpen':
+        this.viewportsAgents = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.portsAgents = 1;
+        }
+        break;
+      case 'portsAgentsClose':
+        this.viewportsAgents = false;
+        this.vesselService.myDefaultViewPayload.portsAgents = 0;
+        break;
+      case 'otherDetailsClose':
+        this.viewotherDetails = false;
+        this.vesselService.myDefaultViewPayload.otherDetails = 0;
+        break;
+      case 'otherDetailsOpen':
+        this.viewotherDetails = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.otherDetails = 1;
+        }
+        break;
+        case 'PortProductAvailabilityClose':
+        this.viewPortProductAvailability = false;
+        this.vesselService.myDefaultViewPayload.productAvailability = 0;
+        break;
+        case 'PortProductAvailabilityOpen':
+        this.viewPortProductAvailability = true;
+        if (this.myDefaultView) {
+          this.vesselService.myDefaultViewPayload.productAvailability = 1;
+        }
+        break;
+    }
+
 
     // if (this.second.expanded && !this.third.expanded && !this.fourth.expanded && !this.fifth.expanded && !this.sixth.expanded) {
     //   this.defaultView = true;

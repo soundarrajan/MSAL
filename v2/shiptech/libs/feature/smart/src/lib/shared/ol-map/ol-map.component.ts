@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren, QueryList, HostListener } from '@angular/core';
 import OlFeature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import OlPoint from 'ol/geom/Point';
@@ -23,6 +23,7 @@ import TileLayer from 'ol/layer/Tile';
 // import olms from 'ol-mapbox-style';
 import FullScreen from 'ol/control/FullScreen';
 import { MapViewService } from '../../services/map-view.service';
+import { VesselPopupService } from '../../services/vessel-popup.service';
 
 
 @Component({
@@ -254,7 +255,7 @@ export class OlMapComponent implements OnInit {
   private portHoverPopupOverlay;
   private hoverCircleEffectOverlay;
 
-  constructor(private localService: LocalService, public dialog: MatDialog, private logger: LoggerService, private mapService: MapViewService) {
+  constructor(private localService: LocalService, private vesselService: VesselPopupService, public dialog: MatDialog, private logger: LoggerService, private mapService: MapViewService) {
     this.logger.logInfo('OlMapComponent-ngOnInit()', new Date());
   }
 
@@ -640,6 +641,7 @@ export class OlMapComponent implements OnInit {
     return iconStyle;
   }
 
+  
   private getGreyVesselStyle(vesselDetail): Style {
     var iconStyle = new Style({
       image: new Icon(({
@@ -877,6 +879,9 @@ export class OlMapComponent implements OnInit {
       var hit = this.map.hasFeatureAtPixel(pixel);
       //Check Bunker Plan Screen is open
       this.onMapClick.emit();
+      if(this.vesselService.myDefaultViewPayload != undefined && this.vesselService.myDefaultViewPayload.length !=0){
+        this.SavemyDefaultView();
+      }
       if (hit) {
         let items = this.map.getFeaturesAtPixel(pixel);
         // this.routePopupOverlay.setPosition(evt.coordinate);
@@ -919,7 +924,7 @@ export class OlMapComponent implements OnInit {
           }
           this.showLocationPop = false;
           this.showPortList = [];
-          this.showVesselPop = true;
+         this.showVesselPop = true;
           let feature1 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.id == "RL");
           let feature2 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "port-on-route");//Port Icon on Route
           let feature3 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-glow");//Vessel Icon Glow on Route
@@ -1019,6 +1024,7 @@ export class OlMapComponent implements OnInit {
           this.showLocationPop = true;
         }
         else {
+
           //Retain popup even on close of Bunker plan
           if (!this.displayRoute) {
             if (!(this.isBunkerPlanOpen && (this.showVesselPop || this.showLocationPop))) {
@@ -1797,6 +1803,7 @@ export class OlMapComponent implements OnInit {
     this.isPortInfoOpen = value;
   }
   closeVesselPopup() {
+    this.SavemyDefaultView();
     this.clickedPort = "";
     var e = document.getElementsByClassName("ol-popup");
     for (let i = 0; i < e.length; i++) {
@@ -1824,6 +1831,7 @@ export class OlMapComponent implements OnInit {
     this.routeFound = false;
   }
   closeLocationPopup(event) {
+    this.SavemyDefaultView();
     this.clickedPort = "";
     var e = document.getElementsByClassName("ol-popup");
     for (let i = 0; i < e.length; i++) {
@@ -1899,10 +1907,41 @@ export class OlMapComponent implements OnInit {
         else {
           this.showBplan(true);
         }
-
+       
       })
     }
   }
+  
+  SavemyDefaultView() {
+    console.log("======Final Payload===========", this.vesselService.myDefaultViewPayload)
+    let requestPayload = {}
+    requestPayload = {
+      "Payload": {
+        "UserId": this.vesselService.myDefaultViewPayload.userId,
+        "Port": this.vesselService.myDefaultViewPayload.port,
+        "Vesel": this.vesselService.myDefaultViewPayload.vessel,
+        "Bunker_Plan": this.vesselService.myDefaultViewPayload.bunker_Plan,
+        "DefaultView": this.vesselService.myDefaultViewPayload.defaultView,
+        "PortRemarks": this.vesselService.myDefaultViewPayload.portRemarks,
+        "ProductAvailability":this.vesselService.myDefaultViewPayload.productAvailability,
+        "BOPSPrice": this.vesselService.myDefaultViewPayload.bopsPrice,
+        "PortsAgents": this.vesselService.myDefaultViewPayload.portsAgents,
+        "OtherDetails": this.vesselService.myDefaultViewPayload.otherDetails,
+        "VesselAlerts": this.vesselService.myDefaultViewPayload.vesselAlerts,
+        "FutureRequest": this.vesselService.myDefaultViewPayload.futureRequest,
+        "VesselRedelivery": this.vesselService.myDefaultViewPayload.vesselRedelivery,
+        "VesselSchedule": this.vesselService.myDefaultViewPayload.vesselSchedule,
+        "CurrentROBandArbitragedetails": this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails,
+        "Comments": this.vesselService.myDefaultViewPayload.comments,
+        "CurrentBunkeringPlan": this.vesselService.myDefaultViewPayload.currentBunkeringPlan,
+        "PreviousBunkeringPlan": this.vesselService.myDefaultViewPayload.previousBunkeringPlan
+      }
+    }
+    this.localService.saveDefaultView(requestPayload).subscribe(response => {
+      console.log(response.payload);
+    })
+  }
+  
 
   setOverlayMapColor(){
     countryText.fill_.color_ = "#808C92";
@@ -1912,6 +1951,7 @@ export class OlMapComponent implements OnInit {
 
   }
 }
+
 
 //Styles 9aadaa
 var countryText = new Style({

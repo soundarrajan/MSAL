@@ -1,11 +1,7 @@
-﻿commit 3c1e3f39b26abc82a7e2ae21aefa93fa37c6b78d
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jul 6 14:18:57 2021 +0000
+﻿commit 791b6f4f65e21f9abd18be926d818c7c9c48c9a8
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Wed Jul 7 06:51:23 2021 +0530
 
-    Merged PR 12175: #32744 : Bunker plan: View Current Bunkering plan
-    
-    #32744 : Bunker plan: View Current Bunkering plan
-    
-    Related work items: #32744
+    My Default View - Vessel, port, Bunker-plan
 
 branch: master
