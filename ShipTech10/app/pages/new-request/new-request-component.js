@@ -4360,7 +4360,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     $rootScope.RootTempMinQtyToReach = angular.copy(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach);          
                 }
             }
-            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach== undefined ){
+            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach== undefined || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length==0 ){
                 ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach=[];
                 ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.push({'id':0,'port':{'id': 0,'name': '',},'portid':0,'eta':null,'isDeleted':false});
             }
