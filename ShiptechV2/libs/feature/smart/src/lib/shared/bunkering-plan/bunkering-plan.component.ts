@@ -10,6 +10,7 @@ import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction,UpdateCurrentROBAction,UpdateBplanTypeAction, GeneratePlanProgressAction } from '../../store/bunker-plan/bunkering-plan.action';
 import { SaveBunkeringPlanState, SaveCurrentROBState, UpdateBplanTypeState, GeneratePlanState} from '../../store/bunker-plan/bunkering-plan.state';
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
+import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
@@ -555,9 +556,8 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('Save status',data);
         if(data?.isSuccess == true){
-          const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-            width: '350px',
-            panelClass: 'confirmation-popup-operator',
+          const dialogRef = this.dialog.open(SuccesspopupComponent, {
+            panelClass: ['success-popup-panel'],
             data : {message: 'Plan Details updated successfully'}
           });
           this.store.dispatch(new GeneratePlanProgressAction(data.payload.gen_in_progress))
