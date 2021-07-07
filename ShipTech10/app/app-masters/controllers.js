@@ -10306,6 +10306,28 @@
                     $scope.formValues.accessCustomers.push(v);
                 }
             })
+            var customersIdsList = [];
+            $.each($scope.formValues.accessCustomers, (k,v) => {
+                customersIdsList.push(v.id);
+            } )
+            $http.post(`${API.BASE_URL_DATA_MASTERS}/api/masters/vessels/listByCustomerIds`, {
+                Payload: customersIdsList
+            }).then((response) => {
+                $.each($rootScope.tabData["vessel_access"] , (k,v) => {
+                    $.each(response.data.payload, (k2,v2) => {
+                        if(v.id == v2.id) {
+                            $rootScope.tabData["vessel_access"][k].isSelected = true;
+                        }
+                        if(v.children) {
+                            $.each(v.children, (k3,v3) => {
+                                if(v.id == v3.id) {
+                                    $rootScope.tabData["vessel_access"][k].children[k3].isSelected = true;
+                                }  
+                            })
+                        }  
+                    })
+                })
+            });
             $scope.prettyCloseModal();
         }
         $scope.selectAllUserMasterCustomers = (selectState) => {
