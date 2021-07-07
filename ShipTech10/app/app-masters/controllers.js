@@ -883,7 +883,6 @@
         }
 
 
-        // Deprecate function on 06.07.2021
         $scope.counterPartyListisValid = () => {
             // Return boolean
             // True allow saving;
@@ -893,16 +892,22 @@
                 let counterPartyWithoutAccess = '';
 
                 // Checked list
-                $scope.formValues.counterpartyTypes.some(e => {
+                let canContinue = $scope.formValues.counterpartyTypes.some(e => {
 
                     if(!$scope.filteredCounterpartyTypeList.find(j => e.id === j.id)){
                         // Checked and enabled
                         counterPartyWithoutAccess += `${e.name} `
+                    } else {
+                        return true;
                     }
                 });
 
+                if(canContinue){
+                    return true;
+                }
+
                 if(counterPartyWithoutAccess){
-                    toastr.info(`You dont have permission to add ${counterPartyWithoutAccess} ${counterPartyWithoutAccess.split(" ").length > 2 ? "types" : "type"} of Counterparty`)
+                    toastr.info(`You dont have permission to add ${counterPartyWithoutAccess.split(" ").join(", ")} ${counterPartyWithoutAccess.split(" ").length > 2 ? "types" : "type"} of Counterparty`)
                     return false;
                 }
             }
@@ -915,10 +920,9 @@
             vm.invalid_form = false;
 
 
-            // verify deprecate 06.07.2021
-            // if(!$scope.counterPartyListisValid()){
-            //     return;
-            // }
+            if(!$scope.counterPartyListisValid()){
+                return;
+            }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
@@ -10364,8 +10368,7 @@
 
                 $scope.filteredCounterpartyTypeList = response.data.payload;
 
-                // Deprecate 06.07.2021
-                // $scope.counterPartyListisValid();
+                $scope.counterPartyListisValid();
             }).catch(e => {
                 $scope.filteredCounterpartyTypeList = "Error";
             });
