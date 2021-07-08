@@ -119,8 +119,9 @@ export class PortPopupComponent implements OnInit {
     ]
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
-      //enableColResize: false,
-      // enableSorting: false,
+      enableColResize: false,
+      enableSorting: false,
+      enableFilter: false,
       animateRows: false,
       headerHeight: 22,
       rowHeight: 30,
@@ -155,7 +156,7 @@ export class PortPopupComponent implements OnInit {
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
-        debugger;
+        // debugger;
       if (res.payload.length > 0) {
         this.vesselService.myDefaultViewPayload = res.payload[0];
       }
@@ -244,7 +245,7 @@ export class PortPopupComponent implements OnInit {
       titleEle.click();
   }
   CheckDefaultView(event) {
-    debugger;
+    // debugger;
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
@@ -340,14 +341,19 @@ export class PortPopupComponent implements OnInit {
 
   private columnDefs = [
 
-    { headerName: 'Product ID', field: 'productId', headerTooltip: 'Product ID', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['font-bold aggrid-content-c '] },
+    { headerName: 'Product ID', field: 'productId', headerTooltip: 'Product ID', width: 55,
+    suppressMenu: true, 
+    cellRendererFramework: AGGridCellRendererComponent, 
+    cellRendererParams: { cellClass: ['cell-ellipsis']},
+    cellClass: ['font-bold aggrid-content-l '] },
     { 
       headerName: 'Max Pump.Rate', 
       field: 'maxPumpRate', 
       headerTooltip: 'Max Pump.Rate', 
       width: 70, 
-      cellClass: ['aggrid-text-align-r '], 
+      cellClass: ['aggrid-text-align-l '], 
       cellRendererFramework: AGGridCellRendererComponent,
+      cellRendererParams: { cellClass: ['cell-ellipsis']},
       valueGetter: (params) => {
         if(params?.data?.maxPumpRate) {
           return params?.data?.maxPumpRate+' mt/h'
@@ -357,11 +363,13 @@ export class PortPopupComponent implements OnInit {
       }
     },
     { headerName: 'Min Supply Qty',
-      field: 'minSupplyQty',
-      headerTooltip: 'Min Supply Qty', 
-      width: 55, 
-      cellClass: ['aggrid-text-align-r '], 
+    field: 'minSupplyQty',
+    headerTooltip: 'Min Supply Qty', 
+    width: 55, 
+    suppressMenu: true, 
+      cellClass: ['aggrid-text-align-l '], 
       cellRendererFramework: AGGridCellRendererComponent,
+      cellRendererParams: { cellClass: ['cell-ellipsis']},
       valueGetter: (params) => {
         if(params?.data?.minSupplyQty) {
           return params?.data?.minSupplyQty+' mt'
@@ -374,8 +382,10 @@ export class PortPopupComponent implements OnInit {
     field: 'maxSupplyQty', 
     headerTooltip: 'Max Supply Qty', 
     width: 70, 
-    cellClass: ['aggrid-text-align-r '], 
+    suppressMenu: true,
+    cellClass: ['aggrid-text-align-l '], 
     cellRendererFramework: AGGridCellRendererComponent,
+    cellRendererParams: { cellClass: ['cell-ellipsis']},
       valueGetter: (params) => {
         if(params?.data?.maxSupplyQty) {
           return params?.data?.maxSupplyQty+' mt'
@@ -384,7 +394,10 @@ export class PortPopupComponent implements OnInit {
         }
       }
     },
-    { headerName: 'Lowest Grade', field: 'lowestGrade', headerTooltip: 'Lowest Grade', width: 55, cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-c'] }
+    { headerName: 'Lowest Grade', field: 'lowestGrade', headerTooltip: 'Lowest Grade', width: 55, 
+      suppressMenu: true, 
+      cellRendererParams: { cellClass: ['cell-ellipsis']},
+      cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-l'] }
   ];
 
   // private rowData = [

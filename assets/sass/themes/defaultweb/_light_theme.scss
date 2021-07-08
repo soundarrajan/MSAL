@@ -649,6 +649,31 @@ $white:#FFFFFF;
 			}
 			.ag-cell {
 				color: $text_content;
+				display: flex;
+				align-items: center;
+				padding-right: 0px;
+    			padding-left: 5px;
+				.cell-ellipsis{
+					width: 60px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					padding-left: 5px;
+					span{
+						width: 45px;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					  }
+					  &.custom-chip{
+						padding-left: 0px;
+						span{
+						  display: inline-block;
+						  text-align: center;
+						}
+					}
+				}
+				&.cell-span{
+					border-right: 1px solid rgba(13, 18, 24, 0.2) !important;
+				}
 			}
 			.ag-row {
 				border-bottom: 2px solid rgba(13, 18, 24, 0.2) !important;
@@ -984,6 +1009,26 @@ $white:#FFFFFF;
 			}
 			.ag-cell {
 				color: $text_content;
+				padding-left: 5px;
+				.cell-ellipsis{
+					width: 60px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					padding-left: 0;
+					span{
+					  display: inline-block;
+					  width: 45px;
+					  overflow: hidden;
+					  text-overflow: ellipsis;
+					}
+					&.custom-chip{
+					  padding-left: 0px;
+					  span{
+						display: inline-block;
+						text-align: center;
+					  }
+					}
+				  }
 			}
 			.ag-header-cell-label {
 				color: $theme-font;

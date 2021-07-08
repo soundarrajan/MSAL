@@ -1885,14 +1885,18 @@ label {
 	transform: matrix(1, 0, 0, 1, 0, 0);
 	height: 12px;
 	font-size: 10px;
-	width: auto;
+	width: 52.63px;
 	color: $white;
 	margin: 1px 0px;
 	cursor: pointer;
 	text-align: center;
-	padding: 7px 4px;
+	padding: 7px 0px;
 	font-weight: 100;
-
+	.aggrid-text-resizable{
+		width: 45px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+	}
 }
 
 // Footer
