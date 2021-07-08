@@ -564,7 +564,7 @@
                       <mat-autocomplete #auto="matAutocomplete" class="darkPanelAuto" [displayWith]="displayFn"
                         (optionSelected)="setPaybleTo($event.option.value)">
                         <mat-option *ngFor="let option of filterPaybleToList()" [value]="option">
-                          {{ option.name }}
+                          {{ htmlDecode(option.name) }}
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>

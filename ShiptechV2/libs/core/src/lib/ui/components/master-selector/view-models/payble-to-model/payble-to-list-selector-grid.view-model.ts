@@ -46,6 +46,11 @@ function model(prop: keyof IPaybleToListDto): keyof IPaybleToListDto {
   return prop;
 }
 
+function htmlDecode(input) {
+  var doc = new DOMParser().parseFromString(input, "text/html");
+  return doc.documentElement.textContent;
+}
+
 // TODO: to be read from entity types and remove this hardcoded id
 const TRANSACTION_TYPE_ID: number = 46;
 
@@ -133,6 +138,7 @@ export class PaybleToListSelectorGridViewModel extends BaseGridViewModel {
     headerName: PaybleToListColumnsLabels.name,
     colId: PaybleToListColumns.name,
     field: model('name'),
+    valueFormatter: params => htmlDecode(params.value),
     minWidth: 250,
     flex: 2
   };

@@ -2688,6 +2688,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.calculateGrand(this.formValues);
   }
 
+  htmlDecode(input) {
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
+  }
+
   productDetailChanged(productDetails: any): void {
     this.formValues.productDetails = productDetails;
     this.calculateGrand(this.formValues);
