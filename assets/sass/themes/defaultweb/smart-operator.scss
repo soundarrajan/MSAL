@@ -5029,6 +5029,13 @@ label {
 			line-height: 24px;
 			color: $text_color_title;
 			padding: 0px 10px;
+			margin-bottom: 8px;
+			.value{
+			  font-size: 11px;
+			  line-height: 10px;
+			  height: 10px;
+			  color: #EFF3F9;
+			}
 			.mat-form-field {
 				width: 100%
 			}
@@ -5065,6 +5072,12 @@ label {
 			line-height: 24px;
 			color: $text_color_title;
 			padding: 0px 10px;
+			.value{
+				font-size: 11px;
+				line-height: 16px;
+				height: 46px;
+				color: #EFF3F9;
+			}
 			textarea {
 				resize: none;
 				font-style: normal;
@@ -5240,6 +5253,12 @@ label {
 			line-height: 24px;
 			color: $text_color_title;
 			padding: 0px 10px;
+			.value{
+				font-size: 11px;
+				line-height: 16px;
+				height: 46px;
+				color: #EFF3F9;
+			}
 			textarea {
 				resize: none;
 				font-style: normal;
