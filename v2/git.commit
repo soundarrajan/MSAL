@@ -1,9 +1,11 @@
-﻿commit e13e464092b152e390485bc94c2a0f102a96d1fb
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 8 14:38:55 2021 +0000
+﻿commit aa8d3fd3640b4d57fa1473bedb257d0a5f82f6f7
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jul 8 14:46:36 2021 +0000
 
-    Merged PR 12248: #33979: Port details: View Port remarks issue has fixed
+    Merged PR 12249: #29684 : Route detail: Vessel Route.
     
-    Related work items: #33979
+    #29684 : Route detail: Vessel Route.
+    
+    Related work items: #29684
 
 branch: master
