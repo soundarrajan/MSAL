@@ -977,7 +977,7 @@ export class VesselPopupComponent implements OnInit {
   (menuClosed)="toggleMenu1($event);">more_vert</mat-icon>
 <mat-menu #clickalertsmenu="matMenu" class="common" xPosition="after">
 <div (click)="$event.stopPropagation();">
-<div class="alert-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
+<div cdkDrag class="alert-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
   <div class="warning-header">
     <div style="margin-bottom: 5px;">
       <ng-container [ngSwitch]="item.alertColorFlag_Name">
