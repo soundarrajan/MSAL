@@ -1,9 +1,9 @@
-﻿commit cafa04879620dd21fdd62c0c51ead892a5b6045c
+﻿commit e13e464092b152e390485bc94c2a0f102a96d1fb
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 8 14:21:16 2021 +0000
+Date:   Thu Jul 8 14:38:55 2021 +0000
 
-    Merged PR 12247: #33970, 33436: Vessel details: View Future Requests and product availabilty for the Vessel issue has fixed
+    Merged PR 12248: #33979: Port details: View Port remarks issue has fixed
     
-    Related work items: #33436, #33970
+    Related work items: #33979
 
 branch: master

@@ -5574,7 +5574,7 @@ label {
 	.new-remarks-menu {
 		//background: $popup_background_primary;
 		width: 242px;
-		// height: 198px;
+		min-height: 198px;
 		height: 100%;
 		.row {
 			margin: 0px;
