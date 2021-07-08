@@ -90,11 +90,18 @@
               <div class="row product-category">
                 <div class="col-12 row available m-0 pd-0">
                   <div class="col-12 label">Available product category</div>
-                  <div style="width: 100%; display: flex;padding-left: 15px;">
-                    <div *ngFor="let prod of popup_data.avlProdCategory" class="value">
-                      {{prod}}
+                  <ng-container *ngIf="popup_data?.avlProdCategory?.length; else NotAvailable">
+                    <div style="width: 100%; display: flex;padding-left: 15px;">
+                        <div *ngFor="let prod of popup_data.avlProdCategory" class="value">
+                          {{prod}}
+                        </div>
                     </div>
-                  </div>
+                    </ng-container>
+                    <ng-template #NotAvailable>
+                      <div style="width: 100%; display: flex;padding-left: 15px;flex-direction: column;">
+                        <div class="not-avail">Not Available</div>
+                      </div>
+                    </ng-template>
                 </div>
                 <!-- <div class="col-5 not-available m-0 pd-0">
                   <div class="col-12 label">Non Available</div>

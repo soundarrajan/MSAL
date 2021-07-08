@@ -808,6 +808,12 @@ $denim: #5780A6;
 						opacity: 0.5;
 					}
 				}
+				.not-avail {
+					color: $theme-font;
+					font-size: 10px;
+					padding: 0 0 5px 0;
+					text-align: center;
+				}
 			}
 		}
 		#alerts {
