@@ -734,6 +734,9 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             buyer_access: 'accessBuyers',
             company_access: 'accessCompanies'
         }
+        if (!$scope.delayAccessRendering) {
+            $scope.delayAccessRendering = [];
+        }
         $rootScope.listOfVesselTypes = [];
         $.each($scope.entities, (key, val) => {
             Factory_Admin.getTabData(val.id, (response) => {
@@ -744,6 +747,11 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                             $scope.checkData[val.id] = false;
                             $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
                             $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
+                            
+                            $scope.delayAccessRendering[val.id] = 500;
+                            $scope.delayAccessRendering['buyer_access'] = 100;
+                            $scope.delayAccessRendering['company_access'] = 100;
+                            
                             $scope.detectInitialAllSelected();
                         } else {
                             var aligendObject = $scope.setParentUnselectable(response.payload, $scope.formValues.accessVessels);
@@ -993,6 +1001,9 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                 detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
             }
             $scope.checkData[type] = $scope.isAll ? true : false;
+            $timeout( () => {
+                $scope.delayAccessRendering[type] = $scope.tabData[type].length;
+            },1000)
         });
     }
     window.change = function(event) {
