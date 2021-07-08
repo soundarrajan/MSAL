@@ -668,6 +668,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   restrictionForPrevBplan(event){
     this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
     if(this.bplanType =='P'){
+      var overlay = document.querySelector('.cdk-overlay-container');
+      overlay.classList.remove('removeOverlay');
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
         panelClass: 'confirmation-popup-operator',
