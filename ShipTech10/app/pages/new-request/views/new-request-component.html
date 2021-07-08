@@ -904,6 +904,7 @@
                                                     <!-- {{location}} -->
                                                     <label class="control-label col-md-4">
                                                         {{ 'PAGES.NEW_REQUEST.TERMINAL' | translate }}  
+                                                        <span ng-if="$ctrl.requestTenantSettings.isRequestTerminalMandatory" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
                                                     <!-- ng-options="item as item.name for item in CM.listsCache.Uom track by item.id " -->
                                                     <div class="form-group-sm00">
