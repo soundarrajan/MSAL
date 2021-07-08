@@ -1,11 +1,11 @@
-﻿commit ddcc9a9eceb584165143d8add1b9004e387447df
+﻿commit bdb65dd675f1ea42ea57aea8f952bb39ca461e22
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 8 20:14:14 2021 +0000
+Date:   Thu Jul 8 21:41:59 2021 +0000
 
-    Merged PR 12254: #33962 : issue 2 fix & #33976 : view all bplan fix
+    Merged PR 12255: #34095 : Showing error while changing stock
     
-    #33962 : issue 2 fix & #33976 : view all bplan fix
+    #34095 : Showing error while changing stock
     
-    Related work items: #33962, #33976
+    Related work items: #34095
 
 branch: master
