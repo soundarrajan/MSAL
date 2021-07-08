@@ -1,9 +1,9 @@
-﻿commit 7f814c2d6564813fce0e9540fb7cd02d12fc1e46
+﻿commit 1c545a34a3c006c849abdeb068187a012e142a25
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 8 15:25:39 2021 +0000
+Date:   Thu Jul 8 15:45:59 2021 +0000
 
-    Merged PR 12252: #33974: Port details: View Port Basic Information changes has fixed
+    Merged PR 12253: #33977: B plan: View Future Requests date between space issue has fixed
     
-    Related work items: #33974
+    Related work items: #33977
 
 branch: master
