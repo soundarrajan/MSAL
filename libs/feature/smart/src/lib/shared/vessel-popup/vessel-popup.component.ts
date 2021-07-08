@@ -169,11 +169,16 @@ export class VesselPopupComponent implements OnInit {
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
+       debugger; 
+       console.log("55555555555555%%%%%%%%%%%%%res", res);
+       console.log("55555555555555%%%%%%%%%%%%%res", res.payload.length);
       if (res.payload.length > 0) {
         
         this.vesselService.myDefaultViewPayload = res.payload[0];
+        console.log("55555555555555%%%%%%%%%%%%%this.vesselService.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
         
       }else{
+        
           this.vesselService.myDefaultViewPayload.userId = this.popup_data.VesselId;
           this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 1;
