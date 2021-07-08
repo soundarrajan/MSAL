@@ -1160,7 +1160,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     product.screenActions.push(cancelAction);
                 }
             }
-            if(locationIdx) {
+            if(locationIdx !== null) {
                 product.isNew = true;
             }
             products.push(product);
@@ -4552,6 +4552,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 } else {
                     if (!ctrl.request.locations[locationIndex].products[productIndex].tempReasons) {
                         ctrl.request.locations[locationIndex].products[productIndex].tempReasons = {};
+                    }
+                    if(!ctrl.request.locations[locationIndex].id ) { /* is new location */
+                        return false;
                     }
                     if(ctrl.request.locations[locationIndex].products[productIndex].isNew){ 
                         ctrl.request.locations[locationIndex].products[productIndex].isNew = false;
