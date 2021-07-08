@@ -1,11 +1,9 @@
-﻿commit 5d3ff264f32fea857bf3846e814f30385da541d6
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 8 13:35:28 2021 +0000
+﻿commit cafa04879620dd21fdd62c0c51ead892a5b6045c
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Jul 8 14:21:16 2021 +0000
 
-    Merged PR 12244: # 33962 : bug fix for issue 1.
+    Merged PR 12247: #33970, 33436: Vessel details: View Future Requests and product availabilty for the Vessel issue has fixed
     
-    #33962 : bug fix for issue 1.
-    
-    Related work items: #33962
+    Related work items: #33436, #33970
 
 branch: master

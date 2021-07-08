@@ -740,7 +740,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         *ngFor="let item of items"
         class="aggrid-content-center dark-multiple-text"
       >
-        <div class=" aggrid-text-resizable">{{ item }}</div>
+        <div class=" aggrid-text-resizable" [matTooltip]="item">{{ item }}</div>
       </div>
          </div>
   `,

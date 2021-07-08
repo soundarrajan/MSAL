@@ -137,15 +137,16 @@ export class VesselPopupComponent implements OnInit {
 
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
-      //enableColResize: false,
-      // enableSorting: false,
+      enableColResize: false,
+      enableSorting: false,
+      enableFilter: false,
       animateRows: false,
       headerHeight: 0,
-      rowHeight: 38,
+      rowHeight: 30,
       defaultColDef: {
         filter: false,
         sortable: false,
-        resizable: true
+        resizable: false
       },
       rowSelection: 'single',
       onGridReady: (params) => {
@@ -158,7 +159,7 @@ export class VesselPopupComponent implements OnInit {
         }
       },
       onGridSizeChanged: function (params) {
-        params.columnApi.autoSizeAllColumns();
+        // params.columnApi.autoSizeAllColumns();
       },
     };
   }
@@ -254,7 +255,7 @@ export class VesselPopupComponent implements OnInit {
 
 
   CheckDefaultView(event) {
-    debugger;
+    // debugger;
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
@@ -876,14 +877,18 @@ export class VesselPopupComponent implements OnInit {
   }
   private columnDefs = [
     {
-      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 80,
+      headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestId', width: 65,
+      // rowSpan: this.rowSpan,
       cellRendererFramework: AGGridCellDataComponent,
-      cellRendererParams: { type: 'request-link', redirectUrl: `${this.shiptechUrl}/#/edit-request` },
+      cellRendererParams: { cellClass: ['cell-ellipsis'], type: 'request-link', redirectUrl: `${this.shiptechUrl}/#/edit-request` },
       headerClass: ['aggrid-columgroup-dark-splitter'],
       cellClass: ['aggrid-content-center aggrid-link fs-11'],
+      cellClassRules: {
+        'cell-span': 'value !== undefined',
+      },
     },
     {
-      headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 85,
+      headerName: 'Port', headerTooltip: 'Port', field: 'locationName', width: 100,
       cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: {
         type: 'info-with-popup-multiple-values', cellClass: 'aggrid-cell-color white',
@@ -893,10 +898,10 @@ export class VesselPopupComponent implements OnInit {
       headerClass: ['aggrid-colum-splitter-left']
     },
     {
-      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 80,
+      headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 70,
       cellRendererFramework: AGGridCellDataComponent,
-      // cellRendererParams: { type: 'popup-multiple-values' }, 
-      cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' },
+      cellRendererParams: { type: 'popup-multiple-values' }, 
+      // cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' },
       cellClass: ['aggrid-content-center fs-10'],
       valueGetter: function (params) {
         if (params?.data?.productName) {
@@ -913,8 +918,8 @@ export class VesselPopupComponent implements OnInit {
         var classArray: string[] = [];
         let cellStyle = {};
         let status = params?.data?.requestStatus?.displayName;
-        classArray.push('aggrid-content-center');
-        classArray.push('custom-chip small-chip w-100-important');
+        classArray.push('aggrid-content-center cell-ellipsis');
+        classArray.push('custom-chip small-chip');
 
         let colorCode = params?.data?.requestStatus?.colorCode;
         if (colorCode?.code) {
@@ -951,6 +956,15 @@ export class VesselPopupComponent implements OnInit {
   //   }
 
   // ];
+  rowSpan(params) {
+    if (params.data.merge ==='1') {
+      return 1;
+    } else {
+      return 2;
+    }
+  
+  
+  }
 }
 
 @Component({
