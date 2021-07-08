@@ -1,5 +1,5 @@
 /* ----- UTILITY SCSS -----
- Contains classes for spacing, alignment & layouts 
+ Contains classes for spacing, alignment & layouts
 */
 
 /* -----------------------------
@@ -363,7 +363,7 @@
 }
 .m-lr-5{
   margin-left: 5px;
-  margin-right: 5px; 
+  margin-right: 5px;
 }
 .m-lr-6 {
   margin-left: 6px;
@@ -563,7 +563,7 @@
 }
 
 // Checkbox ripple color
-// /deep/ 
+// /deep/
 .mat-ripple-element {
    background: rgba(27, 142, 241, .4) !important;
 }
@@ -878,12 +878,12 @@ table {
   color: $black !important;
 }
 
-// Datatable Resize Handle 
+// Datatable Resize Handle
 .ngx-datatable.material .datatable-header .resize-handle {
   border-right: 1px solid $blue;
 }
 
-// datatable cell 
+// datatable cell
 .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
   border: 1px solid $tbl-border-color;
 }
@@ -1085,6 +1085,10 @@ datatable-body-row.datatable-body-row.datatable-row-even {
     &.mat-active{
       color: #333 !important;
       background: #fff !important;
+
+      .mat-option-text {
+        color: #333 !important;
+      }
     }
   }
 }

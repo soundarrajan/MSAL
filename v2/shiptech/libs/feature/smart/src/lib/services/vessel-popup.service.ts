@@ -18,6 +18,7 @@ export namespace VesselPopupApiPaths{
     export const getVesselAlertList = () => `api/Smart/Port/getVesselAlertList`;
     export const putVesselAlertList = () => `api/Smart/Port/createVesselAlert`;
     export const getVesselRouteData = () => `api/Smart/Vessel/getVesselRoute`;
+    export const saveDefaultView = () => `api/Smart/MapView/saveDefaultView`;
 }
 
 @Injectable({
@@ -46,6 +47,17 @@ export class VesselPopupService{
       { payload: request }
     );
   }
+
+  @ObservableException()  
+    saveDefaultView(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${VesselPopupApiPaths.saveDefaultView()}`,
+        request
+      )
+      
+    }
+
+
   @ObservableException()
   getBdnReport(request: any): Observable<any> {
     return this.http.post<any>(
