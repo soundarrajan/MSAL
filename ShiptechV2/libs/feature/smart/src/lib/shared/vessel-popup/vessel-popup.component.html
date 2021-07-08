@@ -271,8 +271,10 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div *ngIf="third.expanded" style="width:100%;position: relative;">
-                <ag-grid-angular class="popup-grid" style="height:155px;margin-top:2px;" [gridOptions]="gridOptions"
-                  class="ag-theme-balham-dark"></ag-grid-angular>
+                <!-- <ag-grid-angular class="popup-grid" style="height:155px;margin-top:2px;" [gridOptions]="gridOptions"
+                  class="ag-theme-balham-dark"></ag-grid-angular> -->
+                  <ag-grid-angular class="popup-grid" style="height:155px;margin-top:2px;" [gridOptions]="gridOptions"
+                [suppressRowTransform]="true" class="ag-theme-balham-dark"></ag-grid-angular>
               </div>
             </mat-expansion-panel>
             <mat-expansion-panel #fourth id="vessel-redelivery" [expanded]="viewVesselRedelivery" hideToggle="true" (closed)="changeDefault('VRClose')"
