@@ -31,7 +31,7 @@
             </a>
           </td>
           <td>
-            <label>{{relatedLabResultRow.labCounterparty}}</label>
+            <label ng-controller="Controller_Master as CM">{{CM.decodeHtml(relatedLabResultRow.labCounterparty)}}</label>
           </td>
           <td>
             <div class="ui-grid-cell-contents status text-center" ng-controller="Controller_Master as CM"
