@@ -7,16 +7,16 @@
 
 /* Scrollbar */
 
-// ::-webkit-scrollbar {
-// 	width: 4px !important;
-// 	height: 4px !important;
-// 	background-color: transparent !important;
-// }
+::-webkit-scrollbar {
+	width: 4px !important;
+	height: 4px !important;
+	background-color: transparent !important;
+}
 
-// ::-webkit-scrollbar-track {
-// 	border-radius: 10px !important;
-// 	background-color: transparent !important;
-// }
+::-webkit-scrollbar-track {
+	border-radius: 10px !important;
+	background-color: transparent !important;
+}
 
 // ::-webkit-scrollbar-thumb {
 // 	border-radius: 10px;
