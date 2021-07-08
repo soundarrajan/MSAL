@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren, QueryList, HostListener } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren, QueryList, HostListener, ViewEncapsulation } from '@angular/core';
 import OlFeature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import OlPoint from 'ol/geom/Point';
@@ -32,6 +32,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-ol-map',
   templateUrl: './ol-map.component.html',
   styleUrls: ['./ol-map.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('vesselPopupAnimation', [
       transition(':leave', [

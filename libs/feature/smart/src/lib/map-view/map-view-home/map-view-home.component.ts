@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import { OlMapComponent } from '../../shared/ol-map/ol-map.component';
 import { VesselDetailsComponent } from '../vessel-details/vessel-details.component';
 import { LocalService } from '../../services/local-service.service';
@@ -10,7 +10,8 @@ import { SmartOperatorComponent } from '../../shared/smart-operator/smart-operat
 @Component({
   selector: 'app-map-view-home',
   templateUrl: './map-view-home.component.html',
-  styleUrls: ['./map-view-home.component.scss']
+  styleUrls: ['./map-view-home.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MapViewHomeComponent implements OnInit {
 

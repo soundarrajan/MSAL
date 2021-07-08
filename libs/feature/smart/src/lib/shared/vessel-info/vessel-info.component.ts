@@ -8,7 +8,7 @@ import { saveVesselDataAction } from "./../../store/bunker-plan/bunkering-plan.a
 import { CommentsComponent } from '../comments/comments.component';
 import { VesselPopupService } from '../../services/vessel-popup.service';
 import { BunkeringPlanCommentsService } from "../../services/bunkering-plan-comments.service";
-
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -132,7 +132,7 @@ export class VesselInfoComponent implements OnInit {
     return true;
   }
   getDefaultView() {
-    let req = { "UserId": this.vesselData.vesselId, "Port": 0, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 1 }
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId), "Port": 0, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 1 }
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
@@ -142,7 +142,7 @@ export class VesselInfoComponent implements OnInit {
       }
       else{
         if (this.vesselService.myDefaultViewPayload.length == 0) {
-          this.vesselService.myDefaultViewPayload.userId = this.vesselData.vesselId;
+          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
           this.vesselService.myDefaultViewPayload.port = 1;
           this.vesselService.myDefaultViewPayload.vessel = 0;
           this.vesselService.myDefaultViewPayload.bunker_Plan = 0;

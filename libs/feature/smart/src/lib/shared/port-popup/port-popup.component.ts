@@ -10,6 +10,8 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { VesselPopupService } from '../../services/vessel-popup.service';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { Store } from '@ngxs/store';
 
 export interface IPortGrade {
   'HSFO': string[];
@@ -66,7 +68,7 @@ export class PortPopupComponent implements OnInit {
   viewotherDetails: boolean = false;
   viewPortProductAvailability: boolean = false;
 
-  constructor(private logger: LoggerService,private vesselService: VesselPopupService,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) {
+  constructor(private store: Store,private logger: LoggerService,private vesselService: VesselPopupService,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) {
     this.shiptechUrl =  new URL(window.location.href).origin;
   }
   @Input() status: string = "standard-view";
@@ -149,7 +151,7 @@ export class PortPopupComponent implements OnInit {
     this.loadPortRemarks();
   }
   getDefaultView() {
-    let req = { "UserId": this.popup_data.locationId, "Port": 1, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 0 }
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId), "Port": 1, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 0 }
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
@@ -159,7 +161,7 @@ export class PortPopupComponent implements OnInit {
       }
       else{
         if (this.vesselService.myDefaultViewPayload.length == 0) {
-          this.vesselService.myDefaultViewPayload.userId = this.popup_data.locationId;
+          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
           this.vesselService.myDefaultViewPayload.port = 1;
           this.vesselService.myDefaultViewPayload.vessel = 0;
           this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
