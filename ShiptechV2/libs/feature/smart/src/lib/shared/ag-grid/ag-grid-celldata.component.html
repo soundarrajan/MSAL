@@ -172,15 +172,17 @@
       </div>
       <div class="input">
         <div>{{params.column.colDef.headerName}}</div>
-        <mat-form-field appearance="fill">
+        <div class="value">{{params.value}}</div>
+        <!-- <mat-form-field appearance="fill">
           <input matInput disabled style="color:white;" [value]="params.value">
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
       <div class="comments">
         <div>Comments</div>
-        <mat-form-field appearance="fill">
+        <div class="value">{{getComments(params.colDef?.field)}}</div>
+        <!-- <mat-form-field appearance="fill">
           <textarea matInput disabled [value]="getComments(params.colDef?.field)"></textarea>
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
       </div>
     </ng-template>
@@ -266,9 +268,10 @@
       </div>
       <div class="comments">
         <div>Comments</div>
-        <mat-form-field appearance="fill">
+        <div class="value">{{getComments(params.colDef?.field)}}</div>
+        <!-- <mat-form-field appearance="fill">
           <textarea matInput disabled [value]="getComments(params.colDef?.field)"></textarea>
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
       </div>
     </ng-template>
