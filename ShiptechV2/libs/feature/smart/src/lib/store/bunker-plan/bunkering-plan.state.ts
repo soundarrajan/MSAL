@@ -121,7 +121,7 @@ export class SaveBunkeringPlanState{
                               BPlanData[BPlanDataIndex].hsfo_safe_port = payload;
                               break;
                             }
-      case 'hsfo_soa':{
+      case 'hsfo_soa':{ if(BPlanData[BPlanDataIndex]?.hsfo_soa)
                         BPlanData[BPlanDataIndex].hsfo_soa = payload;
                         break;
                       }
@@ -145,7 +145,7 @@ export class SaveBunkeringPlanState{
                                     BPlanData[BPlanDataIndex].ulsfo_estimated_lift = payload;
                                     break;
                                   }
-      case 'ulsfo_soa':{
+      case 'ulsfo_soa':{  if(BPlanData[BPlanDataIndex].ulsfo_soa)
                           BPlanData[BPlanDataIndex].ulsfo_soa = payload;
                           break;
                         }
@@ -167,7 +167,7 @@ export class SaveBunkeringPlanState{
                             break;
                           }
                           
-      case 'lsdis_soa':{
+      case 'lsdis_soa':{  if(BPlanData[BPlanDataIndex].lsdis_soa)
                           BPlanData[BPlanDataIndex].lsdis_soa = payload;
                           break;
                         }
