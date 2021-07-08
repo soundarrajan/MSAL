@@ -80,11 +80,12 @@
         </div>
     </div>
     <div class="modal-body">
-        <table class="table table-hover table-bordered table-striped dataTable no-footer simple-datatable tableFixHead" id="lookup_table">
+        <table class="table table-hover table-bordered table-striped dataTableMqtr no-footer simple-datatable tableFixHead" id="lookup_table">
             <thead>
                 <tr>
-                    <td>
-                    </td>
+                    <th>
+                        <span style="cursor: col-resize;">&nbsp;</span>
+                    </th>
                     <th>
                         ID
                     </th>
@@ -175,7 +176,6 @@
     <div class="pull-right">
         <a class="btn btn-outline orange" ng-if="$ctrl.isvoyagePortchangeEnabled" ng-click="$ctrl.confirmVesselSchedulesOrderSelection()" data-dismiss="modal">Add to Order</a>
         <a class="btn btn-outline orange" ng-if="!$ctrl.isvoyagePortchangeEnabled && !$ctrl.islocationPortEnabled" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Request</a>
-        <!-- <a class="btn btn-outline orange" ng-if="!$ctrl.isvoyagePortchangeEnabled && $ctrl.islocationPortEnabled" ng-click="$ctrl.confirmPortSelection()" data-dismiss="modal">Select</a> -->
     </div>
 </div>
 

@@ -51,19 +51,6 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             });
         };
         /**
-         * Change datatable order to match server required format
-         * @param {Array} - The order format from datatables.
-         * @returns {Object} - normalized object representing a human-readable table order
-         */
-        function normalizeDatatablesOrder(datatablesOrderArray) {
-            let tableOrder = {};
-            datatablesOrderArray = datatablesOrderArray[0];
-            tableOrder.column = $(ctrl.table.column(datatablesOrderArray[0]).header()).data('columnName');
-            // if(tableOrder.column === 'contractName') tableOrder.column = 'name';
-            tableOrder.order = datatablesOrderArray[1];
-            return tableOrder;
-        };    
-        /**
          * Set table parameters
          * @param {int} length - count of items on each page of the table.
          * @param {int} start - item number start of current page of the table.
@@ -93,16 +80,12 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             let tablePagination = {};
             tablePagination.start = (page - 1) * ctrl.tableOptions.pageLength;
             tablePagination.length = ctrl.tableOptions.pageLength;
-            var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
             setTableVars(tablePagination.length, tablePagination.start);
-            call = lookupModel.getList(LOOKUP_TYPE.LOCATIONS, tableOrder, tablePagination, ctrl.tableOptions.filters, ctrl.tableOptions.searchTerm, null, ctrl.args);
+            call = lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, tablePagination, ctrl.tableOptions.filters, ctrl.tableOptions.searchTerm, null, ctrl.args);
             call.then((server_data) => {
                 ctrl.data = server_data.payload;
                 ctrl.data1 = server_data.payload;
                 ctrl.checkboxes = [];
-                $timeout(() => {
-                    ctrl.table.columns.adjust();
-                });
             });
         };
         function Getlocation(){
@@ -317,44 +300,11 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             ctrl.selectedLocations = [];
         };
         /**
-         * Change datatable order to match server required format
-         * @param {Array} - The order format from datatables.
-         * @returns {Object} - normalized object representing a human-readable table order
-         */
-        function normalizeDatatablesOrder(datatablesOrderArray) {
-            let tableOrder = {};
-            datatablesOrderArray = datatablesOrderArray[0];
-            tableOrder.column = $(ctrl.table.column(datatablesOrderArray[0]).header()).data('columnName');
-            // if(tableOrder.column === 'contractName') tableOrder.column = 'name';
-            tableOrder.order = datatablesOrderArray[1];
-            return tableOrder;
-        };
-        /**
          * Initializes all user events on the table (pagination, sorting, searching)
          */
         function handleTableEvents() {
         let table = $(tableSelector),
             call;
-        table.on('order.dt', (e) => {
-            console.log(ctrl.tableOptions.searchTerm);
-            let neworder = angular.copy(ctrl.table.order().slice(0));
-            let tableOrder;
-            // reset pagination
-            let tablePagination = {};
-            tablePagination.start = 0;
-            tablePagination.length = ctrl.tableOptions.pageLength;
-            tableOrder = normalizeDatatablesOrder(neworder);
-            call = lookupModel.getList(LOOKUP_TYPE.LOCATIONS, tableOrder, tablePagination, ctrl.tableOptions.filters, ctrl.tableOptions.searchTerm, null, ctrl.args);
-            call.then((server_data) => {
-                destroyDataTable();
-                ctrl.ctrl.data = server_data.payload;
-                setTableVars(ctrl.tableOptions.pageLength, 0, neworder);
-                $timeout(() => {
-                    ctrl.table = initDatatable();
-                    handleTableEvents();
-                });
-            });
-        });
         table.on('length.dt', (e, settings, len) => {
             let info = ctrl.table.page.info(),
                 tablePagination = {},
@@ -362,9 +312,8 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             tablePagination.start = info.start;
             tablePagination.length = len;
             ctrl.tableOptions.pageLength = len;
-            var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
             setTableVars(tablePagination.length, tablePagination.start);
-            call = lookupModel.getList(LOOKUP_TYPE.LOCATIONS, tableOrder, tablePagination, ctrl.tableOptions.filters, ctrl.tableOptions.searchTerm, null, ctrl.args);
+            call = lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, tablePagination, ctrl.tableOptions.filters, ctrl.tableOptions.searchTerm, null, ctrl.args);
             call.then((server_data) => {
                 destroyDataTable();
                 ctrl.data = server_data.payload;

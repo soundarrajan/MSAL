@@ -3192,6 +3192,11 @@ Uncomment to see border around all .col-*
                 display: block;
             }
 
+            .modal .dataTableMqtr {
+                height: 400px;
+                overflow: auto;
+                display: block;
+            }
             .ui-jqgrid span.jqgrid-ng-action {
                 margin-left: 0 !important;
             }

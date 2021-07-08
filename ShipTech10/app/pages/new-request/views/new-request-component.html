@@ -1326,7 +1326,7 @@
 <lookup-dialog class="modal fade in" id="lookup_dialog" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" vessel-id="$ctrl.request.vesselId" args="$ctrl.voyageId" on-vessel-select="$ctrl.selectVessel(vessel)" on-company-select="$ctrl.selectCompany(company)" on-location-select="$ctrl.selectPort(location, extraDetails)" on-product-select="$ctrl.selectProduct(product)" on-service-select="$ctrl.selectService(service)" on-buyer-select="$ctrl.selectBuyer(buyer)"></lookup-dialog>
 <sellers-dialog class="modal fade in sellers-dialog" id="agents" aria-hidden="true" data-width="90%" seller-types="$ctrl.agentCounterpartyTypeId" on-seller-select="$ctrl.selectAgent(sellerId)"></sellers-dialog>
 <vessel-schedule class="modal fade in requestScreen" id="route_schedule" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedules(locations)"></vessel-schedule>
-<vessel-schedule class="modal fade in requestScreen route_schedule_mintoreach" id="route_schedule_mintoreach" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedulesMintoReach(locations)"></vessel-schedule>
+<vessel-schedule class="modal fade in requestScreen route_schedule_mintoreach" id="route_schedule_mintoreach" aria-hidden="true" data-width="75%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedulesMintoReach(locations)"></vessel-schedule>
 <amend-dialog class="modal fade in" id="amend" aria-hidden="true" on-amend="$ctrl.amendRFQ()" on-reload="$ctrl.reloadRequest()"></amend-dialog>
 <spec-group-edit class="modal fade in" aria-hidden="true" data-width="66%">
     <span ng-controller="Controller_Master as CM">
