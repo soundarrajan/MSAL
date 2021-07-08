@@ -992,7 +992,7 @@ export class OlMapComponent implements OnInit {
         }
         else if (items[0].get('type') == 'port-on-route' || items[0].get('type') == 'next-port') {
 
-          this.createPopup(items[0].get('data'), coordinates);
+          // this.createPopup(items[0].get('data'), coordinates);
           let feature1 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.id == "RL");//Route Line
           let feature3 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-glow");//Vessel Icon Glow on Route
           let feature4 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-on-route");//Vessel Icon on Route
@@ -1434,10 +1434,12 @@ export class OlMapComponent implements OnInit {
       var lonlat = fromLonLat([temp[z].lon, temp[z].lat]);
       this.flyTo(lonlat, () => { this.isLoading = false }, 2.5)
 
+      this.routeFound = false;
     // });
   }
 
   createPopup(data, coordinates) {
+    let popupData;
     var e = document.getElementsByClassName("ol-popup");
     for (let i = 0; i < e.length; i++) {
       e[i].remove();
@@ -1458,19 +1460,28 @@ export class OlMapComponent implements OnInit {
           </div>`;
     }
     else {
-      let popupData = this.routeData.find(item => item.nextLocation == data.locationName)
-      let daysLeft = popupData.daysLeft.split('to');
-      let time = moment(popupData.eta).format('HH:mm');
-      popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
+      this.routeData.find(item => {
+        if(item.startLocation == data.locationName && item.vesselName == item.nextLocation){
+          data.locationName = item.vesselName;
+          popupData = item;
+        }          
+        else if(item.nextLocation == data.locationName)
+        popupData = item;
+      })
+      if(popupData){
+          let daysLeft = popupData.daysLeft.split('to');
+          let time = moment(popupData.eta).format('HH:mm');
+          popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
       
-      element.innerHTML = `<div class="popup-content">
-      <div style="white-space:nowrap;display:flex;align-items:center;">
-      <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
-      </span>
-      <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
-        <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
-        <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
-          </div>`;
+          element.innerHTML = `<div class="popup-content">
+          <div style="white-space:nowrap;display:flex;align-items:center;">
+          <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
+          </span>
+          <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
+            <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
+            <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
+              </div>`;
+        }
     }
 
     var overlay = new Overlay({
@@ -1484,6 +1495,7 @@ export class OlMapComponent implements OnInit {
     // }
   }
   createHoverPopup(data, coordinates) {
+    let popupData;
     if (this.clickedPort != data.locationName) {
       // if (data.locationName == 'Loke' || data.locationName == 'NEW YORK' || data.locationName == 'CRISTOBAL') {
       var element = document.createElement('div');
@@ -1500,26 +1512,35 @@ export class OlMapComponent implements OnInit {
             </div>`;
       }
       else {
-        let popupData = this.routeData.find(item => item.nextLocation == data.locationName)
-        let daysLeft = popupData.daysLeft.split('to');
-        let time = moment(popupData.eta).format('HH:mm');
-        popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
+        this.routeData.find(item => {
+          if(item.startLocation == data.locationName && item.vesselName == item.nextLocation){
+            data.locationName = item.vesselName;
+            popupData = item;
+          }          
+          else if(item.nextLocation == data.locationName)
+          popupData = item;
+        })
+        if(popupData){
+            let daysLeft = popupData.daysLeft.split('to');
+            let time = moment(popupData.eta).format('HH:mm');
+            popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
         
-        element.innerHTML = `<div class="popup-content">
-        <div style="white-space:nowrap;display:flex;align-items:center;">
-        <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
-        </span>
-        <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
-          <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
-          <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
-            </div>`;
-      }
-      var overlay = new Overlay({
-        element: element,
-        positioning: 'center-left'
-      });
-      overlay.setPosition(coordinates);
-      this.map.addOverlay(overlay);
+            element.innerHTML = `<div class="popup-content">
+            <div style="white-space:nowrap;display:flex;align-items:center;">
+            <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
+            </span>
+            <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
+              <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
+              <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
+                </div>`;
+          }
+          var overlay = new Overlay({
+            element: element,
+            positioning: 'center-left'
+          });
+          overlay.setPosition(coordinates);
+          this.map.addOverlay(overlay);
+        } 
       // }
     }
   }
@@ -1613,8 +1634,8 @@ export class OlMapComponent implements OnInit {
     // this.localService.getCountriesList().subscribe(res => {
     //   if (res != undefined) {
         for (let port of this.portList) {
-          if (ind == 0) {
-            if (port.locationName == routes.startLocation) {
+          // if (ind == 0) {
+            if (port.locationName == routes.startLocation && routes.vesselName == routes.nextLocation) {
               let portGlow = new OlFeature({
                 id: 'PI' + routes.id, type: 'port-on-route', data: port,
                 geometry: new OlPoint(fromLonLat([routes.startLocationLongitude, routes.startLocationLatitude])),
@@ -1628,8 +1649,12 @@ export class OlMapComponent implements OnInit {
               });
               portMarker.setStyle(this.getPortMarkerStyle(routes.startLocation));
               featureRoutes.push(portMarker);
+
+              this.routeLayer.getSource().addFeatures(featureRoutes);
+              this.routeLayer.setVisible(true);
+
             }
-          }
+          // }
           if (port.locationName == routes.nextLocation) {
             portData = port;
             if (this.nextPortIndex == ind) {
