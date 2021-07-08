@@ -1,9 +1,11 @@
-﻿commit 1c545a34a3c006c849abdeb068187a012e142a25
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 8 15:45:59 2021 +0000
+﻿commit ddcc9a9eceb584165143d8add1b9004e387447df
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jul 8 20:14:14 2021 +0000
 
-    Merged PR 12253: #33977: B plan: View Future Requests date between space issue has fixed
+    Merged PR 12254: #33962 : issue 2 fix & #33976 : view all bplan fix
     
-    Related work items: #33977
+    #33962 : issue 2 fix & #33976 : view all bplan fix
+    
+    Related work items: #33962, #33976
 
 branch: master
