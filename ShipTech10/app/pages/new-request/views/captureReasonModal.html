@@ -1,6 +1,6 @@
 <div class="capture-reason-modal" ng-if="$ctrl.captureReasonModalData">
     <div class="caption-subject">
-        Change {{$ctrl.captureReasonModalData.field.name}}
+        Change {{$ctrl.captureReasonModalData.field.displayName ? $ctrl.captureReasonModalData.field.displayName : $ctrl.captureReasonModalData.field.name}}
     </div>
     <hr>
         <div class="row">

@@ -4431,9 +4431,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.captureReasonModalData.productIndex = productIndex;
             ctrl.captureReasonModalData.field = ctrl.getReasonField(changedFieldName);
             ctrl.captureReasonModalData.requestLocation = locationIndex !== null ? ctrl.request.locations[locationIndex].location.id : null;
+            ctrl.captureReasonModalData.location = locationIndex !== null ? ctrl.request.locations[locationIndex].location : null;
             ctrl.captureReasonModalData.requestLocationId = locationIndex !== null ? ctrl.request.locations[locationIndex].id : null;
             ctrl.captureReasonModalData.requestProductId = locationIndex !== null && productIndex !== null ? ctrl.request.locations[locationIndex].products[productIndex].id : null;
-            ctrl.captureReasonModalData.product = locationIndex !== null && productIndex !== null ? ctrl.request.locations[locationIndex].products[productIndex].product.id : null;
+            ctrl.captureReasonModalData.product = locationIndex !== null && productIndex !== null ? ctrl.request.locations[locationIndex].products[productIndex].product : null;
         }
         ctrl.getReasonField = (fieldName) => {
             var foundField = false;
@@ -4493,7 +4494,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             data = {
                 "id": 0,
                 "requestId" : ctrl.request.id,
-                "requestLocation" : ctrl.captureReasonModalData.requestLocation,
+                "location" : ctrl.captureReasonModalData.location,
                 "product" : ctrl.captureReasonModalData.product,
                 "fieldName" : ctrl.captureReasonModalData.field,
                 "reasonName" : ctrl.captureReasonModalData.reason,
@@ -4599,7 +4600,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         Object.keys(v2.tempReasons).forEach(key => {
                             if( v2.tempReasons[key] ) {
                                 if(!v2.tempReasons[key].product) {
-                                    v2.tempReasons[key].product = v2.product.id;
+                                    v2.tempReasons[key].product = v2.product;
                                 }
                                 ctrl.request.reasons.push(v2.tempReasons[key]);
                             }
