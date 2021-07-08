@@ -4,6 +4,6 @@
   ></span>
 
   <div class="send-license-button-wrapper">
-    <a class="btn default" ng-click="sendLicense()">Send license</a>
+    <a class="btn default" ng-if="formValues.hasSendLicenseAccess && formValues.id > 0" ng-click="sendLicense()">Send license</a>
   </div>
 </span>
