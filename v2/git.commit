@@ -1,11 +1,7 @@
-﻿commit 7452d2af1b83853d501873e4561b934b09209e39
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 7 19:39:13 2021 +0000
+﻿commit bf72cefa978de425a0a3484b02c8f63e5b7bf94e
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Thu Jul 8 07:06:26 2021 +0530
 
-    Merged PR 12208: #33169 : Warning template for success messages
-    
-    #33169 : Warning template for success messages
-    
-    Related work items: #33169
+    MyDefault View UI
 
 branch: master
