@@ -1,7 +1,11 @@
-﻿commit 3687835e9f435904ec5037018613a1fb365c3263
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Thu Jul 8 16:37:23 2021 +0530
+﻿commit 5d3ff264f32fea857bf3846e814f30385da541d6
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jul 8 13:35:28 2021 +0000
 
-    MyDefault View Checkbox
+    Merged PR 12244: # 33962 : bug fix for issue 1.
+    
+    #33962 : bug fix for issue 1.
+    
+    Related work items: #33962
 
 branch: master
