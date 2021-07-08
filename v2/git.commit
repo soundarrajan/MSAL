@@ -1,9 +1,9 @@
-﻿commit e6e1bc381a899eae3e4a96e27e7cda8cf7957dab
+﻿commit 7f814c2d6564813fce0e9540fb7cd02d12fc1e46
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 8 14:52:30 2021 +0000
+Date:   Thu Jul 8 15:25:39 2021 +0000
 
-    Merged PR 12250: #33980: Port details: View Product Availability issue has fixed
+    Merged PR 12252: #33974: Port details: View Port Basic Information changes has fixed
     
-    Related work items: #33980
+    Related work items: #33974
 
 branch: master
