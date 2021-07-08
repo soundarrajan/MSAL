@@ -12,6 +12,8 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import moment from 'moment';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-vessel-popup',
@@ -44,7 +46,7 @@ export class VesselPopupComponent implements OnInit {
   viewVesselSchedule: boolean = false;
   viewVesselAlerts: boolean = false;
   APImyDefaultView: any = [];
-  constructor(private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService: VesselPopupService) {
+  constructor(private store: Store,private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService: VesselPopupService) {
     this.shiptechUrl = new URL(window.location.href).origin;
   }
   @Input() status: string = "standard-view";
@@ -164,8 +166,11 @@ export class VesselPopupComponent implements OnInit {
     this.logger.logInfo('VesselPopupComponent-ngAfterViewInit()', new Date());
   }
 
+
   getDefaultView() {
-    let req = { "UserId": this.popup_data.vesselId, "Port": 0, "Vessel": 1, "Default_View": 1, "Bunker_Plan": 0 }
+    console.log("YYYYYYYYYYY", this);
+    console.log("YYYYYYYYYYY UserProfileState..userId", this.store.selectSnapshot(UserProfileState.userId));
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId), "Port": 0, "Vessel": 1, "Default_View": 1, "Bunker_Plan": 0 }
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
@@ -173,13 +178,11 @@ export class VesselPopupComponent implements OnInit {
        console.log("55555555555555%%%%%%%%%%%%%res", res);
        console.log("55555555555555%%%%%%%%%%%%%res", res.payload.length);
       if (res.payload.length > 0) {
-        
         this.vesselService.myDefaultViewPayload = res.payload[0];
         console.log("55555555555555%%%%%%%%%%%%%this.vesselService.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
-        
-      }else{
-        
-          this.vesselService.myDefaultViewPayload.userId = this.popup_data.VesselId;
+      }
+      else{
+          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
           this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 1;
           this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
