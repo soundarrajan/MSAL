@@ -2434,8 +2434,6 @@ APP_MASTERS.controller('Controller_Datatables', [
                             $scope.formValues = {
                                 locations: [ {} ]
                             };
-                        } else if (angular.equals($scope.formValues.locations, [])) {
-                            $scope.formValues.locations.push({});
                         }
                     }, 10);
                 }
