@@ -86,6 +86,8 @@ export class AllBunkeringPlanComponent implements OnInit {
   showViewAlert(isCellClicked) {
     if(isCellClicked?.type == "cellClicked") {
       console.log(isCellClicked);
+      var overlay = document.querySelector('.cdk-overlay-container');
+      overlay.classList.remove('removeOverlay');
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '350px',
         panelClass: 'confirmation-popup-operator',// confirmation-popup',
