@@ -1,11 +1,9 @@
-﻿commit aa8d3fd3640b4d57fa1473bedb257d0a5f82f6f7
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 8 14:46:36 2021 +0000
+﻿commit e6e1bc381a899eae3e4a96e27e7cda8cf7957dab
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Jul 8 14:52:30 2021 +0000
 
-    Merged PR 12249: #29684 : Route detail: Vessel Route.
+    Merged PR 12250: #33980: Port details: View Product Availability issue has fixed
     
-    #29684 : Route detail: Vessel Route.
-    
-    Related work items: #29684
+    Related work items: #33980
 
 branch: master
