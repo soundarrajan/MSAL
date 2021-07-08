@@ -887,6 +887,7 @@ export class OlMapComponent implements OnInit {
       var hit = this.map.hasFeatureAtPixel(pixel);
       //Check Bunker Plan Screen is open
       this.onMapClick.emit();
+      debugger;
       if(this.vesselService.myDefaultViewPayload != undefined && this.vesselService.myDefaultViewPayload.length !=0){
         this.SavemyDefaultView();
       }
@@ -1973,7 +1974,7 @@ export class OlMapComponent implements OnInit {
         "PreviousBunkeringPlan": this.vesselService.myDefaultViewPayload.previousBunkeringPlan
       }
     }
-    this.localService.saveDefaultView(requestPayload).subscribe(response => {
+    this.vesselService.saveDefaultView(requestPayload).subscribe(response => {
       console.log(response.payload);
     })
   }
