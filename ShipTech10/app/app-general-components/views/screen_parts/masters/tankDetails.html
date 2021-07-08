@@ -1,7 +1,21 @@
 <div class="custom-hardcoded-table admin">
 	<table class="table-body">
+		<thead>
+			<tr>
+				<td style="max-width: initial; min-width: 50px;" class="padding"><span class="insert" ng-click="addnewTankProduct()"></span></td>
+				<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Product Type</b></td>
+				<td style="max-width: initial; min-width: 230px;" class="padding"><b>Product</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Tank Suction Limit (MT)</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Receiving Rate (MT/h)</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Debunker Rate (MT/h)</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Fill limit (%)</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Storage Capacity (m3)</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Storage Capacity (MT)</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Density (kg/m3)</b></td>
+			</tr>
+		</thead>
 		<tbody ng-repeat="(key, value) in formValues.vesselProducts track by $index" ng-init="$rowIndex = $index" ng-if="!value.isDeleted">
-			<tr class="tank-header-container">
+			<tr class="tank-header-container" ng-if="verifyIfvesselProductsIsEmpty() != key">
 				<td style="max-width: initial; min-width: 50px;" class="padding"><span ng-if="!key" class="insert" ng-click="addnewTankProduct()"></span></td>
 				<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Product Type</b></td>
 				<td style="max-width: initial; min-width: 230px;" class="padding"><b>Product</b></td>

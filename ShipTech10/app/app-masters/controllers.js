@@ -5589,6 +5589,16 @@
             $scope.addnewTankDetail( $scope.formValues.vesselProducts.length-1);
         }
 
+        $scope.verifyIfvesselProductsIsEmpty = function(){
+            let checkIfVesselProductsIsEmpty = _.findIndex($scope.formValues.vesselProducts, function(object) {
+                return !object.isDeleted;
+            });
+            if (checkIfVesselProductsIsEmpty != -1) {
+                return checkIfVesselProductsIsEmpty;
+            }
+            return 0;
+        }
+
         $scope.addnewTradebookItem = function (isNew){
             var newItem = {
                 location:null,
