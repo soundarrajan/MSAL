@@ -1,9 +1,9 @@
-﻿commit 35024b3c4d17080ec9949fa491dd7042fa81ad72
+﻿commit 169b75d825b058a3c4cc4614b94d806384211efd
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 9 05:51:57 2021 +0000
+Date:   Fri Jul 9 06:31:35 2021 +0000
 
-    Merged PR 12258: #33436: Product Availablity Section_ The following issues exists in the product availablity table unwanted header filter removed
+    Merged PR 12259: #33970 -Vessel details: View Future Requests for the Vesse tooltip alignment issue has fixed
     
-    Related work items: #33436
+    Related work items: #33970
 
 branch: master

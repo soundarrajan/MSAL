@@ -5812,6 +5812,7 @@ label {
 		border-radius: 2px;
 		.mat-menu-content{
 			padding: 0px;
+			background-color: inherit !important;
 		}
 		.hover-tooltip {
 			padding: 2px 5px;
@@ -8037,7 +8038,8 @@ cursor:pointer;
 	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25), 2px 0px 2px rgba(0, 0, 0, 0.25);
 	border-radius: 2px;
 	width: 275px;
-	height: 190px;
+	// height: 190px;
+	height: auto;
 	font-size: 10px;
 	.port-future-req{
 		padding:10px;
@@ -8063,14 +8065,16 @@ cursor:pointer;
 		font-weight: 300;
 		font-size: 8px;
 		color: #C4C4C4;
+		text-align: left;
 	}
-
+	
 	td{
 		font-family: Roboto;
 		font-style: normal;
 		font-weight: normal;
 		font-size: 10px;
 		color: #EFF3F9;
+		text-align: left;
 	}
 	.line{
 		margin-top: 2px;
