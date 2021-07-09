@@ -388,9 +388,21 @@
                 <div class="row" *ngFor="let schedule of scheduleList; let i = index">
                   
                   <div class="col-3" style="line-height: 9px;display: flex;">
-                    <ng-container *ngIf="i < scheduleCount-1">
+                    <ng-container *ngIf="i < scheduleCount-1 && i != 1">
                     <div class="grey">
                       <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                    <div class="white">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="i == 1">
+                    <div class="grey current-location">
+                      <img src="./assets/customicons/location-blue.svg" width="11" height="10" alt="location">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                       <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
@@ -408,17 +420,17 @@
                   </ng-container>
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
-                    <div class="caption-details-port" (click)="openPort(schedule.vesselPorts,schedule.locationId)" matTooltip="{{schedule.vesselPorts}}">{{schedule.vesselPorts}}
+                    <div class="caption-details-port" [ngClass]="{'current-location': i==1}" (click)="openPort(schedule.vesselPorts,schedule.locationId)" matTooltip="{{schedule.vesselPorts}}">{{schedule.vesselPorts}}
                     </div>
                   </div>
                   <span class="col-1 icon-seperator">|</span>
                   <div class="col-5 pd-0">
-                    <div class="caption-header">ETA:
-                      <span class="caption-details" matTooltip="{{schedule.eta | utcDatePipe}}">{{schedule.eta | utcDatePipe}}</span>
+                    <div class="caption-header" [ngClass]="{'current-location': i==1}">ETA:
+                      <span class="caption-details" [ngClass]="{'current-location': i==1}" matTooltip="{{schedule.eta | utcDatePipe}}">{{schedule.eta | utcDatePipe}}</span>
                     </div>
                   </div>
                   <span class="col-1 icon-seperator pd-0">|</span>
-                  <div class="days">{{schedule.daysLeft}} Days</div>
+                  <div class="days" [ngClass]="{'current-location': i==1}">{{schedule.daysLeft}} Days</div>
                 </div>
                 <!-- <div class="row">
                   <div class="col-3" style="line-height: 9px;display: flex;">
