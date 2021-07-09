@@ -259,6 +259,17 @@ export class VesselPopupComponent implements OnInit {
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
+      if(this.viewFutureRequest){
+        this.vesselService.myDefaultViewPayload.futureRequest = 1;
+      }else if(this.viewVesselRedelivery){
+        this.vesselService.myDefaultViewPayload.vesselRedelivery = 1;
+      }
+      else if(this.viewVesselSchedule){
+        this.vesselService.myDefaultViewPayload.vesselSchedule = 1;
+      }
+      else if(this.viewVesselAlerts){
+        this.vesselService.myDefaultViewPayload.vesselAlerts = 1;
+      }
     }
     else {
       this.myDefaultView = false;
@@ -273,6 +284,8 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.defaultView = 0;
     }
   }
+
+  
   public changeDefault(expandRef?: any) {
     if (this.second?.expanded || expandRef == 'second') {
       this.loadVesselAlertList();

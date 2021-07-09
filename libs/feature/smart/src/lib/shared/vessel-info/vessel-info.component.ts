@@ -143,9 +143,9 @@ export class VesselInfoComponent implements OnInit {
       else{
         if (this.vesselService.myDefaultViewPayload.length == 0) {
           this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
-          this.vesselService.myDefaultViewPayload.port = 1;
+          this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 0;
-          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+          this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
           this.vesselService.myDefaultViewPayload.defaultView = 0;
           this.vesselService.myDefaultViewPayload.portRemarks = 0;
           this.vesselService.myDefaultViewPayload.productAvailability = 0;
@@ -165,7 +165,7 @@ export class VesselInfoComponent implements OnInit {
            
       console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
       if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
-        if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.port == 1) {
+        if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.bunker_Plan == 1) {
           this.myDefaultView = true;
           if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
             this.viewcurrentROBandArbitragedetails = true;
@@ -191,6 +191,17 @@ export class VesselInfoComponent implements OnInit {
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
+      if(this.viewcomments){
+        this.vesselService.myDefaultViewPayload.comments = 1;
+      }else if(this.viewcurrentROBandArbitragedetails){
+        this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 1;
+      }
+      else if(this.viewcurrentBunkeringPlan){
+        this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 1;
+      }
+      else if(this.viewpreviousBunkeringPlan){
+        this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 1;
+      }
     }
     else {
       this.myDefaultView = false;
@@ -202,7 +213,7 @@ export class VesselInfoComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
       this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
       this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
-      this.vesselService.myDefaultViewPayload.defaultView = 1;
+      this.vesselService.myDefaultViewPayload.defaultView = 0;
     }
   }
   
