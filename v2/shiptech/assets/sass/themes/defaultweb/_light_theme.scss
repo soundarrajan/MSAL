@@ -743,6 +743,10 @@ $white:#FFFFFF;
 				.col-3:hover>.caption-details-port {
 					color: $theme-font !important;
 					font-weight: 500;
+					&.current-location{
+						//color: #70BDE4 !important;
+						font-weight: 500;
+					}
 				}
 				.caption-details {
 					color: $text_content;

@@ -1,7 +1,11 @@
-﻿commit f0df3bae1fe8923b6aa22d3dabf6f9211c2fb655
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Fri Jul 9 16:30:25 2021 +0530
+﻿commit 6d5975e5d4a460404e3865238a93948c9c7027e7
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri Jul 9 11:13:58 2021 +0000
 
-    33972 - Bunker plan: Header section
+    Merged PR 12281: #33831 : Vessel Schedule list_ The current port not highlighted in blue color
+    
+    #33831 : Vessel Schedule list_ The current port not highlighted in blue color
+    
+    Related work items: #33831
 
 branch: master
