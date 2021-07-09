@@ -2510,14 +2510,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             if (ctrl.data.is2MDelivery) {
                 console.log(product);
+                let convertStringToDecimal = convertDecimalSeparatorStringToNumber(product.confirmedQuantity);
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (parseFloat(confirmedQuantityForBqs) > 200) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 200) {
                         product.isBqs = true;
                         return;
                           
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (parseFloat(confirmedQuantityForBqs) > 50) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 50) {
                         product.isBqs = true;
                         return;
                        
@@ -4841,14 +4842,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             if (ctrl.data.is2MDelivery) {
                 console.log(product);
+                let convertStringToDecimal = convertDecimalSeparatorStringToNumber(product.confirmedQuantity);
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (parseFloat(confirmedQuantityForBqs) > 200) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 200) {
                         product.isBqs = true;
                         return;
                           
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (parseFloat(confirmedQuantityForBqs) > 50) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 50) {
                         product.isBqs = true;
                         return;
                        
@@ -4865,13 +4867,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 return;
             }
             if (ctrl.data.is2MDelivery) {
+                let convertStringToDecimal = convertDecimalSeparatorStringToNumber(product.confirmedQuantity);
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (parseFloat(product.confirmedQuantity) > 200 && (product.quantityUom && product.quantityUom.id == 5)) {
+                    if (convertDecimalSeparatorStringToNumber(product.confirmedQuantity) > 200 && (product.quantityUom && product.quantityUom.id == 5)) {
                         product.isBqs = true;
                         return;
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (parseFloat(product.confirmedQuantity) > 50 && (product.quantityUom && product.quantityUom.id == 5)) {
+                    if (convertDecimalSeparatorStringToNumber(product.confirmedQuantity) > 50 && (product.quantityUom && product.quantityUom.id == 5)) {
                         product.isBqs = true;
                         return;      
                     }
@@ -4894,6 +4897,31 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
 
+        }
+
+        function convertDecimalSeparatorStringToNumber(number) {
+            var numberToReturn = number;
+            var decimalSeparator, thousandsSeparator;
+            if (typeof number == 'string') {
+                if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+                    if (number.indexOf(',') > number.indexOf('.')) {
+                        decimalSeparator = ',';
+                        thousandsSeparator = '.';
+                    } else {
+                        thousandsSeparator = ',';
+                        decimalSeparator = '.';
+                    }
+                    numberToReturn = parseFloat(parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`));
+                } else if (number.indexOf(',') != -1) {
+                    numberToReturn = parseFloat(number.replace(new RegExp(',', 'g'), ''));
+                } else {
+                    numberToReturn = parseFloat(number);
+                }
+            }
+            if (isNaN(numberToReturn)) {
+                numberToReturn = 0;
+            }
+            return parseFloat(numberToReturn);
         }
 
         /* Capture reason for change */
