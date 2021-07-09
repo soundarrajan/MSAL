@@ -10325,6 +10325,16 @@
             $.each($scope.formValues.accessCustomers, (k,v) => {
                 customersIdsList.push(v.id);
             } )
+            
+            $.each($rootScope.tabData["vessel_access"] , (k,v) => {
+                $rootScope.tabData["vessel_access"][k].isSelected = false;
+                if(v.children) {
+                    $.each(v.children, (k3,v3) => {
+                        $rootScope.tabData["vessel_access"][k].children[k3].isSelected = false;
+                    })
+                }  
+            })            
+
             $http.post(`${API.BASE_URL_DATA_MASTERS}/api/masters/vessels/listByCustomerIds`, {
                 Payload: customersIdsList
             }).then((response) => {
@@ -10335,19 +10345,21 @@
                         }
                         if(v.children) {
                             $.each(v.children, (k3,v3) => {
-                                if(v.id == v3.id) {
+                                if(v2.id == v3.id) {
                                     $rootScope.tabData["vessel_access"][k].children[k3].isSelected = true;
                                 }  
                             })
                         }  
                     })
                 })
+                console.log($rootScope.tabData["vessel_access"]);
             });
             $scope.prettyCloseModal();
         }
         $scope.selectAllUserMasterCustomers = (selectState) => {
             $.each($scope.userMasterCustomerData, (k,v) => {
-                v.isSelected = selectState;
+                v.isSelected = true;
+                $scope.addUserMasterCustomerToSelection(v);
             })
         }
 /* END USER master customer lookup logic */
