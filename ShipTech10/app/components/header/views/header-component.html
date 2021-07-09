@@ -50,7 +50,7 @@
                <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown main-menu-item user-menu-item">
                     <span class="username" ng-cloak>
-                       {{ userProfile }}
+                       {{ userProfile | decodeReadOnly}}
                     </span>
                     <a href="#" class="dropdown-toggle user-menu" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                     <i class="icon-user"></i>
