@@ -9,6 +9,10 @@ angular.module('shiptech.pages').directive('decodeInputFormat', [ '$window', '$i
                         return String.fromCharCode(dec);
                     });
                 };
+                var decodedString = $('<textarea />').html(modelValue).text();
+                console.log("***********", decodedString)
+                return(decodedString);
+
                 return decode(_.unescape(modelValue));
             });
         }

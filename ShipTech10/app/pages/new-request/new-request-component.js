@@ -2634,7 +2634,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if (!ctrl.lookupInput.buyer) {
                 ctrl.lookupInput.buyer = {};
             }
-            ctrl.lookupInput.buyer.name = buyer.name;
+            ctrl.lookupInput.buyer.name = decodeHtmlEntity(_.unescape(buyer.name));
             ctrl.lookupInput.buyer.id = buyer.id;
         };
         ctrl.selectVesselSchedules = function(locations) {
@@ -3806,11 +3806,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                         if (a.elem[a.elem.length - 1] == 'agent') {
                             var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
+                            a.val.name = decodeHtmlEntity(_.unescape(a.val.name));
                             ctrl.request.locations[idx].agent = a.val;
                         }
                         if (a.elem[a.elem.length - 1] == 'buyer') {
                             var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
                             ctrl.captureReasonModal(idx, null, 'REQUEST_LOCATION_BUYER', 'buyer');
+                            a.val.name = decodeHtmlEntity(_.unescape(a.val.name));
                             ctrl.request.locations[idx].buyer = a.val;
                         }
                         if (a.elem[a.elem.length - 1] == 'destinationInput') {
