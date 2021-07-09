@@ -848,9 +848,7 @@ export class SmartOperatorComponent implements OnInit {
 
   public getBdnReport(FromDelDate, ToDelDate){
 
-    let req = { IsDefaultDate : 1,FromDelDate: FromDelDate,ToDelDate:ToDelDate};
-    // let req = {"FromDelDate":"2020-01-01", "ToDelDate":"2020-01-10"}
-    // {"Payload": {"IsDefaultDate":1,"ToDelDate":"2020-01-28", "FromDelDate":"2020-01-19"}}
+    let req = { IsDefaultDate : 1,FromDelDate: moment(FromDelDate).format('MM/DD/YYYY'),ToDelDate:moment(ToDelDate).format('MM/DD/YYYY')};
     this.vesselService.getBdnReport(req).subscribe((res)=>{
       this.BdnReportsData = res.payload;
       this.BdnReportsData.forEach((item: any) => {
