@@ -1,8 +1,8 @@
-﻿commit 723ea1643a63b1a2fc1473323a9883cfaca03053
+﻿commit e22c1c106eb39be07983f792a4bda33bdbf987eb
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 9 14:07:29 2021 +0000
+Date:   Fri Jul 9 14:32:00 2021 +0000
 
-    Merged PR 12297: #33903: Port Remarks_ Its not allowing to add the same port remark changes has done
+    Merged PR 12301: #33903 - sequenceno ref has changed in port remark section
     
     Related work items: #33903
 
