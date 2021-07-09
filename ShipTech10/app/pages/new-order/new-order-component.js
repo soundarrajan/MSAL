@@ -1768,7 +1768,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 newProduct.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 	            newProduct.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
                 ctrl.loadOrderScreen =  false;
-                ctrl.checkBQSConversionCheckbox(newProduct, parseFloat(newProduct.confirmedQuantity) * newProduct.confirmedQtyProdForBqs);
+                ctrl.checkBQSConversionCheckbox(newProduct, convertDecimalSeparatorStringToNumber(newProduct.confirmedQuantity) * newProduct.confirmedQtyProdForBqs);
                 // newProduct.specGroups = server_data.data.payload;
             });
             payload = { Payload: product.id };
@@ -2118,7 +2118,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ctrl.lookupField.productType.productTypeMOTGroup =  angular.copy(server_data.data.payload.productTypeMOTGroup);
 			            ctrl.lookupField.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
                         ctrl.loadOrderScreen = false;
-                        ctrl.checkBQSConversionCheckbox(ctrl.lookupField, parseFloat(ctrl.lookupField.confirmedQuantity) * ctrl.lookupField.confirmedQtyProdForBqs);
+                        ctrl.checkBQSConversionCheckbox(ctrl.lookupField, convertDecimalSeparatorStringToNumber(ctrl.lookupField.confirmedQuantity) * ctrl.lookupField.confirmedQtyProdForBqs);
 		            });
                     // ctrl.lookupField.productType = product.productType;
                     ctrl.lookupField.tempProduct = ctrl.lookupField.product;
@@ -2494,7 +2494,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if (server_data.payload == 1) {
                     ctrl.checkBQSCheckbox(prod);
                 } else {
-                    ctrl.checkBQSConversionCheckbox(prod, server_data.payload * parseFloat(prod.confirmedQuantity));
+                    ctrl.checkBQSConversionCheckbox(prod, server_data.payload * convertDecimalSeparatorStringToNumber(prod.confirmedQuantity));
                 }
 
             }).catch((e) => {
@@ -4829,9 +4829,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.checkBqsForAllProducts = function(isServiceChanged) {
             for (let i = 0; i < ctrl.data.products.length; i++) {
                 if (!isServiceChanged) {
-                    ctrl.checkBQSConversionCheckbox(ctrl.data.products[i], parseFloat(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs);
+                    ctrl.checkBQSConversionCheckbox(ctrl.data.products[i], convertDecimalSeparatorStringToNumber(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs);
                 } else {
-                    ctrl.checkBQSWhenChangeService(ctrl.data.products[i], parseFloat(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs); 
+                    ctrl.checkBQSWhenChangeService(ctrl.data.products[i], convertDecimalSeparatorStringToNumber(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs); 
                 }
             }
          }
