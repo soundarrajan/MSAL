@@ -1,7 +1,9 @@
-﻿commit 3edc16a16c5418786e852f44ff62c204915584b1
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Fri Jul 9 08:45:52 2021 +0530
+﻿commit 35024b3c4d17080ec9949fa491dd7042fa81ad72
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Jul 9 05:51:57 2021 +0000
 
-    BDN reports_ The delivery from and to filter is not working properly
+    Merged PR 12258: #33436: Product Availablity Section_ The following issues exists in the product availablity table unwanted header filter removed
+    
+    Related work items: #33436
 
 branch: master

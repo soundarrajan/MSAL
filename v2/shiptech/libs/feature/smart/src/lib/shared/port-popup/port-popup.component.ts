@@ -345,13 +345,15 @@ export class PortPopupComponent implements OnInit {
     suppressMenu: true, 
     cellRendererFramework: AGGridCellRendererComponent, 
     cellRendererParams: { cellClass: ['cell-ellipsis']},
-    cellClass: ['font-bold aggrid-content-l '] },
+    cellClass: ['font-bold aggrid-content-l '] 
+    },
     { 
       headerName: 'Max Pump.Rate', 
       field: 'maxPumpRate', 
       headerTooltip: 'Max Pump.Rate', 
       width: 70, 
       cellClass: ['aggrid-text-align-l '], 
+      suppressMenu: true, 
       cellRendererFramework: AGGridCellRendererComponent,
       cellRendererParams: { cellClass: ['cell-ellipsis']},
       valueGetter: (params) => {
