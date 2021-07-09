@@ -263,6 +263,7 @@ export class PortPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.bopsPrice = 0;
       this.vesselService.myDefaultViewPayload.portsAgents = 0;
       this.vesselService.myDefaultViewPayload.otherDetails = 0;
+      this.vesselService.myDefaultViewPayload.defaultView = 0;
     }
   }
 
