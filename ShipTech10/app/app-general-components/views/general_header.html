@@ -244,7 +244,7 @@
                                     <label  class=" mt-checkbox">
                                         <input class="{{ action.id }}"  type="checkbox" name="{{ action.id }}[]"  id="{{ action.id }}"  dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}"/>
                                         <span></span>
-                                        {{CM.isCMATranslations && action.label == 'Blacklisted' ? 'Not Active' : action.label }}
+                                        {{CM.notActiveLabel && action.label == 'Blacklisted' ? 'Not Active' : action.label }}
                                     </label>
                                 </div>
                             </div>

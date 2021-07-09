@@ -49,7 +49,7 @@
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split('.')[0];
         }
-        vm.isCMATranslations = window.isCMATranslations;
+        vm.notActiveLabel = window.notActiveLabel;
         if ($scope.screen) {
             vm.screen_id = $scope.screen;
         } else {

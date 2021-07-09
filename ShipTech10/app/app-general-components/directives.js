@@ -260,7 +260,17 @@ Number(function() {
 	                                                	}
 	                                                }
 		                                        }
-	                                        }                                            
+	                                        } 
+
+                                            if (callback.clc.table_name == 'Counterparties') {  
+                                                for (let i = 0; i < callback.clc.colModel.length - 1; i++) {
+                                                    if (callback.clc.colModel[i].name == "isDeleted") {
+                                                        callback.clc.colModel[i].label = window.notActiveLabel ? 'Not Active' : 'Blacklisted';
+                                                    }
+                                                }  
+                                            }
+                                            
+
                                             $.each(callback.clc.colModel, (k, v) => {
                                                 v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
                                                 v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
@@ -436,7 +446,7 @@ Number(function() {
                                                 	}
                                                 }
 	                                        }
-                                        }  
+                                        } 
 
                                         Layout.table_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase()}`;
                                         Layout.pager_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase() }_pager`;

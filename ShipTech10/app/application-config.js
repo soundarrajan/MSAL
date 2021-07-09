@@ -566,7 +566,7 @@ angular.module('shiptech')
             // prefix: `http://localhost:9015/translations/`,
             suffix: '.json'
         });
-        window.isCMATranslations = tenantConfigs.translations == 'CMA' ? true : false;
+        window.notActiveLabel = (tenantConfigs.translations == 'CMA' || tenantConfigs.translations == 'en') ? true : false;
         // translations are based tenant, use tenantConfigs.translations (file name)
         $translateProvider.preferredLanguage(tenantConfigs.translations);
         $translateProvider.useSanitizeValueStrategy('sanitize');
