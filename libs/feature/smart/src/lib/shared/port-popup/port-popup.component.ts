@@ -544,6 +544,496 @@ export class PortPopupComponent implements OnInit {
     }
     this.portService.loadPortRemark(requestPayload).subscribe(data=> {
       console.log(data);
+
+      //new mock
+      // data = {
+      //   "payload": {
+      //     "portRemarkDetails": [
+      //       {
+      //         "portId": 164,
+      //         "remarkTypes": {
+      //           "id": 1,
+      //           "name": "Market price variation",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkStatus": {
+      //           "id": 2,
+      //           "name": "Pending",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkSeverity": {
+      //           "id": 2,
+      //           "name": "Medium",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkDescriptions": "Sample1",
+      //         "remarkComments": "Sample1",
+      //         "createdBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdOn": "2021-07-09T11:27:53.59Z",
+      //         "lastModifiedBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "lastModifiedOn": "2021-07-09T11:27:53.59Z",
+      //         "sequenceno": 0,
+      //         "id": 1,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       {
+      //         "portId": 164,
+      //         "remarkTypes": {
+      //           "id": 1,
+      //           "name": "Market price variation",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkStatus": {
+      //           "id": 2,
+      //           "name": "Pending",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkSeverity": {
+      //           "id": 2,
+      //           "name": "Medium",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkDescriptions": "update",
+      //         "remarkComments": "update",
+      //         "createdBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdOn": "2021-07-09T11:34:00.597Z",
+      //         "lastModifiedBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "lastModifiedOn": "2021-07-09T11:34:00.597Z",
+      //         "sequenceno": 0,
+      //         "id": 2,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       }
+      //     ],
+      //     "portRemarkLogs": [
+      //       {
+      //         "portId": 164,
+      //         "remarkTypes": {
+      //           "id": 1,
+      //           "name": "Market price variation",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkStatus": {
+      //           "id": 1,
+      //           "name": "No Action Taken",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkSeverity": {
+      //           "id": 2,
+      //           "name": "Medium",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdOn": "2021-07-09T11:26:08.54Z",
+      //         "lastModifiedBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "lastModifiedOn": "2021-07-09T11:26:08.54Z",
+      //         "sequenceno": 1,
+      //         "remarkDescriptions": "Sample1",
+      //         "remarkComments": "Sample1",
+      //         "id": 1,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       {
+      //         "portId": 164,
+      //         "remarkTypes": {
+      //           "id": 1,
+      //           "name": "Market price variation",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkStatus": {
+      //           "id": 2,
+      //           "name": "Pending",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkSeverity": {
+      //           "id": 2,
+      //           "name": "Medium",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdOn": "2021-07-09T11:27:53.59Z",
+      //         "lastModifiedBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "lastModifiedOn": "2021-07-09T11:27:53.59Z",
+      //         "sequenceno": 1,
+      //         "remarkDescriptions": "Sample1",
+      //         "remarkComments": "Sample1",
+      //         "id": 2,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       {
+      //         "portId": 164,
+      //         "remarkTypes": {
+      //           "id": 1,
+      //           "name": "Market price variation",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkStatus": {
+      //           "id": 1,
+      //           "name": "No Action Taken",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkSeverity": {
+      //           "id": 2,
+      //           "name": "Medium",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdOn": "2021-07-09T11:29:32.42Z",
+      //         "lastModifiedBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "lastModifiedOn": "2021-07-09T11:29:32.42Z",
+      //         "sequenceno": 2,
+      //         "remarkDescriptions": "Sample1",
+      //         "remarkComments": "Sample1",
+      //         "id": 3,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       },
+      //       {
+      //         "portId": 164,
+      //         "remarkTypes": {
+      //           "id": 1,
+      //           "name": "Market price variation",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkStatus": {
+      //           "id": 2,
+      //           "name": "Pending",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "remarkSeverity": {
+      //           "id": 2,
+      //           "name": "Medium",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "createdOn": "2021-07-09T11:34:00.597Z",
+      //         "lastModifiedBy": {
+      //           "id": 0,
+      //           "name": "RM",
+      //           "internalName": null,
+      //           "displayName": null,
+      //           "code": null,
+      //           "collectionName": null,
+      //           "customNonMandatoryAttribute1": null,
+      //           "isDeleted": false,
+      //           "modulePathUrl": null,
+      //           "clientIpAddress": null,
+      //           "userAction": null
+      //         },
+      //         "lastModifiedOn": "2021-07-09T11:34:00.597Z",
+      //         "sequenceno": 2,
+      //         "remarkDescriptions": "update",
+      //         "remarkComments": "update",
+      //         "id": 4,
+      //         "isDeleted": false,
+      //         "modulePathUrl": null,
+      //         "clientIpAddress": null,
+      //         "userAction": null
+      //       }
+      //     ]
+      //   },
+      //   "deletedCount": 0,
+      //   "modifiedCount": 0,
+      //   "matchedCount": 0,
+      //   "isAcknowledged": false,
+      //   "isModifiedCountAvailable": false,
+      //   "upsertedId": 0,
+      //   "status": 0,
+      //   "isSuccess": true,
+      //   "message": "",
+      //   "error": null,
+      //   "errorMessage": "Successful"
+      // };
+      //old mock
       // data.payload = {
       //   "portRemarkDetails": [
       //     {
@@ -1439,7 +1929,7 @@ export class PortMenuComponent {
     this.loadMasterLookupData();
   }
   async loadMasterLookupData() {
-    let remarkType = this.item?.remarkTypes?.name;
+    let remarkType = this.item?.sequenceno;
     let groupRemarkLog = await this.groupByRemarkLogs();
     if(groupRemarkLog[remarkType]?.length) {
       let groupRemarkLogData = groupRemarkLog[remarkType];
@@ -1458,7 +1948,7 @@ export class PortMenuComponent {
       // return with empty object if remark doesn't contain any changelog
       if(!(this.remarkLogs?.length)) { resolve(groupRemarkLog); }
       this.remarkLogs.map((logs, index)=>{
-        let type = logs.remarkTypes.name;
+        let type = logs.sequenceno;
         if(!(groupRemarkType.includes(type))) {
             groupRemarkType.push(type);
             groupRemarkLog[type] = [logs];
@@ -1533,7 +2023,8 @@ export class PortMenuComponent {
   deletePortRemark() {
     let requestPayload = {
       "PortId": this.item?.portId,
-      "RemarkTypesId" : this.item?.remarkTypes?.id
+      "RemarkTypesId" : this.item?.remarkTypes?.id,
+      "SequenceNo" : this.item?.id
     }
     this.selectionChange = false;
     this.portService.DeletePortRemark(requestPayload).subscribe(data=> {
