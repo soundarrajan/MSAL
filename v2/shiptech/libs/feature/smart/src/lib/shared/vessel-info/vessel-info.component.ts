@@ -202,6 +202,7 @@ export class VesselInfoComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
       this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
       this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
+      this.vesselService.myDefaultViewPayload.defaultView = 1;
     }
   }
   
