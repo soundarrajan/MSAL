@@ -1915,7 +1915,6 @@ export class PortMenuComponent {
   }
   async loadMasterLookupData() {
     let remarkType = this.item?.id;
-    
     let groupRemarkLog = await this.groupByRemarkLogs();
     if(groupRemarkLog[remarkType]?.length) {
       let groupRemarkLogData = groupRemarkLog[remarkType];
