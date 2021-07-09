@@ -1,11 +1,11 @@
-﻿commit 6d5975e5d4a460404e3865238a93948c9c7027e7
+﻿commit 2237e82a5b0e6d57781c922c7b18aea3afd9802d
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Jul 9 11:13:58 2021 +0000
+Date:   Fri Jul 9 11:36:09 2021 +0000
 
-    Merged PR 12281: #33831 : Vessel Schedule list_ The current port not highlighted in blue color
+    Merged PR 12287: #33527 : Text in the Table legend
     
-    #33831 : Vessel Schedule list_ The current port not highlighted in blue color
+    #33527 : Text in the Table legend
     
-    Related work items: #33831
+    Related work items: #33527
 
 branch: master
