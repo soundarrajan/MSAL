@@ -73,6 +73,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
          * @param {int} page - page to switch to.
          */
         ctrl.setPage = function(page) {
+            if(ctrl.selectedLocationsSingle!==undefined){
+                ctrl.selectedLocationsSingle[ctrl.indexVoyage]=false;
+            }
             let call;
             if (page < 1 || page >= ctrl.tableOptions.totalRows / ctrl.tableOptions.pageLength + 1) {
                 return false;
@@ -89,6 +92,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             });
         };
         function Getlocation(){
+            if(ctrl.selectedLocationsSingle!==undefined){
+                ctrl.selectedLocationsSingle[ctrl.indexVoyage]=false;
+            }
             lookupModel.getList(LOOKUP_TYPE.LOCATIONS, null, null, ctrl.tableOptions.filters,ctrl.searchTerm,ctrl.args).then((data) => {
                 destroyDataTable();
                 ctrl.data = data.payload;
