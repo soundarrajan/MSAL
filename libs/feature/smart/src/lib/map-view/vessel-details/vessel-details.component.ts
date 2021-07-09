@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { VesselInfoComponent} from '../../shared/vessel-info/vessel-info.component';
 import { GeneratePlanAction, ImportGsisAction, SendPlanAction} from './../../store/bunker-plan/bunkering-plan.action';
+import { VesselPopupService } from '../../services/vessel-popup.service';
 
 @Component({
   selector: 'app-vessel-details',
@@ -35,7 +36,7 @@ export class VesselDetailsComponent implements OnInit {
   IsVesselhasNewPlan: boolean = false;
   getVesselListVesselWithImo: any[];
   getVesselListVesselWithCode: any[];
-  constructor(private store: Store, private localService: LocalService, public dialog: MatDialog) { }
+  constructor(private store: Store, private localService: LocalService, public dialog: MatDialog,private vesselService: VesselPopupService) { }
 
   ngOnInit() {
     this.getBunkerUserMode();
@@ -170,7 +171,12 @@ export class VesselDetailsComponent implements OnInit {
   }
 
   closePanel() {
+    debugger;
     if (!this.isBunkerPlanEdited) {
+      if(this.vesselService.myDefaultViewPayload != undefined && this.vesselService.myDefaultViewPayload.length !=0){
+        this.SavemyDefaultView();
+      }
+     
       this.closeBPlan.emit();
     }
     else {
@@ -194,6 +200,36 @@ export class VesselDetailsComponent implements OnInit {
     this.store.dispatch(new ImportGsisAction(0));
     this.store.dispatch(new SendPlanAction(0));
   }
+  SavemyDefaultView() {
+    console.log("======Final Payload===========", this.vesselService.myDefaultViewPayload)
+    let requestPayload = {}
+    requestPayload = {
+      "Payload": {
+        "UserId": this.vesselService.myDefaultViewPayload.userId,
+        "Port": this.vesselService.myDefaultViewPayload.port,
+        "Vessel": this.vesselService.myDefaultViewPayload.vessel,
+        "Bunker_Plan": this.vesselService.myDefaultViewPayload.bunker_Plan,
+        "DefaultView": this.vesselService.myDefaultViewPayload.defaultView,
+        "PortRemarks": this.vesselService.myDefaultViewPayload.portRemarks,
+        "ProductAvailability":this.vesselService.myDefaultViewPayload.productAvailability,
+        "BOPSPrice": this.vesselService.myDefaultViewPayload.bopsPrice,
+        "PortsAgents": this.vesselService.myDefaultViewPayload.portsAgents,
+        "OtherDetails": this.vesselService.myDefaultViewPayload.otherDetails,
+        "VesselAlerts": this.vesselService.myDefaultViewPayload.vesselAlerts,
+        "FutureRequest": this.vesselService.myDefaultViewPayload.futureRequest,
+        "VesselRedelivery": this.vesselService.myDefaultViewPayload.vesselRedelivery,
+        "VesselSchedule": this.vesselService.myDefaultViewPayload.vesselSchedule,
+        "CurrentROBandArbitragedetails": this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails,
+        "Comments": this.vesselService.myDefaultViewPayload.comments,
+        "CurrentBunkeringPlan": this.vesselService.myDefaultViewPayload.currentBunkeringPlan,
+        "PreviousBunkeringPlan": this.vesselService.myDefaultViewPayload.previousBunkeringPlan
+      }
+    }
+    this.vesselService.saveDefaultView(requestPayload).subscribe(response => {
+      console.log(response.payload);
+    })
+  }
+
   vesselChange(event) {
     this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
     if(event.displayName){
