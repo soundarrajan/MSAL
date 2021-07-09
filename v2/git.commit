@@ -1,11 +1,7 @@
-﻿commit bdb65dd675f1ea42ea57aea8f952bb39ca461e22
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 8 21:41:59 2021 +0000
+﻿commit 3edc16a16c5418786e852f44ff62c204915584b1
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Fri Jul 9 08:45:52 2021 +0530
 
-    Merged PR 12255: #34095 : Showing error while changing stock
-    
-    #34095 : Showing error while changing stock
-    
-    Related work items: #34095
+    BDN reports_ The delivery from and to filter is not working properly
 
 branch: master
