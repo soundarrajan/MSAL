@@ -1,11 +1,9 @@
-﻿commit 2237e82a5b0e6d57781c922c7b18aea3afd9802d
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Jul 9 11:36:09 2021 +0000
+﻿commit 723ea1643a63b1a2fc1473323a9883cfaca03053
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Jul 9 14:07:29 2021 +0000
 
-    Merged PR 12287: #33527 : Text in the Table legend
+    Merged PR 12297: #33903: Port Remarks_ Its not allowing to add the same port remark changes has done
     
-    #33527 : Text in the Table legend
-    
-    Related work items: #33527
+    Related work items: #33903
 
 branch: master
