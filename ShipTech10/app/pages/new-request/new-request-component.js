@@ -4296,7 +4296,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $scope.PopupprettyCloseModal = function(){
             if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>0){
                 for(let i=0;ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>i;i++){
-                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==0 || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].eta==null){
+                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==0 
+                        || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].eta==null
+                        || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].minQtyToReachPretest==undefined
+                        || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].minQtyToReach==undefined){
                         ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.splice(i,1);
                     }
                 }
