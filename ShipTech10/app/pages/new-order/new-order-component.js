@@ -1842,7 +1842,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.service.id = data.id;
                 ctrl.data.is2MDelivery = data.is2MDelivery;
                 ctrl.loadOrderScreen = false;
-                ctrl.checkBqsForAllProducts();
+                ctrl.checkBqsForAllProducts(true);
             });
         };
         ctrl.selectBuyer = function(buyer) {
@@ -4825,11 +4825,40 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
         }
 
-        ctrl.checkBqsForAllProducts = function() {
+        ctrl.checkBqsForAllProducts = function(isServiceChanged) {
             for (let i = 0; i < ctrl.data.products.length; i++) {
-                ctrl.checkBQSConversionCheckbox(ctrl.data.products[i], parseFloat(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs);
+                if (!isServiceChanged) {
+                    ctrl.checkBQSConversionCheckbox(ctrl.data.products[i], parseFloat(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs);
+                } else {
+                    ctrl.checkBQSWhenChangeService(ctrl.data.products[i], parseFloat(ctrl.data.products[i].confirmedQuantity) * ctrl.data.products[i].confirmedQtyProdForBqs); 
+                }
             }
          }
+
+        ctrl.checkBQSWhenChangeService = function(product, confirmedQuantityForBqs) {
+            if (ctrl.loadOrderScreen) {
+                return;
+            }
+            if (ctrl.data.is2MDelivery) {
+                console.log(product);
+                if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
+                    if (parseFloat(confirmedQuantityForBqs) > 200) {
+                        product.isBqs = true;
+                        return;
+                          
+                    }
+                } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
+                    if (parseFloat(confirmedQuantityForBqs) > 50) {
+                        product.isBqs = true;
+                        return;
+                       
+                    }
+                }
+            }
+
+            product.isBqs = false; 
+
+        }
 
         ctrl.checkBQSCheckbox = function(product) {
             if (ctrl.loadOrderScreen) {
