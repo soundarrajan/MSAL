@@ -1,9 +1,7 @@
-﻿commit 169b75d825b058a3c4cc4614b94d806384211efd
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 9 06:31:35 2021 +0000
+﻿commit c8f3a8ab1c8b029009f3ae0eab10eb2ef97fdf54
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Fri Jul 9 12:37:40 2021 +0530
 
-    Merged PR 12259: #33970 -Vessel details: View Future Requests for the Vesse tooltip alignment issue has fixed
-    
-    Related work items: #33970
+    MyDefault view Check box UI fix
 
 branch: master
