@@ -1,10 +1,10 @@
-﻿commit 90ca785f1bee918e455c7ae73dc241a9e2830ea1
+﻿commit 5363f5fba1ac62ee989a3750db124fb6d16c0fe6
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sat Jul 10 20:42:09 2021 +0000
+Date:   Sat Jul 10 21:06:25 2021 +0000
 
-    Merged PR 12304: #34148 fix & Delivery Blocker for Current Bplan.
+    Merged PR 12305: setTime out delay while loading bplan.
     
-    #34148 fix & Delivery Blocker for Current Bplan.
+    setTime out delay while loading bplan.
     
     Related work items: #34148
 
