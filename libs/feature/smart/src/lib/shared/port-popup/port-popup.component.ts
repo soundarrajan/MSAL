@@ -249,20 +249,6 @@ export class PortPopupComponent implements OnInit {
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
-      if(this.viewbopsPrice){
-        this.vesselService.myDefaultViewPayload.bopsPrice = 1;
-      }else if(this.viewportRemarks){
-        this.vesselService.myDefaultViewPayload.portRemarks = 1;
-      }
-      else if(this.viewportsAgents){
-        this.vesselService.myDefaultViewPayload.portsAgents = 1;
-      }
-      else if(this.viewotherDetails){
-        this.vesselService.myDefaultViewPayload.otherDetails = 1;
-      }
-      else if(this.viewPortProductAvailability){
-        this.vesselService.myDefaultViewPayload.productAvailability = 1;
-      }
     }
     else {
       this.myDefaultView = false;
@@ -277,7 +263,6 @@ export class PortPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.bopsPrice = 0;
       this.vesselService.myDefaultViewPayload.portsAgents = 0;
       this.vesselService.myDefaultViewPayload.otherDetails = 0;
-      this.vesselService.myDefaultViewPayload.defaultView = 0;
     }
   }
 
@@ -566,7 +551,7 @@ export class PortPopupComponent implements OnInit {
       //         },
       //         "remarkStatus": {
       //           "id": 2,
-      //           "name": "Pending",
+      //           "name": "Resolved",
       //           "internalName": null,
       //           "displayName": null,
       //           "code": null,
@@ -644,7 +629,7 @@ export class PortPopupComponent implements OnInit {
       //         },
       //         "remarkStatus": {
       //           "id": 2,
-      //           "name": "Pending",
+      //           "name": "Resolved",
       //           "internalName": null,
       //           "displayName": null,
       //           "code": null,
@@ -802,7 +787,7 @@ export class PortPopupComponent implements OnInit {
       //         },
       //         "remarkStatus": {
       //           "id": 2,
-      //           "name": "Pending",
+      //           "name": "Resolved",
       //           "internalName": null,
       //           "displayName": null,
       //           "code": null,
@@ -958,7 +943,7 @@ export class PortPopupComponent implements OnInit {
       //         },
       //         "remarkStatus": {
       //           "id": 2,
-      //           "name": "Pending",
+      //           "name": "Resolved",
       //           "internalName": null,
       //           "displayName": null,
       //           "code": null,
@@ -1929,7 +1914,7 @@ export class PortMenuComponent {
     this.loadMasterLookupData();
   }
   async loadMasterLookupData() {
-    let remarkType = this.item?.sequenceno;
+    let remarkType = this.item?.id;
     let groupRemarkLog = await this.groupByRemarkLogs();
     if(groupRemarkLog[remarkType]?.length) {
       let groupRemarkLogData = groupRemarkLog[remarkType];
