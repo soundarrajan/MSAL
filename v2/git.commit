@@ -1,7 +1,11 @@
-﻿commit 3a4d34f75ea9acb8ffa5ef7ce4b3a0d6aa71e549
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Sat Jul 10 23:07:42 2021 +0530
+﻿commit 90ca785f1bee918e455c7ae73dc241a9e2830ea1
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Sat Jul 10 20:42:09 2021 +0000
 
-    Mydefault view Checkbox UI fix
+    Merged PR 12304: #34148 fix & Delivery Blocker for Current Bplan.
+    
+    #34148 fix & Delivery Blocker for Current Bplan.
+    
+    Related work items: #34148
 
 branch: master
