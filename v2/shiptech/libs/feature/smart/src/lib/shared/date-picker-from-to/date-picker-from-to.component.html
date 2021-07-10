@@ -1,7 +1,7 @@
 <div class="custom-date-picker">
     <span class="from-to-label">From</span>
     <span class="from-to-value m-l-r-5">
-        <input matInput 
+        <input matInput class="custom-date-pickerback"
         [matDatepicker]="picker1" 
         [formControl]="fromDate" 
         (click)="picker1.open()"
@@ -14,7 +14,7 @@
     <div style="margin: 0px 10px;color:rgb(143, 155, 171, 0.2);">|</div>
     <span class="from-to-label">To</span>
     <span class="from-to-value m-l-r-5">
-        <input matInput 
+        <input matInput class="custom-date-pickerback"
         [matDatepicker]="picker2" 
         [formControl]="toDate" 
         (click)="picker2.open()"
