@@ -99,7 +99,7 @@ export class BunkeringPlanComponent implements OnInit {
         setTimeout(() => {
           if(this.rowData == null)
             this.gridOptions.api.showNoRowsOverlay();
-        }, 700);
+        }, 1000);
         
         
       },

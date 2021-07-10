@@ -46,11 +46,15 @@ export class VesselPopupComponent implements OnInit {
   viewVesselSchedule: boolean = false;
   viewVesselAlerts: boolean = false;
   APImyDefaultView: any = [];
+  public popup_data : any = [];
   constructor(private store: Store,private elem: ElementRef, private route: ActivatedRoute, private localService: LocalService, private logger: LoggerService, private vesselService: VesselPopupService) {
     this.shiptechUrl = new URL(window.location.href).origin;
   }
   @Input() status: string = "standard-view";
-  @Input('vesselData') popup_data;
+  @Input('vesselData') 
+  public set vesselData(v : any){
+    this.popup_data = v;
+  } 
   @Output() showBPlan = new EventEmitter();
   @Output() showRoutes = new EventEmitter();
   @Output() closePopup = new EventEmitter();
