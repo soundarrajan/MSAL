@@ -1,9 +1,7 @@
-﻿commit dd0eb7201ca50f5ca157e353c38cb6e68ee29ea2
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 9 14:45:25 2021 +0000
+﻿commit 5b9ee698579bcea26bab50a4e837d3b0ac065873
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Sat Jul 10 08:39:49 2021 +0530
 
-    Merged PR 12302: #33903 - unwanted code changed reverted
-    
-    Related work items: #33903
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
