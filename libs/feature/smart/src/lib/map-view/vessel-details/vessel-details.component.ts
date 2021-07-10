@@ -25,6 +25,7 @@ export class VesselDetailsComponent implements OnInit {
   previousUserRole: any;
   selectedUserRole: any;
   public vesselList = [];
+  public vesselId;
   public vesselName;
   public vesselView;
   public vesselData;
@@ -50,6 +51,7 @@ export class VesselDetailsComponent implements OnInit {
 
     this.vesselView = this.vesselData.vesselView;
     this.vesselName = this.vesselData.name;
+    this.vesselId = this.vesselData?.vesselId
     this.store.dispatch(new saveVesselDataAction({'vesselRef': this.vesselData}));
   }
 
@@ -60,7 +62,8 @@ export class VesselDetailsComponent implements OnInit {
     this.localService.getBunkerUserRole(1).subscribe((data)=> {
       console.log('LoadBunkerPlanByRole',data);
       this.bunkerUserRole = data.payload;
-      this.selectedUserRole = this.bunkerUserRole.find((role)=> (role.default==true) );
+      this.selectedUserRole = this.bunkerUserRole.find((role)=> (role.default==1) );
+      this.selectedRole= this.selectedUserRole;
       // this.LoadBunkerPlanByRole();
       // store user role for shared ref
       this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
@@ -130,8 +133,8 @@ export class VesselDetailsComponent implements OnInit {
   }
 
   checkVesselHasNewPlan() {
-    let vesselId = this.vesselData?.vesselId
-    this.localService.checkVesselHasNewPlan(vesselId).subscribe((data)=> {
+    //let vesselId = this.vesselData?.vesselId
+    this.localService.checkVesselHasNewPlan(this.vesselId).subscribe((data)=> {
       console.log('vessel has new plan',data);
       data = (data.payload?.length)? (data.payload)[0]: data.payload;
       if(data.planCount>0)
@@ -156,6 +159,7 @@ export class VesselDetailsComponent implements OnInit {
           this.store.dispatch(new saveVesselDataAction({'userRole': _this.selectedUserRole?.name}));
           let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
+          this.changeUserRole.next(_this.selectedUserRole);
         }, 500);
     });
   }
@@ -235,6 +239,10 @@ export class VesselDetailsComponent implements OnInit {
     if(event.displayName){
       this.vesselName = event?.displayName;
     }
+    if(event.id){
+      this.vesselId = event.id;
+    }
+    this.getBunkerUserMode();
     // this.vesselView = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
     //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
     // this.changeVessel.emit(event);
