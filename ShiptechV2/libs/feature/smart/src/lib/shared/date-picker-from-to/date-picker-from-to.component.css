@@ -11,3 +11,9 @@
 .custom-date-picker .from-to-value {
     width: 70px;
 }
+.custom-date-pickerback{
+    border: none !important;
+    background-color: #2f3845 !important;
+    color: white;
+    width: 80px;
+}
