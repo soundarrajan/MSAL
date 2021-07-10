@@ -51,7 +51,7 @@ export class BunkeringPlanComponent implements OnInit {
   @Input('vesselRef') 
   public set vesselRef(v : string) {
     this.vesselData = v;
-    this.loadBunkeringPlanDetails();
+    //this.loadBunkeringPlanDetails();
   };
   @Input('bPlanType') 
   public set bPlanType(v : any){
@@ -96,6 +96,11 @@ export class BunkeringPlanComponent implements OnInit {
         this.gridOptions.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
         this.gridOptions.api.showLoadingOverlay();
+        setTimeout(() => {
+          if(this.rowData == null)
+            this.gridOptions.api.showNoRowsOverlay();
+        }, 700);
+        
         
       },
       onCellClicked: function (params) {
@@ -119,6 +124,7 @@ export class BunkeringPlanComponent implements OnInit {
     this.editableCell = (this.type == 'C'&& this.selectedUserRole?.id === 1) ? true : false;
     if(this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C')
     this.eventSub = this.changeROB.subscribe((column)=> this.calculateSOA(column));
+    this.loadBunkeringPlanDetails();
   }
   
   columnDefs = [
@@ -420,6 +426,11 @@ export class BunkeringPlanComponent implements OnInit {
         }
         
       })
+    }
+    else{
+      this.loadBplan.emit(false);
+      this.rowData = null;
+      this.store.dispatch(new SaveBunkeringPlanAction(this.rowData));
     }
       
       

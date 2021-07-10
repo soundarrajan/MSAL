@@ -417,6 +417,7 @@ export class VesselInfoComponent implements OnInit {
   //Get Plan Id and Status Details for Current Bunkering Plan
   loadCurrentBunkeringPlan(request){
     this.loadBplan =false;
+    this.statusCurrBPlan = false;
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
       this.currPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
@@ -431,6 +432,7 @@ export class VesselInfoComponent implements OnInit {
         this.statusCurrBPlan = false;
         this.statusCurr = '';
         this.planDate = '';
+        this.isLatestPlanInvalid = false;
       }
       
       this.loadBplan = true;
@@ -447,6 +449,7 @@ export class VesselInfoComponent implements OnInit {
   //Get Plan Id and Status Details for Previous Bunkering Plan
   loadPrevBunkeringPlan(request){
     this.loadBplan =false;
+    this.statusPrevBPlan = false;
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
       this.prevPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
@@ -476,6 +479,7 @@ export class VesselInfoComponent implements OnInit {
     this.loadBunkerPlanDetails(event);
     this.checkVesselHasNewPlan(event);
     this.store.dispatch(new GeneratePlanAction(0));
+    this.isChecked = false;
     this.store.dispatch(new ImportGsisAction(0));
     this.store.dispatch(new SendPlanAction(0));
   }
