@@ -11,7 +11,7 @@
     <app-smart-operator *ngIf="showTable" (clickEvent)="onClick()" (showTableViewEmit)="this.toggle()" (showBPlan)="toggleBPlan(true)">
     </app-smart-operator>
 
-    <app-vessel-details *ngIf="showBPlan" (closeBPlan)="showBPlan = false;olmap.isBunkerPlanOpen =false;closebunkerplan(showBPlan)"
+    <app-vessel-details *ngIf="showBPlan" (closeBPlan)="showBPlan = false;olmap.isBunkerPlanOpen =false"
         (changeVessel)="changeVessel($event)">
     </app-vessel-details>
     <app-port-details *ngIf="showPortInfo" [portData]="portData"
