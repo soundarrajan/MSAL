@@ -89,7 +89,7 @@ export class SaveBunkeringPlanState{
     patchState({
       // BPlanData:[...state.BPlanData,...payload]
       ...state,
-      BPlanData : [...payload]
+      BPlanData : payload? [...payload] : []
     })
   }
 
