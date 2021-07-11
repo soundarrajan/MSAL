@@ -152,7 +152,7 @@ export class PortPopupComponent implements OnInit {
     this.loadPortRemarks();
   }
   getDefaultView() {
-    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId), "Port": 1, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 0 }
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
@@ -163,7 +163,7 @@ export class PortPopupComponent implements OnInit {
       else{
         if (this.vesselService.myDefaultViewPayload.length == 0) {
           this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
-          this.vesselService.myDefaultViewPayload.port = 1;
+          this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 0;
           this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
           this.vesselService.myDefaultViewPayload.defaultView = 0;
@@ -249,6 +249,21 @@ export class PortPopupComponent implements OnInit {
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
+      this.vesselService.myDefaultViewPayload.port = 1;
+      if(this.viewbopsPrice){
+        this.vesselService.myDefaultViewPayload.bopsPrice = 1;
+      }else if(this.viewportRemarks){
+        this.vesselService.myDefaultViewPayload.portRemarks = 1;
+      }
+      else if(this.viewportsAgents){
+        this.vesselService.myDefaultViewPayload.portsAgents = 1;
+      }
+      else if(this.viewotherDetails){
+        this.vesselService.myDefaultViewPayload.otherDetails = 1;
+      }
+      else if(this.viewPortProductAvailability){
+        this.vesselService.myDefaultViewPayload.productAvailability = 1;
+      }
     }
     else {
       this.myDefaultView = false;
@@ -257,6 +272,7 @@ export class PortPopupComponent implements OnInit {
       this.viewportsAgents = false;
       this.viewotherDetails = false;
       this.viewPortProductAvailability = false;
+      this.vesselService.myDefaultViewPayload.port = 0;
       
       this.vesselService.myDefaultViewPayload.portRemarks = 0;
       this.vesselService.myDefaultViewPayload.productAvailability = 0;

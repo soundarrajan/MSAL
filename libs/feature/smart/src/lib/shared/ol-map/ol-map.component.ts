@@ -888,7 +888,7 @@ export class OlMapComponent implements OnInit {
       //Check Bunker Plan Screen is open
       this.onMapClick.emit();
       debugger;
-      if(this.vesselService.myDefaultViewPayload != undefined && this.vesselService.myDefaultViewPayload.length !=0){
+      if(this.vesselService.myDefaultViewPayload.defaultView != undefined){
         this.SavemyDefaultView();
       }
       if (hit) {
@@ -2001,6 +2001,8 @@ export class OlMapComponent implements OnInit {
     }
     this.vesselService.saveDefaultView(requestPayload).subscribe(response => {
       console.log(response.payload);
+      this.vesselService.myDefaultViewPayload = [];
+      this.vesselService.APImyDefaultView = [];
     })
   }
   
