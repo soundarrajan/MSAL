@@ -86,6 +86,7 @@ export class VesselInfoComponent implements OnInit {
   viewcurrentBunkeringPlan: boolean = false;
   viewpreviousBunkeringPlan: boolean = false;
   myDefaultView: boolean = false;
+  sendPlanReminder : boolean = false;
  
 
   constructor(private store: Store, iconRegistry: MatIconRegistry,private vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
@@ -309,6 +310,7 @@ export class VesselInfoComponent implements OnInit {
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.scrubberDate = this.bunkerPlanHeaderDetail?.scrubberDate;
       this.scrubberDate = (this.scrubberDate!='null' && this.scrubberDate.indexOf('2050')==-1)? this.scrubberDate: false;
+      this.sendPlanReminder = this.bunkerPlanHeaderDetail?.dockPortFlag; 
       
       //handle scrubberDate formate : Convert "MMM D YYYY hh:mm" to "dd/mm/yyyy"
       // var arr = this.scrubberDate.split(' ');
@@ -484,6 +486,7 @@ export class VesselInfoComponent implements OnInit {
     this.isChecked = false;
     this.store.dispatch(new ImportGsisAction(0));
     this.store.dispatch(new SendPlanAction(0));
+    this.sendPlanReminder = false;
   }
   TotalCommentCount(count: any) {
     this.totalCommentCount = count;
