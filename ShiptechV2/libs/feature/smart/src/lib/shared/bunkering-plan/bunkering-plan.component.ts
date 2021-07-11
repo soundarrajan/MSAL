@@ -97,9 +97,9 @@ export class BunkeringPlanComponent implements OnInit {
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
         this.gridOptions.api.showLoadingOverlay();
         setTimeout(() => {
-          if(this.rowData == null)
+          if(!this.latestPlanId && this.rowData == null)
             this.gridOptions.api.showNoRowsOverlay();
-        }, 1000);
+        }, 2000);
         
         
       },
