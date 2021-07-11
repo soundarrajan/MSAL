@@ -1,7 +1,11 @@
-﻿commit c035ec89e773d220282a2daa8e7e00cedab3ddce
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Sun Jul 11 09:59:28 2021 +0530
+﻿commit 006a3c8212d8a8f6703f16352244afac07b16c74
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Sun Jul 11 08:17:28 2021 +0000
 
-    Mydefault View UI fix
+    Merged PR 12306: Current bplan increase delay in settimeout.
+    
+    Current bplan increase delay in settimeout.
+    
+    Related work items: #34148
 
 branch: master
