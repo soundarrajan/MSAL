@@ -175,21 +175,17 @@ export class VesselPopupComponent implements OnInit {
   getDefaultView() {
     console.log("YYYYYYYYYYY", this);
     console.log("YYYYYYYYYYY UserProfileState..userId", this.store.selectSnapshot(UserProfileState.userId));
-    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId), "Port": 0, "Vessel": 1, "Default_View": 1, "Bunker_Plan": 0 }
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
-        this.vesselService.APImyDefaultView = [];
-       debugger; 
-       console.log("55555555555555%%%%%%%%%%%%%res", res);
-       console.log("55555555555555%%%%%%%%%%%%%res", res.payload.length);
+      this.vesselService.APImyDefaultView = [];
       if (res.payload.length > 0) {
         this.vesselService.myDefaultViewPayload = res.payload[0];
-        console.log("55555555555555%%%%%%%%%%%%%this.vesselService.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
       }
       else{
           this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
           this.vesselService.myDefaultViewPayload.port = 0;
-          this.vesselService.myDefaultViewPayload.vessel = 1;
+          this.vesselService.myDefaultViewPayload.vessel = 0;
           this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
           this.vesselService.myDefaultViewPayload.defaultView = 0;
           this.vesselService.myDefaultViewPayload.portRemarks = 0;
@@ -205,7 +201,6 @@ export class VesselPopupComponent implements OnInit {
           this.vesselService.myDefaultViewPayload.comments = 0;
           this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
           this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
-        console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
       }
       if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
         if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.vessel == 1) {
@@ -262,6 +257,7 @@ export class VesselPopupComponent implements OnInit {
     // debugger;
     if (event) {
       this.myDefaultView = true;
+      this.vesselService.myDefaultViewPayload.vessel = 1;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
       if(this.viewFutureRequest){
         this.vesselService.myDefaultViewPayload.futureRequest = 1;
@@ -286,6 +282,7 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.futureRequest = 0;
       this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
       this.vesselService.myDefaultViewPayload.defaultView = 0;
+      this.vesselService.myDefaultViewPayload.vessel = 0;
     }
   }
 

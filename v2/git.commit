@@ -1,11 +1,7 @@
-﻿commit 5363f5fba1ac62ee989a3750db124fb6d16c0fe6
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sat Jul 10 21:06:25 2021 +0000
+﻿commit c035ec89e773d220282a2daa8e7e00cedab3ddce
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Sun Jul 11 09:59:28 2021 +0530
 
-    Merged PR 12305: setTime out delay while loading bplan.
-    
-    setTime out delay while loading bplan.
-    
-    Related work items: #34148
+    Mydefault View UI fix
 
 branch: master

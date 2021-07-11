@@ -132,7 +132,7 @@ export class VesselInfoComponent implements OnInit {
     return true;
   }
   getDefaultView() {
-    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId), "Port": 0, "Vessel": 0, "Default_View": 1, "Bunker_Plan": 1 }
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
     this.vesselService.getmyDefaultview(req).subscribe((res) => {
       this.vesselService.myDefaultViewPayload = [];
         this.vesselService.APImyDefaultView = [];
@@ -145,7 +145,7 @@ export class VesselInfoComponent implements OnInit {
           this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
           this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 0;
-          this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
+          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
           this.vesselService.myDefaultViewPayload.defaultView = 0;
           this.vesselService.myDefaultViewPayload.portRemarks = 0;
           this.vesselService.myDefaultViewPayload.productAvailability = 0;
@@ -191,6 +191,7 @@ export class VesselInfoComponent implements OnInit {
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
+      this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
       if(this.viewcomments){
         this.vesselService.myDefaultViewPayload.comments = 1;
       }else if(this.viewcurrentROBandArbitragedetails){
@@ -210,6 +211,7 @@ export class VesselInfoComponent implements OnInit {
       this.viewcurrentBunkeringPlan = false;
       this.viewpreviousBunkeringPlan = false;
       this.vesselService.myDefaultViewPayload.comments = 0;
+      this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
       this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
       this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
       this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
