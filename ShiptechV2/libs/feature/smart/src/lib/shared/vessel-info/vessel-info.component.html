@@ -24,7 +24,7 @@
     <div [ngClass]="(bunkerPlanHeaderDetail.myDefaultView)? 'default-view': 'reminder-view'">My Default View</div>
   </div>
   <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;">
-    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [checked]="bunkerPlanHeaderDetail?.dockPortFlag" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [(ngModel)]="this.sendPlanReminder" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
     <div [ngClass]="(bunkerPlanHeaderDetail.dockPortFlag)? 'default-view': 'reminder-view'">Do not send plan reminder</div>
     <!-- <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon> -->
     <mat-icon *ngIf="bunkerPlanHeaderDetail?.dockPortFlag" matTooltip="Plan reminder disabled since vessel is Dry Dock" svgIcon="info-icon" style="width: 18px;padding-right: 5px;"></mat-icon>
