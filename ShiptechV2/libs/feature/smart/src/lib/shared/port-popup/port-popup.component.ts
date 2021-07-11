@@ -166,7 +166,6 @@ export class PortPopupComponent implements OnInit {
           this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 0;
           this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
-          this.vesselService.myDefaultViewPayload.defaultView = 0;
           this.vesselService.myDefaultViewPayload.portRemarks = 0;
           this.vesselService.myDefaultViewPayload.productAvailability = 0;
           this.vesselService.myDefaultViewPayload.bopsPrice = 0;
@@ -184,7 +183,7 @@ export class PortPopupComponent implements OnInit {
       }
       console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
       if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
-        if (this.vesselService.myDefaultViewPayload.defaultView == 1 && this.vesselService.myDefaultViewPayload.port == 1) {
+        if (this.vesselService.myDefaultViewPayload.port == 1) {
           this.myDefaultView = true;
           if (this.vesselService.myDefaultViewPayload.portRemarks == 1) {
             this.viewportRemarks = true;
@@ -248,7 +247,6 @@ export class PortPopupComponent implements OnInit {
     // debugger;
     if (event) {
       this.myDefaultView = true;
-      this.vesselService.myDefaultViewPayload.defaultView = 1;
       this.vesselService.myDefaultViewPayload.port = 1;
       if(this.viewbopsPrice){
         this.vesselService.myDefaultViewPayload.bopsPrice = 1;
@@ -280,6 +278,9 @@ export class PortPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.portsAgents = 0;
       this.vesselService.myDefaultViewPayload.otherDetails = 0;
     }
+    this.vesselService.myDefaultViewPayload.vessel = 0;
+    this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+
   }
 
   public changeDefault(expandRef?:any) {
