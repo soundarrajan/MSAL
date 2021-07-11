@@ -177,7 +177,7 @@ export class VesselDetailsComponent implements OnInit {
   closePanel() {
     debugger;
     if (!this.isBunkerPlanEdited) {
-      if(this.vesselService.myDefaultViewPayload.defaultView != undefined){
+      if(this.vesselService.myDefaultViewPayload.bunker_Plan != undefined){
         this.SavemyDefaultView();
       }
      
@@ -213,7 +213,6 @@ export class VesselDetailsComponent implements OnInit {
         "Port": this.vesselService.myDefaultViewPayload.port,
         "Vessel": this.vesselService.myDefaultViewPayload.vessel,
         "Bunker_Plan": this.vesselService.myDefaultViewPayload.bunker_Plan,
-        "DefaultView": this.vesselService.myDefaultViewPayload.defaultView,
         "PortRemarks": this.vesselService.myDefaultViewPayload.portRemarks,
         "ProductAvailability":this.vesselService.myDefaultViewPayload.productAvailability,
         "BOPSPrice": this.vesselService.myDefaultViewPayload.bopsPrice,

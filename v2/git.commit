@@ -1,11 +1,7 @@
-﻿commit 9b98a0dde150b861074139663c3bbd81cc608137
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Sun Jul 11 11:59:01 2021 +0000
+﻿commit 09a09752266d380b674837d62c68d0d1e47b86a3
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Sun Jul 11 23:33:03 2021 +0530
 
-    Merged PR 12307: #34148 : Check boxes are not set -  plan reminder
-    
-    #34148 : Check boxes are not set -  plan reminder
-    
-    Related work items: #34148
+    My Default View Check box
 
 branch: master
