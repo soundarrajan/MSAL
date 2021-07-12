@@ -10395,7 +10395,6 @@
 
                 $scope.filteredCounterpartyTypeList = response.data.payload;
 
-                $scope.counterPartyListisValid();
             }).catch(e => {
                 $scope.filteredCounterpartyTypeList = null;
             });
