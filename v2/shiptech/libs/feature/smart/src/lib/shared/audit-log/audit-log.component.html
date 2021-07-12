@@ -1,12 +1,16 @@
 <div class="dark-wrapper" style="height: 100%;width: 100%;">
-  <div style="margin:0 5px;display:flex;align-items: center;">
-    <div class="label-text"> ETA Date:</div>
-    <shiptech-date-picker-from-to
-         [selectedFromDate]="defaultFromDate"
-         [selectedToDate]="selectedToDate"
-         (onDateChange)="onFromToDateChange($event)"
-         >
-        </shiptech-date-picker-from-to>
+  <div class="info-bar">
+    <div class="from-to-data">
+      <div style="margin:0 5px;display:flex;align-items: center;">
+      <div class="value m-l-r-5">ETA Date:</div>
+          <shiptech-date-picker-from-to
+          [selectedFromDate]="defaultFromDate"
+          [selectedToDate]="selectedToDate"
+          (onDateChange)="onFromToDateChange($event)"
+          >
+          </shiptech-date-picker-from-to>
+        </div>
+      </div>
   </div>
   <div style="height: 94%;width:100%">
     <ag-grid-angular id="auditloggrid" style="display:block;height:100%" [gridOptions]="gridOptions" [rowData]="rowData" [columnDefs]="columnDefs"
