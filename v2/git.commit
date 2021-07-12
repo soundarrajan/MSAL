@@ -1,11 +1,9 @@
-﻿commit 09817b7e1ddda9856de4994b381110895a35709a
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jul 12 13:25:08 2021 +0000
+﻿commit eedeb37b1bad311a551eb76192eaf1835d1e4f48
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jul 12 13:41:15 2021 +0000
 
-    Merged PR 12325: #34041 : Minor port is not visible
+    Merged PR 12326: #33164: Grey box error: Grey boxes appear on the screen issue has fixed
     
-    #34041 : Minor port is not visible
-    
-    Related work items: #34041
+    Related work items: #33164
 
 branch: master

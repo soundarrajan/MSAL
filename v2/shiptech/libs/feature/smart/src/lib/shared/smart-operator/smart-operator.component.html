@@ -1,6 +1,6 @@
 <div id="table-view">
   <!-- HEADER -->
-  <mat-tab-group class="mat-main-tab custom-header-tabs-v2" (selectedTabChange)="getReporttaborelse($event)">
+  <mat-tab-group class="mat-main-tab custom-header-tabs-v2" #mainTab (selectedIndexChange)="getReporttaborelse(mainTab.selectedIndex)">
     <mat-tab>
       <ng-template mat-tab-label>
         <div class="custom-label-holder">
@@ -86,7 +86,8 @@
           </div>
         </div>
 
-        <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab">
+        <mat-tab-group  #subTab mat-align-tabs="end" class="tab-right tableview-subtab"
+        (selectedIndexChange)="activeSubTabChange(subTab.selectedIndex)">
           <mat-tab>
             <ng-template mat-tab-label>
               <div class="custom-label-holder">
@@ -94,7 +95,7 @@
                 <div class="custom-label" matTooltip="All my Vessels">All my Vessels</div>
               </div>
             </ng-template>
-            <section id="smart-operator-grid">
+            <section *ngIf="tab1" id="smart-operator-grid">
               <div class="smart-operatorr-content" style="position: relative; width: 100%; height: 100%">
                 <ag-grid-angular id="tableviewGrid" style="width: 100%; height: calc(100vh - 135px)"
                   [rowData]="rowData1" [gridOptions]="gridOptions" class="ag-theme-balham-dark ag-table-view">
@@ -110,7 +111,7 @@
                   Unmanageable</div>
               </div>
             </ng-template>
-            <section id="smart-operator-grid">
+            <section *ngIf="tab2" id="smart-operator-grid">
               <div class="smart-operatorr-content" style="position: relative; width: 100%; height: 100%">
                 <ag-grid-angular id="tableviewGrid" style="width: 100%; height: calc(100vh - 135px)"
                   [rowData]="rowData2" [gridOptions]="gridOptions1" class="ag-theme-balham-dark ag-table-view">
@@ -125,7 +126,7 @@
                 <div class="custom-label" matTooltip="Future Request">Future Request</div>
               </div>
             </ng-template>
-            <section id="smart-operator-grid" style="height: 92%;width: 100%;">
+            <section *ngIf="tab3" id="smart-operator-grid" style="height: 92%;width: 100%;">
               <div class="smart-operatorr-content" style="position: relative; width: 100%; height: 100%">
                 <shiptech-future-request-grid [columnDefs]="columnDefs" *ngIf="futureRequest.isActive">
                 </shiptech-future-request-grid>
@@ -495,8 +496,8 @@
           </div>
         </div>
 
-        <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab" 
-          (selectedTabChange)="gettabvalue($event)">
+        <mat-tab-group mat-align-tabs="end" class="tab-right tableview-subtab" #subTab2 [selectedIndex]="selectedTab"
+          (selectedIndexChange)="gettabvalue(subTab2.selectedIndex)">
           <mat-tab (click)="getBdnReport(selectedFromDate, selectedToDate)" style="top: 10px;">
             <ng-template mat-tab-label>
               <div class="custom-label-holder">
