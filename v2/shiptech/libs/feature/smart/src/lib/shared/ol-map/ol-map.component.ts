@@ -1982,6 +1982,7 @@ export class OlMapComponent implements OnInit {
         "UserId": this.vesselService.myDefaultViewPayload.userId,
         "Port": this.vesselService.myDefaultViewPayload.port,
         "Vessel": this.vesselService.myDefaultViewPayload.vessel,
+        "Default_View": this.vesselService.myDefaultViewPayload.defaultView,
         "Bunker_Plan": this.vesselService.myDefaultViewPayload.bunker_Plan,
         "PortRemarks": this.vesselService.myDefaultViewPayload.portRemarks,
         "ProductAvailability":this.vesselService.myDefaultViewPayload.productAvailability,

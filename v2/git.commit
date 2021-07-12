@@ -1,11 +1,7 @@
-﻿commit dadec8fd4f0377a789e0f16589bec665a74e82b3
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jul 12 13:51:27 2021 +0000
+﻿commit 91a67bc4a5e1114db8d41a5d01d3e03e509d2d56
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Mon Jul 12 21:25:41 2021 +0530
 
-    Merged PR 12328: #34151 : Bunker plan port SOA calculation  is not happening when consumption is changed.
-    
-    #34151 : Bunker plan port SOA calculation  is not happening when consumption is changed.
-    
-    Related work items: #34151
+    MyDefault View Checkbox
 
 branch: master

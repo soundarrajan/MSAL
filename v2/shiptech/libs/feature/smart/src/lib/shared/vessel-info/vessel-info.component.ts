@@ -164,7 +164,7 @@ export class VesselInfoComponent implements OnInit {
       }
            
       console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
-      if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
+      if (this.vesselService.myDefaultViewPayload) {
         if (this.vesselService.myDefaultViewPayload.bunker_Plan == 1) {
           this.myDefaultView = true;
           if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
@@ -190,7 +190,7 @@ export class VesselInfoComponent implements OnInit {
     debugger;
     if (event) {
       this.myDefaultView = true;
-      this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
+      this.vesselService.myDefaultViewPayload.defaultView =1;
       if(this.viewcomments){
         this.vesselService.myDefaultViewPayload.comments = 1;
       }else if(this.viewcurrentROBandArbitragedetails){
@@ -205,17 +205,18 @@ export class VesselInfoComponent implements OnInit {
     }
     else {
       this.myDefaultView = false;
+      this.vesselService.myDefaultViewPayload.defaultView =0;
       this.viewcurrentROBandArbitragedetails = false;
       this.viewcomments = false;
       this.viewcurrentBunkeringPlan = false;
       this.viewpreviousBunkeringPlan = false;
       this.vesselService.myDefaultViewPayload.comments = 0;
-      this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
       this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
       this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
       this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
     }
     this.vesselService.myDefaultViewPayload.vessel = 0;
+    this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
     this.vesselService.myDefaultViewPayload.port = 0;
   }
   
