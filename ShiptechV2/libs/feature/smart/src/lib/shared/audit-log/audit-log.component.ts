@@ -114,7 +114,7 @@ export class AuditLogComponent implements OnInit {
     { headerName: 'New Value', headerTooltip: 'New Value', field: 'newValue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
     { headerName: 'Old Value', headerTooltip: 'Old Value', field: 'oldValue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
     { headerName: 'User Name', headerTooltip: 'User Name', field: 'modifiedBy.name',cellClass:['aggrid-content-c'],width:160  },
-    { headerName: 'Date', headerTooltip: 'Date', field: 'date',valueFormatter: params => {return moment(params.value).format('MM/DD/YYYY HH:mm');}, width:160,cellClass:['aggrid-content-c']  }
+    { headerName: 'Date', headerTooltip: 'Date', field: 'date',valueFormatter: params => {return moment(params.value).format('MM/DD/YYYY HH:mm');}, width:160,cellClass:['aggrid-content-c'],filter: 'date'  }
   ];
 
   public rowData = [];
