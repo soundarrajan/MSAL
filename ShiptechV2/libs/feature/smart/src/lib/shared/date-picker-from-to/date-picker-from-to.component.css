@@ -3,7 +3,7 @@
     margin:0 10px;
     display:flex;
     align-items: center;
-    border-right: solid #54617A 3px;
+    /* border-right: solid #54617A 3px; */
 }
 .custom-date-picker input:focus {
     caret-color : #fff !important;
