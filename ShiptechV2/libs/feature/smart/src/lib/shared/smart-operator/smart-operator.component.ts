@@ -469,12 +469,54 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Destination', headerTooltip: 'Destination', field: 'destination', width: 130, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETA', headerTooltip: 'ETA', field: 'destinationEta', width: 140,
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
-      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] 
+      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+      filter: 'agDateColumnFilter', filterParams:{
+        suppressAndOrCondition: true , 
+        comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
+          var dateAsString = cellValue;
+          if (!dateAsString) {
+              return 0;
+          }
+          let dateTimeArr = cellValue.split('T');
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
+          let cellDate = new Date(dateFormat[0]); // string 
+          cellDate.setHours(0,0,0);
+          // Now that both parameters are Date objects, we can compare
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      } 
     },
     { headerName: 'Next desitination', headerTooltip: 'Next destination', field: 'nextDestination', width: 150, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETA', headerTooltip: 'ETA', field: 'nextDestinationEta', width: 140,
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
-      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'] 
+      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'],
+      filter: 'agDateColumnFilter', filterParams:{
+        suppressAndOrCondition: true , 
+        comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
+          var dateAsString = cellValue;
+          if (!dateAsString) {
+              return 0;
+          }
+          let dateTimeArr = cellValue.split('T');
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
+          let cellDate = new Date(dateFormat[0]); // string 
+          cellDate.setHours(0,0,0);
+          // Now that both parameters are Date objects, we can compare
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      } 
     },
     {
       headerName: 'HSFO', headerTooltip: 'HSFO', field: 'hsfo_current_stock', width: 100,
@@ -572,7 +614,28 @@ export class SmartOperatorComponent implements OnInit {
     {
       headerName: 'Data Date', headerTooltip: 'Data Date', field: 'datadate',
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
-      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'] 
+      headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'],
+      filter: 'agDateColumnFilter', filterParams:{
+        suppressAndOrCondition: true , 
+        comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
+          var dateAsString = cellValue;
+          if (!dateAsString) {
+              return 0;
+          }
+          let dateTimeArr = cellValue.split('T');
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
+          let cellDate = new Date(dateFormat[0]); // string 
+          cellDate.setHours(0,0,0);
+          // Now that both parameters are Date objects, we can compare
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      } 
     },
     { headerName: 'Details', headerTooltip: 'Details', field: 'detail', width: 350, cellClass: 'aggrid-vertical-center' },
     { headerName: 'No of Days Unmanageable', headerTooltip: 'No of Days Unmanageable', field: 'unmanagedDays', width: 150, cellClass: 'aggrid-vertical-center' },

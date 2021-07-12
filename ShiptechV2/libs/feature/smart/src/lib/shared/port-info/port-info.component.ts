@@ -84,11 +84,53 @@ export class PortInfoComponent implements OnInit {
     // { headerName: 'ETA', headerTooltip: 'ETA', field: 'eta', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
     { headerName: 'Vessel Name', field: 'vesselName', headerTooltip: 'Vessel Name', width: 90, cellClass: ['dark-cell aggrid-content-c'], headerClass: ['header-border-right'], cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETA', field: 'eta', headerTooltip: 'ETA', width: 80, cellClass: ['aggrid-content-c'],
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date' }}
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date' }},
+      filter: 'agDateColumnFilter', filterParams:{
+        suppressAndOrCondition: true , 
+        comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
+          var dateAsString = cellValue;
+          if (!dateAsString) {
+              return 0;
+          }
+          let dateTimeArr = cellValue.split('T');
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
+          let cellDate = new Date(dateFormat[0]); // string 
+          cellDate.setHours(0,0,0);
+          // Now that both parameters are Date objects, we can compare
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      }
     },
     { headerName: 'Days', field: 'etaDays', headerTooltip: 'Days', width: 80, cellClass: ['aggrid-content-c'],cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETD', field: 'etd', headerTooltip: 'ETD', width: 80, cellClass: ['aggrid-content-c'] ,
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date' }}
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date' }},
+      filter: 'agDateColumnFilter', filterParams:{
+        suppressAndOrCondition: true , 
+        comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
+          var dateAsString = cellValue;
+          if (!dateAsString) {
+              return 0;
+          }
+          let dateTimeArr = cellValue.split('T');
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
+          let cellDate = new Date(dateFormat[0]); // string 
+          cellDate.setHours(0,0,0);
+          // Now that both parameters are Date objects, we can compare
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      }
     },
     { headerName: 'Days', field: 'etdDays', headerTooltip: 'Days', width: 80, cellClass: ['aggrid-content-c'],cellRendererFramework: AGGridCellRendererComponent },
     { headerName: '', field: 'blank' }
