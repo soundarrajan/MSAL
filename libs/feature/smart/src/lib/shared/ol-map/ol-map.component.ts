@@ -786,7 +786,7 @@ export class OlMapComponent implements OnInit {
   private getPortStyle(name, isMajorPort, flag): Style {
     var iconStyle = new Style({
       image: new Icon(({
-        src: './assets/customicons/port/' + (isMajorPort == 1? 'major' : 'minor') + '-port' + '-blue' + '.png',//(flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
+        src: './assets/customicons/port/' + (isMajorPort == 1? 'major-port-blue.png' : 'new/minor-port-blue.svg') ,//(flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
         rotation: 0,
         anchor: [1, 1],
         // scale: -1,
