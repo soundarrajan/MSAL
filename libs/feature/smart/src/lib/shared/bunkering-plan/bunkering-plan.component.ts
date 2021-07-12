@@ -830,23 +830,27 @@ export class BunkeringPlanComponent implements OnInit {
                       }
         case '0.5 QTY':
         case '3.5 QTY': { 
+                          let estdConsHsfoList = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanDataHsfoCons);
                           let currentRobHsfo = currentROB['3.5 QTY'] ? currentROB['3.5 QTY'] : 0 ;
                           let currentRobVlsfo = currentROB['0.5 QTY'] ? currentROB['0.5 QTY'] : 0 ;                       
                           for (let i = 0 ; i < rowData2.length ; i++ ){
                             //For Port 0
                             if(i == 0){
-                              let estdConsHsfo = parseInt(rowData2[i].hsfo_estimated_consumption);
+                              let estdConsHsfo = parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
                               rowData2[i].hsfo_soa = parseInt(currentRobHsfo.toString()) + parseInt(currentRobVlsfo.toString()) - estdConsHsfo;
                             }
                             //For Port 1 to N 
                             else{
-                              rowData2[i].hsfo_soa = parseInt(rowData2[i-1].hsfo_estimated_lift) + parseInt(rowData2[i-1].hsfo_soa) - parseInt(rowData2[i].hsfo_estimated_consumption);
+                              rowData2[i].hsfo_soa = parseInt(rowData2[i-1].hsfo_estimated_lift) + parseInt(rowData2[i-1].hsfo_soa) - parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
                             }
                             if(rowData2[i].hsfo_soa) 
                             this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no));
                           }
-                          if(this.gridOptions.api)
-                            this.gridOptions.api.setRowData(rowData2);
+                          if(this.gridOptions.api){
+                            setTimeout(() => {
+                              this.gridOptions.api.setRowData(rowData2);
+                            }, 500);
+                          } 
                           break;
                         }
       }
