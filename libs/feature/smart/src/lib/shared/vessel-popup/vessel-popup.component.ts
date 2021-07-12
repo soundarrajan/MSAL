@@ -187,6 +187,7 @@ export class VesselPopupComponent implements OnInit {
           this.vesselService.myDefaultViewPayload.port = 0;
           this.vesselService.myDefaultViewPayload.vessel = 0;
           this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+          this.vesselService.myDefaultViewPayload.defaultView = 0;
           this.vesselService.myDefaultViewPayload.portRemarks = 0;
           this.vesselService.myDefaultViewPayload.productAvailability = 0;
           this.vesselService.myDefaultViewPayload.bopsPrice = 0;
@@ -201,7 +202,7 @@ export class VesselPopupComponent implements OnInit {
           this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
           this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
       }
-      if (this.vesselService.myDefaultViewPayload && this.vesselService.myDefaultViewPayload.length != 0) {
+      if (this.vesselService.myDefaultViewPayload) {
         if (this.vesselService.myDefaultViewPayload.vessel == 1) {
           this.myDefaultView = true;
           if (this.vesselService.myDefaultViewPayload.futureRequest == 1) {
@@ -256,7 +257,7 @@ export class VesselPopupComponent implements OnInit {
     // debugger;
     if (event) {
       this.myDefaultView = true;
-      this.vesselService.myDefaultViewPayload.vessel = 1;
+      this.vesselService.myDefaultViewPayload.defaultView = 1;
       if(this.viewFutureRequest){
         this.vesselService.myDefaultViewPayload.futureRequest = 1;
       }else if(this.viewVesselRedelivery){
@@ -279,8 +280,9 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
       this.vesselService.myDefaultViewPayload.futureRequest = 0;
       this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
-      this.vesselService.myDefaultViewPayload.vessel = 0;
+      this.vesselService.myDefaultViewPayload.defaultView = 1;
     }
+    this.vesselService.myDefaultViewPayload.vessel = 1;
     this.vesselService.myDefaultViewPayload.port = 0;
     this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
   }
