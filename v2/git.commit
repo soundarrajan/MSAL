@@ -1,10 +1,10 @@
-﻿commit 5a93d7813859da662bd10d39133a33ecf84b0c9c
+﻿commit 8ab27a4893b63afebb199fb2302ff771912bd776
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jul 12 19:36:44 2021 +0000
+Date:   Mon Jul 12 19:53:40 2021 +0000
 
-    Merged PR 12329: #34040 : Vessel Arrival _time format incorrect.
+    Merged PR 12330: #34040 : auditlog _filter time format incorrect
     
-    #34040 : Vessel Arrival _time format incorrect.
+    #34040 : auditlog _filter time format incorrect
     
     Related work items: #34040
 
