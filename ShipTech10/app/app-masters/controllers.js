@@ -10347,9 +10347,9 @@
                             $.each(v.children, (k3,v3) => {
                                 if(v2.id == v3.id) {
                                     $rootScope.tabData["vessel_access"][k].children[k3].isSelected = true;
-                                }  
+                                }
                             })
-                        }  
+                        }
                     })
                 })
                 console.log($rootScope.tabData["vessel_access"]);
@@ -10369,7 +10369,9 @@
             $http.post(`${API.BASE_URL_DATA_MASTERS}/api/masters/vessels/vesselSendLicense`, {
                 Payload: vm.entity_id
             }).then((response) => {
-                console.log("Response", response);
+                if(response){
+                    toastr.success("Mail sent successfuly!");
+                }
             });
         };
 
