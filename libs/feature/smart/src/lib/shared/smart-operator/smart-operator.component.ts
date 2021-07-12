@@ -55,6 +55,10 @@ export class SmartOperatorComponent implements OnInit {
   OrderDetailsData: any[];
   Enabledbdnreports: boolean;
   pagesize: any;
+  public selectedTab:number = 0;
+  public tab1: boolean;
+  public tab2: boolean;
+  public tab3: boolean;
   // public paginationPageSize : number = 20;
   // public currentPage : number = 1;
   // public lastPage : number = 99;
@@ -239,7 +243,7 @@ export class SmartOperatorComponent implements OnInit {
         this.gridOptions1.api = params.api;
         this.gridOptions1.columnApi = params.columnApi;
         this.gridOptions1.api.setColumnDefs(this.columnDefs_unmanageablevessels);
-        this.gridOptions.api.sizeColumnsToFit();
+        this.gridOptions1.api.sizeColumnsToFit();
         this.gridOptions1.api.setRowData(this.BdnReportsData);
         this.rowCount = this.gridOptions1.api.getDisplayedRowCount();
         this.gridOptions1.api.showLoadingOverlay();
@@ -305,8 +309,8 @@ export class SmartOperatorComponent implements OnInit {
   }
 
   ngOnInit() {
-     this.loadAllMyVessels();
-     this.loadUnmanageableVessels();
+    this.tab1 = true;
+    this.loadAllMyVessels();
   }
   
   private columnDefs_OrderDetails = [
@@ -799,8 +803,8 @@ export class SmartOperatorComponent implements OnInit {
 
   gettabvalue(event){
      
-    console.log("event.index",event.index)
-    if(event.index == 0){
+    console.log("event.index",event.selectedIndex)
+    if(event.selectedIndex == 0){
       this.Enabledbdnreports = true;
       this.getBdnReport(this.selectedFromDate, this.selectedToDate);
     }
@@ -811,16 +815,38 @@ export class SmartOperatorComponent implements OnInit {
     
 
   }
-
-  getReporttaborelse(event){
-    if(event.index == 1){
+  activeSubTabChange(tabIndex){
+    //alert(tabIndex);
+    if(tabIndex == 0){
+    this.tab1 = true;
+    this.tab2 = false;
+    this.tab3 = false;
+    // load AllMyVessels on tab vessel change
+    this.loadAllMyVessels();
+    }else if(tabIndex == 1){
+    this.tab1 = false;
+    this.tab2 = true;
+    this.tab3 = false;
+    // load UnmanageableVessels on Unmanageable tab change
+    this.loadUnmanageableVessels();
+    }else{
+    this.tab1 = false;
+    this.tab2 = false;
+    this.tab3 = true;
+    }
+  }
+  getReporttaborelse(selectedIndex){
+    if(selectedIndex == 1){
+      setTimeout(() => {
+        this.selectedTab = 0;
+      },1000);
       this.EnableReportDate = true;
       this.Enabledbdnreports = true;
-      
       this.getBdnReport(this.selectedFromDate, this.selectedToDate);
     }
     else{
-
+      this.loadAllMyVessels();
+      this.Enabledbdnreports = false;
       this.EnableReportDate = false;
       
     }
