@@ -94,8 +94,16 @@ export class SaveBunkeringPlanState{
   }
 
   @Selector([SaveBunkeringPlanState])
-  static getUpdateBunkeringPlanData(state: SaveBunkeringPlanStateModel):any{
-    return state?.BPlanData[0]?.hsfo_max_lift;
+  static getBunkeringPlanDataHsfoCons(state: SaveBunkeringPlanStateModel):any{
+    let data = [];
+    let params = state?.BPlanData;
+    params.forEach(bPlan =>{  
+      data.push({
+         hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption        
+      }) ;
+
+    })
+    return data;
   }
 
   @Action(UpdateBunkeringPlanAction)

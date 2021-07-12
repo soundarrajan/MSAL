@@ -816,22 +816,18 @@ export class SmartOperatorComponent implements OnInit {
 
   }
   activeSubTabChange(tabIndex){
-    //alert(tabIndex);
+    this.tab1 = false;
+    this.tab2 = false;
+    this.tab3 = false;
     if(tabIndex == 0){
     this.tab1 = true;
-    this.tab2 = false;
-    this.tab3 = false;
-    // load AllMyVessels on tab vessel change
+    // load AllMyVessels on tab vessel change on demand
     this.loadAllMyVessels();
     }else if(tabIndex == 1){
-    this.tab1 = false;
     this.tab2 = true;
-    this.tab3 = false;
-    // load UnmanageableVessels on Unmanageable tab change
+    // load UnmanageableVessels on Unmanageable tab change on demand
     this.loadUnmanageableVessels();
     }else{
-    this.tab1 = false;
-    this.tab2 = false;
     this.tab3 = true;
     }
   }
