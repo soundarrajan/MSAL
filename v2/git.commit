@@ -1,7 +1,11 @@
-﻿commit 91a67bc4a5e1114db8d41a5d01d3e03e509d2d56
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Mon Jul 12 21:25:41 2021 +0530
+﻿commit 5a93d7813859da662bd10d39133a33ecf84b0c9c
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jul 12 19:36:44 2021 +0000
 
-    MyDefault View Checkbox
+    Merged PR 12329: #34040 : Vessel Arrival _time format incorrect.
+    
+    #34040 : Vessel Arrival _time format incorrect.
+    
+    Related work items: #34040
 
 branch: master
