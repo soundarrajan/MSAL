@@ -122,6 +122,9 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
 
       // }
         this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
+        if(this.params.colDef?.field == 'hsfo_estimated_consumption')
+          this.params.context.componentParent.calculateSOA('0.5 QTY');
+          
         return this.value;
     }
     
