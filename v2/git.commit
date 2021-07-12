@@ -1,9 +1,11 @@
-﻿commit 620ad5ff42b0da4f5090573cae382467d949f9f2
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jul 12 11:58:32 2021 +0000
+﻿commit 09817b7e1ddda9856de4994b381110895a35709a
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon Jul 12 13:25:08 2021 +0000
 
-    Merged PR 12319: #33904: Light Mode_ All list screens_ The font color can be improved, the informations are not visible on white BG issues has fixed
+    Merged PR 12325: #34041 : Minor port is not visible
     
-    Related work items: #33904
+    #34041 : Minor port is not visible
+    
+    Related work items: #34041
 
 branch: master
