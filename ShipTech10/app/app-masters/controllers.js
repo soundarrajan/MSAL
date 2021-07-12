@@ -891,10 +891,11 @@
 
                 let counterPartyWithoutAccess = '';
 
-                // Checked list
-                let canContinue = $scope.formValues.counterpartyTypes.some(e => {
 
-                    if(!$scope.filteredCounterpartyTypeList.find(j => e.id === j.id)){
+                // Checked list
+                let canContinue = $scope.formValues?.counterpartyTypes && $scope.formValues.counterpartyTypes.some(e => {
+
+                    if($scope.filteredCounterpartyTypeList && !$scope.filteredCounterpartyTypeList.find(j => e.id === j.id)){
                         // Checked and enabled
                         counterPartyWithoutAccess += `${e.name} `
                     } else {
@@ -911,6 +912,7 @@
                     return false;
                 }
             }
+
 
             return true;
         }
@@ -10325,15 +10327,15 @@
             $.each($scope.formValues.accessCustomers, (k,v) => {
                 customersIdsList.push(v.id);
             } )
-            
+
             $.each($rootScope.tabData["vessel_access"] , (k,v) => {
                 $rootScope.tabData["vessel_access"][k].isSelected = false;
                 if(v.children) {
                     $.each(v.children, (k3,v3) => {
                         $rootScope.tabData["vessel_access"][k].children[k3].isSelected = false;
                     })
-                }  
-            })            
+                }
+            })
 
             $http.post(`${API.BASE_URL_DATA_MASTERS}/api/masters/vessels/listByCustomerIds`, {
                 Payload: customersIdsList
@@ -10388,14 +10390,14 @@
             }).then((response) => {
                 // Handle error
                 if(response === false){
-                    $scope.filteredCounterpartyTypeList = "Error";
+                    $scope.filteredCounterpartyTypeList = null;
                 }
 
                 $scope.filteredCounterpartyTypeList = response.data.payload;
 
                 $scope.counterPartyListisValid();
             }).catch(e => {
-                $scope.filteredCounterpartyTypeList = "Error";
+                $scope.filteredCounterpartyTypeList = null;
             });
         }
 
@@ -10403,6 +10405,7 @@
             // Return true or false
             // True = disabled;
             // False = allowed;
+
 
             if(!field.Unique_ID === "counterpartyTypes"){
                 return false
@@ -10414,7 +10417,7 @@
 
             if(typeof $scope.filteredCounterpartyTypeList !== "string"){
 
-                if($scope.filteredCounterpartyTypeList.some(e => e.id === value.id)){
+                if($scope.filteredCounterpartyTypeList && $scope.filteredCounterpartyTypeList.some(e => e.id === value.id)){
                     return false;
                 } else {
                     return true;
