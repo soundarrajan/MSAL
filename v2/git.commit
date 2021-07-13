@@ -1,11 +1,11 @@
-﻿commit 8ab27a4893b63afebb199fb2302ff771912bd776
+﻿commit 298be5259dea2b4b77ab403705b084e09d7311b3
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Mon Jul 12 19:53:40 2021 +0000
+Date:   Tue Jul 13 13:16:07 2021 +0000
 
-    Merged PR 12330: #34040 : auditlog _filter time format incorrect
+    Merged PR 12357: #34243 & #34240 bug fixes for Vessel_Route.
     
-    #34040 : auditlog _filter time format incorrect
+    #34243 & #34240 bug fixes for Vessel_Route.
     
-    Related work items: #34040
+    Related work items: #34240, #34243
 
 branch: master
