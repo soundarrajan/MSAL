@@ -292,7 +292,6 @@ export class VesselPopupComponent implements OnInit {
     if (this.second?.expanded || expandRef == 'second') {
       this.loadVesselAlertList();
     }
-    console.log("+++++++++++++", expandRef);
     switch (expandRef) {
       case 'VRClose':
         this.viewVesselRedelivery = false;
