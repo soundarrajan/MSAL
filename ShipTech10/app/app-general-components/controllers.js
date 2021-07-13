@@ -746,10 +746,10 @@
             var precisionFactor = 1;
             var response = 0;
             var intvalue = parseFloat(value);
-            if(pricePrecision == 1) {precisionFactor = 10}   
-            if(pricePrecision == 2) {precisionFactor = 100}   
-            if(pricePrecision == 3) {precisionFactor = 1000}   
-            if(pricePrecision == 4) {precisionFactor = 10000}   
+            if(pricePrecision == 1) {precisionFactor = 10}
+            if(pricePrecision == 2) {precisionFactor = 100}
+            if(pricePrecision == 3) {precisionFactor = 1000}
+            if(pricePrecision == 4) {precisionFactor = 10000}
             response = Math.floor(intvalue * precisionFactor) / precisionFactor;
             return response.toString();
         }
@@ -1284,10 +1284,10 @@
                     }
                     if (!cellValue || cellValue == "Active") {
                         element = var_bind(":content", "No", element);
-                        element = var_bind(":css_formatting", "succes lowercase", element);
+                        element = var_bind(":css_formatting", "danger lowercase", element);
                     } else {
                         element = var_bind(":content", "Yes", element);
-                        element = var_bind(":css_formatting", "danger lowercase", element);
+                        element = var_bind(":css_formatting", "succes lowercase", element);
                     }
                     if (cellValue == "") {
                         element = var_bind(":content", "", element);
@@ -2220,7 +2220,7 @@
                     var tpl = '<span class=""></span>';
                     if(cellValue != null){
                         if(rowObject.currency != null){
-                            
+
                             var currency = rowObject.currency.name;
                             pricePrecision = rowObject.pricePrecision != null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                             plainNumber = $scope.roundDown(rowObject.fixedPrice, pricePrecision);
@@ -4174,7 +4174,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 	                        if (selectedInvoicesIds.length == 0 ) {
 	                        	toastr.error("Please select at least one invoice");
 	                        	return;
-	                        } 
+	                        }
 	                        selectedInvoicesIds = selectedInvoicesIds.join(',');
 	                        window.open(`/v2/invoices/split-view/${selectedInvoicesIds}`, "_blank");
                             break;
