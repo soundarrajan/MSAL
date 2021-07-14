@@ -8,7 +8,7 @@ import {
   BootstrapService
 } from '@shiptech/core/bootstrap.service';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
-import { environment } from '../environments/environment';
+import { environment } from '@shiptech/environment';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
@@ -17,18 +17,13 @@ import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/develop
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { CoreModule } from '@shiptech/core/core.module';
-import { APP_BASE_HREF, DOCUMENT,  AsyncPipe } from '@angular/common';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import { TitleModule } from '@shiptech/core/services/title/title.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AllModules, ModuleRegistry } from '@ag-grid-enterprise/all-modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
-import { AngularFireModule } from '@angular/fire';
-import {notificationService} from 'libs/feature/smart/src/lib/services/notification.service';
-import { AngularFireMessagingModule } from '@angular/fire/messaging';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFireAuth } from '@angular/fire/auth';
+
 // Note: Currently we're running the application in a sub directory on the IIS (v2), v1 (angular js) runs in the root. They way we'll also share auth cookies
 export function getAppBaseHref(doc: Document): string {
   const base = doc.querySelector('base');
@@ -44,9 +39,6 @@ export function getAppBaseHref(doc: Document): string {
     HttpClientModule,
     BrowserModule,
     FormsModule,
-    
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireMessagingModule,
     ReactiveFormsModule,
     MaterialModule,
     BrowserAnimationsModule,
@@ -76,12 +68,7 @@ export function getAppBaseHref(doc: Document): string {
       useFactory: bootstrapApplication,
       multi: true,
       deps: [BootstrapService]
-    },
-    notificationService,
-    AngularFirestore,
-    AngularFireDatabase,
-    AngularFireAuth,
-    AsyncPipe
+    }
   ],
   bootstrap: [AppComponent]
 })

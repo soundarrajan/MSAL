@@ -1,7 +1,11 @@
-﻿commit c350d8a2dd788077e6ce47735cadcb0990353a75
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Jul 14 13:04:25 2021 +0300
+﻿commit 49b4c0aadd0813771d20b07645f7772ca1e2af26
+Author: Anurag Dwivedi <anurag.d@Inatech.com>
+Date:   Wed Jul 14 12:10:49 2021 +0000
 
-    Fixed 34269
+    Merged PR 12390: Revert 'View Notifications'
+    
+    Reverts !12374
+    
+    Related work items: #29904
 
 branch: master
