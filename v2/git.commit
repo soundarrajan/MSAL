@@ -1,11 +1,11 @@
-﻿commit 535c86b72ae6e2dcc512300a2f2dd0caccf718d0
+﻿commit a471ec3a05e8a0660bd3086df3696ac7ce7d8ef3
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 14 08:29:58 2021 +0000
+Date:   Wed Jul 14 09:02:32 2021 +0000
 
-    Merged PR 12377: #34159 : Able to change SOD without comment
+    Merged PR 12378: #34156 : SOD digits more than 3 digits ,values not shown.
     
-    #34159 : Able to change SOD without comment
+    #34156 : SOD digits more than 3 digits ,values not shown.
     
-    Related work items: #34159
+    Related work items: #34156
 
 branch: master
