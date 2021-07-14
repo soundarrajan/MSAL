@@ -1,11 +1,7 @@
-﻿commit a471ec3a05e8a0660bd3086df3696ac7ce7d8ef3
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 14 09:02:32 2021 +0000
+﻿commit c350d8a2dd788077e6ce47735cadcb0990353a75
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Jul 14 13:04:25 2021 +0300
 
-    Merged PR 12378: #34156 : SOD digits more than 3 digits ,values not shown.
-    
-    #34156 : SOD digits more than 3 digits ,values not shown.
-    
-    Related work items: #34156
+    Fixed 34269
 
 branch: master
