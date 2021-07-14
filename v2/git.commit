@@ -1,11 +1,9 @@
-﻿commit 49b4c0aadd0813771d20b07645f7772ca1e2af26
-Author: Anurag Dwivedi <anurag.d@Inatech.com>
-Date:   Wed Jul 14 12:10:49 2021 +0000
+﻿commit 28c0be0512a40169aceabf5f57f431802152f069
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Jul 14 13:33:28 2021 +0000
 
-    Merged PR 12390: Revert 'View Notifications'
+    Merged PR 12396: #34302: Order reports page: multiple UI issues in the grid issues has fixed
     
-    Reverts !12374
-    
-    Related work items: #29904
+    Related work items: #34302
 
 branch: master
