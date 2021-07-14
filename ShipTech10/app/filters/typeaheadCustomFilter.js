@@ -10,7 +10,7 @@
 		  }
 
 
-    	return function (items, searchTerm, objProperty) {
+    	return function (items, searchTerm, objProperty, limit = 10) {
     		if (!objProperty) {
     			objProperty = "name";
     		}
@@ -42,9 +42,6 @@
             filtered = _.filter(filtered, function(object) {
                 return typeof(object) !=  "undefined";
             });
-    		console.log(items);
-    		console.log(filtered);
-    		console.log(searchTerm, objProperty);
     		if (!filtered[0]) {
     			return [];
     		}
@@ -52,7 +49,7 @@
                 return [];
             }
 
-			const finalResponse = filtered.slice(0,10);
+			const finalResponse = filtered.slice(0,limit);
     		return finalResponse
     	};
     });
