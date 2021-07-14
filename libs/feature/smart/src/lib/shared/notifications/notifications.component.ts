@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { FormControl } from '@angular/forms'; 
 import{alertservice} from '../../services/alert.service';
+import {notificationService} from '../../services/notification.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as _loadashC from 'lodash';
 const loadashC = _loadashC;
@@ -84,25 +85,34 @@ alertsType:any[]= [];
   newPanelExpandedHeight: string = '72px';
   panelCollapsedHeight: string = '51px';
   panelExpandedHeight: string = '70px';
-  constructor(public dialog: MatDialog, private alertservice: alertservice, private _snackBar: MatSnackBar,private cd: ChangeDetectorRef) { }
-
+  constructor(public dialog: MatDialog, private alertservice: alertservice, private _snackBar: MatSnackBar,private cd: ChangeDetectorRef,private notify: notificationService) { }
+message;
   ngOnInit() {
     this.loadAlerts();
     this.loadAlertParameters();
-    this.newAlert =       {
-      active: false,
-      name: "",
-      type: "",
-      triggerRule: [
-        {
-          rule: [],
-          alert: "",
-          vesselFlag: false,
-          email: false,
-          notification: false
-        }
-      ]
-    }
+    this.notify.getAlerts().subscribe(actionArray => {
+      this.alertData = actionArray.map(item => {
+        return {
+          NotificationId: item.payload.doc.id,
+          ...item.payload.doc.data()
+        } as notificationData;
+      });
+    });  
+    
+    // this.newAlert =       {
+    //   active: false,
+    //   name: "",
+    //   type: "",
+    //   triggerRule: [
+    //     {
+    //       rule: [],
+    //       alert: "",
+    //       vesselFlag: false,
+    //       email: false,
+    //       notification: false
+    //     }
+    //   ]
+    // }
   //  this.items = [
   //     {
   //       id: 1,
@@ -634,4 +644,16 @@ deleteNotification (a_id,idx){
   });
 }
 
+}
+
+export class notificationData {
+  NotificationId:string;
+EntityType:string;
+EntityId:number;
+AlertName:string;
+Message:string;
+ColorFlag:number;
+Latitude:number;
+Longitude:number;
+LastUpdatedDate:string;
 }
