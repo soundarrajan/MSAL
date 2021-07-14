@@ -412,6 +412,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
           }
 
           if(requestExists === 1){
+            var overlay = document.querySelector('.cdk-overlay-container');
+            overlay.classList.remove('removeOverlay');
             const confirmMessage = 'Please note that there is a request in Shiptech for a prior call which BOPS will only modify next time the plan optimized, and the trader may nominate it before if no action is taken. In case it needs to be adjusted or cancelled please do so or advise responsible party.';
               const dialogRef = this.dialog.open(ConfirmDialogComponent, {
                 panelClass: 'confirmation-popup-operator', 
@@ -512,6 +514,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
             }
 
             if(requestExists === 1){
+              var overlay = document.querySelector('.cdk-overlay-container');
+              overlay.classList.remove('removeOverlay');
               const confirmMessage = 'Please note that there is a request in Shiptech for a prior call which BOPS will only modify next time the plan optimized, and the trader may nominate it before if no action is taken. In case it needs to be adjusted or cancelled please do so or advise responsible party.';
                 const dialogRef = this.dialog.open(ConfirmDialogComponent, {
                   panelClass: 'confirmation-popup-operator', 
