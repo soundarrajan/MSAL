@@ -1399,7 +1399,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         },
                         {
                         	ColumnName: 'IsDestinationList',
-                        	Value: Boolean(($state.params.title.indexOf('New Request') !== -1 || $state.params.title.indexOf('Edit Request') !== -1) && clc == 'procurement_destinationport')
+                        	Value: !!(($state.current.name == 'default.new-request' || $state.current.name == 'default.edit-request' ) && clc == 'procurement_destinationport')
                         }
                		];
                 }
