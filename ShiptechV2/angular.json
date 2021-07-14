@@ -34,7 +34,6 @@
             "assets": [
               "apps/shiptech/src/favicon.ico",
               "apps/shiptech/src/assets",
-              "apps/shiptech/src/firebase-messaging-sw.js",
               {
                 "glob": "**/*",
                 "input": "./assets/",
@@ -71,8 +70,7 @@
               "assets/sass/themes/defaultweb/_smart-operator-utils.scss",
               "assets/sass/themes/defaultweb/_smart-operator-variables.scss"
             ],
-            "scripts": [
-             ],
+            "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": []
             }
