@@ -719,21 +719,21 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
       this.setChipDatas();
       this.manualtab = this.more_invoice_types.filter(x => {
-          return x.value === this.formValues.documentType?.id;
-        });
-        if (this.manualtab.length == 0) {
-            this.more_invoice_types.pop();
-        }
-        this.setInvoiceAmount();
-        this.setTitle();
-        if (!this.entityId) {
-            this.summaryCalculationsForProductDetails();
-            this.summaryCalculationsForCostDetails();
-        } else {
-            this.calculationForRanegAndTotal();
-        }
-        this.calculateDifference();
-        this.calculateGrand(this.formValues);
+        return x.value === this.formValues.documentType?.id;
+      });
+      if (this.manualtab.length == 0) {
+        this.more_invoice_types.pop();
+      }
+      this.setInvoiceAmount();
+      this.setTitle();
+      if (!this.entityId) {
+        this.summaryCalculationsForProductDetails();
+        this.summaryCalculationsForCostDetails();
+      } else {
+        this.calculationForRanegAndTotal();
+      }
+      this.calculateDifference();
+      this.calculateGrand(this.formValues);
 
       //For Due Date
       this.initialDueDate = this.formValues.dueDate;
@@ -2689,7 +2689,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   htmlDecode(input) {
-    var doc = new DOMParser().parseFromString(input, "text/html");
+    var doc = new DOMParser().parseFromString(input, 'text/html');
     return doc.documentElement.textContent;
   }
 
