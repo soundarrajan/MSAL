@@ -1,11 +1,9 @@
-﻿commit 298be5259dea2b4b77ab403705b084e09d7311b3
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jul 13 13:16:07 2021 +0000
+﻿commit 6548c4d4e6c9d04c08d46a7cc00c35044c4d08f6
+Author: Anurag Dwivedi <anurag.d@Inatech.com>
+Date:   Wed Jul 14 07:05:15 2021 +0000
 
-    Merged PR 12357: #34243 & #34240 bug fixes for Vessel_Route.
+    Merged PR 12374: View Notifications
     
-    #34243 & #34240 bug fixes for Vessel_Route.
-    
-    Related work items: #34240, #34243
+    Related work items: #29904
 
 branch: master
