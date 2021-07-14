@@ -1254,7 +1254,7 @@ export class OlMapComponent implements OnInit {
       lsmgo: '',
       notificationsCount: 6,
       messagesCount: 2,
-      routeAvailable: true
+      routeAvailable: 0
     }
     if (this.cdkDrag.length > 0)//Reset the pop up position after drag
       this.cdkDrag.forEach(popup => popup._dragRef.reset());

@@ -1,9 +1,11 @@
-﻿commit 0885261a2d92367ff1334ac2447e3b301fce291a
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jul 14 15:00:09 2021 +0000
+﻿commit 57f1e137edbb104410250ecfe49caade5ceada90
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jul 14 19:34:30 2021 +0000
 
-    Merged PR 12399: #34302: Order reports page: ellipsis UI issues replaced with column left aligned  in the grid issues has fixed
+    Merged PR 12403: #34300 : Vessel_route indication if not available.
     
-    Related work items: #34302
+    #34300 : Vessel_route indication if not available.
+    
+    Related work items: #34300
 
 branch: master
