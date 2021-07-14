@@ -10,7 +10,7 @@
 		  }
 
 
-    	return function (items, searchTerm, objProperty) {
+    	return function (items, searchTerm, objProperty, limit = 10) {
     		if (!objProperty) {
     			objProperty = "name";
     		}
@@ -49,7 +49,7 @@
                 return [];
             }
 
-			const finalResponse = filtered.slice(0,10);
+			const finalResponse = filtered.slice(0,limit);
     		return finalResponse
     	};
     });
