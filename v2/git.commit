@@ -1,8 +1,8 @@
-﻿commit 28c0be0512a40169aceabf5f57f431802152f069
+﻿commit 0885261a2d92367ff1334ac2447e3b301fce291a
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Jul 14 13:33:28 2021 +0000
+Date:   Wed Jul 14 15:00:09 2021 +0000
 
-    Merged PR 12396: #34302: Order reports page: multiple UI issues in the grid issues has fixed
+    Merged PR 12399: #34302: Order reports page: ellipsis UI issues replaced with column left aligned  in the grid issues has fixed
     
     Related work items: #34302
 
