@@ -150,7 +150,7 @@
   
   <div *ngIf="params.type=='disable-with-popup'">
     <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event,params.colDef?.field);restrictionForPrevBplan($event)"
-      (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);">
+      (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);" [matTooltip]="params.value">
       <input disabled style="z-index: 1050;" [matMenuTriggerFor]="inputDisabledMenu" [matMenuTriggerData]="params.value"
         #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
         <span *ngIf="getComments(params.colDef?.field) != '' && getComments(params.colDef?.field) != undefined">
@@ -190,7 +190,7 @@
   
   <div *ngIf="params.type=='edit-with-popup'">
     <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event,params.colDef?.field)"
-      (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);">
+      (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);" [matTooltip]="params.value">
       <input disabled style="z-index: 1050;" #inp [matMenuTriggerFor]="inputEditMenu" [matMenuTriggerData]="params.value"
         #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
         <span *ngIf="getComments(params.colDef?.field) != '' && getComments(params.colDef?.field) != undefined">
