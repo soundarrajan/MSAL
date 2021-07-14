@@ -1,9 +1,11 @@
-﻿commit 6548c4d4e6c9d04c08d46a7cc00c35044c4d08f6
-Author: Anurag Dwivedi <anurag.d@Inatech.com>
-Date:   Wed Jul 14 07:05:15 2021 +0000
+﻿commit 535c86b72ae6e2dcc512300a2f2dd0caccf718d0
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jul 14 08:29:58 2021 +0000
 
-    Merged PR 12374: View Notifications
+    Merged PR 12377: #34159 : Able to change SOD without comment
     
-    Related work items: #29904
+    #34159 : Able to change SOD without comment
+    
+    Related work items: #34159
 
 branch: master
