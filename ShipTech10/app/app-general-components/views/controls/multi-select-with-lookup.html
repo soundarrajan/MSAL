@@ -16,7 +16,7 @@
           class="typeahead form-control"
           ng-class="{'ng-invalid': $ctrl.request.locations.length == 0}"
           type="text"
-          uib-typeahead="item as item.name for item in removeArrayFromArray(formValues.roles.accessCounterpartyTypes, CM.listsCache.CounterpartyType) | typeaheadCustomFilter:$viewValue:'name':CM.listsCache.CounterpartyType.length"
+          uib-typeahead="item as item.name for item in removeArrayFromArray(formValues.roles.accessCounterpartyTypes, CM.listsCache.CounterpartyType) | typeaheadCustomFilter:$viewValue:'name'"
           typeahead-on-select="selectCounterpartyType($item)"
           typeahead-wait-ms="100"
           typeahead-show-hint="true"

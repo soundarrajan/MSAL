@@ -2951,7 +2951,7 @@ Uncomment to see border around all .col-*
 
             #header_notification_bar .unread-notifications {
                 position: absolute;
-                left: 3px;
+                left: -5px;
                 background: #78b0fd;
                 width: 20px;
                 height: 20px;
