@@ -589,9 +589,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     if (comment!= "" && value !="")
       this.enableSave = true;
     else if(value == ""&& comment =="")
-      this.enableSave = true;
+      this.enableSave = false;
     else if(value == 0 && comment =="")
-      this.enableSave = true;
+      this.enableSave = false;
     else
       this.enableSave = false;
   }
