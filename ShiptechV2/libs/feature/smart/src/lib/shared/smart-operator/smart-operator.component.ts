@@ -314,23 +314,26 @@ export class SmartOperatorComponent implements OnInit {
   }
   
   private columnDefs_OrderDetails = [
-    { headerName: 'Order Number', headerTooltip: 'Order Number', field: 'orderId', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Order Number', headerTooltip: 'Order Number', field: 'orderId', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent, 
+    cellRendererParams: { cellClass: ['cell-ellipsis']},
+    },
     { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent, 
       cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
     {
       headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'vesselName', width: 150,
       cellClass: function (params) {
         var classArray: string[] = ['aggridlink aggrid-vertical-center'];
-        let newClass =
-          params.data.severity === '3' ? 'aggrid-left-ribbon mediumred1' :
-            (params.data.severity === '2' ? 'aggrid-left-ribbon mediumamber' :
-              'aggrid-left-ribbon mediumblue1');
-        classArray.push(newClass);
+        // let newClass =
+        //   params.data.severity === '3' ? 'aggrid-left-ribbon mediumred1' :
+        //     (params.data.severity === '2' ? 'aggrid-left-ribbon mediumamber' :
+        //       'aggrid-left-ribbon mediumblue1');
+        // classArray.push(newClass);
         return classArray.length > 0 ? classArray : null
       },
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName', cellClass: ['cell-ellipsis'] }}
     },
-    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
     { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
     // { headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     {
@@ -339,14 +342,24 @@ export class SmartOperatorComponent implements OnInit {
         return params.data.fuelGrade;
       }
     },
-    { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'confirmedQuantity', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Price', headerTooltip: 'Price', field: 'price', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Order Value', headerTooltip: 'Order Value', field: 'orderValue', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'confirmedQuantity', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent, 
+    cellRendererParams: { cellClass: ['cell-ellipsis']}
+    },
+    { headerName: 'Price', headerTooltip: 'Price', field: 'price', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent,
+    cellRendererParams: { cellClass: ['cell-ellipsis']}
+    },
+    { headerName: 'Order Value', headerTooltip: 'Order Value', field: 'orderValue', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent, 
+    cellRendererParams: { cellClass: ['cell-ellipsis']}
+    },
     {
       headerName: 'Status', field: 'orderStatus', headerTooltip: 'Status', cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
         classArray.push('aggrid-content-center');
+        classArray.push('cell-ellipsis');
         let newClass = params.value === 'Stemmed' ? 'custom-chip darkgreen' :
           params.value === 'Confirmed' ? 'custom-chip darkblue' :
           params.value === 'Invoiced' ? 'custom-chip darkgreen' :
@@ -362,7 +375,7 @@ export class SmartOperatorComponent implements OnInit {
     },
 
     { headerName: 'Type', headerTooltip: 'Type', field: 'agreementType', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Dept', headerTooltip: 'Dept', field: 'department', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
+    { headerName: 'Dept', headerTooltip: 'Dept', field: 'department', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
     { headerName: 'Sub Dept', headerTooltip: 'Sub Dept', field: 'subDepartment', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     { headerName: 'Service', headerTooltip: 'Service', field: 'serviceName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-vertical-center']},
     { headerName: 'SOA', headerTooltip: 'SOA', field: 'soa', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']}
@@ -763,11 +776,11 @@ export class SmartOperatorComponent implements OnInit {
         return classArray.length > 0 ? classArray : null
       }
     },
-    { headerName: 'Service', field: 'serviceName', filter: 'text', headerTooltip: 'Service', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 100 },
-    { headerName: 'Vessel ID', field: 'vesselId', filter: 'text', headerTooltip: 'Vessel ID', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 100 },
+    { headerName: 'Service', field: 'serviceName', filter: 'text', headerTooltip: 'Service', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'], width: 100 },
+    { headerName: 'Vessel ID', field: 'vesselId', filter: 'text', headerTooltip: 'Vessel ID', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'], width: 100 },
     { headerName: 'Vessel Name', field: 'vesselName', filter: 'text', headerTooltip: 'Vessel Name', 
       headerClass: ['aggrid-text-align-c'], 
-      cellClass: ['aggrid-content-center'], width: 100,
+      cellClass: ['aggrid-content-c'], width: 100,
       cellRendererFramework: AGGridCellDataComponent, 
       cellRendererParams: { type: 'vesselName', redirectUrl: `${this.shiptechUrl}/#/new-request` }
     },

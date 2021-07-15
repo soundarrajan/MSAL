@@ -201,8 +201,8 @@ $denim: #5780A6;
 	//******************************************************************************
 	.ag-theme-balham-dark {
 		.ag-root ::-webkit-scrollbar {
-			width: 4px;
-			height: 4px;
+			width: 8px;
+			height: 8px;
 		}
 		.ag-body-viewport {
 			background-color: $basecolor-l2;
@@ -1732,4 +1732,30 @@ $denim: #5780A6;
 	.ol-hover-popup:after {
 		border-top-color: $darkl3;
 	}	
+}
+
+.grid-cell-ellipsis {
+	.ag-cell {
+		.cell-ellipsis{
+		width: 56px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding-left: 5px;
+		span{
+			width: 45px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		&.custom-chip{
+			padding-left: 0px;
+			span{
+			display: inline-block;
+			text-align: center;
+			}
+		}
+		}
+		&.cell-span{
+			border-right: 2px solid rgba(13, 18, 24, 0.2) !important;
+		}
+	}
 }

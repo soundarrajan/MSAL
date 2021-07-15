@@ -224,8 +224,8 @@ $white:#FFFFFF;
 	//******************************************************************************
 	.ag-theme-balham-dark {
 		.ag-root ::-webkit-scrollbar {
-			width: 4px;
-			height: 4px;
+			width: 8px;
+			height: 8px;
 		}
 		.ag-body-viewport {
 			background-color: $darkl2;
@@ -1835,4 +1835,29 @@ $white:#FFFFFF;
 		background-color: #636b76 !important;
 	}
 }
+}
+.grid-cell-ellipsis {
+	.ag-cell {
+		.cell-ellipsis{
+		width: 60px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding-left: 5px;
+		span{
+			width: 56px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		&.custom-chip{
+			padding-left: 0px;
+			span{
+			display: inline-block;
+			text-align: center;
+			}
+		}
+		}
+		&.cell-span{
+			border-right: 2px solid rgba(13, 18, 24, 0.2) !important;
+		}
+	}
 }
