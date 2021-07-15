@@ -65,7 +65,24 @@ export class VesselPopupComponent implements OnInit {
 
   ngOnInit() {
 
-
+    if (this.vesselService.myDefaultViewPayload) {
+      if (this.vesselService.myDefaultViewPayload.vessel == 1) {
+        this.vesselService.myDefaultViewPayload.defaultView = 1;
+        this.myDefaultView = true;
+        if (this.vesselService.myDefaultViewPayload.futureRequest == 1) {
+          this.viewFutureRequest = true;
+        }
+        else if (this.vesselService.myDefaultViewPayload.vesselRedelivery == 1) {
+          this.viewVesselRedelivery = true;
+        }
+        else if (this.vesselService.myDefaultViewPayload.vesselSchedule == 1) {
+          this.viewVesselSchedule = true;
+        }
+        else if (this.vesselService.myDefaultViewPayload.vesselAlerts == 1) {
+          this.viewVesselAlerts = true;
+        }
+      }
+    }
 
     this.route.data.subscribe(data => {
       console.log(data);
@@ -76,7 +93,7 @@ export class VesselPopupComponent implements OnInit {
       this.vesselList = data?.vesselListWithImono;
     });
     this.loadVesselBasicInfo(this.popup_data.vesselId);
-    this.getDefaultView();
+    //this.getDefaultView();
     this.loadFutureRequestData();
     this.loadRedeliveryInfo(this.popup_data.vesselId);
     this.loadVesselScheduleList(this.popup_data.vesselId);
@@ -172,59 +189,7 @@ export class VesselPopupComponent implements OnInit {
   }
 
 
-  getDefaultView() {
-    console.log("YYYYYYYYYYY", this);
-    console.log("YYYYYYYYYYY UserProfileState..userId", this.store.selectSnapshot(UserProfileState.userId));
-    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
-    this.vesselService.getmyDefaultview(req).subscribe((res) => {
-      this.vesselService.myDefaultViewPayload = [];
-      this.vesselService.APImyDefaultView = [];
-      if (res.payload.length > 0) {
-        this.vesselService.myDefaultViewPayload = res.payload[0];
-      }
-      else{
-          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
-          this.vesselService.myDefaultViewPayload.port = 0;
-          this.vesselService.myDefaultViewPayload.vessel = 0;
-          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
-          this.vesselService.myDefaultViewPayload.defaultView = 0;
-          this.vesselService.myDefaultViewPayload.portRemarks = 0;
-          this.vesselService.myDefaultViewPayload.productAvailability = 0;
-          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
-          this.vesselService.myDefaultViewPayload.portsAgents = 0;
-          this.vesselService.myDefaultViewPayload.otherDetails = 0;
-          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
-          this.vesselService.myDefaultViewPayload.futureRequest = 0;
-          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
-          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
-          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
-          this.vesselService.myDefaultViewPayload.comments = 0;
-          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
-          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
-      }
-      if (this.vesselService.myDefaultViewPayload) {
-        if (this.vesselService.myDefaultViewPayload.vessel == 1) {
-          this.myDefaultView = true;
-          if (this.vesselService.myDefaultViewPayload.futureRequest == 1) {
-            this.viewFutureRequest = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.vesselRedelivery == 1) {
-            this.viewVesselRedelivery = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.vesselSchedule == 1) {
-            this.viewVesselSchedule = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.vesselAlerts == 1) {
-            this.viewVesselAlerts = true;
-          }
-        }
-      }
-      
-    })
-
-
-  }
-
+ 
 
   loadVesselBasicInfo(vesselId) {
     if (vesselId != null) {
@@ -281,7 +246,7 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
       this.vesselService.myDefaultViewPayload.futureRequest = 0;
       this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
-      this.vesselService.myDefaultViewPayload.defaultView = 1;
+      this.vesselService.myDefaultViewPayload.defaultView = 0;
     }
     this.vesselService.myDefaultViewPayload.vessel = 1;
     this.vesselService.myDefaultViewPayload.port = 0;
@@ -293,7 +258,6 @@ export class VesselPopupComponent implements OnInit {
     if (this.second?.expanded || expandRef == 'second') {
       this.loadVesselAlertList();
     }
-    console.log("+++++++++++++", expandRef);
     switch (expandRef) {
       case 'VRClose':
         this.viewVesselRedelivery = false;
