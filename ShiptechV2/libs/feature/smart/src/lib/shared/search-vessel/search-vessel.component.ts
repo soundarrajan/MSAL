@@ -75,7 +75,7 @@ export class SearchVesselComponent implements OnInit, OnChanges {
       return;
     else
    
-    return this.filterList.filter(option => (option.displayName.toLowerCase().indexOf(filterValue) > -1 || option.code.toLowerCase().indexOf(filterValue) > -1));
+    return this.filterList.filter(option => (option?.displayName.toLowerCase().indexOf(filterValue) > -1 || option?.code.toLowerCase().indexOf(filterValue) > -1));
   }
   clearSearch() {
     this.searchVesselControl.setValue('');
