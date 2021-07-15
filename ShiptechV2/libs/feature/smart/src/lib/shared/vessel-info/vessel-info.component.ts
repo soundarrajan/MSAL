@@ -189,7 +189,7 @@ export class VesselInfoComponent implements OnInit {
 
   public changeDefault(expandRef?: any) {
    
-    console.log("+++++++++++++", expandRef);
+    
     switch (expandRef) {
       case 'commentsClose':
         this.viewcomments = false;

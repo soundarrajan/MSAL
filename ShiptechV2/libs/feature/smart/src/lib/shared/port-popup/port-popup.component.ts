@@ -260,7 +260,7 @@ export class PortPopupComponent implements OnInit {
     if(this.fourth?.expanded || expandRef=='bopsPriceOpen') {
       this.loadBopsPrice();
     }
-    console.log("+++++++++++++", expandRef);
+  
     switch (expandRef) {
       case 'bopsPriceClose':
         this.viewbopsPrice = false;
