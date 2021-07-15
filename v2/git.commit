@@ -1,7 +1,11 @@
-﻿commit dbe137bb3d970ccd21f1839e7235c2a2777e0c6f
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Jul 15 13:17:08 2021 +0300
+﻿commit 119c111b4d7c7ee4201a60005252297678ecb7c8
+Author: Suresh <suresh.r@Inatech.com>
+Date:   Thu Jul 15 10:41:53 2021 +0000
 
-    Fixed 34228
+    Merged PR 12348: Unwanted Code removed
+    
+    Unwanted Code removed
+    
+    Related work items: #32131
 
 branch: master

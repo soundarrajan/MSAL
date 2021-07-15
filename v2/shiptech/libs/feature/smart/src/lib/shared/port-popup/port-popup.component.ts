@@ -82,6 +82,27 @@ export class PortPopupComponent implements OnInit {
   @ViewChild('sixth') sixth: MatExpansionPanel;
 
   ngOnInit() {
+      if (this.vesselService.myDefaultViewPayload) {
+        if (this.vesselService.myDefaultViewPayload.port == 1) {
+          this.myDefaultView = true;
+          this.vesselService.myDefaultViewPayload.defaultView = 1;
+          if (this.vesselService.myDefaultViewPayload.portRemarks == 1) {
+            this.viewportRemarks = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.productAvailability == 1) {
+            this.viewPortProductAvailability = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.bopsPrice == 1) {
+            this.viewbopsPrice = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.portsAgents == 1) {
+            this.viewportsAgents = true;
+          }
+          else if (this.vesselService.myDefaultViewPayload.otherDetails == 1) {
+            this.viewotherDetails = true;
+          }
+        }
+      }
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.loadMasterLookupData();
     // this.remarkTypes = ["Market type variation", "Port Closure", "Port Congestion", "Strike in Port"]
@@ -97,7 +118,7 @@ export class PortPopupComponent implements OnInit {
     ]
     this.loadPortBasicInfo(this.popup_data.locationId);
     console.log("Angular Test", this.popup_data);
-    this.getDefaultView();
+    
     this.loadOtherDetails(this.popup_data.locationId);
     this.loadAgentInfo(this.popup_data.locationId);
     this.hsfo = [
@@ -151,63 +172,7 @@ export class PortPopupComponent implements OnInit {
     console.log(this.remarkTypes);
     this.loadPortRemarks();
   }
-  getDefaultView() {
-    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
-    this.vesselService.getmyDefaultview(req).subscribe((res) => {
-      this.vesselService.myDefaultViewPayload = [];
-        this.vesselService.APImyDefaultView = [];
-        // debugger;
-      if (res.payload.length > 0) {
-        this.vesselService.myDefaultViewPayload = res.payload[0];
-      }
-      else{
-        if (this.vesselService.myDefaultViewPayload.length == 0) {
-          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
-          this.vesselService.myDefaultViewPayload.port = 0;
-          this.vesselService.myDefaultViewPayload.vessel = 0;
-          this.vesselService.myDefaultViewPayload.defaultView = 0;
-          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
-          this.vesselService.myDefaultViewPayload.portRemarks = 0;
-          this.vesselService.myDefaultViewPayload.productAvailability = 0;
-          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
-          this.vesselService.myDefaultViewPayload.portsAgents = 0;
-          this.vesselService.myDefaultViewPayload.otherDetails = 0;
-          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
-          this.vesselService.myDefaultViewPayload.futureRequest = 0;
-          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
-          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
-          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
-          this.vesselService.myDefaultViewPayload.comments = 0;
-          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
-          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
-        }
-      }
-      console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
-      if (this.vesselService.myDefaultViewPayload) {
-        if (this.vesselService.myDefaultViewPayload.port == 1) {
-          this.myDefaultView = true;
-          if (this.vesselService.myDefaultViewPayload.portRemarks == 1) {
-            this.viewportRemarks = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.productAvailability == 1) {
-            this.viewPortProductAvailability = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.bopsPrice == 1) {
-            this.viewbopsPrice = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.portsAgents == 1) {
-            this.viewportsAgents = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.otherDetails == 1) {
-            this.viewotherDetails = true;
-          }
-        }
-      }
-    })
-
-
-  }
-
+  
 
 
   loadPortProductAvailability() {
