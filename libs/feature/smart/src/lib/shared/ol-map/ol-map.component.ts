@@ -1254,7 +1254,7 @@ export class OlMapComponent implements OnInit {
       lsmgo: '',
       notificationsCount: 6,
       messagesCount: 2,
-      routeAvailable: true
+      routeAvailable: 0
     }
     if (this.cdkDrag.length > 0)//Reset the pop up position after drag
       this.cdkDrag.forEach(popup => popup._dragRef.reset());
@@ -1462,16 +1462,20 @@ export class OlMapComponent implements OnInit {
     else {
       this.routeData.find(item => {
         if(item.startLocation == data.locationName && item.vesselName == item.nextLocation){
-          data.locationName = item.vesselName;
-          popupData = item;
+          //data.locationName = item.vesselName;
+          popupData = '';//item;
         }          
         else if(item.nextLocation == data.locationName)
         popupData = item;
       })
       if(popupData){
-          let daysLeft = popupData.daysLeft.split('to');
-          let time = moment(popupData.eta).format('HH:mm');
-          popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
+        let daysLeft = popupData.daysLeft.split('to');
+        let dateTimeArr = popupData.eta.split('T');
+        let eta = dateTimeArr.slice(0,1);
+        let TimeArr = dateTimeArr[1].split('Z');
+        TimeArr = TimeArr.slice(0,1)
+        TimeArr = TimeArr[0].split(":");
+        let time = TimeArr[0] + ':' +TimeArr[1];
       
           element.innerHTML = `<div class="popup-content">
           <div style="white-space:nowrap;display:flex;align-items:center;">
@@ -1479,7 +1483,7 @@ export class OlMapComponent implements OnInit {
           </span>
           <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
             <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
-            <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
+            <span class="date">${eta}</span><span class="time"> ${time}</span> </div>
               </div>`;
         }
     }
@@ -1514,16 +1518,21 @@ export class OlMapComponent implements OnInit {
       else {
         this.routeData.find(item => {
           if(item.startLocation == data.locationName && item.vesselName == item.nextLocation){
-            data.locationName = item.vesselName;
-            popupData = item;
+            // data.locationName = item.vesselName;
+            popupData = '';
           }          
-          else if(item.nextLocation == data.locationName)
+          else 
+          if(item.nextLocation == data.locationName)
           popupData = item;
         })
         if(popupData){
             let daysLeft = popupData.daysLeft.split('to');
-            let time = moment(popupData.eta).format('HH:mm');
-            popupData.eta = moment(popupData.eta).format('YYYY-MM-DD');
+            let dateTimeArr = popupData.eta.split('T');
+            let eta = dateTimeArr.slice(0,1);
+            let TimeArr = dateTimeArr[1].split('Z');
+            TimeArr = TimeArr.slice(0,1)
+            TimeArr = TimeArr[0].split(":");
+            let time = TimeArr[0] + ':' +TimeArr[1];
         
             element.innerHTML = `<div class="popup-content">
             <div style="white-space:nowrap;display:flex;align-items:center;">
@@ -1531,15 +1540,17 @@ export class OlMapComponent implements OnInit {
             </span>
             <span class="days">${daysLeft[0]}</span> <span style="padding:0px 5px;">to</span> <span class="days">${data.locationName}</span> </div>
               <div style="line-height: 23px;padding:0px 2px;"> ETA <br>
-              <span class="date">${popupData.eta}</span><span class="time"> ${time}</span> </div>
+              <span class="date">${eta}</span><span class="time"> ${time}</span> </div>
                 </div>`;
+          
+            var overlay = new Overlay({
+              element: element,
+              positioning: 'center-left'
+            });
+            overlay.setPosition(coordinates);
+            this.map.addOverlay(overlay);
           }
-          var overlay = new Overlay({
-            element: element,
-            positioning: 'center-left'
-          });
-          overlay.setPosition(coordinates);
-          this.map.addOverlay(overlay);
+         
         } 
       // }
     }

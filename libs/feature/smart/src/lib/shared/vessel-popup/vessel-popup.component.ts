@@ -243,6 +243,7 @@ export class VesselPopupComponent implements OnInit {
           this.popup_data.vlsfo = res.payload[0].vlsfo_current_stock;
           this.popup_data.lsdis = res.payload[0].lsdis_current_stock;
           this.popup_data.dis = res.payload[0].hsdis_current_stock;
+          this.popup_data.routeAvailable = res.payload[0].isRouteAvailable;
 
           this.triggerClickEvent();
         }
