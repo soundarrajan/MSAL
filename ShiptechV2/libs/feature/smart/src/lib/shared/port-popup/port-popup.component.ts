@@ -104,7 +104,7 @@ export class PortPopupComponent implements OnInit {
         }
         this.vesselService.myDefaultViewPayload.vessel = 0;
       this.vesselService.myDefaultViewPayload.port = 1;
-      this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+      this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
       }
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.loadMasterLookupData();
@@ -247,7 +247,7 @@ export class PortPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.otherDetails = 0;
     }
     this.vesselService.myDefaultViewPayload.vessel = 0;
-    this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
     this.vesselService.myDefaultViewPayload.port = 1;
 
   }
