@@ -130,6 +130,7 @@ export class CustomerListSelectorGridViewModel extends BaseGridViewModel {
     headerName: CustomerListColumnsLabels.name,
     colId: CustomerListColumns.name,
     field: model('name'),
+    valueFormatter: params => this.format.htmlDecode(params.value),
     minWidth: 250,
     flex: 2
   };
