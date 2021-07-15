@@ -102,6 +102,9 @@ export class PortPopupComponent implements OnInit {
             this.viewotherDetails = true;
           }
         }
+        this.vesselService.myDefaultViewPayload.vessel = 0;
+      this.vesselService.myDefaultViewPayload.port = 1;
+      this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
       }
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.loadMasterLookupData();
