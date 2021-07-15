@@ -131,6 +131,9 @@ export class VesselInfoComponent implements OnInit {
           this.viewpreviousBunkeringPlan = true;
         }
       }
+      this.vesselService.myDefaultViewPayload.vessel = 0;
+      this.vesselService.myDefaultViewPayload.port = 0;
+      this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
     }
     console.log('Vessel Data11111111111111 ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
