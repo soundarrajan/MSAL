@@ -1412,6 +1412,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (isNaN(number)) {
       return null;
     }
+
     if (number) {
       plainNumber = this.roundDown(plainNumber, pricePrecision);
       return this._decimalPipe.transform(
