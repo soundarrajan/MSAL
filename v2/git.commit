@@ -1,7 +1,7 @@
-﻿commit 4e7f450aa60dd456f6a7ee222735a11c09de96d1
+﻿commit 32c00ec2540cf0f1c92a1f725fdc06c9c2ebae29
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Jul 15 14:58:16 2021 +0300
+Date:   Thu Jul 15 15:54:03 2021 +0300
 
-    Fixed payble to and customer list and autocomplete in invoice screen(33429)
+    Fixed 33429
 
 branch: master
