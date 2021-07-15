@@ -10,6 +10,8 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { VesselInfoComponent} from '../../shared/vessel-info/vessel-info.component';
 import { GeneratePlanAction, ImportGsisAction, SendPlanAction} from './../../store/bunker-plan/bunkering-plan.action';
 import { VesselPopupService } from '../../services/vessel-popup.service';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+// import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-vessel-details',
@@ -212,8 +214,8 @@ export class VesselDetailsComponent implements OnInit {
         "UserId": this.vesselService.myDefaultViewPayload.userId,
         "Port": this.vesselService.myDefaultViewPayload.port,
         "Vessel": this.vesselService.myDefaultViewPayload.vessel,
-        "Default_View": this.vesselService.myDefaultViewPayload.defaultView,
-        "Bunker_Plan": this.vesselService.myDefaultViewPayload.bunker_Plan,
+        "DefaultView": this.vesselService.myDefaultViewPayload.defaultView,
+        "BunkerPlan": this.vesselService.myDefaultViewPayload.bunker_Plan,
         "PortRemarks": this.vesselService.myDefaultViewPayload.portRemarks,
         "ProductAvailability":this.vesselService.myDefaultViewPayload.productAvailability,
         "BOPSPrice": this.vesselService.myDefaultViewPayload.bopsPrice,
@@ -233,8 +235,49 @@ export class VesselDetailsComponent implements OnInit {
       console.log(response.payload);
       this.vesselService.myDefaultViewPayload = [];
       this.vesselService.APImyDefaultView = [];
+      if(response.payload[0].success == 1){
+        this.getDefaultView();
+      }
     })
   }
+
+  getDefaultView() {
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
+    this.vesselService.getmyDefaultview(req).subscribe((res) => {
+      this.vesselService.myDefaultViewPayload = [];
+        this.vesselService.APImyDefaultView = [];
+        // debugger;
+      if (res.payload.length > 0) {
+        this.vesselService.myDefaultViewPayload = res.payload[0];
+      }
+      else{
+        if (this.vesselService.myDefaultViewPayload.length == 0) {
+          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
+          this.vesselService.myDefaultViewPayload.port = 0;
+          this.vesselService.myDefaultViewPayload.vessel = 0;
+          this.vesselService.myDefaultViewPayload.defaultView = 0;
+          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+          this.vesselService.myDefaultViewPayload.portRemarks = 0;
+          this.vesselService.myDefaultViewPayload.productAvailability = 0;
+          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
+          this.vesselService.myDefaultViewPayload.portsAgents = 0;
+          this.vesselService.myDefaultViewPayload.otherDetails = 0;
+          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
+          this.vesselService.myDefaultViewPayload.futureRequest = 0;
+          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
+          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
+          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
+          this.vesselService.myDefaultViewPayload.comments = 0;
+          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
+        }
+      }
+      
+    })
+
+
+  }
+
 
   vesselChange(event) {
     this.IsVesselhasNewPlan = event?.IsVesselhasNewPlan;
