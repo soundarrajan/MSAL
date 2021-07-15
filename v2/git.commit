@@ -1,11 +1,9 @@
-﻿commit 57f1e137edbb104410250ecfe49caade5ceada90
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 14 19:34:30 2021 +0000
+﻿commit 922b3935d7a1d29e7a30a510ccdd389142a361ab
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Jul 15 09:32:46 2021 +0000
 
-    Merged PR 12403: #34300 : Vessel_route indication if not available.
+    Merged PR 12418: #33847: No request details popup while mouse hovering over the Fuel grade issue has fixed
     
-    #34300 : Vessel_route indication if not available.
-    
-    Related work items: #34300
+    Related work items: #33847
 
 branch: master
