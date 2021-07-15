@@ -3073,7 +3073,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         SearchText: '',
         Pagination: {
           Skip: 0,
-          Take: 25
+          Take: 99999
         }
       }
     };

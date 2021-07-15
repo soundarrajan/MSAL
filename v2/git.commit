@@ -1,9 +1,7 @@
-﻿commit 2612c2673c0fa4aad8d732d8731dfcab8f2888ca
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 15 09:45:12 2021 +0000
+﻿commit dbe137bb3d970ccd21f1839e7235c2a2777e0c6f
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Thu Jul 15 13:17:08 2021 +0300
 
-    Merged PR 12419: #34349: Red Error in map view issue has fixed
-    
-    Related work items: #34349
+    Fixed 34228
 
 branch: master
