@@ -113,11 +113,30 @@ export class VesselInfoComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    if (this.vesselService.myDefaultViewPayload) {
+      if (this.vesselService.myDefaultViewPayload.bunker_Plan == 1) {
+        this.myDefaultView = true;
+        this.vesselService.myDefaultViewPayload.defaultView = 1;
+        if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
+          this.viewcurrentROBandArbitragedetails = true;
+        }
+        else if (this.vesselService.myDefaultViewPayload.comments == 1) {
+          this.viewcomments = true;
+        }
+        else if (this.vesselService.myDefaultViewPayload.currentBunkeringPlan == 1) {
+          this.viewcurrentBunkeringPlan = true;
+        }
+        else if (this.vesselService.myDefaultViewPayload.previousBunkeringPlan == 1) {
+          this.viewpreviousBunkeringPlan = true;
+        }
+      }
+    }
     console.log('Vessel Data11111111111111 ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
     
     this.checkVesselHasNewPlan(this.vesselData); 
-    this.getDefaultView();
+   // this.getDefaultView();
     this.loadBunkerPlanHeader(this.vesselData);  
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     this.loadBunkerPlanDetails(vesseldata.vesselRef);   
@@ -132,60 +151,7 @@ export class VesselInfoComponent implements OnInit {
     }
     return true;
   }
-  getDefaultView() {
-    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
-    this.vesselService.getmyDefaultview(req).subscribe((res) => {
-      this.vesselService.myDefaultViewPayload = [];
-        this.vesselService.APImyDefaultView = [];
-        debugger;
-      if (res.payload.length > 0) {
-        this.vesselService.myDefaultViewPayload = res.payload[0];
-      }
-      else{
-        if (this.vesselService.myDefaultViewPayload.length == 0) {
-          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
-          this.vesselService.myDefaultViewPayload.port = 0;
-          this.vesselService.myDefaultViewPayload.vessel = 0;
-          this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
-          this.vesselService.myDefaultViewPayload.portRemarks = 0;
-          this.vesselService.myDefaultViewPayload.productAvailability = 0;
-          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
-          this.vesselService.myDefaultViewPayload.portsAgents = 0;
-          this.vesselService.myDefaultViewPayload.otherDetails = 0;
-          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
-          this.vesselService.myDefaultViewPayload.futureRequest = 0;
-          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
-          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
-          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
-          this.vesselService.myDefaultViewPayload.comments = 0;
-          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
-          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
-        }
-      }
-           
-      console.log("55555555555555%%%%%%%%%%%%% this.myDefaultViewPayload", this.vesselService.myDefaultViewPayload);
-      if (this.vesselService.myDefaultViewPayload) {
-        if (this.vesselService.myDefaultViewPayload.bunker_Plan == 1) {
-          this.myDefaultView = true;
-          if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
-            this.viewcurrentROBandArbitragedetails = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.comments == 1) {
-            this.viewcomments = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.currentBunkeringPlan == 1) {
-            this.viewcurrentBunkeringPlan = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.previousBunkeringPlan == 1) {
-            this.viewpreviousBunkeringPlan = true;
-          }
-        }
-      }
-    })
-
-
-  }
-
+  
   CheckDefaultView(event) {
     debugger;
     if (event) {
