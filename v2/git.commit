@@ -1,11 +1,11 @@
-﻿commit 6ae843ae44259daaa08fb1f194bb9a60b3d5e137
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 15 13:13:23 2021 +0000
+﻿commit 3219c5988b1c9c843f90bc33cb297f1d7e1a185c
+Author: Suresh <suresh.r@Inatech.com>
+Date:   Thu Jul 15 13:57:20 2021 +0000
 
-    Merged PR 12438: Agents info panel, handling null length.
+    Merged PR 12444: #33309, #32131 - My Default View Checkbox functionality is not working in hea...
     
-    Agents info panel, handling null length.
+    #33309, #32131 - My Default View Checkbox functionality is not working in header section
     
-    Related work items: #34356
+    Related work items: #32131, #33309
 
 branch: master
