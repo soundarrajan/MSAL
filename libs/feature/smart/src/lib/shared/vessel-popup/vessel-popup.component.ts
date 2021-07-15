@@ -82,9 +82,7 @@ export class VesselPopupComponent implements OnInit {
           this.viewVesselAlerts = true;
         }
       }
-      this.vesselService.myDefaultViewPayload.vessel = 1;
-      this.vesselService.myDefaultViewPayload.port = 0;
-      this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+     
     }
 
     this.route.data.subscribe(data => {
@@ -253,11 +251,14 @@ export class VesselPopupComponent implements OnInit {
     }
     this.vesselService.myDefaultViewPayload.vessel = 1;
     this.vesselService.myDefaultViewPayload.port = 0;
-    this.vesselService.myDefaultViewPayload.bunker_Plan = 0;
+    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
   }
 
   
   public changeDefault(expandRef?: any) {
+    this.vesselService.myDefaultViewPayload.vessel = 1;
+    this.vesselService.myDefaultViewPayload.port = 0;
+    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
     if (this.second?.expanded || expandRef == 'second') {
       this.loadVesselAlertList();
     }
