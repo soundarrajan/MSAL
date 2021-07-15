@@ -1862,9 +1862,10 @@ label {
 
 //Multiple Text
 .multiple-text {
-	background-color: $denim;
-	height: 17px;
-	width: 54px;
+	background-color: $denim !important;
+	border-radius: 0 !important;
+	height: 17px !important;
+	width: 54px !important;
 	margin: 3px 5px;
 	color: white;
 	text-align: center;
