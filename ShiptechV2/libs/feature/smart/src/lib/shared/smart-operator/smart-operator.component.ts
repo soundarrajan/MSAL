@@ -792,6 +792,16 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Port', headerTooltip: 'Port', field: 'locationName', filter: 'text', width: 100, cellClass: ['aggrid-content-c aggrid-column-splitter-left'] },
     { headerName: 'ETA', headerTooltip: 'ETA', field: 'eta', filter: 'date', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
     { headerName: 'ETD', headerTooltip: 'ETD', field: 'etd', filter: 'date', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
+    // {
+    //   headerName: 'Fuel Grade', headerTooltip: 'Fuel Gradesss', width: 160, field: 'productName', filter: 'text', cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' }, cellClass: ['aggrid-content-c aggrid-column-splitter-left'],
+    //   valueGetter: function (params) {
+    //     if(params?.data?.productName) {
+    //       return [params.data.productName];
+    //     } else {
+    //       return []
+    //     }
+    //   }
+    // },
     {
       headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', width: 160, field: 'productName', filter: 'text', cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' }, cellClass: ['aggrid-content-c aggrid-column-splitter-left'],
       valueGetter: function (params) {
