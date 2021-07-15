@@ -115,25 +115,27 @@ export class VesselInfoComponent implements OnInit {
   ngOnInit() {
 
     if (this.vesselService.myDefaultViewPayload) {
-      if (this.vesselService.myDefaultViewPayload.bunker_Plan == 1) {
-        this.myDefaultView = true;
+      if (this.vesselService.myDefaultViewPayload.bunkerPlan == 1) {
         this.vesselService.myDefaultViewPayload.defaultView = 1;
+        this.vesselService.defaultView = true;
+        
         if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
-          this.viewcurrentROBandArbitragedetails = true;
+          this.vesselService.currentROBandArbitragedetails = true;
         }
-        else if (this.vesselService.myDefaultViewPayload.comments == 1) {
-          this.viewcomments = true;
+        
+        if (this.vesselService.myDefaultViewPayload.comments == 1) {
+          this.vesselService.comments = true;
         }
-        else if (this.vesselService.myDefaultViewPayload.currentBunkeringPlan == 1) {
-          this.viewcurrentBunkeringPlan = true;
+        if (this.vesselService.myDefaultViewPayload.currentBunkeringPlan == 1) {
+          this.vesselService.currentBunkeringPlan = true;
         }
-        else if (this.vesselService.myDefaultViewPayload.previousBunkeringPlan == 1) {
-          this.viewpreviousBunkeringPlan = true;
+        if (this.vesselService.myDefaultViewPayload.previousBunkeringPlan == 1) {
+          this.vesselService.previousBunkeringPlan = true;
         }
       }
       this.vesselService.myDefaultViewPayload.vessel = 0;
       this.vesselService.myDefaultViewPayload.port = 0;
-      this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
+      this.vesselService.myDefaultViewPayload.bunkerPlan = 1;
     }
     console.log('Vessel Data11111111111111 ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
@@ -156,36 +158,48 @@ export class VesselInfoComponent implements OnInit {
   }
   
   CheckDefaultView(event) {
-    debugger;
+
     if (event) {
-      this.myDefaultView = true;
+      this.vesselService.defaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView =1;
-      if(this.viewcomments){
+      if(this.vesselService.comments){
         this.vesselService.myDefaultViewPayload.comments = 1;
-      }else if(this.viewcurrentROBandArbitragedetails){
+      }
+      else{
+        this.vesselService.myDefaultViewPayload.comments = 0;
+      }
+      if(this.vesselService.currentROBandArbitragedetails){
         this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 1;
       }
-      else if(this.viewcurrentBunkeringPlan){
-        this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 1;
+      else{
+        this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
       }
-      else if(this.viewpreviousBunkeringPlan){
+      if(this.vesselService.currentBunkeringPlan){
+        this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 1;
+      }else{
+        this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+      }
+      if(this.vesselService.previousBunkeringPlan){
         this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 1;
+      }
+      else{
+        this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
       }
     }
     else {
-      this.myDefaultView = false;
+      this.vesselService.defaultView = false;
       this.vesselService.myDefaultViewPayload.defaultView =0;
-      this.viewcurrentROBandArbitragedetails = false;
-      this.viewcomments = false;
-      this.viewcurrentBunkeringPlan = false;
-      this.viewpreviousBunkeringPlan = false;
+      this.vesselService.comments = false;
+      this.vesselService.currentROBandArbitragedetails = false;
+      this.vesselService.currentBunkeringPlan = false;
+      this.vesselService.previousBunkeringPlan = false;
       this.vesselService.myDefaultViewPayload.comments = 0;
       this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
       this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
       this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
     }
     this.vesselService.myDefaultViewPayload.vessel = 0;
-    this.vesselService.myDefaultViewPayload.bunker_Plan = 1;
+    this.vesselService.myDefaultViewPayload.bunkerPlan = 1;
     this.vesselService.myDefaultViewPayload.port = 0;
   }
   
@@ -195,44 +209,44 @@ export class VesselInfoComponent implements OnInit {
     
     switch (expandRef) {
       case 'commentsClose':
-        this.viewcomments = false;
+        this.vesselService.comments = false;
         this.vesselService.myDefaultViewPayload.comments = 0;
         break;
       case 'commentsOpen':
-        this.viewcomments = true;
-        if (this.myDefaultView) {
+        this.vesselService.comments = true;
+        if (this.vesselService.defaultView) {
           this.vesselService.myDefaultViewPayload.comments = 1;
         }
         break;
       case 'currentROBandArbitragedetailsClose':
-        this.viewcurrentROBandArbitragedetails = false;
+        this.vesselService.currentROBandArbitragedetails = false;
         this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
         break;
       case 'currentROBandArbitragedetailsOpen':
-        this.viewcurrentROBandArbitragedetails = true;
-        if (this.myDefaultView) {
+        this.vesselService.currentROBandArbitragedetails = true;
+        if (this.vesselService.defaultView) {
           this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 1;
         }
         break;
       case 'currentBunkeringPlanOpen':
-        this.viewcurrentBunkeringPlan = true;
+        this.vesselService.currentBunkeringPlan = true;
         this.statusCurrBPlan = true;
-        if (this.myDefaultView) {
+        if (this.vesselService.defaultView) {
           this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 1;
         }
         break;
       case 'currentBunkeringPlanClose':
-        this.viewcurrentBunkeringPlan = false;
+        this.vesselService.currentBunkeringPlan = false;
         this.statusCurrBPlan = false;
         this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
         break;
       case 'previousBunkeringPlanClose':
-        this.viewpreviousBunkeringPlan = false;
+        this.vesselService.previousBunkeringPlan = false;
         this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0;
         break;
       case 'previousBunkeringPlanOpen':
-        this.viewpreviousBunkeringPlan = true;
-        if (this.myDefaultView) {
+        this.vesselService.previousBunkeringPlan = true;
+        if (this.vesselService.defaultView) {
           this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 1;
         }
         break;
