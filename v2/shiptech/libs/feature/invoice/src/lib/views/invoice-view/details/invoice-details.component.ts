@@ -2688,11 +2688,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.calculateGrand(this.formValues);
   }
 
-  htmlDecode(input) {
-    var doc = new DOMParser().parseFromString(input, 'text/html');
-    return doc.documentElement.textContent;
-  }
-
   productDetailChanged(productDetails: any): void {
     this.formValues.productDetails = productDetails;
     this.calculateGrand(this.formValues);
@@ -3081,6 +3076,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.invoiceService.getCustomerList(payload).subscribe((result: any) => {
       // console.log(result);
       this.customerList = result;
+      for (let i = 0; i < this.customerList.length; i++) {
+        this.customerList[i].name = this.htmlDecode(this.customerList[i].name);
+      }
       this.changeDetectorRef.detectChanges();
     });
   }
@@ -3115,7 +3113,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     } else {
       const obj = {
         id: selection.id,
-        name: selection.name
+        name: this.htmlDecode(selection.name)
       };
       this.formValues.counterpartyDetails.customer = obj;
       this.changeDetectorRef.detectChanges();
@@ -3150,7 +3148,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         SearchText: '',
         Pagination: {
           Skip: 0,
-          Take: 25
+          Take: 999999
         }
       }
     };
@@ -3158,8 +3156,21 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.invoiceService.getPaybleToList(payload).subscribe((result: any) => {
       // console.log(result);
       this.paybleToList = result;
+      for (let i = 0; i < this.paybleToList.length; i++) {
+        this.paybleToList[i].name = this.htmlDecode(this.paybleToList[i].name);
+      }
       this.changeDetectorRef.detectChanges();
     });
+  }
+
+  htmlDecode(str: string): string {
+    var decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+
+    return decode(_.unescape(str));
   }
 
   public filterPaybleToList() {
@@ -3192,7 +3203,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     } else {
       const obj = {
         id: selection.id,
-        name: selection.name
+        name: this.htmlDecode(selection.name)
       };
       this.formValues.counterpartyDetails.payableTo = obj;
       this.changeDetectorRef.detectChanges();
