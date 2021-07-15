@@ -285,7 +285,7 @@ export class PortPopupComponent implements OnInit {
   }
 
   public changeDefault(expandRef?:any) {
-    if(this.third?.expanded || expandRef=='PortProductAvailabilityClose') {
+    if(this.third?.expanded || expandRef=='PortProductAvailabilityOpen') {
       this.loadPortProductAvailability();
     }
     // if(this.second?.expanded || expandRef=='second') {
