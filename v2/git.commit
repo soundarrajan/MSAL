@@ -1,7 +1,11 @@
-﻿commit 32c00ec2540cf0f1c92a1f725fdc06c9c2ebae29
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Jul 15 15:54:03 2021 +0300
+﻿commit 6ae843ae44259daaa08fb1f194bb9a60b3d5e137
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jul 15 13:13:23 2021 +0000
 
-    Fixed 33429
+    Merged PR 12438: Agents info panel, handling null length.
+    
+    Agents info panel, handling null length.
+    
+    Related work items: #34356
 
 branch: master
