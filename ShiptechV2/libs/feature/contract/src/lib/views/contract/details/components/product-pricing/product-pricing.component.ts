@@ -1356,16 +1356,12 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   recomputeProductPricePrecision(productKey) {
     if (this.formValues.products[productKey].price) {
-      this.formValues.products[productKey].price = this.priceFormatValue(
+      (<HTMLInputElement>(
+        document.getElementById('price_' + productKey)
+      )).value = this.priceFormatValue(
         this.formValues.products[productKey].price,
         this.formValues.products[productKey].pricePrecision
       );
-
-      if (!this.formValues.products[productKey].pricePrecision) {
-        (<HTMLInputElement>(
-          document.getElementById('price_' + productKey)
-        )).value = this.formValues.products[productKey].price;
-      }
 
       this.changeDetectorRef.detectChanges();
     }
