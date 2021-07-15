@@ -1,9 +1,9 @@
-﻿commit 922b3935d7a1d29e7a30a510ccdd389142a361ab
+﻿commit 2612c2673c0fa4aad8d732d8731dfcab8f2888ca
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Jul 15 09:32:46 2021 +0000
+Date:   Thu Jul 15 09:45:12 2021 +0000
 
-    Merged PR 12418: #33847: No request details popup while mouse hovering over the Fuel grade issue has fixed
+    Merged PR 12419: #34349: Red Error in map view issue has fixed
     
-    Related work items: #33847
+    Related work items: #34349
 
 branch: master
