@@ -47,7 +47,7 @@ function model(prop: keyof IPaybleToListDto): keyof IPaybleToListDto {
 }
 
 function htmlDecode(input) {
-  var doc = new DOMParser().parseFromString(input, "text/html");
+  var doc = new DOMParser().parseFromString(input, 'text/html');
   return doc.documentElement.textContent;
 }
 
@@ -138,7 +138,7 @@ export class PaybleToListSelectorGridViewModel extends BaseGridViewModel {
     headerName: PaybleToListColumnsLabels.name,
     colId: PaybleToListColumns.name,
     field: model('name'),
-    valueFormatter: params => htmlDecode(params.value),
+    valueFormatter: params => this.format.htmlDecode(params.value),
     minWidth: 250,
     flex: 2
   };

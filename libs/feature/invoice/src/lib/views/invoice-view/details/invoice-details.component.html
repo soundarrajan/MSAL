@@ -1005,7 +1005,7 @@
                           *ngFor="let option of filterPaybleToList()"
                           [value]="option"
                         >
-                          {{ htmlDecode(option.name) }}
+                          {{ option.name }}
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>
