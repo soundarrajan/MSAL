@@ -493,7 +493,7 @@
                     <img src="./assets/customicons/mail.svg" alt="mail-icon" style="margin-right: 7px; vertical-align: middle;"><span class="link">{{item.email}}</span>
                   </div>                  
               </div>
-              <div class="agents-info-panel" *ngIf="agentsInfo.length == 0">                                                      
+              <div class="agents-info-panel" *ngIf="agentsInfo && agentsInfo.length == 0">                                                      
                 <div>
                   <span class="link" style = "text-decoration-line:none !important">No agents information available</span>
                 </div>                  
