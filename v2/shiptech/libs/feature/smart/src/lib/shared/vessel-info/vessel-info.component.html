@@ -20,7 +20,7 @@
     </tbody>
   </table>
   <div  class="border-r" style="display: flex;flex:0 0 11%;align-items: center;justify-content: space-evenly;">
-    <mat-checkbox (ngModelChange)="CheckDefaultView($event)" [ngModel]="myDefaultView" (change)="saveDefaultView($event)" [checked]="myDefaultView" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <mat-checkbox (ngModelChange)="CheckDefaultView($event)" [ngModel]="vesselService.defaultView" (change)="saveDefaultView($event)" [checked]="vesselService.defaultView" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
     <div [ngClass]="(bunkerPlanHeaderDetail.myDefaultView)? 'default-view': 'reminder-view'">My Default View</div>
   </div>
   <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;">
@@ -54,7 +54,7 @@
 <div id="accordion-container-dark">
   <mat-accordion multi="true">
     <mat-expansion-panel *ngIf="!expandComments" hideToggle="true"
-    [expanded]="viewcurrentROBandArbitragedetails" (closed)="changeDefault('currentROBandArbitragedetailsClose')"
+    [expanded]="vesselService.currentROBandArbitragedetails" (closed)="changeDefault('currentROBandArbitragedetailsClose')"
     (opened)="changeDefault('currentROBandArbitragedetailsOpen')">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -176,7 +176,7 @@
       </div>
     </mat-expansion-panel>
     <mat-expansion-panel #commentpanel
-      [ngClass]="{'fullheight':expandComments}" hideToggle="true" [expanded]="viewcomments" (closed)="changeDefault('commentsClose');expandComments = false"
+      [ngClass]="{'fullheight':expandComments}" hideToggle="true" [expanded]="vesselService.comments" (closed)="changeDefault('commentsClose');expandComments = false"
       (opened)="changeDefault('commentsOpen')">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -205,7 +205,7 @@
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
       id="current-bunker-plan" hideToggle="true" 
-       [expanded]="viewcurrentBunkeringPlan" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel)"
+       [expanded]="vesselService.currentBunkeringPlan" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);changeDefault('currentBunkeringPlanClose')"
       (opened)="changeDefault('currentBunkeringPlanOpen')">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -291,7 +291,7 @@
       </div>
     </mat-expansion-panel>
     <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
-      hideToggle="true" id="bunker-plan" [expanded]="viewpreviousBunkeringPlan" (closed)="changeDefault('previousBunkeringPlanClose');expandPrevBPlan = false"
+      hideToggle="true" id="bunker-plan" [expanded]="vesselService.previousBunkeringPlan" (closed)="changeDefault('previousBunkeringPlanClose');expandPrevBPlan = false"
       (opened)="changeDefault('previousBunkeringPlanOpen')">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
