@@ -1,8 +1,8 @@
-﻿commit 8c8d2b9b28eb4b8db35a7d1e708372f23de67bab
+﻿commit 8f81f2b446f863efe057dec8671a7b351acbde57
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 16 08:06:52 2021 +0000
+Date:   Fri Jul 16 08:22:07 2021 +0000
 
-    Merged PR 12458: #34383: Bunker plan - Current ROB Negative SOA issue has fixed
+    Merged PR 12460: #34383: Bunker plan - Current ROB Negative SOA for MSPS, Unpumpables issue has fixed
     
     Related work items: #34383
 
