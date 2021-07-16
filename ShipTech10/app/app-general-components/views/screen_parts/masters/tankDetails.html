@@ -52,8 +52,8 @@
 				<td><input type="text" name="receivingRate_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].receivingRate" format="number"></td>
 				<td><input type="text" name="debunkerRate_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].debunkerRate" format="number"></td>
 				<td><input type="text" name="fillLimit_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].fillLimit" format="number"></td>			
-				<td><input type="text" name="storageCapacity_m3_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityM3" format="number"></td>			
-				<td><input type="text" name="storageCapacity_mt_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityMt" format="number"></td>			
+				<td><input type="text" name="storageCapacity_m3_{{ $index }}" disabled ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityM3" format="number"></td>			
+				<td><input type="text" name="storageCapacity_mt_{{ $index }}" disabled ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityMt" format="number"></td>			
 				<td><input type="text" name="density_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].density" format="number"></td>			
 			</tr>
             <tr>
