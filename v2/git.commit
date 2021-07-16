@@ -1,9 +1,9 @@
-﻿commit e0c314fedec14295b7a51ba9925e7d7387bed773
+﻿commit eb9c8d03c2f4591f76f64d88747b23b124bd1b56
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 16 07:02:16 2021 +0000
+Date:   Fri Jul 16 08:00:14 2021 +0000
 
-    Merged PR 12452: #32131-My Default View Checkbox functionality is not working in header section changes updated
+    Merged PR 12457: #34383: Bunker plan - Negative SOA issue has fixed
     
-    Related work items: #32131
+    Related work items: #34383
 
 branch: master
