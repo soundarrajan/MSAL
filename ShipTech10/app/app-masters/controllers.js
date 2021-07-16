@@ -10424,6 +10424,17 @@
             }
             return false;
         }
+        $scope.customerSubdepartmentStatusChanged = function(idx) {
+    		if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
+                if($scope.formValues && $scope.formValues.subDepartments[idx] && !$scope.formValues.subDepartments[idx].status) {
+                    $scope.formValues.subDepartments[idx].sendEmailToVessel = false;
+                    $scope.formValues.subDepartments[idx].priceInfoToVessel = false;
+                    $scope.formValues.subDepartments[idx].sendEmailToAgent = false;
+                    $scope.formValues.subDepartments[idx].priceToAgent = false;
+                    $scope.formValues.subDepartments[idx].showPO = false;
+                }
+            }
+        }
 
     }
 ]);

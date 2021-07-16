@@ -61,12 +61,12 @@
 				<td  style="max-width: initial; min-width: 50px;"><span class="insert" ng-click="formValues.subDepartments.push({})"></span></td>
 				<td style="max-width: initial; min-width: 200px;"><input name="customer_configuration_ID_{{$index}}" decode-input-format class="form-control" type="text" ng-required="true" ng-model="value.subDepartmentId"></td>
 				<td style="max-width: initial; min-width: 200px;"><input name="customer_configuration_name_{{$index}}" decode-input-format class="form-control" type="text" ng-required="true" ng-model="value.name"></td>
-				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-model="formValues.subDepartments[$index].status"/></td>
-				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-model="formValues.subDepartments[$index].sendEmailToVessel"/></td>
-				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-model="formValues.subDepartments[$index].priceInfoToVessel"/></td>
-				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-model="formValues.subDepartments[$index].sendEmailToAgent"/></td>
-				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-model="formValues.subDepartments[$index].priceToAgent"/></td>
-				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-model="formValues.subDepartments[$index].showPO"/></td>
+				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-model="formValues.subDepartments[$index].status" ng-change="customerSubdepartmentStatusChanged($index)"/></td>
+				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-disabled="!formValues.subDepartments[$index].status" ng-model="formValues.subDepartments[$index].sendEmailToVessel"/></td>
+				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-disabled="!formValues.subDepartments[$index].status" ng-model="formValues.subDepartments[$index].priceInfoToVessel"/></td>
+				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-disabled="!formValues.subDepartments[$index].status" ng-model="formValues.subDepartments[$index].sendEmailToAgent"/></td>
+				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-disabled="!formValues.subDepartments[$index].status" ng-model="formValues.subDepartments[$index].priceToAgent"/></td>
+				<td style="max-width: initial; min-width: 100px; text-align: center;"><input type="checkbox" ng-disabled="!formValues.subDepartments[$index].status" ng-model="formValues.subDepartments[$index].showPO"/></td>
 
 			</tr>
 		</tbody>
