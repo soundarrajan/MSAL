@@ -1387,7 +1387,7 @@ APP_CLAIMS.controller('Controller_Claims', [
         };
 
         var calculateQuantityShortagePercentage = function(qtyShortage, bdnQty) {
-            if(qtyShortage >= 0 && bdnQty > 0) {
+            if(qtyShortage && $.isNumeric(qtyShortage) && bdnQty > 0) {
                 $scope.formValues.claimType.quantityShortagePercent = ((qtyShortage / bdnQty) * 100).toFixed(2);
             } else {
                 $scope.formValues.claimType.quantityShortagePercent = null;
