@@ -1,8 +1,8 @@
-﻿commit eb9c8d03c2f4591f76f64d88747b23b124bd1b56
+﻿commit 8c8d2b9b28eb4b8db35a7d1e708372f23de67bab
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 16 08:00:14 2021 +0000
+Date:   Fri Jul 16 08:06:52 2021 +0000
 
-    Merged PR 12457: #34383: Bunker plan - Negative SOA issue has fixed
+    Merged PR 12458: #34383: Bunker plan - Current ROB Negative SOA issue has fixed
     
     Related work items: #34383
 
