@@ -8243,6 +8243,9 @@ APP_API.factory('$Api_Service', [
                             apiJSON.Payload.Filters = {};
                             apiJSON.Payload.Filters = angular.copy(param.field.Filters);
                         }
+                        if(param.field.Name == "usersList") {
+                            apiJSON.Payload.Pagination.Take = 999;
+                        }
                         // debugger;
 
                         // 0. define masters list url map based on masterSource
