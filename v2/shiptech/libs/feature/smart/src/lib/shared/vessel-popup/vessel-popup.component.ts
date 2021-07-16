@@ -82,6 +82,9 @@ export class VesselPopupComponent implements OnInit {
           this.viewVesselAlerts = true;
         }
       }
+      this.vesselService.myDefaultViewPayload.vessel = 1;
+    this.vesselService.myDefaultViewPayload.port = 0;
+    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
      
     }
 
@@ -256,9 +259,7 @@ export class VesselPopupComponent implements OnInit {
 
   
   public changeDefault(expandRef?: any) {
-    this.vesselService.myDefaultViewPayload.vessel = 1;
-    this.vesselService.myDefaultViewPayload.port = 0;
-    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
+    
     if (this.second?.expanded || expandRef == 'second') {
       this.loadVesselAlertList();
     }

@@ -7,7 +7,8 @@
       </app-search-vessel>
     </div>
   </div>
-  <table class=" table-noborder tbl-shadow border-l-r" style="width: 30%;">
+  <!-- <table class=" table-noborder tbl-shadow border-l-r" style="width: 30%;"> -->
+  <table class=" table-noborder tbl-shadow border-l-r" style="width: 37%;">
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
@@ -19,17 +20,19 @@
       </tr>
     </tbody>
   </table>
-  <div  class="border-r" style="display: flex;flex:0 0 11%;align-items: center;justify-content: space-evenly;">
-    <mat-checkbox (ngModelChange)="CheckDefaultView($event)" [ngModel]="vesselService.defaultView" (change)="saveDefaultView($event)" [checked]="vesselService.defaultView" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
-    <div [ngClass]="(bunkerPlanHeaderDetail.myDefaultView)? 'default-view': 'reminder-view'">My Default View</div>
-  </div>
-  <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;">
+  <!-- <div  class="border-r" style="display: flex;flex:0 0 11%;align-items: center;justify-content: space-evenly;"> -->
+    <!-- <mat-checkbox (ngModelChange)="CheckDefaultView($event)" [ngModel]="vesselService.defaultView" (change)="saveDefaultView($event)" [checked]="vesselService.defaultView" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <div [ngClass]="(bunkerPlanHeaderDetail.myDefaultView)? 'default-view': 'reminder-view'">My Default View</div> -->
+  <!-- </div> -->
+  <!-- <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;"> -->
+  <div  style="display: flex;align-items: center; justify-content: space-evenly;">
     <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [(ngModel)]="this.sendPlanReminder" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
     <div [ngClass]="(bunkerPlanHeaderDetail.dockPortFlag)? 'default-view': 'reminder-view'">Do not send plan reminder</div>
     <!-- <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon> -->
     <mat-icon *ngIf="bunkerPlanHeaderDetail?.dockPortFlag" matTooltip="Plan reminder disabled since vessel is Dry Dock" svgIcon="info-icon" style="width: 18px;padding-right: 5px;"></mat-icon>
   </div>
-  <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
+  <!-- <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;"> -->
+  <div class="border-l-r" style="flex:0 0 24%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan received</div><span class="label-text">:</span>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
@@ -53,9 +56,10 @@
 <!-- ACCORDION -->
 <div id="accordion-container-dark">
   <mat-accordion multi="true">
-    <mat-expansion-panel *ngIf="!expandComments" hideToggle="true"
+    <!-- <mat-expansion-panel *ngIf="!expandComments" hideToggle="true"
     [expanded]="vesselService.currentROBandArbitragedetails" (closed)="changeDefault('currentROBandArbitragedetailsClose')"
-    (opened)="changeDefault('currentROBandArbitragedetailsOpen')">
+    (opened)="changeDefault('currentROBandArbitragedetailsOpen')"> -->
+    <mat-expansion-panel *ngIf="!expandComments" hideToggle="true" [expanded]="'false'">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -175,9 +179,11 @@
         </div>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel #commentpanel
+    <!-- <mat-expansion-panel #commentpanel
       [ngClass]="{'fullheight':expandComments}" hideToggle="true" [expanded]="vesselService.comments" (closed)="changeDefault('commentsClose');expandComments = false"
-      (opened)="changeDefault('commentsOpen')">
+      (opened)="changeDefault('commentsOpen')"> -->
+    <mat-expansion-panel #commentpanel
+      [ngClass]="{'fullheight':expandComments}" hideToggle="true" [expanded]="'false'" (closed)="expandComments = false">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -203,9 +209,13 @@
       </div>
 
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
+    <!-- <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
       id="current-bunker-plan" hideToggle="true" 
        [expanded]="vesselService.currentBunkeringPlan" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);changeDefault('currentBunkeringPlanClose')"
+      (opened)="changeDefault('currentBunkeringPlanOpen')"> -->
+    <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
+      id="current-bunker-plan" hideToggle="true" 
+       [expanded]="'true'" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);"
       (opened)="changeDefault('currentBunkeringPlanOpen')">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -290,9 +300,11 @@
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
+    <!-- <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
       hideToggle="true" id="bunker-plan" [expanded]="vesselService.previousBunkeringPlan" (closed)="changeDefault('previousBunkeringPlanClose');expandPrevBPlan = false"
-      (opened)="changeDefault('previousBunkeringPlanOpen')">
+      (opened)="changeDefault('previousBunkeringPlanOpen')"> -->
+    <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
+      hideToggle="true" id="bunker-plan" [expanded]="'false'" (closed)="expandPrevBPlan = false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
