@@ -28,8 +28,13 @@ export class VesselPopupService{
 
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_SMART;
-  myDefaultViewPayload: any = [];
-  APImyDefaultView: any = [];
+  public myDefaultViewPayload: any = [];
+  public APImyDefaultView: any = [];
+  public currentROBandArbitragedetails: boolean;
+  public comments: boolean;
+  public currentBunkeringPlan: boolean;
+  public previousBunkeringPlan: boolean;
+  public defaultView: boolean;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
