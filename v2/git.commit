@@ -1,9 +1,11 @@
-﻿commit 8f81f2b446f863efe057dec8671a7b351acbde57
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 16 08:22:07 2021 +0000
+﻿commit aa745dae586a9fde1e03043c46918280b6d46e5b
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri Jul 16 12:56:09 2021 +0000
 
-    Merged PR 12460: #34383: Bunker plan - Current ROB Negative SOA for MSPS, Unpumpables issue has fixed
+    Merged PR 12476: Vessel rotation on map lat -log correction.
     
-    Related work items: #34383
+    Vessel rotation on map lat -log correction.
+    
+    Related work items: #34391
 
 branch: master

@@ -591,8 +591,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         anchor: [0.47, 0.47],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
-          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
+        rotation: this.getRotationForVessel(vesselDetail.vesselLatitude, vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude, vesselDetail.destinationLongitude),
         src: "./assets/customicons/vessel/hover-blue.svg"//vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/customicons/vessel/hover-red.svg" : "./assets/customicons/vessel/hover-blue.svg",
       }))
     });
@@ -622,8 +622,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         // anchorXUnits: 'pixels',
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
-          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
+        rotation: this.getRotationForVessel(vesselDetail.vesselLatitude, vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude, vesselDetail.destinationLongitude),
         // src: "http://cdn.mapmarker.io/api/v1/pin?text=P&size=50&hoffset=1",
         // src: vesselDetail.ColorFlag == 0 ? "./assets/icon/ROB_blue.svg" : vesselDetail.ColorFlag == 1 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_amber.svg",
         src: "./assets/customicons/vessel/ROB_blue.svg"//vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
@@ -641,8 +641,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         zIndex: Infinity,
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
-          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
+        rotation: this.getRotationForVessel(vesselDetail.vesselLatitude, vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude, vesselDetail.destinationLongitude),
         src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
 
         // src: "./assets/icon/ROB_red.svg",
@@ -661,8 +661,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         anchorOrigin: 'bottom-left',
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        rotation: this.getRotationForVessel(vesselDetail.destinationLatitude, vesselDetail.destinationLongitude,
-          vesselDetail.vesselLatitude, vesselDetail.vesselLongitude),
+        rotation: this.getRotationForVessel(vesselDetail.vesselLatitude, vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude, vesselDetail.destinationLongitude),
         src: "./assets/customicons/vessel/vessel_grey.svg"
       }))
     });
