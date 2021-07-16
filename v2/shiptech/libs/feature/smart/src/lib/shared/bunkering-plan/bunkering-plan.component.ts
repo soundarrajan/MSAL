@@ -572,6 +572,8 @@ export class BunkeringPlanComponent implements OnInit {
             data : {message: 'Plan Details updated successfully'}
           });
           this.store.dispatch(new GeneratePlanProgressAction(data.payload.gen_in_progress))
+          this.latestPlanId = storeVesselData.planId;
+          this.loadBunkeringPlanDetails();
         }
       })
     }

@@ -1,10 +1,10 @@
-﻿commit aa745dae586a9fde1e03043c46918280b6d46e5b
+﻿commit e65835f28cea1e6bb6a1a114dc22f0600bfe255b
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Jul 16 12:56:09 2021 +0000
+Date:   Fri Jul 16 13:14:18 2021 +0000
 
-    Merged PR 12476: Vessel rotation on map lat -log correction.
+    Merged PR 12477: #34391 : Bunker plan port max lift value fetching
     
-    Vessel rotation on map lat -log correction.
+    #34391 : Bunker plan port max lift value fetching
     
     Related work items: #34391
 
