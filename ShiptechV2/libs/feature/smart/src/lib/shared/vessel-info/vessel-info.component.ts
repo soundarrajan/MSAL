@@ -113,30 +113,8 @@ export class VesselInfoComponent implements OnInit {
    }
 
   ngOnInit() {
-
-    if (this.vesselService.myDefaultViewPayload) {
-      if (this.vesselService.myDefaultViewPayload.bunkerPlan == 1) {
-        this.vesselService.myDefaultViewPayload.defaultView = 1;
-        this.vesselService.defaultView = true;
-        
-        if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
-          this.vesselService.currentROBandArbitragedetails = true;
-        }
-        
-        if (this.vesselService.myDefaultViewPayload.comments == 1) {
-          this.vesselService.comments = true;
-        }
-        if (this.vesselService.myDefaultViewPayload.currentBunkeringPlan == 1) {
-          this.vesselService.currentBunkeringPlan = true;
-        }
-        if (this.vesselService.myDefaultViewPayload.previousBunkeringPlan == 1) {
-          this.vesselService.previousBunkeringPlan = true;
-        }
-      }
-      this.vesselService.myDefaultViewPayload.vessel = 0;
-      this.vesselService.myDefaultViewPayload.port = 0;
-      this.vesselService.myDefaultViewPayload.bunkerPlan = 1;
-    }
+    this.getDefaultView();
+    
     // console.log('Vessel Data11111111111111 ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
     
@@ -147,6 +125,67 @@ export class VesselInfoComponent implements OnInit {
     this.loadBunkerPlanDetails(vesseldata.vesselRef);   
     //trigger unsubscribe to avoid memory leakage
     window.onbeforeunload = () => this.ngOnDestroy();
+  }
+
+  getDefaultView() {
+    this.vesselService.myDefaultViewPayload = [];
+    this.vesselService.APImyDefaultView = [];
+    let req = { "UserId": this.store.selectSnapshot(UserProfileState.userId)}
+    this.vesselService.getmyDefaultview(req).subscribe((res) => {
+     
+        // debugger;
+      if (res.payload.length > 0) {
+        this.vesselService.myDefaultViewPayload = res.payload[0];
+      }
+      else{
+        if (this.vesselService.myDefaultViewPayload.length == 0) {
+          this.vesselService.myDefaultViewPayload.userId = this.store.selectSnapshot(UserProfileState.userId);
+          this.vesselService.myDefaultViewPayload.port = 0;
+          this.vesselService.myDefaultViewPayload.vessel = 0;
+          this.vesselService.myDefaultViewPayload.defaultView = 0;
+          this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
+          this.vesselService.myDefaultViewPayload.portRemarks = 0;
+          this.vesselService.myDefaultViewPayload.productAvailability = 0;
+          this.vesselService.myDefaultViewPayload.bopsPrice = 0;
+          this.vesselService.myDefaultViewPayload.portsAgents = 0;
+          this.vesselService.myDefaultViewPayload.otherDetails = 0;
+          this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
+          this.vesselService.myDefaultViewPayload.futureRequest = 0;
+          this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
+          this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
+          this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails = 0;
+          this.vesselService.myDefaultViewPayload.comments = 0;
+          this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 0;
+          this.vesselService.myDefaultViewPayload.previousBunkeringPlan = 0
+        }
+      }
+      if (this.vesselService.myDefaultViewPayload) {
+        if (this.vesselService.myDefaultViewPayload.bunkerPlan == 1) {
+          this.vesselService.myDefaultViewPayload.defaultView = 1;
+          this.vesselService.defaultView = true;
+          
+          if (this.vesselService.myDefaultViewPayload.currentROBandArbitragedetails == 1) {
+            this.vesselService.currentROBandArbitragedetails = true;
+          }
+          
+          if (this.vesselService.myDefaultViewPayload.comments == 1) {
+            this.vesselService.comments = true;
+          }
+          if (this.vesselService.myDefaultViewPayload.currentBunkeringPlan == 1) {
+            this.vesselService.currentBunkeringPlan = true;
+          }
+          if (this.vesselService.myDefaultViewPayload.previousBunkeringPlan == 1) {
+            this.vesselService.previousBunkeringPlan = true;
+          }
+        }
+        this.vesselService.myDefaultViewPayload.vessel = 0;
+        this.vesselService.myDefaultViewPayload.port = 0;
+        this.vesselService.myDefaultViewPayload.bunkerPlan = 1;
+      }
+      
+    })
+
+
   }
 
   validateOnlyInt(event): boolean {
