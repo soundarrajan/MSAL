@@ -1,9 +1,9 @@
-﻿commit 3b0f51ef9db05025dcb7f96f13b5ab7e4a6beb82
+﻿commit ee581aba459a6f4de476a0650b41ecf4dd6aef80
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jul 19 13:52:47 2021 +0000
+Date:   Mon Jul 19 14:08:03 2021 +0000
 
-    Merged PR 12527: #NoJIRA - filter changes to improve performance in future request tableview api payload
+    Merged PR 12528: #34384: Current ROB fields structure is disturbed on "enter" issue has fixed
     
-    Related work items: #29982
+    Related work items: #34384
 
 branch: master
