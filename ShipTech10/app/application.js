@@ -871,6 +871,7 @@ angular.element(document).ready(() => {
                 angular.module('shiptech').value('$filtersData', {});
                 bootstrapApplication();
             } else {
+                angular.module('shiptech').value('$filtersData', {});
                 angular.bootstrap(auth, [ 'auth' ], {
                     strictDi: true
                 });
