@@ -5594,6 +5594,43 @@
             $scope.addnewTankDetail( $scope.formValues.vesselProducts.length-1);
         }
 
+        $scope.vpKey = 0;
+        $scope.vptKey = 0;
+
+        $scope.removeVesselProduct = function(key) {
+            $scope.currentEntity = 'VesselProduct';
+            $scope.vpKey = key;
+            $scope.sweetConfirmModal('Do you want delete the Product Type?', (response) => {
+                if ($scope.currentEntity == 'VesselProduct' && response == true) {
+                    if($scope.formValues.vesselProducts[$scope.vpKey].id == undefined || $scope.formValues.vesselProducts[$scope.vpKey].id == 0) {
+                        $scope.formValues.vesselProducts.splice($scope.vpKey,1)
+                    }
+                    else {
+                        $scope.deleteVesselProduct($scope.vpKey);
+                    }
+                }
+            });
+        }
+
+        $scope.removeVesselProductTank = function(vpKey, vptKey) {
+            $scope.currentEntity = 'VesselProductTank';
+            $scope.vpKey = vpKey;
+            $scope.vptKey = vptKey;
+            $scope.sweetConfirmModal('Do you want delete the Tank?', (response) => {
+                if ($scope.currentEntity == 'VesselProductTank' && response == true) {
+                    if($scope.formValues.vesselProducts[$scope.vpKey] && $scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks.length > 0) {
+                        if($scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks[$scope.vptKey].id == undefined ||
+                            $scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks[$scope.vptKey].id == 0) {
+                            $scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks.splice($scope.vptKey,1)
+                        }
+                        else {
+                            $scope.deleteVesselProductTank($scope.vpKey, $scope.vptKey);
+                        }
+                    }
+                }
+            });
+        }
+
         $scope.verifyIfvesselProductsIsEmpty = function(){
             let checkIfVesselProductsIsEmpty = _.findIndex($scope.formValues.vesselProducts, function(object) {
                 return !object.isDeleted;
@@ -8274,6 +8311,28 @@
         		// $scope.sweetConfirmHasResponded(sweetConfirmResponse)
         	});
         };
+        $scope.sweetConfirmModal = function(message, callback) {
+        	if (!message) {
+                return false;
+            }
+    		var sweetConfirmResponse = {};
+        	$('.sweetConfirmModal').modal();
+        	$('.sweetConfirmModal').removeClass('hide fade');
+        	$('.sweetConfirmModal').css('transform', 'translateY(100px)');
+        	$('.sweetConfirmModal .modal-body').text(message);
+
+        	$('.sweetConfirmModal .sweetConfirmModalYes').on('click', () => {
+        		callback(true);
+            $('.sweetConfirmModal .sweetConfirmModalYes').off('click');
+            $('.sweetConfirmModal .sweetConfirmModalNo').off('click');
+        	});
+        	$('.sweetConfirmModal .sweetConfirmModalNo').on('click', () => {
+        		callback(false);
+            $('.sweetConfirmModal .sweetConfirmModalNo').off('click');
+            $('.sweetConfirmModal .sweetConfirmModalYes').off('click');
+        	});
+        };
+
         vm.useDisplayName = function(fieldName) {
             let displayNameList = [ 'invoiceStatus', 'customStatus', 'ClaimType' ];
             let found = _.indexOf(displayNameList, fieldName);
