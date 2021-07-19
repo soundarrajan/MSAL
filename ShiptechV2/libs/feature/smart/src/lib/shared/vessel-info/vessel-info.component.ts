@@ -190,6 +190,11 @@ export class VesselInfoComponent implements OnInit {
 
   validateOnlyInt(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
+    // Restrict enter on keypress
+    if(charCode == 13) {
+      event.preventDefault();
+      return false;
+    }
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
     }
