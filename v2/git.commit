@@ -1,11 +1,9 @@
-﻿commit 08819f84a018dd3c3215d896fd395a62fb4cce8d
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Mon Jul 19 06:47:55 2021 +0000
+﻿commit 3b0f51ef9db05025dcb7f96f13b5ab7e4a6beb82
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Jul 19 13:52:47 2021 +0000
 
-    Merged PR 12498: Filtering out Cancelled requests (Performance Fix)
+    Merged PR 12527: #NoJIRA - filter changes to improve performance in future request tableview api payload
     
-    Filtering out Cancelled requests (Performance Fix)
-    
-    Cherry-picked from commit `b45c004b`.
+    Related work items: #29982
 
 branch: master
