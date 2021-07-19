@@ -1,11 +1,11 @@
-﻿commit e65835f28cea1e6bb6a1a114dc22f0600bfe255b
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Jul 16 13:14:18 2021 +0000
+﻿commit 08819f84a018dd3c3215d896fd395a62fb4cce8d
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Mon Jul 19 06:47:55 2021 +0000
 
-    Merged PR 12477: #34391 : Bunker plan port max lift value fetching
+    Merged PR 12498: Filtering out Cancelled requests (Performance Fix)
     
-    #34391 : Bunker plan port max lift value fetching
+    Filtering out Cancelled requests (Performance Fix)
     
-    Related work items: #34391
+    Cherry-picked from commit `b45c004b`.
 
 branch: master
