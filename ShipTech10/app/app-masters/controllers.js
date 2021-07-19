@@ -39,6 +39,8 @@
         $rootScope.TempadditionalCosts = [];
         $scope.vm = this;
         $scope.preferredContacts = [];
+        $rootScope.isSaveAction = false;
+
 
         $controller('ScreenLayout_Controller', {
             $scope: $scope
@@ -1873,6 +1875,7 @@
                                 toastr.success(callback.message);
                                 // alert('reloading');
                                 var $tenantConfiguration = null;
+                                $rootScope.isSaveAction = true;
                                 $state.reload();
                                 screenLoader.hideLoader();
                             } else if(completeCallback) {
@@ -6986,7 +6989,36 @@
         $rootScope.$on('$stateChangeStart',
             (event, toState, toParams, fromState, fromParams) => {
 		    $rootScope.called_getAdditionalCostsCM = false;
-            });
+
+            if( 
+                vm.app_id == "masters" && 
+                vm.screen_id == "vessel" && 
+                vm.entity_id && 
+                fromState.url.includes("edit") && 
+                !window.confirmVesselMasterLeave && 
+                !$rootScope.isSaveAction
+            ) {
+                if( $('form[name="CM.editInstance"]').find(".ng-dirty:not(.ng-untouched)").length > 0 ) {
+                    event.preventDefault();
+                    window.confirmVesselMasterLeaveDestinationUrl = window.location.href;
+                    window.confirmVesselMasterLeave = true;
+                    $scope.sweetConfirm("Are you sure? You might have unsaved changes", (response) => {
+                        if(response == true) {
+                            window.location.href = window.confirmVesselMasterLeaveDestinationUrl;
+                            setTimeout(() => {
+                                window.confirmVesselMasterLeave = false;
+                            });
+                        } else {
+                            setTimeout(() => {
+                                window.confirmVesselMasterLeave = false;
+                            });
+                        }
+
+                    });
+                }
+            } 
+
+        });
         vm.getAdditionalCostsComponentTypes = function(callback) {
             if (!vm.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCostsCM) {
@@ -10486,3 +10518,4 @@ $("body").on("click", (e)=>{
 	        .removeClass('expanded');
 	}
 })
+
