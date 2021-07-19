@@ -11,7 +11,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
         ctrl.requestScreen = $state.current.name == 'default.edit-request';
         ctrl.lookupType = null;
         ctrl.selectedRow = null;
-        $state.params.title = `${$state.params.title } ${ ctrl.requestId}`;
+        // $state.params.title = `${$state.params.title } ${ ctrl.requestId}`;
         ctrl.tableOptions = {};
         ctrl.tableOptions.pageLength = 10;
         ctrl.tableOptions.paginationStart = 0;
