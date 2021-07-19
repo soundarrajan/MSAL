@@ -73,6 +73,7 @@ export class FutureRequestGridComponent implements OnInit {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
         // this.gridOptions.api.setDatasource(this.dataSource);
+        this.loadOutstandRequestData();
         this.gridOptions.api.setServerSideDatasource(this.dataSource);
         this.gridOptions.api.sizeColumnsToFit();
 
@@ -249,16 +250,7 @@ export class FutureRequestGridComponent implements OnInit {
         "Payload": {
           "Order": null,
           "PageFilters": {
-            "Filters": [{      
-              "columnValue": "RequestStatus_DisplayName",
-              "ColumnType": "Text",
-              "isComputedColumn": false,
-              "ConditionValue": "!=",
-              "Values": [
-                "CANCELLED"
-              ],
-              "FilterOperator": 0
-      }]
+            "Filters": this.columnFilter
           },
           "SortList": {
             "SortList": [
@@ -376,6 +368,9 @@ export class FutureRequestGridComponent implements OnInit {
     }
   }
   loadOutstandRequestData(param?:any) {
+    let currentDate = new Date();
+    let prevMonthDate = (new Date(currentDate.setMonth(currentDate.getMonth() - 1))).toISOString();
+    prevMonthDate = prevMonthDate.substring(0, 16);
     let fromDate = new Date().toISOString();
     let toDate = null;
         fromDate = fromDate.substring(0, 16);
@@ -419,6 +414,29 @@ export class FutureRequestGridComponent implements OnInit {
       ],
       "FilterOperator": 0
     });
+
+    // filter cancel request on load
+    this.columnFilter.push({      
+      "columnValue": "RequestStatus_DisplayName",
+      "ColumnType": "Text",
+      "isComputedColumn": false,
+      "ConditionValue": "!=",
+      "Values": [
+        "CANCELLED"
+      ],
+      "FilterOperator": 0
+    });
+    this.columnFilter.push({        
+      "columnValue": "RequestDate",
+      "ColumnType": "Date",
+      "isComputedColumn": false,
+      "ConditionValue": ">=",
+      "Values": [
+        prevMonthDate  
+      ],
+      "FilterOperator": 1
+    })
+ 
   }
 
   onDateChange(event) {
