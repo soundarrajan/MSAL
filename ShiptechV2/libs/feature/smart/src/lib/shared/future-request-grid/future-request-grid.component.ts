@@ -249,7 +249,16 @@ export class FutureRequestGridComponent implements OnInit {
         "Payload": {
           "Order": null,
           "PageFilters": {
-            "Filters": this.columnFilter
+            "Filters": [{      
+              "columnValue": "RequestStatus_DisplayName",
+              "ColumnType": "Text",
+              "isComputedColumn": false,
+              "ConditionValue": "!=",
+              "Values": [
+                "CANCELLED"
+              ],
+              "FilterOperator": 0
+      }]
           },
           "SortList": {
             "SortList": [
