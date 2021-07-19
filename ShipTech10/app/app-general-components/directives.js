@@ -480,6 +480,10 @@ Number(function() {
                                     if (scope.tenantSetting.shiptechLite) {
                                         newValue.colModel.splice(i, 1);
                                     }
+                                }  else if (newValue.colModel[i].name == 'terminal.name' ) {
+                                    if (procurementSettings.request.isRequestTerminalHidden) {
+                                        newValue.colModel.splice(i, 1);
+                                    }
                                 }
                             }  
                         }
@@ -492,6 +496,10 @@ Number(function() {
                                     }
                                 } else if (newValue.colModel[i].name == 'hasSellerConfirmationDocument') {
                                     if (scope.tenantSetting.shiptechLite) {
+                                        newValue.colModel.splice(i, 1);
+                                    }
+                                } else if (newValue.colModel[i].name == 'terminal.name' ) {
+                                    if (procurementSettings.request.isRequestTerminalHidden) {
                                         newValue.colModel.splice(i, 1);
                                     }
                                 }
