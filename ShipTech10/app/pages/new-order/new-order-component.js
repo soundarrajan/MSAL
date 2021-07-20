@@ -1373,6 +1373,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * Adds a first additional cost row in case there are none in the respective location.
          */
         function addFirstAdditionalCost() {
+            return false;
             if (!orderHasAdditionalCosts()) {
                 ctrl.addAdditionalCost();
             }

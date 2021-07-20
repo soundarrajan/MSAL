@@ -1759,16 +1759,15 @@
                                 <tr ng-if="!additionalCost.isDeleted"
                                     ng-repeat="additionalCost in $ctrl.additionalCosts | orderBy: '-fakeId' track by $index">
 
-                                    <td>
-
-                                    <span class="clickable"
+                                    <td style="vertical-align: middle;">
+                                        <span class="clickable"
                                           id="addCost_addRow_{{ $index }}"
                                           ng-click="$ctrl.addAdditionalCost()"
                                           ng-if="['Invoiced', 'PartiallyInvoiced', 'Closed'].indexOf($ctrl.data.status.name) == -1">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
-                                </td>
-                                <td>
+                                    </td>
+                                    <td style="vertical-align: middle;">
                                         <span class="clickable"
                                               id="addCost_remRow_{{ $index }}"
                                               ng-click="$ctrl.deleteAdditionalCost(additionalCost)"
@@ -1776,10 +1775,9 @@
                                             <i class="fa fa-minus st-btn-icon"></i>
                                         </span>
                                     </td>
+    
                                     <td>
-
                                         <!-- additional cost -->
-
                                         <select class="select2 form-control"
                                             id="additional_cost_additional_cost_{{ $index }}"
                                             name="{{ $ctrl.additionalCostColumns.name.name }}"
@@ -1789,6 +1787,7 @@
                                             ng-options="addCost as addCost.name for addCost in additionalCost.additionalCostList | decodeReadOnly track by (addCost.id + '-' + (addCost.locationid || 0))">
                                         </select>
                                     </td>
+
                                     <td>
                                         <!--  cost type -->
                                         <select class="select2 form-control" id="additional_cost_type_{{ $index }}"
