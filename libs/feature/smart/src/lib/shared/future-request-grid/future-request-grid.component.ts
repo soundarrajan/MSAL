@@ -81,6 +81,14 @@ export class FutureRequestGridComponent implements OnInit {
         // this.gridOptions.api.setRowData(this.rowData);
         // this.rowCount = this.gridOptions.api.getDisplayedRowCount();
 
+        setTimeout(() => {
+          let filterComponent = this.gridOptions.api.getFilterInstance("Status");
+          filterComponent.setModel({
+            type: "notEqual",
+            filter: "Cancelled"
+          });
+          this.gridOptions.api.onFilterChanged();
+        },150);
       },
       onColumnResized: function (params) {
         // if (params.columnApi.getAllDisplayedColumns().length <= 10 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
