@@ -106,6 +106,33 @@ export class SaveBunkeringPlanState{
     return data;
   }
 
+  @Selector([SaveBunkeringPlanState])
+  static getBunkeringPlanDataEcaCons(state: SaveBunkeringPlanStateModel):any{
+    let data = [];
+    let params = state?.BPlanData;
+    params.forEach(bPlan =>{  
+      data.push({
+        eca_estimated_consumption: bPlan.eca_estimated_consumption        
+      }) ;
+
+    })
+    return data;
+  }
+
+  @Selector([SaveBunkeringPlanState])
+  static getBunkeringPlanDataLsdisCons(state: SaveBunkeringPlanStateModel):any{
+    let data = [];
+    let params = state?.BPlanData;
+    params.forEach(bPlan =>{  
+      data.push({
+        lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption       
+      }) ;
+
+    })
+    return data;
+  }
+
+
   @Action(UpdateBunkeringPlanAction)
   update({getState, patchState}: StateContext<SaveBunkeringPlanStateModel>, {payload, type, detail_no}:UpdateBunkeringPlanAction){
     const state = getState();
