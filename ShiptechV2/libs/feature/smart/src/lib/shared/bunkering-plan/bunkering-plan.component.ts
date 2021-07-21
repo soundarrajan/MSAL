@@ -790,44 +790,44 @@ export class BunkeringPlanComponent implements OnInit {
       let currentROB = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
       let rowData2 = this.rowData;
       switch(column){
-        case 'LSDIS' :{
-                        let currentRobLsdis = currentROB.LSDIS ? currentROB.LSDIS : 0 ;
-                        for( let i = 0; i < rowData2.length ; i++){
-                          let lsdisAsEca = parseInt(rowData2[i].lsdis_as_eca);
-                          //For Port 0
-                          if(i==0){
-                            rowData2[i].lsdis_soa = parseInt(currentRobLsdis.toString()) - parseInt(rowData2[i].lsdis_estimated_consumption) - lsdisAsEca;
-                          }
-                          //For Port 1 to N 
-                          else{
-                            rowData2[i].lsdis_soa = parseInt(rowData2[i-1].lsdis_soa) - parseInt(rowData2[i].lsdis_estimated_consumption) - lsdisAsEca + parseInt(rowData2[i-1].lsdis_estimated_lift);
-
-                          }
-                          if(rowData2[i].lsdis_soa)
-                          this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no));
-                        }
-                        if(this.gridOptions.api)
-                          this.gridOptions.api.setRowData(rowData2);
-                        break;
-                      }
+        case 'LSDIS' :
         case 'ULSFO' :{
+                        let estdConsLsdisList = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanDataLsdisCons);
+                        let estdConsEcaList = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanDataEcaCons);
+                        let currentRobLsdis = currentROB.LSDIS ? currentROB.LSDIS : 0 ;
                         let currentRobUslfo = currentROB.ULSFO ? currentROB.ULSFO : 0 ;
-                        for( let i = 0; i < rowData2.length ; i++){
-                          let lsdisAsEca = parseInt(rowData2[i].lsdis_as_eca);
-                          //For Port 0
-                          if(i==0){
-                            rowData2[i].ulsfo_soa = parseInt(currentRobUslfo.toString()) - (parseInt(rowData2[i].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption)) + lsdisAsEca 
+                        if(rowData2.length > 0){
+                          for( let i = 0; i < rowData2.length ; i++){
+                            let lsdisAsEca = 0;
+                            //For Port 0
+                            if(i==0){
+                              lsdisAsEca = (parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) + parseInt(rowData2[i].mpo_ulsfo_soa)) - parseInt(currentRobUslfo.toString());
+                              rowData2[i].lsdis_soa = parseInt(currentRobLsdis.toString()) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) - lsdisAsEca;
+                              let estd_Cons = parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption);
+                              rowData2[i].ulsfo_soa = parseInt(currentRobUslfo.toString()) - estd_Cons + lsdisAsEca 
+                            }
+                            //For Port 1 to N 
+                            else{
+                              lsdisAsEca = (parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption)) + parseInt(rowData2[i].mpo_ulsfo_soa) - parseInt(rowData2[i-1].mpo_ulsfo_soa) - parseInt(rowData2[i-1].mpo_ulsfo_estimated_lift);//parseInt(lsdisAsEcaList[i].lsdis_as_eca);
+                              rowData2[i].lsdis_soa = parseInt(rowData2[i-1].lsdis_estimated_lift) + parseInt(rowData2[i-1].lsdis_soa) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) - lsdisAsEca ;
+                              let estd_Cons = parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption);
+                              rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_estimated_lift) + parseInt(rowData2[i-1].ulsfo_soa) - estd_Cons + lsdisAsEca;
+                            }
+                            if(rowData2[i].lsdis_soa){
+                              this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no)); //update lsdis_soa updated to store for save
+                              this.store.dispatch(new UpdateBunkeringPlanAction(lsdisAsEca,'lsdis_as_eca',rowData2[i].detail_no)); //update lsdis_as_eca updated to store
+                            }
+                            if(rowData2[i].ulsfo_soa)
+                                this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no)); //update ulsfo_soa updated to store for save
+                              
                           }
-                          //For Port 1 to N 
-                          else{
-                            let estd_Cons = parseInt(rowData2[i].eca_estimated_consumption) - parseInt(rowData2[i].lsdis_estimated_consumption);
-                            rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_soa) - estd_Cons + lsdisAsEca + parseInt(rowData2[i-1].ulsfo_estimated_lift) ;
+                          if(this.gridOptions.api){
+                            setTimeout(() => {
+                              this.gridOptions.api.setRowData(rowData2);
+                            }, 500);
                           }
-                          if(rowData2[i].ulsfo_soa) 
-                          this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no));
                         }
-                        if(this.gridOptions.api)
-                          this.gridOptions.api.setRowData(rowData2);
+                         
                         break;
                       }
         case '0.5 QTY':
