@@ -3223,6 +3223,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       };
       this.formValues.counterpartyDetails.payableTo = obj;
       this.changeDetectorRef.detectChanges();
+      this.formValues.counterpartyBankAccount = null;
+      this.getBankAccountNumber();
     }
   }
 
@@ -3233,6 +3235,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     };
     // console.log(this.formValues.counterpartyDetails.payableTo);
     this.changeDetectorRef.detectChanges();
+    this.formValues.counterpartyBankAccount = null;
+    this.getBankAccountNumber();
   }
 
   getColorCodeFromLabels(statusObj, labels) {
