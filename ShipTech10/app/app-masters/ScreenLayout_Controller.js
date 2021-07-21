@@ -1385,7 +1385,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     $scope.modal.filters = filter;
                 }
                 if (clc == 'masters_productlist') {
-                    $scope.modal.filters = filter;
+                    if(filter != 'master_selectMotProductTypeId') {
+                        $scope.modal.filters = filter;
+                    }
                 }
                 if (clc == 'procurement_bunkerableport' || clc == 'procurement_destinationport') {
                 	$scope.modal.filters = [
@@ -1590,6 +1592,22 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 }
                 if (filter == 'filter__vessel_tankProduct') {
                     localStorage.setItem('uniqueModalTableIdentifier', 'productsInVesselMaster');
+                }
+                if (clc == 'masters_productlist' && filter == 'master_selectMotProductTypeId') {
+                    if(!$scope.modal.filters) {
+                        $scope.modal.filters = [];
+                    }
+                    let value = null;
+                    if($scope.formValues.vesselProducts.length > 0 &&
+                        $scope.formValues.vesselProducts[idx].productType && $scope.formValues.vesselProducts[idx].productType.id > 0) {
+                        value = $scope.formValues.vesselProducts[idx].productType.id;
+                    }
+                    $scope.modal.filters.push(
+                        {
+                            ColumnName: 'MOTProductTypeId',
+                            Value: value
+                        }
+                    );
                 }
                 if (clc == 'masters_marketinstrumentlist') {
                     $scope.modal.screen = 'marketinstrument';

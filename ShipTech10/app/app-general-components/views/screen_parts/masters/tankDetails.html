@@ -36,12 +36,12 @@
 				<td>
 					<div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.vesselProducts[$index].product.id) }}">
 						<input decode-input-format ng-model="formValues.vesselProducts[$index].product"
-							uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name'"
+							uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name' | filter:{motProductTypeId:formValues.vesselProducts[$index].productType.id}"
 							class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
 							typeahead-wait-ms="100" id="Product_{{$index}}_tank_Product" ng-required="true"
 							name="tank_Product" autocomplete="off" typeahead-no-result="noResults"
 							typeahead-editable="false"/>
-						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Tank Product', 'product', 'formValues.vesselProducts', $index,'Product_tank_Product', '','');" ng-init="modal = false">
+						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Tank Product', 'product', 'formValues.vesselProducts', $index,'Product_tank_Product', 'master_selectMotProductTypeId','');" ng-init="modal = false">
 							<a class=" btn default">
 								<i class="fa fa-search"></i>
 							</a>
