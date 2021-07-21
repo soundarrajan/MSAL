@@ -1,11 +1,7 @@
-﻿commit c5655fafb4f387a36060b95bf7ac2b40adb88256
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jul 21 12:50:41 2021 +0000
+﻿commit f7dfc1010ad4ba4080329fed00196a191682ef83
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Jul 21 17:02:33 2021 +0300
 
-    Merged PR 12630: Fix build error
-    
-    Fix build error
-    
-    Related work items: #34348
+    Fixed powered_by.png not found
 
 branch: master
