@@ -302,6 +302,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 ctrl.request.locations[i].destinationEta = null;
                                 // ctrl.request.locations[i].destination = null;
                                 ctrl.request.locations[i].requestId = null;
+                                if(ctrl.request.locations[i].terminal){
+                                    ctrl.request.locations[i].terminal.descriptions = ctrl.request.locations[i].terminal.name;
+                                    ctrl.request.locations[i].terminal.terminalCode = ctrl.request.locations[i].terminal.code;
+                                }
+                                getTerminalLocations(LOOKUP_TYPE.LOCATIONS, ctrl.request.locations[i].location.id);
                                 for (let j = 0; j < ctrl.request.locations[i].products.length; j++) {
                                 	ctrl.request.locations[i].products[j].uniqueIdUI = Math.random().toString(36).substring(7);
                                     ctrl.request.locations[i].products[j].sellers = [];
