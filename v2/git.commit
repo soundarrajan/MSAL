@@ -1,7 +1,11 @@
-﻿commit 9144d9922f8e573e954848416257cf6500454ebe
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Jul 21 11:29:22 2021 +0300
+﻿commit 33f490bd0c9579798a28493f11cf827059eead41
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jul 21 08:56:30 2021 +0000
 
-    Added contract id missing in contract screen
+    Merged PR 12597: #34151 : Bunker plan port SOA calculation  is not happening when consumption is changed.
+    
+    #34151 : Bunker plan port SOA calculation  is not happening when consumption is changed.
+    
+    Related work items: #34151
 
 branch: master
