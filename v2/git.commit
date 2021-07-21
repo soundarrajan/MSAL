@@ -1,9 +1,7 @@
-﻿commit 6b71e3a09892826cb597946062678bd2e3f6e8b4
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Jul 20 10:32:27 2021 +0000
+﻿commit 9144d9922f8e573e954848416257cf6500454ebe
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Jul 21 11:29:22 2021 +0300
 
-    Merged PR 12548: #Nojira - filter cancelled status changes has done
-    
-    Related work items: #29982
+    Added contract id missing in contract screen
 
 branch: master

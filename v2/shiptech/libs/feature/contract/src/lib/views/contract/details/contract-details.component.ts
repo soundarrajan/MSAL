@@ -64,10 +64,6 @@ interface DialogData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContractDetailsComponent implements OnInit, OnDestroy {
-  private _destroy$ = new Subject();
-
-  private quantityPrecision: number;
-
   entityId: number;
   entityName: string;
   isLoading: boolean;
@@ -158,6 +154,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   customerList: any;
   entityCopied: boolean = false;
   tradeBookList: any;
+  private _destroy$ = new Subject();
+
+  private quantityPrecision: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -217,6 +216,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.contractId);
     });
+
     this.route.data.subscribe(data => {
       if (localStorage.getItem(`${this.appId + this.screenId}_copy`)) {
         console.log('copy contract');
@@ -247,6 +247,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.formValues = data.contract;
         if (this.entityId) {
           this.titleService.setTitle('Contract' + ' - ' + this.formValues.name);
+          document.getElementById('navbar-text').innerHTML =
+            'CONTRACT ENTITY EDIT - ' + this.formValues.id;
         }
         if (typeof this.formValues.status != 'undefined') {
           if (this.formValues.status.name) {
@@ -262,6 +264,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         }
 
         this.titleService.setTitle('New Contract');
+        document.getElementById('navbar-text').innerHTML = 'New Contract';
       }
 
       this.staticLists = data.staticLists;
@@ -321,9 +324,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.costTypeList = this.setListFromStaticLists('CostType');
       this.customerList = this.setListFromStaticLists('Customer');
 
-      var defaultUom = this.generalTenantSettings.tenantFormats.uom;
-      var defaultQuantityType = this.contractualQuantityOptionList[0];
-      let firstEntry = {
+      const defaultUom = this.generalTenantSettings.tenantFormats.uom;
+      const defaultQuantityType = this.contractualQuantityOptionList[0];
+      const firstEntry = {
         contractualQuantityOption: defaultQuantityType,
         minContractQuantity: null,
         maxContractQuantity: null,
@@ -345,7 +348,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   setListFromStaticLists(name) {
-    let findList = _.find(this.staticLists, function(object) {
+    const findList = _.find(this.staticLists, function(object) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -355,7 +358,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   selectedAllowedCompanies() {
     this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
-      let findCompanyIndex = _.findIndex(this.companyList, function(
+      const findCompanyIndex = _.findIndex(this.companyList, function(
         object: any
       ) {
         return object.id == allowedCompany.id;
@@ -383,7 +386,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   setFormValuesAfterCopyContract() {
-    var contractId = localStorage.getItem(`${this.appId + this.screenId}_copy`);
+    const contractId = localStorage.getItem(
+      `${this.appId + this.screenId}_copy`
+    );
     localStorage.removeItem(`${this.appId + this.screenId}_copy`);
     console.log('id', contractId);
     this.contractService
@@ -455,8 +460,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    var numberToReturn = number;
-    var decimalSeparator, thousandsSeparator;
+    let numberToReturn = number;
+    let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
         if (number.indexOf(',') > number.indexOf('.')) {
@@ -533,7 +538,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         j++
       ) {
         if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
-          let amount = parseInt(
+          const amount = parseInt(
             this.formValues.products[i].additionalCosts[j].amount
           );
           if (
@@ -679,7 +684,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         j++
       ) {
         if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
-          let amount = parseInt(
+          const amount = parseInt(
             this.formValues.products[i].additionalCosts[j].amount
           );
           if (
@@ -779,10 +784,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
     let notValidConversionFactor = false;
     for (let i = 0; i < this.formValues.products.length; i++) {
-      let conversionFactorForProduct = this.formValues.products[i]
+      const conversionFactorForProduct = this.formValues.products[i]
         .conversionFactors;
       if (conversionFactorForProduct && conversionFactorForProduct.length) {
-        let findSystemInstrumentOption = _.find(
+        const findSystemInstrumentOption = _.find(
           conversionFactorForProduct,
           function(object) {
             return object.contractConversionFactorOptions.id == 4;
@@ -873,12 +878,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     }
 
     // test dates
-    let notValid = this.testForValidDates();
+    const notValid = this.testForValidDates();
     if (notValid) {
       return;
     }
 
-    let id = this.entityId;
+    const id = this.entityId;
     this.entityCopied = false;
     this.eventsSubject5.next(false);
     if (!id) {
@@ -954,12 +959,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   testForValidDates() {
-    var notValidDates = false;
+    let notValidDates = false;
     if (!this.formValues.evergreen) {
-      let start = new Date(this.formValues.validFrom);
-      let startDate = start.getTime();
-      let end = new Date(this.formValues.validTo);
-      let endDate = end.getTime();
+      const start = new Date(this.formValues.validFrom);
+      const startDate = start.getTime();
+      const end = new Date(this.formValues.validTo);
+      const endDate = end.getTime();
 
       if (startDate > endDate) {
         this.toastr.error(
