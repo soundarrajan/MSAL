@@ -679,7 +679,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     }/${InvoiceApiPaths.getPaybleToList()}`;
     return this.http.post(requestUrl, request).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the payble to list'))
+      catchError(() => of('Error, could not load the payable to list'))
     );
   }
 
