@@ -1,11 +1,11 @@
-﻿commit 33f490bd0c9579798a28493f11cf827059eead41
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 21 08:56:30 2021 +0000
+﻿commit c5655fafb4f387a36060b95bf7ac2b40adb88256
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Jul 21 12:50:41 2021 +0000
 
-    Merged PR 12597: #34151 : Bunker plan port SOA calculation  is not happening when consumption is changed.
+    Merged PR 12630: Fix build error
     
-    #34151 : Bunker plan port SOA calculation  is not happening when consumption is changed.
+    Fix build error
     
-    Related work items: #34151
+    Related work items: #34348
 
 branch: master
