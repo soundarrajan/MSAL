@@ -29,7 +29,7 @@ export enum knowMastersAutocompleteHeaderName {
   currency = 'SELECT CURRENCY',
   formula = 'SELECT FORMULA',
   invoiceProduct = 'SELECT INV. PRODUCT',
-  payableTo = 'SELECT PAYBLE TO',
+  payableTo = 'SELECT PAYABLE TO',
   customer = 'SELECT CUSTOMER',
   paymentTerm = 'SELECT PAYMENT TERM'
 }
