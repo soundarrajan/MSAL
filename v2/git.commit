@@ -1,7 +1,11 @@
-﻿commit f7dfc1010ad4ba4080329fed00196a191682ef83
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Jul 21 17:02:33 2021 +0300
+﻿commit 4193ddefd41f8cc7544d19539b3d324b61b55158
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Jul 21 14:43:21 2021 +0000
 
-    Fixed powered_by.png not found
+    Merged PR 12635: highlight active split delivery
+    
+    highlight active split delivery
+    
+    Related work items: #34513
 
 branch: master

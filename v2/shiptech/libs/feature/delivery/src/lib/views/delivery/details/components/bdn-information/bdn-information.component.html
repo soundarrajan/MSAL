@@ -191,23 +191,24 @@
                 >
                   {{ formValues.deliveryStatus.name }}
                 </span>
-              </div>
             </div>
-          </div>
-          <div
-            class="readonly-label-related-delivery related-deliveries col-md-6"
-          >
-            <div class="label-block">
-              <div class="title">Related Deliveries</div>
-              <div
-                class="value related-deliveries-container"
-                style="padding-top: 5px;"
-              >
-                <span *ngFor="let relatedDelivery of relatedDeliveries">
-                  <a
-                    *ngIf="relatedDelivery"
-                    href="{{
-                      getRelatedDeliveryLink(relatedDelivery.deliveryId)
+        </div>
+    </div>
+    <div
+    class="readonly-label-related-delivery related-deliveries col-md-6"
+    >
+    <div class="label-block">
+        <div class="title">Related Deliveries</div>
+        <div
+        class="value related-deliveries-container"
+        style="padding-top: 5px;"
+        >
+        <span *ngFor="let relatedDelivery of relatedDeliveries">
+            <a
+            *ngIf="relatedDelivery"
+            [ngClass]="{'active_delivery': formValues.id === relatedDelivery.deliveryId}"
+            href="{{
+                getRelatedDeliveryLink(relatedDelivery.deliveryId)
                     }}"
                   >
                     <span class="related-deliveries-dot-container"></span>
