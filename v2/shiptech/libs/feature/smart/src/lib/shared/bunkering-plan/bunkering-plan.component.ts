@@ -759,13 +759,14 @@ export class BunkeringPlanComponent implements OnInit {
 
   triggerRefreshGrid(role){
     this.rowData = JSON.parse(JSON.stringify(this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)))
-    if(role?.id == 1 && this.type == 'C')
+    let vesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    if(vesselData?.userRole == 'Vessel' && this.type == 'C')
       this.editableCell = true;
     else
       this.editableCell = false;
       
      
-      this.selectedUserRole = role?.id;
+      this.selectedUserRole = vesselData?.userRole == 'Vessel'? 1 : 2;
       var event = {force : true}
       if(this.type == 'C')
       this.gridOptions.api.setRowData(this.rowData);

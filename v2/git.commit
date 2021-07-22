@@ -1,11 +1,11 @@
-﻿commit 9b84dd70bf00917ca40e26edd92acce6f1161362
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jul 22 14:31:15 2021 +0000
+﻿commit 1d791a5208005ec3d54a2709fae6b1eea5de6d22
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Jul 22 22:05:22 2021 +0000
 
-    Merged PR 12665: moved price precision field
+    Merged PR 12666: #34336 : Bunker Plan fields editable in Oper role.
     
-    moved price precision field
+    #34336 : Bunker Plan fields editable in Oper role.
     
-    Related work items: #34354
+    Related work items: #34336, #34468
 
 branch: master
