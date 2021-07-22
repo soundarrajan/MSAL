@@ -732,6 +732,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   async getPhysicalSupplierList() {
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
+    this.physicalSupplierList.forEach((v,k) => {
+        v.name = this.decodeSpecificField(v.name);
+    })
     console.log(this.physicalSupplierList);
   }
 
@@ -1035,7 +1038,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     } else {
       const obj = {
         id: selection.id,
-        name: selection.name
+        name: this.decodeSpecificField(selection.name)
       };
       this.formValues.products[this.selectedTabIndex].physicalSupplier = obj;
       this.changeDetectorRef.detectChanges();
