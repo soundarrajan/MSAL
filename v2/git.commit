@@ -1,11 +1,11 @@
-﻿commit 4193ddefd41f8cc7544d19539b3d324b61b55158
+﻿commit 010bb9fbfab6aa57fcdec7b83eac717b1284f0b4
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jul 21 14:43:21 2021 +0000
+Date:   Thu Jul 22 11:54:42 2021 +0000
 
-    Merged PR 12635: highlight active split delivery
+    Merged PR 12656: Fixed encoded html values
     
-    highlight active split delivery
+    Fixed encoded html values
     
-    Related work items: #34513
+    Related work items: #33429
 
 branch: master
