@@ -663,10 +663,11 @@ Number(function() {
                                             isComputedColumn: false
                                         }
                                     );
-                                }
+                                } 
                             }
                             if (scope.id == 'admin_userlist' && (scope.$root.currentColumnRoute.indexOf('claims') != -1 || scope.$root.currentColumnRoute == "new-request/admin_userlist")  ) {
                                 if (CLC.tableParams.PageFilters.length == 0) {
+                                    var originalSorting = CLC.tableParams.PageFilters.sortList;
                                     CLC.tableParams.PageFilters = [
                                         {
                                             ColumnName: 'IsDeleted',
@@ -678,6 +679,7 @@ Number(function() {
                                             isComputedColumn: false
                                         }
                                     ];
+                                    CLC.tableParams.PageFilters.sortList = originalSorting;
                                 } else {
                                     let obj =
                                         {

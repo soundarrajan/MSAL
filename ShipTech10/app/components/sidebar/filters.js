@@ -583,6 +583,9 @@ angular.module('shiptech.components').controller('FiltersController', [
                 $scope.currentList = $state.current.url.replace(':screen_id', $state.params.screen_id).replace('/', '');
             } else {
                 $scope.currentList = $state.current.url.replace('/', '');
+                if($scope.currentList.includes("new-request")) {
+                    $scope.currentList = $scope.currentList.replace('new-request', 'edit-request');
+                }
             }
 
             if ($rootScope.isModal) {
