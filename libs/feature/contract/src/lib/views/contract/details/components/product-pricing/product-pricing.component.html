@@ -7,6 +7,35 @@
       Product pricing
     </div>
   </div>
+
+    <div
+        class="custom-form-field col-3 mt-3 p-0 "
+        [ngClass]="{
+        darkTheme: switchTheme,
+        lightTheme: !switchTheme,
+        'price-fixed': !formValues.products[selectedTabIndex].isFormula,
+        'formula-description': formValues.products[selectedTabIndex].isFormula
+        }"
+    >
+        <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Price Precision</mat-label>
+        <mat-select
+            [(ngModel)]="formValues.products[selectedTabIndex].pricePrecision"
+            placeholder="Price Precision"
+            [disableOptionCentering]="true"
+            panelClass="price-precision-select-container"
+            [disabled]="
+            formValues.status && formValues.status.name == 'Confirmed'
+            "
+            (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)"
+        >
+            <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
+            {{ option }}
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
+    </div>
+
   <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
     <div class="col-md-6 no-padding-left">
       <div id="custom-contract-btn-toggle-v2">
@@ -29,6 +58,7 @@
         </mat-button-toggle-group>
       </div>
     </div>
+    
     <div
       class="col-md-6"
       style="display: flex;align-items: center;justify-content: flex-end;"
@@ -110,33 +140,7 @@
     class="col-md-12 no-padding d-flex"
     style="flex-wrap: wrap;margin-top: 10px;"
   >
-    <div
-      class="custom-form-field"
-      [ngClass]="{
-        darkTheme: switchTheme,
-        lightTheme: !switchTheme,
-        'price-fixed': !formValues.products[selectedTabIndex].isFormula,
-        'formula-description': formValues.products[selectedTabIndex].isFormula
-      }"
-    >
-      <mat-form-field class="without-search" appearance="legacy">
-        <mat-label>Price Precision</mat-label>
-        <mat-select
-          [(ngModel)]="formValues.products[selectedTabIndex].pricePrecision"
-          placeholder="Price Precision"
-          [disableOptionCentering]="true"
-          panelClass="price-precision-select-container"
-          [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed'
-          "
-          (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)"
-        >
-          <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
-            {{ option }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+
     <div
       class="custom-form-field product-details"
       [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
