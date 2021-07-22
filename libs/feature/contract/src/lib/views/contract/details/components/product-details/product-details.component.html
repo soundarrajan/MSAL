@@ -282,7 +282,7 @@
               *ngFor="let physicalSupplier of filterPhysicalSupplierList()"
               [value]="physicalSupplier"
             >
-              {{ physicalSupplier.name }}
+              {{ decodeSpecificField(physicalSupplier.name) }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
