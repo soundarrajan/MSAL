@@ -519,6 +519,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       return;
     }
     this.sellerList = sellerList;
+    this.sellerList.forEach((v,k) => {
+        v.name = this.decodeSpecificField(v.name);
+    })
   }
 
   @Input('companyList') set _setCompanyList(companyList) {
@@ -711,8 +714,8 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
 
   selectSeller(event: MatAutocompleteSelectedEvent) {
     this.formValues.seller = event.option.value;
-    this.formValues.seller.name = this.decodeSpecificField(this.formValues.seller.name);
     this.getCounterpartyById(this.formValues.seller.id);
+    this.changeDetectorRef.detectChanges();
   }
 
   selectorSellerSelectionChange(selection: IOrderLookupDto): void {
