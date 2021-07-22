@@ -119,6 +119,13 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 "id": rowId,
                 "name": docName
             }
+            if(rowId == 0) {
+                payload = {
+                    "id": rowId,
+                    "name": docName,
+                    "content": content
+                }
+            }
             Factory_Master.get_document_file(
                 {
                     Payload: payload
