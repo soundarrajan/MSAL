@@ -29,12 +29,12 @@
                             </label>
                         </td>
                         <td><a href="#/contracts/contract/edit/{{row.id1}}" target="_blank" class="link-underline-light"><!-- Contract  -->{{row.id1}}</a></td>
-                        <td>{{row.contractName}}</td>
+                        <td>{{row.contractName | decodeReadOnly}}</td>
                         <td><span ng-controller="Controller_Master as CM"> {{CM.formatDateTime(row.validTo , null, 'default')}}</span></td>
                         <td>{{row.fixedPrice | number: (row.pricePrecision ? row.pricePrecision : $ctrl.tenantSettings.defaultValues.pricePrecision) }}</td>
-                        <td>{{row.formula}}</td>
-                        <td>{{row.seller.name}}</td>
-                        <td>{{row.location.name}}</td>
+                        <td>{{row.formula | decodeReadOnly}}</td>
+                        <td>{{row.seller.name | decodeReadOnly}}</td>
+                        <td>{{row.location.name | decodeReadOnly}}</td>
                         <td>{{row.product.name}}</td>
                         <td>{{row.contractedQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
                         <td>{{row.availableQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
