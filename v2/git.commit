@@ -1,11 +1,11 @@
-﻿commit 1de5209bfed3f507881a07d4d35c0097e1f2b89e
+﻿commit 9b84dd70bf00917ca40e26edd92acce6f1161362
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jul 22 12:33:08 2021 +0000
+Date:   Thu Jul 22 14:31:15 2021 +0000
 
-    Merged PR 12660: Fixed encoded html values
+    Merged PR 12665: moved price precision field
     
-    Fixed encoded html values
+    moved price precision field
     
-    Related work items: #33429
+    Related work items: #34354
 
 branch: master
