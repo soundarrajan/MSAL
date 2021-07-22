@@ -69,6 +69,7 @@ export class VesselDetailsComponent implements OnInit {
       // this.LoadBunkerPlanByRole();
       // store user role for shared ref
       this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
+      this.changeUserRole.next(this.selectedUserRole);
     })
   }
   getVesselList() {
@@ -102,35 +103,44 @@ export class VesselDetailsComponent implements OnInit {
 
   LoadBunkerPlanByRole() {
     var _this = this;
-    const confirmMessage = this.selectedUserRole?.name == 'Vessel'? 'Are you sure to switch your role to Vessel?' : 'Are you sure to switch your role to Operator?'
-    console.log('LoadBunkerPlanByRole service', this.selectedUserRole);
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
-      data:  { message: confirmMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      if(result) {
-        // store user role for shared ref
-        this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
-        if(this.selectedUserRole?.name=='Vessel') {
-          this.checkVesselHasNewPlan();
-        }
-      } else {
-        setTimeout(() => {
-          _this.selectedRole = _this.bunkerUserRole.find((role)=> (role.name==_this.previousUserRole?.name) );
-          _this.selectedUserRole = _this.selectedRole;
-          // store user role for shared ref
-          this.store.dispatch(new saveVesselDataAction({'userRole': _this.selectedUserRole?.name}));
-          let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-          titleEle.click();
-        }, 500);
+    //this.checkVesselHasNewPlan() ;
+    this.localService.checkVesselHasNewPlan(this.vesselId).subscribe((data)=> {
+      console.log('vessel has new plan',data);
+      data = (data.payload?.length)? (data.payload)[0]: data.payload;
+      if(data.planCount>0){
+        this.vesselWarningConfirmation();
       }
-      this.changeUserRole.next(this.selectedUserRole);
-    });
+      else{
+        const confirmMessage = this.selectedUserRole?.name == 'Vessel'? 'Are you sure to switch your role to Vessel?' : 'Are you sure to switch your role to Operator?'
+        console.log('LoadBunkerPlanByRole service', this.selectedUserRole);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
+          data:  { message: confirmMessage }
+        });
 
-
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(result);
+          if(result) {
+            // store user role for shared ref
+            this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
+            // if(this.selectedUserRole?.name=='Vessel') {
+            //   this.checkVesselHasNewPlan();
+            // }
+          } else {
+            setTimeout(() => {
+              _this.selectedRole = _this.bunkerUserRole.find((role)=> (role.name==_this.previousUserRole?.name) );
+              _this.selectedUserRole = _this.selectedRole;
+              // store user role for shared ref
+              this.store.dispatch(new saveVesselDataAction({'userRole': _this.selectedUserRole?.name}));
+              let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+              titleEle.click();
+            }, 500);
+          }
+          this.changeUserRole.next(this.selectedUserRole);
+        });
+      }
+        
+    })
 
   }
 
