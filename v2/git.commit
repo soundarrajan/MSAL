@@ -1,8 +1,8 @@
-﻿commit 010bb9fbfab6aa57fcdec7b83eac717b1284f0b4
+﻿commit 1de5209bfed3f507881a07d4d35c0097e1f2b89e
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jul 22 11:54:42 2021 +0000
+Date:   Thu Jul 22 12:33:08 2021 +0000
 
-    Merged PR 12656: Fixed encoded html values
+    Merged PR 12660: Fixed encoded html values
     
     Fixed encoded html values
     
