@@ -223,7 +223,7 @@
           <mat-autocomplete #auto="matAutocomplete" class="darkPanelAuto" [displayWith]="displayFn"
             (optionSelected)="selectSeller($event)">
             <mat-option *ngFor="let option of filterSellerList()" [value]="option">
-              {{ option.name }}
+              {{ decodeSpecificField(option.name) }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>

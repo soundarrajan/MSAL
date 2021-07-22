@@ -711,6 +711,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
 
   selectSeller(event: MatAutocompleteSelectedEvent) {
     this.formValues.seller = event.option.value;
+    this.formValues.seller.name = this.decodeSpecificField(this.formValues.seller.name);
     this.getCounterpartyById(this.formValues.seller.id);
   }
 
@@ -720,7 +721,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     } else {
       const obj = {
         id: selection.id,
-        name: selection.name
+        name: this.decodeSpecificField(selection.name)
       };
       this.formValues.seller = obj;
       this.getCounterpartyById(this.formValues.seller.id);
@@ -990,6 +991,15 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   openSeller() {
     document.getElementsByTagName('body')[0].click();
   }
+
+    decodeSpecificField(modelValue) {
+        let decode = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
+        return decode(_.unescape(modelValue));
+    }
 
   ngAfterViewInit(): void {}
 }

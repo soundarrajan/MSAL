@@ -128,14 +128,16 @@ export class SellerListSelectorGridViewModel extends BaseGridViewModel {
     headerName: PhysicalSupplierListColumnsLabels.name,
     colId: PhysicalSupplierListColumns.name,
     field: model('name'),
+    valueFormatter: params => this.format.htmlDecode(params.value),
     minWidth: 250,
     flex: 2
-  };
+};
 
-  displayNameCol: ITypedColDef<IPhysicalSupplierListDto, string> = {
+displayNameCol: ITypedColDef<IPhysicalSupplierListDto, string> = {
     headerName: PhysicalSupplierListColumnsLabels.displayName,
     colId: PhysicalSupplierListColumns.displayName,
     field: model('displayName'),
+    valueFormatter: params => this.format.htmlDecode(params.value),
     minWidth: 250,
     flex: 2
   };
