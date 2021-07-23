@@ -1,11 +1,9 @@
-﻿commit 788760d79f962c338728e2017d1dace802380110
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Jul 23 09:02:00 2021 +0000
+﻿commit fcc3cc34d833a2c97d2fa386a76f18d445bfd379
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Jul 23 12:36:43 2021 +0000
 
-    Merged PR 12674: Removed required for description
+    Merged PR 12680: #33648: GSIS import & Generate actions are sequential processes has done
     
-    Removed required for description
-    
-    Related work items: #34600
+    Related work items: #33648
 
 branch: master

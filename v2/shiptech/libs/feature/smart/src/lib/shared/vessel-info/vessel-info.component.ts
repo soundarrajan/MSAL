@@ -20,9 +20,8 @@ import { SaveCurrentROBState,GeneratePlanState } from '../../store/bunker-plan/b
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import moment  from 'moment';
-import { Subject, Subscription, Observable, forkJoin } from 'rxjs';
-import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
-
+import { Subject, Subscription, forkJoin,Observable, interval } from 'rxjs';
+import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vessel-info',
@@ -87,7 +86,7 @@ export class VesselInfoComponent implements OnInit {
   viewpreviousBunkeringPlan: boolean = false;
   myDefaultView: boolean = false;
   sendPlanReminder : boolean = false;
- 
+  observableRef$;
 
   constructor(private store: Store, iconRegistry: MatIconRegistry,public vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
@@ -110,6 +109,7 @@ export class VesselInfoComponent implements OnInit {
           }
         }
       });
+      this.VesselHasNewPlanJob();
    }
 
   ngOnInit() {
@@ -616,15 +616,17 @@ export class VesselInfoComponent implements OnInit {
   setImportGSIS(event){
     this.import_gsis = this.isChecked == false ? 1:0 ;
     this.store.dispatch(new ImportGsisAction(this.import_gsis))
-      let req = {
-        action:"",
-        ship_id: this.vesselData?.vesselId,
-        generate_new_plan:this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
-        import_gsis:this.import_gsis,
-      } 
-      this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
-        console.log('Import GSIS status',data);
-      })
+    
+    // As per new requirement discussion, we plan to send gen plan request only after click generate button
+    // let req = {
+      //   action:"",
+      //   ship_id: this.vesselData?.vesselId,
+      //   generate_new_plan:this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
+      //   import_gsis:this.import_gsis,
+      // } 
+      // this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
+      //   console.log('Import GSIS status',data);
+      // })
 
     event.stopPropagation();
   }
@@ -689,6 +691,37 @@ export class VesselInfoComponent implements OnInit {
       let url = `${baseOrigin}/#/new-request/${voyage_id}` ;
       window.open(url, "_blank");
     }      
+  }
+
+  VesselHasNewPlanJob() {
+    let genBunkerPlanRef = null;
+    //Need to check gen plan status every 15 sec after enter this screen to know the process gen plan completion
+    this.observableRef$ = interval(15000)
+    .pipe(
+      switchMap(() => {
+        let genNewPlanStatus = this.store.selectSnapshot(GeneratePlanState.getGeneratePlan);
+        let req = {
+          action:"",
+          ship_id: this.vesselData?.vesselId,
+          generate_new_plan:(genBunkerPlanRef?.gen_in_progress)? 1: (genNewPlanStatus? genNewPlanStatus: 0),
+          import_gsis:(genBunkerPlanRef?.import_in_progress)? 1: (this.import_gsis? 1: 0),
+        }
+        this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
+        return this.bunkerPlanService.saveBunkeringPlanDetails(req);
+    }))
+    .subscribe((data) => {
+      console.log("interval data**********************");
+      console.log(data);
+      data = (data.payload?.length)? (data.payload)[0]: data.payload;
+      genBunkerPlanRef = data;
+      if(data.import_in_progress==0 && data.gen_in_progress==0) {
+        //Refresh current bunker plan section once gen plan get completed
+        let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+        this.loadBunkerPlanDetails(vesseldata.vesselRef);
+        //unsubscribe next exec after 15 sec, if plan generate get completed
+        this.observableRef$.unsubscribe();
+      }
+    });
   }
 
   ngOnDestroy() {
