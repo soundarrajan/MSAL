@@ -1,11 +1,11 @@
-﻿commit 1d791a5208005ec3d54a2709fae6b1eea5de6d22
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Jul 22 22:05:22 2021 +0000
+﻿commit 788760d79f962c338728e2017d1dace802380110
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Jul 23 09:02:00 2021 +0000
 
-    Merged PR 12666: #34336 : Bunker Plan fields editable in Oper role.
+    Merged PR 12674: Removed required for description
     
-    #34336 : Bunker Plan fields editable in Oper role.
+    Removed required for description
     
-    Related work items: #34336, #34468
+    Related work items: #34600
 
 branch: master
