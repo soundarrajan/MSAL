@@ -1,8 +1,8 @@
-﻿commit fcc3cc34d833a2c97d2fa386a76f18d445bfd379
+﻿commit 68a8f5589db9d44fe51f5a82b118fd8139683171
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 23 12:36:43 2021 +0000
+Date:   Fri Jul 23 13:49:54 2021 +0000
 
-    Merged PR 12680: #33648: GSIS import & Generate actions are sequential processes has done
+    Merged PR 12682: #33648: GSIS import & Generate actions are disbaled in sequential call response in process flow has done
     
     Related work items: #33648
 
