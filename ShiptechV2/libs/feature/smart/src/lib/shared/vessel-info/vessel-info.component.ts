@@ -86,6 +86,7 @@ export class VesselInfoComponent implements OnInit {
   viewpreviousBunkeringPlan: boolean = false;
   myDefaultView: boolean = false;
   sendPlanReminder : boolean = false;
+  disableCurrentBPlan: boolean = false;
   observableRef$;
 
   constructor(private store: Store, iconRegistry: MatIconRegistry,public vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
@@ -514,6 +515,8 @@ export class VesselInfoComponent implements OnInit {
     this.store.dispatch(new ImportGsisAction(0));
     this.store.dispatch(new SendPlanAction(0));
     this.sendPlanReminder = false;
+    //Trigger gen plan status auto update on vessel change
+    this.VesselHasNewPlanJob();
   }
   TotalCommentCount(count: any) {
     this.totalCommentCount = count;
@@ -637,18 +640,26 @@ export class VesselInfoComponent implements OnInit {
       generate_new_plan:1,
       import_gsis:this.import_gsis,
     }
+    this.disableCurrentBPlan = true;
     this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
+      //Trigger VesselHasNewPlanJob Fn to get gen plan completion to refresh this current bunker plan section
+      this.VesselHasNewPlanJob();
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       // if(data?.isSuccess == true ){
       if(data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 0 && data?.payload[0]?.import_in_progress == 0){
-        const dialogRef = this.dialog.open(SuccesspopupComponent, {
-          panelClass: ['success-popup-panel'],
-          data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
-        });
-        this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
-        this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
+        /* As per new requirement discussion, "import_in_progress, gen_in_progress" will be 0 
+        ** only on gen plan completion. So we don't need to handle this dialog for this plan completed case 
+        */
+        this.disableCurrentBPlan = false;
+
+        // const dialogRef = this.dialog.open(SuccesspopupComponent, {
+        //   panelClass: ['success-popup-panel'],
+        //   data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
+        // });
+        // this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
+        // this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
       }
       else if (data?.isSuccess == true && data?.payload[0]?.gen_in_progress == 1 && data?.payload[0]?.import_in_progress == 0){
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
@@ -703,23 +714,26 @@ export class VesselInfoComponent implements OnInit {
         let req = {
           action:"",
           ship_id: this.vesselData?.vesselId,
-          generate_new_plan:(genBunkerPlanRef?.gen_in_progress)? 1: (genNewPlanStatus? genNewPlanStatus: 0),
-          import_gsis:(genBunkerPlanRef?.import_in_progress)? 1: (this.import_gsis? 1: 0),
+          generate_new_plan: (genBunkerPlanRef?.import_in_progress==0)? 1: 0,
+          import_gsis: 0//(genBunkerPlanRef?.import_in_progress)? 1: (this.import_gsis? 1: 0),
         }
         this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
         return this.bunkerPlanService.saveBunkeringPlanDetails(req);
     }))
     .subscribe((data) => {
-      console.log("interval data**********************");
-      console.log(data);
       data = (data.payload?.length)? (data.payload)[0]: data.payload;
       genBunkerPlanRef = data;
       if(data.import_in_progress==0 && data.gen_in_progress==0) {
         //Refresh current bunker plan section once gen plan get completed
         let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
         this.loadBunkerPlanDetails(vesseldata.vesselRef);
+        //Enable Import GSIS checkbox and generate button after gen plan success
+        this.disableCurrentBPlan = false;
         //unsubscribe next exec after 15 sec, if plan generate get completed
         this.observableRef$.unsubscribe();
+      } else {
+        //Disable Import GSIS checkbox and generate button while gen plan in progress
+        this.disableCurrentBPlan = true;
       }
     });
   }

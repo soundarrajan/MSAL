@@ -267,15 +267,15 @@
                   </div>
                   <!-- <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
                     GSIS</button> -->
-                    <div *ngIf="isLatestPlanInvalid == false"style="position: relative; margin-left: 50%;"> <mat-checkbox [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
-                    <div *ngIf="isLatestPlanInvalid == false"class="import-gsis"> Import GSIS</div>
-                    <div *ngIf="isLatestPlanInvalid == true"style="margin-left: 90px;margin-top: 5px;"> <mat-checkbox [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div *ngIf="isLatestPlanInvalid == false" style="position: relative; margin-left: 50%;"> <mat-checkbox [disabled]="disableCurrentBPlan" [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div *ngIf="isLatestPlanInvalid == false" class="import-gsis"> Import GSIS</div>
+                    <div *ngIf="isLatestPlanInvalid == true" style="margin-left: 90px;margin-top: 5px;"> <mat-checkbox [disabled]="disableCurrentBPlan" [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
                     <div *ngIf="isLatestPlanInvalid == true" style="margin-top: 5px;" class="import-gsis"> Import GSIS</div>
                 </div>
                 <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
                   class="border-rightside">
                   <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
-                    class="btn" (click)="generateCurrentBPlan($event)">Generate</button>
+                    class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
                   <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
                   <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
                     (click)="saveCurrentBPlan($event)" >Save</button>
