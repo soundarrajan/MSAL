@@ -710,12 +710,11 @@ export class VesselInfoComponent implements OnInit {
     this.observableRef$ = interval(15000)
     .pipe(
       switchMap(() => {
-        let genNewPlanStatus = this.store.selectSnapshot(GeneratePlanState.getGeneratePlan);
         let req = {
           action:"",
           ship_id: this.vesselData?.vesselId,
-          generate_new_plan: (genBunkerPlanRef?.import_in_progress==0)? 1: 0,
-          import_gsis: 0//(genBunkerPlanRef?.import_in_progress)? 1: (this.import_gsis? 1: 0),
+          generate_new_plan: 0, //(genBunkerPlanRef?.import_in_progress==0)? 1: 0,
+          import_gsis: 0
         }
         this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
         return this.bunkerPlanService.saveBunkeringPlanDetails(req);
