@@ -1500,7 +1500,8 @@ Number(function() {
                                                 }
                                                 var cellAttrs;
                                                 if (v.data_attributes) {
-                                                    cellAttrs = `<a ng-disabled ="!${ eval(v.disabled) }"${ v.data_attributes } ng-click="CLC.dataAction('${ v.action }', '${ encodeURIComponent(JSON.stringify(rowObject)) }')" class=" ${ v.class }">${ v.label }</a>`;
+                                                    stringifiedRowObj = encodeURIComponent(JSON.stringify(rowObject)).replace(/'/g, ".");
+                                                    cellAttrs = `<a ng-disabled ="!${ eval(v.disabled) }"${ v.data_attributes } ng-click="CLC.dataAction('${ v.action }', '${stringifiedRowObj}')" class=" ${ v.class }">${ v.label }</a>`;
                                                 } else {
                                                     cellAttrs = `<span title="${ v.label }" class="jqgrid-ng-action ${ v.class }" ng-click="CLC.do_entity_action('${ v.class }', '${ rowID }', '${ rowId }', null, '${ checkProcurement }')">${ v.label }</span>`;
                                                 }
