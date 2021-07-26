@@ -1,8 +1,8 @@
-﻿commit 68a8f5589db9d44fe51f5a82b118fd8139683171
+﻿commit e729ef7ff678958952314e9004a72b8f998a747f
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Jul 23 13:49:54 2021 +0000
+Date:   Mon Jul 26 13:54:38 2021 +0000
 
-    Merged PR 12682: #33648: GSIS import & Generate actions are disbaled in sequential call response in process flow has done
+    Merged PR 12706: #33648: GSIS import & Generate actions payload changes for sequential update bunker plan processes has done
     
     Related work items: #33648
 
