@@ -1,11 +1,11 @@
-﻿commit b365bde347a6a956e62c2828d33144b2e07536d3
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue Jul 27 11:03:18 2021 +0000
+﻿commit cf09d9858219a2af5bf42e42e43154175b72d2cd
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Jul 27 13:48:31 2021 +0000
 
-    Merged PR 12723: #34151 : Bunker plan port SOA calculation
+    Merged PR 12728: Fix add transaction in invoice screen
     
-    #34151 : Bunker plan port SOA calculation
+    Fix add transaction in invoice screen
     
-    Related work items: #34151
+    Related work items: #34710
 
 branch: master
