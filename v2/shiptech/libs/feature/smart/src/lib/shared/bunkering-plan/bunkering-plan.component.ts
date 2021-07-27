@@ -803,6 +803,8 @@ export class BunkeringPlanComponent implements OnInit {
                             //For Port 0
                             if(i==0){
                               lsdisAsEca = (parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) + parseInt(rowData2[i].mpo_ulsfo_soa)) - parseInt(currentRobUslfo.toString());
+                              if(lsdisAsEca < 0)
+                                lsdisAsEca = 0;
                               rowData2[i].lsdis_soa = parseInt(currentRobLsdis.toString()) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) - lsdisAsEca;
                               let estd_Cons = parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption);
                               rowData2[i].ulsfo_soa = parseInt(currentRobUslfo.toString()) - estd_Cons + lsdisAsEca 
@@ -810,6 +812,8 @@ export class BunkeringPlanComponent implements OnInit {
                             //For Port 1 to N 
                             else{
                               lsdisAsEca = (parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption)) + parseInt(rowData2[i].mpo_ulsfo_soa) - parseInt(rowData2[i-1].mpo_ulsfo_soa) - parseInt(rowData2[i-1].mpo_ulsfo_estimated_lift);//parseInt(lsdisAsEcaList[i].lsdis_as_eca);
+                              if(lsdisAsEca < 0)
+                                lsdisAsEca = 0;
                               rowData2[i].lsdis_soa = parseInt(rowData2[i-1].lsdis_estimated_lift) + parseInt(rowData2[i-1].lsdis_soa) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) - lsdisAsEca ;
                               let estd_Cons = parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption);
                               rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_estimated_lift) + parseInt(rowData2[i-1].ulsfo_soa) - estd_Cons + lsdisAsEca;

@@ -1,9 +1,11 @@
-﻿commit e729ef7ff678958952314e9004a72b8f998a747f
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Jul 26 13:54:38 2021 +0000
+﻿commit b365bde347a6a956e62c2828d33144b2e07536d3
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue Jul 27 11:03:18 2021 +0000
 
-    Merged PR 12706: #33648: GSIS import & Generate actions payload changes for sequential update bunker plan processes has done
+    Merged PR 12723: #34151 : Bunker plan port SOA calculation
     
-    Related work items: #33648
+    #34151 : Bunker plan port SOA calculation
+    
+    Related work items: #34151
 
 branch: master
