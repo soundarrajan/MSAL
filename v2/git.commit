@@ -1,11 +1,9 @@
-﻿commit 967dd43bbb9d90ab0ef082fd685810ad3d21cbb5
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Jul 28 08:26:47 2021 +0000
+﻿commit 869a063fc7a2776379d0d5690fdf04aa2f670410
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jul 28 09:18:33 2021 +0000
 
-    Merged PR 12741: #33661 : option 2 should be shown as 'Alt.port'
+    Merged PR 12744: Fixed eta format in invoice screen
     
-    #33661 : option 2 should be shown as 'Alt.port'
-    
-    Related work items: #33661
+    Fixed eta format in invoice screen
 
 branch: master
