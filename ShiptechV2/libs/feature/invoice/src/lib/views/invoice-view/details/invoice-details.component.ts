@@ -155,8 +155,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
+    const elem = moment(value, currentFormat);
+    const date = elem.toDate();
     return value ? date : null;
   }
 }
@@ -313,7 +313,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    let elem = moment(value, currentFormat);
+    const elem = moment(value, currentFormat);
     const isValid = this.isValid(elem);
     return this.isValid(elem) ? elem : null;
   }
@@ -373,8 +373,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
-      let newVal = moment(elem).format(currentFormat);
+      const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      const newVal = moment(elem).format(currentFormat);
       // console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
@@ -454,14 +454,107 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 })
 export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   implements OnInit, OnDestroy {
+  //formValues:any;
+
+  // detailFormvalues:any;
+  @Input('detailFormvalues') set _detailFormvalues(val) {
+    if (val) {
+      this.formValues = val;
+      // Set trader and buyer name;
+      this.orderDetails2.contents[0].value =
+        this.formValues.orderDetails.buyerName || this.emptyStringVal;
+      this.orderDetails2.contents[1].value =
+        this.formValues.orderDetails.traderName || this.emptyStringVal;
+
+      if (this.formValues.relatedInvoices) {
+        this.formValues.relatedInvoices.forEach(element => {
+          this.rowData_aggrid_rel_invoice.push({
+            id: element.id,
+            'order-number': element.orderId,
+            type: element.invoiceType.name,
+            date: element.invoiceDate
+              ? moment(element.invoiceDate).format(this.dateFormat_rel_invoice)
+              : '',
+            amount: this.format.amount(element.invoiceAmount),
+            deductions: this.format.amount(element.deductions),
+            paid: this.format.amount(element.paidAmount),
+            status: element.invoiceStatus.name
+          });
+        });
+        this.formValues.relatedInvoicesSummary.forEach(total => {
+          this.totalrowData.push({
+            id: 'Net Payable',
+            'order-number': this.format.amount(total.netPayable),
+            type: '',
+            date: 'Total',
+            amount: this.format.amount(total.invoiceAmountTotal),
+            deductions: this.format.amount(total.deductionsTotal),
+            paid: this.format.amount(total.paidAmount),
+            status: ''
+          });
+        });
+        if (this.gridOptions_rel_invoice.api) {
+          this.gridOptions_rel_invoice.api.sizeColumnsToFit();
+        }
+      }
+      // Set paid ammount disabled;
+      if (
+        !this.formValues.status ||
+        this.formValues.status.name === 'New' ||
+        this.formValues.status.name === 'Cancelled' ||
+        this.formValues.status.name === 'Discrepancy'
+      ) {
+        this.paidAmmoutDisabled = true;
+      }
+
+      if (this.formValues.invoiceRateCurrency) {
+        this.conversionTo = this.formValues.invoiceRateCurrency;
+      }
+      this.entityId = val.id;
+      if (!this.formValues.paymentDetails) {
+        this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
+      }
+      if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
+        this.formValues.counterpartyDetails.counterpartyBankAccount = <
+          IInvoiceDetailsItemBaseInfo
+        >{};
+      }
+      this.parseProductDetailData(this.formValues.productDetails);
+      //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
+      this.setOrderDetailsLables(this.formValues.orderDetails);
+      this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
+      this.setChipDatas();
+      this.manualtab = this.more_invoice_types.filter(
+        x => x.value === this.formValues.documentType?.id
+      );
+      if (this.manualtab.length == 0) {
+        this.more_invoice_types.pop();
+      }
+      this.setInvoiceAmount();
+      this.setTitle();
+      if (!this.entityId) {
+        this.summaryCalculationsForProductDetails();
+        this.summaryCalculationsForCostDetails();
+      } else {
+        this.calculationForRanegAndTotal();
+      }
+      this.calculateDifference();
+      this.calculateGrand(this.formValues);
+
+      //For Due Date
+      this.initialDueDate = this.formValues.dueDate;
+
+      //For Payment Date Field
+      this.manualPaymentDateReference = this.formValues.paymentDate;
+      this.initialHasManualPaymentDate = this.formValues.hasManualPaymentDate;
+    }
+  }
   //Default Values - strats
   orderId: number;
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public gridOptions_claims: GridOptions;
   public gridOptions_rel_invoice: GridOptions;
-  private rowData_aggrid_pd = [];
-  private rowData_aggrid_ac = [];
   public productData: any = [];
   paidAmmoutDisabled = false;
   paymentStatus: number = 0;
@@ -648,103 +741,402 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   rowData_aggrid_rel_invoice: any = [];
   totalrowData = [];
   dateFormat_rel_invoice: any;
-  //formValues:any;
-
-  // detailFormvalues:any;
-  @Input('detailFormvalues') set _detailFormvalues(val) {
-    if (val) {
-      this.formValues = val;
-      // Set trader and buyer name;
-      this.orderDetails2.contents[0].value =
-        this.formValues.orderDetails.buyerName || this.emptyStringVal;
-      this.orderDetails2.contents[1].value =
-        this.formValues.orderDetails.traderName || this.emptyStringVal;
-
-      if (this.formValues.relatedInvoices) {
-        this.formValues.relatedInvoices.forEach(element => {
-          this.rowData_aggrid_rel_invoice.push({
-            id: element.id,
-            'order-number': element.orderId,
-            type: element.invoiceType.name,
-            date: element.invoiceDate
-              ? moment(element.invoiceDate).format(this.dateFormat_rel_invoice)
-              : '',
-            amount: this.format.amount(element.invoiceAmount),
-            deductions: this.format.amount(element.deductions),
-            paid: this.format.amount(element.paidAmount),
-            status: element.invoiceStatus.name
-          });
-        });
-        this.formValues.relatedInvoicesSummary.forEach(total => {
-          this.totalrowData.push({
-            id: 'Net Payable',
-            'order-number': this.format.amount(total.netPayable),
-            type: '',
-            date: 'Total',
-            amount: this.format.amount(total.invoiceAmountTotal),
-            deductions: this.format.amount(total.deductionsTotal),
-            paid: this.format.amount(total.paidAmount),
-            status: ''
-          });
-        });
-        if (this.gridOptions_rel_invoice.api) {
-          this.gridOptions_rel_invoice.api.sizeColumnsToFit();
-        }
-      }
-      // Set paid ammount disabled;
-      if (
-        !this.formValues.status ||
-        this.formValues.status.name === 'New' ||
-        this.formValues.status.name === 'Cancelled' ||
-        this.formValues.status.name === 'Discrepancy'
-      ) {
-        this.paidAmmoutDisabled = true;
-      }
-
-      if (this.formValues.invoiceRateCurrency) {
-        this.conversionTo = this.formValues.invoiceRateCurrency;
-      }
-      this.entityId = val.id;
-      if (!this.formValues.paymentDetails) {
-        this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
-      }
-      if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
-        this.formValues.counterpartyDetails.counterpartyBankAccount = <
-          IInvoiceDetailsItemBaseInfo
-        >{};
-      }
-      this.parseProductDetailData(this.formValues.productDetails);
-      //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
-      this.setOrderDetailsLables(this.formValues.orderDetails);
-      this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
-      this.setChipDatas();
-      this.manualtab = this.more_invoice_types.filter(x => {
-          return x.value === this.formValues.documentType?.id;
-        });
-        if (this.manualtab.length == 0) {
-            this.more_invoice_types.pop();
-        }
-        this.setInvoiceAmount();
-        this.setTitle();
-        if (!this.entityId) {
-            this.summaryCalculationsForProductDetails();
-            this.summaryCalculationsForCostDetails();
-        } else {
-            this.calculationForRanegAndTotal();
-        }
-        this.calculateDifference();
-        this.calculateGrand(this.formValues);
-
-      //For Due Date
-      this.initialDueDate = this.formValues.dueDate;
-
-      //For Payment Date Field
-      this.manualPaymentDateReference = this.formValues.paymentDate;
-      this.initialHasManualPaymentDate = this.formValues.hasManualPaymentDate;
-    }
-  }
 
   @Output() onInvoiceDetailsChanged = new EventEmitter<any>();
+
+  public formValues: IInvoiceDetailsItemDto = {
+    sellerInvoiceNo: 0,
+    documentNo: 0,
+    invoiceId: 0,
+    documentType: <IInvoiceDetailsItemBaseInfo>{
+      internalName: 'FinalInvoice'
+    },
+    canCreateFinalInvoice: false,
+    receivedDate: '',
+    dueDate: '',
+    manualDueDate: '',
+    accountNumber: 0,
+    workingDueDate: '',
+    sellerInvoiceDate: '',
+    sellerDueDate: '',
+    approvedDate: '',
+    paymentDate: '',
+    accountancyDate: '',
+    invoiceRateCurrency: <IInvoiceDetailsItemBaseInfo>{},
+    backOfficeComments: '',
+    customStatus: '',
+    status: <IInvoiceDetailsItemStatus>{},
+    reconStatus: <IInvoiceDetailsItemStatus>{},
+    deliveryDate: '',
+    orderDeliveryDate: '',
+    workflowId: '',
+    invoiceChecks: <IInvoiceDetailsItemInvoiceCheck[]>[],
+    invoiceAmount: 0,
+    invoiceTotalPrice: 0,
+    createdByUser: <IInvoiceDetailsItemBaseInfo>{ name: '' },
+    createdAt: '',
+    invoiceDate: '',
+    lastModifiedByUser: <IInvoiceDetailsItemBaseInfo>{},
+    lastModifiedAt: '',
+    relatedInvoices: '',
+    relatedInvoicesSummary: [],
+    orderDetails: <IInvoiceDetailsItemOrderDetails>{},
+    counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{
+      paymentTerm: <IInvoiceDetailsItemBaseInfo>{ name: '' },
+      payableTo: <IInvoiceDetailsItemBaseInfo>{ name: '' },
+      counterpartyBankAccount: <any>{},
+      customer: <any>{}
+    },
+    paymentDetails: <IInvoiceDetailsItemPaymentDetails>{},
+    productDetails: <IInvoiceDetailsItemProductDetails[]>[],
+    costDetails: [],
+    invoiceClaimDetails: [],
+    invoiceSummary: <IInvoiceDetailsItemInvoiceSummary>{},
+    screenActions: <IInvoiceDetailsItemBaseInfo[]>[],
+    requestInfo: <IInvoiceDetailsItemRequestInfo>{
+      request: <IInvoiceDetailsItemBaseInfo>{ id: 0 }
+    },
+    isCreatedFromIntegration: false,
+    hasManualPaymentDate: false,
+    attachments: [],
+    customNonMandatoryAttribute1: '',
+    customNonMandatoryAttribute2: '',
+    customNonMandatoryAttribute3: '',
+    customNonMandatoryAttribute4: '',
+    customNonMandatoryAttribute5: '',
+    customNonMandatoryAttribute6: '',
+    customNonMandatoryAttribute7: '',
+    customNonMandatoryAttribute8: '',
+    customNonMandatoryAttribute9: '',
+    name: '',
+    id: 0,
+    isDeleted: false,
+    modulePathUrl: '',
+    clientIpAddress: '',
+    userAction: ''
+  };
+  private rowData_aggrid_pd = [];
+  private rowData_aggrid_ac = [];
+
+  private columnDef_aggrid_pd = [
+    {
+      resizable: false,
+      width: 30,
+      suppressMenu: true,
+      headerName: '',
+      headerClass: ['aggridtextalign-center'],
+      headerComponentParams: {
+        template: `<span  unselectable="on">
+             <div class="add-btn"></div>
+             <span ref="eMenu"></span>`
+      },
+      cellClass: ['aggridtextalign-left'],
+      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererParams: { type: 'row-remove-icon' }
+    },
+    /* {
+      children: [{headerName: 'Delivery No./ ', headerTooltip: 'Delivery No./ Order Product', field: 'del_no',
+      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: function(params) {
+                  let keyData = params.value;
+                  let newLink =
+                  `<a href= "https://www.figma.com/proto/vdYj7vV3e5WCNVIxzpMkzA/Shiptech-Invoice-screen_Final?node-id=94%3A7895&scaling=min-zoom"
+                  target="_blank">${keyData}</a>`;
+                  return newLink;
+              }
+      },
+      {
+        headerName: 'Order Product', headerTooltip: 'Order Product', field: 'order_product'
+      }]
+    }, */
+    {
+      headerName: 'Delivery No. / Order Product',
+      width: 250,
+      headerTooltip: 'Delivery No. / Order Product',
+      field: 'del_no',
+      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererParams: { type: 'border-cell' }
+    },
+    {
+      children: [
+        {
+          headerName: 'Deliv Product',
+          headerTooltip: 'Deliv Product',
+          field: 'del_product',
+          cellClass: 'border-padding-5 p-r-0',
+          cellRendererFramework: AgGridCellStyleComponent,
+          cellRendererParams: {
+            cellClass: ['cell-bg-border'],
+            label: 'div-in-cell'
+          }
+        },
+        {
+          headerName: 'Deliv. Qty',
+          headerTooltip: 'Deliv. Qty',
+          field: 'del_qty',
+          cellClass: 'blue-opacity-cell pad-lr-0'
+        },
+        {
+          headerName: 'Estd. Rate',
+          editable: true,
+          headerTooltip: 'Estd. Rate',
+          field: 'est_rate',
+          cellClass: 'blue-opacity-cell pad-lr-0'
+        },
+        {
+          headerName: 'Amount',
+          headerTooltip: 'Amount',
+          field: 'amount1',
+          cellClass: 'blue-opacity-cell pad-lr-5'
+        }
+      ]
+    },
+    {
+      children: [
+        {
+          headerName: 'Invoice Product',
+          headerTooltip: 'Invoice Product',
+          field: 'inv_product',
+          cellClass: 'border-padding-5 p-r-0',
+          cellRendererFramework: AGGridCellActionsComponent,
+          cellRendererParams: { type: 'dashed-border-dark' }
+        },
+        {
+          headerName: 'Invoice Qty',
+          headerTooltip: 'Invoice Qty',
+          field: 'inv_qty',
+          cellClass: 'blue-opacity-cell dark pad-lr-0',
+          cellRendererFramework: AGGridCellActionsComponent,
+          cellRendererParams: { type: 'dashed-border-darkcell' }
+        },
+        {
+          headerName: 'Invoice Rate',
+          headerTooltip: 'Invoice Rate',
+          field: 'inv_rate',
+          cellClass: 'blue-opacity-cell dark pad-lr-0',
+          cellRendererFramework: AGGridCellActionsComponent,
+          cellRendererParams: { type: 'dashed-border-darkcell' }
+        },
+        {
+          headerName: 'Amount',
+          headerTooltip: 'Amount',
+          field: 'amount2',
+          cellClass: 'blue-opacity-cell dark pad-lr-5'
+        }
+      ]
+    },
+    {
+      headerName: 'Recon status',
+      headerTooltip: 'Recon status',
+      field: 'recon_status',
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellRendererParams: function(params) {
+        const classArray: string[] = [];
+        classArray.push('aggridtextalign-center');
+        const newClass =
+          params.value === 'Unmatched'
+            ? 'custom-chip-type1 red-chip'
+            : params.value === 'Matched'
+            ? 'custom-chip-type1 mediumgreen'
+            : 'custom-chip-type1';
+        classArray.push(newClass);
+        return { cellClass: classArray.length > 0 ? classArray : null };
+      }
+    },
+    {
+      headerName: 'Sulpher content',
+      headerTooltip: 'Sulpher content',
+      field: 'sulpher_content',
+      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererParams: { type: 'dashed-border' }
+    },
+    {
+      headerName: 'Phy. suppier',
+      headerTooltip: 'Phy. supplier',
+      field: 'phy_supplier',
+      width: 250,
+      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererParams: { type: 'dashed-border-with-expand' }
+    }
+  ];
+
+  private columnDef_aggrid_ac = [
+    {
+      resizable: false,
+      width: 30,
+      suppressMenu: true,
+      headerName: '',
+      headerClass: ['aggridtextalign-center'],
+      headerComponentParams: {
+        template: `<span  unselectable="on">
+             <div class="add-btn-ac"></div>
+             <span ref="eMenu"></span>`
+      },
+      cellClass: ['aggridtextalign-left'],
+      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererParams: { type: 'row-remove-icon' }
+    },
+    {
+      headerName: 'Item',
+      editable: true,
+      headerTooltip: 'Item',
+      field: 'cost',
+      cellRendererFramework: AGGridCellEditableComponent,
+      cellRendererParams: {
+        type: 'cell-edit-dropdown',
+        label: 'cost-type',
+        items: ['Pay', 'Receive']
+      }
+    },
+    {
+      headerName: 'Cost Type',
+      headerTooltip: 'Cost Type',
+      field: 'name',
+      cellRendererFramework: AGGridCellEditableComponent,
+      cellRendererParams: { type: 'cell-edit-autocomplete', label: 'cost-name' }
+    },
+    {
+      headerName: '%of',
+      headerTooltip: '% of',
+      field: 'provider',
+      cellRendererFramework: AGGridCellEditableComponent,
+      cellRendererParams: {
+        type: 'cell-edit-autocomplete',
+        label: 'service-provider'
+      }
+    },
+    {
+      headerName: 'BDN Qty',
+      editable: true,
+      headerTooltip: 'BDN Qty',
+      field: 'type',
+      cellRendererFramework: AGGridCellEditableComponent,
+      cellRendererParams: {
+        type: 'cell-edit-dropdown',
+        label: 'rate-type',
+        items: ['Flat', 'Option 2']
+      }
+    },
+    {
+      headerName: 'Estd. Rate',
+      headerTooltip: 'Estd. Rate',
+      field: 'currency'
+    },
+    { headerName: 'Amount', headerTooltip: 'Amount', field: 'name' },
+    { headerName: 'Extra %', headerTooltip: 'Extra %', field: 'name' },
+    { headerName: 'ExtraAmt', headerTooltip: 'ExtraAmt', field: 'name' },
+    { headerName: 'Amount', headerTooltip: 'Amount', field: 'name' },
+    { headerName: 'Total', headerTooltip: 'Total', field: 'name' },
+    { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'name' },
+    {
+      headerName: 'Invoice Rate',
+      headerTooltip: 'Invoice Rate',
+      field: 'name'
+    },
+    { headerName: 'Amount', headerTooltip: 'Amount', field: 'name' },
+    { headerName: 'Extra%', headerTooltip: 'Extra%', field: 'name' },
+    { headerName: 'ExtraAmt', headerTooltip: 'ExtraAmt', field: 'name' },
+    { headerName: 'Total', headerTooltip: 'Total', field: 'name' },
+    { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
+  ];
+
+  private columnDef_aggrid_claims = [
+    { headerName: 'Claim ID', headerTooltip: 'Claim ID', field: 'claim.id' },
+    {
+      headerName: 'Delivery No',
+      headerTooltip: 'Delivery No',
+      field: 'delivery.id'
+    },
+    {
+      headerName: 'Claim Type',
+      headerTooltip: 'Claim Type',
+      field: 'claimType.name'
+    },
+    { headerName: 'Product', headerTooltip: 'Product', field: 'product.name' },
+    {
+      headerName: 'Delivery Qty',
+      headerTooltip: 'Delivery Quantity',
+      field: 'deliveryQuantity'
+    },
+    {
+      headerName: 'Invoice Amount',
+      headerTooltip: 'Invoice Amount',
+      field: 'invoiceAmount',
+      editable: true,
+      cellRendererFramework: AGGridCellEditableComponent,
+      cellRendererParams: { type: 'dashed-border-with-expand' }
+    },
+    {
+      headerName: 'Amount(order currency)',
+      headerTooltip: ' Amount',
+      field: 'baseInvoiceAmount'
+    }
+  ];
+
+  private columnDef_aggrid_rel_invoice = [
+    {
+      headerName: 'Invoice ID',
+      headerTooltip: 'Invoice ID',
+      field: 'id',
+      width: 100,
+      cellClass: ['aggridlink aggridtextalign-center'],
+      headerClass: ['aggrid-text-align-c']
+    },
+    {
+      headerName: 'Order number',
+      headerTooltip: 'Order number',
+      field: 'order-number',
+      cellClass: ['aggridtextalign-left']
+    },
+    {
+      headerName: 'Invoice Type',
+      headerTooltip: 'Invoice Type',
+      field: 'type'
+    },
+    {
+      headerName: 'Invoice Date',
+      headerTooltip: 'Invoice Date',
+      field: 'date',
+      width: 150
+    },
+    {
+      headerName: 'Invoice Amt',
+      headerTooltip: 'Invoice Amt',
+      field: 'amount',
+      width: 150
+    },
+    {
+      headerName: 'Deductions',
+      headerTooltip: 'Deductions',
+      field: 'deductions',
+      width: 150
+    },
+    {
+      headerName: 'Paid Amount',
+      headerTooltip: 'Paid Amount',
+      field: 'paid',
+      width: 150
+    },
+    {
+      headerName: 'Invoice status',
+      headerTooltip: 'Invoice status',
+      field: 'status',
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellRendererParams: function(params) {
+        const classArray: string[] = [];
+        classArray.push('aggridtextalign-center');
+        const newClass =
+          params.value === 'Reverted' || params.value === 'Discrepancy'
+            ? 'custom-chip-type1 red-chip'
+            : params.value === 'Approved'
+            ? 'custom-chip-type1 mediumgreen'
+            : params.value === 'New'
+            ? 'custom-chip-type1 dark'
+            : 'custom-chip-type1';
+        classArray.push(newClass);
+        return { cellClass: classArray.length > 0 ? classArray : null };
+      }
+    }
+  ];
 
   //Default Values - strats
   constructor(
@@ -921,7 +1313,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   isFormValid(configObject): any {
-    let useToaster = configObject?.useToaster || false;
+    const useToaster = configObject?.useToaster || false;
     let error = false;
     let errorMessage = '';
     this.formErrors = {};
@@ -1095,7 +1487,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       return;
     }
 
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         Filters: [
@@ -1178,8 +1570,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -1194,7 +1586,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   invoiceConvertUomCost(type, rowIndex) {
     // console.log(type);
     // console.log(rowIndex);
-    let currentRowIndex = rowIndex;
+    const currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
     if (this.type == 'cost') {
@@ -1338,11 +1730,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     orderProductId,
     rowIndex
   ) {
-    let productId = ProductId;
-    let quantity = Quantity;
-    let fromUomId = FromUomId;
-    let toUomId = ToUomId;
-    let data = {
+    const productId = ProductId;
+    const quantity = Quantity;
+    const fromUomId = FromUomId;
+    const toUomId = ToUomId;
+    const data = {
       Payload: {
         ProductId: productId,
         OrderProductId: orderProductId,
@@ -1356,7 +1748,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       return;
     }
     if (toUomId == fromUomId) {
-      let result = 1;
+      const result = 1;
       if (this.costType) {
         if (this.costType.name == 'Unit') {
           this.formValues.costDetails[rowIndex].invoiceAmount =
@@ -1480,7 +1872,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (!this.formValues.counterpartyDetails.payableTo) {
       return;
     }
-    let counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
+    const counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
     this.invoiceService
       .getBankAccountNumber(counterPartyId)
       .subscribe((result: any) => {
@@ -1493,11 +1885,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   invoiceConvertUom(type, rowIndex) {
     // console.log(type);
     // console.log(rowIndex);
-    let currentRowIndex = rowIndex;
+    const currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
     if (this.type == 'product') {
-      let product = this.formValues.productDetails[currentRowIndex];
+      const product = this.formValues.productDetails[currentRowIndex];
       if (
         typeof product.product != 'undefined' &&
         typeof product.invoiceQuantityUom != 'undefined' &&
@@ -1536,11 +1928,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     currentRowIndex
   ) {
     let conversionFactor = 1;
-    let productId = ProductId;
-    let quantity = Quantity;
-    let fromUomId = FromUomId;
-    let toUomId = ToUomId;
-    let data = {
+    const productId = ProductId;
+    const quantity = Quantity;
+    const fromUomId = FromUomId;
+    const toUomId = ToUomId;
+    const data = {
       Payload: {
         ProductId: productId,
         OrderProductId: orderProductId,
@@ -1642,7 +2034,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     // 1.if request available, use request id
     if (this.formValues.requestInfo) {
       if (this.formValues.requestInfo.request) {
-        let title = `Invoice - ${this.formValues.requestInfo.request.name} - ${this.formValues.requestInfo.vesselName}`;
+        const title = `Invoice - ${this.formValues.requestInfo.request.name} - ${this.formValues.requestInfo.vesselName}`;
         this.titleService.setTitle(title);
         return;
       }
@@ -1651,7 +2043,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     // 2. else use order id
     if (this.formValues.orderDetails) {
       if (this.formValues.orderDetails.order) {
-        let invoiceTitle = `Invoice - ${this.formValues.orderDetails.order.name} - ${this.formValues.orderDetails.vesselName}`;
+        const invoiceTitle = `Invoice - ${this.formValues.orderDetails.order.name} - ${this.formValues.orderDetails.vesselName}`;
         this.titleService.setTitle(invoiceTitle);
         return;
       }
@@ -1659,7 +2051,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
     // 3. use invoice name
     if (this.formValues.id) {
-      let invoiceTitle = `Invoice - INV${this.formValues.id} - ${this.formValues.orderDetails.vesselName}`;
+      const invoiceTitle = `Invoice - INV${this.formValues.id} - ${this.formValues.orderDetails.vesselName}`;
       this.titleService.setTitle(invoiceTitle);
     }
   }
@@ -1679,378 +2071,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   setListFromStaticLists(name) {
-    let findList = _.find(this.staticLists, function(object) {
+    const findList = _.find(this.staticLists, function(object) {
       return object.name == name;
     });
     if (findList != -1) {
       return findList?.items;
     }
   }
-
-  private setupGrid() {
-    this.gridOptions_ac = <GridOptions>{
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef_aggrid_ac,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 45,
-      animateRows: false,
-
-      onGridReady: params => {
-        this.gridOptions_data.api = params.api;
-        this.gridOptions_data.columnApi = params.columnApi;
-        this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid_ac);
-        this.addCustomHeaderEventListener_AC(params);
-      },
-      onColumnResized: function(params) {
-        if (
-          params.columnApi.getAllDisplayedColumns().length <= 9 &&
-          params.type === 'columnResized' &&
-          params.finished === true &&
-          params.source === 'uiColumnDragged'
-        ) {
-          params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function(params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-          params.api.sizeColumnsToFit();
-        }
-      }
-    };
-  }
-
-  private columnDef_aggrid_pd = [
-    {
-      resizable: false,
-      width: 30,
-      suppressMenu: true,
-      headerName: '',
-      headerClass: ['aggridtextalign-center'],
-      headerComponentParams: {
-        template: `<span  unselectable="on">
-             <div class="add-btn"></div>
-             <span ref="eMenu"></span>`
-      },
-      cellClass: ['aggridtextalign-left'],
-      cellRendererFramework: AGGridCellActionsComponent,
-      cellRendererParams: { type: 'row-remove-icon' }
-    },
-    /* {
-      children: [{headerName: 'Delivery No./ ', headerTooltip: 'Delivery No./ Order Product', field: 'del_no',
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: function(params) {
-                  let keyData = params.value;
-                  let newLink =
-                  `<a href= "https://www.figma.com/proto/vdYj7vV3e5WCNVIxzpMkzA/Shiptech-Invoice-screen_Final?node-id=94%3A7895&scaling=min-zoom"
-                  target="_blank">${keyData}</a>`;
-                  return newLink;
-              }
-      },
-      {
-        headerName: 'Order Product', headerTooltip: 'Order Product', field: 'order_product'
-      }]
-    }, */
-    {
-      headerName: 'Delivery No. / Order Product',
-      width: 250,
-      headerTooltip: 'Delivery No. / Order Product',
-      field: 'del_no',
-      cellRendererFramework: AGGridCellActionsComponent,
-      cellRendererParams: { type: 'border-cell' }
-    },
-    {
-      children: [
-        {
-          headerName: 'Deliv Product',
-          headerTooltip: 'Deliv Product',
-          field: 'del_product',
-          cellClass: 'border-padding-5 p-r-0',
-          cellRendererFramework: AgGridCellStyleComponent,
-          cellRendererParams: {
-            cellClass: ['cell-bg-border'],
-            label: 'div-in-cell'
-          }
-        },
-        {
-          headerName: 'Deliv. Qty',
-          headerTooltip: 'Deliv. Qty',
-          field: 'del_qty',
-          cellClass: 'blue-opacity-cell pad-lr-0'
-        },
-        {
-          headerName: 'Estd. Rate',
-          editable: true,
-          headerTooltip: 'Estd. Rate',
-          field: 'est_rate',
-          cellClass: 'blue-opacity-cell pad-lr-0'
-        },
-        {
-          headerName: 'Amount',
-          headerTooltip: 'Amount',
-          field: 'amount1',
-          cellClass: 'blue-opacity-cell pad-lr-5'
-        }
-      ]
-    },
-    {
-      children: [
-        {
-          headerName: 'Invoice Product',
-          headerTooltip: 'Invoice Product',
-          field: 'inv_product',
-          cellClass: 'border-padding-5 p-r-0',
-          cellRendererFramework: AGGridCellActionsComponent,
-          cellRendererParams: { type: 'dashed-border-dark' }
-        },
-        {
-          headerName: 'Invoice Qty',
-          headerTooltip: 'Invoice Qty',
-          field: 'inv_qty',
-          cellClass: 'blue-opacity-cell dark pad-lr-0',
-          cellRendererFramework: AGGridCellActionsComponent,
-          cellRendererParams: { type: 'dashed-border-darkcell' }
-        },
-        {
-          headerName: 'Invoice Rate',
-          headerTooltip: 'Invoice Rate',
-          field: 'inv_rate',
-          cellClass: 'blue-opacity-cell dark pad-lr-0',
-          cellRendererFramework: AGGridCellActionsComponent,
-          cellRendererParams: { type: 'dashed-border-darkcell' }
-        },
-        {
-          headerName: 'Amount',
-          headerTooltip: 'Amount',
-          field: 'amount2',
-          cellClass: 'blue-opacity-cell dark pad-lr-5'
-        }
-      ]
-    },
-    {
-      headerName: 'Recon status',
-      headerTooltip: 'Recon status',
-      field: 'recon_status',
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: function(params) {
-        var classArray: string[] = [];
-        classArray.push('aggridtextalign-center');
-        let newClass =
-          params.value === 'Unmatched'
-            ? 'custom-chip-type1 red-chip'
-            : params.value === 'Matched'
-            ? 'custom-chip-type1 mediumgreen'
-            : 'custom-chip-type1';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null };
-      }
-    },
-    {
-      headerName: 'Sulpher content',
-      headerTooltip: 'Sulpher content',
-      field: 'sulpher_content',
-      cellRendererFramework: AGGridCellActionsComponent,
-      cellRendererParams: { type: 'dashed-border' }
-    },
-    {
-      headerName: 'Phy. suppier',
-      headerTooltip: 'Phy. supplier',
-      field: 'phy_supplier',
-      width: 250,
-      cellRendererFramework: AGGridCellActionsComponent,
-      cellRendererParams: { type: 'dashed-border-with-expand' }
-    }
-  ];
-
-  private columnDef_aggrid_ac = [
-    {
-      resizable: false,
-      width: 30,
-      suppressMenu: true,
-      headerName: '',
-      headerClass: ['aggridtextalign-center'],
-      headerComponentParams: {
-        template: `<span  unselectable="on">
-             <div class="add-btn-ac"></div>
-             <span ref="eMenu"></span>`
-      },
-      cellClass: ['aggridtextalign-left'],
-      cellRendererFramework: AGGridCellActionsComponent,
-      cellRendererParams: { type: 'row-remove-icon' }
-    },
-    {
-      headerName: 'Item',
-      editable: true,
-      headerTooltip: 'Item',
-      field: 'cost',
-      cellRendererFramework: AGGridCellEditableComponent,
-      cellRendererParams: {
-        type: 'cell-edit-dropdown',
-        label: 'cost-type',
-        items: ['Pay', 'Receive']
-      }
-    },
-    {
-      headerName: 'Cost Type',
-      headerTooltip: 'Cost Type',
-      field: 'name',
-      cellRendererFramework: AGGridCellEditableComponent,
-      cellRendererParams: { type: 'cell-edit-autocomplete', label: 'cost-name' }
-    },
-    {
-      headerName: '%of',
-      headerTooltip: '% of',
-      field: 'provider',
-      cellRendererFramework: AGGridCellEditableComponent,
-      cellRendererParams: {
-        type: 'cell-edit-autocomplete',
-        label: 'service-provider'
-      }
-    },
-    {
-      headerName: 'BDN Qty',
-      editable: true,
-      headerTooltip: 'BDN Qty',
-      field: 'type',
-      cellRendererFramework: AGGridCellEditableComponent,
-      cellRendererParams: {
-        type: 'cell-edit-dropdown',
-        label: 'rate-type',
-        items: ['Flat', 'Option 2']
-      }
-    },
-    {
-      headerName: 'Estd. Rate',
-      headerTooltip: 'Estd. Rate',
-      field: 'currency'
-    },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'name' },
-    { headerName: 'Extra %', headerTooltip: 'Extra %', field: 'name' },
-    { headerName: 'ExtraAmt', headerTooltip: 'ExtraAmt', field: 'name' },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'name' },
-    { headerName: 'Total', headerTooltip: 'Total', field: 'name' },
-    { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'name' },
-    {
-      headerName: 'Invoice Rate',
-      headerTooltip: 'Invoice Rate',
-      field: 'name'
-    },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'name' },
-    { headerName: 'Extra%', headerTooltip: 'Extra%', field: 'name' },
-    { headerName: 'ExtraAmt', headerTooltip: 'ExtraAmt', field: 'name' },
-    { headerName: 'Total', headerTooltip: 'Total', field: 'name' },
-    { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
-  ];
-
-  private columnDef_aggrid_claims = [
-    { headerName: 'Claim ID', headerTooltip: 'Claim ID', field: 'claim.id' },
-    {
-      headerName: 'Delivery No',
-      headerTooltip: 'Delivery No',
-      field: 'delivery.id'
-    },
-    {
-      headerName: 'Claim Type',
-      headerTooltip: 'Claim Type',
-      field: 'claimType.name'
-    },
-    { headerName: 'Product', headerTooltip: 'Product', field: 'product.name' },
-    {
-      headerName: 'Delivery Qty',
-      headerTooltip: 'Delivery Quantity',
-      field: 'deliveryQuantity'
-    },
-    {
-      headerName: 'Invoice Amount',
-      headerTooltip: 'Invoice Amount',
-      field: 'invoiceAmount',
-      editable: true,
-      cellRendererFramework: AGGridCellEditableComponent,
-      cellRendererParams: { type: 'dashed-border-with-expand' }
-    },
-    {
-      headerName: 'Amount(order currency)',
-      headerTooltip: ' Amount',
-      field: 'baseInvoiceAmount'
-    }
-  ];
-
-  public formValues: IInvoiceDetailsItemDto = {
-    sellerInvoiceNo: 0,
-    documentNo: 0,
-    invoiceId: 0,
-    documentType: <IInvoiceDetailsItemBaseInfo>{
-      internalName: 'FinalInvoice'
-    },
-    canCreateFinalInvoice: false,
-    receivedDate: '',
-    dueDate: '',
-    manualDueDate: '',
-    accountNumber: 0,
-    workingDueDate: '',
-    sellerInvoiceDate: '',
-    sellerDueDate: '',
-    approvedDate: '',
-    paymentDate: '',
-    accountancyDate: '',
-    invoiceRateCurrency: <IInvoiceDetailsItemBaseInfo>{},
-    backOfficeComments: '',
-    customStatus: '',
-    status: <IInvoiceDetailsItemStatus>{},
-    reconStatus: <IInvoiceDetailsItemStatus>{},
-    deliveryDate: '',
-    orderDeliveryDate: '',
-    workflowId: '',
-    invoiceChecks: <IInvoiceDetailsItemInvoiceCheck[]>[],
-    invoiceAmount: 0,
-    invoiceTotalPrice: 0,
-    createdByUser: <IInvoiceDetailsItemBaseInfo>{ name: '' },
-    createdAt: '',
-    invoiceDate: '',
-    lastModifiedByUser: <IInvoiceDetailsItemBaseInfo>{},
-    lastModifiedAt: '',
-    relatedInvoices: '',
-    relatedInvoicesSummary: [],
-    orderDetails: <IInvoiceDetailsItemOrderDetails>{},
-    counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{
-      paymentTerm: <IInvoiceDetailsItemBaseInfo>{ name: '' },
-      payableTo: <IInvoiceDetailsItemBaseInfo>{ name: '' },
-      counterpartyBankAccount: <any>{},
-      customer: <any>{}
-    },
-    paymentDetails: <IInvoiceDetailsItemPaymentDetails>{},
-    productDetails: <IInvoiceDetailsItemProductDetails[]>[],
-    costDetails: [],
-    invoiceClaimDetails: [],
-    invoiceSummary: <IInvoiceDetailsItemInvoiceSummary>{},
-    screenActions: <IInvoiceDetailsItemBaseInfo[]>[],
-    requestInfo: <IInvoiceDetailsItemRequestInfo>{
-      request: <IInvoiceDetailsItemBaseInfo>{ id: 0 }
-    },
-    isCreatedFromIntegration: false,
-    hasManualPaymentDate: false,
-    attachments: [],
-    customNonMandatoryAttribute1: '',
-    customNonMandatoryAttribute2: '',
-    customNonMandatoryAttribute3: '',
-    customNonMandatoryAttribute4: '',
-    customNonMandatoryAttribute5: '',
-    customNonMandatoryAttribute6: '',
-    customNonMandatoryAttribute7: '',
-    customNonMandatoryAttribute8: '',
-    customNonMandatoryAttribute9: '',
-    name: '',
-    id: 0,
-    isDeleted: false,
-    modulePathUrl: '',
-    clientIpAddress: '',
-    userAction: ''
-  };
 
   addCustomHeaderEventListener(params) {
     /*let addButtonElement = document.getElementsByClassName('add-btn');
@@ -2075,10 +2102,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   addrow(param, details) {
-    let value = details.data;
+    const value = details.data;
     // console.log('add btn');
 
-    let productdetail = {
+    const productdetail = {
       del_no: { no: value.deliveryId, order_prod: value.invoicedProduct.name },
       del_product: value.product.name,
       del_qty: value.deliveryQuantity + ' ' + value.deliveryQuantityUom.name,
@@ -2099,9 +2126,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   addCustomHeaderEventListener_AC(params) {
-    let addButtonElementAC = document.getElementsByClassName('add-btn-ac');
+    const addButtonElementAC = document.getElementsByClassName('add-btn-ac');
     addButtonElementAC[0].addEventListener('click', event => {
-      var newItems = [{}];
+      const newItems = [{}];
       params.api.applyTransaction({
         add: newItems
       });
@@ -2150,8 +2177,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   parseProductDetailData(productDetails: IInvoiceDetailsItemProductDetails[]) {
-    for (let value of productDetails) {
-      let productdetail = {
+    for (const value of productDetails) {
+      const productdetail = {
         del_no: {
           no: value.deliveryId,
           order_prod: value.invoicedProduct.name
@@ -2184,9 +2211,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       ? orderDetails?.portName
       : this.emptyStringVal;
     this.orderDetails.contents[3].value = orderDetails?.eta
-      ? moment(orderDetails?.eta).format(
-          this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')
-        )
+      ? this.formatDate(orderDetails?.eta)
       : this.emptyStringVal;
 
     this.formValues.orderDetails.frontOfficeComments =
@@ -2218,10 +2243,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   setChipDatas() {
-    var currencyCode = this.formValues.invoiceRateCurrency.code; // USD
-    var emptyValue = `${this.amountFormatValue(0)} ${currencyCode}`; // 0.00 USD
+    const currencyCode = this.formValues.invoiceRateCurrency.code; // USD
+    const emptyValue = `${this.amountFormatValue(0)} ${currencyCode}`; // 0.00 USD
 
-    var ivs = this.formValues.invoiceSummary;
+    const ivs = this.formValues.invoiceSummary;
     this.chipData[0].Data = this.formValues.id?.toString();
     this.chipData[1].Data = this.formValues.status?.displayName
       ? this.formValues.status.displayName
@@ -2269,7 +2294,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
@@ -2293,7 +2318,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       return;
     }
     this.setAdditionalCostLine();
-    let valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
+    const valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
     if (
       this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
         undefined ||
@@ -2356,7 +2381,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   setAdditionalCostLine() {
-    let validCostDetails = [];
+    const validCostDetails = [];
     if (this.formValues.costDetails.length > 0) {
       this.formValues.costDetails.forEach((v, k) => {
         if (typeof v.product != 'undefined' && v.product != null) {
@@ -2416,7 +2441,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   onModelChanged(evt) {}
 
   AC_valueChanges(type, event) {
-    let eventValueObject = {
+    const eventValueObject = {
       id: event.id ? event.id : null,
       name: event.name ? event.name : null,
       internalName: event.internalName ? event.internalName : null,
@@ -2440,7 +2465,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       // this.formValues.orderDetails.carrierCompany.displayName = event.displayName ? event.displayName : '';
       // this.formValues.orderDetails.carrierCompany.code = event.code ? event.code : '';
     } else if (type === 'customer') {
-      let res = isEmpty(eventValueObject) ? null : eventValueObject;
+      const res = isEmpty(eventValueObject) ? null : eventValueObject;
       this.formValues.counterpartyDetails.customer = res;
     } else if (type === 'payableto') {
       this.formValues.counterpartyDetails.payableTo = eventValueObject;
@@ -2459,7 +2484,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.spinner.show();
     this.formSubmitted = true;
     this.setAdditionalCostLine();
-    let valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
+    const valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
     if (
       this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
         undefined ||
@@ -2551,9 +2576,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       dialogRef.afterClosed().subscribe(result => {
         this.formSubmitted = false;
         if (result && result != 'close') {
-          let createinvoice = this.invoiceTypeList.filter(x => {
-            return x.id === result;
-          });
+          const createinvoice = this.invoiceTypeList.filter(
+            x => x.id === result
+          );
           this.entityId = 0;
           this.formValues.documentType.id = createinvoice[0].id;
           this.formValues.documentType.name = createinvoice[0].name;
@@ -2617,7 +2642,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getProductList() {
-    let data: any = {
+    const data: any = {
       Order: null,
       PageFilters: { Filters: [] },
       SortList: { SortList: [] },
@@ -2643,7 +2668,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   addnewProduct(event) {
     // console.log(event);
-    var itemsToUpdate = [];
+    const itemsToUpdate = [];
     this.gridOptions_data.api.forEachNodeAfterFilterAndSort(function(
       rowNode,
       index
@@ -2651,7 +2676,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (index >= 1) {
         return;
       }
-      var data = rowNode.data;
+      const data = rowNode.data;
 
       // data.price = Math.floor(Math.random() * 20000 + 20000);
       itemsToUpdate.push(data);
@@ -2669,8 +2694,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -2787,14 +2812,14 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   calculateClaimInvoiceGrandTotal(formValues) {
-    let grandTotal = 0;
+    const grandTotal = 0;
 
     return grandTotal;
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    var numberToReturn = number;
-    var decimalSeparator, thousandsSeparator;
+    let numberToReturn = number;
+    let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
         if (number.indexOf(',') > number.indexOf('.')) {
@@ -2874,7 +2899,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getPaymentTermList() {
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         PageFilters: {
@@ -2907,9 +2932,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         : this.formValues.counterpartyDetails.paymentTerm.toLowerCase();
       if (this.paymentTermList) {
         const list = this.paymentTermList
-          .filter((item: any) => {
-            return item.name.toLowerCase().includes(filterValue.toLowerCase());
-          })
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.toLowerCase())
+          )
           .splice(0, 10);
         // console.log(list);
         return list;
@@ -2932,7 +2957,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getCompanyList() {
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         PageFilters: {
@@ -2965,11 +2990,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         : this.formValues.orderDetails.paymentCompany.toLowerCase();
       if (this.companyList) {
         const list = this.companyList
-          .filter((item: any) => {
-            return item.name
-              .toLowerCase()
-              .includes(filterValue.trim().toLowerCase());
-          })
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.trim().toLowerCase())
+          )
           .splice(0, 10);
         // console.log(list);
         return list;
@@ -3011,11 +3034,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         : this.formValues.orderDetails.carrierCompany.toLowerCase();
       if (this.companyList) {
         const list = this.companyList
-          .filter((item: any) => {
-            return item.name
-              .toLowerCase()
-              .includes(filterValue.trim().toLowerCase());
-          })
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.trim().toLowerCase())
+          )
           .splice(0, 10);
         // console.log(list);
         return list;
@@ -3050,7 +3071,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getCustomerList() {
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         PageFilters: {
@@ -3088,11 +3109,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         : this.formValues.counterpartyDetails.customer.toLowerCase();
       if (this.customerList) {
         const list = this.customerList
-          .filter((item: any) => {
-            return item.name
-              .toLowerCase()
-              .includes(filterValue.trim().toLowerCase());
-          })
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.trim().toLowerCase())
+          )
           .splice(0, 10);
         // console.log(list);
         return list;
@@ -3127,7 +3146,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getPaybleToList() {
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         PageFilters: {
@@ -3165,11 +3184,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         : this.formValues.counterpartyDetails.payableTo.toLowerCase();
       if (this.paybleToList) {
         const list = this.paybleToList
-          .filter((item: any) => {
-            return item.name
-              .toLowerCase()
-              .includes(filterValue.trim().toLowerCase());
-          })
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.trim().toLowerCase())
+          )
           .splice(0, 10);
         // console.log(list);
         return list;
@@ -3223,7 +3240,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   triggerChangeFieldsAppSpecific(name: string) {
-    let dueDate = this.formValues.dueDate;
+    const dueDate = this.formValues.dueDate;
     switch (name) {
       case 'DueDate':
         if (this.initialDueDate) {
@@ -3286,7 +3303,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         if (!this.formValues.id || this.formValues.id == 0) {
           break;
         }
-        let payload = {
+        const payload = {
           InvoiceId: this.formValues.id,
           PaymentTermId: this.formValues.counterpartyDetails.paymentTerm.id,
           InvoiceDeliveryDate: this.formValues.deliveryDate,
@@ -3369,72 +3386,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     };
   }
 
-  private columnDef_aggrid_rel_invoice = [
-    {
-      headerName: 'Invoice ID',
-      headerTooltip: 'Invoice ID',
-      field: 'id',
-      width: 100,
-      cellClass: ['aggridlink aggridtextalign-center'],
-      headerClass: ['aggrid-text-align-c']
-    },
-    {
-      headerName: 'Order number',
-      headerTooltip: 'Order number',
-      field: 'order-number',
-      cellClass: ['aggridtextalign-left']
-    },
-    {
-      headerName: 'Invoice Type',
-      headerTooltip: 'Invoice Type',
-      field: 'type'
-    },
-    {
-      headerName: 'Invoice Date',
-      headerTooltip: 'Invoice Date',
-      field: 'date',
-      width: 150
-    },
-    {
-      headerName: 'Invoice Amt',
-      headerTooltip: 'Invoice Amt',
-      field: 'amount',
-      width: 150
-    },
-    {
-      headerName: 'Deductions',
-      headerTooltip: 'Deductions',
-      field: 'deductions',
-      width: 150
-    },
-    {
-      headerName: 'Paid Amount',
-      headerTooltip: 'Paid Amount',
-      field: 'paid',
-      width: 150
-    },
-    {
-      headerName: 'Invoice status',
-      headerTooltip: 'Invoice status',
-      field: 'status',
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: function(params) {
-        var classArray: string[] = [];
-        classArray.push('aggridtextalign-center');
-        let newClass =
-          params.value === 'Reverted' || params.value === 'Discrepancy'
-            ? 'custom-chip-type1 red-chip'
-            : params.value === 'Approved'
-            ? 'custom-chip-type1 mediumgreen'
-            : params.value === 'New'
-            ? 'custom-chip-type1 dark'
-            : 'custom-chip-type1';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null };
-      }
-    }
-  ];
-
   onCellClicked(params) {
     if (params.colDef.field === 'id' && !params.rowPinned) {
       this.openEditInvoice(params.data.id);
@@ -3450,5 +3401,63 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   compareCurrencyObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
+  }
+
+  formatDate(date?: any) {
+    if (date) {
+      let currentFormat = this.format.dateFormat;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      const elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      let formattedDate = moment(elem).format(currentFormat);
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
+  }
+
+  private setupGrid() {
+    this.gridOptions_ac = <GridOptions>{
+      defaultColDef: {
+        resizable: true,
+        filtering: false,
+        sortable: false
+      },
+      columnDefs: this.columnDef_aggrid_ac,
+      suppressRowClickSelection: true,
+      suppressCellSelection: true,
+      headerHeight: 35,
+      rowHeight: 45,
+      animateRows: false,
+
+      onGridReady: params => {
+        this.gridOptions_data.api = params.api;
+        this.gridOptions_data.columnApi = params.columnApi;
+        this.gridOptions_data.api.sizeColumnsToFit();
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid_ac);
+        this.addCustomHeaderEventListener_AC(params);
+      },
+      onColumnResized: function(params) {
+        if (
+          params.columnApi.getAllDisplayedColumns().length <= 9 &&
+          params.type === 'columnResized' &&
+          params.finished === true &&
+          params.source === 'uiColumnDragged'
+        ) {
+          params.api.sizeColumnsToFit();
+        }
+      },
+      onColumnVisible: function(params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
+          params.api.sizeColumnsToFit();
+        }
+      }
+    };
   }
 }
