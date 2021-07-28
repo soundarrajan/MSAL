@@ -307,7 +307,7 @@ export class AdditionalCostModalComponent implements OnInit {
   applyFilter() {}
 
   invoiceRateChange(event, index) {
-    let sumvalue = +event;
+    const sumvalue = +event;
     this.formValues.costDetails[index].amountInOrderCurrency =
       this.formValues.costDetails[index].costType.id == 2
         ? sumvalue * this.formValues.costDetails[index].invoiceQuantity
@@ -326,7 +326,7 @@ export class AdditionalCostModalComponent implements OnInit {
     this.changedAdditonalCostEmit();
   }
   extraAmount(event, index) {
-    let sumValue = +event;
+    const sumValue = +event;
     this.formValues.costDetails[index].invoiceExtrasAmount =
       this.formValues.costDetails[index].costType.id == 2
         ? (this.formValues.costDetails[index].amountInOrderCurrency *
@@ -349,9 +349,7 @@ export class AdditionalCostModalComponent implements OnInit {
   originalOrder = (
     a: KeyValue<number, any>,
     b: KeyValue<number, any>
-  ): number => {
-    return 0;
-  };
+  ): number => 0;
 
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
@@ -376,13 +374,13 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   doFiltering(addCostCompTypes, cost, currentCost) {
-    var costType = null;
+    let costType = null;
     addCostCompTypes.forEach((v, k) => {
       if (v.id == currentCost) {
         costType = v.costType.id;
       }
     });
-    var availableCosts = [];
+    const availableCosts = [];
     if (costType == 1 || costType == 2) {
       this.costTypeList.forEach((v, k) => {
         if (v.id == 1 || v.id == 2) {
@@ -419,7 +417,7 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   filterCostTypesByAdditionalCost(cost) {
-    var currentCost = cost;
+    const currentCost = cost;
     // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
     if (this.costDetailsComponentTypes === undefined) {
       // this.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
@@ -448,7 +446,7 @@ export class AdditionalCostModalComponent implements OnInit {
       return;
     }
 
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         Filters: [
@@ -539,7 +537,7 @@ export class AdditionalCostModalComponent implements OnInit {
         deliveryProductId: this.applyForList[1].deliveryProductId
       };
     }
-    let newLine = {
+    const newLine = {
       costName: {
         id: additionalCost.additionalCostid,
         name: additionalCost.name,
@@ -596,7 +594,7 @@ export class AdditionalCostModalComponent implements OnInit {
   invoiceConvertUom(type, rowIndex) {
     console.log(type);
     console.log(rowIndex);
-    let currentRowIndex = rowIndex;
+    const currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
     if (this.type == 'cost') {
@@ -757,11 +755,11 @@ export class AdditionalCostModalComponent implements OnInit {
     orderProductId,
     rowIndex
   ) {
-    let productId = ProductId;
-    let quantity = Quantity;
-    let fromUomId = FromUomId;
-    let toUomId = ToUomId;
-    let data = {
+    const productId = ProductId;
+    const quantity = Quantity;
+    const fromUomId = FromUomId;
+    const toUomId = ToUomId;
+    const data = {
       Payload: {
         ProductId: productId,
         OrderProductId: orderProductId,
@@ -775,7 +773,7 @@ export class AdditionalCostModalComponent implements OnInit {
       return;
     }
     if (toUomId == fromUomId) {
-      let result = 1;
+      const result = 1;
       if (this.costType) {
         if (this.costType.name == 'Unit') {
           this.formValues.costDetails[rowIndex].invoiceAmount =
@@ -977,8 +975,8 @@ export class AdditionalCostModalComponent implements OnInit {
 
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
-        if (typeof v.estimatedAmount != 'undefined') {
-          grandTotal = grandTotal + v.estimatedAmount;
+        if (typeof v.estimatedTotalAmount != 'undefined') {
+          grandTotal = grandTotal + v.estimatedTotalAmount;
         }
       }
     });
@@ -986,8 +984,8 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    var numberToReturn = number;
-    var decimalSeparator, thousandsSeparator;
+    let numberToReturn = number;
+    let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
         if (number.indexOf(',') > number.indexOf('.')) {
@@ -1017,8 +1015,8 @@ export class AdditionalCostModalComponent implements OnInit {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -1035,8 +1033,8 @@ export class AdditionalCostModalComponent implements OnInit {
     if (typeof value == 'undefined' || !value) {
       return null;
     }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -1098,7 +1096,7 @@ export class AdditionalCostModalComponent implements OnInit {
     if (!this.additionalCostForLocationFilter[locationId]) {
       return;
     }
-    let filterCostList = this.additionalCostForLocationFilter[
+    const filterCostList = this.additionalCostForLocationFilter[
       locationId
     ].filter(option => option.name.toLowerCase().includes(value));
     this.additionalCostForLocation[locationId] = _.cloneDeep(filterCostList);
@@ -1116,7 +1114,7 @@ export class AdditionalCostModalComponent implements OnInit {
       this.additionalCostForLocationFilter = [];
     }
 
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         PageFilters: { Filters: [] },
@@ -1136,13 +1134,13 @@ export class AdditionalCostModalComponent implements OnInit {
         } else {
           console.log(response);
           this.additionalCostForLocation[locationId] = _.cloneDeep(response);
-          let filterElements = _.filter(
+          const filterElements = _.filter(
             this.additionalCostForLocation[locationId],
             function(object) {
               return !object.isDeleted;
             }
           );
-          let newAdditionalCostList = _.cloneDeep(filterElements);
+          const newAdditionalCostList = _.cloneDeep(filterElements);
           this.additionalCostForLocation[locationId] = _.cloneDeep(
             filterElements
           );
@@ -1157,7 +1155,7 @@ export class AdditionalCostModalComponent implements OnInit {
 
   // Only Number
   keyPressNumber(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (inp == '.' || inp == ',' || inp == '-') {
       return true;
     }
