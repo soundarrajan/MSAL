@@ -165,6 +165,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   createNewInvoiceFromDelivery() {
     const data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
+
     localStorage.removeItem('invoiceFromDelivery');
 
     this.invoiceService
