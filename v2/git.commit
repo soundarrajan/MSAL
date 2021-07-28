@@ -1,9 +1,15 @@
-﻿commit 869a063fc7a2776379d0d5690fdf04aa2f670410
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jul 28 09:18:33 2021 +0000
+﻿commit ce51c8b66ad4e9a797dee4d8d3dd31bde33eb47c
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Jul 28 10:13:56 2021 +0000
 
-    Merged PR 12744: Fixed eta format in invoice screen
+    Merged PR 12750: Fix add product display in delivery screen
     
-    Fixed eta format in invoice screen
+    Fix add product display in delivery screen
+    
+    Cherry picked from !12749
+    
+    Cherry-picked from commit `8371efaf`.
+    
+    Related work items: #34728
 
 branch: master
