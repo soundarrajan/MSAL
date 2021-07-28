@@ -1146,6 +1146,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         deliveryQuantityUom: rowData.confirmedQuantityUom,
         deliveryMFM: rowData.deliveryMFM,
         sulphurContent: rowData.sulphurContent,
+        pricePrecision: rowData.pricePrecision,
         difference: '',
         estimatedAmount: rowData.estimatedAmount,
         estimatedAmountCurrency: rowData.estimatedRateCurrency,
