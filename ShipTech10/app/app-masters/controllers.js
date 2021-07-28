@@ -5283,6 +5283,11 @@
                         let blob = new Blob([ file.data ], {
                             type: mime
                         });
+                        if (blob.type == "application/pdf") {
+                            $scope.openPDFViewer(blob);
+                            return;
+                        }
+
                         let a = document.createElement('a');
                         a.style = 'display: none';
                         document.body.appendChild(a);
@@ -5298,6 +5303,28 @@
                 }
             );
         };
+
+
+        $scope.openPDFViewer = (blobData) => {
+            let url = window.URL.createObjectURL(blobData);
+            pdfViewerTemplate = `<div class="documentsPdfViewer">
+                                    <div class="close-bar">
+                                        <i class="closePDFViewer fa fa-times"></i>
+                                    </div>
+                                    <object
+                                        data='${url}'
+                                        style='width: 100%; height: calc(100% - 40px);'
+                                        type="application/pdf">
+                                    </object>
+                                </div>`;
+            $("body").append(pdfViewerTemplate);   
+            $("body").css("overflow", "hidden");   
+            $(".documentsPdfViewer .closePDFViewer").on("click", () => {
+                $(".documentsPdfViewer").remove();
+                $("body").css("overflow", "auto");   
+            })       
+        }    
+
         $scope.getLogo = function(name) {
             if ($state.params.entity_id > 0) {
                 Factory_Master.get_file($state.params.entity_id, (callback, mime) => {
