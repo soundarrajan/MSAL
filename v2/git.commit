@@ -1,11 +1,11 @@
-﻿commit cf09d9858219a2af5bf42e42e43154175b72d2cd
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Jul 27 13:48:31 2021 +0000
+﻿commit 967dd43bbb9d90ab0ef082fd685810ad3d21cbb5
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Jul 28 08:26:47 2021 +0000
 
-    Merged PR 12728: Fix add transaction in invoice screen
+    Merged PR 12741: #33661 : option 2 should be shown as 'Alt.port'
     
-    Fix add transaction in invoice screen
+    #33661 : option 2 should be shown as 'Alt.port'
     
-    Related work items: #34710
+    Related work items: #33661
 
 branch: master

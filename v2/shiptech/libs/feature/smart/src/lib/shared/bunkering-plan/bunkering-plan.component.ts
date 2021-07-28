@@ -303,7 +303,7 @@ export class BunkeringPlanComponent implements OnInit {
               headerClass: ['aggrid-colum-splitter-left'], cellClass: ['aggrid-content-right'] 
             },
             {
-              headerName: BunkeringPlanColumnsLabels.UlsfoConfPlanLift, headerTooltip: BunkeringPlanColumnsLabels.UlsfoConfPlanLift, field: 'ulsfo_estimated_lift', width: 45, 
+              headerName: BunkeringPlanColumnsLabels.UlsfoConfPlanLift, headerTooltip: BunkeringPlanColumnsLabels.UlsfoConfPlanLift, field: 'ulsfo_estimated_lift', width: 50, 
               headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'], 
               cellRendererFramework: AGGridCellDataComponent, 
               cellClass: ['aggrid-columgroup-splitter pd-1 aggrid-content-right'],
@@ -355,7 +355,7 @@ export class BunkeringPlanComponent implements OnInit {
               cellEditorParams : (params) =>{return {type: 'edit',context: { componentParent: this }}}
             },
             {
-              headerName: BunkeringPlanColumnsLabels.LsdisConfPlanLift, headerTooltip: BunkeringPlanColumnsLabels.LsdisConfPlanLift, field: 'lsdis_estimated_lift', width: 45, 
+              headerName: BunkeringPlanColumnsLabels.LsdisConfPlanLift, headerTooltip: BunkeringPlanColumnsLabels.LsdisConfPlanLift, field: 'lsdis_estimated_lift', width: 50, 
               cellRendererFramework: AGGridCellDataComponent, 
               cellClass: 'pd-1 aggrid-content-right', 
               headerClass: ['aggrid-colum-splitter-left'],
@@ -768,8 +768,11 @@ export class BunkeringPlanComponent implements OnInit {
      
       this.selectedUserRole = vesselData?.userRole == 'Vessel'? 1 : 2;
       var event = {force : true}
-      if(this.type == 'C')
-      this.gridOptions.api.setRowData(this.rowData);
+      if(this.type == 'C' && this.gridOptions.api && this.rowData){
+        setTimeout(() => {
+          this.gridOptions.api.setRowData(this.rowData);
+        }, 500);
+      }
   }
   triggerChangeEvent() {
     this.gridChanged = true;
