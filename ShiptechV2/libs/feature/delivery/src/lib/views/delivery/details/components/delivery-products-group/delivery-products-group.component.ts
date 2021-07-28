@@ -311,6 +311,7 @@ export class DeliveryProductsGroupComponent
       }
     });
     if (productAlreadyExist) {
+        this.selectedProductToAddInDelivery = null;
       return this.toastr.error(
         'The selected product is already added to delivery'
       );
