@@ -686,45 +686,45 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       let url;
       switch(params.colDef.field){
         case 'hsfo_estimated_lift' : { 
-                                          if(params.data?.request_id_hsfo)
+                                          if(params.data?.request_id_hsfo && params.data?.is_alt_port != 'N')
                                             url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_hsfo}`
                                           
                                           else
-                                            url = `/`
+                                            url = `#`
                                         
                                           break;
                                      }
         case 'ulsfo_estimated_lift' : { 
-                                        if(params.data?.request_id_ulsfo)
+                                        if(params.data?.request_id_ulsfo && params.data?.is_alt_port != 'N')
                                           url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_ulsfo}`
                                         
                                         else
-                                          url = `/`
+                                          url = `#`
                                       
                                         break;
                                       }
         case 'lsdis_estimated_lift': {  
-                                        if(params.data?.request_id_lsdis)
+                                        if(params.data?.request_id_lsdis && params.data?.is_alt_port != 'N' )
                                           url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_lsdis}`
                                         
                                         else
-                                          url = `/`
+                                          url = `#`
                                       
                                         break;
                                       }
         case 'hsdis_estimated_lift': {  
-                                        if(params.data?.request_id_hsdis)
+                                        if(params.data?.request_id_hsdis && params.data?.is_alt_port != 'N')
                                           url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_hsdis}`
                                         
                                         else
-                                          url = `/`
+                                          url = `#`
                                       
                                         break;
                                       }
       
       }
 
-      if(url != '/')
+      if(url != '#')
         window.open(url, "_blank");
     }
   }
