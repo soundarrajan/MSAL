@@ -565,9 +565,21 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
     this.autocompleteFormula = knownMastersAutocomplete.formula;
-    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
-    this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
-    this.priceFormat = '1.' + this.tenantService.pricePrecision + '-' + this.tenantService.pricePrecision;
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
+    this.amountFormat =
+      '1.' +
+      this.tenantService.amountPrecision +
+      '-' +
+      this.tenantService.amountPrecision;
+    this.priceFormat =
+      '1.' +
+      this.tenantService.pricePrecision +
+      '-' +
+      this.tenantService.pricePrecision;
   }
 
   ngOnInit(): void {
@@ -587,7 +599,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     return 0;
   };
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
 
   openDeliveryLink(deliveryId) {
     return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
@@ -615,33 +627,42 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
   }
   roundDown(value, pricePrecision) {
-      var precisionFactor = 1;
-      var response = 0;
-      var intvalue = parseFloat(value);
-      if(pricePrecision == 1) {precisionFactor = 10}   
-      if(pricePrecision == 2) {precisionFactor = 100}   
-      if(pricePrecision == 3) {precisionFactor = 1000}   
-      if(pricePrecision == 4) {precisionFactor = 10000}   
-      response = Math.floor(intvalue * precisionFactor) / precisionFactor;
-      return response.toString();
+    var precisionFactor = 1;
+    var response = 0;
+    var intvalue = parseFloat(value);
+    if (pricePrecision == 1) {
+      precisionFactor = 10;
+    }
+    if (pricePrecision == 2) {
+      precisionFactor = 100;
+    }
+    if (pricePrecision == 3) {
+      precisionFactor = 1000;
+    }
+    if (pricePrecision == 4) {
+      precisionFactor = 10000;
+    }
+    response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+    return response.toString();
   }
   priceFormatValue(value, pricePrecision) {
-      if (typeof value == 'undefined' || value == null) {
-          return null;
-        }
-        let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-        let number = parseFloat(plainNumber);
-        if (isNaN(number)) {
-            return null;
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
     }
     var productPricePrecision = this.tenantService.pricePrecision;
     if (pricePrecision !== null) {
-        productPricePrecision = pricePrecision;
+      productPricePrecision = pricePrecision;
     }
-    this.priceFormat = '1.' + productPricePrecision + '-' + productPricePrecision;
+    this.priceFormat =
+      '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
-        plainNumber = this.roundDown(plainNumber, pricePrecision);
-        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+      plainNumber = this.roundDown(plainNumber, pricePrecision);
+      return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
   }
 
@@ -802,7 +823,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         if (
           product.invoiceQuantityUom == null ||
           product.invoiceRateUom ==
-          null /* || typeof(product.invoiceAmount) == 'undefined'*/
+            null /* || typeof(product.invoiceAmount) == 'undefined'*/
         ) {
           return;
         }
@@ -874,7 +895,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
 
     this.invoiceService
       .getUomConversionFactor(data)
-      .pipe(finalize(() => { }))
+      .pipe(finalize(() => {}))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -970,8 +991,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
 
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
-        if (typeof v.estimatedAmount != 'undefined') {
-          grandTotal = grandTotal + v.estimatedAmount;
+        if (typeof v.estimatedTotalAmount != 'undefined') {
+          grandTotal = grandTotal + v.estimatedTotalAmount;
         }
       }
     });
@@ -1015,7 +1036,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
     this.invoiceService
       .calculateProductRecon(product)
-      .pipe(finalize(() => { }))
+      .pipe(finalize(() => {}))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
