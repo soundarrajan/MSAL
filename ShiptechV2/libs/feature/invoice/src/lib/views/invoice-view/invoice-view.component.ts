@@ -80,7 +80,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       } else if (localStorage.getItem('createInvoice')) {
         this.createNewInvoiceType();
       } else if (localStorage.getItem('createCreditNote')) {
-        let data = JSON.parse(localStorage.getItem('createCreditNote'));
+        const data = JSON.parse(localStorage.getItem('createCreditNote'));
         this.toastr.success('Credit note is Created!');
         localStorage.removeItem('createCreditNote');
         this.setScreenActions(data);
@@ -138,7 +138,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   setListFromStaticLists(name) {
-    let findList = _.find(this.staticLists, function(object) {
+    const findList = _.find(this.staticLists, function(object) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -164,7 +164,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   createNewInvoiceFromDelivery() {
-    let data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
+    const data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
+
     localStorage.removeItem('invoiceFromDelivery');
 
     this.invoiceService
@@ -210,7 +211,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   createNewInvoiceType() {
-    let data = JSON.parse(localStorage.getItem('createInvoice'));
+    const data = JSON.parse(localStorage.getItem('createInvoice'));
     localStorage.removeItem('createInvoice');
 
     // 2 - Final Invoice - Get provisional invoice data, if final invoice is created from provisional
@@ -248,11 +249,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     data.customStatus = null;
     data.accountancyDate = null;
     data.paymentDetails = {};
-    var invoiceAmountGrandTotal = 0;
-    var deductions = 0;
+    const invoiceAmountGrandTotal = 0;
+    const deductions = 0;
 
     data.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
-    let deliveryProductIds = [];
+    const deliveryProductIds = [];
     data.productDetails.forEach((v, k) => {
       v.id = 0;
       v.invoiceRate = 0;
@@ -295,7 +296,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
     this.displayDetailFormvalues = false;
     this.spinner.show();
-    let requestPayload = {
+    const requestPayload = {
       DeliveryProductIds: deliveryProductIds,
       OrderId: data.orderDetails.order.id
     };
@@ -387,7 +388,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let payloadData = {
+    const payloadData = {
       Amount: this.invoiceDetailsComponent.formValues.invoiceSummary
         .invoiceAmountGrandTotal,
       CurrencyId: this.invoiceDetailsComponent.formValues.invoiceRateCurrency
@@ -454,8 +455,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    var numberToReturn = number;
-    var decimalSeparator, thousandsSeparator;
+    let numberToReturn = number;
+    let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
         if (number.indexOf(',') > number.indexOf('.')) {
