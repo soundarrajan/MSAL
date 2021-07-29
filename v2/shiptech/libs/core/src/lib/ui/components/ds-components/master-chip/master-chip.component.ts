@@ -230,8 +230,8 @@ export class MasterChip {
 
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
-        if (typeof v.estimatedAmount != 'undefined') {
-          grandTotal = grandTotal + v.estimatedAmount;
+        if (typeof v.estimatedTotalAmount != 'undefined') {
+          grandTotal = grandTotal + v.estimatedTotalAmount;
         }
       }
     });
@@ -239,8 +239,8 @@ export class MasterChip {
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    var numberToReturn = number;
-    var decimalSeparator, thousandsSeparator;
+    let numberToReturn = number;
+    let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
         if (number.indexOf(',') > number.indexOf('.')) {

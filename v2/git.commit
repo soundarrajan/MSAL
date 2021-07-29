@@ -1,15 +1,7 @@
-﻿commit ce51c8b66ad4e9a797dee4d8d3dd31bde33eb47c
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jul 28 10:13:56 2021 +0000
+﻿commit 7e9d679452ee2950b386010803d27e2cc01658cc
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Thu Jul 29 12:34:41 2021 +0300
 
-    Merged PR 12750: Fix add product display in delivery screen
-    
-    Fix add product display in delivery screen
-    
-    Cherry picked from !12749
-    
-    Cherry-picked from commit `8371efaf`.
-    
-    Related work items: #34728
+    Merged Support_10_10_0 into master
 
 branch: master
