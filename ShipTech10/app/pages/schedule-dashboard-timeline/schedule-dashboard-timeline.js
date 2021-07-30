@@ -318,9 +318,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     cls += " vis-voyage-content-sap";
                 }
 
-                if (vessels[i].voyageDetail.request.requestDetail.isSludgeProduct || voyageDaysWithSludge[vessels[i].voyageDetail.id]) {
-                    cls += " vis-voyage-sludge-product";
-                }
+
                 // if (!vessels[i].voyageDetail.portStatus.id) {
                 //     cls += " no-request";
                 // }
@@ -603,7 +601,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var computedEndDate, computedStartDate;
         	if (ctrl.scheduleDashboardConfiguration.startsBefore >= 15) {
 	        	computedStartDate = moment.utc().subtract(15, "days").format("YYYY-MM-DD");
-	        	computedEndDate = angular.copy(moment.utc(computedStartDate).add(25,"days").format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment.utc(computedStartDate).add(28,"days").format("YYYY-MM-DD"));
         		// if ( (ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter) % 2 == 1) {
 		        // 	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(25,"days").format("YYYY-MM-DD"));
         		// } else {
@@ -611,7 +609,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         		// }
         	} else {
 	        	computedStartDate = angular.copy(moment.utc(ctrl.startDate).format("YYYY-MM-DD"));
-	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(25,"days").format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(28,"days").format("YYYY-MM-DD"));
         	}
 
 
@@ -638,7 +636,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': zoomMin,
-                'zoomMax': 2.16e+9,
+                'zoomMax': 2419200000,
                 // 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
@@ -682,15 +680,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     if ($scope.displayedColumns["Buyer of the Service"]) {
                         tpl += `<span class="vis-custom-group-column vis-buyer-of-service" tooltip title="${group.serviceBuyerName}" ><span class="vis-custom-group-column-content serviceBuyerName"> ${serviceBuyerName} </span></span>`;
                     }                    
-                    if ($scope.displayedColumns["Company"]) {
-                        tpl += `<span class="vis-custom-group-column last vis-company" tooltip title="${group.companyName}"> <span class="vis-custom-group-column-content companyName"> ${companyName} </span></span>`;
-                    }
                     tpl += '</div>';
                     return tpl;
                 },
             };
 
-            return options;
+            return options;    
         }
 
         var buildTimeline = function(data) {
@@ -776,7 +771,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     ctrl.lastStartDate = moment(timeline.range.start);
                     ctrl.lastEndDate = moment(timeline.range.end);
                     var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
-                    if (diff == 2.16e+9) {
+                    if (diff == 2419200000) {
                         $(".st-btn-icon-zoom-in a").css("color", "#555555");
                          $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
                     } else if (diff == zoomMin) {
@@ -1030,13 +1025,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if ($scope.displayedColumns["Buyer of the Service"]) {
                     groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service" timeline-order-column="serviceBuyerName"> Buyer of the Service </span>';
                 }                
-                if ($scope.displayedColumns["Company"]) { 
-                    if ($scope.tenantSettings.companyDisplayName.name == "Company") {
-                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company" timeline-order-column="companyName"> Company </span></div>';
-                    } else {
-                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company" timeline-order-column="companyName"> Pool </span></div>';
-                    }
-                } 
+            
                 groupColumnsTitleElement += '</div>';
 
                 $('.vis-timeline').first().prepend(groupColumnsTitleElement);
@@ -1864,39 +1853,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         });
 
 
-        /*build hover popover*/
-        $(document).on("mouseover", "span[voyage-detail-id]", function(){
-
-            console.log("mouseover");
-            var voyageDetailId = $(this).attr("voyage-detail-id");
-            if (voyageDetailId) {
-                var html = buildHoverPopoverMarkup(voyageDetailId);
-                $(this).attr("data-content", html);
-                $(this).popover({
-                    container: 'body',
-                    trigger: 'hover',
-                    placement: 'auto bottom',
-                    html: true,
-                    template: '<div class="popover" style="z-index: 9999999" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
-                }).
-                on('show.bs.popover', function (event) {
-                    $scope.rightClickPopoverData = null;
-                    $scope.$apply();
-                    var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
-                    if (lengthVoyageStops > 3) {
-                        $('.breadcrumbs-container').css('z-index', '0');
-                        $('.page-header.navbar').addClass("hoverOnPortCode");
-                    } 
-                 
-                });
-                $(this).popover('show');
-                // setTimeout(function() {
-                //     $scope.$apply();
-                // });
-
-              
-            }
-        });
         $(document).on("mouseout", "span[voyage-detail-id]", function(e) {
             console.log("mouseout");      
             $('.breadcrumbs-container').css('z-index', '10000');
