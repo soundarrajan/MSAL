@@ -386,7 +386,7 @@ export class VesselInfoComponent implements OnInit {
   }
 
   saveCurrentROB(ROBArbitrageData){
-    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null };
+    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null , 'upulsfo': null, 'uplsdis' :null};
     currentROBObj['3.5 QTY'] = ROBArbitrageData?.hsfoCurrentStock;
     currentROBObj['0.5 QTY'] = ROBArbitrageData?.hsfO05CurrentStock;
     currentROBObj.ULSFO = ROBArbitrageData?.ulsfoCurrentStock;
@@ -396,6 +396,9 @@ export class VesselInfoComponent implements OnInit {
     currentROBObj.ulsfoTankCapacity = ROBArbitrageData?.ulsfoTankCapacity;
     currentROBObj.lsdisTankCapacity = ROBArbitrageData?.lsdisTankCapacity;
     currentROBObj.hsdisTankCapacity = ROBArbitrageData?.hsdisTankCapacity;
+    currentROBObj.upulsfo = ROBArbitrageData?.upulsfo;
+    currentROBObj.uplsdis = ROBArbitrageData?.uplsdis;
+
     this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
     
   }
