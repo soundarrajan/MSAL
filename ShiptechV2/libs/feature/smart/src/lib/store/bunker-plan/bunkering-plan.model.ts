@@ -21,6 +21,7 @@
     hsfo_soa: number;
     hsfo_sod_comment: string;
     is_end_of_service: any;
+    is_alt_port: any;
     is_min_soa: number;
     is_new_port: any;
     location_id: any;
@@ -76,5 +77,7 @@
     'ulsfoTankCapacity': number;
     'lsdisTankCapacity': number;
     'hsdisTankCapacity': number;
+    'upulsfo': number;
+    'uplsdis' : number;
   }
   
