@@ -118,8 +118,8 @@ const routes: Routes = [
   providers:  [
     AdalGuard,
     {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: InterceptorService, 
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
       multi: true
     }
   ],
