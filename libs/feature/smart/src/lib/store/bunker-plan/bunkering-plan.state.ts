@@ -324,7 +324,7 @@ export class SaveCurrentROBStateModel{
 @State <SaveCurrentROBStateModel>({
   name : 'SaveCurrentROBObj',
   defaults : {
-    CurrentROBObj: {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null}
+    CurrentROBObj: {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null, 'upulsfo': null, 'uplsdis' :null}
   }
 })
 
