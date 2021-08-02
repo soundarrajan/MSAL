@@ -461,6 +461,7 @@ export class BunkeringPlanComponent implements OnInit {
         hsfo_safe_port: bPlan.hsfo_safe_port,
         hsfo_soa: bPlan.hsfo_soa,
         hsfo_sod_comment: bPlan.hsfo_sod_comment,
+        is_alt_port: bPlan.is_alt_port,
         is_end_of_service: bPlan.is_end_of_service,
         is_min_soa: bPlan.is_min_soa,
         is_new_port: bPlan.is_new_port,
@@ -805,31 +806,15 @@ export class BunkeringPlanComponent implements OnInit {
                             let lsdisAsEca = 0;
                             //For Port 0
                             if(i==0){
-                              lsdisAsEca = (parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) + parseInt(rowData2[i].mpo_ulsfo_soa)) - parseInt(currentRobUslfo.toString());
-                              if(lsdisAsEca < 0)
-                                lsdisAsEca = 0;
-                              rowData2[i].lsdis_soa = parseInt(currentRobLsdis.toString()) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) - lsdisAsEca;
-                              let estd_Cons = parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption);
-                              rowData2[i].ulsfo_soa = parseInt(currentRobUslfo.toString()) - estd_Cons + lsdisAsEca 
+                              this.calculateConsumptionAndLsdisAsEca(i, parseInt(currentRobLsdis.toString()), parseInt(currentRobUslfo.toString()), rowData2, estdConsEcaList, estdConsLsdisList);
                             }
                             //For Port 1 to N 
                             else{
-                              lsdisAsEca = (parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption)) + parseInt(rowData2[i].mpo_ulsfo_soa) - parseInt(rowData2[i-1].mpo_ulsfo_soa) - parseInt(rowData2[i-1].mpo_ulsfo_estimated_lift);//parseInt(lsdisAsEcaList[i].lsdis_as_eca);
-                              if(lsdisAsEca < 0)
-                                lsdisAsEca = 0;
-                              rowData2[i].lsdis_soa = parseInt(rowData2[i-1].lsdis_estimated_lift) + parseInt(rowData2[i-1].lsdis_soa) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption) - lsdisAsEca ;
-                              let estd_Cons = parseInt(estdConsEcaList[i].eca_estimated_consumption) - parseInt(estdConsLsdisList[i].lsdis_estimated_consumption);
-                              rowData2[i].ulsfo_soa = parseInt(rowData2[i-1].ulsfo_estimated_lift) + parseInt(rowData2[i-1].ulsfo_soa) - estd_Cons + lsdisAsEca;
+                              this.calculateConsumptionAndLsdisAsEca(i, parseInt(rowData2[i-1].lsdis_soa), parseInt(rowData2[i-1].ulsfo_soa), rowData2, estdConsEcaList, estdConsLsdisList);
                             }
-                            if(rowData2[i].lsdis_soa){
-                              this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].lsdis_soa,'lsdis_soa',rowData2[i].detail_no)); //update lsdis_soa updated to store for save
-                              this.store.dispatch(new UpdateBunkeringPlanAction(lsdisAsEca,'lsdis_as_eca',rowData2[i].detail_no)); //update lsdis_as_eca updated to store
-                            }
-                            if(rowData2[i].ulsfo_soa)
-                                this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].ulsfo_soa,'ulsfo_soa',rowData2[i].detail_no)); //update ulsfo_soa updated to store for save
-                              
+                             rowData2 = this.rowData; 
                           }
-                          if(this.gridOptions.api){
+                          if(this.gridOptions.api  && rowData2){
                             setTimeout(() => {
                               this.gridOptions.api.setRowData(rowData2);
                             }, 500);
@@ -856,7 +841,7 @@ export class BunkeringPlanComponent implements OnInit {
                             if(rowData2[i].hsfo_soa) 
                             this.store.dispatch(new UpdateBunkeringPlanAction(rowData2[i].hsfo_soa,'hsfo_soa',rowData2[i].detail_no));
                           }
-                          if(this.gridOptions.api){
+                          if(this.gridOptions.api && rowData2){
                             setTimeout(() => {
                               this.gridOptions.api.setRowData(rowData2);
                             }, 500);
@@ -865,6 +850,91 @@ export class BunkeringPlanComponent implements OnInit {
                         }
       }
     }
+  }
+
+  calculateConsumptionAndLsdisAsEca(index,lsdisCurrentRob,ulsfoCurrentRob,rowData,ecaEstdConsList,lsdisEstdConsList){
+    let currentROB = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
+    let ulsfo_cons = 0;
+    let ulsfo_unpumpables = currentROB.upulsfo ? currentROB.upulsfo : 0 ;
+    let lsdis_unpumpables = currentROB.uplsdis ? currentROB.uplsdis : 0 ;
+    let ulsfo_original_stock = 0;
+    let lsdis_original_stock = 0;
+    let prev_ulsfo_lift = 0;
+    let prev_lsdis_lift = 0
+    let ulsfo_reduce_cons = 0;
+    let lsdis_as_eca = 0
+    let pendingCons = 0
+    let ulsfo_soa = 0;
+    let lsdis_soa = 0;
+    let final_ulsfo_soa = 0;
+    let final_lsdis_soa = 0;
+    let final_lsdis_as_eca = 0
+
+    
+    if(index == 0){ // Lift values for Port 0 
+      prev_ulsfo_lift = 0;
+      prev_lsdis_lift = 0
+      
+    }
+    else{
+      prev_ulsfo_lift = rowData[index-1].is_alt_port == 'D'? parseInt(rowData[index-1].ulsfo_estimated_lift) : 0;
+      prev_lsdis_lift = rowData[index-1].is_alt_port == 'D'? parseInt(rowData[index-1].lsdis_estimated_lift) : 0;
+    }
+
+    // ExpectedUlsfoCons = EcaEstdCons - LsdisEstdCons 
+    ulsfo_cons = parseInt(ecaEstdConsList[index].eca_estimated_consumption) - parseInt(lsdisEstdConsList[index].lsdis_estimated_consumption) ;
+      
+    //Ulsfo Original Stock calculation
+    ulsfo_original_stock = (ulsfoCurrentRob + prev_ulsfo_lift) < ulsfo_unpumpables ? 0 : (ulsfoCurrentRob + prev_ulsfo_lift - ulsfo_unpumpables);
+
+    //Lsdis Original Stock calculation
+    lsdis_original_stock = lsdisCurrentRob + prev_lsdis_lift - lsdis_unpumpables - parseInt(lsdisEstdConsList[index].lsdis_estimated_consumption) ;
+
+    //Ulsfo Actual/Reduced Stock Calculation
+    if(ulsfo_original_stock > 0 )
+      ulsfo_reduce_cons = ulsfo_original_stock > ulsfo_cons ? ulsfo_cons : ulsfo_original_stock ;
+    else
+      ulsfo_reduce_cons = 0;
+
+    //LsdisAsEca calculation
+    if(lsdis_original_stock < 0)
+      lsdis_as_eca = 0
+    else 
+      lsdis_as_eca = lsdis_original_stock > (ulsfo_cons - ulsfo_reduce_cons) ?  ulsfo_cons - ulsfo_reduce_cons : lsdis_original_stock ; 
+
+    //Pending Cons
+    pendingCons = ulsfo_cons - lsdis_as_eca - ulsfo_reduce_cons;
+
+    //Ulsfo SOA calculation
+      ulsfo_soa = (ulsfo_original_stock > 0 ? ulsfo_original_stock : 0 ) - 
+                  (ulsfo_reduce_cons > 0? ulsfo_reduce_cons : 0 ) + 
+                  ulsfo_unpumpables -
+                  pendingCons;                  
+
+      final_ulsfo_soa = ulsfo_soa < 0 ? 0 : ulsfo_soa ;
+      if(final_ulsfo_soa >= 0){
+        this.store.dispatch(new UpdateBunkeringPlanAction(final_ulsfo_soa,'ulsfo_soa',rowData[index].detail_no)); //update ulsfo_soa updated to store for save 
+        rowData[index].ulsfo_soa =  final_ulsfo_soa; 
+      }
+        
+
+    //LSDIS SOA Calculation
+      lsdis_soa = lsdis_original_stock < 0 ? lsdis_original_stock : lsdis_original_stock - lsdis_as_eca + lsdis_unpumpables;
+      final_lsdis_soa = lsdis_soa + 
+                        (ulsfo_soa < 0 ? ulsfo_soa : 0 ) + 
+                        (ulsfoCurrentRob < ulsfo_unpumpables ? ulsfoCurrentRob - ulsfo_unpumpables : 0); 
+      this.store.dispatch(new UpdateBunkeringPlanAction(final_lsdis_soa,'lsdis_soa',rowData[index].detail_no)); //update lsdis_soa updated to store for save
+      rowData[index].lsdis_soa =  final_lsdis_soa; 
+        
+      //Final LsdisAsEca Calculation
+        final_lsdis_as_eca = lsdis_as_eca + 
+                            (ulsfo_soa < 0 ? ulsfo_soa * (-1) : 0 ) - 
+                            (ulsfoCurrentRob < ulsfo_unpumpables ? ulsfoCurrentRob - ulsfo_unpumpables : 0 );   
+        this.store.dispatch(new UpdateBunkeringPlanAction(final_lsdis_as_eca,'lsdis_as_eca',rowData[index].detail_no)); //update lsdis_as_eca updated to store
+        rowData[index].lsdis_as_eca = final_lsdis_as_eca; 
+        
+    this.rowData = rowData;
+      
   }
     
 }
