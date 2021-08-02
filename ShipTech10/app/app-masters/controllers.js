@@ -5322,6 +5322,7 @@
             $(".documentsPdfViewer .closePDFViewer").on("click", () => {
                 $(".documentsPdfViewer").remove();
                 $("body").css("overflow", "auto");   
+                $("body").css("overflow-x", "hidden");   
             })       
         }    
 
