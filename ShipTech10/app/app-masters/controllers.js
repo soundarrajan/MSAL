@@ -7084,6 +7084,19 @@
             } 
 
         });
+
+
+        window.onbeforeunload = function () {
+            if( 
+                vm.app_id == "masters" && 
+                vm.screen_id == "vessel" && 
+                vm.entity_id &&
+                window.location.href.includes("/edit/")
+            ) {
+                return "Are you sure?"
+            } 
+        };
+
         vm.getAdditionalCostsComponentTypes = function(callback) {
             if (!vm.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCostsCM) {
