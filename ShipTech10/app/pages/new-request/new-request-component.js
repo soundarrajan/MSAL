@@ -1064,7 +1064,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             };
         };
         ctrl.canBeCancelledLocation = function(locationId, payload) {
-            if(!ctrl.reasonProvidedForCancellation) {
+            if(!ctrl.reasonProvidedForCancellation && ctrl.selectedVessel.isVesselManagable) {
                 locationIndex = null;
                 $.each(ctrl.request.locations, (k,v) => {
                     if (v.id == locationId) {
@@ -1075,7 +1075,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             } else {
                 ctrl.reasonProvidedForCancellation = false;
                 if(!payload) {
-                    payload = locationId
+                    payload = {};
+                    payload.id = locationId
+                    payload.reason = null;                    
                 } else {
                     payload.id = locationId
                 }
