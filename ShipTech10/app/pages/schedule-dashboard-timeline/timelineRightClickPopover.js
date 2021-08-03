@@ -1,6 +1,6 @@
 angular.module('shiptech.components')
-    .controller('timelineRightClickPopover', [ '$scope', '$rootScope', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings', 'API', '$http', '$listsCache', 'statusColors',
-        function($scope, $rootScope, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http, $listsCache, statusColors) {
+    .controller('timelineRightClickPopover', [ '$scope', '$rootScope', '$filter', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings', 'API', '$http', '$listsCache', 'statusColors',
+        function($scope, $rootScope, $filter, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http, $listsCache, statusColors) {
 	        let ctrl = this;
 	        $scope.tenantSettings = $tenantSettings;
 	        tenantService.tenantSettings.then((settings) => {
@@ -71,7 +71,9 @@ angular.module('shiptech.components')
 
 		    	var groupedVoyagesBunker = angular.copy(groupedVoyages);
 		    	var groupedVoyagesRequest = angular.copy(groupedVoyages);
+                let groupedVoyagesRequestForRightClickPopup = angular.copy(groupedVoyages);
 		    	var groupedVoyagesOrder = angular.copy(groupedVoyages);
+                var groupedVoyagesOrderForRightClickPopup = angular.copy(groupedVoyages);
 		    	var groupedVoyagesAllRequestProductsAreStemmed = [];
 		    	var allProductTypes = {};
 	    		var orderProductTypes = {};
@@ -142,6 +144,9 @@ angular.module('shiptech.components')
                         }
                     });
                 });
+
+                groupedVoyagesRequestForRightClickPopup = angular.copy(groupedVoyagesRequest);
+
                 _.forEach(groupedVoyagesOrder, (value, key) => {
                     groupedVoyagesOrder[key] = _.groupBy(groupedVoyagesOrder[key], (item) => {
                         if (item.voyageDetail.request) {
@@ -151,6 +156,8 @@ angular.module('shiptech.components')
                         }
                     });
                 });
+
+                groupedVoyagesOrderForRightClickPopup = angular.copy(groupedVoyagesOrder);
 
                 $.each(uniqueVoyages, (k, v) => {
                     allProductTypes[v] = [];
@@ -174,22 +181,30 @@ angular.module('shiptech.components')
                         if (item2 != 'undefined') {                    
                             groupedVoyagesRequest[item][item2] = _.uniqBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.Id');
                             groupedVoyagesRequest[item][item2] = _.groupBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.fuelType.name');
+
+                            groupedVoyagesRequestForRightClickPopup[item][item2] = _.uniqBy(groupedVoyagesRequestForRightClickPopup[item][item2], 'voyageDetail.request.requestDetail.Id');
+                            groupedVoyagesRequestForRightClickPopup[item][item2] = _.groupBy(groupedVoyagesRequestForRightClickPopup[item][item2], 'voyageDetail.request.requestDetail.fuelType.name');
+                            
                             Object.keys(groupedVoyagesRequest[item][item2]).forEach((item3) => {
                                 if (item3 != 'undefined') {
                                     groupedVoyagesRequest[item][item2][item3] = _.sumBy(groupedVoyagesRequest[item][item2][item3], 'voyageDetail.request.requestDetail.fuelMaxQuantity');
                                     allProductTypes[item].push(item3);
                                 } else {
                                     delete groupedVoyagesRequest[item][item2];
+                                    delete groupedVoyagesRequestForRightClickPopup[item][item2];
                                 }
                             });                
                         }   
                         else
                         {
                             delete groupedVoyagesRequest[item][item2];
+                            delete groupedVoyagesRequestForRightClickPopup[item][item2];
                         }
                     
                     });
                 });
+
+                console.log(groupedVoyagesRequestForRightClickPopup);
 
                 Object.keys(groupedVoyagesOrder).forEach((item) => {
                     Object.keys(groupedVoyagesOrder[item]).forEach((item2) => {
@@ -197,8 +212,13 @@ angular.module('shiptech.components')
                             // groupedVoyagesOrder[item][item2] = _.groupBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.orderId');
                            
                             groupedVoyagesOrder[item][item2] = _.groupBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.fuelType.name');
+
+                            groupedVoyagesOrderForRightClickPopup[item][item2] = _.groupBy(groupedVoyagesOrderForRightClickPopup[item][item2], 'voyageDetail.request.requestDetail.fuelType.name');
+
                             Object.keys(groupedVoyagesOrder[item][item2]).forEach((item3) => {
                                 if (item3 != 'undefined') {
+                                    groupedVoyagesOrderForRightClickPopup[item][item2][item3] =  _.uniqBy(groupedVoyagesOrderForRightClickPopup[item][item2][item3], 'voyageDetail.request.requestDetail.Id');
+
                                     groupedVoyagesOrder[item][item2][item3] =  _.uniqBy(groupedVoyagesOrder[item][item2][item3], 'voyageDetail.request.requestDetail.Id');
                                     groupedVoyagesOrder[item][item2][item3] = _.sumBy(groupedVoyagesOrder[item][item2][item3], 'voyageDetail.request.requestDetail.orderProductQuantity');
                                     allProductTypes[item].push(item3);
@@ -207,9 +227,13 @@ angular.module('shiptech.components')
                             });
                         } else {
                             delete groupedVoyagesOrder[item][item2];
+                            delete groupedVoyagesOrderForRightClickPopup[item][item2];
                         }
                     });
                 });
+
+                console.log(groupedVoyagesOrderForRightClickPopup);
+
                 Object.keys(allProductTypes).forEach((item) => {
                     allProductTypes[item] = _.uniq(allProductTypes[item]);
 
@@ -221,6 +245,98 @@ angular.module('shiptech.components')
                     }
                 });
 
+                let maxLengthForGroupedVoyagesRequest = {};
+                $.each(uniqueVoyages, (key,voyage) => {
+                    console.log(key);
+                    console.log(voyage);
+                    if (typeof  maxLengthForGroupedVoyagesRequest[voyage] == 'undefined') {
+                        maxLengthForGroupedVoyagesRequest[voyage] = {};
+                    }
+                    $.each(groupedVoyagesRequestForRightClickPopup[voyage], (key2, requests) => {
+                        console.log(key2);
+                        console.log(requests);
+                        if (typeof  maxLengthForGroupedVoyagesRequest[voyage][key2] == 'undefined') {
+                            maxLengthForGroupedVoyagesRequest[voyage][key2] = {};
+                        }
+                        let maxLengthArray = 0;
+                        maxLengthArray = ctrl.maxLength(requests);
+                        maxLengthForGroupedVoyagesRequest[voyage][key2] = maxLengthArray;
+                    });
+
+                });
+
+                console.log(maxLengthForGroupedVoyagesRequest);
+
+
+                let rowValuesForGroupedVoyagesRequest = {};
+                $.each(uniqueVoyages, (key, voyage) => {
+                    console.log(key);
+                    console.log(voyage);
+                    if (typeof  rowValuesForGroupedVoyagesRequest[voyage] == 'undefined') {
+                        rowValuesForGroupedVoyagesRequest[voyage] = {};
+                    }
+                    $.each(maxLengthForGroupedVoyagesRequest[voyage], (key2, maxValue) => {
+                        console.log(key2);
+                        console.log(maxValue);
+                        if (typeof  rowValuesForGroupedVoyagesRequest[voyage][key2] == 'undefined') {
+                            rowValuesForGroupedVoyagesRequest[voyage][key2] = [];
+                        }
+                        let requests = groupedVoyagesRequestForRightClickPopup[voyage][key2];
+                        console.log(requests);
+                        for (let i = 0; i < maxValue; i++) {
+                            let valueFromSpecificLine = ctrl.getLineElementsForRequest(requests, i, allProductTypes[voyage]);
+                            rowValuesForGroupedVoyagesRequest[voyage][key2].push(valueFromSpecificLine);
+                            console.log(valueFromSpecificLine);
+                        }
+                    });
+                })
+                console.log(rowValuesForGroupedVoyagesRequest);
+
+                let maxLengthForGroupedVoyagesOrder = {};
+                $.each(uniqueVoyages, (key,voyage) => {
+                    console.log(key);
+                    console.log(voyage);
+                    if (typeof  maxLengthForGroupedVoyagesOrder[voyage] == 'undefined') {
+                        maxLengthForGroupedVoyagesOrder[voyage] = {};
+                    }
+                    $.each(groupedVoyagesOrderForRightClickPopup[voyage], (key2, orders) => {
+                        console.log(key2);
+                        console.log(orders);
+                        if (typeof  maxLengthForGroupedVoyagesOrder[voyage][key2] == 'undefined') {
+                            maxLengthForGroupedVoyagesOrder[voyage][key2] = {};
+                        }
+                        let maxLengthArray = 0;
+                        maxLengthArray = ctrl.maxLength(orders);
+                        maxLengthForGroupedVoyagesOrder[voyage][key2] = maxLengthArray;
+                    });
+
+                });
+                console.log(maxLengthForGroupedVoyagesOrder);
+
+                let rowValuesForGroupedVoyagesOrder = {};
+                $.each(uniqueVoyages, (key, voyage) => {
+                    console.log(key);
+                    console.log(voyage);
+                    if (typeof  rowValuesForGroupedVoyagesOrder[voyage] == 'undefined') {
+                        rowValuesForGroupedVoyagesOrder[voyage] = {};
+                    }
+                    $.each(maxLengthForGroupedVoyagesOrder[voyage], (key2, maxValue) => {
+                        console.log(key2);
+                        console.log(maxValue);
+                        if (typeof  rowValuesForGroupedVoyagesOrder[voyage][key2] == 'undefined') {
+                            rowValuesForGroupedVoyagesOrder[voyage][key2] = [];
+                        }
+                        let orders = groupedVoyagesOrderForRightClickPopup[voyage][key2];
+                        console.log(orders);
+                        for (let i = 0; i < maxValue; i++) {
+                            let valueFromSpecificLine = ctrl.getLineElementsForOrder(orders, i, allProductTypes[voyage]);
+                            rowValuesForGroupedVoyagesOrder[voyage][key2].push(valueFromSpecificLine);
+                            console.log(valueFromSpecificLine);
+                        }
+                    });
+                })
+                console.log(rowValuesForGroupedVoyagesOrder);
+
 
                 ctrl.groupedVoyages = {
                     hasEntity : hasEntity,
@@ -228,10 +344,130 @@ angular.module('shiptech.components')
                     groupedVoyagesAllRequestProductsAreStemmed : groupedVoyagesAllRequestProductsAreStemmed,
                     groupedVoyagesBunker : groupedVoyagesBunker,
                     groupedVoyagesRequest : groupedVoyagesRequest,
+                    groupedVoyagesRequestForRightClickPopup: groupedVoyagesRequestForRightClickPopup,
+                    maxLengthForGroupedVoyagesRequest: maxLengthForGroupedVoyagesRequest,
+                    rowValuesForGroupedVoyagesRequest: rowValuesForGroupedVoyagesRequest,
                     groupedVoyagesOrder : groupedVoyagesOrder,
+                    groupedVoyagesOrderForRightClickPopup: groupedVoyagesOrderForRightClickPopup,
+                    maxLengthForGroupedVoyagesOrder: maxLengthForGroupedVoyagesOrder,
+                    rowValuesForGroupedVoyagesOrder: rowValuesForGroupedVoyagesOrder,
                     uniqueVoyages : uniqueVoyages
                 };
 		    };
+
+            ctrl.getLineElementsForRequest = function(values, index, productTypes) {
+                let rowValues = [];
+                let status = '';
+                $.each(productTypes, (key, productType) => {
+                    console.log(key);
+                    console.log(productType);
+                    rowValues.push(null);
+                    rowValues.push(null);
+                    $.each(values, (ptkey, ptval) => {
+                        if (ptkey == productType) {
+                            console.log(ptkey);
+                            console.log(ptval);
+                            if (ptval[index]) {
+                                status = ptval[index].voyageDetail.portStatus;
+                                rowValues[key * 2] = ptval[index].voyageDetail.request.requestDetail.fuelOilOfRequest;
+                                rowValues[key * 2 + 1] = $filter("number")(ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity, ctrl.numberPrecision.quantityPrecision) +  ' ' + ptval[index].voyageDetail.request.requestDetail.uom;
+                            }
+                            
+                        }
+
+                    });
+                });
+            
+                rowValues.push(status);
+                return rowValues;
+            }
+
+            ctrl.getLineElementsForOrder = function(values, index, productTypes) {
+                let rowValues = [];
+                let status = '';
+                $.each(productTypes, (key, productType) => {
+                    console.log(key);
+                    console.log(productType);
+                    rowValues.push(null);
+                    rowValues.push(null);
+                    $.each(values, (ptkey, ptval) => {
+                        if (ptkey == productType) {
+                            console.log(ptkey);
+                            console.log(ptval);
+                            if (ptval[index]) {
+                                status = ptval[index].voyageDetail.request.requestDetail.orderStatus;
+                                rowValues[key * 2] = ptval[index].voyageDetail.request.requestDetail.fuelOilOfRequest;
+                                rowValues[key * 2 + 1] = $filter("number")(ptval[index].voyageDetail.request.requestDetail.orderProductQuantity, ctrl.numberPrecision.quantityPrecision) +  ' ' + ptval[index].voyageDetail.request.requestDetail.orderProductQuantityUom;
+                            }
+                            
+                        }
+
+                    });
+                });
+            
+                rowValues.push(status);
+                return rowValues;
+            }
+
+
+
+            ctrl.getStatusColor = function(portStatus) {
+                let colorCode = statusColors.getColorCodeFromLabels(portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
+                return colorCode;
+            }
+
+            ctrl.getBunkerPlan = function(allProductTypes, groupedVoyagesBunker) {
+                let array = [];
+                for (let i = 0; i < allProductTypes.length; i++) {
+                    array.push(null);
+                    array.push(null);
+                }
+                let i = 0;
+                $.each(groupedVoyagesBunker, (ptkey, ptval) => {
+                    console.log(ptkey);
+                    console.log(ptval);
+                    let voyageDetail = '';
+                    $.each(ptval, (productType, val) => {
+                        voyageDetail = ptval[productType][0].voyageDetail;
+                    });
+                    if (ptkey != 'undefined') {
+                        array[i * 2 + 1] = voyageDetail; 
+                        i++; 
+                    }
+                });
+                array.push(null);
+                return array;
+            }
+
+            ctrl.getElementsFromArray = function(length) {
+                let array = [];
+                for (let i = 0; i < length; i++) {
+                    array.push(i);
+                }
+                return array;
+            }
+
+            ctrl.getListForHeader = function(list) {
+                let headerList = [];
+                $.each(list, (key, v) => {
+                    headerList.push(v + ' Product');
+                    headerList.push(v + ' Qty');
+                });
+
+                return  headerList;
+            }
+
+            ctrl.maxLength = function(list) {
+                let max = 0;
+                $.each(list, (type, v) => {
+                    if (v.length > max) {
+                        max = v.length;
+                    }
+                 });
+
+                return  max;
+            }
+
 
 		    ctrl.getPriorityStatus = function(voyage) {
                 var lowestPriorityStatus = _.minBy(ctrl.groupedVoyagesDetails[voyage], 'voyageDetail.portStatusPriority');
@@ -392,6 +628,7 @@ angular.module('shiptech.components')
 	            return '';
        		};
         }
+
     ]
     );
 
