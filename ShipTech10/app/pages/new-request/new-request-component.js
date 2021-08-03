@@ -1345,7 +1345,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             } else {
                 ctrl.reasonProvidedForCancellation = false;
                 if(!payload) {
-                    payload = productId
+                    payload = {};
+                    payload.id = productId;
+                    payload.reason = null;
                 } else {
                     payload.id = productId
                 }
