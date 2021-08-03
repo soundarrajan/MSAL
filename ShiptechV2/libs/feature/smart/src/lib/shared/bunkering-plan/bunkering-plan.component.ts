@@ -912,7 +912,7 @@ export class BunkeringPlanComponent implements OnInit {
                   pendingCons;                  
 
       final_ulsfo_soa = ulsfo_soa < 0 ? 0 : ulsfo_soa ;
-      if(final_ulsfo_soa >= 0){
+      if(final_ulsfo_soa >= 0 && final_ulsfo_soa!= undefined){
         this.store.dispatch(new UpdateBunkeringPlanAction(final_ulsfo_soa,'ulsfo_soa',rowData[index].detail_no)); //update ulsfo_soa updated to store for save 
         rowData[index].ulsfo_soa =  final_ulsfo_soa; 
       }
@@ -923,15 +923,21 @@ export class BunkeringPlanComponent implements OnInit {
       final_lsdis_soa = lsdis_soa + 
                         (ulsfo_soa < 0 ? ulsfo_soa : 0 ) + 
                         (ulsfoCurrentRob < ulsfo_unpumpables ? ulsfoCurrentRob - ulsfo_unpumpables : 0); 
-      this.store.dispatch(new UpdateBunkeringPlanAction(final_lsdis_soa,'lsdis_soa',rowData[index].detail_no)); //update lsdis_soa updated to store for save
-      rowData[index].lsdis_soa =  final_lsdis_soa; 
+      if(final_lsdis_soa != undefined){
+        this.store.dispatch(new UpdateBunkeringPlanAction(final_lsdis_soa,'lsdis_soa',rowData[index].detail_no)); //update lsdis_soa updated to store for save
+        rowData[index].lsdis_soa =  final_lsdis_soa;
+      }
+       
         
       //Final LsdisAsEca Calculation
         final_lsdis_as_eca = lsdis_as_eca + 
                             (ulsfo_soa < 0 ? ulsfo_soa * (-1) : 0 ) - 
-                            (ulsfoCurrentRob < ulsfo_unpumpables ? ulsfoCurrentRob - ulsfo_unpumpables : 0 );   
-        this.store.dispatch(new UpdateBunkeringPlanAction(final_lsdis_as_eca,'lsdis_as_eca',rowData[index].detail_no)); //update lsdis_as_eca updated to store
-        rowData[index].lsdis_as_eca = final_lsdis_as_eca; 
+                            (ulsfoCurrentRob < ulsfo_unpumpables ? ulsfoCurrentRob - ulsfo_unpumpables : 0 );  
+        if(final_lsdis_as_eca != undefined){
+          this.store.dispatch(new UpdateBunkeringPlanAction(final_lsdis_as_eca,'lsdis_as_eca',rowData[index].detail_no)); //update lsdis_as_eca updated to store
+          rowData[index].lsdis_as_eca = final_lsdis_as_eca; 
+        }
+      
         
     this.rowData = rowData;
       
