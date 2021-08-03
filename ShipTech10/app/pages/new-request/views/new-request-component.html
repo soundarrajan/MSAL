@@ -846,7 +846,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div ng-if="$ctrl.productInfoFields.Agent.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "Agent","masterSource": "Agent"})'>
+                                            <div ng-if="$ctrl.productInfoFields.Agent.visible" class="col-md-4" style="clear: both;" ng-init='CM.getOptions({"Name": "Agent","masterSource": "Agent"})'>
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.productInfoFields.Agent.caption | translate }}
@@ -861,6 +861,28 @@
                                                         <div class="input-group col-md-8 col-sm-12" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Free text'">
                                                             <input name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" ng-model="location.agentCounterpartyFreeText" ng-disabled="$ctrl.disableAllFields">
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="$ctrl.productInfoFields.PortCall.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "PortCall","masterSource": "PortCall", "Filter": $ctrl.formatPortCallFilter("portCall")})'>
+                                                <div class="row">
+                                                    <label class="control-label col-md-4">
+                                                        {{ $ctrl.productInfoFields.PortCall.name | translate }}
+                                                        <!-- {{ "Port Call" | translate }} -->
+                                                    </label>
+                                                    <div class="form-group-sm00">
+                                                        <div class="input-group col-md-8 col-sm-12">
+                                                            <!-- <input decode-input-format name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" uib-typeahead="ag as ag.name for ag in options.Agent | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.agentLocationIdx = $index; $ctrl.selectAgent($item.id)" ng-model="location.agent" typeahead-editable="false" ng-blur="location.agent.name == null || location.agent.name == '' ? location.agent = null : '' " ng-value="location.agent.name" ng-disabled="$ctrl.disableAllFields"> -->
+                                                            <!-- <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_agentlist', 'Select Agent1', '$ctrl.location[' + $index + '].agent' ,'','', $$ctrl.productInfoFields.Agent.name)" ng-disabled="$ctrl.disableAllFields"> -->
+                                                            <input decode-input-format name="{{ $ctrl.productInfoFields.PortCall.name }}" id="id_{{ $ctrl.productInfoFields.PortCall.name }}" uib-typeahead="portCallLocation as portCallLocation.locationName  for portCallLocation in options.PortCall | typeaheadCustomFilter:$viewValue:'locationName'" typeahead-on-select="" typeahead-editable="true" class="typeahead form-control" ng-model="$ctrl.request.portCall" ng-disabled="$ctrl.disableAllFields">
+                                                            <!-- <input decode-input-format name="{{ "Port Call" }}" id="id_{{ "Port Call" }}" uib-typeahead="portCallLocation as portCallLocation.locationName  for portCallLocation in options.PortCall | typeaheadCustomFilter:$viewValue:'locationName'" typeahead-on-select="" typeahead-editable="true" class="typeahead form-control" ng-model="$ctrl.request.portCall" ng-disabled="$ctrl.disableAllFields"> -->
+                                                            <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" data-toggle="modal" ng-click="$ctrl.getVesselSchedules('portCall')" href="#port_call_model" ng-disabled="$ctrl.disableAllFields">
+                                                                <i class="glyphicon glyphicon-search"></i>
+                                                            </span>
+                                                        </div>
+                                                        <!-- <div class="input-group col-md-8 col-sm-12" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Free text'">
+                                                            <input name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" ng-model="location.agentCounterpartyFreeText" ng-disabled="$ctrl.disableAllFields">
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -1326,6 +1348,7 @@
 <lookup-dialog class="modal fade in" id="lookup_dialog" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" vessel-id="$ctrl.request.vesselId" args="$ctrl.voyageId" on-vessel-select="$ctrl.selectVessel(vessel)" on-company-select="$ctrl.selectCompany(company)" on-location-select="$ctrl.selectPort(location, extraDetails)" on-product-select="$ctrl.selectProduct(product)" on-service-select="$ctrl.selectService(service)" on-buyer-select="$ctrl.selectBuyer(buyer)"></lookup-dialog>
 <sellers-dialog class="modal fade in sellers-dialog" id="agents" aria-hidden="true" data-width="90%" seller-types="$ctrl.agentCounterpartyTypeId" on-seller-select="$ctrl.selectAgent(sellerId)"></sellers-dialog>
 <vessel-schedule class="modal fade in requestScreen" id="route_schedule" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedules(locations)"></vessel-schedule>
+<vessel-schedule class="modal fade in requestScreen" id="port_call_model" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" on-port-call-select="$ctrl.selectedPortCall(locations)"></vessel-schedule>
 <vessel-schedule class="modal fade in requestScreen route_schedule_mintoreach" id="route_schedule_mintoreach" aria-hidden="true" data-width="75%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedulesMintoReach(locations)"></vessel-schedule>
 <amend-dialog class="modal fade in" id="amend" aria-hidden="true" on-amend="$ctrl.amendRFQ()" on-reload="$ctrl.reloadRequest()"></amend-dialog>
 <spec-group-edit class="modal fade in" aria-hidden="true" data-width="66%">

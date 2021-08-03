@@ -65,7 +65,12 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
             }
             if (typeof filters != 'undefined' && filters !== null) {
                 lookupPayload.Filters.length = 0;
-                lookupPayload.Filters.push(filters);
+                //handle multi column filter payload
+                if (filters?.length) {
+                    lookupPayload.Filters.push(...filters);
+                } else {
+                    lookupPayload.Filters.push(filters);
+                }
             }
             let request_data = payloadDataModel.create(lookupPayload);
             return lookupResource.getList({

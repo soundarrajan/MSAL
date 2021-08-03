@@ -1014,6 +1014,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                     ctrl.prepareReasonsForSave();
                     screenLoader.showLoader();
+                    //Map port call id and voyageId, vesselVoyageDetailId with request payload locations->portCallId,vesselVoyageId
+                    let selectedPortCall = ctrl.request.portCall;
+                    let PayloadLocations = ctrl.request.locations;
+                    PayloadLocations.map((location, index)=>{
+                        location.portCallId=selectedPortCall?.locationId;
+                        location.vesselVoyageId=selectedPortCall?.voyageId;
+                        location.vesselVoyageDetailId=selectedPortCall?.vesselVoyageDetailId;
+                        return true;
+                    });
+                    delete ctrl.request.portCall;
                     newRequestModel.updateRequest(ctrl.request).then(
                         (responseData) => {
                             let data = responseData.payload;
@@ -2643,7 +2653,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.lookupInput.buyer.id = buyer.id;
         };
         ctrl.selectVesselSchedules = function(locations) {
-
             // console.log(ctrl.scheduleVoyageID );
             angular.forEach(locations, (location, key) => {
                 addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
@@ -2651,6 +2660,15 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     setDefaultLocationFields(location.locationId, location.vesselVoyageId || location.voyageId, location);
                 });
             });
+        };
+        ctrl.selectedPortCall = function(locations) {
+            ctrl.request.portCall = locations;
+            // angular.forEach(locations, (location, key) => {
+            //     addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
+            //         setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd, location.recentETA);
+            //         setDefaultLocationFields(location.locationId, location.vesselVoyageId || location.voyageId, location);
+            //     });
+            // });
         };
 
         ctrl.selectVesselSchedulesMintoReach = function(locations) {
@@ -4313,14 +4331,64 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             $scope.prettyCloseModal();
         };
-        ctrl.getVesselSchedules = function() {
+        ctrl.getVesselSchedules = function(param) {
             ctrl.EnableSingleSelect = false;
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
+                    let locationFilterModel = {
+                        ColumnName: 'LocationId',
+                        OperationType: 0,
+                        ValueType: 5,
+                        Value: null
+                    }
+                    let selectedBunkerPort = ctrl.request?.locations;
+                    
+                    let filterPayload = [
+                        {
+                            ColumnName: 'Id',
+                            OperationType: 0,
+                            ValueType: 5,
+                            Value: ctrl.request?.vesselDetails?.vessel?.id
+                        }
+                    ];
+                    if(param && param=='portCall' && selectedBunkerPort?.length) {
+                        ctrl.EnableSingleSelect = true;
+                        let locationFilter = selectedBunkerPort.map(location=> {
+                            locationFilterModel.value = location?.location?.id;
+                            return locationFilterModel;
+                        })
+                        filterPayload.push(...locationFilter);
 
-                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, false,'NewRequest');
+                    }
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, ctrl.EnableSingleSelect,'NewRequest', filterPayload);
 	        	}
         	}
+        };
+        ctrl.formatPortCallFilter = function(param) {
+            let locationFilterModel = {
+                ColumnName: 'LocationId',
+                OperationType: 0,
+                ValueType: 5,
+                Value: null
+            }
+            let selectedBunkerPort = ctrl.request?.locations;
+            
+            let filterPayload = [
+                {
+                    ColumnName: 'Id',
+                    OperationType: 0,
+                    ValueType: 5,
+                    Value: ctrl.request?.vesselDetails?.vessel?.id
+                }
+            ];
+            if(param && param=='portCall' && selectedBunkerPort?.length) {
+                let locationFilter = selectedBunkerPort.map(location=> {
+                    locationFilterModel.value = location?.location?.id;
+                    return locationFilterModel;
+                })
+                filterPayload.push(...locationFilter);
+            }
+            return filterPayload;
         };
         ctrl.getVesselSchedulesSingleselect = function(key) {
             ctrl.EnableSingleSelect = true;

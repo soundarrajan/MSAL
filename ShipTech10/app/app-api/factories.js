@@ -7587,6 +7587,41 @@ APP_API.factory('$Api_Service', [
                             );
                             return;
                         }
+                        //Port Call get options
+                        if (param?.field?.masterSource == 'PortCall') {
+                            var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vesselSchedules/list`;
+                            var apiJSON = {
+                                "IsValid": false,
+                                "TenantMongoDbUrl": null,
+                                "TenantId": null,
+                                "IsAuthorized": false,
+                                "Payload": {
+                                  "Order": null,
+                                  "Filters": [],
+                                  "Pagination": {
+                                    "Skip": 0,
+                                    "Take": 25
+                                  }
+                                }
+                            }
+                            apiJSON.Payload.Filters = param.field.Filter;
+                            $http.post(url, apiJSON).then(
+                                (response) => {
+                                    console.log(response);
+                                    if (response.status == 200) {
+                                        callback(response.data.payload);
+                                    } else {
+                                        callback(false);
+                                    }
+                                },
+                                (response) => {
+                                    console.log('HTTP ERROR');
+                                    console.log(response);
+                                    callback(false);
+                                }
+                            );
+                            return;
+                        }
                         // if (param.app == 'labs' && param.screen == 'labresult' && param.field.masterSource == 'Surveyor') {
                         //     var apiJSON = {
                         //         "Payload": {

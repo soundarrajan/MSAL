@@ -111,7 +111,8 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                 });
             });
         }
-	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page) => {
+	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page, Filters) => {
+            let filterPayload = [];
             ctrl.EnableSingleSelect = EnableSingleselect;
             if(Page == 'NewOrder'){
                 ctrl.isvoyagePortchangeEnabled = true;
@@ -129,13 +130,18 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                 return false;
              }
 
-            if(!ctrl.islocationPortEnabled){
-                lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, {
+             if(Filters?.length) {
+                filterPayload = Filters;
+             } else {
+                filterPayload = {
                     ColumnName: 'Id',
                     OperationType: 0,
                     ValueType: 5,
                     Value: value
-                }).then((data) => {
+                }
+             }
+            if(!ctrl.islocationPortEnabled){
+                lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, filterPayload).then((data) => {
                     ctrl.data = data.payload;
                     ctrl.data1 = angular.copy(data.payload);
                     $.each(ctrl.data, (k, v) => {
@@ -284,6 +290,11 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             ctrl.onVesselSchedulesSelect({
                 locations: selectedLocations
             });
+            // Port call select only for single location and no more multi select option there
+            ctrl.onPortCallSelect({
+                locations: (ctrl?.indexVoyage)? ctrl.data[ctrl.indexVoyage]: selectedLocations[selectedLocations.length-1]
+            });
+            
             ctrl.selectedLocations = [];
         };
         ctrl.confirmVesselSchedulesSingleSelection = function() {
@@ -339,6 +350,7 @@ angular.module('shiptech.components').component('vesselSchedule', {
     bindings: {
         vesselId: '<',
         onVesselSchedulesSelect: '&',
+        onPortCallSelect: '&',
         args: '<',
     }
 });

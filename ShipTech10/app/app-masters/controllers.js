@@ -3504,8 +3504,12 @@
                         $scope.optionsCache[field.Name] = JSON.stringify(field);
                         Factory_Master.get_master_list(app_id, screen_id, field, (callback) => {
                             if (callback) {
-
-                                $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
+                                if(field?.Name == 'PortCall') {
+                                    //orderBy locationName to bypass below orderBy steps because of unavailabilty of name field
+                                    $scope.options[field.Name] = _.orderBy(callback, [item => item.locationName.toLowerCase()], ['asc']);
+                                } else {
+                                    $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
+                                }
                                 if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
                                     vm.checkSpecGroup(field);
                                 }
