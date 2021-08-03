@@ -1328,7 +1328,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // $(".confirmModal").modal();
         };
         ctrl.canBeCancelledProductFromLocation = function(location, productId, payload) {
-            if(!ctrl.reasonProvidedForCancellation) {
+            if(!ctrl.reasonProvidedForCancellation && ctrl.selectedVessel.isVesselManagable) {
                 locationIndex = null;
                 productIndex = null;
                 $.each(ctrl.request.locations, (k,v) => {
