@@ -1,3 +1,4 @@
+import { SpotNegotiationModule } from './../../../../libs/feature/spot-negotiation/src/lib/spot-negotiation.module';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AdalGuard } from 'adal-angular-wrapper';
@@ -76,6 +77,24 @@ const routes: Routes = [
   {
     path: '',
     data: {
+      breadcrumb: 'Spot Negotiation',
+      breadcrumbUrl: '/#/spot-negotiation',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.SpotNegotiation,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import('@shiptech/feature/spot-negotiation').then(
+            m => m.SpotNegotiationModule
+          )
+      }
+    ]
+  },
+  {
+    path: '',
+    data: {
       breadcrumb: 'Invoice List',
       breadcrumbUrl: '/#/invoice',
       breadcrumbIcon: 'fa fa-home'
@@ -115,7 +134,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  providers:  [
+  providers: [
     AdalGuard,
     {
       provide: HTTP_INTERCEPTORS,

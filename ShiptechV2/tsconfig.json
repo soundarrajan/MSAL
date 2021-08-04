@@ -34,6 +34,7 @@
         "libs/feature/smart/src/index.ts"
       ],
       "@shiptech/feature/contract": ["libs/feature/contract/src/index.ts"],
+      "@shiptech/feature/spot-negotiation": ["libs/feature/spot-negotiation/src/index.ts"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,

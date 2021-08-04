@@ -1,3 +1,5 @@
+import { MainSpotNegotiationComponent } from './views/main-spot-negotiation.component';
+import { SpotNegotiationComponent } from './views/contract/details/spot-negotiation.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
@@ -6,7 +8,7 @@ import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
-import { ContractGridModule } from './contract-grid.module';
+import { ContractGridModule } from './spot-negotiation-grid.module';
 import { NgxsModule } from '@ngxs/store';
 import { QuantityControlState } from './store/quantity-control.state';
 import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
@@ -82,7 +84,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ContractService } from './services/contract.service';
+import { SpotNegotiationService } from './services/spot-negotiation.service';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import {
   NgxMatDatetimePickerModule,
@@ -90,70 +92,27 @@ import {
   NgxMatTimepickerModule
 } from '@angular-material-components/datetime-picker';
 
-import { NgxSpinnerModule } from "ngx-spinner";
-import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
-import { ContractRoutingModule } from './contract-routing.module';
-import { DeliveryAutocompleteModule } from './views/contract/details/components/delivery-autocomplete/delivery-autocomplete.module';
-import { MainContractComponent } from './views/main-contract.component';
-import { ContractDetailsComponent } from './views/contract/details/contract-details.component';
-import { AutocompleteInputComponent } from './views/contract/details/components/autocomplete-input/autocomplete-input.component';
-import { ContractDetailsToolbarComponent } from './views/contract/toolbar/contract-details-toolbar.component';
-import { ContractDetailsDocumentsComponent } from './views/contract/documents/contract-details-documents.component';
-import { QuantityTenantFormatDirective } from './views/contract/details/directives/quantity-tenant-format.directive';
-import { NumberOnlyDirective } from './views/contract/details/directives/number-only.directive';
-import { ContractRouteResolver } from './views/contract/details/contract-route.resolver';
-import { UomsRouteResolver } from './views/contract/details/uoms-route.resolver';
-import { ContractFeedbackRouteResolver } from './views/contract/details/contract-feedback-route.resolver';
-import { QuantityCategoryRouteResolver } from './views/contract/details/quantity-category-route.resolver';
-import { ScheduleDashboardLabelsRouteResolver } from './views/contract/details/schedule-dashboard-labels-route.resolver';
-import { ClaimTypeRouteResolver } from './views/contract/details/claim-type-route.resolver';
-import { BargeRouteResolver } from './views/contract/details/barge-route.resolver';
-import { NavBarResolver } from './views/contract/details/navbar-route.resolver';
+import { SpotNegotiationRoutingModule } from './spot-negotiation-routing.module';
 import { ContractDetailsUnsavedChangesGuard } from './guards/contract-details-unsaved-changes-guard.service';
 import { ContractApi, CONTRACT_API_SERVICE } from './services/api/contract-api';
-import { GeneralInformationContract } from './views/contract/details/components/general-information-contract/general-information-contract.component';
-import { StaticListsRouteResolver } from './views/contract/details/static-lists-route.resolver';
-import { AgreementTypeRouteResolver } from './views/contract/details/agreement-type-route.resolver';
-import { ContractQuantity } from './views/contract/details/components/contract-quantity/contract-quantity.component';
-import { ContractProduct } from './views/contract/details/components/contract-product/contract-product.component';
-import { LocationMasterRouteResolver } from './views/contract/details/location-master-route.resolver';
-import { ProductMasterRouteResolver } from './views/contract/details/product-master-route.resolver';
-import { ProductSpecGroupModalComponent } from './views/contract/details/components/product-spec-group-modal/product-spec-group-modal.component';
-import { ProductDetails } from './views/contract/details/components/product-details/product-details.component';
-import { ProductPricing } from './views/contract/details/components/product-pricing/product-pricing.component';
-import { CreateNewFormulaModalComponent } from './views/contract/details/components/create-new-formula-modal/create-new-formula-modal.component';
-import { AmountTenantFormatDirective } from './views/contract/details/directives/amount-tenant-format.directive';
-import { PricingFormulaSimple } from './views/contract/details/components/pricing-formula-simple/pricing-formula-simple.component';
-import { PricingFormulaComplex } from './views/contract/details/components/pricing-formula-complex/pricing-formula-complex.component';
-import { DateRange } from './views/contract/details/components/date-range/date-range.component';
-import { SpecificDates } from './views/contract/details/components/specific-dates/specific-dates.component';
-import { EventBasedContinuous } from './views/contract/details/components/event-based-continuous/event-based-continuous.component';
-import { EventBasedExtended } from './views/contract/details/components/event-based-extended/event-based-extended.component';
-import { EventBasedSimple } from './views/contract/details/components/event-based-simple/event-based-simple.component';
-import { QuantityBased } from './views/contract/details/components/quantity-based/quantity-based.component';
-import { ProductBased } from './views/contract/details/components/product-based/product-based.component';
-import { VesselLocationBased } from './views/contract/details/components/vessel-location-based/vessel-location-based.component';
-import { PriceTenantFormatDirective } from './views/contract/details/directives/price-tenant-format.directive';
-import { ExtendContractModalComponent } from './views/contract/details/components/extend-contract-modal/extend-contract-modal.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { FormulaHistoryModalComponent } from './views/contract/details/components/formula-history-modal/formula-history-modal.component';
-
 
 @NgModule({
   imports: [
     CommonModule,
     ContractGridModule,
-    ContractRoutingModule,
+    SpotNegotiationRoutingModule,
     LoggingModule,
     AuthenticationModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,
     MasterAutocompleteModule,
-    DeliveryAutocompleteModule,
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
@@ -238,75 +197,21 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     MatSelectInfiniteScrollModule,
     BreadcrumbsModule
   ],
-  declarations: [
-    MainContractComponent,
-    ContractDetailsComponent,
-    GeneralInformationContract,
-    ContractQuantity,
-    ContractProduct,
-    ProductDetails,
-    ProductPricing,
-    PricingFormulaSimple,
-    PricingFormulaComplex,
-    DateRange,
-    SpecificDates,
-    EventBasedContinuous,
-    EventBasedExtended,
-    ProductBased,
-    VesselLocationBased,
-    EventBasedSimple,
-    QuantityBased,
-    AutocompleteInputComponent,
-    ContractDetailsToolbarComponent,
-    ContractDetailsDocumentsComponent,
-    QuantityTenantFormatDirective,
-    AmountTenantFormatDirective,
-    PriceTenantFormatDirective,
-    NumberOnlyDirective,
-    ProductSpecGroupModalComponent,
-    CreateNewFormulaModalComponent,
-    ExtendContractModalComponent,
-    FormulaHistoryModalComponent
-    //PSpinnerDisableKeysSpinDirective,
-    //PSpinnerTenantFormatDirective
-  ],
+  declarations: [MainSpotNegotiationComponent, SpotNegotiationComponent],
   entryComponents: [],
-  exports: [
-    MainContractComponent,
-    QuantityTenantFormatDirective,
-    NumberOnlyDirective,
-    AmountTenantFormatDirective,
-    PriceTenantFormatDirective
-   // PSpinnerDisableKeysSpinDirective,
-    //PSpinnerTenantFormatDirective
-  ],
+  exports: [],
   providers: [
     ModuleLoggerFactory,
-    ContractRouteResolver,
-    UomsRouteResolver,
-    ContractFeedbackRouteResolver,
-    StaticListsRouteResolver,
-    NavBarResolver,
-    BargeRouteResolver,
-    ClaimTypeRouteResolver,
-    ScheduleDashboardLabelsRouteResolver,
-    AgreementTypeRouteResolver,
-    QuantityCategoryRouteResolver,
-    ProductMasterRouteResolver,
-    LocationMasterRouteResolver,
     {
       provide: CONTRACT_API_SERVICE,
-      useClass: environment.production
-        ? ContractApi
-        : ContractApi
+      useClass: environment.production ? ContractApi : ContractApi
     },
     ContractDetailsUnsavedChangesGuard,
-    ContractService,
+    SpotNegotiationService,
     DialogService,
     MessageService,
     ConfirmationService,
     DecimalPipe
-
   ]
 })
-export class ContractModule {}
+export class SpotNegotiationModule {}
