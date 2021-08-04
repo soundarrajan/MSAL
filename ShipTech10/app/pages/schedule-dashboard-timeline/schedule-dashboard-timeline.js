@@ -601,7 +601,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var computedEndDate, computedStartDate;
         	if (ctrl.scheduleDashboardConfiguration.startsBefore >= 15) {
 	        	computedStartDate = moment.utc().subtract(15, "days").format("YYYY-MM-DD");
-	        	computedEndDate = angular.copy(moment.utc(computedStartDate).add(28,"days").format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment.utc(computedStartDate).add(30,"days").format("YYYY-MM-DD"));
         		// if ( (ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter) % 2 == 1) {
 		        // 	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(25,"days").format("YYYY-MM-DD"));
         		// } else {
@@ -609,7 +609,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         		// }
         	} else {
 	        	computedStartDate = angular.copy(moment.utc(ctrl.startDate).format("YYYY-MM-DD"));
-	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(28,"days").format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
         	}
 
 
@@ -636,7 +636,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': zoomMin,
-                'zoomMax': 2419200000,
+                'zoomMax': 2592000000000,
                 // 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
@@ -669,7 +669,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         }
                     }
                     if ($scope.displayedColumns["Vessel Type"]) {
-                        tpl += `<span class="vis-custom-group-column vis-vessel-type" tooltip title="${group.vesselType}"> <span class="vis-custom-group-column-content vesselType">${vesselType} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column vis-vessel-type" tooltip title="${group.vesselType}"> <span class="vis-custom-group-column-content vesselType">${vesselType.substring(0, 4)} </span></span>`;
                     }
                     if ($scope.displayedColumns["Service"]) {
                     	tpl += `<span class="vis-custom-group-column vis-service" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content serviceName">${serviceName} </span></span>`;
@@ -679,7 +679,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                     if ($scope.displayedColumns["Buyer of the Service"]) {
                         tpl += `<span class="vis-custom-group-column vis-buyer-of-service" tooltip title="${group.serviceBuyerName}" ><span class="vis-custom-group-column-content serviceBuyerName"> ${serviceBuyerName} </span></span>`;
-                    }                    
+                    } 
+                    if ($scope.displayedColumns["Company"]) {
+                        tpl += `<span class="vis-custom-group-column last vis-company" tooltip title="${group.companyName}"> <span class="vis-custom-group-column-content companyName"> ${companyName} </span></span>`;
+                    }                   
                     tpl += '</div>';
                     return tpl;
                 },
@@ -771,7 +774,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     ctrl.lastStartDate = moment(timeline.range.start);
                     ctrl.lastEndDate = moment(timeline.range.end);
                     var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
-                    if (diff == 2419200000) {
+                    if (diff == 2592000000000) {
                         $(".st-btn-icon-zoom-in a").css("color", "#555555");
                          $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
                     } else if (diff == zoomMin) {
@@ -1024,7 +1027,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
                 if ($scope.displayedColumns["Buyer of the Service"]) {
                     groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service" timeline-order-column="serviceBuyerName"> Buyer of the Service </span>';
-                }                
+                }      
+                if ($scope.displayedColumns["Company"]) { 
+                    if ($scope.tenantSettings.companyDisplayName.name == "Company") {
+                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company" timeline-order-column="companyName"> Company </span></div>';
+                    } else {
+                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company" timeline-order-column="companyName"> Pool </span></div>';
+                    }
+                }           
             
                 groupColumnsTitleElement += '</div>';
 
