@@ -3,6 +3,8 @@ angular.module('shiptech.components')
         function($scope, $rootScope, $filter, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http, $listsCache, statusColors) {
 	        let ctrl = this;
 	        $scope.tenantSettings = $tenantSettings;
+
+            ctrl.collapseContainer = [];
 	        tenantService.tenantSettings.then((settings) => {
 	            ctrl.numberPrecision = settings.payload.defaultValues;
 	            ctrl.pricePrecision = settings.payload.defaultValues.pricePrecision;

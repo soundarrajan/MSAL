@@ -1,4 +1,72 @@
 <div class="newStatusColoured contextmenu fade in" style="background-color: #fff; z-index: 9999999;"> 
+<!-- 	<div class="popover-header">
+		<i class="fa fa-location-arrow">
+			&nbsp;&nbsp;
+		</i><span>{{$ctrl.vesselName | decodeReadOnly}}</span>
+	</div>
+	<div class="content">
+		<div class="voyageDetailSection" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.uniqueVoyages">
+			<hr ng-if="$index > 0" style="margin: 5px 0;" >
+			<div ng-init="voyageStatus = $ctrl.getPriorityStatus(voyage)" style="padding-left: 5px;">
+				Port: <b>{{$ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.locationCode | decodeReadOnly}}</b>
+				<span ng-if="!voyageStatus.hideInDashboard" style="background: {{voyageStatus.color}}; color:{{voyageStatus.fontColor}}; padding: 0px 5px; border-radius: 200px !important;">{{voyageStatus.name}}</span>
+			</div>
+			<table ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder" style="border-spacing: 5px 5px;border-collapse: separate;">
+				<thead>
+					<tr>
+						<th id="generatedThId232" style="width: 90px;max-width: 100px; padding-left: 0">
+						</th>
+						<th id="generatedThId233" ng-repeat="(key2, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" class="productType">
+							{{productType}}
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan && !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
+						<td style="width: 90px;max-width: 100px; padding-left: 0">
+							{{voyage}}
+						</td>
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" class="cancelBunkerStrategyCell" style="border: 1px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important; ">
+							<span ng-repeat="(ptkey,ptval) in $ctrl.groupedVoyages.groupedVoyagesBunker[voyage]" ng-init="bunkerPlan = ptval[productType][0].voyageDetail.bunkerPlan" class="amountRightPopover">
+								{{( (!bunkerPlan.supplyQuantity) ? ("") : (bunkerPlan.supplyQuantity | number : $ctrl.numberPrecision.amountPrecision))}}
+								<span ng-if="bunkerPlan.supplyStrategy && !$ctrl.strategyAlreadyCancelled(bunkerPlan.id)" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, ptval[productType][0].voyageDetail)" ><i class="fa fa-times"></i></span>
+							</span>
+						</td>
+					</tr>
+					<tr ng-repeat="(key2, requests) in $ctrl.groupedVoyages.groupedVoyagesRequest[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasRequest && !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
+						<td style="width: 90px;max-width: 100px; padding-left: 0">
+							<a href="/#/edit-request/{{key2}}" target="_blank">
+								REQ{{key2}}
+							</a>
+						</td>
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" style="border: 1px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important;">
+							<span ng-repeat="(ptkey,ptval) in requests" ng-if="ptkey == productType" class="amountRightPopover">
+								{{( (!ptval) ? ("-") : (ptval | number : $ctrl.numberPrecision.amountPrecision))}}
+							</span>
+						</td>						
+					</tr>
+					<tr ng-repeat="(key2, orders) in $ctrl.groupedVoyages.groupedVoyagesOrder[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasOrder">
+						<td style="width: 90px;max-width: 100px; padding-left: 0">
+							<a href="/#/edit-order/{{key2}}" target="_blank">
+								ORD{{key2}}
+							</a>
+						</td>
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" style="border: 1px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important;">
+							<span ng-repeat="(ptkey,ptval) in orders" ng-if="ptkey == productType" class="amountRightPopover">
+								{{( (!ptval) ? ("-") : (ptval | number : $ctrl.numberPrecision.amountPrecision))}}
+								
+							</span>
+						</td>						
+					</tr>
+		
+				</tbody>			
+			</table>
+			<div>
+				<a class="action-btn btn btn-sm btn-default" href="#/new-request/{{voyage}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a>
+				<span class="action-btn btn btn-sm btn-default" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite"> <i class="fa fa-pencil"></i> Add to Contract Planning </span>
+			</div>
+		</div>
+	</div> -->
 	<div class="content-right-click">
 		<div class="popover-header header-right-click-pop-up">
 			<span> Request Details - {{$ctrl.vesselName | decodeReadOnly}}</span>
@@ -8,8 +76,8 @@
 				<div class="row" style="margin-left: unset !important; margin-right: unset !important;">
 					<div style="float: left;">
 						<span class="icon-container">
-						 	<a ng-if="!$ctrl.collapseContainer" class="expand-icon" ng-click="$ctrl.collapseContainer = true;"> </a>
-						 	<a ng-if="$ctrl.collapseContainer" class="collapse-icon" ng-click="$ctrl.collapseContainer = false;"> </a>
+						 	<a ng-if="!$ctrl.collapseContainer[voyage]" class="expand-icon" ng-click="$ctrl.collapseContainer[voyage] = true;"> </a>
+						 	<a ng-if="$ctrl.collapseContainer[voyage]" class="collapse-icon" ng-click="$ctrl.collapseContainer[voyage] = false;"> </a>
 						 	<b> Port of {{$ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.request.requestDetail.location}} ({{ $ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.locationCode }})</b>
 						 	<span class="border-line"></span>
 						 	<b>
@@ -22,7 +90,7 @@
 						<span class="action-btn btn btn-sm btn-default btn-right-pop-up" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite"> <i class="contract-planning"></i> Contract Planning </span>
 					</div>
 				</div>
-				<table class="right-popup-table table table-stripped table-hover"  ng-if="!$ctrl.collapseContainer && ($ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder)">
+				<table class="right-popup-table table table-stripped table-hover"  ng-if="!$ctrl.collapseContainer[voyage] && ($ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder)">
 					<thead>
 						<tr>
 							<th class="bp-request-id">
