@@ -25,8 +25,8 @@
     <div [ngClass]="(bunkerPlanHeaderDetail.myDefaultView)? 'default-view': 'reminder-view'">My Default View</div> -->
   <!-- </div> -->
   <!-- <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;"> -->
-  <div  style="display: flex;align-items: center; justify-content: space-evenly;">
-    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [(ngModel)]="this.sendPlanReminder" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+  <div  style="display: flex;align-items: center; justify-content: space-evenly;padding: 0px 20px;">
+    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [(ngModel)]="this.sendPlanReminder" class="dark-bg-checkbox dark-checkbox noborder" style="padding-right: 10px;"></mat-checkbox>
     <div [ngClass]="(bunkerPlanHeaderDetail.dockPortFlag)? 'default-view': 'reminder-view'">Do not send plan reminder</div>
     <!-- <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon> -->
     <mat-icon *ngIf="bunkerPlanHeaderDetail?.dockPortFlag" matTooltip="Plan reminder disabled since vessel is Dry Dock" svgIcon="info-icon" style="width: 18px;padding-right: 5px;"></mat-icon>
@@ -59,10 +59,10 @@
     <!-- <mat-expansion-panel *ngIf="!expandComments" hideToggle="true"
     [expanded]="vesselService.currentROBandArbitragedetails" (closed)="changeDefault('currentROBandArbitragedetailsClose')"
     (opened)="changeDefault('currentROBandArbitragedetailsOpen')"> -->
-    <mat-expansion-panel *ngIf="!expandComments" hideToggle="true" [expanded]="'false'">
+    <mat-expansion-panel *ngIf="!expandComments" hideToggle="true" [expanded]="'true'" disabled>
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
-        <mat-panel-title>
-          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+        <mat-panel-title style="padding-left: 10px;">
+          <!-- <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon"> -->
           Current ROB & Arbitrage details
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -127,16 +127,22 @@
                     <div class="dark-table-title">Arbitrage Details</div>
                     <div class="dark-table">
                       <div class="dark-table-body">
-                        <div class="row">
+                        <div class="row fz-12 p-t-5">
                           <div class="col-5 p-0">
-                            <div>Arbitrage Volume : {{ROBArbitrageData?.arbitrageVolume}} MT</div>
-                            <div>Contango Volume : {{ROBArbitrageData?.contangoVolume}}</div>
-                            <div>Arbitrage Bunker port : {{ROBArbitrageData?.arbitrageBunkerPort}}</div>
+                            <div><span class="text-white">Arbitrage Volume : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageVolume}} MT</span></div>
+                            <div><span class="text-white">Contango Volume : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.contangoVolume}}</span></div>
+                            <div><span class="text-white">Arbitrage Bunker port : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageBunkerPort}}</span></div>
                           </div>
                           <div class="col-7 p-0">
-                            <div>Arbitrage Bunker Port ETA : {{ROBArbitrageData?.arbitrageBunkerPortETA}}</div>
-                            <div>Arbitrage Discharge Port : {{ROBArbitrageData?.arbitrageDischargePort}}</div>
-                            <div>Arbitrage Discharge Port ETA : {{ROBArbitrageData?.arbitrageDischargePortETA}}</div>
+                            <div><span class="text-white">Arbitrage Bunker Port ETA : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageBunkerPortETA}}</span></div>
+                            <div><span class="text-white">Arbitrage Discharge Port : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageDischargePort}}</span></div>
+                            <div><span class="text-white">Arbitrage Discharge Port ETA : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageDischargePortETA}}</span></div>
                           </div>
                         </div>
                         <!-- <table class="table">
@@ -220,12 +226,12 @@
     <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
       id="current-bunker-plan" hideToggle="true" 
        [expanded]="'true'" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);"
-      (opened)="changeDefault('currentBunkeringPlanOpen')">
+      (opened)="changeDefault('currentBunkeringPlanOpen')" disabled>
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+          <!-- <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon"> -->
           <div style="display: flex;align-items: center;width: 100%;">
-            <div style="flex: 0 0 17%;">Current Bunker Plan</div>
+            <div style="flex: 0 0 17%; padding-left: 10px;">Current Bunker Plan</div>
             <div style="flex:0 0 80%;display: flex;align-items: center;">
               <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID :
               </span><span class="content">{{this.planId}}</span></div>
