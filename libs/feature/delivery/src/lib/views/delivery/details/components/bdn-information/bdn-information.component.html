@@ -206,6 +206,7 @@
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
                   <a
                     *ngIf="relatedDelivery"
+                    [ngClass]="{'active_delivery': formValues.id === relatedDelivery.deliveryId}"
                     href="{{
                       getRelatedDeliveryLink(relatedDelivery.deliveryId)
                     }}"
