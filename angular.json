@@ -246,6 +246,40 @@
         }
       }
     },
+    "spot-negotiation": {
+      "projectType": "library",
+      "root": "libs/feature/spot-negotiation",
+      "sourceRoot": "libs/feature/spot-negotitation/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/spot-negotiation/tsconfig.lib.json",
+              "libs/feature/spot-negotiation/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/spot-negotiation/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/spot-negotiation/jest.config.js",
+            "tsConfig": "libs/feature/spot-negotiation/tsconfig.spec.json",
+            "setupFile": "libs/feature/spot-negotiation/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
     "core": {
       "projectType": "library",
       "root": "libs/core",
