@@ -89,7 +89,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
             if (pricePrecision == null) {
                 pricePrecision = ctrl.tenantSettings.defaultValues.pricePrecision; 
             }
-            plainNumber = $scope.roundDown(value);
+            plainNumber = $scope.roundDown(value, pricePrecision);
             return $filter("number")(plainNumber, pricePrecision);
         }
         ctrl.confirmOffers = function(shouldValidate) {
