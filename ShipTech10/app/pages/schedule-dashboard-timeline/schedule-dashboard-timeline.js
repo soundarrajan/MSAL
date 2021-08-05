@@ -636,7 +636,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': zoomMin,
-                'zoomMax': 2592000000000,
+                'zoomMax': 2592000000,
                 // 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
@@ -774,7 +774,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     ctrl.lastStartDate = moment(timeline.range.start);
                     ctrl.lastEndDate = moment(timeline.range.end);
                     var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
-                    if (diff == 2592000000000) {
+                    if (diff == 2592000000) {
                         $(".st-btn-icon-zoom-in a").css("color", "#555555");
                          $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
                     } else if (diff == zoomMin) {
@@ -1365,8 +1365,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
-
-
             if (!timeline) {
                 return;
             }
