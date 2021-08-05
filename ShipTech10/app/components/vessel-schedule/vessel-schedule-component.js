@@ -157,6 +157,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                                 [ 0, 'asc' ]
                             ]
                         });
+                        $('.table').dataTable();
                     });
                 });
             }
@@ -292,7 +293,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             });
             // Port call select only for single location and no more multi select option there
             ctrl.onPortCallSelect({
-                locations: (ctrl?.indexVoyage)? ctrl.data[ctrl.indexVoyage]: selectedLocations[selectedLocations.length-1]
+                locations: (ctrl?.indexVoyage!=undefined)? ctrl.data[ctrl.indexVoyage]: selectedLocations[selectedLocations.length-1]
             });
             
             ctrl.selectedLocations = [];
