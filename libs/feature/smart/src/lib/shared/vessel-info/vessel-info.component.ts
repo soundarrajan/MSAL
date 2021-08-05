@@ -279,6 +279,7 @@ export class VesselInfoComponent implements OnInit {
         if (this.vesselService.defaultView) {
           this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 1;
         }
+        this.loadROBArbitrage();
         break;
       case 'currentBunkeringPlanClose':
         this.vesselService.currentBunkeringPlan = false;
