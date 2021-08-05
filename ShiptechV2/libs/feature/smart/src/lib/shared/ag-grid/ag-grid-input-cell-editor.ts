@@ -15,8 +15,12 @@ const KEY_TAB = 9;
 @Component({
     selector: 'aggrid-cell-data',
     template: ` <div *ngIf="params.type=='edit'">
-    <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
-        (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
+    <div [matTooltip]="input.value">
+      <input #input 
+      [disabled]=" (params.colDef?.field == 'hsfo_max_lift' || params.colDef?.field == 'ulsfo_max_lift' || params.colDef?.field == 'lsdis_max_lift') &&  params?.data?.operator_ack == 0" 
+      [ngClass]="params.cellClass" [(ngModel)]="value"
+      (keydown)="triggerChangeEvent();onKeyDown($event)" >
+    </div>
     <!-- <span *ngIf="showInfoIcon == true">
           <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
     </span> -->
