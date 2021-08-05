@@ -759,6 +759,7 @@ export class BunkeringPlanComponent implements OnInit {
   }
 
   triggerRefreshGrid(role){
+    let _this = this;
     this.rowData = JSON.parse(JSON.stringify(this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)))
     let vesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     if(vesselData?.userRole == 'Vessel' && this.type == 'C')
@@ -771,7 +772,9 @@ export class BunkeringPlanComponent implements OnInit {
       var event = {force : true}
       if(this.type == 'C' && this.gridOptions.api && this.rowData){
         setTimeout(() => {
-          this.gridOptions.api.setRowData(this.rowData);
+          if(_this.gridOptions?.api) {
+            _this.gridOptions.api.setRowData(this.rowData);
+          }
         }, 500);
       }
   }
