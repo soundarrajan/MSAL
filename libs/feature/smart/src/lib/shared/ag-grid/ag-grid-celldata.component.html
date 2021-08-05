@@ -343,7 +343,7 @@
       {{params.value}}</div>
   </div>
   
-  <div class="port-cell" *ngIf="params.type=='port'" style="display:flex;" [ngClass]="{'highlight': params?.data?.is_end_of_service =='Y','end-of-voyage':params?.data?.is_last_port == 'Y'}">
+  <div class="port-cell" *ngIf="params.type=='port'" style="display:flex;" [ngClass]="{'highlight': params?.data?.is_end_of_service =='Y','end-of-voyage':params?.data?.is_last_port == 'Y','font-weight-port-unack': this.isOperatorAck == false , 'font-bold-port': this.isOperatorAck == true }">
     <div style="width:15px;">
       <mat-checkbox #check [ngClass]="{'cell-checkbox':!check.checked}" [(ngModel)]="params.data.createReqFlag"
         (change)="portClicked({event:$event, param: params})">
