@@ -71,7 +71,7 @@ angular.module('shiptech').config([
         ];
         $httpProvider.interceptors.push([
             '$q'/* , 'applicationInsightsService'*/, '$log', 'appInsightsInstance', '$rootScope',
-            function($q/* , applicationInsightsService*/, $log, appInsightsInstance, $rootScope) {
+            function($q/* , applicationInsightsService*/, $log, appInsightsInstance, $rootScope) {      
                 function computePerformance(url) {
                     let deferredResult = $q.defer();
 
@@ -257,6 +257,7 @@ angular.module('shiptech').config([
                                 if (window.openedScreenLoaders <= 0) {
                                     $('.screen-loader').fadeOut(200);
                                     $('clc-table-list tbody').css('opacity', 1);
+                                    $rootScope.$broadcast('loaderHasClosed', true);
                                 }
                             }, 50);
                         }

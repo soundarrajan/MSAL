@@ -604,8 +604,8 @@ angular
                     $rootScope.lastLoggedUri = uri;
                     $rootScope.pageViewTelemetryId = Microsoft.ApplicationInsights.Util.generateW3CId();
 
-                    if (appInsightsInstance) {
-                        appInsightsInstance.trackPageView({
+                   if (appInsightsInstance && window.loggedAppBootTime) {
+                       appInsightsInstance.trackPageView({
                             id: $rootScope.pageViewTelemetryId,
                             name: 'shiptech page view',
                             properties: {
@@ -619,6 +619,30 @@ angular
                     }
                 }
             });
+
+
+            $rootScope.$on("loaderHasClosed", function(event, pageData){
+                if(!window.loggedAppBootTime) {
+                    loadDuration = Date.now() - performance.timing.connectStart;
+                    console.log("Page Load duration", loadDuration);
+                    window.loggedAppBootTime = true;
+                    if (appInsightsInstance) {
+                        window.angularJsApplicationStart = false
+                        console.log("******", appInsightsInstance);
+                        appInsightsInstance.trackMetric(
+                            {   
+                                name: `Page Load : ${window.location.href}`, 
+                                average: loadDuration
+                            },
+                            window.location
+                        );
+                        appInsightsInstance.trackPageView();
+                                           
+                    }
+                }
+            })
+
+
         }
     ]);
 angular.module('shiptech').config([
@@ -912,8 +936,6 @@ function appInsightsInstanceProvider(instrumentationKey) {
     };
     return global.Microsoft.ApplicationInsights.ApplicationInsightsContainer.getAppInsights(snippet, snippet.version);
 }
-
-
 angular.module("uib/template/typeahead/typeahead-match.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("uib/template/typeahead/typeahead-match.html",
     "<a href\n" +
