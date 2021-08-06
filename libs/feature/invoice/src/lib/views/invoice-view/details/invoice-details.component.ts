@@ -460,6 +460,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   @Input('detailFormvalues') set _detailFormvalues(val) {
     if (val) {
       this.formValues = val;
+      this.dateFormat_rel_invoice = this.dateFormat_rel_invoice.replace('DDD', 'ddd').replace('dd/', 'DD/').replace('dd-', 'DD-')
       // Set trader and buyer name;
       this.orderDetails2.contents[0].value =
         this.formValues.orderDetails.buyerName || this.emptyStringVal;
