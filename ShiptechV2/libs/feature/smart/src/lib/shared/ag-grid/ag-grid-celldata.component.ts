@@ -749,6 +749,30 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
   }
 
+  requestAvailable(params){
+    let isRequestAvailable = false;
+    switch(params?.colDef?.field){
+      case 'hsfo_estimated_lift' : { 
+                                        isRequestAvailable = params.data?.request_id_hsfo ? true : false;
+                                        break;
+                                   }
+      case 'ulsfo_estimated_lift' : { 
+                                      isRequestAvailable = params.data?.request_id_ulsfo ? true : false;
+                                      break;
+                                    }
+      case 'lsdis_estimated_lift': {  
+                                      isRequestAvailable = params.data?.request_id_lsdis ? true : false;
+                                      break;
+                                    }
+      case 'hsdis_estimated_lift': {  
+                                      isRequestAvailable = params.data?.request_id_hsdis ? true : false;
+                                      break;
+                                    }
+    
+    }
+    return isRequestAvailable
+  }
+
   consUpdatedEvent(params,value){
     this.params.context.componentParent.consUpdatedEvent(params,value);
   }
