@@ -33,6 +33,7 @@ export class AppComponent {
   isProduction = environment.production;
   public isLoading = true;
   loading: boolean;
+  window: any;
   firstApiCallStartTime: any;
 
   constructor(
@@ -42,10 +43,7 @@ export class AppComponent {
     private loaderService: LoaderService,
     private elementRef: ElementRef
   ) {
-    declare global {
-        interface Window { loggedBootTime: any; }
-    }
-    window.loggedBootTime = window.loggedBootTime || false;
+
     router.events.subscribe((event: RouterEvent): void => {
       if (
         event instanceof NavigationEnd ||
