@@ -42,6 +42,10 @@ export class AppComponent {
     private loaderService: LoaderService,
     private elementRef: ElementRef
   ) {
+    declare global {
+        interface Window { loggedBootTime: any; }
+    }
+    window.loggedBootTime = window.loggedBootTime || false;
     router.events.subscribe((event: RouterEvent): void => {
       if (
         event instanceof NavigationEnd ||
@@ -49,7 +53,6 @@ export class AppComponent {
         event instanceof NavigationError
       ) {
           this.isLoading = false;
-          if(typeof(window.loggedBootTime) == 'undefined') {window.loggedBootTime = false;}
           setTimeout(()=>{
               if(!window.loggedBootTime) {
                   window.loggedBootTime = true;
