@@ -1,11 +1,11 @@
-﻿commit 47d39a314c63c8eff1f4a359a798e07097b8ec76
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Aug 4 18:34:22 2021 +0000
+﻿commit 47bd35ca7194a7c1d35cf7face79bff7f442bcab
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Aug 6 11:31:31 2021 +0000
 
-    Merged PR 12891: Revert '#34646: Bunker plan - Requests: Complete name of the fuel grade changes has done'
+    Merged PR 12928: Capture full page load on AppInsights - fix build4
     
-    Reverts !12889
+    Capture full page load on AppInsights - fix build4
     
-    Related work items: #34646
+    Related work items: #32863
 
 branch: master
