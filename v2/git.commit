@@ -1,11 +1,7 @@
-﻿commit 47bd35ca7194a7c1d35cf7face79bff7f442bcab
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Aug 6 11:31:31 2021 +0000
+﻿commit 858b5a341ce58149f0398bc9f61b9fa05bbe338f
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Fri Aug 6 17:26:23 2021 +0530
 
-    Merged PR 12928: Capture full page load on AppInsights - fix build4
-    
-    Capture full page load on AppInsights - fix build4
-    
-    Related work items: #32863
+    #34850 : AltPort displayed for all the prod type
 
 branch: master
