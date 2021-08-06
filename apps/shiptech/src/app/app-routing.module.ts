@@ -1,4 +1,3 @@
-import { SpotNegotiationModule } from './../../../../libs/feature/spot-negotiation/src/lib/spot-negotiation.module';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AdalGuard } from 'adal-angular-wrapper';
@@ -7,7 +6,6 @@ import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard'
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './service/interceptor.service';
-import { AuthenticationInterceptor } from '@shiptech/core/interceptors/authentication-http.interceptor.service.';
 
 const routes: Routes = [
   {
@@ -78,7 +76,7 @@ const routes: Routes = [
     path: '',
     data: {
       breadcrumb: 'Spot Negotiation',
-      breadcrumbUrl: '/#/spot-negotiation',
+      breadcrumbUrl: '/#/group-of-requests',
       breadcrumbIcon: 'fa fa-home'
     },
     children: [

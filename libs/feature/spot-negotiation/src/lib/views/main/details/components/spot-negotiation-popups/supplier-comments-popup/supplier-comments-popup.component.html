@@ -1,0 +1,76 @@
+<div class="supplier-comments-popup">
+    <div class="header">
+        <div class="title">Supplier Comments</div>
+        <div class="header-btn">
+            <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+        </div>
+    </div>
+    <div class="seperator-line"></div>
+    <mat-dialog-content>
+        <div class="supplier-comments-section">
+            <div>
+                <div class="comments-panel">
+                    <div class="display-receiver-comment" *ngFor="let item of receiver_comments; let i=index;">
+                        <div class="row">
+                            <div style="flex:0 0 5%; margin: 8px;">
+                                <div [ngClass]="item.selected ? 'selected' : 'comment-user'" (click)="selectItem(0,i);">{{item.placeholder}}</div>
+                            </div>
+                            <div style="flex:0 0 90%; margin: 5px -10px;">
+                                <div class="row">
+                                    <div class="name col-5 plr0" matTooltip="{{item.name}}" [matTooltipShowDelay]="500" (click)="selectItem(0,i);">
+                                      <div class="truncate-180">{{item.name}}</div>
+                                    </div>
+                                    <div class="col-7 pl0 pr10 text-right" style="margin-left: -12px;">
+                                    <div class="date display-inline " matTooltip="{{item.date}} {{item.time}}" [matTooltipShowDelay]="500">
+                                        {{item.date}} {{item.time}}    
+                                    </div>
+                                    <div class="display-inline">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    </div>                                          
+                                </div>
+                                <div class="row" style="padding-top: 5px;" (click)="selectItem(0,i);">
+                                    <div class="comment">
+                                      {{item.comment}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="display-sender-comment" *ngFor="let item of sender_comments; let i=index;">
+                        <div class="row">
+                            <div style="flex:0 0 5%; margin: 8px;">
+                                <div [ngClass]="item.selected ? 'selected' : 'comment-user'" (click)="selectItem(0,i);">{{item.placeholder}}</div>
+                            </div>
+                            <div style="flex:0 0 90%; margin: 5px -10px;">
+                                <div class="row">
+                                    <div class="name col-5 plr0" matTooltip="{{item.name}}" [matTooltipShowDelay]="500" (click)="selectItem(0,i);">
+                                      <div class="truncate-180">{{item.name}}</div>
+                                    </div>
+                                    <div class="col-7 pl0 pr10 text-right" style="margin-left: -12px;">
+                                    <div class="date display-inline " matTooltip="{{item.date}} {{item.time}}" [matTooltipShowDelay]="500">
+                                        {{item.date}} {{item.time}}    
+                                    </div>
+                                    <div class="display-inline">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    </div>                                           
+                                </div>
+                                <div class="row" style="padding-top: 5px;" (click)="selectItem(0,i);">
+                                    <div class="comment">
+                                      {{item.comment}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>       
+        <div class="new-comments">
+            <div class="enter-new-comment">
+                <input placeholder="Type your comments here" matInput #newInternalInput type="text" [(ngModel)]="newInternalComment" (keyup.enter)="addInternalComment(newInternalInput.value)" style="height: 50px; padding-left: 12px;">
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>
