@@ -74,9 +74,11 @@
     
     <div *ngIf="params?.data?.is_alt_port == 'N'" matTooltip="0" [ngClass]="params.cellClass" style="color: white;">0 </div>
       
-    <div *ngIf="params?.data?.is_alt_port == 'Y'" matTooltip="Alt.port" [ngClass]="params.cellClass">
-      <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>
+    <div *ngIf="params?.data?.is_alt_port == 'Y' && requestAvailable(params); else content" matTooltip="Alt.port" [ngClass]="params.cellClass">
+      <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>  
     </div>
+    <ng-template #content><div *ngIf="params?.data?.is_alt_port == 'Y' && !requestAvailable(params); "matTooltip="{{params.value}}" [ngClass]="params.cellClass" style="color: white;">{{params.value}}</div></ng-template>
+
   </div>
   <div *ngIf="params.type=='request-link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
