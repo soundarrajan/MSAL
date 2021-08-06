@@ -48,7 +48,18 @@ export class AppComponent {
         event instanceof NavigationCancel ||
         event instanceof NavigationError
       ) {
-        this.isLoading = false;
+          this.isLoading = false;
+          setTimeout(()=>{
+              if(!window.loggedBootTime) {
+                  window.loggedBootTime = true;
+                  var loadTime = Date.now() - performance.timing.connectStart; 
+                  this.myMonitoringService.logMetric(
+                      `Page Load : ${window.location.href}`,
+                      loadTime,
+                      window.location
+                  );              
+              }
+          })
         changeDetector.markForCheck();
       }
       if (event instanceof NavigationStart) {
