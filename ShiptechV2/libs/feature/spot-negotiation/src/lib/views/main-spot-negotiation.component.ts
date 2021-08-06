@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { ResetQcModuleStateAction } from '../store/report/qc-module.actions';
 
 @Component({
   selector: 'shiptech-main-spot-negotiation',
@@ -20,6 +19,5 @@ export class MainSpotNegotiationComponent implements OnDestroy {
 
     // Note: On module destroy we have to reset the module states
     // Note: to prevent displaying irrelevant data on delayed switching of modules
-    this.store.dispatch(ResetQcModuleStateAction);
   }
 }

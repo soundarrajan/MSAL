@@ -1,0 +1,122 @@
+<div class="spot-popup-header-container"><div class="spot-nego-title">Confirm Order</div>
+  <div class="spot-dialog-title-right">
+    <button class="cancel-btn" mat-button [mat-dialog-close]="true" >Cancel</button>
+    <button class="proceed-btn" mat-button [mat-dialog-close]="true" >Proceed</button>
+<div class="title-divider">|</div>
+    <div class="close-circle">
+    <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() " style="font-size: 14px; display: inline; position:relative; top:-1px; ">close</mat-icon>
+      </div>
+    </div>
+    
+</div>
+  <hr class="hr-line">
+  <div class="m-l-20 m-t-10 m-b-10" style="font-weight: 500;">You are about to confirm this offer. Are you sure you want to Proceed? </div>
+    
+  <div class="product-terms p-b-5 p-r-15 p-l-15">
+    <div class="operations-details-block"style="height: auto;">
+      <table>
+        <thead>
+          <tr>
+            
+            <th class="text-left w-80">Request</th>
+            <th class="text-left">Vessel</th>
+            <th class="text-left w-125">Seller</th>
+            <th class="text-left">Port</th>
+            <th class="text-left">Offer Product</th>
+            <th class="text-left">Min Qty</th>
+            <th class="text-left">Max Qty</th>
+            <th class="text-left">Confirmed Qty</th>
+            <th class="text-left">Offer Price</th>
+            <th class="text-left">Total Price</th>
+            <th class="text-left w-125">Phy.Supplier</th>
+          </tr>
+        </thead>
+        </table>
+        <div style="height: auto;">
+        <table>
+        <tbody #scrollMe1 [scrollTop]="scrollMe1.scrollHeight">
+  
+         
+          
+            <tr id="commentList" >
+              <td class="w-80">12321</td>
+              <td class="">Al Mashrif</td>
+              <td class="w-125" >Bominflot BV</td>
+              <td class="" >Rotterdam</td>
+              <td class="" > RMG 380 0.5%  </td>
+              <td class="">500.00 MT    </td>
+              <td class="">500.00 MT    </td>            
+              
+              <td class="text-left  cell-dashed-border" contenteditable="true">500.00 MT </td>
+              <td class="">$560.19 </td>   
+              <td class="">$125,000 </td>   
+              <td class="w-125">Bominflot BV</td>   
+            </tr>
+            <tr id="commentList" >
+              <td class="w-80">12321</td>
+              <td class="">Afif</td>
+              <td class="w-125" >BP Nederland BV</td>
+              <td class="" >Rotterdam</td>
+              <td class="" >RMG 80 0.1%</td>
+              <td class="">500.00 MT    </td>
+              <td class="">600.00 MT    </td>            
+              
+              <td class="text-left  cell-dashed-border" contenteditable="true">600.00 MT </td>
+              <td class="">$560.19 </td>   
+              <td class="">$125,000 </td>   
+              <td class="w-125">BP Nederland BV</td>   
+            </tr>
+         
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+<!--   <div class="m-l-20 m-t-20 m-b-10" style="font-weight: 500;">Available Term Contracts</div>
+  <div class="product-terms p-b-5 p-r-15 p-l-15">
+    <div class="operations-details-block" style="height: auto;">
+      <table>
+        <thead>
+          <tr>
+            
+            <th class=" text-left">Seller</th>
+            <th class=" text-left">Port</th>
+            <th class="text-left ">Contract Product</th>
+            <th class="text-left w-158">Contract Name</th>
+            <th class=" text-left">Formula</th>
+            <th class=" text-left">Schedule</th>
+            <th class=" text-left">Contract Qty</th>
+            <th class=" text-left">Lifted Qty</th>
+            <th class=" text-left">Available Qty</th>
+            <th class=" text-left">Price</th>
+          </tr>
+        </thead>
+        </table>
+        <div >
+        <table>
+        <tbody #scrollMe1 [scrollTop]="scrollMe1.scrollHeight">     
+        
+            <tr id="commentList" *ngFor="let tabledata of tabledata;let i = index">
+             <td class="border-bottom-1">{{tabledata.seller}}</td>
+             <td class="border-bottom-1">{{tabledata.port}}</td> 
+             <td class="border-bottom-1">{{tabledata.contractproduct}}</td>
+             <td class="border-bottom-1 w-158">{{tabledata.contractname}}</td>
+             <td class="border-bottom-1">{{tabledata.formula}}</td>
+             <td class="border-bottom-1">{{tabledata.schedule}}</td>
+             <td class="border-bottom-1">{{tabledata.contractqty}}</td>
+             <td class="border-bottom-1">{{tabledata.liftedqty}}</td>
+             <td class="border-bottom-1">{{tabledata.availableqty}}</td>
+             <td class="border-bottom-1">{{tabledata.price}}</td>
+
+            </tr>
+         
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div> -->
+  
+
+  
+  <!-- </mat-dialog-content> -->
+  

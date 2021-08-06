@@ -12,7 +12,7 @@ import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/develo
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 
 @Injectable()
-export class ContractModuleResolver implements Resolve<any> {
+export class SpotNegotiationModuleResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,

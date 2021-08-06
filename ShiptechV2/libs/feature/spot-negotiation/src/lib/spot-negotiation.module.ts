@@ -1,5 +1,26 @@
+import { SupplierCommentsPopupComponent } from './views/main/details/components/spot-negotiation-popups/supplier-comments-popup/supplier-comments-popup.component';
+import { SpotnegoPricingDetailsComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
+import { SpotnegoOtherdetails2Component } from './views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
+import { SpotnegoOtherdetailsComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-otherdetails/spotnego-otherdetails.component';
+import { SpotnegoOfferpricehistoryComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
+import { SpotnegoConfirmorderComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
+import { SpotnegoAdditionalcostComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-additionalcost/spotnego-additionalcost.component';
+import { SellerratingpopupComponent } from './views/main/details/components/spot-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
+import { SearchRequestPopupComponent } from './views/main/details/components/spot-negotiation-popups/search-request-popup/search-request-popup.component';
+import { RfqspopupComponent } from './views/main/details/components/spot-negotiation-popups/rfqspopup/rfqspopup.component';
+import { MarketpricehistorypopupComponent } from './views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
+import { EmailPreviewPopupComponent } from './views/main/details/components/spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
+import { ContactinformationpopupComponent } from './views/main/details/components/spot-negotiation-popups/contactinformationpopup/contactinformationpopup.component';
+import { AvailabletermcontractspopupComponent } from './views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
+import { ApplicablecostpopupComponent } from './views/main/details/components/spot-negotiation-popups/applicablecostpopup/applicablecostpopup.component';
+import { SpotnegoemaillogComponent } from './views/main/details/components/spotnegoemaillog/spotnegoemaillog.component';
+import { SpotNegotiationHomeComponent } from './views/main/details/components/spot-negotiation-home/spot-negotiation-home.component';
+import { SpotNegotiationHeaderComponent } from './views/main/details/components/spot-negotiation-header/spot-negotiation-header.component';
+import { SpotNegotiationDetailsComponent } from './views/main/details/components/spot-negotiation-details/spot-negotiation-details.component';
+import { SpotNegotiationCommentsComponent } from './views/main/details/components/spot-negotiation-comments/spot-negotiation-comments.component';
+import { DocDragDropUploadComponent } from './views/main/details/components/doc-drag-drop-upload/doc-drag-drop-upload.component';
 import { MainSpotNegotiationComponent } from './views/main-spot-negotiation.component';
-import { SpotNegotiationComponent } from './views/contract/details/spot-negotiation.component';
+import { SpotNegotiationComponent } from './views/main/details/spot-negotiation.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
@@ -8,11 +29,7 @@ import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
-import { ContractGridModule } from './spot-negotiation-grid.module';
-import { NgxsModule } from '@ngxs/store';
-import { QuantityControlState } from './store/quantity-control.state';
-import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportState } from './store/report/qc-report.state';
+import { SpotNegotiationGridModule } from './spot-negotiation-grid.module';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
@@ -98,14 +115,48 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { SpotNegotiationRoutingModule } from './spot-negotiation-routing.module';
-import { ContractDetailsUnsavedChangesGuard } from './guards/contract-details-unsaved-changes-guard.service';
-import { ContractApi, CONTRACT_API_SERVICE } from './services/api/contract-api';
+import {
+  SpotNegotiationApi,
+  SPOT_NEGOTIATION_API_SERVICE
+} from './services/api/spot-negotiation-api';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { CellHoverDetailsComponent } from './core/dialog-popup/cell-hover-details/cell-hover-details.component';
+import { CogsCalculationComponent } from './core/dialog-popup/cogs-calculation/cogs-calculation.component';
+import { OperationSummaryPopComponent } from './core/dialog-popup/operation-summary-pop/operation-summary-pop.component';
+import { OperationSummaryWithStatusComponent } from './core/dialog-popup/operation-summary-with-status/operation-summary-with-status.component';
+import { OperationSummaryWithoutaddnewComponent } from './core/dialog-popup/operation-summary-withoutaddnew/operation-summary-withoutaddnew.component';
+import { PipelineTariffComponent } from './core/dialog-popup/pipeline-tariff/pipeline-tariff.component';
+import { ProductDetailsComponent } from './core/dialog-popup/product-details/product-details.component';
+import { WarningDeletePopupComponent } from './core/dialog-popup/warning-delete-popup/warning-delete-popup.component';
+import { InventoryReportPopupComponent } from './core/ops-inventory/popup-screens/inventory-report-popup/inventory-report-popup.component';
+import { MovDetailsComponent } from './core/ops-inventory/popup-screens/mov-details/mov-details.component';
+import { ChangeLogPopupComponent } from './core/dialog-popup/change-log-popup/change-log-popup.component';
+import { LocalService } from './services/local-service.service';
+import { AgGridCellStyleComponent } from './core/ag-grid/ag-grid-cell-style.component';
+import { AGGridCellDataComponent } from './core/ag-grid/ag-grid-celldata.component';
+import { AggridStatusChipComponent } from './core/ag-grid/ag-grid-status-chip.component';
+import { AggridCustomFilter } from './core/ag-grid/ag-grid-custom-filter.component';
+import { AgGridCustomRadiobuttonComponent } from './core/ag-grid/ag-grid-custom-radiobutton.component';
+
+import { AGGridCellRendererComponent } from './core/ag-grid/ag-grid-cell-renderer.component';
+import { AgGridDatetimePickerNewComponent } from './core/ag-grid/ag-grid-datetime-picker-new.component';
+import { AgGridDatetimePickerToggleComponent } from './core/ag-grid/ag-grid-datetimePicker-Toggle';
+import { AGGridDateTimePickerComponent } from './core/ag-grid/ag-grid-datetimePicker.component';
+import { AGGridEditorComponent } from './core/ag-grid/ag-grid-editor.component';
+import { AgGridHoverPopupComponent } from './core/ag-grid/ag-grid-hover-popup.component';
+import { AggridLinkComponent } from './core/ag-grid/ag-grid-link.component';
+import { AgGridLookupEditor } from './core/ag-grid/ag-grid-lookup.component';
+import { CustomHeaderGroupNotify } from './core/ag-grid/custom-header-group-notification.component';
+import { CustomHeaderGroup } from './core/ag-grid/custom-header-group.component';
+import { ShiptechCustomHeaderGroup } from './core/ag-grid/shiptech-custom-header-group';
+import { AGGridCellRendererV2Component } from './core/ag-grid/ag-grid-cell-rendererv2.component';
+import { AGGridCellActionsComponent } from './core/ag-grid/ag-grid-cell-actions.component';
+import { AGGridCellMenuPopupComponent } from './core/ag-grid/ag-grid-cell-menu.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    ContractGridModule,
+    SpotNegotiationGridModule,
     SpotNegotiationRoutingModule,
     LoggingModule,
     AuthenticationModule.forFeature(),
@@ -118,11 +169,6 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     EntityStatusModule,
     DynamicDialogModule,
     ExportModule,
-    NgxsModule.forFeature([
-      QuantityControlState,
-      QcReportsListState,
-      QcReportState
-    ]),
     FormsModule,
     ReactiveFormsModule,
     NgxsResetPluginModule.forRoot(),
@@ -197,19 +243,74 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatSelectInfiniteScrollModule,
     BreadcrumbsModule
   ],
-  declarations: [MainSpotNegotiationComponent, SpotNegotiationComponent],
+  declarations: [
+    MainSpotNegotiationComponent,
+    MovDetailsComponent,
+    ApplicablecostpopupComponent,
+    SupplierCommentsPopupComponent,
+    AvailabletermcontractspopupComponent,
+    ContactinformationpopupComponent,
+    EmailPreviewPopupComponent,
+    MarketpricehistorypopupComponent,
+    RfqspopupComponent,
+    SearchRequestPopupComponent,
+    SellerratingpopupComponent,
+    SpotnegoAdditionalcostComponent,
+    SpotnegoConfirmorderComponent,
+    SpotnegoOfferpricehistoryComponent,
+    SpotnegoOtherdetailsComponent,
+    SpotnegoOtherdetails2Component,
+    SpotNegotiationCommentsComponent,
+    SpotNegotiationDetailsComponent,
+    SpotnegoPricingDetailsComponent,
+    SpotNegotiationHeaderComponent,
+    CogsCalculationComponent,
+    OperationSummaryPopComponent,
+    OperationSummaryWithStatusComponent,
+    OperationSummaryWithoutaddnewComponent,
+    PipelineTariffComponent,
+    ProductDetailsComponent,
+    WarningDeletePopupComponent,
+    CellHoverDetailsComponent,
+    InventoryReportPopupComponent,
+    ChangeLogPopupComponent,
+    SpotNegotiationComponent,
+    DocDragDropUploadComponent,
+    SpotNegotiationHomeComponent,
+    SpotnegoemaillogComponent,
+    // Ag grid, unable to load from module
+    AgGridCellStyleComponent,
+    AGGridCellDataComponent,
+    AggridCustomFilter,
+    AggridStatusChipComponent,
+    AgGridCustomRadiobuttonComponent,
+    AGGridCellRendererComponent,
+    AgGridDatetimePickerNewComponent,
+    AgGridDatetimePickerToggleComponent,
+    AGGridDateTimePickerComponent,
+    AGGridEditorComponent,
+    AgGridHoverPopupComponent,
+    AggridLinkComponent,
+    AgGridLookupEditor,
+    CustomHeaderGroupNotify,
+    CustomHeaderGroup,
+    ShiptechCustomHeaderGroup,
+    AGGridCellRendererV2Component,
+    AGGridCellActionsComponent,
+    AGGridCellMenuPopupComponent
+  ],
   entryComponents: [],
   exports: [],
   providers: [
     ModuleLoggerFactory,
     {
-      provide: CONTRACT_API_SERVICE,
-      useClass: environment.production ? ContractApi : ContractApi
+      provide: SPOT_NEGOTIATION_API_SERVICE,
+      useClass: environment.production ? SpotNegotiationApi : SpotNegotiationApi
     },
-    ContractDetailsUnsavedChangesGuard,
     SpotNegotiationService,
     DialogService,
     MessageService,
+    LocalService,
     ConfirmationService,
     DecimalPipe
   ]

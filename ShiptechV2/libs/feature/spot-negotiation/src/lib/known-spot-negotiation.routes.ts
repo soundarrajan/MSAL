@@ -1,9 +1,9 @@
 export enum KnownSpotNegotiationRoutes {
-  ContractList = 'contract',
-  Contract = 'contract',
-  ContractDetails = 'details',
-  ContractIdParam = 'contractId',
-  ContractAuditPath = 'audit-log',
-  ContractDocumentsPath = 'documents',
-  ContractEmailLogPath = 'email-log'
+  spotNegotiationList = 'spot-negotiation-list',
+  spotNegotiation = 'group-of-requests',
+  details = 'details',
+  idParam = 'spotNegotiationId',
+  auditPath = 'audit-log',
+  documentsPath = 'documents',
+  emailLog = 'email-log'
 }
