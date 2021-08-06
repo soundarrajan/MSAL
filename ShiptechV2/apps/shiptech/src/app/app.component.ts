@@ -49,6 +49,7 @@ export class AppComponent {
         event instanceof NavigationError
       ) {
           this.isLoading = false;
+          if(typeof(window.loggedBootTime) == 'undefined') {window.loggedBootTime = false;}
           setTimeout(()=>{
               if(!window.loggedBootTime) {
                   window.loggedBootTime = true;
