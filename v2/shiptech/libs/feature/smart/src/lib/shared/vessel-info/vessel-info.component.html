@@ -89,7 +89,7 @@
                           <tr>
                             <th scope="row">Current ROB</th>
                               <td>
-                                <div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY')">
+                                <div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.hsfoCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY');ROBArbitrageData.hsfoCurrentStock=$event.target.textContent">
                                   {{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock): 0}}
                                 </div>
                               </td>

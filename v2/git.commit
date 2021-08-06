@@ -1,7 +1,7 @@
-﻿commit 858b5a341ce58149f0398bc9f61b9fa05bbe338f
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Fri Aug 6 17:26:23 2021 +0530
+﻿commit 0fb6a14230216f1401bc67bbb00c45fd3ca06144
+Author: udayakumar.s <udayakumar.s@inatech.com>
+Date:   Fri Aug 6 19:26:34 2021 +0530
 
-    #34850 : AltPort displayed for all the prod type
+    #34676: Bunker Plan - ROB details is not refreshed for hsfoCurrentStock has fixed
 
 branch: master
