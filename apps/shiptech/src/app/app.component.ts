@@ -33,7 +33,7 @@ export class AppComponent {
   isProduction = environment.production;
   public isLoading = true;
   loading: boolean;
-  window: any;
+  loggedBootTime: any;
   firstApiCallStartTime: any;
 
   constructor(
@@ -52,8 +52,8 @@ export class AppComponent {
       ) {
           this.isLoading = false;
           setTimeout(()=>{
-              if(!window.loggedBootTime) {
-                  window.loggedBootTime = true;
+              if(!this.loggedBootTime) {
+                  this.loggedBootTime = true;
                   var loadTime = Date.now() - performance.timing.connectStart; 
                   this.myMonitoringService.logMetric(
                       `Page Load : ${window.location.href}`,
