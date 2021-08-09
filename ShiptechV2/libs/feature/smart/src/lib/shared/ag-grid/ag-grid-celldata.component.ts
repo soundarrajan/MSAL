@@ -593,7 +593,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       this.params.data.operator_ack = this.isOperatorAck ==  false ?1:0
     }
       
-    this.params.context.componentParent.toggleOperAck();
+    this.params.context.componentParent.toggleOperAck(this.params);
   }
   triggerChangeEvent() {
     this.params.context.componentParent.triggerChangeEvent();
