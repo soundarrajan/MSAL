@@ -695,51 +695,7 @@ Number(function() {
                                         CLC.tableParams.PageFilters.push(obj);
                                 }
                             }
-                            if (scope.id == 'procurement_requestslist' ) {
-                                    requestStatusFilter = {
-                                        "columnValue": "RequestStatus_DisplayName",
-                                        "ColumnType": "Text",
-                                        "isComputedColumn": false,
-                                        "ConditionValue": "!=",
-                                        "Values": [
-                                            "CANCELLED"
-                                        ],
-                                        "FilterOperator": 0
-                                    },
 
-                                    requestDateFilter = {
-                                        "columnValue": "RequestDate",
-                                        "ColumnType": "Date",
-                                        "isComputedColumn": false,
-                                        "ConditionValue": ">=",
-                                        "Values": [
-                                            moment().subtract(1, 'months').format('YYYY-MM-DD[T]HH:mm:ss.SSSZZ')
-                                        ],
-                                        "FilterOperator": 1
-                                    }
-
-                                    requestStatusAlreadyAdded = false;
-                                    requestDateFilterAlreadyAdded = false;
-
-                                    $.each(CLC.tableParams.PageFilters, (k,v) => {
-                                        if (v.columnValue == "RequestStatus_DisplayName" && v !== requestStatusFilter ) {
-                                            requestStatusAlreadyAdded = true;
-                                        }
-                                        if (v.columnValue == "RequestDate" && v !== requestDateFilter ) {
-                                            requestDateFilterAlreadyAdded = true;
-                                        }
-                                    })
-
-                                    requestFilters = [];
-                                    if (!requestStatusAlreadyAdded) {
-                                        CLC.tableParams.PageFilters.push(requestStatusFilter);
-                                        requestFilters.push(requestStatusFilter);                                
-                                    }
-                                    if (!requestDateFilterAlreadyAdded) {
-                                        CLC.tableParams.PageFilters.push(requestDateFilter);
-                                        requestFilters.push(requestDateFilter);                                
-                                    }
-                            }
                             // console.log(CLC)
                             // if (CLC.tableParams.PageFilters) {
 

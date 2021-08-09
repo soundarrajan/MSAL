@@ -981,16 +981,64 @@ angular.module('shiptech.components').controller('FiltersController', [
             return $q((resolve, reject) => {
                 // send default config to table build
                 // no default config, send false
-
-                if ($rootScope.rawFilters && $state.current.url != '/schedule-dashboard-table') {
-			            $scope.packedFilters = $scope.packFilters($rootScope.rawFilters);
-			            $scope.packedFilters.raw = $rootScope.rawFilters;
-
-			            if ($rootScope.sortList) {
-			                $scope.packedFilters.sortList = $rootScope.sortList;
-			            }
+                if($state.current.url == '/all-requests-table' && $rootScope.rawFilters.length == 0) {
+                    $rootScope.rawFilters = [
+                        {
+                            "column": {
+                                "columnRoute": "all-requests-table",
+                                "columnName": "Request Date",
+                                "columnValue": "RequestDate",
+                                "sortColumnValue": null,
+                                "columnType": "Date",
+                                "isComputedColumn": false
+                            },
+                            "condition": {
+                                "conditionName": "Is after or equal to",
+                                "conditionValue": ">=",
+                                "conditionApplicable": "Date",
+                                "conditionNrOfValues": 1
+                            },
+                            "filterOperator": 0,
+                            "value": [
+                                moment().subtract(1, 'months').format('YYYY-MM-DD[T]HH:mm:ss.SSSZZ')
+                            ]
+                        },
+                        {
+                            "column": {
+                                "columnRoute": "all-requests-table",
+                                "columnName": "Request Status",
+                                "columnValue": "RequestStatus_DisplayName",
+                                "sortColumnValue": null,
+                                "columnType": "Text",
+                                "isComputedColumn": false
+                            },
+                            "condition": {
+                                "conditionName": "Is not",
+                                "conditionValue": "!=",
+                                "conditionApplicable": "Text",
+                                "conditionNrOfValues": 1
+                            },
+                            "filterOperator": 0,
+                            "value": [
+                                "CANCELLED"
+                            ]
+                        }
+                    ]                    
                 }
-
+                
+                if ($rootScope.rawFilters && $state.current.url != '/schedule-dashboard-table') {
+                    $scope.packedFilters = $scope.packFilters($rootScope.rawFilters);
+                    $scope.packedFilters.raw = $rootScope.rawFilters;
+                    
+                    if ($rootScope.sortList) {
+                        $scope.packedFilters.sortList = $rootScope.sortList;
+                    }
+                }
+                
+                if($state.current.url == '/all-requests-table') {
+                    $rootScope.filterForExport = angular.copy($scope.packedFilters);
+                }
+                
                 // test = $scope.packFilters($rootScope.rawFilters);
                 // console.log($rootScope.rawFilters);
                 resolve($scope.packedFilters);
