@@ -148,7 +148,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   deleteRow() {
     let rowData = [];
     this.params.api.forEachNode(node => rowData.push(node.data));
-    let index = this.params.node.rowIndex;
+    const index = this.params.node.rowIndex;
     let newData = [];
     newData = rowData.splice(index, 1);
     this.params.api.applyTransaction({ remove: newData });
@@ -161,25 +161,24 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     //   maxHeight: '600px',
     //   panelClass: 'movements-popup-grid'
     // });
-
     // dialogRef.afterClosed().subscribe(result => {
     //   this.popupOpen = false;
     // });
   }
 
-  navigateTo() {
+  navigateTo(e) {
     this.params.onClick(this.params);
   }
 
-  viewFigma(e) {
-    var figmaLink = this.params.value;
+  viewFigma() {
+    const figmaLink = this.params.value;
     this.router.navigate([]).then(result => {
       window.open(figmaLink, '_blank');
     });
   }
 
   changeLog() {
-    var changeLogsData = this.params.data.changeLogs;
+    const changeLogsData = this.params.data.changeLogs;
     const dialogRef = this.dialog.open(ChangeLogPopupComponent, {
       width: '100vw',
       height: '95vh',
