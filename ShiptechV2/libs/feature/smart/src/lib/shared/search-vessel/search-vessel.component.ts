@@ -75,7 +75,11 @@ export class SearchVesselComponent implements OnInit, OnChanges {
       return;
     else
    
-    return this.filterList.filter(option => (option?.displayName.toLowerCase().indexOf(filterValue) > -1 || option?.code.toLowerCase().indexOf(filterValue) > -1));
+    return this.filterList.filter(option => {
+      if(option?.displayName && option?.code) {
+        return ((option?.displayName).toLowerCase().indexOf(filterValue) > -1 || (option?.code).toLowerCase().indexOf(filterValue) > -1);
+      }
+    });
   }
   clearSearch() {
     this.searchVesselControl.setValue('');
@@ -136,8 +140,12 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     if (document.getElementById('vesselSearch')) {
       document.getElementById('vesselSearch').blur();
     }
-    let vessel = this.vesselList.filter(element => (element.imono == this.searchVesselControl.value) ||
-      (element.imono.toLowerCase() == this.searchVesselControl.value.toLowerCase()));
+    let vessel = this.vesselList.filter(element => {
+      if(element.imono) {
+        return (element.imono == this.searchVesselControl.value) ||
+        (element.imono.toLowerCase() == this.searchVesselControl.value.toLowerCase())
+      }
+    });
     if (vessel.length > 0)
       this.store.dispatch(new saveVesselDataAction({'vesselRef': vessel[0]}));
       this.changeVessel.emit(vessel[0]);
