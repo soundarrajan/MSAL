@@ -294,39 +294,41 @@ export class AGGridCellMenuPopupComponent implements ICellRendererAngularComp {
 
   openPopup(label) {
     let dialogRef;
-    switch (label) {
-    //   case 'Costing Details': {
-    //     dialogRef = this.dialog.open(OperationalAmountDialog, {
-    //       width: '600px',
-    //       maxHeight: '600px',
-    //       panelClass: 'movements-popup-grid'
-    //     });
-    //     break;
-    //   }
-    //   case 'Spec Group': {
-    //     dialogRef = this.dialog.open(OpsSpecParameterDialog, {
-    //       width: '900px',
-    //       maxHeight: '480px',
-    //       panelClass: 'movements-popup-grid'
-    //     });
-    //     break;
-    //   }
-    //   case 'Sort Order': {
-    //     dialogRef = this.dialog.open(EditSortOrderDialog, {
-    //       width: '100%',
-    //       maxHeight: '100%',
-    //       panelClass: 'movements-popup-grid'
-    //     });
-    //     break;
-    //   }
-    //   case 'Spec Parameter': {
-    //     dialogRef = this.dialog.open(SpecParameterDialog, {
-    //       width: '956px',
-    //       maxHeight: '480px',
-    //       panelClass: 'movements-popup-grid'
-    //     });
-    //     break;
-    //   }
+    switch (
+      label
+      //   case 'Costing Details': {
+      //     dialogRef = this.dialog.open(OperationalAmountDialog, {
+      //       width: '600px',
+      //       maxHeight: '600px',
+      //       panelClass: 'movements-popup-grid'
+      //     });
+      //     break;
+      //   }
+      //   case 'Spec Group': {
+      //     dialogRef = this.dialog.open(OpsSpecParameterDialog, {
+      //       width: '900px',
+      //       maxHeight: '480px',
+      //       panelClass: 'movements-popup-grid'
+      //     });
+      //     break;
+      //   }
+      //   case 'Sort Order': {
+      //     dialogRef = this.dialog.open(EditSortOrderDialog, {
+      //       width: '100%',
+      //       maxHeight: '100%',
+      //       panelClass: 'movements-popup-grid'
+      //     });
+      //     break;
+      //   }
+      //   case 'Spec Parameter': {
+      //     dialogRef = this.dialog.open(SpecParameterDialog, {
+      //       width: '956px',
+      //       maxHeight: '480px',
+      //       panelClass: 'movements-popup-grid'
+      //     });
+      //     break;
+      //   }
+    ) {
     }
     dialogRef.afterClosed().subscribe(result => {});
   }
@@ -407,7 +409,7 @@ export class AGGridCellMenuPopupComponent implements ICellRendererAngularComp {
 
   hoverPopupOpen(event, left?) {
     event.target.classList.add('selectedIcon-v2');
-    if (left == true) {
+    if (left === true) {
       this.hovermenuTriggerLeftGrid.openMenu();
       var overlay = document.querySelector('.cdk-overlay-container');
       overlay.classList.add('removeOverlay');
@@ -419,7 +421,7 @@ export class AGGridCellMenuPopupComponent implements ICellRendererAngularComp {
       if (frameZones.length > 1) {
         frameZones[1].classList.add('movedpanel');
       }
-    } else if (left == false) {
+    } else if (left === false) {
       this.hovermenuTriggerRightGrid.openMenu();
       var overlay = document.querySelector('.cdk-overlay-container');
       overlay.classList.add('removeOverlay');
@@ -468,7 +470,7 @@ export class AGGridCellMenuPopupComponent implements ICellRendererAngularComp {
     }
   }
 
-  navigateTo() {
+  navigateTo(e) {
     this.params.onClick(this.params);
   }
 
@@ -484,7 +486,7 @@ export class AGGridCellMenuPopupComponent implements ICellRendererAngularComp {
       hovericon.forEach(element => {
         element.style.pointerEvents = 'auto';
       });
-    } else if (left == false) {
+    } else if (left === false) {
       var hovericon = Array.from(
         document.querySelectorAll<HTMLElement>('.hoverdisable1')
       );
