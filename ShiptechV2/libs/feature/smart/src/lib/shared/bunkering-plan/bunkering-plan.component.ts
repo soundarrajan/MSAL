@@ -529,9 +529,16 @@ export class BunkeringPlanComponent implements OnInit {
     else
       this.enableCreateReq.emit(false);
   }
-  toggleOperAck() {
+  toggleOperAck(params) {
     this.triggerChangeEvent();
-    this.gridOptions.api.refreshCells();
+    // let RefreshCellsParams = {
+    //   columns: [params.colDef.colId], // specify columns, or all columns by default
+    //   rowNodes: [params.node],
+    //   force: false, // skips change detection, refresh everything
+    //   suppressFlash: false, // skips cell flashing, if cell flashing is enabled
+    // }
+    // params.api.refreshCells(RefreshCellsParams);
+    this.triggerRefreshGrid();
     this.gridChanged = true;
     this.localService.setBunkerPlanState(this.gridChanged);
   }
@@ -758,7 +765,7 @@ export class BunkeringPlanComponent implements OnInit {
     return isHardValidation;
   }
 
-  triggerRefreshGrid(role){
+  triggerRefreshGrid(){
     let _this = this;
     this.rowData = JSON.parse(JSON.stringify(this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)))
     let vesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
