@@ -152,10 +152,11 @@ import { ShiptechCustomHeaderGroup } from './core/ag-grid/shiptech-custom-header
 import { AGGridCellRendererV2Component } from './core/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from './core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellMenuPopupComponent } from './core/ag-grid/ag-grid-cell-menu.component';
-
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 @NgModule({
   imports: [
     CommonModule,
+    OwlDateTimeModule, OwlNativeDateTimeModule,
     SpotNegotiationGridModule,
     SpotNegotiationRoutingModule,
     LoggingModule,
@@ -245,6 +246,27 @@ import { AGGridCellMenuPopupComponent } from './core/ag-grid/ag-grid-cell-menu.c
   ],
   declarations: [
     MainSpotNegotiationComponent,
+    // Ag grid, unable to load from module
+    AgGridCellStyleComponent,
+    AGGridCellDataComponent,
+    AggridCustomFilter,
+    AggridStatusChipComponent,
+    AgGridCustomRadiobuttonComponent,
+    AGGridCellRendererComponent,
+    AgGridDatetimePickerNewComponent,
+    AgGridDatetimePickerToggleComponent,
+    AGGridDateTimePickerComponent,
+    AGGridEditorComponent,
+    AgGridHoverPopupComponent,
+    AggridLinkComponent,
+    AgGridLookupEditor,
+    CustomHeaderGroupNotify,
+    CustomHeaderGroup,
+    ShiptechCustomHeaderGroup,
+    AGGridCellRendererV2Component,
+    AGGridCellActionsComponent,
+    AGGridCellMenuPopupComponent,
+    // Components
     MovDetailsComponent,
     ApplicablecostpopupComponent,
     SupplierCommentsPopupComponent,
@@ -277,27 +299,7 @@ import { AGGridCellMenuPopupComponent } from './core/ag-grid/ag-grid-cell-menu.c
     SpotNegotiationComponent,
     DocDragDropUploadComponent,
     SpotNegotiationHomeComponent,
-    SpotnegoemaillogComponent,
-    // Ag grid, unable to load from module
-    AgGridCellStyleComponent,
-    AGGridCellDataComponent,
-    AggridCustomFilter,
-    AggridStatusChipComponent,
-    AgGridCustomRadiobuttonComponent,
-    AGGridCellRendererComponent,
-    AgGridDatetimePickerNewComponent,
-    AgGridDatetimePickerToggleComponent,
-    AGGridDateTimePickerComponent,
-    AGGridEditorComponent,
-    AgGridHoverPopupComponent,
-    AggridLinkComponent,
-    AgGridLookupEditor,
-    CustomHeaderGroupNotify,
-    CustomHeaderGroup,
-    ShiptechCustomHeaderGroup,
-    AGGridCellRendererV2Component,
-    AGGridCellActionsComponent,
-    AGGridCellMenuPopupComponent
+    SpotnegoemaillogComponent
   ],
   entryComponents: [],
   exports: [],
