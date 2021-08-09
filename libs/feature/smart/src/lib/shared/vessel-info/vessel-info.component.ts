@@ -20,7 +20,7 @@ import { SaveCurrentROBState,GeneratePlanState } from '../../store/bunker-plan/b
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import moment  from 'moment';
-import { Subject, Subscription, forkJoin,Observable, interval } from 'rxjs';
+import { Subject, Subscription, forkJoin,Observable, timer } from 'rxjs';
 import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -279,6 +279,7 @@ export class VesselInfoComponent implements OnInit {
         if (this.vesselService.defaultView) {
           this.vesselService.myDefaultViewPayload.currentBunkeringPlan = 1;
         }
+        this.loadROBArbitrage();
         break;
       case 'currentBunkeringPlanClose':
         this.vesselService.currentBunkeringPlan = false;
@@ -386,7 +387,7 @@ export class VesselInfoComponent implements OnInit {
   }
 
   saveCurrentROB(ROBArbitrageData){
-    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null };
+    let currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, 'hsfoTankCapacity': null, 'ulsfoTankCapacity': null, 'lsdisTankCapacity': null, 'hsdisTankCapacity': null , 'upulsfo': null, 'uplsdis' :null};
     currentROBObj['3.5 QTY'] = ROBArbitrageData?.hsfoCurrentStock;
     currentROBObj['0.5 QTY'] = ROBArbitrageData?.hsfO05CurrentStock;
     currentROBObj.ULSFO = ROBArbitrageData?.ulsfoCurrentStock;
@@ -396,6 +397,9 @@ export class VesselInfoComponent implements OnInit {
     currentROBObj.ulsfoTankCapacity = ROBArbitrageData?.ulsfoTankCapacity;
     currentROBObj.lsdisTankCapacity = ROBArbitrageData?.lsdisTankCapacity;
     currentROBObj.hsdisTankCapacity = ROBArbitrageData?.hsdisTankCapacity;
+    currentROBObj.upulsfo = ROBArbitrageData?.upulsfo;
+    currentROBObj.uplsdis = ROBArbitrageData?.uplsdis;
+
     this.store.dispatch(new SaveCurrentROBAction(currentROBObj))
     
   }
@@ -706,8 +710,9 @@ export class VesselInfoComponent implements OnInit {
 
   VesselHasNewPlanJob() {
     let genBunkerPlanRef = null;
-    //Need to check gen plan status every 15 sec after enter this screen to know the process gen plan completion
-    this.observableRef$ = interval(15000)
+    this.disableCurrentBPlan = true;
+    //Need to check gen plan status once and check after every 15 sec after enter this screen to know the process gen plan completion
+    this.observableRef$ = timer(0, 15000)
     .pipe(
       switchMap(() => {
         let req = {
@@ -740,6 +745,7 @@ export class VesselInfoComponent implements OnInit {
   ngOnDestroy() {
     //unsubscribe to avoid memory leakage
     this.subscription.unsubscribe();
+    this.observableRef$.unsubscribe();
   }
   
 

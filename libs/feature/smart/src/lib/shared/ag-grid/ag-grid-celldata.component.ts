@@ -89,8 +89,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                 newClass = 'aggrid-cell-color darkgreen';
                               else if(params.data?.hsfo_max_lift_color === 'M')
                                 newClass = 'aggrid-cell-color mediumred';
-                              else
+                              else if(params.data?.hsfo_max_lift_color === 'B')
                                 newClass = 'aggrid-cell-color brown';
+                              else
+                                newClass = 'aggrid-cell-color white';
 
                               classArray.push(newClass);
                               params.cellClass =  classArray.length > 0 ? classArray : null
@@ -131,8 +133,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                         newClass = 'aggrid-cell-color darkgreen';
                                       else if(params.data?.ulsfo_max_lift_color === 'M')
                                         newClass = 'aggrid-cell-color mediumred';
-                                      else
+                                      else if(params.data?.ulsfo_max_lift_color === 'B')
                                         newClass = 'aggrid-cell-color brown';
+                                      else
+                                        newClass = 'aggrid-cell-color white';
 
                                       classArray.push(newClass);
                                     params.cellClass =  classArray.length > 0 ? classArray : null
@@ -145,8 +149,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                       newClass = 'aggrid-cell-color darkgreen';
                                     else if(params.data?.lsdis_max_lift_color === 'M')
                                       newClass = 'aggrid-cell-color mediumred';
-                                    else
+                                      else if(params.data?.lsdis_max_lift_color === 'B')
                                       newClass = 'aggrid-cell-color brown';
+                                    else
+                                      newClass = 'aggrid-cell-color white';
 
                                     classArray.push(newClass);
                                   params.cellClass =  classArray.length > 0 ? classArray : null
@@ -571,8 +577,22 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   }
 
   toggleOperAck() {
-    if(this.params?.data)
+    if(this.isOperatorAck == true ){
+      //User cannot unacknowledge/uncheck a port with request available.
+      if(!this.params.data?.request_id_hsfo && !this.params.data?.request_id_hsdis && !this.params.data?.request_id_lsdis && !this.params.data?.request_id_ulsfo)
+      {
+        this.isOperatorAck = true;
+      }
+      else{
+        this.isOperatorAck = false;
+      }
+    }
+
+    if(this.params?.data){
       this.store.dispatch(new UpdateBunkeringPlanAction( this.isOperatorAck ==  false ?1:0 ,'operator_ack', this.params.data?.detail_no))
+      this.params.data.operator_ack = this.isOperatorAck ==  false ?1:0
+    }
+      
     this.params.context.componentParent.toggleOperAck();
   }
   triggerChangeEvent() {
@@ -727,6 +747,30 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       if(url != '#')
         window.open(url, "_blank");
     }
+  }
+
+  requestAvailable(params){
+    let isRequestAvailable = false;
+    switch(params?.colDef?.field){
+      case 'hsfo_estimated_lift' : { 
+                                        isRequestAvailable = params.data?.request_id_hsfo ? true : false;
+                                        break;
+                                   }
+      case 'ulsfo_estimated_lift' : { 
+                                      isRequestAvailable = params.data?.request_id_ulsfo ? true : false;
+                                      break;
+                                    }
+      case 'lsdis_estimated_lift': {  
+                                      isRequestAvailable = params.data?.request_id_lsdis ? true : false;
+                                      break;
+                                    }
+      case 'hsdis_estimated_lift': {  
+                                      isRequestAvailable = params.data?.request_id_hsdis ? true : false;
+                                      break;
+                                    }
+    
+    }
+    return isRequestAvailable
   }
 
   consUpdatedEvent(params,value){
