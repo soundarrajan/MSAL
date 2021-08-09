@@ -90,8 +90,8 @@ import {
   NgxMatTimepickerModule
 } from '@angular-material-components/datetime-picker';
 
-import { NgxSpinnerModule } from "ngx-spinner";
-import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
@@ -105,6 +105,7 @@ import { ContractDetailsDocumentsComponent } from './views/contract/documents/co
 import { QuantityTenantFormatDirective } from './views/contract/details/directives/quantity-tenant-format.directive';
 import { NumberOnlyDirective } from './views/contract/details/directives/number-only.directive';
 import { ContractRouteResolver } from './views/contract/details/contract-route.resolver';
+import { ContractModuleResolver } from './contract-route.resolver';
 import { UomsRouteResolver } from './views/contract/details/uoms-route.resolver';
 import { ContractFeedbackRouteResolver } from './views/contract/details/contract-feedback-route.resolver';
 import { QuantityCategoryRouteResolver } from './views/contract/details/quantity-category-route.resolver';
@@ -112,6 +113,7 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/contract/details/s
 import { ClaimTypeRouteResolver } from './views/contract/details/claim-type-route.resolver';
 import { BargeRouteResolver } from './views/contract/details/barge-route.resolver';
 import { NavBarResolver } from './views/contract/details/navbar-route.resolver';
+import { ContractDetailsRouteResolver } from './views/contract/details/contract-details-route.resolver';
 import { ContractDetailsUnsavedChangesGuard } from './guards/contract-details-unsaved-changes-guard.service';
 import { ContractApi, CONTRACT_API_SERVICE } from './services/api/contract-api';
 import { GeneralInformationContract } from './views/contract/details/components/general-information-contract/general-information-contract.component';
@@ -140,7 +142,6 @@ import { PriceTenantFormatDirective } from './views/contract/details/directives/
 import { ExtendContractModalComponent } from './views/contract/details/components/extend-contract-modal/extend-contract-modal.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { FormulaHistoryModalComponent } from './views/contract/details/components/formula-history-modal/formula-history-modal.component';
-
 
 @NgModule({
   imports: [
@@ -270,22 +271,29 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [],
+  entryComponents: [
+    ProductSpecGroupModalComponent,
+    CreateNewFormulaModalComponent,
+    ExtendContractModalComponent,
+    FormulaHistoryModalComponent
+  ],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
     AmountTenantFormatDirective,
     PriceTenantFormatDirective
-   // PSpinnerDisableKeysSpinDirective,
+    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
   providers: [
     ModuleLoggerFactory,
+    ContractModuleResolver,
     ContractRouteResolver,
     UomsRouteResolver,
     ContractFeedbackRouteResolver,
     StaticListsRouteResolver,
+    ContractDetailsRouteResolver,
     NavBarResolver,
     BargeRouteResolver,
     ClaimTypeRouteResolver,
@@ -296,9 +304,7 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     LocationMasterRouteResolver,
     {
       provide: CONTRACT_API_SERVICE,
-      useClass: environment.production
-        ? ContractApi
-        : ContractApi
+      useClass: environment.production ? ContractApi : ContractApi
     },
     ContractDetailsUnsavedChangesGuard,
     ContractService,
@@ -306,7 +312,6 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     MessageService,
     ConfirmationService,
     DecimalPipe
-
   ]
 })
 export class ContractModule {}
