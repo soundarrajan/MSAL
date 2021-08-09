@@ -1,7 +1,7 @@
-﻿commit 0fb6a14230216f1401bc67bbb00c45fd3ca06144
-Author: udayakumar.s <udayakumar.s@inatech.com>
-Date:   Fri Aug 6 19:26:34 2021 +0530
+﻿commit 3800045ec7e298b59a564626fd960bebe68df69e
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Aug 9 10:51:04 2021 +0300
 
-    #34676: Bunker Plan - ROB details is not refreshed for hsfoCurrentStock has fixed
+    Fixed 34894
 
 branch: master
