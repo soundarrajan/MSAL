@@ -259,6 +259,7 @@ export class ShiptechCustomHeaderGroup {
     @Inject(DOCUMENT) private _document: HTMLDocument,
     public dialog: MatDialog
   ) {}
+
   agInit(params): void {
     this.params = params;
     this.params.columnGroup

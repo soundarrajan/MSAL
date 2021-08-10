@@ -353,7 +353,7 @@ import { MovDetailsComponent } from '../ops-inventory/popup-screens/mov-details/
 
     <div *ngIf="params.type == 'revert'">
       <div class="aggrid-content-center unmatch" (click)="deleteWarning()">
-        <!--<img id="list-icon" src="/assets/icon/unmatch.svg" alt="list" (click)="unmatch()" matTooltip="Revert">-->
+        <img id="list-icon" src="/assets/icon/unmatch.svg" alt="list" (click)="unmatch()" matTooltip="Revert">
         <img [src]="imageSource" style="width:16px;height:16px" />
       </div>
     </div>

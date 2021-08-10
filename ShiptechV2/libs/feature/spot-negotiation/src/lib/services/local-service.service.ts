@@ -524,7 +524,7 @@ export class LocalService {
     );
   }
   public getSpotDataJSON(): Observable<any> {
-    return this.http.get('./assets/data/ship-tech/spot-grid1-data.json');
+    return this.http.get('./assets/data/spot-grid1-data.json');
   }
   public getSpotDataRequestData(reqId): Observable<any> {
     return this.http.get(
