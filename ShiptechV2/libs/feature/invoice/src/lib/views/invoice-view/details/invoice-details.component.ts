@@ -2306,7 +2306,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     // this.invoiceService.getInvoicDetails().
   }
 
-  public saveInvoiceDetails(callback: any) {
+  public saveInvoiceDetails(callback: () => void) {
     if (this.formSubmitted) {
       return;
     }
