@@ -15,7 +15,6 @@ import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-gr
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { LocalService } from '../../../../../services/local-service.service';
 
-
 @Component({
   selector: 'app-spot-negotiation-details',
   templateUrl: './spot-negotiation-details.component.html',

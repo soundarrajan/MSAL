@@ -5,12 +5,12 @@ import { Component } from '@angular/core';
   template: `
     <div class="aggrid-group-headercontenet" style="height: 35px;">
       <div class="text-left amber" style="position: fixed">
-        <!-- <app-badge
+        <app-badge
           *ngIf="this.params?.badge"
           [badgeColor]="this.params?.badge?.color"
           [value]="this.params?.badge?.value"
           [unit]="this.params?.badge?.unit"
-        ></app-badge> -->
+        ></app-badge>
       </div>
       <div class="title">
         <div

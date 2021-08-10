@@ -22,7 +22,7 @@ import { DocDragDropUploadComponent } from './views/main/details/components/doc-
 import { MainSpotNegotiationComponent } from './views/main-spot-negotiation.component';
 import { SpotNegotiationComponent } from './views/main/details/spot-negotiation.component';
 import { NgModule } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
@@ -153,10 +153,13 @@ import { AGGridCellRendererV2Component } from './core/ag-grid/ag-grid-cell-rende
 import { AGGridCellActionsComponent } from './core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellMenuPopupComponent } from './core/ag-grid/ag-grid-cell-menu.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { BadgeComponent } from './views/main/details/components/badge/badge.component';
+import { LocPanDataComponent } from './views/main/details/components/loc-pan-data/loc-pan-data.component';
 @NgModule({
   imports: [
     CommonModule,
-    OwlDateTimeModule, OwlNativeDateTimeModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     SpotNegotiationGridModule,
     SpotNegotiationRoutingModule,
     LoggingModule,
@@ -299,9 +302,16 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     SpotNegotiationComponent,
     DocDragDropUploadComponent,
     SpotNegotiationHomeComponent,
-    SpotnegoemaillogComponent
+    SpotnegoemaillogComponent,
+    BadgeComponent,
+    LocPanDataComponent
   ],
-  entryComponents: [],
+  entryComponents: [
+    AGGridCellRendererV2Component,
+    AGGridCellActionsComponent,
+    ShiptechCustomHeaderGroup,
+    SellerratingpopupComponent
+  ],
   exports: [],
   providers: [
     ModuleLoggerFactory,
@@ -314,7 +324,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     MessageService,
     LocalService,
     ConfirmationService,
-    DecimalPipe
+    DecimalPipe,
+    DatePipe
   ]
 })
 export class SpotNegotiationModule {}
