@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
+import _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,6 @@ export class TenantFormattingService {
   private quantityFormatter: Intl.NumberFormat;
   private priceFormatter: Intl.NumberFormat;
   private amountFormatter: Intl.NumberFormat;
-
 
   constructor(tenantSettings: TenantSettingsService) {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
@@ -83,5 +83,15 @@ export class TenantFormattingService {
     if (value === null || value === undefined) return undefined;
 
     return moment(value).format(dateTimeAdapter.fromDotNet(this.dateFormat));
+  }
+
+  htmlDecode(str: string): string {
+    const decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+
+    return decode(_.unescape(str));
   }
 }
