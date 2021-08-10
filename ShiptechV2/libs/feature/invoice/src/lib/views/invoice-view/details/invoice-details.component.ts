@@ -2306,7 +2306,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     // this.invoiceService.getInvoicDetails().
   }
 
-  public saveInvoiceDetails() {
+  public saveInvoiceDetails(callback) {
     if (this.formSubmitted) {
       return;
     }
@@ -2339,6 +2339,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
         this.entityId = result;
         this.handleServiceResponse(result, 'Invoice saved successfully.');
+        if(callback) {
+            callback(result);
+        }
       });
     } else {
       // this.spinner.show();
@@ -2348,6 +2351,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.formatAdditionalCosts();
         }
         this.handleServiceResponse(result, 'Invoice updated successfully.');
+        if(callback) {
+            callback(result);
+        }        
       });
     }
   }

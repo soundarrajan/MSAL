@@ -31,6 +31,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class InvoiceViewComponent implements OnInit, OnDestroy {
   @ViewChild('invoiceDetails') invoiceDetailsComponent: any;
+  @ViewChild('invoiceDetailsToolbar') invoiceDetailsToolbarComponent: any;
   _entityId;
   isConfirm = false;
   detailFormvalues: any;
@@ -147,7 +148,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   detailsSave() {
-    this.invoiceDetailsComponent.saveInvoiceDetails();
+    this.invoiceDetailsComponent.saveInvoiceDetails( (result) => {
+        let params = {
+            invoiceid: result
+        };        
+        this.invoiceDetailsToolbarComponent.setNavIds(params);
+    });
     // this.isConfirm = !this.isConfirm;
   }
   invoiceOptions(options) {
