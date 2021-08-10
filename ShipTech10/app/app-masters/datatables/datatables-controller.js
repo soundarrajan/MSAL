@@ -2403,6 +2403,22 @@ APP_MASTERS.controller('Controller_Datatables', [
                         required: true
                     },
                     {
+                        name: 'selectedStrategyType',
+                        displayName: 'Strategy Applicable',
+                        enableSorting: false,
+                        cellTemplate: $scope.dataTableTemplates.multiselect,
+                        cellObject: {
+                            Name: 'StrategyType',
+                            Type: 'text',
+                            // dropdownSource: 'formatStrategyType( grid.appScope.fVal().formValues )',
+                            // customChangeAction : 'addStrategyTypeMasterService(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)',
+                            masterSource: 'StrategyType',
+                            // customNumberOfRowsProductType: 'getRowNumbersOfProductType(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)',
+                            customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
+                        },
+                        required: true
+                    },
+                    {
                         enableSorting: false,
                         name: 'createdBy.name',
                         displayName: 'Created by'
@@ -2435,6 +2451,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                                 locations: [ {} ]
                             };
                         }
+                        $scope.formatStrategyType($scope.formValues.locations);
                     }, 10);
                 }
             },
@@ -3989,6 +4006,59 @@ APP_MASTERS.controller('Controller_Datatables', [
             }
         }
 
+        $scope.formatStrategyType = function(fVal) {
+            console.log('formatStrategyType******', fVal);
+            if(!($scope.formValues?.locations?.length)) {
+                return;
+            }
+            $scope.formValues.locations.map((location)=> {
+                if(location.isDeleted) { return true; }
+                location['selectedStrategyType'] = [];
+                location.strategyTypes.map(strategyTypeObj=> {
+                    if(strategyTypeObj.isDeleted) { return true; }
+                    let strategyObj = {}
+                    strategyObj.code= null;
+                    strategyObj.databaseValue= 0;
+                    strategyObj.description= null;
+                    strategyObj.displayName= null;
+                    strategyObj.id= strategyTypeObj?.strategyType.id;
+                    strategyObj.internalName= strategyTypeObj?.strategyType.internalName;
+                    strategyObj.motProductTypeId= null;
+                    strategyObj.name= strategyTypeObj?.strategyType.name;
+                    strategyObj.productTypeId= 0;
+                    strategyObj.transactionTypeId= 0;
+                    location['selectedStrategyType'].push(strategyObj);
+                    return true;
+                })
+                return location;
+            })
+            // $scope.formValues.locations[0].selectedStrategyType = [{
+            //     code: null,
+            //     databaseValue: 0,
+            //     description: null,
+            //     displayName: null,
+            //     id: 1,
+            //     internalName: "Bunker Strategy",
+            //     motProductTypeId: null,
+            //     name: "Bunker Strategy",
+            //     productTypeId: 0,
+            //     transactionTypeId: 0
+            // },
+            // {
+            //     code: null,
+            //     databaseValue: 0,
+            //     description: null,
+            //     displayName: null,
+            //     id: 3,
+            //     internalName: "Alkali Strategy",
+            //     motProductTypeId: null,
+            //     name: "Alkali Strategy",
+            //     productTypeId: 0,
+            //     transactionTypeId: 0
+            // }];
+            console.log('*************hoooooo');
+            console.log($scope.formValues.locations);
+        };
         $scope.addProductTypeMasterService = function(rowIdx, item, fVal) {
             if (!item) {
                 toastr.warning('Please select a product type');

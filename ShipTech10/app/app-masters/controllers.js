@@ -1682,6 +1682,64 @@
                     });
                     $scope.filterFromData.marketPrices = tempMarketPrices;
                 }
+                if (vm.app_id == 'masters' && vm.screen_id == 'service') {
+                    //strategyTypes request payload json formation
+                    let strategyTypeModel = {
+                        "id": 0,
+                        "isDeleted": false,
+                        "modulePathUrl": null,
+                        "clientIpAddress": null,
+                        "userAction": null,
+                        "strategyType": {
+                            "id": 0,
+                            "name": "",
+                            "internalName": "",
+                            "isDeleted": false,
+                            "databaseValue": 0,
+                            "transactionTypeId": 0,
+                            "strategyTypeId": 0
+                        }
+                    }
+
+                    $scope.filterFromData.locations.map(location => {
+                        if(location.isDeleted) { return true; }
+                        if ((location.selectedStrategyType?.length)) {
+                            // Handle delete for specific strategy, if not available in selected strategy list
+                            location.strategyTypes.map(StrategyTypeObj=> {
+                                let canDeletedStrategyType = location.selectedStrategyType.filter(item=> item.id == StrategyTypeObj?.strategyType?.id);
+                                    if(canDeletedStrategyType?.length == 0) {
+                                        StrategyTypeObj.isDeleted = true;
+                                    } else {
+                                        StrategyTypeObj.isDeleted = false;
+                                    }
+                                return StrategyTypeObj;
+                            })
+                            //Reformat strategy types json structure into BE DB query supported json 
+                            location.selectedStrategyType.map((strategyType, index)=> {
+                                if(!location?.strategyTypes) {
+                                    location['strategyTypes'] = [angular.copy(strategyTypeModel)];
+                                }
+                                let isStrategyTypeExist = location.strategyTypes.find((item)=> item?.strategyType?.id == strategyType.id);
+                                if(isStrategyTypeExist) {
+                                    location.strategyTypes[index].id = isStrategyTypeExist?.id;
+                                } else {
+                                    let tempstrategyType = angular.copy(strategyTypeModel);
+                                    tempstrategyType.strategyType.id = strategyType.id;
+                                    tempstrategyType.strategyType.name = strategyType.name;
+                                    tempstrategyType.strategyType.internalName = strategyType.internalName;
+                                    location.strategyTypes[index] = tempstrategyType;
+                                }
+                                return location.strategyTypes;
+                            })
+                            // Remove unwanted temp selectedStrategyType field from request form data
+                            delete location.selectedStrategyType;
+                            return location;
+                    	} else {
+                            //handle delete all exist strategy, if selected strategy list empty
+                            location.strategyTypes.map(strategyType=>strategyType.isDeleted=true);
+                        }
+                    });
+                }
                 if (vm.app_id == 'masters' && vm.screen_id == 'formula' && (!vm.entity_id || vm.entity_id == '')) {
                     $.each($scope.filterFromData.complexFormulaQuoteLines, (key, val) => {
 	                    $.each(val.systemInstruments, (key2, val2) => {
