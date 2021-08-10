@@ -310,7 +310,12 @@ import { LocPanDataComponent } from './views/main/details/components/loc-pan-dat
     AGGridCellRendererV2Component,
     AGGridCellActionsComponent,
     ShiptechCustomHeaderGroup,
-    SellerratingpopupComponent
+    SellerratingpopupComponent,
+    ApplicablecostpopupComponent,
+    SpotnegoOfferpricehistoryComponent,
+    MarketpricehistorypopupComponent,
+    AvailabletermcontractspopupComponent,
+    SpotnegoAdditionalcostComponent
   ],
   exports: [],
   providers: [
