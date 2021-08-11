@@ -615,8 +615,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     //e.preventDefault();
     var itemsToUpdate = [];
     params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
-      // console.log("eeeeeeeee");
-      //console.log(rowNode);
       if (!rowNode.isSelected() === true) {
         return;
       }
@@ -648,7 +646,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.params.api.applyTransaction({ remove: newData });
   }
   selectSupplier(text) {
-    //console.log(text);
     this.editedSeller = text;
   }
 }

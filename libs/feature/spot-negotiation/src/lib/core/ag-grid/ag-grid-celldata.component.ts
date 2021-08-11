@@ -2450,10 +2450,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   }
   agInit(params: any): void {
     this.params = params;
-    //console.log(params);
     this.toolTip = params.value;
-    //console.log(this.params.data.rating);
-    //console.log(this.params);
+
     const image =
       this.params.data.revert === 'yes' ? 'unmatch.svg' : 'unmatch-disable.svg';
     this.imageSource = `/assets/icon/${image}`;
@@ -2895,7 +2893,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     if (this.menuTriggerToggle != undefined) this.menuTriggerToggle.closeMenu();
 
     var overlay = document.querySelector('.cdk-overlay-container');
-    //console.log(overlay);
     overlay.classList.remove('removeOverlay');
   }
 
@@ -2906,7 +2903,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       element.classList.remove('selectedIcon');
     });
     var overlay = document.querySelector('.cdk-overlay-container');
-    //console.log(overlay);
     overlay.classList.remove('removeOverlay');
     var overlay1 = document.querySelector('.cdk-overlay-pane');
     overlay1.classList.remove('movedpanel');
