@@ -109,3 +109,23 @@ body .ui-tabmenu .ui-tabmenu-nav {
   position: relative;
   top: 10px !important;
 }
+
+.search-btn-for-invoice .ui-button-icon-left,
+.search-icon-supplier .ui-button-icon-left {
+  color: #777a7f !important;
+}
+
+.shiptech-searchbox .ui-corner-all {
+  border: unset !important;
+}
+
+.btn-invoice .ui-button-icon-left {
+  color: white !important;
+}
+
+// body .ui-button:enabled:hover,
+// body .ui-button:enabled:active,
+// body .ui-button {
+//   background-color: unset !important;
+//   border-color: unset !important;
+// }
