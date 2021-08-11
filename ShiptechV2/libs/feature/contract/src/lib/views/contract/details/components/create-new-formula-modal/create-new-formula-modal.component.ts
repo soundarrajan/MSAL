@@ -507,10 +507,15 @@ export class CreateNewFormulaModalComponent
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.setDefaultValues();
   }
 
   closeClick(): void {
     this.dialogRef.close();
+  }
+
+  setDefaultValues = () => {
+      console.log(this.formValues);
   }
 
   originalOrder = (
@@ -532,6 +537,13 @@ export class CreateNewFormulaModalComponent
     this.formValues.pricingScheduleOptionEventBasedSimple = null;
     this.formValues.pricingScheduleOptionEventBasedExtended = null;
     this.formValues.pricingScheduleOptionEventBasedContinuous = null;
+    /* 
+    4 = Date Range
+    5 = Specific Dates 
+    6 = Event Based simple
+    7 = Event Based extended
+    8 = Event Based Continuous
+    */
     if (id == 4) {
       this.formValues.pricingScheduleOptionDateRange = {};
       this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = _.cloneDeep(
@@ -579,7 +591,12 @@ export class CreateNewFormulaModalComponent
         this.holidayRuleList[2]
       );
     } else if (id == 6) {
-      this.formValues.pricingScheduleOptionEventBasedSimple = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple = {
+          fromNoOfBusinessDaysBefore : 0,
+          toNoOfBusinessDaysAfter : 0,
+          fromBusinessCalendarId : {id : 1},
+          toBusinessCalendar : {id : 1},
+      };
       this.formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = _.cloneDeep(
         this.holidayRuleList[2]
       );
@@ -602,7 +619,12 @@ export class CreateNewFormulaModalComponent
         this.holidayRuleList[2]
       );
     } else if (id == 7) {
-      this.formValues.pricingScheduleOptionEventBasedExtended = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended = {
+          fromNoOfBusinessDaysBefore : 0,
+          toNoOfBusinessDaysAfter : 0,  
+          fromBusinessCalendar : {id : 1},  
+          toBusinessCalendar : {id : 1},
+      };
       this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = _.cloneDeep(
         this.holidayRuleList[2]
       );
