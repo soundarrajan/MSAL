@@ -476,6 +476,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.formValues.counterpartyDetails.customer.name
         );
       }
+      this.dateFormat_rel_invoice = this.dateFormat_rel_invoice.replace('DDD', 'ddd').replace('dd/', 'DD/').replace('dd-', 'DD-')
       // Set trader and buyer name;
       this.orderDetails2.contents[0].value =
         this.formValues.orderDetails.buyerName || this.emptyStringVal;
@@ -2321,7 +2322,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     // this.invoiceService.getInvoicDetails().
   }
 
-  public saveInvoiceDetails() {
+  public saveInvoiceDetails(callback?: Function) {
     if (this.formSubmitted) {
       return;
     }
@@ -2354,6 +2355,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
         this.entityId = result;
         this.handleServiceResponse(result, 'Invoice saved successfully.');
+        if(callback) {
+            callback(result);
+        }
       });
     } else {
       // this.spinner.show();
@@ -2363,6 +2367,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.formatAdditionalCosts();
         }
         this.handleServiceResponse(result, 'Invoice updated successfully.');
+        if(callback) {
+            callback(result);
+        }        
       });
     }
   }
