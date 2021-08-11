@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 
@@ -6,6 +6,7 @@ import { Store } from '@ngxs/store';
   selector: 'shiptech-main-spot-negotiation',
   templateUrl: './main-spot-negotiation.component.html',
   styleUrls: ['./main-spot-negotiation.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainSpotNegotiationComponent implements OnDestroy {

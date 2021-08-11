@@ -315,7 +315,10 @@ import { LocPanDataComponent } from './views/main/details/components/loc-pan-dat
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
     AvailabletermcontractspopupComponent,
-    SpotnegoAdditionalcostComponent
+    SpotnegoAdditionalcostComponent,
+    SupplierCommentsPopupComponent,
+    SpotnegoConfirmorderComponent,
+    EmailPreviewPopupComponent
   ],
   exports: [],
   providers: [
