@@ -2733,7 +2733,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (command == 'confirmToSeller') {
             	// if (ctrl.procurementSettings.order.needConfirmationSellerEmail.name == 'HardStop') {
             		var isContractOrder = false;
+                    var alkaliproducttype = false;
+                    var otherprodcount = false;
             		$.each(ctrl.data.products, (k, v) => {
+                        if(v.productType["id"] == 7){
+                            alkaliproducttype = true;
+                        }
+                        if(v.productType["id"] != 7){
+                            otherprodcount = true;
+                        }
             			if (v.contractId) {
 		            		isContractOrder = true;
             			}
@@ -2766,7 +2774,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 		            	if (ctrl.confirmToSellerManual) {
 			                var data = {
 			                    orderId: ctrl.orderId,
-		                        defaultTemplate : defaultTemplate[0].template,
+		                        defaultTemplate : (otherprodcount ? defaultTemplate[0].template : alkaliproducttype ? defaultTemplate[1].template :  defaultTemplate[0].template),
 		                        canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
 		                        canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
 		                        command: command
@@ -2785,7 +2793,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 		            	if (ctrl.confirmToSellerContractManual) {
 			                var data = {
 			                    orderId: ctrl.orderId,
-		                        defaultTemplate : defaultTemplate[0].template,
+		                        defaultTemplate : (otherprodcount ? defaultTemplate[0].template : alkaliproducttype ? defaultTemplate[1].template :  defaultTemplate[0].template),
 		                        canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
 		                        canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
 		                        command: command
@@ -2801,6 +2809,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             	// }
             }
             if (command == 'confirmToAll') {
+                var lngproducttype = false;
+                var otherprodcount = false;
         		minProductType = _.minBy(ctrl.data.products, (o) => {
                     return o.productType.productTypeGroup.id;
                 });
@@ -2816,6 +2826,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         		isContractOrder = false;
         		$.each(ctrl.data.products, (k, v) => {
+                    if(v.productType["id"] == 22){
+                        lngproducttype = true;
+                    }
+                    if(v.productType["id"] != 22){
+                        otherprodcount = true;
+                    }
         			if (v.contractId) {
 	            		isContractOrder = true;
         			}
@@ -2846,7 +2862,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             	if (defaultTemplate[0].emailType.name == 'Manual' /* && ctrl.procurementSettings.order.needConfirmationVesselEmail.name == 'HardStop'*/) {
 	                var data = {
 	                    orderId: ctrl.orderId,
-                        defaultTemplate : defaultTemplate[0].template,
+                        defaultTemplate : (otherprodcount ? defaultTemplate[0].template : lngproducttype ? defaultTemplate[1].template :  defaultTemplate[0].template),
                         canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
                         canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
                         command: command
