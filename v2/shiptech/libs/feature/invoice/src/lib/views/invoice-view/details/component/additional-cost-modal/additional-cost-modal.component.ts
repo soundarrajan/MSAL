@@ -705,6 +705,9 @@ export class AdditionalCostModalComponent implements OnInit {
         this.convertDecimalSeparatorStringToNumber(
           this.formValues.costDetails[rowIndex].invoiceAmount
         );
+      this.formValues.costDetails[rowIndex].difference =
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) -
+        parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
       this.calculateGrand(this.formValues);
       return;
     }
@@ -732,6 +735,9 @@ export class AdditionalCostModalComponent implements OnInit {
         this.convertDecimalSeparatorStringToNumber(
           this.formValues.costDetails[rowIndex].invoiceAmount
         );
+      this.formValues.costDetails[rowIndex].difference =
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) -
+        parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
       this.calculateGrand(this.formValues);
       return;
     }
