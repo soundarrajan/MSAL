@@ -1704,6 +1704,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues.costDetails[rowIndex].invoiceTotalAmount =
         parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) +
         parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+      this.formValues.costDetails[rowIndex].difference =
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) -
+        parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
       this.calculateGrand(this.formValues);
       return;
     }
@@ -1722,6 +1725,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues.costDetails[rowIndex].invoiceTotalAmount =
         parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) +
         parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+      this.formValues.costDetails[rowIndex].difference =
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) -
+        parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
       this.calculateGrand(this.formValues);
       return;
     }
