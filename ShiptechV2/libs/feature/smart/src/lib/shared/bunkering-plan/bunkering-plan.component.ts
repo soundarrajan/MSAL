@@ -45,8 +45,11 @@ export class BunkeringPlanComponent implements OnInit {
   public set planId(v : string) {
     if (v == null)
     this.latestPlanId = '';
-    else
-    this.latestPlanId = v;
+    else{
+      this.latestPlanId = v;
+      this.loadBunkeringPlanDetails();
+    }
+    
   };
   @Input('vesselRef') 
   public set vesselRef(v : string) {
@@ -92,14 +95,19 @@ export class BunkeringPlanComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
+        this.gridOptions.suppressNoRowsOverlay = true;
+        this.gridOptions.suppressLoadingOverlay = false;
         this.gridOptions.api.setRowData(this.rowData);
         this.gridOptions.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
         this.gridOptions.api.showLoadingOverlay();
-        setTimeout(() => {
-          if(!this.latestPlanId && this.rowData == null)
+        setTimeout(() => { // Show 'Plan details not available' message in there are no Bunker Plan details
+          if(!this.latestPlanId && this.gridOptions?.api && (this.rowData == undefined || this.rowData?.length == 0)){
+            this.gridOptions.suppressLoadingOverlay = true;
+            this.gridOptions.suppressNoRowsOverlay = false;
             this.gridOptions.api.showNoRowsOverlay();
-        }, 7000);
+          }     
+        }, 5000);
         
         
       },
@@ -117,6 +125,11 @@ export class BunkeringPlanComponent implements OnInit {
       onGridSizeChanged: function (params) {
         params.api.sizeColumnsToFit();
       }
+      // onRowDataChanged: function (params) {
+      //   if(this.rowData)
+      //     this.gridOptions.suppressLoadingOverlay = true;
+         
+      // }
     };
   }
   
@@ -410,12 +423,16 @@ export class BunkeringPlanComponent implements OnInit {
 
   public loadBunkeringPlanDetails(){
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    this.rowData = [];
     
     if(this.latestPlanId){
       let req = { shipId : vesseldata.vesselRef.id, planId : this.latestPlanId }
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
+        if(this.gridOptions?.api) {
+          this.gridOptions.api.setRowData(this.rowData);
+        }
         this.bPlanData = this.rowData;   
         this.latestPlanId = '';
         this.loadBplan.emit(false);
@@ -430,6 +447,9 @@ export class BunkeringPlanComponent implements OnInit {
     else{
       this.loadBplan.emit(false);
       this.rowData = null;
+      if(this.gridOptions?.api) {
+        this.gridOptions.api.setRowData(this.rowData);
+      }
       this.store.dispatch(new SaveBunkeringPlanAction(this.rowData));
     }
       
