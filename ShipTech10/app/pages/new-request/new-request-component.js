@@ -60,6 +60,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.saved = false;
         ctrl.request = [];
         ctrl.request.locations = [];
+        $scope.portCall = [];
         ctrl.lookupInput = null;
         ctrl.screenActions = null;
         ctrl.checkedProducts = [];
@@ -1015,15 +1016,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     ctrl.prepareReasonsForSave();
                     screenLoader.showLoader();
                     //Map port call id and voyageId, vesselVoyageDetailId with request payload locations->portCallId,vesselVoyageId
-                    let selectedPortCall = ctrl.request.portCall;
+                    // let selectedPortCall = ctrl.request.portCall;
+                    let selectedPortCall = (angular.isArray($scope.portCall))? $scope.portCall: [$scope.portCall];
                     let PayloadLocations = ctrl.request.locations;
                     PayloadLocations.map((location, index)=>{
-                        location.portCallId=selectedPortCall?.locationId;
-                        location.vesselVoyageId=selectedPortCall?.voyageId;
-                        location.vesselVoyageDetailId=selectedPortCall?.vesselVoyageDetailId;
+                        let selectedPortCallObj = selectedPortCall.find(portCallItem=>portCallItem?.locationId == location?.locationId);
+                        location.portCallId = selectedPortCallObj?.locationId;
+                        location.vesselVoyageId = selectedPortCallObj?.voyageId;
+                        location.vesselVoyageDetailId = selectedPortCallObj?.vesselVoyageDetailId;
                         return true;
                     });
-                    delete ctrl.request.portCall;
                     newRequestModel.updateRequest(ctrl.request).then(
                         (responseData) => {
                             let data = responseData.payload;
@@ -2666,7 +2668,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             });
         };
         ctrl.selectedPortCall = function(locations) {
-            ctrl.request.portCall = locations;
+            // ctrl.request.portCall = locations;
+            $scope.portCall[locations.locationId] = locations;
             // angular.forEach(locations, (location, key) => {
             //     addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
             //         setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd, location.recentETA);
@@ -2674,7 +2677,15 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             //     });
             // });
         };
-
+        ctrl.setPortCallDefaultView = function(index, locationObj) {
+            if(!(locationObj?.vesselVoyageDetailId)) { return true; }
+            locationObj.locationId = locationObj.location.id;
+            locationObj.locationName = locationObj.location.name;
+            locationObj.voyageId = locationObj.vesselVoyageId;
+            locationObj.vesselVoyageDetailId = locationObj.vesselVoyageDetailId;
+            ctrl.request.portCall = locationObj;
+            $scope.portCall[index] = locationObj;
+        };
         ctrl.selectVesselSchedulesMintoReach = function(locations) {
             ctrl.EnableSingleSelect = false;
             // $scope.formValues.minimumQuantitiesToReach = locations;
@@ -4335,7 +4346,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             $scope.prettyCloseModal();
         };
-        ctrl.getVesselSchedules = function(param) {
+        ctrl.getVesselSchedules = function(param, locationId) {
             ctrl.EnableSingleSelect = false;
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
@@ -4358,9 +4369,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if(param && param=='portCall' && selectedBunkerPort?.length) {
                         ctrl.EnableSingleSelect = true;
                         let locationFilter = selectedBunkerPort.map(location=> {
-                            locationFilterModel.value = location?.location?.id;
-                            return locationFilterModel;
-                        })
+                            if(locationId == location?.location?.id) {
+                                locationFilterModel.value = location?.location?.id;
+                                return locationFilterModel;
+                            }
+                        }).filter(Boolean);
                         filterPayload.push(...locationFilter);
 
                     }
