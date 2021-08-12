@@ -90,6 +90,7 @@
     "file-saver": "^2.0.2",
     "hammerjs": "^2.0.8",
     "highcharts": "^9.1.2",
+    "highcharts-angular": "^2.10.0",
     "intl": "1.2.5",
     "jsnlog": "^2.30.0",
     "json-cycle": "^1.3.0",
