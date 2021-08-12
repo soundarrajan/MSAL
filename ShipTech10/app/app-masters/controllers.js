@@ -1704,25 +1704,27 @@
                     $scope.filterFromData.locations.map(location => {
                         if(location.isDeleted) { return true; }
                         if ((location.selectedStrategyType?.length)) {
-                            // Handle delete for specific strategy, if not available in selected strategy list
-                            location.strategyTypes.map(StrategyTypeObj=> {
-                                let canDeletedStrategyType = location.selectedStrategyType.filter(item=> item.id == StrategyTypeObj?.strategyType?.id);
-                                    if(canDeletedStrategyType?.length == 0) {
-                                        StrategyTypeObj.isDeleted = true;
-                                    } else {
-                                        StrategyTypeObj.isDeleted = false;
-                                    }
-                                return StrategyTypeObj;
-                            })
+                            if(location.strategyTypes?.length) {
+                                // Handle delete for specific strategy, if not available in selected strategy list
+                                location.strategyTypes.map(StrategyTypeObj=> {
+                                    let canDeletedStrategyType = location.selectedStrategyType.filter(item=> item.id == StrategyTypeObj?.strategyType?.id);
+                                        if(canDeletedStrategyType?.length == 0) {
+                                            StrategyTypeObj.isDeleted = true;
+                                        } else {
+                                            StrategyTypeObj.isDeleted = false;
+                                        }
+                                    return StrategyTypeObj;
+                                })
+                            }
                             //Reformat strategy types json structure into BE DB query supported json 
                             location.selectedStrategyType.map((strategyType, index)=> {
                                 if(!location?.strategyTypes) {
                                     location['strategyTypes'] = [angular.copy(strategyTypeModel)];
                                 }
                                 let isStrategyTypeExist = location.strategyTypes.find((item)=> item?.strategyType?.id == strategyType.id);
-                                if(isStrategyTypeExist) {
-                                    location.strategyTypes[index].id = isStrategyTypeExist?.id;
-                                } else {
+                                if(!isStrategyTypeExist) {
+                                    // location.strategyTypes[index].id = isStrategyTypeExist?.id;
+                                // } else {
                                     let tempstrategyType = angular.copy(strategyTypeModel);
                                     tempstrategyType.strategyType.id = strategyType.id;
                                     tempstrategyType.strategyType.name = strategyType.name;
