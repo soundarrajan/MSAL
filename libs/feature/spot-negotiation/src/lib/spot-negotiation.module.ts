@@ -109,6 +109,7 @@ import {
   NgxMatTimepickerModule
 } from '@angular-material-components/datetime-picker';
 
+import { HighchartsChartModule } from 'highcharts-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -245,7 +246,8 @@ import { LocPanDataComponent } from './views/main/details/components/loc-pan-dat
     MatFormFieldModule,
     NgxMatSelectSearchModule,
     MatSelectInfiniteScrollModule,
-    BreadcrumbsModule
+    BreadcrumbsModule,
+    HighchartsChartModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
@@ -318,7 +320,8 @@ import { LocPanDataComponent } from './views/main/details/components/loc-pan-dat
     SpotnegoAdditionalcostComponent,
     SupplierCommentsPopupComponent,
     SpotnegoConfirmorderComponent,
-    EmailPreviewPopupComponent
+    EmailPreviewPopupComponent,
+    ContactinformationpopupComponent
   ],
   exports: [],
   providers: [
