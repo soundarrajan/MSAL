@@ -476,7 +476,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.formValues.counterpartyDetails.customer.name
         );
       }
-      this.dateFormat_rel_invoice = this.dateFormat_rel_invoice.replace('DDD', 'ddd').replace('dd/', 'DD/').replace('dd-', 'DD-')
+      this.dateFormat_rel_invoice = this.dateFormat_rel_invoice
+        .replace('DDD', 'ddd')
+        .replace('dd/', 'DD/')
+        .replace('dd-', 'DD-');
       // Set trader and buyer name;
       this.orderDetails2.contents[0].value =
         this.formValues.orderDetails.buyerName || this.emptyStringVal;
@@ -1705,6 +1708,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues.costDetails[rowIndex].invoiceTotalAmount =
         parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) +
         parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+      this.formValues.costDetails[rowIndex].difference =
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) -
+        parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
+
       this.calculateGrand(this.formValues);
       return;
     }
@@ -1723,6 +1730,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formValues.costDetails[rowIndex].invoiceTotalAmount =
         parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) +
         parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+      this.formValues.costDetails[rowIndex].difference =
+        parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) -
+        parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
       this.calculateGrand(this.formValues);
       return;
     }
@@ -2355,8 +2365,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
         this.entityId = result;
         this.handleServiceResponse(result, 'Invoice saved successfully.');
-        if(callback) {
-            callback(result);
+        if (callback) {
+          callback(result);
         }
       });
     } else {
@@ -2367,9 +2377,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.formatAdditionalCosts();
         }
         this.handleServiceResponse(result, 'Invoice updated successfully.');
-        if(callback) {
-            callback(result);
-        }        
+        if (callback) {
+          callback(result);
+        }
       });
     }
   }
