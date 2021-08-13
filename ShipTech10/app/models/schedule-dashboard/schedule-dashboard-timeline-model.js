@@ -53,7 +53,7 @@ angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', [ 's
             if (productTypeView) {
                 payload.Filters = [];
                 let packedFilter = {
-                    columnName: 'ProductTypeId',
+                    columnName: 'ProductViewId',
                     value:  productTypeView.id 
                 };
                 payload.Filters.push(packedFilter);
