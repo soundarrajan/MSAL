@@ -1,7 +1,7 @@
-﻿commit f3bcbdcd0d48e01c2334b52b6f44a517d91a12e9
+﻿commit c40096ea4571240e706e24d8ee52e36ba49467a4
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Aug 12 15:23:40 2021 +0300
+Date:   Fri Aug 13 09:03:35 2021 +0300
 
-    Fixed 34896 on master
+    Fixed price precision for zero for estimated rate in invoice screen on master
 
 branch: master

@@ -670,7 +670,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       if (productPricePrecision) {
         plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
       } else {
-        plainNumber = this.roundDown(plainNumber, productPricePrecision);
+        plainNumber = Math.trunc(plainNumber);
       }
       return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
