@@ -134,7 +134,7 @@
                         "Required": false,
                         "Hidden": false,
                         "Added": false,
-                        "LastOnRow": true,
+                        "LastOnRow": false,
                         "Active": false,
                         "masterSource": "Users"
                     }, {
@@ -171,7 +171,7 @@
                         "Hidden": false,
                         "Added": false,
                         "Disabled": true,
-                        "LastOnRow": false,
+                        "LastOnRow": true,
                         "Active": false
                     }, {
                         "Unique_ID": "isLocked",
