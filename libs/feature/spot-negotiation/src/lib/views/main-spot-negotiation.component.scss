@@ -1,9 +1,8 @@
+@import '../../../../../../assets/theme/defaultweb/shiptech.scss';
+
 ag-grid-angular {
   height: 60vh;
 }
-
-
-
 
 /* Spot Negotiation - Details- Start */
 
@@ -3312,6 +3311,10 @@ ag-grid-angular {
   }
 }
 
+.operations-details-block table {
+  width: 100% !important;
+}
+
 .additional-cost-popup {
   .additional-cost-subheading1 {
 
@@ -3585,6 +3588,8 @@ ag-grid-angular {
 
   }
 }
+
+
 
 .pricing-formula-tab {
   //background: #ffffff;
