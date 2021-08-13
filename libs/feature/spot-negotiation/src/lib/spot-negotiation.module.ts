@@ -321,7 +321,8 @@ import { LocPanDataComponent } from './views/main/details/components/loc-pan-dat
     SupplierCommentsPopupComponent,
     SpotnegoConfirmorderComponent,
     EmailPreviewPopupComponent,
-    ContactinformationpopupComponent
+    ContactinformationpopupComponent,
+    SpotnegoPricingDetailsComponent
   ],
   exports: [],
   providers: [
