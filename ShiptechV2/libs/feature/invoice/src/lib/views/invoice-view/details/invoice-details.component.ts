@@ -2727,7 +2727,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
-    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    var plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    if(plainNumber.includes("e")) {
+        plainNumber = plainNumber.split("e")[0]
+    }
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
