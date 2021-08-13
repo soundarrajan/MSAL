@@ -86,35 +86,37 @@ angular.module('shiptech.components').controller('FiltersController', [
             $scope.applyFilters($rootScope.rawFilters);
         });
 
-        $rootScope.$on('breadcrumbs-filter-applied', (event, packedFilter) => {
-            // First filter applied
-            $scope.appliedFiltersFromBreadcrumb = true;
-        	if (!$scope.globalFilters) {
-        		$scope.globalFilters = [];
-                $scope.applyFilters($scope.globalFilters);
-                return;
-        	}
-        	if ($scope.globalFilters.length === 0 || !$scope.globalFilters[0].value) {
-        		$scope.globalFilters[0] = packedFilter;
-                $scope.applyFilters($scope.globalFilters);
-                return;
-        	}
+        $rootScope.$on('breadcrumbs-filter-applied', (event, packedFilter, productTypeView) => {
+            if (!productTypeView) {
+                // First filter applied
+                $scope.appliedFiltersFromBreadcrumb = true;
+                if (!$scope.globalFilters) {
+                    $scope.globalFilters = [];
+                    $scope.applyFilters($scope.globalFilters);
+                    return;
+                }
+                if ($scope.globalFilters.length === 0 || !$scope.globalFilters[0].value) {
+                    $scope.globalFilters[0] = packedFilter;
+                    $scope.applyFilters($scope.globalFilters);
+                    return;
+                }
 
-            if (!$rootScope.listOfAppliedFiltersString) {
-                $rootScope.listOfAppliedFiltersString = [];
+                if (!$rootScope.listOfAppliedFiltersString) {
+                    $rootScope.listOfAppliedFiltersString = [];
+                }
+
+                if ($rootScope.listOfAppliedFiltersString.indexOf(packedFilter.value[0].toLowerCase()) == -1) {
+                    $scope.globalFilters.push(packedFilter);
+                } else {
+                    for (let i = $scope.globalFilters.length - 1; i >= 0; i--) {
+                        if ($scope.globalFilters[i].value.length > 0) {
+                            if ($scope.globalFilters[i].value[0].toLowerCase() == packedFilter.value[0].toLowerCase()) {
+                                $scope.globalFilters.splice(i, 1);
+                            }
+                        }
+                    }
+                }
             }
-
-        	if ($rootScope.listOfAppliedFiltersString.indexOf(packedFilter.value[0].toLowerCase()) == -1) {
-                $scope.globalFilters.push(packedFilter);
-        	} else {
-        		for (let i = $scope.globalFilters.length - 1; i >= 0; i--) {
-        			if ($scope.globalFilters[i].value.length > 0) {
-		        		if ($scope.globalFilters[i].value[0].toLowerCase() == packedFilter.value[0].toLowerCase()) {
-	                        $scope.globalFilters.splice(i, 1);
-	                    }
-        			}
-        		}
-        	}
         	// Apply filters
             $scope.applyFilters($scope.globalFilters);
         });
@@ -317,7 +319,11 @@ angular.module('shiptech.components').controller('FiltersController', [
                 if ($rootScope.clc_loaded) {
                     // console.log(123)
                     if (!ctrl.saveFilterActionEvent) {
-	                    $rootScope.$broadcast('filters-applied', $scope.packedFilters);
+                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home') {
+	                        $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
+                        } else {
+                            $rootScope.$broadcast('filters-applied', $scope.packedFilters);
+                        }
                     } else {
                         ctrl.saveFilterActionEvent = false;
                     }
@@ -965,6 +971,9 @@ angular.module('shiptech.components').controller('FiltersController', [
                     toastr.success('Configuration deleted!');
                     $timeout(() => {
                         $state.reload();
+                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home') {
+                            $rootScope.$broadcast('filters-removed', $rootScope.productTypeView);
+                        }
                     }, 1000);
                 })
                 .catch((error) => {

@@ -5,7 +5,7 @@ angular.module('shiptech.models')
             {
     	// TODO: all methods to POST
                 getTable: { method:'POST', params:{ verb:'getTable' } },
-                getWSeparateBunkerPlan: { method:'POST', params:{ verb:'getWSeparateBunkerPlan' } },
+                getTimeline: { method:'POST', params:{ verb:'getTimeline' } },
             });
     } ]);
 

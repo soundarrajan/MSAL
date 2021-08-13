@@ -8,6 +8,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         
         ctrl.startDate = null;
         ctrl.endDate = null;
+
+        ctrl.listsCache = $listsCache;
+        ctrl.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
         $rootScope.numberLoad = 0;
 
         var DEBUG = false;
@@ -37,7 +40,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         $scope.searchTimeline = function(searchText) {
             searchTextFilters = searchText;
-            scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, $scope.filtersAppliedPayload, {}, searchText).then(function (response) {
+            scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, $scope.filtersAppliedPayload, {}, searchText, ctrl.productTypeView).then(function (response) {
                 if (timeline) {
                     updateTimeline(response);
                     $scope.getTimelineStatus();
@@ -1250,7 +1253,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 } else {
                     isDefault = false;
                 }
-                scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, payload, {}, searchTextFilters).then(function (response) {
+                console.log(ctrl.productTypeView);
+                scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, payload, {}, searchTextFilters, ctrl.productTypeView).then(function (response) {
                     resolve(response);
                     if (typeof $rootScope.timelineSaved != "undefined" && $rootScope.timelineSaved != null && isDefault) {
                         $scope.getDefaultFilters($rootScope.timelineSaved, false);
@@ -1364,10 +1368,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
         }
 
-        $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter) {
+        $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter, productTypeView) {
             if (!timeline) {
                 return;
             }
+            console.log(productTypeView);
+            ctrl.productTypeView = productTypeView;
 
             $scope.filtersAppliedPayload = payload;
             $rootScope.saveFiltersDefaultTimeline = [];

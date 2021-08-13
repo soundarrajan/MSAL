@@ -19,7 +19,7 @@ angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', [ 's
          * @param {Integer} endDate - The end date as a UNIX timestamp.
          * @returns {Array} An a promise of an array of rows as custom objects.
          */
-        function get(startDate, endDate, filters, pagination, search) {
+        function get(startDate, endDate, filters, pagination, search, productTypeView) {
         	let payload = {};
             if (typeof filters != 'undefined' && filters !== null) {
                 payload.PageFilters = {
@@ -50,6 +50,16 @@ angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', [ 's
             payload.Start = startDate;
             payload.End = endDate;
 
+            if (productTypeView) {
+                payload.Filters = [];
+                let packedFilter = {
+                    columnName: 'ProductTypeId',
+                    value:  productTypeView.id 
+                };
+                payload.Filters.push(packedFilter);
+            }
+
+
             if (typeof pagination !== 'undefined' && pagination !== null) {
                 // Pagination
                 payload.Pagination = {
@@ -70,7 +80,7 @@ angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', [ 's
             // complete request data with custom payload info
             request_data = payloadDataModel.create(payload);
             // return scheduleDashboardTimelineResource.fetch(request_data).$promise.then(function(data) {
-            return scheduleDashboardTimelineResource.getWSeparateBunkerPlan(request_data).$promise.then((data) => {
+            return scheduleDashboardTimelineResource.getTimeline(request_data).$promise.then((data) => {
                 currentModel = new scheduleDashboardTimelineModel(data);
                 modelReady = true;
                 return data;

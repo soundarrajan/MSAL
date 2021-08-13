@@ -5,6 +5,19 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         $scope.STATE = STATE;
         window.scheduleDashboardConfiguration = { payload: $tenantConfiguration.scheduleDashboardConfiguration };
 
+        $scope.listsCache = $listsCache;
+        $scope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+        $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+
+        $scope.$on('filters-removed', function (event, payload) {
+            console.log(payload);
+            $scope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+            $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+            $scope.$apply();
+            $scope.$digest();
+
+        });
+
         $scope.setStateParamsPath = function(toParams) {
             let pathMap = {
                 deliveriestobeverified: 'Deliveries to be Verified',
@@ -63,26 +76,33 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         * Broadcast an event with a certain status so pages know to react and filter
         * @param {String} status - status for broadcast
         */
-        $scope.breadcrumbsFilter = function(status, no) {
-            let packedFilter = {
-                column: {
-                    columnRoute: 'schedule-dashboard-calendar',
-                    columnName: 'Port Status',
-                    columnValue: 'VoyageDetail_PortStatus_DisplayName',
-                    sortColumnValue: null,
-                    columnType: 'Text',
-                    displayName: 'Port Status',
-                },
-                condition: {
-                    conditionName: 'Is equal',
-                    conditionValue: '=',
-                    conditionApplicable: 'Text',
-                    conditionNrOfValues: 1
-                },
-                value: [ status ]
-            };
-            $rootScope.$broadcast('breadcrumbs-filter-applied', packedFilter);
-            // $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, status, no);
+        $scope.breadcrumbsFilter = function(status, no, productTypeView) {
+            if (productTypeView && ['Bunker View', 'Residue View', 'Additive View'].indexOf(productTypeView.name) != -1) {
+                console.log('user select product type view');
+                $scope.productTypeView = angular.copy(productTypeView);
+                $rootScope.productTypeView  = angular.copy(productTypeView);
+                $rootScope.$broadcast('breadcrumbs-filter-applied', null, productTypeView);
+            } else {
+                let packedFilter = {
+                    column: {
+                        columnRoute: 'schedule-dashboard-calendar',
+                        columnName: 'Port Status',
+                        columnValue: 'VoyageDetail_PortStatus_DisplayName',
+                        sortColumnValue: null,
+                        columnType: 'Text',
+                        displayName: 'Port Status',
+                    },
+                    condition: {
+                        conditionName: 'Is equal',
+                        conditionValue: '=',
+                        conditionApplicable: 'Text',
+                        conditionNrOfValues: 1
+                    },
+                    value: [ status ]
+                };
+                $rootScope.$broadcast('breadcrumbs-filter-applied', packedFilter);
+                // $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, status, no);
+            }
         };
 
         /**

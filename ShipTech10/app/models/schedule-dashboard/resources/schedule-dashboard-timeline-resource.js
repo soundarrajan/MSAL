@@ -3,7 +3,7 @@ angular.module('shiptech.models')
         return $resource(`${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/scheduledashboard/:verb`, null,
             {
     	// TODO: all methods to POST
-                getWSeparateBunkerPlan: { method:'POST', params:{ verb:'getWSeparateBunkerPlan' } },
+                getTimeline: { method:'POST', params:{ verb:'getTimeline' } },
                 getTable: { method:'POST', params:{ verb:'getTable' } },
             });
     } ]);

@@ -1,4 +1,60 @@
 <div class="page-bar breadcrumbs-container" ng-controller="BreadcrumbsController" ng-class="{'no-top-margin' : state.is(STATE.SUPPLIER_PORTAL)}">
+    <div  class="type-views page-toolbar schedule_toolbar"
+        ng-if="
+               state.is(STATE.DASHBOARD_TIMELINE) || 
+               state.is(STATE.HOME)">
+        <div class="mat-button-toggle-group mat-button-toggle-group-appearance-standard">
+            <div class="mat-button-toggle mat-button-toggle-appearance-standard" ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[0].id}">
+                <button
+                  class="mat-button-toggle-button mat-focus-indicator"
+                  type="button"
+                  id="mat-button-toggle-1-button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  name="mat-button-toggle-group-0"
+                  ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[0])"
+                >
+                  <div class="mat-button-toggle-label-content">
+                    <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[0].id"></span> 
+                        {{listsCache.ProductView[0].name}}
+                  </div>
+                </button>
+            </div>
+            <div class="mat-button-toggle mat-button-toggle-appearance-standard"  ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[1].id}" >
+               <button
+                  class="mat-button-toggle-button mat-focus-indicator"
+                  type="button"
+                  id="mat-button-toggle-2-button"
+                  tabindex="0"
+                  aria-pressed="true"
+                  name="mat-button-toggle-group-0"
+                  ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[1])"
+                >
+                  <div class="mat-button-toggle-label-content">
+                    <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[1].id"></span> 
+                        {{listsCache.ProductView[1].name}}
+                  </div>
+                </button>
+
+            </div>
+            <div class="mat-button-toggle mat-button-toggle-appearance-standard"  ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[2].id}" >
+                <button
+                  class="mat-button-toggle-button mat-focus-indicator"
+                  type="button"
+                  id="mat-button-toggle-1-button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  name="mat-button-toggle-group-0"
+                  ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[2])"
+                >
+                  <div class="mat-button-toggle-label-content">
+                    <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[2].id"></span> 
+                    {{listsCache.ProductView[2].name}}
+                  </div>
+                </button>
+            </div>
+        </div>
+    </div>
     <ul class="page-breadcrumb">
         <li ng-repeat="station in state.params.path">
 

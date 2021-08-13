@@ -516,12 +516,14 @@ timeline-right-click-popover .contextmenu {
 
 .collapse-icon {
     content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxjaXJjbGUgY3g9IjgiIGN5PSI4IiByPSI4IiB0cmFuc2Zvcm09InJvdGF0ZSgtMTgwIDggOCkiIGZpbGw9IiMzNjQxNTAiLz4NCjxwYXRoIGQ9Ik0xMyAxMEw3Ljc5OTk4IDQuNzk5OThMMi42IDEwTDEzIDEwWiIgZmlsbD0id2hpdGUiLz4NCjwvc3ZnPg0K");
+    position: relative;
+    top: 3px; 
 }
 
 .expand-icon {
     content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxjaXJjbGUgY3g9IjgiIGN5PSI4IiByPSI4IiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNMyA2TDguMjAwMDIgMTEuMkwxMy40IDZIM1oiIGZpbGw9IndoaXRlIi8+DQo8L3N2Zz4NCg==");
     position: relative;
-    top: 2px;
+    top: 3px;
 }
 
 
@@ -735,5 +737,6 @@ timeline-right-click-popover .contextmenu {
 }
 
 .type-views {
-   background: #FCFCFE !important;
+   /*background: #FCFCFE !important;*/
+   background: white !important;
 }
