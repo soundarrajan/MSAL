@@ -2,9 +2,6 @@
 <div class="form-group  row textUOM"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}" ng-class="field.ReadOnly ? 'read-only-group-control' : 'editable-group-control'">
     <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
         {{ CM.app_id + '.' + field.Label | translate }}
-        <span ng-if="(CM.screen_id == 'claims' && field.Label == 'ACTUAL_SETTLEMENT_AMOUNT') || $eval(field.Required) == true || field.Required == true ? true : false" class="orange-txt">
-            *
-        </span>
     </label>
     <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
 
