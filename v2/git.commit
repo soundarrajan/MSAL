@@ -1,13 +1,9 @@
-﻿commit 520818e89bcf972658fca3df4ed5bb7891962727
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Aug 13 06:54:59 2021 +0000
+﻿commit 41eb8789dac3d9772836e2b6bca33b82d5261233
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Aug 13 12:19:43 2021 +0000
 
-    Merged PR 13053: #32847: Bunker Plan - UI Changes in Bunker plan screen changes updated
+    Merged PR 13067: added dynamic config file
     
-    #32847: Bunker Plan - UI Changes in Bunker plan screen changes updated
-    
-    (cherry picked from commit a30237fd7787d96e5ed7e4e07a34085fe630f54f)
-    
-    Related work items: #32847
+    added dynamic config file
 
 branch: master

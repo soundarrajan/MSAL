@@ -41,7 +41,12 @@ export class UrlService {
   }
 
   public getLegacySettings(): string {
-    return `/config/config.json`;
+    var hostName = window.location.hostname;
+    var config = "/config/" + hostName + ".json"
+    if (["localhost"].indexOf(hostName) != -1) {
+        config = "/config/config.json";
+    }
+    return config;
   }
 
   public offer(requestId: string | number): string {
