@@ -1225,6 +1225,7 @@
     "COMPANY": "Company",
     "POOL": "Pool",
     "REPORTING_MANAGER": "Reporting manager",
+    "DEFAULT_LANDING_PAGE": "Default Landing Page",
     "LOCKED": "Locked",
     "IS_ACTIVE": "Is Active",
     "EMAIL_CONTACT": "Email Contact",
