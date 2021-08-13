@@ -1,7 +1,13 @@
-﻿commit c40096ea4571240e706e24d8ee52e36ba49467a4
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Aug 13 09:03:35 2021 +0300
+﻿commit 520818e89bcf972658fca3df4ed5bb7891962727
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Aug 13 06:54:59 2021 +0000
 
-    Fixed price precision for zero for estimated rate in invoice screen on master
+    Merged PR 13053: #32847: Bunker Plan - UI Changes in Bunker plan screen changes updated
+    
+    #32847: Bunker Plan - UI Changes in Bunker plan screen changes updated
+    
+    (cherry picked from commit a30237fd7787d96e5ed7e4e07a34085fe630f54f)
+    
+    Related work items: #32847
 
 branch: master
