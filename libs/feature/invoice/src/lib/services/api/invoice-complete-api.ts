@@ -28,10 +28,12 @@ export namespace InvoiceApiPaths {
   export const getInvoiceItem = () => `api/invoice/get`;
   export const getPhysicalInvoice = () => `api/invoice/getPhysicalDocument`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
-  export const getFinalInvoiceDueDates = () =>`/api/invoice/finalInvoiceDueDates`;
+  export const getFinalInvoiceDueDates = () =>
+    `/api/invoice/finalInvoiceDueDates`;
   export const createInvoiceItem = () => `api/invoice/create`;
   export const updateInvoiceItem = () => `api/invoice/update`;
-  export const productListOnInvoice = () =>`api/invoice/deliveriesToBeInvoicedList`;
+  export const productListOnInvoice = () =>
+    `api/invoice/deliveriesToBeInvoicedList`;
   export const submitapproval = () => `api/invoice/submitForApproval`;
   export const cancelInvoiceItem = () => `api/invoice/cancel`;
   export const acceptInvoiceItem = () => `api/invoice/accept`;
@@ -40,20 +42,27 @@ export namespace InvoiceApiPaths {
   export const approveInvoiceItem = () => `api/invoice/approve`;
   export const submitForReview = () => `api/invoice/submitForReview`;
   export const getStaticLists = () => `api/infrastructure/static/lists`;
-  export const getUomConversionFactor = () => `api/masters/uoms/convertQuantity`;
-  export const calculateProductRecon = () => `api/recon/invoiceproduct`;
+  export const getUomConversionFactor = () =>
+    `api/masters/uoms/convertQuantity`;
+  export const calculateProductRecon = () => `api/invoice/invoiceproduct`;
   export const addTransaction = () => `api/invoice/deliveriesToBeInvoicedList`;
   export const totalConversion = () => `api/invoice/totalConversion`;
-  export const getAdditionalCostsComponentTypes = () => `api/masters/additionalcosts/listApps`;
+  export const getAdditionalCostsComponentTypes = () =>
+    `api/masters/additionalcosts/listApps`;
   export const getApplyForList = () => `api/invoice/getApplicableProducts`;
   export const calculateCostRecon = () => `/api/recon/invoicecost`;
-  export const getBankAccountNumber = () => `/api/invoice/getAccountNumberCounterpartylist`;
-  export const getTenantConfiguration = () => `api/admin/tenantConfiguration/get`;
+  export const getBankAccountNumber = () =>
+    `/api/invoice/getAccountNumberCounterpartylist`;
+  export const getTenantConfiguration = () =>
+    `api/admin/tenantConfiguration/get`;
   export const notesAutoSave = () => `api/invoice/autosave`;
-  export const createCreditNoteInvoiceFromClaim = () => `api/invoice/newFromClaim`;
+  export const createCreditNoteInvoiceFromClaim = () =>
+    `api/invoice/newFromClaim`;
   export const createPreClaimCreditNote = () => `api/invoice/newPreclaimCN`;
-  export const getAdditionalCostsPerPort = () => `api/masters/additionalcosts/listforlocation`;
-  export const getRangeTotalAdditionalCosts = () => `api/procurement/order/getRangeTotalAdditionalCosts`;
+  export const getAdditionalCostsPerPort = () =>
+    `api/masters/additionalcosts/listforlocation`;
+  export const getRangeTotalAdditionalCosts = () =>
+    `api/procurement/order/getRangeTotalAdditionalCosts`;
   export const getPaymentTermList = () => `api/masters/paymentterm/list`;
   export const getCompanyList = () => `api/masters/companies/list`;
   export const getCustomerList = () => `api/masters/counterparties/listByTypes`;
@@ -380,10 +389,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   calculateProductRecon(request: any): Observable<any> {
     return this.http
-      .post<any>(
-        `${this._reconUrl}/${InvoiceApiPaths.calculateProductRecon()}`,
-        { payload: request }
-      )
+      .post<any>(`${this._apiUrl}/${InvoiceApiPaths.calculateProductRecon()}`, {
+        payload: request
+      })
       .pipe(
         map((body: any) => body),
         catchError((body: any) =>
@@ -399,7 +407,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   calculateCostRecon(request: any): Observable<any> {
     return this.http
-      .post<any>(`${this._reconUrl}/${InvoiceApiPaths.calculateCostRecon()}`, {
+      .post<any>(`${this._apiUrl}/${InvoiceApiPaths.calculateCostRecon()}`, {
         payload: request
       })
       .pipe(
@@ -703,13 +711,15 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   getDueDateWithoutSave(request: any): Observable<any> {
-    return this.http.post<any>(`${this._apiUrl}/${InvoiceApiPaths.getDueDateWithoutSave()}`, {
+    return this.http
+      .post<any>(`${this._apiUrl}/${InvoiceApiPaths.getDueDateWithoutSave()}`, {
         payload: request
       })
       .pipe(
         map((body: any) => body.payload),
         catchError((body: any) =>
-          of(body.error.ErrorMessage && body.error.Reference
+          of(
+            body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
               : body.error.errorMessage + ' ' + body.error.reference
           )
