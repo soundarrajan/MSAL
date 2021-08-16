@@ -151,8 +151,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.invoiceDetailsComponent.saveInvoiceDetails( (result) => {
         let params = {
             invoiceid: result
-        };        
-        this.invoiceDetailsToolbarComponent.setNavIds(params);
+        };  
+        setTimeout( () => {
+            this.invoiceDetailsToolbarComponent.setNavIds(params);
+        })      
     });
     // this.isConfirm = !this.isConfirm;
   }
