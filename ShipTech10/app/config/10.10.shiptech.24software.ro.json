@@ -24,6 +24,7 @@
     "DASHBOARD_TIMELINE": "default.dashboard-timeline",
     "DASHBOARD_CALENDAR": "default.dashboard-calendar",
     "NEW_REQUEST": "default.new-request",
+    "NEW_REQUEST_VIEWS": "default.new-request_r",
     "EDIT_REQUEST": "default.edit-request",
     "VIEW_REQUEST_DOCUMENTS": "default.view-request-documents",
     "VIEW_REQUEST_REPORT": "default.view-request-report",

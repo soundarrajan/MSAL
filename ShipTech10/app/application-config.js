@@ -126,6 +126,25 @@ angular.module('shiptech')
                 })
 
                 // New Request View
+                .state(STATE.NEW_REQUEST_VIEWS, {
+                    params: {
+                        path: [ {
+                            label: 'Procurement',
+                            uisref: STATE.HOME
+                        },
+                        {
+                            label: 'New Request',
+                            uisref: STATE.NEW_REQUEST_VIEWS
+                        } ],
+                        title: 'New Request',
+                        voyageId : null
+                    },
+                    url: '/new-request/:voyageId/:productView',
+                    template: '<new-request></new-request>'
+                })
+
+
+                // New Request View
                 .state(STATE.NEW_REQUEST, {
                     params: {
                         path: [ {
@@ -139,7 +158,7 @@ angular.module('shiptech')
                         title: 'New Request',
                         voyageId : null
                     },
-                    url: '/new-request/:voyageId/:productView',
+                    url: '/new-request/:voyageId',
                     template: '<new-request></new-request>'
                 })
 
