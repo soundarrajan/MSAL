@@ -89,7 +89,7 @@ export class InvoiceDetailsToolbarComponent
 
   
   public setNavIds(params: any, navBarList: NavBar) {
-    const invoiceId = params.invoiceid;
+    const invoiceId = params.invoiceId;
     const disabled = invoiceId === '0';
     const routeLinkToReportDetails = [
       '/',
