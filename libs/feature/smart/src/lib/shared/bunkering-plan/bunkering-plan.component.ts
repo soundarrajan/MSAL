@@ -650,7 +650,7 @@ export class BunkeringPlanComponent implements OnInit {
     //business address validation
     let isValidBusinessAddress = data.findIndex(data => !data?.business_address && data?.operator_ack == 1) == -1? 'Y':'N'
     if(isValidBusinessAddress == 'N'){
-      let id = data.findIndex(data => !data?.business_address && data?.operator_ack == 1)
+      let id = data.findIndex( data => !data?.business_address && data?.operator_ack == 1 )
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
