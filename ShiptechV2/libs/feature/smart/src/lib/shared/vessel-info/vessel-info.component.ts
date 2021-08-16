@@ -87,6 +87,7 @@ export class VesselInfoComponent implements OnInit {
   myDefaultView: boolean = false;
   sendPlanReminder : boolean = false;
   disableCurrentBPlan: boolean = false;
+  checkAutoPlanGenInProgress : boolean = false
   observableRef$;
 
   constructor(private store: Store, iconRegistry: MatIconRegistry,public vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
@@ -110,7 +111,9 @@ export class VesselInfoComponent implements OnInit {
           }
         }
       });
-      this.VesselHasNewPlanJob();
+      //Check if auto-plan generation is in progress on Initial Load of Plan
+      this.checkAutoPlanGenInProgress = true;
+      this.VesselHasNewPlanJob(); 
    }
 
   ngOnInit() {
@@ -519,6 +522,8 @@ export class VesselInfoComponent implements OnInit {
     this.store.dispatch(new ImportGsisAction(0));
     this.store.dispatch(new SendPlanAction(0));
     this.sendPlanReminder = false;
+    //Check if auto-plan generation is in progress on vessel change in lookup
+    this.checkAutoPlanGenInProgress = true;
     //Trigger gen plan status auto update on vessel change
     this.VesselHasNewPlanJob();
   }
@@ -739,7 +744,24 @@ export class VesselInfoComponent implements OnInit {
         //Disable Import GSIS checkbox and generate button while gen plan in progress
         this.disableCurrentBPlan = true;
       }
+      //Check if auto-plan generation is happening at the backend. (Usually happens once in a day)
+      if(this.checkAutoPlanGenInProgress == true)
+        this.checkAutoPlanGenerationInProgress(data.auto_gen_possible_time);
     });
+  }
+
+  checkAutoPlanGenerationInProgress(auto_gen_possible_time){
+    //Disable generate button when auto-plan generation happens at the backend.
+    if(auto_gen_possible_time){
+      this.disableCurrentBPlan = true;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '450px',
+        panelClass: 'confirmation-popup-operator',
+        data: {message : 'General plan generation is currently running and therefore manual plan generation is disabled. Manual plan generation will be enabled again ' + `${auto_gen_possible_time}`+ ' CPH time'}
+      });
+
+    }
+    this.checkAutoPlanGenInProgress = false;
   }
 
   ngOnDestroy() {

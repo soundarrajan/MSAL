@@ -89,7 +89,7 @@
                           <tr>
                             <th scope="row">Current ROB</th>
                               <td>
-                                <div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY')">
+                                <div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.hsfoCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY');ROBArbitrageData.hsfoCurrentStock=$event.target.textContent">
                                   {{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock): 0}}
                                 </div>
                               </td>
@@ -231,7 +231,7 @@
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           <div style="display: flex;align-items: center;width: 100%;">
-            <div style="flex: 0 0 17%;">Current Bunker Plan</div>
+            <div style="flex: 0 0 17%;">Latest Valid Bunker Plan</div>
             <div style="flex:0 0 80%;display: flex;align-items: center;">
               <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID :
               </span><span class="content">{{this.planId}}</span></div>
@@ -280,11 +280,16 @@
                 </div>
                 <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
                   class="border-rightside">
-                  <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
-                    class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
-                  <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
+                  <!-- <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
+                    class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button> -->
+                  <!-- <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
                   <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
-                    (click)="saveCurrentBPlan($event)" >Save</button>
+                    (click)="saveCurrentBPlan($event)" >Save</button> -->
+                    <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
+                      (click)="saveCurrentBPlan($event)" >Save</button>
+                      <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
+                      class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
+                      <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
                 </div>
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>
