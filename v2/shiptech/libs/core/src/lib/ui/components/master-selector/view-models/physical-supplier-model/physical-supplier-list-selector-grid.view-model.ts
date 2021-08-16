@@ -175,7 +175,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     colId: PhysicalSupplierListColumns.isDeleted,
     field: model('isDeleted'),
     cellRenderer: params => {
-      var a = document.createElement('span');
+      const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
       !params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;

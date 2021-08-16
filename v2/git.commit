@@ -1,9 +1,7 @@
-﻿commit 41eb8789dac3d9772836e2b6bca33b82d5261233
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Aug 13 12:19:43 2021 +0000
+﻿commit e60c03af5317d7d343172d12234c11bb7633b413
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Aug 16 13:29:43 2021 +0300
 
-    Merged PR 13067: added dynamic config file
-    
-    added dynamic config file
+    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
 
 branch: master
