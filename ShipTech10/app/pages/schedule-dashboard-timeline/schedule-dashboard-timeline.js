@@ -9,6 +9,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         ctrl.startDate = null;
         ctrl.endDate = null;
 
+        ctrl.lastStartDateForViews = null;
+        ctrl.lastEndDateForViews = null;
+
         ctrl.listsCache = $listsCache;
         ctrl.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
         $rootScope.numberLoad = 0;
@@ -625,6 +628,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 zoomMin = 2.0e+8;
         	}
 
+            ctrl.lastStartDate = angular.copy(ctrl.lastStartDateForViews);
+            ctrl.lastEndDate = angular.copy(ctrl.lastEndDateForViews);
+
             options =  {
                 'verticalScroll': true,
                 // 'moveable': false,
@@ -776,6 +782,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                     ctrl.lastStartDate = moment(timeline.range.start);
                     ctrl.lastEndDate = moment(timeline.range.end);
+
+                    ctrl.lastStartDateForViews = moment(timeline.range.start);
+                    ctrl.lastEndDateForViews = moment(timeline.range.end);
+
                     var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
                     if (diff == 2592000000) {
                         $(".st-btn-icon-zoom-in a").css("color", "#555555");
