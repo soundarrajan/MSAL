@@ -143,8 +143,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
+    const elem = moment(value, currentFormat);
+    const date = elem.toDate();
     return value ? date : null;
   }
 }
@@ -301,7 +301,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    let elem = moment(value, currentFormat);
+    const elem = moment(value, currentFormat);
     const isValid = this.isValid(elem);
     return this.isValid(elem) ? elem : null;
   }
@@ -361,8 +361,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
-      let newVal = moment(elem).format(currentFormat);
+      const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      const newVal = moment(elem).format(currentFormat);
       console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
@@ -440,36 +440,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 })
 export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   implements OnInit {
-  switchTheme; //false-Light Theme, true- Dark Theme
-  formValues: any;
-  amountFormat: string;
-  priceFormat: string;
-  quantityFormat: string;
-  autocompleteFormula: knownMastersAutocomplete;
-  baseOrigin: string;
-  autocompletePhysicalSupplier: knownMastersAutocomplete;
-  productList: any;
-  private _autocompleteType: any;
-  _entityName: string;
-  _entityId: number;
-  autocompleteInvoiceProduct: knownMastersAutocomplete;
-  uomList: any;
-  isPricingDateEditable: boolean;
-  currencyList: any;
-  physicalSupplierList: any;
-  type: any;
-  expandAddTransactionListPopUp: boolean = false;
-  displayedColumns: string[] = ['product', 'delivery'];
-  @Output() productDetailChanged: EventEmitter<any> = new EventEmitter<any>();
-  @Output() costDetailsChanged: EventEmitter<any> = new EventEmitter<any>();
-
-  deliveriesToBeInvoicedList: any = [];
-  selectedProductLine: any;
-  productSearch: any;
-  filteredProductOptions: Observable<string[]>;
-  @ViewChild('productMenuTrigger') productMenuTrigger: MatMenuTrigger;
-  eventsFormValuesSubscription: any;
-
   get entityId(): number {
     return this._entityId;
   }
@@ -487,8 +457,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-
-  @Input() vesselId: number;
   @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
@@ -530,8 +498,39 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
     this.physicalSupplierList = physicalSupplierList;
   }
+  switchTheme; //false-Light Theme, true- Dark Theme
+  formValues: any;
+  amountFormat: string;
+  priceFormat: string;
+  quantityFormat: string;
+  autocompleteFormula: knownMastersAutocomplete;
+  baseOrigin: string;
+  autocompletePhysicalSupplier: knownMastersAutocomplete;
+  productList: any;
+  _entityName: string;
+  _entityId: number;
+  autocompleteInvoiceProduct: knownMastersAutocomplete;
+  uomList: any;
+  isPricingDateEditable: boolean;
+  currencyList: any;
+  physicalSupplierList: any;
+  type: any;
+  expandAddTransactionListPopUp: boolean = false;
+  displayedColumns: string[] = ['product', 'delivery'];
+  @Output() productDetailChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() costDetailsChanged: EventEmitter<any> = new EventEmitter<any>();
+
+  deliveriesToBeInvoicedList: any = [];
+  selectedProductLine: any;
+  productSearch: any;
+  filteredProductOptions: Observable<string[]>;
+  @ViewChild('productMenuTrigger') productMenuTrigger: MatMenuTrigger;
+  eventsFormValuesSubscription: any;
+
+  @Input() vesselId: number;
   productDetailsExpandArray = [];
   @Input() eventsFormValues: Observable<void>;
+  private _autocompleteType: any;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -595,9 +594,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   originalOrder = (
     a: KeyValue<number, any>,
     b: KeyValue<number, any>
-  ): number => {
-    return 0;
-  };
+  ): number => 0;
 
   ngAfterViewInit(): void {}
 
@@ -613,8 +610,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -627,9 +624,9 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
   }
   roundDown(value, pricePrecision) {
-    var precisionFactor = 1;
-    var response = 0;
-    var intvalue = parseFloat(value);
+    let precisionFactor = 1;
+    let response = 0;
+    const intvalue = parseFloat(value);
     if (pricePrecision == 1) {
       precisionFactor = 10;
     }
@@ -642,26 +639,39 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     if (pricePrecision == 4) {
       precisionFactor = 10000;
     }
+    if (pricePrecision == 5) {
+      precisionFactor = 100000;
+    }
     response = Math.floor(intvalue * precisionFactor) / precisionFactor;
     return response.toString();
   }
+
+  isNumber(value) {
+    return typeof value === 'number';
+  }
+
   priceFormatValue(value, pricePrecision) {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const number = parseFloat(plainNumber);
+
     if (isNaN(number)) {
       return null;
     }
-    var productPricePrecision = this.tenantService.pricePrecision;
+    let productPricePrecision = this.tenantService.pricePrecision;
     if (pricePrecision !== null) {
       productPricePrecision = pricePrecision;
     }
     this.priceFormat =
       '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
-      plainNumber = this.roundDown(plainNumber, pricePrecision);
+      if (productPricePrecision) {
+        plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
+      } else {
+        plainNumber = Math.trunc(plainNumber);
+      }
       return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
   }
@@ -670,8 +680,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     if (typeof value == 'undefined' || !value) {
       return null;
     }
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -798,7 +808,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
       currentFormat = currentFormat.replace(/HH:mm/g, '');
-      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      const elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
         formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
@@ -810,11 +820,11 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   invoiceConvertUom(type, rowIndex) {
     console.log(type);
     console.log(rowIndex);
-    let currentRowIndex = rowIndex;
+    const currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
     if (this.type == 'product') {
-      let product = this.formValues.productDetails[currentRowIndex];
+      const product = this.formValues.productDetails[currentRowIndex];
       if (
         typeof product.product != 'undefined' &&
         typeof product.invoiceQuantityUom != 'undefined' &&
@@ -851,11 +861,11 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     currentRowIndex
   ) {
     let conversionFactor = 1;
-    let productId = ProductId;
-    let quantity = Quantity;
-    let fromUomId = FromUomId;
-    let toUomId = ToUomId;
-    let data = {
+    const productId = ProductId;
+    const quantity = Quantity;
+    const fromUomId = FromUomId;
+    const toUomId = ToUomId;
+    const data = {
       Payload: {
         ProductId: productId,
         OrderProductId: orderProductId,
@@ -1000,8 +1010,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    var numberToReturn = number;
-    var decimalSeparator, thousandsSeparator;
+    let numberToReturn = number;
+    let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
         if (number.indexOf(',') > number.indexOf('.')) {
@@ -1071,7 +1081,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   addTransaction() {
     this.productMenuTrigger.closeMenu();
     this.deliveriesToBeInvoicedList = [];
-    let payload = {
+    const payload = {
       Payload: {
         Order: null,
         PageFilters: { Filters: [] },
@@ -1109,7 +1119,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   searchProducts(value: string): void {
-    let filterProducts = this.deliveriesToBeInvoicedList.filter(option =>
+    const filterProducts = this.deliveriesToBeInvoicedList.filter(option =>
       option.product.name.toLowerCase().includes(value)
     );
     this.deliveriesToBeInvoicedList = [...filterProducts];
@@ -1120,7 +1130,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     console.log(rowData);
     let transactionstobeinvoiced_dtRow;
     if (rowData.costName) {
-      let transaction_type = 'cost';
+      const transaction_type = 'cost';
       rowData.product.productId = rowData.product.id;
       transactionstobeinvoiced_dtRow = {
         product: rowData.product,

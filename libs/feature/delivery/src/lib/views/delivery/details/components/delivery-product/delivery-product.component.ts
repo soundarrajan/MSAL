@@ -128,8 +128,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
+    const elem = moment(value, currentFormat);
+    const date = elem.toDate();
     return value ? date : null;
   }
 }
@@ -150,22 +150,6 @@ export class PickDateAdapter extends NativeDateAdapter {
 })
 export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   implements OnInit {
-  switchTheme; //false-Light Theme, true- Dark Theme
-  uomList$: any;
-  text: any;
-  uoms: any;
-  quantityCategory: any;
-  selectedProduct: any;
-  quantityFormat: string;
-  events1Subscription: Subscription;
-  isPricingEventDateInvalid: boolean;
-  buttonClicked: any;
-  events2Subscription: Subscription;
-  uomVolume: any;
-  uomMass: any;
-  deliveredQuantityUoms: any;
-  pumpingRateUom: any;
-
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) {
     if (!finalQuantityRules) {
       return;
@@ -255,20 +239,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-
-  @Input() vesselId: number;
-  @Input() data;
-
-  autocompleteVessel: knownMastersAutocomplete;
-  _entityId: number;
-  _entityName: string;
-  toleranceLimits: any;
-  deliveryProductIndex: any;
-  productList$: any;
-  filteredOptions: any;
-  options: any;
-  productList: any[];
-  private _autocompleteType: any;
   @Input('formValues') set _setFormValues(formValues) {
     if (!formValues) {
       return;
@@ -384,7 +354,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
           .deliveredVolume
       );
     }
-
     if (
       this.formValues.deliveryProducts[this.deliveryProductIndex]
         .physicalSupplier
@@ -398,8 +367,34 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
     this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
+  switchTheme; //false-Light Theme, true- Dark Theme
+  uomList$: any;
+  text: any;
+  uoms: any;
+  quantityCategory: any;
+  selectedProduct: any;
+  quantityFormat: string;
+  events1Subscription: Subscription;
+  isPricingEventDateInvalid: boolean;
+  buttonClicked: any;
+  events2Subscription: Subscription;
+  uomVolume: any;
+  uomMass: any;
+  deliveredQuantityUoms: any;
+  pumpingRateUom: any;
 
-  private eventsSubscription: Subscription;
+  @Input() vesselId: number;
+  @Input() data;
+
+  autocompleteVessel: knownMastersAutocomplete;
+  _entityId: number;
+  _entityName: string;
+  toleranceLimits: any;
+  deliveryProductIndex: any;
+  productList$: any;
+  filteredOptions: any;
+  options: any;
+  productList: any[];
   @Input() events: Observable<void>;
   @Input() events1: Observable<void>;
   @Input() events2: Observable<void>;
@@ -413,6 +408,9 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   hideDropdown: boolean;
   conversionInfoData: any = {};
   finalQuantityRules: any;
+  private _autocompleteType: any;
+
+  private eventsSubscription: Subscription;
   constructor(
     public gridViewModel: OrderListGridViewModel,
     public bdnInformationService: BdnInformationApiService,
@@ -508,7 +506,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   getProductList() {
-    let data: any = {
+    const data: any = {
       Order: null,
       PageFilters: { Filters: [] },
       SortList: { SortList: [] },
@@ -657,7 +655,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   /* delivery quantity variance and status calculations*/
   setBuyerSellerQuantityAndUom(qtyToChange) {
     if (qtyToChange == 'seller') {
-      let sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
+      const sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
       if (sellerQty == 'Surveyor') {
         this.formValues.deliveryProducts.forEach((val, key) => {
           this.formValues.deliveryProducts[
@@ -730,7 +728,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       }
     }
     if (qtyToChange == 'buyer') {
-      let buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
+      const buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
       if (buyerQty == 'Surveyor') {
         this.formValues.deliveryProducts.forEach((val, key) => {
           this.formValues.deliveryProducts[
@@ -819,7 +817,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     // rules are in order, check for each if quantity exists and set that
     // if not, go on
     for (let i = 0; i < this.finalQuantityRules.length; i++) {
-      let rule = this.finalQuantityRules[i];
+      const rule = this.finalQuantityRules[i];
       if (
         typeof this.formValues.deliveryProducts[productIdx][
           `${rule.deliveryMapping}Uom`
@@ -858,8 +856,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   setQuantityFormat(value) {
-    let viewValue = `${value}`;
-    let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+    const viewValue = `${value}`;
+    const plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
     return plainNumber;
   }
 
@@ -872,7 +870,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       vesselFlowMeterQuantityUom,
       surveyorQuantityUom;
     let conversionInfo = this.conversionInfoData[productIdx];
-    let activeProduct = this.formValues.deliveryProducts[productIdx];
+    const activeProduct = this.formValues.deliveryProducts[productIdx];
     // get fields values and uom
     activeProduct.confirmedQuantityUom == null
       ? (confirmedQuantityUom = null)
@@ -891,19 +889,19 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     activeProduct.surveyorQuantityUom == null
       ? (surveyorQuantityUom = null)
       : (surveyorQuantityUom = activeProduct.surveyorQuantityUom.name);
-    let Confirm = {
+    const Confirm = {
       val: this.setQuantityFormat(activeProduct.confirmedQuantityAmount),
       uom: confirmedQuantityUom
     };
-    let Vessel = {
+    const Vessel = {
       val: this.setQuantityFormat(activeProduct.vesselQuantityAmount),
       uom: vesselQuantityUom
     };
-    let Bdn = {
+    const Bdn = {
       val: this.setQuantityFormat(activeProduct.bdnQuantityAmount),
       uom: bdnQuantityUom
     };
-    let VesselFlowMeter = {
+    const VesselFlowMeter = {
       val: this.setQuantityFormat(activeProduct.vesselFlowMeterQuantityAmount),
       uom: vesselFlowMeterQuantityUom
     };
@@ -911,11 +909,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     //     'val': activeProduct.bargeFlowMeterQuantityAmount,
     //     'uom': bargeFlowMeterQuantityUom
     // };
-    let Surveyor = {
+    const Surveyor = {
       val: this.setQuantityFormat(activeProduct.surveyorQuantityAmount),
       uom: surveyorQuantityUom
     };
-    let currentFieldValues = {
+    const currentFieldValues = {
       Confirm: Confirm,
       Vessel: Vessel,
       Bdn: Bdn,
@@ -923,7 +921,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       Surveyor: Surveyor
     };
     // "BargeFlowMeter": BargeFlowMeter,
-    let fieldUoms = {
+    const fieldUoms = {
       Confirm: 'confirmedQuantityUom',
       Vessel: 'vesselQuantityUom',
       Bdn: 'bdnQuantityUom',
@@ -931,7 +929,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       Surveyor: 'surveyorQuantityUom'
     };
     // "BargeFlowMeter": 'bargeFlowMeterQuantityUom',
-    let convertedFields: any = {};
+    const convertedFields: any = {};
     let baseUom: any = {};
     let convFact = 1;
     if (typeof conversionInfo == 'undefined') {
@@ -948,7 +946,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       typeof this.formValues.deliveryProducts[productIdx].sellerQuantityType
         .name != 'undefined'
     ) {
-      let uomObjId =
+      const uomObjId =
         fieldUoms[
           this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
         ];
@@ -962,7 +960,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
 
     const currentFieldValuesProps = Object.keys(currentFieldValues);
-    for (let fieldKey of currentFieldValuesProps) {
+    for (const fieldKey of currentFieldValuesProps) {
       const fieldVal = currentFieldValues[fieldKey];
       conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
         if (fieldVal.uom == factVal.sourceUom.name) {
@@ -991,21 +989,21 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       activeProduct.bdnQuantityAmount &&
       activeProduct.vesselFlowMeterQuantityAmount
     ) {
-      let mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
+      const mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
       if (mfm_baseUom && conversionInfo.toleranceQuantityUom) {
         if (mfm_baseUom.name != conversionInfo.toleranceQuantityUom.name) {
           conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
             if (mfm_baseUom.name == factVal.sourceUom.name) {
-              var mfm_convFact = factVal.conversionFactor;
+              const mfm_convFact = factVal.conversionFactor;
             }
           });
         } else {
           var mfm_convFact = 1;
         }
-        var mfm_qty = convertedFields.VesselFlowMeter;
-        var bdn_qty = convertedFields.Bdn;
+        const mfm_qty = convertedFields.VesselFlowMeter;
+        const bdn_qty = convertedFields.Bdn;
         var variance = mfm_qty - bdn_qty;
-        var mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
+        const mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
         this.formValues.temp.variances[
           `mfm_product_${productIdx}`
         ] = this._decimalPipe.transform(mfm_variance, this.quantityFormat);
@@ -1020,10 +1018,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     if (!activeProduct.sellerQuantityType) {
       return;
     }
-    var buyerOption = activeProduct.buyerQuantityType.name;
-    var sellerOption = activeProduct.sellerQuantityType.name;
-    var buyerConvertedValue = convertedFields[buyerOption];
-    var sellerConvertedValue = convertedFields[sellerOption];
+    const buyerOption = activeProduct.buyerQuantityType.name;
+    const sellerOption = activeProduct.sellerQuantityType.name;
+    const buyerConvertedValue = convertedFields[buyerOption];
+    const sellerConvertedValue = convertedFields[sellerOption];
     if (!sellerConvertedValue || !buyerConvertedValue) {
       variance = null;
       this.formValues.temp.variances[`product_${productIdx}`] = variance;
@@ -1033,7 +1031,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       variance = buyerConvertedValue - sellerConvertedValue;
 
       //
-      var varianceDisplay = variance / convFact;
+      const varianceDisplay = variance / convFact;
       this.formValues.temp.variances[
         `product_${productIdx}`
       ] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
@@ -1058,12 +1056,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       } else {
-        var minValue =
+        const minValue =
           (conversionInfo.minToleranceLimit *
             this.formValues.deliveryProducts[productIdx]
               .confirmedQuantityAmount) /
           100;
-        var maxValue =
+        const maxValue =
           (conversionInfo.maxToleranceLimit *
             this.formValues.deliveryProducts[productIdx]
               .confirmedQuantityAmount) /
@@ -1190,8 +1188,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   quantityFormatValue(value) {
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -1206,7 +1204,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   onChange($event, field) {
     if ($event.value) {
-      let beValue = `${moment($event.value).format(
+      const beValue = `${moment($event.value).format(
         'YYYY-MM-DDTHH:mm:ss'
       )}+00:00`;
       if (field == 'pricingEventDate') {
@@ -1222,7 +1220,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
@@ -1230,10 +1228,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   setDeliveredQuantityUomList(deliveryProductIndex) {
-    let bdnUom = this.formValues.deliveryProducts[deliveryProductIndex]
+    const bdnUom = this.formValues.deliveryProducts[deliveryProductIndex]
       .bdnQuantityUom;
     if (bdnUom) {
-      let verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
+      const verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
         return object.name == bdnUom.name && object.id == bdnUom.id;
       });
       if (verifyIfBdnUomIsMassUom) {
@@ -1268,7 +1266,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       this.formValues.pumpingRate = '';
       this.formValues.pumpingRateUom = '';
     }
-    var pumpingTime =
+    const pumpingTime =
       (parseInt(timeString.split(':')[0]) * 60 +
         parseInt(timeString.split(':')[1])) /
       60;
@@ -1288,7 +1286,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   // Only Number
   // Only Number
   keyPressNumber(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (inp == '.' || inp == ',' || inp == '-') {
       return true;
     }
