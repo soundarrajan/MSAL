@@ -45,7 +45,7 @@ export class InvoiceDetailsToolbarComponent
     }
     this.navBar = navBar;
     let params = {
-      invoiceId: navbar.invoiceId ? navbar.invoiceId : this.invoiceId
+      invoiceId: this.navBar.invoiceId ? this.navBar.invoiceId : this.invoiceId
     };
     this.setNavIds(params, this.navBar);
     this.createNavigationItems(this.navBar);
