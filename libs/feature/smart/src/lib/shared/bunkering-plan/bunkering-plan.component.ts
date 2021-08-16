@@ -785,7 +785,7 @@ export class BunkeringPlanComponent implements OnInit {
     return isHardValidation;
   }
 
-  triggerRefreshGrid(role){
+  triggerRefreshGrid(){
     let _this = this;
     this.rowData = JSON.parse(JSON.stringify(this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)))
     let vesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
