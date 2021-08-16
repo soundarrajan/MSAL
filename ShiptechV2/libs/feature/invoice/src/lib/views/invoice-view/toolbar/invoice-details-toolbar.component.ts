@@ -45,7 +45,7 @@ export class InvoiceDetailsToolbarComponent
     }
     this.navBar = navBar;
     let params = {
-      invoiceId: this.invoiceId
+      invoiceId: this.navBar.invoiceId ? this.navBar.invoiceId : this.invoiceId
     };
     this.setNavIds(params, this.navBar);
     this.createNavigationItems(this.navBar);
@@ -88,8 +88,8 @@ export class InvoiceDetailsToolbarComponent
 
 
   
-  setNavIds(params: any, navBarList: NavBar) {
-    const invoiceId = params.invoiceid;
+  public setNavIds(params: any, navBarList: NavBar) {
+    const invoiceId = params.invoiceId;
     const disabled = invoiceId === '0';
     const routeLinkToReportDetails = [
       '/',
