@@ -106,6 +106,7 @@ export class BunkeringPlanComponent implements OnInit {
             this.gridOptions.suppressLoadingOverlay = true;
             this.gridOptions.suppressNoRowsOverlay = false;
             this.gridOptions.api.showNoRowsOverlay();
+          }
         }, 5000);
         
         
