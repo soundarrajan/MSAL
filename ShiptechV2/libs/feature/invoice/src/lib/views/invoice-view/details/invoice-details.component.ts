@@ -2701,7 +2701,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
-    if(value.includes("e")) {
+    if(value.toString().includes("e")) {
         value = value.split("e")[0]
     }
     var plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
