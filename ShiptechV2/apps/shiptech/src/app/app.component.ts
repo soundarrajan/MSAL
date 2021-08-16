@@ -33,6 +33,7 @@ export class AppComponent {
   isProduction = environment.production;
   public isLoading = true;
   loading: boolean;
+  loggedBootTime: any;
   firstApiCallStartTime: any;
 
   constructor(
@@ -42,13 +43,25 @@ export class AppComponent {
     private loaderService: LoaderService,
     private elementRef: ElementRef
   ) {
+
     router.events.subscribe((event: RouterEvent): void => {
       if (
         event instanceof NavigationEnd ||
         event instanceof NavigationCancel ||
         event instanceof NavigationError
       ) {
-        this.isLoading = false;
+          this.isLoading = false;
+          setTimeout(()=>{
+              if(!this.loggedBootTime) {
+                  this.loggedBootTime = true;
+                  var loadTime = Date.now() - performance.timing.connectStart; 
+                  this.myMonitoringService.logMetric(
+                      `Page Load : ${window.location.href}`,
+                      loadTime,
+                      window.location
+                  );              
+              }
+          })
         changeDetector.markForCheck();
       }
       if (event instanceof NavigationStart) {
