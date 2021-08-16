@@ -50,7 +50,7 @@ export namespace InvoiceApiPaths {
   export const getAdditionalCostsComponentTypes = () =>
     `api/masters/additionalcosts/listApps`;
   export const getApplyForList = () => `api/invoice/getApplicableProducts`;
-  export const calculateCostRecon = () => `/api/recon/invoicecost`;
+  export const calculateCostRecon = () => `/api/invoice/invoicecost`;
   export const getBankAccountNumber = () =>
     `/api/invoice/getAccountNumberCounterpartylist`;
   export const getTenantConfiguration = () =>
