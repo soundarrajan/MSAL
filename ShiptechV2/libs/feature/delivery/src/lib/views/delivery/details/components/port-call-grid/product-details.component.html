@@ -8,57 +8,90 @@
       [gridOptions]="viewModel.gridViewModel.gridOptions"
       [rowData]="viewModel.productTypes$ | async"
       class="ag-theme-balham shiptech-blue-group-header"
-      id="quantity-control-product-details-grid">
+      id="quantity-control-product-details-grid"
+    >
     </ag-grid-angular>
   </div>
 </div>
 
-
-<ng-template [columnDef]="viewModel.gridViewModel.bdnDeliveredQuantityCol"
-             appAgCellTemplate
-             let-model="data.model" let-value="valueFormatted">
+<ng-template
+  [columnDef]="viewModel.gridViewModel.bdnDeliveredQuantityCol"
+  appAgCellTemplate
+  let-model="data.model"
+  let-value="valueFormatted"
+>
   <ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center" style="color:#1FBBE6">{{value}}</div>
+    <div fxLayout="row" fxLayoutAlign="center center" style="color:#1FBBE6">
+      {{ value }}
+    </div>
   </ng-container>
 </ng-template>
 
-<ng-template [columnDef]="[
-              viewModel.gridViewModel.robBeforeDeliveryColGroup,
-              viewModel.gridViewModel.robAfterDeliveryColGroup,
-              viewModel.gridViewModel.deliveredQuantityColGroup]"
-             agGroupHeaderTemplate
-             let-groupDef="groupDef" let-title="title">
-
+<ng-template
+  [columnDef]="[
+    viewModel.gridViewModel.robBeforeDeliveryColGroup,
+    viewModel.gridViewModel.robAfterDeliveryColGroup,
+    viewModel.gridViewModel.deliveredQuantityColGroup
+  ]"
+  agGroupHeaderTemplate
+  let-groupDef="groupDef"
+  let-title="title"
+>
   <div fxLayout="row" fxLayoutAlign="end stretch">
-    <div style=" width: 100%; display: inline-flex; align-items: center; justify-content: center;">
-        <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
+    <div
+      style=" width: 100%; display: inline-flex; align-items: center; justify-content: center;"
+    >
+      <span class="ag-header-group-text" ref="agLabel">{{ title }}</span>
     </div>
     <div>
-      <shiptech-uom-selector (selectionChanged)="viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)"
-                             [selectedUom]="viewModel.gridViewModel.getSelectedUomValue$(groupDef.groupId) | async"
-                             [disabled]="isReadOnly$ | async"
-                             [uoms]="viewModel.uoms$ | async"></shiptech-uom-selector>
+      <shiptech-uom-selector
+        (selectionChanged)="
+          viewModel.gridViewModel.switchSelectedUom(groupDef.groupId, $event)
+        "
+        [selectedUom]="
+          viewModel.gridViewModel.getSelectedUomValue$(groupDef.groupId) | async
+        "
+        [disabled]="isReadOnly$ | async"
+        [uoms]="viewModel.uoms$ | async"
+      ></shiptech-uom-selector>
     </div>
   </div>
-
 </ng-template>
 
-
-<ng-template [columnDef]="[
-              viewModel.gridViewModel.logBookBeforeDeliveryCol,
-              viewModel.gridViewModel.measuredRobBeforeDeliveryCol,
-              viewModel.gridViewModel.measuredDeliveredQuantityCol,
-              viewModel.gridViewModel.logBookAfterDeliveryCol,
-              viewModel.gridViewModel.measuredRobAfterDeliveryCol]"
-             appAgCellTemplate let-column="column" let-model="data" let-value="valueFormatted">
-  <div fxLayout="row" fxLayoutAlign="center center"
-       *ngIf="!((column.colId === viewModel.gridViewModel.logBookAfterDeliveryCol.colId || column.colId === viewModel.gridViewModel.measuredRobAfterDeliveryCol.colId) && model.isSludge)">
-    <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)"
-               disable-keys-spin
-               [inputStyle]="{width:'100%' }"
-               tenant-format="quantity"
-               [disabled]="isReadOnly$ | async"
-               [ngModelOptions]="{updateOn: 'blur'}"
-               [ngModel]="value"></p-spinner>
+<ng-template
+  [columnDef]="[
+    viewModel.gridViewModel.logBookBeforeDeliveryCol,
+    viewModel.gridViewModel.measuredRobBeforeDeliveryCol,
+    viewModel.gridViewModel.measuredDeliveredQuantityCol,
+    viewModel.gridViewModel.logBookAfterDeliveryCol,
+    viewModel.gridViewModel.measuredRobAfterDeliveryCol
+  ]"
+  appAgCellTemplate
+  let-column="column"
+  let-model="data"
+  let-value="valueFormatted"
+>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    *ngIf="
+      !(
+        (column.colId ===
+          viewModel.gridViewModel.logBookAfterDeliveryCol.colId ||
+          column.colId ===
+            viewModel.gridViewModel.measuredRobAfterDeliveryCol.colId) &&
+        model.isSludge
+      )
+    "
+  >
+    <p-spinner
+      (ngModelChange)="viewModel.updateProductType(column, model, $event)"
+      disable-keys-spin
+      [inputStyle]="{ width: '100%' }"
+      tenant-format="quantity"
+      [disabled]="isReadOnly$ | async"
+      [ngModelOptions]="{ updateOn: 'blur' }"
+      [ngModel]="value"
+    ></p-spinner>
   </div>
 </ng-template>
