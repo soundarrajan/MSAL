@@ -139,7 +139,7 @@ angular.module('shiptech')
                         title: 'New Request',
                         voyageId : null
                     },
-                    url: '/new-request/:voyageId',
+                    url: '/new-request/:voyageId/:productView',
                     template: '<new-request></new-request>'
                 })
 

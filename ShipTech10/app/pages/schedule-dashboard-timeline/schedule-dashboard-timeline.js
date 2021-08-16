@@ -1729,6 +1729,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 rightClickPopoverData = {};
                 rightClickPopoverData.todayVoyages = object;
                 rightClickPopoverData.bunkerDetails = todaysBunkerDetails;
+                rightClickPopoverData.productTypeView = ctrl.productTypeView;
                 $scope.rightClickPopoverData = rightClickPopoverData;
                 $scope.$apply();
 

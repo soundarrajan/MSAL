@@ -15,6 +15,7 @@ angular.module('shiptech.components')
 		    ctrl.$onChanges = function(changes) {
 		    	$scope.test = new Date();
 		    	$scope.rightClickPopoverData = changes.rightClickPopoverData.currentValue;
+                ctrl.productTypeView = changes.rightClickPopoverData.currentValue.productTypeView;
                 var todayVoyages;
 		    	$timeout(() => {
 		    		todayVoyages = changes.rightClickPopoverData.currentValue.todayVoyages;
@@ -629,6 +630,15 @@ angular.module('shiptech.components')
 	            }
 	            return '';
        		};
+
+            ctrl.checkProductTypeView = function(productTypeView) {
+                if (productTypeView) {
+                    if ([1].indexOf(productTypeView.id) != -1) {
+                        return true;
+                    } 
+                }
+                return false;
+            }
         }
 
     ]

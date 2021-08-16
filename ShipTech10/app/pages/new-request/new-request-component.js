@@ -46,6 +46,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         let voyageId = $stateParams.voyageId;
         let requestId = $stateParams.requestId;
+        let productView = $stateParams.productView;
         ctrl.requestId = $stateParams.requestId;
         ctrl.showAllContracts = false;
         $scope.forms = {};
@@ -350,9 +351,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof voyageId != 'undefined' && voyageId !== null) {
                         newRequestModel.newRequest(voyageId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
-
                             $.each(ctrl.request.locations, (i, j) => {
+                                if (typeof productView != 'undefined' && productView !== null) {
+                                    if ([2, 3].indexOf(parseFloat(productView)) != -1) {
+                                        ctrl.request.locations[i].products = [];
+                                    }
 
+                                }
                                 getTerminalLocations('locations',j.location.id);
                             });
                             setPageTitle();
