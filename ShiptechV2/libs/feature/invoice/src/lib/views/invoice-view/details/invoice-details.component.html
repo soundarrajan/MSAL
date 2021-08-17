@@ -145,7 +145,7 @@
                     autocomplete="off"
                     placeholder="Received Date"
                     (dateChange)="
-                      formatDateForBe(formValues.receivedDate);
+                      formValues.receivedDate = formatDateForBe(formValues.receivedDate);
                       isFormValid({ useToaster: false })
                     "
                   />
@@ -410,7 +410,7 @@
                     (focus)="validationDate.open()"
                     autocomplete="off"
                     placeholder="Validation Date"
-                    (dateChange)="formatDateForBe(formValues.approvedDate)"
+                    (dateChange)="formValues.approvedDate = formatDateForBe(formValues.approvedDate)"
                   />
                   <mat-datepicker-toggle matSuffix [for]="validationDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
