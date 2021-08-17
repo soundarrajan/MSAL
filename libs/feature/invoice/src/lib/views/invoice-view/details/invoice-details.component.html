@@ -113,11 +113,6 @@
                     autocomplete="off"
                     placeholder="Invoice Date"
                     (blur)="isFormValid({ useToaster: false })"
-                    (dateChange)="
-                      formValues.invoiceDate = formatDateForBe(
-                        formValues.invoiceDate
-                      )
-                    "
                   />
                   <mat-datepicker-toggle matSuffix [for]="invoiceDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -150,9 +145,7 @@
                     autocomplete="off"
                     placeholder="Received Date"
                     (dateChange)="
-                      formValues.receivedDate = formatDateForBe(
-                        formValues.receivedDate
-                      );
+                      formatDateForBe(formValues.receivedDate);
                       isFormValid({ useToaster: false })
                     "
                   />
@@ -212,8 +205,35 @@
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
-
-                <button
+                <div class="ui-inputgroup shiptech-searchbox">
+                  <ng-content></ng-content>
+                  <button
+                    pButton
+                    type="button"
+                    icon="pi pi-search"
+                    class="ui-button-warn search-square-button search-btn-for-invoice"
+                    appMasterSelectorTrigger
+                    [masterSelector]="masterSelector4"
+                    #masterSelectorTrigger4="masterSelectorTrigger"
+                    [header]="getHeaderNameSelector4()"
+                  ></button>
+                  <ng-template cdkPortal #masterSelector4="cdkPortal">
+                    <shiptech-shared-master-selector
+                      (selectedChange)="
+                        selectorPaymentTermSelectionChange($event);
+                        masterSelectorTrigger4.close()
+                      "
+                      (shouldCloseModal)="masterSelectorTrigger4.close()"
+                      [selectorType]="autocompletePaymentTerm"
+                      [disabled]="disabled"
+                      [readonly]="readonly"
+                      [entityName]="entityName"
+                      [entityId]="entityId"
+                      [headerName]="getHeaderNameSelector4()"
+                    ></shiptech-shared-master-selector>
+                  </ng-template>
+                </div>
+                <!-- <button
                   class="search-icon"
                   appMasterSelectorTrigger
                   [masterSelector]="masterSelector4"
@@ -238,11 +258,10 @@
                       ></shiptech-shared-master-selector>
                     </ng-template>
                   </div>
-                </button>
+                </button> -->
               </div>
             </div>
           </div>
-
           <div class="row pt-3">
             <div class="col-md-3">
               <div
@@ -367,11 +386,7 @@
                     [matDatepicker]="sellerDueDate"
                     autocomplete="off"
                     placeholder="Seller Due Date"
-                    (dateChange)="
-                      formValues.sellerDueDate = formatDateForBe(
-                        formValues.sellerDueDate
-                      )
-                    "
+                    (dateChange)="formatDateForBe(formValues.sellerDueDate)"
                   />
                   <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -422,11 +437,7 @@
                     (focus)="validationDate.open()"
                     autocomplete="off"
                     placeholder="Validation Date"
-                    (dateChange)="
-                      formValues.approvedDate = formatDateForBe(
-                        formValues.approvedDate
-                      )
-                    "
+                    (dateChange)="formatDateForBe(formValues.approvedDate)"
                   />
                   <mat-datepicker-toggle matSuffix [for]="validationDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -611,10 +622,7 @@
           </div>
           <div class="section-content order-details">
             <div style="display: flex;">
-              <readonly-details
-                class="order-details-left"
-                [options]="orderDetails"
-              ></readonly-details>
+              <readonly-details [options]="orderDetails"></readonly-details>
               <readonly-details
                 [options]="orderDetails2"
                 style="margin: 0px 15px;"
@@ -667,8 +675,40 @@
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>
-
-                    <button
+                    <div class="ui-inputgroup shiptech-searchbox">
+                      <ng-content></ng-content>
+                      <button
+                        [ngClass]="{
+                          'search-icon-disabled':
+                            formValues.status &&
+                            formValues.status?.name === 'Approved'
+                        }"
+                        pButton
+                        type="button"
+                        icon="pi pi-search"
+                        class="ui-button-warn search-square-button search-btn-for-invoice"
+                        appMasterSelectorTrigger
+                        [masterSelector]="masterSelector1"
+                        #masterSelectorTrigger1="masterSelectorTrigger"
+                        [header]="getHeaderNameSelector1()"
+                      ></button>
+                      <ng-template cdkPortal #masterSelector1="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorCompanySelectionChange($event);
+                            masterSelectorTrigger1.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger1.close()"
+                          [selectorType]="autocompleteCompany"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="entityId"
+                          [headerName]="getHeaderNameSelector1()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                    <!-- <button
                       [ngClass]="{
                         'search-icon-disabled':
                           formValues.status &&
@@ -699,7 +739,7 @@
                           </shiptech-shared-master-selector>
                         </ng-template>
                       </div>
-                    </button>
+                    </button> -->
                   </div>
                 </div>
               </div>
@@ -781,8 +821,40 @@
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>
-
-                    <button
+                    <div class="ui-inputgroup shiptech-searchbox">
+                      <ng-content></ng-content>
+                      <button
+                        [ngClass]="{
+                          'search-icon-disabled':
+                            formValues.status &&
+                            formValues.status?.name === 'Approved'
+                        }"
+                        pButton
+                        type="button"
+                        icon="pi pi-search"
+                        class="ui-button-warn search-square-button search-btn-for-invoice"
+                        appMasterSelectorTrigger
+                        [masterSelector]="masterSelector2"
+                        #masterSelectorTrigger2="masterSelectorTrigger"
+                        [header]="getHeaderNameSelector2()"
+                      ></button>
+                      <ng-template cdkPortal #masterSelector2="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorCarrierSelectionChange($event);
+                            masterSelectorTrigger2.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger2.close()"
+                          [selectorType]="autocompleteCarrier"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="entityId"
+                          [headerName]="getHeaderNameSelector2()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                    <!-- <button
                       class="search-icon"
                       appMasterSelectorTrigger
                       [masterSelector]="masterSelector2"
@@ -808,7 +880,7 @@
                           </shiptech-shared-master-selector>
                         </ng-template>
                       </div>
-                    </button>
+                    </button> -->
                   </div>
                 </div>
               </div>
@@ -926,7 +998,35 @@
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <button
+                      <div class="ui-inputgroup shiptech-searchbox">
+                        <ng-content></ng-content>
+                        <button
+                          pButton
+                          type="button"
+                          icon="pi pi-search"
+                          class="ui-button-warn search-square-button search-btn-for-invoice"
+                          appMasterSelectorTrigger
+                          [masterSelector]="masterSelector3"
+                          #masterSelectorTrigger3="masterSelectorTrigger"
+                          [header]="getHeaderNameSelector3()"
+                        ></button>
+                        <ng-template cdkPortal #masterSelector3="cdkPortal">
+                          <shiptech-shared-master-selector
+                            (selectedChange)="
+                              selectorCustomerSelectionChange($event);
+                              masterSelectorTrigger3.close()
+                            "
+                            (shouldCloseModal)="masterSelectorTrigger3.close()"
+                            [selectorType]="autocompleteCustomer"
+                            [disabled]="disabled"
+                            [readonly]="readonly"
+                            [entityName]="entityName"
+                            [entityId]="entityId"
+                            [headerName]="getHeaderNameSelector3()"
+                          ></shiptech-shared-master-selector>
+                        </ng-template>
+                      </div>
+                      <!-- <button
                         class="search-icon"
                         appMasterSelectorTrigger
                         [masterSelector]="masterSelector3"
@@ -953,7 +1053,7 @@
                             ></shiptech-shared-master-selector>
                           </ng-template>
                         </div>
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>
@@ -978,7 +1078,7 @@
                 >
                   <div class="d-flex">
                     <mat-form-field class="with-search" appearance="legacy">
-                      <mat-label>Payable to</mat-label>
+                      <mat-label>Payble to</mat-label>
                       <input
                         class="free-text-field"
                         type="text"
@@ -994,7 +1094,7 @@
                         matTooltipClass="custom-tooltip"
                         [matAutocomplete]="auto"
                         autocomplete="off"
-                        placeholder="Payable to"
+                        placeholder="Payble to"
                       />
                       <mat-autocomplete
                         #auto="matAutocomplete"
@@ -1010,8 +1110,35 @@
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>
-
-                    <button
+                    <div class="ui-inputgroup shiptech-searchbox">
+                      <ng-content></ng-content>
+                      <button
+                        pButton
+                        type="button"
+                        icon="pi pi-search"
+                        class="ui-button-warn search-square-button search-btn-for-invoice"
+                        appMasterSelectorTrigger
+                        [masterSelector]="masterSelector"
+                        #masterSelectorTrigger="masterSelectorTrigger"
+                        [header]="getHeaderNameSelector()"
+                      ></button>
+                      <ng-template cdkPortal #masterSelector="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorPaybleToSelectionChange($event);
+                            masterSelectorTrigger.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger.close()"
+                          [selectorType]="autocompletePaybleTo"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="entityId"
+                          [headerName]="getHeaderNameSelector()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                    <!-- <button
                       class="search-icon"
                       appMasterSelectorTrigger
                       [masterSelector]="masterSelector"
@@ -1037,9 +1164,10 @@
                           </shiptech-shared-master-selector>
                         </ng-template>
                       </div>
-                    </button>
+                    </button> -->
                   </div>
                 </div>
+
                 <div style="padding-top: 5px;">
                   <mat-checkbox
                     class="example-margin"
