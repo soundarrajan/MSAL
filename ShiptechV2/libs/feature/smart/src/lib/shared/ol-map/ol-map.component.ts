@@ -1230,6 +1230,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       vesselView: this.vessel_view,
       name: vData.vesselName,
       id: vData.vesselId,
+      vesselCode: vData.vesselCode,
       destination: '',
       eta1: '',
       eta2: '',
