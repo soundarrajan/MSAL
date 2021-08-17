@@ -82,3 +82,17 @@
 .search-icon-disabled {
   background-color: #eeeeee !important;
 }
+
+.search-btn-for-invoice {
+  border: 1px solid #a5a5a5 !important;
+  padding: 7px;
+  cursor: pointer;
+  border-radius: 0px 4px 4px 0px !important;
+  width: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.search-btn-for-invoice .ui-button-icon-left {
+  color: #777a7f !important;
+}
