@@ -81,6 +81,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
+        <shiptech-current-rob-arbit-section [planId]="item.planId" *ngIf="panel.expanded"></shiptech-current-rob-arbit-section>
         <app-bunkering-plan *ngIf="panel.expanded"  [isExpanded]="panel.expanded" [planId]="item.planId" [vesselRef]="vesselData" [bPlanType]="bPlanType" (isCellClicked)="showViewAlert($event)"></app-bunkering-plan>
       </div>
     </mat-expansion-panel>

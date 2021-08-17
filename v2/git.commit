@@ -1,7 +1,9 @@
-﻿commit e60c03af5317d7d343172d12234c11bb7633b413
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Aug 16 13:29:43 2021 +0300
+﻿commit ae1c381fdadd07392e46eb6e040dfaeda9e363e1
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Aug 17 12:52:25 2021 +0000
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+    Merged PR 13130: #NoJIRA-current ROB and artifact section in All bunker plan screen has done
+    
+    Related work items: #32847
 
 branch: master
