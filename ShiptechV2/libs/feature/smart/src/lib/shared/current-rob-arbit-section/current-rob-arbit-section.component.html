@@ -1,0 +1,81 @@
+<div id="currentRequestDetails" class="mb-2">
+    <div class="row">
+    <div class="col-6 pd-0">
+        <div class="row">
+        <div class="col-12 p-0">
+            <section id="robDetails">
+            <div class="dark-table-title">Current ROB Details</div>
+            <div class="dark-table">
+                <div class="dark-table-body">
+                <table class="table">
+                    <tr>
+                    <th></th>
+                    <th>3.5 QTY</th>
+                    <th>0.5 QTY</th>
+                    <th>ULSFO</th>
+                    <th>LSDIS</th>
+                    <th>HSDIS</th>
+                    </tr>
+                    <tr>
+                    <th scope="row">Current ROB</th>
+                        <td><div>{{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock): 0}}</div></td>
+                        <td><div>{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock): 0}}</div></td>
+                        <td><div>{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock): 0}}</div></td>
+                        <td><div>{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock): 0}}</div></td>
+                        <td><div>{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock): 0}}</div></td>
+                    </tr>
+                    <tr>
+                    <th scope="row">MSPS</th>
+                    <td colspan=2>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo): 0}}</td>
+                    <td>{{ROBArbitrageData?.mspsulsfo? (ROBArbitrageData?.mspsulsfo): 0}}</td>
+                    <td>{{ROBArbitrageData?.mspslsdis? (ROBArbitrageData?.mspslsdis): 0}}</td>
+                    <td>{{ROBArbitrageData?.mspsdis? (ROBArbitrageData?.mspsdis): 0}}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Unpumpables</th>
+                    <td colspan=2>{{ROBArbitrageData?.uphsfo? (ROBArbitrageData?.uphsfo): 0}}</td>
+                    <td>{{ROBArbitrageData?.upulsfo? (ROBArbitrageData?.upulsfo): 0}}</td>
+                    <td>{{ROBArbitrageData?.uplsdis? (ROBArbitrageData?.uplsdis): 0}}</td>
+                    <td>{{ROBArbitrageData?.uphsdis? (ROBArbitrageData?.uphsdis): 0}}</td>
+                    
+                    </tr>
+                </table>
+                </div>
+            </div>
+            </section>
+        </div>
+        </div>
+    </div>
+    <div class="col-6 pr-0">
+        <div class="row">
+        <div class="col-12 p-0">
+            <section id="arbitrageDetails">
+            <div class="dark-table-title">Arbitrage Details</div>
+            <div class="dark-table">
+                <div class="dark-table-body">
+                <div class="row fz-12 p-t-5">
+                    <div class="col-5 p-0">
+                    <div><span class="text-white">Arbitrage Volume : </span>
+                        <span class="text-gray">{{ROBArbitrageData?.arbitrageVolume}} MT</span></div>
+                    <div><span class="text-white">Contango Volume : </span>
+                        <span class="text-gray">{{ROBArbitrageData?.contangoVolume}}</span></div>
+                    <div><span class="text-white">Arbitrage Bunker port : </span>
+                        <span class="text-gray">{{ROBArbitrageData?.arbitrageBunkerPort}}</span></div>
+                    </div>
+                    <div class="col-7 p-0">
+                    <div><span class="text-white">Arbitrage Bunker Port ETA : </span>
+                        <span class="text-gray">{{ROBArbitrageData?.arbitrageBunkerPortETA}}</span></div>
+                    <div><span class="text-white">Arbitrage Discharge Port : </span>
+                        <span class="text-gray">{{ROBArbitrageData?.arbitrageDischargePort}}</span></div>
+                    <div><span class="text-white">Arbitrage Discharge Port ETA : </span>
+                        <span class="text-gray">{{ROBArbitrageData?.arbitrageDischargePortETA}}</span></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </section>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
