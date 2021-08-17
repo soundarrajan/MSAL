@@ -2,7 +2,8 @@
     <div  class="type-views page-toolbar schedule_toolbar"
         ng-if="
                state.is(STATE.DASHBOARD_TIMELINE) || 
-               state.is(STATE.HOME)">
+               state.is(STATE.HOME) ||
+               state.is(STATE.DASHBOARD_TABLE)">
         <div class="mat-button-toggle-group mat-button-toggle-group-appearance-standard">
             <div class="mat-button-toggle mat-button-toggle-appearance-standard" ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[0].id}">
                 <button

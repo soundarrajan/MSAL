@@ -1,6 +1,7 @@
 angular.module('shiptech.pages').controller('ScheduleTableController', [
     '$rootScope',
     '$scope',
+    '$listsCache',
     '$tenantSettings',
     'tenantService',
     '$element',
@@ -17,7 +18,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
     'STATE',
     'CUSTOM_EVENTS',
     'screenLoader',
-    function($rootScope, $scope, $tenantSettings, tenantService, $element, $attrs, $timeout, $filter, $state, $window, scheduleDashboardCalendarModel, uiApiModel, newRequestModel, SCREEN_LAYOUTS, groupOfRequestsModel, STATE, CUSTOM_EVENTS, screenLoader) {
+    function($rootScope, $scope, $listsCache, $tenantSettings, tenantService, $element, $attrs, $timeout, $filter, $state, $window, scheduleDashboardCalendarModel, uiApiModel, newRequestModel, SCREEN_LAYOUTS, groupOfRequestsModel, STATE, CUSTOM_EVENTS, screenLoader) {
         let ctrl = this;
         let settings, statusList;
         ctrl.selectedRequests = {};
@@ -37,6 +38,10 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
         ctrl.endDate = null;
         ctrl.tenantSettings = $tenantSettings;
         window.tenantFormatsDateFormat = ctrl.tenantSettings.tenantFormats.dateFormat.name;
+
+        ctrl.listsCache = $listsCache;
+        ctrl.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
+        $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
         //    tenantService.scheduleDashboardConfiguration.then(function(settings){
         //    		ctrl.scheduleDashboardConfiguration = settings.payload;
         //    })
@@ -111,7 +116,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             }));
             $rootScope.$broadcast('sdDataLoaded');
         });
-        scheduleDashboardCalendarModel.getTable(ctrl.startDate, ctrl.endDate).then(() => {
+        scheduleDashboardCalendarModel.getTable(ctrl.startDate, ctrl.endDate, null, null, null, null, ctrl.productTypeView).then(() => {
             if (!ctrl.startDate || !ctrl.endDate) {
                 scheduleDashboardCalendarModel.getStatuses().then((data) => {
                     // ctrl.dashboardConfiguration = data;
@@ -227,9 +232,11 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             });
         };
         ctrl.newRequest = function(voyageId) {
-            $state.go(STATE.NEW_REQUEST, {
-                voyageId: voyageId
+            let href = $state.href(STATE.NEW_REQUEST_VIEWS, {
+                voyageId: voyageId,
+                productView: $rootScope.productTypeView.id
             });
+            $window.open(href, '_blank');
         };
 
         ctrl.gotoNewRequest = function() {
@@ -351,6 +358,8 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             return all;
             // },200)
         };
+
+
         function createRequestIdsModel(data) {
             let result = {};
             for (let i = 0; i < data.length; i++) {
@@ -358,6 +367,24 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             }
             return result;
         }
+
+
+        ctrl.checkProductTypeView = function(productTypeView) {
+            if (productTypeView) {
+                if ([1].indexOf(productTypeView.id) != -1) {
+                    return true;
+                } 
+            }
+            return false;
+        }
+
+        $scope.$on('set-product-type-view-for-table', function (event, payload) {
+            console.log(payload);
+            ctrl.productTypeView = angular.copy(payload);
+            $scope.$apply();
+            $scope.$digest();
+
+        });
     }
 ]);
 angular.module('shiptech.pages').component('scheduleDashboardTable', {

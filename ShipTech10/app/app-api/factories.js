@@ -5499,6 +5499,7 @@ APP_API.factory('$Api_Service', [
                         ];
                     }
                     if (param.clc_id == 'procurement_scheduleDashboardTable') {
+                        console.log($rootScope.productTypeView);
                     	if (!localStorage.getItem('scheduleDatesTable')) {
                     		var interval = setInterval(() => {
                     			if (localStorage.getItem('scheduleDatesTable')) {
@@ -5531,6 +5532,15 @@ APP_API.factory('$Api_Service', [
                         } else {
                             apiJSON.Payload.Start = param.params.tableDates.startDate;
                             apiJSON.Payload.End = param.params.tableDates.endDate;
+                        }
+                        
+                        if ($rootScope.productTypeView) {
+                            apiJSON.Payload.Filters = [];
+                            let packedFilter = {
+                                columnName: 'ProductViewId',
+                                value:  $rootScope.productTypeView.id 
+                            };
+                            apiJSON.Payload.Filters.push(packedFilter);
                         }
                     }
 

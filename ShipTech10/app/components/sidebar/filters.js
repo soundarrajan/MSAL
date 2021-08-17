@@ -116,6 +116,10 @@ angular.module('shiptech.components').controller('FiltersController', [
                         }
                     }
                 }
+            } else {
+                if (!$scope.globalFilters[0].value) {
+                    $scope.globalFilters = [];
+                } 
             }
         	// Apply filters
             $scope.applyFilters($scope.globalFilters);
@@ -319,7 +323,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 if ($rootScope.clc_loaded) {
                     // console.log(123)
                     if (!ctrl.saveFilterActionEvent) {
-                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home') {
+                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table') {
 	                        $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
                         } else {
                             $rootScope.$broadcast('filters-applied', $scope.packedFilters);
@@ -971,7 +975,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     toastr.success('Configuration deleted!');
                     $timeout(() => {
                         $state.reload();
-                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home') {
+                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.dashboard-table') {
                             $rootScope.$broadcast('filters-removed', $rootScope.productTypeView);
                         }
                     }, 1000);
