@@ -674,7 +674,8 @@ export class VesselInfoComponent implements OnInit {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
           panelClass: 'confirmation-popup-operator',
-          data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
+          data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
+          // data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
         this.store.dispatch(new GeneratePlanAction(0));
         this.store.dispatch(new GeneratePlanProgressAction(data.payload[0].gen_in_progress));
