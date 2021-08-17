@@ -2788,7 +2788,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 		            	}
             		} else {
             			defaultTemplate = _.filter(foundEmailTemplates, (email) => {
-						    return email.process.indexOf('Contract') != -1;
+						    return email.process.indexOf('Contract') != -1 || email.process.indexOf('Alkali') > -1;
                     });
 		            	if (ctrl.confirmToSellerContractManual) {
 			                var data = {
@@ -2839,7 +2839,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 window.orderDetails = ctrl;
         		if (isContractOrder) {
         			defaultTemplate = _.filter(foundEmailTemplates, (email) => {
-					    return email.process.indexOf('Contract') != -1;
+					    return email.process.indexOf('Contract') != -1 || email.process.indexOf('LNG') > -1; 
                     });
         		} else {
         			defaultTemplate = _.filter(foundEmailTemplates, (email) => {
