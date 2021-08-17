@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'feature-contract',
+  name: 'feature-spot-negotiation',
   preset: '../../../jest.config.js',
-  coverageDirectory: '../../../coverage/libs/feature/contract',
+  coverageDirectory: '../../../coverage/libs/feature/spot-negotiation',
   snapshotSerializers: [
     'jest-preset-angular/AngularSnapshotSerializer.js',
     'jest-preset-angular/HTMLCommentSerializer.js'

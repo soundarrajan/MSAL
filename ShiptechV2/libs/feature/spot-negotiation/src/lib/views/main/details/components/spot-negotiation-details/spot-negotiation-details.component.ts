@@ -14,6 +14,7 @@ import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { LocalService } from '../../../../../services/local-service.service';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-spot-negotiation-details',
@@ -39,18 +40,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     width: '100%'
   };
   menuOptions = [{ label: 'ETA' }, { label: 'ETB' }, { label: 'ETD' }];
-  // public grid2Width = {
-  //   width: '50%'
-  // }
+
   ngOnInit(): void {}
 
-  //   ngAfterViewInit() {
-  //     setTimeout(()=>{
-  //         this.inputSection.nativeElement.focus();
-  //       },3000);
-  // }
-
   constructor(
+    private store: Store,
     @Inject(DOCUMENT) private _document: HTMLDocument,
     private datePipe: DatePipe,
     public dialog: MatDialog,
@@ -124,10 +118,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
     };
 
-    this.localService.getSpotDataJSON().subscribe((res: any) => {
-      this.rowData_aggrid = res;
-      this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
+    const storeRows = this.store.selectSnapshot(state => {
+
+      debugger;
+      return state.spotNegotiation.rows;
     });
+
+    this.rowData_aggrid = storeRows;
   }
 
   private rowClassRules = {
@@ -811,7 +808,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     // console.log(this.gridOptions_counterparty);
   }
   onSelectionChanged(e) {
-    // console.log("selectchange");
-    //console.log(e);
+    const currentSelectedRows = this.gridOptions_counterparty.api.getSelectedNodes().map(e => e.data);
   }
 }

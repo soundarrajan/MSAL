@@ -12,7 +12,8 @@ import { Store } from '@ngxs/store';
 export class MainSpotNegotiationComponent implements OnDestroy {
   private _destroy$ = new Subject();
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   ngOnDestroy(): void {
     this._destroy$.next();

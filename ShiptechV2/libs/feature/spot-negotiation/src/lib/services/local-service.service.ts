@@ -11,13 +11,19 @@ import {
   VesselLocation,
   RequestDetail
 } from '../core/models/vessel.data.model';
-
+import { Store } from '@ngxs/store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalService {
-  constructor(private http: HttpClient, private router: Router) {
+  public showHeader = new Subject<boolean>();
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store
+  ) {
     this.getVesselsList().subscribe(data => {
       // console.log(data);
     });
@@ -26,8 +32,6 @@ export class LocalService {
       // console.log(data);
     });
   }
-
-  public showHeader = new Subject<boolean>();
 
   checkVesselNormal(robColorCode: any): boolean {
     if (robColorCode == '') return true;
@@ -524,6 +528,7 @@ export class LocalService {
     );
   }
   public getSpotDataJSON(): Observable<any> {
+
     return this.http.get('./assets/data/spot-grid1-data.json');
   }
   public getSpotDataRequestData(reqId): Observable<any> {

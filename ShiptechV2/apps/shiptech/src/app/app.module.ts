@@ -23,6 +23,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AllModules, ModuleRegistry } from '@ag-grid-enterprise/all-modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
 
 // Note: Currently we're running the application in a sub directory on the IIS (v2), v1 (angular js) runs in the root. They way we'll also share auth cookies
 export function getAppBaseHref(doc: Document): string {
@@ -55,7 +57,10 @@ export function getAppBaseHref(doc: Document): string {
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     DeveloperToolbarModule,
     LoadingBarRouterModule,
-    TitleModule
+    TitleModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    })
   ],
   providers: [
     {
