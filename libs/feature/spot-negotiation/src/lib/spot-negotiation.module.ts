@@ -1,3 +1,6 @@
+// Store
+
+// Components
 import { SupplierCommentsPopupComponent } from './views/main/details/components/spot-negotiation-popups/supplier-comments-popup/supplier-comments-popup.component';
 import { SpotnegoPricingDetailsComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
 import { SpotnegoOtherdetails2Component } from './views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
@@ -34,7 +37,6 @@ import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
-import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import { SelectTextOnFocusDirectiveModule } from '@shiptech/core/ui/directives/default/select-text-on-focus.directive';
@@ -156,11 +158,21 @@ import { AGGridCellMenuPopupComponent } from './core/ag-grid/ag-grid-cell-menu.c
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { BadgeComponent } from './views/main/details/components/badge/badge.component';
 import { LocPanDataComponent } from './views/main/details/components/loc-pan-data/loc-pan-data.component';
+import { SpotNegotiationStore } from './store/spot-negotiation.store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+
 @NgModule({
   imports: [
     CommonModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    // STORE
+    NgxsModule.forRoot([SpotNegotiationStore]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+
     SpotNegotiationGridModule,
     SpotNegotiationRoutingModule,
     LoggingModule,
@@ -176,7 +188,6 @@ import { LocPanDataComponent } from './views/main/details/components/loc-pan-dat
     ExportModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
     AgFooterModule,
     SelectTextOnFocusDirectiveModule,
