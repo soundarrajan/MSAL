@@ -773,25 +773,25 @@ export class CreateNewFormulaModalComponent
     if (!this.formValues.formulaHolidayRules) {
       this.formValues.formulaHolidayRules = {};
       this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(
-        this.holidayRuleList[1]
+        this.holidayRuleList[0]
       );
       this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(
-        this.holidayRuleList[1]
+        this.holidayRuleList[0]
       );
       this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(
-        this.holidayRuleList[1]
+        this.holidayRuleList[0]
       );
       this.formValues.formulaHolidayRules.wednesdayHolidayRule = _.cloneDeep(
-        this.holidayRuleList[1]
+        this.holidayRuleList[0]
       );
       this.formValues.formulaHolidayRules.thursdayHolidayRule = _.cloneDeep(
-        this.holidayRuleList[1]
+        this.holidayRuleList[0]
       );
       this.formValues.formulaHolidayRules.fridayHolidayRule = _.cloneDeep(
-        this.holidayRuleList[1]
+        this.holidayRuleList[0]
       );
       this.formValues.formulaHolidayRules.saturdayHolidayRule = _.cloneDeep(
-        this.holidayRuleList[1]
+        this.holidayRuleList[0]
       );
     }
   }
