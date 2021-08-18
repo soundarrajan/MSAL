@@ -1,62 +1,10 @@
-<div class="page-bar breadcrumbs-container" ng-controller="BreadcrumbsController" ng-class="{'no-top-margin' : state.is(STATE.SUPPLIER_PORTAL)}">
-    <div  class="type-views page-toolbar schedule_toolbar"
-        ng-if="
-               state.is(STATE.DASHBOARD_TIMELINE) || 
-               state.is(STATE.HOME) ||
-               state.is(STATE.DASHBOARD_TABLE)">
-        <div class="mat-button-toggle-group mat-button-toggle-group-appearance-standard">
-            <div class="mat-button-toggle mat-button-toggle-appearance-standard" ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[0].id}">
-                <button
-                  class="mat-button-toggle-button mat-focus-indicator"
-                  type="button"
-                  id="mat-button-toggle-1-button"
-                  tabindex="0"
-                  aria-pressed="false"
-                  name="mat-button-toggle-group-0"
-                  ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[0])"
-                >
-                  <div class="mat-button-toggle-label-content">
-                    <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[0].id"></span> 
-                        {{listsCache.ProductView[0].name}}
-                  </div>
-                </button>
-            </div>
-            <div class="mat-button-toggle mat-button-toggle-appearance-standard"  ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[1].id}" >
-               <button
-                  class="mat-button-toggle-button mat-focus-indicator"
-                  type="button"
-                  id="mat-button-toggle-2-button"
-                  tabindex="0"
-                  aria-pressed="true"
-                  name="mat-button-toggle-group-0"
-                  ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[1])"
-                >
-                  <div class="mat-button-toggle-label-content">
-                    <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[1].id"></span> 
-                        {{listsCache.ProductView[1].name}}
-                  </div>
-                </button>
-
-            </div>
-            <div class="mat-button-toggle mat-button-toggle-appearance-standard"  ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[2].id}" >
-                <button
-                  class="mat-button-toggle-button mat-focus-indicator"
-                  type="button"
-                  id="mat-button-toggle-1-button"
-                  tabindex="0"
-                  aria-pressed="false"
-                  name="mat-button-toggle-group-0"
-                  ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[2])"
-                >
-                  <div class="mat-button-toggle-label-content">
-                    <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[2].id"></span> 
-                    {{listsCache.ProductView[2].name}}
-                  </div>
-                </button>
-            </div>
-        </div>
-    </div>
-    <ul class="page-breadcrumb">
+<div class="page-bar breadcrumbs-container" ng-controller="BreadcrumbsController" ng-class="{'no-top-margin' : state.is(STATE.SUPPLIER_PORTAL), 'page-bar-for-multiple-views':   state.is(STATE.DASHBOARD_TIMELINE) || 
+                   state.is(STATE.HOME) ||
+                   state.is(STATE.DASHBOARD_TABLE)}">
+    <ul class="page-breadcrumb"   ng-if="
+                   !(state.is(STATE.DASHBOARD_TIMELINE) || 
+                   state.is(STATE.HOME) ||
+                   state.is(STATE.DASHBOARD_TABLE))">
         <li ng-repeat="station in state.params.path">
 
             <a ui-sref="{{station.uisref}}({screen_id: '{{state.params.screen_id}}'})" ng-if="station.uisref.indexOf('.single') >= 0"
@@ -75,16 +23,13 @@
     
 
     <div style="float: right; margin-top:15px; margin-right:15px;" ng-if="isContractInFormulaScreen()" class="font-white">
-    	<b>Related Contract : <span style="padding: 5px 5px;margin-left:10px;float: right;margin-top: -5px;" class="bg-green-sharp font-white ng-binding">{{isContractInFormulaScreen()}}</span></b>
+      <b>Related Contract : <span style="padding: 5px 5px;margin-left:10px;float: right;margin-top: -5px;" class="bg-green-sharp font-white ng-binding">{{isContractInFormulaScreen()}}</span></b>
     </div>
 
     <div class="btn-group pull-right"
-        ng-if="state.is(STATE.DASHBOARD_TABLE) ||
-               state.is(STATE.DASHBOARD_CALENDAR) || 
-               state.is(STATE.DASHBOARD_TIMELINE) || 
-               state.is(STATE.HOME)">
+        ng-if="state.is(STATE.DASHBOARD_CALENDAR)">
 
-            <span class="hidden">{{CheckForFilters}}</span>
+        <span class="hidden">{{CheckForFilters}}</span>
         <span class="refresh-icon"><a ng-click="broadcastRefreshData()"><i class="fa fa-refresh fa-2x"></i></a></span>
         <span class="dropdown dropdown-quick-sidebar-toggler" ng-click="toggle()">
             <a class="btn btn-fit-height dropdown-toggle filter_btn" ng-hide="CheckForFilters == 0">
@@ -92,6 +37,95 @@
             </a>
         </span>
     </div>
+
+     <div    ng-if="
+                   state.is(STATE.DASHBOARD_TIMELINE) || 
+                   state.is(STATE.HOME) ||
+                   state.is(STATE.DASHBOARD_TABLE)" class="views-container">
+
+        <ul class="page-breadcrumb col col-xs-4 text-left">
+            <li ng-repeat="station in state.params.path">
+
+                <a ui-sref="{{station.uisref}}({screen_id: '{{state.params.screen_id}}'})" ng-if="station.uisref.indexOf('.single') >= 0"
+                    ng-class="{'disabled' : state.is(STATE.SUPPLIER_PORTAL)}">
+                    <i ng-show="$first" class="fa fa-home"></i>
+                    {{station.label}}
+                </a>
+                <a ui-sref="{{station.uisref}}" ng-if="station.uisref.indexOf('.single') < 0" ng-class="{'disabled' : state.is(STATE.SUPPLIER_PORTAL)}">
+                    <i ng-show="$first" class="fa fa-home"></i>
+                    {{station.label}}
+                </a>
+
+                <i ng-show="!$last" class="fa fa-angle-right"></i>
+            </li>
+        </ul>
+        <div class="col col-xs-4 text-center">
+            <div class="mat-button-toggle-group mat-button-toggle-group-appearance-standard">
+                <div class="mat-button-toggle mat-button-toggle-appearance-standard" ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[0].id}">
+                    <button
+                      class="mat-button-toggle-button mat-focus-indicator"
+                      type="button"
+                      id="mat-button-toggle-1-button"
+                      tabindex="0"
+                      aria-pressed="false"
+                      name="mat-button-toggle-group-0"
+                      ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[0])"
+                    >
+                      <div class="mat-button-toggle-label-content">
+                        <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[0].id"></span> 
+                            {{listsCache.ProductView[0].name}}
+                      </div>
+                    </button>
+                </div>
+                <div class="mat-button-toggle mat-button-toggle-appearance-standard "  ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[1].id}" >
+                   <button
+                      class="mat-button-toggle-button mat-focus-indicator"
+                      type="button"
+                      id="mat-button-toggle-2-button"
+                      tabindex="0"
+                      aria-pressed="true"
+                      name="mat-button-toggle-group-0"
+                      ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[1])"
+                    >
+                      <div class="mat-button-toggle-label-content">
+                        <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[1].id"></span> 
+                            {{listsCache.ProductView[1].name}}
+                      </div>
+                    </button>
+
+                </div>
+                <div class="mat-button-toggle mat-button-toggle-appearance-standard"  ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[2].id}" >
+                    <button
+                      class="mat-button-toggle-button mat-focus-indicator"
+                      type="button"
+                      id="mat-button-toggle-1-button"
+                      tabindex="0"
+                      aria-pressed="false"
+                      name="mat-button-toggle-group-0"
+                      ng-click="breadcrumbsFilter(-1, -1, listsCache.ProductView[2])"
+                    >
+                      <div class="mat-button-toggle-label-content">
+                        <span class="toggle-icon ng-star-inserted" style="" ng-if="productTypeView.id == listsCache.ProductView[2].id"></span> 
+                        {{listsCache.ProductView[2].name}}
+                      </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+
+        <div class="btn-group pull-right col col-xs-4 text-right" >
+            <span class="hidden">{{CheckForFilters}}</span>
+            <span class="dropdown dropdown-quick-sidebar-toggler" ng-click="toggle()">
+                <a class="btn btn-fit-height dropdown-toggle filter_btn filter-multiple-views" ng-hide="CheckForFilters == 0">
+                    <i class="filters-for-multiple-views"></i>
+                </a>
+            </span>
+            <span class="refresh-icon"><a ng-click="broadcastRefreshData()" class="refresh-multiple-views"><i class="refresh-for-multiple-views"></i></a></span>
+
+        </div>
+    </div>
+
     <navigation-topbar class="pull-right"></navigation-topbar>
     <div class="page-toolbar" ng-class="state.is(STATE.DASHBOARD_TABLE) ||
                                         state.is(STATE.DASHBOARD_CALENDAR) ||
@@ -104,9 +138,9 @@
              ng-init="getCalendarStatus()">
             <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
             <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
-            	<li class="hidden">
-	            	{{statusesCount = calculateStatusesCount() }}
-            	</li>
+              <li class="hidden">
+                {{statusesCount = calculateStatusesCount() }}
+              </li>
                 <li ng-style="listOfAppliedFiltersString && listOfAppliedFiltersString.indexOf(status.statusDisplayName.toLowerCase()) != -1 && {'background': '#1a365d'}" ng-repeat="status in statusList | filter:{ display: true } track by $index" style="width: {{100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px; padding-top: 10px;" ng-click="breadcrumbsFilter(status.label,status.count)">
                     <div class="tear clickable" ng-style="{{status.style}}">
                         <span>
@@ -143,19 +177,19 @@
 
 <!-- confirm modal -->
 <div class="confirmModal1 fade bs-modal hide" style="transform: translateY(50%);" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
-			</div>
-			<div class="modal-body">
-				{{confirmModalData.text}} 
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-				<button type="button" class="btn btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
-			</div>
-		</div>
-	</div>
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+      </div>
+      <div class="modal-body">
+        {{confirmModalData.text}} 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-default  btn-outline orange confirmAction" data-dismiss="modal">Yes</button>
+      </div>
+    </div>
+  </div>
 </div>
