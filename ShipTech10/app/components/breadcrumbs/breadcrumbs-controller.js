@@ -18,6 +18,14 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
 
         });
 
+        $scope.$on('breadscrumbs-reset', function (event, payload) {
+            $scope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+            $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+            $scope.$apply();
+            $scope.$digest();
+
+        });
+
         $scope.setStateParamsPath = function(toParams) {
             let pathMap = {
                 deliveriestobeverified: 'Deliveries to be Verified',

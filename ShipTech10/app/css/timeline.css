@@ -165,7 +165,8 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 .vis-voyage-content {
 	height: 32px;
 	/*color: darkslateblue;*/
-	font-size: 1em;
+	/*font-size: 1em;*/
+    font-size: 10px !important;
     display: flex;
     justify-content: center;
     align-items: center;

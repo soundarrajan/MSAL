@@ -42,6 +42,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
         ctrl.listsCache = $listsCache;
         ctrl.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
         $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
+        $rootScope.$broadcast('breadscrumbs-reset', $rootScope.productTypeView);
         //    tenantService.scheduleDashboardConfiguration.then(function(settings){
         //    		ctrl.scheduleDashboardConfiguration = settings.payload;
         //    })

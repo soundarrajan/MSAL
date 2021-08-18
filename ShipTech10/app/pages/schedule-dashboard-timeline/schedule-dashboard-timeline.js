@@ -14,6 +14,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         ctrl.listsCache = $listsCache;
         ctrl.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
+        $rootScope.$broadcast('breadscrumbs-reset', $rootScope.productTypeView);
         $rootScope.numberLoad = 0;
 
         var DEBUG = false;
