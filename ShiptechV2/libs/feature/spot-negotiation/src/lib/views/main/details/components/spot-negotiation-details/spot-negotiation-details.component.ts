@@ -15,6 +15,7 @@ import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-gr
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { LocalService } from '../../../../../services/local-service.service';
 import { Store } from '@ngxs/store';
+import { SetSelectedRow } from '../../../../../store/actions/ag-grid-row.action';
 
 @Component({
   selector: 'app-spot-negotiation-details',
@@ -119,12 +120,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
 
     const storeRows = this.store.selectSnapshot(state => {
-
-      debugger;
       return state.spotNegotiation.rows;
     });
 
     this.rowData_aggrid = storeRows;
+
   }
 
   private rowClassRules = {
@@ -802,12 +802,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     var res = this.gridOptions_counterparty.api.applyTransaction({
       update: itemsToUpdate
     });
+
+    this.store.dispatch(new SetSelectedRow(itemsToUpdate));
     //this.gridOptions_counterparty.api.deselectAll();//optional
     //console.log(e);
     // console.log("eeeeeeeeeeee");
     // console.log(this.gridOptions_counterparty);
   }
   onSelectionChanged(e) {
-    const currentSelectedRows = this.gridOptions_counterparty.api.getSelectedNodes().map(e => e.data);
   }
 }
