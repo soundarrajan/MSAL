@@ -575,7 +575,7 @@ export class BunkeringPlanComponent implements OnInit {
     
     let req = {
        action : "save",
-       user_id : this.store.selectSnapshot(UserProfileState.userId),//"default@inatech.com",
+       user_id : this.store.selectSnapshot(UserProfileState.username),//"default@inatech.com",
        ship_id: storeVesselData.vesselId,
        plan_id: storeVesselData.planId,
        hsfo_current_stock: currentROBObj['3.5 QTY'] ? currentROBObj['3.5 QTY']: 0,
@@ -648,9 +648,9 @@ export class BunkeringPlanComponent implements OnInit {
     let isHardValidation = 0;
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB)
     //business address validation
-    let isValidBusinessAddress = data.findIndex(data => data?.business_address=='' && data?.operator_ack == 1) == -1? 'Y':'N'
+    let isValidBusinessAddress = data.findIndex(data => !data?.business_address && data?.operator_ack == 1) == -1? 'Y':'N'
     if(isValidBusinessAddress == 'N'){
-      let id = data.findIndex(data => data?.business_address=='' && data?.operator_ack == 1)
+      let id = data.findIndex( data => !data?.business_address && data?.operator_ack == 1 )
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
@@ -738,7 +738,8 @@ export class BunkeringPlanComponent implements OnInit {
     }
     //Stock validation : When Stock > Tank Capacity
     //1. Current HSFO Qty > HSFO Tank Capacity
-    let isValidHsfoStock = (currentROBObj['3.5 QTY'] + currentROBObj['0.5 QTY']) > currentROBObj?.hsfoTankCapacity ? 'N':'Y';
+    let totalHsfoCurrentROB = parseInt(currentROBObj['3.5 QTY'].toString()) + parseInt(currentROBObj['0.5 QTY'].toString());
+    let isValidHsfoStock = totalHsfoCurrentROB > currentROBObj?.hsfoTankCapacity ? 'N':'Y';
     if(isValidHsfoStock == 'N'){
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',

@@ -1,9 +1,7 @@
-﻿commit ae1c381fdadd07392e46eb6e040dfaeda9e363e1
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Aug 17 12:52:25 2021 +0000
+﻿commit e1c1ac469c814993d0ac65f1a10517d81550967f
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Wed Aug 18 15:31:21 2021 +0300
 
-    Merged PR 13130: #NoJIRA-current ROB and artifact section in All bunker plan screen has done
-    
-    Related work items: #32847
+    Merge branch 'Support_10_10_1'
 
 branch: master
