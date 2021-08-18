@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { environment } from '@shiptech/environment';
-
+import { AppConfig } from '@shiptech/core/config/app-config';
 @Injectable({
     providedIn: 'root'
   })
 
 export class MyMonitoringService {
   appInsights: ApplicationInsights;
-  constructor() {
+  constructor(private appConfig: AppConfig) {
+    const configInstrumentationKey = this.appConfig.v1.INSTRUMENTATION_KEY;
     this.appInsights = new ApplicationInsights({
       config: {
-        instrumentationKey: environment.instrumentationKey,
+        instrumentationKey: configInstrumentationKey,
         enableAutoRouteTracking: true // option to log all route changes
       }
     });
