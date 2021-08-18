@@ -62,6 +62,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.request = [];
         ctrl.request.locations = [];
         $scope.portCall = [];
+        $scope.setSelectedPortCall = null;
         ctrl.lookupInput = null;
         ctrl.screenActions = null;
         ctrl.checkedProducts = [];
@@ -2691,6 +2692,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.request.portCall = locationObj;
             $scope.portCall[index] = locationObj;
         };
+        ctrl.checkProductStemmed = function(locationObj) {
+            let FreezeStatus = ['Cancelled', 'Stemmed', 'PartiallyStemmed'];
+            let CurrentStatus = locationObj?.portStatus?.name;
+            return (FreezeStatus.indexOf(CurrentStatus) != -1);
+        }
         ctrl.selectVesselSchedulesMintoReach = function(locations) {
             ctrl.EnableSingleSelect = false;
             // $scope.formValues.minimumQuantitiesToReach = locations;
@@ -4351,8 +4357,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             $scope.prettyCloseModal();
         };
-        ctrl.getVesselSchedules = function(param, locationId) {
-            ctrl.EnableSingleSelect = false;
+        ctrl.getVesselSchedules = function(param, locationObj) {
+            let locationId = locationObj?.location?.id;
+            // ctrl.setSelectedPortCall = locationObj?.portCallId;
+            ctrl.setSelectedPortCall = locationObj?.vesselVoyageDetailId;
+           ctrl.EnableSingleSelect = false;
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
                     let locationFilterModel = {

@@ -139,15 +139,17 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                     ValueType: 5,
                     Value: value
                 }
-             }
+            }
             if(!ctrl.islocationPortEnabled){
-                lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, filterPayload).then((data) => {
+                 lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, filterPayload).then((data) => {
                     ctrl.data = data.payload;
                     ctrl.data1 = angular.copy(data.payload);
                     $.each(ctrl.data, (k, v) => {
                         v.eta = $scope.formatDate(v.eta);
                         v.etb = $scope.formatDate(v.etb);
                         v.etd = $scope.formatDate(v.etd);
+                        // v.isSelectedPortCall = ctrl?.portCallId == v.portCallId;
+                        v.isSelectedPortCall = ctrl?.portCallVoyageId == v.vesselVoyageDetailId;
                     });
                     destroyDataT();
                     $timeout(() => {
@@ -157,7 +159,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                                 [ 0, 'asc' ]
                             ]
                         });
-                        $('.table').dataTable();
+                        $timeout(() => {
+                            $('.table').dataTable();
+                        },1000);
                     });
                 });
             }
@@ -350,6 +354,7 @@ angular.module('shiptech.components').component('vesselSchedule', {
     controller: 'VesselScheduleController',
     bindings: {
         vesselId: '<',
+        portCallVoyageId: '<',
         onVesselSchedulesSelect: '&',
         onPortCallSelect: '&',
         args: '<',
