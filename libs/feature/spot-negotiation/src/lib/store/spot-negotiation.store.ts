@@ -1,5 +1,10 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { AddRow, RemoveRow } from './actions/ag-grid-row.action';
+import {
+  AddRow,
+  RemoveRow,
+  AddSelectedRow,
+  SetSelectedRow
+} from './actions/ag-grid-row.action';
 
 // Delete this;
 const demoData = [
@@ -501,7 +506,6 @@ const demoData = [
   }
 ];
 export class SpotNegotiationStoreModel {
-
   rows: any;
   selectedRows: any;
 
@@ -510,7 +514,6 @@ export class SpotNegotiationStoreModel {
     this.rows = [];
     this.selectedRows = [];
   }
-
 }
 
 @State<SpotNegotiationStoreModel>({
@@ -546,11 +549,40 @@ export class SpotNegotiationStore {
     });
   }
 
+  // Add a new row
+  @Action(AddSelectedRow)
+  addSelectedRow(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AddSelectedRow
+  ) {
+    const state = getState();
+
+    const futureRows = [...state.selectedRows, payload];
+
+    patchState({
+      selectedRows: futureRows
+    });
+  }
+  // Set  selected rows
+  @Action(SetSelectedRow)
+  setSelectedRow(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetSelectedRow
+  ) {
+    const state = getState();
+
+    const futureRows = payload;
+
+    patchState({
+      selectedRows: futureRows
+    });
+  }
+
   // Remove a row
   @Action(RemoveRow)
   remove(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: AddRow
+    { payload }: RemoveRow
   ) {
     const state = getState();
     const futureRows = state.rows.filter((e: any) => e.id != payload);

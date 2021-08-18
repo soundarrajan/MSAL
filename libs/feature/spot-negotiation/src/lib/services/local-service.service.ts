@@ -528,8 +528,9 @@ export class LocalService {
     );
   }
   public getSpotDataJSON(): Observable<any> {
-
-    return this.http.get('./assets/data/spot-grid1-data.json');
+    return this.store.selectSnapshot(state => {
+      return state.spotNegotiation.rows;
+    });
   }
   public getSpotDataRequestData(reqId): Observable<any> {
     return this.http.get(
