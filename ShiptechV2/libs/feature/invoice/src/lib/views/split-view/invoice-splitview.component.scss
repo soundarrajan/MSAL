@@ -61,10 +61,18 @@
     }
 }
 
+shiptech-invoice-detail,
+pdf-viewer {
+    max-height: calc(100vh - 195px);
+    overflow: auto;
+}
+
 .split-view-wrapper {
     .inner-content {
         flex-direction: column;
         background: #fff;
+        // max-height: calc(100vh - 150px);
+        // overflow: auto;
         .pdf-viewer-wrapper {
             // max-height: calc(100vh - 190px);
             overflow: auto;
