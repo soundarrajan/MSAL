@@ -685,7 +685,7 @@ export class VesselInfoComponent implements OnInit {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
           panelClass: 'confirmation-popup-operator',
-          data: {message : 'Please wait, GSIS import is under process'}
+          data: {message : 'Please wait, GSIS import is under process', okayButton : true}
         })
         this.store.dispatch(new GeneratePlanAction(0));
         this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
