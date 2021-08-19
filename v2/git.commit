@@ -1,7 +1,11 @@
-﻿commit e1c1ac469c814993d0ac65f1a10517d81550967f
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Wed Aug 18 15:31:21 2021 +0300
+﻿commit ccaa0756d84dcd52dc43b45f86235869c842a1b3
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu Aug 19 11:32:33 2021 +0000
 
-    Merge branch 'Support_10_10_1'
+    Merged PR 13178: #34984 bug fix  & #35055 requirement.
+    
+    #34984 bug fix  & #35055 requirement.
+    
+    Related work items: #34984, #35055
 
 branch: master
