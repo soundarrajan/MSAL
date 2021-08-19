@@ -22,7 +22,7 @@ getTestBed().initTestEnvironment(
 
 // Current path
 const context = require.context('./', true, /\.spec\.ts$/);
-const context1 = require.context('../../../libs/', true, /\.spec\.ts$/);
+const context1 = require.context('../../../libs/feature/spot-negotiation/', true, /\.spec\.ts$/);
 // Libs ppath
 
 context.keys().map(context);
