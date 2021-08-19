@@ -149,11 +149,11 @@ export class BunkeringPlanComponent implements OnInit {
           headerName: BunkeringPlanColumnsLabels.OperAck, headerTooltip: BunkeringPlanColumnsLabels.OperAck, field: "operator_ack",
           resizable: false,
           width: 45,
-          cellClassRules: {
-            'lightgreen': function (params) {
-              return params.value == 0?true:false;
-            }
-          },
+          // cellClassRules: {
+          //   'lightgreen': function (params) {
+          //     return params.value == 1?true:false;
+          //   }
+          // },
           cellClass: ['custom-check-box aggrid-content-center aggrid-left-ribbon '],
           headerClass: ['aggrid-text-align-c '],
           cellRendererFramework: AGGridCellDataComponent,
