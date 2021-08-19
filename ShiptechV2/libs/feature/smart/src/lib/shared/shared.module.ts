@@ -55,6 +55,7 @@ import { SuccesspopupComponent } from './successpopup/successpopup.component';
 import { FutureRequestGridComponent } from './future-request-grid/future-request-grid.component';
 import { CountByPriorityPipe } from './pipes/count-by-priority.pipe';
 import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
+import { CurrentRobArbitSectionComponent } from './current-rob-arbit-section/current-rob-arbit-section.component';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
@@ -67,7 +68,9 @@ import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
     SuccesspopupComponent,
     UtcDatePipePipe,
     FutureRequestGridComponent, 
-    CountByPriorityPipe],
+    CountByPriorityPipe, 
+    CurrentRobArbitSectionComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -84,7 +87,7 @@ import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
     CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent,
-    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, AllBunkeringPlanComponent,NoDataComponent, WarningoperatorpopupComponent, UtcDatePipePipe, CountByPriorityPipe, SuccesspopupComponent],
+    FilterPipe, CommentDPFormatPipe, GroupByPipe, FilterCommentByParticipantPipe, GroupByParticipantPipe, EnUsDatePipePipe, AllBunkeringPlanComponent,NoDataComponent, WarningoperatorpopupComponent, UtcDatePipePipe, CountByPriorityPipe, SuccesspopupComponent, CurrentRobArbitSectionComponent],
   providers: [LocalService, LoggerService, AuthGaurdService, BunkeringPlanComponent, FutureRequestGridComponent],
   entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent,WarningoperatorpopupComponent, SuccesspopupComponent]
 })
