@@ -10,11 +10,14 @@ export class WarningoperatorpopupComponent implements OnInit {
 
   public message : string;
   public id : any;
+  public okayButton : boolean = false;
   constructor(public dialogRef: MatDialogRef<WarningoperatorpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     //dialogRef.disableClose = true;
     this.message = data?.message;
     if(this.data?.id)
     this.id = data?.id;
+    if(this.data?.okayButton)
+    this.okayButton = this.data?.okayButton;
   }
 
   ngOnInit(): void {
