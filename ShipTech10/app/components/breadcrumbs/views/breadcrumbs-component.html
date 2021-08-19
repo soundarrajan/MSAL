@@ -142,7 +142,7 @@
                 {{statusesCount = calculateStatusesCount() }}
               </li>
                 <li ng-style="listOfAppliedFiltersString && listOfAppliedFiltersString.indexOf(status.statusDisplayName.toLowerCase()) != -1 && {'background': '#1a365d'}" ng-repeat="status in statusList | filter:{ display: true } track by $index" style="width: {{100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px; padding-top: 10px;" ng-click="breadcrumbsFilter(status.label,status.count)">
-                    <div class="tear clickable" ng-style="{{status.style}}">
+                    <div class="tear clickable" style="background-color: {{getPropertyValue(status.style, 'background-color')}};border-color: {{getPropertyValue(status.style, 'border-color')}} ">
                         <span>
                             {{status.count}}
                         </span>
@@ -159,7 +159,7 @@
             <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
                 {{ statusesCount = calculateTimelineStatusesCount() }}
                 <li ng-style="listOfAppliedFiltersString && listOfAppliedFiltersString.indexOf(status.statusDisplayName.toLowerCase()) != -1 && {'background': '#1a365d'}" ng-repeat="status in timelineStatusList | filter:{ display: true } track by $index" style="width: {{100 / statusesCount }}%; margin: 0!important; display: block; float: left; min-width: 120px; padding-top: 10px;"  ng-click="breadcrumbsFilter(status.label,status.count)">
-                    <div class="tear clickable" ng-style="{{status.style}}">
+                    <div class="tear clickable"  style="background-color: {{getPropertyValue(status.style, 'background-color')}};border-color: {{getPropertyValue(status.style, 'border-color')}} ">
                         <span>
                             {{ status.count }}
                         </span>
