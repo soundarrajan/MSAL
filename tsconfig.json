@@ -38,7 +38,7 @@
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["reflect-metadata", "jest"]
+    "types": ["reflect-metadata"]
   },
   "exclude": ["node_modules", "tmp", "**/*.mock.ts"],
   "angularCompilerOptions": {

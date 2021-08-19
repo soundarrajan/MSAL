@@ -35,7 +35,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public totalOfferHeaderWidth;
   public fullHeaderWidth;
   public frameworkComponents;
-  private context: any;
+  public context: any;
   rowData_aggrid = [];
   public grid1Width = {
     width: '100%'
@@ -127,7 +127,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   }
 
-  private rowClassRules = {
+  public rowClassRules = {
     customRowClass: function(params) {
       var offPrice = params.data.offPrice1;
       return offPrice == 100;
