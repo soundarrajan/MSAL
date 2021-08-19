@@ -39,6 +39,10 @@ export class SupplierCommentsPopupComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  selectItem(index: number, item: any): void {
+
+  }
+
   addInternalComment(senderComment) {
     if (senderComment) {
       this.sender_comments.push({

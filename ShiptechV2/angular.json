@@ -17,6 +17,21 @@
       "sourceRoot": "apps/shiptech/src",
       "prefix": "shiptech",
       "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/shiptech/src/test.ts",
+            "polyfills": "apps/shiptech/src/polyfills.ts",
+            "tsConfig": "apps/shiptech/tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "stylePreprocessorOptions": {
+              "includePaths": [ "apps/shiptech/src/app/shared/styles"]
+            },
+            "styles": ["apps/shiptech/src/styles.scss"],
+            "scripts": [],
+            "assets": [ "apps/shiptech/src/favicon.ico", "apps/shiptech/src/assets"]
+          }
+        },
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
@@ -133,14 +148,6 @@
               "!apps/shiptech/**"
             ]
           }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/shiptech/jest.config.js",
-            "tsConfig": "apps/shiptech/tsconfig.spec.json",
-            "setupFile": "apps/shiptech/src/test-setup.ts"
-          }
         }
       }
     },
@@ -161,14 +168,6 @@
               "**/node_modules/**",
               "!libs/feature/quantity-control/**"
             ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/quantity-control/jest.config.js",
-            "tsConfig": "libs/feature/quantity-control/tsconfig.spec.json",
-            "setupFile": "libs/feature/quantity-control/src/test-setup.ts"
           }
         }
       },
@@ -196,14 +195,6 @@
               "!libs/feature/delivery/**"
             ]
           }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/delivery/jest.config.js",
-            "tsConfig": "libs/feature/delivery/tsconfig.spec.json",
-            "setupFile": "libs/feature/delivery/src/test-setup.ts"
-          }
         }
       },
       "schematics": {
@@ -229,14 +220,6 @@
               "**/node_modules/**",
               "!libs/feature/contract/**"
             ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/contract/jest.config.js",
-            "tsConfig": "libs/feature/contract/tsconfig.spec.json",
-            "setupFile": "libs/feature/contract/src/test-setup.ts"
           }
         }
       },
@@ -264,14 +247,6 @@
               "!libs/feature/spot-negotiation/**"
             ]
           }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/spot-negotiation/jest.config.js",
-            "tsConfig": "libs/feature/spot-negotiation/tsconfig.spec.json",
-            "setupFile": "libs/feature/spot-negotiation/src/test-setup.ts"
-          }
         }
       },
       "schematics": {
@@ -297,14 +272,6 @@
               "**/node_modules/**",
               "!libs/core/**"
             ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/core/jest.config.js",
-            "tsConfig": "libs/core/tsconfig.spec.json",
-            "setupFile": "libs/core/src/test-setup.ts"
           }
         }
       },
@@ -332,14 +299,6 @@
               "!libs/feature/lazy-load-poc/**"
             ]
           }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/lazy-load-poc/jest.config.js",
-            "tsConfig": "libs/feature/lazy-load-poc/tsng serveconfig.spec.json",
-            "setupFile": "libs/feature/lazy-load-poc/src/test-setup.ts"
-          }
         }
       },
       "schematics": {
@@ -365,14 +324,6 @@
               "**/node_modules/**",
               "!libs/feature/invoice/**"
             ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/invoice/jest.config.js",
-            "tsConfig": "libs/feature/invoice/tsconfig.spec.json",
-            "setupFile": "libs/feature/invoice/src/test-setup.ts"
           }
         }
       },
@@ -400,14 +351,6 @@
               "!libs/feature/ete/**"
             ]
           }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/ete/jest.config.js",
-            "tsConfig": "libs/feature/ete/tsconfig.spec.json",
-            "setupFile": "libs/feature/ete/src/test-setup.ts"
-          }
         }
       },
       "schematics": {
@@ -433,14 +376,6 @@
               "**/node_modules/**",
               "!libs/feature/smart/**"
             ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/feature/smart/jest.config.js",
-            "tsConfig": "libs/feature/smart/tsconfig.spec.json",
-            "setupFile": "libs/feature/smart/src/test-setup.ts"
           }
         }
       },

@@ -122,6 +122,7 @@ export class AGGridDateTimePickerComponent
   implements ICellEditorAngularComp, AfterViewInit {
   private params: any;
   public show: boolean = true;
+  public dateTime: any;
   constructor(public el: ElementRef, private renderer: Renderer2) {}
 
   @ViewChild('container', { read: ViewContainerRef }) public container;

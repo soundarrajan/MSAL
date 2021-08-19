@@ -260,6 +260,8 @@ export class ShiptechCustomHeaderGroup {
     public dialog: MatDialog
   ) {}
 
+  search(userInput: string): void {}
+
   agInit(params): void {
     this.params = params;
     this.params.columnGroup
