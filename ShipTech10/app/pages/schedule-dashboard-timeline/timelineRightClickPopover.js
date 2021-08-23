@@ -373,7 +373,11 @@ angular.module('shiptech.components')
                             if (ptval[index]) {
                                 status = ptval[index].voyageDetail.portStatus;
                                 rowValues[key * 2] = ptval[index].voyageDetail.request.requestDetail.fuelOilOfRequest;
-                                rowValues[key * 2 + 1] = ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity ? $filter("number")(ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity, ctrl.numberPrecision.quantityPrecision)  : ' ' +  ' ' + ptval[index].voyageDetail.request.requestDetail.uom;
+                                if (ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity) {
+                                    rowValues[key * 2 + 1] = $filter("number")(ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity, ctrl.numberPrecision.quantityPrecision) +  ' ' + ptval[index].voyageDetail.request.requestDetail.uom;
+                                } else {
+                                    rowValues[key * 2 + 1] = ptval[index].voyageDetail.request.requestDetail.uom;
+                                }
                             }
                             
                         }
@@ -400,7 +404,11 @@ angular.module('shiptech.components')
                             if (ptval[index]) {
                                 status = ptval[index].voyageDetail.request.requestDetail.orderStatus;
                                 rowValues[key * 2] = ptval[index].voyageDetail.request.requestDetail.fuelOilOfRequest;
-                                rowValues[key * 2 + 1] = ptval[index].voyageDetail.request.requestDetail.orderProductQuantity ? $filter("number")(ptval[index].voyageDetail.request.requestDetail.orderProductQuantity, ctrl.numberPrecision.quantityPrecision) : ' ' +  ' ' + ptval[index].voyageDetail.request.requestDetail.orderProductQuantityUom;
+                                if (ptval[index].voyageDetail.request.requestDetail.orderProductQuantity) {
+                                    rowValues[key * 2 + 1] = $filter("number")(ptval[index].voyageDetail.request.requestDetail.orderProductQuantity, ctrl.numberPrecision.quantityPrecision) +  ' ' + ptval[index].voyageDetail.request.requestDetail.orderProductQuantityUom;
+                                } else {
+                                    rowValues[key * 2 + 1] = ptval[index].voyageDetail.request.requestDetail.orderProductQuantityUom;
+                                }
                             }
                             
                         }
