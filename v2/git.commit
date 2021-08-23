@@ -1,11 +1,7 @@
-﻿commit ccaa0756d84dcd52dc43b45f86235869c842a1b3
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Aug 19 11:32:33 2021 +0000
+﻿commit 46bd58347c8221b909e431cf7ecca8d06227ef4f
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Aug 23 18:51:30 2021 +0300
 
-    Merged PR 13178: #34984 bug fix  & #35055 requirement.
-    
-    #34984 bug fix  & #35055 requirement.
-    
-    Related work items: #34984, #35055
+    Removed loader after user changed the conversion value from contract
 
 branch: master
