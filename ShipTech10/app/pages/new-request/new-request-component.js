@@ -1026,7 +1026,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     let selectedPortCall = (angular.isArray($scope.portCall))? $scope.portCall: [$scope.portCall];
                     let PayloadLocations = ctrl.request.locations;
                     PayloadLocations.map((location, index)=>{
-                        let selectedPortCallObj = selectedPortCall.find(portCallItem=>portCallItem?.locationId == location?.locationId);
+                        let locationID = (location?.locationId)? (location.locationId): (location?.location?.id);
+                        let selectedPortCallObj = selectedPortCall.find(portCallItem=>portCallItem?.locationId == locationID);
                         location.portCallId = selectedPortCallObj?.locationId;
                         location.vesselVoyageId = selectedPortCallObj?.voyageId;
                         location.vesselVoyageDetailId = selectedPortCallObj?.vesselVoyageDetailId;
