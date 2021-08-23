@@ -6,8 +6,8 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         window.scheduleDashboardConfiguration = { payload: $tenantConfiguration.scheduleDashboardConfiguration };
 
         $scope.listsCache = $listsCache;
-        $scope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
-        $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+        $scope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
+        $rootScope.productTypeView =  $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
 
         $scope.$on('filters-removed', function (event, payload) {
             console.log(payload);
@@ -15,12 +15,6 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
             $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
             $scope.$apply();
             $scope.$digest();
-
-        });
-
-        $scope.$on('breadscrumbs-reset', function (event, payload) {
-            $scope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
-            $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
 
         });
 
