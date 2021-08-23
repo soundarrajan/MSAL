@@ -1,3 +1,4 @@
-<div ng-controller="Controller_Master as CM">
-	<multiselect ng-model="MODEL_COL_FIELD" options="CM.listsCache[col.colDef.cellObject.masterSource]" id-prop="id" display-prop="name" show-search="true"></multiselect>
+<div ng-controller="Controller_Master as CM" ng-class="{'strategy-applicable-container': !MODEL_COL_FIELD.length && col.colDef.displayName == 'Strategy Applicable' && checkFormSubmitted()}">
+	<multiselect ng-model="MODEL_COL_FIELD" options="CM.listsCache[col.colDef.cellObject.masterSource]" id-prop="id" display-prop="name" show-search="true"  ng-required="$eval(col.colDef.required) || col.colDef.required"
+	name="{{ col.colDef.displayName }} on line {{col.colDef.cellObject.customNumberOfRowsAction ? $eval(col.colDef.cellObject.customNumberOfRowsAction) :  rowRenderIndex + 1}}"></multiselect>
 </div>

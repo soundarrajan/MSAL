@@ -1133,3 +1133,7 @@ label.mt-checkbox input.ng-invalid-required + span {
 .documentsPdfViewer .close-bar .closePDFViewer:hover {
     color:red;
 }
+
+.strategy-applicable-container {
+    border: 1px solid #e73d4a !important;
+}

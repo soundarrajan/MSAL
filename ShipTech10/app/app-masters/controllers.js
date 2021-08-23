@@ -918,10 +918,21 @@
 
             return true;
         }
+
+        $scope.checkFormSubmitted = function() {
+            console.log($rootScope.serviceFormSubmitted);
+            return $rootScope.serviceFormSubmitted;
+        }
+
+
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
             screenLoader.showLoader();
             $('form').addClass('submitted');
             vm.invalid_form = false;
+
+            if (vm.app_id == 'masters' && vm.screen_id == 'service') {
+                $rootScope.serviceFormSubmitted = true;
+            }
 
 
             if(!$scope.counterPartyListisValid()){
@@ -1575,6 +1586,9 @@
 
             /* END Contract Validations*/
             if (vm.editInstance.$valid) {
+                if (vm.app_id == 'masters' &&  vm.screen_id == 'service') {
+                     $rootScope.serviceFormSubmitted = false;
+                }
                 if (vm.app_id == 'admin' &&  vm.screen_id == 'sellerrating') {
                     for (let i = 0 ; i < $scope.formValues.applications.length; i++) {
                         const model = {
@@ -1683,7 +1697,7 @@
                     $scope.filterFromData.marketPrices = tempMarketPrices;
                 }
                 if (vm.app_id == 'masters' && vm.screen_id == 'service') {
-                    //strategyTypes request payload json formation
+                    //strategyTypes request payload json formation 
                     let strategyTypeModel = {
                         "id": 0,
                         "isDeleted": false,
@@ -1738,7 +1752,9 @@
                             return location;
                     	} else {
                             //handle delete all exist strategy, if selected strategy list empty
-                            location.strategyTypes.map(strategyType=>strategyType.isDeleted=true);
+                            if (typeof location.strategyTypes != 'undefined') {
+                                location.strategyTypes.map(strategyType=>strategyType.isDeleted=true);
+                            }
                         }
                     });
                 }
@@ -4793,9 +4809,30 @@
 
         $scope.addData = function(obj) {
             obj = eval("$scope." + obj);
-            obj.push({
-                id: 0
-            });
+            if (vm.app_id == 'masters' && vm.screen_id == 'service') {
+                let selectedStrategyType = [];
+                selectedStrategyType.push({
+                    "id": 1,
+                    "name": "Bunker Strategy",
+                    "internalName": "Bunker Strategy",
+                    "code": null,
+                    "displayName": null,
+                    "databaseValue": 0,
+                    "transactionTypeId": 0,
+                    "productTypeId": 0,
+                    "motProductTypeId": null,
+                    "description": null
+                });
+                obj.push({
+                    id: 0,
+                    selectedStrategyType: selectedStrategyType
+                });
+            } else {
+                obj.push({
+                    id: 0
+                });
+            }
+            console.log(obj.selectedStrategyType);
             if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
                 $.each(obj, (key, val) => {
                     if (val.id == 0) {
@@ -4843,6 +4880,7 @@
             }
         };
         $scope.remData = function(obj, row, idx) {
+            let initialObject = angular.copy(obj);
             let autoSave = false;
             if (obj == "formValues.notes") {
                 autoSave = true;
@@ -4896,7 +4934,9 @@
                 row.isDeleted = true;
                 if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
                     if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1) || (vm.app_id == 'labs' && vm.screen_id == 'labresult')) {
-                    } else {
+                    } else if (vm.app_id == 'masters' && vm.screen_id == 'service' && initialObject == 'formValues.locations') {
+
+                    } else{
                         obj.push({
                             id: 0
                         });

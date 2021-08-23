@@ -2447,9 +2447,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                     setTimeout(() => {
                         api.core.handleWindowResize();
                         if (angular.equals($scope.formValues, {}) || !$scope.formValues.locations) {
-                            $scope.formValues = {
-                                locations: [ {} ]
-                            };
+                            // $scope.formValues = {
+                            //     locations: [ {} ]
+                            // };
                         }
                         $scope.formatStrategyType($scope.formValues.locations);
                     }, 10);
