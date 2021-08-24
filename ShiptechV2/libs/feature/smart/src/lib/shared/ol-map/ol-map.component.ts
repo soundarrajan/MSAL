@@ -1243,6 +1243,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       vesselType: 'LR1',
       bunkeringStatus: 'Created',
       serviceId: '',
+      serviceCode: '',
       deptId: '',
       ownership: '',
       hsfo: '',

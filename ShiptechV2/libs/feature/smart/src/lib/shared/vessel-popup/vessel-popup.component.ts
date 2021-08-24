@@ -200,7 +200,8 @@ export class VesselPopupComponent implements OnInit {
       let req = { VesselId: vesselId };
       this.vesselService.getVesselBasicInfo(req).subscribe((res) => {
         if (res.payload.length > 0) {
-          this.popup_data.serviceId = res.payload[0].serviceId;
+          //this.popup_data.serviceId = res.payload[0].serviceId;
+          this.popup_data.serviceCode = res.payload[0].serviceCode;
           this.popup_data.deptId = res.payload[0].deptId;
           this.popup_data.ownership = res.payload[0].ownership;
           this.popup_data.destination = res.payload[0].destination;
