@@ -1,3 +1,8 @@
+export class SetStaticLists {
+  static readonly type = '[Static Lists] Set';
+
+  constructor(public payload: any) {}
+}
 export class AddRow {
   static readonly type = '[Row] Add';
 

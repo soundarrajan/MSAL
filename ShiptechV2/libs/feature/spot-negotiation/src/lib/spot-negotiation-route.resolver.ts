@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { TenantSettingsModuleName } from '../../../../core/src/lib/store/states/tenant/tenant-settings.interface';
+import { KnownPrimaryRoutes } from '../../../../core/src/lib/enums/known-modules-routes.enum';
 
 @Injectable()
 export class SpotNegotiationModuleResolver implements Resolve<any> {
@@ -29,19 +31,19 @@ export class SpotNegotiationModuleResolver implements Resolve<any> {
     state: RouterStateSnapshot
   ): Observable<any> | Promise<any> | any {
     // Note: Before this module can be used/opened, we need to load module settings and cached lookups first.
-    // return this.tenantService
-    //   .loadModule(TenantSettingsModuleName.Delivery)
-    //   .pipe(
-    //     catchError(error => {
-    //       // Note: If the user navigated directly to this route, we need to redirect to root and show and error
-    //       if (!state.root.component) {
-    //         this.appErrorHandler.handleError(error);
-    //         return this.router.navigate([KnownPrimaryRoutes.Root]);
-    //       } else {
-    //         // Note: if the application is already loaded (something visible on the screen) and we navigate to a bad route we need to "cancel" the navigation and show an error
-    //         return throwError(error);
-    //       }
-    //     })
-    //   );
-  }
+  //   return this.tenantService
+  //     .loadModule(TenantSettingsModuleName.Delivery)
+  //     .pipe(
+  //       catchError(error => {
+  //         // Note: If the user navigated directly to this route, we need to redirect to root and show and error
+  //         if (!state.root.component) {
+  //           this.appErrorHandler.handleError(error);
+  //           return this.router.navigate([KnownPrimaryRoutes.Root]);
+  //         } else {
+  //           // Note: if the application is already loaded (something visible on the screen) and we navigate to a bad route we need to "cancel" the navigation and show an error
+  //           return throwError(error);
+  //         }
+  //       })
+  //     );
+  // }
 }

@@ -4,9 +4,8 @@ import { SpotNegotiationComponent } from './views/main/details/spot-negotiation.
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule, Type } from '@angular/core';
 
-
 import { KnownSpotNegotiationRoutes } from './known-spot-negotiation.routes';
-
+import { StaticListsRouteResolver } from './static-lists-route.resolver';
 
 const routes: Routes = [
   {
@@ -36,6 +35,7 @@ const routes: Routes = [
               {
                 path: KnownSpotNegotiationRoutes.details,
                 component: SpotNegotiationComponent,
+                resolve: { staticLists: StaticListsRouteResolver },
                 data: {
                   title: 'Negotiation',
                   breadcrumb: 'Negotiation'
