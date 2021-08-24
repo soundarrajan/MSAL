@@ -476,7 +476,7 @@ export class SmartOperatorComponent implements OnInit {
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
     },
 
-    { headerName: 'Service Code', headerTooltip: 'Service Code', field: 'serviceId', width: 100, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent},
+    { headerName: 'Service Code', headerTooltip: 'Service Code', field: 'serviceCode', width: 100, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent},
     { headerName: 'Dept ID', headerTooltip: 'Dept ID', field: 'deptId', width: 100, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'Ownership', headerTooltip: 'Ownership', field: 'ownership', width: 100, cellClass: 'aggrid-columgroup-splitter-right aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'Destination', headerTooltip: 'Destination', field: 'destination', width: 130, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
