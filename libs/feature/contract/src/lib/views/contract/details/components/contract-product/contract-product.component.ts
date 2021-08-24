@@ -685,6 +685,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.getSpecGroupByProduct(
           this.formValues.products[i].product.id,
           this.formValues.products[i].specGroup
+          , 'CPInit'
         );
       }
       if (this.formValues.products[i].location) {
@@ -1459,12 +1460,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
     this.searchProductInput = null;
     this.addProductToConversion(index, null, true);
-    this.getSpecGroupByProduct(product.id, null);
+    this.getSpecGroupByProduct(product.id, null, 'ProductChange');
     this.changeDetectorRef.detectChanges();
     this.contractFormSubject.next(this.formValues);
   }
 
-  getSpecGroupByProduct(productId, additionalSpecGroup) {
+  getSpecGroupByProduct(productId, additionalSpecGroup, initiatorName) {
     var data = {
       Payload: {
         Filters: [
@@ -1481,11 +1482,15 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     // if spec group for product exists, do not make call again
     if (typeof this.productSpecGroup[productId] != 'undefined') {
+      if(initiatorName != 'CPInit')
+      {
+        this.setDefaultSpecGroup(productId);
+      }
       return;
     }
 
     this.contractService
-      .getSpecGroupGetByProduct(data)
+      .getSpecGroupsGetByProduct(data)
       .pipe(finalize(() => {}))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
@@ -1510,9 +1515,17 @@ export class ContractProduct extends DeliveryAutocompleteComponent
             this.productSpecGroup[productId] = response;
             this.changeDetectorRef.detectChanges();
             //this.productSpecGroupSubject.next(this.productSpecGroup);
+            if(initiatorName != 'CPInit')
+            {
+              this.setDefaultSpecGroup(productId);
+            }
           }
         }
       });
+  }
+
+  setDefaultSpecGroup(productId) {
+    this.formValues.products[this.selectedTabIndex].specGroup = this.productSpecGroup[productId]?.find(sg => sg.isDefault);
   }
 
   getAdditionalCostsComponentTypes() {
