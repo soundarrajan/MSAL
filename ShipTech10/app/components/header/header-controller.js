@@ -14,6 +14,9 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
                     name: response.payload.username,
                     displayName: response.payload.displayName
                 };
+                $rootScope.$broadcast('$productTypeView', {
+                    productTypeView: response?.payload?.landingPage
+                })
             }else{
                 $scope.userProfile = '';
             }

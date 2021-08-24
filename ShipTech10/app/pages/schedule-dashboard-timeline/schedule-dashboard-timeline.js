@@ -42,6 +42,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         ctrl.vesselWithPbBucket = [];
         //var filtersDefault = null;
 
+        $rootScope.$on('$productTypeView', (event, pageData) => {
+            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView.id : angular.copy(ctrl.listsCache.ProductView[0]);
+            ctrl.productTypeView = $rootScope.productTypeView;
+        });
+
         $scope.searchTimeline = function(searchText) {
             searchTextFilters = searchText;
             scheduleDashboardTimelineModel.get(ctrl.startDate, ctrl.endDate, $scope.filtersAppliedPayload, {}, searchText, ctrl.productTypeView).then(function (response) {
