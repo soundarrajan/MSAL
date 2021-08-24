@@ -1641,23 +1641,16 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
                 // console.log(response);
                 this.calculate(
                   this.old_cost,
-                  response[1].id,
+                  response[1].productId,
                   this.old_costType,
                   rowIndex
                 );
               }
             });
         } else {
-          if (this.formValues.productDetails[0]) {
-            if (!this.formValues.productDetails[0].invoicedProduct) {
-              return;
-            }
-          }
           this.calculate(
             this.old_cost,
-            this.formValues.productDetails[0]
-              ? this.formValues.productDetails[0].invoicedProduct.id
-              : null,
+            this.applyForList[1].productId,
             this.old_costType,
             rowIndex
           );
