@@ -35,6 +35,7 @@ export class BunkeringPlanComponent implements OnInit {
   public latestPlanId: any;
   public editableCell : boolean;
   public type : any;
+  public rowSelection;
   public dialogRef: MatDialogRef<WarningoperatorpopupComponent>;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
