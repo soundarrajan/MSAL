@@ -1,7 +1,7 @@
-﻿commit 46bd58347c8221b909e431cf7ecca8d06227ef4f
+﻿commit 55a9bedecad62e80d7e1e732826106cc9506b61f
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Aug 23 18:51:30 2021 +0300
+Date:   Tue Aug 24 13:55:17 2021 +0300
 
-    Removed loader after user changed the conversion value from contract
+     Fixed calculation   for Unit additional  Costs , Amount , Total and Difference value is not getting changed when Invoice rate is changed for master
 
 branch: master
