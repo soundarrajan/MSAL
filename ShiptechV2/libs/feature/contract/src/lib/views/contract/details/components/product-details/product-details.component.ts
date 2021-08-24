@@ -1067,7 +1067,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
 
     this.contractService
-      .getSpecGroupGetByProduct(data)
+      .getSpecGroupsGetByProduct(data)
       .pipe(finalize(() => {}))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
