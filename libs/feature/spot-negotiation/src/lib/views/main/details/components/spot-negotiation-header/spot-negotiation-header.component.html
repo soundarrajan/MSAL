@@ -1,143 +1,238 @@
 <div id="spot-nego-header">
-    <div class="row" style="border-bottom: 4px solid #E0E1E4;">
-        <div class="section1">
-            <span class="add-icon" [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger"></span>
-            <mat-menu  #clickmenu="matMenu" class="add-new-request-menu">
-                <div class="expansion-popup" style="margin: 20px 0px;">
-                    <div class="select-product-container">
-                        <div class="col-md-12 header-container-product" (click)="$event.stopPropagation(); $event.preventDefault()">
-                        <div class="search-product-container col-md-10">
-                            <span class="search-product-lookup">
-                            </span>
-                            <input matInput
-                                placeholder="Search and select counterparty"
-                                class="search-product-input">
-                                </div>
-                        <div class="col-md-2">
-                            <span class="expand-img"></span>
-                        </div>
-                        </div>
-                        <table class="delivery-products-pop-up col-md-12 no-padding" mat-table (click)="$event.stopPropagation()" [dataSource]="counterpartyList">
-                                                                
-                            <ng-container matColumnDef="counterparty">
-                                <th mat-header-cell *matHeaderCellDef> Counterparty </th>
-                                <td mat-cell *matCellDef="let element"> 
-                                <mat-option [value]="element">
-                                    <mat-checkbox [value]="element" [(ngModel)]="element.selected">
-                                        {{element.counterparty}}
-                                    </mat-checkbox>
-                                </mat-option>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="blank">
-                                <th mat-header-cell *matHeaderCellDef></th>
-                                <td mat-cell *matCellDef="let element">
-                                </td>
-                            </ng-container>
-                            <tr mat-header-row *matHeaderRowDef="counterpartyColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: counterpartyColumns;"></tr>
-                        </table>
-                        <div class="proceed-div">
-                            <button mat-button class="mid-blue-button proceed-btn">Proceed</button>
-                        </div>
-                    </div>
-                    </div>
-            </mat-menu>
-            <span class="info-text" [ngClass]="{'with-ellipsis' : expandedSearch}">Counterparty Information</span>
-            <span *ngIf="!expandedSearch" class="search-icon" (click)="expandedSearch = !expandedSearch;showSearch();"></span>
-            <div *ngIf="expandedSearch" style="display:flex">
-                <input type="text" (focusout)="searchInput()" #inputSearch autofocus placeholder="Search counterparty" class="search-box">
-                <button class="searchButton" type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
+  <div class="row" style="border-bottom: 4px solid #E0E1E4;">
+    <div class="section1">
+      <span
+        class="add-icon"
+        [matMenuTriggerFor]="clickmenu"
+        #menuTrigger="matMenuTrigger"
+      ></span>
+      <mat-menu #clickmenu="matMenu" class="add-new-request-menu">
+        <div class="expansion-popup" style="margin: 20px 0px;">
+          <div class="select-product-container">
+            <div
+              class="col-md-12 header-container-product"
+              (click)="$event.stopPropagation(); $event.preventDefault()"
+            >
+              <div class="search-product-container col-md-10">
+                <span class="search-product-lookup"> </span>
+                <input
+                  matInput
+                  placeholder="Search and select counterparty"
+                  class="search-product-input"
+                />
+              </div>
+              <div class="col-md-2">
+                <span class="expand-img"></span>
+              </div>
             </div>
-        </div>
-        <div class="section2" #headerContainer>
-                <div class="row">
-                    <div style="margin: 4px 0px;display: flex;align-items: center;">
-                        <span class="add-icon" [matMenuTriggerFor]="clickmenu1" #menuTrigger="matMenuTrigger"></span>
-                        <mat-menu  #clickmenu1="matMenu" class="add-new-request-menu">
-                            <div class="expansion-popup" style="margin: 20px 0px;">
-                                <div class="select-product-container">
-                                  <div class="col-md-12 header-container-product" (click)="$event.stopPropagation(); $event.preventDefault()">
-                                    <div class="search-product-container col-md-10">
-                                      <span class="search-product-lookup">
-                                      </span>
-                                      <input matInput
-                                            placeholder="Search all and select a request"
-                                            class="search-product-input">
-                                          </div>
-                                    <div class="col-md-2" (click)="openRequestPopup()">
-                                        <span class="expand-img"></span>
-                                    </div>
-                                  </div>
-                                  <table class="delivery-products-pop-up col-md-12 no-padding" mat-table (click)="$event.stopPropagation()" [dataSource]="requestsAndVessels">
-                                                                            
-                                        <ng-container matColumnDef="request">
-                                            <th mat-header-cell *matHeaderCellDef> Requests </th>
-                                            <td mat-cell *matCellDef="let element"> 
-                                            <mat-option [value]="element">
-                                                <mat-checkbox [value]="element" [(ngModel)]="element.selected">
-                                                    {{element.request}}
-                                                </mat-checkbox>
-                                            </mat-option>
-                                            </td>
-                                        </ng-container>
+            <table
+              class="delivery-products-pop-up col-md-12 no-padding"
+              mat-table
+              (click)="$event.stopPropagation()"
+              [dataSource]="counterpartyList"
+            >
+              <ng-container matColumnDef="counterparty">
+                <th mat-header-cell *matHeaderCellDef>Counterparty</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-option [value]="element">
+                    <mat-checkbox
+                      [value]="element"
+                      [(ngModel)]="element.selected"
+                    >
+                      {{ element.counterparty }}
+                    </mat-checkbox>
+                  </mat-option>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="blank">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element"></td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="counterpartyColumns"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: counterpartyColumns"
+              ></tr>
+            </table>
 
-                                        <ng-container matColumnDef="vessel">
-                                            <th mat-header-cell *matHeaderCellDef> Vessel </th>
-                                            <td mat-cell *matCellDef="let element"> 
-                                            <mat-option>
-                                                {{element.vessel}} 
-                                            </mat-option>
-                                            </td>
-                                        </ng-container>
-                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                                    </table>
-                                    <div class="proceed-div">
-                                        <button mat-button class="mid-blue-button proceed-btn" (click)="addToCheckboxOptions()">Proceed</button>
-                                    </div>
-                                </div>
-                              </div>
-                        </mat-menu>
-                    </div> 
-                    <div style="display: flex; margin-left: 10px;">
-                        <div style="float:left;" #requestContainer>                           
-                            <div class="addRemoveRequest" *ngFor="let item of requestOptions; let i = index">
-                                <div class="divider"></div>
-                                <a class="remove-icon" (click)="removeRequest(i);"></a>
-                                <div #requestTooltip class="checkboxOptions" [ngClass]="selectedReqBtn == i ? 'selected-request' : ''" (click)="selectRequest($event,i,item.selected)">
-                                    <mat-checkbox *ngIf="!displayVessel" [checked]="item.selected" (click)="item.selected = !item.selected"></mat-checkbox><span style="padding-right: 5px;" *ngIf="!displayVessel">{{ item.request }} - {{ item.vessel }}</span>
-                                    <mat-checkbox *ngIf="displayVessel" [checked]="item.selected" (click)="item.selected = !item.selected"></mat-checkbox><span style="padding-right: 5px;" *ngIf="displayVessel">{{ item.vessel }}</span>                           
-                                    <div class="requestTooltip">
-                                        <span class="white-space"></span>
-                                        <span class="linkImg"></span>
-                                        <span class="linkText">Link to {{ item.request }}</span>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>                                
-                </div>      
+            <div class="proceed-div">
+              <button mat-button class="mid-blue-button proceed-btn">
+                Proceed
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="section3">
-            <span class="go-to-port">Go to port</span>
-            <span>
-                <button class="circle-btn1" (click)="scrollPort1(port1)" >1</button>
-            </span>
-            <button class="comments-icon-btn">
-                <span class="comments-icon" (click)="scrollComments(comments)"></span>
-            </button>
-        </div>
-    </div>
-</div>
-<div style="overflow-y: scroll; width: 100%; height: calc( 100vh - 200px );margin-left: -16px;position: fixed;">
-    <div #port1 class="col-md-12" style="background-color: #ffffff;padding: 0px 5px;">
-        <app-spot-negotiation-details></app-spot-negotiation-details>
+      </mat-menu>
+      <span class="info-text" [ngClass]="{ 'with-ellipsis': expandedSearch }"
+        >Counterparty Information</span
+      >
+      <span
+        *ngIf="!expandedSearch"
+        class="search-icon"
+        (click)="expandedSearch = !expandedSearch; showSearch()"
+      ></span>
+      <div *ngIf="expandedSearch" style="display:flex">
+        <input
+          type="text"
+          (focusout)="searchInput()"
+          #inputSearch
+          autofocus
+          placeholder="Search counterparty"
+          class="search-box"
+        />
+        <button class="searchButton" type="submit">
+          <i class="fa fa-search"></i>
+        </button>
       </div>
-    <div #comments class="col-md-12" style="background-color: #ffffff;padding: 0px 5px;">
-        <app-spot-negotiation-comments [reqIndex]="selectedReqIndex" [selectedReqIndex]="selectedReqIndexes"></app-spot-negotiation-comments>
     </div>
+    <div class="section2" #headerContainer>
+      <div class="row">
+        <div style="margin: 4px 0px;display: flex;align-items: center;">
+          <span
+            class="add-icon"
+            [matMenuTriggerFor]="clickmenu1"
+            #menuTrigger="matMenuTrigger"
+          ></span>
+          <mat-menu #clickmenu1="matMenu" class="add-new-request-menu">
+            <div class="expansion-popup" style="margin: 20px 0px;">
+              <div class="select-product-container">
+                <div
+                  class="col-md-12 header-container-product"
+                  (click)="$event.stopPropagation(); $event.preventDefault()"
+                >
+                  <div class="search-product-container col-md-10">
+                    <span class="search-product-lookup"> </span>
+                    <input
+                      matInput
+                      placeholder="Search all and select a request"
+                      class="search-product-input"
+                    />
+                  </div>
+                  <div class="col-md-2" (click)="openRequestPopup()">
+                    <span class="expand-img"></span>
+                  </div>
+                </div>
+                <table
+                  class="delivery-products-pop-up col-md-12 no-padding"
+                  mat-table
+                  (click)="$event.stopPropagation()"
+                  [dataSource]="requestsAndVessels"
+                >
+                  <ng-container matColumnDef="request">
+                    <th mat-header-cell *matHeaderCellDef>Requests</th>
+                    <td mat-cell *matCellDef="let element">
+                      <mat-option [value]="element">
+                        <mat-checkbox
+                          [value]="element"
+                          [(ngModel)]="element.selected"
+                        >
+                          {{ element.request }}
+                        </mat-checkbox>
+                      </mat-option>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="vessel">
+                    <th mat-header-cell *matHeaderCellDef>Vessel</th>
+                    <td mat-cell *matCellDef="let element">
+                      <mat-option>
+                        {{ element.vessel }}
+                      </mat-option>
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                  ></tr>
+                </table>
+
+                <div class="proceed-div">
+                  <button
+                    mat-button
+                    class="mid-blue-button proceed-btn"
+                    (click)="addToCheckboxOptions()"
+                  >
+                    Proceed
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-menu>
+        </div>
+        <div style="display: flex; margin-left: 10px;">
+          <div style="float:left;" #requestContainer>
+            <div
+              class="addRemoveRequest"
+              *ngFor="let item of requestOptions; let i = index"
+            >
+              <div class="divider"></div>
+              <a class="remove-icon" (click)="removeRequest(i)"></a>
+              <div
+                #requestTooltip
+                class="checkboxOptions"
+                [ngClass]="selectedReqBtn == i ? 'selected-request' : ''"
+                (click)="selectRequest($event, i, item.selected)"
+              >
+                <mat-checkbox
+                  *ngIf="!displayVessel"
+                  [checked]="item.selected"
+                  (click)="item.selected = !item.selected"
+                ></mat-checkbox
+                ><span style="padding-right: 5px;" *ngIf="!displayVessel"
+                  >{{ item.request }} - {{ item.vessel }}</span
+                >
+                <mat-checkbox
+                  *ngIf="displayVessel"
+                  [checked]="item.selected"
+                  (click)="item.selected = !item.selected"
+                ></mat-checkbox
+                ><span style="padding-right: 5px;" *ngIf="displayVessel">{{
+                  item.vessel
+                }}</span>
+                <div
+                  class="requestTooltip"
+                  (click)="openRequestInNewTab(getRequestIDfromName(item.request))"
+                >
+                  <span class="white-space"></span>
+                  <span class="linkImg"></span>
+                  <span class="linkText">Link to {{ item.request }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section3">
+      <span class="go-to-port">Go to port</span>
+      <span>
+        <button class="circle-btn1" (click)="scrollPort1(port1)">1</button>
+      </span>
+      <button class="comments-icon-btn">
+        <span class="comments-icon" (click)="scrollComments(comments)"></span>
+      </button>
+    </div>
+  </div>
+</div>
+<div
+  style="overflow-y: scroll; width: 100%; height: calc( 100vh - 200px );margin-left: -16px;position: fixed;"
+>
+  <div
+    #port1
+    class="col-md-12"
+    style="background-color: #ffffff;padding: 0px 5px;"
+  >
+    <app-spot-negotiation-details></app-spot-negotiation-details>
+  </div>
+  <div
+    #comments
+    class="col-md-12"
+    style="background-color: #ffffff;padding: 0px 5px;"
+  >
+    <app-spot-negotiation-comments
+      [reqIndex]="selectedReqIndex"
+      [selectedReqIndex]="selectedReqIndexes"
+    ></app-spot-negotiation-comments>
+  </div>
 </div>

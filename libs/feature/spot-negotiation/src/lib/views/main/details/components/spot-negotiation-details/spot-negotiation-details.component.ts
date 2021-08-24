@@ -15,7 +15,8 @@ import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-gr
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { LocalService } from '../../../../../services/local-service.service';
 import { Store } from '@ngxs/store';
-import { SetSelectedRow } from '../../../../../store/actions/ag-grid-row.action';
+import { SetSelectedRow, SetStaticLists } from '../../../../../store/actions/ag-grid-row.action';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-spot-negotiation-details',
@@ -37,15 +38,26 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public frameworkComponents;
   public context: any;
   rowData_aggrid = [];
+
+  public test: any;
   public grid1Width = {
     width: '100%'
   };
   menuOptions = [{ label: 'ETA' }, { label: 'ETB' }, { label: 'ETD' }];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.route.data.subscribe(data => {
+      this.store.dispatch(new SetStaticLists(data.staticLists));
+    })
+  }
+
+
+
 
   constructor(
     private store: Store,
+    private route: ActivatedRoute,
     @Inject(DOCUMENT) private _document: HTMLDocument,
     private datePipe: DatePipe,
     public dialog: MatDialog,
@@ -124,7 +136,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
     this.rowData_aggrid = storeRows;
-
   }
 
   public rowClassRules = {
@@ -809,6 +820,5 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     // console.log("eeeeeeeeeeee");
     // console.log(this.gridOptions_counterparty);
   }
-  onSelectionChanged(e) {
-  }
+  onSelectionChanged(e) {}
 }

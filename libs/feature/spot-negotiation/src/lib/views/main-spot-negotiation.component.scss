@@ -4,6 +4,17 @@ ag-grid-angular {
   height: 60vh;
 }
 
+/* Later fixes */
+
+.mat-menu-content {
+  .expansion-popup {
+    .select-product-container {
+      max-width: 311px !important;
+      height: 412px;
+    }
+  }
+}
+
 /* Spot Negotiation - Details- Start */
 
 .spot-nego-content {

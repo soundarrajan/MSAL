@@ -1,13 +1,8 @@
 import { DOCUMENT } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  Inject,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
+
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
@@ -45,7 +40,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
                 class="delivery-products-pop-up col-md-12 no-padding"
                 mat-table
                 (click)="$event.stopPropagation()"
-                [dataSource]="counterpartyList"
+                [dataSource]="visibleCounterpartyList"
               >
                 <ng-container matColumnDef="counterparty">
                   <th mat-header-cell *matHeaderCellDef>Counterparty</th>
@@ -53,9 +48,10 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
                     <mat-option [value]="element">
                       <mat-checkbox
                         [value]="element"
+                        (change)="onCounterPartyCheckBoxChange($event, element)"
                         [(ngModel)]="element.selected"
                       >
-                        {{ element.counterparty }}
+                        {{ limitStrLength(element.name, 25) }}
                       </mat-checkbox>
                     </mat-option>
                   </td>
@@ -80,7 +76,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
           </div>
         </mat-menu>
         <div class="text">Counterparty Details</div>
-        <div class="count">16</div>
+        <div class="count">{{ selectedCounterParty.length }}</div>
       </div>
       <!--<div class="action">
         <div class="search"></div>
@@ -243,24 +239,60 @@ export class ShiptechCustomHeaderGroup {
   public expandState: string;
 
   counterpartyColumns: string[] = ['counterparty', 'blank'];
-  counterpartyList = [
-    { counterparty: 'Shell North America Division', selected: false },
-    { counterparty: 'Shell North America Division', selected: false },
-    { counterparty: 'Trefoil Oil and Sales', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false }
-  ];
+  counterpartyList = [];
+  visibleCounterpartyList = [];
+  selectedCounterParty = [];
+
+  ngOnInit() {
+    return this.store.selectSnapshot(({ spotNegotiation }) => {
+      // Index [0] "SellerWithInactive"
+      // Index [1] "Seller"
+
+      if (this.counterpartyList.length === 0) {
+        this.counterpartyList = spotNegotiation.staticLists[1].items;
+        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+      }
+    });
+  }
 
   constructor(
     private el: ElementRef,
+    private store: Store,
     @Inject(DOCUMENT) private _document: HTMLDocument,
     public dialog: MatDialog
   ) {}
 
-  search(userInput: string): void {}
+  onCounterPartyCheckBoxChange(checkbox, element) {
+
+    if(checkbox.checked) {
+      // Add to selected counterparty list
+      this.selectedCounterParty.push(element);
+    }
+
+    if(!checkbox.checked) {
+      // Remove from selected counterparty list
+      this.selectedCounterParty = this.selectedCounterParty.filter(e => e.id !== element.id);
+    }
+  }
+
+  search(userInput: string): void {
+    this.visibleCounterpartyList = this.counterpartyList
+      .filter(e => {
+        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+          return true;
+        }
+        return false;
+      })
+      .slice(0, 7);
+  }
+
+  limitStrLength = (text, max_length) => {
+    if (text.length > max_length - 3) {
+      return text.substring(0, max_length).trimEnd() + '...';
+    }
+
+    return text;
+  };
 
   agInit(params): void {
     this.params = params;
