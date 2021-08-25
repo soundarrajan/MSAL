@@ -9,10 +9,10 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         $scope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
         $rootScope.productTypeView =  $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
         
-        $rootScope.$on('$productTypeView', (event, pageData) => {
-            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
-            $scope.productTypeView = $rootScope.productTypeView;
-        });
+        // $rootScope.$on('$productTypeView', (event, pageData) => {
+        //     $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
+        //     $scope.productTypeView = $rootScope.productTypeView;
+        // });
 
         $scope.$on('filters-removed', function (event, payload) {
             console.log(payload);
@@ -321,12 +321,12 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
                 if (!statusIsAlreadyAdded) {
                     let skipStatus = false;
                     if ($scope.productTypeView && $scope.productTypeView.name == 'Bunker View') {
-                        if (status.label == 'Alkali Strategy' || status.label == 'Residue Strategy') {
+                        if (status.label == 'Additive Strategy' || status.label == 'Residue Strategy') {
                             skipStatus = true;
                         }
                     }
                     if ($scope.productTypeView && $scope.productTypeView.name == 'Residue View') {
-                        if (status.label == 'Alkali Strategy' || status.label == 'Bunker Strategy') {
+                        if (status.label == 'Additive Strategy' || status.label == 'Bunker Strategy') {
                             skipStatus = true;
                         }
                     }
