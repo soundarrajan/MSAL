@@ -1317,9 +1317,19 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
                 ctrl.productTypeView = angular.copy($rootScope.productTypeView);
             }
+            $rootScope.isPageRefresh = false;
             doTimeline();
         });
-
+        // init this doTimeline Fn only on timeline view tab change
+        if($rootScope.isPageRefresh == false) {
+            ctrl.productTypeView = angular.copy($rootScope.productTypeView);
+            doTimeline();
+        }
+        $scope.$on('$locationChangeStart', function(e, next, prev) {
+            if(next.indexOf('schedule-dashboard-timeline') == -1) {
+                $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
+            }
+        });
 
         var buildVisibleColumns = function() {
         	$scope.displayedColumns = {}; 

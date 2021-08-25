@@ -20,7 +20,6 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
             }
         });
 
-
         $scope.$on('filters-removed', function (event, payload) {
             console.log(payload);
             $scope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
@@ -77,6 +76,14 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
 
         $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
             $scope.setStateParamsPath(toParams);
+        });
+
+        $scope.$on('$locationChangeStart', function(e, next, prev) {
+            // Check and reset to default view as bunker view on nav to any page
+            if(next.indexOf('schedule-dashboard-timeline') == -1 && next.indexOf('schedule-dashboard-table') == -1) {
+                $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+                $scope.productTypeView = angular.copy($rootScope.productTypeView);
+            }
         });
 
         $scope.$on('sdDataLoaded', (event) => {
