@@ -1307,7 +1307,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
             });
         }
-        doTimeline();
+        $rootScope.$on('$productTypeView', (event, pageData) => {
+            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
+            ctrl.productTypeView = $rootScope.productTypeView;
+            doTimeline();
+        });
 
         var buildVisibleColumns = function() {
         	$scope.displayedColumns = {}; 
