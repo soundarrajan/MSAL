@@ -3,9 +3,12 @@ import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
+import { HelloRequest } from '../../protoc/generated/proto/sample.pb';
+import { GreeterClient } from '../../protoc/generated/proto/sample.pbsc';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
+
 @Component({
   selector: 'app-loading-overlay',
   template: `
@@ -244,6 +247,21 @@ export class ShiptechCustomHeaderGroup {
   selectedCounterParty = [];
 
   ngOnInit() {
+
+
+    // Demo consume gRPC request-response
+    // Clean all grpc from this files
+    // DELETE AFTER TESTING
+    var request = new HelloRequest();
+    this.demoClient.$raw.sayHello(request).subscribe(
+      event => {
+        debugger;
+      },
+      () => null, // no errors expected in this mode
+      () => { console.log("asdasd")}
+    );
+
+
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       // Index [0] "SellerWithInactive"
       // Index [1] "Seller"
@@ -256,6 +274,7 @@ export class ShiptechCustomHeaderGroup {
   }
 
   constructor(
+    private demoClient: GreeterClient,
     private el: ElementRef,
     private store: Store,
     @Inject(DOCUMENT) private _document: HTMLDocument,
@@ -263,15 +282,16 @@ export class ShiptechCustomHeaderGroup {
   ) {}
 
   onCounterPartyCheckBoxChange(checkbox, element) {
-
-    if(checkbox.checked) {
+    if (checkbox.checked) {
       // Add to selected counterparty list
       this.selectedCounterParty.push(element);
     }
 
-    if(!checkbox.checked) {
+    if (!checkbox.checked) {
       // Remove from selected counterparty list
-      this.selectedCounterParty = this.selectedCounterParty.filter(e => e.id !== element.id);
+      this.selectedCounterParty = this.selectedCounterParty.filter(
+        e => e.id !== element.id
+      );
     }
   }
 
@@ -315,11 +335,11 @@ export class ShiptechCustomHeaderGroup {
     //this.invokeParentMethod();
   }
 
-  invokeParentMethod() : void {
+  invokeParentMethod(): void {
     this.params.context.componentParent.resizeGrid();
   }
 
-  syncExpandButtons() : void {
+  syncExpandButtons(): void {
     if (this.params.columnGroup.getOriginalColumnGroup().isExpanded()) {
       this.expandState = 'expand';
     } else {
@@ -327,7 +347,7 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-  offerpricehistorypopup() : void {
+  offerpricehistorypopup(): void {
     const dialogRef = this.dialog.open(SpotnegoOfferpricehistoryComponent, {
       width: '500vw',
       height: '90vh',
@@ -339,7 +359,7 @@ export class ShiptechCustomHeaderGroup {
     });
   }
 
-  pricinghistorypopup() : void {
+  pricinghistorypopup(): void {
     const dialogRef = this.dialog.open(MarketpricehistorypopupComponent, {
       width: '500vw',
       height: '90vh',
@@ -351,7 +371,7 @@ export class ShiptechCustomHeaderGroup {
     });
   }
 
-  availabletermcontractpopup() : void {
+  availabletermcontractpopup(): void {
     const dialogRef = this.dialog.open(AvailabletermcontractspopupComponent, {
       width: '1164px',
       height: '179px',
@@ -362,7 +382,7 @@ export class ShiptechCustomHeaderGroup {
       console.log(`Dialog result: ${result}`);
     });
   }
-  editQty(e : any) : any{
+  editQty(e: any): any {
     if (e.keyCode == 37 || e.keyCode == 39) {
       e.stopPropagation();
     }
