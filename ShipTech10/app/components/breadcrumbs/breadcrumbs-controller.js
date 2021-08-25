@@ -9,10 +9,17 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         $scope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
         $rootScope.productTypeView =  $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
         
-        // $rootScope.$on('$productTypeView', (event, pageData) => {
-        //     $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
-        //     $scope.productTypeView = $rootScope.productTypeView;
-        // });
+        $rootScope.$on('$productTypeView', (event, pageData) => {
+            let productTypeViewId = (pageData?.productTypeView?.id) ? pageData.productTypeView.id : angular.copy($scope.listsCache.ProductView[0].id);
+            let findProductViewIndexFromListCache = _.findIndex($scope.listsCache.ProductView, function(obj) {
+                return obj.id == productTypeViewId;
+            });
+            if (findProductViewIndexFromListCache != -1) {
+                $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[findProductViewIndexFromListCache]);
+                $scope.productTypeView = angular.copy($rootScope.productTypeView);
+            }
+        });
+
 
         $scope.$on('filters-removed', function (event, payload) {
             console.log(payload);

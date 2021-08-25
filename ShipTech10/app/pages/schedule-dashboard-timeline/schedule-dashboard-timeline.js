@@ -1309,10 +1309,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
         //init timeline after getting user default landing page view 
         $rootScope.$on('$productTypeView', (event, pageData) => {
-            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
-            ctrl.productTypeView = $rootScope.productTypeView;
+            let productTypeViewId = (pageData?.productTypeView?.id) ? pageData.productTypeView.id : angular.copy($scope.listsCache.ProductView[0].id);
+            let findProductViewIndexFromListCache = _.findIndex(ctrl.listsCache.ProductView, function(obj) {
+                return obj.id == productTypeViewId;
+            });
+            if (findProductViewIndexFromListCache != -1) {
+                $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
+                ctrl.productTypeView = angular.copy($rootScope.productTypeView);
+            }
             doTimeline();
         });
+
 
         var buildVisibleColumns = function() {
         	$scope.displayedColumns = {}; 
