@@ -5048,6 +5048,9 @@ label {
 			// top: 5px;
 			// right: 0px;
 		}
+		input, textarea {
+			caret-color: #c4c4c4!important;
+		}
 		.input {
 			font-style: normal;
 			font-weight: normal;
@@ -5293,6 +5296,7 @@ label {
 				line-height: 16px;
 				height: 46px;
 				color: $text_color_content;
+				caret-color: #c4c4c4!important;
 			}
 			.mat-form-field {
 				width: 100%
