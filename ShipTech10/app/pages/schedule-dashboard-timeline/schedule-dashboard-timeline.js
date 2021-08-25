@@ -1307,6 +1307,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
             });
         }
+        //init timeline after getting user default landing page view 
         $rootScope.$on('$productTypeView', (event, pageData) => {
             $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
             ctrl.productTypeView = $rootScope.productTypeView;
