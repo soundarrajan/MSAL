@@ -3,7 +3,8 @@ import {
   AddRow,
   RemoveRow,
   AddSelectedRow,
-  SetSelectedRow
+  SetSelectedRow,
+  SetStaticLists
 } from './actions/ag-grid-row.action';
 
 // Delete this;
@@ -508,11 +509,13 @@ const demoData = [
 export class SpotNegotiationStoreModel {
   rows: any;
   selectedRows: any;
+  staticLists: any;
 
   constructor() {
     // Initialization inside the constructor
     this.rows = [];
     this.selectedRows = [];
+    this.staticLists = [];
   }
 }
 
@@ -520,10 +523,28 @@ export class SpotNegotiationStoreModel {
   name: 'spotNegotiation',
   defaults: {
     rows: demoData,
-    selectedRows: []
+    selectedRows: [],
+    staticLists: []
   }
 })
 export class SpotNegotiationStore {
+  // Static lists
+  @Action(SetStaticLists)
+  setStaticLists(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetStaticLists
+  ) {
+    patchState({
+      staticLists: payload
+    });
+  }
+
+  @Selector()
+  static getStaticList(state: SpotNegotiationStoreModel) {
+    return state.staticLists;
+  }
+
+  // AG GRID ROWS
   @Selector()
   static getRows(state: SpotNegotiationStoreModel) {
     return state.rows;

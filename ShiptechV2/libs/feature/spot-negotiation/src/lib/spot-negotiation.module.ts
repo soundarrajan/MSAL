@@ -162,6 +162,7 @@ import { SpotNegotiationStore } from './store/spot-negotiation.store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { StaticListsRouteResolver } from './static-lists-route.resolver';
 
 @NgModule({
   imports: [
@@ -348,7 +349,8 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
     LocalService,
     ConfirmationService,
     DecimalPipe,
-    DatePipe
+    DatePipe,
+    StaticListsRouteResolver
   ]
 })
 export class SpotNegotiationModule {}
