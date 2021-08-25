@@ -10672,6 +10672,28 @@
             }
         }
 
+        vm.calculateNewReserve = function(object) {
+            if (['reeferCapacity', 'mcr100', 'sfocMe', 'sfocAe'].indexOf(object.Unique_ID) != -1) {
+                console.log(object);
+                console.log($scope.formValues);
+                let reeferCapacity = $scope.formValues.reeferCapacity ? $scope.formValues.reeferCapacity : 0;
+                let mcr100 = $scope.formValues.mcr100 ? $scope.formValues.mcr100 : 0;
+                let sfocMe = $scope.formValues.sfocMe ? $scope.formValues.sfocMe : 0;
+                let sfocAe = $scope.formValues.sfocAe ? $scope.formValues.sfocAe : 0;
+
+                let mcrPart = $scope.tenantSetting.mcrPart;
+                let reeferCon =  $scope.tenantSetting.reeferCon;
+
+                let mecons = mcr100 * sfocMe * mcrPart * 0.000024;
+                let reefercons = reeferCapacity * sfocAe * reeferCon * 0.000024;
+                let newreserve  = mecons + reefercons;
+
+                $scope.formValues.oneDayReserve = Math.ceil(newreserve);
+
+    
+            }   
+        }
+
     }
 ]);
 

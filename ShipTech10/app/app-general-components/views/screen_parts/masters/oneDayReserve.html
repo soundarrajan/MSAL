@@ -1,9 +1,7 @@
  
 <div class="form-group row">
-	<span class="hidden">{{formValues.oneDayReserve = ((formValues.mcrPart || 0) * (formValues.mcr100 || 0) * (formValues.sfocMe || 0) * 0.000024)
-        + ((formValues.reeferCapacity || 0) * (formValues.sfocAe || 0) * (formValues.oneReeferConsumption || 0) * 0.000024)}}</span>
     <label class="MaximumDailyConsumption_label" style="height: 30px; padding-top: 0px;">1 Day Reserve(MT)</label>
-    <input name="onedayReserve" ng-required="false" type="text" class="form-control form_input" 
-    ng-model="formValues.onedayReserve"
+    <input name="oneDayReserve" ng-required="false" type="text" class="form-control form_input" 
+    ng-model="formValues.oneDayReserve"
     ng-disabled="true" format="number">
 </div>
