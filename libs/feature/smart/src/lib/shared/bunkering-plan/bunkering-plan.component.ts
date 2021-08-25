@@ -951,7 +951,7 @@ export class BunkeringPlanComponent implements OnInit {
         
 
     //LSDIS SOA Calculation
-      lsdis_soa = lsdis_original_stock < 0 ? lsdis_original_stock : lsdis_original_stock - lsdis_as_eca + lsdis_unpumpables;
+      lsdis_soa = lsdis_original_stock < 0 ? lsdis_original_stock + lsdis_unpumpables : lsdis_original_stock - lsdis_as_eca + lsdis_unpumpables;
       final_lsdis_soa = lsdis_soa + 
                         (ulsfo_soa < 0 ? ulsfo_soa : 0 ) + 
                         (ulsfoCurrentRob < ulsfo_unpumpables ? ulsfoCurrentRob - ulsfo_unpumpables : 0); 
