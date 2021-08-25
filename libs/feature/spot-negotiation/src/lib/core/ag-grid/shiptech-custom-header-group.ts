@@ -315,11 +315,11 @@ export class ShiptechCustomHeaderGroup {
     //this.invokeParentMethod();
   }
 
-  invokeParentMethod() {
+  invokeParentMethod() : void {
     this.params.context.componentParent.resizeGrid();
   }
 
-  syncExpandButtons() {
+  syncExpandButtons() : void {
     if (this.params.columnGroup.getOriginalColumnGroup().isExpanded()) {
       this.expandState = 'expand';
     } else {
@@ -327,7 +327,7 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-  offerpricehistorypopup() {
+  offerpricehistorypopup() : void {
     const dialogRef = this.dialog.open(SpotnegoOfferpricehistoryComponent, {
       width: '500vw',
       height: '90vh',
@@ -339,7 +339,7 @@ export class ShiptechCustomHeaderGroup {
     });
   }
 
-  pricinghistorypopup() {
+  pricinghistorypopup() : void {
     const dialogRef = this.dialog.open(MarketpricehistorypopupComponent, {
       width: '500vw',
       height: '90vh',
@@ -350,7 +350,8 @@ export class ShiptechCustomHeaderGroup {
       console.log(`Dialog result: ${result}`);
     });
   }
-  availabletermcontractpopup() {
+
+  availabletermcontractpopup() : void {
     const dialogRef = this.dialog.open(AvailabletermcontractspopupComponent, {
       width: '1164px',
       height: '179px',
@@ -361,7 +362,7 @@ export class ShiptechCustomHeaderGroup {
       console.log(`Dialog result: ${result}`);
     });
   }
-  editQty(e) {
+  editQty(e : any) : any{
     if (e.keyCode == 37 || e.keyCode == 39) {
       e.stopPropagation();
     }
