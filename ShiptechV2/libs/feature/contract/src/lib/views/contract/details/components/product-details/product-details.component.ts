@@ -732,9 +732,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   async getPhysicalSupplierList() {
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
-    this.physicalSupplierList.forEach((v,k) => {
-        v.name = this.decodeSpecificField(v.name);
-    })
+    this.physicalSupplierList.forEach((v, k) => {
+      v.name = this.decodeSpecificField(v.name);
+    });
     console.log(this.physicalSupplierList);
   }
 
@@ -1386,7 +1386,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         payload = { Payload: { ProductId: conversionFactors.product.id } };
       }
       this.openedScreenLoaders += 1;
-      this.spinner.show();
+      // this.spinner.show();
       this.contractService
         .getProdDefaultConversionFactors(payload)
         .pipe(
@@ -1447,7 +1447,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         let conversionFactorsList = [];
         conversionFactorsList.push(conversionFactors);
         let payload = { Payload: conversionFactorsList };
-        this.spinner.show();
+        //this.spinner.show();
         this.contractService
           .saveConversionFactorsForContractProduct(payload)
           .pipe(
