@@ -164,11 +164,20 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
 
+
+import { grpc } from '@improbable-eng/grpc-web';
+import { GrpcCoreModule } from '@ngx-grpc/core';
+import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 @NgModule({
   imports: [
     CommonModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    // gRPC
+    GrpcCoreModule.forRoot(),
+    GrpcWebClientModule.forChild({
+      settings: { host: 'http://localhost:8080' }
+    }),
     // STORE
     NgxsModule.forRoot([SpotNegotiationStore]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
