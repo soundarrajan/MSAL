@@ -43,7 +43,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         //var filtersDefault = null;
 
         $rootScope.$on('$productTypeView', (event, pageData) => {
-            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView.id : angular.copy(ctrl.listsCache.ProductView[0]);
+            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy(ctrl.listsCache.ProductView[0]);
             ctrl.productTypeView = $rootScope.productTypeView;
         });
 

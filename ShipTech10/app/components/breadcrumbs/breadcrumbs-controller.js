@@ -10,7 +10,7 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         $rootScope.productTypeView =  $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
         
         $rootScope.$on('$productTypeView', (event, pageData) => {
-            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView.id : angular.copy($scope.listsCache.ProductView[0]);
+            $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
             $scope.productTypeView = $rootScope.productTypeView;
         });
 
