@@ -38,7 +38,7 @@
 		    '        {{getButtonText()}}&nbsp;<span class="caret"></span>\n' +
 		    '    </button>\n' +
 		    '    <ul class="dropdown-menu dropdown-menu-form"\n' +
-		    '        ng-style="{display: open ? \'block\' : \'none\'}" style="width: 100%; overflow-x: auto">\n' +
+		    '        ng-style="{display: open ? \'block\' : \'none\'}" style="width: 100%; overflow-x: auto; position: fixed; top: 25px; left: 702px; max-width: 175px;">\n' +
 		    '\n' +
 		    '        <li ng-show="showSelectAll">\n' +
 		    '            <a ng-click="selectAll()" href="">\n' +
