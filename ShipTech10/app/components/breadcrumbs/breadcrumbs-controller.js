@@ -1,24 +1,17 @@
-angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '$timeout', '$scope', '$state', '$location', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
+angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '$timeout', '$scope', '$state', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
     'scheduleDashboardCalendarModel', 'statusColors', '$listsCache', '$tenantConfiguration',
-    function($rootScope, $timeout, $scope, $state, $location, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, statusColors, $listsCache, $tenantConfiguration) {
+    function($rootScope, $timeout, $scope, $state, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, statusColors, $listsCache, $tenantConfiguration) {
         $scope.state = $state;
         $scope.STATE = STATE;
         window.scheduleDashboardConfiguration = { payload: $tenantConfiguration.scheduleDashboardConfiguration };
 
         $scope.listsCache = $listsCache;
-        $scope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
-        $rootScope.productTypeView =  $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy($scope.listsCache.ProductView[0]);
+      
         
-        $rootScope.$on('$productTypeView', (event, pageData) => {
-            let productTypeViewId = (pageData?.productTypeView?.id) ? pageData.productTypeView.id : angular.copy($scope.listsCache.ProductView[0].id);
-            let findProductViewIndexFromListCache = _.findIndex($scope.listsCache.ProductView, function(obj) {
-                return obj.id == productTypeViewId;
-            });
-            if (findProductViewIndexFromListCache != -1) {
-                $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[findProductViewIndexFromListCache]);
-                $rootScope.DefaultLandingPageView = angular.copy($rootScope.productTypeView);
-                $scope.productTypeView = angular.copy($rootScope.productTypeView);
-            }
+        $rootScope.$on('$setProductTypeView', (event, payload) => {
+            console.log(payload);
+            $scope.productTypeView = angular.copy(payload.productTypeView);
+            $rootScope.productTypeView = angular.copy(payload.productTypeView);
         });
 
         $scope.$on('filters-removed', function (event, payload) {
@@ -77,21 +70,6 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
 
         $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
             $scope.setStateParamsPath(toParams);
-        });
-
-        $scope.$on('$locationChangeStart', function(e, next, prev) {
-            let currentPath = $location.path();
-            // Check and reset to default view as bunker view on nav to any page except logo link
-            if(currentPath == "" || currentPath == "/") {
-                $rootScope.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
-                $scope.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
-            } else if((prev.indexOf('schedule-dashboard-timeline') == -1 && prev.indexOf('schedule-dashboard-table')==-1) && (next.indexOf('schedule-dashboard-timeline') > -1 || next.indexOf('schedule-dashboard-table') > -1)) {
-                $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
-                $scope.productTypeView = angular.copy($rootScope.productTypeView);
-            } else if(next.indexOf('schedule-dashboard-timeline') == -1 && next.indexOf('schedule-dashboard-table') == -1) {
-                $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
-                $scope.productTypeView = angular.copy($rootScope.productTypeView);
-            }
         });
 
         $scope.$on('sdDataLoaded', (event) => {

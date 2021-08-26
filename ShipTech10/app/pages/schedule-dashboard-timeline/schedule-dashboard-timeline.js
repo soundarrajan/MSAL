@@ -1,5 +1,5 @@
-angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache",  "scheduleDashboardTimelineModel", "statusColors", "$filter",   "filterConfigurationModel", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state', '$timeout', 'STATE',
-    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel,  statusColors, $filter, filterConfigurationModel, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state, $timeout, STATE) {
+angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache",  "scheduleDashboardTimelineModel", "Factory_Admin", "Factory_Master", "statusColors", "$filter",   "filterConfigurationModel", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state', '$timeout', 'STATE',
+    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, Factory_Admin,  Factory_Master, statusColors, $filter, filterConfigurationModel, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state, $timeout, STATE) {
 
         var ctrl = this;
         $scope.numberPrecision = $tenantSettings.defaultValues;
@@ -13,8 +13,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         ctrl.lastEndDateForViews = null;
 
         ctrl.listsCache = $listsCache;
-        $rootScope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : ctrl.listsCache.ProductView[0];
-        ctrl.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy(ctrl.listsCache.ProductView[0]);
         $rootScope.numberLoad = 0;
 
         var DEBUG = false;
@@ -42,10 +40,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         ctrl.vesselWithPbBucket = [];
         //var filtersDefault = null;
 
-        // $rootScope.$on('$productTypeView', (event, pageData) => {
-        //     $rootScope.productTypeView = (pageData?.productTypeView?.id) ? pageData.productTypeView : angular.copy(ctrl.listsCache.ProductView[0]);
-        //     ctrl.productTypeView = $rootScope.productTypeView;
-        // });
+ 
 
         $scope.searchTimeline = function(searchText) {
             searchTextFilters = searchText;
@@ -1297,45 +1292,57 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             });
         }
 
-        // Get data and initialize timeline
-        async function doTimeline() {
-            Promise.all([getStatuses(), getConfiguration(), getDefaultFiltersConfiguration()]).then(function(res) {
-                getData().then(function(data) {
-                    createFilters();
-                    $rootScope.timelineStatusList = timelineStatusList;
-                    buildTimeline(data);
-                });
-            });
-        }
-        //init timeline after getting user default landing page view 
-        $rootScope.$on('$productTypeView', (event, pageData) => {
-            let productTypeViewId = (pageData?.productTypeView?.id) ? pageData.productTypeView.id : angular.copy($scope.listsCache.ProductView[0].id);
+        ctrl.getProductViewFromStaticLists = function(landingPage) {
+            let productTypeViewId = (landingPage?.id) ? landingPage.id : angular.copy(ctrl.listsCache.ProductView[0].id);
             let findProductViewIndexFromListCache = _.findIndex(ctrl.listsCache.ProductView, function(obj) {
                 return obj.id == productTypeViewId;
             });
             if (findProductViewIndexFromListCache != -1) {
-                $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
-                $rootScope.DefaultLandingPageView = angular.copy($rootScope.productTypeView);
+                $rootScope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
+                ctrl.productTypeView = angular.copy($rootScope.productTypeView);
+            } else if (window.location.href.indexOf('schedule-dashboard-timeline') == -1) {
+                if (landingPage && landingPage.id == 4) {
+                    $state.go(STATE.ALL_REQUESTS_TABLE);
+                }
+            } else {
+                $rootScope.productTypeView = ctrl.listsCache.ProductView[0];
                 ctrl.productTypeView = angular.copy($rootScope.productTypeView);
             }
-            $rootScope.isPageRefresh = false;
-            doTimeline();
-        });
-        // init this doTimeline Fn only on timeline view tab change
-        if($rootScope.isPageRefresh == false) {
-            ctrl.productTypeView = angular.copy($rootScope.productTypeView);
-            doTimeline();
         }
-        $scope.$on('$locationChangeStart', function(e, next, prev) {
-            if(currentPath == "" || currentPath == "/") {
-                $rootScope.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
-                ctrl.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
-            }  else if((prev.indexOf('schedule-dashboard-timeline') == -1 && prev.indexOf('schedule-dashboard-table')==-1) && (next.indexOf('schedule-dashboard-timeline') > -1 || next.indexOf('schedule-dashboard-table') > -1)) {
-                $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
-            } else if(next.indexOf('schedule-dashboard-timeline') == -1) {
-                $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
-            }
-        });
+
+        // Get data and initialize timeline
+        async function doTimeline() {
+            Factory_Master.initSignalRParameters((callback) => {
+                $('.scheduledashboardtimeline').hide();
+                $('.page-bar-for-multiple-views').hide();
+                $('#entity-title').hide();
+                Factory_Admin.getUsername(callback.data.userId, (response) => {
+                    if(response) {
+                        ctrl.getProductViewFromStaticLists(response?.payload?.landingPage);
+                        $('.scheduledashboardtimeline').show();
+                        if (response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) {
+                            $('#entity-title').show();
+                            $('.page-bar-for-multiple-views').show();
+                            $rootScope.$broadcast('$setProductTypeView', {
+                                productTypeView: ctrl.productTypeView
+                            });
+                            Promise.all([getStatuses(), getConfiguration(), getDefaultFiltersConfiguration()]).then(function(res) {
+                                getData().then(function(data) {
+                                    createFilters();
+                                    $rootScope.timelineStatusList = timelineStatusList;
+                                    buildTimeline(data);
+                                });
+                   
+                            });
+                        }
+                    }
+                });
+            });
+
+            
+        }
+
+        doTimeline();
 
         var buildVisibleColumns = function() {
         	$scope.displayedColumns = {}; 

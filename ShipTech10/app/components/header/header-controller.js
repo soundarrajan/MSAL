@@ -14,9 +14,7 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
                     name: response.payload.username,
                     displayName: response.payload.displayName
                 };
-                $rootScope.$broadcast('$productTypeView', {
-                    productTypeView: response?.payload?.landingPage
-                })
+              
             }else{
                 $scope.userProfile = '';
             }
@@ -29,6 +27,10 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
         }
         sessionStorage.clear();
     };
+
+    $scope.setDefaultLandingPage = function() {
+        $rootScope.productTypeView = null;
+    }
 
     $timeout(() => {
     	Layout.init();

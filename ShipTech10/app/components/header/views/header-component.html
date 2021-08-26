@@ -5,8 +5,8 @@
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="#">
-                <img ng-if="!tenantSettings.shiptechLite" src="img/newLogo.png" alt="logo" class="logo-default"/>
-                <img ng-if="tenantSettings.shiptechLite"  src="img/logo-shiptech-lite.png" alt="logo" class="logo-default-lite"/>
+                <img ng-click="setDefaultLandingPage()" ng-if="!tenantSettings.shiptechLite" src="img/newLogo.png" alt="logo" class="logo-default"/>
+                <img ng-click="setDefaultLandingPage()" ng-if="tenantSettings.shiptechLite"  src="img/logo-shiptech-lite.png" alt="logo" class="logo-default-lite"/>
             </a>
             <div class="menu-toggler sidebar-toggler">
                 <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
