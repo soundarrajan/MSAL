@@ -7,37 +7,34 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./email-preview-popup.component.css']
 })
 export class EmailPreviewPopupComponent implements OnInit {
+
   selected = 'Amend RFQ';
   toEmail = '';
   ccEmail = '';
-  filesList = ['Purchase Documents', 'Purchase Documents'];
-  to = [
-    'Saranya.v@inatech.com',
-    'Saranya.v@inatech.com',
-    'Saranya.v@inatech.com'
-  ];
-  cc = ['Saranya.v@inatech.com', 'Saranya.v@inatech.com'];
+  filesList = ['Purchase Documents','Purchase Documents'];
+  to = ['Saranya.v@inatech.com','Saranya.v@inatech.com','Saranya.v@inatech.com'];
+  cc = ['Saranya.v@inatech.com','Saranya.v@inatech.com'];
 
-  constructor(
-    public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  constructor(public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-  addTo(item) {
+  addTo(item){
     this.to.push(item);
     this.toEmail = '';
   }
 
-  addCc(item) {
+  addCc(item){
     this.cc.push(item);
     this.ccEmail = '';
   }
 
-  fileBrowseHandler(files) {
+  fileBrowseHandler(files){
     for (const item of files) {
       this.filesList.push(item.name);
     }
   }
+
 }

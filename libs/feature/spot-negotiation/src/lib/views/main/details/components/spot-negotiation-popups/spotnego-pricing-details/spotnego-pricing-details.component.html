@@ -1,5 +1,5 @@
 <div class="spot-popup-header-container">
-  <div class="spot-nego-title">Pricing Details</div>
+  <div class="spot-nego-title">Formula pricing details</div>
   <div class="spot-dialog-title-right">
     <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button>
     <button class="proceed-btn w-104" mat-button [mat-dialog-close]="true">Save</button>
@@ -14,15 +14,15 @@
 <hr class="hr-line mb-0" style="height: 0.1px;">
   
   <div id="custom-tabs-v2" class="shiptech-inverted-tab" [@.disabled]="true">
-    <mat-tab-group #tabs  mat-align-tabs="end">
-      <mat-tab #tab>
-        <ng-template mat-tab-label>
+    <!-- <mat-tab-group #tabs  mat-align-tabs="end">
+      <mat-tab #tab> -->
+        <!-- <ng-template mat-tab-label>
           <div class="custom-label-holder">
             <div class="custom-tab-ui"></div>
             <div class="custom-label">Pricing Data</div>
           </div>
   
-        </ng-template>
+        </ng-template> -->
         <ng-container>
           <div class="custom-tab-container pricing-details-tab-container">
             <div class="row d-flex col-md-12">
@@ -194,86 +194,9 @@
   
           </div>
         </ng-container>
-      </mat-tab>
-      <mat-tab #tab>
-        <ng-template mat-tab-label>
-          <div class="custom-label-holder">
-            <div class="custom-tab-ui"></div>
-            <div class="custom-label">Request Change</div>
-          </div>
-  
-        </ng-template>
-        <ng-container>
-          <div class="custom-tab-container pricing-details-tab-container">
-  
-            <div class="row d-flex col-md-12">
-              <div class="col-md-12">
-                <div class="pricing-type-container">
-                  <div class="col-md-12 pricing-container">
-  
-                    <div class="row" style="height: 87px; align-items: center;">
-  
-                      <div class="col-md-12 d-flex" style=" flex-wrap: wrap;">
-                        <div class="custom-form-field create-new-formula-form-field"
-                          [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                          <div class="d-flex">
-                            <mat-form-field class="with-search" appearance="legacy">
-                              <mat-label>Quoted Product</mat-label>
-                              <input class="free-text-field" type="text" matInput required placeholder="Quoted Product">
-                            </mat-form-field>
-                            <button class="search-icon">
-                              <div class="img">
-                              </div>
-                            </button>
-                          </div>
-                        </div>
-  
-                        <div class="custom-form-field create-new-formula-form-field"
-                          [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                          <mat-form-field class="without-search">
-                            <mat-label>Supply Qty</mat-label>
-                            <mat-select placeholder="Supply Qty">
-                              <mat-option>
-                                Discount
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <!-- <div class="custom-form-field create-new-formula-form-field supply-date"
-                          [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                          <mat-form-field  appearance="legacy">
-                           
-                            <input matInput placeholder="Supply Date">
-                            <mat-datepicker-toggle matSuffix [for]="picker">
-                              <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
-                              </mat-icon>
-                          </mat-datepicker-toggle>
-                         <input matInput [matDatepicker]="picker" [formControl]="today" (focus)="picker.open()">
-                          <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
-                        </div> -->
-                        <div id="custom-form-field" class="lightTheme supply-date m-l-0">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Supply Date</mat-label>
-                                <input name="Supply date" 
-                                matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date">
-                                <mat-datepicker-toggle matSuffix [for]="invoiceDate">
-                                    <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
-                                    </mat-icon>
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #invoiceDate></mat-datepicker>
-                            </mat-form-field>
-                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </mat-tab>
-    </mat-tab-group>
+      <!-- </mat-tab>
+
+    </mat-tab-group> -->
   </div>
   
   

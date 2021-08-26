@@ -527,14 +527,14 @@ export class LocalService {
       './assets/data/config-ui-json/add-deliverymovements-b2b.json'
     );
   }
-  public getSpotDataJSON(): Observable<any> {
+  public getSpotDataJSON(): any {
     return this.store.selectSnapshot(state => {
       return state.spotNegotiation.rows;
     });
   }
   public getSpotDataRequestData(reqId): Observable<any> {
     return this.http.get(
-      './assets/data/ship-tech/spot-request-' + reqId + '.json'
+      './assets/data/demoData/spot-request-' + reqId + '.json'
     );
   }
 

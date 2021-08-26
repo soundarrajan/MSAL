@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-
-import { AGGridCellRendererComponent } from '../../../../../core/ag-grid/ag-grid-cell-renderer.component';
-import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
+import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
+import { AGGridCellRendererComponent } from '../../../../../core/ag-grid/ag-grid-cell-renderer.component';
 
 @Component({
   selector: 'app-doc-drag-drop-upload',
@@ -12,6 +14,10 @@ import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-gr
 })
 export class DocDragDropUploadComponent implements OnInit {
   public gridOptions_data: GridOptions;
+  myControl = new FormControl();
+  options: string[] = ['Additional Document', 'Contract Document'];
+  placeholder: string = '';
+  filteredOptions: Observable<string[]>;
   constructor() {
     this.gridOptions_data = <GridOptions>{
       defaultColDef: {
@@ -49,16 +55,27 @@ export class DocDragDropUploadComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
 
   files: any[] = [];
   public doc_type;
+
   public enableFileUpload: boolean = false;
   public enableDrag: boolean = false;
   enableUpload(e) {
-    //console.log(e.);
     this.doc_type = e.value;
-    //(this.doc_type);
     this.enableFileUpload = true;
     this.enableDrag = true;
   }

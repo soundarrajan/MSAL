@@ -515,7 +515,7 @@ export class SpotNegotiationStoreModel {
     // Initialization inside the constructor
     this.rows = [];
     this.selectedRows = [];
-    this.staticLists = [];
+    this.staticLists = {};
   }
 }
 
