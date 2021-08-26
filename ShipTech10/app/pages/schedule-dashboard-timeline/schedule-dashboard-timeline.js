@@ -1298,33 +1298,42 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 return obj.id == productTypeViewId;
             });
             if (findProductViewIndexFromListCache != -1) {
-                $rootScope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
-                ctrl.productTypeView = angular.copy($rootScope.productTypeView);
+                //if user has as default landing page bunker, additive or residue view
+                if (window.location.href.indexOf('schedule-dashboard-timeline') == -1) {
+                    $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
+                    ctrl.productTypeView = angular.copy($rootScope.productTypeView);
+                } else {
+                    $rootScope.productTypeView = $rootScope.productTypeView ? angular.copy($rootScope.productTypeView) : angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
+                    ctrl.productTypeView = angular.copy($rootScope.productTypeView);
+                }
             } else if (window.location.href.indexOf('schedule-dashboard-timeline') == -1) {
+                //if user has a default landing page as request list
                 if (landingPage && landingPage.id == 4) {
-                    $('#entity-title').show();
                     $state.go(STATE.ALL_REQUESTS_TABLE);
                 }
             } else {
+                //if user click on schedule dahboard timeline from menu and has default landing page as request list
                 $rootScope.productTypeView = $rootScope.productTypeView ? angular.copy($rootScope.productTypeView) : ctrl.listsCache.ProductView[0];
                 ctrl.productTypeView = angular.copy($rootScope.productTypeView);
             }
         }
 
 
+
+        $rootScope.$on('$setDefaultProductTypeView', (event, payload) => {
+            $state.reload();
+        });
+
+
+
         // Get data and initialize timeline
         async function doTimeline() {
             Factory_Master.initSignalRParameters((callback) => {
-                $('.scheduledashboardtimeline').hide();
-                $('.page-bar-for-multiple-views').hide();
-                $('#entity-title').hide();
                 Factory_Admin.getUsername(callback.data.userId, (response) => {
                     if(response) {
+                        $rootScope.landingPage = angular.copy(response?.payload?.landingPage);
                         ctrl.getProductViewFromStaticLists(response?.payload?.landingPage);
-                        $('.scheduledashboardtimeline').show();
                         if ((response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) || window.location.href.indexOf('schedule-dashboard-timeline') != -1) {
-                            $('#entity-title').show();
-                            $('.page-bar-for-multiple-views').show();
                             $rootScope.$broadcast('$setProductTypeView', {
                                 productTypeView: ctrl.productTypeView
                             });

@@ -20,6 +20,7 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
             }
         });
     });
+
     $scope.logout = function() {
         adalService.logOut();
         if (!localStorage.getItem('loggedOut')) {
@@ -30,6 +31,8 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
 
     $scope.setDefaultLandingPage = function() {
         $rootScope.productTypeView = null;
+        $rootScope.$broadcast('$setDefaultProductTypeView', {
+        });
     }
 
     $timeout(() => {

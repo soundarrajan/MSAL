@@ -1,5 +1,5 @@
-angular.module('shiptech').controller('navigationSidebarController', [ '$scope', '$rootScope', '$state', 'STATE', '$timeout', '$tenantSettings', '$filter', '$window', '$location', '$tenantConfiguration',
-    function($scope, $rootScope, $state, STATE, $timeout, $tenantSettings, $filter, $window, $location, $tenantConfiguration) {
+angular.module('shiptech').controller('navigationSidebarController', [ '$scope', '$rootScope', '$state', 'STATE', '$timeout', "$listsCache", '$tenantSettings', '$filter', '$window', '$location', '$tenantConfiguration',
+    function($scope, $rootScope, $state, STATE, $timeout, $listsCache, $tenantSettings, $filter, $window, $location, $tenantConfiguration) {
         $scope.state = $state;
         $scope.STATE = STATE;
         $scope.tenantSettings = $tenantSettings;
@@ -30,6 +30,10 @@ angular.module('shiptech').controller('navigationSidebarController', [ '$scope',
                 });
             }, 10);
         });
+
+        $scope.setProductTypeView = function() {
+            $rootScope.productTypeView = angular.copy($listsCache.ProductView[0]);
+        }
 
 
         $scope.openInNewTab = function(type, data) {
