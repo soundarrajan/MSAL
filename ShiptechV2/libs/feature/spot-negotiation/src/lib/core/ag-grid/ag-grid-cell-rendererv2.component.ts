@@ -110,21 +110,21 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
             #menuTrigger="matMenuTrigger"
           ></span>
           <span
-            class="mail-icon mail-active"
+            class="spot-mail-icon mail-active"
             *ngIf="params.data.mail == 'mail-active'"
             matTooltipClass=""
             matTooltip=""
             >a</span
           >
           <span
-            class="mail-icon mail-none"
+            class="spot-mail-icon mail-none"
             *ngIf="params.data.mail == 'mail-inactive'"
             matTooltipClass=""
             matTooltip=""
             >i</span
           >
           <span
-            class="mail-icon mail-none"
+            class="spot-mail-icon mail-none"
             *ngIf="params.data.mail == 'mail-none'"
             matTooltipClass=""
             matTooltip=""
