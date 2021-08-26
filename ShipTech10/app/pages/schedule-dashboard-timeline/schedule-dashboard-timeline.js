@@ -1302,6 +1302,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 ctrl.productTypeView = angular.copy($rootScope.productTypeView);
             } else if (window.location.href.indexOf('schedule-dashboard-timeline') == -1) {
                 if (landingPage && landingPage.id == 4) {
+                    $('#entity-title').show();
                     $state.go(STATE.ALL_REQUESTS_TABLE);
                 }
             } else {
@@ -1334,7 +1335,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                                 });
                    
                             });
-                        }
+                        } 
                     }
                 });
             });
