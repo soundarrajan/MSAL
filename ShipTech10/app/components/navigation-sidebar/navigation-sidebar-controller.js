@@ -32,6 +32,7 @@ angular.module('shiptech').controller('navigationSidebarController', [ '$scope',
         });
 
         $scope.setProductTypeView = function() {
+            localStorage.setItem('productTypeView', JSON.stringify($listsCache.ProductView[0]));
             $rootScope.productTypeView = angular.copy($listsCache.ProductView[0]);
         }
 

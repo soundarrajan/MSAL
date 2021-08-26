@@ -1303,6 +1303,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
                     ctrl.productTypeView = angular.copy($rootScope.productTypeView);
                 } else {
+                    //set bunker view when user click on schedule dashboard from menu
+                    if (localStorage.getItem('productTypeView')) {
+                        $rootScope.productTypeView = angular.copy(JSON.parse(localStorage.getItem('productTypeView')));
+                        localStorage.removeItem('productTypeView');
+                    }
                     $rootScope.productTypeView = $rootScope.productTypeView ? angular.copy($rootScope.productTypeView) : angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
                     ctrl.productTypeView = angular.copy($rootScope.productTypeView);
                 }
