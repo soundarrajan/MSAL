@@ -166,11 +166,20 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 
+
+import { grpc } from '@improbable-eng/grpc-web';
+import { GrpcCoreModule } from '@ngx-grpc/core';
+import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 @NgModule({
   imports: [
     CommonModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    // gRPC
+    GrpcCoreModule.forRoot(),
+    GrpcWebClientModule.forChild({
+      settings: { host: 'http://localhost:8080' }
+    }),
     // STORE
     NgxsModule.forRoot([SpotNegotiationStore]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
