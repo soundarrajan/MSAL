@@ -1320,9 +1320,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
 
 
-        $rootScope.$on('$setDefaultProductTypeView', (event, payload) => {
-            $state.reload();
-        });
 
 
 

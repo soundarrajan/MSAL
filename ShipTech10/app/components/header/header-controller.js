@@ -31,8 +31,6 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
 
     $scope.setDefaultLandingPage = function() {
         $rootScope.productTypeView = null;
-        $rootScope.$broadcast('$setDefaultProductTypeView', {
-        });
     }
 
     $timeout(() => {
