@@ -1306,10 +1306,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $state.go(STATE.ALL_REQUESTS_TABLE);
                 }
             } else {
-                $rootScope.productTypeView = ctrl.listsCache.ProductView[0];
+                $rootScope.productTypeView = $rootScope.productTypeView ? angular.copy($rootScope.productTypeView) : ctrl.listsCache.ProductView[0];
                 ctrl.productTypeView = angular.copy($rootScope.productTypeView);
             }
         }
+
 
         // Get data and initialize timeline
         async function doTimeline() {
@@ -1321,7 +1322,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     if(response) {
                         ctrl.getProductViewFromStaticLists(response?.payload?.landingPage);
                         $('.scheduledashboardtimeline').show();
-                        if (response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) {
+                        if ((response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) || window.location.href.indexOf('schedule-dashboard-timeline') != -1) {
                             $('#entity-title').show();
                             $('.page-bar-for-multiple-views').show();
                             $rootScope.$broadcast('$setProductTypeView', {
