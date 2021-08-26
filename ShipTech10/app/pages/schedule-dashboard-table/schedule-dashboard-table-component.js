@@ -384,9 +384,6 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
         $scope.$on('set-product-type-view-for-table', function (event, payload) {
             console.log(payload);
             ctrl.productTypeView = angular.copy(payload);
-            $scope.$apply();
-            $scope.$digest();
-
         });
     }
 ]);
