@@ -1,0 +1,44 @@
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
+@Component({
+  selector: 'app-spot-negotiation-new-comments',
+  templateUrl: './spot-negotiation-new-comments.component.html',
+  styleUrls: ['./spot-negotiation-new-comments.component.css']
+})
+export class SpotNegotiationNewCommentsComponent implements OnInit {
+
+  @ViewChild("comment1") commentBox1: ElementRef;
+  @ViewChild("comment2") commentBox2: ElementRef;
+  @ViewChild("comment3") commentBox3: ElementRef;
+  @ViewChild("comment4") commentBox4: ElementRef;
+
+  comments = 'LPB not sent- Quantity to order directly calculated and instructed by Ops. BO calculated around 400MT below quantity validated. BO calculated around 400MT below quantity validate.';
+  editableComments1: boolean = true;
+  editableComments2: boolean = true;
+  editableComments4: boolean = true;
+  showEditIcon: boolean = false;
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  editComments1(){
+    this.editableComments1 = false;
+    this.commentBox1.nativeElement.focus();
+  }
+
+  editComments2(){
+    this.editableComments2 = false;
+    this.commentBox2.nativeElement.focus();
+  }
+
+  editComments3(){
+    this.commentBox3.nativeElement.focus();
+  }
+
+  editComments4(){
+    this.editableComments4 = false;
+    this.commentBox4.nativeElement.focus();
+  }
+
+}

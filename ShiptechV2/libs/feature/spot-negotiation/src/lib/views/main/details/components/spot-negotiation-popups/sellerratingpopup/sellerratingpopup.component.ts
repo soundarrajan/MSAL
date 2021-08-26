@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Inject,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef,  } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -13,13 +7,17 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./sellerratingpopup.component.css']
 })
 export class SellerratingpopupComponent implements OnInit {
-  ngOnInit() {}
-  constructor(
-    public dialogRef: MatDialogRef<SellerratingpopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-
-  closeDialog() {
-    this.dialogRef.close();
+  ngOnInit() { 
+   
   }
-}
+  constructor(public dialogRef: MatDialogRef<SellerratingpopupComponent>,@Inject(MAT_DIALOG_DATA) public data: any) { }
+   
+  closeDialog() {
+      this.dialogRef.close();
+    
+    } 
+      
+
+  }
+
+

@@ -8,8 +8,9 @@ describe('SpotNegotiationHomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SpotNegotiationHomeComponent]
-    }).compileComponents();
+      declarations: [ SpotNegotiationHomeComponent ]
+    })
+    .compileComponents();
   }));
 
   beforeEach(() => {

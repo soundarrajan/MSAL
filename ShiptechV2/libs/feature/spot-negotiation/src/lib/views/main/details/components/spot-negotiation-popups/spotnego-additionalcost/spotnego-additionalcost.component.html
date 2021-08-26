@@ -3,14 +3,27 @@
     <mat-checkbox class="checkbox-alignment" ></mat-checkbox>
 
     <div class="check-text">Duplicate Costs to: </div>
-    <div class=" dropdown-alignment"><mat-form-field appearance="none">
+    <div [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger" class="vessels_req">
+      All Vessels <span class="down-arrow"></span>
+    </div>
+    <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-requestOptions" xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;">
+        <div (click)="$event.stopPropagation()">
+            <div class="more-options-menu-inv no-border p-lr-0">
+              <div class="checkboxOptions" *ngFor="let item of requestOptions">
+                <mat-checkbox [disabled]="item.selected==false" [checked]="item.selected">{{item.request}} - {{item.vessel}}</mat-checkbox>
+              </div>
+            </div>
+        </div>
+    </mat-menu>
+    <!-- <div class=" dropdown-alignment"><mat-form-field appearance="none">
       <select matNativeControl>
         <option value="volvo">All Vessels</option>
         <option value="saab">Selected Vessels</option>
 
       </select>
     </mat-form-field>
-    </div>
+    </div> -->
     <button class="save-btn" mat-button [mat-dialog-close]="true" >Save</button>
 <div class="title-divider">|</div>
     <div class="close-circle" style="padding:0px;">
@@ -62,7 +75,25 @@
               </select>
             </mat-form-field></td>
             <td class="text-left "> {{tabledata.maxqty}}</td>
-            <td class="text-left cell-dashed-border " contenteditable="true">{{tabledata.price }}</td>
+            <td class="text-left cell-dashed-border " contenteditable="true">
+              <div id="custom-form-field" style="float: left;margin: 0px 5px !important;width: 26px;" class="priceCalculated">
+              <mat-form-field class="without-search currency-select-trigger" appearance="none" [formGroup]="myFormGroup">
+                  <mat-select disableOptionCentering 
+                  [(ngModel)]="select"
+                  formControlName="frequency" panelClass="currencyselecttrigger"
+                  >
+                  <mat-select-trigger overlayPanelClass="123class">
+                      {{myFormGroup.controls['frequency'].value}}
+                  </mat-select-trigger>
+                  <mat-option [disabled]>Change Currency </mat-option>
+                  <mat-option class="currency-mat-select" *ngFor="let frequency of frequencyArr" [value]="frequency.key">
+                    <span> <mat-radio-button>{{ frequency.abbriviation}}</mat-radio-button></span>
+                  </mat-option>
+                  </mat-select>
+              </mat-form-field>
+              </div>
+              <div style="padding-top: 5px;">{{tabledata.price}}</div>
+            </td>
             <td class="text-left cell-dashed-border " contenteditable="true">   
               <mat-form-field appearance="none">
                 <select matNativeControl>
@@ -73,7 +104,25 @@
               </mat-form-field>         
             </td>
             <td class="text-left cell-dashed-border " contenteditable="true" > {{tabledata.extra}}</td>
-            <td class="text-left cell-dashed-border " contenteditable="true">{{tabledata.extraamt}} </td>
+            <td class="text-left cell-dashed-border " contenteditable="true">
+              <div id="custom-form-field" style="float: left;margin: 0px 5px !important;width: 26px;" class="priceCalculated">
+                <mat-form-field class="without-search currency-select-trigger" appearance="none" [formGroup]="myFormGroup">
+                    <mat-select disableOptionCentering 
+                    [(ngModel)]="select"
+                    formControlName="frequency" panelClass="currencyselecttrigger"
+                    >
+                    <mat-select-trigger overlayPanelClass="123class">
+                        {{myFormGroup.controls['frequency'].value}}
+                    </mat-select-trigger>
+                    <mat-option [disabled]>Change Currency </mat-option>
+                    <mat-option class="currency-mat-select" *ngFor="let frequency of frequencyArr" [value]="frequency.key">
+                      <span> <mat-radio-button>{{ frequency.abbriviation}}</mat-radio-button></span>
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                </div>
+                <div style="padding-top: 5px;">{{tabledata.extraamt}}</div>
+            </td>
             <td class="text-left cell-dashed-border " contenteditable="true"> </td>
             <td class="text-left cell-dashed-border " contenteditable="true" > </td>
             <td class="text-left cell-dashed-border " contenteditable="true" > </td>
@@ -99,10 +148,26 @@
                 </mat-form-field>
               </td>
               <td class="text-left cell-dashed-border" contenteditable="true"> 
-               
+                
               </td>
               <td class="text-left cell-dashed-border">
-                
+                <div id="custom-form-field" style="float: left;margin: 0px 5px !important;width: 26px;" class="priceCalculated">
+                  <mat-form-field class="without-search currency-select-trigger" appearance="none" [formGroup]="myFormGroup">
+                      <mat-select disableOptionCentering 
+                      [(ngModel)]="select"
+                      formControlName="frequency" panelClass="currencyselecttrigger"
+                      >
+                      <mat-select-trigger overlayPanelClass="123class">
+                          {{myFormGroup.controls['frequency'].value}}
+                      </mat-select-trigger>
+                      <mat-option [disabled]>Change Currency </mat-option>
+                      <mat-option class="currency-mat-select" *ngFor="let frequency of frequencyArr" [value]="frequency.key">
+                        <span> <mat-radio-button>{{ frequency.abbriviation}}</mat-radio-button></span>
+                      </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                  </div>
+                  <div style="padding-top: 5px;"></div>
               </td>
               <td class="text-left cell-dashed-border " contenteditable="true">   
                 <mat-form-field appearance="none">
@@ -113,8 +178,28 @@
                   </select>
                 </mat-form-field>         
               </td>
-              <td class="text-left  cell-dashed-border" contenteditable="true"> </td>
-              <td class="text-left  cell-dashed-border" contenteditable="true"> </td>
+              <td class="text-left  cell-dashed-border" contenteditable="true">
+                
+              </td>
+              <td class="text-left  cell-dashed-border" contenteditable="true">
+                <div id="custom-form-field" style="float: left;margin: 0px 5px !important;width: 26px;" class="priceCalculated">
+                  <mat-form-field class="without-search currency-select-trigger" appearance="none" [formGroup]="myFormGroup">
+                      <mat-select disableOptionCentering 
+                      [(ngModel)]="select"
+                      formControlName="frequency" panelClass="currencyselecttrigger"
+                      >
+                      <mat-select-trigger overlayPanelClass="123class">
+                          {{myFormGroup.controls['frequency'].value}}
+                      </mat-select-trigger>
+                      <mat-option [disabled]>Change Currency </mat-option>
+                      <mat-option class="currency-mat-select" *ngFor="let frequency of frequencyArr" [value]="frequency.key">
+                        <span> <mat-radio-button>{{ frequency.abbriviation}}</mat-radio-button></span>
+                      </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                  </div>
+                  <div style="padding-top: 5px;"></div>
+              </td>
               <td class="text-left  cell-dashed-border" contenteditable="true"> </td>
               <td class="text-left  cell-dashed-border" contenteditable="true"> </td>
               <td class="text-left  cell-dashed-border" contenteditable="true"> </td>
@@ -188,7 +273,7 @@
               <td class=""></td>
               <td class="" ></td>
               <td class="text-left "> </td>
-              <td class="text-left "> </td>
+              <td class="text-left ">$5000</td>
               <td class="text-left cell-dashed-border " contenteditable="true">   
                 <mat-form-field appearance="none">
                   <select matNativeControl>
@@ -199,7 +284,7 @@
                 </mat-form-field>         
               </td>
               <td class="text-left  " > 5.5</td>
-              <td class="text-left  ">5000 </td>
+              <td class="text-left  ">$5000 </td>
               <td class="text-left"> </td>
               <td class="text-left" > </td>
               <td class="text-left" > </td>

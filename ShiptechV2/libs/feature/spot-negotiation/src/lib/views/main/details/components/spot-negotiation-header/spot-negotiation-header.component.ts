@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 // import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { LocalService } from '../../../../../services/local-service.service';
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 @Component({
   selector: 'app-spot-negotiation-header',
@@ -19,6 +20,7 @@ export class SpotNegotiationHeaderComponent implements OnInit {
   @ViewChild('headerContainer') container: ElementRef;
   @ViewChild('requestContainer') requestcontainer: ElementRef;
   @ViewChild('inputSearch') inputSearch: ElementRef;
+  allRequestDetails = [];
   selectedReqIndex = 0;
   selectedReqIndexes = [0, 1, 2];
   selectAll: boolean = true;
@@ -27,17 +29,20 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     {
       request: 'Req 12321',
       vessel: 'Merlion',
-      selected: true
+      selected: true,
+      requestId: '01'
     },
     {
       request: 'Req 12322',
       vessel: 'Afif',
-      selected: true
+      selected: true,
+      requestId: '02'
     },
     {
       request: 'Req 12323',
       vessel: 'Al Mashrab',
-      selected: true
+      selected: true,
+      requestId: '03'
     }
   ];
   //showAddReq: boolean = false;
@@ -67,23 +72,19 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     { request: 'Req 100007', vessel: 'MerinLion', selected: false },
     { request: 'Req 100008', vessel: 'Al Mashrab', selected: false }
   ];
-  constructor(private renderer: Renderer2, public dialog: MatDialog) {}
+  constructor(
+    private renderer: Renderer2,
+    public dialog: MatDialog,
+    private localService: LocalService
+  ) {}
   @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
-  ngOnInit(): void {}
-
-  openRequestInNewTab(requestId: string): void {
-    window
-      .open(window.location.origin + '#/edit-request/' + requestId, '_blank')
-      .focus();
+  ngOnInit(): void {
+    this.getJSONData();
   }
+
   /*   addNewRequest(){
     this.showAddReq = !this.showAddReq;
   } */
-
-  // Get request from name;
-  getRequestIDfromName(request: string): string {
-    return request.split(' ')[1];
-  }
 
   removeRequest(i) {
     this.requestOptions.splice(i, 1);
@@ -92,7 +93,6 @@ export class SpotNegotiationHeaderComponent implements OnInit {
       var headerWidth = this.container.nativeElement.offsetWidth;
       var reqWidth = this.requestcontainer.nativeElement.offsetWidth;
       this.availWidth = headerWidth - reqWidth;
-      console.log(this.availWidth);
       if (this.availWidth < 485 || this.requestOptions.length > 5) {
         this.displayVessel = true;
       } else {
@@ -110,33 +110,38 @@ export class SpotNegotiationHeaderComponent implements OnInit {
       this.requestOptions.push({
         request: val.request,
         vessel: val.vessel,
-        selected: true
+        selected: true,
+        requestId: '04'
       });
+      this.allRequestDetails.push([
+        {
+          'location-name': 'ROTTERDAM',
+          'location-id': '1234',
+          'port-id': '1'
+        }
+      ]);
       const arrayIndex = this.requestsAndVessels.indexOf(val);
       this.requestsAndVessels.splice(arrayIndex, 1);
     }
-    //console.log(this.requestsAndVessels);
-    //this.showAddReq = false;
     setTimeout(() => {
       var headerWidth = this.container.nativeElement.offsetWidth;
       var reqWidth = this.requestcontainer.nativeElement.offsetWidth;
       this.availWidth = headerWidth - reqWidth;
-      //console.log(this.availWidth);
       if (this.availWidth < 150) {
         this.displayVessel = true;
       } else {
-        //this.displayVessel = false;
-        //alert("b");
       }
     }, 0);
     this.selectedRequest = '';
   }
 
   selectedReqBtn = 0;
+  selReqIndex = 0;
   selectRequest(event, i, selected) {
     event.preventDefault();
     event.stopPropagation();
     this.selectedReqBtn = i;
+    this.selReqIndex = i;
     var checkedItems = this.requestOptions.reduce(function(acc, curr, index) {
       if (curr.selected) {
         acc.push(index);
@@ -158,9 +163,7 @@ export class SpotNegotiationHeaderComponent implements OnInit {
       panelClass: 'search-request-popup'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   reqSelectionChange(evt) {
@@ -191,5 +194,16 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     setTimeout(() => {
       //this.inputSearch.nativeElement.focus();
     }, 0);
+  }
+
+  private getJSONData() {
+    this.allRequestDetails = [];
+    this.requestOptions.forEach(element => {
+      this.localService
+        .getSpotDataRequestData(element.requestId)
+        .subscribe((res: any) => {
+          this.allRequestDetails.push(res);
+        });
+    });
   }
 }

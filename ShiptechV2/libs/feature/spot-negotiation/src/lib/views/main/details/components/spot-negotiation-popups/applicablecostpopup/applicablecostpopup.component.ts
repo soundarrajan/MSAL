@@ -7,6 +7,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ApplicablecostpopupComponent implements OnInit {
 
+  requestOptions = [
+    {
+      request : 'Req 12321', vessel: 'Merlion', selected: true
+    },
+    {
+      request : 'Req 12322', vessel: 'Afif', selected: true
+    }
+  ];
   disableScrollDown = false;
   public showaddbtn=true;
   isShown: boolean = true; // hidden by default
@@ -15,17 +23,17 @@ export class ApplicablecostpopupComponent implements OnInit {
   isButtonVisible=true;
   iscontentEditable=false;
 
-  ngOnInit() {
+  ngOnInit() { 
     // this.scrollToBottom();
 }
-
+  
   constructor(public dialogRef: MatDialogRef<ApplicablecostpopupComponent>,    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
+   
   closeDialog() {
       this.dialogRef.close();
-
-    }
-
+    
+    } 
+      
  tabledatalocation=[{}];
     tabledataslocation1=[{}];
     tabledataslocationlist=[{
@@ -55,7 +63,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   addNew(){
         this.tabledatas2.push(this.newtabledata)
         this.newtabledata = {};
-        // this.scrollToBottom();
+        // this.scrollToBottom();    
   }
   delete(i){
     this.tabledatas2.splice(i,1);
@@ -70,13 +78,13 @@ export class ApplicablecostpopupComponent implements OnInit {
 
     this.isShown = ! this.isShown;
     this.isShown2=! this.isShown2;
-
-    }
+    
+    } 
     tabledataslocation=[ ];
     addNewlocationbasedcost(){
       this.tabledataslocation.push(this.newtabledata)
       this.newtabledata = {};
-
+     
     }
 
 }

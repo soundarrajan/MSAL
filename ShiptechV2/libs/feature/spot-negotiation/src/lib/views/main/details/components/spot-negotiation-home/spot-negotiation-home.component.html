@@ -43,18 +43,33 @@
                   </div>
                   <div style="margin-top: -40px;">
                     <div class="header-buttons">
-                      <div style="position: fixed;right: 415px;">
+                      <div style="position: fixed;right: 295px;">
                         <span class="seperator-line left-line"></span>
-                        <span class="duplicate-price" matTooltip="Duplicate Price" matTooltipClass="blueTooltip"></span>
+                        <span class="duplicate-price" [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger" matTooltip="Duplicate Price" matTooltipClass="lightTooltip"></span>
+                        <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-requestOptionsDuplicate">
+                          <div class="duplicate-price-menu">
+                                  <div class="text">
+                                    <span>Duplicate To</span>
+                                  </div>  
+                                  <div class="divider-line"></div>
+                                  <div class="more-options-menu-inv no-border p-lr-0" (click)="$event.stopPropagation()" style="margin: 7px 5px;">
+                                    <div class="checkboxOptions" *ngFor="let item of requestOptions">
+                                      <mat-checkbox [disabled]="item.selected==false" [checked]="item.selected">{{item.request}} - {{item.vessel}}</mat-checkbox>
+                                    </div>
+                                  </div>
+                                  <div class="proceed-div">
+                                      <button mat-button (click)="displaySuccessMsg()" class="mid-blue-button proceed-btn">Proceed</button>
+                                  </div>
+                          </div>
+                      </mat-menu>
 <!--                         <span class="duplicate-cost" matTooltip="Duplicate Cost" matTooltipClass="blueTooltip"></span>
  -->                        <span class="seperator-line"></span>
                       </div>                    
                       <div style="position: fixed;right: 35px;">
-                        <button matTooltip="Calculate" matTooltipShowDelay="500" mat-button class="mid-blue-button cust-header-btn">Calculate</button>
-                        <button matTooltip="Send RFQ" matTooltipShowDelay="500" mat-button class="mid-blue-button cust-header-btn">Send RFQ</button>
+                        <button matTooltip="Send RFQ" matTooltipShowDelay="500" mat-button class="mid-blue-button cust-header-btn" (click)="sendRFQpopup()">Send RFQ</button>
                         <button matTooltip="Confirm Order" matTooltipShowDelay="500" mat-button class="mid-blue-button cust-header-btn" (click)="confirmorderpopup()">Confirm Order</button>                                           
                       </div>
-                      <span class="menu-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
+                      <span class="menu-icon" matTooltip="View more options" matTooltipClass="lightTooltip" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
       
                       </span>
                       <mat-menu #clickmenupopup="matMenu" class="menu-panel-eta small-menu darkPanel">

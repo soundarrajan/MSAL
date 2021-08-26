@@ -3,14 +3,27 @@
     <mat-checkbox class="checkbox-alignment" ></mat-checkbox>
 
     <div class="check-text">Duplicate Costs to: </div>
-    <div class="dropdown-alignment"><mat-form-field appearance="none">
+    <div [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger" class="vessels_req">
+      All Vessels <span class="down-arrow"></span>
+    </div>
+    <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-requestOptions" xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;">
+        <div (click)="$event.stopPropagation()">
+            <div class="more-options-menu-inv no-border p-lr-0">
+              <div class="checkboxOptions" *ngFor="let item of requestOptions">
+                <mat-checkbox [disabled]="item.selected==false" [checked]="item.selected">{{item.request}} - {{item.vessel}}</mat-checkbox>
+              </div>
+            </div>
+        </div>
+    </mat-menu>
+    <!-- <div class="dropdown-alignment"><mat-form-field appearance="none">
       <select matNativeControl>
         <option value="volvo">All Vessels</option>
         <option value="saab">Selected Vessels</option>
 
       </select>
     </mat-form-field>
-    </div>
+    </div> -->
     <button class="save-btn" mat-button [mat-dialog-close]="true" >Save</button>
 <div class="title-divider">|</div>
     <div class="close-circle" style="padding:0px;">
