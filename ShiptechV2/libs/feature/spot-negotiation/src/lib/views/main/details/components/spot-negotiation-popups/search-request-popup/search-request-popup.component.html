@@ -1,39 +1,23 @@
 <div class="search-request-popup">
-  <div class="header">
-    <div class="title">Search Request</div>
-    <div style="display:flex">
-      <input type="text" placeholder="Search request here" class="search-box" />
-      <button class="searchButton" type="submit">
-        <i class="fa fa-search"></i>
-      </button>
+    <div class="header">
+        <div class="title">Search Request</div>
+        <div style="display:flex">
+            <input type="text" placeholder="Search request here" class="search-box">
+            <button class="searchButton" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <div class="header-btn">
+            <button class="blue-button h-25" [mat-dialog-close]="true">Proceed</button>
+            <span class="seperator-line"></span>
+            <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+        </div>
     </div>
-    <div class="header-btn">
-      <button class="blue-button h-25" [mat-dialog-close]="true">
-        Proceed
-      </button>
-      <span class="seperator-line"></span>
-      <span
-        class="close"
-        style="cursor:pointer;"
-        [mat-dialog-close]="true"
-      ></span>
-    </div>
-  </div>
-  <mat-dialog-content style="overflow: hidden;">
-    <ag-grid-angular
-      id="tradelistgrid"
-      style="height: calc(100vh - 156px);"
-      [gridOptions]="dialog_gridOptions"
-      class="ag-theme-material angular-v9"
-    >
-    </ag-grid-angular>
-    <!-- <app-footer-v2
-      class="footer-popup"
-      [id]="'inv-report-popup'"
-      [singleGrid]="true"
-      [doublePagination]="true"
-      [rowCount]="rowCount"
-      [maxSize]="7"
-    ></app-footer-v2> -->
-  </mat-dialog-content>
+    <mat-dialog-content style="overflow: hidden;">
+        <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 156px);"
+            [gridOptions]="dialog_gridOptions"
+            class="ag-theme-material angular-v9">
+        </ag-grid-angular>
+        <!-- <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>   -->
+    </mat-dialog-content>
 </div>

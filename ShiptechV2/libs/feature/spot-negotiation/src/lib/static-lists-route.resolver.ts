@@ -21,7 +21,6 @@ export class StaticListsRouteResolver implements Resolve<any> {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-
     return this.spotNegotiationService.getStaticLists(['Seller']);
   }
 }
