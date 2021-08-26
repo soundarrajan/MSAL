@@ -1,11 +1,11 @@
 <div class="market-price-history-popup">
   <div class="spot-popup-header-container"><div class="spot-nego-title">Market Price History</div>
-  <div class="spot-dialog-title-right">
+  <div class="spot-dialog-title-right">    
     <div class="close-circle">
     <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() " style="font-size: 13px; display: inline; position: relative; top:-2px;">close</mat-icon>
       </div>
     </div>
-
+    
   </div>
   <hr class="hr-line">
 
@@ -13,34 +13,34 @@
     <div class="col-3">
       <div class="row">
         <div class="p-l-15">
-
+          
           <span class="location-main-heading">Tabular Represenation</span>
-        </div>
-      </div>
+        </div>   
+      </div>  
       <div class="product-terms p-b-5 p-r-15 p-l-15" style="margin-top: 10px;">
         <div class="operations-details-block market-history" style="height:auto">
           <table>
             <thead>
               <tr>
-
+                
                 <th class=" text-left ">Date</th>
                 <th class=" text-left w-95">Price(in USD)</th>
-
+              
               </tr>
             </thead>
             </table>
             <div style="background-color: #ffffff;" >
             <table>
-            <tbody #scrollMe1 [scrollTop]="scrollMe1.scrollHeight">
-
+            <tbody>      
+            
                 <tr id="commentList" *ngFor="let tabledata of tabledata;let i = index">
-
+                  
                   <td class="border-bottom-1 fz-13" >{{tabledata.date}}</td>
                   <td class="border-bottom-1 text-left fz-13 w-95" >{{tabledata.price}}</td>
-
-
+                  
+                  
                 </tr>
-
+              
             </tbody>
           </table>
           </div>
@@ -51,7 +51,7 @@
     <div class="row">
       <div class="col-4" style="margin-left: -15px;">
         <span class="location-main-heading">Graphical Representation</span>
-
+        
       </div>
       <div class="col-8 text-right">
         <span class="location-title-marketprice">Index:</span>
@@ -63,9 +63,8 @@
       </div>
     </div>
     <div class="market-graph" style="margin-top: 10px;">
-      <!-- Component not found -->
       <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
     </div>
     </div>
   </div>
-</div>
+</div>  

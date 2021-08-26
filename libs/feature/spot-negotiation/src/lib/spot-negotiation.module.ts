@@ -1,3 +1,4 @@
+import { FooterV2Component } from './../../../../core/src/lib/ui/components/ds-components/footer-v2/footer-v2.component';
 // Store
 
 // Components
@@ -163,6 +164,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
+import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 
 @NgModule({
   imports: [
@@ -285,6 +287,8 @@ import { StaticListsRouteResolver } from './static-lists-route.resolver';
     AGGridCellMenuPopupComponent,
     // Components
     MovDetailsComponent,
+    FooterV2Component,
+    SpotNegotiationNewCommentsComponent,
     ApplicablecostpopupComponent,
     SupplierCommentsPopupComponent,
     AvailabletermcontractspopupComponent,

@@ -24,6 +24,7 @@ import { NavBarApiService } from '@shiptech/core/services/navbar/navbar-api.serv
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Title } from '@angular/platform-browser';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -44,6 +45,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   generalTenantSettings: IGeneralTenantSettings;
 
   constructor(
+    private store: Store,
     public bdnInformationService: BdnInformationApiService,
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
@@ -72,6 +74,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
 
     this.route.data.subscribe(data => {
+
       // Data id
     });
   }
