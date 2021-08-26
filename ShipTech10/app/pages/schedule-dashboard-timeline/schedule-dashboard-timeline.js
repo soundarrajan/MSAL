@@ -1315,6 +1315,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             });
             if (findProductViewIndexFromListCache != -1) {
                 $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
+                $rootScope.DefaultLandingPageView = angular.copy($rootScope.productTypeView);
                 ctrl.productTypeView = angular.copy($rootScope.productTypeView);
             }
             $rootScope.isPageRefresh = false;
@@ -1326,7 +1327,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             doTimeline();
         }
         $scope.$on('$locationChangeStart', function(e, next, prev) {
-            if(next.indexOf('schedule-dashboard-timeline') == -1) {
+            if(currentPath == "" || currentPath == "/") {
+                $rootScope.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
+                ctrl.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
+            }  else if((prev.indexOf('schedule-dashboard-timeline') == -1 && prev.indexOf('schedule-dashboard-table')==-1) && (next.indexOf('schedule-dashboard-timeline') > -1 || next.indexOf('schedule-dashboard-table') > -1)) {
+                $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
+            } else if(next.indexOf('schedule-dashboard-timeline') == -1) {
                 $rootScope.productTypeView = angular.copy(ctrl.listsCache.ProductView[0]);
             }
         });

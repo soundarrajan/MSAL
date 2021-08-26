@@ -1,6 +1,6 @@
-angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '$timeout', '$scope', '$state', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
+angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '$timeout', '$scope', '$state', '$location', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
     'scheduleDashboardCalendarModel', 'statusColors', '$listsCache', '$tenantConfiguration',
-    function($rootScope, $timeout, $scope, $state, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, statusColors, $listsCache, $tenantConfiguration) {
+    function($rootScope, $timeout, $scope, $state, $location, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, statusColors, $listsCache, $tenantConfiguration) {
         $scope.state = $state;
         $scope.STATE = STATE;
         window.scheduleDashboardConfiguration = { payload: $tenantConfiguration.scheduleDashboardConfiguration };
@@ -16,6 +16,7 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
             });
             if (findProductViewIndexFromListCache != -1) {
                 $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[findProductViewIndexFromListCache]);
+                $rootScope.DefaultLandingPageView = angular.copy($rootScope.productTypeView);
                 $scope.productTypeView = angular.copy($rootScope.productTypeView);
             }
         });
@@ -79,8 +80,15 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         });
 
         $scope.$on('$locationChangeStart', function(e, next, prev) {
-            // Check and reset to default view as bunker view on nav to any page
-            if(next.indexOf('schedule-dashboard-timeline') == -1 && next.indexOf('schedule-dashboard-table') == -1) {
+            let currentPath = $location.path();
+            // Check and reset to default view as bunker view on nav to any page except logo link
+            if(currentPath == "" || currentPath == "/") {
+                $rootScope.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
+                $scope.productTypeView = angular.copy($rootScope.DefaultLandingPageView);
+            } else if((prev.indexOf('schedule-dashboard-timeline') == -1 && prev.indexOf('schedule-dashboard-table')==-1) && (next.indexOf('schedule-dashboard-timeline') > -1 || next.indexOf('schedule-dashboard-table') > -1)) {
+                $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
+                $scope.productTypeView = angular.copy($rootScope.productTypeView);
+            } else if(next.indexOf('schedule-dashboard-timeline') == -1 && next.indexOf('schedule-dashboard-table') == -1) {
                 $rootScope.productTypeView = angular.copy($scope.listsCache.ProductView[0]);
                 $scope.productTypeView = angular.copy($rootScope.productTypeView);
             }
