@@ -24,6 +24,9 @@ import { NavBarApiService } from '@shiptech/core/services/navbar/navbar-api.serv
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Title } from '@angular/platform-browser';
+import { HelloRequest } from './../../../protoc/generated/proto/sample.pb';
+import { GreeterClient } from './../../../protoc/generated/proto/sample.pbsc';
+import { GrpcStatusEvent } from '@ngx-grpc/common';
 import { Store } from '@ngxs/store';
 
 @Component({
@@ -57,7 +60,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private tenantService: TenantFormattingService,
     private loadingBar: LoadingBarService,
     private titleService: Title,
-    private tenantSettingsService: TenantSettingsService
+    private tenantSettingsService: TenantSettingsService,
+    private demoClient: GreeterClient
   ) {
     this.entityName = 'Spot negotiation';
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
@@ -71,7 +75,23 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // On init
       // Please check params object and assign a value for entityId;
       // this.entityId = parseFloat(params.spotNegotiationId);
-    });
+
+
+    // Demo consume gRPC request-response
+    // Clean all grpc from this files
+    // DELETE AFTER TESTING
+    var request = new HelloRequest({name: "Welcome to Grpc Web."});
+    this.demoClient.$raw.sayHello(request).subscribe(
+      event => {
+        debugger;
+        if (!(event instanceof GrpcStatusEvent)) {
+          console.log(event.data);
+        }
+      },
+      () => null, // no errors expected in this mode
+      () => { console.log("asdasd")}
+    );
+  });
 
     this.route.data.subscribe(data => {
 

@@ -3,8 +3,6 @@ import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { HelloRequest } from '../../protoc/generated/proto/sample.pb';
-import { GreeterClient } from '../../protoc/generated/proto/sample.pbsc';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
@@ -248,20 +246,6 @@ export class ShiptechCustomHeaderGroup {
 
   ngOnInit() {
 
-
-    // Demo consume gRPC request-response
-    // Clean all grpc from this files
-    // DELETE AFTER TESTING
-    var request = new HelloRequest();
-    this.demoClient.$raw.sayHello(request).subscribe(
-      event => {
-        debugger;
-      },
-      () => null, // no errors expected in this mode
-      () => { console.log("asdasd")}
-    );
-
-
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       // Index [0] "SellerWithInactive"
       // Index [1] "Seller"
@@ -274,7 +258,6 @@ export class ShiptechCustomHeaderGroup {
   }
 
   constructor(
-    private demoClient: GreeterClient,
     private el: ElementRef,
     private store: Store,
     @Inject(DOCUMENT) private _document: HTMLDocument,

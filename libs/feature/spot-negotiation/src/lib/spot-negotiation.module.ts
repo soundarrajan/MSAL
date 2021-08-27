@@ -170,6 +170,7 @@ import { SpotNegotiationNewCommentsComponent } from './views/main/details/compon
 import { grpc } from '@improbable-eng/grpc-web';
 import { GrpcCoreModule } from '@ngx-grpc/core';
 import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
+import { ImprobableEngGrpcWebClientModule } from '@ngx-grpc/improbable-eng-grpc-web-client';
 @NgModule({
   imports: [
     CommonModule,
@@ -177,8 +178,11 @@ import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
     OwlNativeDateTimeModule,
     // gRPC
     GrpcCoreModule.forRoot(),
-    GrpcWebClientModule.forChild({
-      settings: { host: 'http://localhost:8080' }
+    ImprobableEngGrpcWebClientModule.forChild({
+      settings: {
+        host: 'https://localhost:5001',
+        transport: grpc.CrossBrowserHttpTransport({}),
+      },
     }),
     // STORE
     NgxsModule.forRoot([SpotNegotiationStore]),
