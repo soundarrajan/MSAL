@@ -167,23 +167,11 @@ import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 
 
-import { grpc } from '@improbable-eng/grpc-web';
-import { GrpcCoreModule } from '@ngx-grpc/core';
-import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
-import { ImprobableEngGrpcWebClientModule } from '@ngx-grpc/improbable-eng-grpc-web-client';
 @NgModule({
   imports: [
     CommonModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    // gRPC
-    GrpcCoreModule.forRoot(),
-    ImprobableEngGrpcWebClientModule.forChild({
-      settings: {
-        host: 'https://localhost:5001',
-        transport: grpc.CrossBrowserHttpTransport({}),
-      },
-    }),
     // STORE
     NgxsModule.forRoot([SpotNegotiationStore]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
