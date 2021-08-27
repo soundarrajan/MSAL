@@ -151,6 +151,10 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                         // v.isSelectedPortCall = ctrl?.portCallId == v.portCallId;
                         v.isSelectedPortCall = ctrl?.portCallVoyageId == v.vesselVoyageDetailId;
                     });
+                    if((ctrl?.indexVoyage || ctrl?.indexVoyage==0) && ctrl?.indexChecked) {
+                        ctrl.data.map(location=> location.isSelectedPortCall = false);
+                        ctrl.selectedLocationsSingle[ctrl?.indexVoyage] = true;
+                    }
                     destroyDataT();
                     $timeout(() => {
                         ctrl.table = SimpleDatatable.init({
@@ -159,9 +163,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                                 [ 0, 'asc' ]
                             ]
                         });
-                        $timeout(() => {
+                        // $timeout(() => {
                             $('.table').dataTable();
-                        },1000);
+                        // },1000);
                     });
                 });
             }
@@ -246,10 +250,12 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
         };
 
 
-        $scope.selectedLocationsSingle = function(index){
+        $scope.selectedLocationsSingle = function(index, isChecked){
             ctrl.indexVoyage=index;
+            ctrl.indexChecked=isChecked;
             ctrl.selectedLocationsSingle = [];
-            ctrl.selectedLocationsSingle[index] = true;
+            ctrl.data.map(location=> location.isSelectedPortCall = false);
+            ctrl.selectedLocationsSingle[index] = isChecked;
         };
         ctrl.confirmVesselSchedulesOrderSelection = function() {
             let selectedLocations = [];

@@ -28,7 +28,7 @@
                     <td>
                         <!-- {{$ctrl.EnableSingleSelect}} -->
                         <label ng-if="$ctrl.EnableSingleSelect"  class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" ng-checked="row.isSelectedPortCall" ng-model="$ctrl.selectedLocationsSingle[$index]"  ng-click="selectedLocationsSingle($index)"/>
+                            <input type="checkbox" ng-checked="row.isSelectedPortCall" ng-model="$ctrl.selectedLocationsSingle[$index]" ng-click="selectedLocationsSingle($index, $event.target.checked)"/>
                             <span></span>
                         </label>
                         <label ng-if="!$ctrl.EnableSingleSelect" class="mt-checkbox mt-checkbox-outline">
