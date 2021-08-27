@@ -507,21 +507,59 @@ const demoData = [
   }
 ];
 export class SpotNegotiationStoreModel {
+  staticLists: any;
+  // Delete this
   rows: any;
   selectedRows: any;
-  staticLists: any;
+  // Until here
+  groupOfRequestsId: number | null;
+  requests: Array<any>;
+  locations: Array<any>;
+  additionalCost: Array<any>;
+  availableTermContracts: Array<any>;
+  sellerRating: Array<any>;
+  commentsForCurrentRequest: Array<any>;
+  sellerComments: Array<any>;
+  currentRequest: object | null;
+  formulaPricingDetails: object | null;
+  marketPriceHistory: object | null;
+  offerPriceHistory: object | null;
 
   constructor() {
     // Initialization inside the constructor
+    this.staticLists = {};
     this.rows = [];
     this.selectedRows = [];
-    this.staticLists = {};
+    this.requests = [];
+    this.locations = [];
+    this.additionalCost = [];
+    this.sellerRating = [];
+    this.availableTermContracts = [];
+    this.currentRequest = null;
+    this.formulaPricingDetails = null;
+    this.marketPriceHistory = null;
+    this.commentsForCurrentRequest = [];
+    this.sellerComments = [];
+    this.groupOfRequestsId = null;
+    this.offerPriceHistory = null;
   }
 }
 
 @State<SpotNegotiationStoreModel>({
   name: 'spotNegotiation',
   defaults: {
+    groupOfRequestsId: null,
+    requests: [],
+    commentsForCurrentRequest: [],
+    currentRequest: null,
+    locations: [],
+    additionalCost: [],
+    availableTermContracts: [],
+    formulaPricingDetails: {},
+    sellerRating: [],
+    offerPriceHistory: {},
+    sellerComments: [],
+    marketPriceHistory: {},
     rows: demoData,
     selectedRows: [],
     staticLists: []
