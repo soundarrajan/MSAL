@@ -244,8 +244,7 @@ export class ShiptechCustomHeaderGroup {
   visibleCounterpartyList = [];
   selectedCounterParty = [];
 
-  ngOnInit() {
-
+  ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       // Index [0] "SellerWithInactive"
       // Index [1] "Seller"
@@ -258,13 +257,13 @@ export class ShiptechCustomHeaderGroup {
   }
 
   constructor(
+    public dialog: MatDialog,
     private el: ElementRef,
     private store: Store,
-    @Inject(DOCUMENT) private _document: HTMLDocument,
-    public dialog: MatDialog
+    @Inject(DOCUMENT) private _document: HTMLDocument
   ) {}
 
-  onCounterPartyCheckBoxChange(checkbox, element) {
+  onCounterPartyCheckBoxChange(checkbox: any, element: any) {
     if (checkbox.checked) {
       // Add to selected counterparty list
       this.selectedCounterParty.push(element);
@@ -297,7 +296,7 @@ export class ShiptechCustomHeaderGroup {
     return text;
   };
 
-  agInit(params): void {
+  agInit(params: any): void {
     this.params = params;
     this.params.columnGroup
       .getOriginalColumnGroup()
@@ -306,10 +305,11 @@ export class ShiptechCustomHeaderGroup {
   }
 
   expandOrCollapse(isExpanded) {
-    let currentState = this.params.columnGroup
+    const currentState = this.params.columnGroup
       .getOriginalColumnGroup()
       .isExpanded();
-    let groupNames = ['grid1', 'grid2', 'grid3'];
+
+    const groupNames = ['grid1', 'grid2', 'grid3'];
     groupNames.forEach(groupId => {
       this.params.columnApi.setColumnGroupOpened(groupId, !currentState);
     });
@@ -366,7 +366,7 @@ export class ShiptechCustomHeaderGroup {
     });
   }
   editQty(e: any): any {
-    if (e.keyCode == 37 || e.keyCode == 39) {
+    if (e.keyCode === 37 || e.keyCode === 39) {
       e.stopPropagation();
     }
   }

@@ -4,7 +4,11 @@ import {
   RemoveRow,
   AddSelectedRow,
   SetSelectedRow,
-  SetStaticLists
+  SetStaticLists,
+  SetGroupOfRequestsId,
+  SetRequests,
+  SetCurrentRequest,
+  SetCurrentRequestSmallInfo
 } from './actions/ag-grid-row.action';
 
 // Delete this;
@@ -521,6 +525,7 @@ export class SpotNegotiationStoreModel {
   commentsForCurrentRequest: Array<any>;
   sellerComments: Array<any>;
   currentRequest: object | null;
+  currentRequestSmallInfo: object | null;
   formulaPricingDetails: object | null;
   marketPriceHistory: object | null;
   offerPriceHistory: object | null;
@@ -535,6 +540,7 @@ export class SpotNegotiationStoreModel {
     this.additionalCost = [];
     this.sellerRating = [];
     this.availableTermContracts = [];
+    this.currentRequestSmallInfo = null;
     this.currentRequest = null;
     this.formulaPricingDetails = null;
     this.marketPriceHistory = null;
@@ -549,6 +555,7 @@ export class SpotNegotiationStoreModel {
   name: 'spotNegotiation',
   defaults: {
     groupOfRequestsId: null,
+    currentRequestSmallInfo: null,
     requests: [],
     commentsForCurrentRequest: [],
     currentRequest: null,
@@ -566,6 +573,47 @@ export class SpotNegotiationStoreModel {
   }
 })
 export class SpotNegotiationStore {
+  // Requests
+  @Action(SetCurrentRequestSmallInfo)
+  setCurrentRequestSmallInfo(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetCurrentRequestSmallInfo
+  ): any {
+    patchState({
+      currentRequestSmallInfo: payload
+    });
+  }
+  // Requests
+  @Action(SetCurrentRequest)
+  setCurrentRequest(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetCurrentRequest
+  ) {
+    patchState({
+      currentRequest: payload
+    });
+  }
+
+  @Action(SetRequests)
+  setRequests(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetRequests
+  ) {
+    patchState({
+      requests: payload
+    });
+  }
+
+  // Group Of Requests Id
+  @Action(SetGroupOfRequestsId)
+  setGroupOfRequestsId(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetGroupOfRequestsId
+  ) {
+    patchState({
+      groupOfRequestsId: payload
+    });
+  }
   // Static lists
   @Action(SetStaticLists)
   setStaticLists(
@@ -613,7 +661,7 @@ export class SpotNegotiationStore {
   addSelectedRow(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: AddSelectedRow
-  ) {
+  ): any {
     const state = getState();
 
     const futureRows = [...state.selectedRows, payload];
@@ -627,7 +675,7 @@ export class SpotNegotiationStore {
   setSelectedRow(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SetSelectedRow
-  ) {
+  ): any {
     const state = getState();
 
     const futureRows = payload;
@@ -642,7 +690,7 @@ export class SpotNegotiationStore {
   remove(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: RemoveRow
-  ) {
+  ): any {
     const state = getState();
     const futureRows = state.rows.filter((e: any) => e.id != payload);
 

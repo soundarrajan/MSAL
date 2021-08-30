@@ -1,10 +1,10 @@
 <div class="spot-nego-content">
   <div class="grid-in-accordion">
-    <div *ngFor="let loc of requests[selectedRequestIndex];let i = index">
+    <div *ngFor="let loc of locations;let i = index">
       <mat-expansion-panel [expanded]="i==0?false:false" style="margin-top: 1px;">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <app-loc-pan-data [title]="loc['location-name']"></app-loc-pan-data>
+            <app-loc-pan-data [reqLocation]="loc"></app-loc-pan-data>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>

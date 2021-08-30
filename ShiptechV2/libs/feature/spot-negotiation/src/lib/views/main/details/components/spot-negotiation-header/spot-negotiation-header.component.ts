@@ -9,7 +9,14 @@ import {
 } from '@angular/core';
 // import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { LocalService } from '../../../../../services/local-service.service';
+import {
+  SetCurrentRequest,
+  SetCurrentRequestSmallInfo
+} from '../../../../../store/actions/ag-grid-row.action';
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 @Component({
   selector: 'app-spot-negotiation-header',
@@ -20,31 +27,13 @@ export class SpotNegotiationHeaderComponent implements OnInit {
   @ViewChild('headerContainer') container: ElementRef;
   @ViewChild('requestContainer') requestcontainer: ElementRef;
   @ViewChild('inputSearch') inputSearch: ElementRef;
-  allRequestDetails = [];
-  selectedReqIndex = 0;
-  selectedReqIndexes = [0, 1, 2];
+
+  // Current request;
+  locations = [];
+  selReqIndex = 0;
   selectAll: boolean = true;
   availWidth: any;
-  requestOptions = [
-    {
-      request: 'Req 12321',
-      vessel: 'Merlion',
-      selected: true,
-      requestId: '01'
-    },
-    {
-      request: 'Req 12322',
-      vessel: 'Afif',
-      selected: true,
-      requestId: '02'
-    },
-    {
-      request: 'Req 12323',
-      vessel: 'Al Mashrab',
-      selected: true,
-      requestId: '03'
-    }
-  ];
+  requestOptions: Observable<any> = null;
   //showAddReq: boolean = false;
   displayVessel: boolean = false;
   expandedSearch: boolean = false;
@@ -52,54 +41,54 @@ export class SpotNegotiationHeaderComponent implements OnInit {
   expandRequestPopUp: boolean = false;
   displayedColumns: string[] = ['request', 'vessel'];
   counterpartyColumns: string[] = ['counterparty', 'blank'];
-  counterpartyList = [
-    { counterparty: 'Shell North America Division', selected: false },
-    { counterparty: 'Shell North America Division', selected: false },
-    { counterparty: 'Trefoil Oil and Sales', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false }
-  ];
+  counterpartyList: any = [];
+  visibleCounterpartyList: any = [];
+
   requestsAndVessels = [
-    { request: 'Req 100001', vessel: 'MerinLion', selected: false },
-    { request: 'Req 100002', vessel: 'Afif', selected: false },
-    { request: 'Req 100003', vessel: 'Al Mashrab', selected: false },
-    { request: 'Req 100004', vessel: 'Afif', selected: false },
-    { request: 'Req 100005', vessel: 'MerinLion', selected: false },
-    { request: 'Req 100006', vessel: 'Afif', selected: false },
-    { request: 'Req 100007', vessel: 'MerinLion', selected: false },
-    { request: 'Req 100008', vessel: 'Al Mashrab', selected: false }
+    { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
+    { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
+    { request: 'Demo Req 100003', vessel: 'Al Mashrab', selected: false },
+    { request: 'Demo Req 100004', vessel: 'Afif', selected: false },
+    { request: 'Demo Req 100005', vessel: 'MerinLion', selected: false },
+    { request: 'Demo Req 100006', vessel: 'Afif', selected: false },
+    { request: 'Demo Req 100007', vessel: 'MerinLion', selected: false },
+    { request: 'Demo Req 100008', vessel: 'Al Mashrab', selected: false }
   ];
   constructor(
+    private store: Store,
     private renderer: Renderer2,
     public dialog: MatDialog,
     private localService: LocalService
-  ) {}
-  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
-  ngOnInit(): void {
-    this.getJSONData();
+  ) {
+    // Set counterpartyList
+    this.counterpartyList = this.store.selectOnce(({ spotNegotiation }) => {
+      if (this.counterpartyList.length === 0) {
+        this.counterpartyList = spotNegotiation.staticLists[1].items;
+        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+      }
+    });
+
+    // Set observable;
+    this.requestOptions = this.store.select(({ spotNegotiation }) => {
+      if (spotNegotiation.currentRequestSmallInfo) {
+        this.setLocations(spotNegotiation.currentRequestSmallInfo.locations);
+      }
+
+      return spotNegotiation.requests;
+    });
   }
 
-  /*   addNewRequest(){
-    this.showAddReq = !this.showAddReq;
-  } */
+  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
+  ngOnInit(): void {
+    // Get data from store;
+  }
+
+  setLocations(eLocations: any): void {
+    this.locations = eLocations;
+  }
 
   removeRequest(i) {
-    this.requestOptions.splice(i, 1);
-    //this.displayVessel = false;
-    setTimeout(() => {
-      var headerWidth = this.container.nativeElement.offsetWidth;
-      var reqWidth = this.requestcontainer.nativeElement.offsetWidth;
-      this.availWidth = headerWidth - reqWidth;
-      if (this.availWidth < 485 || this.requestOptions.length > 5) {
-        this.displayVessel = true;
-      } else {
-        this.displayVessel = false;
-        //alert("b");
-      }
-    }, 0);
+    alert('asd');
   }
 
   addToCheckboxOptions() {
@@ -107,19 +96,11 @@ export class SpotNegotiationHeaderComponent implements OnInit {
       item => item.selected == true
     );
     for (var val of selectedVessel) {
-      this.requestOptions.push({
-        request: val.request,
-        vessel: val.vessel,
-        selected: true,
-        requestId: '04'
+      this.locations.push({
+        'location-name': 'ROTTERDAM',
+        'location-id': '1234',
+        'port-id': '1'
       });
-      this.allRequestDetails.push([
-        {
-          'location-name': 'ROTTERDAM',
-          'location-id': '1234',
-          'port-id': '1'
-        }
-      ]);
       const arrayIndex = this.requestsAndVessels.indexOf(val);
       this.requestsAndVessels.splice(arrayIndex, 1);
     }
@@ -135,22 +116,25 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     this.selectedRequest = '';
   }
 
-  selectedReqBtn = 0;
-  selReqIndex = 0;
   selectRequest(event, i, selected) {
     event.preventDefault();
     event.stopPropagation();
-    this.selectedReqBtn = i;
     this.selReqIndex = i;
-    var checkedItems = this.requestOptions.reduce(function(acc, curr, index) {
-      if (curr.selected) {
-        acc.push(index);
-      }
-      return acc;
-    }, []);
+
+    // Get small requests
+    var requests;
+    this.requestOptions.subscribe(e => {
+      return (requests = e);
+    });
+
+    // Set current request
+    this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
+
+    // Change locations
+    this.setLocations(requests[i].locations);
+
     var obj = {
-      seletedreqIndex: i,
-      checkedreqindexes: checkedItems
+      selReqIndex: i
     };
     this.selectionChange.emit(obj);
   }
@@ -164,13 +148,6 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {});
-  }
-
-  reqSelectionChange(evt) {
-    if (evt) {
-      this.selectedReqIndex = evt.seletedreqIndex;
-      this.selectedReqIndexes = evt.checkedreqindexes;
-    }
   }
 
   searchInput() {
@@ -194,16 +171,5 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     setTimeout(() => {
       //this.inputSearch.nativeElement.focus();
     }, 0);
-  }
-
-  private getJSONData() {
-    this.allRequestDetails = [];
-    this.requestOptions.forEach(element => {
-      this.localService
-        .getSpotDataRequestData(element.requestId)
-        .subscribe((res: any) => {
-          this.allRequestDetails.push(res);
-        });
-    });
   }
 }

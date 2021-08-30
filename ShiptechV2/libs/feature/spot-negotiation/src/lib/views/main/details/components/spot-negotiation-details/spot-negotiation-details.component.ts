@@ -26,9 +26,7 @@ import { SetStaticLists } from '../../../../../store/actions/ag-grid-row.action'
 export class SpotNegotiationDetailsComponent implements OnInit {
   @ViewChild('inputSection') inputSection: ElementRef;
   today = new FormControl(new Date());
-  @Input() requests;
-  @Input() selectedRequestIndex;
-  locations = [];
+  @Input() locations;
   public ETASelect: any;
   public gridOptions_counterparty: GridOptions;
   public gridOptions_details: GridOptions;
@@ -41,6 +39,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public frameworkComponents;
   private context: any;
   rowData_aggrid = [];
+
   public grid1Width = {
     width: '100%'
   };
@@ -49,7 +48,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   //   width: '50%'
   // }
   ngOnInit(): void {
-
     // Set static lists;
     this.route.data.subscribe(data => {
       this.store.dispatch(new SetStaticLists(data.staticLists));

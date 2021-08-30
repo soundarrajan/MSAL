@@ -8,9 +8,8 @@ describe('SpotNegotiationHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpotNegotiationHeaderComponent ]
-    })
-    .compileComponents();
+      declarations: [SpotNegotiationHeaderComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
