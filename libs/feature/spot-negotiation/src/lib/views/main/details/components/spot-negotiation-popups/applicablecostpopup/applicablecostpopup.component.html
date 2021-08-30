@@ -30,7 +30,7 @@
     <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() " style="font-size: 14px; display: inline; ">close</mat-icon>
       </div>
     </div>
-    
+
 </div>
   <hr class="hr-line">
      <div class="product-terms p-b-5 p-r-15 p-l-15">
@@ -38,10 +38,10 @@
       <table>
         <thead>
           <tr>
-            <th class="increment-circle-button" style="width: 30px;" (click)="addNewlocationbasedcost()"> 
+            <th class="increment-circle-button" style="width: 30px;" (click)="addNewlocationbasedcost()">
               <div class="increment-circle">
               <div class="plus">+</div>
-            </div> 
+            </div>
           </th>
             <th class=" text-left">Cost Type</th>
             <th class=" text-left">Cost Name</th>
@@ -64,19 +64,19 @@
               <div class="decrement-circle">
                 <div class="minus">-</div>
               </div>
-            </td>            
+            </td>
             <td class="">{{tabledata.costname}}</td>
             <td class="" >{{tabledata.costtype}}</td>
             <td class="text-left "> {{tabledata.maxqty}}</td>
             <td class="text-left ">{{tabledata.price }}</td>
-            <td class="text-left cell-dashed-border " contenteditable="true">   
+            <td class="text-left cell-dashed-border " contenteditable="true">
               <mat-form-field appearance="none">
                 <select matNativeControl>
                   <option value="volvo"></option>
                   <option value="saab"></option>
 
                 </select>
-              </mat-form-field>         
+              </mat-form-field>
             </td>
             <td class="text-left " > {{tabledata.extra}}</td>
             <td class="text-left ">{{tabledata.extraamt}} </td>
@@ -84,7 +84,7 @@
             <td class="text-left" > </td>
             <td class="text-left" > </td>
           </tr>
-         
+
           <ng-container *ngIf="isShown2">
             <tr class="border-bottom" id="commentList" *ngFor="let tabledata of  tabledataslocation;let j = index">
               <td class="decrement-circle-button" (click)="delete2(j)" style="width: 30px;">
@@ -96,14 +96,14 @@
               <td class="" ></td>
               <td class="text-left "> </td>
               <td class="text-left "> </td>
-              <td class="text-left cell-dashed-border " contenteditable="true">   
+              <td class="text-left cell-dashed-border " contenteditable="true">
                 <mat-form-field appearance="none">
                   <select matNativeControl>
                     <option value="volvo"></option>
                     <option value="saab"></option>
-  
+
                   </select>
-                </mat-form-field>         
+                </mat-form-field>
               </td>
               <td class="text-left  " > 5.5</td>
               <td class="text-left  ">5000 </td>
@@ -117,7 +117,6 @@
       </div>
     </div>
   </div>
- 
-  
+
+
   <!-- </mat-dialog-content> -->
-  

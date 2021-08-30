@@ -25,6 +25,12 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
+import { HttpClient } from '@angular/common/http';
+import {
+  SetCurrentRequestSmallInfo,
+  SetGroupOfRequestsId,
+  SetRequests
+} from '../../../store/actions/ag-grid-row.action';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -45,6 +51,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   generalTenantSettings: IGeneralTenantSettings;
 
   constructor(
+    private http: HttpClient,
     private store: Store,
     public bdnInformationService: BdnInformationApiService,
     private route: ActivatedRoute,
@@ -66,10 +73,26 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     >(TenantSettingsModuleName.General);
   }
 
-  getGroupOfRequests(): void{
+  getGroupOfRequests(): void {
     // Get current id from url and make a request with that data.
-    const requestID = this.route.snapshot.params.spotNegotiationId;
-    debugger;
+    const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
+    this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
+
+    // Demo response
+    const requestFromApiService = this.http.get(
+      './assets/data/demoData/group-of-request.json'
+    );
+
+    // Handle api requests
+    requestFromApiService.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      }
+
+      this.store.dispatch(new SetCurrentRequestSmallInfo(res.requests[0]));
+      this.store.dispatch(new SetRequests(res.requests));
+    });
 
     // Populate store;
   }
