@@ -135,7 +135,6 @@ import { WarningDeletePopupComponent } from './core/dialog-popup/warning-delete-
 import { InventoryReportPopupComponent } from './core/ops-inventory/popup-screens/inventory-report-popup/inventory-report-popup.component';
 import { MovDetailsComponent } from './core/ops-inventory/popup-screens/mov-details/mov-details.component';
 import { ChangeLogPopupComponent } from './core/dialog-popup/change-log-popup/change-log-popup.component';
-import { LocalService } from './services/local-service.service';
 import { AgGridCellStyleComponent } from './core/ag-grid/ag-grid-cell-style.component';
 import { AGGridCellDataComponent } from './core/ag-grid/ag-grid-celldata.component';
 import { AggridStatusChipComponent } from './core/ag-grid/ag-grid-status-chip.component';
@@ -353,7 +352,6 @@ import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-n
     SpotNegotiationService,
     DialogService,
     MessageService,
-    LocalService,
     ConfirmationService,
     DecimalPipe,
     DatePipe,

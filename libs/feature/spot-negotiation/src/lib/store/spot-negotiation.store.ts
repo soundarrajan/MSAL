@@ -533,8 +533,6 @@ export class SpotNegotiationStoreModel {
   constructor() {
     // Initialization inside the constructor
     this.staticLists = {};
-    this.rows = [];
-    this.selectedRows = [];
     this.requests = [];
     this.locations = [];
     this.additionalCost = [];
@@ -548,6 +546,9 @@ export class SpotNegotiationStoreModel {
     this.sellerComments = [];
     this.groupOfRequestsId = null;
     this.offerPriceHistory = null;
+    // Clean after we get full request info on locations.
+    this.rows = [];
+    this.selectedRows = [];
   }
 }
 
@@ -583,6 +584,7 @@ export class SpotNegotiationStore {
       currentRequestSmallInfo: payload
     });
   }
+
   // Requests
   @Action(SetCurrentRequest)
   setCurrentRequest(

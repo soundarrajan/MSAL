@@ -78,23 +78,25 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
 
-    // Demo response
-    const requestFromApiService = this.http.get(
+
+    const changeThis = this.spotNegotiationService.getGroupOfRequests(groupRequestIdFromUrl);
+
+    // Delete this;
+    const withThis = this.http.get(
       './assets/data/demoData/group-of-request.json'
     );
 
-    // Handle api requests
-    requestFromApiService.subscribe((res: any) => {
+    withThis.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;
       }
-
+      // Populate store;
       this.store.dispatch(new SetCurrentRequestSmallInfo(res.requests[0]));
       this.store.dispatch(new SetRequests(res.requests));
     });
 
-    // Populate store;
+
   }
 
   ngOnInit(): void {

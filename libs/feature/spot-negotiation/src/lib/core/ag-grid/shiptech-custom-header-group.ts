@@ -263,7 +263,7 @@ export class ShiptechCustomHeaderGroup {
     @Inject(DOCUMENT) private _document: HTMLDocument
   ) {}
 
-  onCounterPartyCheckBoxChange(checkbox: any, element: any) {
+  onCounterPartyCheckBoxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
       // Add to selected counterparty list
       this.selectedCounterParty.push(element);

@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { defer, Observable, of, throwError } from 'rxjs';
+import { defer, Observable, of, Subject, throwError } from 'rxjs';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { Store } from '@ngxs/store';
@@ -12,6 +12,8 @@ import { SpotNegotiationApi } from './api/spot-negotiation-api';
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
   implements OnDestroy {
+  private futureSetTabIndex = new Subject<any>();
+
   constructor(
     protected store: Store,
     private urlService: UrlService,
@@ -36,6 +38,28 @@ export class SpotNegotiationService extends BaseStoreService
   @ObservableException()
   getStaticLists(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getStaticLists(payload);
+  }
+
+  /**
+   * Get group of request when window loads.
+   * @param payload = int
+   */
+  @ObservableException()
+  getGroupOfRequests(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getGroupOfRequests(payload);
+  }
+
+  /**
+   * Fake populate rows
+   */
+  public getSpotDataJSON(): any {
+    return this.store.selectSnapshot(state => {
+      return state.spotNegotiation.rows;
+    });
+  }
+
+  public getFutureSettlementTabChange(): Observable<any> {
+    return this.futureSetTabIndex.asObservable();
   }
 
   ngOnDestroy(): void {

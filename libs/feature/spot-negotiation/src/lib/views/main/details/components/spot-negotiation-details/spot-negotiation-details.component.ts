@@ -15,7 +15,7 @@ import { GridOptions } from 'ag-grid-community';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
 import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-custom-header-group';
-import { LocalService } from '../../../../../services/local-service.service';
+import { SpotNegotiationService } from '../../../../../services/spot-negotiation.service';
 import { SetStaticLists } from '../../../../../store/actions/ag-grid-row.action';
 
 @Component({
@@ -66,7 +66,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private store: Store,
-    private localService: LocalService
+    private spotNegotiationService: SpotNegotiationService
   ) {
     this.context = { componentParent: this };
     this.rowSelection = 'single';
@@ -139,7 +139,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   private getGridData() {
     //Grid Data
-    this.rowData_aggrid = this.localService.getSpotDataJSON();
+    this.rowData_aggrid = this.spotNegotiationService.getSpotDataJSON();
     this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
   }
 
