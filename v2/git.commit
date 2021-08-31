@@ -1,7 +1,9 @@
-﻿commit 62370d8d54d6f296dc0a19db3b9259fdee4e2c4d
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 31 17:35:42 2021 +0300
+﻿commit df9932ec86cd74286638ff7609a8391406e5507f
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Aug 31 15:07:29 2021 +0000
 
-    Merged 35035 on master
+    Merged PR 13325: #35049: Bunker Plan: Field popup closes when cursor clicked anywhere issue has fixed
+    
+    Related work items: #35049
 
 branch: master
