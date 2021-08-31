@@ -19,6 +19,7 @@
                 <span class="search-product-lookup"> </span>
                 <input
                   matInput
+                  (input)="search($event.target.value)"
                   placeholder="Search and select counterparty"
                   class="search-product-input"
                 />
@@ -31,7 +32,7 @@
               class="delivery-products-pop-up col-md-12 no-padding"
               mat-table
               (click)="$event.stopPropagation()"
-              [dataSource]="counterpartyList"
+              [dataSource]="visibleCounterpartyList"
             >
               <ng-container matColumnDef="counterparty">
                 <th mat-header-cell *matHeaderCellDef>Counterparty</th>
@@ -41,7 +42,7 @@
                       [value]="element"
                       [(ngModel)]="element.selected"
                     >
-                      {{ element.counterparty }}
+                      {{ element.name }}
                     </mat-checkbox>
                   </mat-option>
                 </td>
@@ -78,7 +79,6 @@
       <div *ngIf="expandedSearch" style="display:flex" class="search-input">
         <input
           type="search"
-          (focusout)="searchInput()"
           #inputSearch
           autofocus
           placeholder="Search counterparty"

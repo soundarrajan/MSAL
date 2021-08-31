@@ -60,18 +60,20 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     public dialog: MatDialog,
     private localService: LocalService
   ) {
-    // Set counterpartyList
-    this.counterpartyList = this.store.selectOnce(({ spotNegotiation }) => {
-      if (this.counterpartyList.length === 0) {
-        this.counterpartyList = spotNegotiation.staticLists[1].items;
-        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
-      }
-    });
-
     // Set observable;
     this.requestOptions = this.store.select(({ spotNegotiation }) => {
+      // Set locations
       if (spotNegotiation.currentRequestSmallInfo) {
         this.setLocations(spotNegotiation.currentRequestSmallInfo.locations);
+      }
+
+      // Set counterpartyList
+      if (
+        this.counterpartyList.length === 0 &&
+        spotNegotiation.staticLists.length > 0
+      ) {
+        this.counterpartyList = spotNegotiation.staticLists[1].items;
+        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
 
       return spotNegotiation.requests;
@@ -150,9 +152,26 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {});
   }
 
-  searchInput() {
+  search(userInput: string): void {
     this.expandedSearch = false;
+
+    this.visibleCounterpartyList = this.counterpartyList
+      .filter(e => {
+        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+          return true;
+        }
+        return false;
+      })
+      .slice(0, 7);
   }
+
+  limitStrLength = (text, max_length) => {
+    if (text.length > max_length - 3) {
+      return text.substring(0, max_length).trimEnd() + '...';
+    }
+
+    return text;
+  };
 
   showSearch() {
     setTimeout(() => {
