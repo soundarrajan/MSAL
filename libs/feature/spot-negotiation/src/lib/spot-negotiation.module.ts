@@ -165,6 +165,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
+import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
 
 @NgModule({
   imports: [
@@ -286,6 +287,7 @@ import { SpotNegotiationNewCommentsComponent } from './views/main/details/compon
     AGGridCellActionsComponent,
     AGGridCellMenuPopupComponent,
     // Components
+    SpotnegoSendRfqComponent,
     MovDetailsComponent,
     FooterV2Component,
     SpotNegotiationNewCommentsComponent,
@@ -338,7 +340,8 @@ import { SpotNegotiationNewCommentsComponent } from './views/main/details/compon
     SpotnegoConfirmorderComponent,
     EmailPreviewPopupComponent,
     ContactinformationpopupComponent,
-    SpotnegoPricingDetailsComponent
+    SpotnegoPricingDetailsComponent,
+    SpotnegoSendRfqComponent
   ],
   exports: [],
   providers: [
