@@ -1,7 +1,7 @@
-﻿commit 55a9bedecad62e80d7e1e732826106cc9506b61f
+﻿commit 62370d8d54d6f296dc0a19db3b9259fdee4e2c4d
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 24 13:55:17 2021 +0300
+Date:   Tue Aug 31 17:35:42 2021 +0300
 
-     Fixed calculation   for Unit additional  Costs , Amount , Total and Difference value is not getting changed when Invoice rate is changed for master
+    Merged 35035 on master
 
 branch: master

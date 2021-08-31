@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/tslint/config */
 import {
   ChangeDetectionStrategy,
   Component,
@@ -44,8 +45,17 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
   previousInvoice: any;
   nextInvoice: any;
   noMoreInvoices: boolean = false;
+
   invoiceIds = this.activatedRoute.snapshot.params.invoiceIds.split(',');
-  pdfSrc: any; // demo only
+  // pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf';
+  pdfSrc: string;
+  rotation = 0;
+  zoom = 1;
+  zoomScale = 'page-width';
+  zoomOptions = [25, 50, 75, 100, 125, 150, 200, 300, 400];
+  zoomOption = 100;
+  zoomOptionIndex = 3;
+  switchTheme: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -117,7 +127,16 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
     if (indexOfCurrentInvoice == this.invoiceIds.length - 1) {
       this.nextInvoice = false;
     }
+
+    this.resetPdfViewerOptions();
     this.getInvoiceItem(this.currentInvoice);
+  }
+
+  resetPdfViewerOptions() {
+    this.rotation = 0;
+    this.zoom = 1;
+    this.zoomOption = 100;
+    this.zoomOptionIndex = 3;
   }
 
   approveInvoiceItem() {
@@ -140,8 +159,8 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
           this.toastr.error(response);
         } else {
           this.toastr.success('Invoiced Approved!');
-          var nextInvoiceId = this.invoiceIds[this.nextInvoice];
-          var prevInvoiceId = this.invoiceIds[this.nextInvoice];
+          const nextInvoiceId = this.invoiceIds[this.nextInvoice];
+          const prevInvoiceId = this.invoiceIds[this.nextInvoice];
           if (this.nextInvoice !== false) {
             this.invoiceIds.splice(
               this.invoiceIds.indexOf(this.currentInvoice),
@@ -163,7 +182,7 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
   }
 
   setAdditionalCostLine() {
-    let validCostDetails = [];
+    const validCostDetails = [];
     if (this.detailFormvalues.costDetails.length > 0) {
       this.detailFormvalues.costDetails.forEach((v, k) => {
         if (typeof v.product != 'undefined' && v.product != null) {
@@ -205,8 +224,8 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
           this.toastr.error(response);
         } else {
           this.toastr.success('Invoiced Rejected!');
-          var nextInvoiceId = this.invoiceIds[this.nextInvoice];
-          var prevInvoiceId = this.invoiceIds[this.nextInvoice];
+          const nextInvoiceId = this.invoiceIds[this.nextInvoice];
+          const prevInvoiceId = this.invoiceIds[this.nextInvoice];
           if (this.nextInvoice !== false) {
             this.invoiceIds.splice(
               this.invoiceIds.indexOf(this.currentInvoice),
@@ -225,5 +244,40 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+
+  rotateClockWiseDoc() {
+    this.rotation += 90;
+  }
+
+  rotateAntiClockWiseDoc() {
+    this.rotation -= 90;
+  }
+
+  zoomIn() {
+    if (this.zoomOptionIndex < 8) {
+      this.zoomOptionIndex += 1;
+      this.zoomOption = this.zoomOptions[this.zoomOptionIndex];
+      this.zoom = (this.zoomOption / 25) * 0.25;
+    }
+  }
+
+  zoomOut() {
+    if (this.zoomOptionIndex > 0) {
+      this.zoomOptionIndex -= 1;
+      this.zoomOption = this.zoomOptions[this.zoomOptionIndex];
+      this.zoom = (this.zoomOption / 25) * 0.25;
+    }
+  }
+
+  selectZoomLevel(value) {
+    const findIndex = _.findIndex(this.zoomOptions, function(obj) {
+      return obj === value;
+    });
+    if (findIndex !== -1) {
+      this.zoomOptionIndex = findIndex;
+      this.zoomOption = this.zoomOptions[this.zoomOptionIndex];
+      this.zoom = (this.zoomOption / 25) * 0.25;
+    }
   }
 }
