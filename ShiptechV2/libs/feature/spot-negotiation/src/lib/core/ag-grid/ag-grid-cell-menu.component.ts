@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { LocalService } from '../../services/local-service.service';
 import { Router } from '@angular/router';
+import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 
 // Not found
 // import { OperationalAmountDialog } from 'src/app/movements/popup-screens/operational-amount.component';
@@ -256,10 +257,10 @@ export class AGGridCellMenuPopupComponent implements ICellRendererAngularComp {
     private router: Router,
     public dialog: MatDialog,
     private elem: ElementRef,
-    private service: LocalService
+    private spotNegotiationService: SpotNegotiationService
   ) {
     // Close the opened matmenu on tab change
-    this.service.getFutureSettlementTabChange().subscribe(index => {
+    this.spotNegotiationService.getFutureSettlementTabChange().subscribe(index => {
       if (
         this.hovermenuTriggerLeftGrid &&
         this.hovermenuTriggerLeftGrid.menuOpen

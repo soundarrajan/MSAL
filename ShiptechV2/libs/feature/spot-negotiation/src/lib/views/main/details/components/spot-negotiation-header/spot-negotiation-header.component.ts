@@ -12,7 +12,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { LocalService } from '../../../../../services/local-service.service';
 import {
   SetCurrentRequest,
   SetCurrentRequestSmallInfo
@@ -58,9 +57,9 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     private store: Store,
     private renderer: Renderer2,
     public dialog: MatDialog,
-    private localService: LocalService
   ) {
     // Set observable;
+
     this.requestOptions = this.store.select(({ spotNegotiation }) => {
       // Set locations
       if (spotNegotiation.currentRequestSmallInfo) {
