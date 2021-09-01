@@ -1,9 +1,7 @@
-﻿commit df9932ec86cd74286638ff7609a8391406e5507f
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Aug 31 15:07:29 2021 +0000
+﻿commit 96dbd70b54fc127198886cdfcb1ec2b0bf7b0706
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Sep 1 15:34:01 2021 +0300
 
-    Merged PR 13325: #35049: Bunker Plan: Field popup closes when cursor clicked anywhere issue has fixed
-    
-    Related work items: #35049
+    Freezed the horizontal scrollbar when the document is rotated sideways on master
 
 branch: master
