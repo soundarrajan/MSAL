@@ -1716,7 +1716,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             event.preventDefault();
             $("#timeline").click();
             if (event.which == 3) {
-                var voyageDetailId = $(this).attr("voyage-detail-id");
+                var voyageDetailId = parseFloat($(this).attr("voyage-detail-id"));
+                var currentDate = $(this).attr('cell-identifier').split(' <> ')[0];
                 removePopups();
                 $(".contextmenu").css("display", "block");
 	            
@@ -1809,7 +1810,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 	}
                 })
                 rightClickPopoverData = {};
-                rightClickPopoverData.todayVoyages = object;
+   
+                var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
+
+                rightClickPopoverData.todayVoyages = _.filter(object, function(el) {
+                    if (displayScheduleBasedOn === 'Delivery Date' && el.voyageDetail.deliveryFrom) {
+                        return el.voyageDetail.deliveryFrom.split("T")[0]  == currentDate;
+                    } else {
+                        return el.voyageDetail.eta.split("T")[0] == currentDate;
+                    }
+                });
                 rightClickPopoverData.bunkerDetails = todaysBunkerDetails;
                 rightClickPopoverData.productTypeView = ctrl.productTypeView;
                 $scope.rightClickPopoverData = rightClickPopoverData;
@@ -1827,7 +1837,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
                 }
 
-                $('.contextmenu').css("top", "-400px");
+               $('.contextmenu').css("top", "-400px");
                 setTimeout(function() {
                     var heightElement = $('.contextmenu').height();
                     var scrollTop  = $(window).scrollTop();
@@ -1841,6 +1851,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         $('.contextmenu').css("top", $(currentElem).offset().top - 15);
                     } else {
                         $('.contextmenu').css("top", $(currentElem).offset().top - heightElement - 36);
+                    }
+
+                    if (heightElement > $(currentElem).offset().top) {
+                        console.log('set max-height');
+                        $('.contextmenu').css('margin-top', heightElement - $(currentElem).offset().top);
+                        $('.contextmenu').css('max-height', $(currentElem).offset().top);
+                        $('.contextmenu').css('overflow', 'auto !important');
                     }
                     setTimeout(function() {
                         $('.contextmenu').css("visibility", "visible");
@@ -1948,6 +1965,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             console.log("DELETE");
             console.log(ctrl);
         });
+
 
 
         $(document).on("mouseout", "span[voyage-detail-id]", function(e) {
@@ -2207,10 +2225,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }, false);
  
         document.addEventListener('scroll', function (e) {
-           if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
-                $(".contextmenu").css("display", "none");
-
-            }   
+            if (!$(event.target).hasClass("contextmenu")) {
+                if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
+                    $(".contextmenu").css("display", "none");
+                } 
+            }  
         }, true);
 
 		jQuery(document).ready(function(){
