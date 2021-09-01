@@ -622,7 +622,7 @@
                                                         <div
                                                             class="form_input form_input_{{ $ctrl.portFields.locationName.name }} input-group">
                                                             {{ $ctrl.data.location.name | decodeReadOnly}}
-                                                            <span ng-if="$ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location.id)"></span>
+                                                            <span ng-if="$ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location, false)"></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -646,7 +646,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="input-group form_input">
-                                                            <input ng-if="!$ctrl.isEnabledVessel" class="typeahead form-control"
+                                                            <!-- <input ng-if="!$ctrl.isEnabledVessel" class="typeahead form-control"
                                                                    id="id_{{ $ctrl.portFields.locationName.name }}"
                                                                    name="{{ $ctrl.portFields.locationName.caption | translate }}"
                                                                    ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
@@ -678,6 +678,23 @@
 
                                                                 <a class=" btn default">
                                                                     <i class="fa fa-anchor"></i>
+                                                                </a>
+                                                            </span> -->
+                                                            <input class="typeahead form-control"
+                                                                id="id_{{ $ctrl.portFields.locationName.name }}"
+                                                                name="{{ $ctrl.portFields.locationName.caption | translate }}"
+                                                                ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
+                                                                ng-model="$ctrl.data.location" decode-input-format
+                                                                required typeahead-append-to-body="true"
+                                                                typeahead-editable="false"
+                                                                typeahead-on-select="$ctrl.selectPort($item, true)"
+                                                                uib-typeahead="location as location.name for location in $ctrl.lists.Location | typeaheadCustomFilter:$viewValue:'name'" />
+                                                            <span ng-if="$ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location, false)"></span>
+                                                            <span class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'procurement_bunkerableport', 'Location' ,'location','','', null, $ctrl.data.vessel);"
+                                                                  ng-controller="Controller_Master as CM">
+                                                                <a class=" btn default" href="">
+                                                                    <i class="fa fa-search"></i>
                                                                 </a>
                                                             </span>
                                                         </div>
@@ -1561,7 +1578,7 @@
                                         <a href="v2/contracts/contract/{{ product.contract.id }}/details"
                                            ng-disabled="!product.contract.id || product.requestOfferId"
                                            style="display: block; float: left;margin-top: 10px; margin-right: 10px;">
-                                            show
+                                            {{product.contract.id}}
                                         </a>
                                         <div class="input-group"
                                              ng-init="$ctrl.getOrderContractOptions(product, false, false, key)">

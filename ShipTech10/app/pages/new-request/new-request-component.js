@@ -2059,6 +2059,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     ctrl.request.vesselDetails.estimatedRedeliveryDate = vessel.estimatedRedelivery;
                     ctrl.request.vesselDetails.latestRedeliveryDate = vessel.latestRedelivery;
                 });
+
+                ctrl.getFilteredOperatorsAutocomplete(vessel.id);
+
                 ctrl.robDetails = {
                     robDate: server_data.payload.robDate,
                     robDoGoDeliveryUom: server_data.payload.robDoGoDeliveryUom,
@@ -2086,6 +2089,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 };
             });
         };
+		ctrl.getFilteredOperatorsAutocomplete = (vesselId) => {
+			// payload = {"Payload" : vesselId};
+			payload = { Payload: vesselId }
+            $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/user/getVesselOperators`, payload).then((response) => {
+                if (response.data.payload != 'null') {
+                	ctrl.operatorListFiltered = response.data.payload;
+                	console.log(ctrl.operatorListFiltered);
+                }
+            });
+		}        
         ctrl.selectOperator = function(operator) {
             ctrl.request.operatorBy = operator;
             ctrl.captureReasonModal(null,null,"REQUEST_OPERATOR", "operatorBy");
@@ -3146,18 +3159,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return true;
         };
         ctrl.checkValidMQTRs = function() {
-            let text = '';
+            let text = ''; 
             if(ctrl.requestTenantSettings.isRequestMinimumQuantityToReachMandatory){
                 $.each(ctrl.request.locations, (key, val) => {
                     $.each(val.products, (key2, val2) => {
                         if(val2.id==null){
                              if(val2.minimumQuantitiesToReach==undefined){ 
-                                text = 'The following fields are required minimumQuantitiesToReach  '+ ctrl.request.locations[key].location.name+':-'+ctrl.request.locations[key].products[key2].product.name;
-                                ctrl.request.locations[key].products[key2].minimumQuantitiesToReach = null;           
+                                text = 'The following fields are required minimumQuantitiesToReach  '+ ctrl.request.locations[key].location.name+':-'+ctrl.request.locations[key].products[key2].product.name;         
                              }
                         }else if(val2.productStatus.id!==14 && val2.minimumQuantitiesToReach.length==0 ){
                                 text = 'The following fields are required minimumQuantitiesToReach  '+ ctrl.request.locations[key].location.name+':-'+ctrl.request.locations[key].products[key2].product.name;
-                                ctrl.request.locations[key].products[key2].minimumQuantitiesToReach = null
                         }
                     });
                 });
@@ -3865,6 +3876,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             a.val.name = decodeHtmlEntity(_.unescape(a.val.name));
                             ctrl.request.locations[idx].buyer = a.val;
                         }
+                        if (a.elem[a.elem.length - 1] == 'terminal') {
+                            var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
+                            let terminal = $scope.locationTerminal[idx].find(t => t.id == a.val.id);
+                            ctrl.request.locations[idx].terminal = terminal;
+                        }
                         if (a.elem[a.elem.length - 1] == 'destinationInput') {
                             var idx = $scope.modalGetIndex(a.elem[a.elem.length - 2]);
                             if(a.val.voyageCode) {
@@ -4113,7 +4129,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 						ctrl.enableReport = true;
 			        } else {
                         if (window.location.href.indexOf("group-of-requests") == -1) {
-			                toastr.error('Error occured while getting reports data!');
+                            response.data.Reference ? Reference = response.data.Reference : Reference = response.data.reference;
+                            toastr.error(`Error occured while getting reports data! <br> Reference : ${Reference}`);
                         }
 			        }
 			    }

@@ -119,10 +119,10 @@
                 <div class="caption">
                     <span class="caption-subject">
                         Vessel Details
-                        <span  ng-if="$ctrl.request.vesselDetails.vessel.is2MDelivery==1" class="entity-status ng-binding ng-scope" style="color:red">
+                        <span ng-if="$ctrl.request.vesselDetails.vessel.is2MDelivery==1" class="entity-status ng-binding ng-scope" style="color:red">
                             2M DELIVERY
                         </span>
-                        <span style="color:red"> {{ $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name }}</span>
+                        <span ng-if="$ctrl.request.vesselDetails != null && $ctrl.request.vesselDetails.vessel != null && $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup != null && $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name != null" style="color:red"> ISO:{{ $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name }}</span>
                         <!--
                         <span class="caption-subject" >
                         Vessel Details
@@ -259,8 +259,8 @@
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>                                        
-                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.OperatorBy.name }}" id="id_{{ $ctrl.vesselDetailsFields.OperatorBy.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" ng-required="$ctrl.isOperatorRequired()">
-                                            <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
+                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.OperatorBy.name }}" id="id_{{ $ctrl.vesselDetailsFields.OperatorBy.name }}" uib-typeahead="entity.userName as entity.userName for entity in $ctrl.operatorListFiltered | typeaheadCustomFilter:$viewValue:'userName'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" ng-required="$ctrl.isOperatorRequired()">
+                                            <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name, 'request-operator', $ctrl.request)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                                 <i class="fa fa-search"></i>
                                             </span>
                                         </div>
@@ -928,11 +928,12 @@
                                                         {{ 'PAGES.NEW_REQUEST.TERMINAL' | translate }}  
                                                         <span ng-if="$ctrl.requestTenantSettings.isRequestTerminalMandatory" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
-                                                    <!-- ng-options="item as item.name for item in CM.listsCache.Uom track by item.id " -->
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal[$index] track by terminal.terminalCode" 
-                                                            ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
+                                                            <input decode-input-format name="Terminal" id="id_Terminal" class="typeahed form-control" uib-typeahead="terminal as terminal.descriptions for terminal in locationTerminal[$index] | typeaheadCustomFilter:$viewValue:'descriptions'" ng-model="location.terminal" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory" typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)" ng-blur="location.terminal.descriptions == null || location.terminal.descriptions == '' ? location.terminal = null : '' ;" ng-value="location.terminal.descriptions" ng-disabled="$ctrl.disableAllFields">
+                                                            <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_terminallist', 'Terminal','$ctrl.location[' + $index + '].terminal' ,'','', null, location.location)" ng-disabled="$ctrl.disableAllFields">
+                                                                <i class="glyphicon glyphicon-search"></i>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>

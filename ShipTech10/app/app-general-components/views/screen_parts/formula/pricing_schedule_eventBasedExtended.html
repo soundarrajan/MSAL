@@ -37,7 +37,7 @@
                     <span  ng-init='options.BusinessCalendar ? return : CM.getOptions({"Name": "BusinessCalendar", "Type": "dropdown", "masterSource": "BusinessCalendar"});'>
                         <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.BusinessCalendar track by item.id " ng-model="formValues.pricingScheduleOptionEventBasedExtended.fromBusinessCalendar"></select>
                     </span>
-                    <span class="input-group-btn">
+                    <span style="width: 1%;display: table-cell;padding-left: 10px;">
                         <label  for="pricing_schedule_days_before" class="pricing_schedule_days_before_label">
                             {{ CM.app_id + '.BUSINESS_DAYS_BEFORE_EXCLUDING' | translate }}
                         </label>
@@ -73,7 +73,7 @@
                     <span  ng-init='options.BusinessCalendar ? return : CM.getOptions({"Name": "BusinessCalendar", "Type": "dropdown", "masterSource": "BusinessCalendar"});'>
                         <select class="form-control bs-select  changeIT" ng-options="item as item.name for item in options.BusinessCalendar track by item.id " ng-model="formValues.pricingScheduleOptionEventBasedExtended.toBusinessCalendar"></select>
                     </span>
-                    <span class="input-group-btn">
+                    <span style="width: 1%;display: table-cell;padding-left: 10px;">
                         <label  for="pricing_schedule_days_before" class="pricing_schedule_days_before_label">
                             {{ CM.app_id + '.BUSINESS_DAYS_AFTER_EXCLUDING' | translate }}
                         </label>

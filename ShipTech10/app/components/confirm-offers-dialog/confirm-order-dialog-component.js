@@ -290,6 +290,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     let item = {};
                     let product;
                     // product = pv;
+                    item.contractId = v.contract.id;
                     item.sellerName = v.seller.name;
                     item.existingOrderId = v.existingOrderId;
                     item.locationName = v.location.name;

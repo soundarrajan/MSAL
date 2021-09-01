@@ -261,25 +261,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
 
-        ctrl.getPortVisible = function(orderId,data){
+        ctrl.getPortVisible = function(orderId,data) {
             ctrl.PortLocationEditable = false;
-            if(orderId != null && data.status != null && data.status != undefined){
+            if(orderId != null && data.status != null && data.status != undefined) {
                 ctrl.isEnabledVessel = false;
-                if(data.status.name == 'Stemmed' || data.status.name == 'Confirmed' || data.status.name == 'Approved'){
+                if(ctrl.procurementSettings.order?.optionToChangePort?.name == 'Yes' && ctrl.relatedOrders.length > 0 && ctrl.relatedOrders[0].deliveryCount == 0 && (data.status.name == 'Stemmed' || data.status.name == 'Confirmed' || data.status.name == 'Approved')) {
                     ctrl.PortLocationEditable = true;
                     ctrl.isEnabledVessel = true;
                 }
-
                 // data.status.name == 'Cancelled' || data.status.name == 'Delivered' || data.status.name == 'PartiallyDelivered' || data.status.name == 'Invoiced' || data.status.name == 'PartiallyInvoiced'
                 // else if(data.status == null || $ctrl.data.status.name == 'Stemmed' || $ctrl.data.status.name == 'Confirmed' || $ctrl.data.status.name == 'Approved')
-
             }
-            else{
+            else { // esle : for new orders enable port change
                 ctrl.isEnabledVessel = false;
                 ctrl.PortLocationEditable = true;
             }
-            
-
         };
 
         ctrl.canCloseOrder = function() {
@@ -325,14 +321,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
         }
 
-        ctrl.setAdditionalCostsForLocation = function() {
+        ctrl.setAdditionalCostsForLocation = function(locationId) {
             let apiJSON = {
                 Payload: {
                     Order: null,
                     Filters: [
                         {
                             ColumnName: 'LocationId',
-                            Value: ctrl.data.location.id
+                            Value: locationId
                         }
                     ],
                     Pagination: {
@@ -408,7 +404,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                             obj.extras = addCostRow.additionalCost.extrasPercentage;
                             obj.isDeleted = addCostRow.additionalCost.isDeleted;
                             filteredAddCostList.push(obj);
-                        }
+                    }
                 }
             }
             return filteredAddCostList;
@@ -626,22 +622,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.data = data.payload;
             ctrl.getOrderinitialSnapshot = angular.copy(ctrl.data);
             ctrl.PortLocationEditable = false;
-            if(ctrl.data != undefined && ctrl.data != null){
-                if(ctrl.orderId != null && ctrl.data.status != null && ctrl.data.status != undefined){
-                   ctrl.isEnabledVessel = false;
-                    if (ctrl.relatedOrders.length > 0) {
-	                    if(ctrl.relatedOrders[0].deliveryCount ==0 && ctrl.data.vesselVoyageDetailId != null && (ctrl.data.status.name == 'Stemmed' || ctrl.data.status.name == 'Confirmed' || ctrl.data.status.name == 'Approved')){
-	                        ctrl.PortLocationEditable = true;
-	                        ctrl.isEnabledVessel = true;
-	                        
-	                    }
-                    }
-                }
-                else{
-                    ctrl.PortLocationEditable = true;
-                    ctrl.isEnabledVessel = false;
-                }
-            }
+            ctrl.getPortVisible(ctrl.orderId, ctrl.data);
             $.each(ctrl.data.products, (k, v) => {
                 if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
@@ -955,20 +936,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }
                 
             // }
-           
-           
-
         }
-
         
         ctrl.selectVesselSchedulesPort = function(locations) {
             ctrl.EnableSingleSelect = false;
             ctrl.data.oldLocation = angular.copy(ctrl.data.location);
-            ctrl.data.location.name = locations[0].locationName;
-            ctrl.data.location.id = locations[0].locationId;
-            ctrl.data.eta = locations[0].eta;
-            ctrl.data.recentEta = locations[0].recentETA;
-            ctrl.data.vesselVoyageDetailId = locations[0].vesselVoyageDetailId;
+            if(locations && locations.length > 0) {
+                // ctrl.data.location.name = locations[0].locationName;
+                // ctrl.data.location.id = locations[0].locationId;
+                ctrl.data.eta = locations[0].eta;
+                ctrl.data.recentEta = locations[0].recentETA ?? locations[0].recentEta;
+                ctrl.data.vesselVoyageDetailId = locations[0].vesselVoyageDetailId;
+            }
 
             var isAvailablecontract = false;
             if(ctrl.data.products != undefined && ctrl.data.products.length != 0){
@@ -982,19 +961,17 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
 
-            
-            console.log("Suresh R", ctrl.data)
-           
-            ctrl.selectPort(ctrl.data.location.id, true);
-           $.each(ctrl.data.products, (k, v) => {
-           // v.price =null;
-            v.contract = null;
-            v.formula = null;
-            v.formulaDescription = null;
-            v.contractId = null;
+            $.each(ctrl.data.products, (k, v) => {
+                // v.price =null;
+                v.contract = null;
+                v.formula = null;
+                v.formulaDescription = null;
+                v.contractId = null;
+                v.contractProductId = null;
+                v.agreementType = ctrl.defaultSpotAgreementType;
 
-            ctrl.productPriceChanged(v);
-            ctrl.changedProductContract();
+                ctrl.productPriceChanged(v);
+                ctrl.changedProductContract();
             });
         }
 
@@ -1996,7 +1973,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
 
-        ctrl.selectPort = function(locationId, isManualChange) {
+        ctrl.selectPort = function(selectedLocation, isManualChange) {
+            let locationId = selectedLocation.id;
             let location,
                 productList,
                 agent = {};
@@ -2010,6 +1988,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ctrl.data.agentCounterparty.id = defaultAgent.counterpartyId;
                         ctrl.data.agentCounterparty.name = defaultAgent.counterpartyName;
                     }
+                }
+                let selectedLocations = undefined;
+                if(selectedLocation.eta) {
+                    selectedLocations = [];
+                    selectedLocations.push(selectedLocation);
+                } else {
+                    ctrl.data.vesselVoyageDetailId = null;
+                }
+                if (isManualChange) {
+                    ctrl.selectVesselSchedulesPort(selectedLocations);
                 }
                 ctrl.data.location = {
                     code: location.code,
@@ -2030,7 +2018,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 });
             }
             // On location change get location-wise additional costs master
-            ctrl.setAdditionalCostsForLocation();
+            ctrl.setAdditionalCostsForLocation(locationId);
             ctrl.evaluateAdditionalCostList();
         };
 
@@ -2455,7 +2443,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     product.amount = Number(product.confirmedQtyPrice) * Number(confirmedQuantityOrMaxQuantity) * Number(product.price);
                 } else {
                 	if (!product.contractProductId) {
-	                    lookupModel.getConvertedUOM(ctrl.data.products[0].product.id, 1, product.quantityUom.id, product.priceUom.id, product.id).then((server_data) => {
+	                        lookupModel.getConvertedUOM(ctrl.data.products[0].product.id, 1, product.quantityUom.id, product.priceUom.id, product.id).then((server_data) => {
 	                        product.confirmedQtyPrice = server_data.payload;
 	                        product.amount = Number(product.confirmedQtyPrice) * Number(confirmedQuantityOrMaxQuantity) * Number(product.price);
 	                    }).catch((e) => {
@@ -4423,7 +4411,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ctrl.data.carrierCompany = a.val;
                     }
                     if (a.elem[0] == 'location') {
-                        ctrl.selectPort(a.val.id);
+                        ctrl.selectPort(a.val, true);
                     }
                     if (a.elem[0] == 'broker') {
                         ctrl.data.broker = a.val;

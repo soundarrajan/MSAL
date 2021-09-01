@@ -40,6 +40,7 @@
 							class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
 							typeahead-wait-ms="100" id="Product_{{$index}}_tank_Product" ng-required="true"
 							name="tank_Product" autocomplete="off" typeahead-no-result="noResults"
+							typeahead-on-select="selectVesselProduct(formValues.vesselProducts[$index].product, $index)"
 							typeahead-editable="false"/>
 						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Tank Product', 'product', 'formValues.vesselProducts', $index,'Product_tank_Product', 'master_selectMotProductTypeId','');" ng-init="modal = false">
 							<a class=" btn default">
@@ -48,13 +49,13 @@
 						</span>
 					</div>
 				</td>
-				<td><input type="text" name="tankSuctionLimit_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].tankSuctionLimit" format="number"></td>
-				<td><input type="text" name="receivingRate_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].receivingRate" format="number"></td>
-				<td><input type="text" name="debunkerRate_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].debunkerRate" format="number"></td>
-				<td><input type="text" name="fillLimit_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].fillLimit" format="number"></td>			
-				<td><input type="text" name="storageCapacity_m3_{{ $index }}" disabled ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityM3" format="number"></td>			
-				<td><input type="text" name="storageCapacity_mt_{{ $index }}" disabled ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityMt" format="number"></td>			
-				<td><input type="text" name="density_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].density" format="number"></td>			
+				<td><input type="text" name="tankSuctionLimit_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].tankSuctionLimit" format="number:0"></td>
+				<td><input type="text" name="receivingRate_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].receivingRate" format="number:0"></td>
+				<td><input type="text" name="debunkerRate_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].debunkerRate" format="number:0"></td>
+				<td><input type="text" name="fillLimit_{{ $index }}" ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].fillLimit" format="number:0"></td>			
+				<td><input type="text" name="storageCapacity_m3_{{ $index }}" disabled ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityM3" ng-init="calculateStorageCapacityM3($index)" format="number:0"></td>			
+				<td><input type="text" name="storageCapacity_mt_{{ $index }}" disabled ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].storageCapacityMt" ng-init="calculateStorageCapacityMt($index)" format="number:0"></td>			
+				<td><input type="text" name="density_{{ $index }}" disabled ng-required="formValues.vesselProducts[$index].product?true:false" type="number" class="form-control" ng-model="formValues.vesselProducts[$index].density" format="number:0" ng-change="calculateStorageCapacityMt($index);"></td>
 			</tr>
             <tr>
 			<td colspan="8"> 
@@ -75,12 +76,12 @@
 							<td style="max-width: initial; min-width: 50px;"></td>							
 							<td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="removeVesselProductTank(key, tankKey)"></span></td>
 							<td><input name="tankName_{{ $index }}" type="text" class="form-control" ng-required="true" decode-input-format ng-model="formValues.vesselProducts[$rowIndex].vesselProductTanks[$index].name"></td>
-							<td><select name="tankCategory_{{ $index }}" class="form-control" ng-required="formValues.vesselProducts[$rowIndex].name!=''?true:false" ng-model="formValues.vesselProducts[$rowIndex].vesselProductTanks[$index].tankCategory" ng-options="item as item.name for item in CM.listsCache.TankCategory track by item.id"></td>
-							<td><input type="text" name="tankCapacity_{{ $index }}" ng-required="formValues.vesselProducts[$rowIndex].name!=''?true:false" class="form-control" ng-model="formValues.vesselProducts[$rowIndex].vesselProductTanks[$index].capacity" format="number"></td>
+							<td><select name="tankCategory_{{ $index }}" class="form-control" ng-required="formValues.vesselProducts[$rowIndex].name!=''?true:false" ng-model="formValues.vesselProducts[$rowIndex].vesselProductTanks[$index].tankCategory" ng-options="item as item.name for item in CM.listsCache.TankCategory track by item.id" ng-change="calculateStorageCapacityM3($rowIndex);calculateStorageCapacityMt($rowIndex);"></td>
+							<td><input type="text" name="tankCapacity_{{ $index }}" ng-required="formValues.vesselProducts[$rowIndex].name!=''?true:false" class="form-control" ng-model="formValues.vesselProducts[$rowIndex].vesselProductTanks[$index].capacity" format="number:0" ng-change="calculateStorageCapacityM3($rowIndex);calculateStorageCapacityMt($rowIndex);"></td>
 							<td>
 								<div class="text-center">
 									<label class="mt-checkbox">
-										<input name="tankisActive_{{ $index }}" type="checkbox" class="form-control" ng-model="formValues.vesselProducts[$rowIndex].vesselProductTanks[$index].isActive">
+										<input name="tankisActive_{{ $index }}" type="checkbox" class="form-control" ng-model="formValues.vesselProducts[$rowIndex].vesselProductTanks[$index].isActive" ng-change="calculateStorageCapacityM3($rowIndex);calculateStorageCapacityMt($rowIndex);">
 										<span></span>
 									</label>
 								</div>
@@ -96,25 +97,25 @@
 </div>
 
 <div aria-labelledby="mySmallModalLabel"
-	     class="confirmModalDeletePreferredLocationWithRating confirmModal1 fade bs-modal hide"
-	      role="dialog"
-	     style="transform: translateY(90px);" tabindex="-1">
-	    <div class="modal-dialog modal-sm" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span>
-	                </button>
-	                <h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
-	            </div>
-	            <div class="modal-body">
-	                {{confirmModalData.message}}
-	            </div>
-	            <div class="modal-footer">
-	                <button class="btn btn-default" data-dismiss="modal" type="button">No</button>
-	                <button class="btn btn-default  btn-outline orange confirmAction1" data-dismiss="modal" type="button">
-	                    Yes
-	                </button>
-	            </div>
-	        </div>
-	    </div>
+	class="confirmModalDeletePreferredLocationWithRating confirmModal1 fade bs-modal hide"
+	role="dialog"
+	style="transform: translateY(90px);" tabindex="-1">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+			</div>
+			<div class="modal-body">
+				{{confirmModalData.message}}
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-default" data-dismiss="modal" type="button">No</button>
+				<button class="btn btn-default  btn-outline orange confirmAction1" data-dismiss="modal" type="button">
+					Yes
+				</button>
+			</div>
+		</div>
 	</div>
+</div>

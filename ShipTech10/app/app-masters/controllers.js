@@ -435,10 +435,10 @@
         };
         $scope.validateMinMaxQuantity = function(min, max) {
             if(typeof min == 'string') {
-                min = parseFloat(min);
+                min = parseInt(min);
             }
             if(typeof max == 'string') {
-                max = parseFloat(max);
+                max = parseInt(max);
             }
             var response = {
                 minSupplyQty: min,
@@ -3348,6 +3348,11 @@
                         vm.getOptions(field);
                     }
                 }
+                if (vm.screen_id == 'vessel' && id == 'vesselProducts') {
+                	setTimeout(() => {
+                        $scope.selectVesselProduct($scope.selected_value, $scope.modal.idx);
+                	}, 500);
+                }
                 if (name == 'specParameter' && vm.screen_id == 'specgroup') {
                     var row = $(`[name= "${ name }"]`).data('row-index');
                     setTimeout(() => {
@@ -5726,6 +5731,29 @@
             $scope.addnewTankDetail( $scope.formValues.vesselProducts.length-1);
         }
 
+        $scope.calculateStorageCapacityM3 = function (vesselProdIdx) {
+            var sum = 0;
+            if ($scope.formValues.vesselProducts[vesselProdIdx]
+                && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
+                sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
+                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.name == "Storage" ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0);
+            }
+            $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityM3 = sum;
+        }
+
+        $scope.calculateStorageCapacityMt = function (vesselProdIdx) {
+            var sum = 0;
+            var density = 0;
+            var mtConversionFactor = 0.001;
+            if ($scope.formValues.vesselProducts[vesselProdIdx]
+                && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
+                density = $scope.formValues.vesselProducts[vesselProdIdx].density;
+                sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
+                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.name == "Storage" ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0);
+            }
+            $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityMt = sum * density * mtConversionFactor;
+        }
+
         $scope.vpKey = 0;
         $scope.vptKey = 0;
 
@@ -5759,6 +5787,8 @@
                             $scope.deleteVesselProductTank($scope.vpKey, $scope.vptKey);
                         }
                     }
+                    $scope.calculateStorageCapacityM3($scope.vpKey);
+                    $scope.calculateStorageCapacityMt($scope.vpKey);
                 }
             });
         }
@@ -5771,6 +5801,19 @@
                 return checkIfVesselProductsIsEmpty;
             }
             return 0;
+        }
+
+        $scope.selectVesselProduct = function(product, idx) {
+            // let productId = $scope.formValues.vesselProducts[idx].product.id;
+            let productId = product.id;
+            Factory_Master.getBOPSDensityByProductId(productId, (response) => {
+                if (response) {
+                    if (response.status == true) {
+                        $scope.formValues.vesselProducts[idx].density = response.data?.payload ?? 0;
+                        $scope.calculateStorageCapacityMt(idx);
+                    }
+                }
+            });
         }
 
         $scope.addnewTradebookItem = function (isNew){
@@ -7169,7 +7212,7 @@
             ) {
                 if( $('form[name="CM.editInstance"]').find(".ng-dirty:not(.ng-untouched)").length > 0 ) {
                     event.preventDefault();
-                    window.confirmVesselMasterLeaveDestinationUrl = window.location.href;
+                    window.confirmVesselMasterLeaveDestinationUrl = window.location.href.split('/edit/')[0];
                     window.confirmVesselMasterLeave = true;
                     $scope.sweetConfirm("Are you sure? You might have unsaved changes", (response) => {
                         if(response == true) {
@@ -7431,6 +7474,22 @@
             $scope.formValues.pricingScheduleOptionEventBasedSimple = null;
             $scope.formValues.pricingScheduleOptionEventBasedExtended = null;
             $scope.formValues.pricingScheduleOptionEventBasedContinuous = null;
+            if ($scope.formValues.pricingSchedule.id == 6) {
+            	$scope.formValues.pricingScheduleOptionEventBasedSimple = {
+            		fromNoOfBusinessDaysBefore : 0,
+            		toNoOfBusinessDaysAfter : 0,
+            		fromBusinessCalendarId : {id : 1},
+            		toBusinessCalendar : {id : 1},
+            	};
+            }
+            if ($scope.formValues.pricingSchedule.id == 7) {
+            	$scope.formValues.pricingScheduleOptionEventBasedExtended = {
+            		fromNoOfBusinessDaysBefore : 0,
+            		toNoOfBusinessDaysAfter : 0,  
+            		fromBusinessCalendar : {id : 1},  
+            		toBusinessCalendar : {id : 1},
+            	};            	
+            }
         };
         $scope.getProductTooltipByProductId = function(productId) {
             var tooltipName = null;
@@ -10334,9 +10393,9 @@
         $scope.initMultilookupsForLocationProducts = () => {
         	$scope.multilookupsForLocationProducts = [
 	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
-				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_HSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
-				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
-				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_35_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
+				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_35_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
+				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_VLSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}, // Based on #35158, renamed UI label alone.
+				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
         	]
         }
 
@@ -10694,6 +10753,31 @@
             }   
         }
 
+        $scope.filterMultiple = function (item) {
+            return (item.id == 1 || item.id == 4 || item.id == 5 || item.id == 26 || item.id == 28);
+        };
+
+        vm.calculateNewReserve = function(object) {
+            if (['reeferCapacity', 'mcr100', 'sfocMe', 'sfocAe'].indexOf(object.Unique_ID) != -1) {
+                console.log(object);
+                console.log($scope.formValues);
+                let reeferCapacity = $scope.formValues.reeferCapacity ? $scope.formValues.reeferCapacity : 0;
+                let mcr100 = $scope.formValues.mcr100 ? $scope.formValues.mcr100 : 0;
+                let sfocMe = $scope.formValues.sfocMe ? $scope.formValues.sfocMe : 0;
+                let sfocAe = $scope.formValues.sfocAe ? $scope.formValues.sfocAe : 0;
+
+                let mcrPart = $scope.tenantSetting.mcrPart;
+                let reeferCon =  $scope.tenantSetting.reeferCon;
+
+                let mecons = mcr100 * sfocMe * mcrPart * 0.000024;
+                let reefercons = reeferCapacity * sfocAe * reeferCon * 0.000024;
+                let newreserve  = mecons + reefercons;
+
+                $scope.formValues.oneDayReserve = Math.ceil(newreserve);
+
+    
+            }   
+        }
     }
 ]);
 

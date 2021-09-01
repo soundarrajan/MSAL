@@ -35,6 +35,11 @@
                 "sortable": true,
                 "sortableName": "confirmedQuantity"
             },{
+                "caption": "PAGES.CONFIRM_DIALOG.CONTRACT_ID",
+                "visible": true,
+                "sortable": true,
+                "sortableName": "contractId"
+            },{
                 "caption": "PAGES.CONFIRM_DIALOG.OFFER_PRICE",
                 "visible": true,
                 "sortable": true,

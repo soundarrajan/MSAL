@@ -1013,6 +1013,14 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(result);
             });
         },
+        getBOPSDensityByProductId: function(productId, callback) {
+            let payload = {
+                Payload: productId
+            };
+            $Api_Service.masters.getBOPSDensityByProductId(payload, (result) => {
+                callback(result);
+            });
+        },
         get_master_list_filtered: function(app, screen, clc_id, callback) {
             let data = {
                 app: app,

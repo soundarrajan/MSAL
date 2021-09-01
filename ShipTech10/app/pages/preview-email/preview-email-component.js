@@ -30,7 +30,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
         ctrl.STATE = STATE;
         ctrl.templateList = [];
         ctrl.emailTransactionTypeId = 10;
-        ctrl.data = $stateParams.data;
+        ctrl.data = angular.copy($stateParams.data);
         ctrl.lists = $listsCache;
         ctrl.transaction = $stateParams.transaction;
         $scope.transaction = $stateParams.transaction;
@@ -290,6 +290,18 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     if (templateFilter.length > 0) {
                         ctrl.template = templateFilter[0];
                     }
+
+                    let templateFilterByDisplayName = $filter('filter')(
+                        ctrl.templateList,
+                        {
+                            // name: "SingleRfqNewRFQEmailTemplate"
+                            displayName: 'MultipleRfqNewRFQEmailTemplate'
+                        },
+                        true
+                    );
+                    if (!templateFilter.length && templateFilterByDisplayName.length > 0) {
+                        ctrl.template = templateFilterByDisplayName[0];
+                    }
                     ctrl.getAvailableDocumentAttachments(ctrl.data.groupId, 'Offer');
                     break;
                 case EMAIL_TRANSACTION.REQUOTE:
@@ -473,7 +485,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     ctrl.initOthers();
                 }, () => {
                     	ctrl.template = null;
-                    	ctrl.data = {};
+                    	//ctrl.data = {};
                     	ctrl.email = {};
                 }).finally(() => {
                     setTimeout(() => {

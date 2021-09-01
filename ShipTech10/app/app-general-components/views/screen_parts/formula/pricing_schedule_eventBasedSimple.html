@@ -37,7 +37,7 @@
                     <span  ng-init='options.BusinessCalendar ? return : CM.getOptions({"Name": "BusinessCalendar", "Type": "dropdown", "masterSource": "BusinessCalendar"});'>
                         <select class="form-control changeIT bs-select " ng-options="item as item.name for item in options.BusinessCalendar track by item.id " ng-model="formValues.pricingScheduleOptionEventBasedSimple.fromBusinessCalendarId"></select>
                     </span>
-                    <span class="input-group-btn">
+                    <span style="width: 1%;display: table-cell;padding-left: 10px;">
                         <label  for="pricing_schedule_days_before" class="pricing_schedule_days_before_label">
                             {{ CM.app_id + '.BUSINESS_DAYS_BEFORE' | translate }}
                         </label>
@@ -66,7 +66,7 @@
                     <span  ng-init='options.BusinessCalendar ? return : CM.getOptions({"Name": "BusinessCalendar", "Type": "dropdown", "masterSource": "BusinessCalendar"});'>
                         <select class="form-control changeIT bs-select " ng-options="item as item.name for item in options.BusinessCalendar track by item.id " ng-model="formValues.pricingScheduleOptionEventBasedSimple.toBusinessCalendar"></select>
                     </span>
-                    <span class="input-group-btn">
+                    <span style="width: 1%;display: table-cell;padding-left: 10px;">
                         <label  for="pricing_schedule_days_before" class="pricing_schedule_days_before_label">
                             {{ CM.app_id + '.BUSINESS_DAYS_AFTER' | translate }}
                         </label>
@@ -96,7 +96,7 @@
             </label>
             <div class="input-group form_input form_input_formula_quotes">
                 <select class="form-control changeIT bs-select " ng-options="item as item.name for item in options.FormulaEventInclude track by item.id " ng-model="formValues.pricingScheduleOptionEventBasedSimple.isEventIncluded"></select>
-                <span class="input-group-btn">
+                <span style="width: 1%;display: table-cell;padding-left: 10px;">
                     <label  >
                         {{ CM.app_id + '.INCLUDED_AS_PRICING_DATE' | translate }}
                     </label>

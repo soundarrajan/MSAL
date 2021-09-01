@@ -201,6 +201,23 @@ APP_API.factory('$Api_Service', [
                         }
                     }
                 },
+                terminallist: {
+                    layout: {
+                        get: {
+                            json: {
+                                Payload: {
+                                    ScreenType: 102
+                                }
+                            },
+                            endpoint: `${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/screenlayout/get`
+                        }
+                    },
+                    entity: {
+                        list: {
+                            endpoint: `${API.BASE_URL_DATA_MASTERS }/api/masters/locations/getTerminals`
+                        }
+                    }
+                },
                 agentlist: {
                     layout: {
                         get: {
@@ -4543,6 +4560,16 @@ APP_API.factory('$Api_Service', [
                                 SearchText: null
                             }
                         };
+                        if(param.id == 'spec') {
+                            apiJSON.Payload.SortList = {
+                                SortList: [
+                                    {
+                                        columnValue: 'SpecGroupParameter_Id',
+                                        sortParameter: 1
+                                    }
+                                ]
+                            };
+                        }
                         $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/specParameters/getLabsSpecParameters`, apiJSON).then(
                             (response) => {
                                 if (response.status == 200) {
@@ -5127,6 +5154,11 @@ APP_API.factory('$Api_Service', [
 
                     if (param.clc_id == "masters_counterpartylist_subdepartment") {
                     	url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/subDepartmentPaginatedList`;
+                    }
+
+                    if (param.clc_id == "admin_userlist" && (window.location.href.indexOf('/edit-request') || window.location.href.indexOf('/new-request')) ) {
+                    	param.clc_id = "admin_userlist";
+                    	url = `${API.BASE_URL_DATA_ADMIN}/api/admin/user/getVesselOperatorsPaginated`;
                     }
 
                     // payableTo URL (invoices)
@@ -10758,6 +10790,31 @@ APP_API.factory('$Api_Service', [
                             res.message = response.data.ErrorMessage;
                             callback(res);
                             console.log('HTTP ERROR while trying getSevice!');
+                        }
+                    );
+                },
+                getBOPSDensityByProductId: function(param, callback) {
+                    let apiJSON = param;
+                    var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/products/getBOPSDensity`;
+                    $http.post(url, apiJSON).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.data = response.data;
+                                res.status = true;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                res.message = response.data.ErrorMessage;
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            res.message = response.data.ErrorMessage;
+                            callback(res);
+                            console.log('HTTP ERROR while trying to getBOPSDensityByProductId!');
                         }
                     );
                 }

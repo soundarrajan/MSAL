@@ -1299,6 +1299,16 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		    		$scope.filters = $scope.modal.filters;
                 }
 
+                if (filter == 'request-operator') {
+			    	$scope.modal.filters = [
+			    		{
+			    			ColumnName: 'VesselId',
+			    			Value: ctrlData.vesselDetails.vessel.id
+			    		}
+		    		];
+		    		$scope.filters = $scope.modal.filters;
+                }                
+
                 if (clc == 'Requote') {
                     $scope.modal.app = 'procurement';
                     $scope.modal.screen = 'request_entity_documents';
@@ -1393,7 +1403,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 	$scope.modal.filters = [
                         {
                             ColumnName: 'VesselId',
-                            Value: filter.id
+                            Value: filter?.id
                         },
                         {
                             ColumnName: 'VesselVoyageDetailId',
@@ -1433,6 +1443,18 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 }
                 if(clc == 'procurement_productcontractlist') {
                     $scope.modal.filters = filter;
+                }
+                if (clc == 'procurement_terminallist') {
+                	$scope.modal.filters = [
+                        {
+                            ColumnName: 'LocationId',
+                            Value: filter?.id
+                        },
+                        {
+                            ColumnName: 'IsDeleted',
+                            Value: false
+                        }
+               		];
                 }
                 if (filter == 'filter__invoices_order_id') {
                     $scope.modal.filters = [

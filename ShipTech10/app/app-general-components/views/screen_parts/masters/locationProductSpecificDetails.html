@@ -16,16 +16,16 @@
 					<span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.locationProducts.splice(key,1) : formValues.locationProducts[key].isDeleted=true"></span>
 				</td>
 				<td>
-					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType track by item.id" ng-required="true">
+					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType | filter:filterMultiple track by item.id" ng-required="true">
 				 </td>
 				<td>
 					<input type="text" name="maxTransferRate_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxTransferRate" format="number:0">
 				</td>
 				<td>
-					<input type="text" name="minSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].minSupplyQty" format="number" ng-blur="formValues.locationProducts[$index].minSupplyQty =validateMinMaxQuantity(formValues.locationProducts[$index].minSupplyQty,formValues.locationProducts[$index].maxSupplyQty) ['minSupplyQty']; $ctrl.minQtyBlur(formValues.locationProducts)">
+					<input type="text" name="minSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].minSupplyQty" format="number:0" ng-blur="formValues.locationProducts[$index].minSupplyQty =validateMinMaxQuantity(formValues.locationProducts[$index].minSupplyQty,formValues.locationProducts[$index].maxSupplyQty) ['minSupplyQty']; $ctrl.minQtyBlur(formValues.locationProducts)">
 				</td> 
 				<td>
-					<input type="text" name="maxSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxSupplyQty" format="number" ng-blur="formValues.locationProducts[$index].maxSupplyQty =validateMinMaxQuantity(formValues.locationProducts[$index].minSupplyQty,formValues.locationProducts[$index].maxSupplyQty)['maxSupplyQty']; ">
+					<input type="text" name="maxSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxSupplyQty" format="number:0" ng-blur="formValues.locationProducts[$index].maxSupplyQty =validateMinMaxQuantity(formValues.locationProducts[$index].minSupplyQty,formValues.locationProducts[$index].maxSupplyQty)['maxSupplyQty']; ">
 				</td>
 				<td>
 					<span class="hide">

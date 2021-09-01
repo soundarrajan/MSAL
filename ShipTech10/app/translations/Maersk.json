@@ -468,7 +468,8 @@
       "PRICE": "Price",
       "PRICEUOM": "Price UOM",
       "CONTRACT_PRODUCT": "Contract Product",
-      "REQUESTED_PRODUCT": "Offer Product"
+      "REQUESTED_PRODUCT": "Offer Product",
+      "CONTRACT_ID": "Contract Id"
     },
     "LATEST_OFFER_DIALOG": {
       "TITLE": "Latest Offer Prices",
@@ -565,8 +566,9 @@
 	"CONTRACT_TERMS_AND_CONDITIONS" : "Contract terms and conditions",
     "VESSEL_OWNER_EMAIL" : "Vessel Owner Email",
     "LOCATION_HSFO_05_GRADES" : "HSFO 0.5 Grades",
-    "LOCATION_DISTILLATE_GRADES" : "Distillate Fuel Grade",
-    "LOCATION_HSFO_35_GRADES" : "HSFO 3.5 Grade",
+    "LOCATION_DISTILLATE_GRADES" : "Distillate Grades",
+    "LOCATION_HSFO_35_GRADES" : "HSFO 3.5 Grades",
+    "LOCATION_VLSFO_05_GRADES" : "VLSFO 0.5 Grades",
     "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
     "SUBDEPARTMENT" : "Sub Department",
     "CUSTOMER" : "Customer",

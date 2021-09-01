@@ -765,9 +765,9 @@
             // ====== FORMATTERS ======
             {
             	var plain_text = function(cellValue, options, rowObject) {
-            		if (typeof(cellValue) == "string") {
+            		if (typeof(cellValue) == "string") { 
             			if (cellValue) {
-                            return $filter("decodeReadOnly")(cellValue);
+                            // return $filter("decodeReadOnly")(cellValue);
                             // return decodeHtmlEntity(cellValue);
 		            		// return cellValue.replace(/<.*?>/g, '');
             			}
@@ -1673,9 +1673,9 @@
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.invoice) {
                         if (rowObject.claimNo) {
-                            var tpl = '  <a target="_blank" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                            var tpl = '  <a target="_blank" class="link-new-invoice-edit-page" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                         } else {
-                            var tpl = '  <a target="_blank" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                            var tpl = '  <a target="_blank" class="link-new-invoice-edit-page" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                         }
                     } else {
                         var tpl = '  <a target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
@@ -3294,13 +3294,13 @@
             } else {
                 $scope.selectedContractPlanningRows = [];
                 // selectContracts = []
-                $scope.selectContracts = []
+                $scope.selectContracts = [] 
                 $('#jqgh_flat_contract_planning_actions-0').html('<i id="selectAllContractPlanning"' +
                     ' style="font-size: 25px !important; color: #d9d9d9;"' +
                     ' class="fa fa-square-o" ng-click="selectAllContractPlanning()"  ng-mouseover="evaluateChangedContracts()"></i>');
                 $('#jqgh_flat_contract_planning_actions-0').css('display', 'inherit');
 
-                $('#flat_invoices_app_invoice_list_cb').html('<span id="selectAllInvoices" style="font-size: 25px !important; color: #d9d9d9;" ng-click="selectAllInvoices()"></span>');
+                $('#jqgh_flat_invoices_app_invoice_list_cb').html('<div id="selectAllInvoices" style="font-size: 25px !important; color: #d9d9d9" ng-click="selectAllInvoices()"></div>');
            }
 
         });
@@ -4081,6 +4081,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             if (method == "sellerRatingScreen()") {
                 $scope.sellerRatingScreen();
             }
+
+            if (type == "discardVessel") {
+            	$rootScope.isSaveAction = true;
+                $state.reload();
+            }
+
             switch (type) {
                 case "goto":
                     if ($state.$current.url.prefix.indexOf("edit") > 0) {
@@ -4685,6 +4691,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 				}
 			});
 
+			$(document).on("click", ".link-new-invoice-edit-page", (e) => {
+				$(e.currentTarget).parent().trigger("click");
+			})
 
         })
 

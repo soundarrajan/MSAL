@@ -48,6 +48,13 @@
                         <input class="form-control" ng-required="true" ng-model="item.confirmedQuantity" type="text" format="number:3" ng-change="$ctrl.changeOrderQty(item)" name="confirmedQuantity_{{ $index }}"/>
                         <span class="input-group-addon"> {{ item.quantityUomName ? item.quantityUomName : '-' }}</span>
                     </td>
+                    <td ng-if="!$ctrl.tenantSettings.shiptechLite">
+                        <a href="v2/contracts/contract/{{ item.contractId }}/details" 
+                            ng-disabled="!item.contractId" 
+                            style="display: block; float: left;margin-top: 10px; margin-right: 10px;">
+                            {{item.contractId}}
+                        </a>
+                    </td>
                     <td>
                         {{ $ctrl.priceFormat(item.offerPrice, item.pricePrecision) }}
                     </td>
