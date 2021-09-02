@@ -1,16 +1,16 @@
 {
   "auth": {
     "instance": "https://login.microsoftonline.com/",
-    "tenant": "inatech.onmicrosoft.com",
-    "clientId": "47592693-174d-4576-8a4a-98f50040682d",
+    "tenant": "twentyfoursoftwareoutlook.onmicrosoft.com",
+    "clientId": "3e7b4241-b1e6-4769-bb5c-989d64458e51",
     "authEndpoint": "/oauth2/authorize",
     "cacheLocation": "localStorage",
     "extraQueryParameter": "nux=1",
     "logOutUri": "",
     "endpoints": {
-      "https://euw-sh-int-dev-api01.azurewebsites.net": "47592693-174d-4576-8a4a-98f50040682d"
+      "http://shiptech.24software.ro:8081/": "3e7b4241-b1e6-4769-bb5c-989d64458e51"
     },
-    "anonymousEndpoints": ["https://euw-sh-int-dev-sp.azurewebsites.net"],
+    "anonymousEndpoints": [ "http://shiptech10.24software.ro:8081/" ],
     "postLogoutRedirectUri": null,
     "expireOffsetSeconds": 10
   },
@@ -24,7 +24,6 @@
     "DASHBOARD_TIMELINE": "default.dashboard-timeline",
     "DASHBOARD_CALENDAR": "default.dashboard-calendar",
     "NEW_REQUEST": "default.new-request",
-    "NEW_REQUEST_VIEWS": "default.new-request_r",
     "EDIT_REQUEST": "default.edit-request",
     "VIEW_REQUEST_DOCUMENTS": "default.view-request-documents",
     "VIEW_REQUEST_REPORT": "default.view-request-report",
@@ -53,42 +52,33 @@
     "REPORTS": "default.reports"
   },
   "VIEW_TYPES": {
-    "LIST": [
-      "default.dashboard-table",
-      "default.all-requests-table",
-      "default.order-list",
-      "default.view-rfq",
-      "default.select-contract",
-      "default.contract-planning",
-      "default.contract-evaluation"
-    ]
+    "LIST": [ "default.dashboard-table", "default.all-requests-table", "default.order-list", "default.view-rfq", "default.select-contract", "default.contract-planning", "default.contract-evaluation" ]
   },
   "API": {
-    "BASE_URL_DATA_PROCUREMENT": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Procurement",
-    "BASE_URL_DATA_EMAIL": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Mail",
-    "BASE_URL_DATA_MASTERS": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Masters",
-    "BASE_URL_DATA_ADMIN": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Admin",
-    "BASE_URL_DATA_INFRASTRUCTURE": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Infrastructure",
-    "BASE_URL_DATA_SELLER_PORTAL": "https://euw-sh-int-dev-sp.azurewebsites.net/Shiptech10.Api.SellerPortal",
-    "BASE_URL_DATA_CLAIMS": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Claims",
-    "BASE_URL_DATA_LABS": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Labs",
-    "BASE_URL_DATA_CONTRACTS": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Contracts",
-    "BASE_URL_DATA_DELIVERY": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Delivery",
-    "BASE_URL_DATA_RECON": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Recon",
-    "BASE_URL_DATA_SELLERRATING": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.SellerRating",
-    "BASE_URL_DATA_INVOICES": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Invoice",
-    "BASE_URL_DATA_ALERTS": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.BusinessAlerts",
-    "BASE_URL_DATA_HANGFIRE": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Hangfire",
-    "BASE_URL_DATA_MAIL": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Mail",
-    "BASE_URL_DATA_ROB": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Rob",
-    "BASE_URL_DATA_NEGOTIATION": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech.Negotiation.Api",
-    "BASE_URL_DATA_IMPORTEXPORT": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.ImportExport",
-    "BASE_URL_DATA_BOPS": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.BOPS",
-    "BASE_URL_DATA_SMART": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Smart",
-    "BASE_URL_UI": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
-    "BASE_URL_OPEN_SERVER": "https://euw-sh-int-dev-sp.azurewebsites.net",
-    "BASE_HEADER_FOR_NOTIFICATIONS": "https://dev.shiptech.com",
-    "BASE_URL": "https://euw-sh-int-dev-api01.azurewebsites.net",
+    "BASE_URL_DATA_PROCUREMENT": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Procurement",
+    "BASE_URL_DATA_EMAIL": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Mail",
+    "BASE_URL_DATA_MASTERS": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Masters",
+    "BASE_URL_DATA_ADMIN": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Admin",
+    "BASE_URL_DATA_INFRASTRUCTURE": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Infrastructure",
+    "BASE_URL_DATA_SELLER_PORTAL": "http://shiptech10.24software.ro:8081/Integration10101/Shiptech10.Api.SellerPortal",
+    "BASE_URL_DATA_CLAIMS": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Claims",
+    "BASE_URL_DATA_LABS": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Labs",
+    "BASE_URL_DATA_CONTRACTS": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Contracts",
+    "BASE_URL_DATA_DELIVERY": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Delivery",
+    "BASE_URL_DATA_RECON": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Recon",
+    "BASE_URL_DATA_SELLERRATING": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.SellerRating",
+    "BASE_URL_DATA_INVOICES": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Invoice",
+    "BASE_URL_DATA_ALERTS": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.BusinessAlerts",
+    "BASE_URL_DATA_HANGFIRE": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Hangfire",
+    "BASE_URL_DATA_MAIL": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Mail",
+    "BASE_URL_DATA_ROB": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Rob",
+    "BASE_URL_DATA_IMPORTEXPORT": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.ImportExport",
+    "BASE_URL_DATA_BOPS": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.BOPS",
+    "BASE_URL_DATA_SMART": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Smart",
+    "BASE_URL_UI": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
+    "BASE_URL_OPEN_SERVER": "http://10.10.1.shiptech.24software.ro:8170",
+    "BASE_HEADER_FOR_NOTIFICATIONS": "http://10.10.1.shiptech.24software.ro:8170",
+    "BASE_URL": "http://shiptech.24software.ro:8081/Integration10101/",
     "USE_LOCAL_MOCKUPS": false
   },
   "SCREEN_LAYOUTS": {
@@ -185,7 +175,6 @@
     "RECONFIRM": "ReConfirm",
     "SUBMITFORAPPROVAL": "SubmitForApproval",
     "CONFIRMSELLEREMAIL": "ConfirmSellerEmail",
-    "SHOWHARDSTOPPRETESTEMAIL": "ShowHardStopPreTestEmail",
     "CONFIRMALLEMAIL": "ConfirmAllEmail",
     "SHOWSOFTSTOPCONFIRMEMAIL": "ShowSoftStopConfirmEmail",
     "SHOWSOFTSTOPSELLEREMAIL": "ShowSoftStopSellerEmail",
@@ -243,9 +232,7 @@
   "COST_TYPE_IDS": {
     "FLAT": 1,
     "UNIT": 2,
-    "PERCENT": 3,
-    "RANGE": 4,
-    "TOTAL": 5
+    "PERCENT": 3
   },
   "COMPONENT_TYPE_IDS": {
     "TAX_COMPONENT": 1,
@@ -278,7 +265,7 @@
     "3": "pdf"
   },
   "PACKAGES_CONFIGURATION": {
-    "ENABLED": "True"
+    "ENABLED": true
   },
   "EMAIL_TRANSACTION": {
     "REQUEST": "PreRequest",
@@ -289,5 +276,5 @@
     "ORDER_CONFIRM": "OrderConfirmationToSellerOrVessel",
     "CONTRACT_PLANNING": "ContractPlanning"
   },
-  "INSTRUMENTATION_KEY": "3a6d834e-1597-40d8-9442-2cbcbecaea07"
+  "INSTRUMENTATION_KEY": "61f82289-6395-460f-81ca-9cb0da7407b2"
 }

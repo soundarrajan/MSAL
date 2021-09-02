@@ -2,7 +2,6 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { LocalService } from '../../services/local-service.service';
 import { Router } from '@angular/router';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 
