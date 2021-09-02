@@ -40,7 +40,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         ctrl.vesselWithPbBucket = [];
         //var filtersDefault = null;
 
- 
 
         $scope.searchTimeline = function(searchText) {
             searchTextFilters = searchText;
@@ -1460,6 +1459,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             $scope.filtersAppliedPayload = payload;
             $rootScope.saveFiltersDefaultTimeline = [];
 
+            $rootScope.timelineStatusList = [];
+            $scope.timelineStatusList = [];
+
             getData(payload).then(function(response) {
                 updateTimeline(response);
                 $timeout(function() {
@@ -1853,7 +1855,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         $('.contextmenu').css("top", $(currentElem).offset().top - heightElement - 36);
                     }
 
-                    if (heightElement > $(currentElem).offset().top) {
+                    if (heightElement > $(currentElem).offset().top && $('.contextmenu').offset().top < $(currentElem).offset().top) {
+                        console.log($('.contextmenu').offset().top);
                         console.log('set max-height');
                         $('.contextmenu').css('margin-top', heightElement - $(currentElem).offset().top);
                         $('.contextmenu').css('max-height', $(currentElem).offset().top);
@@ -2127,6 +2130,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     if (window.scheduleDashboardConfiguration) {
 
                         $scope.timelineAdminDashboardStatuses = $filter("filter")(window.scheduleDashboardConfiguration.payload.labels, { displayInDashboard : true}, true);
+                        $scope.timelineAdminDashboardStatuses = _.orderBy($scope.timelineAdminDashboardStatuses, function(obj) {                
+                                return obj.displayOrder;          
+                        }, 'asc');
                         if ($scope.timelineStatuses) {
                             $rootScope.timelineStatusList = $scope.createStatusFilters();
                         }

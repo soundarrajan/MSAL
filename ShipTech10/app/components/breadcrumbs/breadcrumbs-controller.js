@@ -88,6 +88,7 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         $scope.breadcrumbsFilter = function(status, no, productTypeView) {
             if (productTypeView && ['Bunker View', 'Residue View', 'Additive View'].indexOf(productTypeView.name) != -1) {
                 console.log('user select product type view');
+                $scope.statusList = [];
                 $scope.productTypeView = angular.copy(productTypeView);
                 $rootScope.productTypeView  = angular.copy(productTypeView);
                 $rootScope.$broadcast('set-product-type-view-for-table', $rootScope.productTypeView);
