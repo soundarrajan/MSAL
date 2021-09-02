@@ -121,6 +121,9 @@ export class SearchVesselComponent implements OnInit, OnChanges {
       this.enableVesselList = false;
       this.toggleFlag = false;
     }
+    else if (event.keyCode == '13') {//If not on keyboard ENTER keycode
+      this.onVesselSelected(trigger);
+    }
   }
 
   setVesselList() {
@@ -143,12 +146,16 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     let vessel = this.vesselList.filter(element => {
       if(element.code) {
         return (element.code == this.searchVesselControl.value) ||
-        (element.code.toLowerCase() == this.searchVesselControl.value.toLowerCase())
+        (element.code.toLowerCase() == this.searchVesselControl.value.toLowerCase()) ||
+        (element.displayName == this.searchVesselControl.value) ||
+        (element.displayName.toLowerCase() == this.searchVesselControl.value.toLowerCase())
       }
     });
-    if (vessel.length > 0)
+    if (vessel.length > 0){
       this.store.dispatch(new saveVesselDataAction({'vesselRef': vessel[0]}));
       this.changeVessel.emit(vessel[0]);
+    }
+      
   }
 
 }
