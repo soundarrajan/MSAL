@@ -11,23 +11,7 @@ import { Observable } from 'rxjs';
 export class SpotnegoSendRfqComponent implements OnInit {
   currentRequestSmallInfo: Observable<any> = null;
 
-  requests = [
-    {
-      request: 'Req 12321',
-      vessel: 'Merlion',
-      selected: true
-    },
-    {
-      request: 'Req 12322',
-      vessel: 'Afif',
-      selected: true
-    },
-    {
-      request: 'Req 12323',
-      vessel: 'Al Mashrab',
-      selected: false
-    }
-  ];
+  requests = [];
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoSendRfqComponent>,
@@ -42,8 +26,17 @@ export class SpotnegoSendRfqComponent implements OnInit {
     });
   }
 
-  public sendRFQ() {
-    alert(1);
+  public toggleCheckbox(checkbox: any, item: any): void {
+    if (checkbox.checked) {
+      item.selected = true;
+    } else {
+      item.selected = false;
+    }
+  }
+
+  public sendRFQ(): void {
+    console.log(this.requests);
+    debugger;
   }
   ngOnInit(): void {}
 }

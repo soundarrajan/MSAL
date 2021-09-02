@@ -79,14 +79,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
 
 
-    const changeThis = this.spotNegotiationService.getGroupOfRequests(groupRequestIdFromUrl);
+    // Get response from server and populate store
+    const response = this.spotNegotiationService.getGroupOfRequests(groupRequestIdFromUrl);
 
-    // Delete this;
-    const withThis = this.http.get(
-      './assets/data/demoData/group-of-request.json'
-    );
-
-    withThis.subscribe((res: any) => {
+    response.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;

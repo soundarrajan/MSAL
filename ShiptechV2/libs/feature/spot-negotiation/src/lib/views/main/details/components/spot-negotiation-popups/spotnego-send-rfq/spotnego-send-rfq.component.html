@@ -28,8 +28,8 @@
       <div class="checkboxOptions" *ngFor="let item of requests">
         <mat-checkbox
           [ngClass]="item.selected ? 'checked' : 'unchecked'"
-          [disabled]="item.selected == false"
           [checked]="item.selected"
+          (change)="toggleCheckbox($event, item)"
           >{{ item.requestName }} - {{ item.vesselName }}</mat-checkbox
         >
       </div>
