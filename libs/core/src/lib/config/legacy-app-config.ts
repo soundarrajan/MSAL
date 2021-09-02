@@ -63,6 +63,7 @@ export interface IApiUrlsLegacyConfig {
   BASE_URL_DATA_INFRASTRUCTURE: string;
   BASE_URL_DATA_SELLER_PORTAL: string;
   BASE_URL_DATA_CLAIMS: string;
+  BASE_URL_DATA_NEGOTIATION: string;
   BASE_URL_DATA_LABS: string;
   BASE_URL_DATA_CONTRACTS: string;
   BASE_URL_DATA_DELIVERY: string;
