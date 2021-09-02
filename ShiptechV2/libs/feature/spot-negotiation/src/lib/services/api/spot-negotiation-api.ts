@@ -31,6 +31,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     .BASE_URL_DATA_INFRASTRUCTURE;
 
   @ApiCallUrl()
+  private _negotiationApiUrl = this.appConfig.v1.API.BASE_URL_DATA_NEGOTIATION;
+
+  @ApiCallUrl()
   private _masterApiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
@@ -76,10 +79,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ObservableException()
   getGroupOfRequests(request: any): Observable<any> {
     return this.http
-      .post<any>(
-        `${this._infrastructureApiUrl}/Group/group`,
-        { Payload: request }
-      )
+      .get<any>(`${this._negotiationApiUrl}/groups/${request}/sellers`, {
+        headers: { Origin: 'https://bvt.shiptech.com' }
+      })
       .pipe(
         map((body: any) => body),
         catchError((body: any) =>
