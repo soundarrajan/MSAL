@@ -158,10 +158,6 @@ import { AGGridCellMenuPopupComponent } from './core/ag-grid/ag-grid-cell-menu.c
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { BadgeComponent } from './views/main/details/components/badge/badge.component';
 import { LocPanDataComponent } from './views/main/details/components/loc-pan-data/loc-pan-data.component';
-import { SpotNegotiationStore } from './store/spot-negotiation.store';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-import { NgxsModule } from '@ngxs/store';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
@@ -171,11 +167,6 @@ import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-n
     CommonModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    // STORE
-    NgxsModule.forRoot([SpotNegotiationStore]),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-
     SpotNegotiationGridModule,
     SpotNegotiationRoutingModule,
     LoggingModule,
