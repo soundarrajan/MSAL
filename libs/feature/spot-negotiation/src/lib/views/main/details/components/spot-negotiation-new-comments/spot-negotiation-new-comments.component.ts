@@ -25,6 +25,8 @@ export class SpotNegotiationNewCommentsComponent implements OnInit {
   editableComments4: boolean = true;
   showEditIcon: boolean = false;
 
+  notYet: string = 'Api not ready yet';
+
   constructor(private store: Store, public changeDetector: ChangeDetectorRef) {
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.currentRequestSmallInfo) {

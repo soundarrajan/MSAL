@@ -44,9 +44,7 @@
                   [readonly]="editableComments1"
                   #comment1
                   class="comments-text"
-                  [(ngModel)]="
-                    currentRequestSmallInfo?.negotiationComments.generalComment
-                  "
+                  [(ngModel)]="notYet"
                 ></textarea>
               </div>
             </div>
@@ -66,10 +64,7 @@
                   [readonly]="editableComments2"
                   #comment2
                   class="comments-text"
-                  [(ngModel)]="
-                    currentRequestSmallInfo?.negotiationComments
-                      .performanceComment
-                  "
+                  [(ngModel)]="notYet"
                 ></textarea>
               </div>
             </div>
@@ -94,9 +89,7 @@
                   #comment3
                   (focusout)="showEditIcon = !showEditIcon"
                   class="comments-text"
-                  [(ngModel)]="
-                    currentRequestSmallInfo?.negotiationComments.supplyComment
-                  "
+                  [(ngModel)]="notYet"
                 ></textarea>
               </div>
             </div>
@@ -116,10 +109,7 @@
                   [readonly]="editableComments4"
                   #comment4
                   class="comments-text"
-                  [(ngModel)]="
-                    currentRequestSmallInfo?.negotiationComments
-                      .vesselAndAgentsComment
-                  "
+                  [(ngModel)]="notYet"
                 ></textarea>
               </div>
             </div>

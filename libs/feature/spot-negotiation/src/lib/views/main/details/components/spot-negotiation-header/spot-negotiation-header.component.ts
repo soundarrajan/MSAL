@@ -63,7 +63,7 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     this.requestOptions = this.store.select(({ spotNegotiation }) => {
       // Set locations
       if (spotNegotiation.currentRequestSmallInfo) {
-        this.setLocations(spotNegotiation.currentRequestSmallInfo.locations);
+        this.setLocations(spotNegotiation.currentRequestSmallInfo.requestLocations);
       }
 
       // Set counterpartyList
@@ -132,7 +132,7 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
 
     // Change locations
-    this.setLocations(requests[i].locations);
+    this.setLocations(requests[i].requestLocations);
 
     var obj = {
       selReqIndex: i
