@@ -1,7 +1,9 @@
-﻿commit 7c1a5c4dae603dca86930ef625785f70b72cb2ce
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Sep 3 16:00:11 2021 +0300
+﻿commit a4c8bb390cea7ac95f4b6db3c220d1abcb718369
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Sep 3 13:28:55 2021 +0000
 
-    Fixed 35151
+    Merged PR 13400: #35259: Future request Grid: Seems like 2nd filtering box have no effect FE changes has done
+    
+    Related work items: #35259
 
 branch: master

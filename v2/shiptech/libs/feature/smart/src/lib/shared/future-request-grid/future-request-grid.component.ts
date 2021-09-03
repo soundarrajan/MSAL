@@ -86,7 +86,7 @@ export class FutureRequestGridComponent implements OnInit {
           //   type: 'set',
           //   values: ['United States'],
           // },
-          'requestStatus.displayName': { type: 'notEqual', filter: 'Cancelled' }
+          'requestStatus.displayName': { type: 'notEqual', filter: 'CANCELLED' }
           // date: { type: 'lessThan', dateFrom: '2010-01-01' },
         };
       
@@ -318,6 +318,10 @@ export class FutureRequestGridComponent implements OnInit {
           columnFormat.ColumnType = filterType.charAt(0).toUpperCase()+filterType.substring(1);
           columnFormat.ConditionValue = await this.mapConditionType(filterModel[filterKey]?.type);
           columnFormat.Values = await this.mapFilterValue(filterType, filterModel[filterKey]);
+          let isColumnMultiFilter = this.columnFilter.filter(filterItem=>filterItem.columnValue == columnFormat.columnValue)
+          if(isColumnMultiFilter.length) {
+            columnFormat.FilterOperator = 2;
+          }
           this.columnFilter.push(columnFormat);
           if(filterModelArr.length == index+1) {
             requestPayload.Payload.PageFilters.Filters = this.columnFilter;
