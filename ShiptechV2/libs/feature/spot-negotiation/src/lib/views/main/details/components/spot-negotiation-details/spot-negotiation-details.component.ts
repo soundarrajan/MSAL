@@ -37,12 +37,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public totalOfferHeaderWidth;
   public fullHeaderWidth;
   public frameworkComponents;
-  private context: any;
   rowData_aggrid = [];
 
   public grid1Width = {
     width: '100%'
   };
+
+  private context: any;
+
   menuOptions = [{ label: 'ETA' }, { label: 'ETB' }, { label: 'ETD' }];
   // public grid2Width = {
   //   width: '50%'
@@ -114,7 +116,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
-        this.getGridData();
       },
 
       onColumnResized: function(params) {
@@ -135,12 +136,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         customHeaderGroupComponent: ShiptechCustomHeaderGroup
       }
     };
-  }
-
-  private getGridData() {
-    //Grid Data
-    this.rowData_aggrid = this.spotNegotiationService.getSpotDataJSON();
-    this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
   }
 
   dataManupulation() {}

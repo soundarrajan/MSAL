@@ -49,6 +49,11 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getGroupOfRequests(payload);
   }
 
+  @ObservableException()
+  getGroupOfRequests1(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getGroupOfRequests1(payload);
+  }
+
   /**
    * Fake populate rows
    */
