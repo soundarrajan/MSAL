@@ -120,7 +120,7 @@ export const PICK_FORMATS = {
 export class PickDateAdapter extends NativeDateAdapter {
   format(value: Date, displayFormat: string): string {
     if (value === null || value === undefined) return '';
-    let currentFormat = displayFormat;
+    let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
       hasDayOfWeek = true;
@@ -129,9 +129,9 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment(value).format(currentFormat);
+    let formattedDate = moment.utc(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -328,6 +328,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     if (hasDayOfWeek) {
       formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
     }
+    if (formattedDate.endsWith('00:00')) {
+      formattedDate = formattedDate.split(' 00:00')[0];
+    }
     return formattedDate;
   }
 
@@ -388,8 +391,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   }
 
   getHour(date: Moment): number {
-    const el = date.hours();
-    const elem = moment(date).utcOffset(0);
     return date.hours();
   }
   getMinute(date: Moment): number {
@@ -466,6 +467,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   baseOrigin: string;
   bargeId: any;
   backgroundColor: string;
+  wasInside: any;
+  text: string;
+  hideTime: boolean;
 
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
@@ -980,9 +984,41 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     }
   }
 
-  formatDateForBe(value) {
+  formatForBE(value: Date): string {
+    if (value === null || value === undefined) return '';
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    const formattedDate = moment(value).format(currentFormat);
+    return formattedDate;
+  }
+
+  formatDateForBe(value, type) {
     if (value) {
       let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      if (type == 'deliveryDate' || type == 'bdnDate') {
+        let currentFormat = PICK_FORMATS.display.dateInput;
+        let hasDayOfWeek;
+        if (currentFormat.startsWith('DDD ')) {
+          hasDayOfWeek = true;
+          currentFormat = currentFormat.split('DDD ')[1];
+        }
+        currentFormat = currentFormat.replace(/d/g, 'D');
+        currentFormat = currentFormat.replace(/y/g, 'Y');
+        //currentFormat = currentFormat.split(' HH:mm')[0];
+        value = moment.utc(this.formatForBE(value), currentFormat, true);
+        if (value) {
+          const beValue = `${value.format('YYYY-MM-DDT')}00:00:00+00:00`;
+          return `${value.format('YYYY-MM-DDT')}00:00:00+00:00`;
+        } else {
+          return null;
+        }
+      }
       return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
@@ -999,6 +1035,31 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     });
     if (findBarge != -1) {
       this.formValues.barge = findBarge;
+    }
+  }
+
+  openPopUp() {
+    setTimeout(() => {
+      let el = document.querySelector('.time-container') as HTMLElement;
+      if (el) {
+        el.style.display = 'none';
+      }
+      let elem2 = document.querySelector('.hour') as HTMLElement;
+      console.log(elem2);
+    });
+  }
+
+  @HostListener('document:click', ['$event.target'])
+  clickout(event) {
+    if (
+      event &&
+      event.classList &&
+      event.classList.value.includes('mat-calendar-body-cell-content') != -1
+    ) {
+      let el = document.querySelector('.time-container') as HTMLElement;
+      if (el && this.formValues.hideTime) {
+        el.style.display = 'none';
+      }
     }
   }
 }

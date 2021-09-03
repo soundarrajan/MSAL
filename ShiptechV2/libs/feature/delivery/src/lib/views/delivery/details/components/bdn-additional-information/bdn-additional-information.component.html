@@ -58,7 +58,9 @@
           [(ngModel)]="formValues.bargePumpingRateStartTime"
           matInput
           [ngxMatDatetimePicker]="bargePumpingRateStartTime"
-          (focus)="bargePumpingRateStartTime.open()"
+          (focus)="
+            bargePumpingRateStartTime.open(); formValues.hideTime = false
+          "
           autocomplete="off"
           placeholder="Pumping start"
           (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
@@ -71,7 +73,11 @@
         <button
           mat-icon-button
           matSuffix
-          (click)="bargePumpingRateStartTime.open(); $event.stopPropagation()"
+          (click)="
+            bargePumpingRateStartTime.open();
+            $event.stopPropagation();
+            formValues.hideTime = false
+          "
         >
           <mat-icon class="icon-date"> </mat-icon>
         </button>
@@ -97,7 +103,7 @@
           [(ngModel)]="formValues.bargePumpingRateEndTime"
           matInput
           [ngxMatDatetimePicker]="bargePumpingRateEndTime"
-          (focus)="bargePumpingRateEndTime.open()"
+          (focus)="bargePumpingRateEndTime.open(); formValues.hideTime = false"
           autocomplete="off"
           placeholder="Pumping end"
           (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
@@ -110,7 +116,11 @@
         <button
           mat-icon-button
           matSuffix
-          (click)="bargePumpingRateEndTime.open(); $event.stopPropagation()"
+          (click)="
+            bargePumpingRateEndTime.open();
+            $event.stopPropagation();
+            formValues.hideTime = false
+          "
         >
           <mat-icon class="icon-date"> </mat-icon>
         </button>
@@ -564,7 +574,9 @@
                       matInput
                       (keypress)="keyPressAlphaNumeric($event)"
                       [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      [placeholder]="sampleDetail.value.sealNumber ? '' : 'Value'"
+                      [placeholder]="
+                        sampleDetail.value.sealNumber ? '' : 'Value'
+                      "
                       autocomplete="off"
                     />
                   </mat-form-field>
