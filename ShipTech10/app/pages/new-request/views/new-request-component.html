@@ -597,7 +597,7 @@
 
 
                                     <div class="col-md-3 label-list">
-                                        <span ng-repeat="location in $ctrl.request.locations track by $index" class="tag label label-info" ng-if="!location.isDeleted && location.location !== null" data-original-title=" {{ location.location.name }}">
+                                        <span ng-class="{'cancelled' : location.portStatus.name == 'Cancelled'}" ng-repeat="location in $ctrl.request.locations track by $index" class="request-location-tag tag label label-info" ng-if="!location.isDeleted && location.location !== null" data-original-title=" {{ location.location.name }}">
                                             <a ng-click="$ctrl.deleteLocation(location)" ng-disabled="$ctrl.disableAllFields">
                                                 <i class="fa fa-close clickable" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
                                                <b > {{location.optionId}}- </b>{{location.location.name | decodeReadOnly}}

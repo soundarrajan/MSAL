@@ -603,6 +603,15 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     	$.each($scope.formValues.robs, (k, v) => {
                                     		v.vesselId = 0;
                                     	});
+                                        $.each($scope.formValues.vesselProducts, (k, v) => {
+                                    		v.id = 0;
+                                            v.vessel.id = 0;
+                                            $.each(v.vesselProductTanks, (k1, v1) => {
+                                                v1.id = 0;
+                                                v1.vesselId = 0;
+                                                v1.vesselProduct.id = 0;
+                                            });
+                                    	});
                                     }
                                     // reset contract status
                                     if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {

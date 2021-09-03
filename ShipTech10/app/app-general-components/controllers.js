@@ -1596,9 +1596,9 @@
                 var edit_delivery_link = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.delivery) {
-                        var tpl = ' <a target="_blank" href="v2/delivery/delivery/' + rowObject.delivery.id + '/details" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a target="_blank" class="prevent-row-selection" href="v2/delivery/delivery/' + rowObject.delivery.id + '/details" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                     } else {
-                        var tpl = ' <a target="blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
+                        var tpl = ' <a target="blank" class="prevent-row-selection" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
                     return tpl;
                 }; // edit_order_link  - add edit lionk to column
@@ -1673,9 +1673,9 @@
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.invoice) {
                         if (rowObject.claimNo) {
-                            var tpl = '  <a target="_blank" class="link-new-invoice-edit-page" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                            var tpl = '  <a target="_blank" class="prevent-row-selection" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                         } else {
-                            var tpl = '  <a target="_blank" class="link-new-invoice-edit-page" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                            var tpl = '  <a target="_blank" class="prevent-row-selection" href="v2/invoices/edit/' + rowObject.invoice.id + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                         }
                     } else {
                         var tpl = '  <a target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
@@ -1684,7 +1684,7 @@
                 };
                 var edit_order_link = function(cellValue, options, rowObject) {
                     if (rowObject.order) {
-                        var tpl = ' <a href="#/edit-order/' + rowObject.order.id + '" style="width: 100%" target="_blank"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.order.name + "</span></a>";
+                        var tpl = ' <a href="#/edit-order/' + rowObject.order.id + '" class="prevent-row-selection" style="width: 100%" target="_blank"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.order.name + "</span></a>";
                     } else {
                         var tpl = '<span class="formatter no_order" style="white-space:none"> - </span>';
                         setTimeout(function() {
@@ -4691,7 +4691,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 				}
 			});
 
-			$(document).on("click", ".link-new-invoice-edit-page", (e) => {
+			$(document).on("click", ".prevent-row-selection", (e) => {
 				$(e.currentTarget).parent().trigger("click");
 			})
 

@@ -5096,3 +5096,14 @@ table.energyCalculationBlade tr.border-green-jungle {
     font-size: 14px;
     background: #f1f4f6;
 }
+
+.request-location-tag.cancelled {
+	border-color: red;
+    color: red;
+    pointer-events: none;
+    text-decoration: line-through;	
+}
+.request-location-tag.cancelled a{
+    color: red;
+    text-decoration: line-through;	
+}
