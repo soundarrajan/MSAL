@@ -45,7 +45,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { DecimalPipe, Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownDeliverylRoutes } from '../../../known-delivery.routes';
 import { fromLegacyLookupVesselToWatch } from '@shiptech/core/lookups/utils';
@@ -150,6 +150,9 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   private quantityPrecision: number;
+  baseOrigin: string;
+
+  mySubscription: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -225,6 +228,17 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.tenantService.quantityPrecision +
       '-' +
       this.tenantService.quantityPrecision;
+
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      return false;
+    };
+
+    this.mySubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
     //this.loadingBar.start();
   }
 
@@ -1448,7 +1462,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
+  }
 
   public detectChanges(form: any): void {
     this.formValues = form;
@@ -1693,18 +1711,29 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 })
               )
               .subscribe((data: any) => {
-                this.formValues.sampleSources = data.sampleSources;
-                this.formValues = _.merge(this.formValues, data);
-                if (typeof this.formValues.deliveryStatus != 'undefined') {
-                  if (this.formValues.deliveryStatus.name) {
-                    this.statusColorCode = this.getColorCodeFromLabels(
-                      this.formValues.deliveryStatus,
-                      this.scheduleDashboardLabelConfiguration
-                    );
-                  }
-                }
-                this.setQuantityFormatValues();
-                this.decodeFields();
+                // if (this.mySubscription) {
+                //   this.mySubscription.unsubscribe();
+                // }
+                // this.formValues.sampleSources = data.sampleSources;
+                // this.formValues = _.merge(this.formValues, data);
+                // if (typeof this.formValues.deliveryStatus != 'undefined') {
+                //   if (this.formValues.deliveryStatus.name) {
+                //     this.statusColorCode = this.getColorCodeFromLabels(
+                //       this.formValues.deliveryStatus,
+                //       this.scheduleDashboardLabelConfiguration
+                //     );
+                //   }
+                // }
+                // this.setQuantityFormatValues();
+                // this.decodeFields();
+                this.router
+                  .navigate([
+                    KnownPrimaryRoutes.Delivery,
+                    `${KnownDeliverylRoutes.Delivery}`,
+                    result.id,
+                    KnownDeliverylRoutes.DeliveryDetails
+                  ])
+                  .then(() => {});
               });
           }
         });

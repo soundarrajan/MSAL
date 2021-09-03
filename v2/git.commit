@@ -1,7 +1,7 @@
-﻿commit 7f96d86dd305554d24e541f34487691539457434
+﻿commit e8721fec2cc732281012351d973c0c00146e6738
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Sep 3 09:28:55 2021 +0300
+Date:   Fri Sep 3 08:01:05 2021 -0400
 
-    Fixed creating delivery from delivery list
+    Fixed  Delivery date and BDN date  selection (35151)
 
 branch: master
