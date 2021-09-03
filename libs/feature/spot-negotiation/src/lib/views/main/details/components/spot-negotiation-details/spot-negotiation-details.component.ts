@@ -140,6 +140,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   private getGridData() {
     //Grid Data
     this.rowData_aggrid = this.spotNegotiationService.getSpotDataJSON();
+   this.route.data.subscribe(data => {
+    this.rowData_aggrid.forEach(element1 => {
+      var filterValue = data.staticLists[1].items.filter(Seller => Seller.id === element1.sellerCounterpartyId);
+      element1.name = filterValue[0].name;
+    });
+  });
     this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
   }
 

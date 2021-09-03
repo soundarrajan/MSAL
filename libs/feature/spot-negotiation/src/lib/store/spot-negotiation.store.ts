@@ -5,6 +5,7 @@ import {
   AddSelectedRow,
   SetSelectedRow,
   SetStaticLists,
+  SetRowsList,
   SetGroupOfRequestsId,
   SetRequests,
   SetCurrentRequest,
@@ -624,6 +625,17 @@ export class SpotNegotiationStore {
   ) {
     patchState({
       staticLists: payload
+    });
+  }
+
+  // Rows lists
+  @Action(SetRowsList)
+  SetRowsList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetRowsList
+  ) {
+    patchState({
+      rows: payload
     });
   }
 

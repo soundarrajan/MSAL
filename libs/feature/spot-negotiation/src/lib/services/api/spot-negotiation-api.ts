@@ -93,6 +93,23 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
+  @ObservableException()
+  getGroupOfRequests1(request: any): Observable<any> {
+    return this.http
+      .get<any>(`${this._negotiationApiUrl}/groups/${request}`, {
+        headers: { Origin: 'https://bvt.shiptech.com' }
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
 }
 
 export const SPOT_NEGOTIATION_API_SERVICE = new InjectionToken<
