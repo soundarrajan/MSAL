@@ -1051,15 +1051,23 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   @HostListener('document:click', ['$event.target'])
   clickout(event) {
-    if (
-      event &&
-      event.classList &&
-      event.classList.value.includes('mat-calendar-body-cell-content') != -1
-    ) {
-      let el = document.querySelector('.time-container') as HTMLElement;
-      if (el && this.formValues.hideTime) {
-        el.style.display = 'none';
+    setTimeout(() => {
+      if (
+        event &&
+        event.classList &&
+        event.classList.value.includes('mat-calendar-body-cell-content') != -1
+      ) {
+        let el = document.querySelector('.time-container') as HTMLElement;
+        if (el && this.formValues.hideTime) {
+          el.style.display = 'none';
+        }
       }
-    }
+    });
+  }
+
+  blurFromDatePicker() {
+    setTimeout(() => {
+      document.getElementsByTagName('body')[0].click();
+    }, 100);
   }
 }

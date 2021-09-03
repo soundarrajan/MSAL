@@ -335,13 +335,13 @@
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           matInput
           [ngxMatDatetimePicker]="deliveryDate"
-          (focus)="deliveryDate.open(); openPopUp(); formValues.hideTime = true"
           (onInput)="onChange($event, 'deliveryDate')"
           (dateChange)="
             formValues.deliveryDate = formatDateForBe(
               formValues.deliveryDate,
               'deliveryDate'
-            )
+            );
+            blurFromDatePicker()
           "
           autocomplete="off"
           placeholder="Delivery Date"
@@ -395,10 +395,10 @@
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           matInput
           [ngxMatDatetimePicker]="bdnDate"
-          (focus)="bdnDate.open(); openPopUp(); formValues.hideTime = true"
           (onInput)="onChange($event, 'bdnDate')"
           (dateChange)="
-            formValues.bdnDate = formatDateForBe(formValues.bdnDate, 'bdnDate')
+            formValues.bdnDate = formatDateForBe(formValues.bdnDate, 'bdnDate');
+            blurFromDatePicker()
           "
           autocomplete="off"
           placeholder="BDN Date"
@@ -455,13 +455,13 @@
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           matInput
           [ngxMatDatetimePicker]="berthingTime"
-          (focus)="berthingTime.open(); formValues.hideTime = false"
           (onInput)="onChange($event, 'berthingTime')"
           (dateChange)="
             formValues.berthingTime = formatDateForBe(
               formValues.berthingTime,
               'berthingTime'
-            )
+            );
+            blurFromDatePicker()
           "
           autocomplete="off"
           placeholder="Berthing time"
@@ -498,13 +498,13 @@
           matInput
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           [ngxMatDatetimePicker]="bargeAlongside"
-          (focus)="bargeAlongside.open(); formValues.hideTime = false"
           (onInput)="onChange($event, 'bargeAlongside')"
           (dateChange)="
             formValues.bargeAlongside = formatDateForBe(
               formValues.bargeAlongside,
               'bargeAlongside'
-            )
+            );
+            blurFromDatePicker()
           "
           autocomplete="off"
           placeholder="Barge alongside"
