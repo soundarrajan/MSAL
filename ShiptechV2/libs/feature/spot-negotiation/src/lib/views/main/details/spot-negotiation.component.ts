@@ -29,7 +29,8 @@ import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
   SetGroupOfRequestsId,
-  SetRequests
+  SetRequests,
+  SetRowsList
 } from '../../../store/actions/ag-grid-row.action';
 
 @Component({
@@ -80,23 +81,60 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
 
     // Get response from server and populate store
-    const response = this.spotNegotiationService.getGroupOfRequests(groupRequestIdFromUrl);
+    const response = this.spotNegotiationService.getGroupOfRequests(20);
 
     response.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;
       }
+
+
       // Populate store;
-      this.store.dispatch(new SetCurrentRequestSmallInfo(res.requests[0]));
-      this.store.dispatch(new SetRequests(res.requests));
+ 
+      this.store.dispatch(new SetCurrentRequestSmallInfo(res["requestGroups"][0].requests[0]));
+      this.store.dispatch(new SetRequests(res["requestGroups"][0].requests[0]));
     });
-
-
   }
+  getGroupOfRequests1(): void {
+    // Get current id from url and make a request with that data.
+    const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
+    this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
 
+
+    // Get response from server and populate store
+
+    const response = this.spotNegotiationService.getGroupOfRequests1(groupRequestIdFromUrl);
+
+    response.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      }
+
+      this.store.dispatch(new SetRowsList(res.requestGroupDto.requestLocationSellers));
+    });
+  }
   ngOnInit(): void {
     this.getGroupOfRequests();
+    this.getGroupOfRequests1();
+    // this.getSpotNegotiationRows();
+  }
+
+  getSpotNegotiationRows(): void {
+    // Delete this;
+    const withThis = this.http.get(
+      './assets/data/demoData/Spot_Negotiation.json'
+    );
+    withThis.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      }
+      // Populate store;
+     // alert(2);
+      this.store.dispatch(new SetRowsList(res.requestGroupDto.requestLocationSellers));
+    });
   }
 
   ngOnDestroy(): void {}
