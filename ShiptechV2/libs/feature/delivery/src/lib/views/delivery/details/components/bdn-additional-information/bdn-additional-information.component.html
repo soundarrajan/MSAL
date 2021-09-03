@@ -58,16 +58,14 @@
           [(ngModel)]="formValues.bargePumpingRateStartTime"
           matInput
           [ngxMatDatetimePicker]="bargePumpingRateStartTime"
-          (focus)="
-            bargePumpingRateStartTime.open(); formValues.hideTime = false
-          "
           autocomplete="off"
           placeholder="Pumping start"
           (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
           (dateChange)="
             formValues.bargePumpingRateStartTime = formatDateForBe(
               formValues.bargePumpingRateStartTime
-            )
+            );
+            blurFromDatePicker()
           "
         />
         <button
@@ -103,14 +101,14 @@
           [(ngModel)]="formValues.bargePumpingRateEndTime"
           matInput
           [ngxMatDatetimePicker]="bargePumpingRateEndTime"
-          (focus)="bargePumpingRateEndTime.open(); formValues.hideTime = false"
           autocomplete="off"
           placeholder="Pumping end"
           (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
           (dateChange)="
             formValues.bargePumpingRateEndTime = formatDateForBe(
               formValues.bargePumpingRateEndTime
-            )
+            );
+            blurFromDatePicker()
           "
         />
         <button

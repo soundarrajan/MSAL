@@ -763,6 +763,12 @@ export class BdnAdditionalInformationComponent
     }
   }
 
+  blurFromDatePicker() {
+    setTimeout(() => {
+      document.getElementsByTagName('body')[0].click();
+    }, 100);
+  }
+
   ngAfterViewInit(): void {
     this.addSampleSources();
   }
