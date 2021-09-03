@@ -119,22 +119,23 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getGroupOfRequests();
     // this.getGroupOfRequests1();
-    // this.getSpotNegotiationRows();
+    this.getSpotNegotiationRows();
   }
 
   getSpotNegotiationRows(): void {
     // Delete this;
     const withThis = this.http.get(
-      './assets/data/demoData/Spot_Negotiation.json'
+      './assets/data/demoData/spot-grid1-data.json'
     );
     withThis.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;
       }
+
       // Populate store;
      // alert(2);
-      this.store.dispatch(new SetRowsList(res.requestGroupDto.requestLocationSellers));
+      this.store.dispatch(new SetRowsList(res));
     });
   }
 
