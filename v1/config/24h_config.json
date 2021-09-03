@@ -68,6 +68,7 @@
     "BASE_URL_DATA_RECON": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Recon",
     "BASE_URL_DATA_SELLERRATING": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.SellerRating",
     "BASE_URL_DATA_INVOICES": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Invoice",
+    "BASE_URL_DATA_NEGOTIATION": "https://euw-sh-int-dev-api.azurewebsites.net/Shiptech.Negotiation.Api",
     "BASE_URL_DATA_ALERTS": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.BusinessAlerts",
     "BASE_URL_DATA_HANGFIRE": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Hangfire",
     "BASE_URL_DATA_MAIL": "http://shiptech.24software.ro:8081/Integration10101/Shiptech10.Api.Mail",

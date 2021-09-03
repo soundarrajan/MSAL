@@ -88,8 +88,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         return;
       }
       // Populate store;
-      this.store.dispatch(new SetCurrentRequestSmallInfo(res.requests[0]));
-      this.store.dispatch(new SetRequests(res.requests));
+      // this.store.dispatch(new SetCurrentRequestSmallInfo(res.requestGroups[0]));
+      // this.store.dispatch(new SetRequests(res.requestGroups));
     });
 
 

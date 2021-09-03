@@ -619,7 +619,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   groupHeaderCheck() {
-    let addButtonElement = document.getElementsByClassName(
+    const addButtonElement = document.getElementsByClassName(
       'groupHeaderCheckBox'
     );
     addButtonElement[0].addEventListener('click', event => {
@@ -641,7 +641,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (!rowNode.isSelected() === true) {
         return;
       }
-      var data = rowNode.data;
+      const data = rowNode.data;
       data.check = TextTrackCueList;
       itemsToUpdate.push(data);
     });

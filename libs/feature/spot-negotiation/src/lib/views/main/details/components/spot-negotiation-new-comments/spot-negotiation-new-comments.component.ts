@@ -35,21 +35,21 @@ export class SpotNegotiationNewCommentsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  editComments1() {
+  editComments1(): void {
     this.editableComments1 = false;
     this.commentBox1.nativeElement.focus();
   }
 
-  editComments2() {
+  editComments2(): void {
     this.editableComments2 = false;
     this.commentBox2.nativeElement.focus();
   }
 
-  editComments3() {
+  editComments3(): void {
     this.commentBox3.nativeElement.focus();
   }
 
-  editComments4() {
+  editComments4(): void {
     this.editableComments4 = false;
     this.commentBox4.nativeElement.focus();
   }

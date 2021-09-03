@@ -590,7 +590,7 @@ export class SpotNegotiationStore {
   setCurrentRequest(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SetCurrentRequest
-  ) {
+  ): void {
     patchState({
       currentRequest: payload
     });
@@ -600,7 +600,7 @@ export class SpotNegotiationStore {
   setRequests(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SetRequests
-  ) {
+  ): void {
     patchState({
       requests: payload
     });
@@ -611,7 +611,7 @@ export class SpotNegotiationStore {
   setGroupOfRequestsId(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SetGroupOfRequestsId
-  ) {
+  ): void {
     patchState({
       groupOfRequestsId: payload
     });
@@ -621,7 +621,7 @@ export class SpotNegotiationStore {
   setStaticLists(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SetStaticLists
-  ) {
+  ): void {
     patchState({
       staticLists: payload
     });
