@@ -1,7 +1,7 @@
-﻿commit 96dbd70b54fc127198886cdfcb1ec2b0bf7b0706
+﻿commit 7f96d86dd305554d24e541f34487691539457434
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 1 15:34:01 2021 +0300
+Date:   Fri Sep 3 09:28:55 2021 +0300
 
-    Freezed the horizontal scrollbar when the document is rotated sideways on master
+    Fixed creating delivery from delivery list
 
 branch: master
