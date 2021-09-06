@@ -58,24 +58,20 @@
           [(ngModel)]="formValues.bargePumpingRateStartTime"
           matInput
           [ngxMatDatetimePicker]="bargePumpingRateStartTime"
+          (focus)="bargePumpingRateStartTime.open()"
           autocomplete="off"
           placeholder="Pumping start"
           (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
           (dateChange)="
             formValues.bargePumpingRateStartTime = formatDateForBe(
               formValues.bargePumpingRateStartTime
-            );
-            blurFromDatePicker()
+            )
           "
         />
         <button
           mat-icon-button
           matSuffix
-          (click)="
-            bargePumpingRateStartTime.open();
-            $event.stopPropagation();
-            formValues.hideTime = false
-          "
+          (click)="bargePumpingRateStartTime.open(); $event.stopPropagation()"
         >
           <mat-icon class="icon-date"> </mat-icon>
         </button>
@@ -101,24 +97,20 @@
           [(ngModel)]="formValues.bargePumpingRateEndTime"
           matInput
           [ngxMatDatetimePicker]="bargePumpingRateEndTime"
+          (focus)="bargePumpingRateEndTime.open()"
           autocomplete="off"
           placeholder="Pumping end"
           (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
           (dateChange)="
             formValues.bargePumpingRateEndTime = formatDateForBe(
               formValues.bargePumpingRateEndTime
-            );
-            blurFromDatePicker()
+            )
           "
         />
         <button
           mat-icon-button
           matSuffix
-          (click)="
-            bargePumpingRateEndTime.open();
-            $event.stopPropagation();
-            formValues.hideTime = false
-          "
+          (click)="bargePumpingRateEndTime.open(); $event.stopPropagation()"
         >
           <mat-icon class="icon-date"> </mat-icon>
         </button>
@@ -572,9 +564,7 @@
                       matInput
                       (keypress)="keyPressAlphaNumeric($event)"
                       [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      [placeholder]="
-                        sampleDetail.value.sealNumber ? '' : 'Value'
-                      "
+                      [placeholder]="sampleDetail.value.sealNumber ? '' : 'Value'"
                       autocomplete="off"
                     />
                   </mat-form-field>
