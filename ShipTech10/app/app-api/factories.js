@@ -5156,7 +5156,7 @@ APP_API.factory('$Api_Service', [
                     	url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/subDepartmentPaginatedList`;
                     }
 
-                    if (param.clc_id == "admin_userlist" && (window.location.href.indexOf('/edit-request') || window.location.href.indexOf('/new-request')) ) {
+                    if (param.clc_id == "admin_userlist" && (window.location.href.includes('/edit-request') || window.location.href.includes('/new-request')) ) {
                     	param.clc_id = "admin_userlist";
                     	url = `${API.BASE_URL_DATA_ADMIN}/api/admin/user/getVesselOperatorsPaginated`;
                     }
