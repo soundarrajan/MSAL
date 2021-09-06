@@ -126,6 +126,22 @@ export class CustomDateAdapter extends MomentDateAdapter {
     }
     return formattedDate;
   }
+  
+  parse(value) {
+    // We have no way using the native JS Date to set the parse format or locale, so we ignore these
+    // parameters.
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    currentFormat = currentFormat.split(' HH:mm')[0];
+    let elem = moment.utc(value, currentFormat);
+    return value ? elem : null;
+  }
 }
 export interface NgxMatMomentDateAdapterOptions {
   strict?: boolean;
