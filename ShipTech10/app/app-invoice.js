@@ -225,13 +225,13 @@ APP_INVOICE.run([ '$state', '$rootScope','$window','$location', 'INVOICE_STATE',
         changeTitle();
     });
 
-    $rootScope.$on('$stateChangeStart', (event, fromState, stateParams) => {
-        if(fromState.name === INVOICE_STATE.EDIT){
-            event.preventDefault();
-            $window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/'+stateParams.entity_id), '_self');
-            //$window.open('http://localhost:9016/v2/invoices/edit/'+stateParams.entity_id, '_self');
-        }
-    });
+    // $rootScope.$on('$stateChangeStart', (event, fromState, stateParams) => {
+    //     if(fromState.name === INVOICE_STATE.EDIT){
+    //         event.preventDefault();
+    //         $window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/'+stateParams.entity_id), '_self');
+    //         //$window.open('http://localhost:9016/v2/invoices/edit/'+stateParams.entity_id, '_self');
+    //     }
+    // });
 
     $rootScope.$on('$stateChangeSuccess', () => {
         changeTitle();

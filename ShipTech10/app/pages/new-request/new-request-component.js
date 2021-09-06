@@ -1163,6 +1163,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 productType: null,
                 productCategory: null,
                 specGroups: [],
+                optionId: ctrl.request.locations[locationIdx].optionId,
                 deliveryOption: angular.copy(ctrl.requestTenantSettings.defaultDeliveryOption),
                 robOnArrival: null,
                 minQuantity: null,
