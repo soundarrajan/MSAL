@@ -5,7 +5,7 @@ import {
   AddSelectedRow,
   SetSelectedRow,
   SetStaticLists,
-  SetRowsList,
+  SetLocations,
   SetGroupOfRequestsId,
   SetRequests,
   SetCurrentRequest,
@@ -629,13 +629,13 @@ export class SpotNegotiationStore {
   }
 
   // Rows lists
-  @Action(SetRowsList)
-  SetRowsList(
+  @Action(SetLocations)
+  SetLocations(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: SetRowsList
+    { payload }: SetLocations
   ) {
     patchState({
-      rows: payload
+      locations: payload
     });
   }
 

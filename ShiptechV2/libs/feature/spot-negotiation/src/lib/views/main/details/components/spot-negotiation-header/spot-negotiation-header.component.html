@@ -167,7 +167,8 @@
             </div>
           </mat-menu>
         </div>
-        <div style="display: flex; margin-left: 10px;">
+        <div style="display: flex; margin-left: 10px;" >
+          
           <div style="float:left;" #requestContainer>
             <div
               class="addRemoveRequest"
@@ -176,7 +177,7 @@
               (contextmenu)="
                 $event.preventDefault(); deleteRequestTrigger.openMenu()
               "
-              *ngFor="let item of requestOptions | async; let i = index"
+              *ngFor="let item of requestOptions; let i = index"
             >
               <!-- <div class="divider"></div>
                             <a class="remove-icon" (click)="removeRequest(i);"></a> -->
@@ -187,7 +188,7 @@
                 (click)="selectRequest($event, i, item)"
               >
                 <span style="padding-right: 5px;" *ngIf="!displayVessel"
-                  >{{ item.requestName }} - {{ item.vesselName }}
+                  >{{ item.name }} - {{ item.vesselName }}
                 </span>
                 <span style="padding-right: 5px;" *ngIf="displayVessel">{{
                   item.vessel

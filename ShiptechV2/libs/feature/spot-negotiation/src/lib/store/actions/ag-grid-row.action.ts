@@ -23,8 +23,8 @@ export class SetStaticLists {
 
   constructor(public payload: any) {}
 }
-export class SetRowsList {
-  static readonly type = '[Rows Lists] Set';
+export class SetLocations{
+  static readonly type = '[Set Locations] Set';
 
   constructor(public payload: any) {}
 }
