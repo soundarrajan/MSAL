@@ -91,7 +91,10 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -135,6 +138,22 @@ export class CustomDateAdapter extends MomentDateAdapter {
       formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
+  }
+
+  parse(value) {
+    // We have no way using the native JS Date to set the parse format or locale, so we ignore these
+    // parameters.
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    currentFormat = currentFormat.split(' HH:mm')[0];
+    let elem = moment.utc(value, currentFormat);
+    return value ? elem : null;
   }
 }
 export interface NgxMatMomentDateAdapterOptions {
