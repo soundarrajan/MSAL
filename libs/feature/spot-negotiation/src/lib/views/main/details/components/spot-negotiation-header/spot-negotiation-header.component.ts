@@ -4,6 +4,7 @@ import {
   OnInit,
   Output,
   Renderer2,
+  AfterViewInit,
   ViewChild,
   EventEmitter
 } from '@angular/core';
@@ -22,7 +23,7 @@ import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-r
   templateUrl: './spot-negotiation-header.component.html',
   styleUrls: ['./spot-negotiation-header.component.css']
 })
-export class SpotNegotiationHeaderComponent implements OnInit {
+export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   @ViewChild('headerContainer') container: ElementRef;
   @ViewChild('requestContainer') requestcontainer: ElementRef;
   @ViewChild('inputSearch') inputSearch: ElementRef;
@@ -32,7 +33,7 @@ export class SpotNegotiationHeaderComponent implements OnInit {
   selReqIndex = 0;
   selectAll: boolean = true;
   availWidth: any;
-  requestOptions: Observable<any> = null;
+  requestOptions: any;
   //showAddReq: boolean = false;
   displayVessel: boolean = false;
   expandedSearch: boolean = false;
@@ -53,35 +54,37 @@ export class SpotNegotiationHeaderComponent implements OnInit {
     { request: 'Demo Req 100007', vessel: 'MerinLion', selected: false },
     { request: 'Demo Req 100008', vessel: 'Al Mashrab', selected: false }
   ];
+  isLoadpage: boolean = false;
   constructor(
     private store: Store,
     private renderer: Renderer2,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     // Set observable;
-
-    this.requestOptions = this.store.select(({ spotNegotiation }) => {
-      // Set locations
-      if (spotNegotiation.currentRequestSmallInfo) {
-        this.setLocations(spotNegotiation.currentRequestSmallInfo.requestLocations);
-      }
-
-      // Set counterpartyList
-      if (
-        this.counterpartyList.length === 0 &&
-        spotNegotiation.staticLists.length > 0
-      ) {
-        this.counterpartyList = spotNegotiation.staticLists[1].items;
-        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
-      }
-
-      return spotNegotiation.requests;
-    });
   }
 
   @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
   ngOnInit(): void {
     // Get data from store;
+
+    setTimeout(() => {
+        this.store.subscribe(({ spotNegotiation }) => {
+        this.requestOptions = spotNegotiation.currentRequestSmallInfo;
+        this.locations = spotNegotiation.currentRequestSmallInfo;
+        if (spotNegotiation.currentRequestSmallInfo) {
+          this.setLocations(
+            spotNegotiation.currentRequestSmallInfo[0].requestLocations
+          );
+          if (
+            this.counterpartyList.length === 0 &&
+            spotNegotiation.staticLists.length > 0
+          ) {
+            this.counterpartyList = spotNegotiation.staticLists[1].items;
+            this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+      }
+      }
+    });
+  }, 100);
   }
 
   setLocations(eLocations: any): void {

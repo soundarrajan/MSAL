@@ -45,8 +45,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload = int
    */
   @ObservableException()
-  getGroupOfRequests(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.getGroupOfRequests(payload);
+  getGroupOfSellers(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getGroupOfSellers(payload);
   }
 
   @ObservableException()
