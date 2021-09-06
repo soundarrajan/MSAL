@@ -50,10 +50,22 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   //   width: '50%'
   // }
   ngOnInit(): void {
+    
     // Set static lists;
     this.route.data.subscribe(data => {
       this.store.dispatch(new SetStaticLists(data.staticLists));
     });
+
+    setTimeout(() => {
+      this.store.subscribe(({ spotNegotiation }) => {
+        if(spotNegotiation.locations && spotNegotiation.locations.length > 0){
+          this.rowData_aggrid = spotNegotiation.locations;
+          //this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
+          // this.gridOptions_counterparty.api.setRowData(spotNegotiation.locations);
+        }
+        
+      });
+    }, 100);
   }
 
   //   ngAfterViewInit() {
@@ -92,13 +104,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       onGridReady: params => {
         this.gridOptions_counterparty.api = params.api;
         this.gridOptions_counterparty.columnApi = params.columnApi;
-        //  this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
+         this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
         this.gridOptions_counterparty.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         params.api.sizeColumnsToFit();
         this.counterpartyHeaderWidth =
           params.columnApi.getColumn('check').getActualWidth() +
-          params.columnApi.getColumn('name').getActualWidth() +
+          params.columnApi.getColumn('sellerCounterpartyName').getActualWidth() +
           params.columnApi.getColumn('genRating').getActualWidth() +
           params.columnApi.getColumn('portRating').getActualWidth() +
           params.columnApi.getColumn('phySupplier').getActualWidth();
@@ -185,7 +197,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'Name',
           headerTooltip: 'Name',
-          field: 'name',
+          field: 'sellerCounterpartyName',
           width: 520,
           cellClass: 'suppress-movable-col remove-option hoverCell',
           pinned: 'left',
@@ -594,7 +606,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         .getColumn('check')
         .getActualWidth() +
       this.gridOptions_counterparty.columnApi
-        .getColumn('name')
+        .getColumn('sellerCounterpartyName')
         .getActualWidth() +
       this.gridOptions_counterparty.columnApi
         .getColumn('genRating')
