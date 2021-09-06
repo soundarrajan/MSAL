@@ -1,9 +1,7 @@
-﻿commit 2df1c509e4f5253181eea3b5c0627d83826d966c
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Sep 6 11:08:17 2021 +0000
+﻿commit 1d5733d81cbd57d739722fc25011db28f0cba6ed
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Sep 6 08:49:28 2021 -0300
 
-    Merged PR 13416: #35322: Vessel popup: Future request should be displayed based on the future ETA has done
-    
-    Related work items: #35322
+    Fixed 35151
 
 branch: master

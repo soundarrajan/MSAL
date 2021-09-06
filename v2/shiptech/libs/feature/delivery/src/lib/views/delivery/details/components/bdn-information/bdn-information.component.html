@@ -332,33 +332,28 @@
         <mat-label>Delivery Date</mat-label>
         <input
           [(ngModel)]="formValues.deliveryDate"
-          [disabled]="formValues.deliveryStatus.name == 'Verified'"
           matInput
-          [ngxMatDatetimePicker]="deliveryDate"
-          (onInput)="onChange($event, 'deliveryDate')"
-          (dateChange)="
-            formValues.deliveryDate = formatDateForBe(
-              formValues.deliveryDate,
-              'deliveryDate'
-            );
-            blurFromDatePicker()
+          [matDatepicker]="deliveryDate"
+          [disabled]="
+            formValues.invoiceActiveFlag == true ||
+            formValues.claimActiveFlag == true
           "
+          (focus)="deliveryDate.open()"
           autocomplete="off"
           placeholder="Delivery Date"
-        />
-        <button
-          mat-icon-button
-          matSuffix
-          (click)="
-            deliveryDate.open();
-            $event.stopPropagation();
-            openPopUp();
-            formValues.hideTime = true
+          (dateInput)="onChange($event, 'deliveryDate')"
+          (dateChange)="
+            formValues.deliveryDate = formatDateForBe(formValues.deliveryDate)
           "
-        >
-          <mat-icon class="icon-date"> </mat-icon>
-        </button>
-        <ngx-mat-datetime-picker #deliveryDate></ngx-mat-datetime-picker>
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="deliveryDate">
+          <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker
+          #deliveryDate
+          [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+        ></mat-datepicker>
       </mat-form-field>
     </div>
     <div
@@ -394,28 +389,23 @@
           [(ngModel)]="formValues.bdnDate"
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           matInput
-          [ngxMatDatetimePicker]="bdnDate"
-          (onInput)="onChange($event, 'bdnDate')"
-          (dateChange)="
-            formValues.bdnDate = formatDateForBe(formValues.bdnDate, 'bdnDate');
-            blurFromDatePicker()
-          "
+          required
+          [matDatepicker]="bdnDate"
+          (focus)="bdnDate.open()"
           autocomplete="off"
-          placeholder="BDN Date"
-        />
-        <button
-          mat-icon-button
-          matSuffix
-          (click)="
-            bdnDate.open();
-            $event.stopPropagation();
-            openPopUp();
-            formValues.hideTime = true
+          placeholder="BDN date"
+          (dateInput)="onChange($event, 'bdnDate')"
+          (dateChange)="
+            formValues.bdnDate = formatDateForBe(formValues.bdnDate)
           "
-        >
-          <mat-icon class="icon-date"> </mat-icon>
-        </button>
-        <ngx-mat-datetime-picker #bdnDate></ngx-mat-datetime-picker>
+        />
+        <mat-datepicker-toggle matSuffix [for]="bdnDate">
+          <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker
+          #bdnDate
+          [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+        ></mat-datepicker>
       </mat-form-field>
     </div>
     <div
@@ -455,13 +445,10 @@
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           matInput
           [ngxMatDatetimePicker]="berthingTime"
+          (focus)="berthingTime.open()"
           (onInput)="onChange($event, 'berthingTime')"
           (dateChange)="
-            formValues.berthingTime = formatDateForBe(
-              formValues.berthingTime,
-              'berthingTime'
-            );
-            blurFromDatePicker()
+            formValues.berthingTime = formatDateForBe(formValues.berthingTime)
           "
           autocomplete="off"
           placeholder="Berthing time"
@@ -469,11 +456,7 @@
         <button
           mat-icon-button
           matSuffix
-          (click)="
-            berthingTime.open();
-            $event.stopPropagation();
-            formValues.hideTime = false
-          "
+          (click)="berthingTime.open(); $event.stopPropagation()"
         >
           <mat-icon class="icon-date"> </mat-icon>
         </button>
@@ -498,13 +481,12 @@
           matInput
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           [ngxMatDatetimePicker]="bargeAlongside"
+          (focus)="bargeAlongside.open()"
           (onInput)="onChange($event, 'bargeAlongside')"
           (dateChange)="
             formValues.bargeAlongside = formatDateForBe(
-              formValues.bargeAlongside,
-              'bargeAlongside'
-            );
-            blurFromDatePicker()
+              formValues.bargeAlongside
+            )
           "
           autocomplete="off"
           placeholder="Barge alongside"
@@ -512,11 +494,7 @@
         <button
           mat-icon-button
           matSuffix
-          (click)="
-            bargeAlongside.open();
-            $event.stopPropagation();
-            formValues.hideTime = false
-          "
+          (click)="bargeAlongside.open(); $event.stopPropagation()"
         >
           <mat-icon class="icon-date"> </mat-icon>
         </button>
