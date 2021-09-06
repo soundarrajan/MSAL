@@ -979,10 +979,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 })
                 $scope.timelineItems = groups.length;
                 setLayoutAfterTimelineLoad();
-
-                window.timelineCurrentSort = "vessel";
-                window.timelineCurrentSortDirection = "asc";
-                initSortingData()
+                if (!window.timelineCurrentSort) {
+                    window.timelineCurrentSort = 'vesselName';
+                } 
+                if (!window.timelineCurrentSortDirection) {
+                    window.timelineCurrentSortDirection = "asc";
+                }
+                initSortingData(null, window.timelineCurrentSort);
 				applyCurrentSort();
 				// enableImprovedScrolling();
                 disableImprovedScrolling();
@@ -2254,11 +2257,23 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         	})
         })
 
-		initSortingData = function(e) {
+		initSortingData = function(e, column) {
 			if (e) {
 				activeColumn = e.target;
 			} else {
-				activeColumn = $(".vis-custom-group > .vis-vessel");
+                if (column == 'vesselName') {
+                    activeColumn = $('.vis-custom-group > .vis-vessel');
+                } else  if (column == 'vesselType') {
+                    activeColumn = $('.vis-custom-group > .vis-vessel-type');
+                } else if (column == 'serviceName') {
+                    activeColumn = $('.vis-custom-group > .vis-service');
+                } else if (column == 'buyerName') {
+                    activeColumn = $('.vis-custom-group > .vis-buyer-of-vessel');
+                } else if (column == 'serviceBuyerName') {
+                    activeColumn = $('.vis-custom-group > .vis-buyer-of-service');
+                } else if (column == 'companyName') {
+                    activeColumn = $('.vis-custom-group > .vis-company');
+                }
 			}
 	 		var currentSort = $(activeColumn).attr("timeline-order-column");
     		window.timelineGroupOrdering = [];
@@ -2274,22 +2289,25 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 					});        				
     			}
     		}
-            if (!window.selectFrame) {
-                if (window.timelineCurrentSort == currentSort) {
-                    if (!window.selectFrame) {
-                        if (window.timelineCurrentSortDirection == 'asc') {
-                            window.timelineCurrentSortDirection = 'desc';
-                        } else {
-                            window.timelineCurrentSortDirection = 'asc';
+            if (!column) {
+                if (!window.selectFrame) {
+                    if (window.timelineCurrentSort == currentSort) {
+                        if (!window.selectFrame) {
+                            if (window.timelineCurrentSortDirection == 'asc') {
+                                window.timelineCurrentSortDirection = 'desc';
+                            } else {
+                                window.timelineCurrentSortDirection = 'asc';
+                            }
                         }
+                        
+                    } else {
+                        window.timelineCurrentSortDirection = 'asc';
                     }
-                    
                 } else {
-                    window.timelineCurrentSortDirection = 'asc';
+                    window.selectFrame = false;
                 }
-            } else {
-                window.selectFrame = false;
             }
+
 			
 			$("span[timeline-order-column]").removeClass("asc").removeClass("desc");
 			$(activeColumn).addClass(window.timelineCurrentSortDirection);
