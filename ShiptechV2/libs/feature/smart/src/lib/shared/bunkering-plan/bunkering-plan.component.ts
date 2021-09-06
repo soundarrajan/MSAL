@@ -381,7 +381,7 @@ export class BunkeringPlanComponent implements OnInit {
               editable : true,
               valueFormatter: (params)=> {return params.value == 0? '':params.value ;},
               cellEditorFramework : AgGridInputCellEditor,  
-              cellEditorParams : (params) =>{return {type: 'edit',context: { componentParent: this }, cellClass: 'aggrid-blue-editable-cell aggrid-columgroup-splitter  aggrid-content-right'}}
+              cellEditorParams : (params) =>{return {type: 'edit-lsdis-safe-port',context: { componentParent: this }, cellClass: 'aggrid-blue-cell text-ellipsis editable'}}
             },
           ]
         },
