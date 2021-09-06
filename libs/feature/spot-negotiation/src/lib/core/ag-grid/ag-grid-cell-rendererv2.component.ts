@@ -83,17 +83,17 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
       <div class="hover-cell-lookup">
         <span
           class="counterpartytype-icon type-physicalsupplier"
-          *ngIf="params.data.counterpartytype == 'physicalsupplier'"
+          *ngIf="params.data.counterpartyTypeName == 'Supplier'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
           class="counterpartytype-icon type-broker"
-          *ngIf="params.data.counterpartytype == 'broker'"
+          *ngIf="params.data.counterpartyTypeName == 'broker'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
           class="counterpartytype-icon type-seller"
-          *ngIf="params.data.counterpartytype == 'seller'"
+          *ngIf="params.data.counterpartyTypeName == 'seller'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
