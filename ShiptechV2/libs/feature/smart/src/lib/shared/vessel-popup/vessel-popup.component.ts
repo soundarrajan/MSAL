@@ -322,6 +322,8 @@ export class VesselPopupComponent implements OnInit {
     }
   }
   loadFutureRequestData() {
+    let currentDate = new Date().toISOString();
+    currentDate = currentDate.substring(0, 16);
     let requestPayload = {
       "Payload": {
         "Order": null,
@@ -354,6 +356,16 @@ export class VesselPopupComponent implements OnInit {
               "ConditionValue": "=",
               "Values": [
                 this.popup_data?.vesselId
+              ],
+              "FilterOperator": 0
+            },
+            {
+              "columnValue": "Eta",
+              "ColumnType": "Date",
+              "isComputedColumn": false,
+              "ConditionValue": ">=",
+              "Values": [
+                currentDate
               ],
               "FilterOperator": 0
             }
