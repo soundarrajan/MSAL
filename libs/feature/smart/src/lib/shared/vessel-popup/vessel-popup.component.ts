@@ -376,7 +376,7 @@ export class VesselPopupComponent implements OnInit {
             {
               "columnValue": "eta",
               "sortIndex": 0,
-              "sortParameter": 2
+              "sortParameter": 1
             }
           ]
         },
