@@ -1722,13 +1722,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             $("#timeline").click();
             if (event.which == 3) {
                 var voyageDetailId = parseFloat($(this).attr("voyage-detail-id"));
-                var currentDate = $(this).attr('cell-identifier').split(' <> ')[0];
+                let voyageContent;
                 removePopups();
                 $(".contextmenu").css("display", "block");
 	            
 	            var allStops = [parseFloat(voyageDetailId)];
 	            $.each(ctrl.voyages, function(k,v){
 	            	if (v.voyageId == voyageDetailId) {
+                        voyageContent = angular.copy(v);
 	            		if (v.additionalStops) {
 		            		$.each(v.additionalStops, function(k2,v2){
 			            		allStops.push(v2.voyageDetail.id)
@@ -1817,14 +1818,20 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 rightClickPopoverData = {};
    
                 var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
-
+                console.log(voyageContent);
                 rightClickPopoverData.todayVoyages = _.filter(object, function(el) {
                     if (displayScheduleBasedOn === 'Delivery Date' && el.voyageDetail.deliveryFrom) {
-                        return el.voyageDetail.deliveryFrom.split("T")[0]  == currentDate;
+                        let deliveryFrom = moment.utc(el.voyageDetail.deliveryFrom).format('YYYY-MM-DD HH:mm');
+                        return moment(deliveryFrom) >= moment(voyageContent.start) && moment(deliveryFrom) <= moment(voyageContent.end);
                     } else {
-                        return el.voyageDetail.eta.split("T")[0] == currentDate;
+                        let eta = moment.utc(el.voyageDetail.eta).format('YYYY-MM-DD HH:mm');
+                        let value = moment(eta) >= moment(voyageContent.start) && moment(eta) <= moment(voyageContent.end);
+                        console.log(eta);
+                        console.log(value);
+                        return moment(eta) >= moment(voyageContent.start) && moment(eta) <= moment(voyageContent.end);
                     }
                 });
+                // rightClickPopoverData.todayVoyages = object;
                 rightClickPopoverData.bunkerDetails = todaysBunkerDetails;
                 rightClickPopoverData.productTypeView = ctrl.productTypeView;
                 $scope.rightClickPopoverData = rightClickPopoverData;
@@ -1971,7 +1978,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             console.log("DELETE");
             console.log(ctrl);
         });
-
 
 
         $(document).on("mouseout", "span[voyage-detail-id]", function(e) {
