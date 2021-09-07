@@ -172,12 +172,13 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   createNewInvoiceFromDelivery() {
     const data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
 
-    localStorage.removeItem('invoiceFromDelivery');
+    // localStorage.removeItem('invoiceFromDelivery');
 
     this.invoiceService
       .getNewInvoicDetails(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.setScreenActions(response);
+        this.getDefaultValues();     
       });
   }
 
@@ -349,6 +350,21 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     });
     this.changeDetectorRef.detectChanges();
   }
+	
+	getDefaultValues() {
+		const requestPayload = this.invoiceDetailsComponent.formValues.orderDetails.order.id;		
+    this.invoiceService
+		.getDefaultValues(requestPayload)
+		.subscribe((response: any) => {
+				if (response) {
+					this.invoiceDetailsComponent.formValues.counterpartyDetails.counterpartyBankAccount = response.bankAccount;
+					this.invoiceDetailsComponent.formValues.counterpartyDetails.customer = response.customer;
+					this.invoiceDetailsComponent.formValues.counterpartyDetails.payableTo = response.payableTo;
+					this.changeDetectorRef.detectChanges();
+					console.log(response);
+				}
+      });		
+	}
 
   openCurrencyConversionPopUp() {
     if (
