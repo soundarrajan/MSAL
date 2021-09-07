@@ -13,29 +13,27 @@ export class FooterV2Component implements OnInit {
   @Input() doublePagination;
   @Input() dualfooter;
   @Input() singleGrid;
-  @Input() id: string;
+  @Input() id:string;
   @Input() footerWidth;
   @Input() showFooterDatepicker;
   //@Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
   //constructor() { }
   public page: number;
 
-  ngOnInit(): void {}
-
-  pageChanged(e) {
-    this.page = e;
+  ngOnInit(): void {
+  }
+  
+  pageChanged(e){
+    this.page= e;
     //console.log(e);
     //this.pageChange.emit(event)
   }
 
   collection = [];
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(iconRegistry: MatIconRegistry,sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
       'data-picker',
-      sanitizer.bypassSecurityTrustResourceUrl(
-        '../assets/customicons/datepicker.svg'
-      )
-    );
+      sanitizer.bypassSecurityTrustResourceUrl('../assets/customicons/datepicker.svg'));
 
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);

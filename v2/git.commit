@@ -1,7 +1,7 @@
-﻿commit 7d917b9764654297ca59e9928848bcf670b4cb19
-Author: Suresh <suresh.r@Inatech.com>
-Date:   Mon Sep 6 23:47:55 2021 +0530
+﻿commit 9df4f08abb5ec0baa34e75191e403e32edbc968d
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Tue Sep 7 17:40:33 2021 +0300
 
-    32945 - UI Update
+    Fixed 35464
 
-branch: spot-develop
+branch: master

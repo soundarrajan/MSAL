@@ -90,8 +90,8 @@ import {
   NgxMatTimepickerModule
 } from '@angular-material-components/datetime-picker';
 
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
+import { NgxSpinnerModule } from "ngx-spinner";
+import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
@@ -142,6 +142,7 @@ import { PriceTenantFormatDirective } from './views/contract/details/directives/
 import { ExtendContractModalComponent } from './views/contract/details/components/extend-contract-modal/extend-contract-modal.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { FormulaHistoryModalComponent } from './views/contract/details/components/formula-history-modal/formula-history-modal.component';
+
 
 @NgModule({
   imports: [
@@ -271,19 +272,14 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [
-    ProductSpecGroupModalComponent,
-    CreateNewFormulaModalComponent,
-    ExtendContractModalComponent,
-    FormulaHistoryModalComponent
-  ],
+  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent,ExtendContractModalComponent, FormulaHistoryModalComponent],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
     AmountTenantFormatDirective,
     PriceTenantFormatDirective
-    // PSpinnerDisableKeysSpinDirective,
+   // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
   providers: [
@@ -304,7 +300,9 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     LocationMasterRouteResolver,
     {
       provide: CONTRACT_API_SERVICE,
-      useClass: environment.production ? ContractApi : ContractApi
+      useClass: environment.production
+        ? ContractApi
+        : ContractApi
     },
     ContractDetailsUnsavedChangesGuard,
     ContractService,
@@ -312,6 +310,7 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     MessageService,
     ConfirmationService,
     DecimalPipe
+
   ]
 })
 export class ContractModule {}

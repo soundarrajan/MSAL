@@ -21,7 +21,7 @@
 /* DatePicker Theme colour- end */
 
 /*Search Trader Popup - start */
-.traderSearchPopup-v2,.searchLookup-v2{
+.traderSearchPopup-v2{
   .search-block{
     .title{
       font-size: 16px;
@@ -114,7 +114,7 @@
   
   .ag-theme-material {
   border-radius: 3px 3px 0px 0px;
-  border-width: 3px 7px 2px 7px;
+  border-width: 3px 7px 2px 7px !important;
   border-color: #E9EAEC;
   }
   
@@ -1754,9 +1754,7 @@
         }
         
       }
-      .accordion-detail-right{
-        top: 7px;
-      }
+     
     }
   }
   
@@ -1766,32 +1764,6 @@
   
   .mat-expansion-panel-header {
     padding-left: 0px !important;
-  }
-  .accordion-detail-right{
-    position: absolute;
-    right: 10px;
-    top: 11px;
-    .divider{
-      width: 1px;
-      height: 15px;
-      background: #C4C4C4;
-      border-radius: 3px;
-      float: left;
-    }
-    .text{
-      font-size: 12px;
-      color: #333333;
-      float: left;
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
-      .light{
-        font-weight: 300;
-      }
-      .bold{
-        font-weight: 500
-      }
-    }
   }
   .accordion-detail {
     display: flex;
