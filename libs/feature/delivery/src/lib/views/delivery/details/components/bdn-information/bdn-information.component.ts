@@ -92,6 +92,10 @@ import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -117,10 +121,11 @@ export const PICK_FORMATS = {
   }
 };
 
-export class PickDateAdapter extends NativeDateAdapter {
-  format(value: Date, displayFormat: string): string {
+@Injectable()
+export class CustomDateAdapter extends MomentDateAdapter {
+  public format(value: moment.Moment, displayFormat: string): string {
     if (value === null || value === undefined) return '';
-    let currentFormat = displayFormat;
+    let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
       hasDayOfWeek = true;
@@ -129,9 +134,9 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment(value).format(currentFormat);
+    let formattedDate = moment.utc(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -148,21 +153,19 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
-    return value ? date : null;
+    let elem = moment.utc(value, currentFormat);
+    return value ? elem : null;
   }
 }
-
 export interface NgxMatMomentDateAdapterOptions {
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS_1 = new InjectionToken<
   NgxMatMomentDateAdapterOptions
->('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS_1', {
   providedIn: 'root',
   factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
 });
@@ -196,7 +199,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   constructor(
     @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
     @Optional()
-    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS_1)
     private _options?: NgxMatMomentDateAdapterOptions
   ) {
     super();
@@ -306,7 +309,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    let elem = moment(value, currentFormat);
+    const elem = moment(value, currentFormat);
     const isValid = this.isValid(elem);
     return this.isValid(elem) ? elem : null;
   }
@@ -366,8 +369,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
-      let newVal = moment(elem).format(currentFormat);
+      const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      const newVal = moment(elem).format(currentFormat);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -431,42 +434,19 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     OrderListGridViewModel,
     DialogService,
     ConfirmationService,
-    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     {
       provide: NgxMatDateAdapter,
       useClass: CustomNgxDatetimeAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS_1]
     },
-    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ]
 })
 export class BdnInformationComponent extends DeliveryAutocompleteComponent
   implements OnInit {
-  switchTheme; //false-Light Theme, true- Dark Theme
-  bargeOptions: any;
-  orderDetails: any;
-  deliverySettings: any;
-  bargeList$: any;
-  formValues: any;
-  isLoading: boolean;
-  eventsSubscription: any;
-  eventsSaveButtonSubscription: any;
-  adminConfiguration: IGeneralTenantSettings;
-  openedScreenLoaders: number = 0;
-  bargeList: any;
-  bargeListLength: any;
-  isDeliveryInvalid: boolean;
-  isDeliveryDateInvalid: boolean;
-  isBdnDateInvalid: boolean;
-  isBerthingTimeDateInvalid: boolean;
-  isBargeAlongsideDateInvalid: boolean;
-  statusColorCode: any;
-  buttonClicked: any;
-  baseOrigin: string;
-  bargeId: any;
-  backgroundColor: string;
-
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -525,6 +505,29 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
+  switchTheme; //false-Light Theme, true- Dark Theme
+  bargeOptions: any;
+  orderDetails: any;
+  deliverySettings: any;
+  bargeList$: any;
+  formValues: any;
+  isLoading: boolean;
+  eventsSubscription: any;
+  eventsSaveButtonSubscription: any;
+  adminConfiguration: IGeneralTenantSettings;
+  openedScreenLoaders: number = 0;
+  bargeList: any;
+  bargeListLength: any;
+  isDeliveryInvalid: boolean;
+  isDeliveryDateInvalid: boolean;
+  isBdnDateInvalid: boolean;
+  isBerthingTimeDateInvalid: boolean;
+  isBargeAlongsideDateInvalid: boolean;
+  statusColorCode: any;
+  buttonClicked: any;
+  baseOrigin: string;
+  bargeId: any;
+  backgroundColor: string;
 
   @Input() vesselId: number;
   @Output() changeInputBdn = new EventEmitter<any>();
@@ -534,9 +537,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   @Select(UserProfileState.displayName) displayName$: Observable<string>;
   @Select(UserProfileState.username) username$: Observable<string>;
-  private _autocompleteType: string;
-  private _TRANSACTION_TYPE_ID: number = 46;
-  protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
   firstTenOptions: any;
   filteredOptions: Observable<any>;
 
@@ -545,9 +545,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   isReadOnly: boolean;
 
   autocompleteVessel: string;
-
-  private _entityId: any;
-  private _entityName: string;
   options: TransactionForSearch[];
   relatedDeliveries: DeliveryInfoForOrder[];
   options1 = new BehaviorSubject<any[]>([]);
@@ -560,6 +557,12 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   limit = 10;
   offset = 0;
   @Input() eventsSaveButton: Observable<void>;
+  protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
+  private _autocompleteType: string;
+  private _TRANSACTION_TYPE_ID: number = 46;
+
+  private _entityId: any;
+  private _entityName: string;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -614,10 +617,10 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return 'black';
     }
     hexcolor = hexcolor.replace('#', '');
-    var r = parseInt(hexcolor.substr(0, 2), 16);
-    var g = parseInt(hexcolor.substr(2, 2), 16);
-    var b = parseInt(hexcolor.substr(4, 2), 16);
-    var yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    const r = parseInt(hexcolor.substr(0, 2), 16);
+    const g = parseInt(hexcolor.substr(2, 2), 16);
+    const b = parseInt(hexcolor.substr(4, 2), 16);
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
     return yiq >= 128 ? 'black' : 'white';
   }
 
@@ -653,7 +656,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      const elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
         formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
@@ -705,11 +708,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
         : this.formValues.order;
       if (this.options) {
         const list = this.options
-          .filter((item: any) => {
-            return item.name
-              .toLowerCase()
-              .includes(filterValue.trim().toLowerCase());
-          })
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.trim().toLowerCase())
+          )
           .splice(0, 10);
         return list;
       } else {
@@ -729,9 +730,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     }
     if (this.bargeList$) {
       const list = this.bargeList$
-        .filter((item: any) => {
-          return item.name.toLowerCase().includes(filterValue.toLowerCase());
-        })
+        .filter((item: any) =>
+          item.name.toLowerCase().includes(filterValue.toLowerCase())
+        )
         .splice(0, 10);
       return list;
     } else {
@@ -954,7 +955,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   onChange($event, field) {
     if ($event.value) {
-      let beValue = `${moment($event.value).format(
+      const beValue = `${moment($event.value).format(
         'YYYY-MM-DDTHH:mm:ss'
       )}+00:00`;
       if (field == 'deliveryDate') {
@@ -982,7 +983,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
@@ -994,7 +995,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   setBarge(value) {
-    let findBarge = _.find(this.bargeList, function(object) {
+    const findBarge = _.find(this.bargeList, function(object) {
       return object.id == value;
     });
     if (findBarge != -1) {

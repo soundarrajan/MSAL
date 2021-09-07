@@ -191,42 +191,46 @@
                 >
                   {{ formValues.deliveryStatus.name }}
                 </span>
-            </div>
-          </div>
-          <div
-            class="readonly-label-related-delivery related-deliveries col-md-6"
-          >
-            <div class="label-block">
-              <div class="title">Related Deliveries</div>
-              <div
-                class="value related-deliveries-container"
-                style="padding-top: 5px;"
-              >
-                <span *ngFor="let relatedDelivery of relatedDeliveries">
-                  <a
-                    *ngIf="relatedDelivery"
-                    [ngClass]="{'active_delivery': formValues.id === relatedDelivery.deliveryId}"
-                    href="{{
-                      getRelatedDeliveryLink(relatedDelivery.deliveryId)
-                    }}"
-                  >
-                    <span class="related-deliveries-dot-container"></span>
-                    {{ relatedDelivery.deliveryNumber }}
-                  </a>
-                </span>
               </div>
             </div>
-            <div class="border_line"></div>
-            <div class="related-deliveries-complete-delivery label-block">
-              <!-- <div class="title" style="visibility: hidden;">Related Deliveries</div> -->
-              <div class="value">
-                <mat-checkbox
-                  [color]="'primary'"
-                  [disabled]="formValues.deliveryStatus.name != 'Verified'"
-                  [(ngModel)]="formValues.completed"
+            <div
+              class="readonly-label-related-delivery related-deliveries col-md-6"
+            >
+              <div class="label-block">
+                <div class="title">Related Deliveries</div>
+                <div
+                  class="value related-deliveries-container"
+                  style="padding-top: 5px;"
                 >
-                  Mark order as completed
-                </mat-checkbox>
+                  <span *ngFor="let relatedDelivery of relatedDeliveries">
+                    <a
+                      *ngIf="relatedDelivery"
+                      [ngClass]="{
+                        active_delivery:
+                          formValues.id === relatedDelivery.deliveryId
+                      }"
+                      href="{{
+                        getRelatedDeliveryLink(relatedDelivery.deliveryId)
+                      }}"
+                    >
+                      <span class="related-deliveries-dot-container"></span>
+                      {{ relatedDelivery.deliveryNumber }}
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div class="border_line"></div>
+              <div class="related-deliveries-complete-delivery label-block">
+                <!-- <div class="title" style="visibility: hidden;">Related Deliveries</div> -->
+                <div class="value">
+                  <mat-checkbox
+                    [color]="'primary'"
+                    [disabled]="formValues.deliveryStatus.name != 'Verified'"
+                    [(ngModel)]="formValues.completed"
+                  >
+                    Mark order as completed
+                  </mat-checkbox>
+                </div>
               </div>
             </div>
           </div>
@@ -234,265 +238,275 @@
       </div>
     </div>
   </div>
-</div>
-<div class="col-md-12 row bdn-info">
-  <div
-    class="custom-form-field lookup-delivery-container"
-    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-  >
-    <div class="d-flex">
+  <div class="col-md-12 row bdn-info">
+    <div
+      class="custom-form-field lookup-delivery-container"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <div class="d-flex">
+        <mat-form-field
+          class="with-search"
+          appearance="legacy"
+          [ngClass]="{
+            'date-invalid':
+              buttonClicked && !orderNumberField.valid && !formValues.order.name
+          }"
+        >
+          <mat-label>Order Number</mat-label>
+          <input
+            class="free-text-field"
+            type="text"
+            matInput
+            #orderNumberField="ngModel"
+            [(ngModel)]="formValues.order"
+            [matAutocomplete]="auto"
+            placeholder="Order Number"
+            [disabled]="
+              formValues.deliveryStatus.name == 'Verified' || entityId != 0
+            "
+            required
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            class="darkPanelAuto"
+            [displayWith]="displayFn"
+            (optionSelected)="selectOrderNumber($event)"
+          >
+            <mat-option
+              *ngFor="let option of filterOrderNumberList()"
+              [value]="option"
+            >
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button
+          [disabled]="
+            formValues.deliveryStatus.name == 'Verified' || entityId != 0
+          "
+          [ngClass]="{
+            'search-icon-disabled':
+              formValues.deliveryStatus.name == 'Verified' || entityId != 0
+          }"
+          class="search-icon"
+          appMasterSelectorTrigger
+          [masterSelector]="masterSelector"
+          #masterSelectorTrigger="masterSelectorTrigger"
+          [header]="getHeaderNameSelector()"
+        >
+          <div class="img">
+            <ng-template cdkPortal #masterSelector="cdkPortal">
+              <shiptech-shared-master-selector
+                (selectedChange)="
+                  selectorOrderNumberSelectionChange($event);
+                  masterSelectorTrigger.close()
+                "
+                (shouldCloseModal)="masterSelectorTrigger.close()"
+                [selectorType]="autocompleteVessel"
+                [disabled]="disabled"
+                [readonly]="readonly"
+                [entityName]="entityName"
+                [entityId]="entityId"
+                [vesselId]="vesselId"
+                [headerName]="getHeaderNameSelector()"
+              ></shiptech-shared-master-selector>
+            </ng-template>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="custom-form-field"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
       <mat-form-field
-        class="with-search"
+        class="without-search"
         appearance="legacy"
         [ngClass]="{
           'date-invalid':
-            buttonClicked && !orderNumberField.valid && !formValues.order.name
+            isDeliveryDateInvalid ||
+            (buttonClicked && !formValues.deliveryDate),
+          'date-valid': !isDeliveryDateInvalid
         }"
       >
-        <mat-label>Order Number</mat-label>
+        <mat-label>Delivery Date</mat-label>
         <input
-          class="free-text-field"
-          type="text"
+          [(ngModel)]="formValues.deliveryDate"
           matInput
-          #orderNumberField="ngModel"
-          [(ngModel)]="formValues.order"
-          [matAutocomplete]="auto"
-          placeholder="Order Number"
-          [disabled]="formValues.deliveryStatus.name == 'Verified' || entityId != 0"
+          [matDatepicker]="deliveryDate"
+          [disabled]="
+            formValues.invoiceActiveFlag == true ||
+            formValues.claimActiveFlag == true
+          "
+          (focus)="deliveryDate.open()"
+          autocomplete="off"
+          placeholder="Delivery Date"
+          (dateInput)="onChange($event, 'deliveryDate')"
+          (dateChange)="
+            formValues.deliveryDate = formatDateForBe(formValues.deliveryDate)
+          "
           required
         />
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          class="darkPanelAuto"
-          [displayWith]="displayFn"
-          (optionSelected)="selectOrderNumber($event)"
-        >
-          <mat-option
-            *ngFor="let option of filterOrderNumberList()"
-            [value]="option"
-          >
-            {{ option.name }}
-          </mat-option>
-        </mat-autocomplete>
+        <mat-datepicker-toggle matSuffix [for]="deliveryDate">
+          <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker
+          #deliveryDate
+          [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+        ></mat-datepicker>
       </mat-form-field>
-      <button
-        [disabled]="formValues.deliveryStatus.name == 'Verified' || entityId != 0"
+    </div>
+    <div
+      class="custom-form-field"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Bdn Number</mat-label>
+        <input
+          [(ngModel)]="formValues.bdnNumber"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          matInput
+          autocomplete="off"
+          placeholder="Bdn Number"
+        />
+      </mat-form-field>
+    </div>
+    <div
+      class="custom-form-field"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field
+        class="without-search"
+        appearance="legacy"
         [ngClass]="{
-          'search-icon-disabled': formValues.deliveryStatus.name == 'Verified' || entityId != 0
+          'date-invalid':
+            isBdnDateInvalid || (buttonClicked && !formValues.bdnDate),
+          'date-valid': !isBdnDateInvalid
         }"
-        class="search-icon"
-        appMasterSelectorTrigger
-        [masterSelector]="masterSelector"
-        #masterSelectorTrigger="masterSelectorTrigger"
-        [header]="getHeaderNameSelector()"
       >
-        <div class="img">
-          <ng-template cdkPortal #masterSelector="cdkPortal">
-            <shiptech-shared-master-selector
-              (selectedChange)="
-                selectorOrderNumberSelectionChange($event);
-                masterSelectorTrigger.close()
-              "
-              (shouldCloseModal)="masterSelectorTrigger.close()"
-              [selectorType]="autocompleteVessel"
-              [disabled]="disabled"
-              [readonly]="readonly"
-              [entityName]="entityName"
-              [entityId]="entityId"
-              [vesselId]="vesselId"
-              [headerName]="getHeaderNameSelector()"
-            ></shiptech-shared-master-selector>
-          </ng-template>
-        </div>
-      </button>
+        <mat-label>BDN date</mat-label>
+        <input
+          [(ngModel)]="formValues.bdnDate"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          matInput
+          required
+          [matDatepicker]="bdnDate"
+          (focus)="bdnDate.open()"
+          autocomplete="off"
+          placeholder="BDN date"
+          (dateInput)="onChange($event, 'bdnDate')"
+          (dateChange)="
+            formValues.bdnDate = formatDateForBe(formValues.bdnDate)
+          "
+        />
+        <mat-datepicker-toggle matSuffix [for]="bdnDate">
+          <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker
+          #bdnDate
+          [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+        ></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div
+      class="custom-form-field"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Barge</mat-label>
+        <mat-select
+          [(ngModel)]="bargeId"
+          (ngModelChange)="setBarge($event)"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          [disableOptionCentering]="true"
+          panelClass="barge-select-container"
+        >
+          <mat-option *ngFor="let barge of bargeList" [value]="barge.id">{{
+            barge.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div
+      class="custom-form-field"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field
+        class="without-search"
+        appearance="legacy"
+        [ngClass]="{
+          'date-invalid': isBerthingTimeDateInvalid,
+          'date-valid': !isBerthingTimeDateInvalid
+        }"
+      >
+        <mat-label>Berthing time</mat-label>
+        <input
+          [(ngModel)]="formValues.berthingTime"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          matInput
+          [ngxMatDatetimePicker]="berthingTime"
+          (focus)="berthingTime.open()"
+          (onInput)="onChange($event, 'berthingTime')"
+          (dateChange)="
+            formValues.berthingTime = formatDateForBe(formValues.berthingTime)
+          "
+          autocomplete="off"
+          placeholder="Berthing time"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="berthingTime.open(); $event.stopPropagation()"
+        >
+          <mat-icon class="icon-date"> </mat-icon>
+        </button>
+        <ngx-mat-datetime-picker #berthingTime></ngx-mat-datetime-picker>
+      </mat-form-field>
+    </div>
+    <div
+      class="custom-form-field"
+      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+    >
+      <mat-form-field
+        class="without-search"
+        appearance="legacy"
+        [ngClass]="{
+          'date-invalid': isBargeAlongsideDateInvalid,
+          'date-valid': !isBargeAlongsideDateInvalid
+        }"
+      >
+        <mat-label>Barge alongside</mat-label>
+        <input
+          [(ngModel)]="formValues.bargeAlongside"
+          matInput
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          [ngxMatDatetimePicker]="bargeAlongside"
+          (focus)="bargeAlongside.open()"
+          (onInput)="onChange($event, 'bargeAlongside')"
+          (dateChange)="
+            formValues.bargeAlongside = formatDateForBe(
+              formValues.bargeAlongside
+            )
+          "
+          autocomplete="off"
+          placeholder="Barge alongside"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="bargeAlongside.open(); $event.stopPropagation()"
+        >
+          <mat-icon class="icon-date"> </mat-icon>
+        </button>
+        <ngx-mat-datetime-picker #bargeAlongside></ngx-mat-datetime-picker>
+      </mat-form-field>
     </div>
   </div>
-  <div
-    class="custom-form-field"
-    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-spin-clockwise-fade"
   >
-    <mat-form-field
-      class="without-search"
-      appearance="legacy"
-      [ngClass]="{
-        'date-invalid':
-          isDeliveryDateInvalid || (buttonClicked && !formValues.deliveryDate),
-        'date-valid': !isDeliveryDateInvalid
-      }"
-    >
-      <mat-label>Delivery Date</mat-label>
-      <input
-        [(ngModel)]="formValues.deliveryDate"
-        matInput
-        [matDatepicker]="deliveryDate"
-        [disabled]="
-          formValues.invoiceActiveFlag == true ||
-          formValues.claimActiveFlag == true
-        "
-        (focus)="deliveryDate.open()"
-        autocomplete="off"
-        placeholder="Delivery Date"
-        (dateInput)="onChange($event, 'deliveryDate')"
-        (dateChange)="
-          formValues.deliveryDate = formatDateForBe(formValues.deliveryDate)
-        "
-        required
-      />
-      <mat-datepicker-toggle matSuffix [for]="deliveryDate">
-        <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
-      </mat-datepicker-toggle>
-      <mat-datepicker
-        #deliveryDate
-        [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
-      ></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div
-    class="custom-form-field"
-    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-  >
-    <mat-form-field class="without-search" appearance="legacy">
-      <mat-label>Bdn Number</mat-label>
-      <input
-        [(ngModel)]="formValues.bdnNumber"
-        [disabled]="formValues.deliveryStatus.name == 'Verified'"
-        matInput
-        autocomplete="off"
-        placeholder="Bdn Number"
-      />
-    </mat-form-field>
-  </div>
-  <div
-    class="custom-form-field"
-    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-  >
-    <mat-form-field
-      class="without-search"
-      appearance="legacy"
-      [ngClass]="{
-        'date-invalid':
-          isBdnDateInvalid || (buttonClicked && !formValues.bdnDate),
-        'date-valid': !isBdnDateInvalid
-      }"
-    >
-      <mat-label>BDN date</mat-label>
-      <input
-        [(ngModel)]="formValues.bdnDate"
-        [disabled]="formValues.deliveryStatus.name == 'Verified'"
-        matInput
-        required
-        [matDatepicker]="bdnDate"
-        (focus)="bdnDate.open()"
-        autocomplete="off"
-        placeholder="BDN date"
-        (dateInput)="onChange($event, 'bdnDate')"
-        (dateChange)="formValues.bdnDate = formatDateForBe(formValues.bdnDate)"
-      />
-      <mat-datepicker-toggle matSuffix [for]="bdnDate">
-        <mat-icon matDatepickerToggleIcon class="icon-date"> </mat-icon>
-      </mat-datepicker-toggle>
-      <mat-datepicker
-        #bdnDate
-        [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
-      ></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div
-    class="custom-form-field"
-    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-  >
-    <mat-form-field class="without-search" appearance="legacy">
-      <mat-label>Barge</mat-label>
-      <mat-select
-        [(ngModel)]="bargeId"
-        (ngModelChange)="setBarge($event)"
-        [disabled]="formValues.deliveryStatus.name == 'Verified'"
-        [disableOptionCentering]="true"
-        panelClass="barge-select-container"
-      >
-        <mat-option *ngFor="let barge of bargeList" [value]="barge.id">{{
-          barge.name
-        }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div
-    class="custom-form-field"
-    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-  >
-    <mat-form-field
-      class="without-search"
-      appearance="legacy"
-      [ngClass]="{
-        'date-invalid': isBerthingTimeDateInvalid,
-        'date-valid': !isBerthingTimeDateInvalid
-      }"
-    >
-      <mat-label>Berthing time</mat-label>
-      <input
-        [(ngModel)]="formValues.berthingTime"
-        [disabled]="formValues.deliveryStatus.name == 'Verified'"
-        matInput
-        [ngxMatDatetimePicker]="berthingTime"
-        (focus)="berthingTime.open()"
-        (onInput)="onChange($event, 'berthingTime')"
-        (dateChange)="
-          formValues.berthingTime = formatDateForBe(formValues.berthingTime)
-        "
-        autocomplete="off"
-        placeholder="Berthing time"
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="berthingTime.open(); $event.stopPropagation()"
-      >
-        <mat-icon class="icon-date"> </mat-icon>
-      </button>
-      <ngx-mat-datetime-picker #berthingTime></ngx-mat-datetime-picker>
-    </mat-form-field>
-  </div>
-  <div
-    class="custom-form-field"
-    [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-  >
-    <mat-form-field
-      class="without-search"
-      appearance="legacy"
-      [ngClass]="{
-        'date-invalid': isBargeAlongsideDateInvalid,
-        'date-valid': !isBargeAlongsideDateInvalid
-      }"
-    >
-      <mat-label>Barge alongside</mat-label>
-      <input
-        [(ngModel)]="formValues.bargeAlongside"
-        matInput
-        [disabled]="formValues.deliveryStatus.name == 'Verified'"
-        [ngxMatDatetimePicker]="bargeAlongside"
-        (focus)="bargeAlongside.open()"
-        (onInput)="onChange($event, 'bargeAlongside')"
-        (dateChange)="
-          formValues.bargeAlongside = formatDateForBe(formValues.bargeAlongside)
-        "
-        autocomplete="off"
-        placeholder="Barge alongside"
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="bargeAlongside.open(); $event.stopPropagation()"
-      >
-        <mat-icon class="icon-date"> </mat-icon>
-      </button>
-      <ngx-mat-datetime-picker #bargeAlongside></ngx-mat-datetime-picker>
-    </mat-form-field>
-  </div>
+  </ngx-spinner>
 </div>
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-spin-clockwise-fade"
->
-</ngx-spinner>
