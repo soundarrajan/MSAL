@@ -658,22 +658,22 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
-    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
+    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Max Capacity which is HSFO Tank Capacity
     let isValidMinEcaSod = data.findIndex(params => {
       let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-      return  sum > parseInt(params?.max_sod) ;
+      return  sum > currentROBObj?.hsfoTankCapacity;//parseInt(params?.max_sod) ;
     });
     isValidMinEcaSod = isValidMinEcaSod < 0 ? 'Y':'N'
     if(isValidMinEcaSod == 'N'){
       let id = data.findIndex(params => {
         let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-        return  sum > parseInt(params?.max_sod) ;
+        return  sum > currentROBObj?.hsfoTankCapacity;//parseInt(params?.max_sod) ;
       });
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
         panelClass: 'confirmation-popup-operator',
-        data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id}
+        data : {message: `The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Max Capacity (${currentROBObj.hsfoTankCapacity}) for port `,id: port_id}
       });
       isHardValidation = 1;
       return isHardValidation;
