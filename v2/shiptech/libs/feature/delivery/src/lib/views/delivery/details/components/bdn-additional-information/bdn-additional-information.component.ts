@@ -763,6 +763,7 @@ export class BdnAdditionalInformationComponent
     }
   }
 
+
   ngAfterViewInit(): void {
     this.addSampleSources();
   }

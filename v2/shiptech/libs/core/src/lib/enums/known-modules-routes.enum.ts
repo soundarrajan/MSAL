@@ -6,6 +6,5 @@ export enum KnownPrimaryRoutes {
   Root = '',
   Delivery = 'delivery',
   Smart = 'smart',
-  Contract = 'contracts',
-  SpotNegotiation = 'group-of-requests'
+  Contract = 'contracts'
 }
