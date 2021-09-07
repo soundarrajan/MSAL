@@ -30,10 +30,13 @@ export class LocPanDataComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if(this.reqLocation.eta){
+      this.ETAdatetime = new FormControl(new Date(this.reqLocation.eta));
+    }
     this.title = this.reqLocation.locationName;
     this.deliveryFrom = this.reqLocation.deliveryFrom;
     this.deliveryTo = this.reqLocation.deliveryTo;
-    this.terminal = this.reqLocation.terminal;
+    this.terminal = this.reqLocation.terminalName;
   }
 
   formatDate(date?: any) {
