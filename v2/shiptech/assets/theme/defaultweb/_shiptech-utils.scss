@@ -1,0 +1,915 @@
+/* 
+------- TABLE OF CONTENTS -------
+1) Font Sizes         : SCFS
+2) Font Weights       : SCFW
+3) Padding            : SCPD
+4) Margin             : SCMR
+5) Heights            : SCHT
+6) Line Heights       : SCLH
+7) Font Awesome       : SCFA
+8) Material Overrides : SCMTOV
+9) Text Truncate      : SCTRN
+10) Box Border        : SCBXR
+11) Tables            : SCTBL
+12) Table Border      : SCTBR
+13) Extras            : SCEXT
+14) Widths            : SCWT
+15) Text              : SCTXT
+
+*/
+
+// ============================================================================================================================= //
+/*------ 1) FONT SIZES START: SCFS: -------- */
+
+// $baseFontSize : 14;
+@function rem($pixels, $context: $baseFontSize) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1rem;
+}
+
+.fs7 {
+  font-size: rem(7) !important;
+}
+
+.fs8 {
+  font-size: rem(8) !important;
+}
+
+.fs9 {
+  font-size: rem(9) !important;
+}
+
+.fs10 {
+  font-size: rem(10) !important;
+}
+
+.fs11 {
+  font-size: rem(11) !important;
+}
+
+.fs12 {
+  font-size: rem(12) !important;
+}
+
+.fs14 {
+  font-size: rem(14) !important;
+}
+
+.fs16 {
+  font-size: rem(16) !important;
+}
+
+.fs18 {
+  font-size: rem(18) !important;
+}
+
+/*------ FONT SIZES END -------- */
+
+// ============================================================================================================================= //
+/*------ 2) FONT WEIGHTS START: SCFW -------- */
+
+.fw300 {
+  font-weight: 300 !important;
+}
+
+.fw400 {
+  font-weight: 400 !important;
+}
+
+.fw500 {
+  font-weight: 500 !important;
+}
+
+.fw600 {
+  font-weight: 600 !important;
+}
+
+.fw700 {
+  font-weight: 700 !important;
+}
+
+.fs18-fw100 {
+  font-size: 1.28rem !important;
+  font-weight: 100;
+}
+
+.grey500 {
+  color: $grey;
+  font-weight: 500;
+}
+
+/*------ FONT WEIGHTS END -------- */
+
+// ============================================================================================================================= //
+/*------ 3) PADDING START: SCPD -------- */
+
+.p10 {
+  padding: 10px;
+}
+
+.p15 {
+  padding: 15px;
+}
+
+.ptb0 {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.pt2 {
+  padding-top: 2px;
+}
+
+.pt5 {
+  padding-top: 5px;
+}
+
+.pt10 {
+  padding-top: 10px;
+}
+
+.pt30 {
+  padding-top: 30px;
+}
+.plr0{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.pl0 {
+  padding-left: 0px !important;
+}
+
+.pl3 {
+  padding-left: 3px;
+}
+
+.pl5 {
+  padding-left: 5px;
+}
+
+.pl7 {
+  padding-left: 7px;
+}
+
+.pl10 {
+  padding-left: 10px !important;
+}
+
+.pl15 {
+  padding-left: 15px;
+}
+
+.pl20 {
+  padding-left: 20px;
+}
+
+.pl25 {
+  padding-left: 25px;
+}
+
+.pl40 {
+  padding-left: 40px !important;
+}
+
+.pl80 {
+  padding-left: 80px !important;
+}
+
+.pr0 {
+  padding-right: 0px !important;
+}
+
+.pr7 {
+  padding-right: 7px;
+}
+
+.pr10 {
+  padding-right: 10px;
+}
+
+.pr15 {
+  padding-right: 15px;
+}
+
+.pr4rem {
+  padding-right: 4rem;
+}
+
+.pr5rem {
+  padding-right: 5rem;
+}
+
+.ptb10 {
+  padding: 10px 0;
+}
+
+.tptb-20 {
+  td {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+/*------ PADDING END -------- */
+
+// ============================================================================================================================= //
+/*------ 4) MARGINS START: SCMR -------- */
+
+.m10 {
+  margin: 10px;
+}
+
+.mt0 {
+  margin-top: 0px !important;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.mt10 {
+  margin-top: 10px !important;
+}
+
+.mt25 {
+  margin-top: 25px !important;
+}
+
+.mb10 {
+  margin-bottom: 10px !important;
+}
+
+.mb15 {
+  margin-bottom: 15px;
+}
+.mb-0{
+  margin-bottom: 0px;
+}
+.ml0 {
+  margin-left: 0px !important;
+}
+
+.ml10 {
+  margin-left: 10px;
+}
+
+.ml15 {
+  margin-left: 15px;
+}
+
+.mt1rem {
+  margin-top: 1rem;
+}
+
+.mb1rem {
+  margin-bottom: 1rem;
+}
+
+.ml1rem {
+  margin-left: 1rem;
+}
+
+.mr1rem {
+  margin-right: 1rem;
+}
+
+.m1rem {
+  margin: 1rem;
+}
+.mr0{
+  margin-right: 0px !important;
+}
+.mr10 {
+  margin-right: 10px;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+/*------ MARGINS END -------- */
+
+// ============================================================================================================================= //
+/*---- 5) HEIGHTS START: SCHT ----*/
+
+.h35 {
+  height: 35px;
+}
+
+.h2rem {
+  height: 2rem;
+}
+
+/*---- HEIGHTS END ----*/
+
+// ============================================================================================================================= //
+/*---- 6) LINE HEIGHTS START: SCLH ----*/
+
+.lh-18 {
+  line-height: 1.8rem;
+
+  td {
+    line-height: 1.8rem !important;
+  }
+}
+
+.lh-25 {
+  line-height: 1.56rem;
+
+  td {
+    line-height: 1.56rem !important;
+  }
+}
+
+.lh-32 {
+  line-height: 2rem;
+
+  td {
+    line-height: 2rem !important;
+  }
+}
+
+.lh-35 {
+  line-height: 2.18rem !important;
+
+  td {
+    line-height: 2.18rem !important;
+  }
+}
+
+/*---- LINE HEIGHTS END ----*/
+
+// ============================================================================================================================= //
+/*---- 7) FONT AWESOME START: SCFA ----*/
+
+.fa-star {
+  font-size: 0.4rem;
+  color: $medium-grey;
+}
+
+.filled-star {
+  color: $medium-orange;
+}
+
+.fa-caret-up {
+  color: $green;
+}
+
+.fa-caret-down {
+  color: $red;
+}
+
+.fa-ship {
+  color: $blue;
+  font-size: 1.125rem;
+}
+
+.fa-check {
+  color: #219653;
+}
+
+.fa-table {
+  font-size: 12px;
+}
+
+/*---- FONT AWESOME END ----*/
+
+// ============================================================================================================================= //
+/*---- 8) MATERIAL OVERRIDES & CUSTOMIZATIONS START: SCMTOV ----*/
+
+mat-chip:hover {
+  cursor: pointer;
+}
+
+.multiline-tooltip {
+  white-space: pre-line;
+}
+
+// Material Button Font weight
+.mat-button {
+  font-weight: 400;
+}
+
+// MATERIAL POPUP OVERLAY OPACITY
+.cdk-overlay-dark-backdrop {
+  //background: rgba(0,0,0,0.5) !important;
+  background: rgba(55, 65, 79, 0.6) !important;
+}
+
+// Remove the underline from chips in save preference popup
+.mat-chip {
+  .mat-form-field-appearance-legacy .mat-form-field-underline {
+    display: none !important;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 0.8em !important;
+  }
+
+  .mat-form-field-infix {
+    input {
+      text-align: center;
+      -webkit-text-align: center;
+      -moz-text-align: center;
+      -o-text-align: center;
+    }
+  }
+}
+
+
+// Material Chip list wrapper - remove focus outline color
+.mat-chip-list-wrapper:focus,
+.mat-chip-list:focus {
+  outline: transparent !important;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+// Material Dialog Box Close icon
+.mat-dialog-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  #dialogCloseButton {
+    color: $black;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(217, 217, 217, 0.47);
+      border-radius: 20px;
+    }
+  }
+}
+
+// Material Context Menu Color
+.mat-menu-item-style {
+  background-color: #37414F;
+  color: #FFF;
+}
+
+// Individual Material Menu Item 
+.mat-menu-item {
+  display: flex !important;
+  align-items: center;
+  font-size: 14px !important;
+  height: 40px !important;
+  line-height: normal !important;
+}
+ 
+/* Material Context menu hover color */
+.mat-menu-item-highlighted:not([disabled]),
+.mat-menu-item.cdk-keyboard-focused:not([disabled]),
+.mat-menu-item.cdk-program-focused:not([disabled]),
+.mat-menu-item:hover:not([disabled]) {
+  background: rgba(0,0,0,0.15);
+}
+
+// Material Ink Bar
+.mat-ink-bar {
+  height: 4px !important;
+}
+
+// Button Border Radius
+.mat-button {
+  border-radius: 3px !important;
+}
+
+// Checkbox ripple color
+:host ::ng-deep .mat-ripple-element {
+  background: rgba(27, 142, 241, .4) !important;
+}
+
+// Material radio button ripple element color
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background-color:rgba(66, 134, 244,.26);
+}
+
+.dark-checkbox {
+  .mat-checkbox-inner-container {
+    background: $checkbox-bg !important;
+    border-radius: 4px;
+  }
+
+  // Checkbox checked background color
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: $dark;
+  }
+}
+
+.dark-checkbox {
+  .mat-checkbox-inner-container {
+    background: $checkbox-bg !important;
+    border-radius: 4px;
+    width: 18px;
+    height: 18px;
+    position: relative;
+    right: 7px;
+    top: 3px;
+  }
+  span{
+    border: none !important;
+  }
+
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background: $dark2 !important;
+  }
+  
+}
+
+.grey-checkbox {
+  .mat-checkbox-inner-container {
+    background: $checkbox-bg !important;
+    border-radius: 4px;
+  }
+
+  // Checkbox checked background color
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #8F9BAB;
+    ;
+  }
+}
+
+.light-checkbox {
+  .mat-checkbox-inner-container {
+    background: $white !important;
+    border-radius: 4px;
+  }
+}
+
+.dark-bg-checkbox{
+  .mat-checkbox-inner-container {
+    background-color: #54617A !important;
+  }
+    
+}
+
+// Datepicker active date color
+.mat-calendar-body-selected {
+  background-color: $dark2;
+  color: #fff;
+}
+
+// Checkbox checked background color
+// .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+// .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+//   background-color: $dark;
+// }
+
+.mat-primary .mat-pseudo-checkbox-checked,
+.mat-primary .mat-pseudo-checkbox-indeterminate {
+  background: $dark;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: $dark !important;
+}
+
+.mat-option,
+.mat-option.mat-active {
+  color: $medium-grey2;
+}
+
+.mat-input-element {
+  caret-color: $dark !important;
+}
+
+// TEXT FORM OUTLINE COLOR
+.mat-form-field-appearance-outline.mat-focused {
+  .mat-form-field-outline-thick {
+    color: $dark;
+  }
+}
+
+.mat-primary {
+  color: $dark;
+}
+
+.noborder {
+  .mat-checkbox-frame {
+    border-width: 0 !important;
+  }
+}
+
+/*---- MATERIAL OVERRIDES & CUSTOMIZATIONS END----*/
+
+// ============================================================================================================================= //
+/*---- 9) TEXT TRUNCATE START: SCTRN  ----*/
+
+// Max-width truncate
+@for $maxwidth from 3 through 25 {
+  /* max-width truncate to #{$maxwidth * 10}px */
+  .truncate-#{$maxwidth * 10} {
+    max-width: $maxwidth * 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Fixed width truncate
+@for $width from 3 through 25 {
+  /* fixed width truncate to #{$width * 10}px */
+  .truncate-f#{$width * 10} {
+    width: $width * 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.truncate-f35 {
+  @include fixed-text-truncate(35px);
+}
+
+.truncate-85 {
+  @include text-truncate(85px);
+}
+
+.truncate-f85 {
+  @include fixed-text-truncate(85px);
+}
+
+.truncate-280 {
+  @include text-truncate(280px);
+}
+
+.truncate-f280 {
+  @include fixed-text-truncate(280px);
+}
+
+.truncate-f310 {
+  @include fixed-text-truncate(310px);
+}
+
+/*---- TEXT TRUNCATE END  ----*/
+
+// ============================================================================================================================= //
+/*---- 10) BOX BORDER COLORS START: SCBXR  ----*/
+
+.brl-red {
+  border-left: 7px solid $red !important;
+}
+
+.brl-green {
+  border-left: 7px solid $light-green !important;
+}
+
+.brl-amber {
+  border-left: 7px solid $amber !important;
+}
+
+.brl-orange {
+  border-left: 7px solid $light-yellow !important;
+}
+
+.brl-blue {
+  border-left: 7px solid $blue !important;
+}
+
+.bl-dark {
+  border-left: 1px solid $dark !important;
+}
+
+.br-black {
+  border-right: 1px solid $black;
+}
+
+.br-dark {
+  border-right: 1px solid $dark-text !important;
+}
+
+.br-dark {
+  border-right: 1px solid $dark;
+}
+
+.brl-dark {
+  border-left: 7px solid $dark-text !important;
+}
+
+.brb-lightdark {
+  border-bottom: 1px solid lighten($dark, 10%);
+}
+
+/*---- BOX BORDER COLORS END  ----*/
+
+// ============================================================================================================================= //
+/*---- 11) TABLE SECTION START: SCTBL ----*/
+
+.th-18 {
+  font-weight: 500;
+  font-size: 1.285rem;
+}
+
+.tbl-dark-header {
+  thead {
+    th {
+      background: #2F3845;
+      color: $dark-text;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      border: none;
+    }
+  }
+}
+
+/*---- TABLE SECTION END ----*/
+
+// ============================================================================================================================= //
+/*---- 12) TABLE BORDER COLORS START: SCTBR ----*/
+
+.tbl-red {
+  //position: relative;
+  //border-left: 6px solid $red;
+  box-shadow: inset 6px 0 0 0 $red;
+}
+
+// .tbl-red::after {
+//   background-color: $red;
+//   content: "";
+//   height: 90px;
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   width: 6px;
+// }
+
+.tbl-orange {
+  //position: relative;
+  //border-left: 6px solid $medium-orange;
+  box-shadow: inset 6px 0 0 0 $medium-orange;
+}
+
+// .tbl-orange::after {
+//   background-color: $medium-orange;
+//   content: "";
+//   height: 90px;
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   width: 6px;
+// }
+
+.tbl-blue {
+  //position: relative;
+  //border-left: 6px solid $blue;
+  box-shadow: inset 6px 0 0 0 $blue;
+}
+
+// .tbl-blue::after {
+//   background-color: $blue;
+//   content: "";
+//   height: 90px;
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   width: 6px;
+// }
+
+/*---- TABLE BORDER COLORS END ----*/
+
+// ============================================================================================================================= //
+/*---- 13) EXTRAS SECTION START: SCEXT ----*/
+
+.element-disable {
+  filter: grayscale(100%) brightness(125%);
+  -webkit-filter: grayscale(100%) brightness(125%);
+  pointer-events: none;
+}
+
+.row {
+  margin: 0 !important;
+}
+
+.w100p {
+  width: 100%;
+}
+
+.h100p {
+  height: 100%;
+}
+
+.d-t-row {
+  display: table-row;
+}
+
+.hand {
+  cursor: pointer;
+}
+
+.white {
+  background: #fff;
+}
+
+.center {
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+.bg-white {
+  background: #fff;
+}
+
+.light-bg {
+  background: $light-grey !important;
+}
+
+
+.black-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $black;
+  margin: 9px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+#table-filter-button {
+  left: 10px;
+  margin-top: 12px;
+  position: absolute;
+  z-index: 1000;
+}
+
+.more {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iNSIgdmlld0JveD0iMCAwIDI1IDUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMi41IiBjeT0iMi41IiByPSIyLjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwKSIgZmlsbD0iIzM3NDE0RiIvPjxjaXJjbGUgY3g9IjIuNSIgY3k9IjIuNSIgcj0iMi41IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCkiIGZpbGw9IiMzNzQxNEYiLz48Y2lyY2xlIGN4PSIyLjUiIGN5PSIyLjUiIHI9IjIuNSIgZmlsbD0iIzM3NDE0RiIvPjwvc3ZnPg==);
+  width: 21px;
+  height: auto;
+}
+
+.more-white {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iNSIgdmlld0JveD0iMCAwIDI1IDUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMi41IiBjeT0iMi41IiByPSIyLjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwKSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjIuNSIgY3k9IjIuNSIgcj0iMi41IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCkiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyLjUiIGN5PSIyLjUiIHI9IjIuNSIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==);
+  width: 21px;
+  height: auto;
+}
+
+
+/*---- EXTRAS SECTION END  ----*/
+
+// ============================================================================================================================= //
+
+/*---- 14) WIDTH SECTION START: SCWT ----*/
+.w50 {
+  width: 50px;
+}
+
+.w60 {
+  width: 60px;
+}
+
+.w70 {
+  width: 70px;
+}
+
+.w80 {
+  width: 80px;
+}
+
+.w90 {
+  width: 90px;
+}
+
+.w100 {
+  width: 100px;
+}
+
+/*---- WIDTH SECTION END  ----*/
+
+// ============================================================================================================================= //
+
+/*---- 15) TEXT SECTION START: SCTXT ----*/
+
+.dark-text {
+  color: $dark-text !important;
+}
+
+.green-text {
+  color: $green-text !important;
+}
+
+.red-text {
+  color: $light-red !important;
+}
+
+.dark-red-text {
+  color: $red !important;
+}
+
+.green-text2 {
+  color: #5EB591 !important;
+}

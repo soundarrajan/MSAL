@@ -12,8 +12,7 @@ import {
   EventEmitter,
   AfterViewInit,
   Inject,
-  ChangeDetectorRef,
-  Injectable
+  ChangeDetectorRef
 } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { QcReportService } from '../../../../../services/qc-report.service';
@@ -86,11 +85,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { throws } from 'assert';
 
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import {
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MomentDateAdapter
-} from '@angular/material-moment-adapter';
-
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -103,11 +97,10 @@ export const PICK_FORMATS = {
   }
 };
 
-@Injectable()
-export class CustomDateAdapter extends MomentDateAdapter {
-  public format(value: moment.Moment, displayFormat: string): string {
+export class PickDateAdapter extends NativeDateAdapter {
+  format(value: Date, displayFormat: string): string {
     if (value === null || value === undefined) return '';
-    let currentFormat = PICK_FORMATS.display.dateInput;
+    let currentFormat = displayFormat;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
       hasDayOfWeek = true;
@@ -116,13 +109,13 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment.utc(value).format(currentFormat);
+    let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
-  
+
   parse(value) {
     // We have no way using the native JS Date to set the parse format or locale, so we ignore these
     // parameters.
@@ -135,8 +128,9 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment.utc(value, currentFormat);
-    return value ? elem : null;
+    const elem = moment(value, currentFormat);
+    const date = elem.toDate();
+    return value ? date : null;
   }
 }
 
@@ -150,9 +144,8 @@ export class CustomDateAdapter extends MomentDateAdapter {
     OrderListGridViewModel,
     DialogService,
     ConfirmationService,
-    { provide: DateAdapter, useClass: CustomDateAdapter },
-    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
-    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS }
   ]
 })
 export class DeliveryProductComponent extends DeliveryAutocompleteComponent

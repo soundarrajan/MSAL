@@ -97,6 +97,9 @@ interface DialogData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeliveryDetailsComponent implements OnInit, OnDestroy {
+  private _destroy$ = new Subject();
+
+  private quantityPrecision: number;
   @Select(UserProfileState) usernameobj$: Observable<object>;
   @Select(UserProfileState.username) username$: Observable<string>;
   entityId: string;
@@ -147,9 +150,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   uomMass: any;
   pumpingRateUom: any;
   sampleSource: any;
-  private _destroy$ = new Subject();
-
-  private quantityPrecision: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -362,7 +362,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       deliveryProducts: [],
       feedback: {}
     };
-    const data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
+    let data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
     localStorage.removeItem('parentSplitDelivery');
     this.formValues.order = data.order;
     this.formValues.info = data.info;
@@ -394,16 +394,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (summaryProd.id == deliveryProd.orderProductId) {
           deliveryProd.orderProductId = summaryProd.id;
           deliveryProd.productType = { ...summaryProd.productType };
-          deliveryProd.productTypeId = summaryProd.productType
-            ? summaryProd.productType.id
-            : null;
+          deliveryProd.productTypeId = summaryProd.productType.id;
 
           const orderProductId = summaryProd.id;
-          const orderProductSpecGroupId = summaryProd.specGroup
-            ? summaryProd.specGroup.id
-            : null;
+          const orderProductSpecGroupId = summaryProd.specGroup.id;
 
-          const dataForInfo = {
+          var dataForInfo = {
             Payload: {
               Filters: [
                 {
@@ -493,8 +489,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   setQuantityFormat(value) {
-    const viewValue = `${value}`;
-    const plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+    let viewValue = `${value}`;
+    let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
     return plainNumber;
   }
 
@@ -507,7 +503,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       vesselFlowMeterQuantityUom,
       surveyorQuantityUom;
     let conversionInfo = this.conversionInfoData[productIdx];
-    const activeProduct = this.formValues.deliveryProducts[productIdx];
+    let activeProduct = this.formValues.deliveryProducts[productIdx];
     // get fields values and uom
     activeProduct.confirmedQuantityUom == null
       ? (confirmedQuantityUom = null)
@@ -526,19 +522,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     activeProduct.surveyorQuantityUom == null
       ? (surveyorQuantityUom = null)
       : (surveyorQuantityUom = activeProduct.surveyorQuantityUom.name);
-    const Confirm = {
+    let Confirm = {
       val: this.setQuantityFormat(activeProduct.confirmedQuantityAmount),
       uom: confirmedQuantityUom
     };
-    const Vessel = {
+    let Vessel = {
       val: this.setQuantityFormat(activeProduct.vesselQuantityAmount),
       uom: vesselQuantityUom
     };
-    const Bdn = {
+    let Bdn = {
       val: this.setQuantityFormat(activeProduct.bdnQuantityAmount),
       uom: bdnQuantityUom
     };
-    const VesselFlowMeter = {
+    let VesselFlowMeter = {
       val: this.setQuantityFormat(activeProduct.vesselFlowMeterQuantityAmount),
       uom: vesselFlowMeterQuantityUom
     };
@@ -546,11 +542,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     //     'val': activeProduct.bargeFlowMeterQuantityAmount,
     //     'uom': bargeFlowMeterQuantityUom
     // };
-    const Surveyor = {
+    let Surveyor = {
       val: this.setQuantityFormat(activeProduct.surveyorQuantityAmount),
       uom: surveyorQuantityUom
     };
-    const currentFieldValues = {
+    let currentFieldValues = {
       Confirm: Confirm,
       Vessel: Vessel,
       Bdn: Bdn,
@@ -558,7 +554,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       Surveyor: Surveyor
     };
     // "BargeFlowMeter": BargeFlowMeter,
-    const fieldUoms = {
+    let fieldUoms = {
       Confirm: 'confirmedQuantityUom',
       Vessel: 'vesselQuantityUom',
       Bdn: 'bdnQuantityUom',
@@ -566,7 +562,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       Surveyor: 'surveyorQuantityUom'
     };
     // "BargeFlowMeter": 'bargeFlowMeterQuantityUom',
-    const convertedFields: any = {};
+    let convertedFields: any = {};
     let baseUom: any = {};
     let convFact = 1;
     if (typeof conversionInfo == 'undefined') {
@@ -583,7 +579,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       typeof this.formValues.deliveryProducts[productIdx].sellerQuantityType
         .name != 'undefined'
     ) {
-      const uomObjId =
+      let uomObjId =
         fieldUoms[
           this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
         ];
@@ -597,7 +593,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
 
     const currentFieldValuesProps = Object.keys(currentFieldValues);
-    for (const fieldKey of currentFieldValuesProps) {
+    for (let fieldKey of currentFieldValuesProps) {
       const fieldVal = currentFieldValues[fieldKey];
       conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
         if (fieldVal.uom == factVal.sourceUom.name) {
@@ -626,21 +622,21 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       activeProduct.bdnQuantityAmount &&
       activeProduct.vesselFlowMeterQuantityAmount
     ) {
-      const mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
+      let mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
       if (mfm_baseUom && conversionInfo.toleranceQuantityUom) {
         if (mfm_baseUom.name != conversionInfo.toleranceQuantityUom.name) {
           conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
             if (mfm_baseUom.name == factVal.sourceUom.name) {
-              const mfm_convFact = factVal.conversionFactor;
+              var mfm_convFact = factVal.conversionFactor;
             }
           });
         } else {
           var mfm_convFact = 1;
         }
-        const mfm_qty = convertedFields.VesselFlowMeter;
-        const bdn_qty = convertedFields.Bdn;
+        var mfm_qty = convertedFields.VesselFlowMeter;
+        var bdn_qty = convertedFields.Bdn;
         var variance = mfm_qty - bdn_qty;
-        const mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
+        var mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
         this.formValues.temp.variances[
           `mfm_product_${productIdx}`
         ] = this._decimalPipe.transform(mfm_variance, this.quantityFormat);
@@ -655,10 +651,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (!activeProduct.sellerQuantityType) {
       return;
     }
-    const buyerOption = activeProduct.buyerQuantityType.name;
-    const sellerOption = activeProduct.sellerQuantityType.name;
-    const buyerConvertedValue = convertedFields[buyerOption];
-    const sellerConvertedValue = convertedFields[sellerOption];
+    var buyerOption = activeProduct.buyerQuantityType.name;
+    var sellerOption = activeProduct.sellerQuantityType.name;
+    var buyerConvertedValue = convertedFields[buyerOption];
+    var sellerConvertedValue = convertedFields[sellerOption];
     if (!sellerConvertedValue || !buyerConvertedValue) {
       variance = null;
       this.formValues.temp.variances[`product_${productIdx}`] = variance;
@@ -668,7 +664,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       variance = buyerConvertedValue - sellerConvertedValue;
 
       //
-      const varianceDisplay = variance / convFact;
+      var varianceDisplay = variance / convFact;
       this.formValues.temp.variances[
         `product_${productIdx}`
       ] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
@@ -693,12 +689,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       } else {
-        const minValue =
+        var minValue =
           (conversionInfo.minToleranceLimit *
             this.formValues.deliveryProducts[productIdx]
               .confirmedQuantityAmount) /
           100;
-        const maxValue =
+        var maxValue =
           (conversionInfo.maxToleranceLimit *
             this.formValues.deliveryProducts[productIdx]
               .confirmedQuantityAmount) /
@@ -724,7 +720,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   setBuyerSellerQuantityAndUom(qtyToChange) {
     if (qtyToChange == 'seller') {
-      const sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
+      let sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
       if (sellerQty == 'Surveyor') {
         this.formValues.deliveryProducts.forEach((val, key) => {
           this.formValues.deliveryProducts[
@@ -798,7 +794,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
 
     if (qtyToChange == 'buyer') {
-      const buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
+      let buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
       if (buyerQty == 'Surveyor') {
         this.formValues.deliveryProducts.forEach((val, key) => {
           this.formValues.deliveryProducts[
@@ -887,7 +883,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     // rules are in order, check for each if quantity exists and set that
     // if not, go on
     for (let i = 0; i < this.finalQuantityRules.length; i++) {
-      const rule = this.finalQuantityRules[i];
+      let rule = this.finalQuantityRules[i];
       if (
         typeof this.formValues.deliveryProducts[productIdx][
           `${rule.deliveryMapping}Uom`
@@ -994,7 +990,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   createDeliveryWithOneProductFromOrdersToBeDeliveriesList() {
-    const data = JSON.parse(localStorage.getItem('deliveryFromOrder'));
+    let data = JSON.parse(localStorage.getItem('deliveryFromOrder'));
     localStorage.removeItem('deliveryFromOrder');
     this.formValues.order = data.order;
     this.formValues.surveyor = data.surveyor;
@@ -1007,12 +1003,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       product: data.product,
       confirmedQuantityAmount: data.confirmedQuantityAmount,
       confirmedQuantityUom: data.confirmedQuantityUom,
-      productTypeId: data.productType ? data.productType.id : null,
+      productTypeId: data.productType.id,
       orderProductId: data.orderProductId
     });
     // add quality and quantity params for product
     const orderProductId = data.orderProductId;
-    const orderProductSpecGroupId = data.specGroup ? data.specGroup.id : null;
+    const orderProductSpecGroupId = data.specGroup.id;
     const dataForInfo = {
       Payload: {
         Filters: [
@@ -1078,7 +1074,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList() {
     this.isLoading = true;
-    const data = JSON.parse(localStorage.getItem('deliveriesFromOrder'));
+    let data = JSON.parse(localStorage.getItem('deliveriesFromOrder'));
     localStorage.removeItem('deliveriesFromOrder');
     this.formValues.order = data[0].order;
     this.formValues.surveyor = data[0].surveyor;
@@ -1091,13 +1087,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         product: delivery.product,
         confirmedQuantityAmount: delivery.confirmedQuantityAmount,
         confirmedQuantityUom: delivery.confirmedQuantityUom,
-        orderProductId: delivery.orderProductId ? delivery.orderProductId : null
+        orderProductId: delivery.orderProductId
       });
-      const orderProductId = delivery.orderProductId;
-      const orderProductSpecGroupId = delivery.specGroup
-        ? delivery.specGroup.id
-        : null;
-      const dataForInfo = {
+      let orderProductId = delivery.orderProductId;
+      let orderProductSpecGroupId = delivery.specGroup.id;
+      let dataForInfo = {
         Payload: {
           Filters: [
             {
@@ -1371,7 +1365,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       response.data.finalQtyPrecedenceLogicRules;
     this.finalQuantityRules = [];
     this.formValues.temp.finalQtyPrecedenceLogicRules.forEach((rule, _) => {
-      const localRule = {
+      let localRule = {
         ord: rule.ord,
         precedenceRule: rule.precedenceRule,
         deliveryMapping: ''
@@ -1605,7 +1599,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     this.setReconMatchIdBasedOnProductVarianceColor();
     let Isvalid = false;
     let product;
-    const hasMandatoryFields = this.validateRequiredFields();
+    let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
     }
@@ -1639,7 +1633,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   saveDelivery() {
-    const id = parseFloat(this.entityId);
+    let id = parseFloat(this.entityId);
     if (!parseFloat(this.entityId)) {
       this.spinner.show();
       this.deliveryService
@@ -1714,7 +1708,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   setReconMatchIdBasedOnProductVarianceColor() {
     this.formValues.deliveryProducts.forEach((product, k) => {
       if (this.formValues.temp.variances) {
-        const getColor = this.formValues.temp.variances['color_' + k];
+        let getColor = this.formValues.temp.variances['color_' + k];
         console.log(getColor);
         if (getColor == 'amber') {
           product.reconMatch = {
@@ -1746,7 +1740,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (hasFinalQuantityError) {
       return;
     }
-    const hasMandatoryFields = this.validateRequiredFields();
+    let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
     }
@@ -1796,11 +1790,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   revertVerify() {
-    const hasMandatoryFields = this.validateRequiredFields();
+    let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
     }
-    const payload = {
+    let payload = {
       DeliveryId: this.formValues.id
     };
     this.spinner.show();
@@ -1953,8 +1947,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   quantityFormatValue(value) {
-    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    const number = parseFloat(plainNumber);
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
@@ -1996,7 +1990,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   decodeSpecificField(modelValue) {
-    const decode = function(str) {
+    let decode = function(str) {
       return str.replace(/&#(\d+);/g, function(match, dec) {
         return String.fromCharCode(dec);
       });
@@ -2006,12 +2000,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   notesUpdate() {
     console.log('Mouse out notes section');
-    const findNotesWithIdZero = _.filter(
-      this.formValues.deliveryNotes,
-      function(object) {
-        return object.id == 0;
-      }
-    );
+    let findNotesWithIdZero = _.filter(this.formValues.deliveryNotes, function(
+      object
+    ) {
+      return object.id == 0;
+    });
 
     if (findNotesWithIdZero && findNotesWithIdZero.length) {
       this.autoSave();
@@ -2020,7 +2013,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   autoSave() {
     if (parseFloat(this.entityId)) {
-      const payload = {
+      let payload = {
         DeliveryId: parseFloat(this.entityId),
         DeliveryNotes: this.formValues.deliveryNotes
       };

@@ -1,0 +1,49 @@
+<div class="drag-drop-upload-v2">
+    <div class="drag-drop-upload">
+        <div class="title">Add New Document</div>
+        <div appDragNDrop class="file-drop-container" (fileDropped)="onFileDropped($event)">
+            <div id="custom-form-field" class="lightTheme select-doc">
+                <div class="form-fields" style='padding: 0px 20px;'>
+                    <div class="custom-form-field-with-search lightTheme">
+                        <form>
+                            <div class="custom-form-field lookup-delivery-container d-flex" [ngClass]="{'darkTheme':false,'lightTheme':true}">
+                              <mat-form-field class="with-search">
+                                <mat-label>Document Type</mat-label>
+                                <input class="free-text-field" type="text" placeholder="{{placeholder}}" aria-label="name" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class="">
+                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                              <button [disabled]="false" [ngClass]="{'search-icon-disabled': false}" class="search-icon search-icon-bg">
+                                <div class="img">
+                                </div>
+                              </button>
+                            </div>
+                          </form>
+                    </div>
+                </div>
+            </div>
+            <div class="upload-options" [ngClass]="enableFileUpload?'active':''">
+                <div class="text">Drag and Drop files here</div>
+                <div class="light-text">or</div>
+                <label class="add-doc" for="getFile"><span class="add-doc-plus">+</span>Add
+                    doc</label>
+                <input type="file" id="getFile" class="get-file" multiple
+                    (change)="fileBrowseHandler($event.target.files)" />
+            </div>
+        </div>
+
+    </div>
+    <div class="title">Documents List
+    </div>
+    <div class="uploaded-files-grid">
+        <div class="agGrid-v2" style="margin: 0px;">
+            <div style="width:100%;height:220px;max-height: 220px;">
+                <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
+                    class="ag-theme-material ag-grid-v2 angular-v9 "></ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

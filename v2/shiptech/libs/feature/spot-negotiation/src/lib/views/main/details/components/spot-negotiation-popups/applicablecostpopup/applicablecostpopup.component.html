@@ -1,0 +1,122 @@
+<div class="spot-popup-header-container applicable-cost-popup-header"><div class="spot-nego-title">Applicable Location Costs- Rotterdam </div>
+  <div class="spot-dialog-title-right popup-header-form" >
+    <mat-checkbox class="checkbox-alignment" ></mat-checkbox>
+
+    <div class="check-text">Duplicate Costs to: </div>
+    <div [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger" class="vessels_req">
+      All Vessels <span class="down-arrow"></span>
+    </div>
+    <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-requestOptions" xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;">
+        <div (click)="$event.stopPropagation()">
+            <div class="more-options-menu-inv no-border p-lr-0">
+              <div class="checkboxOptions" *ngFor="let item of requestOptions">
+                <mat-checkbox [disabled]="item.selected==false" [checked]="item.selected">{{item.request}} - {{item.vessel}}</mat-checkbox>
+              </div>
+            </div>
+        </div>
+    </mat-menu>
+    <!-- <div class="dropdown-alignment"><mat-form-field appearance="none">
+      <select matNativeControl>
+        <option value="volvo">All Vessels</option>
+        <option value="saab">Selected Vessels</option>
+
+      </select>
+    </mat-form-field>
+    </div> -->
+    <button class="save-btn" mat-button [mat-dialog-close]="true" >Save</button>
+<div class="title-divider">|</div>
+    <div class="close-circle" style="padding:0px;">
+    <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() " style="font-size: 14px; display: inline; ">close</mat-icon>
+      </div>
+    </div>
+
+</div>
+  <hr class="hr-line">
+     <div class="product-terms p-b-5 p-r-15 p-l-15">
+    <div class="operations-details-block">
+      <table>
+        <thead>
+          <tr>
+            <th class="increment-circle-button" style="width: 30px;" (click)="addNewlocationbasedcost()">
+              <div class="increment-circle">
+              <div class="plus">+</div>
+            </div>
+          </th>
+            <th class=" text-left">Cost Type</th>
+            <th class=" text-left">Cost Name</th>
+            <th class="text-left "> Max Qty</th>
+            <th class="text-left">Price</th>
+            <th class=" text-left">Applicable for</th>
+            <th class=" text-left">Extra(%)</th>
+            <th class=" text-left">Extra Amt</th>
+            <th class=" text-left">Total Amt</th>
+            <th class=" text-left">Rate/MT</th>
+            <th class=" text-left">Comments</th>
+          </tr>
+        </thead>
+        </table>
+        <div style="height: 107px; overflow-y: scroll;">
+        <table>
+        <tbody >
+          <tr class="border-bottom" *ngFor="let tabledata of  tabledataslocationlist; let j = index" >
+            <td class="decrement-circle-button" (click)="delete3(j)" style="width: 30px;">
+              <div class="decrement-circle">
+                <div class="minus">-</div>
+              </div>
+            </td>
+            <td class="">{{tabledata.costname}}</td>
+            <td class="" >{{tabledata.costtype}}</td>
+            <td class="text-left "> {{tabledata.maxqty}}</td>
+            <td class="text-left ">{{tabledata.price }}</td>
+            <td class="text-left cell-dashed-border " contenteditable="true">
+              <mat-form-field appearance="none">
+                <select matNativeControl>
+                  <option value="volvo"></option>
+                  <option value="saab"></option>
+
+                </select>
+              </mat-form-field>
+            </td>
+            <td class="text-left " > {{tabledata.extra}}</td>
+            <td class="text-left ">{{tabledata.extraamt}} </td>
+            <td class="text-left"> </td>
+            <td class="text-left" > </td>
+            <td class="text-left" > </td>
+          </tr>
+
+          <ng-container *ngIf="isShown2">
+            <tr class="border-bottom" id="commentList" *ngFor="let tabledata of  tabledataslocation;let j = index">
+              <td class="decrement-circle-button" (click)="delete2(j)" style="width: 30px;">
+                <div class="decrement-circle">
+                  <div class="minus">-</div>
+                </div>
+              </td>
+              <td class=""></td>
+              <td class="" ></td>
+              <td class="text-left "> </td>
+              <td class="text-left "> </td>
+              <td class="text-left cell-dashed-border " contenteditable="true">
+                <mat-form-field appearance="none">
+                  <select matNativeControl>
+                    <option value="volvo"></option>
+                    <option value="saab"></option>
+
+                  </select>
+                </mat-form-field>
+              </td>
+              <td class="text-left  " > 5.5</td>
+              <td class="text-left  ">5000 </td>
+              <td class="text-left"> </td>
+              <td class="text-left" > </td>
+              <td class="text-left" > </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- </mat-dialog-content> -->

@@ -208,7 +208,7 @@
   </div>
   <mat-menu #inputEditMenu="matMenu" class="common" xPosition="after">
     <ng-template matMenuContent >
-    <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}" (click)="$event.stopPropagation();">
+    <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
           Port of {{params.data?.location_name}} ({{params.data?.port_id}})
