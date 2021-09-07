@@ -119,7 +119,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
         <div class="label-content" style="width:95%;">
           <div class="label-element w-100">
             <div class="title">No. of Products</div>
-            <div class="value">3</div>
+            <div class="value">{{params.currentReqDatalength}}</div>
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
       <div class="options">
         <div class="checkBox">
           <mat-checkbox class="noborder" [checked]="true"
-            >DMA 0.1%</mat-checkbox
+            >{{params.product.productName}}</mat-checkbox
           >
         </div>
         <div class="optionsText">
@@ -138,7 +138,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
               class="value"
               contenteditable="true"
               (keydown)="editQty($event)"
-              >600/800 MT</span
+              >{{params.product.minQuantity}}/{{params.product.maxQuantity}} {{params.product.uomName}}</span
             >
           </div>
           <div class="arrow" (click)="pricinghistorypopup()">

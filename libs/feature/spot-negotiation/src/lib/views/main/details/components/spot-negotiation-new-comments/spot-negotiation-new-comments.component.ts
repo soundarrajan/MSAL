@@ -19,18 +19,19 @@ export class SpotNegotiationNewCommentsComponent implements OnInit {
   @ViewChild('comment3') commentBox3: ElementRef;
   @ViewChild('comment4') commentBox4: ElementRef;
 
-  currentRequestSmallInfo: Observable<any> = null;
+  currentRequestSmallInfo: any = null;
   editableComments1: boolean = true;
   editableComments2: boolean = true;
   editableComments4: boolean = true;
   showEditIcon: boolean = false;
 
-  notYet: string = 'Api not ready yet';
+  notYet: string = ' - ';
 
   constructor(private store: Store, public changeDetector: ChangeDetectorRef) {
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.currentRequestSmallInfo) {
         this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+       // console.log("66666666666666666", this.currentRequestSmallInfo)
       }
     });
   }
