@@ -57,6 +57,7 @@
   },
   "API": {
     "BASE_URL_DATA_PROCUREMENT": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Procurement",
+    "BASE_URL_DATA_NEGOTIATION": "https://euw-sh-int-dev-api01.azurewebsites.net/Shiptech.Negotiation.Api",
     "BASE_URL_DATA_EMAIL": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Mail",
     "BASE_URL_DATA_MASTERS": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Masters",
     "BASE_URL_DATA_ADMIN": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Admin",
