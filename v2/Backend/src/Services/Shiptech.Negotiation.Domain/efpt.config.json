@@ -1,0 +1,72 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "NegotiationDbContext",
+   "ContextNamespace": "Domain.Data.EfCore",
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": "Domain.Data.Model",
+   "OutputContextPath": "Data\/EfCore\/Generated",
+   "OutputPath": "Data\/Model\/Generated",
+   "ProjectRootNamespace": "Shiptech.Negotiation",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[procurement].[RequestLocations]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[procurement].[RequestProducts]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[procurement].[RequestProductScreenActions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[procurement].[RequestProductSpecParameters]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[procurement].[Requests]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[rfq].[Offers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[rfq].[RequestGroups]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[rfq].[RequestLocationSellers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[rfq].[RequestOffers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[rfq].[Rfqs]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "euw-sl-np-db-01.Shiptech-TNT-BVT",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

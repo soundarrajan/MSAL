@@ -25,7 +25,6 @@ export class FutureRequestGridComponent implements OnInit {
   currentDate = new Date();
   selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
   selectedToDate: Date = new Date();
-  ETAFromTo: any;
 
   public RequestDetails : any = [];
   rowData: any[];
@@ -87,7 +86,7 @@ export class FutureRequestGridComponent implements OnInit {
           //   type: 'set',
           //   values: ['United States'],
           // },
-          'requestStatus.displayName': { type: 'notEqual', filter: 'CANCELLED' }
+          'requestStatus.displayName': { type: 'notEqual', filter: 'Cancelled' }
           // date: { type: 'lessThan', dateFrom: '2010-01-01' },
         };
       
@@ -307,16 +306,6 @@ export class FutureRequestGridComponent implements OnInit {
       };
       if(typeof filterModel == 'object' && Object.keys(filterModel).length>0) {
         this.columnFilter = [];
-        if(this.ETAFromTo) {
-          this.loadOutstandRequestData(this.ETAFromTo);
-        } else {
-          //set Eta From, To date as 1 month from current date by default
-          let currentDate = new Date();
-          let todayDate = new Date();
-          let futureDate = new Date(todayDate.setMonth(todayDate.getMonth() + 1));
-          this.loadOutstandRequestData({fromDate: currentDate, toDate: futureDate});
-        }
-        this.columnFilter = this.columnFilter.filter(EtaItem=>EtaItem.columnValue=="Eta")
        filterModel = await this.formatNestFilter(filterModel);
 
         let filterModelArr = Object.keys(filterModel)
@@ -329,10 +318,6 @@ export class FutureRequestGridComponent implements OnInit {
           columnFormat.ColumnType = filterType.charAt(0).toUpperCase()+filterType.substring(1);
           columnFormat.ConditionValue = await this.mapConditionType(filterModel[filterKey]?.type);
           columnFormat.Values = await this.mapFilterValue(filterType, filterModel[filterKey]);
-          let isColumnMultiFilter = this.columnFilter.filter(filterItem=>filterItem.columnValue == columnFormat.columnValue)
-          if(isColumnMultiFilter.length) {
-            columnFormat.FilterOperator = 2;
-          }
           this.columnFilter.push(columnFormat);
           if(filterModelArr.length == index+1) {
             requestPayload.Payload.PageFilters.Filters = this.columnFilter;
@@ -474,7 +459,7 @@ export class FutureRequestGridComponent implements OnInit {
 
   onDateChange(event) {
     console.log('selected date', event);
-    this.ETAFromTo = event;
+    this.loadOutstandRequestData(event);
     this.gridOptions.api.setServerSideDatasource(this.dataSource);
     this.gridOptions.api.sizeColumnsToFit();
   }

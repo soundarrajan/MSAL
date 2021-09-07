@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Inatech.Shared.Infrastructure.Cqs\Inatech.Shared.Infrastructure.Cqs.csproj" />
+    <ProjectReference Include="..\..\Shared\Inatech.Shared.Infrastructure.MediatR\Inatech.Shared.Infrastructure.MediatR.csproj" />
+    <ProjectReference Include="..\..\Shared\Inatech.Shared.Infrastructure.Tenant\Inatech.Shared.Infrastructure.Tenant.csproj" />
+    <ProjectReference Include="..\..\Shared\Shiptech.Core\Shiptech.Core.csproj" />
+  </ItemGroup>
+
+</Project>

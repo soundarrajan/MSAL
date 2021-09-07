@@ -54,30 +54,10 @@
                   selectedTabIndex == contractProduct.key
               }"
             >
-              <mat-form-field
-                class="without-search contract-location-product-dropdown"
-                appearance="legacy"
-                [ngClass]="{
-                  'move-trigger': contractProduct.value.location
-                }"
-              >
+              <mat-form-field class="without-search" appearance="legacy">
                 <mat-label *ngIf="!contractProduct.value.location"
                   >Add location</mat-label
                 >
-                <span
-                  [ngClass]="{
-                    'white-color':
-                      contractProduct.value.location &&
-                      selectedTabIndex == contractProduct.key
-                  }"
-                  *ngIf="contractProduct.value.location"
-                >
-                  {{
-                    contractProduct.value.location
-                      ? contractProduct.value.location.name
-                      : ''
-                  }}
-                </span>
                 <mat-select
                   [(ngModel)]="contractProduct.value.location"
                   #singleSelect
@@ -215,30 +195,10 @@
                   selectedTabIndex == contractProduct.key
               }"
             >
-              <mat-form-field
-                class="without-search contract-location-product-dropdown"
-                appearance="legacy"
-                [ngClass]="{
-                  'move-trigger': contractProduct.value.product
-                }"
-              >
+              <mat-form-field class="without-search" appearance="legacy">
                 <mat-label *ngIf="!contractProduct.value.product"
                   >Add product</mat-label
                 >
-                <span
-                  *ngIf="contractProduct.value.product"
-                  [ngClass]="{
-                    'white-color':
-                      contractProduct.value.product &&
-                      selectedTabIndex == contractProduct.key
-                  }"
-                >
-                  {{
-                    contractProduct.value.product
-                      ? contractProduct.value.product.name
-                      : ''
-                  }}
-                </span>
                 <mat-select
                   [(ngModel)]="contractProduct.value.product"
                   #singleSelect

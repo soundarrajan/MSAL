@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.2.0" />
+    <PackageReference Include="NETCore.Encrypt" Version="2.0.7" />
+    <PackageReference Include="Slapper.AutoMapper" Version="2.0.4" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Inatech.Shared.Infrastructure.Cqs\Inatech.Shared.Infrastructure.Cqs.csproj" />
+  </ItemGroup>
+
+</Project>

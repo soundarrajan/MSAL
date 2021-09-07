@@ -1,0 +1,14 @@
+<div class="remove-terminal-section">
+  <div class="close-btn" style="position: absolute !important;top: -12px !important;right: -8px;"><img id="close-icon" src="../../../assets/customicons/close.svg" alt="list"></div>
+  <div class="warning-title"><img id="warning-icon" src="../../../assets/customicons/warning_o.svg" alt="list"><span class="p-l-10">Warning</span></div>
+  <p>{{data.message}}</p>
+  <div class="yes-no">
+     
+      <button  class="blue-button" style="float:left;" (click)="close();">    
+        <span>CANCEL</span>
+      </button>
+      <button mat-raised-button class="red-button" style="float:right;" (click)="proceed();">    
+        <span>PROCEED</span>
+      </button>
+  </div>
+</div>

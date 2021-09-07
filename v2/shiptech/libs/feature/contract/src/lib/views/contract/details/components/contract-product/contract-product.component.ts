@@ -143,8 +143,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    const elem = moment(value, currentFormat);
-    const date = elem.toDate();
+    let elem = moment(value, currentFormat);
+    let date = elem.toDate();
     return value ? date : null;
   }
 }
@@ -301,7 +301,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    const elem = moment(value, currentFormat);
+    let elem = moment(value, currentFormat);
     const isValid = this.isValid(elem);
     return this.isValid(elem) ? elem : null;
   }
@@ -361,8 +361,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
-      const newVal = moment(elem).format(currentFormat);
+      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      let newVal = moment(elem).format(currentFormat);
       console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
@@ -684,8 +684,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       if (this.formValues.products[i].product) {
         this.getSpecGroupByProduct(
           this.formValues.products[i].product.id,
-          this.formValues.products[i].specGroup,
-          'CPInit'
+          this.formValues.products[i].specGroup
         );
       }
       if (this.formValues.products[i].location) {
@@ -904,10 +903,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     for (let i = 0; i < this.formValues.products.length; i++) {
       this.locationMasterSearchListOptions[i] = _.cloneDeep(
         this.locationMasterList
-      ).splice(0, 10);
+      );
       this.productMasterSearchListOptions[i] = _.cloneDeep(
         this.productMasterList
-      ).splice(0, 10);
+      );
     }
 
     console.log(this.locationMasterSearchListOptions);
@@ -930,30 +929,30 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   searchLocations(value: string, contractProductIndex): void {
-    const filterLocations = this.locationMasterList.filter(location =>
+    let filterLocations = this.locationMasterList.filter(location =>
       location.name.toLowerCase().includes(value.toLowerCase())
     );
     console.log(filterLocations);
     this.locationMasterSearchListOptions[contractProductIndex] = [
       ...filterLocations
-    ].splice(0, 10);
+    ];
     this.changeDetectorRef.detectChanges();
   }
 
   searchProducts(value: string, contractProductIndex): void {
-    const filterProducts = this.productMasterList.filter(location =>
+    let filterProducts = this.productMasterList.filter(location =>
       location.name.toLowerCase().includes(value.toLowerCase())
     );
     console.log(filterProducts);
     this.productMasterSearchListOptions[contractProductIndex] = [
       ...filterProducts
-    ].splice(0, 10);
+    ];
     this.changeDetectorRef.detectChanges();
   }
 
   addEmptyProductLine() {
     console.log(this.formValues);
-    const emptyProductObj = {
+    let emptyProductObj = {
       id: 0,
       details: null,
       additionalCosts: [],
@@ -974,11 +973,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     this.locationMasterSearchListOptions[
       this.formValues.products.length - 1
-    ] = _.cloneDeep(this.locationMasterList).splice(0, 10);
+    ] = _.cloneDeep(this.locationMasterList);
 
     this.productMasterSearchListOptions[
       this.formValues.products.length - 1
-    ] = _.cloneDeep(this.productMasterList).splice(0, 10);
+    ] = _.cloneDeep(this.productMasterList);
 
     //this.selectedTabIndex =  0;
     this.setAllowedLocations(this.selectedTabIndex);
@@ -990,9 +989,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   addProductToContract() {
-    this.spinner.show();
     console.log(this.formValues);
-    const emptyProductObj = {
+    let emptyProductObj = {
       id: 0,
       details: null,
       additionalCosts: [],
@@ -1021,11 +1019,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     this.locationMasterSearchListOptions[
       this.formValues.products.length - 1
-    ] = _.cloneDeep(this.locationMasterList).splice(0, 10);
+    ] = _.cloneDeep(this.locationMasterList);
 
     this.productMasterSearchListOptions[
       this.formValues.products.length - 1
-    ] = _.cloneDeep(this.productMasterList).splice(0, 10);
+    ] = _.cloneDeep(this.productMasterList);
     this.selectedTabIndex = this.formValues.products.length - 1;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
@@ -1033,16 +1031,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.getContractFormulaList();
     }
     this.changeDetectorRef.detectChanges();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 300);
 
     console.log(this.formValues);
   }
 
   getContractFormulaList1() {
     console.log(this._entityId);
-    const data = {
+    let data = {
       Payload: {
         PageFilters: {
           Filters: []
@@ -1074,7 +1069,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   getContractFormulaList() {
     console.log(this._entityId);
-    const data = {
+    let data = {
       Payload: {
         PageFilters: {
           Filters: []
@@ -1113,14 +1108,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   setAllowedLocations(selectedTabIndex) {
     this.selectedLocationList = _.cloneDeep(this.locationMasterList);
-    const contractProduct = this.formValues.products[selectedTabIndex];
+    let contractProduct = this.formValues.products[selectedTabIndex];
     if (
       contractProduct.allowedLocations &&
       contractProduct.allowedLocations.length
     ) {
       for (let i = 0; i < contractProduct.allowedLocations.length; i++) {
-        const allowedLocation = contractProduct.allowedLocations[i];
-        const findIndexOfLocationInLocationList = _.findIndex(
+        let allowedLocation = contractProduct.allowedLocations[i];
+        let findIndexOfLocationInLocationList = _.findIndex(
           this.selectedLocationList,
           function(obj) {
             return (
@@ -1139,11 +1134,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   saveAllowedLocations(selectedTabIndex) {
-    const newAllowedLocations = [];
-    const allowedLocations = this.selectedLocationList;
+    let newAllowedLocations = [];
+    let allowedLocations = this.selectedLocationList;
     for (let i = 0; i < allowedLocations.length; i++) {
       if (allowedLocations[i].isSelected) {
-        const allowedLocation = {
+        let allowedLocation = {
           id: allowedLocations[i].id,
           name: allowedLocations[i].name
         };
@@ -1158,14 +1153,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   setAllowedProducts(selectedTabIndex) {
     this.selectedProductList = _.cloneDeep(this.productMasterList);
-    const contractProduct = this.formValues.products[selectedTabIndex];
+    let contractProduct = this.formValues.products[selectedTabIndex];
     if (
       contractProduct.allowedProducts &&
       contractProduct.allowedProducts.length
     ) {
       for (let i = 0; i < contractProduct.allowedProducts.length; i++) {
-        const allowedProduct = contractProduct.allowedProducts[i];
-        const findIndexOfProductInProductList = _.findIndex(
+        let allowedProduct = contractProduct.allowedProducts[i];
+        let findIndexOfProductInProductList = _.findIndex(
           this.selectedProductList,
           function(obj) {
             return (
@@ -1185,11 +1180,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   saveAllowedProducts(selectedTabIndex) {
-    const newAllowedProducts = [];
-    const allowedProducts = this.selectedProductList;
+    let newAllowedProducts = [];
+    let allowedProducts = this.selectedProductList;
     for (let i = 0; i < allowedProducts.length; i++) {
       if (allowedProducts[i].isSelected) {
-        const allowedProduct = {
+        let allowedProduct = {
           id: allowedProducts[i].id,
           name: allowedProducts[i].name
         };
@@ -1197,7 +1192,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
     }
 
-    const previousAllowedProducts = _.cloneDeep(
+    let previousAllowedProducts = _.cloneDeep(
       this.formValues.products[selectedTabIndex].allowedProducts
     );
     this.formValues.products[selectedTabIndex].allowedProducts = _.cloneDeep(
@@ -1210,10 +1205,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       i < this.formValues.products[selectedTabIndex].allowedProducts.length;
       i++
     ) {
-      const allowedProduct = {
+      let allowedProduct = {
         ...this.formValues.products[selectedTabIndex].allowedProducts[i]
       };
-      const findProductIfExistsInPreviousAllowedProducts = _.find(
+      let findProductIfExistsInPreviousAllowedProducts = _.find(
         previousAllowedProducts,
         function(obj) {
           return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
@@ -1227,8 +1222,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     //check allowed products removed
     for (let i = 0; i < previousAllowedProducts.length; i++) {
-      const previousAllowedProduct = { ...previousAllowedProducts[i] };
-      const findProductIfExistsInAllowedProducts = _.find(
+      let previousAllowedProduct = { ...previousAllowedProducts[i] };
+      let findProductIfExistsInAllowedProducts = _.find(
         this.formValues.products[selectedTabIndex].allowedProducts,
         function(obj) {
           return (
@@ -1250,7 +1245,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   onChange($event, field) {
     if ($event.value) {
-      const beValue = `${moment($event.value).format(
+      let beValue = `${moment($event.value).format(
         'YYYY-MM-DDTHH:mm:ss'
       )}+00:00`;
       if (field == 'dealDate') {
@@ -1267,7 +1262,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
@@ -1320,7 +1315,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   decodeSpecificField(modelValue) {
-    const decode = function(str) {
+    let decode = function(str) {
       return str.replace(/&#(\d+);/g, function(match, dec) {
         return String.fromCharCode(dec);
       });
@@ -1349,7 +1344,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.additionalCostForLocation = [];
     }
 
-    const payload = {
+    let payload = {
       Payload: {
         Order: null,
         PageFilters: { Filters: [] },
@@ -1383,7 +1378,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.additionalCostForLocation = [];
     }
 
-    const payload = {
+    let payload = {
       Payload: {
         Order: null,
         PageFilters: { Filters: [] },
@@ -1421,7 +1416,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
                   this.selectedTabIndex
                 ].additionalCosts = [];
               }
-              const additionalCostLine = {
+              let additionalCostLine = {
                 additionalCost: {
                   id: this.additionalCostForLocation[locationId][i]
                     .additionalCostid,
@@ -1456,7 +1451,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     console.log(product);
     console.log(index);
     console.log(this.formValues.products[index]);
-    const objectProduct = {
+    let objectProduct = {
       id: product.id,
       name: product.name
     };
@@ -1464,13 +1459,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
     this.searchProductInput = null;
     this.addProductToConversion(index, null, true);
-    this.getSpecGroupByProduct(product.id, null, 'ProductChange');
+    this.getSpecGroupByProduct(product.id, null);
     this.changeDetectorRef.detectChanges();
     this.contractFormSubject.next(this.formValues);
   }
 
-  getSpecGroupByProduct(productId, additionalSpecGroup, initiatorName) {
-    const data = {
+  getSpecGroupByProduct(productId, additionalSpecGroup) {
+    var data = {
       Payload: {
         Filters: [
           {
@@ -1486,14 +1481,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     // if spec group for product exists, do not make call again
     if (typeof this.productSpecGroup[productId] != 'undefined') {
-      if (initiatorName != 'CPInit') {
-        this.setDefaultSpecGroup(productId);
-      }
       return;
     }
 
     this.contractService
-      .getSpecGroupsGetByProduct(data)
+      .getSpecGroupGetByProduct(data)
       .pipe(finalize(() => {}))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
@@ -1505,7 +1497,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
               return o.isDeleted == false;
             });
             if (additionalSpecGroup) {
-              let additionalSpecIsInArray = false;
+              var additionalSpecIsInArray = false;
               response.forEach(function(v, k) {
                 if (v.id == additionalSpecGroup.id) {
                   additionalSpecIsInArray = true;
@@ -1518,18 +1510,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
             this.productSpecGroup[productId] = response;
             this.changeDetectorRef.detectChanges();
             //this.productSpecGroupSubject.next(this.productSpecGroup);
-            if (initiatorName != 'CPInit') {
-              this.setDefaultSpecGroup(productId);
-            }
           }
         }
       });
-  }
-
-  setDefaultSpecGroup(productId) {
-    this.formValues.products[
-      this.selectedTabIndex
-    ].specGroup = this.productSpecGroup[productId]?.find(sg => sg.isDefault);
   }
 
   getAdditionalCostsComponentTypes() {
@@ -1567,10 +1550,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         if (allowProducts.length) {
           this.formValues.products[index].conversionFactors.forEach(
             (value, key) => {
-              const idIndex = _.findIndex(
-                allowProducts,
-                (o: any) => o.id == value.product.id
-              );
+              var idIndex = _.findIndex(allowProducts, (o: any) => {
+                return o.id == value.product.id;
+              });
               if (idIndex == -1) {
                 if (value.id == 0) {
                   this.formValues.products[index].conversionFactors.splice(
@@ -1586,7 +1568,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
             }
           );
         } else {
-          const indexProduct =
+          var indexProduct =
             this.formValues.products[index].conversionFactors.length - 1;
           this.formValues.products[index].conversionFactors[
             indexProduct
@@ -1603,10 +1585,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
             if (
               value.product.id != this.formValues.products[index].product.id
             ) {
-              const idIndex = _.findIndex(
-                allowProducts,
-                (o: any) => o.id == value.product.id
-              );
+              var idIndex = _.findIndex(allowProducts, (o: any) => {
+                return o.id == value.product.id;
+              });
               if (idIndex == -1) {
                 indexDeleted = key;
                 if (value.id == 0) {
@@ -1647,9 +1628,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     }
     if (this.formValues.products[index].conversionFactors) {
       if (selectedProduct) {
-        const indexProduct = _.findLastIndex(
+        let indexProduct = _.findLastIndex(
           this.formValues.products[index].conversionFactors,
-          (o: any) => o.product.id == selectedProduct.product.id
+          (o: any) => {
+            return o.product.id == selectedProduct.product.id;
+          }
         );
         if (indexProduct != -1) {
           if (
@@ -1677,11 +1660,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
             this.toastr.error(response);
           } else {
             console.log(response);
-            const contractConversionFactor = {
+            let contractConversionFactor = {
               id: 3,
               name: 'Standard (Product)'
             };
-            const object = {
+            let object = {
               id: 0,
               product: selectedProduct.product,
               value: response.value,
@@ -1705,7 +1688,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     }
     console.log(this.selectedTabIndex);
 
-    const findFirstIndex = _.findIndex(this.formValues.products, function(
+    let findFirstIndex = _.findIndex(this.formValues.products, function(
       object: any
     ) {
       return !object.isDeleted;
@@ -1719,12 +1702,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   originalOrder = (
     a: KeyValue<number, any>,
     b: KeyValue<number, any>
-  ): number => 0;
+  ): number => {
+    return 0;
+  };
 
   changeAdditionalCostList(locationId) {
     console.log(this.additionalCostList);
     console.log(this.additionalCostForLocation[locationId]);
-    const newAdditionalCostList = _.cloneDeep(
+    let newAdditionalCostList = _.cloneDeep(
       this.additionalCostForLocation[locationId]
     );
     // for (let j = 0; j < this.additionalCostList.length; j++) {
@@ -1757,9 +1742,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       ) {
         if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
           if (this.formValues.products[i].additionalCosts[j].additionalCost) {
-            const additionalLocationId = this.formValues.products[i]
+            let additionalLocationId = this.formValues.products[i]
               .additionalCosts[j].locationAdditionalCostId;
-            const findLocationId = _.findIndex(
+            let findLocationId = _.findIndex(
               this.additionalCostForLocation[locationId],
               function(object: any) {
                 return object.locationid == additionalLocationId;
