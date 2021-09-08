@@ -1167,7 +1167,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     private invoiceService: InvoiceDetailsService,
     public dialog: MatDialog,
     private toastrService: ToastrService,
-		private myMonitoringService: MyMonitoringService,
+    private myMonitoringService: MyMonitoringService,
     private format: TenantFormattingService,
     private tenantSetting: TenantSettingsService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -2352,30 +2352,30 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       !parseFloat(this.formValues?.id?.toString()) ||
       this.formValues.id == 0
     ) {
-			this.myMonitoringService.startTrackEvent('Create Invoice');
+      this.myMonitoringService.startTrackEvent('Create Invoice');
       // this.spinner.show();
       this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
-				if (typeof result == 'string') {
-					console.log('Format Additional costs');
+        if (typeof result == 'string') {
+          console.log('Format Additional costs');
           this.formatAdditionalCosts();
         }
         this.entityId = result;
         this.handleServiceResponse(result, 'Invoice saved successfully.');
-				this.myMonitoringService.stopTrackEvent('Create Invoice');
+        this.myMonitoringService.stopTrackEvent('Create Invoice');
         if (callback) {
-					callback(result);
+          callback(result);
         }
       });
     } else {
-			this.myMonitoringService.startTrackEvent('Update Invoice');
+      this.myMonitoringService.startTrackEvent('Update Invoice');
       // this.spinner.show();
       this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
-				if (typeof result == 'string') {
+        if (typeof result == 'string') {
           console.log('Format Additional costs');
           this.formatAdditionalCosts();
         }
         this.handleServiceResponse(result, 'Invoice updated successfully.');
-				this.myMonitoringService.stopTrackEvent('Update Invoice');
+        this.myMonitoringService.stopTrackEvent('Update Invoice');
         if (callback) {
           callback(result);
         }
@@ -2587,13 +2587,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           );
           return;
         }
-				this.myMonitoringService.startTrackEvent('Approve Invoice');
+        this.myMonitoringService.startTrackEvent('Approve Invoice');
       }
       this.invoiceService
-			.approveInvoiceItem(valuesForm)
-			.subscribe((result: any) => {
-				this.handleServiceResponse(result, 'Invoice approved successfully.');
-				this.myMonitoringService.stopTrackEvent('Approve Invoice');
+        .approveInvoiceItem(valuesForm)
+        .subscribe((result: any) => {
+          this.handleServiceResponse(result, 'Invoice approved successfully.');
+          this.myMonitoringService.stopTrackEvent('Approve Invoice');
         });
     } else if (option == 'create') {
       this.spinner.hide();
@@ -2785,6 +2785,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.convertDecimalSeparatorStringToNumber(
         formValues.invoiceSummary.estimatedAmountGrandTotal
       );
+
+    if (
+      formValues.invoiceClaimDetails &&
+      formValues.invoiceClaimDetails.length > 0
+    ) {
+      formValues.invoiceSummary.totalDifference = 0;
+    }
 
     if (
       formValues.documentType.name === 'Credit Note' ||
