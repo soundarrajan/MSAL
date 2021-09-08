@@ -1,0 +1,90 @@
+<!-- <mat-dialog-content> -->
+<h2 mat-dialog-title class="dialog-title">Product Details
+  <mat-icon id="dialogCloseButton" matSuffix class="float-right" (click)="closeDialog()">close</mat-icon>
+</h2>
+<hr>
+
+<div class="product-terms p-b-5">
+<span class="product-id">BL036782</span>
+<span class="product-name">Product:Red Carb Diesel</span>
+</div>
+<div class="product-details-block">
+<table>
+  <thead>
+      <tr>
+          <th>Tank</th>
+          <th>Book</th>
+          <th>Product</th>
+          <th>Quantity</th>
+      </tr>
+    </thead>
+  <tbody>
+    <tr>      
+      <td *ngIf="!isEdit" (click)="isEdit=true">{{option}}</td>
+      <td  *ngIf="isEdit">
+        <mat-form-field class="example-full-width">
+          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" class="dark-autocomplete" (optionSelected)="option =$event.option.value;isEdit=false"> 
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+          </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </td>
+      <td>Book1</td>
+      <td>Carb Diesel 380</td>
+      <td>10000 BBL</td>
+    </tr>
+    <tr>
+      <td>Diesel tank</td>
+      <td>Book1</td>
+      <td>Carb Diesel 380</td>
+      <td>10000 BBL</td>
+    </tr>
+    <tr>
+      <td>Diesel tank</td>
+      <td>Book1</td>
+      <td>Carb Diesel 380</td>
+      <td>10000 BBL</td>
+    </tr>
+    <tr>
+      <td>Diesel tank</td>
+      <td>Book1</td>
+      <td>Carb Diesel 380</td>
+      <td>10000 BBL</td>
+    </tr>
+    <tr>
+        <td>Diesel tank</td>
+        <td>Book1</td>
+        <td>Carb Diesel 380</td>
+        <td>10000 BBL</td>
+    </tr>
+    <tr>
+        <td>Diesel tank</td>
+        <td>Book1</td>
+        <td>Carb Diesel 380</td>
+        <td>10000 BBL</td>
+    </tr>
+    <tr>
+        <td>Diesel tank</td>
+        <td>Book1</td>
+        <td>Carb Diesel 380</td>
+        <td>10000 BBL</td>
+    </tr>
+    <tr>
+        <td>Diesel tank</td>
+        <td>Book1</td>
+        <td>Carb Diesel 380</td>
+        <td>10000 BBL</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+  
+
+<!-- </mat-dialog-content> -->
+
+<mat-dialog-actions class="float-right">
+  <button class="cancel-btn" mat-button>CANCEL</button>
+  <button class="blue-button" mat-button [mat-dialog-close]="true" style="width: 90px;">PROCEED</button>
+</mat-dialog-actions>

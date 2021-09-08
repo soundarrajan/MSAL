@@ -2,10 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": []
+    "types": ["jasmine"]
   },
   "include": ["**/*.ts", "../../libs/lazy-load-poc/src/index.ts"],
-  "exclude": ["src/test-setup.ts", "**/*.spec.ts"],
+  "exclude": ["**/*.spec.ts"],
   "angularCompilerOptions": {
     "enableIvy": false
   }

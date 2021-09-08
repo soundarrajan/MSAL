@@ -1,0 +1,45 @@
+<div class="operation-summary-withoutaddnew">
+  <h2 mat-dialog-title class="dialog-title">Operations Summary
+    <mat-icon id="dialogCloseButton" matSuffix class="float-right" (click)="closeDialog()">close</mat-icon>
+  </h2>
+  <hr class="hr-line">
+  <div class="operation-summary-heading">
+    <div class="operations-delivery-id">
+      <div style="float: left;max-width: 63px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">PS001-1111</div> 
+      <div class="truncate-f160" style="margin-left: 20px;float:left">Product:Red Carb Dieselssssss</div>
+    </div>
+    <div class="operations-status">
+      <span>Invoice</span><div class="status completed">Completed</div>
+    </div>
+  </div>
+  <div class="product-terms p-b-5">
+    <div class="operations-details-block">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20px;"></th>
+            <th class="p-r-10">Source</th>
+            <th class="w-150">Source Document</th>
+            <th class="text-right p-r-10">Qty</th>
+            <th class="text-left">UOM</th>
+            <th class="w-125">Invoicing Qty</th>
+          </tr>
+        </thead>
+        <hr class="hr-line-margin">
+        <tbody #scrollMe1 [scrollTop]="scrollMe1.scrollHeight">
+
+          <tr *ngFor="let tabledata of tabledatas">
+            <td style="width: 20px;"></td>
+            <td class="p-r-10">{{tabledata.Source}}</td>
+            <td class="w-150">{{tabledata.SourceDoument}}</td>
+            <td class="text-right p-r-10"> {{tabledata.Qty}}</td>
+            <td class="text-left"> {{tabledata.QtyUOM}}</td>
+            <td class="text-center w-125">
+              <mat-radio-button Input type="radio" name="InvoicingQty"></mat-radio-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

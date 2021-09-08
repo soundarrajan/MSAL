@@ -1,0 +1,191 @@
+<div class="spot-nego-new-comments">
+  <div class="grid-in-accordion">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="accordion-detail">
+            <div class="open-close-arrow"></div>
+            <span class="panel-title m-l-9">
+              <span>Comments:</span>
+              <span>
+                {{ currentRequestSmallInfo?.requestId }} -
+                {{ currentRequestSmallInfo?.vesselName }}
+              </span>
+            </span>
+            <div class="comments-type" (click)="$event.stopPropagation()">
+              <span class="circle internal"></span>
+              <span class="label internal">Internal Comments</span>
+              <span class="circle external"></span>
+              <span class="label external">External Comments</span>
+              <span
+                class="copy-btn"
+                matTooltip="Duplicate Comments"
+                matTooltipClass="blueTooltip"
+                >copy</span
+              >
+            </div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <div class="row" style="padding: 0px 4px;">
+          <div
+            class="col-md-3 spot-comments-section"
+            style="padding: unset !important;"
+          >
+            <div class="new-comments">
+              <div style="padding: 15px;">
+                <span class="circle internal"></span
+                ><span class="label">General</span>
+                <span class="edit-icon" (click)="editComments1()"></span>
+              </div>
+              <div class="comments-div">
+                <textarea
+                  [readonly]="editableComments1"
+                  #comment1
+                  class="comments-text"
+                  [(ngModel)]="notYet"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-3 spot-comments-section"
+            style="padding: unset !important;border-right: 5px solid #364150;"
+          >
+            <div class="new-comments">
+              <div style="padding: 15px;">
+                <span class="circle internal"></span
+                ><span class="label">Performance</span>
+                <span class="edit-icon" (click)="editComments2()"></span>
+              </div>
+              <div class="comments-div">
+                <textarea
+                  [readonly]="editableComments2"
+                  #comment2
+                  class="comments-text"
+                  [(ngModel)]="notYet"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-3 spot-comments-section"
+            style="padding: unset !important;"
+          >
+            <div class="new-comments">
+              <div style="padding: 15px;">
+                <span class="circle external"></span
+                ><span class="label">Supply</span>
+                <span
+                  class="edit-icon"
+                  *ngIf="showEditIcon"
+                  (click)="editComments3()"
+                ></span>
+              </div>
+              <div class="comments-div">
+                <textarea
+                  placeholder="Type notes here.."
+                  #comment3
+                  (focusout)="showEditIcon = !showEditIcon"
+                  class="comments-text"
+                  [(ngModel)]="notYet"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-3 spot-comments-section"
+            style="padding: unset !important;"
+          >
+            <div class="new-comments">
+              <div style="padding: 15px;">
+                <span class="circle external"></span
+                ><span class="label">Vessel & Agents</span>
+                <span class="edit-icon" (click)="editComments4()"></span>
+              </div>
+              <div class="comments-div">
+                <textarea
+                  [readonly]="editableComments4"
+                  #comment4
+                  class="comments-text"
+                  [(ngModel)]="notYet"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inner-accordion">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="accordion-detail">
+                  <div class="open-close-arrow"></div>
+                  <span class="panel-title m-l-9">
+                    <span>Comments from Request</span>
+                  </span>
+                </div>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+              <div class="row" style="padding: 4px;">
+                <div
+                  class="col-md-3 spot-comments-section2"
+                  style="padding: unset !important; border-right: 5px solid #BEBEBE;"
+                >
+                  <div class="new-comments" style="margin: 0px 14px;">
+                    <div style="padding: 15px;">
+                      <span class="circle internal"></span
+                      ><span class="label">General</span>
+                    </div>
+                    <div style="padding: 0px 20px;">
+                      <span class="comments-text">
+                        {{ currentRequestSmallInfo?.generalComment }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-md-3 spot-comments-section2"
+                  style="padding: unset !important; border-right: 5px solid #364150;"
+                >
+                  <div class="new-comments" style="margin: 0px 14px;">
+                    <div style="padding: 15px;">
+                      <span class="circle internal"></span
+                      ><span class="label">Performance</span>
+                    </div>
+                    <div style="padding: 0px 20px;">
+                      <span class="comments-text">
+                        {{ currentRequestSmallInfo?.performanceComment }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-md-3 spot-comments-section2"
+                  style="padding: unset !important; border-right: 5px solid #BEBEBE;"
+                ></div>
+                <div
+                  class="col-md-3 spot-comments-section2"
+                  style="padding: unset !important;"
+                >
+                  <div class="new-comments" style="margin: 0px 14px;">
+                    <div style="padding: 15px;">
+                      <span class="circle external"></span
+                      ><span class="label">Vessel & Agents</span>
+                    </div>
+                    <div style="padding: 0px 20px;">
+                      <span class="comments-text">
+                        {{ currentRequestSmallInfo?.vesselAndAgentsComment }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </mat-expansion-panel>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="accordion-detail">
+  <div class="open-close-arrow"></div>
+  <span class="panel-title" style="margin-left: 3px;"
+    ><span>Location:</span><span>{{ title }}</span></span
+  >
+</div>
+
+<div class="header-content" (click)="$event.stopPropagation()">
+  <div class="location-cost" (click)="additionalcostpopup()">
+    <span class="title">View location cost</span>
+    <span class="eye-icon"></span>
+  </div>
+  <div class="terminal">
+    <span class="title">Terminal:</span>
+    <div class="location w-180" style="margin-bottom: 3px;">
+      <div id="custom-form-field">
+        <mat-form-field class="without-search terminal-select" appearance="none">
+          <mat-select
+
+            disableOptionCentering
+            disabled
+            [(ngModel)]="terminal"
+            (click)="$event.stopPropagation()"
+          >
+            <mat-option value="{{ terminal }}">{{ terminal }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eta -->
+  <div class="date">
+    <span class="title">ETA:</span>
+    <span class="text">{{ formatDate(ETAdatetime.value) }}</span>
+  </div>
+
+  <div class="labels">
+    <div class="content">
+      <span class="title">Delivery Window</span>
+      <span class="text"
+        >{{ formatDate(deliveryFrom) }} - {{ formatDate(deliveryTo) }}</span
+      >
+    </div>
+  </div>
+</div>

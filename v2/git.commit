@@ -1,7 +1,7 @@
-﻿commit 9df4f08abb5ec0baa34e75191e403e32edbc968d
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Sep 7 17:40:33 2021 +0300
+﻿commit df3d55632e5983417b5b207ad4d9c6419d02e091
+Author: Suresh <suresh.r@Inatech.com>
+Date:   Wed Sep 8 03:35:19 2021 +0530
 
-    Fixed 35464
+    Spot Negotiation Base UI Changes
 
-branch: master
+branch: spot-develop

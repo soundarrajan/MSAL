@@ -1,0 +1,98 @@
+<div class="email-preview-popup">
+    <div class="header">
+        <div class="title">Email Preview</div>
+        <div style="display: flex; margin: 7px -10px 0px -10px;">
+            <span style="margin-top: 16px; color: #c4c4c4;">Template:</span>
+            <div id="custom-form-field" style="width: 100px !important; margin: 0px 7px;">
+                <mat-form-field class="without-search" appearance="none">
+                    <mat-select [(value)]="selected" disableOptionCentering>
+                        <mat-option value="Amend RFQ" selected="selected">Amend RFQ</mat-option>
+                        <mat-option value="Amend RFQ1">Amend RFQ1</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="header-btn">
+                
+                <span class="seperator-line"></span>
+                <button class="blue-button h-25" [mat-dialog-close]="true">Revert Changes</button>
+                <button class="blue-button h-25" [mat-dialog-close]="true">Save</button>
+                <button class="blue-button h-25" [mat-dialog-close]="true">Save & Send</button>
+                <span class="seperator-line"></span>
+                <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+            </div>
+        </div>
+    </div>
+    <mat-dialog-content>
+        <div class="email-container">
+            <div class="section1">
+                <span class="text">Contact Details</span>
+                <div style="display: flex; margin: 10px 0px;">
+                    <div style="flex: 0 0 5%">
+                        <span class="text">To:</span>
+                    </div>
+                    <div style="display: flex; flex: 0 0 95%">
+                        <div style="margin: 0px 5px;" *ngFor="let item of to">
+                            <input class="cust-input-field" matInput value="{{item}}">
+                        </div>
+                        <div class="add-new">
+                            <input #toemail matInput placeholder="+Add New" [(ngModel)]="toEmail" (change)="addTo(toemail.value)">
+                        </div>
+                    </div>                 
+                </div>
+                <div style="display: flex; margin: 10px 0px;">
+                    <div style="flex: 0 0 5%">
+                        <span class="text">Cc:</span>
+                    </div>
+                    <div style="display: flex; flex: 0 0 95%">
+                        <div style="margin: 0px 5px;" *ngFor="let item of cc">
+                            <input class="cust-input-field" matInput value="{{item}}">
+                        </div>
+                        <div class="add-new">
+                            <input #ccemail matInput placeholder="+Add New" [(ngModel)]="ccEmail" (change)="addCc(ccemail.value)">
+                        </div>
+                    </div>                 
+                </div>
+                <div style="display: flex; margin: 10px 0px;">
+                    <div style="flex: 0 0 5%">
+                        <span class="text">Subject:</span>
+                    </div>
+                    <div style="display: flex; flex: 0 0 95%">
+                        <span class="subject">AMENDMENT CHANGES: REQ226533 - ACHIEVER in AARHUS on Wed 30/06/2021 00:00:00</span>
+                    </div>                 
+                </div>
+            </div>
+            <div class="section2">
+                <div style="display: flex; margin: 15px; align-items: center;">
+                    <span class="text">Attachments:</span>
+                    <label class="add-doc" for="getFile">
+                        <span class="add-doc-plus"></span>
+                    </label>
+                    <input type="file" id="getFile" class="get-file" multiple
+                        (change)="fileBrowseHandler($event.target.files)" />
+                    <div class="file-list" *ngFor="let item of filesList">
+                        <span class="attachment-icon"></span>
+                        <span>{{item}}</span>
+                    </div>    
+                </div>
+                <div class="email-draft">
+                    <div>
+                        <span class="email-editor"></span>
+                    </div>
+                    <div style="padding: 18px;">
+                        <p>Good day dear Captain and Chief,</p>
+                        <p>Please kindly let me know your bunker requirement for the following</p>
+                        <p>Option 1. - BOSTON, MA on 28062020 00:00:00</p>
+                        <p>1. Bunker ROB on arrival 28062020 00:00:00</p>
+                        <p>2. Minimum quantity you need to bunker in BOSTON, MA to safely reach Barbados ?</p>
+                        <p>3. Maximum quantity you can lift without mixing?</p>
+                        <p>4. Best for your vessels stability if relevant?</p>
+                        <br>
+                        <p>Please justify your request with figures and calculations.</p>
+                        <p>Thanks in advance for your prompt reply!</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>
