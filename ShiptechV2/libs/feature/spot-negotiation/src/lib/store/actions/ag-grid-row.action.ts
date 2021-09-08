@@ -28,6 +28,12 @@ export class SetLocations{
 
   constructor(public payload: any) {}
 }
+
+export class AddCounterpartyToLocations{
+  static readonly type = '[Add Counterparty] Add';
+
+  constructor(public payload: any) {}
+}
 export class AddRow {
   static readonly type = '[Row] Add';
 

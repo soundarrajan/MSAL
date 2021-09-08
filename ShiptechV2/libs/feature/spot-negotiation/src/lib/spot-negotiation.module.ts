@@ -161,6 +161,7 @@ import { LocPanDataComponent } from './views/main/details/components/loc-pan-dat
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
+import { SpotnegoSearchCtpyComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 
 @NgModule({
   imports: [
@@ -314,7 +315,8 @@ import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-n
     SpotNegotiationHomeComponent,
     SpotnegoemaillogComponent,
     BadgeComponent,
-    LocPanDataComponent
+    LocPanDataComponent,
+    SpotnegoSearchCtpyComponent
   ],
   entryComponents: [
     AGGridCellRendererV2Component,
@@ -331,7 +333,9 @@ import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-n
     EmailPreviewPopupComponent,
     ContactinformationpopupComponent,
     SpotnegoPricingDetailsComponent,
-    SpotnegoSendRfqComponent
+    SpotnegoSendRfqComponent,
+    SearchRequestPopupComponent,
+    SpotnegoSearchCtpyComponent
   ],
   exports: [],
   providers: [

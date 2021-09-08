@@ -3,8 +3,10 @@ import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
+import { AddRow, AddSelectedRow } from '../../store/actions/ag-grid-row.action';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
+import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
 
 @Component({
@@ -34,7 +36,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
                   />
                 </div>
                 <div class="col-md-2">
-                  <span class="expand-img"></span>
+                  <span class="expand-img" (click)="openCounterpartyPopup()"></span>
                 </div>
               </div>
               <table
@@ -69,7 +71,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
               </table>
 
               <div class="proceed-div">
-                <button mat-button class="mid-blue-button proceed-btn">
+                <button mat-button class="mid-blue-button proceed-btn" (click)="addCounterpartiesToLocation()">
                   Proceed
                 </button>
               </div>
@@ -288,6 +290,17 @@ export class ShiptechCustomHeaderGroup {
       .slice(0, 7);
   }
 
+  openCounterpartyPopup(){
+    const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {});
+  }
+
   limitStrLength = (text, max_length) => {
     if (text.length > max_length - 3) {
       return text.substring(0, max_length).trimEnd() + '...';
@@ -369,5 +382,9 @@ export class ShiptechCustomHeaderGroup {
     if (e.keyCode === 37 || e.keyCode === 39) {
       e.stopPropagation();
     }
+  }
+  addCounterpartiesToLocation(){
+    debugger;
+    this.store.dispatch(new AddSelectedRow(this.selectedCounterParty));
   }
 }

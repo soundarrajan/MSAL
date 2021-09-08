@@ -9,7 +9,8 @@ import {
   SetGroupOfRequestsId,
   SetRequests,
   SetCurrentRequest,
-  SetCurrentRequestSmallInfo
+  SetCurrentRequestSmallInfo,
+  AddCounterpartyToLocations
 } from './actions/ag-grid-row.action';
 
 // Delete this;
@@ -639,6 +640,25 @@ export class SpotNegotiationStore {
     });
   }
 
+    // Rows lists
+    @Action(AddCounterpartyToLocations)
+    AddCounterpartyToLocations(
+      { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+      { payload }: AddCounterpartyToLocations
+    ) {
+      debugger;
+      const state = getState();
+      var ctpys = [...state.locations];
+      for(let load of payload){
+        let loc = {"sellerCounterpartyId" : load.id, "sellerCounterpartyName" : load.name};
+        ctpys = [...ctpys, loc];
+      }
+
+      patchState({
+        locations:  ctpys
+      });
+    }
+
   @Selector()
   static getStaticList(state: SpotNegotiationStoreModel) {
     return state.staticLists;
@@ -677,7 +697,7 @@ export class SpotNegotiationStore {
     { payload }: AddSelectedRow
   ): any {
     const state = getState();
-
+    debugger;
     const futureRows = [...state.selectedRows, payload];
 
     patchState({
