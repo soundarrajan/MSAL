@@ -658,56 +658,7 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
-    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Max Capacity which is HSFO Tank Capacity
-    let isValidMinEcaSod = data.findIndex(params => {
-      let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-      return  sum > currentROBObj?.hsfoTankCapacity;//parseInt(params?.max_sod) ;
-    });
-    isValidMinEcaSod = isValidMinEcaSod < 0 ? 'Y':'N'
-    if(isValidMinEcaSod == 'N'){
-      let id = data.findIndex(params => {
-        let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-        return  sum > currentROBObj?.hsfoTankCapacity;//parseInt(params?.max_sod) ;
-      });
-      let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: 'confirmation-popup-operator',
-        data : {message: `The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Max Capacity (${currentROBObj.hsfoTankCapacity}) for port `,id: port_id}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    //ECA est cons. validation : ECA Est consumption < LSDIS Est consumption
-    let isValidEcaEstCons = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption) == -1 ? 'Y':'N';
-    if(isValidEcaEstCons == 'N'){
-      let id = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption)
-      let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: 'confirmation-popup-operator',
-        data : {message: 'The ECA Estimated Consumption should not be smaller than LSDIS Estimated Consumption for port ', id: port_id}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    // max SOD validation : Total max SOD< Total min SOD 
-    let isValidMaxSod = data.findIndex(data => {
-        return parseInt(data?.max_sod) < parseInt(data?.min_sod)
-      });
-      isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
-    if(isValidMaxSod == 'N'){
-      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
-      let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: 'confirmation-popup-operator',
-        data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    // HSFO SOD validation : HSFO SOD > HSFO tank capacity
+    // Min HSFO SOD validation : Min HSFO SOD > HSFO tank capacity
     let isValidHsfoSod = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity) == -1 ? 'Y':'N';
     if(isValidHsfoSod =='N'){
       let id = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity)
@@ -716,6 +667,22 @@ export class BunkeringPlanComponent implements OnInit {
         width: '350px',
         panelClass: 'confirmation-popup-operator',
         data : {message: `The minimum HSFO SOD cannot exceed the Total HSFO tank capacity (${currentROBObj.hsfoTankCapacity}) for port `, id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    // Total max SOD validation : Total max SOD< Total min SOD 
+    let isValidMaxSod = data.findIndex(data => {
+      return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+    });
+    isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
+    if(isValidMaxSod == 'N'){
+      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup-operator',
+        data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
       });
       isHardValidation = 1;
       return isHardValidation;
@@ -730,6 +697,39 @@ export class BunkeringPlanComponent implements OnInit {
         width: '350px',
         panelClass: 'confirmation-popup-operator',
         data : {message: `The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity of ${capacity} for port `, id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
+    let isValidMinEcaSod = data.findIndex(params => {
+      let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
+      return  sum > parseInt(params?.max_sod) ;
+    });
+    isValidMinEcaSod = isValidMinEcaSod < 0 ? 'Y':'N'
+    if(isValidMinEcaSod == 'N'){
+      let id = data.findIndex(params => {
+        let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
+        return  sum > parseInt(params?.max_sod) ;
+      });
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup-operator',
+        data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    //ECA est cons. validation : ECA Est consumption < LSDIS Est consumption
+    let isValidEcaEstCons = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption) == -1 ? 'Y':'N';
+    if(isValidEcaEstCons == 'N'){
+      let id = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup-operator',
+        data : {message: 'The ECA Estimated Consumption should not be smaller than LSDIS Estimated Consumption for port ', id: port_id}
       });
       isHardValidation = 1;
       return isHardValidation;
