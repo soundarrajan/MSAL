@@ -153,7 +153,7 @@ export class FutureRequestGridComponent implements OnInit {
         return "CreatedByName";
     
       default:
-        return 'RequestName'
+        return columnName
     }
   }
 
