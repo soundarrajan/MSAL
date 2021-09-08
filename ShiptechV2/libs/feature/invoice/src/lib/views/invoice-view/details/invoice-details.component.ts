@@ -2784,6 +2784,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       );
 
     if (
+        formValues.invoiceClaimDetails &&
+        formValues.invoiceClaimDetails.length > 0
+      ) {
+        formValues.invoiceSummary.totalDifference = 0;
+      }
+
+    if (
       formValues.documentType.name === 'Credit Note' ||
       formValues.documentType.name === 'Pre-claim Credit Note'
     ) {
