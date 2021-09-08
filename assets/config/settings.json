@@ -1,2 +1,6 @@
 {
+  "agGridLicense": "INATECH_EUROPE_LIMITED__MultiApp_1Devs1_SaaS_14_November_2022__MTY3MTUzMDkzODQxNQ==d429630a4af81735003a345c0cd1c941",
+  "robApi": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Rob",
+  "v1ConfigPath":  "/config/defaultConfig.json"
+  
 }
