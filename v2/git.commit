@@ -1,7 +1,9 @@
-﻿commit 47daaa3cdf5d5d559097aeb85bdfe9f145c6c297
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 8 16:13:59 2021 +0300
+﻿commit c55162595aaf131b80242128a5e017a38394f4b8
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Sep 8 13:18:41 2021 +0000
 
-    Made total difference as zero for  Claim related invoices
+    Merged PR 13474: #35259: Future request Grid: equal filter not working for unknown column value issue has fixed
+    
+    Related work items: #35259
 
 branch: master
