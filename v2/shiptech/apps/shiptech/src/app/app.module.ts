@@ -23,10 +23,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AllModules, ModuleRegistry } from '@ag-grid-enterprise/all-modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-import { SpotNegotiationStore } from '../../../../libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 // Note: Currently we're running the application in a sub directory on the IIS (v2), v1 (angular js) runs in the root. They way we'll also share auth cookies
 export function getAppBaseHref(doc: Document): string {
@@ -52,18 +48,14 @@ export function getAppBaseHref(doc: Document): string {
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
     TitleModule,
-    NgxsModule.forRoot([SpotNegotiationStore], {
+    NgxsModule.forRoot([], {
       developmentMode: !environment.production,
       selectorOptions: { injectContainerState: false, suppressErrors: false }
     }),
-    NgxsReduxDevtoolsPluginModule.forRoot({ name: 'General-Store' }),
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     DeveloperToolbarModule,
     LoadingBarRouterModule,
-    TitleModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    })
+    TitleModule
   ],
   providers: [
     {
