@@ -1,0 +1,144 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { GridOptions } from 'ag-grid-community';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { AGGridCellRendererComponent } from '../../../../../../core/ag-grid/ag-grid-cell-renderer.component';
+
+@Component({
+  selector: 'app-spotnego-searchctpy',
+  templateUrl: './spotnego-searchctpy.component.html',
+  styleUrls: ['./spotnego-searchctpy.component.css']
+})
+
+export class SpotnegoSearchCtpyComponent implements OnInit {
+  public dialog_gridOptions: GridOptions;
+  public rowCount: Number;
+
+  constructor(
+    private router: Router,
+    private spotNegotiationService: SpotNegotiationService,
+    public dialogRef: MatDialogRef<SpotnegoSearchCtpyComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.dialog_gridOptions = <GridOptions>{
+      defaultColDef: {
+        filter: true,
+        sortable: true,
+        resizable: true
+      },
+      columnDefs: this.columnDefs,
+      suppressRowClickSelection: true,
+      headerHeight: 30,
+      rowHeight: 30,
+      rowSelection: 'multiple',
+      // groupIncludeTotalFooter: true,
+      onGridReady: params => {
+        this.dialog_gridOptions.api = params.api;
+        this.dialog_gridOptions.columnApi = params.columnApi;
+        this.dialog_gridOptions.api.sizeColumnsToFit();
+        debugger;
+        // this.dialog_gridOptions.api.setRowData(this.rowData);
+        // this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+      },
+      getRowStyle: function(params) {
+        if (params.node.rowPinned) {
+          return { 'font-weight': '500', 'font-size': '20px' };
+        }
+      },
+      onColumnResized: function(params) {
+        if (
+          params.columnApi.getAllDisplayedColumns().length <= 5 &&
+          params.type === 'columnResized' &&
+          params.finished === true &&
+          params.source === 'uiColumnDragged'
+        ) {
+          params.api.sizeColumnsToFit();
+        }
+      }
+    };
+  }
+
+  public columnDefs = [
+    {
+      headerName: '',
+      field: 'check',
+      filter: true,
+      suppressMenu: true,
+      width: 35,
+      checkboxSelection: true,
+      resizable: false,
+      suppressMovable: true,
+      headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+      cellClass: 'p-1 checkbox-center ag-checkbox-v2'
+    },
+    {
+      headerName: 'Counterparty',
+      headerTooltip: 'Counterparty',
+      field: 'name',
+      width: 175,
+      cellClass: ['aggridtextalign-left']
+    },
+    {
+      headerName: 'Parent',
+      headerTooltip: 'Parent',
+      field: 'parent.name',
+      cellClass: ['aggridtextalign-left']
+    },
+    {
+      headerName: 'Created By',
+      headerTooltip: 'Created By',
+      field: 'createdBy.name',
+      cellClass: ['aggridtextalign-left']
+    },
+    {
+      headerName: 'Created On',
+      headerTooltip: 'Created On',
+      field: 'createdOn',
+      cellClass: ['aggridtextalign-center']
+    },
+    {
+      headerName: 'Last Modified By',
+      headerTooltip: 'Last Modified By',
+      field: 'lastModifiedBy.name',
+      cellClass: ['aggridtextalign-left']
+    },
+    {
+      headerName: 'Last Modified On',
+      headerTooltip: 'Last Modified On',
+      field: 'lastModifiedOn',
+      cellClass: ['aggridtextalign-center']
+    }
+  ];
+
+  public numberFormatter(params) {
+    if (isNaN(params.value)) return params.value;
+    else return params.value.toFixed(4);
+  }
+
+  public rowData : any[];
+  
+
+  ngOnInit() {
+    this.loadCounterparties();   
+  }
+
+  public loadCounterparties(){
+    let businessId = "1102"; //smart module or screen ID
+    // let planID = this.vesselRef?.planId;
+    debugger;
+    let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":25}};
+    const response = this.spotNegotiationService.getCounterpartiesList(payload).subscribe((data:any)=>{
+      this.rowData = data.payload;
+      this.dialog_gridOptions.api.setRowData(this.rowData);
+      this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+    });
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
+}
+
+
+

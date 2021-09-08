@@ -1,0 +1,46 @@
+<!-- <mat-dialog-content> -->
+  <div class="table-no-verticalLine">
+    
+  <h2 mat-dialog-title class="dialog-title">
+    Pipeline Tariff
+    <mat-icon matSuffix class="dialogCloseButton float-right">close</mat-icon>
+  </h2>
+  <hr>
+ <div class="dialog-table-block">
+   <table>
+     <thead>
+         <tr>
+            <th></th>
+             <th>Carrier</th>
+             <th>Load Loc.</th>
+             <th>Discharge Loc.</th>
+             <th style="font-weight:500">Rate</th>
+             <th>Currency</th>
+             <th>UOM</th>
+             <th>Effective Date</th>
+         </tr>
+       </thead>
+     <tbody>
+       
+       <tr>
+         <td><mat-radio-button [checked]="checked" value="" (change)="enableProceed();"></mat-radio-button></td>
+         <td>Magellan</td>
+         <td>Tulsa</td>
+         <td>Enid</td>
+         <td>1.3400</td>
+         <td>USD</td>
+         <td>BBL</td>
+         <td>01/15/2020</td>
+       </tr>
+       
+     </tbody>
+   </table>
+   </div>
+
+   <!-- </mat-dialog-content> -->
+  
+  <mat-dialog-actions class="float-right m-t-10">
+    <button class=""  style="width:100px;" mat-button [mat-dialog-close]="true">CANCEL</button>
+    <button mat-raised-button class="blue-button" [disabled]="disableBtn" style="width:100px;" mat-button [mat-dialog-close]="true">PROCEED</button>
+  </mat-dialog-actions>
+  

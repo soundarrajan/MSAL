@@ -1,7 +1,7 @@
-﻿commit 26bf0b9c9207f7d08edcf83114ce2bb3903d458f
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 8 16:55:08 2021 +0300
+﻿commit bf4c41c2eb2f13b599b0c61ed8547efbf7c71b5d
+Author: Suresh <suresh.r@Inatech.com>
+Date:   Wed Sep 8 18:29:07 2021 +0530
 
-    Fixed 35482
+    Spot_Negotiation Multi Locations UI Changes
 
-branch: master
+branch: spot-develop

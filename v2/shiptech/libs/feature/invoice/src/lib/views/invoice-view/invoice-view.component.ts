@@ -22,7 +22,6 @@ import { CurrencyConvertorModalComponent } from './details/component/currency-co
 import _ from 'lodash';
 import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import moment from 'moment';
 
 @Component({
   selector: 'shiptech-invoice-view',
@@ -234,7 +233,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     data.invoiceDetails = null;
     data.documentNo = null;
     data.dueDate = null;
-    data.invoiceDate = `${moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').split('T')[0] }T00:00:00`;
+    //data.invoiceDate = `${moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').split('T')[0] }T00:00:00`;
     data.invoiceSummary.deductions = null;
     // data.paymentDate = null;
     data.accountNumber = null;

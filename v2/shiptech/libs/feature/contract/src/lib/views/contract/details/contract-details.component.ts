@@ -883,15 +883,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.formValues.details.forEach((v, k) => {
-      if (typeof v != 'undefined') {
-        if (v.minContractQuantity == null || v.minContractQuantity == '') {
-          v.minContractQuantity = 0;
-        }
-      }
-    });
-
-
     const id = this.entityId;
     this.entityCopied = false;
     this.eventsSubject5.next(false);
