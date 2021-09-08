@@ -1,9 +1,7 @@
-﻿commit 07ede2c8eb8a2c25c9334df5e64ceec222e54cb2
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Sep 8 12:59:10 2021 +0000
+﻿commit 47daaa3cdf5d5d559097aeb85bdfe9f145c6c297
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Sep 8 16:13:59 2021 +0300
 
-    Merged PR 13473: #35259: Future request Grid: Seems like 2nd filtering box have no effect issue has fixed
-    
-    Related work items: #35259
+    Made total difference as zero for  Claim related invoices
 
 branch: master
