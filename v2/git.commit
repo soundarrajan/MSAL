@@ -1,7 +1,7 @@
-﻿commit 9df4f08abb5ec0baa34e75191e403e32edbc968d
+﻿commit b29ebb91c6c53549465f6bfcf2144b0f29fdd34c
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Sep 7 17:40:33 2021 +0300
+Date:   Wed Sep 8 12:20:59 2021 +0300
 
-    Fixed 35464
+    Fixed error on save when user change payable to
 
 branch: master
