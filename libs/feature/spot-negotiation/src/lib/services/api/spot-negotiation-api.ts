@@ -10,7 +10,8 @@ import { ISpotNegotiationApiService } from './spot-negotiation.api.service.inter
 
 export const SpotNegotiationApiPaths = {
   tenantConfiguration: `api/admin/tenantConfiguration/get`,
-  staticLists: `api/infrastructure/static/lists`
+  staticLists: `api/infrastructure/static/lists`,
+  counterpartyLists: `api/masters/counterparties/list`
 };
 
 @Injectable({
@@ -62,6 +63,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .post<any>(
         `${this._infrastructureApiUrl}/${SpotNegotiationApiPaths.staticLists}`,
+        { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getCounterpartiesList(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.counterpartyLists}`,
         { Payload: request }
       )
       .pipe(

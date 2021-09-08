@@ -24,7 +24,7 @@
                   class="search-product-input"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-md-2" (click)="openCounterpartyPopup()">
                 <span class="expand-img"></span>
               </div>
             </div>
@@ -40,6 +40,7 @@
                   <mat-option [value]="element">
                     <mat-checkbox
                       [value]="element"
+                      (change)="OnCounterpartyCheckboxChange($event,element)"
                       [(ngModel)]="element.selected"
                     >
                       {{ element.name }}
@@ -59,7 +60,7 @@
             </table>
 
             <div class="proceed-div">
-              <button mat-button class="mid-blue-button proceed-btn">
+              <button mat-button class="mid-blue-button proceed-btn" (click)="addCounterpartyAcrossLocations()">
                 Proceed
               </button>
             </div>

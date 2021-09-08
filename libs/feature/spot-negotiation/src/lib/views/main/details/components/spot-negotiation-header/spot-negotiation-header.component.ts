@@ -14,10 +14,12 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import {
+  AddCounterpartyToLocations,
   SetCurrentRequest,
   SetCurrentRequestSmallInfo
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
+import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -43,6 +45,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList: any = [];
   visibleCounterpartyList: any = [];
+  selectedCounterparty:any = [];
 
   requestsAndVessels = [
     { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
@@ -95,6 +98,36 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     alert('asd');
   }
 
+  onCounterPartyCheckboxChange(checkbox: any, element: any): void {
+    if (checkbox.checked) {
+      // Add to selected counterparty list
+      this.selectedCounterparty.push(element);
+    }
+
+    if (!checkbox.checked) {
+      // Remove from selected counterparty list
+      this.selectedCounterparty = this.selectedCounterparty.filter(
+        e => e.id !== element.id
+      );
+    }
+  }
+
+  addCounterpartyAcrossLocations(){
+    debugger;
+
+    //this.setLocations(this.selectedCounterparty);
+     this.store.dispatch(new AddCounterpartyToLocations(this.selectedCounterparty));
+
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.requestOptions = spotNegotiation.currentRequestSmallInfo;
+      this.locations = spotNegotiation.currentRequestSmallInfo;
+      if (spotNegotiation.currentRequestSmallInfo) {
+        this.setLocations(
+          spotNegotiation.currentRequestSmallInfo[0].requestLocations
+        );
+      }});
+  }
+
   addToCheckboxOptions() {
     var selectedVessel = this.requestsAndVessels.filter(
       item => item.selected == true
@@ -145,6 +178,17 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   openRequestPopup() {
     const dialogRef = this.dialog.open(SearchRequestPopupComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {});
+  }
+
+  openCounterpartyPopup() {
+    const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
       width: '100vw',
       height: '95vh',
       maxWidth: '95vw',
