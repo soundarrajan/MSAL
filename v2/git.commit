@@ -1,9 +1,7 @@
-﻿commit c55162595aaf131b80242128a5e017a38394f4b8
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Sep 8 13:18:41 2021 +0000
+﻿commit 26bf0b9c9207f7d08edcf83114ce2bb3903d458f
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Sep 8 16:55:08 2021 +0300
 
-    Merged PR 13474: #35259: Future request Grid: equal filter not working for unknown column value issue has fixed
-    
-    Related work items: #35259
+    Fixed 35482
 
 branch: master
