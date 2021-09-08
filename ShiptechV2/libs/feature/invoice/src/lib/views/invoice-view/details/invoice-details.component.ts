@@ -1342,9 +1342,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       return null;
     }
 
-    // Bank Accound
+    // Bank Account
     if (
-      isEmpty(this.formValues.counterpartyDetails?.counterpartyBankAccount) &&
+      !this.formValues.counterpartyDetails?.counterpartyBankAccount &&
       this.getBankAccountNumberDateConfig().isMandatory
     ) {
       error = true;
@@ -2338,12 +2338,18 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
     this.setAdditionalCostLine();
     const valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
-    if (
-      this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
-        undefined ||
-      this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
-    ) {
-      valuesForm.counterpartyDetails.counterpartyBankAccount = null;
+    if (this.formValues.counterpartyDetails.counterpartyBankAccount) {
+      if (
+        this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
+          undefined ||
+        this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
+      ) {
+        valuesForm.counterpartyDetails.counterpartyBankAccount = null;
+      }
+    }
+
+    if (!this.formValues.counterpartyDetails.payableTo && this.formValues.counterpartyDetails.payableTo.length == 0) {
+      valuesForm.counterpartyDetails.payableTo = null;
     }
     if (
       !parseFloat(this.formValues?.id?.toString()) ||
