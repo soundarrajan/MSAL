@@ -542,6 +542,7 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     //console.log( this.formValues.details);
     this.formValues.details.push({
       id: 0,
+      minContractQuantity: this.quantityFormatValue(0),
       contractualQuantityOption: {
         code: null,
         databaseValue: 0,
@@ -581,9 +582,9 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
   formatDetailsQuantity() {
     for (let i = 0; i < this.formValues.details.length; i++) {
       if (!this.formValues.details[i].minContractQuantity) {
-        // this.formValues.details[
-        //   i
-        // ].minContractQuantity = this.quantityFormatValue(0);
+        this.formValues.details[
+          i
+        ].minContractQuantity = this.quantityFormatValue(0);
       }
       if (!this.formValues.details[i].maxContractQuantity) {
         // this.formValues.details[

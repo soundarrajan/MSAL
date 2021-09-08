@@ -6,6 +6,7 @@ import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard'
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './service/interceptor.service';
+import { AuthenticationInterceptor } from '@shiptech/core/interceptors/authentication-http.interceptor.service.';
 
 const routes: Routes = [
   {
@@ -75,24 +76,6 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      breadcrumb: 'Spot Negotiation',
-      breadcrumbUrl: '/#/group-of-requests',
-      breadcrumbIcon: 'fa fa-home'
-    },
-    children: [
-      {
-        path: KnownPrimaryRoutes.SpotNegotiation,
-        canActivate: [AuthenticationGuard],
-        loadChildren: () =>
-          import('@shiptech/feature/spot-negotiation').then(
-            m => m.SpotNegotiationModule
-          )
-      }
-    ]
-  },
-  {
-    path: '',
-    data: {
       breadcrumb: 'Invoice List',
       breadcrumbUrl: '/#/invoice',
       breadcrumbIcon: 'fa fa-home'
@@ -132,11 +115,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  providers: [
+  providers:  [
     AdalGuard,
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: InterceptorService,
+      provide: HTTP_INTERCEPTORS, 
+      useClass: InterceptorService, 
       multi: true
     }
   ],
