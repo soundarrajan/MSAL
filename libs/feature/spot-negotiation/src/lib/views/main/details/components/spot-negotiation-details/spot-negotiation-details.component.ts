@@ -48,6 +48,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   menuOptions = [{ label: 'ETA' }, { label: 'ETB' }, { label: 'ETD' }];
   isEnabledView: boolean = false;
   CurrentRequestData: any[];
+  columnDef_aggridObj: any[];
   // public grid2Width = {
   //   width: '50%'
   // }
@@ -60,125 +61,127 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
-        if(spotNegotiation.locations && spotNegotiation.locations.length > 0){
           this.rowData_aggrid = spotNegotiation.locations;
           this.CurrentRequestData = spotNegotiation.requests;
           if(this.CurrentRequestData && this.CurrentRequestData.length > 0){
             const currentReqDatalength = this.CurrentRequestData[0].requestProducts.length;
             this.columnDef_aggrid[1].headerGroupComponentParams.currentReqDatalength = currentReqDatalength;
-            this.CurrentRequestData.forEach((v, k) => {
-              v.requestProducts.forEach((i, j) => {
-              this.columnDef_aggrid.push(
-                {
-                  headerName: '',
-                  headerTooltip: '',
-                  headerGroupComponent: 'customHeaderGroupComponent',
-                  headerGroupComponentParams: {
-                    type: 'bg-header',
-                    product: i
-                  },
-                  marryChildren: true,
-                  resizable: false,
-                  name: 'grid1',
-                  groupId: 'grid1',
-            
-                  children: [
-                    {
-                      headerName: '',
-                       field: 'check1',
-                      filter: true,
-                      suppressMenu: true,
-                      width: 35,
-            
-                      //checkboxSelection: true,
-                      resizable: false,
-                      suppressMovable: true,
-                      headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
-                      cellClass:
-                        'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
-            
-                      cellRendererFramework: AGGridCellRendererV2Component,
-                      cellRendererParams: { type: 'mat-check-box' }
-                      //pinned: 'left'
+            this.columnDef_aggridObj = [];
+
+            for( let i = 0; i < this.CurrentRequestData.length ; i++){
+              this.columnDef_aggridObj[i] = Object.assign([], this.columnDef_aggrid);
+              for( let j = 0; j < this.CurrentRequestData[i].requestProducts.length ; j++){
+                console
+                this.columnDef_aggridObj[i].push(
+                  {
+                    headerName: '',
+                    headerTooltip: '',
+                    headerGroupComponent: 'customHeaderGroupComponent',
+                    headerGroupComponentParams: {
+                      type: 'bg-header',
+                      product: this.CurrentRequestData[i].requestProducts[j]
                     },
-                    {
-                      headerName: 'Offer price',
-                      headerTooltip: 'Offer price',
-                      field: 'offPrice1',
-                      width: 260,
-                      cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
-                      cellRendererFramework: AGGridCellRendererV2Component,
-                      cellRendererParams: {
-                        label: 'price-calc',
-                        type: 'price-calc',
-                        cellClass: ''
+                    marryChildren: true,
+                    resizable: false,
+                    name: 'grid1',
+                    groupId: 'grid1',
+              
+                    children: [
+                      {
+                        headerName: '',
+                         field: 'check1',
+                        filter: true,
+                        suppressMenu: true,
+                        width: 35,
+              
+                        //checkboxSelection: true,
+                        resizable: false,
+                        suppressMovable: true,
+                        headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+                        cellClass:
+                          'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
+              
+                        cellRendererFramework: AGGridCellRendererV2Component,
+                        cellRendererParams: { type: 'mat-check-box' }
+                        //pinned: 'left'
+                      },
+                      {
+                        headerName: 'Offer price',
+                        headerTooltip: 'Offer price',
+                        field: 'offPrice1',
+                        width: 260,
+                        cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
+                        cellRendererFramework: AGGridCellRendererV2Component,
+                        cellRendererParams: {
+                          label: 'price-calc',
+                          type: 'price-calc',
+                          cellClass: ''
+                        }
+                      },
+                      {
+                        headerName: 'T.Pr.($)',
+                        headerTooltip: 'T.Pr.($)',
+                        field: 'tPr',
+                        width: 150,
+                        cellClass: 'grey-opacity-cell pad-lr-0',
+                        cellStyle: params =>
+                          params.value == '518.50' ? { background: '#C5DCCF' } : null,
+                        cellRendererFramework: AGGridCellRendererV2Component,
+                        cellRendererParams: { type: 'addTpr', cellClass: '' }
+                      },
+                      {
+                        headerName: 'Amt ($)',
+                        headerTooltip: 'Amt ($)',
+                        field: 'amt',
+                        width: 150,
+                        cellClass: 'grey-opacity-cell pad-lr-0'
+                      },
+                      {
+                        headerName: 'Tar. diff',
+                        headerTooltip: 'Tar. diff',
+                        field: 'diff',
+                        width: 150,
+                        headerClass: 'border-right',
+                        cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
+                      },
+                      {
+                        headerName: 'MJ/KJ',
+                        headerTooltip: 'MJ/KJ',
+                        field: 'mj',
+                        width: 150,
+                        columnGroupShow: 'open',
+                        cellClass: 'grey-opacity-cell pad-lr-0'
+                      },
+                      {
+                        headerName: 'TCO ($)',
+                        headerTooltip: 'TCO ($)',
+                        field: 'tco',
+                        width: 150,
+                        columnGroupShow: 'open',
+                        cellClass: 'grey-opacity-cell pad-lr-0'
+                      },
+                      {
+                        headerName: 'E. diff',
+                        headerTooltip: 'E. diff',
+                        field: 'ediff',
+                        width: 150,
+                        columnGroupShow: 'open',
+                        headerClass: 'border-right',
+                        cellClass: 'line-seperator grey-opacity-cell pad-lr-5'
                       }
-                    },
-                    {
-                      headerName: 'T.Pr.($)',
-                      headerTooltip: 'T.Pr.($)',
-                      field: 'tPr',
-                      width: 150,
-                      cellClass: 'grey-opacity-cell pad-lr-0',
-                      cellStyle: params =>
-                        params.value == '518.50' ? { background: '#C5DCCF' } : null,
-                      cellRendererFramework: AGGridCellRendererV2Component,
-                      cellRendererParams: { type: 'addTpr', cellClass: '' }
-                    },
-                    {
-                      headerName: 'Amt ($)',
-                      headerTooltip: 'Amt ($)',
-                      field: 'amt',
-                      width: 150,
-                      cellClass: 'grey-opacity-cell pad-lr-0'
-                    },
-                    {
-                      headerName: 'Tar. diff',
-                      headerTooltip: 'Tar. diff',
-                      field: 'diff',
-                      width: 150,
-                      headerClass: 'border-right',
-                      cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
-                    },
-                    {
-                      headerName: 'MJ/KJ',
-                      headerTooltip: 'MJ/KJ',
-                      field: 'mj',
-                      width: 150,
-                      columnGroupShow: 'open',
-                      cellClass: 'grey-opacity-cell pad-lr-0'
-                    },
-                    {
-                      headerName: 'TCO ($)',
-                      headerTooltip: 'TCO ($)',
-                      field: 'tco',
-                      width: 150,
-                      columnGroupShow: 'open',
-                      cellClass: 'grey-opacity-cell pad-lr-0'
-                    },
-                    {
-                      headerName: 'E. diff',
-                      headerTooltip: 'E. diff',
-                      field: 'ediff',
-                      width: 150,
-                      columnGroupShow: 'open',
-                      headerClass: 'border-right',
-                      cellClass: 'line-seperator grey-opacity-cell pad-lr-5'
-                    }
-                  ]
-                }
-              )
-              });
-            });
-            
-          }
+                    ]
+                  }
+                )
+              }
+
+            }
         }
         
       });
       this.isEnabledView = true;
-      
-      
-      //this.columnDef_aggrid
+
+
+
     }, 100);
   }
 
@@ -223,22 +226,22 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         params.api.sizeColumnsToFit();
         this.counterpartyHeaderWidth =
-          params.columnApi.getColumn('check').getActualWidth() +
-          params.columnApi.getColumn('sellerCounterpartyName').getActualWidth() +
-          params.columnApi.getColumn('genRating').getActualWidth() +
-          params.columnApi.getColumn('portRating').getActualWidth() +
-          params.columnApi.getColumn('phySupplier').getActualWidth();
+          // params.columnApi.getColumn('check').getActualWidth() +
+          // params.columnApi.getColumn('sellerCounterpartyName').getActualWidth() +
+          // params.columnApi.getColumn('genRating').getActualWidth() +
+          // params.columnApi.getColumn('portRating').getActualWidth() +
+          // params.columnApi.getColumn('phySupplier').getActualWidth();
         this.expandGridHeaderWidth =
-          params.columnApi.getColumn('check1').getActualWidth() +
-          params.columnApi.getColumn('offPrice1').getActualWidth() +
+          // params.columnApi.getColumn('check1').getActualWidth() +
+          // params.columnApi.getColumn('offPrice1').getActualWidth() +
           // params.columnApi.getColumn('offPrice2').getActualWidth() +
           // params.columnApi.getColumn('offPrice3').getActualWidth() +
-          params.columnApi.getColumn('tPr').getActualWidth() +
-          params.columnApi.getColumn('diff').getActualWidth() +
-          //params.columnApi.getColumn("mj").getActualWidth()+
-          //params.columnApi.getColumn("tco").getActualWidth()+
-          //params.columnApi.getColumn("ediff").getActualWidth()+
-          params.columnApi.getColumn('amt').getActualWidth();
+          // params.columnApi.getColumn('tPr').getActualWidth() +
+          // params.columnApi.getColumn('diff').getActualWidth() +
+          // params.columnApi.getColumn("mj").getActualWidth()+
+          // params.columnApi.getColumn("tco").getActualWidth()+
+          // params.columnApi.getColumn("ediff").getActualWidth()+
+          // params.columnApi.getColumn('amt').getActualWidth();
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
@@ -277,7 +280,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
   };
 
-  private columnDef_aggrid:any = [
+  public columnDef_aggrid:any = [
     {
       headerName: 'counterparty',
       headerTooltip: '',

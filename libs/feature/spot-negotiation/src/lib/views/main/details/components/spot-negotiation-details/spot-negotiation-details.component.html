@@ -14,7 +14,8 @@
                 <div class="grid-container">
                   <div class="agGrid-v2" style="margin:0px">
                     <div style="width:100%;height: 100%;">
-                      <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_counterparty"
+                      <ag-grid-angular style="width: 100%;height: 100%;" [rowData]="rowData_aggrid"
+                      [columnDefs]="columnDef_aggridObj[i]" [gridOptions]="gridOptions_counterparty"
                         [rowClassRules]="rowClassRules" domLayout='autoHeight'
                         class="ag-theme-material ag-grid-v2 angular-v9" (rowSelected)="onRowSelected($event)"
                         (selectionChanged)="onSelectionChanged($event)" [context]="context"
