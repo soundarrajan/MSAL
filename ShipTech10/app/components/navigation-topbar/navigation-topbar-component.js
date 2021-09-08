@@ -47,9 +47,16 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
     	$scope.initNavigation = function(resize) {
 			$scope.shouldDisplayNavigationBar = $scope.checkIfShouldDisplayNavigationBar();
 			if($scope.shouldDisplayNavigationBar){
-				createNavigationItems();
-                setItemsActiveStatus();
-                setResponsiveItemsNames();
+                let possiblePagesForRequest = ['default.edit-request', 'default.new-request'];
+                if (possiblePagesForRequest.indexOf($scope.currentPage) != -1 && !window.firstLoadNavBarIdsList) {
+                    createNavigationItems();
+                    setItemsActiveStatus();
+                    setResponsiveItemsNames();
+                } else if (possiblePagesForRequest.indexOf($scope.currentPage) == -1){
+                    createNavigationItems();
+                    setItemsActiveStatus();
+                    setResponsiveItemsNames();
+                }
 			}
 		};
 
@@ -257,6 +264,11 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
                 // console.error('navigation payload', navigationPayload)
                 if (navigationPayload.InvoiceId == '') {
                     return;
+                }
+
+                let possiblePagesForRequest = ['default.edit-request', 'default.new-request'];
+                if (possiblePagesForRequest.indexOf($scope.currentPage) != -1) {
+                    window.firstLoadNavBarIdsList = true;
                 }
 
                 $http({

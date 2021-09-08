@@ -598,6 +598,12 @@ angular
                 }
             };
 
+
+            $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+                console.log(event);
+                window.firstLoadNavBarIdsList = false;
+            });
+
             $rootScope.lastLoggedUri = '';
             $rootScope.$on('$locationChangeSuccess', (e, uri) => {
                 if (uri !== $rootScope.lastLoggedUri) {
@@ -944,3 +950,8 @@ angular.module("uib/template/typeahead/typeahead-match.html", []).run(["$templat
     "   ng-attr-title=\"{{match.label | decodeReadOnly}}\"></a>\n" +
     "");
 }]);
+
+$(document).on('click',  function (event) {
+    console.log('Application click');
+    window.firstLoadNavBarIdsList = false;
+});
