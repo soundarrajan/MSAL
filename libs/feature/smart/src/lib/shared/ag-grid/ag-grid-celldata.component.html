@@ -339,10 +339,23 @@
     </ng-template>
   </mat-menu>
   
-  <div class="port-cell" *ngIf="params.type=='port-readOnly'">
+  <div class="port-cell" *ngIf="params.type=='port-readOnly'" style="display: flex;">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass"
-      style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 90px;">
+      style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 45px;">
+      <!-- style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 90px;"> -->
       {{params.value}}</div>
+      <div style="width:15px;">
+        <div class="info-i" (click)="toggleMenu3Info($event)" 
+          (mouseenter)="!menuClick  && toggleMenuInfo($event,params.value);"
+          (mouseleave)="!menuClick  && toggleMenu2Info();">
+          <div style="z-index: 1050;pointer-events:none;"
+          #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="infoPopup"
+            [matMenuTriggerData]="{data:params.value}">
+            <span>i</span>
+        </div>
+    
+      </div>
+    </div>
   </div>
   
   <div class="port-cell" *ngIf="params.type=='port'" style="display:flex;" [ngClass]="{'highlight': params?.data?.is_end_of_service =='Y','end-of-voyage':params?.data?.is_last_port == 'Y','font-weight-port-unack': this.isOperatorAck == false , 'font-bold-port': this.isOperatorAck == true }">
@@ -366,6 +379,7 @@
       </div>
   
     </div>
+  </div>
   </div>
   <mat-menu  #infoPopup="matMenu" xPosition="after" class="common port-deptails-popup">
     <ng-template matMenuContent let-data="data">
