@@ -1,7 +1,9 @@
-﻿commit b29ebb91c6c53549465f6bfcf2144b0f29fdd34c
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 8 12:20:59 2021 +0300
+﻿commit 7cc4f7e6b7291097a17c5968dfa1c03124229d2e
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Sep 8 12:09:47 2021 +0000
 
-    Fixed error on save when user change payable to
+    Merged PR 13466: #35205: Missing port info popup in Old bunker plans has done
+    
+    Related work items: #35205
 
 branch: master
