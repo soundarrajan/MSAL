@@ -1822,16 +1822,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 rightClickPopoverData.todayVoyages = _.filter(object, function(el) {
                     if (displayScheduleBasedOn === 'Delivery Date' && el.voyageDetail.deliveryFrom) {
                         let deliveryFrom = moment.utc(el.voyageDetail.deliveryFrom).format('YYYY-MM-DD HH:mm');
-                        return moment(deliveryFrom) >= moment(voyageContent.start) && moment(deliveryFrom) <= moment(voyageContent.end);
+                        let startDate = moment(voyageContent.start).format('YYYY-MM-DD');
+                        return moment(deliveryFrom) >= moment(startDate) && moment(deliveryFrom) <= moment(voyageContent.end);
                     } else {
                         let eta = moment.utc(el.voyageDetail.eta).format('YYYY-MM-DD HH:mm');
-                        let value = moment(eta) >= moment(voyageContent.start) && moment(eta) <= moment(voyageContent.end);
-                        console.log(eta);
-                        console.log(value);
-                        return moment(eta) >= moment(voyageContent.start) && moment(eta) <= moment(voyageContent.end);
+                        let startDate = moment(voyageContent.start).format('YYYY-MM-DD');
+                        let value = moment(eta) >= moment(startDate) && moment(eta) <= moment(voyageContent.end);
+                        return  moment(eta) >= moment(startDate) && moment(eta) <= moment(voyageContent.end);
                     }
                 });
-                // rightClickPopoverData.todayVoyages = object;
+                //rightClickPopoverData.todayVoyages = object;
                 rightClickPopoverData.bunkerDetails = todaysBunkerDetails;
                 rightClickPopoverData.productTypeView = ctrl.productTypeView;
                 $scope.rightClickPopoverData = rightClickPopoverData;
