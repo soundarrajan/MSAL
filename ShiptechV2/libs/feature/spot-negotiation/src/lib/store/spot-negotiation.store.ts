@@ -5,6 +5,7 @@ import {
   AddSelectedRow,
   SetSelectedRow,
   SetStaticLists,
+  SetCounterpartyList,
   SetLocations,
   SetGroupOfRequestsId,
   SetRequests,
@@ -514,6 +515,7 @@ const demoData = [
 ];
 export class SpotNegotiationStoreModel {
   staticLists: any;
+  counterpartyList:any;
   // Delete this
   rows: any;
   selectedRows: any;
@@ -535,6 +537,7 @@ export class SpotNegotiationStoreModel {
   constructor() {
     // Initialization inside the constructor
     this.staticLists = {};
+    this.counterpartyList = {};
     this.requests = [];
     this.locations = [];
     this.additionalCost = [];
@@ -572,7 +575,8 @@ export class SpotNegotiationStoreModel {
     marketPriceHistory: {},
     rows: demoData,
     selectedRows: [],
-    staticLists: []
+    staticLists: [],
+    counterpartyList: []
   }
 })
 export class SpotNegotiationStore {
@@ -629,6 +633,16 @@ export class SpotNegotiationStore {
     });
   }
 
+  @Action(SetCounterpartyList)
+  SetCounterparties(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetCounterpartyList
+  ): void {
+    patchState({
+      counterpartyList: payload
+    });
+  }
+
   // Rows lists
   @Action(SetLocations)
   SetLocations(
@@ -646,13 +660,8 @@ export class SpotNegotiationStore {
       { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
       { payload }: AddCounterpartyToLocations
     ) {
-      debugger;
       const state = getState();
-      var ctpys = [...state.locations];
-      for(let load of payload){
-        let loc = {"sellerCounterpartyId" : load.id, "sellerCounterpartyName" : load.name};
-        ctpys = [...ctpys, loc];
-      }
+      var ctpys = [...state.locations, ...payload];
 
       patchState({
         locations:  ctpys
@@ -662,6 +671,11 @@ export class SpotNegotiationStore {
   @Selector()
   static getStaticList(state: SpotNegotiationStoreModel) {
     return state.staticLists;
+  }
+
+  @Selector()
+  static getCounterpartyList(state: SpotNegotiationStoreModel) {
+    return state.counterpartyList;
   }
 
   // AG GRID ROWS
@@ -697,7 +711,6 @@ export class SpotNegotiationStore {
     { payload }: AddSelectedRow
   ): any {
     const state = getState();
-    debugger;
     const futureRows = [...state.selectedRows, payload];
 
     patchState({

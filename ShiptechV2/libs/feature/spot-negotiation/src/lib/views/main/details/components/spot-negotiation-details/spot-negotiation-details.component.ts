@@ -16,7 +16,7 @@ import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
 import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-custom-header-group';
 import { SpotNegotiationService } from '../../../../../services/spot-negotiation.service';
-import { SetStaticLists } from '../../../../../store/actions/ag-grid-row.action';
+import { SetCounterpartyList, SetStaticLists } from '../../../../../store/actions/ag-grid-row.action';
 
 @Component({
   selector: 'app-spot-negotiation-details',
@@ -54,9 +54,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   // }
   ngOnInit(): void {
     
-    // Set static lists;
+    // Set Counterparty list;
     this.route.data.subscribe(data => {
-      this.store.dispatch(new SetStaticLists(data.staticLists));
+      this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
     });
 
     setTimeout(() => {
@@ -221,8 +221,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       onGridReady: params => {
         this.gridOptions_counterparty.api = params.api;
         this.gridOptions_counterparty.columnApi = params.columnApi;
-         this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
         this.gridOptions_counterparty.api.sizeColumnsToFit();
+        this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
         this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         params.api.sizeColumnsToFit();
         this.counterpartyHeaderWidth =

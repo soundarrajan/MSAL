@@ -10,7 +10,11 @@ import {
 } from '@angular/core';
 // import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import {
@@ -60,6 +64,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   isLoadpage: boolean = false;
   constructor(
     private store: Store,
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private _spotNegotiationService: SpotNegotiationService,
     private renderer: Renderer2,
     public dialog: MatDialog
   ) {
@@ -78,14 +85,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.setLocations(
             spotNegotiation.currentRequestSmallInfo[0].requestLocations
           );
-          if (
-            this.counterpartyList.length === 0 &&
-            spotNegotiation.staticLists.length > 0
-          ) {
-            this.counterpartyList = spotNegotiation.staticLists[1].items;
+          if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
+            this.counterpartyList = spotNegotiation.counterpartyList;
             this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
-      }
-      }
+          }
+        }
     });
   }, 100);
   }
@@ -98,7 +102,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     alert('asd');
   }
 
-  onCounterPartyCheckboxChange(checkbox: any, element: any): void {
+  onCounterpartyCheckboxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
       // Add to selected counterparty list
       this.selectedCounterparty.push(element);
@@ -112,20 +116,70 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  toBeAddedCounterparties() : SpnegoAddCounterpartyModel[] {
+    if (this.requestOptions && this.requestOptions.length > 0) {
+      let selectedCounterparties = [];
+      
+      //current RequestGroupId
+      let RequestGroupId = parseInt(this.requestOptions[0].requestGroupId);
+      
+      //Looping through all the Request Locations
+      this.requestOptions[0].requestLocations.forEach(reqLoc => {
+        let perLocationCtpys = this.selectedCounterparty.map(val => <SpnegoAddCounterpartyModel>{
+          requestGroupId: RequestGroupId,
+          requestLocationId: reqLoc.id,
+          locationId: reqLoc.locationId,
+          id: 0,
+          name: "",
+          counterpartytypeId: 0,
+          counterpartyTypeName: "",
+          genPrice: "",
+          genRating: "",
+          isDeleted: false,
+          isSelected: true,
+          mail: "",
+          portPrice: "",
+          portRating: "",
+          prefferedProductIds: "",
+          sellerComments: "",
+          sellerCounterpartyId: val.id,
+          sellerCounterpartyName: val.name,
+          senRating: "",
+        });
+        selectedCounterparties.push(...perLocationCtpys);
+      });
+
+      return selectedCounterparties;
+    }
+    else {
+        return Array<SpnegoAddCounterpartyModel>();
+    }
+  }
+
   addCounterpartyAcrossLocations(){
-    debugger;
+    const selectedCounterparties = this.toBeAddedCounterparties();
+    if(selectedCounterparties.length == 0)
+      return;
 
-    //this.setLocations(this.selectedCounterparty);
-     this.store.dispatch(new AddCounterpartyToLocations(this.selectedCounterparty));
+    const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+    let payload = {
+      "requestGroupId": parseInt(RequestGroupId),
+      "isAllLocation": true,
+      "counterparties": selectedCounterparties
+    };
 
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.requestOptions = spotNegotiation.currentRequestSmallInfo;
-      this.locations = spotNegotiation.currentRequestSmallInfo;
-      if (spotNegotiation.currentRequestSmallInfo) {
-        this.setLocations(
-          spotNegotiation.currentRequestSmallInfo[0].requestLocations
-        );
-      }});
+    const response = this._spotNegotiationService.addCounterparties(payload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toastr.success(res.message);
+        // Add in Store
+        this.store.dispatch(new AddCounterpartyToLocations(payload.counterparties));
+      }
+      else{
+        this.toastr.error(res.message);
+        return;
+      }
+    });
   }
 
   addToCheckboxOptions() {
@@ -192,7 +246,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       width: '100vw',
       height: '95vh',
       maxWidth: '95vw',
-      panelClass: 'search-request-popup'
+      panelClass: 'search-request-popup',
+      data:{
+        "AddCounterpartiesAcrossLocations":true
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {});
@@ -238,3 +295,4 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 }
+

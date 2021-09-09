@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { GridOptions } from 'ag-grid-community';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AGGridCellRendererComponent } from '../../../../../../core/ag-grid/ag-grid-cell-renderer.component';
@@ -14,13 +15,23 @@ import { AGGridCellRendererComponent } from '../../../../../../core/ag-grid/ag-g
 export class SpotnegoSearchCtpyComponent implements OnInit {
   public dialog_gridOptions: GridOptions;
   public rowCount: Number;
-
+  public AddCounterpartiesAcrossLocations : boolean;
+  public RequestGroupId: number;
+  public RequestLocationId: number;
+  public LocationId: number;
   constructor(
     private router: Router,
+    private store: Store,
     private spotNegotiationService: SpotNegotiationService,
     public dialogRef: MatDialogRef<SpotnegoSearchCtpyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.AddCounterpartiesAcrossLocations = data.AddCounterpartiesAcrossLocations;
+    if(!data.AddCounterpartiesAcrossLocations){
+      this.RequestGroupId = data.RequestGroupId;
+      this.RequestLocationId = data.RequestLocationId;
+      this.LocationId = data.LocationId;
+    }
     this.dialog_gridOptions = <GridOptions>{
       defaultColDef: {
         filter: true,
@@ -37,9 +48,14 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         this.dialog_gridOptions.api = params.api;
         this.dialog_gridOptions.columnApi = params.columnApi;
         this.dialog_gridOptions.api.sizeColumnsToFit();
-        debugger;
-        // this.dialog_gridOptions.api.setRowData(this.rowData);
-        // this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+
+        this.store.subscribe(({ spotNegotiation }) => {
+            if (spotNegotiation.counterpartyList) {
+              this.rowData = spotNegotiation.counterpartyList;
+              this.dialog_gridOptions.api.setRowData(this.rowData);
+              this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+            }
+          });
       },
       getRowStyle: function(params) {
         if (params.node.rowPinned) {
@@ -120,20 +136,19 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   
 
   ngOnInit() {
-    this.loadCounterparties();   
+    //this.loadCounterparties();   
   }
 
-  public loadCounterparties(){
-    let businessId = "1102"; //smart module or screen ID
-    // let planID = this.vesselRef?.planId;
-    debugger;
-    let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":25}};
-    const response = this.spotNegotiationService.getCounterpartiesList(payload).subscribe((data:any)=>{
-      this.rowData = data.payload;
-      this.dialog_gridOptions.api.setRowData(this.rowData);
-      this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
-    });
-  }
+  // public loadCounterparties(){
+  //   let businessId = "1102"; //smart module or screen ID
+  //   // let planID = this.vesselRef?.planId;
+  //   let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":25}};
+  //   const response = this.spotNegotiationService.getCounterpartyList(payload).subscribe((data:any)=>{
+  //     this.rowData = data.payload;
+  //     this.dialog_gridOptions.api.setRowData(this.rowData);
+  //     this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+  //   });
+  // }
 
   closeDialog() {
     this.dialogRef.close();

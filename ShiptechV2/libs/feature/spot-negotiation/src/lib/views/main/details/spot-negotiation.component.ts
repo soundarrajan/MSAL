@@ -30,7 +30,8 @@ import {
   SetCurrentRequestSmallInfo,
   SetGroupOfRequestsId,
   SetRequests,
-  SetLocations
+  SetLocations,
+  SetCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
 
 @Component({
@@ -72,6 +73,23 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
       IGeneralTenantSettings
     >(TenantSettingsModuleName.General);
+  }
+
+  getCounterpartyList():void{
+    let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":1000}};
+    
+    const response = this.spotNegotiationService.getCounterpartyList(payload);
+
+    response.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      }
+      else{
+        // Populate Store
+        this.store.dispatch(new SetCounterpartyList(res.payload));
+      }
+    });
   }
 
   getGroupOfRequests(): void {
@@ -127,6 +145,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getGroupOfRequests();
     this.getGroupOfRequests1();
+    this.getCounterpartyList();
     // this.getSpotNegotiationRows();
   }
 

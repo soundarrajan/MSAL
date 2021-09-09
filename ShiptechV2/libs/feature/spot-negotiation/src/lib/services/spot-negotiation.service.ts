@@ -44,9 +44,17 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload = False
    */
   @ObservableException()
-  getCounterpartiesList(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.getCounterpartiesList(payload);
+  getCounterpartyList(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getCounterpartyList(payload);
   }
+
+  /**
+   * @param payload = False
+   */
+   @ObservableException()
+   addCounterparties(payload: any): Observable<unknown> {
+     return this.spotNegotiationApi.AddCounterparties(payload);
+   }
 
   /**
    * Get group of request when window loads.
