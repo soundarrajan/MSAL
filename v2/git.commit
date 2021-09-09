@@ -1,7 +1,7 @@
-﻿commit 26bf0b9c9207f7d08edcf83114ce2bb3903d458f
+﻿commit f52618b08d297f878db6f38ed4f2af5c51a2eff4
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 8 16:55:08 2021 +0300
+Date:   Thu Sep 9 16:29:13 2021 +0300
 
-    Fixed 35482
+    Fixed 35209 on master
 
 branch: master
