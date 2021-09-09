@@ -23,6 +23,13 @@ export class SetStaticLists {
 
   constructor(public payload: any) {}
 }
+
+export class SetCounterpartyList {
+  static readonly type = '[Counterparty List] Set';
+
+  constructor(public payload: any) {}
+}
+
 export class SetLocations{
   static readonly type = '[Set Locations] Set';
 

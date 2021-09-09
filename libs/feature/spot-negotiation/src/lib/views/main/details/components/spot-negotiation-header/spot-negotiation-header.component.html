@@ -40,7 +40,7 @@
                   <mat-option [value]="element">
                     <mat-checkbox
                       [value]="element"
-                      (change)="OnCounterpartyCheckboxChange($event,element)"
+                      (change)="onCounterpartyCheckboxChange($event,element)"
                       [(ngModel)]="element.selected"
                     >
                       {{ element.name }}

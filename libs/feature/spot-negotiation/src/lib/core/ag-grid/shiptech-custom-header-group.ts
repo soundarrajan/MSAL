@@ -2,12 +2,16 @@ import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { AddRow, AddSelectedRow } from '../../store/actions/ag-grid-row.action';
+import { ToastrService } from 'ngx-toastr';
+import { SpotNegotiationService } from '../../services/spot-negotiation.service';
+import { AddCounterpartyToLocations, AddRow, AddSelectedRow } from '../../store/actions/ag-grid-row.action';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
+import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.model';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -51,7 +55,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
                     <mat-option [value]="element">
                       <mat-checkbox
                         [value]="element"
-                        (change)="onCounterPartyCheckBoxChange($event, element)"
+                        (change)="onCounterpartyCheckboxChange($event, element)"
                         [(ngModel)]="element.selected"
                       >
                         {{ limitStrLength(element.name, 25) }}
@@ -79,7 +83,7 @@ import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/com
           </div>
         </mat-menu>
         <div class="text">Counterparty Details</div>
-        <div class="count">{{ selectedCounterParty.length }}</div>
+        <div class="count">{{ selectedCounterparty.length }}</div>
       </div>
       <!--<div class="action">
         <div class="search"></div>
@@ -244,15 +248,16 @@ export class ShiptechCustomHeaderGroup {
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [];
   visibleCounterpartyList = [];
-  selectedCounterParty = [];
+  selectedCounterparty = [];
+  currentRequestInfo = [];
 
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
-      // Index [0] "SellerWithInactive"
-      // Index [1] "Seller"
-
+      this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+      
+      // Fetching counterparty list
       if (this.counterpartyList.length === 0) {
-        this.counterpartyList = spotNegotiation.staticLists[1].items;
+        this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
     });
@@ -262,18 +267,21 @@ export class ShiptechCustomHeaderGroup {
     public dialog: MatDialog,
     private el: ElementRef,
     private store: Store,
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private _spotNegotiationService: SpotNegotiationService,
     @Inject(DOCUMENT) private _document: HTMLDocument
   ) {}
 
-  onCounterPartyCheckBoxChange(checkbox: any, element: any): void {
+  onCounterpartyCheckboxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
       // Add to selected counterparty list
-      this.selectedCounterParty.push(element);
+      this.selectedCounterparty.push(element);
     }
 
     if (!checkbox.checked) {
       // Remove from selected counterparty list
-      this.selectedCounterParty = this.selectedCounterParty.filter(
+      this.selectedCounterparty = this.selectedCounterparty.filter(
         e => e.id !== element.id
       );
     }
@@ -291,11 +299,29 @@ export class ShiptechCustomHeaderGroup {
   }
 
   openCounterpartyPopup(){
+    let RequestGroupId = 0;
+    let currentRequestLocation = {id:"0", locationId:"0"};
+
+    if(this.currentRequestInfo && this.currentRequestInfo.length > 0){
+      RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
+      
+      if(this.currentRequestInfo[0].requestLocations 
+        && this.currentRequestInfo[0].requestLocations.length > 0){
+        currentRequestLocation = this.currentRequestInfo[0].requestLocations[0];
+        }
+    }
+
     const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
       width: '100vw',
       height: '95vh',
       maxWidth: '95vw',
-      panelClass: 'search-request-popup'
+      panelClass: 'search-request-popup',
+      data:{
+        "AddCounterpartiesAcrossLocations":false,
+        "RequestGroupId":RequestGroupId,
+        "RequestLocationId" : parseInt(currentRequestLocation.id),
+        "LocationId" : parseInt(currentRequestLocation.locationId)
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {});
@@ -383,8 +409,63 @@ export class ShiptechCustomHeaderGroup {
       e.stopPropagation();
     }
   }
+
+  toBeAddedCounterparties() : SpnegoAddCounterpartyModel[] {
+    if (this.currentRequestInfo && this.currentRequestInfo.length > 0) {
+
+      let RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
+      let currentRequestLocation = this.currentRequestInfo[0].requestLocations[0];
+
+      return this.selectedCounterparty.map(val => <SpnegoAddCounterpartyModel>{
+        requestGroupId: RequestGroupId,
+        requestLocationId: parseInt(currentRequestLocation.id),
+        locationId: parseInt(currentRequestLocation.locationId),
+        id: 0,
+        name: "",
+        counterpartytypeId: 0,
+        counterpartyTypeName: "",
+        genPrice: "",
+        genRating: "",
+        isDeleted: false,
+        isSelected: true,
+        mail: "",
+        portPrice: "",
+        portRating: "",
+        prefferedProductIds: "",
+        sellerComments: "",
+        sellerCounterpartyId: val.id,
+        sellerCounterpartyName: val.name,
+        senRating: "",
+      });
+    }
+    else {
+      return Array<SpnegoAddCounterpartyModel>();
+    }
+  }
+
   addCounterpartiesToLocation(){
-    debugger;
-    this.store.dispatch(new AddSelectedRow(this.selectedCounterParty));
+    const selectedCounterparties = this.toBeAddedCounterparties();
+    if(selectedCounterparties.length == 0)
+      return;
+
+    const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+    let payload = {
+      "requestGroupId": parseInt(RequestGroupId),
+      "isAllLocation": false,
+      "counterparties": selectedCounterparties
+    };
+
+    const response = this._spotNegotiationService.addCounterparties(payload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toastr.success(res.message);
+        // Add in Store
+        this.store.dispatch(new AddCounterpartyToLocations(payload.counterparties));
+      }
+      else{
+        this.toastr.error(res.message);
+        return;
+      }
+    });
   }
 }
