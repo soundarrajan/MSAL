@@ -1,8 +1,8 @@
-﻿commit ba90b4b0cbc6fe6c76b784e6aefb638bfde9f399
+﻿commit 976b77ae42e656b90f2c6622e6fe1dc3b6e9ccec
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Sep 9 14:48:00 2021 +0000
+Date:   Thu Sep 9 15:01:13 2021 +0000
 
-    Merged PR 13492: #35322: Vessel popup: Future request should be displayed based on the future ETA has done
+    Merged PR 13493: Future Request sorting order in vessel popup.
     
     Related work items: #35322
 
