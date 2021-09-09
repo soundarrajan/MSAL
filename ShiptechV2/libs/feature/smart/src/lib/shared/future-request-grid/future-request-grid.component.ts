@@ -153,7 +153,7 @@ export class FutureRequestGridComponent implements OnInit {
         return "CreatedByName";
     
       default:
-        return 'RequestName'
+        return columnName
     }
   }
 
@@ -240,6 +240,7 @@ export class FutureRequestGridComponent implements OnInit {
           if(filterModel[filterValue]?.operator) {
             let conditionArr = Object.keys(filterModel[filterValue]).filter(condKey=>condKey.indexOf('condition')>-1)
             conditionArr.forEach( async (key, idx)=> {
+              filterModel[filterValue][key]['operator'] = filterModel[filterValue]?.operator;
               conditionFilterArr[filterValue+('~~~'+idx+1)]=(filterModel[filterValue][key]);
             })
           } else {
@@ -331,7 +332,8 @@ export class FutureRequestGridComponent implements OnInit {
           columnFormat.Values = await this.mapFilterValue(filterType, filterModel[filterKey]);
           let isColumnMultiFilter = this.columnFilter.filter(filterItem=>filterItem.columnValue == columnFormat.columnValue)
           if(isColumnMultiFilter.length) {
-            columnFormat.FilterOperator = 2;
+            let opertorMode = filterModel[filterKey]?.operator;
+            columnFormat.FilterOperator = opertorMode == "AND"? 1: (opertorMode == "OR"? 2: 0);
           }
           this.columnFilter.push(columnFormat);
           if(filterModelArr.length == index+1) {
