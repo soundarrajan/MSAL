@@ -268,8 +268,8 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.vessel = 0;
     }
     //this.vesselService.myDefaultViewPayload.vessel = 1;
-    this.vesselService.myDefaultViewPayload.port = 0;
-    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
+    // this.vesselService.myDefaultViewPayload.port = 0;
+    // this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
   }
 
   
