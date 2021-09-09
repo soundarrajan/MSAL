@@ -211,22 +211,24 @@ export class FutureRequestGridComponent implements OnInit {
   async mapFilterValue(filterType, filterValue) {
     // check whether column type date or text
     if(filterType=='date') {
-      if(!(filterValue?.operator)) {
+      // if(!(filterValue?.operator)) {
         // let DateArr =  await this.dateConditionFormat(filterValue);
         let fromDate, toDate;
         let DateArr = [];
         if(filterValue?.dateFrom) {
             fromDate = new Date(filterValue?.dateFrom).toISOString();
             fromDate = fromDate.substring(0, 16);
+            fromDate = fromDate.split("T")[0]+"T00:00";
             DateArr.push(fromDate);
           } 
           if(filterValue?.dateTo) {
-              toDate = new Date(filterValue?.dateTo).toISOString();
-              toDate = toDate.substring(0, 16);
-              DateArr.push(toDate);
-            }
-            return DateArr;
+            toDate = new Date(filterValue?.dateTo).toISOString();
+            toDate = toDate.substring(0, 16);
+            toDate = toDate.split("T")[0]+"T00:00";
+            DateArr.push(toDate);
           }
+            return DateArr;
+          // }
     } else {
       return [filterValue?.filter];
     }
@@ -310,7 +312,7 @@ export class FutureRequestGridComponent implements OnInit {
         this.columnFilter = [];
         if(this.ETAFromTo) {
           this.loadOutstandRequestData(this.ETAFromTo);
-        } else {
+        } else if(Object.keys(filterModel).indexOf("eta")==-1){
           //set Eta From, To date as 1 month from current date by default
           let currentDate = new Date();
           let todayDate = new Date();
@@ -330,10 +332,15 @@ export class FutureRequestGridComponent implements OnInit {
           columnFormat.ColumnType = filterType.charAt(0).toUpperCase()+filterType.substring(1);
           columnFormat.ConditionValue = await this.mapConditionType(filterModel[filterKey]?.type);
           columnFormat.Values = await this.mapFilterValue(filterType, filterModel[filterKey]);
-          let isColumnMultiFilter = this.columnFilter.filter(filterItem=>filterItem.columnValue == columnFormat.columnValue)
+          let isColumnMultiFilter = this.columnFilter.filter(filterItem=>filterItem.columnValue == columnFormat.columnValue);
           if(isColumnMultiFilter.length) {
+            let filterLastIndex = this.columnFilter.map(filterItem=>filterItem.columnValue).lastIndexOf(columnFormat.columnValue);
             let opertorMode = filterModel[filterKey]?.operator;
-            columnFormat.FilterOperator = opertorMode == "AND"? 1: (opertorMode == "OR"? 2: 0);
+            if(filterLastIndex!=-1) {
+              this.columnFilter[filterLastIndex].FilterOperator = opertorMode == "AND"? 1: (opertorMode == "OR"? 2: 0);
+            } else {
+              columnFormat.FilterOperator = opertorMode == "AND"? 1: (opertorMode == "OR"? 2: 0);
+            }
           }
           this.columnFilter.push(columnFormat);
           if(filterModelArr.length == index+1) {
@@ -409,16 +416,18 @@ export class FutureRequestGridComponent implements OnInit {
     let fromDate = new Date().toISOString();
     let toDate = null;
         fromDate = fromDate.substring(0, 16);
-        
-    if(param) {
-      fromDate = param.fromDate.toISOString();
-      fromDate = fromDate.substring(0, 16);
+        fromDate = fromDate.split("T")[0]+"T00:00";
+        if(param) {
+          fromDate = param.fromDate.toISOString();
+          fromDate = fromDate.substring(0, 16);
+          fromDate = fromDate.split("T")[0]+"T00:00";
 
       let condFromDate = new Date(param.fromDate);
       let condToDate = new Date(param.toDate);
       if(param?.toDate && condFromDate<=condToDate) {
         toDate = param.toDate.toISOString();
         toDate = toDate.substring(0, 16);
+        toDate = toDate.split("T")[0]+"T00:00";
         
       let isExist = this.columnFilter.findIndex((item)=> item.columnValue=='Eta' && item.ConditionValue== "<=");
       if(isExist>-1) this.columnFilter.splice(isExist,1);
@@ -447,7 +456,7 @@ export class FutureRequestGridComponent implements OnInit {
       "Values": [
         fromDate
       ],
-      "FilterOperator": 0
+      "FilterOperator": 1
     });
 
     // filter cancel request on load
@@ -461,16 +470,16 @@ export class FutureRequestGridComponent implements OnInit {
       ],
       "FilterOperator": 0
     });
-    this.columnFilter.push({        
-      "columnValue": "RequestDate",
-      "ColumnType": "Date",
-      "isComputedColumn": false,
-      "ConditionValue": ">=",
-      "Values": [
-        prevMonthDate  
-      ],
-      "FilterOperator": 1
-    })
+    // this.columnFilter.push({        
+    //   "columnValue": "RequestDate",
+    //   "ColumnType": "Date",
+    //   "isComputedColumn": false,
+    //   "ConditionValue": ">=",
+    //   "Values": [
+    //     prevMonthDate  
+    //   ],
+    //   "FilterOperator": 1
+    // })
  
   }
 

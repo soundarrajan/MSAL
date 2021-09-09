@@ -22,8 +22,8 @@ export class RequestsDetailsComponent implements OnInit {
   public colResizeDefault;
   public rowCount: Number;
   public date = new FormControl(new Date());
-  currentDate = new Date();
-  selectedFromDate: Date = new Date();
+  currentDate = new Date(new Date().setHours(0,0,0,0));
+  selectedFromDate: Date = new Date(new Date().setHours(0,0,0,0));
   selectedToDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())+1));
 
   public RequestDetails : any = [];
