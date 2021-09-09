@@ -49,6 +49,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   isEnabledView: boolean = false;
   CurrentRequestData: any[];
   columnDef_aggridObj: any[];
+  rowData_aggridobj: any[];
   // public grid2Width = {
   //   width: '50%'
   // }
@@ -69,9 +70,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             this.columnDef_aggridObj = [];
 
             for( let i = 0; i < this.CurrentRequestData.length ; i++){
+              var filterobj  = this.rowData_aggrid.filter(filter => filter.locationId == this.CurrentRequestData[i].locationId);
+              this.rowData_aggridobj[i] = filterobj;
               this.columnDef_aggridObj[i] = Object.assign([], this.columnDef_aggrid);
               for( let j = 0; j < this.CurrentRequestData[i].requestProducts.length ; j++){
-                console
+
                 this.columnDef_aggridObj[i].push(
                   {
                     headerName: '',
@@ -222,7 +225,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.gridOptions_counterparty.api = params.api;
         this.gridOptions_counterparty.columnApi = params.columnApi;
         this.gridOptions_counterparty.api.sizeColumnsToFit();
-        this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
+        // this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
         this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         params.api.sizeColumnsToFit();
         this.counterpartyHeaderWidth =
