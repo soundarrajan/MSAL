@@ -616,7 +616,7 @@
                 <div ng-repeat="(locationIdx, location) in $ctrl.request.locations track by $index" ng-if="!location.isDeleted && location.location !== null">
                     <div class="" ng-init="$ctrl.initializeDateInputs(); $ctrl.isEnabledEta(locationIdx)" ng-mouseover="$ctrl.initializeDateInputs()">
                         <span ng-init="CM.initMask(true)"></span>  <!-- datepicker mask initialization  -->
-                        <div class="col-md-12 location-label">
+                        <div class="col-md-12 location-label" ng-class="{'cancelled' : location.portStatus.name == 'Cancelled'}">
                             <span class="caption-subject row">
                                 <a role="button" data-toggle="collapse" href="#location{{ $index }}">
                                     <i class="fa fa-angle-double-down"></i>

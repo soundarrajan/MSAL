@@ -47,61 +47,6 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
             });
         }, 10);
     };
-    $scope.liveNotifications = function() {
-    	$scope.getNotificationsLista();
-    	// return;
-        Factory_Master.initSignalRParameters((callback) => {
-            $scope.initSignalRData = callback.data;
-            $scope.$emit('userId', $scope.initSignalRData.userId);
-            if (typeof $scope.initSignalRData != 'undefined') {
-                let jobHub = $.connection.notificationsHub;
-                $.connection.hub.logging = true;
-                $.connection.hub.url = `${API.BASE_URL_DATA_HANGFIRE }/signalr/hubs`;
-                $rootScope.liveNotificationsList = [];
-                jobHub.client.update = function(message, addedAt, id) {
-                    // console.log(message, addedAt, id);
-                    var notificationExists = false;
-                    $.each($rootScope.liveNotificationsList, (k, v) => {
-                    	if (v.id == id) {
-                            notificationExists = true;
-                        }
-                    });
-                    if (!notificationExists) {
-	                    $rootScope.liveNotificationsList.push({
-	                        id: id,
-	                        message: message,
-	                        addedAt: addedAt
-	                    });
-                    }
-                    vm.liveNotificationsList = $rootScope.liveNotificationsList;
-                    console.log($rootScope.liveNotificationsList);
-                };
-            }
-        });
-    };
-    $scope.getNotificationsLista = function() {
-        var data = {
-            Payload: {
-                Filters: [ {
-                    ColumnName: 'IsRead',
-                    Value: false
-                } ],
-                Pagination: {
-                    Skip: 0,
-                    Take: 99999
-                },
-            }
-        };
-        Factory_Master.getNotificationsList(data, (callback) => {
-            if (callback) {
-                if (callback.status == true) {
-                    $rootScope.liveNotificationsList = callback.data;
-                } else {
-                    toastr.error('An error has occured!');
-                }
-            }
-        });
-    };
     $scope.formatDate = function(elem, dateFormat) {
         if (elem) {
             var messageDate = new Date(elem);

@@ -1365,6 +1365,18 @@
                         vm.editInstance.$error.required.push(vm.editInstance['OperationalDepartment']);
                     }
                 }
+                if ($scope.formValues.vesselProducts && $scope.formValues.vesselProducts.length > 0) {
+                    for(i = 0; i < $scope.formValues.vesselProducts.length; i++) {
+                        if (!$scope.formValues.vesselProducts[i].isDeleted && ($scope.formValues.vesselProducts[i].vesselProductTanks.length == 0 ||
+                            ($scope.formValues.vesselProducts[i].vesselProductTanks.length > 0 &&
+                                !$scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && vpt.isActive && vpt.tankCategory && vpt.tankCategory.name == "Storage"))))
+                        {
+                            $('#Product_' + i + '_tank_Product').addClass('invalid');
+                            toastr.error('Please add atleast one Storage tank for the Product type ' + $scope.formValues.vesselProducts[i].productType.name + ' to proceed');
+                            return;
+                        }
+                    }
+                }
             }
             if (vm.app_id == 'masters' && vm.screen_id == 'vesseltype') {
                 var minMaxError = false;

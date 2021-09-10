@@ -370,6 +370,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             };
 
                             for (let j = 0; j < ctrl.request.locations.length; j++) {
+                                ctrl.request.locations[j].optionId = j+1;
                                 if (ctrl.requestTenantSettings.recentEta.id == 1 && ctrl.request.locations[j].eta && ctrl.request.locations[j].id) {
                                     if (!ctrl.request.locations[j].recentEta) {
                                         ctrl.request.locations[j].recentEta = ctrl.request.locations[j].eta;
@@ -378,6 +379,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
 				                $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
                                 for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
+                                    ctrl.request.locations[j].products[i].optionId = j+1;
                                     var cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
                                     if (cancelAction != null) {
                                         if (ctrl.request.locations[j].products[i].screenActions == null || typeof ctrl.request.locations[j].products[i].screenActions == 'undefined') {
@@ -413,6 +415,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             }
                             newRequestModel.getDefaultBuyer(ctrl.request.vesselId).then((buyer) => {
                                 ctrl.buyer = buyer.payload;
+                            });
+                            lookupModel.getForRequest(LOOKUP_TYPE.VESSEL, ctrl.request.vesselId).then((server_data) => {
+                                vessel = server_data.payload;
+                                ctrl.selectedVessel = vessel;
+                                if (!ctrl.request.vesselDetails.vessel) {
+                                    ctrl.request.vesselDetails.vessel = {};
+                                }
+                                ctrl.request.vesselDetails.vessel = angular.copy(vessel);
                             });
                             addDefaultProducts();
                             ctrl.calculateScreenActions();
@@ -1673,11 +1683,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
                     if($scope.locationTerminal == undefined){
                         $scope.locationTerminal = [];
-                    $scope.locationTerminal.push(angular.copy(server_data.payload.terminals));
+	                    $scope.locationTerminal.push(angular.copy(server_data.payload.terminals));
                     }
                     else{
                         $scope.locationTerminal.push(angular.copy(server_data.payload.terminals));
-
                     }
                     location = server_data.payload;
                     let agent = {};
@@ -1754,6 +1763,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         locationObject.destinationVesselVoyageDetailId = extraInfo.destinationVesselVoyageDetailId;
                         locationObject.destinationEta = extraInfo.destinationEta;
                     }
+                    locationObject.optionId = ctrl.request.locations.length+1;
                     ctrl.request.locations.push(locationObject);
 
                     ctrl.etaEnabled[ctrl.request.locations.length - 1] = true;

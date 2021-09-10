@@ -1842,6 +1842,12 @@
             .st-new-request-form .location-label {
                 margin-top: -10px;
             }
+            .editrequest .location-label {
+            	margin-top: 15px;
+            }
+            .editrequest .location-label.cancelled *{
+            	color: red;
+            }
 
             form.form-inline.st-new-request-form.ports.ng-pristine.ng-valid {
                 margin-bottom: -12px;

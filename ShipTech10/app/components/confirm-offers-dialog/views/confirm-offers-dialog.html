@@ -49,7 +49,7 @@
                         <span class="input-group-addon"> {{ item.quantityUomName ? item.quantityUomName : '-' }}</span>
                     </td>
                     <td ng-if="!$ctrl.tenantSettings.shiptechLite">
-                        <a href="v2/contracts/contract/{{ item.contractId }}/details" 
+                        <a href="v2/contracts/contract/{{ item.contractId }}/details" target="_blank"
                             ng-disabled="!item.contractId" 
                             style="display: block; float: left;margin-top: 10px; margin-right: 10px;">
                             {{item.contractId}}
