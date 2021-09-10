@@ -633,32 +633,46 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $scope.$watch('productTypesLoadedPerLocation.loadedProducts', (obj) => {
         	if (obj) {
 	        	if (obj == $scope.productTypesLoadedPerLocation.totalProducts) {
-	        		for (let j = 0; j < ctrl.request.locations.length; j++) {
+                    var allProductsIds = [];
+	        		for (var j = 0; j < ctrl.request.locations.length; j++) {
                         if (!ctrl.request.id) {
                             ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, [ 'productTypeId', 'product.name' ], [ 'asc', 'asc' ]);
                         }
                         for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
                             ctrl.request.locations[j].products[i].name = `${String(i + 1) } - ${ ctrl.request.locations[j].products[i].name}`;
-                                listsModel.getSpecGroupByProductAndVessel(ctrl.request.locations[j].products[i].product.id, ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
-                                    ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
-                                    let isInList = false;
-                                    $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, (k, v) => {
-                                        if (v.isDefault && !ctrl.request.locations[server_data.id].products[server_data.id2].specGroup && !ctrl.request.locations[server_data.id].products[server_data.id2].id) {
-                                            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
-                                        }
-                                    	if (ctrl.request.locations[server_data.id].products[server_data.id2].specGroup) {
-	                                        if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
-	                                            isInList = true;
-	                                        }
-                                    	}
-                                    });
-                                    if (!isInList) {
-                                    	ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.isDeleted = true;
-                                        ctrl.request.locations[server_data.id].products[server_data.id2].specGroups.push(ctrl.request.locations[server_data.id].products[server_data.id2].specGroup);
-                                    }
-                                });
+                            allProductsIds.push(ctrl.request.locations[j].products[i].product.id);
                         }
                     }
+                 	allProductsIds = [...new Set(allProductsIds)] // make array unique
+                    listsModel.getSpecGroupByProductAndVessel(allProductsIds.join(","), ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
+		        		
+		        		$.each(server_data.data.payload, (k,v) => {
+		        			$.each(ctrl.request.locations, (lk, lv) => {
+			        			$.each(lv.products, (pk, pv) => {
+			        				if (v.reference == pv.product.id) {
+				                        if (!ctrl.request.locations[lk].products[pk].specGroups) {
+				                        	ctrl.request.locations[lk].products[pk].specGroups = [];
+				                        }
+				                        ctrl.request.locations[lk].products[pk].specGroups.push(v);
+				                        let isInList = false;
+				                        
+				                            if (v.isDefault && !ctrl.request.locations[lk].products[pk].specGroup && !ctrl.request.locations[lk].products[pk].id) {
+				                                ctrl.request.locations[lk].products[pk].specGroup = v;
+				                            }
+				                        	if (ctrl.request.locations[lk].products[pk].specGroup) {
+				                                if (v.id == ctrl.request.locations[lk].products[pk].specGroup.id) {
+				                                    isInList = true;
+				                                }
+				                        	}
+				                        if (!isInList) {
+				                        	ctrl.request.locations[lk].products[pk].specGroup.isDeleted = true;
+				                            ctrl.request.locations[lk].products[pk].specGroups.push(ctrl.request.locations[lk].products[pk].specGroup);
+				                        }
+			        				}
+			        			})
+		        			})
+		        		})
+                    });
 	        	}
         	}
         });

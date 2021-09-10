@@ -198,9 +198,9 @@
   
   <div *ngIf="params.type=='edit-with-popup'">
     <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event,params.colDef?.field)"
-      (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);" [matTooltip]="params.value">
-      <input disabled style="z-index: 1050;" #inp [matMenuTriggerFor]="inputEditMenu" [matMenuTriggerData]="params.value"
-        #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
+      (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);" [matTooltip]="params.value == 0 ? '': params.value">
+      <input disabled style="z-index: 1050;" #inp [matMenuTriggerFor]="inputEditMenu" [matMenuTriggerData]="params.value == 0 ? '': params.value"
+        #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value == 0 ? '': params.value">
         <span *ngIf="getComments(params.colDef?.field) != '' && getComments(params.colDef?.field) != undefined">
           <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
         </span>

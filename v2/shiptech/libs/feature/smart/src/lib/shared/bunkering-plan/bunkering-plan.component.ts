@@ -35,6 +35,7 @@ export class BunkeringPlanComponent implements OnInit {
   public latestPlanId: any;
   public editableCell : boolean;
   public type : any;
+  public rowSelection;
   public dialogRef: MatDialogRef<WarningoperatorpopupComponent>;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
@@ -380,7 +381,7 @@ export class BunkeringPlanComponent implements OnInit {
               editable : true,
               valueFormatter: (params)=> {return params.value == 0? '':params.value ;},
               cellEditorFramework : AgGridInputCellEditor,  
-              cellEditorParams : (params) =>{return {type: 'edit',context: { componentParent: this }, cellClass: 'aggrid-blue-editable-cell aggrid-columgroup-splitter  aggrid-content-right'}}
+              cellEditorParams : (params) =>{return {type: 'edit-lsdis-safe-port',context: { componentParent: this }, cellClass: 'aggrid-blue-cell text-ellipsis editable'}}
             },
           ]
         },
@@ -660,6 +661,49 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
+    // Min HSFO SOD validation : Min HSFO SOD > HSFO tank capacity
+    let isValidHsfoSod = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity) == -1 ? 'Y':'N';
+    if(isValidHsfoSod =='N'){
+      let id = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup-operator',
+        data : {message: `The minimum HSFO SOD cannot exceed the Total HSFO tank capacity (${currentROBObj.hsfoTankCapacity}) for port `, id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    // Total max SOD validation : Total max SOD< Total min SOD 
+    let isValidMaxSod = data.findIndex(data => {
+      return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+    });
+    isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
+    if(isValidMaxSod == 'N'){
+      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup-operator',
+        data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    //ECA min SOD validation : ECA Min SOD > Vessel ECA tank capacity(ULSFO Tank Capacity + LSDIS Tank Capacity)
+    let isValidEcaMinSod = data.findIndex(data => (data?.eca_min_sod > (currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity))) == -1 ? 'Y':'N';
+    if(isValidEcaMinSod == 'N'){
+      let id = data.findIndex(data => data?.eca_min_sod > (currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity))
+      let port_id = data[id].port_id;
+      let capacity = currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup-operator',
+        data : {message: `The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity of ${capacity} for port `, id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
     // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
     let isValidMinEcaSod = data.findIndex(params => {
       let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
@@ -689,49 +733,6 @@ export class BunkeringPlanComponent implements OnInit {
         width: '350px',
         panelClass: 'confirmation-popup-operator',
         data : {message: 'The ECA Estimated Consumption should not be smaller than LSDIS Estimated Consumption for port ', id: port_id}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    // max SOD validation : Total max SOD< Total min SOD 
-    let isValidMaxSod = data.findIndex(data => {
-        return parseInt(data?.max_sod) < parseInt(data?.min_sod)
-      });
-      isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
-    if(isValidMaxSod == 'N'){
-      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
-      let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: 'confirmation-popup-operator',
-        data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    // HSFO SOD validation : HSFO SOD > HSFO tank capacity
-    let isValidHsfoSod = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity) == -1 ? 'Y':'N';
-    if(isValidHsfoSod =='N'){
-      let id = data.findIndex(data => data?.hsfo_min_sod > currentROBObj?.hsfoTankCapacity)
-      let port_id = data[id].port_id;
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: 'confirmation-popup-operator',
-        data : {message: `The minimum HSFO SOD cannot exceed the Total HSFO tank capacity (${currentROBObj.hsfoTankCapacity}) for port `, id: port_id}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    //ECA min SOD validation : ECA Min SOD > Vessel ECA tank capacity(ULSFO Tank Capacity + LSDIS Tank Capacity)
-    let isValidEcaMinSod = data.findIndex(data => (data?.eca_min_sod > (currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity))) == -1 ? 'Y':'N';
-    if(isValidEcaMinSod == 'N'){
-      let id = data.findIndex(data => data?.eca_min_sod > (currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity))
-      let port_id = data[id].port_id;
-      let capacity = currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity;
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: 'confirmation-popup-operator',
-        data : {message: `The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity of ${capacity} for port `, id: port_id}
       });
       isHardValidation = 1;
       return isHardValidation;

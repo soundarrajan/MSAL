@@ -40,7 +40,7 @@ export class TenantSettingsApi extends ApiServiceBase
     moduleName: TenantSettingsModuleName
   ): Observable<ITenantSettingsApiResponse> {
     return this.http.post<ITenantSettingsApiResponse>(
-      `${this._apiUrl}/${this.getApiPathForModuleName(moduleName)}`,
+      `${this.appConfig.v1.API.BASE_URL_DATA_ADMIN}/${this.getApiPathForModuleName(moduleName)}`,
       {
         payload: true
       }

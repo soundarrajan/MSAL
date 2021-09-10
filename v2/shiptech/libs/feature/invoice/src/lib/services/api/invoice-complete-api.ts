@@ -497,6 +497,27 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         )
       );
   }
+
+  @ObservableException()
+  getDefaultValues(
+    request: any
+  ): Observable<any> {
+    return this.http
+      .post<IInvoiceDetailsItemResponse>(
+        `${this._apiUrl}/${InvoiceApiPaths.getDefaultValues()}`,
+        { payload: request }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
   @ObservableException()
   getBankAccountNumber(request: any): Observable<IInvoiceDetailsItemResponse> {
     return this.http

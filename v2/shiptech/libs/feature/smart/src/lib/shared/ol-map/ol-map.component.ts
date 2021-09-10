@@ -890,9 +890,9 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       var hit = this.map.hasFeatureAtPixel(pixel);
       //Check Bunker Plan Screen is open
       this.onMapClick.emit();
-      debugger;
+      //debugger;
       if(this.vesselService.myDefaultViewPayload.bunkerPlan != undefined){
-        this.SavemyDefaultView();
+        this.getDefaultView();//this.SavemyDefaultView();
       }
       if (hit) {
         let items = this.map.getFeaturesAtPixel(pixel);
@@ -1243,6 +1243,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       vesselType: 'LR1',
       bunkeringStatus: 'Created',
       serviceId: '',
+      serviceCode: '',
       deptId: '',
       ownership: '',
       hsfo: '',

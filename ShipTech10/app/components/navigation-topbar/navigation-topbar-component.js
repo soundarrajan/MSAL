@@ -45,6 +45,12 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
 		};
 
     	$scope.initNavigation = function(resize) {
+		    if ($scope.navbarNavigationInitDone) {
+		    	return;
+		    } 
+	    	$scope.navbarNavigationInitDone = true;
+
+		    $scope.lastInitNavigationTime = new Date();
 			$scope.shouldDisplayNavigationBar = $scope.checkIfShouldDisplayNavigationBar();
 			if($scope.shouldDisplayNavigationBar){
                 let possiblePagesForRequest = ['default.edit-request', 'default.new-request'];
@@ -63,6 +69,10 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
     	$(window).resize(() => {
             $scope.initNavigation(true);
     	});
+
+    	$rootScope.$on('$stateChangeStart', () => {
+    		$scope.navbarNavigationInitDone = false;
+    	})
 
 		var createNavigationItems = function(payload) {
             // indexStatus = calculate if is previous, current or next
