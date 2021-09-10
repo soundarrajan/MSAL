@@ -750,9 +750,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
   }
 
-
   openAddLocationSelect() {
-    this.searchLocationInput = null;
+    // this.searchLocationInput = null;
     if (this.locationMasterList) {
       this.locationMasterSearchList = [...this.locationMasterList];
       this.changeDetectorRef.detectChanges();
@@ -1053,7 +1052,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
 
     this.contractService
-      .getSpecGroupGetByProduct(data)
+      .getSpecGroupsGetByProduct(data)
       .pipe(finalize(() => {}))
       .subscribe((response: any) => {
         if (typeof response == 'string') {

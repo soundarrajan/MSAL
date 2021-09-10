@@ -34,6 +34,7 @@ import {
 } from 'rxjs/operators';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MyMonitoringService } from '../../../services/logging.service';
 import { environment } from '@shiptech/environment';
 
 // import { EMPTY$ } from './utils/rxjs-operators';
@@ -97,8 +98,12 @@ import { MatRadioChange } from '@angular/material/radio';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 
-const isEmpty = object =>
-  !Object.values(object).some(x => x !== null && x !== '');
+const isEmpty = (object) => {
+    if(!object) {
+        return true;
+    }  
+    !Object.values(object).some(x => x !== null && x !== '');
+}
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -1166,6 +1171,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     private invoiceService: InvoiceDetailsService,
     public dialog: MatDialog,
     private toastrService: ToastrService,
+    private myMonitoringService: MyMonitoringService,
     private format: TenantFormattingService,
     private tenantSetting: TenantSettingsService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -2355,6 +2361,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       !parseFloat(this.formValues?.id?.toString()) ||
       this.formValues.id == 0
     ) {
+      this.myMonitoringService.startTrackEvent('Create Invoice');
       // this.spinner.show();
       this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
         if (typeof result == 'string') {
@@ -2363,11 +2370,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
         this.entityId = result;
         this.handleServiceResponse(result, 'Invoice saved successfully.');
+        this.myMonitoringService.stopTrackEvent('Create Invoice');
         if (callback) {
           callback(result);
         }
       });
     } else {
+      this.myMonitoringService.startTrackEvent('Update Invoice');
       // this.spinner.show();
       this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
         if (typeof result == 'string') {
@@ -2375,6 +2384,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           this.formatAdditionalCosts();
         }
         this.handleServiceResponse(result, 'Invoice updated successfully.');
+        this.myMonitoringService.stopTrackEvent('Update Invoice');
         if (callback) {
           callback(result);
         }
@@ -2586,11 +2596,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           );
           return;
         }
+        this.myMonitoringService.startTrackEvent('Approve Invoice');
       }
       this.invoiceService
         .approveInvoiceItem(valuesForm)
         .subscribe((result: any) => {
           this.handleServiceResponse(result, 'Invoice approved successfully.');
+          this.myMonitoringService.stopTrackEvent('Approve Invoice');
         });
     } else if (option == 'create') {
       this.spinner.hide();
@@ -2784,11 +2796,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       );
 
     if (
-        formValues.invoiceClaimDetails &&
-        formValues.invoiceClaimDetails.length > 0
-      ) {
-        formValues.invoiceSummary.totalDifference = 0;
-      }
+      formValues.invoiceClaimDetails &&
+      formValues.invoiceClaimDetails.length > 0
+    ) {
+      formValues.invoiceSummary.totalDifference = 0;
+    }
 
     if (
       formValues.documentType.name === 'Credit Note' ||
