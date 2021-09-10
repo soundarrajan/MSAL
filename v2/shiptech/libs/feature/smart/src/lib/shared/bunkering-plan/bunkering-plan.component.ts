@@ -102,7 +102,7 @@ export class BunkeringPlanComponent implements OnInit {
         this.gridOptions.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
         this.gridOptions.api.showLoadingOverlay();
-        setTimeout(() => { // Show 'Plan details not available' message in there are no Bunker Plan details
+        setTimeout(() => { // Show 'Plan details not available' message if there are no Bunker Plan details
           if(!this.latestPlanId && this.gridOptions?.api && (this.rowData == undefined || this.rowData?.length == 0)){
             this.gridOptions.suppressLoadingOverlay = true;
             this.gridOptions.suppressNoRowsOverlay = false;
@@ -448,9 +448,6 @@ export class BunkeringPlanComponent implements OnInit {
     else{
       this.loadBplan.emit(false);
       this.rowData = null;
-      if(this.gridOptions?.api) {
-        this.gridOptions.api.setRowData(this.rowData);
-      }
       this.store.dispatch(new SaveBunkeringPlanAction(this.rowData));
     }
       
@@ -951,7 +948,7 @@ export class BunkeringPlanComponent implements OnInit {
         
 
     //LSDIS SOA Calculation
-      lsdis_soa = lsdis_original_stock < 0 ? lsdis_original_stock : lsdis_original_stock - lsdis_as_eca + lsdis_unpumpables;
+      lsdis_soa = lsdis_original_stock < 0 ? lsdis_original_stock + lsdis_unpumpables : lsdis_original_stock - lsdis_as_eca + lsdis_unpumpables;
       final_lsdis_soa = lsdis_soa + 
                         (ulsfo_soa < 0 ? ulsfo_soa : 0 ) + 
                         (ulsfoCurrentRob < ulsfo_unpumpables ? ulsfoCurrentRob - ulsfo_unpumpables : 0); 

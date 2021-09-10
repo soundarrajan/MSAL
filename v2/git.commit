@@ -1,9 +1,7 @@
-﻿commit 976b77ae42e656b90f2c6622e6fe1dc3b6e9ccec
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Sep 9 15:01:13 2021 +0000
+﻿commit de9ee72bbdb35bf26d3b139e29057501a235426c
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Fri Sep 10 18:17:43 2021 +0300
 
-    Merged PR 13493: Future Request sorting order in vessel popup.
-    
-    Related work items: #35322
+    Merge Support_10_10_1 into master
 
 branch: master
