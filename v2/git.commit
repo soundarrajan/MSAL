@@ -1,7 +1,11 @@
-﻿commit de9ee72bbdb35bf26d3b139e29057501a235426c
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Fri Sep 10 18:17:43 2021 +0300
+﻿commit d20affc914d66953b0cb2f22895f9756943dd35b
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Sep 13 10:40:08 2021 +0000
 
-    Merge Support_10_10_1 into master
+    Merged PR 13512: Revert '#35076: Future requests: Duplicate Requests pagination issue has fixed'
+    
+    Reverts !13511
+    
+    Related work items: #35076
 
 branch: master

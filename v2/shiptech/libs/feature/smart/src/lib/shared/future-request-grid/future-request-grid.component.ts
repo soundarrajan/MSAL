@@ -286,7 +286,7 @@ export class FutureRequestGridComponent implements OnInit {
           "Filters": [],
           "SearchText": null,
           "Pagination": {
-            "Skip": (params.startRow)? params.startRow: 0,
+            "Skip": (params?.request?.startRow)? params.request?.startRow: 0,
             "Take": 25
           }
         }
