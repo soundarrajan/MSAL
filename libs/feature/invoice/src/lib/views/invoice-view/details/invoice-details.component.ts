@@ -2358,7 +2358,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       !parseFloat(this.formValues?.id?.toString()) ||
       this.formValues.id == 0
     ) {
-        window.startCreateInvoiceTime = Date.now();
+        (<any>window).startCreateInvoiceTime = Date.now();
         // this.spinner.show();
         this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
             if (typeof result == 'string') {
@@ -2367,13 +2367,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             }
             this.entityId = result;
             this.handleServiceResponse(result, 'Invoice saved successfully.');
-            this.myMonitoringService.logMetric('Create ' + window.location.href, Date.now() - window.startCreateInvoiceTime, window.location.href);
+            this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateInvoiceTime, (<any>window).location.href);
             if (callback) {
                 callback(result);
             }
             });
         } else {
-            window.startUpdateInvoiceTime = Date.now();
+            (<any>window).startUpdateInvoiceTime = Date.now();
             // this.spinner.show();
             this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
                 if (typeof result == 'string') {
@@ -2381,7 +2381,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
                     this.formatAdditionalCosts();
                 }
                 this.handleServiceResponse(result, 'Invoice updated successfully.');
-                this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - window.startUpdateInvoiceTime, window.location.href);
+                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateInvoiceTime, (<any>window).location.href);
                 if (callback) {
                     callback(result);
                 }
@@ -2593,13 +2593,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           );
           return;
         }
-            window.startApproveInvoiceTime = Date.now();
+            (<any>window).startApproveInvoiceTime = Date.now();
         }
         this.invoiceService
         .approveInvoiceItem(valuesForm)
         .subscribe((result: any) => {
             this.handleServiceResponse(result, 'Invoice approved successfully.');
-            this.myMonitoringService.logMetric('Approve ' + window.location.href, Date.now() - window.startApproveInvoiceTime, window.location.href);
+            this.myMonitoringService.logMetric('Approve ' + (<any>window).location.href, Date.now() - (<any>window).startApproveInvoiceTime, (<any>window).location.href);
         });
     } else if (option == 'create') {
       this.spinner.hide();
