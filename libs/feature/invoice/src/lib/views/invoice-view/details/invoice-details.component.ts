@@ -2593,8 +2593,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           );
           return;
         }
-            (<any>window).startApproveInvoiceTime = Date.now();
-        }
+      }
+        (<any>window).startApproveInvoiceTime = Date.now();
         this.invoiceService
         .approveInvoiceItem(valuesForm)
         .subscribe((result: any) => {
