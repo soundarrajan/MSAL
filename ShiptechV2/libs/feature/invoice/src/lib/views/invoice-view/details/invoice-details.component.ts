@@ -2591,7 +2591,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           );
           return;
         }
-        this.myMonitoringService.startTrackEvent('Approve Invoice');
+        this.myMonitoringService.startTrackEvent('Approve Invoice'); 
       }
       this.invoiceService
         .approveInvoiceItem(valuesForm)
