@@ -1635,7 +1635,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   saveDelivery() {
     let id = parseFloat(this.entityId);
     if (!parseFloat(this.entityId)) {
+<<<<<<< HEAD
       (<any>window).startCreateDeliveryTime = Date.now();
+=======
+      window.startCreateDeliveryTime = Date.now();
+>>>>>>> c272fb65 (Moved reporting to metric instead of Event)
       this.spinner.show();
       this.deliveryService
       .saveDeliveryInfo(this.formValues)
@@ -1662,12 +1666,20 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
               KnownDeliverylRoutes.DeliveryDetails
             ])
             .then(() => {
+<<<<<<< HEAD
               this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);        
+=======
+              this.myMonitoringService.logMetric('Create ' + window.location.href, Date.now() - window.startCreateDeliveryTime, window.location.href);        
+>>>>>>> c272fb65 (Moved reporting to metric instead of Event)
             });
           }
         });
       } else {
+<<<<<<< HEAD
       (<any>window).startUpdateDeliveryTime = Date.now();
+=======
+      window.startUpdateDeliveryTime = Date.now();
+>>>>>>> c272fb65 (Moved reporting to metric instead of Event)
       this.spinner.show();
       this.deliveryService
 			.updateDeliveryInfo(this.formValues)
@@ -1681,7 +1693,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 					if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
+<<<<<<< HEAD
             this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
+=======
+            this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - window.startUpdateDeliveryTime, window.location.href);        
+>>>>>>> c272fb65 (Moved reporting to metric instead of Event)
           } else {
             this.toastrService.success('Delivery saved successfully');
             this.deliveryService
@@ -1689,7 +1705,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 						.pipe(
               finalize(() => {
                 this.spinner.hide();
+<<<<<<< HEAD
                 this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
+=======
+                this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - window.startUpdateDeliveryTime, window.location.href);        
+>>>>>>> c272fb65 (Moved reporting to metric instead of Event)
 							})
               )
               .subscribe((data: any) => {
