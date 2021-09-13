@@ -2385,8 +2385,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         if (callback) {
           callback(result);
         }
-      });
-    }
   }
 
   formatAdditionalCosts() {
