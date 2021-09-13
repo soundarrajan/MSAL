@@ -2358,32 +2358,34 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       !parseFloat(this.formValues?.id?.toString()) ||
       this.formValues.id == 0
     ) {
-      this.myMonitoringService.startTrackEvent('Create Invoice');
-      // this.spinner.show();
-      this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
-        if (typeof result == 'string') {
-          console.log('Format Additional costs');
-          this.formatAdditionalCosts();
-        }
-        this.entityId = result;
-        this.handleServiceResponse(result, 'Invoice saved successfully.');
-        this.myMonitoringService.stopTrackEvent('Create Invoice');
-        if (callback) {
-          callback(result);
-        }
-      });
-    } else {
-      this.myMonitoringService.startTrackEvent('Update Invoice');
-      // this.spinner.show();
-      this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
-        if (typeof result == 'string') {
-          console.log('Format Additional costs');
-          this.formatAdditionalCosts();
-        }
-        this.handleServiceResponse(result, 'Invoice updated successfully.');
-        this.myMonitoringService.stopTrackEvent('Update Invoice');
-        if (callback) {
-          callback(result);
+        window.startCreateInvoiceTime = Date.now();
+        // this.spinner.show();
+        this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
+            if (typeof result == 'string') {
+                console.log('Format Additional costs');
+                this.formatAdditionalCosts();
+            }
+            this.entityId = result;
+            this.handleServiceResponse(result, 'Invoice saved successfully.');
+            this.myMonitoringService.logMetric('Create ' + window.location.href, Date.now() - window.startCreateInvoiceTime, window.location.href);
+            if (callback) {
+                callback(result);
+            }
+            });
+        } else {
+            window.startUpdateInvoiceTime = Date.now();
+            // this.spinner.show();
+            this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
+                if (typeof result == 'string') {
+                    console.log('Format Additional costs');
+                    this.formatAdditionalCosts();
+                }
+                this.handleServiceResponse(result, 'Invoice updated successfully.');
+                this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - window.startUpdateInvoiceTime, window.location.href);
+                if (callback) {
+                    callback(result);
+                }
+            });
         }
   }
 
@@ -2591,13 +2593,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           );
           return;
         }
-        this.myMonitoringService.startTrackEvent('Approve Invoice'); 
-      }
-      this.invoiceService
+            window.startApproveInvoiceTime = Date.now();
+        }
+        this.invoiceService
         .approveInvoiceItem(valuesForm)
         .subscribe((result: any) => {
-          this.handleServiceResponse(result, 'Invoice approved successfully.');
-          this.myMonitoringService.stopTrackEvent('Approve Invoice');
+            this.handleServiceResponse(result, 'Invoice approved successfully.');
+            this.myMonitoringService.logMetric('Approve ' + window.location.href, Date.now() - window.startApproveInvoiceTime, window.location.href);
         });
     } else if (option == 'create') {
       this.spinner.hide();
