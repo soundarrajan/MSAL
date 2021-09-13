@@ -119,6 +119,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   adminConfiguration: any;
   relatedDeliveries: any = [];
   uoms: any;
+  startCreateDeliveryTime : any;
+  startUpdateDeliveryTime : any;  
   deliveryFeedback: any;
   satisfactionLevel: any;
   bargeList: any;
@@ -1635,7 +1637,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   saveDelivery() {
     let id = parseFloat(this.entityId);
     if (!parseFloat(this.entityId)) {
-      window.startCreateDeliveryTime = Date.now();
+      this.startCreateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
       .saveDeliveryInfo(this.formValues)
@@ -1662,12 +1664,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
               KnownDeliverylRoutes.DeliveryDetails
             ])
             .then(() => {
-              this.myMonitoringService.logMetric('Create ' + window.location.href, Date.now() - window.startCreateDeliveryTime, window.location.href);        
+              this.myMonitoringService.logMetric('Create ' + window.location.href, Date.now() - this.startCreateDeliveryTime, window.location.href);        
             });
           }
         });
       } else {
-      window.startUpdateDeliveryTime = Date.now();
+      this.startUpdateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
 			.updateDeliveryInfo(this.formValues)
@@ -1681,7 +1683,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 					if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
-            this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - window.startUpdateDeliveryTime, window.location.href);        
+            this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - this.startUpdateDeliveryTime, window.location.href);        
           } else {
             this.toastrService.success('Delivery saved successfully');
             this.deliveryService
@@ -1689,7 +1691,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 						.pipe(
               finalize(() => {
                 this.spinner.hide();
-                this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - window.startUpdateDeliveryTime, window.location.href);        
+                this.myMonitoringService.logMetric('Update ' + window.location.href, Date.now() - this.startUpdateDeliveryTime, window.location.href);        
 							})
               )
               .subscribe((data: any) => {
