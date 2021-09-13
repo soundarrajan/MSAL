@@ -713,9 +713,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   };
 
   invoiceStatusList: any;
-  startApproveInvoiceTime: any;
-  startCreateInvoiceTime: any;
-  startUpdateInvoiceTime: any;  
   paymentStatusList: any;
   invoiceTypeList: any;
   manualtab: any;
