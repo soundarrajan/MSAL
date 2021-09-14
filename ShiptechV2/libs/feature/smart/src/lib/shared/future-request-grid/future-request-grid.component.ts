@@ -18,6 +18,7 @@ import moment from 'moment';
 export class FutureRequestGridComponent implements OnInit {
 
   @Input('columnDefs') columnDefs;
+  @Input('filterByVessel') filterByVessel?: any;
   public baseOrigin: string = '';
   public gridOptions: GridOptions;
   public colResizeDefault;
@@ -346,14 +347,14 @@ export class FutureRequestGridComponent implements OnInit {
           this.columnFilter.push(columnFormat);
           if(filterModelArr.length == index+1) {
             requestPayload.Payload.PageFilters.Filters = this.columnFilter;
-            if(vesselRef && vesselRef.vesselId) {
+            if(vesselRef && vesselRef.vesselId && this.filterByVessel) {
               requestPayload.Payload.PageFilters.Filters.push(columnFilterByVessel);
             }
             resolve(requestPayload);
           }
         })
       } else {
-        if(vesselRef && vesselRef.vesselId) {
+        if(vesselRef && vesselRef.vesselId && this.filterByVessel) {
           requestPayload.Payload.PageFilters.Filters.push(columnFilterByVessel);
         }
         resolve(requestPayload);
