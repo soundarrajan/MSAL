@@ -1,9 +1,9 @@
-﻿commit 457d6f7ee077b108723aaa9b27cc63b8ad54f62e
+﻿commit e6ea162fdb9026aa6517054401c9998172330e9e
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Sep 14 15:32:02 2021 +0000
+Date:   Tue Sep 14 15:54:08 2021 +0000
 
-    Merged PR 13556: #35521: Bunker plan: Future request filters issue for requestId,ETA,ETD has fixed
+    Merged PR 13557: #35570: Table view_ The future requests are not loading properly issue has fixed
     
-    Related work items: #35521
+    Related work items: #35570
 
 branch: master
