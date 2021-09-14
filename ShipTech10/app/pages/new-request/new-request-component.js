@@ -1187,7 +1187,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 productType: null,
                 productCategory: null,
                 specGroups: [],
-                optionId: ctrl.request.locations[locationIdx].optionId,
+                optionId: locationIdx ? ctrl.request.locations[locationIdx].optionId : null,
                 deliveryOption: angular.copy(ctrl.requestTenantSettings.defaultDeliveryOption),
                 robOnArrival: null,
                 minQuantity: null,
@@ -1219,8 +1219,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // clear product selection
             ctrl.checkedProducts = [];
         };
-        ctrl.addProductAndSpecGroupToList = function(product, specGroup, productTypeId, productList, extraInfo) {
-            ctrl.addEmptyProduct(productList);
+        ctrl.addProductAndSpecGroupToList = function(product, specGroup, productTypeId, productList, extraInfo,  addCancel, locationIdx) {
+            ctrl.addEmptyProduct(productList, addCancel, locationIdx); 
             let newProduct = productList[productList.length - 1];
         	if (extraInfo) {
         		if (extraInfo.vesselVoyageDetailId) {
@@ -1785,13 +1785,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if (ctrl.selectedVessel) {
                         // console.log('ctrl.selectedVessel',ctrl.selectedVessel);
                         if (ctrl.selectedVessel.defaultFuelOilProduct != null) {
-                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo);
+                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo, true, ctrl.request.locations.length - 1);
                         }
                         if (ctrl.selectedVessel.defaultDistillateProduct != null) {
-                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo);
+                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
                         }
                         if (ctrl.selectedVessel.defaultLsfoProduct != null) {
-                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo);
+                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
                         }
                         if (ctrl.selectedVessel.buyer !== null) {
                             locationObject.buyer = ctrl.buyer;
@@ -1803,13 +1803,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         lookupModel.getForRequest(LOOKUP_TYPE.VESSEL, ctrl.request.vesselId).then((server_data) => {
                             ctrl.selectedVessel = server_data.payload;
                             if (ctrl.selectedVessel.defaultFuelOilProduct !== null) {
-                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo);
+                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
                             }
                             if (ctrl.selectedVessel.defaultFuelOilProduct !== null) {
-                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo);
+                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
                             }
                             if (ctrl.selectedVessel.defaultLsfoProduct !== null) {
-                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo);
+                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
                             }
                             if (ctrl.selectedVessel.buyer !== null) {
                                 locationObject.buyer = ctrl.buyer;

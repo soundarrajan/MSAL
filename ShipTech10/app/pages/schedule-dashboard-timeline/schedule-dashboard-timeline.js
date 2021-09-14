@@ -553,8 +553,23 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	               //  }
                 // }               
 
-                if (!_.find(voyages, {'voyageId' : vessels[i].voyageDetail.id}) && !isExtraStop) {
-	                voyages.push(voyage);
+                if (!isExtraStop) {
+                    if (!_.find(voyages, {'voyageId' : vessels[i].voyageDetail.id}) ) {
+                        voyages.push(voyage);
+                    } else {
+                        let currentEndDate = voyage.end;
+                        let previousVoyageIndex = _.findIndex(voyages, {'voyageId' : vessels[i].voyageDetail.id});
+                        if (previousVoyageIndex != -1) {
+                            let previousVoyage = voyages[previousVoyageIndex];
+                            let previousEndDate = previousVoyage.end;
+                            if (moment(currentEndDate) > moment(previousEndDate)) {
+                                console.log(previousVoyage);
+                                console.log(voyage);
+                                voyages[previousVoyageIndex].end = currentEndDate;
+                                console.log(voyages[previousVoyageIndex]);
+                            }
+                        }
+                    }
                 }
                 if (initialEtaDotted != '' && displayDottedLine == true) {
                     voyage1.group = groupId;
@@ -1831,7 +1846,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         return  moment(eta) >= moment(startDate) && moment(eta) <= moment(voyageContent.end);
                     }
                 });
-                //rightClickPopoverData.todayVoyages = object;
+                // rightClickPopoverData.todayVoyages = object;
                 rightClickPopoverData.bunkerDetails = todaysBunkerDetails;
                 rightClickPopoverData.productTypeView = ctrl.productTypeView;
                 $scope.rightClickPopoverData = rightClickPopoverData;
