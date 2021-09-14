@@ -6,8 +6,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ICellRendererAngularComp } from "ag-grid-angular";
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { OpsSpecParameterDialog } from "../pop-ups/ops-spec-parameter.component";
-import { SpecParameterDialog } from "../pop-ups/spec-parameter.component";
+// import { OpsSpecParameterDialog } from "../pop-ups/ops-spec-parameter.component";
+// import { SpecParameterDialog } from "../pop-ups/spec-parameter.component";
 
 @Component({
   selector: 'aggrid-cell-data',
@@ -32,7 +32,7 @@ import { SpecParameterDialog } from "../pop-ups/spec-parameter.component";
 	</mat-form-field>
 </div>
 
-<div *ngIf="params.type==='cell-edit-autocomplete-withpopup'" class="hover-popup-icon">
+<!-- <div *ngIf="params.type==='cell-edit-autocomplete-withpopup'" class="hover-popup-icon">
 	<mat-form-field class="ag-grid-formfield">
 		<input matInput  [formControl]="myControl" [matAutocomplete]="autodyield">
 		<mat-autocomplete #autodyield="matAutocomplete" class="darkPanelAuto">
@@ -44,7 +44,7 @@ import { SpecParameterDialog } from "../pop-ups/spec-parameter.component";
 	</mat-form-field>
   <div class="popup-icon" (click)="openSpecPopup();" matTooltip="View/Edit Spec Group">
   </div>
-</div>
+</div> -->
 
 <div *ngIf="params.type==='cell-edit-value-autocomplete'">
   <div class="editable-cell" style="text-align:right;width: 160px; padding-right: 10px; float: left; margin-left: -10px;">
@@ -181,27 +181,4 @@ export class AGGridCellEditableComponent implements ICellRendererAngularComp {
     return false;
   }
 
-  openSpecPopup(){
-    let dialogRef;
-    switch(this.params.label){
-      case 'spec-group':{
-        dialogRef = this.dialog.open(OpsSpecParameterDialog, {
-          width: '900px',
-          maxHeight: '480px',
-          panelClass: 'movements-popup-grid'
-        });
-        break;
-      }
-      case 'spec-param':{
-        dialogRef = this.dialog.open(SpecParameterDialog, {
-          width: '956px',
-          maxHeight: '480px',
-          panelClass: 'movements-popup-grid'
-        });
-        break;
-      }
-    }
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
 }

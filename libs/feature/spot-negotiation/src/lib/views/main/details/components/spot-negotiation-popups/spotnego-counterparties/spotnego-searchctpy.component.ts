@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { GridOptions } from 'ag-grid-community';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
-import { AGGridCellRendererComponent } from '../../../../../../core/ag-grid/ag-grid-cell-renderer.component';
 
 @Component({
   selector: 'app-spotnego-searchctpy',
@@ -133,10 +132,10 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   }
 
   public rowData : any[];
-  
+
 
   ngOnInit() {
-    //this.loadCounterparties();   
+    //this.loadCounterparties();
   }
 
   // public loadCounterparties(){

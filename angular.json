@@ -177,7 +177,7 @@
         }
       }
     },
-    "delivery": {
+    "feature-delivery": {
       "projectType": "library",
       "root": "libs/feature/delivery",
       "sourceRoot": "libs/feature/delivery/src",
@@ -203,7 +203,7 @@
         }
       }
     },
-    "contract": {
+    "feature-contract": {
       "projectType": "library",
       "root": "libs/feature/contract",
       "sourceRoot": "libs/feature/contract/src",
@@ -229,7 +229,7 @@
         }
       }
     },
-    "spot-negotiation": {
+    "feature-spot-negotiation": {
       "projectType": "library",
       "root": "libs/feature/spot-negotiation",
       "sourceRoot": "libs/feature/spot-negotitation/src",

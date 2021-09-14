@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-main-spot-negotiation',
