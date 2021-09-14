@@ -8,15 +8,12 @@ import {
   ViewChild,
   EventEmitter
 } from '@angular/core';
-// import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 import {
   AddCounterpartyToLocations,
   SetCurrentRequest,
@@ -119,10 +116,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   toBeAddedCounterparties() : SpnegoAddCounterpartyModel[] {
     if (this.requestOptions && this.requestOptions.length > 0) {
       let selectedCounterparties = [];
-      
+
       //current RequestGroupId
       let RequestGroupId = parseInt(this.requestOptions[0].requestGroupId);
-      
+
       //Looping through all the Request Locations
       this.requestOptions[0].requestLocations.forEach(reqLoc => {
         let perLocationCtpys = this.selectedCounterparty.map(val => <SpnegoAddCounterpartyModel>{

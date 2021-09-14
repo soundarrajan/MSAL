@@ -13,6 +13,6 @@ export class ModuleLoggerFactory extends LoggerFactory
   constructor(appContext: AppContext) {
     super(appContext);
 
-    this.enrich = { ...this.enrich, clientModule: 'QualityControlModule' };
+    this.enrich = { ...this.enrich, clientModule: 'SpotNegotiationModule' };
   }
 }

@@ -7,17 +7,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-
-import { ProductDetailsComponent } from '../dialog-popup/product-details/product-details.component';
-import { CellHoverDetailsComponent } from '../dialog-popup/cell-hover-details/cell-hover-details.component';
-import { OperationSummaryPopComponent } from '../dialog-popup/operation-summary-pop/operation-summary-pop.component';
-import { WarningDeletePopupComponent } from '../dialog-popup/warning-delete-popup/warning-delete-popup.component';
-import { OperationSummaryWithoutaddnewComponent } from '../dialog-popup/operation-summary-withoutaddnew/operation-summary-withoutaddnew.component';
-import { OperationSummaryWithStatusComponent } from '../dialog-popup/operation-summary-with-status/operation-summary-with-status.component';
-import { PipelineTariffComponent } from '../dialog-popup/pipeline-tariff/pipeline-tariff.component';
-import { CogsCalculationComponent } from '../dialog-popup/cogs-calculation/cogs-calculation.component';
-import { InventoryReportPopupComponent } from '../ops-inventory/popup-screens/inventory-report-popup/inventory-report-popup.component';
-import { MovDetailsComponent } from '../ops-inventory/popup-screens/mov-details/mov-details.component';
+// import { CellHoverDetailsComponent } from '../dialog-popup/cell-hover-details/cell-hover-details.component';
 
 @Component({
   selector: 'aggrid-cell-data',
@@ -2501,184 +2491,17 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     return styleClass;
   }
 
-  pipelineTariff(value) {
-    const dialogRef = this.dialog.open(PipelineTariffComponent, {
-      width: '725px',
-      height: '240px',
-      panelClass: 'pipeline-tariff',
-      data: { cost: value }
-    });
+  // openPopup() {
+  //   const dialogRef = this.dialog.open(CellHoverDetailsComponent, {
+  //     width: '750px',
+  //     height: '425px',
+  //     panelClass: 'cell-details-popup'
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openTankDetails() {
-    const dialogRef = this.dialog.open(ProductDetailsComponent, {
-      width: '750px',
-      height: '420px',
-      panelClass: 'tank-details-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openoperationsummaryStatus() {
-    //event.stopPropagation();
-    const dialogRef = this.dialog.open(OperationSummaryWithStatusComponent, {
-      width: '600px',
-      height: '400px',
-      panelClass: 'tank-details-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  movReport() {
-    //debugger;
-    const dialogRef = this.dialog.open(MovDetailsComponent, {
-      width: '100vw',
-      height: '95vh',
-      maxWidth: '95vw',
-      panelClass: 'mov-report-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  inventoryReport() {
-    const dialogRef = this.dialog.open(InventoryReportPopupComponent, {
-      width: '100vw',
-      height: '95vh',
-      maxWidth: '95vw',
-      panelClass: 'mov-report-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openoperationsummary() {
-    //event.stopPropagation();
-    const dialogRef = this.dialog.open(OperationSummaryPopComponent, {
-      width: '600px',
-      height: '400px',
-      panelClass: 'tank-details-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  viewMovement(params) {
-    //console.log(params);
-    var movType = this.router.url;
-    var viewmovId = params.data.movementid;
-    if (movType == '/movements/delivery')
-      this.router.navigate(['movements/delivery/addMovement'], {
-        state: { type: 'view', movId: viewmovId }
-      });
-
-    if (movType == '/movements/transfer')
-      this.router.navigate(['movements/transfer/addMovement'], {
-        state: { type: 'view', movId: viewmovId }
-      });
-
-    if (movType == '/movements/other')
-      this.router.navigate(['movements/other/addMovement'], {
-        state: { type: 'view', movId: viewmovId }
-      });
-  }
-
-  deleteWarning() {
-    const dialogRef = this.dialog.open(WarningDeletePopupComponent, {
-      width: '368px',
-      data: {
-        message: 'Are you sure you want to delete the Movement?',
-        toastMsg: 'Movement deleted successfully!'
-      },
-      //height: '240px',
-      //position: { top:'25px'},
-      //top: '25px',
-
-      panelClass: ['remove-terminal-popup', 'close-btn-pos']
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-
-    //this.current_state='confirm';
-  }
-
-  revertWarning() {
-    const dialogRef = this.dialog.open(WarningDeletePopupComponent, {
-      width: '368px',
-      data: {
-        message:
-          'This action will revert the movement to planned. Do you want to proceed?',
-        toastMsg: 'Movement Reverted successfully!'
-      },
-      panelClass: ['remove-terminal-popup', 'close-btn-pos']
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  deleteTankReport() {
-    const dialogRef = this.dialog.open(WarningDeletePopupComponent, {
-      width: '368px',
-      data: {
-        message: 'Are you sure you want to delete the Tank Report?',
-        toastMsg: 'Tank Report deleted successfully!'
-      },
-      panelClass: ['remove-terminal-popup', 'close-btn-pos']
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  cogsCalculation() {
-    const dialogRef = this.dialog.open(CogsCalculationComponent, {
-      width: '570px',
-      //height: '240px',
-      //position: { top:'25px'},
-      //top: '25px',
-
-      panelClass: ['remove-terminal-popup', 'cogs-calc']
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-
-    //this.current_state='confirm';
-  }
-
-  openPopup() {
-    const dialogRef = this.dialog.open(CellHoverDetailsComponent, {
-      width: '750px',
-      height: '425px',
-      panelClass: 'cell-details-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log(`Dialog result: ${result}`);
+  //   });
+  // }
 
   public isMarked = index => {
     var ratingcount = this.params.data.rating;
@@ -2984,17 +2807,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   clickMenuClosed() {
     this.blueMenuIcon = false;
-  }
-  openOperationSummarywithoutaddnewComponent() {
-    const dialogRef = this.dialog.open(OperationSummaryWithoutaddnewComponent, {
-      width: '600px',
-      height: '400px',
-      panelClass: 'OperationSummaryWithoutaddnew-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
 
   checkValue(event: any) {
