@@ -239,13 +239,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   openCounterpartyPopup() {
+    const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+
     const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
       width: '100vw',
       height: '95vh',
       maxWidth: '95vw',
       panelClass: 'search-request-popup',
       data:{
-        "AddCounterpartiesAcrossLocations":true
+        "AddCounterpartiesAcrossLocations":true,
+        "RequestGroupId":parseInt(RequestGroupId)
       }
     });
 
