@@ -646,15 +646,15 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                  	allProductsIds = [...new Set(allProductsIds)] // make array unique
                     listsModel.getSpecGroupByProductAndVessel(allProductsIds.join(","), ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
 		        		
-		        		$.each(server_data.data.payload, (k,v) => {
-		        			$.each(ctrl.request.locations, (lk, lv) => {
-			        			$.each(lv.products, (pk, pv) => {
+	        			$.each(ctrl.request.locations, (lk, lv) => {
+		        			$.each(lv.products, (pk, pv) => {
+		                        var isInList = false;
+				        		$.each(server_data.data.payload, (k,v) => {
 			        				if (v.reference == pv.product.id) {
 				                        if (!ctrl.request.locations[lk].products[pk].specGroups) {
 				                        	ctrl.request.locations[lk].products[pk].specGroups = [];
 				                        }
 				                        ctrl.request.locations[lk].products[pk].specGroups.push(v);
-				                        let isInList = false;
 				                        
 				                            if (v.isDefault && !ctrl.request.locations[lk].products[pk].specGroup && !ctrl.request.locations[lk].products[pk].id) {
 				                                ctrl.request.locations[lk].products[pk].specGroup = v;
@@ -664,12 +664,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 				                                    isInList = true;
 				                                }
 				                        	}
-				                        if (!isInList) {
-				                        	ctrl.request.locations[lk].products[pk].specGroup.isDeleted = true;
-				                            ctrl.request.locations[lk].products[pk].specGroups.push(ctrl.request.locations[lk].products[pk].specGroup);
-				                        }
 			        				}
 			        			})
+		                        if (!isInList) {
+		                        	ctrl.request.locations[lk].products[pk].specGroup.isDeleted = true;
+		                            ctrl.request.locations[lk].products[pk].specGroups.push(ctrl.request.locations[lk].products[pk].specGroup);
+		                        }
+		                        ctrl.request.locations[lk].products[pk].specGroups = _.uniqBy(ctrl.request.locations[lk].products[pk].specGroups, 'id');
 		        			})
 		        		})
                     });
