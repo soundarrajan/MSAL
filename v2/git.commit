@@ -1,9 +1,9 @@
-﻿commit e6ea162fdb9026aa6517054401c9998172330e9e
+﻿commit 56e03df22c6b98f43b8700d47c4a0ef0c77f602f
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Sep 14 15:54:08 2021 +0000
+Date:   Tue Sep 14 16:29:27 2021 +0000
 
-    Merged PR 13557: #35570: Table view_ The future requests are not loading properly issue has fixed
+    Merged PR 13560: #35568: Vessel Pop Up- In future requests info pop up "ETA" date is incorrect in payload issue fixed
     
-    Related work items: #35570
+    Related work items: #35568
 
 branch: master
