@@ -1347,29 +1347,25 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         // Get data and initialize timeline
         async function doTimeline() {
-            Factory_Master.initSignalRParameters((callback) => {
-                Factory_Admin.getUsername(callback.data.userId, (response) => {
-                    if(response) {
-                        $rootScope.landingPage = angular.copy(response?.payload?.landingPage);
-                        ctrl.getProductViewFromStaticLists(response?.payload?.landingPage);
-                        if ((response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) || window.location.href.indexOf('schedule-dashboard-timeline') != -1) {
-                            $rootScope.$broadcast('$setProductTypeView', {
-                                productTypeView: ctrl.productTypeView
+            Factory_Admin.getUsername(true, (response) => {
+                if(response) {
+                    $rootScope.landingPage = angular.copy(response?.payload?.landingPage);
+                    ctrl.getProductViewFromStaticLists(response?.payload?.landingPage);
+                    if ((response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) || window.location.href.indexOf('schedule-dashboard-timeline') != -1) {
+                        $rootScope.$broadcast('$setProductTypeView', {
+                            productTypeView: ctrl.productTypeView
+                        });
+                        Promise.all([getStatuses(), getConfiguration(), getDefaultFiltersConfiguration()]).then(function(res) {
+                            getData().then(function(data) {
+                                createFilters();
+                                $rootScope.timelineStatusList = timelineStatusList;
+                                buildTimeline(data);
                             });
-                            Promise.all([getStatuses(), getConfiguration(), getDefaultFiltersConfiguration()]).then(function(res) {
-                                getData().then(function(data) {
-                                    createFilters();
-                                    $rootScope.timelineStatusList = timelineStatusList;
-                                    buildTimeline(data);
-                                });
-                   
-                            });
-                        } 
-                    }
-                });
+               
+                        });
+                    } 
+                }
             });
-
-            
         }
 
         doTimeline();

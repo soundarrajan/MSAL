@@ -21,6 +21,22 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
         });
     });
 
+    $scope.getUsername = function() {
+         Factory_Admin.getUsername(true, (response) => {
+            if(response) {
+                $scope.userProfile = `${response.payload.username } | ${ response.payload.displayName}`;
+                $rootScope.user = {
+                    id: response.payload.id,
+                    name: response.payload.username,
+                    displayName: response.payload.displayName
+                };
+              
+            }else{
+                $scope.userProfile = '';
+            }
+        });
+    }
+
     $scope.logout = function() {
         adalService.logOut();
         if (!localStorage.getItem('loggedOut')) {
