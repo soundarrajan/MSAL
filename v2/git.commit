@@ -1,9 +1,9 @@
-﻿commit 56e03df22c6b98f43b8700d47c4a0ef0c77f602f
+﻿commit c1be676b2c0432e5ccbb790494172c278e1c318f
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Sep 14 16:29:27 2021 +0000
+Date:   Wed Sep 15 10:38:42 2021 +0000
 
-    Merged PR 13560: #35568: Vessel Pop Up- In future requests info pop up "ETA" date is incorrect in payload issue fixed
+    Merged PR 13571: #35521, 35568: Bunker plan: Future request header filters removed to avoid ETA filter conflict, "ETA" date is incorrect in vessel popup issue has fixed
     
-    Related work items: #35568
+    Related work items: #35521, #35568
 
 branch: master
