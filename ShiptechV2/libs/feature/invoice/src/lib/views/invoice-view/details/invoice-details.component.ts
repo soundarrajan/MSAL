@@ -98,12 +98,12 @@ import { MatRadioChange } from '@angular/material/radio';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 
-const isEmpty = (object) => {
-    if(!object) {
-        return true;
-    }  
-    !Object.values(object).some(x => x !== null && x !== '');
-}
+const isEmpty = object => {
+  if (!object) {
+    return true;
+  }
+  !Object.values(object).some(x => x !== null && x !== '');
+};
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -2345,14 +2345,14 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
     this.setAdditionalCostLine();
     const valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
-    if(this.formValues.counterpartyDetails.counterpartyBankAccount) {
-        if (
-          this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
-            undefined ||
-          this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
-        ) {
-          valuesForm.counterpartyDetails.counterpartyBankAccount = null;
-        }
+    if (this.formValues.counterpartyDetails.counterpartyBankAccount) {
+      if (
+        this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
+          undefined ||
+        this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
+      ) {
+        valuesForm.counterpartyDetails.counterpartyBankAccount = null;
+      }
     }
     if (
       !parseFloat(this.formValues?.id?.toString()) ||
@@ -2805,14 +2805,18 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     ) {
       formValues.invoiceSummary.netPayable =
         formValues.invoiceSummary.invoiceAmountGrandTotal * -1 -
-        formValues.invoiceSummary.deductions;
+        formValues.invoiceSummary.deductions -
+        formValues.paymentDetails.paidAmount;
     } else {
       formValues.invoiceSummary.netPayable =
         formValues.invoiceSummary.invoiceAmountGrandTotal -
-        formValues.invoiceSummary.deductions;
+        formValues.invoiceSummary.deductions -
+        formValues.paymentDetails.paidAmount;
     }
 
     this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
+
     this.setChipDatas();
   }
   calculateInvoiceGrandTotal(formValues) {
