@@ -1,9 +1,9 @@
-﻿commit c1be676b2c0432e5ccbb790494172c278e1c318f
+﻿commit 10bea5d9548c51c91e253b22ef3e91048f59a673
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Sep 15 10:38:42 2021 +0000
+Date:   Wed Sep 15 14:23:53 2021 +0000
 
-    Merged PR 13571: #35521, 35568: Bunker plan: Future request header filters removed to avoid ETA filter conflict, "ETA" date is incorrect in vessel popup issue has fixed
+    Merged PR 13580: #35608 - vessel count bind issue and vessel, port list duplication issue on map view screen has done
     
-    Related work items: #35521, #35568
+    Related work items: #35608
 
 branch: master
