@@ -559,7 +559,7 @@
                             var url = procurement_apps[checkProcurement].editPath + id;
                             // console.log(procurement_apps[checkProcurement].editPath)
                         }
-                        if (window.location.href.indexOf("delivery/deliveriestobeverified") != -1) {
+                        if (window.location.href.indexOf("delivery/delivery") != -1 || window.location.href.indexOf("delivery/deliveriestobeverified") != -1) {
                             window.open("/v2/delivery/delivery/"+ parseFloat(id) + "/details", "_blank");
                             return;
                         }
