@@ -580,8 +580,13 @@ export class OlMapComponent implements OnInit, AfterViewInit {
             
           }
         })
+        this.triggerClickEvent();
       }
     });
+  }
+  triggerClickEvent() {
+    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+    titleEle.click();
   }
 
   //Hover Circle Style
