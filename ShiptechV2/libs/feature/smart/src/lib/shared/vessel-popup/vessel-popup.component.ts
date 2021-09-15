@@ -322,8 +322,8 @@ export class VesselPopupComponent implements OnInit {
     }
   }
   loadFutureRequestData() {
-    let currentDate = new Date().toISOString();
-    currentDate = currentDate.substring(0, 16);
+    let currentDate = moment(new Date()).format("YYYY-MM-DD");
+    currentDate = currentDate+"T00:00";
     let requestPayload = {
       "Payload": {
         "Order": null,

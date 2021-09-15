@@ -1635,15 +1635,15 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   saveDelivery() {
     let id = parseFloat(this.entityId);
     if (!parseFloat(this.entityId)) {
-			this.myMonitoringService.startTrackEvent('Create Delivery');
+      (<any>window).startCreateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
-        .saveDeliveryInfo(this.formValues)
-        .pipe(
-          finalize(() => {
-            this.buttonClicked = false;
-            this.eventsSubject2.next(this.buttonClicked);
-          })
+      .saveDeliveryInfo(this.formValues)
+      .pipe(
+        finalize(() => {
+          this.buttonClicked = false;
+          this.eventsSubject2.next(this.buttonClicked);
+        })
         )
         .subscribe((result: any) => {
           if (typeof result == 'string') {
@@ -1655,41 +1655,41 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
-              .navigate([
-								KnownPrimaryRoutes.Delivery,
-                `${KnownDeliverylRoutes.Delivery}`,
-                result,
-                KnownDeliverylRoutes.DeliveryDetails
-              ])
-              .then(() => {
-								this.myMonitoringService.stopTrackEvent('Create Delivery');
-							});
+            .navigate([
+              KnownPrimaryRoutes.Delivery,
+              `${KnownDeliverylRoutes.Delivery}`,
+              result,
+              KnownDeliverylRoutes.DeliveryDetails
+            ])
+            .then(() => {
+              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);        
+            });
           }
         });
-    } else {
-			this.myMonitoringService.startTrackEvent('Update Delivery');
+      } else {
+        (<any>window).startUpdateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
 			.updateDeliveryInfo(this.formValues)
 			.pipe(
-				finalize(() => {
-					this.buttonClicked = false;
+        finalize(() => {
+          this.buttonClicked = false;
 					this.eventsSubject2.next(this.buttonClicked);
 				})
         )
         .subscribe((result: any) => {
 					if (typeof result == 'string') {
-						this.spinner.hide();
+            this.spinner.hide();
             this.toastrService.error(result);
-						this.myMonitoringService.stopTrackEvent('Update Delivery');
+            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
           } else {
-						this.toastrService.success('Delivery saved successfully');
+            this.toastrService.success('Delivery saved successfully');
             this.deliveryService
 						.loadDeliverytDetails(result.id)
 						.pipe(
-							finalize(() => {
-								this.spinner.hide();
-								this.myMonitoringService.stopTrackEvent('Update Delivery');
+              finalize(() => {
+                this.spinner.hide();
+                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
 							})
               )
               .subscribe((data: any) => {

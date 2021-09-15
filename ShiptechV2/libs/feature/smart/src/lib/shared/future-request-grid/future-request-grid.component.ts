@@ -7,6 +7,7 @@ import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { FormControl } from '@angular/forms';
 import { LocalService } from '../../services/local-service.service';
 import { ActivatedRoute } from '@angular/router';
+import moment from 'moment';
 
 @Component({
   selector: 'shiptech-future-request-grid',
@@ -17,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 export class FutureRequestGridComponent implements OnInit {
 
   @Input('columnDefs') columnDefs;
+  @Input('filterByVessel') filterByVessel?: any;
   public baseOrigin: string = '';
   public gridOptions: GridOptions;
   public colResizeDefault;
@@ -122,7 +124,7 @@ export class FutureRequestGridComponent implements OnInit {
   mapColumnValue(columnName) {
     switch (columnName) {
       case "requestId":
-        return "RequestName";
+        return "requestId";
         
       case "serviceName":
         return "ServiceName";
@@ -216,13 +218,13 @@ export class FutureRequestGridComponent implements OnInit {
         let fromDate, toDate;
         let DateArr = [];
         if(filterValue?.dateFrom) {
-            fromDate = new Date(filterValue?.dateFrom).toISOString();
+            fromDate = new Date((filterValue?.dateFrom).split(' ')[0]).toISOString();
             fromDate = fromDate.substring(0, 16);
             fromDate = fromDate.split("T")[0]+"T00:00";
             DateArr.push(fromDate);
           } 
           if(filterValue?.dateTo) {
-            toDate = new Date(filterValue?.dateTo).toISOString();
+            toDate = new Date((filterValue?.dateTo).split(' ')[0]).toISOString();
             toDate = toDate.substring(0, 16);
             toDate = toDate.split("T")[0]+"T00:00";
             DateArr.push(toDate);
@@ -286,7 +288,7 @@ export class FutureRequestGridComponent implements OnInit {
           "Filters": [],
           "SearchText": null,
           "Pagination": {
-            "Skip": (params.startRow)? params.startRow: 0,
+            "Skip": (params?.request?.startRow)? params.request?.startRow: 0,
             "Take": 25
           }
         }
@@ -345,14 +347,14 @@ export class FutureRequestGridComponent implements OnInit {
           this.columnFilter.push(columnFormat);
           if(filterModelArr.length == index+1) {
             requestPayload.Payload.PageFilters.Filters = this.columnFilter;
-            if(vesselRef && vesselRef.vesselId) {
+            if(vesselRef && vesselRef.vesselId && this.filterByVessel) {
               requestPayload.Payload.PageFilters.Filters.push(columnFilterByVessel);
             }
             resolve(requestPayload);
           }
         })
       } else {
-        if(vesselRef && vesselRef.vesselId) {
+        if(vesselRef && vesselRef.vesselId && this.filterByVessel) {
           requestPayload.Payload.PageFilters.Filters.push(columnFilterByVessel);
         }
         resolve(requestPayload);
@@ -413,21 +415,25 @@ export class FutureRequestGridComponent implements OnInit {
     let currentDate = new Date();
     let prevMonthDate = (new Date(currentDate.setMonth(currentDate.getMonth() - 1))).toISOString();
     prevMonthDate = prevMonthDate.substring(0, 16);
-    let fromDate = new Date().toISOString();
+    // let fromDate = new Date().toISOString();
+    let fromDate:any = moment(new Date()).format("YYYY-MM-DD");
     let toDate = null;
-        fromDate = fromDate.substring(0, 16);
-        fromDate = fromDate.split("T")[0]+"T00:00";
+        // fromDate = fromDate.substring(0, 16);
+        // fromDate = fromDate.split("T")[0]+"T00:00";
+        fromDate = fromDate+"T00:00";
         if(param) {
-          fromDate = param.fromDate.toISOString();
-          fromDate = fromDate.substring(0, 16);
-          fromDate = fromDate.split("T")[0]+"T00:00";
+          // fromDate = param.fromDate.toISOString();
+          // fromDate = fromDate.substring(0, 16);
+          // fromDate = fromDate.split("T")[0]+"T00:00";
+          fromDate = moment(param.fromDate).format("YYYY-MM-DD");
+          fromDate = fromDate+"T00:00";
 
       let condFromDate = new Date(param.fromDate);
       let condToDate = new Date(param.toDate);
       if(param?.toDate && condFromDate<=condToDate) {
-        toDate = param.toDate.toISOString();
-        toDate = toDate.substring(0, 16);
-        toDate = toDate.split("T")[0]+"T00:00";
+        toDate = moment(param.toDate).format("YYYY-MM-DD");
+        // toDate = toDate.substring(0, 16);
+        toDate = toDate+"T00:00";
         
       let isExist = this.columnFilter.findIndex((item)=> item.columnValue=='Eta' && item.ConditionValue== "<=");
       if(isExist>-1) this.columnFilter.splice(isExist,1);
