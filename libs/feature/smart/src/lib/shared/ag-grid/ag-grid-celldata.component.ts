@@ -20,6 +20,7 @@ const today = new Date();
 })
 
 export class AGGridCellDataComponent implements ICellRendererAngularComp {
+  moment: any = moment;
   public params: any;
   public toolTip: string;
   public data;
