@@ -1029,6 +1029,26 @@ APP_API.factory('$Api_Service', [
                         }
                     }
                 },
+                vessellistall: {
+                    layout: {
+                        get: {
+                            json: {
+                                Payload: {
+                                    ScreenType: 114
+                                }
+                            },
+                            endpoint: `${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/screenlayout/get`
+                        },
+                        update: {
+                            endpoint: `${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/screenlayout/update`
+                        }
+                    },
+                    entity: {
+                        list: {
+                            endpoint: `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/listAdmin`
+                        }
+                    }
+                },
                 vessel: {
                     layout: {
                         get: {
@@ -4423,6 +4443,9 @@ APP_API.factory('$Api_Service', [
                                     if (typeof jsonDATA2.clc[param.clc_id] != 'undefined') {
                                         let singleCLC = jsonDATA2.clc[param.clc_id];
                                         jsonDATA2.clc = singleCLC;
+                                    }
+                                    if (param.clc_id == 'masters_vessellistall') {
+                                        jsonDATA2.clc = jsonDATA2.clc['masters_vessellist'];
                                     }
                                 }
                                 let result2 = parse('formatters', jsonDATA2);
@@ -8400,7 +8423,42 @@ APP_API.factory('$Api_Service', [
                         callback($listsCache.VesselProductFilteredType);
                         return;
                     }
-
+                    if (param.app == 'masters' && param.screen == 'vessel' && param.field.clc_id == 'masters_vessellistall') {
+                        var apiJSON = {
+                            Payload: {
+                                pagination: {}
+                                // , pageFilters: {
+                                //     Filters: [
+                                //         {
+                                //             ColumnType: 'Number',
+                                //             ColumnValue: 'Id',
+                                //             ConditionValue: '!=',
+                                //             Values: [ '4621' ],
+                                //             FilterOperator: 1,
+                                //             isComputedColumn: false
+                                //         }
+                                //     ]
+                                // }
+                            }
+                        };
+                        var postUrl = api_map[param.app].vessellistall.entity.list.endpoint;
+                        $http.post(postUrl, apiJSON).then(
+                            (response) => {
+                                console.log(response);
+                                if (response.status == 200) {
+                                    callback(response.data.payload);
+                                } else {
+                                    callback(false);
+                                }
+                            },
+                            (response) => {
+                                console.log('HTTP ERROR');
+                                console.log(response);
+                                callback(false);
+                            }
+                        );
+                        return;
+                    }
 
                     // End Custom implementations
                     if (typeof $listsCache[param.field.masterSource] != 'undefined') {
@@ -10578,6 +10636,31 @@ APP_API.factory('$Api_Service', [
                             res.message = response.data.ErrorMessage;
                             callback(res);
                             console.log('HTTP ERROR while trying to claimPreviewEmail!');
+                        }
+                    );
+                },
+                getVesselBOPSDetails: function(param, callback) {
+                    let apiJSON = param;
+                    let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/vesselBOPSDetails`;
+                    $http.post(url, apiJSON).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.data = response.data;
+                                res.status = true;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                res.message = response.data.ErrorMessage;
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            res.message = response.data.ErrorMessage;
+                            callback(res);
+                            console.log('HTTP ERROR while trying to get vesselBOPSDetails!');
                         }
                     );
                 },

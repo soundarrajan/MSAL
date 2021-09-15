@@ -17,7 +17,7 @@ angular.module('shiptech')
         'default.contract-planning': 'js/mockups/contract-planning-ui.js',
         'default.contract-evaluation': 'js/mockups/contract-evaluation-ui.js',
 
-        'unrouted.lookup': 'js/mockups/lookup-dialog-ui.js',
+        // 'unrouted.lookup': 'js/mockups/lookup-dialog-ui.js', 
         'unrouted.seller-card': 'js/mockups/seller-card-ui.js',
         'unrouted.vessel-schedule': 'js/mockups/vessel-schedule-ui.js',
         'unrouted.sellers-dialog': 'js/mockups/sellers-dialog-ui.js',

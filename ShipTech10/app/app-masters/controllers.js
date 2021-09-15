@@ -1369,7 +1369,7 @@
                     for(i = 0; i < $scope.formValues.vesselProducts.length; i++) {
                         if (!$scope.formValues.vesselProducts[i].isDeleted && ($scope.formValues.vesselProducts[i].vesselProductTanks.length == 0 ||
                             ($scope.formValues.vesselProducts[i].vesselProductTanks.length > 0 &&
-                                !$scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && vpt.isActive && vpt.tankCategory && vpt.tankCategory.name == "Storage"))))
+                                !$scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && vpt.isActive && vpt.tankCategory && vpt.tankCategory.id == 1))))
                         {
                             $('#Product_' + i + '_tank_Product').addClass('invalid');
                             toastr.error('Please add atleast one Storage tank for the Product type ' + $scope.formValues.vesselProducts[i].productType.name + ' to proceed');
@@ -3228,10 +3228,9 @@
             $state.params.title = title;
         };
 
-        $scope.triggerChangeFields = function(name, id) {
+        $scope.triggerChangeFields = function(name, id, isManualChange) {
 
             $rootScope.formDataFields = $scope.formValues;
-
 
             var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
             var company_id = $('#companylistCompany').val();
@@ -3364,6 +3363,22 @@
                 	setTimeout(() => {
                         $scope.selectVesselProduct($scope.selected_value, $scope.modal.idx);
                 	}, 500);
+                }
+                if (vm.screen_id == 'vessel' && id == 'copyVessel' && $scope.formValues.copyVessel && isManualChange) {
+                    if($scope.formValues.copyVessel.id == $scope.formValues.id) {
+                        $scope.formValues.copyVessel = null;
+                        toastr.error('Copy vessel cannot be same as current vessel!');
+                        return;
+                    }
+                    if($scope.formValues.vesselProducts.some(vp => vp.isDeleted == 0)) {
+                        $scope.sweetConfirmModal('Do you want to overwrite the BOPS and Tank details?', (response) => {
+                            if (response == true) {
+                                $scope.vessel_loadBopsCopy();
+                            }
+                        });
+                        return;
+                    }
+                    $scope.vessel_loadBopsCopy();
                 }
                 if (name == 'specParameter' && vm.screen_id == 'specgroup') {
                     var row = $(`[name= "${ name }"]`).data('row-index');
@@ -5647,7 +5662,7 @@
             // }
             $scope.prettyCloseModal();
             $('*').tooltip('destroy');
-            $scope.triggerChangeFields(field_name, elements[1]);
+            $scope.triggerChangeFields(field_name, elements[1], true);
         };
 
 
@@ -5748,7 +5763,7 @@
             if ($scope.formValues.vesselProducts[vesselProdIdx]
                 && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
-                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.name == "Storage" ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0);
+                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
             }
             $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityM3 = sum;
         }
@@ -5761,7 +5776,7 @@
                 && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
                 density = $scope.formValues.vesselProducts[vesselProdIdx].density;
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
-                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.name == "Storage" ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0);
+                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
             }
             $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityMt = sum * density * mtConversionFactor;
         }
@@ -10770,25 +10785,98 @@
         };
 
         vm.calculateNewReserve = function(object) {
-            if (['reeferCapacity', 'mcr100', 'sfocMe', 'sfocAe'].indexOf(object.Unique_ID) != -1) {
+            if (object == 'copyVessel' || ['reeferCapacity', 'mcr100', 'sfocMe', 'sfocAe'].indexOf(object.Unique_ID) != -1) {
                 console.log(object);
                 console.log($scope.formValues);
                 let reeferCapacity = $scope.formValues.reeferCapacity ? $scope.formValues.reeferCapacity : 0;
                 let mcr100 = $scope.formValues.mcr100 ? $scope.formValues.mcr100 : 0;
                 let sfocMe = $scope.formValues.sfocMe ? $scope.formValues.sfocMe : 0;
                 let sfocAe = $scope.formValues.sfocAe ? $scope.formValues.sfocAe : 0;
-
                 let mcrPart = $scope.tenantSetting.mcrPart;
                 let reeferCon =  $scope.tenantSetting.reeferCon;
-
                 let mecons = mcr100 * sfocMe * mcrPart * 0.000024;
                 let reefercons = reeferCapacity * sfocAe * reeferCon * 0.000024;
                 let newreserve  = mecons + reefercons;
 
                 $scope.formValues.oneDayReserve = Math.ceil(newreserve);
-
-    
             }   
+        }
+
+        $scope.vessel_loadBopsCopy = function() {
+            data = { Payload: $scope.formValues.copyVessel.id };
+            Factory_Master.getVesselBOPSDetails(data, (callback) => {
+                if (callback) {
+                    if (callback.status == true) {
+                        let cvData = callback.data.payload;
+                        $scope.formValues.averageDraft = cvData.averageDraft;
+                        $scope.formValues.bopsAverageDailyConsumption = cvData.bopsAverageDailyConsumption;
+                        $scope.formValues.isSimultaneousFOBunker = cvData.isSimultaneousFOBunker;
+                        $scope.formValues.lsdisReserve = cvData.lsdisReserve;
+                        $scope.formValues.maxSpeed = cvData.maxSpeed;
+                        $scope.formValues.maximumDailyConsumption = cvData.maximumDailyConsumption;
+                        $scope.formValues.mcr100 = cvData.mcr100;
+                        $scope.formValues.pilotSpeed = cvData.pilotSpeed;
+                        $scope.formValues.reeferCapacity = cvData.reeferCapacity;
+                        $scope.formValues.scrubbersReadyOn = cvData.scrubbersReadyOn;
+                        $scope.formValues.vesselClass = cvData.vesselClass;
+                        $scope.formValues.vesselIsoSpecGroup = cvData.vesselIsoSpecGroup;
+                        vm.calculateNewReserve('copyVessel');
+                        
+                        let unlinkedVesselProducts = cvData.vesselProducts.map(function(vp) {
+                            vp.id = null;
+                            vp.createdBy = $rootScope.user;
+                            vp.createdOn = moment().format();
+                            vp.vessel = {
+                                'clientIpAddress':  $scope.formValues.clientIpAddress,
+                                'code': $scope.formValues.code,
+                                'collectionName': $scope.formValues.collectionName,
+                                'customNonMandatoryAttribute1': $scope.formValues.customNonMandatoryAttribute1,
+                                'displayName': $scope.formValues.displayName,
+                                'id': $scope.formValues.id,
+                                'internalName': $scope.formValues.internalName,
+                                'isDeleted': $scope.formValues.isDeleted,
+                                'modulePathUrl': $scope.formValues.modulePathUrl,
+                                'name': $scope.formValues.name,
+                                'userAction': $scope.formValues.userAction
+                            };
+                            vp.vesselProductTanks = vp.vesselProductTanks.map(function(vpt) {
+                                vpt.id = null;
+                                vpt.vessel = vp.vessel;
+                                vpt.vesselId = null;
+                                vpt.createdBy = $rootScope.user;
+                                vpt.createdOn = moment().format();
+                                vpt.vesselProduct = {
+                                    id: 0
+                                };
+                                return vpt;
+                            });
+                            return vp;
+                        });
+                        if(!$scope.formValues.vesselProducts) {
+                            $scope.formValues.vesselProducts = [];
+                        }
+                        /* Soft delete existing Vessel Products if any - Start*/
+                        // Do not soft delete temporarily added items, instead hard delete
+                        $scope.formValues.vesselProducts = $scope.formValues.vesselProducts.filter(vp => vp.id > 0);
+                        let removableVPs = $scope.formValues.vesselProducts.map(function(vp) {
+                            vp.isDeleted = true;
+                            vp.vesselProductTanks = vp.vesselProductTanks.map(function(vpt) {
+                                vpt.isDeleted = true;
+                                return vpt;
+                            });
+                            return vp;
+                        });
+                        /* Soft delete existing Vessel Products if any - End*/
+                        $scope.formValues.vesselProducts = removableVPs.concat(unlinkedVesselProducts);
+                        for(var i=0; i < $scope.formValues.vesselProducts.length; i++) {
+                            $scope.calculateStorageCapacityM3(i);
+                            $scope.calculateStorageCapacityMt(i);
+                        }
+                    } else {
+                        toastr.error('An error has occured!');
+                    }
+                }
+            });
         }
     }
 ]);

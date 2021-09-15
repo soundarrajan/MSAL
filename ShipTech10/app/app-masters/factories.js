@@ -753,6 +753,11 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(result);
             });
         },
+        getVesselBOPSDetails: function(data, callback) {
+            $Api_Service.masters.getVesselBOPSDetails(data, (result) => {
+                callback(result);
+            });
+        },
         getService: function(data, callback) {
             $Api_Service.masters.getService(data, (result) => {
                 callback(result);

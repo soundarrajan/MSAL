@@ -387,10 +387,10 @@
     <offer-details-dialog id="offer_details" aria-hidden="true" args="{product: $ctrl.offerDetailsProduct, offer: $ctrl.offerDetails}" on-offer-saved="$ctrl.updateOffer(offer, product)" data-width="90%"></offer-details-dialog>
 </div>
 <last-offer-prices-dialog class="modal fade in" id="prices" aria-hidden="true" args="{product: $ctrl.latestOfferProduct, seller: $ctrl.latestOfferSeller}" data-width="45%"></last-offer-prices-dialog>
-<lookup-dialog class="modal fade in lookup-dialog" id="lookup" aria-hidden="true" data-width="90%" lookup-type="$ctrl.lookupType" on-request-select="$ctrl.selectRequest(request)" on-product-select="$ctrl.selectQuotedProduct(product)"></lookup-dialog>
-<sellers-dialog class="modal fade in sellers-dialog" id="sellers" aria-hidden="true" data-width="90%" trigger="$ctrl.supplierPlace" seller-types="$ctrl.sellerTypeIds" on-seller-select="$ctrl.onSellerSelect(sellerId)" on-supplier-select="$ctrl.onSupplierSelect(seller)" on-broker-select="$ctrl.onBrokerSelect(seller)"></sellers-dialog>
+<!-- <lookup-dialog class="modal fade in lookup-dialog" id="lookup" aria-hidden="true" data-width="90%" lookup-type="$ctrl.lookupType" on-request-select="$ctrl.selectRequest(request)" on-product-select="$ctrl.selectQuotedProduct(product)"></lookup-dialog> -->
+<!-- <sellers-dialog class="modal fade in sellers-dialog" id="sellers" aria-hidden="true" data-width="90%" trigger="$ctrl.supplierPlace" seller-types="$ctrl.sellerTypeIds" on-seller-select="$ctrl.onSellerSelect(sellerId)" on-supplier-select="$ctrl.onSupplierSelect(seller)" on-broker-select="$ctrl.onBrokerSelect(seller)"></sellers-dialog> -->
+<!-- <suppliers-dialog class="modal fade in suppliers-dialog" id="suppliers" aria-hidden="true" data-width="90%" seller-types="['1']" on-supplier-select="$ctrl.onSupplierSelect(sellerId)"></suppliers-dialog> -->
 
-<suppliers-dialog class="modal fade in suppliers-dialog" id="suppliers" aria-hidden="true" data-width="90%" seller-types="['1']" on-supplier-select="$ctrl.onSupplierSelect(sellerId)"></suppliers-dialog>
 <delink-dialog class="modal fade in" id="delink" aria-hidden="true" args="$ctrl.delinkIds" on-delink="$ctrl.delinkRequests(requestIds)"></delink-dialog>
 
 <div class="row">
