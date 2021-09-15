@@ -2354,12 +2354,15 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       }
     }
 
-    if (
-      !this.formValues.counterpartyDetails.payableTo &&
-      this.formValues.counterpartyDetails.payableTo.length == 0
-    ) {
-      valuesForm.counterpartyDetails.payableTo = null;
+    if (this.formValues.counterpartyDetails.payableTo != null) {
+      if (
+        !this.formValues.counterpartyDetails.payableTo &&
+        this.formValues.counterpartyDetails.payableTo.length == 0
+      ) {
+        valuesForm.counterpartyDetails.payableTo = null;
+      }
     }
+
     if (
       !parseFloat(this.formValues?.id?.toString()) ||
       this.formValues.id == 0
