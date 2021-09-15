@@ -4,7 +4,7 @@
     </div>
     <div class="warning-title"><span class="warning-icon-yellow" ></span><span style="padding-left: 5px;">Warning</span></div>
     <div class="warning-text">{{message}} {{id}}</div>
-    <div class="proceedandcancel-btn">
+    <div class="proceedandcancel-btn" *ngIf="this.showActionBtn">
       <button *ngIf = "this.okayButton == false" mat-raised-button class="cancel-btn" [mat-dialog-close]="false">
         <span>Cancel</span>
       </button>
