@@ -98,12 +98,12 @@ import { MatRadioChange } from '@angular/material/radio';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 
-const isEmpty = (object) => {
-    if(!object) {
-        return true;
-    }  
-    !Object.values(object).some(x => x !== null && x !== '');
-}
+const isEmpty = object => {
+  if (!object) {
+    return true;
+  }
+  !Object.values(object).some(x => x !== null && x !== '');
+};
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -2354,7 +2354,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       }
     }
 
-    if (!this.formValues.counterpartyDetails.payableTo && this.formValues.counterpartyDetails.payableTo.length == 0) {
+    if (
+      !this.formValues.counterpartyDetails.payableTo &&
+      this.formValues.counterpartyDetails.payableTo.length == 0
+    ) {
       valuesForm.counterpartyDetails.payableTo = null;
     }
     if (
@@ -2808,11 +2811,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     ) {
       formValues.invoiceSummary.netPayable =
         formValues.invoiceSummary.invoiceAmountGrandTotal * -1 -
-        formValues.invoiceSummary.deductions;
+        formValues.invoiceSummary.deductions -
+        formValues.paymentDetails.paidAmount;
     } else {
       formValues.invoiceSummary.netPayable =
         formValues.invoiceSummary.invoiceAmountGrandTotal -
-        formValues.invoiceSummary.deductions;
+        formValues.invoiceSummary.deductions -
+        formValues.paymentDetails.paidAmount;
     }
 
     this.changeDetectorRef.detectChanges();
