@@ -452,6 +452,7 @@
       "CONTRACTS_TITLE": "Available Term Contracts",
       "SELLER": "Seller",
       "CONTRACT_NAME": "Contract name",
+      "CONTRACT_ID": "Contract Id",
       "FORMULA": "Formula",
       "SCHEDULE": "Schedule",
       "PORT": "Port",

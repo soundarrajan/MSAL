@@ -91,6 +91,7 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
                 $scope.statusList = [];
                 $scope.productTypeView = angular.copy(productTypeView);
                 $rootScope.productTypeView  = angular.copy(productTypeView);
+                window.productTypeView = angular.copy($rootScope.productTypeView);
                 $rootScope.$broadcast('set-product-type-view-for-table', $rootScope.productTypeView);
                 $rootScope.$broadcast('breadcrumbs-filter-applied', null, productTypeView);
             } else {
@@ -321,17 +322,17 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
                 });
                 if (!statusIsAlreadyAdded) {
                     let skipStatus = false;
-                    if ($scope.productTypeView && $scope.productTypeView.name == 'Bunker View') {
+                    if ($scope.productTypeView && $scope.productTypeView.id == 1) {
                         if (status.label == 'Additive Strategy' || status.label == 'Residue Strategy') {
                             skipStatus = true;
                         }
                     }
-                    if ($scope.productTypeView && $scope.productTypeView.name == 'Residue View') {
+                    if ($scope.productTypeView && $scope.productTypeView.id == 2) {
                         if (status.label == 'Additive Strategy' || status.label == 'Bunker Strategy') {
                             skipStatus = true;
                         }
                     }
-                    if ($scope.productTypeView && $scope.productTypeView.name == 'Additive View') {
+                    if ($scope.productTypeView && $scope.productTypeView.id == 3) {
                         if (status.label == 'Residue Strategy' || status.label == 'Bunker Strategy') {
                             skipStatus = true;
                         }

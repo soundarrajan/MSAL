@@ -121,6 +121,10 @@ angular.module('shiptech.components').controller('FiltersController', [
                     $scope.globalFilters = [];
                 } 
             }
+
+            if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
+                $scope.globalFilters = angular.copy($scope.checkPackedFiltersBasedOnView(angular.copy($scope.globalFilters)));
+            }
         	// Apply filters
             $scope.applyFilters($scope.globalFilters);
         });
@@ -305,6 +309,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             } else {
                 data = [];
             }
+
             $scope.packedFilters = $scope.packFilters(data);
             $scope.packedFilters.raw = $rootScope.rawFilters;
             $rootScope.filterForExport = angular.copy($scope.packedFilters);
@@ -337,6 +342,35 @@ angular.module('shiptech.components').controller('FiltersController', [
                 ctrl.hideSidebar();
             }
         };
+
+        $scope.checkPackedFiltersBasedOnView = function(filters) {
+            let arrayOfFilters = [];
+            for (let i = 0; i < filters.length; i++) {
+                let skipFilters = false;
+                if ($rootScope.productTypeView && $rootScope.productTypeView.id == 1) {
+                    if (filters[i].value[0] == 'Additive Strategy' || filters[i].value[0] == 'Residue Strategy') {
+                        skipFilters = true;
+                    }
+                }
+                if ($rootScope.productTypeView && $rootScope.productTypeView.id == 2) {
+                    if (filters[i].value[0] == 'Additive Strategy' || filters[i].value[0] == 'Bunker Strategy') {
+                        skipFilters = true;
+                    }
+                }
+                if ($rootScope.productTypeView && $rootScope.productTypeView.id == 3) {
+                    if (filters[i].value[0] == 'Residue Strategy' || filters[i].value[0] == 'Bunker Strategy') {
+                        skipFilters = true;
+                    }
+                }
+                if (!skipFilters) {
+                    arrayOfFilters.push(filters[i]);
+                }
+            }
+
+            console.log(arrayOfFilters);
+            return arrayOfFilters;
+
+        }
 
         $scope.formatHeaders = function(data) {
             $('.colMenu')
