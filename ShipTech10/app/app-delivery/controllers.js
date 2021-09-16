@@ -1191,6 +1191,10 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
 
     /* DeliveryList*/
     $scope.createDeliveryFromDeliveryList = function() {
+        if (window.location.href.indexOf('delivery/delivery') != -1) {
+            window.open(`/v2/${ vm.app_id }/` + 'delivery' + '/0/details', "_blank");
+            return;
+        }
         if (typeof $rootScope.selectDeliveryRow !== 'undefined' && $rootScope.selectDeliveryRow != null) {
             if ($rootScope.selectDeliveryRow.delivery != null) {
                 toastr.error('This item already has a delivery!');
