@@ -1273,12 +1273,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         let productTypeGroup  = response.data.payload.productTypeGroup;
                         let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
                         let payload1 = { Payload: {} };
+
                         $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
                             if (response.data.payload != 'null') {
                                let defaultUomAndCompany = _.find(response.data.payload, function(object) {
                                     return object.id == productTypeGroup.id;
                                });
-                               if (defaultUomAndCompany) {
+                               if (defaultUomAndCompany && defaultUomAndCompany.id == sludgeProductTypeGroup.id) {
                                     newProduct.robOnArrivalUom = defaultUomAndCompany.defaultUom;
                                     newProduct.uom = defaultUomAndCompany.defaultUom;
                                     newProduct.roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
@@ -2576,7 +2577,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     return object.id == productTypeGroup.id;
                                });
                                console.log(defaultUomAndCompany);
-                               if (defaultUomAndCompany) {
+                                if (defaultUomAndCompany && defaultUomAndCompany.id == sludgeProductTypeGroup.id) {
                                    ctrl.request.locations[locIdx].products[productKey].robOnArrivalUom = defaultUomAndCompany.defaultUom;
                                    ctrl.request.locations[locIdx].products[productKey].uom = defaultUomAndCompany.defaultUom;
                                    ctrl.request.locations[locIdx].products[productKey].roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
