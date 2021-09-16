@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { environment } from '@shiptech/environment';
 import { AppConfig } from '@shiptech/core/config/app-config';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { Select,Store } from '@ngxs/store';
 @Injectable({
     providedIn: 'root'
   })
