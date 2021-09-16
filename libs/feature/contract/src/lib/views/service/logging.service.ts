@@ -8,7 +8,7 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 
 export class MyMonitoringService {
   appInsights: ApplicationInsights;
-  constructor(private appConfig: AppConfig) {
+  constructor(private appConfig: AppConfig, private store: Store) {
     const configInstrumentationKey = this.appConfig.v1.INSTRUMENTATION_KEY;
     this.appInsights = new ApplicationInsights({
       config: {
@@ -39,6 +39,8 @@ export class MyMonitoringService {
   }
 
   logMetric(name: string, average: number, properties?: { [key: string]: any }) {
+    this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);      
     this.appInsights.trackMetric({ name: name, average: average }, properties);
   }
 
