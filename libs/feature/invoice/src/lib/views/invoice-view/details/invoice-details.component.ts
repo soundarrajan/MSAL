@@ -573,6 +573,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   //Default Values - strats
   orderId: number;
   gotDefaultValues: boolean = false; 
+  isNewFromDelivery: boolean = false; 
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public gridOptions_claims: GridOptions;
@@ -1892,7 +1893,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getBankAccountNumber() {
-    if (!this.formValues.counterpartyDetails.payableTo || (!this.gotDefaultValues && !this.formValues.id)) {
+    if (!this.formValues.counterpartyDetails.payableTo || (!this.gotDefaultValues && this.isNewFromDelivery && !this.formValues.id)) {
       return;
     }
     const counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
