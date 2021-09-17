@@ -1893,7 +1893,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getBankAccountNumber() {
-    if (!this.formValues.counterpartyDetails.payableTo || (!this.gotDefaultValues && this.isNewFromDelivery && !this.formValues.id)) {
+    if (!this.formValues.counterpartyDetails.payableTo || (!this.gotDefaultValues && (<any>window).isNewFromDelivery && !this.formValues.id)) {
+      (<any>window).isNewFromDelivery = false;
       return;
     }
     const counterPartyId = this.formValues.counterpartyDetails.payableTo.id;

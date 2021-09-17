@@ -77,7 +77,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
         // Create new invoice from delivery list // http://localhost:9016/#/invoices/invoice/edit/0
-        this.invoiceDetailsComponent.isNewFromDelivery = true;
         this.createNewInvoiceFromDelivery();
       } else if (localStorage.getItem('createInvoice')) {
         this.createNewInvoiceType();
@@ -172,12 +171,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   createNewInvoiceFromDelivery() {
     const data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
-
     localStorage.removeItem('invoiceFromDelivery');
-
+    
     this.invoiceService
-      .getNewInvoicDetails(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
+    .getNewInvoicDetails(data)
+    .subscribe((response: IInvoiceDetailsItemResponse) => {
+        (<any>window).isNewFromDelivery = true;
         this.setScreenActions(response);
         this.getDefaultValues();     
       });
