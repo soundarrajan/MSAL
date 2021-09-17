@@ -77,6 +77,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
         // Create new invoice from delivery list // http://localhost:9016/#/invoices/invoice/edit/0
+        this.invoiceDetailsComponent.isNewFromDelivery = true;
         this.createNewInvoiceFromDelivery();
       } else if (localStorage.getItem('createInvoice')) {
         this.createNewInvoiceType();
