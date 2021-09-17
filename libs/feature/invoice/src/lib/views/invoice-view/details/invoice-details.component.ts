@@ -1895,7 +1895,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getBankAccountNumber() {
-    if (!this.formValues.counterpartyDetails.payableTo) {
+    if (!this.formValues.counterpartyDetails.payableTo || (!this.gotDefaultValues && !this.formValues.id)) {
       return;
     }
     const counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
@@ -3282,16 +3282,24 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.getBankAccountNumber();
     }
   }
-
+  
   setPaybleTo(data) {
-    this.formValues.counterpartyDetails.payableTo = {
-      id: data.id,
-      name: data.name
-    };
+      this.formValues.counterpartyDetails.payableTo = {
+          id: data.id,
+          name: data.name
+        };
     // console.log(this.formValues.counterpartyDetails.payableTo);
-    this.changeDetectorRef.detectChanges();
     this.formValues.counterpartyDetails.counterpartyBankAccount = null;
+    this.changeDetectorRef.detectChanges();
     this.getBankAccountNumber();
+}
+verifyPayableToIsNull(data) {
+    if(!data) {
+        this.formValues.counterpartyDetails.payableTo = null;
+        this.formValues.counterpartyDetails.counterpartyBankAccount = null;
+        this.bankAccountNumbers = [];
+        this.changeDetectorRef.detectChanges();
+    }
   }
 
   getColorCodeFromLabels(statusObj, labels) {
