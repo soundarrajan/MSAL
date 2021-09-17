@@ -1,9 +1,9 @@
-﻿commit bf6804f4a1cd674d459472f68749015a470aa109
+﻿commit 6e810c94e8e49928816e43200e8147ca6422ed88
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Sep 17 12:31:08 2021 +0000
+Date:   Fri Sep 17 13:38:12 2021 +0000
 
-    Merged PR 13645: #35241: An indication of a new bunker plan warning popup instead of success issue has fixed
+    Merged PR 13648: #35135: Generating a new Bunker Plan check current vessel planid with prev vessel plan id issue has done
     
-    Related work items: #35241
+    Related work items: #35135
 
 branch: master
