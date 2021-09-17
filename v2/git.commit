@@ -1,9 +1,7 @@
-﻿commit 51d7c1392a8fac40d4929eacb2b09903dfab795a
+﻿commit 716f913598f8863da61f11aeef4c78bad8858bfa
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Sep 17 05:25:43 2021 +0000
+Date:   Fri Sep 17 12:18:41 2021 +0000
 
-    Merged PR 13611: #33661: Bunker plan - Request in option 2 should be shown as 'Alt.port' FE changes has done
-    
-    Related work items: #33661
+    Merged PR 13643: #35135: Generating a new Bunker Plan "Generate" action button is inactive issue has fixed
 
 branch: master
