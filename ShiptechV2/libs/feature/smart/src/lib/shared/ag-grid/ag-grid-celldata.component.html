@@ -109,7 +109,7 @@
        <div class="port-future-req" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
           <div class="row">
             <span class=" col-6 main-header">Port of {{params.value}}</span>
-            <span class=" col-6 right-align">ETA : {{moment(params?.data?.eta).format("DD/MM/YYYY")}}</span> <!-- | date: 'dd/MM/yyyy'-->
+            <span class=" col-6 right-align">ETA : {{moment.utc(params?.data?.eta).format("DD/MM/YYYY")}}</span> <!-- | date: 'dd/MM/yyyy'-->
           </div>   
           <div class="line"></div>
           <div>product Details</div>
