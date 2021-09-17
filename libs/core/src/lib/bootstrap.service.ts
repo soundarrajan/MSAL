@@ -26,6 +26,7 @@ import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { EmailStatusLookup } from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service';
+import { MsalService } from '@azure/msal-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class BootstrapService {
   constructor(
     private appConfig: AppConfig,
     private legacyCache: LookupsCacheService,
-    private adal: AdalService,
+    private msalService: MsalService,
     private http: HttpClient,
     private authService: AuthenticationService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -69,6 +70,24 @@ export class BootstrapService {
     );
   }
 
+  init(): Observable<any> {
+    // TODO: Implement proper logging here
+
+    // Note: Order is very important here.
+    return this.loadAppConfig().pipe(
+      tap(() => this.setupLogging()),
+      concatMap(() => this.setupAuthentication()),
+      concatMap(() => this.setupDeveloperToolbar()),
+      // concatMap(() => this.loadUserProfile()),
+      // concatMap(() => this.loadGeneralTenantSettings()),
+      // concatMap(() => this.legacyLookupsDatabase.init()),
+      // concatMap(() => this.legacyCache.load()),
+      // concatMap(() => this.loadKnownLookups()),
+      tap(() => this.setupAgGrid()),
+      tap(() => this._initialized.next())
+    );
+  }
+
   private setupLogging(): void {
     this.loggerFactory.init({
       ...this.loggerSettings,
@@ -84,7 +103,9 @@ export class BootstrapService {
   private loadAppConfig(): Observable<IAppConfig> {
     const runtimeSettingsUrl = this.urlService.getRuntimeSettings();
     const legacySettingsUrl = this.urlService.getLegacySettings();
-
+    if (this.appConfig.v1) {
+      return of(this.appConfig);
+    }
     return forkJoin(
       this.http.get<ILegacyAppConfig>(legacySettingsUrl),
       this.http.get<IAppConfig>(runtimeSettingsUrl)
@@ -99,13 +120,13 @@ export class BootstrapService {
   }
 
   private setupAuthentication(): Observable<void> {
-    this.authService.init(this.appConfig.v1.auth);
-
-    if (this.authService.isAuthenticated) {
-      return EMPTY$;
-    }
+    // this.authService.init(this.appConfig.v1.auth);
+    // this.authService.isAuthenticated = true;
+    // if (this.authService.isAuthenticated) {
+    return EMPTY$;
+    // }
     //TODO: handle adal errors and token expire
-    this.authService.login();
+    // this.authService.login();
 
     return new Observable<void>(() => {
       // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.
@@ -172,6 +193,6 @@ export class BootstrapService {
 
 export function bootstrapApplication(
   bootstrapService: BootstrapService
-): () => Promise<any> {
-  return () => bootstrapService.initApp().toPromise();
+): () => Promise<void> {
+  return () => bootstrapService.init().toPromise();
 }

@@ -1,5 +1,9 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { AdalService } from 'adal-angular-wrapper';
+import {
+  MsalBroadcastService,
+  MsalInterceptor,
+  MsalService
+} from '@azure/msal-angular';
 import { AuthenticationContext } from './authentication-context';
 import { AuthenticationService } from './authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -12,11 +16,12 @@ export function authContextFactory(): AuthenticationContext {
 
 @NgModule()
 export class AuthenticationModule {
-  static forRoot(): ModuleWithProviders <any>{
+  static forRoot(): ModuleWithProviders<any> {
     return {
       ngModule: AuthenticationModule,
       providers: [
-        AdalService,
+        MsalService,
+        MsalBroadcastService,
         AuthenticationService,
         {
           provide: AuthenticationContext,
@@ -27,11 +32,16 @@ export class AuthenticationModule {
           useClass: AuthenticationInterceptor,
           multi: true
         }
+        // {
+        //   provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
+        //   useClass: MsalInterceptor,
+        //   multi: true
+        // }
       ]
     };
   }
 
-  static forFeature(): ModuleWithProviders <any> {
+  static forFeature(): ModuleWithProviders<any> {
     return {
       ngModule: AuthenticationModule,
       providers: [
@@ -40,6 +50,11 @@ export class AuthenticationModule {
           useClass: AuthenticationInterceptor,
           multi: true
         }
+        // {
+        //   provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
+        //   useClass: MsalInterceptor,
+        //   multi: true
+        // }
       ]
     };
   }
