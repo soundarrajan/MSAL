@@ -572,6 +572,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
   //Default Values - strats
   orderId: number;
+  gotDefaultValues: boolean = false; 
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public gridOptions_claims: GridOptions;
