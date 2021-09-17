@@ -323,12 +323,12 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
                 if (!statusIsAlreadyAdded) {
                     let skipStatus = false;
                     if ($scope.productTypeView && $scope.productTypeView.id == 1) {
-                        if (status.label == 'Additive Strategy' || status.label == 'Residue Strategy') {
+                        if (status.label == 'Alkali Strategy' || status.label == 'Residue Strategy') {
                             skipStatus = true;
                         }
                     }
                     if ($scope.productTypeView && $scope.productTypeView.id == 2) {
-                        if (status.label == 'Additive Strategy' || status.label == 'Bunker Strategy') {
+                        if (status.label == 'Alkali Strategy' || status.label == 'Bunker Strategy') {
                             skipStatus = true;
                         }
                     }

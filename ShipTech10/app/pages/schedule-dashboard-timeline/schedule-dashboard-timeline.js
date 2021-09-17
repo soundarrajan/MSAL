@@ -134,12 +134,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                                 if (!statusIsAlreadyAdded) {
                                     let skipStatus = false;
                                     if (ctrl.productTypeView && ctrl.productTypeView.id == 1) {
-                                        if (status.label == 'Additive Strategy' || status.label == 'Residue Strategy') {
+                                        if (status.label == 'Alkali Strategy' || status.label == 'Residue Strategy') {
                                             skipStatus = true;
                                         }
                                     }
                                     if (ctrl.productTypeView && ctrl.productTypeView.id == 2) {
-                                        if (status.label == 'Additive Strategy' || status.label == 'Bunker Strategy') {
+                                        if (status.label == 'Alkali Strategy' || status.label == 'Bunker Strategy') {
                                             skipStatus = true;
                                         }
                                     }
@@ -2216,17 +2216,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 })
                 if (!statusIsAlreadyAdded) {
                     let skipStatus = false;
-                    if (ctrl.productTypeView && ctrl.productTypeView.name == 'Bunker View') {
-                        if (status.label == 'Additive Strategy' || status.label == 'Residue Strategy') {
+                    if (ctrl.productTypeView && ctrl.productTypeView.id == 1) {
+                        if (status.label == 'Alkali Strategy' || status.label == 'Residue Strategy') {
                             skipStatus = true;
                         }
                     }
-                    if (ctrl.productTypeView && ctrl.productTypeView.name == 'Residue View') {
-                        if (status.label == 'Additive Strategy' || status.label == 'Bunker Strategy') {
+                    if (ctrl.productTypeView && ctrl.productTypeView.id == 2) {
+                        if (status.label == 'Alkali Strategy' || status.label == 'Bunker Strategy') {
                             skipStatus = true;
                         }
                     }
-                    if (ctrl.productTypeView && ctrl.productTypeView.name == 'Additive View') {
+                    if (ctrl.productTypeView && ctrl.productTypeView.id == 3) {
                         if (status.label == 'Residue Strategy' || status.label == 'Bunker Strategy') {
                             skipStatus = true;
                         }

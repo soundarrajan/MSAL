@@ -348,12 +348,12 @@ angular.module('shiptech.components').controller('FiltersController', [
             for (let i = 0; i < filters.length; i++) {
                 let skipFilters = false;
                 if ($rootScope.productTypeView && $rootScope.productTypeView.id == 1) {
-                    if (filters[i].value[0] == 'Additive Strategy' || filters[i].value[0] == 'Residue Strategy') {
+                    if (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Residue Strategy') {
                         skipFilters = true;
                     }
                 }
                 if ($rootScope.productTypeView && $rootScope.productTypeView.id == 2) {
-                    if (filters[i].value[0] == 'Additive Strategy' || filters[i].value[0] == 'Bunker Strategy') {
+                    if (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Bunker Strategy') {
                         skipFilters = true;
                     }
                 }

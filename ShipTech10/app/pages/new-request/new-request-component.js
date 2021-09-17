@@ -357,6 +357,17 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     if ([2, 3].indexOf(parseFloat(productView)) != -1) {
                                         ctrl.request.locations[i].products = [];
                                     }
+                                    if (parseFloat(productView) == 2) {
+                                        ctrl.addEmptyProduct(ctrl.request.locations[i].products, true, i);
+
+                                        let findSludgeProduct = _.find(ctrl.listsCache.Product, function(object) {
+                                            return object.name == 'SLUDGE DISCHARGE';
+                                        });
+                                        ctrl.requestProductDataOnChange = {'product': ctrl.request.locations[i].products[0].uniqueIdUI, 'location': i}
+                                        if (findSludgeProduct) {
+                                            ctrl.selectProduct(findSludgeProduct.id);
+                                        }
+                                    }
 
                                 }
                                 getTerminalLocations('locations',j.location.id);
