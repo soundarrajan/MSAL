@@ -1,7 +1,9 @@
-﻿commit 716f913598f8863da61f11aeef4c78bad8858bfa
+﻿commit bf6804f4a1cd674d459472f68749015a470aa109
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Sep 17 12:18:41 2021 +0000
+Date:   Fri Sep 17 12:31:08 2021 +0000
 
-    Merged PR 13643: #35135: Generating a new Bunker Plan "Generate" action button is inactive issue has fixed
+    Merged PR 13645: #35241: An indication of a new bunker plan warning popup instead of success issue has fixed
+    
+    Related work items: #35241
 
 branch: master
