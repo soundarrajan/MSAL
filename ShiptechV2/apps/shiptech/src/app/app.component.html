@@ -1,5 +1,18 @@
+<!-- <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+<button mat-raised-button *ngIf="loginDisplay" (click)="logOut()">
+  Logout
+</button>
+
+<div *ngIf="!loginDisplay">
+  <p>Please sign-in to see your profile information.</p>
+</div>
+
+<div *ngIf="loginDisplay">
+  <p>Login successful!</p>
+  <p>Request your profile information by clicking Profile above.</p>
+</div> -->
 <ngx-loading-bar [includeSpinner]="false"></ngx-loading-bar>
-<router-outlet></router-outlet>
+<router-outlet *ngIf="!isIframe"></router-outlet>
 <app-developer-toolbar *ngIf="!isProduction"></app-developer-toolbar>
 <!-- Note: In case we navigate directly to a route which takes time to load because it's either big or has a resolver which takes
      Note: time, the screen will show blank because the layout-main is displayed by the main module component, which is not shown

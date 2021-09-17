@@ -31,7 +31,6 @@
     >
     <button
       pButton
-      *ngIf="authService.userInfo.authenticated"
       (click)="authService.logout()"
       type="button"
       class="ui-button-danger"
