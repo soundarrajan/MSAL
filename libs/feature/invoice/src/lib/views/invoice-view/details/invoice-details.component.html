@@ -939,10 +939,8 @@
                           formValues.counterpartyDetails.counterpartyBankAccount
                         "
                       >
-                        <mat-option
-                          *ngFor="let bank of bankAccountNumbers"
-                          [value]="bank"
-                          >{{ bank.accountnumber }}
+                        <mat-option *ngFor="let bank of bankAccountNumbers" [value]="bank" >
+                          {{ bank.accountnumber }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -1094,6 +1092,7 @@
                         matTooltipClass="custom-tooltip"
                         [matAutocomplete]="auto"
                         autocomplete="off"
+                        (blur)="verifyPayableToIsNull(this.formValues.counterpartyDetails.payableTo)"
                         placeholder="Payble to"
                       />
                       <mat-autocomplete
