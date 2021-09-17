@@ -749,7 +749,22 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         window.open(url, "_blank");
     }
   }
-
+  checkAltPort(params) {
+    switch (params?.colDef?.field) {
+      case 'hsfo_estimated_lift':
+        return params?.data?.is_alt_port_hsfo;
+        break;
+      case 'ulsfo_estimated_lift':
+        return params?.data?.is_alt_port_ulsfo;
+        break;
+      case 'lsdis_estimated_lift':
+        return params?.data?.is_alt_port_lsdis;
+        break;
+      case 'hsdis_estimated_lift':
+        return params?.data?.is_alt_port_hsdis;
+        break;
+    }
+  }
   requestAvailable(params){
     let isRequestAvailable = false;
     switch(params?.colDef?.field){
