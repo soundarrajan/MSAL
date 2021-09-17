@@ -759,9 +759,9 @@ export class VesselInfoComponent implements OnInit {
             data: {message : 'latest bunker plan is Invalid', hideActionbtn: true }
           });
         } else if(data?.planStatus == 'INP' && ((data?.plan_id).trim() != prevPlanId) && vesselCode) {
-          const dialogValidRef = this.dialog.open(WarningoperatorpopupComponent, {
+          const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
+            panelClass: ['success-popup-panel'],
             width: '350px',
-            panelClass: 'confirmation-popup-operator',
             data: {message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`, hideActionbtn: true }
           });
         }
