@@ -86,7 +86,7 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
         * @param {String} status - status for broadcast
         */
         $scope.breadcrumbsFilter = function(status, no, productTypeView) {
-            if (productTypeView && ['Bunker View', 'Residue View', 'Additive View'].indexOf(productTypeView.name) != -1) {
+            if (productTypeView && ['Bunker View', 'Residue View', 'Alkali View'].indexOf(productTypeView.name) != -1) {
                 console.log('user select product type view');
                 $scope.statusList = [];
                 $scope.productTypeView = angular.copy(productTypeView);
