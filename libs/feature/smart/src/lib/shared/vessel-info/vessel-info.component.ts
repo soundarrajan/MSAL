@@ -527,7 +527,9 @@ export class VesselInfoComponent implements OnInit {
     this.checkAutoPlanGenInProgress = true;
     //Trigger gen plan status auto update on vessel change after clear mem leakage
     this.observableRef$.unsubscribe();
-    this.VesselHasNewPlanJob();
+    setTimeout(() => {
+      this.VesselHasNewPlanJob();
+    }, 500);
   }
   TotalCommentCount(count: any) {
     this.totalCommentCount = count;
