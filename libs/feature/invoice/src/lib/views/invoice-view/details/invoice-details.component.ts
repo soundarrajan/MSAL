@@ -2597,13 +2597,39 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           return;
         }
       }
-        (<any>window).startApproveInvoiceTime = Date.now();
-        this.invoiceService
-        .approveInvoiceItem(valuesForm)
-        .subscribe((result: any) => {
-            this.handleServiceResponse(result, 'Invoice approved successfully.');
-            this.myMonitoringService.logMetric('Approve ' + (<any>window).location.href, Date.now() - (<any>window).startApproveInvoiceTime, (<any>window).location.href);
-        });
+      if (this.formValues.documentType.name == 'Pre-claim Credit Note' ||
+        this.formValues.documentType.name == 'Pre-claim Debit Note')
+      {
+        if(!this.formValues.relatedInvoices.some(el => el.invoiceType.name == 'Final Invoice' &&
+          el.isDeleted == false && el.invoiceStatus.name == 'Approved')) {
+          let invType = this.formValues.documentType.name == 'Pre-claim Credit Note' ? "CN": "DN";
+          this.spinner.hide();
+          this.formSubmitted = false;
+          this.toastr.error(
+            `Please approve the Final Invoice first to proceed with approval of Pre-claim ${invType}`
+          );
+          return;
+        }
+      }
+      if (this.formValues.documentType.name == 'Pre-claim Debit Note')
+      {
+        if(!this.formValues.relatedInvoices.some(el => el.invoiceType.name == 'Pre-claim Credit Note' &&
+          el.isDeleted == false && el.invoiceStatus.name == 'Approved')) {
+          this.spinner.hide();
+          this.formSubmitted = false;
+          this.toastr.error(
+            `Please approve the Pre-claim Credit Note first to proceed with approval of Pre-claim DN`
+          );
+          return;
+        }
+      }
+      (<any>window).startApproveInvoiceTime = Date.now();
+      this.invoiceService
+      .approveInvoiceItem(valuesForm)
+      .subscribe((result: any) => {
+          this.handleServiceResponse(result, 'Invoice approved successfully.');
+          this.myMonitoringService.logMetric('Approve ' + (<any>window).location.href, Date.now() - (<any>window).startApproveInvoiceTime, (<any>window).location.href);
+      });
     } else if (option == 'create') {
       this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
