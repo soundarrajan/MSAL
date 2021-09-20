@@ -353,6 +353,7 @@
       style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 45px;">
       <!-- style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 90px;"> -->
       {{params.value}}</div>
+    <div class="red-indication" *ngIf="params.data?.redelivery_port!=''">.</div>
       <div style="width:15px;">
         <div class="info-i" (click)="toggleMenu3Info($event)" 
           (mouseenter)="!menuClick  && toggleMenuInfo($event,params.value);"
@@ -376,7 +377,7 @@
     <div matTooltip="{{params.value}}" style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 45px;">
       {{params.value}}
     </div>
-    <div class="red-indication" *ngIf="params.data?.redelivery_port">.</div>
+    <div class="red-indication" *ngIf="params.data?.redelivery_port!=''">.</div>
     <div style="width:15px;">
       <div class="info-i" (click)="toggleMenu3Info($event)" 
         (mouseenter)="!menuClick  && toggleMenuInfo($event,params.value);"
@@ -401,7 +402,7 @@
             <mat-icon class="close">close</mat-icon>
           </div>
         </div>
-        <div  *ngIf="params.data?.redelivery_port"><i class="fa fa-circle redelivery-indication" aria-hidden="true"></i> <span class="redelivery-info">Port for Redelivery</span></div>
+        <div  *ngIf="params.data?.redelivery_port!=''"><i class="fa fa-circle redelivery-indication" aria-hidden="true"></i> <span class="redelivery-info">Port for Redelivery</span></div>
       <div class="line"></div>
         <div class="row info-content">
           <div  class="sub-header" >
