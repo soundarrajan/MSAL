@@ -1345,22 +1345,22 @@ export class OlMapComponent implements OnInit, AfterViewInit {
           this.showPortList[0].position = 0;
         }
         else if (this.showPortList.length == 2) {
-          this.showPortList[0].position = 1;
+          this.showPortList[0].position = 0;
           this.showPortList[1].position = 0;
         }
       }
       else {
         if (this.showPortList.length == 1) {
-          this.showPortList[0].position = 1;
+          this.showPortList[0].position = 0;
         }
         else if (this.showPortList.length == 2) {
-          this.showPortList[0].position = 2;
-          this.showPortList[1].position = 1;
+          this.showPortList[0].position = 0;
+          this.showPortList[1].position = 0;
         }
         else if (this.showPortList.length == 3) {
-          this.showPortList[0].position = 2;
+          this.showPortList[0].position = 0;
           this.showPortList[1].position = 0;
-          this.showPortList[2].position = 1;
+          this.showPortList[2].position = 0;
         }
       }
       if (this.showVesselPop) {
