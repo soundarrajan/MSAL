@@ -26,7 +26,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             });
         };
         ctrl.$onChanges = function(changes) {
-            if (changes.vesselId.isFirstChange() || changes.vesselId.currentValue == 0) {
+            if (changes.vesselId?.isFirstChange() || changes.vesselId?.currentValue == 0) {
                 return false;
             }
         };
