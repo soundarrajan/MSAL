@@ -82,10 +82,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.setLocations(
             spotNegotiation.currentRequestSmallInfo[0].requestLocations
           );
-          if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
-            this.counterpartyList = spotNegotiation.counterpartyList;
-            this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
-          }
+        }
+        if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
+          this.counterpartyList = spotNegotiation.counterpartyList;
+          this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
         }
     });
   }, 100);
