@@ -1290,7 +1290,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                let defaultUomAndCompany = _.find(response.data.payload, function(object) {
                                     return object.id == productTypeGroup.id;
                                });
-                               if (defaultUomAndCompany && defaultUomAndCompany.id == sludgeProductTypeGroup.id) {
+                               if (defaultUomAndCompany) {
                                     newProduct.robOnArrivalUom = defaultUomAndCompany.defaultUom;
                                     newProduct.uom = defaultUomAndCompany.defaultUom;
                                     newProduct.roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
@@ -2588,7 +2588,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     return object.id == productTypeGroup.id;
                                });
                                console.log(defaultUomAndCompany);
-                                if (defaultUomAndCompany && defaultUomAndCompany.id == sludgeProductTypeGroup.id) {
+                                if (defaultUomAndCompany) {
                                    ctrl.request.locations[locIdx].products[productKey].robOnArrivalUom = defaultUomAndCompany.defaultUom;
                                    ctrl.request.locations[locIdx].products[productKey].uom = defaultUomAndCompany.defaultUom;
                                    ctrl.request.locations[locIdx].products[productKey].roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
