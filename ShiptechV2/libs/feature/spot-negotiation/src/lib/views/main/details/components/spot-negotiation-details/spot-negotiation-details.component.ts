@@ -60,7 +60,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
     });
 
-    setTimeout(() => {
+    // setTimeout(() => {
+
       this.store.subscribe(({ spotNegotiation }) => {
           this.rowData_aggrid = spotNegotiation.locations;
           this.CurrentRequestData = spotNegotiation.requests;
@@ -68,7 +69,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             const currentReqDatalength = this.CurrentRequestData[0].requestProducts.length;
             this.columnDef_aggrid[1].headerGroupComponentParams.currentReqDatalength = currentReqDatalength;
             this.columnDef_aggridObj = [];
-
+            this.rowData_aggridobj = [];
             for( let i = 0; i < this.CurrentRequestData.length ; i++){
               var filterobj  = this.rowData_aggrid.filter(filter => filter.locationId == this.CurrentRequestData[i].locationId);
               this.rowData_aggridobj[i] = filterobj;
@@ -185,7 +186,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
 
 
-    }, 100);
+    // }, 100);
   }
 
   //   ngAfterViewInit() {
