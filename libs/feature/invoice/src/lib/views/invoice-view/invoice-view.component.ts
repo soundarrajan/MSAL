@@ -85,6 +85,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         this.toastr.success('Credit note is Created!');
         localStorage.removeItem('createCreditNote');
         this.setScreenActions(data);
+        this.getDefaultValues(); 
       } else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
         this.createCreditNoteFromInvoiceClaims(
           'createCreditNoteFromInvoiceClaims'
