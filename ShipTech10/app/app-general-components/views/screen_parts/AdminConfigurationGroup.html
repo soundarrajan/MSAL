@@ -1100,7 +1100,7 @@
                 </div>
             </div>
             <div class="row">
-                <!-- <div class="col-md-4 ">
+                <div class="col-md-4 ">
                     <div class="form-group row"
                         ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
                         <label for="needValidationOnQuoteByDateExpiry" class="simpleLookupLabel"
@@ -1135,7 +1135,7 @@
                                 ng-model="formValues.procurement.offer.needSupplierQuoteValidityDateExpiry"></select>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
                         <div class="form_input form_input_isSelerPortalNeeded">
@@ -1151,57 +1151,8 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_isDisplaySellerRating">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisDisplaySellerRating"
-                                        id="isDisplaySellerRating"
-                                        ng-model="formValues.procurement.offer.isDisplaySellerRating" /> {{ CM.app_id +
-                                    '.DISPLAY_SELLER_RATING' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_isSkipOfferConfirmation">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisSkipOfferConfirmation"
-                                        id="isSkipOfferConfirmation"
-                                        ng-model="formValues.procurement.offer.isSkipOfferConfirmation" /> {{ CM.app_id +
-                                    '.SKIP_OFFER_CONFIRMATION' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="row">
-                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_isPhysicalSupplierMandatoryForQuoting">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisPhysicalSupplierMandatoryForQuoting"
-                                        id="isPhysicalSupplierMandatoryForQuoting"
-                                        ng-model="formValues.procurement.offer.isPhysicalSupplierMandatoryForQuoting" /> {{ CM.app_id +
-                                    '.PHYSICAL_SUPPLIER_MANDATORY_FOR_QUOTING' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="row">
                 <div class="col-md-4">
                     <div class="form-group  row">
                         <div class="form_input form_input_isSkipRfqAllowed">
