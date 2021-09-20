@@ -4415,9 +4415,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.getVesselSchedules = function(param, locationObj) {
             let locationId = locationObj?.location?.id;
+            window.countOfGetVesselSchedules = 0;
             // ctrl.setSelectedPortCall = locationObj?.portCallId;
             ctrl.setSelectedPortCall = locationObj?.vesselVoyageDetailId;
-           ctrl.EnableSingleSelect = false;
+            ctrl.EnableSingleSelect = false;
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
                     let locationFilterModel = {

@@ -113,6 +113,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
         }
 	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page, Filters, portCallVoyageId) => {
             let filterPayload = [];
+            window.countOfGetVesselSchedules += 1;
             ctrl.EnableSingleSelect = EnableSingleselect;
             ctrl.portCallVoyageId = portCallVoyageId;
             if(Page == 'NewOrder'){
@@ -143,7 +144,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             }
             console.log('PORT CALL');
             console.log(ctrl.portCallVoyageId);
-            if(!ctrl.islocationPortEnabled){
+            if(!ctrl.islocationPortEnabled && window.countOfGetVesselSchedules ==  1){
                  lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, filterPayload).then((data) => {
                     ctrl.data = data.payload;
                     ctrl.data1 = angular.copy(data.payload);
@@ -168,7 +169,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                             ]
                         });
                         // $timeout(() => {
-                            // $('.table').dataTable();
+                        //     $('.table').dataTable();
                         // },1000);
                     });
                 });
