@@ -223,7 +223,10 @@ export class BunkeringPlanComponent implements OnInit {
               cellRendererFramework: AGGridCellDataComponent, 
               cellClass: 'pd-1 aggrid-content-right', 
               headerClass: ['aggrid-colum-splitter-left'],
-              cellRendererParams: function (params) {return { type: 'link' }}
+              cellRendererParams: function (params) {return { type: 'link' }},
+              valueGetter: (params) => {
+                return params?.data?.hsfo_estimated_lift+params?.data?.vlsfo_estimated_lift;
+              }
             },
             {
               headerName: BunkeringPlanColumnsLabels.HsfoSafePort, headerTooltip: BunkeringPlanColumnsLabels.HsfoSafePort, field: 'hsfo_safe_port', width: 50, 

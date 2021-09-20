@@ -118,7 +118,7 @@ export class SmartOperatorComponent implements OnInit {
         params.api.sizeColumnsToFit();
       },
       onRowClicked: (event) =>{
-        let req = { vesselView: 'standard-view', name: event.data.vesselName,  id: event.data.vesselId, vesselId: event.data.vesselId }
+        let req = { vesselView: 'standard-view', name: event.data.vesselName,  id: event.data.vesselId, vesselId: event.data.vesselId, vesselCode: event.data.vesselCode }
          this.localService.setVesselPopupData(req);
          
          if(this.coldefOnClick != 'vesselName' && this.coldefOnClick != 'newrequest'){
@@ -262,7 +262,7 @@ export class SmartOperatorComponent implements OnInit {
         params.api.sizeColumnsToFit();
       },
       onRowClicked: (event) =>{
-        let req = { vesselView: 'standard-view', name: event.data.vesselName,  id: event.data.vesselId, vesselId: event.data.vesselId }
+        let req = { vesselView: 'standard-view', name: event.data.vesselName,  id: event.data.vesselId, vesselId: event.data.vesselId, vesselCode: event.data.vesselCode }
          this.localService.setVesselPopupData(req);
          
          if(this.coldefOnClick != 'vesselName'){
