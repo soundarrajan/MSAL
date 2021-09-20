@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
+// import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
 
 // Not found
 // import { OperationalAmountDialog } from 'src/app/movements/popup-screens/operational-amount.component';
@@ -40,7 +40,6 @@ import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change
         class="popup-icon"
         matTooltip="View Operational Calc."
         matTooltipShowDelay="200"
-        (click)="openOperationalAmtPopup()"
       ></div>
     </div>
     <div
@@ -53,7 +52,6 @@ import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change
         [ngClass]="{ 'popup-icon-active': popupOpen }"
         matTooltip="View Operational Calc."
         matTooltipShowDelay="200"
-        (click)="openOperationalAmtPopup()"
       ></div>
     </div>
     <div *ngIf="params.type === 'view-link'">
@@ -86,9 +84,9 @@ import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change
       </button>
     </div>
     <div *ngIf="params.type === 'change-logs-btn'">
-      <button mat-raised-button class="blue-button h-25" (click)="changeLog()">
+      <!-- <button mat-raised-button class="blue-button h-25" (click)="changeLog()">
         Change Logs
-      </button>
+      </button> -->
     </div>
     <div
       *ngIf="params.type === 'cell-edit-sort-order'"
@@ -153,18 +151,6 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     this.params.api.applyTransaction({ remove: newData });
   }
 
-  openOperationalAmtPopup() {
-    // this.popupOpen = true;
-    // const dialogRef = this.dialog.open(OperationalAmountDialog, {
-    //   width: '600px',
-    //   maxHeight: '600px',
-    //   panelClass: 'movements-popup-grid'
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   this.popupOpen = false;
-    // });
-  }
-
   navigateTo(e) {
     this.params.onClick(this.params);
   }
@@ -173,21 +159,6 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     const figmaLink = this.params.value;
     this.router.navigate([]).then(result => {
       window.open(figmaLink, '_blank');
-    });
-  }
-
-  changeLog() {
-    const changeLogsData = this.params.data.changeLogs;
-    const dialogRef = this.dialog.open(ChangeLogPopupComponent, {
-      width: '100vw',
-      height: '95vh',
-      maxWidth: '95vw',
-      panelClass: 'mov-report-popup',
-      data: changeLogsData
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
   }
 }

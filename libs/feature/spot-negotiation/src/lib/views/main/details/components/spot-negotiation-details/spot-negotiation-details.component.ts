@@ -43,7 +43,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     width: '100%'
   };
 
-  private context: any;
+  context: any;
 
   menuOptions = [{ label: 'ETA' }, { label: 'ETB' }, { label: 'ETD' }];
   isEnabledView: boolean = false;
@@ -54,7 +54,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   //   width: '50%'
   // }
   ngOnInit(): void {
-    
+
     // Set Counterparty list;
     this.route.data.subscribe(data => {
       this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
@@ -88,7 +88,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                     resizable: false,
                     name: 'grid1',
                     groupId: 'grid1',
-              
+
                     children: [
                       {
                         headerName: '',
@@ -96,14 +96,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                         filter: true,
                         suppressMenu: true,
                         width: 35,
-              
+
                         //checkboxSelection: true,
                         resizable: false,
                         suppressMovable: true,
                         headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
                         cellClass:
                           'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
-              
+
                         cellRendererFramework: AGGridCellRendererV2Component,
                         cellRendererParams: { type: 'mat-check-box' }
                         //pinned: 'left'
@@ -179,7 +179,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
             }
         }
-        
+
       });
       this.isEnabledView = true;
 
@@ -272,7 +272,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   dataManupulation() {}
 
-  private rowClassRules = {
+  public rowClassRules = {
     customRowClass: function(params) {
       var offPrice = params.data.offPrice1;
       return offPrice == 100;
@@ -385,7 +385,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       resizable: false,
       marryChildren: true,
       headerGroupComponent: 'customHeaderGroupComponent',
-      headerGroupComponentParams: { 
+      headerGroupComponentParams: {
         type: 'single-bg-header'
       },
       children: [

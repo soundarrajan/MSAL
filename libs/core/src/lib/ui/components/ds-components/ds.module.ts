@@ -12,7 +12,7 @@ import { FooterV2Component } from './footer-v2/footer-v2.component';
 import { MasterChip } from './master-chip/master-chip.component';
 import { MasterSelectionDialog } from './pop-ups/master-selection-popup.component';
 import { OperationalAmountDialog } from './pop-ups/operational-amount.component';
-import { OpsSpecParameterDialog } from './pop-ups/ops-spec-parameter.component';
+// import { OpsSpecParameterDialog } from './pop-ups/ops-spec-parameter.component';
 import { SearchPopupDialog } from './pop-ups/search-popup.component';
 import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
 import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
@@ -44,7 +44,7 @@ import { HtmlDecodeReadonly } from '@shiptech/core/pipes/htmlDecode/html-decode-
     TabsComponent,
     AGGridCellActionsComponent,
     AGGridCellEditableComponent,
-    OpsSpecParameterDialog,
+    // OpsSpecParameterDialog,
     OperationalAmountDialog,
     SpecParameterDialog,
     MasterChip,
