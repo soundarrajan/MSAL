@@ -111,9 +111,10 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                 });
             });
         }
-	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page, Filters) => {
+	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page, Filters, portCallVoyageId) => {
             let filterPayload = [];
             ctrl.EnableSingleSelect = EnableSingleselect;
+            ctrl.portCallVoyageId = portCallVoyageId;
             if(Page == 'NewOrder'){
                 ctrl.isvoyagePortchangeEnabled = true;
             }else if(Page == "NewRequest"){
@@ -140,6 +141,8 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                     Value: value
                 }
             }
+            console.log('PORT CALL');
+            console.log(ctrl.portCallVoyageId);
             if(!ctrl.islocationPortEnabled){
                  lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, filterPayload).then((data) => {
                     ctrl.data = data.payload;
@@ -157,6 +160,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                     }
                     destroyDataT();
                     $timeout(() => {
+                        
                         ctrl.table = SimpleDatatable.init({
                             selector: '.simple-datatable',
                             order: [
@@ -164,7 +168,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                             ]
                         });
                         // $timeout(() => {
-                            $('.table').dataTable();
+                            // $('.table').dataTable();
                         // },1000);
                     });
                 });

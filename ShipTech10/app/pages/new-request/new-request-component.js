@@ -4447,7 +4447,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         filterPayload.push(...locationFilter);
 
                     }
-                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, ctrl.EnableSingleSelect,'NewRequest', filterPayload);
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, ctrl.EnableSingleSelect,'NewRequest', filterPayload, ctrl.setSelectedPortCall);
 	        	}
         	}
         };
