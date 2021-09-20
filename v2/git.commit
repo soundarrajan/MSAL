@@ -1,9 +1,13 @@
-﻿commit 6e810c94e8e49928816e43200e8147ca6422ed88
+﻿commit 47d01b1fe48f8a7fb378a95dc10e75686a2346df
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Sep 17 13:38:12 2021 +0000
+Date:   Mon Sep 20 13:23:48 2021 +0000
 
-    Merged PR 13648: #35135: Generating a new Bunker Plan check current vessel planid with prev vessel plan id issue has done
+    Merged PR 13678: #35604-Bunker plan: Alt port, #35574-Bunker Plan_ The redelivery indiaction, #35734-Table view: All my vessels/Unamanageable vessels blocker issue has fixed
     
-    Related work items: #35135
+    Bug 35604: Bunker plan: Alt port displayed for bunkering 2 request
+    Bug 35574: Bunker Plan_ The redelivery indiaction not working properly.
+    Bug 35734: Table view: All my vessels/Unamanageable vessels to Bunker plan
+    
+    Related work items: #35574, #35604, #35734
 
 branch: master
