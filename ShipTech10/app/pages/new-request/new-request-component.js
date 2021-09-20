@@ -786,7 +786,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         /* END "REQUEST COPY" FUNCTIONALITY.
         /*****************************************************************************************************/
         ctrl.goSpot = function(verifyContracts) {
-            debugger;
             var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
             if (validActiveSpecGroupMessage != true) {
                 toastr.error(validActiveSpecGroupMessage);
@@ -818,24 +817,19 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.buttonsDisabled = true;
             if (ctrl.request.requestGroup !== null) {
                 screenLoader.showLoader();
-                window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/group-of-requests/'+ ctrl.request.requestGroup.id +'/details'), '_self');
+                $state.go(STATE.GROUP_OF_REQUESTS, {
+                    groupId: ctrl.request.requestGroup.id
+                });
             } else {
                 screenLoader.showLoader();
                 groupOfRequestsModel.groupRequests([ ctrl.request.id ]).then(
                     (data) => {
                         ctrl.buttonsDisabled = false;
                         var requestGroup = data.payload;
-                        // $http.post(` ${ API.BASE_URL_DATA_NEGOTIATION }/groups/create`, payload).then((response) => {
-                        //     if (response) {
-                        //         if (response.data) {
-                        //             ctrl.hasAccess = true;
-                        //         }
-                        //     } else {
-                        //         ctrl.hasAccess = false;
-                        //     }
-                        // });
-                        window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/group-of-requests/'+requestGroup[0].requestGroup.id+'/details'), '_self');
-                       
+                        $state.go(STATE.GROUP_OF_REQUESTS, {
+                            // group: requestGroup,
+                            groupId: requestGroup[0].requestGroup.id
+                        });
                     },
                     () => {
                         ctrl.buttonsDisabled = false;
