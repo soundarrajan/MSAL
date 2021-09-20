@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef, } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-spotnego-additionalcost',
@@ -94,7 +93,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   addNew() {
     this.tabledatas2.push(this.newtabledata)
     this.newtabledata = {};
-    // this.scrollToBottom();    
+    // this.scrollToBottom();
   }
   delete(i) {
     this.tabledatas2.splice(i, 1);

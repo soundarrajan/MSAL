@@ -25,6 +25,18 @@
     },
     "feature-ete": {
       "tags": []
+    },
+    "feature-delivery": {
+      "tags": []
+    },
+    "feature-contract": {
+      "tags": []
+    },
+    "feature-smart": {
+      "tags": []
+    },
+    "feature-spot-negotiation": {
+      "tags": []
     }
   }
 }

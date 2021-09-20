@@ -28,17 +28,17 @@ export class FooterV2Component implements OnInit {
     //this.pageChange.emit(event)
   }
 
-  collection = [];
+  // collection = [];
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(
-      'data-picker',
-      sanitizer.bypassSecurityTrustResourceUrl(
-        '../assets/customicons/datepicker.svg'
-      )
-    );
+    // iconRegistry.addSvgIcon(
+    //   'data-picker',
+    //   sanitizer.bypassSecurityTrustResourceUrl(
+    //     '../assets/customicons/datepicker.svg'
+    //   )
+    // );
 
-    for (let i = 1; i <= 100; i++) {
-      this.collection.push(`item ${i}`);
-    }
+    // for (let i = 1; i <= 100; i++) {
+    //   this.collection.push(`item ${i}`);
+    // }
   }
 }

@@ -6,7 +6,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-spot-negotiation-new-comments',

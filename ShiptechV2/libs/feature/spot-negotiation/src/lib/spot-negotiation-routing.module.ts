@@ -1,5 +1,4 @@
 import { MainSpotNegotiationComponent } from './views/main-spot-negotiation.component';
-import { SpotNegotiationModule } from './spot-negotiation.module';
 import { SpotNegotiationComponent } from './views/main/details/spot-negotiation.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule, Type } from '@angular/core';

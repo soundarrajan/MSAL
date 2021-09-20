@@ -38,7 +38,7 @@ export class SupplierCommentsPopupComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selectItem(e) {
+  selectItem(e,i) {
 
   }
 
