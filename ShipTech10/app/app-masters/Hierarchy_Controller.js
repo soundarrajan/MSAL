@@ -136,8 +136,15 @@ APP_MASTERS.controller('Master_Hierarchy', [
 			for (i = 0; i < list.length; i += 1) {
 				node = list[i];
 				if (node.parentId !== 0) {
-					list[map[node.parentId]].children.push(node);
-					list[map[node.parentId]].nameList.push(node.name);
+					if (map[node.parentId] && list[map[node.parentId]]) {
+						list[map[node.parentId]].children.push(node);
+						list[map[node.parentId]].nameList.push(node.name);
+					} else {
+						console.log('Without parent');
+						console.log(node);
+						console.log(map[node.parentId]);
+						roots.push(node);
+					}
 				} else {
 					roots.push(node);
 				}
