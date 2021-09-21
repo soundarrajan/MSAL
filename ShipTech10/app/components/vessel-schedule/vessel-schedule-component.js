@@ -114,6 +114,13 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
 	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page, Filters, portCallVoyageId) => {
             let filterPayload = [];
             window.countOfGetVesselSchedules += 1;
+            if (typeof window.countOfGetVesselSchedules != 'undefined') {
+                if (window.countOfGetVesselSchedules > 1 && portCallVoyageId) {
+                    return;
+                } else if (!portCallVoyageId && window.countOfGetVesselSchedules > 2) {
+                    return;
+                }
+            }
             ctrl.EnableSingleSelect = EnableSingleselect;
             ctrl.portCallVoyageId = portCallVoyageId;
             if(Page == 'NewOrder'){
@@ -144,9 +151,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
             }
             console.log('PORT CALL');
             console.log(ctrl.portCallVoyageId);
-            if(!ctrl.islocationPortEnabled && window.countOfGetVesselSchedules ==  1){
+            if(!ctrl.islocationPortEnabled){
                  lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, filterPayload).then((data) => {
-                    ctrl.data = data.payload;
+                    ctrl.data = angular.copy(data.payload);
                     ctrl.data1 = angular.copy(data.payload);
                     $.each(ctrl.data, (k, v) => {
                         v.eta = $scope.formatDate(v.eta);
@@ -194,6 +201,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
 
         function destroyDataT() {
             if (ctrl.table) {
+                // ctrl.table.fnClearTable();
                 ctrl.table.fnDestroy();
                 ctrl.table = null;
             }

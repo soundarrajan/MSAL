@@ -647,11 +647,11 @@
                                                         </div>
                                                     </div>
                                                     <!-- end disabled ETA -->
-													
+                                                    
                                                     <!-- enabled ETA -->
                                                     <div class="form-group-sm00" ng-if="$ctrl.etaEnabled[locationIdx]">
                                                         <div class="input-group col-md-8 col-sm-12">
-																  
+                                                                  
                                                             <input ng-model="$ctrl.request.locations[locationIdx].eta"
                                                                    ng-disabled="$ctrl.disableAllFields"
                                                                    ng-change="$ctrl.etaChanged(location, locationIdx); $ctrl.validateRequestDateFields(location, locationIdx)"
@@ -673,7 +673,7 @@
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-																  
+                                                                  
                                                             <input ng-model="$ctrl.request.locations[locationIdx].etb"
                                                                    ng-disabled="$ctrl.disableAllFields"
                                                                    ng-change="$ctrl.validateRequestDateFields(location, locationIdx)"
@@ -695,7 +695,7 @@
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-																  
+                                                                  
                                                             <input ng-model="$ctrl.request.locations[locationIdx].etd"
                                                                    ng-disabled="$ctrl.disableAllFields"
                                                                    ng-change="$ctrl.validateRequestDateFields(location, locationIdx)"
@@ -720,7 +720,7 @@
 
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-																  
+                                                                  
                                                             <input ng-class="{'invalid': location.eta > location.etb || location.recentEta > location.etb}"
                                                                    ng-model="$ctrl.request.locations[locationIdx].recentEta"
                                                                    ng-disabled="$ctrl.disableAllFields"
@@ -876,10 +876,7 @@
                                                             <!-- <input decode-input-format name="{{ $ctrl.productInfoFields.PortCall.name }}" id="id_{{ $ctrl.productInfoFields.PortCall.name }}" uib-typeahead="portCallLocation as portCallLocation.locationName  for portCallLocation in options.PortCall | typeaheadCustomFilter:$viewValue:'locationName'" typeahead-on-select="" typeahead-editable="true" class="typeahead form-control" ng-model="$ctrl.request.portCall" ng-disabled="$ctrl.disableAllFields" ng-init="$ctrl.setPortCallDefaultView(location)"> -->
                                                             <input decode-input-format name="{{ $ctrl.productInfoFields.PortCall.name+$index }}" id="id_{{ $ctrl.productInfoFields.PortCall.name+$index }}" uib-typeahead="portCallLocation as portCallLocation.locationName  for portCallLocation in options.PortCall | typeaheadCustomFilter:$viewValue:'locationName'" typeahead-on-select="" typeahead-editable="true" class="typeahead form-control" ng-model="portCall[location.location.id]" ng-disabled="$ctrl.disableAllFields || $ctrl.checkProductStemmed(location)" ng-init="$ctrl.setPortCallDefaultView(location.location.id, location)">
                                                             <!-- <input decode-input-format name="{{ "Port Call" }}" id="id_{{ "Port Call" }}" uib-typeahead="portCallLocation as portCallLocation.locationName  for portCallLocation in options.PortCall | typeaheadCustomFilter:$viewValue:'locationName'" typeahead-on-select="" typeahead-editable="true" class="typeahead form-control" ng-model="$ctrl.request.portCall" ng-disabled="$ctrl.disableAllFields"> -->
-                                                          <!--   <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedules('portCall', location)"href="#route_schedule" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="$ctrl.disableAllFields || $ctrl.checkProductStemmed(location)">
-                                                                 <i class="glyphicon glyphicon-search"></i>
-                                                            </span> -->
-                                                            <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" data-toggle="modal" data-html="true" ng-click="$ctrl.getVesselSchedules('portCall', location)" href="#route_schedule" ng-disabled="$ctrl.disableAllFields || $ctrl.checkProductStemmed(location)">
+                                                            <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" data-toggle="modal" ng-click="$ctrl.getVesselSchedules('portCall', location)" href="#port_call_model" ng-disabled="$ctrl.disableAllFields || $ctrl.checkProductStemmed(location)">
                                                                 <i class="glyphicon glyphicon-search"></i>
                                                             </span>
                                                         </div>
@@ -1117,7 +1114,7 @@
                                                 </td>                                                
                                                 <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" style="width:10%">
                                                     {{ product.productStatus.displayName ? product.productStatus.displayName: product.productStatus.name }}
-                                                </td>	
+                                                </td>   
                                                 <td style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
                                                         <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption" data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
@@ -1128,7 +1125,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-																												 
+                                                                                                                 
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1351,8 +1348,8 @@
 </fieldset>
 <!-- <lookup-dialog class="modal fade in" id="lookup_dialog" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" vessel-id="$ctrl.request.vesselId" args="$ctrl.voyageId" on-vessel-select="$ctrl.selectVessel(vessel)" on-company-select="$ctrl.selectCompany(company)" on-location-select="$ctrl.selectPort(location, extraDetails)" on-product-select="$ctrl.selectProduct(product)" on-service-select="$ctrl.selectService(service)" on-buyer-select="$ctrl.selectBuyer(buyer)"></lookup-dialog> -->
 <!-- <sellers-dialog class="modal fade in sellers-dialog" id="agents" aria-hidden="true" data-width="90%" seller-types="$ctrl.agentCounterpartyTypeId" on-seller-select="$ctrl.selectAgent(sellerId)"></sellers-dialog> -->
+<vessel-schedule class="modal fade in requestScreen port_call_model" id="port_call_model" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" port-call-voyage-id="$ctrl.setSelectedPortCall" on-port-call-select="$ctrl.selectedPortCall(locations)"></vessel-schedule>
 <vessel-schedule class="modal fade in requestScreen" id="route_schedule" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedules(locations)"></vessel-schedule>
-<vessel-schedule class="modal fade in requestScreen" id="port_call_model" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" port-call-voyage-id="$ctrl.setSelectedPortCall" on-port-call-select="$ctrl.selectedPortCall(locations)"></vessel-schedule>
 <vessel-schedule class="modal fade in requestScreen route_schedule_mintoreach" id="route_schedule_mintoreach" aria-hidden="true" data-width="75%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedulesMintoReach(locations)"></vessel-schedule>
 <amend-dialog class="modal fade in" id="amend" aria-hidden="true" on-amend="$ctrl.amendRFQ()" on-reload="$ctrl.reloadRequest()"></amend-dialog>
 <spec-group-edit class="modal fade in" aria-hidden="true" data-width="66%">
