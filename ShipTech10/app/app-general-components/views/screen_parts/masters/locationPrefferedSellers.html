@@ -42,7 +42,7 @@
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
 				<td>
-					<multiselect ng-model="formValues.sellers[$index].locationContacts" options="formValues.sellers[$index].sellerContacts" class="multiselect" display-prop="email" id-prop="indexId" show-search="false"></multiselect>
+					<multiselect ng-model="formValues.sellers[$index].locationContacts" options="formValues.sellers[$index].locationContacts" class="multiselect" display-prop="email" id-prop="indexId" show-search="false"></multiselect>
 				</td>
 				<td style="width:30%"><input class="form-control" type="text" decode-input-format ng-model="value.comments"></td>
 			</tr>

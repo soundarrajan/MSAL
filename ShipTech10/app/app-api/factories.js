@@ -16,8 +16,8 @@ APP_API.factory('$Api_Service', [
     '$rootScope',
     'screenLoader',
     function($listsCache, $tenantSettings, $tenantConfiguration, tenantModel, API, $q, $http, $state, $translate, $cacheFactory, dataProcessors, $rootScope, screenLoader) {
-        let _debug = true;
-        let api_map = {
+        let _debug = false;
+        let api_map = { 
             general: {
                 nomenclatoare: {
                     json: {

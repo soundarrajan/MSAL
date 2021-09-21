@@ -1535,7 +1535,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
             ctrl.additionalCosts = result;
 
-            $.each(result, (addCostKey, additionalCost) => {
+			for (i = result.length - 1; i > 0; i--) {
+				additionalCost = result[i];
                 if (ctrl.data.status && (
                     // ctrl.data.status.name == 'Confirmed' ||
                     ctrl.data.status.name == 'PartiallyDelivered' ||
@@ -1545,7 +1546,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                    additionalCost.disabled = true;
                 }
                 ctrl.costTypeChanged(additionalCost);
-            });
+			}
 
             updateOrderSummary();
             return result;

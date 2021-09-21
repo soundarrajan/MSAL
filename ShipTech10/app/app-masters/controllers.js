@@ -3370,15 +3370,13 @@
                         toastr.error('Copy vessel cannot be same as current vessel!');
                         return;
                     }
-                    if($scope.formValues.vesselProducts.some(vp => vp.isDeleted == 0)) {
-                        $scope.sweetConfirmModal('Do you want to overwrite the BOPS and Tank details?', (response) => {
-                            if (response == true) {
-                                $scope.vessel_loadBopsCopy();
-                            }
-                        });
-                        return;
-                    }
-                    $scope.vessel_loadBopsCopy();
+                    // Check with user for overwrite
+                    $scope.sweetConfirmModal('This action will overwrite any existing values in BOPS details and vessel tank details sections. Do you want to continue?', (response) => {
+                        if (response == true) {
+                            $scope.vessel_loadBopsCopy();
+                        }
+                    });
+                    return;
                 }
                 if (name == 'specParameter' && vm.screen_id == 'specgroup') {
                     var row = $(`[name= "${ name }"]`).data('row-index');
@@ -10822,36 +10820,39 @@
                         $scope.formValues.vesselIsoSpecGroup = cvData.vesselIsoSpecGroup;
                         vm.calculateNewReserve('copyVessel');
                         
-                        let unlinkedVesselProducts = cvData.vesselProducts.map(function(vp) {
-                            vp.id = null;
-                            vp.createdBy = $rootScope.user;
-                            vp.createdOn = moment().format();
-                            vp.vessel = {
-                                'clientIpAddress':  $scope.formValues.clientIpAddress,
-                                'code': $scope.formValues.code,
-                                'collectionName': $scope.formValues.collectionName,
-                                'customNonMandatoryAttribute1': $scope.formValues.customNonMandatoryAttribute1,
-                                'displayName': $scope.formValues.displayName,
-                                'id': $scope.formValues.id,
-                                'internalName': $scope.formValues.internalName,
-                                'isDeleted': $scope.formValues.isDeleted,
-                                'modulePathUrl': $scope.formValues.modulePathUrl,
-                                'name': $scope.formValues.name,
-                                'userAction': $scope.formValues.userAction
-                            };
-                            vp.vesselProductTanks = vp.vesselProductTanks.map(function(vpt) {
-                                vpt.id = null;
-                                vpt.vessel = vp.vessel;
-                                vpt.vesselId = null;
-                                vpt.createdBy = $rootScope.user;
-                                vpt.createdOn = moment().format();
-                                vpt.vesselProduct = {
-                                    id: 0
+                        let unlinkedVesselProducts = [];
+                        if (cvData.vesselProducts.some(vp => vp.id > 0)) {
+                            unlinkedVesselProducts = cvData.vesselProducts.map(function(vp) {
+                                vp.id = null;
+                                vp.createdBy = $rootScope.user;
+                                vp.createdOn = moment().format();
+                                vp.vessel = {
+                                    'clientIpAddress':  $scope.formValues.clientIpAddress,
+                                    'code': $scope.formValues.code,
+                                    'collectionName': $scope.formValues.collectionName,
+                                    'customNonMandatoryAttribute1': $scope.formValues.customNonMandatoryAttribute1,
+                                    'displayName': $scope.formValues.displayName,
+                                    'id': $scope.formValues.id,
+                                    'internalName': $scope.formValues.internalName,
+                                    'isDeleted': $scope.formValues.isDeleted,
+                                    'modulePathUrl': $scope.formValues.modulePathUrl,
+                                    'name': $scope.formValues.name,
+                                    'userAction': $scope.formValues.userAction
                                 };
-                                return vpt;
+                                vp.vesselProductTanks = vp.vesselProductTanks.map(function(vpt) {
+                                    vpt.id = null;
+                                    vpt.vessel = vp.vessel;
+                                    vpt.vesselId = null;
+                                    vpt.createdBy = $rootScope.user;
+                                    vpt.createdOn = moment().format();
+                                    vpt.vesselProduct = {
+                                        id: 0
+                                    };
+                                    return vpt;
+                                });
+                                return vp;
                             });
-                            return vp;
-                        });
+                        }
                         if(!$scope.formValues.vesselProducts) {
                             $scope.formValues.vesselProducts = [];
                         }

@@ -3,7 +3,7 @@
  */
 
 APP_RATING.factory('Factory_Rating', ['$listsCache', '$tenantSettings', 'API', '$q', '$http', '$state', '$translate', '$cacheFactory', function($listsCache, $tenantSettings, API, $q, $http, $state, $translate, $cacheFactory) {
-    var _debug = true;
+    var _debug = false;
     var api_map = {
         "general": {
             "nomenclatoare": { "json": { "Payload": true }, "endpoint": API.BASE_URL_DATA_INFRASTRUCTURE + "/api/infrastructure/static/lists" },

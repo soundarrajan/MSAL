@@ -317,7 +317,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
             for (let i = 0; i < ctrl.requirements.length; i++) {
                 requirement = ctrl.requirements[i];
                 for (let j = 0; j < ctrl.requestOfferItems.length; j++) {
-                    offer = ctrl.requestOfferItems[i];
+                    offer = ctrl.requestOfferItems[j];
                     if (offer && offer.requestId === requirement.RequestId && offer.locationId === requirement.LocationId && offer.productId === requirement.ProductId && offer.sellerId === requirement.SellerId) {
                         requirement.OrderFields = {
                             ConfirmedQuantity: offer.confirmedQuantity
