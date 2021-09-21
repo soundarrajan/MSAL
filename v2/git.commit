@@ -1,9 +1,7 @@
-﻿commit 0415c7a43b3a758697141e7966d70fbd334568d5
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Sep 20 17:40:20 2021 +0000
+﻿commit ce5cff015d1de826101e4a3d16b438f0b5f186b5
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Tue Sep 21 16:30:20 2021 +0300
 
-    Merged PR 13685: #35574: Bunker Plan_ The redelivery indiaction icon alignment issue has fixed
-    
-    Related work items: #35574
+    Merge Support_10_10_1 into master branch
 
 branch: master
