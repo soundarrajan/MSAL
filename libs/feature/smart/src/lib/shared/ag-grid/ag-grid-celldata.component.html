@@ -77,17 +77,34 @@
     <div *ngIf="params?.data?.is_alt_port == 'Y' && requestAvailable(params); else content" matTooltip="Alt.port" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>  
     </div> -->
-    <div *ngIf="checkAltPort(params) == 'D'" matTooltip="{{params.value}}" [ngClass]="params.cellClass">
+    <!-- <div *ngIf="checkAltPort(params) == 'D'" matTooltip="{{params.value}}" [ngClass]="params.cellClass" -->
+    <div *ngIf="checkAltPort(params) == 'D'" 
+    #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverPlanLift" 
+    (mouseenter)="requestAvailable(params) && toggleMenuInfo($event);" (mouseleave)="toggleMenu2Info();" 
+    [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">{{params.value}}</a>
     </div>
     
     <div *ngIf="checkAltPort(params) == 'N'" matTooltip="0" [ngClass]="params.cellClass" style="color: white;">0 </div>
       
-    <div *ngIf="checkAltPort(params) == 'Y' && requestAvailable(params); else content" matTooltip="Alt.port" [ngClass]="params.cellClass">
+    <div *ngIf="checkAltPort(params) == 'Y' && requestAvailable(params); else content" matTooltip="Alt.port" 
+    #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverPlanLift" 
+    (mouseenter)="requestAvailable(params) && toggleMenuInfo($event);" (mouseleave)="toggleMenu2Info();" 
+    [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>  
     </div>
     <ng-template #content><div *ngIf="checkAltPort(params) == 'Y' && !requestAvailable(params); "matTooltip="{{params.value}}" [ngClass]="params.cellClass" style="color: white;">{{params.value}}</div></ng-template>
-
+    
+      <mat-menu class="port-future-req-popup" #hoverPlanLift="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
+        <ng-template matMenuContent let-PortReqData="ref">
+        <div class="port-future-req" [ngClass]="{'dark-theme':theme,'light-theme':!theme}" style="font-size: 14px;">
+          <div class="row col-12" *ngFor="let PortData of showProductRequestInfo(PortReqData)">
+            <strong>Request &nbsp;</strong> {{PortData?.request_id}} {{PortData?.request_product}} {{PortData?.estimated_lift}} MT
+            <!-- <strong>Request &nbsp;</strong> {{PortData?.request_id_vlsfo}} {{PortData?.request_product_vlsfo}} {{PortData?.vlsfo_estimated_lift}} MT -->
+          </div> 
+        </div>
+        </ng-template>
+      </mat-menu>
   </div>
   <div *ngIf="params.type=='request-link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
