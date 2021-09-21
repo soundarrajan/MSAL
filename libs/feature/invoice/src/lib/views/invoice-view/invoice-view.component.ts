@@ -86,6 +86,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         this.toastr.success('Credit note is Created!');
         localStorage.removeItem('createCreditNote');
         this.setScreenActions(data);
+        this.getDefaultValues(); 
       } else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
         this.createCreditNoteFromInvoiceClaims(
           'createCreditNoteFromInvoiceClaims'
@@ -172,12 +173,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   createNewInvoiceFromDelivery() {
     const data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
-
     localStorage.removeItem('invoiceFromDelivery');
-
+    
     this.invoiceService
-      .getNewInvoicDetails(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
+    .getNewInvoicDetails(data)
+    .subscribe((response: IInvoiceDetailsItemResponse) => {
+        (<any>window).isNewFromDelivery = true;
         this.setScreenActions(response);
         this.getDefaultValues();     
       });
@@ -354,16 +355,19 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 	
 	getDefaultValues() {
 		const requestPayload = this.invoiceDetailsComponent.formValues.orderDetails.order.id;		
-    this.invoiceService
-		.getDefaultValues(requestPayload)
-		.subscribe((response: any) => {
-				if (response) {
-					this.invoiceDetailsComponent.formValues.counterpartyDetails.counterpartyBankAccount = response.bankAccount;
-					this.invoiceDetailsComponent.formValues.counterpartyDetails.customer = response.customer;
-					this.invoiceDetailsComponent.formValues.counterpartyDetails.payableTo = response.payableTo;
-					this.changeDetectorRef.detectChanges();
-					console.log(response);
-				}
+      this.invoiceService.getDefaultValues(requestPayload).subscribe((response: any) => {
+        if (response) {
+          this.invoiceDetailsComponent.gotDefaultValues = true;
+          this.invoiceDetailsComponent.formValues.counterpartyDetails.customer = response.customer;
+          this.invoiceDetailsComponent.formValues.counterpartyDetails.payableTo = response.payableTo;
+          this.changeDetectorRef.detectChanges();
+          this.invoiceDetailsComponent.getBankAccountNumber();
+          setTimeout(()=>{
+            this.invoiceDetailsComponent.formValues.counterpartyDetails.counterpartyBankAccount = response.bankAccount;
+            this.changeDetectorRef.detectChanges();
+          })
+          console.log(response);
+        }
       });		
 	}
 

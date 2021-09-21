@@ -85,6 +85,9 @@
                     "
                     placeholder="Seller Invoice No"
                     (blur)="isFormValid({ useToaster: false })"
+                    [disabled]="
+                      formValues.documentType.name == 'Pre-claim Credit Note' || formValues.documentType.name == 'Pre-claim Debit Note'
+                    "
                   />
                   <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                 </mat-form-field>
@@ -946,10 +949,8 @@
                           formValues.counterpartyDetails.counterpartyBankAccount
                         "
                       >
-                        <mat-option
-                          *ngFor="let bank of bankAccountNumbers"
-                          [value]="bank"
-                          >{{ bank.accountnumber }}
+                        <mat-option *ngFor="let bank of bankAccountNumbers" [value]="bank" >
+                          {{ bank.accountnumber }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -1101,6 +1102,7 @@
                         matTooltipClass="custom-tooltip"
                         [matAutocomplete]="auto"
                         autocomplete="off"
+                        (blur)="verifyPayableToIsNull(this.formValues.counterpartyDetails.payableTo)"
                         placeholder="Payble to"
                       />
                       <mat-autocomplete
