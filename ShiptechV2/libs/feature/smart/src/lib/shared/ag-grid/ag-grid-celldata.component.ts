@@ -280,7 +280,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.menuTrigger.openMenu();
   }
 
-  toggleMenuInfo(event, data) {//onenter
+  toggleMenuInfo(event, data?:any) {//onenter
     this.infomenuTrigger.openMenu();
     var overlay = document.querySelector('.cdk-overlay-container');
     overlay.classList.add('removeOverlay');
@@ -762,6 +762,55 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         break;
       case 'hsdis_estimated_lift':
         return params?.data?.is_alt_port_hsdis;
+        break;
+    }
+  }
+  showProductRequestInfo(params) {
+    let requestInfo = [];
+    let data = params?.data;
+    let requestModel = {request_id: '', request_product: '', estimated_lift: ''};
+    switch (params?.colDef?.field) {
+      case 'hsfo_estimated_lift':
+        if(data?.request_id_hsfo) {
+          requestModel.request_id = data?.request_id_hsfo;
+          requestModel.request_product = data?.request_product_hsfo;
+          requestModel.estimated_lift = data?.hsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        if(data?.request_id_vlsfo) {
+          requestModel.request_id = data?.request_id_vlsfo;
+          requestModel.request_product = data?.request_product_vlsfo;
+          requestModel.estimated_lift = data?.vlsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'ulsfo_estimated_lift':
+        if(data?.request_id_ulsfo) {
+          requestModel.request_id = data?.request_id_ulsfo;
+          requestModel.request_product = data?.request_product_ulsfo;
+          requestModel.estimated_lift = data?.ulsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'lsdis_estimated_lift':
+        if(data?.request_id_lsdis) {
+          requestModel.request_id = data?.request_id_lsdis;
+          requestModel.request_product = data?.request_product_vlsfo;
+          requestModel.estimated_lift = data?.request_product_lsdis;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'hsdis_estimated_lift':
+        if(data?.request_id_hsdis) {
+          requestModel.request_id = data?.request_id_hsdis;
+          requestModel.request_product = data?.request_product_hsdis;
+          requestModel.estimated_lift = data?.hsdis_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
         break;
     }
   }
