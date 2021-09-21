@@ -42,7 +42,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
         ctrl.listsCache = $listsCache;
         ctrl.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy(ctrl.listsCache.ProductView[0]);
         $rootScope.productTypeView = $rootScope.productTypeView ? $rootScope.productTypeView : angular.copy(ctrl.listsCache.ProductView[0]);
-        window.productTypeView = $rootScope.productTypeView;
+        window.productTypeView = angular.copy($rootScope.productTypeView);
         $rootScope.$broadcast('$setProductTypeView', {
             productTypeView: $rootScope.productTypeView
         });

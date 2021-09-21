@@ -122,10 +122,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 } 
             }
 
-            if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
-                $scope.globalFilters = angular.copy($scope.checkPackedFiltersBasedOnView(angular.copy($scope.globalFilters)));
-            }
-        	// Apply filters
+            	// Apply filters
             $scope.applyFilters($scope.globalFilters);
         });
 
@@ -310,7 +307,11 @@ angular.module('shiptech.components').controller('FiltersController', [
                 data = [];
             }
 
-            $scope.packedFilters = $scope.packFilters(data);
+            if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
+                $scope.packedFilters = $scope.packFilters(angular.copy($scope.checkPackedFiltersBasedOnView(angular.copy(data))));
+            } else {
+                $scope.packedFilters = $scope.packFilters(data);
+            }
             $scope.packedFilters.raw = $rootScope.rawFilters;
             $rootScope.filterForExport = angular.copy($scope.packedFilters);
             $rootScope.filtersAppliedOps = angular.copy(data);
@@ -328,13 +329,16 @@ angular.module('shiptech.components').controller('FiltersController', [
                 if ($rootScope.clc_loaded) {
                     // console.log(123)
                     if (!ctrl.saveFilterActionEvent) {
-                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table') {
+                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' ||  $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
 	                        $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
                         } else {
                             $rootScope.$broadcast('filters-applied', $scope.packedFilters);
                         }
                     } else {
                         ctrl.saveFilterActionEvent = false;
+                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
+                            $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
+                        }
                     }
                 }
             }

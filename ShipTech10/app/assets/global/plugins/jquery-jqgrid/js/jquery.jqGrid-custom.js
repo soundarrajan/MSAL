@@ -517,6 +517,36 @@ var Cfg = {
                 return [item.column.columnName, item.$$hashKey];
             });
             console.log(Filters);
+            if (window.location.href.indexOf('schedule-dashboard-table') != -1) {
+                console.log(Filters);
+                console.log(window.productTypeView);
+                let filters = angular.copy(Filters);
+                let arrayOfFilters = [];
+                for (let i = 0; i < filters.length; i++) {
+                    let skipFilters = false;
+                    if (window.productTypeView && window.productTypeView.id == 1) {
+                        if (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Residue Strategy') {
+                            skipFilters = true;
+                        }
+                    }
+                    if (window.productTypeView && window.productTypeView.id == 2) {
+                        if (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Bunker Strategy') {
+                            skipFilters = true;
+                        }
+                    }
+                    if (window.productTypeView && window.productTypeView.id == 3) {
+                        if (filters[i].value[0] == 'Residue Strategy' || filters[i].value[0] == 'Bunker Strategy') {
+                            skipFilters = true;
+                        }
+                    }
+                    if (!skipFilters) {
+                        arrayOfFilters.push(filters[i]);
+                    }
+                }
+
+                console.log(arrayOfFilters);
+                Filters = angular.copy(arrayOfFilters);
+            }
             $.each(Filters, function(k, v) {
                 if (!_.isEmpty(v)) {
                     console.log(v);
