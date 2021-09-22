@@ -140,9 +140,6 @@ APP_MASTERS.controller('Master_Hierarchy', [
 						list[map[node.parentId]].children.push(node);
 						list[map[node.parentId]].nameList.push(node.name);
 					} else {
-						console.log('Without parent');
-						console.log(node);
-						console.log(map[node.parentId]);
 						roots.push(node);
 					}
 				} else {

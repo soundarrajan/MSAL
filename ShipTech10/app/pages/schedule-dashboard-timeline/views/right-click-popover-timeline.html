@@ -68,8 +68,13 @@
 		</div>
 	</div> -->
 	<div class="content-right-click">
-		<div class="popover-header header-right-click-pop-up">
-			<span> Request Details - {{$ctrl.vesselName | decodeReadOnly}}</span>
+		<div class="popover-header header-right-click-pop-up col-md-12">
+			<div class="request-detail-container">
+				<span> Request Details - {{$ctrl.vesselName | decodeReadOnly}}</span>
+			</div>
+			<div class="close-detail-container">
+				<a class="action-btn" ng-click="$ctrl.removePopup();"> <i class="close-icon-from-right-pop-up"></i></a>
+			</div>
 		</div>
 		<div class="content">
 			<div class="voyageDetailSection" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.uniqueVoyages">

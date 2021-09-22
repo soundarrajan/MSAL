@@ -647,6 +647,11 @@ angular.module('shiptech.components')
                 }
                 return false;
             }
+
+            ctrl.removePopup = function() {
+                $("schedule-dashboard-timeline .contextmenu").remove();
+
+            }
         }
 
     ]
