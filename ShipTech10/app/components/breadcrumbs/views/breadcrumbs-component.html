@@ -38,12 +38,11 @@
         </span>
     </div>
 
-     <div    ng-if="
-                   state.is(STATE.DASHBOARD_TIMELINE) || 
-                   state.is(STATE.HOME) ||
-                   state.is(STATE.DASHBOARD_TABLE)" class="views-container">
+      <div class="page-toolbar views-container schedule_toolbar" ng-if="state.is(STATE.DASHBOARD_TABLE) ||
+                                        state.is(STATE.DASHBOARD_TIMELINE) ||
+                                        state.is(STATE.HOME)">
 
-        <ul class="page-breadcrumb col col-xs-4 text-left">
+        <ul class="page-breadcrumb col col-xs-4 text-left views-left">
             <li ng-repeat="station in state.params.path">
 
                 <a ui-sref="{{station.uisref}}({screen_id: '{{state.params.screen_id}}'})" ng-if="station.uisref.indexOf('.single') >= 0"
@@ -59,7 +58,7 @@
                 <i ng-show="!$last" class="fa fa-angle-right"></i>
             </li>
         </ul>
-        <div class="col col-xs-4 text-center">
+        <div class="col col-xs-4 text-center views-center">
             <div class="mat-button-toggle-group mat-button-toggle-group-appearance-standard">
                 <div class="mat-button-toggle mat-button-toggle-appearance-standard" ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[0].id}">
                     <button
@@ -76,7 +75,7 @@
                             {{listsCache.ProductView[0].name}}
                       </div>
                     </button>
-                </div>
+                </div>  
                 <div class="mat-button-toggle mat-button-toggle-appearance-standard "  ng-class="{'mat-button-toggle-checked': productTypeView.id == listsCache.ProductView[1].id}" >
                    <button
                       class="mat-button-toggle-button mat-focus-indicator"
@@ -114,7 +113,7 @@
         </div>
     
 
-        <div class="btn-group pull-right col col-xs-4 text-right" >
+        <div class="btn-group pull-right col col-xs-4 text-right multiple-view-filter" >
             <span class="hidden">{{CheckForFilters}}</span>
             <span class="dropdown dropdown-quick-sidebar-toggler" ng-click="toggle()">
                 <a class="btn btn-fit-height dropdown-toggle filter_btn filter-multiple-views" ng-hide="CheckForFilters == 0">
