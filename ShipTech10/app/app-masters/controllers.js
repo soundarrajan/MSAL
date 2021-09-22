@@ -3613,6 +3613,7 @@
                                 if(field?.Name == 'PortCall') {
                                     //orderBy locationName to bypass below orderBy steps because of unavailabilty of name field
                                     $scope.options[field.Name] = _.orderBy(callback, [item => item.locationName.toLowerCase()], ['asc']);
+                                    $rootScope.$broadcast('getPortCallNameForEachLocation', $scope.options[field.Name]);
                                 } else {
                                     $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
                                 }

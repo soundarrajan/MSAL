@@ -218,32 +218,32 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                 ctrl.table = null;
             }
         };
-        $scope.formatDate = function(cellValue) {
-            
-            let dateFormat = $scope.momentDateFormat;
-            let hasDayOfWeek = false;
-            dateFormat = dateFormat.replace(/D/g, 'd').replace(/Y/g, 'y');
-            var formattedDate = moment(cellValue).format($scope.momentDateFormat);
-            if (formattedDate) {
-                let array = formattedDate.split(' ');
-                let format = [];
-                $.each(array, (k, v) => {
-                    if (array[k] != '00:00') {
-                        format = `${format + array[k] } `;
-                    }
-                });
-                formattedDate = format;
-            }
-
-            if (formattedDate) {
-                if (formattedDate.indexOf('0001') != -1) {
-                    formattedDate = '';
+        $scope.formatDate = function(elem) {
+            if (elem) {
+                var formattedDate = elem;
+                var dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
+                var hasDayOfWeek = false;
+                if (dateFormat.startsWith('DDD ')) {
+                    hasDayOfWeek = true;
+                    dateFormat = dateFormat.split('DDD ')[1];
                 }
-            }
-            if (cellValue != null) {
+                let date = Date.parse(elem);
+                date = new Date(date);
+                if (date) {
+                    let utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    // var utc = date.getTime();
+                    if (dateFormat.name) {
+                        dateFormat = dateFormat.name.replace(/d/g, 'D').replace(/y/g, 'Y');
+                    } else {
+                        dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
+                    }
+                    formattedDate = fecha.format(utc, dateFormat);
+                }
+                if (hasDayOfWeek) {
+                    formattedDate = `${moment(elem).format('ddd') } ${ formattedDate}`;
+                }
                 return formattedDate;
             }
-            return '';
         };
         
         function initDatatable(searchFlag) {
