@@ -123,9 +123,9 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
       </div>
       <div class="label" matTooltip="No. of Products">
         <div class="label-content" style="width:95%;">
-          <div class="label-element w-100">
+          <div class="label-element w-100" style="width:100%;">
             <div class="title">No. of Products</div>
-            <div class="value">{{params.currentReqDatalength}}</div>
+            <div class="value">{{params.currentReqDataLength}}</div>
           </div>
         </div>
       </div>

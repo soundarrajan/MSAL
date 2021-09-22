@@ -57,14 +57,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   // public grid2Width = {
   //   width: '50%'
   // }
+
   ngOnInit(): void {
     const self = this;
     // Set Counterparty list;
     this.route.data.subscribe(data => {
       this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
     });
-
-    // setTimeout(() => {
 
     this.store.subscribe(({ spotNegotiation }) => {
       // Clone locations object so we can edit (not ideal, i just continue what is done);
@@ -73,173 +72,164 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       );
 
       this.rowData_aggrid = locationsRowsClone;
-
       this.CurrentRequestData = spotNegotiation.requests;
-      if (this.CurrentRequestData && this.CurrentRequestData.length > 0) {
-        const currentReqDatalength = this.CurrentRequestData[0].requestProducts
-          .length;
-        this.columnDef_aggrid[1].headerGroupComponentParams.currentReqDatalength = currentReqDatalength;
-        this.columnDef_aggridObj = [];
-        this.rowData_aggridobj = [];
 
-        for (let i = 0; i < this.CurrentRequestData.length; i++) {
-          var filterobj = this.rowData_aggrid.filter(
-            filter => filter.locationId == this.CurrentRequestData[i].locationId
-          );
-
-          this.rowData_aggridobj[i] = filterobj;
-
-          this.columnDef_aggridObj[i] = Object.assign(
-            [],
-            this.columnDef_aggrid
-          );
-
-          for (
-            let j = 0;
-            j < this.CurrentRequestData[i].requestProducts.length;
-            j++
-          ) {
-            this.columnDef_aggridObj[i].push({
-              headerName: '',
-              headerTooltip: '',
-              headerGroupComponent: 'customHeaderGroupComponent',
-              headerGroupComponentParams: {
-                type: 'bg-header',
-                product: this.CurrentRequestData[i].requestProducts[j]
-              },
-              marryChildren: true,
-              resizable: false,
-              name: 'grid1',
-              groupId: 'grid1',
-
-              children: [
-                {
-                  headerName: '',
-                  field: 'check1',
-                  filter: true,
-                  suppressMenu: true,
-                  width: 35,
-
-                  //checkboxSelection: true,
-                  resizable: false,
-                  suppressMovable: true,
-                  headerClass:
-                    'header-checkbox-center checkbox-center ag-checkbox-v2',
-                  cellClass:
-                    'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
-
-                  cellRendererFramework: AGGridCellRendererV2Component,
-                  cellRendererParams: { type: 'mat-check-box' }
-                  //pinned: 'left'
-                },
-                {
-                  headerName: 'Offer price',
-                  headerTooltip: 'Offer price',
-                  field: 'offPrice1',
-                  onCellValueChanged: function(params) {
-
-                    const currentProduct =
-                    self.CurrentRequestData[i].requestProducts[j];
-
-                    // Destructuring params;
-                    const {
-                      node: { data: currentCell }
-                    } = params;
-
-                    const shouldForceChange = params.newValue !== params.oldValue
-
-                    currentCell.offPrice1 = params.newValue;
-                    // Calculate total price
-                    // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
-                    currentCell.tPr = currentCell.offPrice1;
-
-                    // Calculate ammount
-                    // Amount = Total Price * Max. Quantity
-                    currentCell.amt =
-                      currentCell.tPr * currentProduct.maxQuantity;
-
-                    // Calculate target diference
-                    // Target Difference = Total Price - Target Price
-                    currentCell.diff = currentCell.tPr - currentProduct.target;
-
-                    // Calculate total offer
-                    // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
-                    currentCell.totalOffer = 'DEMO 1234';
-
-                    if (shouldForceChange) {
-                      params.node.setDataValue('offPrice1', params.newValue);
-                    }
-                    return currentCell;
-                  },
-                  width: 260,
-                  cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
-                  cellRendererFramework: AGGridCellRendererV2Component,
-                  cellRendererParams: {
-                    label: 'price-calc',
-                    type: 'price-calc',
-                    cellClass: ''
-                  }
-                },
-                {
-                  headerName: 'T.Pr.($)',
-                  headerTooltip: 'T.Pr.($)',
-                  field: 'tPr',
-                  width: 150,
-                  cellClass: 'grey-opacity-cell pad-lr-0',
-                  cellStyle: params =>
-                    params.value == '518.50' ? { background: '#C5DCCF' } : null,
-                  cellRendererFramework: AGGridCellRendererV2Component,
-                  cellRendererParams: { type: 'addTpr', cellClass: '' }
-                },
-                {
-                  headerName: 'Amt ($)',
-                  headerTooltip: 'Amt ($)',
-                  field: 'amt',
-                  width: 150,
-                  cellClass: 'grey-opacity-cell pad-lr-0'
-                },
-                {
-                  headerName: 'Tar. diff',
-                  headerTooltip: 'Tar. diff',
-                  field: 'diff',
-                  width: 150,
-                  headerClass: 'border-right',
-                  cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
-                },
-                {
-                  headerName: 'MJ/KJ',
-                  headerTooltip: 'MJ/KJ',
-                  field: 'mj',
-                  width: 150,
-                  columnGroupShow: 'open',
-                  cellClass: 'grey-opacity-cell pad-lr-0'
-                },
-                {
-                  headerName: 'TCO ($)',
-                  headerTooltip: 'TCO ($)',
-                  field: 'tco',
-                  width: 150,
-                  columnGroupShow: 'open',
-                  cellClass: 'grey-opacity-cell pad-lr-0'
-                },
-                {
-                  headerName: 'E. diff',
-                  headerTooltip: 'E. diff',
-                  field: 'ediff',
-                  width: 150,
-                  columnGroupShow: 'open',
-                  headerClass: 'border-right',
-                  cellClass: 'line-seperator grey-opacity-cell pad-lr-5'
-                }
-              ]
-            });
-          }
-        }
+      // Spot function if we don't have any requests available
+      if (!this.CurrentRequestData || this.CurrentRequestData.length <= 0) {
+        return null;
       }
+
+      const currentReqDataLength = this.CurrentRequestData[0].requestProducts
+        .length;
+
+      this.columnDef_aggrid[1].headerGroupComponentParams.currentReqDataLength = currentReqDataLength;
+      this.columnDef_aggridObj = [];
+      this.rowData_aggridobj = [];
+
+      this.CurrentRequestData.map((currentRequest, i) => {
+        var filterobj = this.rowData_aggrid.filter(
+          filter => filter.locationId == currentRequest.locationId
+        );
+
+        this.rowData_aggridobj[i] = filterobj;
+
+        this.columnDef_aggridObj[i] = Object.assign([], this.columnDef_aggrid);
+
+        currentRequest.requestProducts.map(product => {
+          this.columnDef_aggridObj[i].push({
+            headerName: '',
+            headerTooltip: '',
+            headerGroupComponent: 'customHeaderGroupComponent',
+            headerGroupComponentParams: {
+              type: 'bg-header',
+              product: product
+            },
+            marryChildren: true,
+            resizable: false,
+            name: 'grid1',
+            groupId: 'grid1',
+
+            children: [
+              {
+                headerName: '',
+                field: 'check1',
+                filter: true,
+                suppressMenu: true,
+                width: 35,
+
+                //checkboxSelection: true,
+                resizable: false,
+                suppressMovable: true,
+                headerClass:
+                  'header-checkbox-center checkbox-center ag-checkbox-v2',
+                cellClass:
+                  'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
+
+                cellRendererFramework: AGGridCellRendererV2Component,
+                cellRendererParams: { type: 'mat-check-box' }
+                //pinned: 'left'
+              },
+              {
+                headerName: 'Offer price',
+                headerTooltip: 'Offer price',
+                field: 'offPrice1',
+                editable: true,
+                onCellValueChanged: function(params) {
+                  // Destructuring params;
+                  const {
+                    node: { data: currentCell }
+                  } = params;
+
+                  const shouldForceChange = params.newValue !== params.oldValue;
+
+                  currentCell.offPrice1 = params.newValue;
+                  // Calculate total price
+                  // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
+                  currentCell.tPr = currentCell.offPrice1;
+
+                  // Calculate ammount
+                  // Amount = Total Price * Max. Quantity
+                  currentCell.amt = currentCell.tPr * product.maxQuantity;
+
+                  // Calculate target diference
+                  // Target Difference = Total Price - Target Price
+                  currentCell.diff = currentCell.tPr - product.target;
+
+                  // Calculate total offer
+                  // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
+                  currentCell.totalOffer = 'DEMO 1234';
+
+                  if (shouldForceChange) {
+                    params.node.setDataValue('offPrice1', params.newValue);
+                  }
+                  return currentCell;
+                },
+                width: 260,
+                cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
+                cellRendererFramework: AGGridCellRendererV2Component,
+                cellRendererParams: {
+                  label: 'price-calc',
+                  type: 'price-calc',
+                  cellClass: ''
+                }
+              },
+              {
+                headerName: 'T.Pr.($)',
+                headerTooltip: 'T.Pr.($)',
+                field: 'tPr',
+                width: 150,
+                cellClass: 'grey-opacity-cell pad-lr-0',
+                cellStyle: params =>
+                  params.value == '518.50' ? { background: '#C5DCCF' } : null,
+                cellRendererFramework: AGGridCellRendererV2Component,
+                cellRendererParams: { type: 'addTpr', cellClass: '' }
+              },
+              {
+                headerName: 'Amt ($)',
+                headerTooltip: 'Amt ($)',
+                field: 'amt',
+                width: 150,
+                cellClass: 'grey-opacity-cell pad-lr-0'
+              },
+              {
+                headerName: 'Tar. diff',
+                headerTooltip: 'Tar. diff',
+                field: 'diff',
+                width: 150,
+                headerClass: 'border-right',
+                cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
+              },
+              {
+                headerName: 'MJ/KJ',
+                headerTooltip: 'MJ/KJ',
+                field: 'mj',
+                width: 150,
+                columnGroupShow: 'open',
+                cellClass: 'grey-opacity-cell pad-lr-0'
+              },
+              {
+                headerName: 'TCO ($)',
+                headerTooltip: 'TCO ($)',
+                field: 'tco',
+                width: 150,
+                columnGroupShow: 'open',
+                cellClass: 'grey-opacity-cell pad-lr-0'
+              },
+              {
+                headerName: 'E. diff',
+                headerTooltip: 'E. diff',
+                field: 'ediff',
+                width: 150,
+                columnGroupShow: 'open',
+                headerClass: 'border-right',
+                cellClass: 'line-seperator grey-opacity-cell pad-lr-5'
+              }
+            ]
+          });
+        });
+      });
     });
     this.isEnabledView = true;
-
-    // }, 100);
   }
 
   //   ngAfterViewInit() {
