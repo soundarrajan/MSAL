@@ -79,7 +79,7 @@
 		<div class="content">
 			<div class="voyageDetailSection" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.uniqueVoyages">
 				<div class="row" style="margin-left: unset !important; margin-right: unset !important;">
-					<div style="float: left;">
+					<div style="float: left; padding: 2px 5px; margin: 10px 0;">
 						<span class="icon-container">
 						 	<a ng-if="!$ctrl.collapseContainer[voyage]" class="expand-icon" ng-click="$ctrl.collapseContainer[voyage] = true;"> </a>
 						 	<a ng-if="$ctrl.collapseContainer[voyage]" class="collapse-icon" ng-click="$ctrl.collapseContainer[voyage] = false;"> </a>
@@ -91,8 +91,8 @@
 						</span>
 					</div>
 					<div style="float: right; margin-left: 20px !important;">
-						<a class="action-btn btn btn-sm btn-default btn-right-pop-up" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank"> <i class="contract-planning"></i> Create Request</a>
-						<span class="action-btn btn btn-sm btn-default btn-right-pop-up" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite && $ctrl.checkProductTypeView($ctrl.productTypeView)"> <i class="contract-planning"></i> Contract Planning </span>
+						<a class="action-btn" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank"> <i class="contract-planning"></i> Create Request</a>
+						<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite && $ctrl.checkProductTypeView($ctrl.productTypeView)"> <i class="contract-planning"></i> Contract Planning  </a> 
 					</div>
 				</div>
 				<table class="right-popup-table table table-stripped table-hover"  ng-if="!$ctrl.collapseContainer[voyage] && ($ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder)">
