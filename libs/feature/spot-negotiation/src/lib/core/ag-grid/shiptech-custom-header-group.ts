@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
-import { AddCounterpartyToLocations, AddRow, AddSelectedRow } from '../../store/actions/ag-grid-row.action';
+import { AddCounterpartyToLocations } from '../../store/actions/ag-grid-row.action';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
@@ -254,9 +254,9 @@ export class ShiptechCustomHeaderGroup {
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      
+
       // Fetching counterparty list
-      if (this.counterpartyList.length === 0) {
+      if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
@@ -304,8 +304,8 @@ export class ShiptechCustomHeaderGroup {
 
     if(this.currentRequestInfo && this.currentRequestInfo.length > 0){
       RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
-      
-      if(this.currentRequestInfo[0].requestLocations 
+
+      if(this.currentRequestInfo[0].requestLocations
         && this.currentRequestInfo[0].requestLocations.length > 0){
         currentRequestLocation = this.currentRequestInfo[0].requestLocations[0];
         }

@@ -40,13 +40,20 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private store: Store,
     private route: ActivatedRoute,
     private spotNegotiationService: SpotNegotiationService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this.entityName = 'Spot negotiation';
   }
 
-  getCounterpartyList():void{
-    let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":1000}};
+  getCounterpartyList(): void {
+    let payload = {
+      Order: null,
+      PageFilters: { Filters: [] },
+      SortList: { SortList: [] },
+      Filters: [],
+      SearchText: null,
+      Pagination: { Skip: 0, Take: 1000 }
+    };
 
     const response = this.spotNegotiationService.getCounterpartyList(payload);
 
@@ -54,8 +61,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if (res.error) {
         alert('Handle Error');
         return;
-      }
-      else{
+      } else {
         // Populate Store
         this.store.dispatch(new SetCounterpartyList(res.payload));
       }
@@ -67,9 +73,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
 
-
     // Get response from server and populate store
-    const response = this.spotNegotiationService.getGroupOfSellers(groupRequestIdFromUrl);
+    const response = this.spotNegotiationService.getGroupOfSellers(
+      groupRequestIdFromUrl
+    );
 
     response.subscribe((res: any) => {
       if (res.error) {
@@ -77,13 +84,20 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         return;
       }
 
-
       // Populate store;
+      if (res['requestLocationSellers']) {
+        // Demo manipulate location before entering store;
+        const editedLocation = res['requestLocationSellers'].map(e => {
+          e.phySupplier = 'Add P. supplier';
+          e.totalOffer = '$500.00';
+          e.diff = '99.00';
+          e.amt = '32.00';
+          e.tPr = '42.00';
+          return e;
+        });
 
-      if(res["requestLocationSellers"]){
-      this.store.dispatch(new SetLocations(res["requestLocationSellers"]))
-      };
-
+        this.store.dispatch(new SetLocations(editedLocation));
+      }
     });
   }
 
@@ -92,10 +106,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
 
-
     // Get response from server and populate store
 
-    const response = this.spotNegotiationService.getGroupOfRequests1(groupRequestIdFromUrl);
+    const response = this.spotNegotiationService.getGroupOfRequests1(
+      groupRequestIdFromUrl
+    );
 
     response.subscribe((res: any) => {
       if (res.error) {
@@ -103,13 +118,12 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         return;
       }
 
-
-
-    if(res["requests"][0]){
-        this.store.dispatch(new SetCurrentRequestSmallInfo(res["requests"]));
-        this.store.dispatch(new SetRequests(res["requests"][0].requestLocations));
+      if (res['requests'][0]) {
+        this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
+        this.store.dispatch(
+          new SetRequests(res['requests'][0].requestLocations)
+        );
       }
-
     });
   }
   ngOnInit(): void {
@@ -131,7 +145,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
 
       // Populate store;
-     // alert(2);
+      // alert(2);
       // this.store.dispatch(new SetLocations(res));
     });
   }

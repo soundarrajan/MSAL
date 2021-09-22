@@ -18,6 +18,7 @@ import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-
 import { SpotNegotiationService } from '../../../../../services/spot-negotiation.service';
 import {
   SetCounterpartyList,
+  SetLocations,
   SetStaticLists
 } from '../../../../../store/actions/ag-grid-row.action';
 
@@ -57,6 +58,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   //   width: '50%'
   // }
   ngOnInit(): void {
+    const self = this;
     // Set Counterparty list;
     this.route.data.subscribe(data => {
       this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
@@ -65,7 +67,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     // setTimeout(() => {
 
     this.store.subscribe(({ spotNegotiation }) => {
-      this.rowData_aggrid = spotNegotiation.locations;
+      // Clone locations object so we can edit (not ideal, i just continue what is done);
+      const locationsRowsClone = JSON.parse(
+        JSON.stringify(spotNegotiation.locations)
+      );
+
+      this.rowData_aggrid = locationsRowsClone;
+
       this.CurrentRequestData = spotNegotiation.requests;
       if (this.CurrentRequestData && this.CurrentRequestData.length > 0) {
         const currentReqDatalength = this.CurrentRequestData[0].requestProducts
@@ -73,15 +81,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.columnDef_aggrid[1].headerGroupComponentParams.currentReqDatalength = currentReqDatalength;
         this.columnDef_aggridObj = [];
         this.rowData_aggridobj = [];
+
         for (let i = 0; i < this.CurrentRequestData.length; i++) {
           var filterobj = this.rowData_aggrid.filter(
             filter => filter.locationId == this.CurrentRequestData[i].locationId
           );
+
           this.rowData_aggridobj[i] = filterobj;
+
           this.columnDef_aggridObj[i] = Object.assign(
             [],
             this.columnDef_aggrid
           );
+
           for (
             let j = 0;
             j < this.CurrentRequestData[i].requestProducts.length;
@@ -124,6 +136,41 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   headerName: 'Offer price',
                   headerTooltip: 'Offer price',
                   field: 'offPrice1',
+                  onCellValueChanged: function(params) {
+
+                    const currentProduct =
+                    self.CurrentRequestData[i].requestProducts[j];
+
+                    // Destructuring params;
+                    const {
+                      node: { data: currentCell }
+                    } = params;
+
+                    const shouldForceChange = params.newValue !== params.oldValue
+
+                    currentCell.offPrice1 = params.newValue;
+                    // Calculate total price
+                    // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
+                    currentCell.tPr = currentCell.offPrice1;
+
+                    // Calculate ammount
+                    // Amount = Total Price * Max. Quantity
+                    currentCell.amt =
+                      currentCell.tPr * currentProduct.maxQuantity;
+
+                    // Calculate target diference
+                    // Target Difference = Total Price - Target Price
+                    currentCell.diff = currentCell.tPr - currentProduct.target;
+
+                    // Calculate total offer
+                    // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
+                    currentCell.totalOffer = 'DEMO 1234';
+
+                    if (shouldForceChange) {
+                      params.node.setDataValue('offPrice1', params.newValue);
+                    }
+                    return currentCell;
+                  },
                   width: 260,
                   cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
                   cellRendererFramework: AGGridCellRendererV2Component,
@@ -480,6 +527,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
   }
   onRowSelected(e) {
+    // Please rewrite this function and comment it
+    return;
     var itemsToUpdate = [];
     this.gridOptions_counterparty.api.forEachNode((rowNode, index) => {
       rowNode.data.check = false;
