@@ -819,6 +819,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     switch(params?.colDef?.field){
       case 'hsfo_estimated_lift' : { 
                                         isRequestAvailable = params.data?.request_id_hsfo ? true : false;
+                                        isRequestAvailable = (isRequestAvailable || (params.data?.request_id_vlsfo)) ? true : false;
                                         break;
                                    }
       case 'ulsfo_estimated_lift' : { 
