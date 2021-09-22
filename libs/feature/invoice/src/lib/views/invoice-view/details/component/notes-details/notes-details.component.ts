@@ -77,7 +77,7 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
 };
 
 
-  
+
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -396,8 +396,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./notes-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
+  providers: [OrderListGridViewModel,
+              DialogService,
               ConfirmationService,
               {provide: DateAdapter, useClass: PickDateAdapter},
               {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
@@ -418,14 +418,14 @@ export class NotesDetailsComponent implements OnInit {
   user: IDisplayLookupDto<number, string>;
   _entityId: string;
 
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
   }
 
-  
+
   get entityId(): string {
     return this._entityId;
   }
@@ -433,9 +433,9 @@ export class NotesDetailsComponent implements OnInit {
   @Input() set entityId(value: string) {
     this._entityId = value;
   }
- 
 
-  
+
+
   constructor(
     private store: Store,
     private changeDetectorRef: ChangeDetectorRef,
@@ -445,24 +445,33 @@ export class NotesDetailsComponent implements OnInit {
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
-    public dialog: MatDialog, 
+    iconRegistry: MatIconRegistry,
+    public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     public authService: AuthenticationService,
     private tenantService: TenantFormattingService,
     private invoiceService: InvoiceDetailsService) {
-    this.dateFormats.display.dateInput = this.format.dateFormat;
-    this.dateFormats.parse.dateInput = this.format.dateFormat;
-    this.dateTimeFormats.display.dateInput = this.format.dateFormat;
-    CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
-    PICK_FORMATS.display.dateInput = this.format.dateFormat;
-    this.baseOrigin = new URL(window.location.href).origin;
+      this.dateFormats.display.dateInput = this.format.dateFormat;
+      this.dateFormats.parse.dateInput = this.format.dateFormat;
+      this.dateTimeFormats.display.dateInput = this.format.dateFormat;
+      CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
+      PICK_FORMATS.display.dateInput = this.format.dateFormat;
+      this.baseOrigin = new URL(window.location.href).origin;
 
+       // new invoice
+      if(!parseFloat(this._entityId) && parseFloat(this.formValues.orderDetails.order.id))
+      {
+          // get order notes only when new invoice
+        this.invoiceService.getOrderNotes(this.formValues.orderDetails.order.id)
+          .subscribe((response: any) => {
+            this.formValues.invoiceNotes = response;
+            this.changeDetectorRef.detectChanges();
+          });
+      }
   }
 
   ngOnInit(): void {
     this.user = this.store.selectSnapshot(UserProfileState.user);
-
   }
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
@@ -470,8 +479,8 @@ export class NotesDetailsComponent implements OnInit {
   }
 
   addNotesLine() {
-    console.log(this.authService);
-    console.log(this.displayName$);
+    // console.log(this.authService);
+    // console.log(this.displayName$);
     if (!this.formValues.invoiceNotes) {
       this.formValues.invoiceNotes = [];
     }
@@ -491,31 +500,24 @@ export class NotesDetailsComponent implements OnInit {
       'createdAt': this.formatDateForBe(new Date()),
       'lastModifiedAt': ''
     }
-
-
     this.formValues.invoiceNotes.push(notesLine);
-
     this.changeDetectorRef.detectChanges();
-    
-    
-
   }
 
 
   updateNotes(key) {
     this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(this.formatDateForBe(new Date()));
     this.changeDetectorRef.detectChanges();
-    console.log(this.formValues.invoiceNotes);
-    console.log(this._entityId);
+    // console.log(this.formValues.invoiceNotes);
+    // console.log(this._entityId);
     this.autoSave();
-  
   }
 
   autoSave() {
-    if (parseFloat(this._entityId)) {
+    if (parseFloat(this.formValues.orderDetails.order.id)) {
       let payload = {
-        "InvoiceId": parseFloat(this._entityId),
-        "InvoiceNotes": this.formValues.invoiceNotes
+        OrderId: this.formValues.orderDetails.order.id,
+        OrderNotes: this.formValues.invoiceNotes
       }
       this.invoiceService
       .notesAutoSave(payload)
@@ -529,7 +531,7 @@ export class NotesDetailsComponent implements OnInit {
           this.spinner.hide();
           this.toastr.error(result);
         } else {
-          console.log(result);
+          // console.log(result);
           this.formValues.invoiceNotes = _.cloneDeep(result);
         }
      });
@@ -556,7 +558,7 @@ export class NotesDetailsComponent implements OnInit {
 
 
   formatDate(date?: any) {
-    if (date) {    
+    if (date) {
       let currentFormat = this.format.dateFormat;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
@@ -587,7 +589,7 @@ export class NotesDetailsComponent implements OnInit {
 
 
 
- 
+
 
 
 

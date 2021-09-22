@@ -487,6 +487,17 @@ export class NotesLogComponent implements OnInit {
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
+
+    // new delivery
+    if(parseFloat(this._entityId) == 0 && parseFloat(this.formValues.order.id))
+    {
+        // get order notes only when new invoice
+      this.deliveryService.getOrderNotes(this.formValues.order.id)
+        .subscribe((response: any) => {
+          this.formValues.deliveryNotes = response;
+          this.changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   ngOnInit(): void {
@@ -545,10 +556,10 @@ export class NotesLogComponent implements OnInit {
   }
 
   autoSave() {
-    if (parseFloat(this._entityId)) {
-      let payload = {
-        DeliveryId: parseFloat(this._entityId),
-        DeliveryNotes: this.formValues.deliveryNotes
+    if (parseFloat(this.formValues.order.id)) {
+      const payload = {
+        OrderId: this.formValues.order.id,
+        OrderNotes: this.formValues.deliveryNotes
       };
       this.deliveryService
         .notesAutoSave(payload)
@@ -630,4 +641,5 @@ export class NotesLogComponent implements OnInit {
       this.autoSave();
     }
   }
+
 }
