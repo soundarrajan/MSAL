@@ -135,6 +135,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 field: 'offPrice1',
                 editable: true,
                 onCellValueChanged: function(params) {
+                  // TODO: when we have additional cost and multiple requests to finish the calculations.
+
                   // Destructuring params;
                   const {
                     node: { data: currentCell }

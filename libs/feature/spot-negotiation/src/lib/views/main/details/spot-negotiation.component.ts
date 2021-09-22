@@ -1,6 +1,7 @@
 import { SpotNegotiationService } from '../../../services/spot-negotiation.service';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit
@@ -39,6 +40,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private store: Store,
     private route: ActivatedRoute,
+    private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
     public dialog: MatDialog
   ) {
@@ -87,6 +89,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // Populate store;
       if (res['requestLocationSellers']) {
         // Demo manipulate location before entering store;
+        // TODO : get phySupplier, totalOffer, diff, amt, tPR from the endpoint directly.
         const editedLocation = res['requestLocationSellers'].map(e => {
           e.phySupplier = 'Add P. supplier';
           e.totalOffer = '$500.00';
@@ -96,7 +99,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           return e;
         });
 
+
         this.store.dispatch(new SetLocations(editedLocation));
+        this.changeDetector.detectChanges();
       }
     });
   }
@@ -123,6 +128,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         this.store.dispatch(
           new SetRequests(res['requests'][0].requestLocations)
         );
+        this.changeDetector.detectChanges();
       }
     });
   }
