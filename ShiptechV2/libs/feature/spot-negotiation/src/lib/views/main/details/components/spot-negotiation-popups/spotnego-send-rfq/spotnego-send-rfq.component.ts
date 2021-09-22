@@ -36,7 +36,6 @@ export class SpotnegoSendRfqComponent implements OnInit {
 
   public sendRFQ(): void {
     console.log(this.requests);
-    debugger;
   }
   ngOnInit(): void {}
 }

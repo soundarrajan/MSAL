@@ -13,15 +13,14 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './spotnego-searchctpy.component.html',
   styleUrls: ['./spotnego-searchctpy.component.css']
 })
-
 export class SpotnegoSearchCtpyComponent implements OnInit {
   public dialog_gridOptions: GridOptions;
   public rowCount: Number;
-  public AddCounterpartiesAcrossLocations : boolean;
+  public AddCounterpartiesAcrossLocations: boolean;
   public RequestGroupId: number;
   public RequestLocationId: number;
   public LocationId: number;
-  public selectedRows:any=[];
+  public selectedRows: any = [];
   currentRequest: any;
   constructor(
     private router: Router,
@@ -31,10 +30,11 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     public dialogRef: MatDialogRef<SpotnegoSearchCtpyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.AddCounterpartiesAcrossLocations = data.AddCounterpartiesAcrossLocations;
+    this.AddCounterpartiesAcrossLocations =
+      data.AddCounterpartiesAcrossLocations;
     this.RequestGroupId = data.RequestGroupId;
 
-    if(!data.AddCounterpartiesAcrossLocations){
+    if (!data.AddCounterpartiesAcrossLocations) {
       this.RequestLocationId = data.RequestLocationId;
       this.LocationId = data.LocationId;
     }
@@ -57,12 +57,12 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         this.dialog_gridOptions.api.sizeColumnsToFit();
 
         this.store.subscribe(({ spotNegotiation }) => {
-            if (spotNegotiation.counterpartyList) {
-              this.rowData = spotNegotiation.counterpartyList;
-              this.dialog_gridOptions.api.setRowData(this.rowData);
-              this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
-            }
-          });
+          if (spotNegotiation.counterpartyList) {
+            this.rowData = spotNegotiation.counterpartyList;
+            this.dialog_gridOptions.api.setRowData(this.rowData);
+            this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+          }
+        });
       },
       getRowStyle: function(params) {
         if (params.node.rowPinned) {
@@ -139,8 +139,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     else return params.value.toFixed(4);
   }
 
-  public rowData : any[];
-
+  public rowData: any[];
 
   ngOnInit() {
     this.store.subscribe(({ spotNegotiation }) => {
@@ -151,89 +150,90 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-  toBeAddedCounterparties() : SpnegoAddCounterpartyModel[] {
-    this.selectedRows= this.dialog_gridOptions.api.getSelectedRows();
+  toBeAddedCounterparties(): SpnegoAddCounterpartyModel[] {
+    this.selectedRows = this.dialog_gridOptions.api.getSelectedRows();
 
-    if(this.AddCounterpartiesAcrossLocations){
+    if (this.AddCounterpartiesAcrossLocations) {
       let selectedCounterparties = [];
       //Looping through all the Request Locations
       this.currentRequest[0].requestLocations.forEach(reqLoc => {
-        let perLocationCtpys = this.selectedRows.map(val => <SpnegoAddCounterpartyModel>{
-          requestGroupId: this.RequestGroupId,
-          requestLocationId: reqLoc.id,
-          locationId: reqLoc.locationId,
-          id: 0,
-          name: "",
-          counterpartytypeId: 0,
-          counterpartyTypeName: "",
-          genPrice: "",
-          genRating: "",
-          isDeleted: false,
-          isSelected: true,
-          mail: "",
-          portPrice: "",
-          portRating: "",
-          prefferedProductIds: "",
-          sellerComments: "",
-          sellerCounterpartyId: val.id,
-          sellerCounterpartyName: val.name,
-          senRating: "",
-        });
+        let perLocationCtpys = this.selectedRows.map(
+          val =>
+            <SpnegoAddCounterpartyModel>{
+              requestGroupId: this.RequestGroupId,
+              requestLocationId: reqLoc.id,
+              locationId: reqLoc.locationId,
+              id: 0,
+              name: '',
+              counterpartytypeId: 0,
+              counterpartyTypeName: '',
+              genPrice: '',
+              genRating: '',
+              isDeleted: false,
+              isSelected: true,
+              mail: '',
+              portPrice: '',
+              portRating: '',
+              prefferedProductIds: '',
+              sellerComments: '',
+              sellerCounterpartyId: val.id,
+              sellerCounterpartyName: val.name,
+              senRating: ''
+            }
+        );
         selectedCounterparties.push(...perLocationCtpys);
       });
 
       return selectedCounterparties;
-    }
-    else{
-      return this.selectedRows.map(val => <SpnegoAddCounterpartyModel>{
-        requestGroupId: this.RequestGroupId,
-        requestLocationId: this.RequestLocationId,
-        locationId: this.LocationId,
-        id: 0,
-        name: "",
-        counterpartytypeId: 0,
-        counterpartyTypeName: "",
-        genPrice: "",
-        genRating: "",
-        isDeleted: false,
-        isSelected: true,
-        mail: "",
-        portPrice: "",
-        portRating: "",
-        prefferedProductIds: "",
-        sellerComments: "",
-        sellerCounterpartyId: val.id,
-        sellerCounterpartyName: val.name,
-        senRating: "",
-      });
+    } else {
+      return this.selectedRows.map(
+        val =>
+          <SpnegoAddCounterpartyModel>{
+            requestGroupId: this.RequestGroupId,
+            requestLocationId: this.RequestLocationId,
+            locationId: this.LocationId,
+            id: 0,
+            name: '',
+            counterpartytypeId: 0,
+            counterpartyTypeName: '',
+            genPrice: '',
+            genRating: '',
+            isDeleted: false,
+            isSelected: true,
+            mail: '',
+            portPrice: '',
+            portRating: '',
+            prefferedProductIds: '',
+            sellerComments: '',
+            sellerCounterpartyId: val.id,
+            sellerCounterpartyName: val.name,
+            senRating: ''
+          }
+      );
     }
   }
 
-  AddCounterparties(){
-
+  AddCounterparties() {
     const selectedCounterparties = this.toBeAddedCounterparties();
-    if(selectedCounterparties.length == 0)
-      return;
+    if (selectedCounterparties.length == 0) return;
 
-      let payload = {
-        "requestGroupId": this.RequestGroupId,
-        "isAllLocation": true,
-        "counterparties": selectedCounterparties
-      };
-      const response = this._spotNegotiationService.addCounterparties(payload);
-      response.subscribe((res: any) => {
-        if (res.status) {
-          this.toastr.success(res.message);
-          // Add in Store
-          this.store.dispatch(new AddCounterpartyToLocations(payload.counterparties));
-        }
-        else{
-          this.toastr.error(res.message);
-          return;
-        }
-      });
+    let payload = {
+      requestGroupId: this.RequestGroupId,
+      isAllLocation: true,
+      counterparties: selectedCounterparties
+    };
+    const response = this._spotNegotiationService.addCounterparties(payload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toastr.success(res.message);
+        // Add in Store
+        this.store.dispatch(
+          new AddCounterpartyToLocations(payload.counterparties)
+        );
+      } else {
+        this.toastr.error(res.message);
+        return;
+      }
+    });
   }
 }
-
-
-
