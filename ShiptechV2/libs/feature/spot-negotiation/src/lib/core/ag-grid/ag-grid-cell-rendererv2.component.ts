@@ -3,15 +3,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { SpotnegoAdditionalcostComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-additionalcost/spotnego-additionalcost.component';
-import { SpotnegoPricingDetailsComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
-import { SupplierCommentsPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/supplier-comments-popup/supplier-comments-popup.component';
-import { EmailPreviewPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
-import { SpotnegoOtherdetailsComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails/spotnego-otherdetails.component';
-import { SellerratingpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
-import { ContactinformationpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/contactinformationpopup/contactinformationpopup.component';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
+import { SpotnegoAdditionalcostComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-additionalcost/spotnego-additionalcost.component';
+import { SellerratingpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
+import { EmailPreviewPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
+import { ContactinformationpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/contactinformationpopup/contactinformationpopup.component';
+import { SupplierCommentsPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/supplier-comments-popup/supplier-comments-popup.component';
+import { SpotnegoRequestChangesComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
+import { SpotnegoPricingDetailsComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
 
 @Component({
   selector: 'ag-grid-cell-renderer',
@@ -75,25 +74,32 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
     </div>
     <div *ngIf="params.type == 'hover-cell-lookup'" class="fly-away">
       <div>
-        <div
-          class="remove-icon-cell-hover float-away"
-          (click)="deleteRow()"
-        ></div>
+        <!--<div class="remove-icon-cell-hover float-away" (click)='deleteRow();'></div>-->
       </div>
-      <div class="hover-cell-lookup">
+      <div
+        class="hover-cell-lookup"
+        [matMenuTriggerFor]="clickmenupopup"
+        #menuPopupTrigger="matMenuTrigger"
+        (click)="menuPopupTrigger.closeMenu()"
+        (contextmenu)="
+          $event.preventDefault();
+          $event.stopPropagation();
+          menuPopupTrigger.openMenu()
+        "
+      >
         <span
           class="counterpartytype-icon type-physicalsupplier"
-          *ngIf="params.data.counterpartyTypeName == 'Supplier'"
+          *ngIf="params.data.counterpartytype == 'physicalsupplier'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
           class="counterpartytype-icon type-broker"
-          *ngIf="params.data.counterpartyTypeName == 'broker'"
+          *ngIf="params.data.counterpartytype == 'broker'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
           class="counterpartytype-icon type-seller"
-          *ngIf="params.data.counterpartyTypeName == 'seller'"
+          *ngIf="params.data.counterpartytype == 'seller'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
@@ -101,30 +107,30 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
           *ngIf="params.data.infoIcon == 'Yes'"
           matTooltipClass="darkTooltip"
           matTooltip="Temporary suspended counterparty"
+          matTooltipClass="lightTooltip"
         ></span>
         <span class="m-l-7">{{ params.value }}</span>
         <span class="sticky-icon">
+          <!--span class="hover-lookup-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger"></span>-->
           <span
-            class="hover-lookup-icon"
-            [matMenuTriggerFor]="clickmenupopup"
-            #menuTrigger="matMenuTrigger"
-          ></span>
-          <span
-            class="spot-mail-icon mail-active"
+            class="mail-icon mail-active"
+            (click)="openEmailPreview()"
             *ngIf="params.data.mail == 'mail-active'"
-            matTooltipClass=""
-            matTooltip=""
+            matTooltip="View preview email"
+            matTooltipClass="lightTooltip"
             >a</span
           >
           <span
-            class="spot-mail-icon mail-none"
+            class="mail-icon mail-none"
+            (click)="openEmailPreview()"
             *ngIf="params.data.mail == 'mail-inactive'"
             matTooltipClass=""
             matTooltip=""
             >i</span
           >
           <span
-            class="spot-mail-icon mail-none"
+            class="mail-icon mail-none"
+            (click)="openEmailPreview()"
             *ngIf="params.data.mail == 'mail-none'"
             matTooltipClass=""
             matTooltip=""
@@ -132,10 +138,10 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
           >
           <span
             class="info-comment"
+            matTooltip="View supplier comments"
+            matTooltipClass="lightTooltip"
             (click)="suppliercommentspopup()"
             *ngIf="params.data.commentIcon == 'Yes'"
-            matTooltipClass=""
-            matTooltip=""
           ></span>
           <span
             class="info-comment-inactive"
@@ -199,6 +205,11 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
         <span><div class="no-quote-icon"></div></span>
         <span class="fs-12">No Quote</span>
       </div>
+      <hr class="menu-divider-line" />
+      <div class="p-tb-5" style="display:flex;align-items:center;">
+        <span><div class="remove-icon"></div></span>
+        <span class="fs-12" (click)="deleteRow()">Remove counterparty</span>
+      </div>
     </mat-menu>
     <div
       class="no-quote-text"
@@ -218,7 +229,19 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
       >
         $ {{ params.value }}
       </div>
-      <div class="price-calc" *ngIf="params.value === '-'">
+      <div
+        class="price-calc"
+        *ngIf="params.value === '-'"
+        [matMenuTriggerFor]="priceMenupopup"
+        #pricePopupTrigger="matMenuTrigger"
+        (click)="pricePopupTrigger.closeMenu()"
+        (contextmenu)="
+          $event.preventDefault();
+          $event.stopPropagation();
+          onRightClickMenuOpened($event);
+          pricePopupTrigger.openMenu()
+        "
+      >
         <div
           id="custom-form-field"
           style="display:relative;"
@@ -260,16 +283,13 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
           (keydown)="onInputChange($event, params)"
           autofocus
           #inputSection
+          autocomplete="off"
           name="inputField"
           spellcheck="false"
           type="text"
           style="display:inline"
         />
-        <div
-          class="addButton"
-          (click)="pricingdetailspopup($event, params)"
-          *ngIf="ispriceCalculated"
-        ></div>
+        <!--<div class="addButton" (click)="pricingdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>-->
         <div
           class="formulaButton"
           style="display:inline; position:absolute; left:78px;"
@@ -280,6 +300,17 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
         ></div>
       </div>
     </div>
+    <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
+      <div class="add-block" (click)="pricingdetailspopup($event, params)">
+        <div></div>
+        <span>Add/View Formula pricing</span>
+      </div>
+      <div class="divider-line"></div>
+      <div class="add-block" (click)="requestChange($event, params)">
+        <div></div>
+        <span>Add/View Request changes</span>
+      </div>
+    </mat-menu>
     <div *ngIf="params.type == 'phy-supplier'">
       <div
         class="phySupplier"
@@ -288,7 +319,12 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
       >
         {{ params.value }}
       </div>
-      <div class="phySupplier edit" *ngIf="params.value == 'Same as seller'">
+      <div
+        class="phySupplier edit"
+        matTooltip="Add physical supplier"
+        matTooltipClass="lightTooltip"
+        *ngIf="params.value == 'Same as seller'"
+      >
         <span
           contentEditable="true"
           [matMenuTriggerFor]="clickmenu"
@@ -364,6 +400,8 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
     <div
       *ngIf="params.type == 'mat-check-box'"
       style="height:100%;display:flex;align-items:center;justify-content:center"
+      [matTooltip]="params.value == 'preferred' ? 'Preffered product' : null"
+      matTooltipClass="lightTooltip"
     >
       <!--<input type="checkbox" (click)="checkedHandler($event)"[checked]="params.value"/>-->
       <mat-checkbox
@@ -375,26 +413,43 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
     </div>
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
-      <span>{{ params.value }}</span>
-      <div
-        class="addButton"
-        *ngIf="params.value != '-'"
-        (click)="additionalcostpopup()"
-      ></div>
+      <div *ngIf="params.value == '-'">
+        <span>{{ params.value }}</span>
+      </div>
+      <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
+      <div *ngIf="params.value == '518.50'">
+        <span>{{ params.value }}</span>
+      </div>
     </div>
     <div
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
-      (click)="additionalcostpopup()"
+      [matTooltip]="params.value != '-' ? 'includes additional costs' : null"
+      matTooltipClass="lightTooltip"
+      [matMenuTriggerFor]="totalOfferMenupopup"
+      #totalOfferPopupTrigger="matMenuTrigger"
+      (click)="totalOfferPopupTrigger.closeMenu()"
+      (contextmenu)="
+        $event.preventDefault();
+        $event.stopPropagation();
+        totalOfferPopupTrigger.openMenu()
+      "
     >
-      <span>{{ params.value }}</span>
-      <div class="addButton" *ngIf="params.value != '-'"></div>
+      <span (click)="additionalcostpopup()">{{ params.value }}</span>
+      <div class="dollarButton" *ngIf="params.value == '500.00'"></div>
     </div>
+    <mat-menu #totalOfferMenupopup="matMenu" class="darkPanel-add big">
+      <div class="add-block" (click)="additionalcostpopup()">
+        <div></div>
+        <span>Add additional cost</span>
+      </div>
+    </mat-menu>
+
     <mat-menu #formulamenu="matMenu" class="small-menu darkPanel">
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
-        (click)="otherdetailspopup1()"
+        (click)="pricingdetailspopup($event, params)"
       >
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13"> Formula Based Pricing</span>
@@ -403,7 +458,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
-        (click)="otherdetailspopup2()"
+        (click)="requestChange($event, params)"
       >
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13">Quotation different from Request</span>
@@ -417,14 +472,43 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
         <input matInput [(ngModel)]="docVal" matTooltip="{{ docVal }}" />
       </div>
     </div>
+    <div
+      *ngIf="params.type === 'dashed-border-darkcell'"
+      class="staticEditCell"
+    >
+      <div class="dashed-border" style="">
+        <input matInput [(ngModel)]="params.value" />
+      </div>
+    </div>
+    <div *ngIf="params.type === 'border-cell'">
+      <div class="border-cell">
+        <span class="left-data">{{ params.value }}</span>
+        <span class="right-data">{{ params.data.orderProduct }}</span>
+      </div>
+    </div>
+    <div *ngIf="params.type === 'dark-border-cell'">
+      <div class="border-cell">
+        {{ params.value }}
+      </div>
+    </div>
+    <div
+      *ngIf="params.type === 'dashed-border-dark-search'"
+      class="cell-bg-border"
+    >
+      <div class="truncate-100p inner-cell dark" style="padding: 0 3px;">
+        <span class="dashed-border with-search">
+          <p>{{ params.value }}</p>
+          <span class="search-icon-dark"></span>
+        </span>
+      </div>
+    </div>
   `
 })
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
-  //@ViewChild('inputSection') inputSection: ElementRef;
-  @ViewChild('inputSection', { static: true }) inputSection: ElementRef;
+  @ViewChild('inputSection') inputSection: ElementRef;
   @ViewChild('menuTriggerHover') menuTriggerHover: MatMenuTrigger;
 
-  //@ViewChild('inputSection') inputSection;
+  public showDollar: boolean = false;
   public params: any;
   public select = '$';
   public inputValue = '';
@@ -464,18 +548,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.params = params;
   }
 
-  // pricingdetailspopup(){
-  //     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
-  //       width: '1164px',
-  //       height: '400px',
-  //       panelClass: 'additional-cost-popup'
-  //     });
-
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       console.log(`Dialog result: ${result}`);
-  //     });
-  //   }
-
   hoverMenu(event) {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
@@ -489,7 +561,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.showDollar = true;
     });
   }
   sellerratingpopup() {
@@ -498,21 +570,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       height: '562px',
       panelClass: 'additional-cost-popup'
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
-  /*rfqspopup(){
-        const dialogRef = this.dialog.open(RfqspopupComponent, {
-          width: '1194px',
-          height: '177px',
-          panelClass: 'additional-cost-popup'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          console.log(`Dialog result: ${result}`);
-        });
-      } */
 
   openEmailPreview() {
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
@@ -521,34 +580,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: 'additional-cost-popup'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  otherdetailspopup1() {
-    const dialogRef = this.dialog.open(SpotnegoOtherdetailsComponent, {
-      width: '1164px',
-      // minHeight: '470px',
-
-      panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-  otherdetailspopup2() {
-    const dialogRef = this.dialog.open(SpotnegoOtherdetails2Component, {
-      width: '1164px',
-      //minHeight: '470px',
-
-      panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   contactinformationpopup() {
@@ -558,9 +590,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   suppliercommentspopup() {
@@ -570,17 +600,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
-  pricingdetailspopup(e, params) {
-    //this.popupOpen = true;
-    const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
+  requestChange(e, params) {
+    const dialogRef = this.dialog.open(SpotnegoRequestChangesComponent, {
       width: '1164px',
-      //maxHeight: '444px',
-
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']
     });
 
@@ -588,12 +613,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       e.target.parentElement.classList.add('active');
       this.inputValue = '560.19';
       var itemsToUpdate = [];
+      let rowData = [];
+
       params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
         var data = rowNode.data;
-        //data.offPrice = "$560.19";
         data.tPr = '$560.19';
         data.amt = '4,48,152.00';
         data.diff = '1.19';
@@ -604,30 +630,59 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       params.api.deselectAll(); //optional
       this.ispriceCalculated = false;
       this.showFormula = true;
-      //this.editCell = true;
+    });
+  }
+  pricingdetailspopup(e, params) {
+    const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
+      width: '1164px',
+      panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      e.target.parentElement.classList.add('active');
+      this.inputValue = '560.19';
+      var itemsToUpdate = [];
+      let rowData = [];
+
+      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+        if (!rowNode.isSelected() === true) {
+          return;
+        }
+        var data = rowNode.data;
+        data.tPr = '$560.19';
+        data.amt = '4,48,152.00';
+        data.diff = '1.19';
+        data.phySupplier = 'Same as seller';
+        itemsToUpdate.push(data);
+      });
+      var res = params.api.applyTransaction({ update: itemsToUpdate });
+      params.api.deselectAll(); //optional
+      this.ispriceCalculated = false;
+      this.showFormula = true;
     });
   }
 
-  onInputChange(e, params) {
-    //console.log(params);
-
+  onRightClickMenuOpened(e) {
     e.target.parentElement.classList.add('active');
-    //e.preventDefault();
-    var itemsToUpdate = [];
-    params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
-      if (!rowNode.isSelected() === true) {
-        return;
-      }
-      var data = rowNode.data;
-      data.tPr = '$560.19';
-      data.amt = '4,48,152.00';
-      data.diff = '1.19';
-      data.phySupplier = 'Same as seller';
-      itemsToUpdate.push(data);
-    });
-    var res = params.api.applyTransaction({ update: itemsToUpdate });
-    params.api.deselectAll(); //optional
-    //this.ispriceCalculated = false;
+  }
+  onInputChange(e, params) {
+    e.target.parentElement.classList.add('active');
+    if (e.keyCode == 9) {
+      var itemsToUpdate = [];
+      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+        if (!rowNode.isSelected() === true) {
+          return;
+        }
+        var data = rowNode.data;
+        data.tPr = '$560.19';
+        data.amt = '4,48,152.00';
+        data.diff = '1.19';
+        data.phySupplier = 'Same as seller';
+        itemsToUpdate.push(data);
+      });
+      var res = params.api.applyTransaction({ update: itemsToUpdate });
+      params.api.deselectAll(); //optional
+    }
   }
   checkedHandler(event) {
     let checked = event.target.checked;
