@@ -61,11 +61,11 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         return next.handle(authorizedRequest);
       }),
       catchError(error => {
-        // this.spinner.hide();
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
             this.toastrService.error('You do not have authorization to perform this action.');
             localStorage.setItem("authorization", "0");
+            this.spinner.hide();
             return throwError(error);
           }
         }
