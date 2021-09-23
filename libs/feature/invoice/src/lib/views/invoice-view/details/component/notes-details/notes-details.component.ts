@@ -457,21 +457,21 @@ export class NotesDetailsComponent implements OnInit {
       CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
       PICK_FORMATS.display.dateInput = this.format.dateFormat;
       this.baseOrigin = new URL(window.location.href).origin;
-
-       // new invoice
-      if(!parseFloat(this._entityId) && parseFloat(this.formValues.orderDetails.order.id))
-      {
-          // get order notes only when new invoice
-        this.invoiceService.getOrderNotes(this.formValues.orderDetails.order.id)
-          .subscribe((response: any) => {
-            this.formValues.invoiceNotes = response;
-            this.changeDetectorRef.detectChanges();
-          });
-      }
   }
 
   ngOnInit(): void {
     this.user = this.store.selectSnapshot(UserProfileState.user);
+
+    // new invoice
+    if(!parseFloat(this._entityId) && parseFloat(this.formValues.orderDetails.order.id))
+    {
+        // get order notes only when new invoice
+      this.invoiceService.getOrderNotes(this.formValues.orderDetails.order.id)
+        .subscribe((response: any) => {
+          this.formValues.invoiceNotes = response;
+          this.changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {

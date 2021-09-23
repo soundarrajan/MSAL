@@ -487,6 +487,10 @@ export class NotesLogComponent implements OnInit {
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
+  }
+
+  ngOnInit(): void {
+    this.user = this.store.selectSnapshot(UserProfileState.user);
 
     // new delivery
     if(parseFloat(this._entityId) == 0 && parseFloat(this.formValues.order.id))
@@ -498,10 +502,6 @@ export class NotesLogComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
         });
     }
-  }
-
-  ngOnInit(): void {
-    this.user = this.store.selectSnapshot(UserProfileState.user);
   }
 
   originalOrder = (
