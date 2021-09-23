@@ -261,7 +261,7 @@
       <div class="actions">
         <button mat-button class="cancel" (click)="cancel()">CANCEL</button>
         <button mat-raised-button [disabled]="!enableSave" [ngClass]="{'active':enableSave}" class="save"
-          (click)="saveUserComment(cmnt.value);saveInput(inpt.value,params,params.colDef?.field)">Save</button>
+          (click)="saveUserComment(cmnt.value);saveInput(inpt, inpt.value,params,params.colDef?.field)">Save</button>
       </div>
       </div>
     </ng-template>

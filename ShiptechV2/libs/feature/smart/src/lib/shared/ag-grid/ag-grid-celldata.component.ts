@@ -624,13 +624,19 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.usercomments = comment;
   }
 
-  saveInput(value,params,column) {
+  saveInput(inputElem: HTMLInputElement,value,params,column) {
     let commentType;
+    let totalTankCapacity = params?.data?.total_tank_capacity;
     switch(column){
       case 'eca_min_sod': {commentType = 'eca_sod_comment'; break;}
       case 'hsfo_min_sod':{commentType = 'hsfo_sod_comment'; break;}
       case 'max_sod': {commentType = 'max_sod_comment'; break;}
       case 'min_sod': {commentType = 'min_sod_comment'; break;}
+    }
+    // check and truncate to totalTankCapacity, if the total max sod input greater then totalTankCapacity
+    if(value>totalTankCapacity) {
+      value = totalTankCapacity;
+      inputElem.value = value;
     }
     if (params.value != value || this.params?.data[commentType] != this.usercomments) {
       this.showInfoIcon = true;
