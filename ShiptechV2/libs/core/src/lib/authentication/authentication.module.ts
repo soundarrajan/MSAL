@@ -8,6 +8,7 @@ import { AuthenticationContext } from './authentication-context';
 import { AuthenticationService } from './authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthenticationInterceptor } from '../interceptors/authentication-http.interceptor.service.';
+import { AuthService } from './auth.service';
 
 // Note: Workaround angular aot: Function calls are not supported in decorators
 export function authContextFactory(): AuthenticationContext {
@@ -22,21 +23,22 @@ export class AuthenticationModule {
       providers: [
         MsalService,
         MsalBroadcastService,
+        AuthService,
         AuthenticationService,
         {
           provide: AuthenticationContext,
           useFactory: authContextFactory
         },
-        // {
-        //   provide: HTTP_INTERCEPTORS,
-        //   useClass: AuthenticationInterceptor,
-        //   multi: true
-        // }
         {
-          provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
-          useClass: MsalInterceptor,
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthenticationInterceptor,
           multi: true
         }
+        // {
+        //   provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
+        //   useClass: MsalInterceptor,
+        //   multi: true
+        // }
       ]
     };
   }
