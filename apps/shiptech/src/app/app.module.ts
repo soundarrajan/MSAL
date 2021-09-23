@@ -67,11 +67,11 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   console.log(baseOrigin);
   console.log(config);
   legacyConfig = config;
-  config.auth.redirectUri = baseOrigin;
+  config.authV2.redirectUri = baseOrigin;
   return new PublicClientApplication({
     auth: {
-      clientId: config.auth.clientId,
-      redirectUri: config.auth.redirectUri
+      clientId: config.authV2.clientId,
+      redirectUri: config.authV2.redirectUri
     },
     cache: {
       cacheLocation: 'localStorage'

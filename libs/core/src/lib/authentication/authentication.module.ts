@@ -29,16 +29,16 @@ export class AuthenticationModule {
           provide: AuthenticationContext,
           useFactory: authContextFactory
         },
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: AuthenticationInterceptor,
-          multi: true
-        }
         // {
-        //   provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
-        //   useClass: MsalInterceptor,
+        //   provide: HTTP_INTERCEPTORS,
+        //   useClass: AuthenticationInterceptor,
         //   multi: true
         // }
+        {
+          provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
+          useClass: MsalInterceptor,
+          multi: true
+        }
       ]
     };
   }
