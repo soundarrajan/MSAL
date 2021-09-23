@@ -7,7 +7,6 @@ import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { LicenseManager } from '@ag-grid-enterprise/all-modules';
 import { AppConfig, IAppConfig } from './config/app-config';
 import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.service';
-import { AuthenticationService } from './authentication/authentication.service';
 import { EMPTY$ } from './utils/rxjs-operators';
 import { ILegacyAppConfig } from './config/legacy-app-config';
 import {
@@ -43,7 +42,6 @@ export class BootstrapService {
     private legacyCache: LookupsCacheService,
     private msalService: MsalService,
     private http: HttpClient,
-    private authService: AuthenticationService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private loggerFactory: LoggerFactory,
     private injector: Injector,
@@ -58,7 +56,6 @@ export class BootstrapService {
     // Note: Order is very important here.
     return this.loadAppConfig().pipe(
       tap(() => this.setupLogging()),
-      concatMap(() => this.setupAuthentication()),
       concatMap(() => this.setupDeveloperToolbar()),
       concatMap(() => this.loadUserProfile()),
       concatMap(() => this.loadGeneralTenantSettings()),
@@ -76,13 +73,7 @@ export class BootstrapService {
     // Note: Order is very important here.
     return this.loadAppConfig().pipe(
       tap(() => this.setupLogging()),
-      concatMap(() => this.setupAuthentication()),
       concatMap(() => this.setupDeveloperToolbar()),
-      // concatMap(() => this.loadUserProfile()),
-      // concatMap(() => this.loadGeneralTenantSettings()),
-      // concatMap(() => this.legacyLookupsDatabase.init()),
-      // concatMap(() => this.legacyCache.load()),
-      // concatMap(() => this.loadKnownLookups()),
       tap(() => this.setupAgGrid()),
       tap(() => this._initialized.next())
     );
@@ -117,20 +108,6 @@ export class BootstrapService {
         return this.appConfig;
       })
     );
-  }
-
-  private setupAuthentication(): Observable<void> {
-    // this.authService.init(this.appConfig.v1.auth);
-    // this.authService.isAuthenticated = true;
-    // if (this.authService.isAuthenticated) {
-    return EMPTY$;
-    // }
-    //TODO: handle adal errors and token expire
-    // this.authService.login();
-
-    return new Observable<void>(() => {
-      // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.
-    });
   }
 
   private setupDeveloperToolbar(): Observable<void> {

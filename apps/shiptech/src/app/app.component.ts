@@ -23,7 +23,6 @@ import {
 import { MyMonitoringService } from './service/logging.service';
 import { LoaderService } from './service/loader.service';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { AuthenticationService } from '@shiptech/core/authentication/authentication.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import {
   InteractionStatus,
@@ -57,6 +56,7 @@ import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/develo
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { BootstrapService } from '@shiptech/core/bootstrap.service';
+import { AuthService } from '@shiptech/core/authentication/auth.service';
 @Component({
   selector: 'shiptech-root',
   templateUrl: './app.component.html',
@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
   private _initialized = new ReplaySubject<void>(1);
   constructor(
     private msalService: MsalService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     private router: Router,
     changeDetector: ChangeDetectorRef,
     private myMonitoringService: MyMonitoringService,
@@ -145,53 +145,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.authService.instance = new PublicClientApplication({
-    //   auth: {
-    //     clientId: '8fdd5b37-c181-49d2-85e9-c2fc71334924',
-    //     redirectUri: 'http://localhost:9016'
-    //   },
-    //   cache: {
-    //     cacheLocation: 'localStorage'
-    //   }
-    // });
-    this.broadcastService.inProgress$
-      .pipe(
-        filter(
-          (status: InteractionStatus) => status === InteractionStatus.None
-        ),
-        takeUntil(this._destroying$)
-      )
-      .subscribe(() => {
-        if (this.count === 0) {
-          // this.bootstrapService.Init();
-          this.setLoginDisplay();
-        }
-        this.count += 1;
-      });
-    // this.authService1.setMsal();
-    this.isIframe = window !== window.parent && !window.opener;
-  }
-
-  logOut() {
-    this.msalService.logout();
-  }
-
-  login() {
-    // this.authService1.logout();
-    this.msalService.loginRedirect();
-    // this.authService.loginPopup().subscribe({
-    //   next: result => {
-    //     console.log(result);
-    //     this.setLoginDisplay();
-    //   },
-    //   error: error => console.log(error)
-    // });
-  }
-
-  setLoginDisplay() {
-    console.log('accounts', this.msalService.instance.getAllAccounts().length);
-    console.log(this.authService.isAuthenticated);
-    this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
+    this.authService.updateLoggedInStatus();
   }
 
   ngOnDestroy(): void {

@@ -8,7 +8,6 @@ import {
 import { Injectable, NgModule } from '@angular/core';
 import { AdalGuard } from 'adal-angular-wrapper';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
-import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './service/interceptor.service';
@@ -43,7 +42,6 @@ const routes: Routes = [
     children: [
       {
         path: KnownPrimaryRoutes.QuantityControl,
-        // canActivate: [AuthenticationGuard],
         canActivate: [MsalGuard],
         loadChildren: () =>
           import('@shiptech/feature/quantity-control').then(
@@ -55,7 +53,6 @@ const routes: Routes = [
       },
       {
         path: KnownPrimaryRoutes.EmailTemplateEditor,
-        // canActivate: [AuthenticationGuard],
         canActivate: [MsalGuard],
         loadChildren: () =>
           import('@shiptech/feature/ete').then(m => m.EteModule),
@@ -75,7 +72,6 @@ const routes: Routes = [
     children: [
       {
         path: KnownPrimaryRoutes.Delivery,
-        // canActivate: [AuthenticationGuard],
         canActivate: [MsalGuard],
         loadChildren: () =>
           import('@shiptech/feature/delivery').then(m => m.DeliveryModule),
@@ -95,7 +91,6 @@ const routes: Routes = [
     children: [
       {
         path: KnownPrimaryRoutes.Contract,
-        // canActivate: [AuthenticationGuard],
         canActivate: [MsalGuard],
         loadChildren: () =>
           import('@shiptech/feature/contract').then(m => m.ContractModule),
@@ -115,7 +110,6 @@ const routes: Routes = [
     children: [
       {
         path: KnownPrimaryRoutes.Invoices,
-        // canActivate: [AuthenticationGuard],
         canActivate: [MsalGuard],
         loadChildren: () =>
           import('@shiptech/feature/invoice').then(m => m.InvoiceModule),
@@ -127,7 +121,7 @@ const routes: Routes = [
   },
   {
     path: KnownPrimaryRoutes.LazyLoad,
-    canActivate: [AuthenticationGuard],
+    canActivate: [MsalGuard],
     loadChildren: () =>
       import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule),
     resolve: {
@@ -144,7 +138,7 @@ const routes: Routes = [
     children: [
       {
         path: KnownPrimaryRoutes.Smart,
-        canActivate: [AuthenticationGuard],
+        canActivate: [MsalGuard],
         loadChildren: () =>
           import('@shiptech/feature/smart').then(m => m.SmartModule),
         resolve: {
