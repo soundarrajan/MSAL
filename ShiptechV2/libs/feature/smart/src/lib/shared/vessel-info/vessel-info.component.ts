@@ -525,9 +525,11 @@ export class VesselInfoComponent implements OnInit {
     this.sendPlanReminder = false;
     //Check if auto-plan generation is in progress on vessel change in lookup
     this.checkAutoPlanGenInProgress = true;
-    //Trigger gen plan status auto update on vessel change
-    this.VesselHasNewPlanJob();
+    //Trigger gen plan status auto update on vessel change after clear mem leakage
     this.observableRef$.unsubscribe();
+    setTimeout(() => {
+      this.VesselHasNewPlanJob();
+    }, 500);
   }
   TotalCommentCount(count: any) {
     this.totalCommentCount = count;
@@ -759,9 +761,9 @@ export class VesselInfoComponent implements OnInit {
             data: {message : 'latest bunker plan is Invalid', hideActionbtn: true }
           });
         } else if(data?.planStatus == 'INP' && ((data?.plan_id).trim() != prevPlanId) && vesselCode) {
-          const dialogValidRef = this.dialog.open(WarningoperatorpopupComponent, {
+          const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
+            panelClass: ['success-popup-panel'],
             width: '350px',
-            panelClass: 'confirmation-popup-operator',
             data: {message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`, hideActionbtn: true }
           });
         }

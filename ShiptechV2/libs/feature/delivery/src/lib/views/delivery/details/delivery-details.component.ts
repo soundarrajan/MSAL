@@ -360,12 +360,14 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         savedProdForCheck: {}
       },
       deliveryProducts: [],
-      feedback: {}
+      feedback: {},
+      deliveryNotes: {}
     };
     let data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
     localStorage.removeItem('parentSplitDelivery');
     this.formValues.order = data.order;
     this.formValues.info = data.info;
+    this.formValues.deliveryNotes = data.deliveryNotes;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
     }
@@ -1081,6 +1083,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
     }
+
     data.forEach((delivery, key) => {
       this.formValues.deliveryProducts.push({
         orderedProduct: delivery.product,
@@ -1662,7 +1665,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
               KnownDeliverylRoutes.DeliveryDetails
             ])
             .then(() => {
-              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);        
+              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);
             });
           }
         });
@@ -1681,7 +1684,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 					if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
-            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
+            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
           } else {
             this.toastrService.success('Delivery saved successfully');
             this.deliveryService
@@ -1689,7 +1692,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 						.pipe(
               finalize(() => {
                 this.spinner.hide();
-                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
+                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
 							})
               )
               .subscribe((data: any) => {
@@ -2004,45 +2007,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     return decode(_.unescape(modelValue));
   }
 
-  notesUpdate() {
-    console.log('Mouse out notes section');
-    let findNotesWithIdZero = _.filter(this.formValues.deliveryNotes, function(
-      object
-    ) {
-      return object.id == 0;
-    });
-
-    if (findNotesWithIdZero && findNotesWithIdZero.length) {
-      this.autoSave();
-    }
-  }
-
-  autoSave() {
-    if (parseFloat(this.entityId)) {
-      let payload = {
-        DeliveryId: parseFloat(this.entityId),
-        DeliveryNotes: this.formValues.deliveryNotes
-      };
-      this.deliveryService
-        .notesAutoSave(payload)
-        .pipe(
-          finalize(() => {
-            this.spinner.hide();
-          })
-        )
-        .subscribe((result: any) => {
-          if (typeof result == 'string') {
-            this.spinner.hide();
-            this.toastrService.error(result);
-          } else {
-            console.log(result);
-            this.formValues.deliveryNotes = _.cloneDeep(result);
-            this.changeDetectorRef.detectChanges();
-          }
-        });
-    }
-  }
-
   deleteDelivery() {
     const dialogRef = this.dialog.open(RemoveDeliveryModalComponent, {
       width: '600px',
@@ -2056,4 +2020,5 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       console.log(result);
     });
   }
+
 }

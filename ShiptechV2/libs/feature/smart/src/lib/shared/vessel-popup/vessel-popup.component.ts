@@ -874,7 +874,7 @@ export class VesselPopupComponent implements OnInit {
           portPopupData[0].position = 0;
         }
         else if (portPopupData.length == 2) {
-          portPopupData[0].position = 1;
+          portPopupData[0].position = 0;
           portPopupData[1].position = 0;
         }
       }

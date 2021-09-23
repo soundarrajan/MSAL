@@ -176,11 +176,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsfo_estimated_lift' :{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_hsfo && params.data?.is_alt_port != 'N'){
+                                    if(params.data?.order_id_hsfo && params.data?.is_alt_port_hsfo != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
-                                    else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo && params.data?.is_alt_port != 'N'){
+                                    else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo && params.data?.is_alt_port_hsfo != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                       classArray.push(newClass);
                                     }
@@ -190,11 +190,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'ulsfo_estimated_lift':{
                                       var classArray: string[] = ['pd-6'];
                                       let newClass;
-                                      if(params.data?.order_id_ulsfo && params.data?.is_alt_port != 'N'){
+                                      if(params.data?.order_id_ulsfo && params.data?.is_alt_port_ulsfo != 'N'){
                                         newClass = 'aggrid-link-bplan aggrid-red-cell'
                                         classArray.push(newClass);
                                       }
-                                      else if(params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo && params.data?.is_alt_port != 'N'){
+                                      else if(params.data?.ulsfo_estimated_lift && params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo && params.data?.is_alt_port_ulsfo != 'N'){
                                         newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                         classArray.push(newClass);
                                       }
@@ -204,11 +204,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'lsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_lsdis && params.data?.is_alt_port != 'N'){
+                                    if(params.data?.order_id_lsdis && params.data?.is_alt_port_lsdis != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
-                                    else if(params.data?.request_id_lsdis && !params.data?.order_id_lsdis && params.data?.is_alt_port != 'N'){
+                                    else if(params.data?.lsdis_estimated_lift && params.data?.request_id_lsdis && !params.data?.order_id_lsdis && params.data?.is_alt_port_lsdis != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                       classArray.push(newClass);
                                     }
@@ -218,11 +218,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                         let newClass;
-                                        if(params.data?.order_id_hsdis && params.data?.is_alt_port != 'N'){
+                                        if(params.data?.order_id_hsdis && params.data?.is_alt_port_hsdis != 'N'){
                                           newClass = 'aggrid-link-bplan aggrid-red-cell'
                                           classArray.push(newClass);
                                         }
-                                        else if(params.data?.request_id_hsdis && !params.data?.order_id_hsdis && params.data?.is_alt_port != 'N'){
+                                        else if(params.data?.hsdis_estimated_lift && params.data?.request_id_hsdis && !params.data?.order_id_hsdis && params.data?.is_alt_port_hsdis != 'N'){
                                           newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                           classArray.push(newClass);
                                         }
@@ -280,7 +280,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.menuTrigger.openMenu();
   }
 
-  toggleMenuInfo(event, data) {//onenter
+  toggleMenuInfo(event, data?:any) {//onenter
     this.infomenuTrigger.openMenu();
     var overlay = document.querySelector('.cdk-overlay-container');
     overlay.classList.add('removeOverlay');
@@ -765,11 +765,61 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         break;
     }
   }
+  showProductRequestInfo(params) {
+    let requestInfo = [];
+    let data = params?.data;
+    let requestModel = {request_id: '', request_product: '', estimated_lift: ''};
+    switch (params?.colDef?.field) {
+      case 'hsfo_estimated_lift':
+        if(data?.request_id_hsfo) {
+          requestModel.request_id = data?.request_id_hsfo;
+          requestModel.request_product = data?.request_product_hsfo;
+          requestModel.estimated_lift = data?.hsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        if(data?.request_id_vlsfo) {
+          requestModel.request_id = data?.request_id_vlsfo;
+          requestModel.request_product = data?.request_product_vlsfo;
+          requestModel.estimated_lift = data?.vlsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'ulsfo_estimated_lift':
+        if(data?.request_id_ulsfo) {
+          requestModel.request_id = data?.request_id_ulsfo;
+          requestModel.request_product = data?.request_product_ulsfo;
+          requestModel.estimated_lift = data?.ulsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'lsdis_estimated_lift':
+        if(data?.request_id_lsdis) {
+          requestModel.request_id = data?.request_id_lsdis;
+          requestModel.request_product = data?.request_product_vlsfo;
+          requestModel.estimated_lift = data?.request_product_lsdis;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'hsdis_estimated_lift':
+        if(data?.request_id_hsdis) {
+          requestModel.request_id = data?.request_id_hsdis;
+          requestModel.request_product = data?.request_product_hsdis;
+          requestModel.estimated_lift = data?.hsdis_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+    }
+  }
   requestAvailable(params){
     let isRequestAvailable = false;
     switch(params?.colDef?.field){
       case 'hsfo_estimated_lift' : { 
                                         isRequestAvailable = params.data?.request_id_hsfo ? true : false;
+                                        isRequestAvailable = (isRequestAvailable || (params.data?.request_id_vlsfo)) ? true : false;
                                         break;
                                    }
       case 'ulsfo_estimated_lift' : { 
