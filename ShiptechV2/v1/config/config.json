@@ -2,6 +2,21 @@
   "auth": {
     "instance": "https://login.microsoftonline.com/",
     "tenant": "twentyfoursoftwareoutlook.onmicrosoft.com",
+    "clientId": "3e7b4241-b1e6-4769-bb5c-989d64458e51",
+    "authEndpoint": "/oauth2/authorize",
+    "cacheLocation": "localStorage",
+    "extraQueryParameter": "nux=1",
+    "logOutUri": "",
+    "endpoints": {
+      "http://shiptech.24software.ro:8081/": "3e7b4241-b1e6-4769-bb5c-989d64458e51"
+    },
+    "anonymousEndpoints": [ "http://shiptech10.24software.ro:8081/" ],
+    "postLogoutRedirectUri": null,
+    "expireOffsetSeconds": 10
+  },
+  "authV2": {
+    "instance": "https://login.microsoftonline.com/",
+    "tenant": "twentyfoursoftwareoutlook.onmicrosoft.com",
     "clientId": "8fdd5b37-c181-49d2-85e9-c2fc71334924",
     "authEndpoint": "/oauth2/authorize",
     "cacheLocation": "localStorage",
