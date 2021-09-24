@@ -4,13 +4,13 @@
       <div class="info-bar" style="padding-left:0">
         <div class="from-to-data">
           <div style="margin:0 5px;display:flex;align-items: center;">
-            <div class="value m-l-r-5">ETA Date: </div>
-            <shiptech-date-picker-from-to
+            <!-- <div class="value m-l-r-5">ETA Date: </div> -->
+            <!-- <shiptech-date-picker-from-to
              [selectedFromDate]="selectedFromDate"
              [selectedToDate]="selectedToDate"
              (onDateChange)="onDateChange($event)"
              >
-            </shiptech-date-picker-from-to>
+            </shiptech-date-picker-from-to> -->
             <!-- <div style="height:32px;margin:0 10px;display:flex;align-items: center;    border-right: solid #54617A 3px;">
               <span class="from-to-label">From</span>
               <span class="from-to-value m-l-r-5">10/02/20</span>
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div>
-      <div class="createReqEnable" style="padding-left:10px;margin-right: 10px;"><a href="javascript:void(0)" (click)="createNewRequest()"> Create Request </a></div>
+      <div class="createReqEnable" style="padding-left:10px;margin-right: 10px;height: 31px;"><a href="javascript:void(0)" (click)="createNewRequest()"> Create Request </a></div>
       <!-- <button matTooltip="Create Request" [matTooltipShowDelay]="500" id="create-btn">
         <img src="./assets/customicons/plus-noborder-denim.svg" alt="create">
         <div class="createReq">Create Request</div>
@@ -44,7 +44,7 @@
     [gridOptions]="gridOptions"
     [multiSortKey]="'ctrl'"
       class="ag-theme-balham-dark"></ag-grid-angular> -->
-    <shiptech-future-request-grid [columnDefs]="columnDefs" #futureGridViewModel></shiptech-future-request-grid>
+    <shiptech-future-request-grid [filterByVessel]="true" [columnDefs]="columnDefs" #futureGridViewModel></shiptech-future-request-grid>
   </div>
 
 </div>
