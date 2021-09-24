@@ -413,9 +413,7 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
     </div>
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
-      <div *ngIf="params.value == '-'">
-        <span>{{ params.value }}</span>
-      </div>
+      <span>{{ params.value }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
       <div *ngIf="params.value == '518.50'">
         <span>{{ params.value }}</span>
@@ -693,6 +691,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
   deleteRow() {
+    debugger;
     let rowData = [];
     this.params.api.forEachNode(node => rowData.push(node.data));
     let index = this.params.node.rowIndex;

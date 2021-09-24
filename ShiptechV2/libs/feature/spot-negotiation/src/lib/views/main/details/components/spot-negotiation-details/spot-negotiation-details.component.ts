@@ -95,6 +95,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
         this.columnDef_aggridObj[i] = Object.assign([], this.columnDef_aggrid);
 
+        const productIds = currentRequest.requestProducts.map(e => e.id);
+
         currentRequest.requestProducts.map(product => {
           this.columnDef_aggridObj[i].push({
             headerName: '',
@@ -132,11 +134,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               {
                 headerName: 'Offer price',
                 headerTooltip: 'Offer price',
-                field: 'offPrice1',
+                field: `offPrice${product.id}`,
                 editable: true,
                 onCellValueChanged: function(params) {
                   // TODO: when we have additional cost and multiple requests to finish the calculations.
-
                   // Destructuring params;
                   const {
                     node: { data: currentCell }
@@ -144,26 +145,40 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
                   const shouldForceChange = params.newValue !== params.oldValue;
 
-                  currentCell.offPrice1 = params.newValue;
+                  currentCell[`offPrice${product.id}`] = params.newValue;
+
                   // Calculate total price
                   // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
-                  currentCell.tPr = currentCell.offPrice1;
+                  currentCell[`tPr${product.id}`] =
+                    currentCell[`offPrice${product.id}`];
 
                   // Calculate ammount
                   // Amount = Total Price * Max. Quantity
-                  currentCell.amt = currentCell.tPr * product.maxQuantity;
+                  currentCell[`amt${product.id}`] =
+                    currentCell[`tPr${product.id}`] * product.maxQuantity;
 
                   // Calculate target diference
                   // Target Difference = Total Price - Target Price
-                  currentCell.diff = currentCell.tPr - product.target;
+                  currentCell[`diff${product.id}`] =
+                    currentCell[`tPr${product.id}`] - 0;
 
                   // Calculate total offer
                   // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
-                  currentCell.totalOffer = 'DEMO 1234';
+                  currentCell.totalOffer = 0;
+                  productIds.map(e => {
+                    let productOffer = currentCell[`offPrice${e}`];
+                    if(productOffer) {
+                      currentCell.totalOffer += Number(productOffer);
+                    }
+                  });
 
                   if (shouldForceChange) {
-                    params.node.setDataValue('offPrice1', params.newValue);
+                    params.node.setDataValue(
+                      `offPrice${product.id}`,
+                      params.newValue
+                    );
                   }
+
                   return currentCell;
                 },
                 width: 260,
@@ -178,25 +193,30 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               {
                 headerName: 'T.Pr.($)',
                 headerTooltip: 'T.Pr.($)',
-                field: 'tPr',
+                field: `tPr${product.id}`,
                 width: 150,
                 cellClass: 'grey-opacity-cell pad-lr-0',
-                cellStyle: params =>
-                  params.value == '518.50' ? { background: '#C5DCCF' } : null,
+                cellStyle: params => {
+                  if (params.highlight) {
+                    return { background: '#C5DCCF' };
+                  }
+
+                  return null;
+                },
                 cellRendererFramework: AGGridCellRendererV2Component,
                 cellRendererParams: { type: 'addTpr', cellClass: '' }
               },
               {
                 headerName: 'Amt ($)',
                 headerTooltip: 'Amt ($)',
-                field: 'amt',
+                field: `amt${product.id}`,
                 width: 150,
                 cellClass: 'grey-opacity-cell pad-lr-0'
               },
               {
                 headerName: 'Tar. diff',
                 headerTooltip: 'Tar. diff',
-                field: 'diff',
+                field: `diff${product.id}`,
                 width: 150,
                 headerClass: 'border-right',
                 cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
@@ -267,7 +287,18 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         params.api.sizeColumnsToFit();
       },
       rowSelection: 'single',
+      onCellEditingStopped: params => {
+        // debugger;
+        // const y = self.rowData_aggrid;
+        // self.rowData_aggrid[0].amt = '123';
+        // const x = params.columnApi.getColumn('tPr')
+        // // Highlight Total offer (lowest)
+        // // Highlight Total price (lowest)
+        // debugger;
+      },
       onGridReady: params => {
+        // Ng init for AG GRID;
+
         this.gridOptions_counterparty.api = params.api;
         this.gridOptions_counterparty.columnApi = params.columnApi;
         this.gridOptions_counterparty.api.sizeColumnsToFit();
@@ -282,7 +313,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           // params.columnApi.getColumn('phySupplier').getActualWidth();
           this.expandGridHeaderWidth =
             // params.columnApi.getColumn('check1').getActualWidth() +
-            // params.columnApi.getColumn('offPrice1').getActualWidth() +
+            // params.columnApi.getColumn('offPrice').getActualWidth() +
             // params.columnApi.getColumn('offPrice2').getActualWidth() +
             // params.columnApi.getColumn('offPrice3').getActualWidth() +
             // params.columnApi.getColumn('tPr').getActualWidth() +
@@ -320,7 +351,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   public rowClassRules = {
     customRowClass: function(params) {
-      var offPrice = params.data.offPrice1;
+      var offPrice = params.data.offPrice;
       return offPrice == 100;
     },
     'display-no-quote': function(params) {
