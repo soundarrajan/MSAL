@@ -24,7 +24,6 @@ import { AuthenticationModule } from '@shiptech/core/authentication/authenticati
 import { CoreModule } from '@shiptech/core/core.module';
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import { TitleModule } from '@shiptech/core/services/title/title.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { AllModules, ModuleRegistry } from '@ag-grid-enterprise/all-modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
@@ -53,10 +52,6 @@ import {
   IPublicClientApplication,
   PublicClientApplication
 } from '@azure/msal-browser';
-import { map } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
-import { IAppConfig } from '@shiptech/core/config/app-config';
-import { ILegacyAppConfig } from '@shiptech/core/config/legacy-app-config';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
 
 let legacyConfig = null;
