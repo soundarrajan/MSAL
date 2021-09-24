@@ -659,9 +659,14 @@ export class OlMapComponent implements OnInit, AfterViewInit {
               break;
             }
           }
-        });
+        })
+        this.triggerClickEvent();
       }
     });
+  }
+  triggerClickEvent() {
+    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+    titleEle.click();
   }
 
   //Hover Circle Style
@@ -1023,9 +1028,9 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       var hit = this.map.hasFeatureAtPixel(pixel);
       //Check Bunker Plan Screen is open
       this.onMapClick.emit();
-      debugger;
-      if (this.vesselService.myDefaultViewPayload.bunkerPlan != undefined) {
-        this.SavemyDefaultView();
+      //debugger;
+      if(this.vesselService.myDefaultViewPayload.bunkerPlan != undefined){
+        this.getDefaultView();//this.SavemyDefaultView();
       }
       if (hit) {
         let items = this.map.getFeaturesAtPixel(pixel);
@@ -1441,6 +1446,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       vesselType: 'LR1',
       bunkeringStatus: 'Created',
       serviceId: '',
+      serviceCode: '',
       deptId: '',
       ownership: '',
       hsfo: '',
@@ -1553,20 +1559,23 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       if (this.showVesselPop) {
         if (this.showPortList.length == 1) {
           this.showPortList[0].position = 0;
-        } else if (this.showPortList.length == 2) {
-          this.showPortList[0].position = 1;
+        }
+        else if (this.showPortList.length == 2) {
+          this.showPortList[0].position = 0;
           this.showPortList[1].position = 0;
         }
       } else {
         if (this.showPortList.length == 1) {
-          this.showPortList[0].position = 1;
-        } else if (this.showPortList.length == 2) {
-          this.showPortList[0].position = 2;
-          this.showPortList[1].position = 1;
-        } else if (this.showPortList.length == 3) {
-          this.showPortList[0].position = 2;
+          this.showPortList[0].position = 0;
+        }
+        else if (this.showPortList.length == 2) {
+          this.showPortList[0].position = 0;
           this.showPortList[1].position = 0;
-          this.showPortList[2].position = 1;
+        }
+        else if (this.showPortList.length == 3) {
+          this.showPortList[0].position = 0;
+          this.showPortList[1].position = 0;
+          this.showPortList[2].position = 0;
         }
       }
       if (this.showVesselPop) {

@@ -25,14 +25,18 @@ const KEY_TAB = 9;
           <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
     </span> -->
     </div>
-  <div *ngIf="params.type=='edit-business-address'">
+    <div *ngIf="params.type=='edit-lsdis-safe-port'" style="width : 30px !important">
     <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
         (keydown)="triggerChangeEvent();" ></div>
-  </div>
-  <div *ngIf="params.type=='edit-with-info-icon'">
-  <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
-        (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
-</div>`
+    </div>
+    <div *ngIf="params.type=='edit-business-address'">
+      <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
+          (keydown)="triggerChangeEvent();" ></div>
+    </div>
+    <div *ngIf="params.type=='edit-with-info-icon'">
+    <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
+          (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
+  </div>`
 })
 export class AgGridInputCellEditor implements ICellEditorAngularComp {
     public params: any;

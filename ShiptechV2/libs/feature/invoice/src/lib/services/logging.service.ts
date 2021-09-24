@@ -20,51 +20,51 @@ export class MyMonitoringService {
     });
     this.appInsights.loadAppInsights();
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);  
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);      
   }
-
+  
   logPageView(name?: string, url?: string) { // option to call manually
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);     
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);    
     this.appInsights.trackPageView({
       name: name,
       uri: url
     });
   }
-
+  
   startTrackEvent(url?: string) {
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);       
-    this.appInsights.startTrackEvent(url); 
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);
+    this.appInsights.startTrackEvent(url);
   }
-
+  
   stopTrackEvent(url?: string) {
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);       
-      this.appInsights.stopTrackEvent(url, { type: 'PAGE LOAD TIME' });
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);
+    this.appInsights.stopTrackEvent(url, { type: 'PAGE LOAD TIME' });
   }
-
+  
   logEvent(name: string, properties?: { [key: string]: any }) {
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);       
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);
     this.appInsights.trackEvent({ name: name}, properties);
   }
-
+  
   logMetric(name: string, average: number, properties?: { [key: string]: any }) {
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);       
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);
     this.appInsights.trackMetric({ name: name, average: average }, properties);
   }
 
   logException(exception: Error, severityLevel?: number) {
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);       
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);
     this.appInsights.trackException({ exception: exception, severityLevel: severityLevel });
   }
 
   logTrace(message: string, properties?: { [key: string]: any }) {
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);       
+    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);
     this.appInsights.trackTrace({ message: message}, properties);
   }
 }
