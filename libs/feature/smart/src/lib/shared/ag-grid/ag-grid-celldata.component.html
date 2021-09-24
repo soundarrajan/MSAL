@@ -87,7 +87,7 @@
     
     <div *ngIf="checkAltPort(params) == 'N'" matTooltip="0" [ngClass]="params.cellClass" style="color: white;">0 </div>
       
-    <div *ngIf="checkAltPort(params) == 'Y' && requestAvailable(params); else content" matTooltip="Alt.port" 
+    <div *ngIf="checkAltPort(params) == 'Y' && requestAvailable(params); else content" 
     #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverPlanLift" 
     (mouseenter)="requestAvailable(params) && toggleMenuInfo($event);" (mouseleave)="toggleMenu2Info();" 
     [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
