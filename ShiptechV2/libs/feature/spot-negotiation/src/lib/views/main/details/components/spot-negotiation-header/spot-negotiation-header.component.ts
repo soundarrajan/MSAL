@@ -10,6 +10,11 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnDestroy
+} from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
@@ -24,7 +29,8 @@ import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
-  styleUrls: ['./spot-negotiation-header.component.css']
+  styleUrls: ['./spot-negotiation-header.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   @ViewChild('headerContainer') container: ElementRef;
@@ -65,7 +71,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
     private renderer: Renderer2,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private changeDetector: ChangeDetectorRef
   ) {
     // Set observable;
   }
@@ -172,6 +179,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.toastr.success(res.message);
         // Add in Store
         this.store.dispatch(new AddCounterpartyToLocations(payload.counterparties));
+        this.changeDetector.detectChanges();
       }
       else{
         this.toastr.error(res.message);
