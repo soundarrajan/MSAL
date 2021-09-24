@@ -1,6 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
-
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
@@ -40,7 +43,7 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
                   />
                 </div>
                 <div class="col-md-2">
-                  <span class="expand-img" (click)="openCounterpartyPopup()"></span>
+                  <span class="expand-img" (click)="openCounterpartyPopup(params.locationId)"></span>
                 </div>
               </div>
               <table
@@ -56,7 +59,6 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
                       <mat-checkbox
                         [value]="element"
                         (change)="onCounterpartyCheckboxChange($event, element)"
-                        [(ngModel)]="element.selected"
                       >
                         {{ limitStrLength(element.name, 25) }}
                       </mat-checkbox>
@@ -75,7 +77,7 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
               </table>
 
               <div class="proceed-div">
-                <button mat-button class="mid-blue-button proceed-btn" (click)="addCounterpartiesToLocation()">
+                <button mat-button class="mid-blue-button proceed-btn" (click)="addCounterpartiesToLocation(params.locationId)">
                   Proceed
                 </button>
               </div>
@@ -123,9 +125,9 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
       </div>
       <div class="label" matTooltip="No. of Products">
         <div class="label-content" style="width:95%;">
-          <div class="label-element w-100" style="width:100%;">
-            <div class="title">No. of Products</div>
-            <div class="value">{{params.currentReqDataLength}}</div>
+        <div class="label-element w-100" style="width:100%;">
+        <div class="title">No. of Products</div>
+        <div class="value">{{params.currentReqDataLength}}</div>
           </div>
         </div>
       </div>
@@ -180,23 +182,22 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
             </div>
           </div>
           <div class="label-element dashed">
-            <div class="title">Live price</div>
-            <div
-              class="value"
-              contenteditable="true"
-              (keydown)="editQty($event)"
-            >
-              $559.00
-            </div>
+          <div class="title">Live price</div>
+          $<input
+            class="value"
+            contenteditable="true"
+            [(ngModel)]="LivePrice"
+            (ngModelChange)="calculateTargetPrice()"
+          />
           </div>
           <div class="label-element green">
             <div class="title">Target</div>
             <div
               class="value"
-              contenteditable="true"
+              contenteditable="false"
               (keydown)="editQty($event)"
             >
-              $559.00
+            {{targetValue}}
             </div>
           </div>
           <div
@@ -233,7 +234,8 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
         width: 100%;
       }
     `
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShiptechCustomHeaderGroup {
   //@ViewChildren('resieIcon') el:ElementRef;
@@ -244,6 +246,8 @@ export class ShiptechCustomHeaderGroup {
   isExpand: boolean;
   public resizeIconss: any;
   public expandState: string;
+  targetValue:any;
+  LivePrice : any;
 
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [];
@@ -254,7 +258,7 @@ export class ShiptechCustomHeaderGroup {
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-
+      
       // Fetching counterparty list
       if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
@@ -270,8 +274,11 @@ export class ShiptechCustomHeaderGroup {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
+    private changeDetector: ChangeDetectorRef,
     @Inject(DOCUMENT) private _document: HTMLDocument
-  ) {}
+  ) {
+    this.targetValue = '';
+  }
 
   onCounterpartyCheckboxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
@@ -298,14 +305,14 @@ export class ShiptechCustomHeaderGroup {
       .slice(0, 7);
   }
 
-  openCounterpartyPopup(){
+  openCounterpartyPopup(locationId){
     let RequestGroupId = 0;
     let currentRequestLocation = {id:"0", locationId:"0"};
 
     if(this.currentRequestInfo && this.currentRequestInfo.length > 0){
       RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
-
-      if(this.currentRequestInfo[0].requestLocations
+      
+      if(this.currentRequestInfo[0].requestLocations 
         && this.currentRequestInfo[0].requestLocations.length > 0){
         currentRequestLocation = this.currentRequestInfo[0].requestLocations[0];
         }
@@ -320,7 +327,7 @@ export class ShiptechCustomHeaderGroup {
         "AddCounterpartiesAcrossLocations":false,
         "RequestGroupId":RequestGroupId,
         "RequestLocationId" : parseInt(currentRequestLocation.id),
-        "LocationId" : parseInt(currentRequestLocation.locationId)
+        "LocationId" : locationId
       }
     });
 
@@ -410,11 +417,12 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-  toBeAddedCounterparties() : SpnegoAddCounterpartyModel[] {
+  toBeAddedCounterparties(locationId) : SpnegoAddCounterpartyModel[] {
     if (this.currentRequestInfo && this.currentRequestInfo.length > 0) {
 
       let RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
-      let currentRequestLocation = this.currentRequestInfo[0].requestLocations[0];
+      let currentRequestLocation = this.currentRequestInfo[0].requestLocations
+                                  .filter(x=> x.locationId === locationId)[0];
 
       return this.selectedCounterparty.map(val => <SpnegoAddCounterpartyModel>{
         requestGroupId: RequestGroupId,
@@ -442,9 +450,12 @@ export class ShiptechCustomHeaderGroup {
       return Array<SpnegoAddCounterpartyModel>();
     }
   }
-
-  addCounterpartiesToLocation(){
-    const selectedCounterparties = this.toBeAddedCounterparties();
+  calculateTargetPrice(){
+    //yet to be implemented(waiting for backend changes)
+    this.targetValue=this.LivePrice+10;
+   }
+  addCounterpartiesToLocation(locationId){
+    const selectedCounterparties = this.toBeAddedCounterparties(locationId);
     if(selectedCounterparties.length == 0)
       return;
 
@@ -461,6 +472,7 @@ export class ShiptechCustomHeaderGroup {
         this.toastr.success(res.message);
         // Add in Store
         this.store.dispatch(new AddCounterpartyToLocations(payload.counterparties));
+        this.changeDetector.markForCheck();
       }
       else{
         this.toastr.error(res.message);

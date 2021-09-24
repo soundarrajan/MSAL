@@ -7,6 +7,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
+import _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -90,10 +91,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         var filterobj = this.rowData_aggrid.filter(
           filter => filter.locationId == currentRequest.locationId
         );
-
+        let locationId = currentRequest.locationId;
         this.rowData_aggridobj[i] = filterobj;
 
-        this.columnDef_aggridObj[i] = Object.assign([], this.columnDef_aggrid);
+       // Assign ColumnDef_aggrid with dynamic location id	
+       this.columnDef_aggridObj[i] = _.cloneDeep(this.columnDef_aggrid);	
+       this.columnDef_aggridObj[i][0].headerGroupComponentParams.locationId = locationId
 
         const productIds = currentRequest.requestProducts.map(e => e.id);
 
