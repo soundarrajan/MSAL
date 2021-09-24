@@ -110,8 +110,6 @@ export class MapPanelComponent implements OnInit {
   setVesselPortList() {
     this.filterList = [];
     this.list = [];
-    this.vList = [];
-    this.pList = [];
     //Make a list of vesselname and vessel ID
     this.vesselList.forEach(vessel => {
       this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });

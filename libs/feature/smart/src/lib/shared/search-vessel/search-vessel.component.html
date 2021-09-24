@@ -26,7 +26,7 @@
         <mat-optgroup *ngIf="enableVesselList" label="My Vessels List"
             [ngClass]="{'dark-theme':theme,'light-theme':!theme}"></mat-optgroup>
         <mat-option id="option" *ngFor="let vessel of enableVesselList?vesselList:(filteredOptions | async)"
-            [ngClass]="{'dark-theme':theme,'light-theme':!theme}" [value]="vessel.code"
+            [ngClass]="{'dark-theme':theme,'light-theme':!theme}" [value]="vessel.imono"
             >
             {{vessel.displayName}}
         </mat-option>

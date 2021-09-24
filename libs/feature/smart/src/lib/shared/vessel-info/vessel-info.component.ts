@@ -88,7 +88,6 @@ export class VesselInfoComponent implements OnInit {
   sendPlanReminder : boolean = false;
   disableCurrentBPlan: boolean = false;
   checkAutoPlanGenInProgress : boolean = false
-  BPlanGenTrigger = [];
   observableRef$;
 
   constructor(private store: Store, iconRegistry: MatIconRegistry,public vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
@@ -525,11 +524,8 @@ export class VesselInfoComponent implements OnInit {
     this.sendPlanReminder = false;
     //Check if auto-plan generation is in progress on vessel change in lookup
     this.checkAutoPlanGenInProgress = true;
-    //Trigger gen plan status auto update on vessel change after clear mem leakage
-    this.observableRef$.unsubscribe();
-    setTimeout(() => {
-      this.VesselHasNewPlanJob();
-    }, 500);
+    //Trigger gen plan status auto update on vessel change
+    this.VesselHasNewPlanJob();
   }
   TotalCommentCount(count: any) {
     this.totalCommentCount = count;
@@ -654,7 +650,6 @@ export class VesselInfoComponent implements OnInit {
       import_gsis:this.import_gsis,
     }
     this.disableCurrentBPlan = true;
-    this.BPlanGenTrigger.push(this.vesselData?.vesselId);
     this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('Save status',data);
@@ -679,7 +674,7 @@ export class VesselInfoComponent implements OnInit {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
           panelClass: 'confirmation-popup-operator',
-          data: {message : 'Please wait, a new plan is getting generated for vessel ', id: this.vesselData?.vesselRef?.vesselRef?.vesselCode }
+          data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
           // data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
         this.store.dispatch(new GeneratePlanAction(0));
@@ -744,33 +739,8 @@ export class VesselInfoComponent implements OnInit {
         this.loadBunkerPlanDetails(vesseldata.vesselRef);
         //Enable Import GSIS checkbox and generate button after gen plan success
         this.disableCurrentBPlan = false;
-        
         //unsubscribe next exec after 15 sec, if plan generate get completed
         this.observableRef$.unsubscribe();
-
-        let vesselCode = this.vesselData?.vesselRef?.vesselRef?.code;
-        vesselCode = vesselCode? vesselCode : this.vesselData?.vesselRef?.vesselRef?.vesselCode;
-        let prevPlanId = this.vesselData?.vesselRef?.planId;
-        let todayDate = new Date(new Date().toLocaleDateString());
-        let planCreatedDate = data?.planCreatedDate;
-        planCreatedDate = new Date(new Date(planCreatedDate).setHours(0,0,0,0));
-        if((data?.planStatus == 'INV') && ((data?.plan_id).trim() != prevPlanId) && (+planCreatedDate == +todayDate) && this.BPlanGenTrigger.includes(this.vesselData?.vesselId)) {
-          const dialogInvalidRef = this.dialog.open(WarningoperatorpopupComponent, {
-            width: '350px',
-            panelClass: 'confirmation-popup-operator',
-            data: {message : 'latest bunker plan is Invalid', hideActionbtn: true }
-          });
-        } else if(data?.planStatus == 'INP' && ((data?.plan_id).trim() != prevPlanId) && vesselCode) {
-          const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
-            panelClass: ['success-popup-panel'],
-            width: '350px',
-            data: {message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`, hideActionbtn: true }
-          });
-        }
-        if(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId)!=-1) {
-          this.BPlanGenTrigger.splice(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId), 1);
-        }
-        return;
       } else {
         //Disable Import GSIS checkbox and generate button while gen plan in progress
         this.disableCurrentBPlan = true;

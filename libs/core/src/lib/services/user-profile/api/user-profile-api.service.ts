@@ -33,7 +33,7 @@ export class UserProfileApi extends ApiServiceBase implements IUserProfileApi {
   @ObservableException()
   public get(): Observable<IUserProfileApiResponse> {
     return this.http.post<IUserProfileApiResponse>(
-      `${this.appConfig.v1.API.BASE_URL_DATA_ADMIN}/${UserProfileApiPaths.get()}`,
+      `${this._apiUrl}/${UserProfileApiPaths.get()}`,
       {
         payload: true
       }

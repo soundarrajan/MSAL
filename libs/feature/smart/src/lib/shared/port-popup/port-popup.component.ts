@@ -102,9 +102,9 @@ export class PortPopupComponent implements OnInit {
             this.viewotherDetails = true;
           }
         }
-        //this.vesselService.myDefaultViewPayload.vessel = 0;
+        this.vesselService.myDefaultViewPayload.vessel = 0;
       this.vesselService.myDefaultViewPayload.port = 1;
-      //this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
+      this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
       }
     this.localService.themeChange.subscribe(value => this.theme = value);
     this.loadMasterLookupData();
@@ -219,39 +219,18 @@ export class PortPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.defaultView = 1;
       if(this.viewbopsPrice){
         this.vesselService.myDefaultViewPayload.bopsPrice = 1;
-        this.vesselService.myDefaultViewPayload.portRemarks = 0;
-        this.vesselService.myDefaultViewPayload.portsAgents = 0;
-        this.vesselService.myDefaultViewPayload.otherDetails = 0;
-        this.vesselService.myDefaultViewPayload.productAvailability = 0;
       }else if(this.viewportRemarks){
         this.vesselService.myDefaultViewPayload.portRemarks = 1;
-        this.vesselService.myDefaultViewPayload.bopsPrice = 0;
-        this.vesselService.myDefaultViewPayload.portsAgents = 0;
-        this.vesselService.myDefaultViewPayload.otherDetails = 0;
-        this.vesselService.myDefaultViewPayload.productAvailability = 0;
       }
       else if(this.viewportsAgents){
         this.vesselService.myDefaultViewPayload.portsAgents = 1;
-        this.vesselService.myDefaultViewPayload.bopsPrice = 0;
-        this.vesselService.myDefaultViewPayload.portRemarks = 0;
-        this.vesselService.myDefaultViewPayload.otherDetails = 0;
-        this.vesselService.myDefaultViewPayload.productAvailability = 0;
       }
       else if(this.viewotherDetails){
         this.vesselService.myDefaultViewPayload.otherDetails = 1;
-        this.vesselService.myDefaultViewPayload.bopsPrice = 0;
-        this.vesselService.myDefaultViewPayload.portRemarks = 0;
-        this.vesselService.myDefaultViewPayload.portsAgents = 0;
-        this.vesselService.myDefaultViewPayload.productAvailability = 0;
       }
       else if(this.viewPortProductAvailability){
         this.vesselService.myDefaultViewPayload.productAvailability = 1;
-        this.vesselService.myDefaultViewPayload.bopsPrice = 0;
-        this.vesselService.myDefaultViewPayload.portRemarks = 0;
-        this.vesselService.myDefaultViewPayload.portsAgents = 0;
-        this.vesselService.myDefaultViewPayload.otherDetails = 0;
       }
-      this.vesselService.myDefaultViewPayload.port = 1;
     }
     else {
       this.myDefaultView = false;
@@ -266,11 +245,10 @@ export class PortPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.bopsPrice = 0;
       this.vesselService.myDefaultViewPayload.portsAgents = 0;
       this.vesselService.myDefaultViewPayload.otherDetails = 0;
-      this.vesselService.myDefaultViewPayload.port = 0;
     }
-    // this.vesselService.myDefaultViewPayload.vessel = 0;
-    // this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
-    //this.vesselService.myDefaultViewPayload.port = 1;
+    this.vesselService.myDefaultViewPayload.vessel = 0;
+    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
+    this.vesselService.myDefaultViewPayload.port = 1;
 
   }
 

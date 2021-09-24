@@ -687,7 +687,7 @@
                 calculateVarianceAndReconStatus(deliveryProductIndex)
               "
               matInput
-              [disabled]="formValues.invoiceActiveFlag === true"
+              [disabled]="formValues.deliveryStatus.name == 'Verified'"
               class="text-ellipsis"
               autocomplete="off"
               placeholder="Vessel Qty"

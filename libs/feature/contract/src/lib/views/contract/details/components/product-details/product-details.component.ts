@@ -750,8 +750,26 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
   }
 
+  searchLocations(value: string): void {
+    let filterLocations = this.locationMasterList.filter(location =>
+      location.name.toLowerCase().includes(value)
+    );
+    console.log(filterLocations);
+    this.locationMasterSearchList = [...filterLocations];
+    this.changeDetectorRef.detectChanges();
+  }
+
+  searchProducts(value: string): void {
+    let filterProducts = this.productMasterList.filter(location =>
+      location.name.toLowerCase().includes(value)
+    );
+    console.log(filterProducts);
+    this.productMasterSearchList = [...filterProducts];
+    this.changeDetectorRef.detectChanges();
+  }
+
   openAddLocationSelect() {
-    // this.searchLocationInput = null;
+    this.searchLocationInput = null;
     if (this.locationMasterList) {
       this.locationMasterSearchList = [...this.locationMasterList];
       this.changeDetectorRef.detectChanges();
@@ -981,8 +999,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
-      return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
     }
@@ -1052,7 +1070,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
 
     this.contractService
-      .getSpecGroupsGetByProduct(data)
+      .getSpecGroupGetByProduct(data)
       .pipe(finalize(() => {}))
       .subscribe((response: any) => {
         if (typeof response == 'string') {

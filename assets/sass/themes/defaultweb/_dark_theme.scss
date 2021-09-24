@@ -1387,48 +1387,6 @@ $denim: #5780A6;
 		.ag-row {
 			background: $basecolor-l2 !important;
 			border-bottom: 0.52px solid rgba(84, 97, 122, 0.58) !important;
-			::selection{
-				background-color: transparent;
-			}
-			&.ag-row-selected{
-				background-color: #495463!important;
-			}
-
-			&.ag-row-hover{
-				background-color: #495463!important;
-				
-				.ag-cell{
-					.aggrid-green-editable-cell {
-						&.editable {
-							outline: 1px dashed $basecolor-l1 !important;
-						}
-						background-color: rgba(98, 155, 99, 0.26)!important;
-					}
-				
-				}
-				.aggrid-green-editable-cell {
-					&.editable {
-						outline: 1px dashed $basecolor-l1;
-						background-color: rgba(98, 155, 99, 0.26)!important;
-					}
-										
-					background-color: rgba(95,
-					183,
-					96,
-					0.26);
-				}
-				.aggrid-blue-editable-cell {
-					&.editable {
-						outline: 1px dashed #8F9BAB;
-					}
-					background-color: rgba(100,
-					190,
-					236,
-					0.15);
-					color: $theme-font;
-				}
-			
-			}	
 		}
 		.aggrid-green-editable-cell {
 			&.editable {

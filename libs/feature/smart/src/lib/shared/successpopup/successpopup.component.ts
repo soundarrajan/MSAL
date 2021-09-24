@@ -9,7 +9,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 export class SuccesspopupComponent implements OnInit {
 
   public message : string;
-  public id ?: any;
+  public id : any;
   constructor(public dialogRef: MatDialogRef<SuccesspopupComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {
     //dialogRef.disableClose = true;
     this.message = data?.message;

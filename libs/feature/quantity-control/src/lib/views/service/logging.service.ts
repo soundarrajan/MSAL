@@ -2,15 +2,13 @@ import { Injectable } from '@angular/core';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { environment } from '@shiptech/environment';
 import { AppConfig } from '@shiptech/core/config/app-config';
-import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { Select,Store } from '@ngxs/store';
 @Injectable({
     providedIn: 'root'
   })
 
 export class MyMonitoringService {
   appInsights: ApplicationInsights;
-  constructor(private appConfig: AppConfig, private store: Store) {
+  constructor(private appConfig: AppConfig) {
     const configInstrumentationKey = this.appConfig.v1.INSTRUMENTATION_KEY;
     this.appInsights = new ApplicationInsights({
       config: {
@@ -41,8 +39,6 @@ export class MyMonitoringService {
   }
 
   logMetric(name: string, average: number, properties?: { [key: string]: any }) {
-    this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
-    this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);      
     this.appInsights.trackMetric({ name: name, average: average }, properties);
   }
 

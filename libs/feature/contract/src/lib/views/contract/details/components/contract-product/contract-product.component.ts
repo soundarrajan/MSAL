@@ -462,7 +462,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   productMasterList: any;
   expandLocationProductPopUp = false;
   locationMasterSearchList: any[];
-  searchLocationInput: any = '';
+  searchLocationInput: any;
   expandCompanyPopUp: any;
   searchCompanyModel: any;
   productMasterSearchList: any[];
@@ -473,7 +473,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   selectedTabIndex: number = 0;
   expandAllowCompanies: false;
 
-  searchProductInput: any = '';
+  searchProductInput: any;
   selectedLocationList: any[];
   selectedProductList: any[];
 
@@ -929,15 +929,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.eventsSubject2.next(this.buttonClicked);
   }
 
-  searchLocations(value: any, contractProductIndex): void {
-    if (!value || typeof value == 'undefined') {
-      value = '';
-    }
-    const filterLocations = _.filter(this.locationMasterList, function(
-      location
-    ) {
-      return location?.name?.toLowerCase().includes(value.toLowerCase());
-    });
+  searchLocations(value: string, contractProductIndex): void {
+    const filterLocations = this.locationMasterList.filter(location =>
+      location.name.toLowerCase().includes(value.toLowerCase())
+    );
     console.log(filterLocations);
     this.locationMasterSearchListOptions[contractProductIndex] = [
       ...filterLocations
@@ -945,13 +940,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.changeDetectorRef.detectChanges();
   }
 
-  searchProducts(value: any, contractProductIndex): void {
-    if (!value || typeof value == 'undefined') {
-      value = '';
-    }
-    const filterProducts = _.filter(this.productMasterList, function(product) {
-      return product?.name?.toLowerCase().includes(value.toLowerCase());
-    });
+  searchProducts(value: string, contractProductIndex): void {
+    const filterProducts = this.productMasterList.filter(location =>
+      location.name.toLowerCase().includes(value.toLowerCase())
+    );
     console.log(filterProducts);
     this.productMasterSearchListOptions[contractProductIndex] = [
       ...filterProducts
@@ -1275,8 +1267,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
-      return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
     }

@@ -50,15 +50,15 @@ export class SearchVesselComponent implements OnInit, OnChanges {
 
     this.vesselRef = (this.vesselRef)? this.vesselRef: this.vesselData;
 
-    if(this.vesselRef?.code) {
-      this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.code ? this.vesselRef.code : "");
-      this.selectedValue = this.vesselRef && this.vesselRef.code ? this.vesselRef.code : "";
+    if(this.vesselRef?.imono) {
+      this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "");
+      this.selectedValue = this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "";
     } else {
-    //get vessel detail by using vessel code to update in vessel search
-    let selectedVesselCode = this.vesselRef?.vesselCode.toString().trim();
-    this.vesselRef = this.vesselList.find(element => (element.code == selectedVesselCode));
-    this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.code ? this.vesselRef.code : "");
-    this.selectedValue = this.vesselRef && this.vesselRef.code ? this.vesselRef.code : "";
+    //get imono detail by using vessel id to update in vessel search
+    let selectedVesselId = this.vesselRef?.vesselId;
+    this.vesselRef = this.vesselList.find(element => (element.id == selectedVesselId));
+    this.searchVesselControl.setValue(this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "");
+    this.selectedValue = this.vesselRef && this.vesselRef.imono ? this.vesselRef.imono : "";
     }
     this.filteredOptions = this.searchVesselControl.valueChanges.pipe(
       // startWith(''),
@@ -121,9 +121,6 @@ export class SearchVesselComponent implements OnInit, OnChanges {
       this.enableVesselList = false;
       this.toggleFlag = false;
     }
-    else if (event.keyCode == '13') {//If not on keyboard ENTER keycode
-      this.onVesselSelected(trigger);
-    }
   }
 
   setVesselList() {
@@ -144,18 +141,14 @@ export class SearchVesselComponent implements OnInit, OnChanges {
       document.getElementById('vesselSearch').blur();
     }
     let vessel = this.vesselList.filter(element => {
-      if(element.code) {
-        return (element.code == this.searchVesselControl.value) ||
-        (element.code.toLowerCase() == this.searchVesselControl.value.toLowerCase()) ||
-        (element.displayName == this.searchVesselControl.value) ||
-        (element.displayName.toLowerCase() == this.searchVesselControl.value.toLowerCase())
+      if(element.imono) {
+        return (element.imono == this.searchVesselControl.value) ||
+        (element.imono.toLowerCase() == this.searchVesselControl.value.toLowerCase())
       }
     });
-    if (vessel.length > 0){
+    if (vessel.length > 0)
       this.store.dispatch(new saveVesselDataAction({'vesselRef': vessel[0]}));
       this.changeVessel.emit(vessel[0]);
-    }
-      
   }
 
 }
