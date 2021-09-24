@@ -82,7 +82,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
   Object.keys(legacyConfig.auth.endpoints).forEach(prop => {
-    protectedResourceMap.set(prop, ['user.read']);
+    protectedResourceMap.set(prop, ['urn:spn:shiptech.api/shiptech']);
   });
 
   return {
