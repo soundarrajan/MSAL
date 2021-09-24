@@ -13,10 +13,10 @@
 // 	background-color: transparent !important;
 // }
 
-// ::-webkit-scrollbar-track {
-// 	border-radius: 10px !important;
-// 	background-color: transparent !important;
-// }
+::-webkit-scrollbar-track {
+  border-radius: 10px !important;
+  background-color: transparent !important;
+}
 
 // ::-webkit-scrollbar-thumb {
 // 	border-radius: 10px;
@@ -7944,6 +7944,9 @@ label {
     visibility: hidden !important;
   }
 }
+//   .mat-tab-label-active{
+// 	background-color: #5780A6;
+// 	color:#F2F2F2;
 
 // }
 
@@ -8035,9 +8038,8 @@ label {
   color: #eb5757;
   font-size: 31px;
   position: relative;
-  // top: -18px;
-  // left: 18px;
-  top: -9px;
+  top: -18px;
+  left: 18px;
   display: inline-block;
 }
 .port-deptails-popup {

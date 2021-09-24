@@ -891,6 +891,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       }
     });
 
+
     const id = this.entityId;
     this.entityCopied = false;
     this.eventsSubject5.next(false);

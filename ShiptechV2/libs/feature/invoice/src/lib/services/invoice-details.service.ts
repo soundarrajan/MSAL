@@ -155,11 +155,6 @@ export class InvoiceDetailsService extends BaseStoreService
   getFinalInvoiceDueDates(payload: any): Observable<unknown> {
     return this.api.getFinalInvoiceDueDates(payload);
   }
-  
-  @ObservableException()
-  getDefaultValues(payload: any): Observable<unknown> {
-    return this.api.getDefaultValues(payload);
-  }
 
   /**
    * @param payload

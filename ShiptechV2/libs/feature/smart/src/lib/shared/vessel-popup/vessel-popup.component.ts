@@ -200,8 +200,7 @@ export class VesselPopupComponent implements OnInit {
       let req = { VesselId: vesselId };
       this.vesselService.getVesselBasicInfo(req).subscribe((res) => {
         if (res.payload.length > 0) {
-          //this.popup_data.serviceId = res.payload[0].serviceId;
-          this.popup_data.serviceCode = res.payload[0].serviceCode;
+          this.popup_data.serviceId = res.payload[0].serviceId;
           this.popup_data.deptId = res.payload[0].deptId;
           this.popup_data.ownership = res.payload[0].ownership;
           this.popup_data.destination = res.payload[0].destination;
@@ -231,28 +230,15 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.defaultView = 1;
       if(this.viewFutureRequest){
         this.vesselService.myDefaultViewPayload.futureRequest = 1;
-        this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
-        this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
-        this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
       }else if(this.viewVesselRedelivery){
         this.vesselService.myDefaultViewPayload.vesselRedelivery = 1;
-        this.vesselService.myDefaultViewPayload.futureRequest = 0;
-        this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
-        this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
       }
       else if(this.viewVesselSchedule){
         this.vesselService.myDefaultViewPayload.vesselSchedule = 1;
-        this.vesselService.myDefaultViewPayload.futureRequest = 0;
-        this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
-        this.vesselService.myDefaultViewPayload.vesselAlerts = 0;
       }
       else if(this.viewVesselAlerts){
         this.vesselService.myDefaultViewPayload.vesselAlerts = 1;
-        this.vesselService.myDefaultViewPayload.futureRequest = 0;
-        this.vesselService.myDefaultViewPayload.vesselRedelivery = 0;
-        this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
       }
-      this.vesselService.myDefaultViewPayload.vessel = 1;
     }
     else {
       this.myDefaultView = false;
@@ -265,11 +251,10 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.futureRequest = 0;
       this.vesselService.myDefaultViewPayload.vesselSchedule = 0;
       this.vesselService.myDefaultViewPayload.defaultView = 0;
-      this.vesselService.myDefaultViewPayload.vessel = 0;
     }
-    //this.vesselService.myDefaultViewPayload.vessel = 1;
-    // this.vesselService.myDefaultViewPayload.port = 0;
-    // this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
+    this.vesselService.myDefaultViewPayload.vessel = 1;
+    this.vesselService.myDefaultViewPayload.port = 0;
+    this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
   }
 
   
@@ -322,8 +307,8 @@ export class VesselPopupComponent implements OnInit {
     }
   }
   loadFutureRequestData() {
-    let currentDate = moment(new Date()).format("YYYY-MM-DD");
-    currentDate = currentDate+"T00:00";
+    let currentDate = new Date().toISOString();
+    currentDate = currentDate.substring(0, 16);
     let requestPayload = {
       "Payload": {
         "Order": null,
@@ -376,7 +361,7 @@ export class VesselPopupComponent implements OnInit {
             {
               "columnValue": "eta",
               "sortIndex": 0,
-              "sortParameter": 1
+              "sortParameter": 2
             }
           ]
         },
@@ -874,7 +859,7 @@ export class VesselPopupComponent implements OnInit {
           portPopupData[0].position = 0;
         }
         else if (portPopupData.length == 2) {
-          portPopupData[0].position = 0;
+          portPopupData[0].position = 1;
           portPopupData[1].position = 0;
         }
       }

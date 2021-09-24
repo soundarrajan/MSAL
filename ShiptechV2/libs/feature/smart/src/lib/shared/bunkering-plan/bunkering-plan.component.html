@@ -2,7 +2,6 @@
   <ag-grid-angular [ngStyle]="{'height':isExpanded?'73vh':'55vh'}" id="bunkerplangrid"
     style="width: 100%;overflow: scroll;" 
     [rowData]="rowData"
-    [rowSelection]="rowSelection"
     [columnDefs]="columnDefs"
     (gridReady)="gridOptions.onGridReady($event)" 
     [gridOptions]="gridOptions"
