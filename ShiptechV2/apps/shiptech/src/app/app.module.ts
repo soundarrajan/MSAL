@@ -64,13 +64,12 @@ let legacyConfig = null;
 export function MSALInstanceFactory(): IPublicClientApplication {
   const config = JSON.parse(localStorage.getItem('config'));
   const baseOrigin = new URL(window.location.href).origin;
-  console.log(baseOrigin);
-  console.log(config);
   legacyConfig = config;
   config.authV2.redirectUri = baseOrigin;
   return new PublicClientApplication({
     auth: {
       clientId: config.authV2.clientId,
+      authority: config.authV2.instance + config.authV2.tenantId,
       redirectUri: config.authV2.redirectUri
     },
     cache: {
@@ -87,9 +86,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
-  console.log(legacyConfig);
   Object.keys(legacyConfig.auth.endpoints).forEach(prop => {
-    console.log(prop);
     protectedResourceMap.set(prop, ['user.read']);
   });
 
