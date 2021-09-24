@@ -7,7 +7,7 @@
       <button
         *ngIf="!isConfirm"
         class="ui-button-info mr-1 btn-i-blue-color"
-        [disabled]="detailFormvalues?.status?.name === 'Cancelled'"
+        [disabled]="detailFormvalues?.status?.name === 'Cancelled' || saveDisabled"
         type="button"
         (click)="detailsSave()"
       >
