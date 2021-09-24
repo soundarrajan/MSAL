@@ -1033,6 +1033,18 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         return;
                     }
                     screenLoader.showLoader();
+                      //Map port call id and voyageId, vesselVoyageDetailId with request payload locations->portCallId,vesselVoyageId
+                    // let selectedPortCall = ctrl.request.portCall;
+                    let selectedPortCall = (angular.isArray($scope.portCall))? $scope.portCall: [$scope.portCall];
+                    let PayloadLocations = ctrl.request.locations;
+                    PayloadLocations.map((location, index)=>{
+                        let locationID = (location?.locationId)? (location.locationId): (location?.location?.id);
+                        let selectedPortCallObj = selectedPortCall.find(portCallItem=>portCallItem?.locationId == locationID);
+                        location.portCallId = selectedPortCallObj?.locationId;
+                        location.vesselVoyageId = selectedPortCallObj?.voyageId;
+                        location.vesselVoyageDetailId = selectedPortCallObj?.vesselVoyageDetailId;
+                        return true;
+                    });
 
                     newRequestModel.createRequest(ctrl.request).then(
                         (responseData) => {
@@ -2745,16 +2757,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
 
 
-        $scope.$on('getPortCallNameForEachLocation', (evt, portCalls) => {
-            $.each(ctrl.request.locations, (index, location) => {
-                let portCall = $scope.locationVesselVoyageDetailIds[location.location.id];
-                let findSpecificPortCall = _.find(portCalls, function(object) {
-                    return object.vesselVoyageDetailId == portCall.vesselVoyageDetailId;
-                });
-                if (findSpecificPortCall) {
-                    $scope.portCall[location.location.id] =  angular.copy(findSpecificPortCall);
-                }
+        $scope.$on('getPortCallNameForEachLocation', (evt, portCalls, locationId) => {
+            let portCall = $scope.locationVesselVoyageDetailIds[locationId];
+            let findSpecificPortCall = _.find(portCalls, function(object) {
+                return object?.vesselVoyageDetailId == portCall?.vesselVoyageDetailId;
             });
+            if (findSpecificPortCall) {
+                $scope.portCall[locationId] =  angular.copy(findSpecificPortCall);
+            }
 
         });
 
@@ -4436,14 +4446,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.EnableSingleSelect = false;
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
-                    let locationFilterModel = {
-                        ColumnName: 'LocationId',
-                        OperationType: 0,
-                        ValueType: 5,
-                        Value: null
-                    }
-                    let selectedBunkerPort = ctrl.request?.locations;
-                    
                     let filterPayload = [
                         {
                             ColumnName: 'Id',
@@ -4452,16 +4454,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             Value: ctrl.request?.vesselDetails?.vessel?.id
                         }
                     ];
-                    if(param && param == 'portCall' && selectedBunkerPort?.length) {
+                    if(param && param == 'portCall' && locationId) {
                         ctrl.EnableSingleSelect = true;
-                        let locationFilter = selectedBunkerPort.map(location=> {
-                            if(locationId == location?.location?.id) {
-                                locationFilterModel.value = location?.location?.id;
-                                return locationFilterModel;
-                            }
-                        }).filter(Boolean);
-
-                        filterPayload.push(...locationFilter);
+                        let locationFilterModel = {
+                            ColumnName: 'LocationId',
+                            OperationType: 0,
+                            ValueType: 5,
+                            Value: locationId
+                        }
+                        
+                        filterPayload.push(locationFilterModel);
 
                         let pastScheduleDaysLimitModel = {
                             ColumnName: 'PastScheduleDaysLimit',
@@ -4476,15 +4478,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	        	}
         	}
         };
-        ctrl.formatPortCallFilter = function(param) {
-            let locationFilterModel = {
-                ColumnName: 'LocationId',
-                OperationType: 0,
-                ValueType: 5,
-                Value: null
-            }
-            let selectedBunkerPort = ctrl.request?.locations;
-            
+        ctrl.formatPortCallFilter = function(param, location) {
             let filterPayload = [
                 {
                     ColumnName: 'Id',
@@ -4494,21 +4488,24 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             ];
 
-            if(param && param=='portCall' && selectedBunkerPort?.length) {
-                let locationFilter = selectedBunkerPort.map(location=> {
-                    locationFilterModel.value = location?.location?.id;
-                    return locationFilterModel;
-                })
-                filterPayload.push(...locationFilter);
-            }
+            if(param && param == 'portCall' && location) {
+                let locationFilterModel = {
+                    ColumnName: 'LocationId',
+                    OperationType: 0,
+                    ValueType: 5,
+                    Value: location.location.id
+                }
+            
+                filterPayload.push(locationFilterModel);
 
-            let pastScheduleDaysLimitModel = {
-                ColumnName: 'PastScheduleDaysLimit',
-                OperationType: 0,
-                ValueType: 5,
-                Value: 15
-            };
-            filterPayload.push(pastScheduleDaysLimitModel);
+                let pastScheduleDaysLimitModel = {
+                    ColumnName: 'PastScheduleDaysLimit',
+                    OperationType: 0,
+                    ValueType: 5,
+                    Value: 15
+                };
+                filterPayload.push(pastScheduleDaysLimitModel);
+            }
 
             return filterPayload;
         };

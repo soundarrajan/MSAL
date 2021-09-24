@@ -3611,9 +3611,21 @@
                         Factory_Master.get_master_list(app_id, screen_id, field, (callback) => {
                             if (callback) {
                                 if(field?.Name == 'PortCall') {
+                                    let findLocation = _.find(field?.Filter, function(obj) {
+                                        return obj.ColumnName == 'LocationId';
+                                    });
+                                    let locationId = null;
+                                    if (findLocation) {
+                                        locationId = findLocation.Value;
+                                    }
                                     //orderBy locationName to bypass below orderBy steps because of unavailabilty of name field
-                                    $scope.options[field.Name] = _.orderBy(callback, [item => item.locationName.toLowerCase()], ['asc']);
-                                    $rootScope.$broadcast('getPortCallNameForEachLocation', $scope.options[field.Name]);
+                                    if (locationId) {
+                                        if (typeof $scope.options[field.Name] == 'undefined') {
+                                            $scope.options[field.Name] = {};
+                                        }
+                                        $scope.options[field.Name][locationId] = _.orderBy(callback, [item => item.locationName.toLowerCase()], ['asc']);
+                                        $rootScope.$broadcast('getPortCallNameForEachLocation', $scope.options[field.Name][locationId], locationId);
+                                    }
                                 } else {
                                     $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
                                 }
