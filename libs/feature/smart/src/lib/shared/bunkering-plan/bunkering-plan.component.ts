@@ -62,7 +62,7 @@ export class BunkeringPlanComponent implements OnInit {
     this.type = v;
     this.store.dispatch(new UpdateBplanTypeAction(this.type));
   };
-  @Input('selectedUserRole')selectedUserRole;
+  @Input('selectedUserRole') selectedUserRole;
   @Input() changeROB : Observable<void>;
   private eventSub : Subscription;
   // @Select(UserProfileState.username) username$: Observable<string>;
@@ -802,7 +802,9 @@ export class BunkeringPlanComponent implements OnInit {
       if(this.type == 'C' && this.gridOptions.api && this.rowData){
         setTimeout(() => {
           if(_this.gridOptions?.api) {
-            _this.gridOptions.api.setRowData(this.rowData);
+            // _this.gridOptions.api.setRowData(this.rowData);
+            this.latestPlanId = (this.vesselData?.vesselRef?.planId)? this.vesselData.vesselRef.planId: '';
+            this.loadBunkeringPlanDetails();
           }
         }, 500);
       }
