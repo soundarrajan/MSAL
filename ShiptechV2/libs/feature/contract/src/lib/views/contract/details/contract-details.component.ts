@@ -1101,7 +1101,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
-          this.toastr.error(result);
+          if(result) {
+              this.toastr.error(result);
+          }
         } else {
           this.toastr.success('Contract cancelled!');
           this.contractService
