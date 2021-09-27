@@ -64,10 +64,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.toolTip = params.value;
   //**ETA/ETD date format and days calculation
   if(this.params?.data){
-    this.params.data.eta_date = moment.utc(params.data?.eta_date).format("YYYY-MM-DD hh:mm");
+    this.params.data.eta_date = moment.utc(params.data?.eta_date).format("YYYY-MM-DD HH:mm");
     //this.etaInTime = today.getTime() - new Date(params.data?.eta_date).getTime();
     //this.etaDays = (this.etaInTime/(1000 * 3600 * 24)).toFixed(0);
-    this.params.data.etd_date = moment.utc(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
+    this.params.data.etd_date = moment.utc(params.data?.etd_date).format("YYYY-MM-DD HH:mm");
     //this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
     //this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
 
