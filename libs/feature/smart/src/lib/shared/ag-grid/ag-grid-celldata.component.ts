@@ -772,18 +772,20 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
   }
   showProductRequestInfo(params) {
+    debugger;
     let requestInfo = [];
     let data = params?.data;
-    let requestModel = {request_id: '', request_product: '', estimated_lift: ''};
     switch (params?.colDef?.field) {
       case 'hsfo_estimated_lift':
         if(data?.request_id_hsfo) {
+          let requestModel= {request_id: '', request_product: '', estimated_lift: ''};
           requestModel.request_id = data?.request_id_hsfo;
           requestModel.request_product = data?.request_product_hsfo;
           requestModel.estimated_lift = data?.hsfo_estimated_lift;
           requestInfo.push(requestModel);
         }
         if(data?.request_id_vlsfo) {
+          let requestModel= {request_id: '', request_product: '', estimated_lift: ''};
           requestModel.request_id = data?.request_id_vlsfo;
           requestModel.request_product = data?.request_product_vlsfo;
           requestModel.estimated_lift = data?.vlsfo_estimated_lift;
@@ -791,6 +793,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         }
         return requestInfo;
         break;
+      let requestModel= {request_id: '', request_product: '', estimated_lift: ''};
       case 'ulsfo_estimated_lift':
         if(data?.request_id_ulsfo) {
           requestModel.request_id = data?.request_id_ulsfo;
