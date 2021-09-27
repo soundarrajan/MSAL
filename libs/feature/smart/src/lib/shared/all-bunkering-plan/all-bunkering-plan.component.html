@@ -81,7 +81,7 @@
           <div class="border-l-r latest-plan-container">
             <div style="display:flex;align-items: center;justify-content: space-between;">
               <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan received</div><span class="label-text">:</span>
-              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_received_date)?.indexOf('0001')==-1">{{item?.last_plan_received_date | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
+              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_received_date)?.indexOf('0001')==-1">{{moment.utc(item?.last_plan_received_date).format("DD/MM/YYYY")}} <div class="m-l-r-5">|</div>
                 ID:{{item?.last_plan_received_id}}</div>
               <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_received_date)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
                 ID:N/A</div>
@@ -89,7 +89,7 @@
             <div style="display:flex;align-items: center;justify-content: space-between;">
               <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
               </div><span class="label-text">:</span>
-              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_sent_date)?.indexOf('0001')==-1"> {{item.last_plan_sent_date | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
+              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_sent_date)?.indexOf('0001')==-1"> {{moment.utc(item?.last_plan_sent_date).format("DD/MM/YYYY")}} <div class="m-l-r-5">|</div>
                 ID:{{item.last_plan_sent_id}}</div>
               <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_sent_date)?.indexOf('0001')>-1"> N/A <div class="m-l-r-5">|</div>
                 ID:N/A</div>
