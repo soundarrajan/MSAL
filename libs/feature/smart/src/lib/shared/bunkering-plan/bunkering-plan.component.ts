@@ -519,6 +519,7 @@ export class BunkeringPlanComponent implements OnInit {
         request_id_lsdis: bPlan.request_id_lsdis,
         request_id_ulsfo: bPlan.request_id_ulsfo,
         service_code: bPlan.service_code,
+        total_tank_capacity: bPlan.total_tank_capacity,
         ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
         ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
         ulsfo_max_lift: bPlan.ulsfo_max_lift,
@@ -648,6 +649,8 @@ export class BunkeringPlanComponent implements OnInit {
   checkBunkerPlanValidations(data){
     let isHardValidation = 0;
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB)
+    let opUdatedColumn = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanDataOpUpdatedColumns);
+    let totalTankCapacity = this.store.selectSnapshot(SaveBunkeringPlanState.getTotalTankCapacity);
     //business address validation
     let isValidBusinessAddress = data.findIndex(data => !data?.business_address && data?.operator_ack == 1) == -1? 'Y':'N'
     if(isValidBusinessAddress == 'N'){
@@ -674,13 +677,25 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
-    // Total max SOD validation : Total max SOD< Total min SOD 
+    // Total max SOD validation : Total max SOD< Total min SOD ; if the Total Max SOD is not updated by operator, then the comparison needs to be done by Total Tank Capacity
     let isValidMaxSod = data.findIndex(data => {
-      return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+      let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
+      let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+      if(IsMaxSodOpUpdated[3])
+        return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+      else
+        return parseInt(totalTankCapacity) < parseInt(data?.min_sod)
     });
     isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
     if(isValidMaxSod == 'N'){
-      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
+      let id = data.findIndex(data => {
+        let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
+        let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+        if(IsMaxSodOpUpdated[3])
+          return parseInt(data?.max_sod) < parseInt(data?.min_sod)
+        else
+          return parseInt(totalTankCapacity) < parseInt(data?.min_sod)
+      });
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
@@ -704,16 +719,26 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
-    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
+    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD ; if the Total Max SOD is not updated by operator, then the comparison needs to be done by Total Tank Capacity
     let isValidMinEcaSod = data.findIndex(params => {
       let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-      return  sum > parseInt(params?.max_sod) ;
+      let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
+        let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+        if(IsMaxSodOpUpdated[3])
+          return sum > parseInt(params?.max_sod)
+        else
+          return sum > parseInt(totalTankCapacity)
     });
     isValidMinEcaSod = isValidMinEcaSod < 0 ? 'Y':'N'
     if(isValidMinEcaSod == 'N'){
       let id = data.findIndex(params => {
         let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-        return  sum > parseInt(params?.max_sod) ;
+        let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
+          let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+          if(IsMaxSodOpUpdated[3])
+            return sum > parseInt(params?.max_sod)
+          else
+            return sum > parseInt(totalTankCapacity)
       });
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
