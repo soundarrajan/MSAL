@@ -200,9 +200,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -236,9 +236,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -254,9 +254,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -272,9 +272,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -290,9 +290,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -308,9 +308,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -326,9 +326,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -344,9 +344,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
