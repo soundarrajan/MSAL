@@ -576,8 +576,8 @@ export class NotesDetailsComponent implements OnInit {
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
     } else {
       return null;
     }
