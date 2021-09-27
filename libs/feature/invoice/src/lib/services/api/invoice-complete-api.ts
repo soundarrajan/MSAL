@@ -30,6 +30,7 @@ export namespace InvoiceApiPaths {
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
   export const getFinalInvoiceDueDates = () =>
     `/api/invoice/finalInvoiceDueDates`;
+  export const getDefaultValues = () => `api/invoice/getDefaultValues`;
   export const createInvoiceItem = () => `api/invoice/create`;
   export const updateInvoiceItem = () => `api/invoice/update`;
   export const productListOnInvoice = () =>
@@ -488,6 +489,27 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       )
       .pipe(
         map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getDefaultValues(
+    request: any
+  ): Observable<any> {
+    return this.http
+      .post<IInvoiceDetailsItemResponse>(
+        `${this._apiUrl}/${InvoiceApiPaths.getDefaultValues()}`,
+        { payload: request }
+      )
+      .pipe(
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage && body.error.Reference

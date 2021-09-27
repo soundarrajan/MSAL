@@ -600,7 +600,7 @@ export class AdditionalCostModalComponent implements OnInit {
     if (this.type == 'cost') {
       this.old_cost = this.formValues.costDetails[currentRowIndex];
       if (this.formValues.costDetails[currentRowIndex].product) {
-        if (this.formValues.costDetails[currentRowIndex].product.id == -1) {
+        if (this.formValues.costDetails[currentRowIndex].product.id === -1) {
           this.old_product = this.formValues.costDetails[
             currentRowIndex
           ].product.id;
@@ -612,7 +612,7 @@ export class AdditionalCostModalComponent implements OnInit {
       }
 
       this.old_costType = this.formValues.costDetails[currentRowIndex].costType;
-      if (this.old_product == -1) {
+      if (this.old_product === -1) {
         this.formValues.costDetails[currentRowIndex].isAllProductsCost = true;
         if (typeof this.applyForList == 'undefined') {
           this.invoiceService

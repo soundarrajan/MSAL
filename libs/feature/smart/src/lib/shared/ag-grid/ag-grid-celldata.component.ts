@@ -20,6 +20,7 @@ const today = new Date();
 })
 
 export class AGGridCellDataComponent implements ICellRendererAngularComp {
+  moment: any = moment;
   public params: any;
   public toolTip: string;
   public data;
@@ -175,11 +176,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsfo_estimated_lift' :{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_hsfo && params.data?.is_alt_port != 'N'){
+                                    if(params.data?.order_id_hsfo && params.data?.is_alt_port_hsfo != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
-                                    else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo && params.data?.is_alt_port != 'N'){
+                                    else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo && params.data?.is_alt_port_hsfo != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                       classArray.push(newClass);
                                     }
@@ -189,11 +190,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'ulsfo_estimated_lift':{
                                       var classArray: string[] = ['pd-6'];
                                       let newClass;
-                                      if(params.data?.order_id_ulsfo && params.data?.is_alt_port != 'N'){
+                                      if(params.data?.order_id_ulsfo && params.data?.is_alt_port_ulsfo != 'N'){
                                         newClass = 'aggrid-link-bplan aggrid-red-cell'
                                         classArray.push(newClass);
                                       }
-                                      else if(params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo && params.data?.is_alt_port != 'N'){
+                                      else if(params.data?.ulsfo_estimated_lift && params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo && params.data?.is_alt_port_ulsfo != 'N'){
                                         newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                         classArray.push(newClass);
                                       }
@@ -203,11 +204,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'lsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                     let newClass;
-                                    if(params.data?.order_id_lsdis && params.data?.is_alt_port != 'N'){
+                                    if(params.data?.order_id_lsdis && params.data?.is_alt_port_lsdis != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
-                                    else if(params.data?.request_id_lsdis && !params.data?.order_id_lsdis && params.data?.is_alt_port != 'N'){
+                                    else if(params.data?.lsdis_estimated_lift && params.data?.request_id_lsdis && !params.data?.order_id_lsdis && params.data?.is_alt_port_lsdis != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                       classArray.push(newClass);
                                     }
@@ -217,11 +218,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'hsdis_estimated_lift':{
                                     var classArray: string[] = ['pd-6'];
                                         let newClass;
-                                        if(params.data?.order_id_hsdis && params.data?.is_alt_port != 'N'){
+                                        if(params.data?.order_id_hsdis && params.data?.is_alt_port_hsdis != 'N'){
                                           newClass = 'aggrid-link-bplan aggrid-red-cell'
                                           classArray.push(newClass);
                                         }
-                                        else if(params.data?.request_id_hsdis && !params.data?.order_id_hsdis && params.data?.is_alt_port != 'N'){
+                                        else if(params.data?.hsdis_estimated_lift && params.data?.request_id_hsdis && !params.data?.order_id_hsdis && params.data?.is_alt_port_hsdis != 'N'){
                                           newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                           classArray.push(newClass);
                                         }
@@ -748,7 +749,22 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         window.open(url, "_blank");
     }
   }
-
+  checkAltPort(params) {
+    switch (params?.colDef?.field) {
+      case 'hsfo_estimated_lift':
+        return params?.data?.is_alt_port_hsfo;
+        break;
+      case 'ulsfo_estimated_lift':
+        return params?.data?.is_alt_port_ulsfo;
+        break;
+      case 'lsdis_estimated_lift':
+        return params?.data?.is_alt_port_lsdis;
+        break;
+      case 'hsdis_estimated_lift':
+        return params?.data?.is_alt_port_hsdis;
+        break;
+    }
+  }
   requestAvailable(params){
     let isRequestAvailable = false;
     switch(params?.colDef?.field){
