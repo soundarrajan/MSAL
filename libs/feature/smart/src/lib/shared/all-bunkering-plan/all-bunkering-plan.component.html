@@ -74,7 +74,7 @@
                </div>
                <div id="plan-status" class="border-l-rightside" style="flex:0 0 18%;text-align: center;">
                 <span class="title">Status : </span>
-                <span [ngClass]="item.planStatus == undefined?'content': (item.planStatus =='Invalid'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{item.planStatus}}</span>
+                <span [ngClass]="(item.planStatus).trim() == undefined?'content': ((item.planStatus).trim() =='Invalid'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{item.planStatus}}</span>
               </div>
             </div>
           </div>
