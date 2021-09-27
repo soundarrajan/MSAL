@@ -772,7 +772,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
   }
   showProductRequestInfo(params) {
-    debugger;
     let requestInfo = [];
     let data = params?.data;
     switch (params?.colDef?.field) {
