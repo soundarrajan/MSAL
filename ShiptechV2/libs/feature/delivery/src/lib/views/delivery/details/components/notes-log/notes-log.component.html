@@ -34,11 +34,7 @@
         ">
         <tr *ngIf="!noteLine.value.isDeleted">
           <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-            <a class="remove-icon-delivery" style="margin-left: 10px;" (click)="
-                !detectCurrentUser(noteLine.value)
-                  ? deleteNotesLine(noteLine.key)
-                  : ''
-              "></a>
+            <a class="remove-icon-delivery" style="margin-left: 10px;" *ngIf ="!detectCurrentUser(noteLine.value)" (click)="deleteNotesLine(noteLine.key)"></a>
           </td>
           <td style="width:30%">
             <div class="custom-form-field-invoice-notes"
