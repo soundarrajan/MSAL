@@ -18,6 +18,7 @@
     "clientId": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01",
     "instance": "https://login.microsoftonline.com/",
     "tenantId": "8bc4afe0-3509-429a-ac6e-d71be32f20f5",
+    "scopes": ["urn:spn:shiptech.api/shiptech"],
     "cacheLocation": "localStorage",
     "endpoints": {
       "http://shiptech.24software.ro:8081/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01"
