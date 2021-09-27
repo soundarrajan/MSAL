@@ -1,7 +1,7 @@
-﻿commit ce5cff015d1de826101e4a3d16b438f0b5f186b5
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Tue Sep 21 16:30:20 2021 +0300
+﻿commit 1e1ad7ccccfbbbb8cfc6dd5e36474a5e145c410d
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Sep 27 13:55:21 2021 +0300
 
-    Merge Support_10_10_1 into master branch
+    Fixed 350479(validation date,received date, accountancy date)
 
 branch: master
