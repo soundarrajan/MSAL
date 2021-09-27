@@ -497,7 +497,7 @@ export class NotesDetailsComponent implements OnInit {
       'id': 0,
       'note': '',
       'createdBy': createdBy,
-      'createdAt': this.formatDateForBe(new Date()),
+      'createdAt': new Date(),
       'lastModifiedAt': ''
     }
     this.formValues.invoiceNotes.push(notesLine);
@@ -505,12 +505,20 @@ export class NotesDetailsComponent implements OnInit {
   }
 
 
-  updateNotes(key) {
-    this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(this.formatDateForBe(new Date()));
+  updateNotes(event, key) {
+    this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(new Date()); //_.cloneDeep(this.formatDateForBe(new Date()));
     this.changeDetectorRef.detectChanges();
-    // console.log(this.formValues.invoiceNotes);
-    // console.log(this._entityId);
-    this.autoSave();
+
+    // if the blur was because of outside focus
+    //  relatedTarget is the clicked element
+    if (
+      event.relatedTarget &&
+      event.relatedTarget.classList.contains('cust-btn1')
+    ) {
+      console.log('Click on button');
+    } else {
+      this.autoSave();
+    }
   }
 
   autoSave() {
@@ -562,15 +570,20 @@ export class NotesDetailsComponent implements OnInit {
       let currentFormat = this.format.dateFormat;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      // let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      //let newDate = date.toDate();
+      var elem = new Date(date);
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+        formattedDate = `${moment(elem).format('ddd')} ${formattedDate}`;
+      }
+      if (formattedDate.endsWith('00:00')) {
+        formattedDate = formattedDate.split('00:00')[0];
       }
       return formattedDate;
     }
