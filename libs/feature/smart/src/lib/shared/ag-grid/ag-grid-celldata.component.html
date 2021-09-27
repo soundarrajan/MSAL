@@ -427,6 +427,7 @@
           </div>
           <div>
             <ul style="padding-left: 14px;vertical-align: middle; margin: 6px 0px 0px;">
+<<<<<<< Updated upstream
               <li *ngIf= "this.params.data.eta_date != '0001-01-01 05:53'"><span class="sub-content-title">ETA: </span>
                   <span  class="sub-content-value">{{params.data.eta_date}}</span>
                   <span  style="padding:7px;"> | </span>
@@ -441,6 +442,10 @@
               </li>
               <li *ngIf= "this.params.data.etd_date  == '0001-01-01 05:53'"><span class="sub-content-title" style="padding-right:50px;">ETD : </span><span style="padding:7px;"> - </span>
               </li>
+=======
+              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value">{{params.data.eta_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{params.data.eta_days}} Days</span></li>
+              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value">{{params.data.etd_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{params.data.etd_days}} Days</span></li>
+>>>>>>> Stashed changes
             </ul>
           </div>
         </div>
