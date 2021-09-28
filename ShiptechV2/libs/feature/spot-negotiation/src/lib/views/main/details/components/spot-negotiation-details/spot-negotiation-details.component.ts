@@ -99,7 +99,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
        this.columnDef_aggridObj[i][0].headerGroupComponentParams.locationId = locationId
 
         const productIds = currentRequest.requestProducts.map(e => e.id);
-
         currentRequest.requestProducts.map(product => {
           this.columnDef_aggridObj[i].push({
             headerName: '',
@@ -107,7 +106,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             headerGroupComponent: 'customHeaderGroupComponent',
             headerGroupComponentParams: {
               type: 'bg-header',
-              product: product
+              product: product,
+              requestLocationId:currentRequest.id
             },
             marryChildren: true,
             resizable: false,
