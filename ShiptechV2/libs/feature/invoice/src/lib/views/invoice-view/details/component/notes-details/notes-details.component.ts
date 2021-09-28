@@ -513,7 +513,7 @@ export class NotesDetailsComponent implements OnInit {
     //  relatedTarget is the clicked element
     if (
       event.relatedTarget &&
-      event.relatedTarget.classList.contains('cust-btn1')
+      event.relatedTarget.classList.contains('ui-button-info')
     ) {
       console.log('Click on button');
     } else {
