@@ -6,7 +6,7 @@
     "ng": "ng",
     "nx": "nx generate library ete",
     "start": "ng serve --port 9015",
-    "build": "ng build",
+    "build": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build",
     "build:stats": "ng build --prod --stats-json",
     "webpack:analyzer": "webpack-bundle-analyzer dist/apps/shiptech/stats-es2015.json",
     "test": "ng test",
