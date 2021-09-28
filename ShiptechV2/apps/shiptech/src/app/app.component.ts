@@ -64,6 +64,9 @@ import { AuthService } from '@shiptech/core/authentication/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
+  get initialized(): Observable<void> {
+    return this._initialized;
+  }
   @HostBinding('@.disabled')
   public animationsDisabled = true;
   title = 'Shiptech';
@@ -74,11 +77,8 @@ export class AppComponent implements OnInit {
   firstApiCallStartTime: any;
   isIframe: boolean;
   loginDisplay: boolean;
-  private readonly _destroying$ = new Subject<void>();
   count: number = 0;
-  get initialized(): Observable<void> {
-    return this._initialized;
-  }
+  private readonly _destroying$ = new Subject<void>();
 
   private _initialized = new ReplaySubject<void>(1);
   constructor(
@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
         setTimeout(() => {
           if (!this.loggedBootTime) {
             this.loggedBootTime = true;
-            var loadTime = Date.now() - performance.timing.connectStart;
+            const loadTime = Date.now() - performance.timing.connectStart;
             this.myMonitoringService.logMetric(
               `Page Load : ${window.location.href}`,
               loadTime,
@@ -135,8 +135,8 @@ export class AppComponent implements OnInit {
 
   @HostListener('document:click', ['$event.target'])
   public onClick(targetElement) {
-    let array = ['Documents', 'Audit Log', 'Email Log', 'Main Page'];
-    let findElement = array.find(function(element) {
+    const array = ['Documents', 'Audit Log', 'Email Log', 'Main Page'];
+    const findElement = array.find(function(element) {
       return element == targetElement.innerText;
     });
     if (findElement) {
@@ -145,6 +145,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isIframe = window !== window.parent && !window.opener;
+
     this.authService.updateLoggedInStatus();
   }
 
