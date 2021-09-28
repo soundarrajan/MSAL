@@ -15,9 +15,9 @@ export class AGGridCellRendererComponent implements ICellRendererAngularComp  {
     public shiptechUrl: string ;
     public data;
     public menuData;
-    public etaDays: any;
+    //public etaDays: any;
     public etaInTime: any;
-    public etdDays: any;
+    //public etdDays: any;
     public theme:boolean = true;
     public etdInTime: any;
     public shiptechPortUrl: string;
