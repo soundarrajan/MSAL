@@ -6,16 +6,17 @@
       </span>
       <button
         *ngIf="!isConfirm"
-        class="ui-button-info mr-1 btn-i-blue-color"
-        [disabled]="detailFormvalues?.status?.name === 'Cancelled'"
+        class="cust-btn1 ui-button-info mr-1 btn-i-blue-color"
+        [disabled]="detailFormvalues?.status?.name === 'Cancelled' || saveDisabled"
         type="button"
-        (click)="detailsSave()">
+        (click)="detailsSave()"
+      >
         <span class="btn-text">Save</span>
       </button>
       <button
         [disabled]="saveDisabled"
         *ngIf="!isConfirm"
-        class="ui-button-info mr-1"
+        class="cust-btn1 ui-button-info mr-1 "
         type="button"
         [ngClass]="{
           'btn-i-blue-color': !saveDisabled,
