@@ -71,6 +71,13 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
+   * @param payload = False
+   */
+   @ObservableException()
+   saveTragetPrice(payload: any): Observable<unknown> {
+     return this.spotNegotiationApi.SaveTragetPrice(payload);
+   }
+  /**
    * Fake populate rows
    */
   public getSpotDataJSON(): any {
