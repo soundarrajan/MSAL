@@ -677,11 +677,11 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
-    // Total max SOD validation : Total max SOD< Total min SOD ; if the Total Max SOD is not updated by operator, then the comparison needs to be done by Total Tank Capacity
+    // Total max SOD validation : Total max SOD< Total min SOD ; if the Total Max SOD is greater than 0, then the comparison needs to be done by Total Tank Capacity
     let isValidMaxSod = data.findIndex(data => {
-      let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
-      let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
-      if(IsMaxSodOpUpdated[3])
+      // let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
+      // let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+      if(parseInt(data?.max_sod) > 0)
         return parseInt(data?.max_sod) < parseInt(data?.min_sod)
       else
         return parseInt(totalTankCapacity) < parseInt(data?.min_sod)
@@ -689,9 +689,9 @@ export class BunkeringPlanComponent implements OnInit {
     isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N'; 
     if(isValidMaxSod == 'N'){
       let id = data.findIndex(data => {
-        let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
-        let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
-        if(IsMaxSodOpUpdated[3])
+        // let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
+        // let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+        if(parseInt(data?.max_sod) > 0)
           return parseInt(data?.max_sod) < parseInt(data?.min_sod)
         else
           return parseInt(totalTankCapacity) < parseInt(data?.min_sod)
@@ -719,12 +719,12 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
-    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD ; if the Total Max SOD is not updated by operator, then the comparison needs to be done by Total Tank Capacity
+    // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD ; if the Total Max SOD is greater than 0, then the comparison needs to be done by Total Tank Capacity
     let isValidMinEcaSod = data.findIndex(params => {
       let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-      let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
-        let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
-        if(IsMaxSodOpUpdated[3])
+      // let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
+      //   let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+        if(parseInt(params?.max_sod) > 0)
           return sum > parseInt(params?.max_sod)
         else
           return sum > parseInt(totalTankCapacity)
@@ -733,9 +733,9 @@ export class BunkeringPlanComponent implements OnInit {
     if(isValidMinEcaSod == 'N'){
       let id = data.findIndex(params => {
         let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-        let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
-          let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
-          if(IsMaxSodOpUpdated[3])
+        // let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
+        //   let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
+          if(parseInt(params?.max_sod) > 0)
             return sum > parseInt(params?.max_sod)
           else
             return sum > parseInt(totalTankCapacity)
