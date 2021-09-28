@@ -21,24 +21,22 @@ export class AuthenticationModule {
     return {
       ngModule: AuthenticationModule,
       providers: [
-        MsalService,
-        MsalBroadcastService,
         AuthService,
-        AuthenticationService,
+        // AuthenticationService,
         {
           provide: AuthenticationContext,
           useFactory: authContextFactory
-        },
+        }
         // {
         //   provide: HTTP_INTERCEPTORS,
         //   useClass: AuthenticationInterceptor,
         //   multi: true
         // }
-        {
-          provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
-          useClass: MsalInterceptor,
-          multi: true
-        }
+        // {
+        //   provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
+        //   useClass: MsalInterceptor,
+        //   multi: true
+        // }
       ]
     };
   }

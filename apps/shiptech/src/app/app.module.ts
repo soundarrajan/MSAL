@@ -36,17 +36,20 @@ export function getAppBaseHref(doc: Document): string {
   }
   return new URL(base.href).pathname;
 }
-
 import {
-  MsalGuardConfiguration,
+  MsalGuard,
   MsalInterceptor,
+  MsalBroadcastService,
   MsalInterceptorConfiguration,
   MsalModule,
-  MsalRedirectComponent,
+  MsalService,
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
-  MSAL_INTERCEPTOR_CONFIG
+  MSAL_INTERCEPTOR_CONFIG,
+  MsalGuardConfiguration,
+  MsalRedirectComponent
 } from '@azure/msal-angular';
+
 import {
   InteractionType,
   IPublicClientApplication,
@@ -136,6 +139,11 @@ export function MSALInterceptConfigFactory() {
       deps: [BootstrapService]
     },
     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true
+    },
+    {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
     },
@@ -147,6 +155,9 @@ export function MSALInterceptConfigFactory() {
       provide: MSAL_INTERCEPTOR_CONFIG,
       useFactory: MSALInterceptorConfigFactory
     },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService,
     BootstrapResolver
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
