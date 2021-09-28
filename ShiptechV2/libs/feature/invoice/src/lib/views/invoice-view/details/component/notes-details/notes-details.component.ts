@@ -87,6 +87,7 @@ import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overl
 import { throws } from 'assert';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
+import { AuthenticationService } from '@shiptech/core/authentication/authentication.service';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -143,8 +144,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
+    const elem = moment(value, currentFormat);
+    const date = elem.toDate();
     return value ? date : null;
   }
 }
@@ -301,7 +302,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    let elem = moment(value, currentFormat);
+    const elem = moment(value, currentFormat);
     const isValid = this.isValid(elem);
     return this.isValid(elem) ? elem : null;
   }
@@ -361,8 +362,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
-      let newVal = moment(elem).format(currentFormat);
+      const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      const newVal = moment(elem).format(currentFormat);
       console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
@@ -475,6 +476,7 @@ export class NotesDetailsComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
+    public authService: AuthenticationService,
     private tenantService: TenantFormattingService,
     private invoiceService: InvoiceDetailsService
   ) {
@@ -507,9 +509,7 @@ export class NotesDetailsComponent implements OnInit {
   originalOrder = (
     a: KeyValue<number, any>,
     b: KeyValue<number, any>
-  ): number => {
-    return 0;
-  };
+  ): number => 0;
 
   addNotesLine() {
     // console.log(this.authService);
@@ -518,7 +518,7 @@ export class NotesDetailsComponent implements OnInit {
       this.formValues.invoiceNotes = [];
     }
 
-    let createdBy = {
+    const createdBy = {
       id: this.user.id,
       name: this.user.name,
       displayName: this.user.displayName,
@@ -526,30 +526,36 @@ export class NotesDetailsComponent implements OnInit {
       collectionName: null
     };
 
-    let notesLine = {
+    const notesLine = {
       id: 0,
       note: '',
       createdBy: createdBy,
-      createdAt: this.formatDateForBe(new Date()),
+      createdAt: new Date(),
       lastModifiedAt: ''
     };
     this.formValues.invoiceNotes.push(notesLine);
     this.changeDetectorRef.detectChanges();
   }
 
-  updateNotes(key) {
-    this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(
-      this.formatDateForBe(new Date())
-    );
+  updateNotes(event, key) {
+    this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(new Date()); //_.cloneDeep(this.formatDateForBe(new Date()));
     this.changeDetectorRef.detectChanges();
-    // console.log(this.formValues.invoiceNotes);
-    // console.log(this._entityId);
-    this.autoSave();
+
+    // if the blur was because of outside focus
+    //  relatedTarget is the clicked element
+    if (
+      event.relatedTarget &&
+      event.relatedTarget.classList.contains('cust-btn1')
+    ) {
+      console.log('Click on button');
+    } else {
+      this.autoSave();
+    }
   }
 
   autoSave() {
     if (parseFloat(this.formValues.orderDetails.order.id)) {
-      let payload = {
+      const payload = {
         OrderId: this.formValues.orderDetails.order.id,
         OrderNotes: this.formValues.invoiceNotes
       };
@@ -598,10 +604,15 @@ export class NotesDetailsComponent implements OnInit {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      // let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      //let newDate = date.toDate();
+      const elem = new Date(date);
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+        formattedDate = `${moment(elem).format('ddd')} ${formattedDate}`;
+      }
+      if (formattedDate.endsWith('00:00')) {
+        formattedDate = formattedDate.split('00:00')[0];
       }
       return formattedDate;
     }
@@ -609,7 +620,9 @@ export class NotesDetailsComponent implements OnInit {
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment
+        .utc(value)
+        .format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
