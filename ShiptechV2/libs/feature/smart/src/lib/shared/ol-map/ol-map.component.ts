@@ -176,14 +176,14 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       // url: './assets/data/countries.json',
       url: './assets/data/countries.json',
       format: new GeoJSON(),
-      id: 'map_layer'
+      id: 'map_layer',
 
-    } as any),
+    }),
     style: function (feature) {
       let newStyle = countryText_Dark;
       countryText_Dark.getText().setText(feature.get('name'));
       return newStyle;
-    }
+    },
   });
   private mapLayer1 = new OlVectorLayer({
     source: new OlVectorSource({
@@ -194,9 +194,9 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       // url: './assets/data/countries.json',
       url: './assets/data/countries.json',
       format: new GeoJSON(),
-      id: 'map_layer'
+      id: 'map_layer',
 
-    }as any),
+    }),
     style: function (feature) {
       let newStyle = countryText;
       countryText.getText().setText(feature.get('name'));
@@ -209,7 +209,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       url: './assets/data/countries.json',
       format: new GeoJSON(),
       id: 'map_layer'
-    } as any),
+    }),
     style: function (feature) {
       let newStyle2 = countryText_dark_click;
       countryText.getText().setText(feature.get('name'));
@@ -290,15 +290,15 @@ export class OlMapComponent implements OnInit, AfterViewInit {
 
         // var lonlat = fromLonLat([this.showPortList[0].longitude, this.showPortList[0].latitude]);
         //  this.createPopup(this.showPortList[0],lonlat)
-        let feature1 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.id == "RL");
+        let feature1 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.id == "RL");
 
         feature1.forEach(element => {
-          let sty = element.getStyle() as any;
+          let sty = element.getStyle();
           sty.stroke_.color_ = "#BBBDBF";
           element.setStyle(sty);
         });
 
-        let feature2 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "port-on-route");//Port Icon on Route
+        let feature2 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "port-on-route");//Port Icon on Route
 
         feature2.forEach(element => {
           if (this.showPortList[0].name == element.getProperties().data.locationName)
@@ -307,21 +307,21 @@ export class OlMapComponent implements OnInit, AfterViewInit {
             element.setStyle(this.getPortGlowStyle(-1));
         });
 
-        let feature3 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "vessel-glow");//Vessel Icon Glow on Route
+        let feature3 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-glow");//Vessel Icon Glow on Route
 
         feature3.forEach(element => {
           element.setStyle(this.getVesselGlowStyle('grey'));
         });
 
-        let feature4 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "vessel-on-route");//Vessel Icon on Route
+        let feature4 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-on-route");//Vessel Icon on Route
         feature4.forEach(element => {
           element.setStyle(this.getGreyVesselStyle(element.getProperties().data));
         });
 
-        let feature5 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "next-port");//Next Port Icon on Route
+        let feature5 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "next-port");//Next Port Icon on Route
 
 
-        feature5.forEach((element : any) => {
+        feature5.forEach(element => {
           if (this.showPortList[0].name == element.getProperties().data.locationName)
             element.setStyle(this.getNextPortStyle('blue'));
           else
@@ -387,8 +387,8 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       autoPanAnimation: {
         duration: 250
       },
-      zindex: 1
-    } as any);
+      zindex: 1,
+    });
     this.hoverCircleEffectOverlay = new Overlay({
       element: this.hoverCircleElement.nativeElement,
       positioning: 'bottom-center',
@@ -420,9 +420,9 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       OverLays: [],
       controls: [],
       target: this.olmapElement.nativeElement,
-      view: mapView
+      view: mapView,
       // interactions: olinteraction
-    } as any);
+    });
     this.localService.themeChange.subscribe(value => {
       this.theme = value;
       // if(!this.theme && !this.lightclick){
@@ -942,11 +942,11 @@ export class OlMapComponent implements OnInit, AfterViewInit {
           this.showLocationPop = false;
           this.showPortList = [];
          this.showVesselPop = true;
-          let feature1 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.id == "RL");
-          let feature2 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "port-on-route");//Port Icon on Route
-          let feature3 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "vessel-glow");//Vessel Icon Glow on Route
-          let feature4 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "vessel-on-route");//Vessel Icon on Route
-          let feature5 = this.routeLayer.getSource().getFeatures().filter((ele : any) => ele.values_.type == "next-port");//Next Port Icon on Route
+          let feature1 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.id == "RL");
+          let feature2 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "port-on-route");//Port Icon on Route
+          let feature3 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-glow");//Vessel Icon Glow on Route
+          let feature4 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "vessel-on-route");//Vessel Icon on Route
+          let feature5 = this.routeLayer.getSource().getFeatures().filter(ele => ele.values_.type == "next-port");//Next Port Icon on Route
           feature1.forEach(element => {
             let sty = element.getStyle();
             sty.stroke_.color_ = this.strokeColor;
