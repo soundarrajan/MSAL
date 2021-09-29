@@ -634,7 +634,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'min_sod': {commentType = 'min_sod_comment'; break;}
     }
     // check and truncate to totalTankCapacity, if the total max sod input greater then totalTankCapacity
-    if(value>totalTankCapacity) {
+    if(column == "max_sod" && value>totalTankCapacity) {
       value = totalTankCapacity;
       inputElem.value = value;
     }
@@ -791,14 +791,12 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     switch (params?.colDef?.field) {
       case 'hsfo_estimated_lift':
         if(data?.request_id_hsfo) {
-          // let requestModel= {request_id: '', request_product: '', estimated_lift: ''};
           requestModel.request_id = data?.request_id_hsfo;
           requestModel.request_product = data?.request_product_hsfo;
           requestModel.estimated_lift = data?.hsfo_estimated_lift;
           requestInfo.push(requestModel);
         }
         if(data?.request_id_vlsfo) {
-          // let requestModel= {request_id: '', request_product: '', estimated_lift: ''};
           requestModel.request_id = data?.request_id_vlsfo;
           requestModel.request_product = data?.request_product_vlsfo;
           requestModel.estimated_lift = data?.vlsfo_estimated_lift;
@@ -807,7 +805,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         return requestInfo;
         break;
         case 'ulsfo_estimated_lift':
-        // let requestModel= {request_id: '', request_product: '', estimated_lift: ''};
         if(data?.request_id_ulsfo) {
           requestModel.request_id = data?.request_id_ulsfo;
           requestModel.request_product = data?.request_product_ulsfo;
@@ -819,8 +816,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'lsdis_estimated_lift':
         if(data?.request_id_lsdis) {
           requestModel.request_id = data?.request_id_lsdis;
-          requestModel.request_product = data?.request_product_vlsfo;
-          requestModel.estimated_lift = data?.request_product_lsdis;
+          requestModel.request_product = data?.request_product_lsdis;
+          requestModel.estimated_lift = data?.lsdis_estimated_lift;
           requestInfo.push(requestModel);
         }
         return requestInfo;
