@@ -357,7 +357,6 @@ export class ShiptechCustomHeaderGroup {
 
   agInit(params: any): void {
     this.params = params;
-    debugger;
     if (this.params.product) {
       this.livePrice = this.params.product.requestGroupProducts.livePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;

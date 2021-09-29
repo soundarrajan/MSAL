@@ -361,7 +361,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'T.Pr.($)',
           headerTooltip: 'T.Pr.($)',
-          field: `tPr${product.id}`,
+          field: `tPr`,
           width: 150,
           cellClass: 'grey-opacity-cell pad-lr-0',
           cellStyle: params => {
@@ -377,14 +377,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'Amt ($)',
           headerTooltip: 'Amt ($)',
-          field: `amt${product.id}`,
+          field: `amt`,
           width: 150,
           cellClass: 'grey-opacity-cell pad-lr-0'
         },
         {
           headerName: 'Tar. diff',
           headerTooltip: 'Tar. diff',
-          field: `diff${product.id}`,
+          field: `diff`,
           width: 150,
           headerClass: 'border-right',
           cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
