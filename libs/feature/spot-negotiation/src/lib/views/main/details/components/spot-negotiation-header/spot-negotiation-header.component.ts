@@ -87,7 +87,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.locations = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
 
-          this.setLocations(
+          this.SetLocationsRows(
             spotNegotiation.currentRequestSmallInfo[0].requestLocations
           );
           if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
@@ -99,7 +99,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }, 100);
   }
 
-  setLocations(eLocations: any): void {
+  SetLocationsRows(eLocations: any): void {
     this.locations = eLocations;
   }
 
@@ -179,7 +179,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.toastr.success(res.message);
         // Add in Store
         this.store.dispatch(new AddCounterpartyToLocations(payload.counterparties));
-        this.changeDetector.detectChanges();
       }
       else{
         this.toastr.error(res.message);
@@ -228,7 +227,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
 
     // Change locations
-    this.setLocations(requests[i].requestLocations);
+    this.SetLocationsRows(requests[i].requestLocations);
 
     var obj = {
       selReqIndex: i

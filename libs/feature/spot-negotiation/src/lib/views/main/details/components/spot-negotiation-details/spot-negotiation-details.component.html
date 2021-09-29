@@ -1,25 +1,41 @@
 <div class="spot-nego-content">
   <div class="grid-in-accordion">
-    <div *ngFor="let loc of locations;let i = index">
-      <mat-expansion-panel [expanded]="i==0?true:false" style="margin-top: 1px;">
+    <div *ngFor="let loc of locations; let i = index">
+      <mat-expansion-panel
+        [expanded]="i == 0 ? true : false"
+        style="margin-top: 1px;"
+      >
         <mat-expansion-panel-header>
           <mat-panel-title>
             <app-loc-pan-data [reqLocation]="loc"></app-loc-pan-data>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-          <div [ngStyle]="grid1Width" style="height: 100%;overflow-x:auto;" class="aggrid-container">
+          <div
+            [ngStyle]="grid1Width"
+            style="height: 100%;overflow-x:auto;"
+            class="aggrid-container"
+          >
             <div appResizable style="position: relative;width: 100%;">
               <div class="grid-content" [style.width.px]="fullHeaderWidth">
                 <div class="grid-container">
                   <div class="agGrid-v2" style="margin:0px">
                     <div style="width:100%;height: 100%;">
-                      <ag-grid-angular style="width: 100%;height: 100%;" [rowData]="rowData_aggridobj[i]"
-                      [columnDefs]="columnDef_aggridObj[i]" [gridOptions]="gridOptions_counterparty"
-                        [rowClassRules]="rowClassRules" domLayout='autoHeight'
-                        class="ag-theme-material ag-grid-v2 angular-v9" (rowSelected)="onRowSelected($event)"
-                        (selectionChanged)="onSelectionChanged($event)" [context]="context"
-                        [rowSelection]="rowSelection">
+                      <ag-grid-angular
+                      class="ag-theme-material ag-grid-v2 angular-v9"
+                        style="width: 100%;height: 100%;"
+                        domLayout="autoHeight"
+                        [rowData]="rowData_aggridObj[i]"
+                        [columnDefs]="columnDef_aggridObj[i]"
+                        [gridOptions]="gridOptions_counterparty"
+                        [rowClassRules]="rowClassRules"
+                        [immutableData]="false"
+                        [getRowNodeId]="getRowNodeId"
+                        (rowSelected)="onRowSelected($event)"
+                        (selectionChanged)="onSelectionChanged($event)"
+                        [context]="context"
+                        [rowSelection]="rowSelection"
+                      >
                       </ag-grid-angular>
                     </div>
                   </div>
@@ -30,6 +46,5 @@
         </ng-template>
       </mat-expansion-panel>
     </div>
-
   </div>
 </div>

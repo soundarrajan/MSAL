@@ -30,14 +30,19 @@ export class SetCounterpartyList {
   constructor(public payload: any) {}
 }
 
-export class SetLocations{
-  static readonly type = '[Set Locations] Set';
+export class SetLocationsRows{
+  static readonly type = '[Locations] Set';
+
+  constructor(public payload: any) {}
+}
+export class EditLocationRow{
+  static readonly type = '[Locations] Edit';
 
   constructor(public payload: any) {}
 }
 
 export class AddCounterpartyToLocations{
-  static readonly type = '[Add Counterparty] Add';
+  static readonly type = '[Counterparty] Add';
 
   constructor(public payload: any) {}
 }
