@@ -12,7 +12,8 @@ export const SpotNegotiationApiPaths = {
   tenantConfiguration: `api/admin/tenantConfiguration/get`,
   staticLists: `api/infrastructure/static/lists`,
   counterpartyLists: `api/masters/counterparties/list`,
-  addCounterparties: `groups/addcounterparties`
+  addCounterparties: `groups/addcounterparties`,
+  saveTargetPrice:`Groups/AutoSaveTargetPrice`
 };
 
 @Injectable({
@@ -139,6 +140,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .get<any>(`${this._negotiationApiUrl}/groups/${request}`, {
         // headers: { Origin: 'https://bvt.shiptech.com' }
       })
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  SaveTragetPrice(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.saveTargetPrice}`,
+        payload
+      )
       .pipe(
         map((body: any) => body),
         catchError((body: any) =>
