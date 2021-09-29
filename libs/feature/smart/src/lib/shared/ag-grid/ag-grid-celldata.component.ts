@@ -787,16 +787,19 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   showProductRequestInfo(params) {
     let requestInfo = [];
     let data = params?.data;
-    let requestModel= {request_id: '', request_product: '', estimated_lift: ''};
+    let requestSchemaModel= {request_id: '', request_product: '', estimated_lift: ''};
+    let requestModel;
     switch (params?.colDef?.field) {
       case 'hsfo_estimated_lift':
         if(data?.request_id_hsfo) {
+          requestModel = {...requestSchemaModel};
           requestModel.request_id = data?.request_id_hsfo;
           requestModel.request_product = data?.request_product_hsfo;
           requestModel.estimated_lift = data?.hsfo_estimated_lift;
           requestInfo.push(requestModel);
         }
         if(data?.request_id_vlsfo) {
+          requestModel = {...requestSchemaModel};
           requestModel.request_id = data?.request_id_vlsfo;
           requestModel.request_product = data?.request_product_vlsfo;
           requestModel.estimated_lift = data?.vlsfo_estimated_lift;
@@ -805,6 +808,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         return requestInfo;
         break;
         case 'ulsfo_estimated_lift':
+          requestModel = {...requestSchemaModel};
         if(data?.request_id_ulsfo) {
           requestModel.request_id = data?.request_id_ulsfo;
           requestModel.request_product = data?.request_product_ulsfo;
@@ -814,6 +818,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         return requestInfo;
         break;
       case 'lsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
         if(data?.request_id_lsdis) {
           requestModel.request_id = data?.request_id_lsdis;
           requestModel.request_product = data?.request_product_lsdis;
@@ -823,6 +828,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         return requestInfo;
         break;
       case 'hsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
         if(data?.request_id_hsdis) {
           requestModel.request_id = data?.request_id_hsdis;
           requestModel.request_product = data?.request_product_hsdis;
