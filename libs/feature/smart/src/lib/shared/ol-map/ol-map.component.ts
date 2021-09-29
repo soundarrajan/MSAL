@@ -1811,7 +1811,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
 
         // src: "./assets/icon/ROB_red.svg",
         // src: "./assets/customicons/vessel/ROB_amber_hover_3.svg",
-      })
+      } as any)
     } as any);
     return iconStyle;
   }
