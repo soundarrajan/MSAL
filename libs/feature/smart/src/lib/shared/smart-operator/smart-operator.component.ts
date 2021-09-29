@@ -146,8 +146,10 @@ export class SmartOperatorComponent implements OnInit {
         resizable: true
       },
       rowSelection: 'multiple',
-       overlayNoRowsTemplate:
-       `<span>Rows are loading...</span>`,
+      overlayLoadingTemplate:
+      '<span class="ag-overlay-loading-center">Rows are loading...</span>',
+      overlayNoRowsTemplate:
+        `<span> No Data to Show</span>`,
       onGridReady: (params) => {
 
         this.gridBdnReportOptions.api = params.api;
@@ -188,8 +190,10 @@ export class SmartOperatorComponent implements OnInit {
         resizable: true
       },
       rowSelection: 'multiple',
-       overlayNoRowsTemplate:
-       `<span>Rows are loading...</span>`,
+      overlayLoadingTemplate:
+      '<span class="ag-overlay-loading-center">Rows are loading...</span>',
+      overlayNoRowsTemplate:
+        `<span> No Data to Show</span>`,
       onGridReady: (params) => {
 
         this.gridOrderDetailsOptions.api = params.api;
