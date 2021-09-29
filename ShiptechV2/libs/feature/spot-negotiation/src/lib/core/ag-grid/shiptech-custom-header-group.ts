@@ -127,7 +127,7 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
         <div class="label-content" style="width:95%;">
         <div class="label-element w-100" style="width:100%;">
         <div class="title">No. of Products</div>
-        <div class="value">{{params.currentReqDataLength}}</div>
+        <div class="value">{{params.currentReqProdcutsLength}}</div>
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@ export class ShiptechCustomHeaderGroup {
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      
+
       // Fetching counterparty list
       if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
@@ -311,8 +311,8 @@ export class ShiptechCustomHeaderGroup {
 
     if(this.currentRequestInfo && this.currentRequestInfo.length > 0){
       RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
-      
-      if(this.currentRequestInfo[0].requestLocations 
+
+      if(this.currentRequestInfo[0].requestLocations
         && this.currentRequestInfo[0].requestLocations.length > 0){
         currentRequestLocation = this.currentRequestInfo[0].requestLocations[0];
         }

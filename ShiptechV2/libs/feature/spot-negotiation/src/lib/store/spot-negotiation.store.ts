@@ -2,21 +2,22 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import {
   SetStaticLists,
   SetCounterpartyList,
-  SetLocations,
+  SetLocationsRows,
   SetGroupOfRequestsId,
   SetRequests,
   SetCurrentRequest,
   SetCurrentRequestSmallInfo,
-  AddCounterpartyToLocations
+  AddCounterpartyToLocations,
+  EditLocationRow
 } from './actions/ag-grid-row.action';
 
 export class SpotNegotiationStoreModel {
   staticLists: any;
-  counterpartyList:any;
+  counterpartyList: any;
   // Until here
   groupOfRequestsId: number | null;
   requests: Array<any>;
-  locations: Array<any>;
+  locationsRows: Array<any>;
   additionalCost: Array<any>;
   availableTermContracts: Array<any>;
   sellerRating: Array<any>;
@@ -33,7 +34,7 @@ export class SpotNegotiationStoreModel {
     this.staticLists = {};
     this.counterpartyList = {};
     this.requests = [];
-    this.locations = [];
+    this.locationsRows = [];
     this.additionalCost = [];
     this.sellerRating = [];
     this.availableTermContracts = [];
@@ -56,7 +57,7 @@ export class SpotNegotiationStoreModel {
     requests: [],
     commentsForCurrentRequest: [],
     currentRequest: null,
-    locations: [],
+    locationsRows: [],
     additionalCost: [],
     availableTermContracts: [],
     formulaPricingDetails: {},
@@ -133,29 +134,50 @@ export class SpotNegotiationStore {
   }
 
   // Rows lists
-  @Action(SetLocations)
-  SetLocations(
+  @Action(SetLocationsRows)
+  SetLocationsRows(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: SetLocations
+    { payload }: SetLocationsRows
   ) {
     patchState({
-      locations: payload
+      locationsRows: payload
     });
   }
 
-    // Rows lists
-    @Action(AddCounterpartyToLocations)
-    AddCounterpartyToLocations(
-      { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-      { payload }: AddCounterpartyToLocations
-    ) {
-      const state = getState();
-      var ctpys = [...state.locations, ...payload];
+  @Selector()
+  static getLocations(state: SpotNegotiationStoreModel) {
+    return state.locationsRows;
+  }
 
-      patchState({
-        locations:  ctpys
-      });
-    }
+  // Rows lists
+  @Action(EditLocationRow)
+  EditLocationRow(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: EditLocationRow
+  ) {
+    patchState({
+      locationsRows: getState().locationsRows.map(row => {
+        if (row.id === payload.id) {
+          return payload;
+        }
+        return row;
+      })
+    });
+  }
+
+  // Rows lists
+  @Action(AddCounterpartyToLocations)
+  AddCounterpartyToLocations(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AddCounterpartyToLocations
+  ) {
+    const state = getState();
+    var ctpys = [...state.locationsRows, ...payload];
+
+    patchState({
+      locationsRows: ctpys
+    });
+  }
 
   @Selector()
   static getStaticList(state: SpotNegotiationStoreModel) {
@@ -166,5 +188,4 @@ export class SpotNegotiationStore {
   static getCounterpartyList(state: SpotNegotiationStoreModel) {
     return state.counterpartyList;
   }
-
 }

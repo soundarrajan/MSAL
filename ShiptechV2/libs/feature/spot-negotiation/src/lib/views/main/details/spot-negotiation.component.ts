@@ -14,7 +14,7 @@ import {
   SetCurrentRequestSmallInfo,
   SetGroupOfRequestsId,
   SetRequests,
-  SetLocations,
+  SetLocationsRows,
   SetCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
@@ -95,12 +95,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           e.totalOffer = '$500.00';
           e.diff = '99.00';
           e.amt = '32.00';
-          e.tPr = '42.00';
+          e.tPr = Math.floor(Math.random() * 100) + 0;
           return e;
         });
 
-
-        this.store.dispatch(new SetLocations(editedLocation));
+        this.store.dispatch(new SetLocationsRows(editedLocation));
         this.changeDetector.detectChanges();
       }
     });
@@ -152,7 +151,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       // Populate store;
       // alert(2);
-      // this.store.dispatch(new SetLocations(res));
+      // this.store.dispatch(new SetLocationsRows(res));
     });
   }
 
