@@ -634,7 +634,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'min_sod': {commentType = 'min_sod_comment'; break;}
     }
     // check and truncate to totalTankCapacity, if the total max sod input greater then totalTankCapacity
-    if(value>totalTankCapacity) {
+    if(column == "max_sod" && value>totalTankCapacity) {
       value = totalTankCapacity;
       inputElem.value = value;
     }
