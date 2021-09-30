@@ -853,6 +853,19 @@ export class BunkeringPlanComponent implements OnInit {
     if(this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C'){
       let currentROB = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
       let rowData2 = this.rowData;
+
+      var BPlanExistData = JSON.parse(JSON.stringify(this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)))
+      rowData2.map(planItem=>{
+        let planItemByIndex = BPlanExistData.findIndex((data)=>data.detail_no==planItem.detail_no);
+        if(planItemByIndex>-1) {
+          planItem.hsfo_min_sod=BPlanExistData[planItemByIndex].hsfo_min_sod;
+          planItem.eca_min_sod=BPlanExistData[planItemByIndex].eca_min_sod;
+          planItem.min_sod=BPlanExistData[planItemByIndex].min_sod;
+          planItem.max_sod=BPlanExistData[planItemByIndex].max_sod;
+        }
+        return planItem;
+      })
+                              
       switch(column){
         case 'LSDIS' :
         case 'ULSFO' :{
