@@ -77,7 +77,9 @@
                 On:
                 <span class="created-on-field">
                   {{
-                    formValues.createdAt ? formatDate(formValues.createdAt) : ''
+                    formValues.createdAt
+                      ? formatDateForCreatedOn(formValues.createdAt)
+                      : ''
                   }}
                 </span>
               </div>
@@ -206,7 +208,10 @@
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
                   <a
                     *ngIf="relatedDelivery"
-                    [ngClass]="{'active_delivery': formValues.id === relatedDelivery.deliveryId}"
+                    [ngClass]="{
+                      active_delivery:
+                        formValues.id === relatedDelivery.deliveryId
+                    }"
                     href="{{
                       getRelatedDeliveryLink(relatedDelivery.deliveryId)
                     }}"
@@ -259,7 +264,9 @@
           [(ngModel)]="formValues.order"
           [matAutocomplete]="auto"
           placeholder="Order Number"
-          [disabled]="formValues.deliveryStatus.name == 'Verified' || entityId != 0"
+          [disabled]="
+            formValues.deliveryStatus.name == 'Verified' || entityId != 0
+          "
           required
         />
         <mat-autocomplete
@@ -277,9 +284,12 @@
         </mat-autocomplete>
       </mat-form-field>
       <button
-        [disabled]="formValues.deliveryStatus.name == 'Verified' || entityId != 0"
+        [disabled]="
+          formValues.deliveryStatus.name == 'Verified' || entityId != 0
+        "
         [ngClass]="{
-          'search-icon-disabled': formValues.deliveryStatus.name == 'Verified' || entityId != 0
+          'search-icon-disabled':
+            formValues.deliveryStatus.name == 'Verified' || entityId != 0
         }"
         class="search-icon"
         appMasterSelectorTrigger
@@ -438,7 +448,9 @@
         (focus)="berthingTime.open()"
         (onInput)="onChange($event, 'berthingTime')"
         (dateChange)="
-          formValues.berthingTime = formatDateForBe(formValues.berthingTime)
+          formValues.berthingTime = formatDateForBeForDateWithTime(
+            formValues.berthingTime
+          )
         "
         autocomplete="off"
         placeholder="Berthing time"
@@ -474,7 +486,9 @@
         (focus)="bargeAlongside.open()"
         (onInput)="onChange($event, 'bargeAlongside')"
         (dateChange)="
-          formValues.bargeAlongside = formatDateForBe(formValues.bargeAlongside)
+          formValues.bargeAlongside = formatDateForBeForDateWithTime(
+            formValues.bargeAlongside
+          )
         "
         autocomplete="off"
         placeholder="Barge alongside"

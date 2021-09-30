@@ -63,7 +63,7 @@
           placeholder="Pumping start"
           (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
           (dateChange)="
-            formValues.bargePumpingRateStartTime = formatDateForBe(
+            formValues.bargePumpingRateStartTime = formatDateForBeForDateWithTime(
               formValues.bargePumpingRateStartTime
             )
           "
@@ -102,7 +102,7 @@
           placeholder="Pumping end"
           (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
           (dateChange)="
-            formValues.bargePumpingRateEndTime = formatDateForBe(
+            formValues.bargePumpingRateEndTime = formatDateForBeForDateWithTime(
               formValues.bargePumpingRateEndTime
             )
           "
@@ -564,7 +564,9 @@
                       matInput
                       (keypress)="keyPressAlphaNumeric($event)"
                       [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                      [placeholder]="sampleDetail.value.sealNumber ? '' : 'Value'"
+                      [placeholder]="
+                        sampleDetail.value.sealNumber ? '' : 'Value'
+                      "
                       autocomplete="off"
                     />
                   </mat-form-field>
