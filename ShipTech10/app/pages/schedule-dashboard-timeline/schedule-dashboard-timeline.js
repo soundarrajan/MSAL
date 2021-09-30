@@ -2262,11 +2262,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         	$(document).on("click", "span[timeline-order-column]", function(e){
 				// Prevent multiple clicks
-				if (window.lastSortingTime) {
-					if (moment().diff(window.lastSortingTime) < 1000) {
-						return;
-					}
-				}
+				// if (window.lastSortingTime) {
+				// 	if (moment().diff(window.lastSortingTime) < 1000) {
+				// 		return;
+				// 	}
+				// }
 				window.lastSortingTime = moment();
 				initSortingData(e);
        
