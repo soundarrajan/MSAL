@@ -2,62 +2,89 @@ import { Injectable } from '@angular/core';
 import { AdalService } from 'adal-angular-wrapper';
 import { Observable } from 'rxjs';
 import { AuthenticationContext } from '@shiptech/core/authentication/authentication-context';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import {
+  AuthenticationResult,
+  EventMessage,
+  EventType,
+  PublicClientApplication
+} from '@azure/msal-browser';
+import { InteractionStatus } from '@azure/msal-browser';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationService {
   private _isInitialized = false;
+  // private isAuthenticated = true;
+
+  private readonly _destroying$ = new Subject<void>();
 
   get isInitialized(): boolean {
     return this._isInitialized;
   }
 
   get config(): adal.Config {
-    return (this.adalService || <AdalService>{}).config;
+    return (<AdalService>{}).config;
   }
 
   get userInfo(): adal.User {
-    return (this.adalService || <AdalService>{}).userInfo;
+    return (<AdalService>{}).userInfo;
   }
 
   get isAuthenticated(): boolean {
-    return ((this.adalService || <AdalService>{}).userInfo || <adal.User>{})
-      .authenticated;
+    return this.msalService.instance.getAllAccounts().length > 0;
   }
 
   constructor(
-    private adalService: AdalService,
-    public authenticationContext: AuthenticationContext
+    private msalService: MsalService,
+    public authenticationContext: AuthenticationContext,
+    private broadcastService: MsalBroadcastService
   ) {}
 
   public init(configOptions: adal.Config): void {
-    this.adalService.init(configOptions);
+    console.log(this.msalService);
+    configOptions.redirectUri = 'http://localhost:9016';
+    // this.msalService.instance = new PublicClientApplication({
+    //   auth: configOptions,
+    //   cache: {
+    //     cacheLocation: 'localStorage'
+    //   }
+    // });
 
-    this._isInitialized = true;
+    console.log(this.msalService.instance);
+    // this.adalService.init(configOptions);
 
-    this.adalService.handleWindowCallback();
+    // this._isInitialized = true;
 
-    if (this.isAuthenticated) {
-      this.authenticationContext.userId = this.userInfo?.userName;
-      this.authenticationContext.isAuthenticated = this.isAuthenticated;
-    }
+    // this.adalService.handleWindowCallback();
+
+    // if (this.isAuthenticated) {
+    //   this.authenticationContext.userId = this.userInfo?.userName;
+    //   this.authenticationContext.isAuthenticated = this.isAuthenticated;
+    // }
   }
 
   public login(): void {
-    this.adalService.login();
+    this.msalService.loginRedirect();
   }
 
   public logout(): void {
-    this.adalService.logOut();
-
-    this.authenticationContext.userId = undefined;
-    this.authenticationContext.isAuthenticated = false;
+    this.msalService.logoutRedirect();
   }
 
   public acquireToken(resource: string): Observable<string | null> {
-    return this.adalService.acquireToken(resource);
+    return null;
+    // return this.adalService.acquireToken(resource);
   }
 
   public getResourceForEndpoint(endpoint: string): string | null {
-    return this.adalService.getResourceForEndpoint(endpoint);
+    return null;
+    // return this.adalService.getResourceForEndpoint(endpoint);
+  }
+
+  ngOnDestroy(): void {
+    this._destroying$.next(undefined);
+    this._destroying$.complete();
   }
 }
