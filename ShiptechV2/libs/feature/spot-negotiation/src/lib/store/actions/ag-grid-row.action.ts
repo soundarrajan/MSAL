@@ -8,8 +8,8 @@ export class SetCurrentRequest {
 
   constructor(public payload: any) {}
 }
-export class SetRequests {
-  static readonly type = '[Requests] Set';
+export class SetLocations {
+  static readonly type = '[Locations] Set';
 
   constructor(public payload: any) {}
 }
@@ -31,7 +31,7 @@ export class SetCounterpartyList {
 }
 
 export class SetLocationsRows{
-  static readonly type = '[Locations] Set';
+  static readonly type = '[LocationsRows] Set';
 
   constructor(public payload: any) {}
 }

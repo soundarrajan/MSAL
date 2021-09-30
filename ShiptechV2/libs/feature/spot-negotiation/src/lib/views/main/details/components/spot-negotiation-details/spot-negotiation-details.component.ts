@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { GridOptions } from 'ag-grid-community';
+import { ToastrService } from 'ngx-toastr';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
 import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-custom-header-group';
@@ -48,19 +49,21 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public fullHeaderWidth;
   public frameworkComponents;
   rowData_aggrid: any = [];
-  productsIds: any = [];
+  locationsRows: any = [];
+  currentRequestSmallInfo = {};
   agGridLoaded = false;
   public grid1Width = {
     width: '100%'
   };
 
-  // highlightedCells
-  // {
-  //   location-> 12: {totalPrice: 152   <- row id
-  //   totalOffer:  612}
-  // }
-  // }
-
+  // highlightedCells = {
+  //   12: { <- Location id
+  //     totalOffer: 612,
+  //     123: { <- Product id
+  //       totalPrice: 152,
+  //     }
+  //   }
+  // };
   highlightedCells = {};
 
   context: any;
@@ -199,7 +202,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'border-right',
           cellClass: 'line-seperator',
           cellStyle: params => {
-            if (params.highlight) {
+            if (
+              this.highlightedCells[params.data.locationId] &&
+              params.data.id ==
+                this.highlightedCells[params.data.locationId].totalOffer
+            ) {
               return { background: '#C5DCCF' };
             }
 
@@ -226,7 +233,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store,
     private spotNegotiationService: SpotNegotiationService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private toastr: ToastrService
   ) {
     this.context = { componentParent: this };
     this.rowSelection = 'single';
@@ -238,10 +246,18 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         filter: true,
         sortable: false,
         valueSetter: ({ colDef, data, newValue }) => {
-          const updatedRow = { ...data };
+          let updatedRow = { ...data };
           updatedRow[colDef.field] = newValue;
 
+          // Do calculation here;
+          updatedRow = this.formatRowData(updatedRow, colDef.product);
+
+          // Update the store
           this.store.dispatch(new EditLocationRow(updatedRow));
+
+          // Save to the cloud
+          this.saveRowToCloud(updatedRow, colDef.product);
+
           return false;
         }
       },
@@ -256,20 +272,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         params.api.sizeColumnsToFit();
       },
       rowSelection: 'single',
-      onCellEditingStopped: params => {
-        const xv = this.getProductsIds();
-        console.log(this.productsIds);
-
-        this.productsIds.map(productID => {
-          const x = params.columnApi.getColumn(`tPr${productID}`);
-        });
-
-        // For each location make a object containing key (location ID) value (smalles value with for that id)
-
-        // Highlight Total offer (lowest)
-
-        // Highlight Total price (lowest)
-      },
       onGridReady: params => {
         // Ng init for AG GRID;
 
@@ -303,12 +305,68 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
   }
 
-  getRowNodeId(data) {
-    return data.id;
+  saveRowToCloud(updatedRow, product) {
+    const payload = {
+      Offers: [
+        {
+          id: updatedRow.id,
+          totalOffer: 1250,
+          requestOffers: [
+            {
+              Id: product.id,
+              totalPrice: 120,
+              amount: 12000,
+              targetDifference: 15,
+              price: 125
+            }
+          ]
+        }
+      ]
+    };
+
+    const response = this.spotNegotiationService.updatePrices(payload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toastr.success(res.message);
+      } else {
+        this.toastr.error(res.message);
+        return;
+      }
+    });
+  }
+  // Calculate row fields and return new row;
+  formatRowData(row, product) {
+    // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
+    row[`tPr${product.id}`] = Number(row[`offPrice${product.id}`]) + 0;
+    // Amount = Total Price * Max. Quantity
+    row[`amt${product.id}`] = row[`tPr${product.id}`] * product.maxQuantity;
+
+    // Target Difference = Total Price - Target Price
+    row[`diff${product.id}`] =
+      row[`tPr${product.id}`] -
+      (product.requestGroupProducts
+        ? product.requestGroupProducts.targetPrice
+        : 0);
+
+    // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
+    const currentLocation = this.locations.filter(
+      e => e.locationId === row.locationId
+    );
+    const currentLocationAllProductsIds = currentLocation[0].requestProducts.map(
+      e => e.id
+    );
+
+    let totalOffer = 0;
+    currentLocationAllProductsIds.map(id => {
+      totalOffer += row[`offPrice${id}`] ? Number(row[`offPrice${id}`]) : 0;
+    });
+    row.totalOffer = totalOffer;
+
+    return row;
   }
 
-  getProductsIds(): any[] {
-    return this.productsIds;
+  getRowNodeId(data) {
+    return data.id;
   }
 
   createProductHeader(product) {
@@ -348,6 +406,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Offer price',
           headerTooltip: 'Offer price',
           field: `offPrice${product.id}`,
+          product: product,
           editable: true,
           width: 260,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
@@ -361,11 +420,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'T.Pr.($)',
           headerTooltip: 'T.Pr.($)',
-          field: `tPr`,
+          field: `tPr${product.id}`,
           width: 150,
           cellClass: 'grey-opacity-cell pad-lr-0',
           cellStyle: params => {
-            if (this.highlightedCells[params.data.locationId] && params.data.id == this.highlightedCells[params.data.locationId].totalPrice) {
+            if (
+              this.highlightedCells[params.data.locationId] &&
+              this.highlightedCells[params.data.locationId][product.id] &&
+              params.data.id ==
+                this.highlightedCells[params.data.locationId][product.id]
+                  .totalPrice
+            ) {
               return { background: '#C5DCCF' };
             }
 
@@ -377,14 +442,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'Amt ($)',
           headerTooltip: 'Amt ($)',
-          field: `amt`,
+          field: `amt${product.id}`,
           width: 150,
           cellClass: 'grey-opacity-cell pad-lr-0'
         },
         {
           headerName: 'Tar. diff',
           headerTooltip: 'Tar. diff',
-          field: `diff`,
+          field: `diff${product.id}`,
           width: 150,
           headerClass: 'border-right',
           cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
@@ -392,7 +457,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'MJ/KJ',
           headerTooltip: 'MJ/KJ',
-          field: 'mj',
+          field: `mj${product.id}`,
           width: 150,
           columnGroupShow: 'open',
           cellClass: 'grey-opacity-cell pad-lr-0'
@@ -400,7 +465,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'TCO ($)',
           headerTooltip: 'TCO ($)',
-          field: 'tco',
+          field: `tco${product.id}`,
           width: 150,
           columnGroupShow: 'open',
           cellClass: 'grey-opacity-cell pad-lr-0'
@@ -408,7 +473,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'E. diff',
           headerTooltip: 'E. diff',
-          field: 'ediff',
+          field: `ediff${product.id}`,
           width: 150,
           columnGroupShow: 'open',
           headerClass: 'border-right',
@@ -418,12 +483,46 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
   }
 
-  // Make calculation here;
-  formatRow(rowData){
+  checkHighlight({ product }) {
+    var smallestTotalPrice = Infinity;
+    var smallesOffer = Infinity;
 
-    rowData.diff = "123";
-    return rowData;
+    this.locationsRows.map(row => {
+      // Create key with id if dosen't exists;
+      if (!this.highlightedCells[row.locationId]) {
+        this.highlightedCells[row.locationId] = {};
+      }
+
+      if (!this.highlightedCells[row.locationId][product.id]) {
+        this.highlightedCells[row.locationId][product.id] = {};
+      }
+
+      if (!this.highlightedCells[row.locationId]) {
+        this.highlightedCells[row.locationId] = {};
+      }
+
+      // Set smallest total price
+      if (
+        row[`tPr${product.id}`] &&
+        Number(smallestTotalPrice) > Number(row[`tPr${product.id}`])
+      ) {
+        smallestTotalPrice = row[`tPr${product.id}`];
+        this.highlightedCells[row.locationId][product.id].totalPrice = row.id;
+      }
+
+      // Set smallest offer price
+      if (
+        row.totalOffer &&
+        Number(smallesOffer) > Number(row.totalOffer)
+      ) {
+        smallesOffer = row.totalOffer;
+        // Create key with id if dosen't exists;
+
+        this.highlightedCells[row.locationId].totalOffer = row.id;
+      }
+    });
   }
+
   ngOnInit(): void {
     const self = this;
     // Set Counterparty list;
@@ -432,39 +531,32 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
     this.store.subscribe(({ spotNegotiation }) => {
-      // this.currentRequestData = spotNegotiation.currentRequestSmallInfo[0];
-
-      // Set locations
-      if (
-        spotNegotiation.currentRequestSmallInfo &&
-        spotNegotiation.currentRequestSmallInfo[0] &&
-        this.locations.length == 0
-      ) {
-        this.locations =
-          spotNegotiation.currentRequestSmallInfo[0].requestLocations;
+      if (spotNegotiation.currentRequestSmallInfo?.length > 0) {
+        this.currentRequestSmallInfo =
+          spotNegotiation.currentRequestSmallInfo[0];
       }
 
-      // Optimize renders;
+      // Set locations;
       if (
-        !spotNegotiation.requests.length ||
+        !spotNegotiation.locations.length ||
         !spotNegotiation.locationsRows.length
       ) {
         return null;
       }
 
+      this.locationsRows = spotNegotiation.locationsRows;
+      this.locations = spotNegotiation.locations;
+
       // Set rows inside ag grid
       this.rowData_aggrid = spotNegotiation.locationsRows;
-      this.currentRequestData = spotNegotiation.requests;
+      this.currentRequestData = spotNegotiation.locations;
 
       // Spot function if we don't have any requests available
       if (!this.currentRequestData || this.currentRequestData.length <= 0) {
         return null;
       }
 
-      // Get and set lenght of products in total products field
-      const currentReqProdcutsLength = this.currentRequestData[0]
-        .requestProducts.length;
-      this.columnDef_aggrid[1].headerGroupComponentParams.currentReqProdcutsLength = currentReqProdcutsLength;
+      this.columnDef_aggrid[1].headerGroupComponentParams.currentReqProdcutsLength = this.locations[0].requestProducts.length;
 
       // Set headers of products;
       this.columnDef_aggridObj = [];
@@ -473,25 +565,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Separate rows for each location;
         // Sord data
 
-        var smallestTotalPrice = Infinity;
         const filterobj = this.rowData_aggrid.filter(row => {
-
-          if(row.locationId !== currentRequest.locationId){
-            return false
+          if (row.locationId !== currentRequest.locationId) {
+            return false;
           }
-          // Set smallest total price
-          if (smallestTotalPrice > row.tPr) {
-            smallestTotalPrice = row.tPr;
-
-            // Create key with id if dosen't exists;
-            if(!self.highlightedCells[row.locationId]) {
-              self.highlightedCells[row.locationId] = {};
-            }
-            self.highlightedCells[row.locationId].totalPrice = row.id;
-          }
-
-          row = this.formatRow(JSON.parse(JSON.stringify(row)));
-
           return true;
         });
 
@@ -500,13 +577,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
         // Assign ColumnDef_aggrid with dynamic location id
         this.columnDef_aggridObj[i] = _.cloneDeep(this.columnDef_aggrid);
+
         this.columnDef_aggridObj[
           i
         ][0].headerGroupComponentParams.locationId = locationId;
 
-        self.productsIds = currentRequest.requestProducts.map(e => e.id);
-
         currentRequest.requestProducts.map(product => {
+          this.checkHighlight({ product: product });
           this.columnDef_aggridObj[i].push(this.createProductHeader(product));
         });
       });
