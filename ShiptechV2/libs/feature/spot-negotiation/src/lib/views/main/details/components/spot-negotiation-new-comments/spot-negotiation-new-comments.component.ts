@@ -29,8 +29,7 @@ export class SpotNegotiationNewCommentsComponent implements OnInit {
   constructor(private store: Store, public changeDetector: ChangeDetectorRef) {
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.currentRequestSmallInfo) {
-        this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
-       // console.log("66666666666666666", this.currentRequestSmallInfo)
+        this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo[0];
       }
     });
   }

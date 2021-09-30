@@ -12,8 +12,10 @@ import { Store } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
-  SetGroupOfRequestsId,
-  SetRequests,
+  SetRequestGroupId,
+  SetRequests
+} from '../../../store/actions/request-group-actions';
+import {
   SetLocationsRows,
   SetCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
@@ -47,33 +49,57 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.entityName = 'Spot negotiation';
   }
 
-  getCounterpartyList(): void {
-    let payload = {
-      Order: null,
-      PageFilters: { Filters: [] },
-      SortList: { SortList: [] },
-      Filters: [],
-      SearchText: null,
-      Pagination: { Skip: 0, Take: 1000 }
-    };
+    ngOnInit(): void {
+    this.getRequestGroup();
+    this.getGroupOfSellers();
+    this.getCounterpartyList();
+  }
 
-    const response = this.spotNegotiationService.getCounterpartyList(payload);
+  getSpotNegotiationRows(): void {
+    // Delete this;
+    const withThis = this.http.get(
+      './assets/data/demoData/spot-grid1-data.json'
+    );
+    withThis.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      }
+
+      // Populate store;
+      // alert(2);
+      // this.store.dispatch(new SetLocations(res));
+    });
+  }
+
+  getRequestGroup(): void {
+    // Get current id from url and make a request with that data.
+    const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
+    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
+
+    // Get response from server and populate store
+    const response = this.spotNegotiationService.getRequestGroup(
+      groupRequestIdFromUrl
+    );
 
     response.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;
-      } else {
-        // Populate Store
-        this.store.dispatch(new SetCounterpartyList(res.payload));
+      }
+
+      if (res['requests'][0]) {
+        this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
+        this.store.dispatch(new SetRequests(res['requests'][0].requestLocations));
+        this.changeDetector.detectChanges();
       }
     });
   }
 
-  getGroupOfRequests(): void {
+  getGroupOfSellers(): void {
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
-    this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
+    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
 
     // Get response from server and populate store
     const response = this.spotNegotiationService.getGroupOfSellers(
@@ -105,53 +131,26 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
 
-  getGroupOfRequests1(): void {
-    // Get current id from url and make a request with that data.
-    const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
-    this.store.dispatch(new SetGroupOfRequestsId(groupRequestIdFromUrl));
+  getCounterpartyList(): void {
+    let payload = {
+      Order: null,
+      PageFilters: { Filters: [] },
+      SortList: { SortList: [] },
+      Filters: [],
+      SearchText: null,
+      Pagination: { Skip: 0, Take: 1000 }
+    };
 
-    // Get response from server and populate store
-
-    const response = this.spotNegotiationService.getGroupOfRequests1(
-      groupRequestIdFromUrl
-    );
+    const response = this.spotNegotiationService.getCounterpartyList(payload);
 
     response.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;
+      } else {
+        // Populate Store
+        this.store.dispatch(new SetCounterpartyList(res.payload));
       }
-
-      if (res['requests'][0]) {
-        this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
-        this.store.dispatch(
-          new SetRequests(res['requests'][0].requestLocations)
-        );
-        this.changeDetector.detectChanges();
-      }
-    });
-  }
-  ngOnInit(): void {
-    this.getGroupOfRequests();
-    this.getGroupOfRequests1();
-    this.getCounterpartyList();
-    // this.getSpotNegotiationRows();
-  }
-
-  getSpotNegotiationRows(): void {
-    // Delete this;
-    const withThis = this.http.get(
-      './assets/data/demoData/spot-grid1-data.json'
-    );
-    withThis.subscribe((res: any) => {
-      if (res.error) {
-        alert('Handle Error');
-        return;
-      }
-
-      // Populate store;
-      // alert(2);
-      // this.store.dispatch(new SetLocationsRows(res));
     });
   }
 

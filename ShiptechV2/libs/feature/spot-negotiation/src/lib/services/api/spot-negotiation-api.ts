@@ -135,10 +135,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       );
   }
   @ObservableException()
-  getGroupOfRequests1(request: any): Observable<any> {
+  getRequestGroup(request: any): Observable<any> {
     return this.http
       .get<any>(`${this._negotiationApiUrl}/groups/${request}`, {
-        // headers: { Origin: 'https://bvt.shiptech.com' }
       })
       .pipe(
         map((body: any) => body),

@@ -18,21 +18,20 @@ import {
 } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { Select } from '@ngxs/store';
-import { QcReportState } from '../../../store/report/qc-report.state';
 import { Observable, Subject } from 'rxjs';
 import { filter, finalize, takeUntil } from 'rxjs/operators';
 import { NavBarApiService } from '@shiptech/core/services/navbar/navbar-api.service';
 import { NavBar } from '../../../services/api/request-response/nav-bar-request-response';
 import { AppConfig } from '@shiptech/core/config/app-config';
-import { KnownContractRoutes } from '../../../known-spot-negotiation.routes';
+import { KnownSpotNegotiationRoutes } from '../../../known-spot-negotiation.routes';
 
 @Component({
-  selector: 'shiptech-contract-details-toolbar',
+  selector: 'shiptech-negotiation-details-toolbar',
   templateUrl: './spot-negotiation-details-toolbar.component.html',
   styleUrls: ['./spot-negotiation-details-toolbar.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class ContractDetailsToolbarComponent
+export class NegotiationDetailsToolbarComponent
   implements OnInit, OnDestroy, AfterViewInit {
   navBar: any;
   contractId: any;

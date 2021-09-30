@@ -1,3 +1,5 @@
+
+<!-- <shiptech-nav-toolbar [navBar] = 'navBar'></shiptech-nav-toolbar> -->
 <div class="shiptech-layout-content" id="spot-nego-home">
     <div class="page-bar" style="position: fixed; width: 100%;">
         <div class="col-md-4">
@@ -22,20 +24,11 @@
                 </a>
               </li>
             </ul>
-          </div>
+        </div>
     </div>
     <div class="w-100 st-main-content-menu no-print" id="wunderbar" style="height:40px;margin-bottom: 0 !important; position: fixed; width: 100%; top: 95px;">
         <div>
             <div style="height:40px">
-              <!-- <div class="shiptech-tab ui-tabmenu ui-widget ui-widget-content ui-corner-all">
-                <ul class="ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-                  <li role="tab" class="{{menuItem.status}}" class="ui-tabmenuitem ui-state-default ui-corner-top" *ngFor="let menuItem of menuItems">
-                    <a class="ui-menuitem-link ui-corner-all" href="{{menuItem.url}}">
-                      <span class="ui-menuitem-text">{{menuItem.label}}</span>
-                    </a>
-                  </li>
-                </ul>
-              </div> -->
               <mat-tab-group class="shiptech-tab-bar">
                 <mat-tab label="Main Page">
                   <div class="col-md-12" style="margin: 0px 15px;z-index: 9999;padding: 0px 0px 0px 0px;position: fixed; top:130px; width: 100%;">
@@ -158,50 +151,6 @@
       <div style="position: fixed;right: 35px;">
         <button matTooltip="Verify" matTooltipShowDelay="500" mat-button class="mid-blue-button cust-header-btn">Verify</button>
       </div>
-      <span class="menu-icon"></span>
-      <!-- <span class="menu-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
-
-      </span>
-      <mat-menu #clickmenupopup="matMenu" class="menu-panel-eta small-menu darkPanel">
-        <div class="p-tb-5" style="display:flex;align-items:center;">
-          <span><div class="amend-icon"></div></span>
-          <span class="fs-12">Amend RFQ</span>
-        </div>
-
-       <div class="p-tb-5" style="display:flex;align-items:center;">
-          <span><div class="skiprfq-icon"></div></span>
-          <span class="fs-12">Skip RFQ</span>
-        </div>
-
-        <div class="p-tb-5" style="display:flex;align-items:center;">
-          <span><div class="revoke-icon"></div></span>
-          <span class="fs-12">Revoke RFQ</span>
-        </div>
-        <hr class="menu-divider-line">
-        <div class="p-tb-5" style="display:flex;align-items:center;">
-          <span><div class="enable-quote-icon"></div></span>
-          <span class="fs-12">Enable quote</span>
-        </div>
-
-        <div class="p-tb-5" style="display:flex;align-items:center;">
-          <span><div class="requote-icon"></div></span>
-          <span class="fs-12">Requote</span>
-        </div>
-        <hr class="menu-divider-line">
-
-        <div class="date" style="padding-left:0">
-          <span class="title" style="width: 48px;">Quote by:</span>
-          <div class="by-datePicker">
-
-              <div id="custom-form-field">
-                  <app-date-time-toggle></app-date-time-toggle>
-               </div>
-
-          </div>
-        </div>
-
-
-        </mat-menu> -->
     </div>
   </div>
   <div style="margin-top: 60px;">
