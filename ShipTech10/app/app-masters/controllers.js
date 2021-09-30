@@ -5507,6 +5507,31 @@
                 $scope.flattened[name].push(val[find]);
             });
         };
+
+
+        $scope.assignObjValueForOrderProducts = function(obj, keyPath, value, productIndex) {
+            var lastKeyIndex = keyPath.length - 1;
+            for (let i = 0; i < lastKeyIndex; ++i) {
+                var key = keyPath[i];
+                var next_key = keyPath[i + 1];
+                if (typeof next_key === 'number') {
+                    if (!(key in obj)) {
+                        obj[key] = [];
+                    }
+                } else if (!(key in obj)) {
+                    obj[key] = {};
+                }
+                if (obj[key] == null) {
+                    obj[key] = {};
+                }
+                obj = obj[key];
+            }
+
+            obj.products[productIndex].product = angular.copy(value);
+            obj.products[productIndex].tempProduct = angular.copy(value);
+            $rootScope.$broadcast('triggerProductChanging', obj.products[productIndex].product, productIndex);
+        };
+
         $scope.selectedModalValue = function(element) {
             // if (!element)return
             if (!element) {
@@ -5643,6 +5668,9 @@
                 $scope.assignObjValue($scope, elements, $scope.selected_value);
                 if (element.screen == 'productlist' && element.name == 'Product' && element.app == 'masters') {
                     let productIndex = element.source.split('.')[2];
+                    if (window.location.href.indexOf('order') != -1) {
+                        $scope.assignObjValueForOrderProducts($scope, elements, $scope.selected_value, element.index);
+                    }
                     if(elements[1]=='locationProducts'){
                         $scope.addLocationProductToConversion(productIndex, null, true);
                     }else{
@@ -5696,7 +5724,7 @@
                 }
                 obj = obj[key];
             }
-            obj[keyPath[lastKeyIndex]] = value;
+            obj[keyPath[lastKeyIndex]] = angular.copy(value);
         };
 
         $scope.assignObjValue_tankproduct = function(idx,value){
@@ -9854,6 +9882,9 @@
         };
         $scope.addProductToConversion = function(index, allowProduct, isMainProduct) {
             if (index == "tanks") {
+                return;
+            }
+            if(!angular.isNumber(index)) {
                 return;
             }
             if($scope.formValues.tradeBookMappings && $scope.formValues.tradeBookMappings.length>0 && $scope.formValues.tradeBookMappings.count!=0){

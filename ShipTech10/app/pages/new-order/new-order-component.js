@@ -2023,6 +2023,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.evaluateAdditionalCostList();
         };
 
+        $rootScope.$on('triggerProductChanging', (ev, product, productIndex) => {
+            ctrl.lookupField = ctrl.data.products[productIndex];
+            ctrl.selectProduct(product.id, productIndex);
+            ctrl.lookupField = null;
+        });
+        
+
         ctrl.selectProduct = function(productId, index) {
             let product;
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {

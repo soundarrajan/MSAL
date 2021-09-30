@@ -1543,6 +1543,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 }
 
                 if (clc=="masters_productlist" && template=="general") {
+                	if (window.location.href.indexOf('order') != -1) { 
+                		$scope.modal.index = idx;
+                	}
                     if($scope.formValues.tradeBookMappings != undefined && $scope.formValues.tradeBookMappings.length>0){
                         $scope.modal.filters = $scope.tradeBookfilter;
                         localStorage.setItem("uniqueModalTableIdentifier", "productsInTradeBookMapping");
