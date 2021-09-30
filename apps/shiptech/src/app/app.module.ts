@@ -67,8 +67,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
       clientId: config.authV2.clientId,
-      authority: config.authV2.instance + config.authV2.tenantId,
-      redirectUri: config.authV2.redirectUri
+      authority: config.authV2.instance + config.authV2.tenantId
     },
     cache: {
       cacheLocation: 'localStorage'
