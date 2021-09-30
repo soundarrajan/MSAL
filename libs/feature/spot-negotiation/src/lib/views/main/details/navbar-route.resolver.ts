@@ -25,21 +25,19 @@ export class NavBarResolver implements Resolve<any> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): any{
-    const ContractIdParam =
-      route.params[KnownSpotNegotiationRoutes.idParam];
-    const contractId = Number(ContractIdParam ?? 0);
+    const idParam = route.params[KnownSpotNegotiationRoutes.idParam];
+    const id = Number(idParam ?? 0);
 
-    if (!Number.isInteger(contractId)) {
+    if (!Number.isInteger(id)) {
       return this.router.navigate([
-        KnownPrimaryRoutes.SpotNegotiationt,
+        KnownPrimaryRoutes.SpotNegotiation,
         KnownSpotNegotiationRoutes.spotNegotiationList
       ]);
     }
     let navBar = {
-      'ContractId': contractId
+      'requestGroupId': id
     };
     return  this.navBarService.getNavBarIdsList(navBar);
-
   }
 
 }
