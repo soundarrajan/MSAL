@@ -594,10 +594,10 @@ export class BdnAdditionalInformationComponent
       this.toastr.error('Please enter the correct format');
     }
 
-    let bargePumpingRateEndTime = this.formatDateForBe(
+    let bargePumpingRateEndTime = this.formatDateForBeForDateWithTime(
       this.formValues.bargePumpingRateEndTime
     );
-    let bargePumpingRateStartTime = this.formatDateForBe(
+    let bargePumpingRateStartTime = this.formatDateForBeForDateWithTime(
       this.formValues.bargePumpingRateStartTime
     );
 
@@ -763,8 +763,19 @@ export class BdnAdditionalInformationComponent
     }
   }
 
-
   ngAfterViewInit(): void {
     this.addSampleSources();
+  }
+
+  formatDateForBeForDateWithTime(value) {
+    if (typeof value == 'string') {
+      return value;
+    }
+    if (value) {
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+    } else {
+      return null;
+    }
   }
 }

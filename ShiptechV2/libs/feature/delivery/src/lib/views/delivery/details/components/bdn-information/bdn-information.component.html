@@ -77,7 +77,9 @@
                 On:
                 <span class="created-on-field">
                   {{
-                    formValues.createdAt ? formatDate(formValues.createdAt) : ''
+                    formValues.createdAt
+                      ? formatDateForCreatedOn(formValues.createdAt)
+                      : ''
                   }}
                 </span>
               </div>
@@ -446,7 +448,9 @@
         (focus)="berthingTime.open()"
         (onInput)="onChange($event, 'berthingTime')"
         (dateChange)="
-          formValues.berthingTime = formatDateForBe(formValues.berthingTime)
+          formValues.berthingTime = formatDateForBeForDateWithTime(
+            formValues.berthingTime
+          )
         "
         autocomplete="off"
         placeholder="Berthing time"
@@ -482,7 +486,9 @@
         (focus)="bargeAlongside.open()"
         (onInput)="onChange($event, 'bargeAlongside')"
         (dateChange)="
-          formValues.bargeAlongside = formatDateForBe(formValues.bargeAlongside)
+          formValues.bargeAlongside = formatDateForBeForDateWithTime(
+            formValues.bargeAlongside
+          )
         "
         autocomplete="off"
         placeholder="Barge alongside"
