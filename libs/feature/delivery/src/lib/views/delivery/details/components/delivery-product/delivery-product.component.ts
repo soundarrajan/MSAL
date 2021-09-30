@@ -122,7 +122,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     }
     return formattedDate;
   }
-  
+
   parse(value) {
     // We have no way using the native JS Date to set the parse format or locale, so we ignore these
     // parameters.
@@ -135,7 +135,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment.utc(value, currentFormat);
+    const elem = moment.utc(value, currentFormat);
     return value ? elem : null;
   }
 }
@@ -1227,7 +1227,9 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      const beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment
+        .utc(value)
+        .format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;

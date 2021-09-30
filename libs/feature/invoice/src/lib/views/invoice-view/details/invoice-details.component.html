@@ -86,7 +86,8 @@
                     placeholder="Seller Invoice No"
                     (blur)="isFormValid({ useToaster: false })"
                     [disabled]="
-                      formValues.documentType.name == 'Pre-claim Credit Note' || formValues.documentType.name == 'Pre-claim Debit Note'
+                      formValues.documentType.name == 'Pre-claim Credit Note' ||
+                      formValues.documentType.name == 'Pre-claim Debit Note'
                     "
                   />
                   <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
@@ -626,7 +627,7 @@
             <div class="header-data">
               Order Date:
               <span>{{
-                formValues.orderDetails?.orderDate | date: this.dateFormat
+                formatDateOnly(formValues.orderDetails?.orderDate)
               }}</span>
             </div>
           </div>
@@ -949,7 +950,10 @@
                           formValues.counterpartyDetails.counterpartyBankAccount
                         "
                       >
-                        <mat-option *ngFor="let bank of bankAccountNumbers" [value]="bank" >
+                        <mat-option
+                          *ngFor="let bank of bankAccountNumbers"
+                          [value]="bank"
+                        >
                           {{ bank.accountnumber }}
                         </mat-option>
                       </mat-select>
@@ -1102,7 +1106,11 @@
                         matTooltipClass="custom-tooltip"
                         [matAutocomplete]="auto"
                         autocomplete="off"
-                        (blur)="verifyPayableToIsNull(this.formValues.counterpartyDetails.payableTo)"
+                        (blur)="
+                          verifyPayableToIsNull(
+                            this.formValues.counterpartyDetails.payableTo
+                          )
+                        "
                         placeholder="Payble to"
                       />
                       <mat-autocomplete

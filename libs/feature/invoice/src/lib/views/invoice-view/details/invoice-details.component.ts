@@ -107,7 +107,6 @@ const isEmpty = object => {
   }
   !Object.values(object).some(x => x !== null && x !== '');
 };
-
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
     dateInput: 'YYYY-MM-DD HH:mm'
@@ -164,7 +163,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment.utc(value, currentFormat);
+    const elem = moment.utc(value, currentFormat);
     return value ? elem : null;
   }
 }
@@ -494,7 +493,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             'order-number': element.orderId,
             type: element.invoiceType.name,
             date: element.invoiceDate
-              ? moment(element.invoiceDate).format(this.dateFormat_rel_invoice)
+              ? this.formatDateOnly(element.invoiceDate)
               : '',
             amount: this.format.amount(element.invoiceAmount),
             deductions: this.format.amount(element.deductions),
@@ -3409,17 +3408,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           .getWorkingDueDate(dueDate)
           .pipe(finalize(() => {}))
           .subscribe((response: any) => {
-            if (typeof response == 'string') {
-              this.toastr.error(response);
-            } else {
-              this.formValues.workingDueDate = response;
-              if (!this.initialHasManualPaymentDate) {
-                this.formValues.hasManualPaymentDate = false;
-                this.formValues.paymentDate = response;
-                this.manualPaymentDateReference = this.formValues.paymentDate;
-              }
-              this.changeDetectorRef.detectChanges();
+            // if (typeof response == 'string') {
+            //   this.toastr.error(response);
+            // } else {
+            this.formValues.workingDueDate = response;
+            if (!this.initialHasManualPaymentDate) {
+              this.formValues.hasManualPaymentDate = false;
+              this.formValues.paymentDate = response;
+              this.manualPaymentDateReference = this.formValues.paymentDate;
             }
+            this.changeDetectorRef.detectChanges();
+            // }
           });
         break;
       case 'PaymentDate':
@@ -3609,5 +3608,29 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       }
     };
+  }
+
+  formatDateOnly(date?: any) {
+    if (date) {
+      let currentFormat = this.format.dateFormat;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      const elem = moment(date, 'YYYY-MM-DD');
+      let formattedDate = moment(elem).format(currentFormat);
+      if (formattedDate) {
+        if (formattedDate.split(' ')[1] === '00:00') {
+          formattedDate = formattedDate.split(' ')[0];
+        }
+      }
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
   }
 }
