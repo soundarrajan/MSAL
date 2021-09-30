@@ -1,7 +1,7 @@
-﻿commit 1e1ad7ccccfbbbb8cfc6dd5e36474a5e145c410d
+﻿commit b9e428ec37d416f361d39a1cebc516ae84f4d468
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Sep 27 13:55:21 2021 +0300
+Date:   Thu Sep 30 12:47:56 2021 +0300
 
-    Fixed 350479(validation date,received date, accountancy date)
+    Merged dates changes to master
 
 branch: master

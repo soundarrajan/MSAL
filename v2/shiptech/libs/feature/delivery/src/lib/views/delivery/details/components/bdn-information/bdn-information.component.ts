@@ -153,7 +153,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment.utc(value, currentFormat);
+    const elem = moment.utc(value, currentFormat);
     return value ? elem : null;
   }
 }
@@ -1000,6 +1000,34 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     });
     if (findBarge != -1) {
       this.formValues.barge = findBarge;
+    }
+  }
+
+  formatDateForCreatedOn(cellValue?: any) {
+    if (cellValue) {
+      let dateFormat = this.format.dateFormat;
+      let hasDayOfWeek = false;
+      if (dateFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        dateFormat = dateFormat.split('DDD ')[1];
+      }
+      dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
+      const date = new Date(cellValue);
+      let formattedDate = moment(date).format(dateFormat);
+
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
+  }
+
+  formatDateForBeForDateWithTime(value) {
+    if (value) {
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+    } else {
+      return null;
     }
   }
 }

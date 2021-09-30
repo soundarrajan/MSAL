@@ -12,7 +12,8 @@ import {
   EventEmitter,
   AfterViewInit,
   Inject,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Injectable
 } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { QcReportService } from '../../../../../services/qc-report.service';
@@ -92,6 +93,11 @@ import { DecimalPipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
 
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
+
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -104,10 +110,11 @@ export const PICK_FORMATS = {
   }
 };
 
-export class PickDateAdapter extends NativeDateAdapter {
-  format(value: Date, displayFormat: string): string {
+@Injectable()
+export class CustomDateAdapter extends MomentDateAdapter {
+  public format(value: moment.Moment, displayFormat: string): string {
     if (value === null || value === undefined) return '';
-    let currentFormat = displayFormat;
+    let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
       hasDayOfWeek = true;
@@ -116,9 +123,9 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment(value).format(currentFormat);
+    let formattedDate = moment.utc(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -135,12 +142,10 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
-    return value ? date : null;
+    const elem = moment.utc(value, currentFormat);
+    return value ? elem : null;
   }
 }
-
 @Component({
   selector: 'shiptech-product-quality',
   templateUrl: './product-quality.component.html',
@@ -151,8 +156,9 @@ export class PickDateAdapter extends NativeDateAdapter {
     OrderListGridViewModel,
     DialogService,
     ConfirmationService,
-    { provide: DateAdapter, useClass: PickDateAdapter },
-    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS }
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ]
 })
 export class ProductQualityComponent extends DeliveryAutocompleteComponent
