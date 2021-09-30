@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
   SetGroupOfRequestsId,
-  SetRequests,
+  SetLocations,
   SetLocationsRows,
   SetCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
@@ -90,14 +90,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if (res['requestLocationSellers']) {
         // Demo manipulate location before entering store;
         // TODO : get phySupplier, totalOffer, diff, amt, tPR from the endpoint directly.
-        const editedLocation = res['requestLocationSellers'].map(e => {
-          e.phySupplier = 'Add P. supplier';
-          e.totalOffer = '$500.00';
-          e.diff = '99.00';
-          e.amt = '32.00';
-          e.tPr = Math.floor(Math.random() * 100) + 0;
-          return e;
-        });
+        const editedLocation = res['requestLocationSellers']
 
         this.store.dispatch(new SetLocationsRows(editedLocation));
         this.changeDetector.detectChanges();
@@ -124,8 +117,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       if (res['requests'][0]) {
         this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
+
         this.store.dispatch(
-          new SetRequests(res['requests'][0].requestLocations)
+          new SetLocations(res['requests'][0].requestLocations)
         );
         this.changeDetector.detectChanges();
       }
