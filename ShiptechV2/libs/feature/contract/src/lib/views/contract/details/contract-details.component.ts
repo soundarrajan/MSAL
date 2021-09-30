@@ -73,6 +73,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   eventsSubject3: Subject<any> = new Subject<any>();
   eventsSubject4: Subject<any> = new Subject<any>();
   eventsSubject5: Subject<any> = new Subject<any>();
+  eventsSubject6: Subject<any> = new Subject<any>();
+
   anyChanges: boolean;
   deliverySettings: IDeliveryTenantSettings;
   finalQuantityRules: any[];
@@ -1156,6 +1158,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       .then(() => {
         console.log('copy contract');
       });
+  }
+
+  public doSomething(date: any): void {
+    console.log('Picked date: ', date);
+    this.formValues = date;
+    this.eventsSubject5.next(date);
+    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
   }
 
   ngOnDestroy(): void {}

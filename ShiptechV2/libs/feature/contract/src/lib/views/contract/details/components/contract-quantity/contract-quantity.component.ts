@@ -443,6 +443,7 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
   contractualQuantityOptionList: any;
   uomList: any;
   quantityFormat: string;
+  eventsChangeUomSubscription: any;
 
   get entityId(): number {
     return this._entityId;
@@ -490,6 +491,8 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     this.contractualQuantityOptionList = contractualQuantityOptionList;
   }
 
+  @Input() eventsChangeUom: Observable<void>;
+
   index = 0;
 
   constructor(
@@ -528,6 +531,14 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.eventsChangeUomSubscription = this.eventsChangeUom.subscribe(data =>
+      this.setData(data)
+    );
+  }
+
+  setData(data) {
+    this.formValues = data;
+    this.changeDetectorRef.detectChanges();
   }
 
   compareUomObjects(object1: any, object2: any) {
