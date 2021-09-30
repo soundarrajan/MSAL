@@ -87,7 +87,6 @@ import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overl
 import { throws } from 'assert';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
-import { AuthenticationService } from '@shiptech/core/authentication/authentication.service';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -476,7 +475,6 @@ export class NotesDetailsComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
-    public authService: AuthenticationService,
     private tenantService: TenantFormattingService,
     private invoiceService: InvoiceDetailsService
   ) {
