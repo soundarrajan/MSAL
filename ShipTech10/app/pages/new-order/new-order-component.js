@@ -2026,7 +2026,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         $rootScope.$on('triggerProductChanging', (ev, product, productIndex) => {
             ctrl.lookupField = ctrl.data.products[productIndex];
             ctrl.selectProduct(product.id, productIndex);
-            ctrl.lookupField = null;
         });
         
 
