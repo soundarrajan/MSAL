@@ -92,6 +92,10 @@ import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -117,10 +121,11 @@ export const PICK_FORMATS = {
   }
 };
 
-export class PickDateAdapter extends NativeDateAdapter {
-  format(value: Date, displayFormat: string): string {
+@Injectable()
+export class CustomDateAdapter extends MomentDateAdapter {
+  public format(value: moment.Moment, displayFormat: string): string {
     if (value === null || value === undefined) return '';
-    let currentFormat = displayFormat;
+    let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
       hasDayOfWeek = true;
@@ -129,9 +134,9 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment(value).format(currentFormat);
+    let formattedDate = moment.utc(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -148,21 +153,19 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
-    return value ? date : null;
+    const elem = moment.utc(value, currentFormat);
+    return value ? elem : null;
   }
 }
-
 export interface NgxMatMomentDateAdapterOptions {
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS_1 = new InjectionToken<
   NgxMatMomentDateAdapterOptions
->('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS_1', {
   providedIn: 'root',
   factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
 });
@@ -196,7 +199,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   constructor(
     @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
     @Optional()
-    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS_1)
     private _options?: NgxMatMomentDateAdapterOptions
   ) {
     super();
@@ -306,7 +309,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    let elem = moment(value, currentFormat);
+    const elem = moment(value, currentFormat);
     const isValid = this.isValid(elem);
     return this.isValid(elem) ? elem : null;
   }
@@ -366,8 +369,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
-      let newVal = moment(elem).format(currentFormat);
+      const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      const newVal = moment(elem).format(currentFormat);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -431,14 +434,15 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     OrderListGridViewModel,
     DialogService,
     ConfirmationService,
-    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     {
       provide: NgxMatDateAdapter,
       useClass: CustomNgxDatetimeAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS_1]
     },
-    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ]
 })
 export class BdnInformationComponent extends DeliveryAutocompleteComponent
@@ -999,6 +1003,33 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     });
     if (findBarge != -1) {
       this.formValues.barge = findBarge;
+    }
+  }
+
+  formatDateForCreatedOn(cellValue?: any) {
+    if (cellValue) {
+      let dateFormat = this.format.dateFormat;
+      let hasDayOfWeek = false;
+      if (dateFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        dateFormat = dateFormat.split('DDD ')[1];
+      }
+      dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
+      const date = new Date(cellValue);
+      let formattedDate = moment(date).format(dateFormat);
+
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
+  }
+  formatDateForBeForDateWithTime(value) {
+    if (value) {
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+    } else {
+      return null;
     }
   }
 }
