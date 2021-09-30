@@ -126,6 +126,7 @@
             [entityId]="entityId"
             [contractualQuantityOptionList]="contractualQuantityOptionList"
             [uomList]="uomList"
+            [eventsChangeUom]="eventsSubject6.asObservable()"
             class="col-12"
             style="padding-left: 0px; padding-right: 0px;"
           >
@@ -178,6 +179,7 @@
             [eventsSaveButton]="eventsSubject2.asObservable()"
             [eventsSelectedTabIndex]="eventsSubject3.asObservable()"
             [eventsEntityCopied]="eventsSubject5.asObservable()"
+            (onDatePicked)="doSomething($event)"
             class="col-12"
             style="padding-left: 0px; padding-right: 0px;"
           >
