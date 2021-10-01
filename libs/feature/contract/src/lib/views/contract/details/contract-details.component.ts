@@ -1160,10 +1160,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public doSomething(date: any): void {
-    console.log('Picked date: ', date);
-    this.formValues = date;
-    this.eventsSubject5.next(date);
+  public changeFormData(formValues: any): void {
+    console.log('Picked form values: ', formValues);
+    this.formValues = formValues;
+    this.eventsSubject5.next(formValues);
     this.changeDetectorRef.detectChanges();
     this.changeDetectorRef.markForCheck();
   }

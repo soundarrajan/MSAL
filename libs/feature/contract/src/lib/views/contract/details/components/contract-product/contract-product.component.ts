@@ -837,7 +837,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   @Input() eventsSaveButton: Observable<void>;
   @Input() eventsSelectedTabIndex: Observable<void>;
   @Input() eventsEntityCopied: Observable<void>;
-  @Output() onDatePicked = new EventEmitter<any>();
+  @Output() onDataPicked = new EventEmitter<any>();
 
   expandProductPopUp: any = false;
 
@@ -1481,8 +1481,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.contractFormSubject.next(this.formValues);
   }
 
-  public pickDate(date: any): void {
-    this.onDatePicked.emit(date);
+  public sendData(date: any): void {
+    this.onDataPicked.emit(date);
   }
 
   defaultUomByProduct(productId, index) {
@@ -1523,7 +1523,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
                   }
                   this.formValues.products[index].priceUom =
                     defaultUomAndCompany.defaultUom;
-                  this.pickDate(this.formValues);
+                  this.sendData(this.formValues);
                 }
               }
             });
