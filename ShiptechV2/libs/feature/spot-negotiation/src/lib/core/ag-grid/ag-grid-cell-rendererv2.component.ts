@@ -691,6 +691,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
   deleteRow() {
+    debugger;
     let rowData = [];
     this.params.api.forEachNode(node => rowData.push(node.data));
     let index = this.params.node.rowIndex;

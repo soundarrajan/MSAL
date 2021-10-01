@@ -174,7 +174,9 @@
               class="addRemoveRequest"
               [matMenuTriggerFor]="requestDeleteMenu"
               #deleteRequestTrigger="matMenuTrigger"
-              (contextmenu)="$event.preventDefault(); deleteRequestTrigger.openMenu()"
+              (contextmenu)="
+                $event.preventDefault(); deleteRequestTrigger.openMenu()
+              "
               *ngFor="let item of requestOptions; let i = index"
             >
               <!-- <div class="divider"></div>
@@ -191,7 +193,7 @@
                 <span style="padding-right: 5px;" *ngIf="displayVessel">{{
                   item.vessel
                 }}</span>
-                <div class="requestTooltip" (click)="openRequestTab($event, item)">
+                <div class="requestTooltip">
                   <span class="white-space"></span>
                   <span class="linkImg"></span>
                   <span class="linkText">Link to {{ item.request }}</span>
