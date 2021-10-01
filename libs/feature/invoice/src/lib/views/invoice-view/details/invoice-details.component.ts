@@ -773,6 +773,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     documentType: <IInvoiceDetailsItemBaseInfo>{
       internalName: 'FinalInvoice'
     },
+    previousDocumentType: null,
     canCreateFinalInvoice: false,
     receivedDate: '',
     dueDate: '',
@@ -2687,6 +2688,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             x => x.id === result
           );
           this.entityId = 0;
+          this.formValues.previousDocumentType = _.cloneDeep(
+            this.formValues.documentType
+          );
           this.formValues.documentType.id = createinvoice[0].id;
           this.formValues.documentType.name = createinvoice[0].name;
 
