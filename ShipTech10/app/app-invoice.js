@@ -142,11 +142,11 @@ APP_INVOICE.config([ '$stateProvider', '$urlRouterProvider', 'INVOICE_STATE', fu
                         uisref: INVOICE_STATE.SINGLE
                     },
                     {
-                        label: 'Delivery Audit View',
+                        label: 'Invoice Audit View',
                         uisref: INVOICE_STATE.AUDIT
                     }
                 ],
-                title: 'Delivery Audit View'
+                title: 'Invoice Audit View'
             },
             url: '/invoices/:screen_id/audit-log/:entity_id',
             requireADLogin: true,
@@ -165,11 +165,11 @@ APP_INVOICE.config([ '$stateProvider', '$urlRouterProvider', 'INVOICE_STATE', fu
                         uisref: INVOICE_STATE.SINGLE
                     },
                     {
-                        label: 'Delivery Documents View',
+                        label: 'Invoice Documents View',
                         uisref: INVOICE_STATE.DOCUMENTS
                     }
                 ],
-                title: 'Delivery Documents View'
+                title: 'Invoice Documents View'
             },
             url: '/invoices/:screen_id/documents/:entity_id',
             requireADLogin: true,
