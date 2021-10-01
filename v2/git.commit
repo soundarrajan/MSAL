@@ -1,7 +1,7 @@
-﻿commit b9e428ec37d416f361d39a1cebc516ae84f4d468
+﻿commit 9dcd9b13e47b25891fdf9b9d067eeb65fe35fa02
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Sep 30 12:47:56 2021 +0300
+Date:   Fri Oct 1 10:04:37 2021 +0300
 
-    Merged dates changes to master
+    Added contract defaulting based on the product type group table
 
 branch: master

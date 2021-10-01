@@ -837,6 +837,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   @Input() eventsSaveButton: Observable<void>;
   @Input() eventsSelectedTabIndex: Observable<void>;
   @Input() eventsEntityCopied: Observable<void>;
+  @Output() onDataPicked = new EventEmitter<any>();
+
   expandProductPopUp: any = false;
 
   eventsSubject2: Subject<any> = new Subject<any>();
@@ -1473,8 +1475,60 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.searchProductInput = null;
     this.addProductToConversion(index, null, true);
     this.getSpecGroupByProduct(product.id, null, 'ProductChange');
+    this.defaultUomByProduct(product.id, index);
     this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
     this.contractFormSubject.next(this.formValues);
+  }
+
+  public sendData(date: any): void {
+    this.onDataPicked.emit(date);
+  }
+
+  defaultUomByProduct(productId, index) {
+    let payload = { Payload: productId };
+    this.spinner.show();
+    this.contractService
+      .getProductById(payload)
+      .pipe(finalize(() => {}))
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+          this.spinner.hide();
+        } else {
+          console.log(response);
+          let productTypeGroup = response.productTypeGroup;
+          let payload1 = { Payload: {} };
+          this.contractService
+            .listProductTypeGroupsDefaults(payload1)
+            .pipe(finalize(() => {}))
+            .subscribe((res: any) => {
+              if (typeof res == 'string') {
+                this.toastr.error(res);
+                this.spinner.hide();
+              } else {
+                console.log(res);
+                this.spinner.hide();
+
+                let defaultUomAndCompany = _.find(res, function(object) {
+                  return object.id == productTypeGroup.id;
+                });
+                if (defaultUomAndCompany) {
+                  console.log(defaultUomAndCompany);
+                  console.log(index);
+                  for (let i = 0; i < this.formValues.details.length; i++) {
+                    console.log(this.formValues.details[i]);
+                    this.formValues.details[i].uom =
+                      defaultUomAndCompany.defaultUom;
+                  }
+                  this.formValues.products[index].priceUom =
+                    defaultUomAndCompany.defaultUom;
+                  this.sendData(this.formValues);
+                }
+              }
+            });
+        }
+      });
   }
 
   getSpecGroupByProduct(productId, additionalSpecGroup, initiatorName) {
