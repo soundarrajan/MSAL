@@ -1,7 +1,7 @@
-﻿commit 9dcd9b13e47b25891fdf9b9d067eeb65fe35fa02
+﻿commit 82ff0f24b48ecebd71440333802c6858cc577492
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Oct 1 10:04:37 2021 +0300
+Date:   Fri Oct 1 16:12:02 2021 +0300
 
-    Added contract defaulting based on the product type group table
+    Added provisionalInvoiceNo  link only between provisional and final invoice
 
 branch: master
