@@ -1,23 +1,3 @@
-export class SetCurrentRequestSmallInfo {
-  static readonly type = '[Current Request Small Info] Set';
-
-  constructor(public payload: any) {}
-}
-export class SetCurrentRequest {
-  static readonly type = '[Current Request] Set';
-
-  constructor(public payload: any) {}
-}
-export class SetLocations {
-  static readonly type = '[Locations] Set';
-
-  constructor(public payload: any) {}
-}
-export class SetGroupOfRequestsId {
-  static readonly type = '[SetGroupOfRequestsId] Set';
-
-  constructor(public payload: any) {}
-}
 export class SetStaticLists {
   static readonly type = '[Static Lists] Set';
 
@@ -30,6 +10,11 @@ export class SetCounterpartyList {
   constructor(public payload: any) {}
 }
 
+export class SetLocations {
+  static readonly type = '[Locations] Set';
+
+  constructor(public payload: any) {}
+}
 export class SetLocationsRows{
   static readonly type = '[LocationsRows] Set';
 
