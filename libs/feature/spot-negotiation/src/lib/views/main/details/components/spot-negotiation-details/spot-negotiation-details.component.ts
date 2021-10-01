@@ -311,14 +311,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return this.productsIds;
   }
 
-  createProductHeader(product) {
+  createProductHeader(product,requestLocationId) {
     return {
       headerName: '',
       headerTooltip: '',
       headerGroupComponent: 'customHeaderGroupComponent',
       headerGroupComponentParams: {
         type: 'bg-header',
-        product: product
+        product: product,
+        requestLocationId:requestLocationId
       },
       marryChildren: true,
       resizable: false,
@@ -505,9 +506,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ][0].headerGroupComponentParams.locationId = locationId;
 
         self.productsIds = currentRequest.requestProducts.map(e => e.id);
-
         currentRequest.requestProducts.map(product => {
-          this.columnDef_aggridObj[i].push(this.createProductHeader(product));
+          this.columnDef_aggridObj[i].push(this.createProductHeader(product,currentRequest.id));
         });
       });
 
