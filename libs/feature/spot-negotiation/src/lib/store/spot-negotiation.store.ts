@@ -3,13 +3,16 @@ import {
   SetStaticLists,
   SetCounterpartyList,
   SetLocationsRows,
-  SetGroupOfRequestsId,
-  SetCurrentRequest,
-  SetCurrentRequestSmallInfo,
   AddCounterpartyToLocations,
   EditLocationRow,
   SetLocations
 } from './actions/ag-grid-row.action';
+
+import {
+  SetRequestGroupId,
+  SetCurrentRequest,
+  SetCurrentRequestSmallInfo
+} from './actions/request-group-actions';
 
 export class SpotNegotiationStoreModel {
   staticLists: any;
@@ -103,10 +106,10 @@ export class SpotNegotiationStore {
   }
 
   // Group Of Requests Id
-  @Action(SetGroupOfRequestsId)
-  setGroupOfRequestsId(
+  @Action(SetRequestGroupId)
+  setRequestGroupId(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: SetGroupOfRequestsId
+    { payload }: SetRequestGroupId
   ): void {
     patchState({
       groupOfRequestsId: payload

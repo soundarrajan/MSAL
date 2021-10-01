@@ -19,11 +19,8 @@ import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
-import {
-  AddCounterpartyToLocations,
-  SetCurrentRequest,
-  SetCurrentRequestSmallInfo
-} from '../../../../../store/actions/ag-grid-row.action';
+import { AddCounterpartyToLocations } from '../../../../../store/actions/ag-grid-row.action';
+import { SetCurrentRequestSmallInfo } from '../../../../../store/actions/request-group-actions';
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 @Component({

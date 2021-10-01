@@ -250,13 +250,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           updatedRow[colDef.field] = newValue;
 
           // Do calculation here;
-          updatedRow = this.formatRowData(updatedRow, colDef.product!);
+          updatedRow = this.formatRowData(updatedRow, colDef.product);
 
           // Update the store
           this.store.dispatch(new EditLocationRow(updatedRow));
 
           // Save to the cloud
-          this.saveRowToCloud(updatedRow, colDef.product!);
+          this.saveRowToCloud(updatedRow, colDef.product);
 
           return false;
         }
@@ -369,14 +369,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return data.id;
   }
 
-  createProductHeader(product) {
+  createProductHeader(product,requestLocationId) {
     return {
       headerName: '',
       headerTooltip: '',
       headerGroupComponent: 'customHeaderGroupComponent',
       headerGroupComponentParams: {
         type: 'bg-header',
-        product: product
+        product: product,
+        requestLocationId:requestLocationId
       },
       marryChildren: true,
       resizable: false,
@@ -582,9 +583,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           i
         ][0].headerGroupComponentParams.locationId = locationId;
 
+        // These are locations!!
         currentRequest.requestProducts.map(product => {
           this.checkHighlight({ product: product });
-          this.columnDef_aggridObj[i].push(this.createProductHeader(product));
+          this.columnDef_aggridObj[i].push(this.createProductHeader(product, currentRequest.id));
         });
       });
 
