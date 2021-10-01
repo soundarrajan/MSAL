@@ -214,24 +214,22 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
     this.selReqIndex = i;
 
-    if(this.selReqIndex != i){
     // Get small requests
-      var requests;
-      this.requestOptions.subscribe(e => {
-        return (requests = e);
-      });
+    var requests;
+    this.requestOptions.subscribe(e => {
+      return (requests = e);
+    });
 
-      // Set current request
-      this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
+    // Set current request
+    this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
 
-      // Change locations
-      this.SetLocationsRows(requests[i].requestLocations);
+    // Change locations
+    this.SetLocationsRows(requests[i].requestLocations);
 
-      var obj = {
-        selReqIndex: i
-      };
-      this.selectionChange.emit(obj);
-    }
+    var obj = {
+      selReqIndex: i
+    };
+    this.selectionChange.emit(obj);
   }
 
   openRequestPopup() {
@@ -300,13 +298,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       //this.inputSearch.nativeElement.focus();
     }, 0);
-  }
-
-  openRequestTab(event: any, request: any){
-    event.preventDefault();
-    event.stopPropagation();
-    const baseOrigin = new URL(window.location.href).origin;
-    window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
   }
 }
 
