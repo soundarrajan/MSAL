@@ -3,6 +3,7 @@ export interface IInvoiceDetailsItemDto {
   documentNo: number;
   invoiceId: number;
   documentType?: IInvoiceDetailsItemBaseInfo;
+  previousDocumentType?: IInvoiceDetailsItemBaseInfo;
   canCreateFinalInvoice: boolean;
   receivedDate: Date | string;
   dueDate: string;

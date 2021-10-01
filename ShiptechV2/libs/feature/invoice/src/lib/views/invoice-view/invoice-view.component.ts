@@ -86,7 +86,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         this.toastr.success('Credit note is Created!');
         localStorage.removeItem('createCreditNote');
         this.setScreenActions(data);
-        this.getDefaultValues(); 
+        this.getDefaultValues();
       } else if (localStorage.getItem('createCreditNoteFromInvoiceClaims')) {
         this.createCreditNoteFromInvoiceClaims(
           'createCreditNoteFromInvoiceClaims'
@@ -150,11 +150,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   detailsSave() {
-    this.invoiceDetailsComponent.saveInvoiceDetails( (result) => {
-        let params = {
-            invoiceId: result
-        };        
-        this.invoiceDetailsToolbarComponent.setNavIds(params);
+    this.invoiceDetailsComponent.saveInvoiceDetails(result => {
+      let params = {
+        invoiceId: result
+      };
+      this.invoiceDetailsToolbarComponent.setNavIds(params);
     });
     // this.isConfirm = !this.isConfirm;
   }
@@ -174,13 +174,13 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   createNewInvoiceFromDelivery() {
     const data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
     localStorage.removeItem('invoiceFromDelivery');
-    
+
     this.invoiceService
-    .getNewInvoicDetails(data)
-    .subscribe((response: IInvoiceDetailsItemResponse) => {
+      .getNewInvoicDetails(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
         (<any>window).isNewFromDelivery = true;
         this.setScreenActions(response);
-        this.getDefaultValues();     
+        this.getDefaultValues();
       });
   }
 
@@ -224,7 +224,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     localStorage.removeItem('createInvoice');
 
     // 2 - Final Invoice - Get provisional invoice data, if final invoice is created from provisional
-    if (data.documentType.id == 2) {
+    if (data.documentType.id == 2 && data.previousDocumentType.id == 1) {
       data.invoiceSummary.provisionalInvoiceNo = data.id;
       data.invoiceSummary.provisionalInvoiceAmount =
         data.invoiceSummary.invoiceAmountGrandTotal;
@@ -236,7 +236,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     data.invoiceDetails = null;
     data.documentNo = null;
     data.dueDate = null;
-    data.invoiceDate = `${moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').split('T')[0] }T00:00:00`;
+    data.invoiceDate = `${
+      moment(new Date())
+        .format('YYYY-MM-DDTHH:mm:ss')
+        .split('T')[0]
+    }T00:00:00`;
     data.invoiceSummary.deductions = null;
     // data.paymentDate = null;
     data.accountNumber = null;
@@ -352,24 +356,30 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     });
     this.changeDetectorRef.detectChanges();
   }
-	
-	getDefaultValues() {
-		const requestPayload = this.invoiceDetailsComponent.formValues.orderDetails.order.id;		
-      this.invoiceService.getDefaultValues(requestPayload).subscribe((response: any) => {
+
+  getDefaultValues() {
+    const requestPayload = this.invoiceDetailsComponent.formValues.orderDetails
+      .order.id;
+    this.invoiceService
+      .getDefaultValues(requestPayload)
+      .subscribe((response: any) => {
         if (response) {
           this.invoiceDetailsComponent.gotDefaultValues = true;
-          this.invoiceDetailsComponent.formValues.counterpartyDetails.customer = response.customer;
-          this.invoiceDetailsComponent.formValues.counterpartyDetails.payableTo = response.payableTo;
+          this.invoiceDetailsComponent.formValues.counterpartyDetails.customer =
+            response.customer;
+          this.invoiceDetailsComponent.formValues.counterpartyDetails.payableTo =
+            response.payableTo;
           this.changeDetectorRef.detectChanges();
           this.invoiceDetailsComponent.getBankAccountNumber();
-          setTimeout(()=>{
-            this.invoiceDetailsComponent.formValues.counterpartyDetails.counterpartyBankAccount = response.bankAccount;
+          setTimeout(() => {
+            this.invoiceDetailsComponent.formValues.counterpartyDetails.counterpartyBankAccount =
+              response.bankAccount;
             this.changeDetectorRef.detectChanges();
-          })
+          });
           console.log(response);
         }
-      });		
-	}
+      });
+  }
 
   openCurrencyConversionPopUp() {
     if (
