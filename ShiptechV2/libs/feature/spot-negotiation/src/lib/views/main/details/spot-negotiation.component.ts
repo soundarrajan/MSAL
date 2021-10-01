@@ -13,14 +13,13 @@ import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
   SetRequestGroupId,
+  SetRequests
 } from '../../../store/actions/request-group-actions';
 import {
-  SetLocations,
   SetLocationsRows,
   SetCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -45,20 +44,35 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
-    public dialog: MatDialog,
-    private spinner: NgxSpinnerService,
+    public dialog: MatDialog
   ) {
     this.entityName = 'Spot negotiation';
   }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.getRequestGroup();
     this.getGroupOfSellers();
     this.getCounterpartyList();
   }
 
+  getSpotNegotiationRows(): void {
+    // Delete this;
+    const withThis = this.http.get(
+      './assets/data/demoData/spot-grid1-data.json'
+    );
+    withThis.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      }
+
+      // Populate store;
+      // alert(2);
+      // this.store.dispatch(new SetLocations(res));
+    });
+  }
+
   getRequestGroup(): void {
-    this.spinner.show();
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
@@ -69,7 +83,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     );
 
     response.subscribe((res: any) => {
-      this.spinner.hide();
       if (res.error) {
         alert('Handle Error');
         return;
@@ -77,7 +90,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       if (res['requests'][0]) {
         this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
-        this.store.dispatch(new SetLocations(res['requests'][0].requestLocations));
+        this.store.dispatch(new SetRequests(res['requests'][0].requestLocations));
         this.changeDetector.detectChanges();
       }
     });
@@ -103,7 +116,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if (res['requestLocationSellers']) {
         // Demo manipulate location before entering store;
         // TODO : get phySupplier, totalOffer, diff, amt, tPR from the endpoint directly.
-        const editedLocation = res['requestLocationSellers']
+        const editedLocation = res['requestLocationSellers'].map(e => {
+          e.phySupplier = 'Add P. supplier';
+          e.totalOffer = '$500.00';
+          e.diff = '99.00';
+          e.amt = '32.00';
+          e.tPr = Math.floor(Math.random() * 100) + 0;
+          return e;
+        });
 
         this.store.dispatch(new SetLocationsRows(editedLocation));
         this.changeDetector.detectChanges();

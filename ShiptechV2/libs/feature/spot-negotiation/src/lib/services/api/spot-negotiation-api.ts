@@ -13,7 +13,7 @@ export const SpotNegotiationApiPaths = {
   staticLists: `api/infrastructure/static/lists`,
   counterpartyLists: `api/masters/counterparties/list`,
   addCounterparties: `groups/addcounterparties`,
-  saveTargetPrice: `Groups/AutoSaveTargetPrice`
+  saveTargetPrice:`Groups/AutoSaveTargetPrice`
 };
 
 @Injectable({
@@ -134,23 +134,6 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
-
-  @ObservableException()
-  updatePrices(payload: any): Observable<any> {
-    return this.http
-      .post<any>(`${this._negotiationApiUrl}/Price/updatePrices`, payload)
-      .pipe(
-        map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
-      );
-  }
-
   @ObservableException()
   getRequestGroup(request: any): Observable<any> {
     return this.http

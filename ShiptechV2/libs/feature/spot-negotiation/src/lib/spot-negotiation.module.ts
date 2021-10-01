@@ -68,7 +68,6 @@ import { BadgeComponent } from './views/main/details/components/badge/badge.comp
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { FooterV2Component } from '@shiptech/core/ui/components/ds-components/footer-v2/footer-v2.component';
 import { SpotnegoRequestChangesComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
-import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -100,8 +99,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AuditLogModule,
     DocumentsModule,
     BreadcrumbsModule,
-    HighchartsChartModule,
-    NgxSpinnerModule
+    HighchartsChartModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
