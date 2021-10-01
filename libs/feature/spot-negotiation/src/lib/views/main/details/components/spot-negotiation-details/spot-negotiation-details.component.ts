@@ -250,13 +250,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           updatedRow[colDef.field] = newValue;
 
           // Do calculation here;
-          updatedRow = this.formatRowData(updatedRow, colDef.product);
+          updatedRow = this.formatRowData(updatedRow, colDef.product!);
 
           // Update the store
           this.store.dispatch(new EditLocationRow(updatedRow));
 
           // Save to the cloud
-          this.saveRowToCloud(updatedRow, colDef.product);
+          this.saveRowToCloud(updatedRow, colDef.product!);
 
           return false;
         }
