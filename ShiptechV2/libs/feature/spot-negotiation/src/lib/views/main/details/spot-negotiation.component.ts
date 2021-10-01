@@ -20,6 +20,7 @@ import {
   SetCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -44,18 +45,20 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private spinner: NgxSpinnerService,
   ) {
     this.entityName = 'Spot negotiation';
   }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.getRequestGroup();
     this.getGroupOfSellers();
     this.getCounterpartyList();
   }
 
   getRequestGroup(): void {
+    this.spinner.show();
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
@@ -66,6 +69,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     );
 
     response.subscribe((res: any) => {
+      this.spinner.hide();
       if (res.error) {
         alert('Handle Error');
         return;
