@@ -362,7 +362,7 @@ export class ShiptechCustomHeaderGroup {
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
       this.requestProductId = this.params.product.id;
-      this.requestLocationId=this.params.requestLocationId
+      this.requestLocationId=this.params.requestLocationId;
     }
 
     this.params.columnGroup
@@ -477,10 +477,12 @@ export class ShiptechCustomHeaderGroup {
     this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
 
     let payload = {
-      requestLocationId: this.requestLocationId,
-      requestProductId: this.requestProductId,
-      livePrice: parseInt(this.livePrice),
-      targetPrice: parseInt(this.targetValue)
+      "productPrice": {
+      "requestLocationId": this.requestLocationId,
+      "requestProductId": this.requestProductId,
+      "livePrice": parseInt(this.livePrice),
+      "targetPrice": parseInt(this.targetValue)
+      }
     };
     const response = this._spotNegotiationService.saveTragetPrice(payload);
     response.subscribe((res: any) => {
