@@ -30,10 +30,7 @@ const routes: Routes = [
     data: {
       title: 'Shiptech'
     },
-    canActivate: [MsalGuard],
-    resolve: {
-      data: BootstrapResolver
-    }
+    canActivate: [MsalGuard]
   },
   {
     path: '',
