@@ -1098,8 +1098,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             switch (additionalCost.costType.id) {
             case COST_TYPE_IDS.UNIT:
+                if (ctrl.tenantUom && !additionalCost.priceUom) {
+                    additionalCost.priceUom = angular.copy(ctrl.tenantUom);
+                }
                 // if (additionalCost.isAllProductsCost || !productComponent) {
                 // addPriceUomChg(additionalCost);
+
                 additionalCost.amount = 0;
                 if (!additionalCost.prodConv) {
                     	ctrl.addPriceUomChanged(additionalCost);
