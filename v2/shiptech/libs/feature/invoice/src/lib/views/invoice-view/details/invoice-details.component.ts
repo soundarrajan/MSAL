@@ -1398,6 +1398,15 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formErrors.invoiceDate = errorMessage;
     }
 
+     // Document number
+     if (
+      this.formValues.documentNo && isNaN(this.formValues.documentNo)
+    ) {
+      error = true;
+      errorMessage += 'Document no should accept only numbers.';
+      this.formErrors.documentNo = errorMessage;
+    }
+
     // Recived date
     if (
       !this.formValues.receivedDate &&

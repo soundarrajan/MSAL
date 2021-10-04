@@ -1,7 +1,9 @@
-﻿commit 82ff0f24b48ecebd71440333802c6858cc577492
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Oct 1 16:12:02 2021 +0300
+﻿commit d5d3aff16e2855146c719741dca93344435eafa7
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Oct 4 08:54:40 2021 +0000
 
-    Added provisionalInvoiceNo  link only between provisional and final invoice
+    Merged PR 13914: #35940: Invoice Screen: Unable to save the Document number entered validation handled
+    
+    Related work items: #35940
 
 branch: master
