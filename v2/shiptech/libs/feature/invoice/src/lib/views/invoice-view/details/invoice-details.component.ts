@@ -773,6 +773,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     documentType: <IInvoiceDetailsItemBaseInfo>{
       internalName: 'FinalInvoice'
     },
+    previousDocumentType: null,
     canCreateFinalInvoice: false,
     receivedDate: '',
     dueDate: '',
@@ -1395,15 +1396,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       error = true;
       errorMessage += 'Invoice date is required. \n';
       this.formErrors.invoiceDate = errorMessage;
-    }
-
-    // Document number
-    if (
-      this.formValues.documentNo && isNaN(this.formValues.documentNo)
-    ) {
-      error = true;
-      errorMessage += 'Document no should accept only numbers.';
-      this.formErrors.documentNo = errorMessage;
     }
 
     // Recived date
@@ -2696,6 +2688,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             x => x.id === result
           );
           this.entityId = 0;
+          this.formValues.previousDocumentType = _.cloneDeep(
+            this.formValues.documentType
+          );
           this.formValues.documentType.id = createinvoice[0].id;
           this.formValues.documentType.name = createinvoice[0].name;
 
