@@ -17,7 +17,7 @@ import {
   MsalInterceptor,
   MSAL_INTERCEPTOR_CONFIG
 } from '@azure/msal-angular';
-import { InteractionType } from '@azure/msal-browser';
+import { BrowserUtils, InteractionType } from '@azure/msal-browser';
 import { Observable } from 'rxjs';
 import { BootstrapService } from '@shiptech/core/bootstrap.service';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
@@ -29,11 +29,8 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       title: 'Shiptech'
-    }
-    // canActivate: [MsalGuard],
-    // resolve: {
-    //   data: BootstrapResolver
-    // }
+    },
+    canActivate: [MsalGuard]
   },
   {
     path: '',
@@ -162,7 +159,15 @@ const routes: Routes = [
       multi: true
     }
   ],
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      // Don't perform initial navigation in iframes or popups
+      initialNavigation:
+        !BrowserUtils.isInIframe() && !BrowserUtils.isInPopup()
+          ? 'enabled'
+          : 'disabled'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
