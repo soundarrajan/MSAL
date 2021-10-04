@@ -368,13 +368,15 @@
                 class="custom-form-field"
                 class="lightTheme"
               >
-                <mat-form-field class="without-search" appearance="legacy">
-                  <mat-label>Document No.</mat-label>
-                  <input
-                    matInput
-                    name="documentNo"
-                    [(ngModel)]="formValues.documentNo"
-                  />
+              <mat-form-field class="without-search" appearance="legacy" [ngClass]="{ 'invalid-field': formErrors.documentNo }">
+                <mat-label>Document No.</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  (blur)="isFormValid({ useToaster: false })"
+                  name="documentNo"
+                  [(ngModel)]="formValues.documentNo"
+                />
                 </mat-form-field>
               </div>
             </div>
