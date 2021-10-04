@@ -140,21 +140,9 @@ export class BootstrapService {
       catchError(error => {
         // TODO: Refactor this pipe and share it with loadGeneralTenantSettings
         if (parseInt(localStorage.getItem('userIsNotAuth'), 10)) {
-          // let segments = this.router.getCurrentNavigation().extractedUrl.root
-          //   .children.primary.segments;
-          // let url = '/v2/';
-          // for (let i = 0; i < segments.length; i++) {
-          //   url = url + segments[i].path + '/';
-          // }
-          // url = url.substring(0, url.length - 1);
           this.appErrorHandler.handleError(error);
           localStorage.removeItem('userIsNotAuth');
-          // setTimeout(function() {
-          // window.location.href = url;
           this.authService.logout();
-          // });
-          // return;
-          // return this.router.navigate([KnownPrimaryRoutes.Root]);
         }
         if (environment.production) {
           return throwError(error);

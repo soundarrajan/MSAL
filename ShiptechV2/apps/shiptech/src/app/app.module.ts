@@ -56,8 +56,6 @@ import {
   PublicClientApplication
 } from '@azure/msal-browser';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
-import { Router } from '@angular/router';
-import { RouterService } from './service/router.service';
 
 let legacyConfig = null;
 
@@ -65,12 +63,10 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   const config = JSON.parse(localStorage.getItem('config'));
   const baseOrigin = new URL(window.location.href).origin;
   legacyConfig = config;
-  config.authV2.redirectUri = baseOrigin;
   return new PublicClientApplication({
     auth: {
       clientId: config.authV2.clientId,
       authority: config.authV2.instance + config.authV2.tenantId,
-      // postLogoutRedirectUri: '/v2/contracts/contract/0/details'
       redirectUri: '/v2/'
     },
     cache: {
@@ -86,6 +82,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const config = JSON.parse(localStorage.getItem('config'));
+  legacyConfig = config;
   const protectedResourceMap = new Map<string, Array<string>>();
   Object.keys(legacyConfig.authV2.endpoints).forEach(prop => {
     protectedResourceMap.set(prop, legacyConfig.authV2.scopes);
@@ -161,8 +159,7 @@ export function MSALInterceptConfigFactory() {
     MsalService,
     MsalGuard,
     MsalBroadcastService,
-    BootstrapResolver,
-    RouterService
+    BootstrapResolver
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
