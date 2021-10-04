@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   MsalService,
   MsalBroadcastService,
@@ -26,7 +27,8 @@ export class AuthService {
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService
+    private msalBroadcastService: MsalBroadcastService,
+    private router: Router
   ) {}
 
   updateLoggedInStatus() {
@@ -74,6 +76,7 @@ export class AuthService {
 
   private setLoggedIn() {
     console.log('Accounts');
+    console.log(this.router.events);
     console.log(this.authService.instance.getAllAccounts().length);
     this.loggedIn = this.authService.instance.getAllAccounts().length > 0;
   }
@@ -105,7 +108,7 @@ export class AuthService {
   }
 
   logout() {
-    this.authService.logout();
+    this.authService.logoutRedirect();
   }
 
   destroy() {

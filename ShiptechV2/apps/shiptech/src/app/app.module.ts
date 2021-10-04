@@ -56,6 +56,8 @@ import {
   PublicClientApplication
 } from '@azure/msal-browser';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
+import { Router } from '@angular/router';
+import { RouterService } from './service/router.service';
 
 let legacyConfig = null;
 
@@ -68,7 +70,8 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     auth: {
       clientId: config.authV2.clientId,
       authority: config.authV2.instance + config.authV2.tenantId,
-      redirectUri: '/'
+      // postLogoutRedirectUri: '/v2/contracts/contract/0/details'
+      redirectUri: '/v2'
     },
     cache: {
       cacheLocation: 'localStorage'
@@ -158,7 +161,8 @@ export function MSALInterceptConfigFactory() {
     MsalService,
     MsalGuard,
     MsalBroadcastService,
-    BootstrapResolver
+    BootstrapResolver,
+    RouterService
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
