@@ -67,7 +67,8 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
       clientId: config.authV2.clientId,
-      authority: config.authV2.instance + config.authV2.tenantId
+      authority: config.authV2.instance + config.authV2.tenantId,
+      redirectUri: '/'
     },
     cache: {
       cacheLocation: 'localStorage'
@@ -82,8 +83,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const config = JSON.parse(localStorage.getItem('config'));
-  legacyConfig = config;
   const protectedResourceMap = new Map<string, Array<string>>();
   Object.keys(legacyConfig.authV2.endpoints).forEach(prop => {
     protectedResourceMap.set(prop, legacyConfig.authV2.scopes);
@@ -140,6 +139,11 @@ export function MSALInterceptConfigFactory() {
       deps: [BootstrapService]
     },
     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true
+    },
+    {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
     },
@@ -151,6 +155,9 @@ export function MSALInterceptConfigFactory() {
       provide: MSAL_INTERCEPTOR_CONFIG,
       useFactory: MSALInterceptorConfigFactory
     },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService,
     BootstrapResolver
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
