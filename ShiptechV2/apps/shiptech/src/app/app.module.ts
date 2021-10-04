@@ -71,7 +71,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
       clientId: config.authV2.clientId,
       authority: config.authV2.instance + config.authV2.tenantId,
       // postLogoutRedirectUri: '/v2/contracts/contract/0/details'
-      redirectUri: '/v2'
+      redirectUri: '/v2/'
     },
     cache: {
       cacheLocation: 'localStorage'
