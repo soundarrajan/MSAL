@@ -10,8 +10,13 @@ export class SetCounterpartyList {
   constructor(public payload: any) {}
 }
 
-export class SetLocationsRows{
+export class SetLocations {
   static readonly type = '[Locations] Set';
+
+  constructor(public payload: any) {}
+}
+export class SetLocationsRows{
+  static readonly type = '[LocationsRows] Set';
 
   constructor(public payload: any) {}
 }

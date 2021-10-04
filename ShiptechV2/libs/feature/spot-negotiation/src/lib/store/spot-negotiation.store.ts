@@ -4,22 +4,22 @@ import {
   SetCounterpartyList,
   SetLocationsRows,
   AddCounterpartyToLocations,
-  EditLocationRow
+  EditLocationRow,
+  SetLocations
 } from './actions/ag-grid-row.action';
 
 import {
   SetRequestGroupId,
-  SetRequests,
   SetCurrentRequest,
   SetCurrentRequestSmallInfo
-} from './actions/request-group-actions'
+} from './actions/request-group-actions';
 
 export class SpotNegotiationStoreModel {
   staticLists: any;
   counterpartyList: any;
   // Until here
   groupOfRequestsId: number | null;
-  requests: Array<any>;
+  locations: Array<any>;
   locationsRows: Array<any>;
   additionalCost: Array<any>;
   availableTermContracts: Array<any>;
@@ -36,7 +36,7 @@ export class SpotNegotiationStoreModel {
     // Initialization inside the constructor
     this.staticLists = {};
     this.counterpartyList = {};
-    this.requests = [];
+    this.locations = [];
     this.locationsRows = [];
     this.additionalCost = [];
     this.sellerRating = [];
@@ -57,7 +57,7 @@ export class SpotNegotiationStoreModel {
   defaults: {
     groupOfRequestsId: null,
     currentRequestSmallInfo: null,
-    requests: [],
+    locations: [],
     commentsForCurrentRequest: [],
     currentRequest: null,
     locationsRows: [],
@@ -95,13 +95,13 @@ export class SpotNegotiationStore {
     });
   }
 
-  @Action(SetRequests)
-  setRequests(
+  @Action(SetLocations)
+  setLocations(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: SetRequests
+    { payload }: SetLocations
   ): void {
     patchState({
-      requests: payload
+      locations: payload
     });
   }
 
