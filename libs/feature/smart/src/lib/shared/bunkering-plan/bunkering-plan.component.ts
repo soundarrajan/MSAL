@@ -648,11 +648,12 @@ export class BunkeringPlanComponent implements OnInit {
 
   checkBunkerPlanValidations(data){
     let isHardValidation = 0;
+    let mailPattern = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB)
     let opUdatedColumn = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanDataOpUpdatedColumns);
     let totalTankCapacity = this.store.selectSnapshot(SaveBunkeringPlanState.getTotalTankCapacity);
     //business address validation
-    let isValidBusinessAddress = data.findIndex(data => !data?.business_address && data?.operator_ack == 1) == -1? 'Y':'N'
+    let isValidBusinessAddress = data.findIndex(data => (!data?.business_address || !(mailPattern.test(data?.business_address))) && data?.operator_ack == 1) == -1? 'Y':'N'
     if(isValidBusinessAddress == 'N'){
       let id = data.findIndex( data => !data?.business_address && data?.operator_ack == 1 )
       let port_id = data[id].port_id;
