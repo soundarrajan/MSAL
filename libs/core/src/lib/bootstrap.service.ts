@@ -28,6 +28,7 @@ import { EmailStatusLookup } from '@shiptech/core/lookups/known-lookups/email-st
 import { MsalService } from '@azure/msal-angular';
 import { Router } from '@angular/router';
 import { KnownPrimaryRoutes } from './enums/known-modules-routes.enum';
+import { AuthService } from './authentication/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,7 @@ export class BootstrapService {
     private appErrorHandler: AppErrorHandler,
     private urlService: UrlService,
     private router: Router,
+    public authService: AuthService,
     @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {}
 
@@ -127,7 +129,8 @@ export class BootstrapService {
         if (parseInt(localStorage.getItem('userIsNotAuth'), 10)) {
           this.appErrorHandler.handleError(error);
           localStorage.removeItem('userIsNotAuth');
-          return this.router.navigate([KnownPrimaryRoutes.Root]);
+          this.authService.logout();
+          // return this.router.navigate([KnownPrimaryRoutes.Root]);
         }
         if (environment.production) {
           return throwError(error);
