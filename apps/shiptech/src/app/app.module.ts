@@ -140,11 +140,6 @@ export function MSALInterceptConfigFactory() {
       deps: [BootstrapService]
     },
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true
-    },
-    {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
     },
@@ -156,9 +151,6 @@ export function MSALInterceptConfigFactory() {
       provide: MSAL_INTERCEPTOR_CONFIG,
       useFactory: MSALInterceptorConfigFactory
     },
-    MsalService,
-    MsalGuard,
-    MsalBroadcastService,
     BootstrapResolver
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]

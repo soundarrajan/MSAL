@@ -29,11 +29,11 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       title: 'Shiptech'
-    },
-    canActivate: [MsalGuard],
-    resolve: {
-      data: BootstrapResolver
     }
+    // canActivate: [MsalGuard],
+    // resolve: {
+    //   data: BootstrapResolver
+    // }
   },
   {
     path: '',

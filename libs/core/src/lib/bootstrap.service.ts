@@ -26,6 +26,8 @@ import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-st
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { EmailStatusLookup } from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service';
 import { MsalService } from '@azure/msal-angular';
+import { Router } from '@angular/router';
+import { KnownPrimaryRoutes } from './enums/known-modules-routes.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +49,7 @@ export class BootstrapService {
     private injector: Injector,
     private appErrorHandler: AppErrorHandler,
     private urlService: UrlService,
+    private router: Router,
     @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {}
 
@@ -121,6 +124,11 @@ export class BootstrapService {
     return userProfileService.load().pipe(
       catchError(error => {
         // TODO: Refactor this pipe and share it with loadGeneralTenantSettings
+        if (parseInt(localStorage.getItem('userIsNotAuth'), 10)) {
+          this.appErrorHandler.handleError(error);
+          localStorage.removeItem('userIsNotAuth');
+          return this.router.navigate([KnownPrimaryRoutes.Root]);
+        }
         if (environment.production) {
           return throwError(error);
         } else {
