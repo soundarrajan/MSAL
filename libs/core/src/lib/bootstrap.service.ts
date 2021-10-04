@@ -3,7 +3,14 @@ import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  filter,
+  map,
+  pairwise,
+  tap
+} from 'rxjs/operators';
 import { LicenseManager } from '@ag-grid-enterprise/all-modules';
 import { AppConfig, IAppConfig } from './config/app-config';
 import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.service';
@@ -26,7 +33,12 @@ import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-st
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { EmailStatusLookup } from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service';
 import { MsalService } from '@azure/msal-angular';
-import { Router } from '@angular/router';
+import {
+  NavigationEnd,
+  NavigationStart,
+  Router,
+  RoutesRecognized
+} from '@angular/router';
 import { KnownPrimaryRoutes } from './enums/known-modules-routes.enum';
 import { AuthService } from './authentication/auth.service';
 
@@ -34,6 +46,7 @@ import { AuthService } from './authentication/auth.service';
   providedIn: 'root'
 })
 export class BootstrapService {
+  previousUrl: string;
   get initialized(): Observable<void> {
     return this._initialized;
   }
@@ -50,7 +63,7 @@ export class BootstrapService {
     private injector: Injector,
     private appErrorHandler: AppErrorHandler,
     private urlService: UrlService,
-    private router: Router,
+    public router: Router,
     public authService: AuthService,
     @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {}
@@ -127,9 +140,20 @@ export class BootstrapService {
       catchError(error => {
         // TODO: Refactor this pipe and share it with loadGeneralTenantSettings
         if (parseInt(localStorage.getItem('userIsNotAuth'), 10)) {
+          // let segments = this.router.getCurrentNavigation().extractedUrl.root
+          //   .children.primary.segments;
+          // let url = '/v2/';
+          // for (let i = 0; i < segments.length; i++) {
+          //   url = url + segments[i].path + '/';
+          // }
+          // url = url.substring(0, url.length - 1);
           this.appErrorHandler.handleError(error);
           localStorage.removeItem('userIsNotAuth');
+          // setTimeout(function() {
+          // window.location.href = url;
           this.authService.logout();
+          // });
+          // return;
           // return this.router.navigate([KnownPrimaryRoutes.Root]);
         }
         if (environment.production) {
