@@ -791,14 +791,14 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     let requestModel;
     switch (params?.colDef?.field) {
       case 'hsfo_estimated_lift':
-        if(data?.request_id_hsfo) {
+        if(data?.request_id_hsfo && data?.hsfo_estimated_lift>0) {
           requestModel = {...requestSchemaModel};
           requestModel.request_id = data?.request_id_hsfo;
           requestModel.request_product = data?.request_product_hsfo;
           requestModel.estimated_lift = data?.hsfo_estimated_lift;
           requestInfo.push(requestModel);
         }
-        if(data?.request_id_vlsfo) {
+        if(data?.request_id_vlsfo && data?.vlsfo_estimated_lift>0) {
           requestModel = {...requestSchemaModel};
           requestModel.request_id = data?.request_id_vlsfo;
           requestModel.request_product = data?.request_product_vlsfo;
