@@ -1013,6 +1013,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               );
             }
           }
+
           this.changeDetectorRef.detectChanges();
           this.changeDetectorRef.markForCheck();
         }
