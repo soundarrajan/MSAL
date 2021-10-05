@@ -53,7 +53,10 @@ export class LayoutMainComponent implements AfterViewInit {
     if (this.router.url.includes('email-template-editor')) {
       this.isEmailTemplateEditor = true;
     }
-    if (this.router.url.includes('delivery') || this.router.url.includes('contract') || this.router.url.includes('invoices/edit')) {
+    if (this.router.url.includes('delivery')
+          || this.router.url.includes('contract')
+          || this.router.url.includes('invoices/edit')
+          || this.router.url.includes('group-of-requests')) {
         this.isDelivery = true;
     }
     if (this.router.url.includes('split-view')) {
