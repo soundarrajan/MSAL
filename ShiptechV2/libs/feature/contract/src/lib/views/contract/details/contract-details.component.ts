@@ -1002,25 +1002,19 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.toastr.error(result);
         } else {
           this.toastr.success('Contract confirmed!');
-          this.contractService
-            .loadContractDetails(this.formValues.id)
-            .pipe(
-              finalize(() => {
-                this.spinner.hide();
-              })
-            )
-            .subscribe((data: any) => {
-              this.formValues = _.cloneDeep(data);
-              this.eventsSubject3.next(0);
-              if (typeof this.formValues.status != 'undefined') {
-                if (this.formValues.status.name) {
-                  this.statusColorCode = this.getColorCodeFromLabels(
-                    this.formValues.status,
-                    this.scheduleDashboardLabelConfiguration
-                  );
-                }
-              }
-            });
+          this.spinner.hide();
+          this.formValues = _.cloneDeep(result);
+          this.eventsSubject3.next(0);
+          if (typeof this.formValues.status != 'undefined') {
+            if (this.formValues.status.name) {
+              this.statusColorCode = this.getColorCodeFromLabels(
+                this.formValues.status,
+                this.scheduleDashboardLabelConfiguration
+              );
+            }
+          }
+          this.changeDetectorRef.detectChanges();
+          this.changeDetectorRef.markForCheck();
         }
       });
   }
@@ -1101,8 +1095,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
-          if(result) {
-              this.toastr.error(result);
+          if (result) {
+            this.toastr.error(result);
           }
         } else {
           this.toastr.success('Contract cancelled!');
