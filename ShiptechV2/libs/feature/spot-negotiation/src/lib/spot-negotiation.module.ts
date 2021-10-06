@@ -69,6 +69,8 @@ import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-prefere
 import { FooterV2Component } from '@shiptech/core/ui/components/ds-components/footer-v2/footer-v2.component';
 import { SpotnegoRequestChangesComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-negotiation-details-toolbar.component';
+import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 
 @NgModule({
   imports: [
@@ -144,7 +146,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     BadgeComponent,
     // FooterV2Component,
     AgGridDatetimePickerToggleComponent,
-    SpotnegoRequestChangesComponent
+    SpotnegoRequestChangesComponent,
+    NegotiationDetailsToolbarComponent
   ],
   entryComponents: [
     MainSpotNegotiationComponent,
@@ -180,7 +183,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ConfirmationService,
     DecimalPipe,
     DatePipe,
-    StaticListsRouteResolver
+    StaticListsRouteResolver,
+    NavBarResolver
   ]
 })
 export class SpotNegotiationModule {}

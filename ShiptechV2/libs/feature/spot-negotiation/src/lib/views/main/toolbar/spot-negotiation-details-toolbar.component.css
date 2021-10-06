@@ -195,7 +195,8 @@ table-layout: fixed;*/
 .page-bar .page-breadcrumb > li > a,
 .page-bar .page-breadcrumb > li > span {
   color: white;
-  padding: 22px 22px 21.5px 22px;
+  /*padding: 22px 22px 21.5px 22px;*/
+  padding: 18px 22px 15.5px 20px;
   font-size: 12px;
 }
 .st-breadcrumbs-progress-bar .page-breadcrumb > li > a {

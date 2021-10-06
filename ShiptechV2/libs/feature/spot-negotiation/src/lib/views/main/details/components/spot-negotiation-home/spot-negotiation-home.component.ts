@@ -1,32 +1,41 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AgGridDatetimePickerToggleComponent } from '../../../../../core/ag-grid/ag-grid-datetimePicker-Toggle';
+import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
+import { Store } from '@ngxs/store';
 // import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 // import { SpotnegoSendRfqComponent } from '../spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
 
 @Component({
   selector: 'app-spot-negotiation-home',
   templateUrl: './spot-negotiation-home.component.html',
-  styleUrls: ['./spot-negotiation-home.component.css']
+  styleUrls: ['./spot-negotiation-home.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   today = new FormControl(new Date());
+  navBar: any;
   requestOptions = [
     {
       request : 'Req 12321', vessel: 'Merlion', selected: true
     },
     {
-      request : 'Req 12322', vessel: 'Afif', selected: true
+      request : 'Req 12322', vessel: 'Afif', selected: false
     }
   ];
   @ViewChild(AgGridDatetimePickerToggleComponent) child:AgGridDatetimePickerToggleComponent;
 
-  navBar: any;
-  constructor(private route: ActivatedRoute,public dialog: MatDialog, private toaster: ToastrService) { }
+  constructor(private route: ActivatedRoute
+    , public dialog: MatDialog
+    , private toaster: ToastrService
+    , private chRef: ChangeDetectorRef
+    , private store: Store) {
+
+    }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -35,14 +44,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   confirmorderpopup(){
-    // const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
-    //   width: '1045px',
-    //   height: '555px',
-    //   panelClass: 'additional-cost-popup'
-    // });
+    const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
+      width: '1045px',
+      height: '555px',
+      panelClass: 'additional-cost-popup'
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+    });
 
   }
 
