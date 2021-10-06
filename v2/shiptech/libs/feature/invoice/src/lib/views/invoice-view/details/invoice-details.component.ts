@@ -460,7 +460,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   @Input('detailFormvalues') set _detailFormvalues(val) {
     if (val) {
       this.formValues = val;
-      this.formValues.productDetails[0].physicalSupplierCounterparty = null;
       if (
         this.formValues.counterpartyDetails &&
         this.formValues.counterpartyDetails.payableTo

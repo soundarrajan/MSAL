@@ -1,7 +1,7 @@
-﻿commit 5f3a751a4f4ca5e511902d6169ca1a1bffea38cc
+﻿commit 1e7f9012d8a1cde25343c852bf16ae564ad40a02
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Oct 6 13:15:28 2021 +0300
+Date:   Wed Oct 6 13:33:54 2021 +0300
 
-    Fixed Invoice page  loading for the particular invoice
+    Fixed 36162
 
 branch: master
