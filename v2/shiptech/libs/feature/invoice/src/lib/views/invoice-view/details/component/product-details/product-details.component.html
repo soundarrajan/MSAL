@@ -548,6 +548,12 @@
                       [(ngModel)]="
                         productDetail.value.physicalSupplierCounterparty
                       "
+                      (ngModelChange)="
+                        physicalSupplierCounterpartyChange(
+                          $event,
+                          productDetail.key
+                        )
+                      "
                       [matTooltip]="
                         productDetail.value?.physicalSupplierCounterparty?.name
                       "

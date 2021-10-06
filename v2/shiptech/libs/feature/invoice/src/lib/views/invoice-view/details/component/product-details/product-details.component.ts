@@ -1244,4 +1244,11 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     this.selectedProductLine = null;
     this.changeDetectorRef.detectChanges();
   }
+
+  physicalSupplierCounterpartyChange(value, line) {
+    this.formValues.productDetails[line].physicalSupplierCounterparty = value;
+    if (!value) {
+      this.formValues.productDetails[line].physicalSupplierCounterparty = null;
+    }
+  }
 }

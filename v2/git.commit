@@ -1,7 +1,7 @@
-﻿commit a5e4dead78e6a7199cd4477d63e040df4c8f0e65
-Author: Prabaharan <prabaharan.p@Inatech.com>
-Date:   Tue Oct 5 17:40:49 2021 +0530
+﻿commit 5f3a751a4f4ca5e511902d6169ca1a1bffea38cc
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Oct 6 13:15:28 2021 +0300
 
-    Item:36120.its fixed
+    Fixed Invoice page  loading for the particular invoice
 
 branch: master

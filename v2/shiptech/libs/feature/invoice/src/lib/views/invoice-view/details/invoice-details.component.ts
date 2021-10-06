@@ -460,6 +460,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   @Input('detailFormvalues') set _detailFormvalues(val) {
     if (val) {
       this.formValues = val;
+      this.formValues.productDetails[0].physicalSupplierCounterparty = null;
       if (
         this.formValues.counterpartyDetails &&
         this.formValues.counterpartyDetails.payableTo
@@ -539,8 +540,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           IInvoiceDetailsItemBaseInfo
         >{};
       }
-      this.parseProductDetailData(this.formValues.productDetails);
-      //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
       this.setChipDatas();
@@ -1263,7 +1262,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.getPaybleToList();
 
     this.getBankAccountNumber();
-    this.buildProductDetilsGrid();
 
     this.legacyLookupsDatabase.getsInvoiceType().then(list => {
       // avoid preclaim credit/debit note invoice type selection
@@ -1398,10 +1396,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formErrors.invoiceDate = errorMessage;
     }
 
-     // Document number
-     if (
-      this.formValues.documentNo && isNaN(this.formValues.documentNo)
-    ) {
+    // Document number
+    if (this.formValues.documentNo && isNaN(this.formValues.documentNo)) {
       error = true;
       errorMessage += 'Document no should accept only numbers.';
       this.formErrors.documentNo = errorMessage;
@@ -2173,71 +2169,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     });
   }
 
-  buildProductDetilsGrid() {
-    this.gridOptions_data = <GridOptions>{
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef_aggrid_pd,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 45,
-      animateRows: false,
-      masterDetail: true,
-
-      onGridReady: params => {
-        this.gridOptions_data.api = params.api;
-        this.gridOptions_data.columnApi = params.columnApi;
-        this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
-        // this.addCustomHeaderEventListener(params);
-      },
-
-      onColumnResized: function(params) {
-        if (
-          params.columnApi.getAllDisplayedColumns().length <= 9 &&
-          params.type === 'columnResized' &&
-          params.finished === true &&
-          params.source === 'uiColumnDragged'
-        ) {
-          params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function(params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-          params.api.sizeColumnsToFit();
-        }
-      }
-    };
-  }
-
-  parseProductDetailData(productDetails: IInvoiceDetailsItemProductDetails[]) {
-    for (const value of productDetails) {
-      const productdetail = {
-        del_no: {
-          no: value.deliveryId,
-          order_prod: value.invoicedProduct.name
-        },
-        del_product: value.product.name,
-        del_qty: value.deliveryQuantity + ' ' + value.deliveryQuantityUom.name,
-        est_rate: value.estimatedRate + ' ' + value.estimatedRateCurrency.code,
-        amount1: value.estimatedAmount + ' ' + value.estimatedRateCurrency.code,
-        inv_product: value.invoicedProduct.name,
-        inv_qty: value.invoiceQuantity + ' ' + value.invoiceQuantityUom.name,
-        inv_rate: value.invoiceRate + ' ' + value.invoiceRateCurrency.code,
-        amount2:
-          value.invoiceComputedAmount + ' ' + value.invoiceRateCurrency.code,
-        recon_status: value.reconStatus ? value.reconStatus.name : '',
-        sulpher_content: value.sulphurContent,
-        phy_supplier: value.physicalSupplierCounterparty.name
-      };
-      this.rowData_aggrid_pd.push(productdetail);
-    }
-  }
-
   setOrderDetailsLables(orderDetails) {
     this.orderDetails.contents[0].value = orderDetails?.vesselName
       ? orderDetails?.vesselName
@@ -2638,7 +2569,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
               el.invoiceStatus.name == 'Approved'
           )
         ) {
-          let invType =
+          const invType =
             this.formValues.documentType.name == 'Pre-claim Credit Note'
               ? 'CN'
               : 'DN';
@@ -3584,6 +3515,30 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
   }
 
+  formatDateOnly(date?: any) {
+    if (date) {
+      let currentFormat = this.format.dateFormat;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      const elem = moment(date, 'YYYY-MM-DD');
+      let formattedDate = moment(elem).format(currentFormat);
+      if (formattedDate) {
+        if (formattedDate.split(' ')[1] === '00:00') {
+          formattedDate = formattedDate.split(' ')[0];
+        }
+      }
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
+  }
+
   private setupGrid() {
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {
@@ -3621,29 +3576,5 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
       }
     };
-  }
-
-  formatDateOnly(date?: any) {
-    if (date) {
-      let currentFormat = this.format.dateFormat;
-      let hasDayOfWeek;
-      if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
-      }
-      currentFormat = currentFormat.replace(/d/g, 'D');
-      currentFormat = currentFormat.replace(/y/g, 'Y');
-      const elem = moment(date, 'YYYY-MM-DD');
-      let formattedDate = moment(elem).format(currentFormat);
-      if (formattedDate) {
-        if (formattedDate.split(' ')[1] === '00:00') {
-          formattedDate = formattedDate.split(' ')[0];
-        }
-      }
-      if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
-      }
-      return formattedDate;
-    }
   }
 }
