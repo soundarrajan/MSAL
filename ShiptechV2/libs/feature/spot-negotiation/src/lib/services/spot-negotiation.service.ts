@@ -51,6 +51,14 @@ export class SpotNegotiationService extends BaseStoreService
   /**
    * @param payload = False
    */
+  @ObservableException()
+  getPriceDetails(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getPriceDetails(payload);
+  }
+
+  /**
+   * @param payload = False
+   */
    @ObservableException()
    addCounterparties(payload: any): Observable<unknown> {
      return this.spotNegotiationApi.AddCounterparties(payload);

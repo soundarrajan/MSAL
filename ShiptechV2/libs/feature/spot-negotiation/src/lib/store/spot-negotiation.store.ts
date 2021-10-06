@@ -5,7 +5,8 @@ import {
   SetLocationsRows,
   AddCounterpartyToLocations,
   EditLocationRow,
-  SetLocations
+  SetLocations,
+  SetLocationsRowsPriceDetails
 } from './actions/ag-grid-row.action';
 
 import {
@@ -21,6 +22,7 @@ export class SpotNegotiationStoreModel {
   groupOfRequestsId: number | null;
   locations: Array<any>;
   locationsRows: Array<any>;
+  locationsRowsPriceDetails: Array<any>;
   additionalCost: Array<any>;
   availableTermContracts: Array<any>;
   sellerRating: Array<any>;
@@ -38,6 +40,7 @@ export class SpotNegotiationStoreModel {
     this.counterpartyList = {};
     this.locations = [];
     this.locationsRows = [];
+    this.locationsRowsPriceDetails = [];
     this.additionalCost = [];
     this.sellerRating = [];
     this.availableTermContracts = [];
@@ -61,6 +64,7 @@ export class SpotNegotiationStoreModel {
     commentsForCurrentRequest: [],
     currentRequest: null,
     locationsRows: [],
+    locationsRowsPriceDetails: [],
     additionalCost: [],
     availableTermContracts: [],
     formulaPricingDetails: {},
@@ -144,6 +148,16 @@ export class SpotNegotiationStore {
   ) {
     patchState({
       locationsRows: payload
+    });
+  }
+  // Rows lists
+  @Action(SetLocationsRowsPriceDetails)
+  SetLocationsRowsPriceDetails(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetLocationsRowsPriceDetails
+  ) {
+    patchState({
+      locationsRowsPriceDetails: payload
     });
   }
 
