@@ -12,7 +12,11 @@ import { Store } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
+<<<<<<< HEAD
   SetRequestGroupId
+=======
+  SetRequestGroupId,
+>>>>>>> f60a004eaf821f7edb8aee27025a892a05f44a56
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
@@ -47,7 +51,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
     public dialog: MatDialog,
+<<<<<<< HEAD
     private spinner: NgxSpinnerService
+=======
+    private spinner: NgxSpinnerService,
+>>>>>>> f60a004eaf821f7edb8aee27025a892a05f44a56
   ) {
     this.entityName = 'Spot negotiation';
   }
@@ -69,7 +77,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       groupRequestIdFromUrl
     );
 
+<<<<<<< HEAD
     responseGetRequestGroup.subscribe((res: any) => {
+=======
+    response.subscribe((res: any) => {
+>>>>>>> f60a004eaf821f7edb8aee27025a892a05f44a56
       this.spinner.hide();
       if (res.error) {
         alert('Handle Error');
@@ -78,9 +90,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       if (res['requests'][0]) {
         this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
+<<<<<<< HEAD
         this.store.dispatch(
           new SetLocations(res['requests'][0].requestLocations)
         );
+=======
+        this.store.dispatch(new SetLocations(res['requests'][0].requestLocations));
+>>>>>>> f60a004eaf821f7edb8aee27025a892a05f44a56
         this.changeDetector.detectChanges();
       }
     });
