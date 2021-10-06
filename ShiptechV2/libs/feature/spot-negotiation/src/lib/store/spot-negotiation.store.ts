@@ -147,11 +147,6 @@ export class SpotNegotiationStore {
     });
   }
 
-  @Selector()
-  static getLocations(state: SpotNegotiationStoreModel) {
-    return state.locationsRows;
-  }
-
   // Rows lists
   @Action(EditLocationRow)
   EditLocationRow(
@@ -180,6 +175,11 @@ export class SpotNegotiationStore {
     patchState({
       locationsRows: ctpys
     });
+  }
+
+  @Selector()
+  static getLocations(state: SpotNegotiationStoreModel) {
+    return state.locationsRows;
   }
 
   @Selector()

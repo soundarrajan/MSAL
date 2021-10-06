@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AgGridDatetimePickerToggleComponent } from '../../../../../core/ag-grid/ag-grid-datetimePicker-Toggle';
 import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
+import { Store } from '@ngxs/store';
+// import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 // import { SpotnegoSendRfqComponent } from '../spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
 
 @Component({
@@ -17,12 +19,23 @@ export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   today = new FormControl(new Date());
   navBar: any;
+  requestOptions = [
+    {
+      request : 'Req 12321', vessel: 'Merlion', selected: true
+    },
+    {
+      request : 'Req 12322', vessel: 'Afif', selected: false
+    }
+  ];
   @ViewChild(AgGridDatetimePickerToggleComponent) child:AgGridDatetimePickerToggleComponent;
 
   constructor(private route: ActivatedRoute
     , public dialog: MatDialog
     , private toaster: ToastrService
-    , private chRef: ChangeDetectorRef) { }
+    , private chRef: ChangeDetectorRef
+    , private store: Store) {
+
+    }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
