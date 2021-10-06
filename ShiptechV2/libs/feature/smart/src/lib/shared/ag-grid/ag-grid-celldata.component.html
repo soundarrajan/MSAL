@@ -247,7 +247,7 @@
       <div class="input">
         <div>{{params.column.colDef.headerName}}</div>
         <mat-form-field appearance="fill">
-          <input matInput #inpt id="inputValue" [value]="params.value" (keyup)="onEditCell(inpt.value,cmnt.value)"
+          <input type="number" matInput #inpt id="inputValue" [value]="params.value" (keyup)="onEditCell(inpt.value,cmnt.value)"
             (click)="$event.stopPropagation();">
         </mat-form-field>
       </div>
