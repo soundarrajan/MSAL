@@ -589,11 +589,13 @@ timeline-right-click-popover .contextmenu {
 
 .right-popup-table th {
     padding: 8px !important;
+    font-size: 12px !important;
 }
 
 .right-popup-table td {
     border-top: unset !important;
 }
+
 
 .bp-request-id {
     width: 170px !important;
