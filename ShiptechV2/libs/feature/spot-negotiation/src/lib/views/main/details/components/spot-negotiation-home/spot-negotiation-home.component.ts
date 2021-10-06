@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AgGridDatetimePickerToggleComponent } from '../../../../../core/ag-grid/ag-grid-datetimePicker-Toggle';
-// import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
+import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 // import { SpotnegoSendRfqComponent } from '../spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
 
 @Component({
@@ -31,14 +31,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   confirmorderpopup(){
-    // const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
-    //   width: '1045px',
-    //   height: '555px',
-    //   panelClass: 'additional-cost-popup'
-    // });
+    const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
+      width: '1045px',
+      height: '555px',
+      panelClass: 'additional-cost-popup'
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+    });
 
   }
 
