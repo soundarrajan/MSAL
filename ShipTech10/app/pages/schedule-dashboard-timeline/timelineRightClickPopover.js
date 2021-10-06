@@ -373,11 +373,8 @@ angular.module('shiptech.components')
                             if (ptval[index]) {
                                 status = ptval[index].voyageDetail.portStatus;
                                 rowValues[key * 2] = ptval[index].voyageDetail.request.requestDetail.fuelOilOfRequest;
-                                if (ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity) {
-                                    rowValues[key * 2 + 1] = $filter("number")(ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity, ctrl.numberPrecision.quantityPrecision) +  ' ' + ptval[index].voyageDetail.request.requestDetail.uom;
-                                } else {
-                                    rowValues[key * 2 + 1] = ptval[index].voyageDetail.request.requestDetail.uom;
-                                }
+                                rowValues[key * 2 + 1] = '';
+                                rowValues[key * 2 + 1] += (ptval[index].voyageDetail.request.requestDetail.fuelMinQuantity ? $filter("number")(ptval[index].voyageDetail.request.requestDetail.fuelMinQuantity, ctrl.numberPrecision.quantityPrecision) : '-') + '/' + (ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity ? $filter("number")(ptval[index].voyageDetail.request.requestDetail.fuelMaxQuantity, ctrl.numberPrecision.quantityPrecision) : '-')  + ' ' + ptval[index].voyageDetail.request.requestDetail.uom;
                             }
                             
                         }
