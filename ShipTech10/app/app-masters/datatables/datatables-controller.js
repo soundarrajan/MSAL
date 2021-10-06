@@ -2400,7 +2400,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             customNumberOfRowsProductType: 'getRowNumbersOfProductType(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)',
                             customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
                         },
-                        required: true
+                        required: false
                     },
                     {
                         name: 'selectedStrategyType',
