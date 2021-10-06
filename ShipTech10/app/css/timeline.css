@@ -590,6 +590,7 @@ timeline-right-click-popover .contextmenu {
 .right-popup-table th {
     padding: 8px !important;
     font-size: 12px !important;
+    font-weight: normal !important;
 }
 
 .right-popup-table td {
