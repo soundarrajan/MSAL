@@ -12,12 +12,13 @@ import { Store } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
-  SetRequestGroupId,
+  SetRequestGroupId
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
   SetLocationsRows,
-  SetCounterpartyList
+  SetCounterpartyList,
+  SetLocationsRowsPriceDetails
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -46,7 +47,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
     public dialog: MatDialog,
-    private spinner: NgxSpinnerService,
+    private spinner: NgxSpinnerService
   ) {
     this.entityName = 'Spot negotiation';
   }
@@ -64,11 +65,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
 
     // Get response from server and populate store
-    const response = this.spotNegotiationService.getRequestGroup(
+    const responseGetRequestGroup = this.spotNegotiationService.getRequestGroup(
       groupRequestIdFromUrl
     );
 
-    response.subscribe((res: any) => {
+    responseGetRequestGroup.subscribe((res: any) => {
       this.spinner.hide();
       if (res.error) {
         alert('Handle Error');
@@ -77,7 +78,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       if (res['requests'][0]) {
         this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
-        this.store.dispatch(new SetLocations(res['requests'][0].requestLocations));
+        this.store.dispatch(
+          new SetLocations(res['requests'][0].requestLocations)
+        );
         this.changeDetector.detectChanges();
       }
     });
@@ -103,9 +106,23 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if (res['requestLocationSellers']) {
         // Demo manipulate location before entering store;
         // TODO : get phySupplier, totalOffer, diff, amt, tPR from the endpoint directly.
-        const editedLocation = res['requestLocationSellers']
+        const editedLocation = res['requestLocationSellers'];
 
-        this.store.dispatch(new SetLocationsRows(editedLocation));
+        // Get response from server and populate store
+        const responseGetPriceDetails = this.spotNegotiationService.getPriceDetails(
+          groupRequestIdFromUrl
+        );
+
+        responseGetPriceDetails.subscribe((priceDetailsRes: any) => {
+          this.store.dispatch(
+            new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
+          );
+
+          this.store.dispatch(new SetLocationsRows(editedLocation));
+
+          debugger;
+        });
+
         this.changeDetector.detectChanges();
       }
     });
