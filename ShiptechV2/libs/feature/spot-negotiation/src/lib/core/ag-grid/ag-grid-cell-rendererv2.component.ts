@@ -226,7 +226,6 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
       <div
         class="price-calc active"
         style="border:none !important;font-weight: 500;"
-        *ngIf="params.value === '550.00'"
       >
         $ {{ params.value }}
       </div>
