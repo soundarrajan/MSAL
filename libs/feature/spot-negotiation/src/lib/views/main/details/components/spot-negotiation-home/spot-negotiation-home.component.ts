@@ -8,6 +8,7 @@ import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotne
 import { Store } from '@ngxs/store';
 // import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 // import { SpotnegoSendRfqComponent } from '../spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
+import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -29,13 +30,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
   ];
   @ViewChild(AgGridDatetimePickerToggleComponent) child:AgGridDatetimePickerToggleComponent;
 
-  constructor(private route: ActivatedRoute
-    , public dialog: MatDialog
-    , private toaster: ToastrService
-    , private chRef: ChangeDetectorRef
-    , private store: Store) {
-
-    }
+  
+  selectedSellerList: any[];
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private toaster: ToastrService,private store: Store,private spotNegotiationService: SpotNegotiationService) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -64,7 +61,85 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     // dialogRef.afterClosed().subscribe(result => {
     // });
+    this.selectedSellerList = [];
+    this.store.subscribe(({ spotNegotiation }) => {
+      spotNegotiation.locations.forEach(element => {
+        spotNegotiation.locationsRows.forEach(element1 => {
+            if(element.locationId == element1.locationId){
+              if(element1["isSelected"]){
+                  var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],'')
+                  if(Sellectedsellerdata != null && Sellectedsellerdata.length != 0){
+                    this.selectedSellerList.push(Sellectedsellerdata[0]);
+                  }
+              }else{
+                let productLength = element.requestProducts.length;
+                for (let index = 0; index < productLength; index++) {
+                  if(index == 0 && element1["checkProd1"]){
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                  }
+                  else if(index == 1 && element1["checkProd2"]){
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                  }
+                  else if(index == 2 && element1["checkProd3"]){
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                  }
+                  else if(index == 3 && element1["checkProd4"]){
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                  }
+                  else if(index == 4 && element1["checkProd5"]){
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                  }
+                  else{
+                    let errormessage = "Atleast 1 counterparty should be selected in" + spotNegotiation.currentRequestSmallInfo[0].name +"-"+spotNegotiation.currentRequestSmallInfo[0].vesselName;
+                    this.toaster.error(errormessage);
+                  }
 
+                  if(Sellectedsellerdata != null && Sellectedsellerdata.length != 0){
+                    this.selectedSellerList.push(Sellectedsellerdata[0]);
+                  }
+                }
+              }
+            }
+            
+          });
+        
+      });
+        
+      });
+    // Get response from server
+    const response = this.spotNegotiationService.SendRFQ(
+      this.selectedSellerList
+    );
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.error(res.message);
+        return;
+      }
+    });
+  }
+  ConstuctSellerPayload(Seller,Product,Request,index){
+    let selectedproduct;
+    if(Product.length >0 && index == ''){
+      selectedproduct = Product.map(({ id }) => id).join(',');
+    }
+    else{
+      selectedproduct = Product[index].id
+    }
+   return  [
+      {
+        RequestLocationSellerId: Seller.sellerCounterpartyId,
+        RequestLocationID: Seller.locationId,
+        RequestId:Request.id,
+        physicalSupplierCounterpartyId:11,
+        RequestProductIds: [parseInt(selectedproduct)],
+        RequestGroupId:Request.requestGroupId,
+        quoteByDate: new Date(),
+        quoteByCurrencyId:1,
+        quoteByTimeZoneId:11
+      }
+    ]
   }
 
   dateTimePicker(e){
