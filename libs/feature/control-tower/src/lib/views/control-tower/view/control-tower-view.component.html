@@ -1,0 +1,41 @@
+<div class="container-fluid-contract contract-container">
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-panel [showHeader]="false">
+        <div fxLayout="row">
+          <div class="col-md-12 d-flex contract-section">
+            <div class="col-md-3" style="padding-left: 0px;">
+              <div id="custom-contract-btn-toggle-v2">
+                <mat-button-toggle-group
+                  #group="matButtonToggleGroup"
+                  [value]="selectedVal"
+                  (change)="onValChange(group.value)"
+                >
+                  <mat-button-toggle value="reportsList">
+                    <span
+                      *ngIf="selectedVal == 'reportsList'"
+                      class="toggle-icon"
+                    ></span>
+                    Reports List
+                  </mat-button-toggle>
+                  <mat-button-toggle value="invoiceList">
+                    <span
+                      *ngIf="selectedVal == 'invoiceList'"
+                      class="toggle-icon"
+                    ></span>
+                    Invoice List
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</div>
+<shiptech-control-tower-list
+  *ngIf="selectedVal == 'reportsList'"
+></shiptech-control-tower-list>
+<shiptech-control-tower-invoice-list *ngIf="selectedVal == 'invoiceList'">
+</shiptech-control-tower-invoice-list>

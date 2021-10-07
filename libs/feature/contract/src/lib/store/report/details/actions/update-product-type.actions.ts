@@ -1,4 +1,4 @@
-import { QcProductTypeEditableProps } from "libs/feature/quantity-control/src/lib/views/qc-report/details/components/port-call-grid/view-model/product-details.view-model";
+import { QcProductTypeEditableProps } from 'libs/feature/quantity-control/src/lib/views/qc-report/details/components/port-call-grid/view-model/product-details.view-model';
 
 export class UpdateProductTypeAction {
   static readonly type = '[Qc.Report.Details] - Update product type';
