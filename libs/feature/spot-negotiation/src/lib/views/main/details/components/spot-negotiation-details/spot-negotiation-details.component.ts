@@ -101,12 +101,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       children: [
         {
           headerName: '',
-          field: 'check',
+          field: 'isSelected',
           filter: true,
           suppressMenu: true,
           maxWidth: 35,
           headerCheckboxSelection: true,
-          checkboxSelection: true,
           resizable: false,
           // suppressMovable: true,
           suppressNavigable: true,
@@ -115,7 +114,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: 'p-1 checkbox-center ag-checkbox-v2',
           cellRendererFramework: AGGridCellActionsComponent,
-          cellRendererParams: { type: 'row-remove-icon-cell-hover' }
+          cellRendererParams: { type: 'checkbox-selection' }
           //pinned: 'left'
         },
         {
@@ -237,7 +236,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.context = { componentParent: this };
-    this.rowSelection = 'single';
+    this.rowSelection = 'multiple';
     this.gridOptions_counterparty = <GridOptions>{
       enableColResize: true,
       defaultColDef: {
@@ -369,7 +368,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return data.id;
   }
 
-  createProductHeader(product,requestLocationId) {
+  createProductHeader(product,requestLocationId,index) {
+    var checkprodindex = index + 1;
     return {
       headerName: '',
       headerTooltip: '',
@@ -387,7 +387,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       children: [
         {
           headerName: '',
-          field: 'check1',
+          field: 'checkProd' + checkprodindex,
           filter: true,
           suppressMenu: true,
           width: 35,
@@ -589,7 +589,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // These are locations!!
         currentRequest.requestProducts.map(product => {
           this.checkHighlight({ product: product });
-          this.columnDef_aggridObj[i].push(this.createProductHeader(product, currentRequest.id));
+          this.columnDef_aggridObj[i].push(this.createProductHeader(product, currentRequest.id,i));
         });
       });
 

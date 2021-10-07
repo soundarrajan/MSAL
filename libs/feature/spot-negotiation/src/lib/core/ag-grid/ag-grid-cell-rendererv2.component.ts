@@ -1,9 +1,10 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { Select, Store } from '@ngxs/store';
 import { SpotnegoAdditionalcostComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-additionalcost/spotnego-additionalcost.component';
 import { SellerratingpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
 import { EmailPreviewPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
@@ -14,6 +15,7 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
 import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
 
+import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.action';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -404,8 +406,8 @@ import { DecimalPipe } from '@angular/common';
     >
       <!--<input type="checkbox" (click)="checkedHandler($event)"[checked]="params.value"/>-->
       <mat-checkbox
-        [checked]="params.data.check"
-        (click)="$event.stopPropagation()"
+        [checked]="params.value"
+        (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="params.value == 'preferred' ? 'darkBorder' : ''"
       ></mat-checkbox>
@@ -545,6 +547,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private _decimalPipe,
     public router: Router,
     public dialog: MatDialog,
+    public store: Store,
     private tenantService: TenantFormattingService
   ) {}
 
@@ -569,6 +572,38 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.menuTriggerHover.openMenu();
   }
 
+  selectCounterParties(params){
+      let updatedRow = { ...params.data };
+      updatedRow = this.formatRowData(updatedRow, params.value);
+      // Update the store
+      this.store.dispatch(new EditLocationRow(updatedRow));
+      if(params.value){
+        return params.value = false;
+
+      }else{
+
+        return params.value = true;
+      }
+
+  }
+
+  formatRowData(row, value) {
+    if(value){
+      row.isSelected = false;
+      row.checkProd1 =false;
+      row.checkProd2 = false;
+      row.checkProd3 =false;
+      row.checkProd4 = false;
+      row.checkProd5 =false;
+    }else{
+      row.checkProd1 =true;
+      row.checkProd2 = true;
+      row.checkProd3 =true;
+      row.checkProd4 = true;
+      row.checkProd5 =true;
+    }
+    return row;
+}
   additionalcostpopup() {
     const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
       width: '1170px',
