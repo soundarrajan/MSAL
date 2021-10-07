@@ -1,0 +1,52 @@
+.badge {
+  // padding: 5px 9px 2px;
+  font-size: 12.025px;
+  padding: 5px;
+  white-space: nowrap;
+  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  color: black;
+
+  &.blue {
+    color: #044f88;
+    background-color: #0c899052;
+  }
+
+  &.info {
+    color: black;
+    background-color: rgba(77, 144, 142, 0.51);
+
+    i {
+      color: darkorange;
+    }
+  }
+}
+
+.badge-flag-false {
+  background-color: #f1f8ff;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  .badge-flag-icon {
+    margin-left: 4px;
+    color: #c3c9d7;
+  }
+}
+
+.badge-flag-true {
+  background-color: darkred;
+  color: white;
+  cursor: pointer;
+
+  .badge-flag-icon {
+    margin-left: 1px;
+    color: white;
+  }
+}
+
+.textarea-only-vertical {
+  resize: vertical;
+}
