@@ -20,7 +20,10 @@ import { SpotNegotiationHomeComponent } from './views/main/details/components/sp
 import { AgGridDatetimePickerToggleComponent } from './core/ag-grid/ag-grid-datetimePicker-Toggle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
-import { SPOT_NEGOTIATION_API_SERVICE, SpotNegotiationApi } from './services/api/spot-negotiation-api';
+import {
+  SPOT_NEGOTIATION_API_SERVICE,
+  SpotNegotiationApi
+} from './services/api/spot-negotiation-api';
 import { environment } from '@shiptech/environment';
 import { SpotNegotiationService } from './services/spot-negotiation.service';
 import { SpotNegotiationGridModule } from './spot-negotiation-grid.module';
@@ -71,6 +74,7 @@ import { SpotnegoRequestChangesComponent } from './views/main/details/components
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-negotiation-details-toolbar.component';
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
+import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
 
 @NgModule({
   imports: [
@@ -106,6 +110,7 @@ import { NavBarResolver } from './views/main/details/navbar-route.resolver';
     NgxSpinnerModule
   ],
   declarations: [
+    PriceTenantFormatDirective,
     MainSpotNegotiationComponent,
     SpotNegotiationComponent,
     SpotNegotiationHomeComponent,
@@ -129,7 +134,6 @@ import { NavBarResolver } from './views/main/details/navbar-route.resolver';
     LocPanDataComponent,
     ApplicablecostpopupComponent,
     SpotNegotiationNewCommentsComponent,
-
 
     AGGridCellActionsComponent,
     AGGridCellRendererComponent,
@@ -170,7 +174,7 @@ import { NavBarResolver } from './views/main/details/navbar-route.resolver';
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent
   ],
-  exports: [],
+  exports: [PriceTenantFormatDirective],
   providers: [
     ModuleLoggerFactory,
     {

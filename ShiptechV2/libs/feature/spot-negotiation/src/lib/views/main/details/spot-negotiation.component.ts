@@ -119,8 +119,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           );
 
           this.store.dispatch(new SetLocationsRows(editedLocation));
-
-          debugger;
         });
 
         this.changeDetector.detectChanges();

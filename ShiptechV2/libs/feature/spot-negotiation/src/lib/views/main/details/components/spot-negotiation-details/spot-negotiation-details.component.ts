@@ -408,7 +408,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerTooltip: 'Offer price',
           field: `offPrice${product.id}`,
           product: product,
-          editable: true,
           width: 260,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
@@ -445,7 +444,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerTooltip: 'Amt ($)',
           field: `amt${product.id}`,
           width: 150,
-          cellClass: 'grey-opacity-cell pad-lr-0'
+          cellClass: 'grey-opacity-cell pad-lr-0',
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'amt', cellClass: '' }
         },
         {
           headerName: 'Tar. diff',
@@ -453,7 +454,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           field: `diff${product.id}`,
           width: 150,
           headerClass: 'border-right',
-          cellClass: 'line-seperator grey-opacity-cell pad-lr-0'
+          cellClass: 'line-seperator grey-opacity-cell pad-lr-0',
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'diff', cellClass: '' }
         },
         {
           headerName: 'MJ/KJ',
