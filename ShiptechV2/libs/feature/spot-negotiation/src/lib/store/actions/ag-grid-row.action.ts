@@ -36,3 +36,15 @@ export class AddCounterpartyToLocations{
 
   constructor(public payload: any) {}
 }
+export class SelectSeller {  
+  static readonly type = '[SelectedSellerList] Add';  
+
+  constructor(public payload: any ) {  
+  }  
+}  
+export class DeleteSeller {  
+  static readonly type = '[SelectedSellerList] Delete';  
+
+  constructor(public RequestLocationSellerId: number) {  
+  }  
+}   

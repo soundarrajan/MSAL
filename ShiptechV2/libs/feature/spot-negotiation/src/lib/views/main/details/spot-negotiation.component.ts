@@ -123,6 +123,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           debugger;
         });
 
+        editedLocation.forEach(element => {
+          element.isSelected = false;
+          element.checkProd1 =false;
+          element.checkProd2 = false;
+          element.checkProd3 =false;
+          element.checkProd4 = false;
+          element.checkProd5 =false;
+        });
+        this.store.dispatch(new SetLocationsRows(editedLocation));
         this.changeDetector.detectChanges();
       }
     });

@@ -65,8 +65,18 @@ export class SpotNegotiationService extends BaseStoreService
    }
 
   /**
-   * Get group of request when window loads.
+   * Send RFQ
    * @param payload = int
+   */
+  @ObservableException()
+  SendRFQ(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.SendRFQ(payload);
+  }
+
+   
+  /**
+   * Get group of request when window loads.
+   * @param payload
    */
   @ObservableException()
   getGroupOfSellers(payload: any): Observable<unknown> {
