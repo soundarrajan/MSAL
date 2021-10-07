@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -11,6 +11,8 @@ import { ContactinformationpopupComponent } from '../../views/main/details/compo
 import { SupplierCommentsPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/supplier-comments-popup/supplier-comments-popup.component';
 import { SpotnegoRequestChangesComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
 import { SpotnegoPricingDetailsComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
+import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'ag-grid-cell-renderer',
@@ -217,21 +219,16 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
     >
       <span>No quote</span>
     </div>
+
+    <!-- Offer price cell -->
     <div *ngIf="params.type == 'price-calc'">
+      <!-- TODO check this code... -->
       <div class="price-calc static-data" *ngIf="params.value === '100.00'">
         <span class="duplicate-icon"></span>
         $ {{ params.value }}
       </div>
       <div
-        class="price-calc active"
-        style="border:none !important;font-weight: 500;"
-        *ngIf="params.value === '550.00'"
-      >
-        $ {{ params.value }}
-      </div>
-      <div
-        class="price-calc"
-        *ngIf="params.value === '-'"
+        [ngClass]="params.value ? 'price-calc active' : 'price-calc'"
         [matMenuTriggerFor]="priceMenupopup"
         #pricePopupTrigger="matMenuTrigger"
         (click)="pricePopupTrigger.closeMenu()"
@@ -279,10 +276,10 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
         </div>
         <input
           class="inputField"
-          [ngModel]="inputValue"
-          (keydown)="onInputChange($event, params)"
+          (blur)="onBlur($event, params)"
           autofocus
           #inputSection
+          value="{{priceFormatValue(params.value)}}"
           autocomplete="off"
           name="inputField"
           spellcheck="false"
@@ -300,6 +297,8 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
         ></div>
       </div>
     </div>
+    <!-- End offer price cell -->
+
     <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
       <div class="add-block" (click)="pricingdetailspopup($event, params)">
         <div></div>
@@ -413,12 +412,22 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
     </div>
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
-      <span>{{ params.value }}</span>
+    <span *ngIf="!params.value">-</span>
+      <span>{{ priceFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
-      <div *ngIf="params.value == '518.50'">
-        <span>{{ params.value }}</span>
-      </div>
     </div>
+
+    <div *ngIf="params.type == 'amt'" class="addTpr">
+      <span *ngIf="!params.value">-</span>
+      <span>{{ priceFormatValue(params.value) }}</span>
+    </div>
+
+    <div *ngIf="params.type == 'diff'" class="addTpr">
+    <span *ngIf="!params.value">-</span>
+      <span>{{ priceFormatValue(params.value) }}</span>
+      <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
+    </div>
+
     <div
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
@@ -433,7 +442,9 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
         totalOfferPopupTrigger.openMenu()
       "
     >
-      <span (click)="additionalcostpopup()">{{ params.value }}</span>
+      <span (click)="additionalcostpopup()">{{
+        priceFormatValue(params.value)
+      }}</span>
       <div class="dollarButton" *ngIf="params.value == '500.00'"></div>
     </div>
     <mat-menu #totalOfferMenupopup="matMenu" class="darkPanel-add big">
@@ -516,6 +527,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public myFormGroup;
   public editSeller: boolean = true;
   public editedSeller = '';
+  public priceFormat = '';
   public docVal = 'Document Uploaded';
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [
@@ -528,7 +540,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     { counterparty: 'Shell North America Corporation', selected: false },
     { counterparty: 'Shell North America Corporation', selected: false }
   ];
-  constructor(public router: Router, public dialog: MatDialog) {}
+  constructor(
+    @Inject(DecimalPipe)
+    private _decimalPipe,
+    public router: Router,
+    public dialog: MatDialog,
+    private tenantService: TenantFormattingService
+  ) {}
 
   ngOnInit() {
     this.myFormGroup = new FormGroup({
@@ -630,6 +648,60 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.showFormula = true;
     });
   }
+
+  roundDown(value, pricePrecision) {
+    let precisionFactor = 1;
+    let response = 0;
+    const intvalue = parseFloat(value);
+    if (pricePrecision === 1) {
+      precisionFactor = 10;
+    }
+    if (pricePrecision === 2) {
+      precisionFactor = 100;
+    }
+    if (pricePrecision === 3) {
+      precisionFactor = 1000;
+    }
+    if (pricePrecision === 4) {
+      precisionFactor = 10000;
+    }
+    response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+    return response.toString();
+  }
+
+  priceFormatValue(value, pricePrecision) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+
+    const number = parseFloat(plainNumber);
+
+    if (isNaN(number)) {
+      return null;
+    }
+
+    let productPricePrecision = this.tenantService.pricePrecision;
+
+    if (pricePrecision) {
+      productPricePrecision = pricePrecision;
+    }
+
+    this.priceFormat =
+      '1.' + productPricePrecision + '-' + productPricePrecision;
+
+    if (plainNumber) {
+      if (productPricePrecision) {
+        plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
+      } else {
+        plainNumber = Math.trunc(plainNumber);
+      }
+
+      return this._decimalPipe.transform(plainNumber, this.priceFormat);
+    }
+  }
+
   pricingdetailspopup(e, params) {
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
@@ -663,24 +735,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   onRightClickMenuOpened(e) {
     e.target.parentElement.classList.add('active');
   }
-  onInputChange(e, params) {
-    e.target.parentElement.classList.add('active');
-    if (e.keyCode == 9) {
-      var itemsToUpdate = [];
-      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
-        if (!rowNode.isSelected() === true) {
-          return;
-        }
-        var data = rowNode.data;
-        data.tPr = '$560.19';
-        data.amt = '4,48,152.00';
-        data.diff = '1.19';
-        data.phySupplier = 'Same as seller';
-        itemsToUpdate.push(data);
-      });
-      var res = params.api.applyTransaction({ update: itemsToUpdate });
-      params.api.deselectAll(); //optional
+  onBlur(e, params) {
+    const futureValue = e.target.value;
+
+    if (!futureValue) {
+      return null;
     }
+
+
+    params.colDef.valueSetter({
+      colDef: params.colDef,
+      data: params.data,
+      newValue: futureValue
+    });
   }
   checkedHandler(event) {
     let checked = event.target.checked;
