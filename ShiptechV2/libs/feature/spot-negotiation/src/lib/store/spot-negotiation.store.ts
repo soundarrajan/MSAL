@@ -5,8 +5,10 @@ import {
   SetLocationsRows,
   AddCounterpartyToLocations,
   EditLocationRow,
-  SetLocations,
-  SetLocationsRowsPriceDetails
+  SetLocationsRowsPriceDetails,
+  SelectSeller,
+  DeleteSeller,
+  SetLocations
 } from './actions/ag-grid-row.action';
 
 import {
@@ -23,6 +25,7 @@ export class SpotNegotiationStoreModel {
   locations: Array<any>;
   locationsRows: Array<any>;
   locationsRowsPriceDetails: Array<any>;
+  selectedSellerList:Array<any>;
   additionalCost: Array<any>;
   availableTermContracts: Array<any>;
   sellerRating: Array<any>;
@@ -39,6 +42,7 @@ export class SpotNegotiationStoreModel {
     this.staticLists = {};
     this.counterpartyList = {};
     this.locations = [];
+    this.selectedSellerList = [];
     this.locationsRows = [];
     this.locationsRowsPriceDetails = [];
     this.additionalCost = [];
@@ -62,6 +66,7 @@ export class SpotNegotiationStoreModel {
     currentRequestSmallInfo: null,
     locations: [],
     commentsForCurrentRequest: [],
+    selectedSellerList: [],
     currentRequest: null,
     locationsRows: [],
     locationsRowsPriceDetails: [],
@@ -176,6 +181,27 @@ export class SpotNegotiationStore {
       })
     });
   }
+
+  @Action(SelectSeller)  
+    addUser({getState, patchState}: StateContext<SpotNegotiationStoreModel>, {payload}: SelectSeller) {  
+        const state = getState();  
+        const selectedSellerList = [...state.selectedSellerList];  
+        patchState({  
+          selectedSellerList: [...state.selectedSellerList, payload]  
+        });  
+        return;  
+    }  
+  
+    @Action(DeleteSeller)  
+    deleteUser({getState, setState}: StateContext<SpotNegotiationStoreModel>, {RequestLocationSellerId}: DeleteSeller) {  
+        const state = getState();  
+        const filteredArray = state.selectedSellerList.filter(item => item.RequestLocationSellerId !== RequestLocationSellerId);  
+        setState({  
+            ...state,  
+            selectedSellerList: filteredArray,  
+        });  
+        return;  
+    } 
 
   // Rows lists
   @Action(AddCounterpartyToLocations)

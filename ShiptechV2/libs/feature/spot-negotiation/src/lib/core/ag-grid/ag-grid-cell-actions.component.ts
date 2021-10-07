@@ -1,7 +1,15 @@
-import { Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { Select, Store } from '@ngxs/store'; 
+import { SelectSeller, EditLocationRow } from '../../store/actions/ag-grid-row.action';
 // import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
 
 // Not found
@@ -29,7 +37,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
       ></mat-radio-button>
     </div>
     <div *ngIf="params.type === 'checkbox-selection'">
-      <mat-checkbox class="grid-checkbox"></mat-checkbox>
+      <mat-checkbox class="grid-checkbox test22" [checked]="params.value" (click)="selectCounterParties(params)"></mat-checkbox>
     </div>
     <div
       class="hover-popup-icon grid-popup"
@@ -133,7 +141,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   public params: any;
   public popupOpen: boolean;
-  constructor(public router: Router, public dialog: MatDialog) {}
+  constructor(public router: Router, public dialog: MatDialog,private store: Store,private changeDetector: ChangeDetectorRef) {}
 
   agInit(params: any): void {
     this.params = params;
@@ -155,6 +163,36 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     this.params.onClick(this.params);
   }
 
+  selectCounterParties(params){
+      let updatedRow = { ...params.data };
+      updatedRow = this.formatRowData(updatedRow, params.value);
+      // Update the store
+      this.store.dispatch(new EditLocationRow(updatedRow));
+      if(params.value){
+        return params.value = false;
+      }else{
+      
+        return params.value = true;
+      }
+  }
+  formatRowData(row, value) {
+        if(value){
+          row.isSelected = false;
+          row.checkProd1 =false;
+          row.checkProd2 = false;
+          row.checkProd3 =false;
+          row.checkProd4 = false;
+          row.checkProd5 =false;
+        }else{
+          row.isSelected = true;
+          row.checkProd1 =true;
+          row.checkProd2 = true;
+          row.checkProd3 =true;
+          row.checkProd4 = true;
+          row.checkProd5 =true;
+        }
+        return row;
+  }
   viewFigma() {
     const figmaLink = this.params.value;
     this.router.navigate([]).then(result => {
