@@ -23,7 +23,8 @@ import {
   EditLocationRow,
   SetCounterpartyList,
   SetLocationsRows,
-  SetStaticLists
+  SetStaticLists,
+  SelectCounterparty
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
@@ -680,4 +681,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
   }
   onSelectionChanged(e) {}
+  onCellClick(event: any) {
+      let rowsSelection = this.gridOptions_counterparty.api.getSelectedRows();
+
+      let payload = {
+        selectedCounterparties: rowsSelection
+      };
+
+      this.store.dispatch(
+        new SelectCounterparty(payload.selectedCounterparties)
+      );
+   }
 }

@@ -31,6 +31,7 @@
                         [rowClassRules]="rowClassRules"
                         [immutableData]="false"
                         [getRowNodeId]="getRowNodeId"
+                        (cellClicked)='onCellClick($event)'
                         (rowSelected)="onRowSelected($event)"
                         (selectionChanged)="onSelectionChanged($event)"
                         [context]="context"
