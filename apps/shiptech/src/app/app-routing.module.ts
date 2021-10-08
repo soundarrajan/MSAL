@@ -77,7 +77,7 @@ const routes: Routes = [
     path: '',
     data: {
       breadcrumb: 'Control Tower List',
-      breadcrumbUrl: '/#/control-tower',
+      breadcrumbUrl: '/v2/control-tower',
       breadcrumbIcon: 'fa fa-home'
     },
     children: [
