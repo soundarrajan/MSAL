@@ -6,7 +6,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { QcReportsListGridViewModel } from './view-model/qc-reports-list-grid.view-model';
+import { ControlTowerListGridViewModel } from './view-model/control-tower-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 import { Observable, Subject } from 'rxjs';
 import { KnownControlTowerRoutes } from '../../control-tower.routes';
@@ -21,14 +21,14 @@ import { RowNode } from '@ag-grid-community/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
-import { QcReportsListColumnServerKeys } from './view-model/qc-reports-list.columns';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { ControlTowerListColumnServerKeys } from './view-model/control-tower-list.columns';
 
 @Component({
   selector: 'shiptech-control-tower-list',
   templateUrl: './control-tower-list.component.html',
   styleUrls: ['./control-tower-list.component.scss'],
-  providers: [QcReportsListGridViewModel],
+  providers: [ControlTowerListGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ControlTowerListComponent implements OnInit, OnDestroy {
@@ -41,13 +41,13 @@ export class ControlTowerListComponent implements OnInit, OnDestroy {
 
   public reportDetailsRoutePath = `../${KnownControlTowerRoutes.Report}`;
   knownRoutes = KnownControlTowerRoutes;
-  qcReportListServerKeys = QcReportsListColumnServerKeys;
+  qcReportListServerKeys = ControlTowerListColumnServerKeys;
 
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
   constructor(
-    public gridViewModel: QcReportsListGridViewModel,
+    public gridViewModel: ControlTowerListGridViewModel,
     public appConfig: AppConfig,
     public reconStatusLookups: ReconStatusLookup,
     private messageBox: MessageBoxService,

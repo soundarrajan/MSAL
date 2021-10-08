@@ -136,3 +136,12 @@ body .ui-tabmenu .ui-tabmenu-nav {
 #pin {
   top: -12px !important;
 }
+
+.ag-theme-balham.ag-popup
+  > .ag-menu
+  > .ag-menu-body
+  > .ag-filter
+  > .ag-filter-wrapper
+  > div:nth-child(3) {
+  display: none !important;
+}

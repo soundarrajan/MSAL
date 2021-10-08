@@ -8,15 +8,7 @@ import {
   TypedRowNode
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import {
-  QcReportsListColumns,
-  QcReportsListColumnServerKeys,
-  QcReportsListColumnsLabels
-} from './qc-reports-list.columns';
-import {
-  IQcReportsListItemDto,
-  IToleranceUomDto
-} from '../../../services/api/dto/qc-reports-list-item.dto';
+import { IToleranceUomDto } from '../../../services/api/dto/qc-reports-list-item.dto';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
@@ -34,13 +26,22 @@ import { takeUntil } from 'rxjs/operators';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
+import {
+  ControlTowerListColumns,
+  ControlTowerListColumnServerKeys,
+  ControlTowerListColumnsLabels
+} from './control-tower-list.columns';
+import { IControlTowerListItemDto } from '../../../services/api/dto/control-tower-list-item.dto';
+import { AgOpenPopUpComponent } from '@shiptech/core/ui/components/ag-grid/ag-open-pop-up/ag-open-pop-up.component';
 
-function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
+function model(
+  prop: keyof IControlTowerListItemDto
+): keyof IControlTowerListItemDto {
   return prop;
 }
 
 @Injectable()
-export class QcReportsListGridViewModel extends BaseGridViewModel {
+export class ControlTowerListGridViewModel extends BaseGridViewModel {
   public paramsServerSide: IServerSideGetRowsParams;
   public searchText: string;
   public exportUrl: string;
@@ -64,11 +65,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
     multiSortKey: 'ctrl',
 
-    isRowSelectable: (params: TypedRowNode<IQcReportsListItemDto>) =>
+    isRowSelectable: (params: TypedRowNode<IControlTowerListItemDto>) =>
       params.data?.surveyStatus?.name !== StatusLookupEnum.Verified,
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IQcReportsListItemDto) =>
+    getRowNodeId: (data: IControlTowerListItemDto) =>
       data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
@@ -78,11 +79,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     }
   };
 
-  selectCol: ITypedColDef<IQcReportsListItemDto> = {
-    colId: QcReportsListColumns.selection,
+  selectCol: ITypedColDef<IControlTowerListItemDto> = {
+    colId: ControlTowerListColumns.selection,
     width: 50,
     ...AgCheckBoxHeaderComponent.withParams({}),
-    ...AgCheckBoxRendererComponent.withParams<IQcReportsListItemDto>({
+    ...AgCheckBoxRendererComponent.withParams<IControlTowerListItemDto>({
       isVisible: params =>
         params.data?.surveyStatus?.name !== StatusLookupEnum.Verified
     }),
@@ -104,50 +105,61 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     cellClass: 'cell-border-green'
   };
 
-  portCallId: ITypedColDef<IQcReportsListItemDto, string> = {
-    headerName: QcReportsListColumnsLabels.portCallId,
-    colId: QcReportsListColumns.portCallId,
+  openPopUp: ITypedColDef<IControlTowerListItemDto> = {
+    headerName: ControlTowerListColumnsLabels.actions,
+    colId: ControlTowerListColumns.actions,
+    cellRendererFramework: AgOpenPopUpComponent,
+    cellRendererParams: {
+      cellClass: ['open-pop-up'],
+      type: 'open-pop-up-link'
+    },
+    width: 110
+  };
+
+  portCallId: ITypedColDef<IControlTowerListItemDto, string> = {
+    headerName: ControlTowerListColumnsLabels.portCallId,
+    colId: ControlTowerListColumns.portCallId,
     field: model('portCallId'),
     cellRendererFramework: AgCellTemplateComponent,
     width: 200
   };
 
-  portNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
-    headerName: QcReportsListColumnsLabels.portName,
-    colId: QcReportsListColumns.portName,
+  portNameCol: ITypedColDef<IControlTowerListItemDto, string> = {
+    headerName: ControlTowerListColumnsLabels.portName,
+    colId: ControlTowerListColumns.portName,
     field: model('portName'),
     cellRenderer: params => {
-      var a = document.createElement('div');
+      const a = document.createElement('div');
       a.innerHTML = params.value;
       return a;
     },
     width: 106
   };
 
-  vesselNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
-    headerName: QcReportsListColumnsLabels.vesselName,
-    colId: QcReportsListColumns.vesselName,
+  vesselNameCol: ITypedColDef<IControlTowerListItemDto, string> = {
+    headerName: ControlTowerListColumnsLabels.vesselName,
+    colId: ControlTowerListColumns.vesselName,
     field: model('vesselName'),
     cellRenderer: params => {
-      var a = document.createElement('div');
+      const a = document.createElement('div');
       a.innerHTML = params.value;
       return a;
     },
     width: 129
   };
 
-  surveyDateCol: ITypedColDef<IQcReportsListItemDto, string> = {
-    headerName: QcReportsListColumnsLabels.surveyDate,
-    colId: QcReportsListColumns.surveyDate,
+  surveyDateCol: ITypedColDef<IControlTowerListItemDto, string> = {
+    headerName: ControlTowerListColumnsLabels.surveyDate,
+    colId: ControlTowerListColumns.surveyDate,
     field: model('surveyDate'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     width: 150
   };
 
-  surveyStatusCol: ITypedColDef<IQcReportsListItemDto, IStatusLookupDto> = {
-    headerName: QcReportsListColumnsLabels.surveyStatus,
-    colId: QcReportsListColumns.surveyStatus,
+  surveyStatusCol: ITypedColDef<IControlTowerListItemDto, IStatusLookupDto> = {
+    headerName: ControlTowerListColumnsLabels.surveyStatus,
+    colId: ControlTowerListColumns.surveyStatus,
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
@@ -161,11 +173,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   };
 
   qtyMatchedStatusCol: ITypedColDef<
-    IQcReportsListItemDto,
+    IControlTowerListItemDto,
     IReconStatusLookupDto
   > = {
-    headerName: QcReportsListColumnsLabels.qtyMatchedStatus,
-    colId: QcReportsListColumns.qtyMatchedStatus,
+    headerName: ControlTowerListColumnsLabels.qtyMatchedStatus,
+    colId: ControlTowerListColumns.qtyMatchedStatus,
     field: model('qtyMatchedStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
@@ -175,27 +187,33 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 96
   };
 
-  logBookRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.logBookRobBeforeDelivery,
-    colId: QcReportsListColumns.logBookRobBeforeDelivery,
+  logBookRobBeforeDeliveryCol: ITypedColDef<
+    IControlTowerListItemDto,
+    number
+  > = {
+    headerName: ControlTowerListColumnsLabels.logBookRobBeforeDelivery,
+    colId: ControlTowerListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
     width: 170,
     valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
 
-  measuredRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
-    colId: QcReportsListColumns.measuredRobBeforeDelivery,
+  measuredRobBeforeDeliveryCol: ITypedColDef<
+    IControlTowerListItemDto,
+    number
+  > = {
+    headerName: ControlTowerListColumnsLabels.measuredRobBeforeDelivery,
+    colId: ControlTowerListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     width: 195
   };
 
-  diffRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.diffRobBeforeDelivery,
-    colId: QcReportsListColumns.diffRobBeforeDelivery,
+  diffRobBeforeDeliveryCol: ITypedColDef<IControlTowerListItemDto, number> = {
+    headerName: ControlTowerListColumnsLabels.diffRobBeforeDelivery,
+    colId: ControlTowerListColumns.diffRobBeforeDelivery,
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -208,39 +226,39 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   };
 
   qtyBeforeDeliveryUomCol: ITypedColDef<
-    IQcReportsListItemDto,
+    IControlTowerListItemDto,
     IToleranceUomDto
   > = {
-    headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
-    colId: QcReportsListColumns.qtyBeforeDeliveryUom,
+    headerName: ControlTowerListColumnsLabels.qtyBeforeDeliveryUom,
+    colId: ControlTowerListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
     cellRenderer: params => {
-      var a = document.createElement('div');
+      const a = document.createElement('div');
       a.innerHTML = params.value?.name;
       return a;
     },
     valueFormatter: params => params.value?.name
   };
 
-  bdnQuantityCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.bdnQuantity,
-    colId: QcReportsListColumns.bdnQuantity,
+  bdnQuantityCol: ITypedColDef<IControlTowerListItemDto, number> = {
+    headerName: ControlTowerListColumnsLabels.bdnQuantity,
+    colId: ControlTowerListColumns.bdnQuantity,
     field: model('bdnQuantity'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  measuredDeliveredQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.measuredDeliveredQty,
-    colId: QcReportsListColumns.measuredDeliveredQty,
+  measuredDeliveredQtyCol: ITypedColDef<IControlTowerListItemDto, number> = {
+    headerName: ControlTowerListColumnsLabels.measuredDeliveredQty,
+    colId: ControlTowerListColumns.measuredDeliveredQty,
     field: model('measuredDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  diffDeliveredQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.diffDeliveredQty,
-    colId: QcReportsListColumns.diffDeliveredQty,
+  diffDeliveredQtyCol: ITypedColDef<IControlTowerListItemDto, number> = {
+    headerName: ControlTowerListColumnsLabels.diffDeliveredQty,
+    colId: ControlTowerListColumns.diffDeliveredQty,
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -251,37 +269,43 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       )
   };
 
-  qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
-    headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
-    colId: QcReportsListColumns.qtyDeliveredUom,
+  qtyDeliveredUomCol: ITypedColDef<
+    IControlTowerListItemDto,
+    IToleranceUomDto
+  > = {
+    headerName: ControlTowerListColumnsLabels.qtyDeliveredUom,
+    colId: ControlTowerListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
     cellRenderer: params => {
-      var a = document.createElement('div');
+      const a = document.createElement('div');
       a.innerHTML = params.value?.name;
       return a;
     },
     valueFormatter: params => params.value?.name
   };
 
-  logBookRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.logBookRobAfterDelivery,
-    colId: QcReportsListColumns.logBookRobAfterDelivery,
+  logBookRobAfterDeliveryCol: ITypedColDef<IControlTowerListItemDto, number> = {
+    headerName: ControlTowerListColumnsLabels.logBookRobAfterDelivery,
+    colId: ControlTowerListColumns.logBookRobAfterDelivery,
     field: model('logBookRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  measuredRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.measuredRobAfterDelivery,
-    colId: QcReportsListColumns.measuredRobAfterDelivery,
+  measuredRobAfterDeliveryCol: ITypedColDef<
+    IControlTowerListItemDto,
+    number
+  > = {
+    headerName: ControlTowerListColumnsLabels.measuredRobAfterDelivery,
+    colId: ControlTowerListColumns.measuredRobAfterDelivery,
     field: model('measuredRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  diffRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.diffRobAfterDelivery,
-    colId: QcReportsListColumns.diffRobAfterDelivery,
+  diffRobAfterDeliveryCol: ITypedColDef<IControlTowerListItemDto, number> = {
+    headerName: ControlTowerListColumnsLabels.diffRobAfterDelivery,
+    colId: ControlTowerListColumns.diffRobAfterDelivery,
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -293,14 +317,14 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   };
 
   qtyAfterDeliveryUomCol: ITypedColDef<
-    IQcReportsListItemDto,
+    IControlTowerListItemDto,
     IToleranceUomDto
   > = {
-    headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
-    colId: QcReportsListColumns.qtyAfterDeliveryUom,
+    headerName: ControlTowerListColumnsLabels.qtyAfterDeliveryUom,
+    colId: ControlTowerListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
     cellRenderer: params => {
-      var a = document.createElement('div');
+      const a = document.createElement('div');
       a.innerHTML = params.value?.name;
       return a;
     },
@@ -308,33 +332,33 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   };
 
   logBookSludgeRobBeforeDischargeCol: ITypedColDef<
-    IQcReportsListItemDto,
+    IControlTowerListItemDto,
     number
   > = {
-    headerName: QcReportsListColumnsLabels.logBookSludgeRobBeforeDischarge,
-    colId: QcReportsListColumns.logBookSludgeRobBeforeDischarge,
+    headerName: ControlTowerListColumnsLabels.logBookSludgeRobBeforeDischarge,
+    colId: ControlTowerListColumns.logBookSludgeRobBeforeDischarge,
     field: model('logBookSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
   measuredSludgeRobBeforeDischargeCol: ITypedColDef<
-    IQcReportsListItemDto,
+    IControlTowerListItemDto,
     number
   > = {
-    headerName: QcReportsListColumnsLabels.measuredSludgeRobBeforeDischarge,
-    colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
+    headerName: ControlTowerListColumnsLabels.measuredSludgeRobBeforeDischarge,
+    colId: ControlTowerListColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
   diffSludgeRobBeforeDischargeCol: ITypedColDef<
-    IQcReportsListItemDto,
+    IControlTowerListItemDto,
     number
   > = {
-    headerName: QcReportsListColumnsLabels.diffSludgeRobBeforeDischarge,
-    colId: QcReportsListColumns.diffSludgeRobBeforeDischarge,
+    headerName: ControlTowerListColumnsLabels.diffSludgeRobBeforeDischarge,
+    colId: ControlTowerListColumns.diffSludgeRobBeforeDischarge,
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -345,44 +369,44 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       )
   };
 
-  sludgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
-    headerName: QcReportsListColumnsLabels.sludgeDischargedQty,
-    colId: QcReportsListColumns.sludgeDischargedQty,
+  sludgeDischargedQtyCol: ITypedColDef<IControlTowerListItemDto, number> = {
+    headerName: ControlTowerListColumnsLabels.sludgeDischargedQty,
+    colId: ControlTowerListColumns.sludgeDischargedQty,
     field: model('sludgeDischargedQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
   qtySludgeDischargedUomCol: ITypedColDef<
-    IQcReportsListItemDto,
+    IControlTowerListItemDto,
     IToleranceUomDto
   > = {
-    headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
-    colId: QcReportsListColumns.qtySludgeDischargedUom,
+    headerName: ControlTowerListColumnsLabels.qtySludgeDischargedUom,
+    colId: ControlTowerListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
     cellRenderer: params => {
-      var a = document.createElement('div');
+      const a = document.createElement('div');
       a.innerHTML = params.value?.name;
       return a;
     },
     valueFormatter: params => params.value?.name
   };
 
-  commentCol: ITypedColDef<IQcReportsListItemDto, string> = {
-    headerName: QcReportsListColumnsLabels.comment,
-    colId: QcReportsListColumns.comment,
+  commentCol: ITypedColDef<IControlTowerListItemDto, string> = {
+    headerName: ControlTowerListColumnsLabels.comment,
+    colId: ControlTowerListColumns.comment,
     field: model('comment'),
     cellRenderer: params => {
-      var a = document.createElement('div');
+      const a = document.createElement('div');
       a.innerHTML = params.valueFormatted ?? params.value;
       return a;
     },
     tooltipValueGetter: params => params.valueFormatted ?? params.value
   };
 
-  isVerifiedSludgeQtyCol: ITypedColDef<IQcReportsListItemDto, string> = {
-    headerName: QcReportsListColumnsLabels.isVerifiedSludgeQty,
-    colId: QcReportsListColumns.isVerifiedSludgeQty,
+  isVerifiedSludgeQtyCol: ITypedColDef<IControlTowerListItemDto, string> = {
+    headerName: ControlTowerListColumnsLabels.isVerifiedSludgeQty,
+    colId: ControlTowerListColumns.isVerifiedSludgeQty,
     field: model('isVerifiedSludgeQty'),
     cellRendererFramework: AgCellTemplateComponent,
     filter: 'agNumberColumnFilter',
@@ -403,10 +427,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     private statusLookup: StatusLookup
   ) {
     super(
-      'quantity-control-grid',
+      'control-tower-grid',
       columnPreferences,
       changeDetector,
-      loggerFactory.createLogger(QcReportsListGridViewModel.name)
+      loggerFactory.createLogger(ControlTowerListGridViewModel.name)
     );
     this.init(this.gridOptions, true);
   }
@@ -414,6 +438,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   getColumnsDefs(): ITypedColDef[] {
     return [
       this.selectCol,
+      this.openPopUp,
       this.portCallId,
       this.portNameCol,
       this.vesselNameCol,
@@ -455,7 +480,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
         transformLocalToServeGridInfo(
           this.gridApi,
           params,
-          QcReportsListColumnServerKeys,
+          ControlTowerListColumnServerKeys,
           this.searchText
         )
       )

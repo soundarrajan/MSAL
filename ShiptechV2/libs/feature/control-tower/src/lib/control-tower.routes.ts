@@ -1,6 +1,6 @@
 export enum KnownControlTowerRoutes {
   ReportList = 'reports-list',
-  ControlTowerList = 'control-tower-list',
+  ControlTowerList = 'control-tower-list-view',
   ControlTowerInvoiceList = 'control-tower-invoice-list',
   Report = 'report',
   ReportDetails = 'details',

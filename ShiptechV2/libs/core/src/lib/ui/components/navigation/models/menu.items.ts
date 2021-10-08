@@ -622,6 +622,11 @@ export const BASE_MENU: KeyedMenuItems = {
       }
     }
   },
+  control_tower: {
+    label: 'Control Tower',
+    url: '/v2/control-tower/control-tower-list-view',
+    target: '_blank'
+  },
   labs: {
     label: 'Labs',
     items: {
