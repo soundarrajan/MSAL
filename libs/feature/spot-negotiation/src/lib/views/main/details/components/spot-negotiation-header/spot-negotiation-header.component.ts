@@ -80,12 +80,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
         this.store.subscribe(({ spotNegotiation }) => {
-        this.requestOptions = spotNegotiation.currentRequestSmallInfo;
+
+        this.requestOptions = spotNegotiation.requests;
         this.locations = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
 
           this.SetLocationsRows(
-            spotNegotiation.currentRequestSmallInfo[0].requestLocations
+            spotNegotiation.currentRequestSmallInfo.requestLocations
           );
           if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
             this.counterpartyList = spotNegotiation.counterpartyList;
@@ -119,14 +120,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   toBeAddedCounterparties() : SpnegoAddCounterpartyModel[] {
-    if (this.requestOptions && this.requestOptions.length > 0) {
+    if (this.requestOptions) {
       let selectedCounterparties = [];
 
       //current RequestGroupId
-      let RequestGroupId = parseInt(this.requestOptions[0].requestGroupId);
+      let RequestGroupId = parseInt(this.requestOptions.requestGroupId);
 
+      debugger;
       //Looping through all the Request Locations
-      this.requestOptions[0].requestLocations.forEach(reqLoc => {
+      this.requestOptions.requestLocations.forEach(reqLoc => {
         let perLocationCtpys = this.selectedCounterparty.map(val => <SpnegoAddCounterpartyModel>{
           requestGroupId: RequestGroupId,
           requestLocationId: reqLoc.id,
@@ -210,28 +212,22 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   selectRequest(event, i, selected) {
+
     event.preventDefault();
-    event.stopPropagation();
     this.selReqIndex = i;
 
+    // Stop if clicked on same request;
     if(this.selReqIndex != i){
-    // Get small requests
-      var requests;
-      this.requestOptions.subscribe(e => {
-        return (requests = e);
-      });
-
+      return null;
+    }
       // Set current request
       this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
 
-      // Change locations
-      this.SetLocationsRows(requests[i].requestLocations);
 
       var obj = {
         selReqIndex: i
-      };
+      }
       this.selectionChange.emit(obj);
-    }
   }
 
   openRequestPopup() {

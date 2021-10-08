@@ -15,7 +15,8 @@ import {
 import {
   SetRequestGroupId,
   SetCurrentRequest,
-  SetCurrentRequestSmallInfo
+  SetCurrentRequestSmallInfo,
+  SetRequests
 } from './actions/request-group-actions';
 
 export class SpotNegotiationStoreModel {
@@ -35,6 +36,7 @@ export class SpotNegotiationStoreModel {
   sellerComments: Array<any>;
   currentRequest: object | null;
   currentRequestSmallInfo: object | null;
+  requests: Array<any>;
   formulaPricingDetails: object | null;
   marketPriceHistory: object | null;
   offerPriceHistory: object | null;
@@ -57,6 +59,7 @@ export class SpotNegotiationStoreModel {
     this.marketPriceHistory = null;
     this.commentsForCurrentRequest = [];
     this.sellerComments = [];
+    this.requests = [];
     this.groupOfRequestsId = null;
     this.offerPriceHistory = null;
   }
@@ -68,6 +71,7 @@ export class SpotNegotiationStoreModel {
     groupOfRequestsId: null,
     currentRequestSmallInfo: null,
     locations: [],
+    requests:[],
     commentsForCurrentRequest: [],
     selectedSellerList: [],
     selectedCounterpartyList:[],
@@ -105,6 +109,16 @@ export class SpotNegotiationStore {
   ): void {
     patchState({
       currentRequest: payload
+    });
+  }
+  // Requests
+  @Action(SetRequests)
+  setRequests(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetRequests
+  ): void {
+    patchState({
+      requests: payload
     });
   }
 
@@ -186,37 +200,36 @@ export class SpotNegotiationStore {
     });
   }
 
-  @Action(SelectSeller)  
-    addUser({getState, patchState}: StateContext<SpotNegotiationStoreModel>, {payload}: SelectSeller) {  
-        const state = getState();  
-        const selectedSellerList = [...state.selectedSellerList];  
-        patchState({  
-          selectedSellerList: [...state.selectedSellerList, payload]  
-        });  
-        return;  
-    }  
-  
-    @Action(DeleteSeller)  
-    deleteUser({getState, setState}: StateContext<SpotNegotiationStoreModel>, {RequestLocationSellerId}: DeleteSeller) {  
-        const state = getState();  
-        const filteredArray = state.selectedSellerList.filter(item => item.RequestLocationSellerId !== RequestLocationSellerId);  
-        setState({  
-            ...state,  
-            selectedSellerList: filteredArray,  
-        });  
-        return;  
-    } 
+  @Action(SelectSeller)
+    addUser({getState, patchState}: StateContext<SpotNegotiationStoreModel>, {payload}: SelectSeller) {
+        const state = getState();
+        const selectedSellerList = [...state.selectedSellerList];
+        patchState({
+          selectedSellerList: [...state.selectedSellerList, payload]
+        });
+        return;
+    }
 
-    @Action(SelectCounterparty)  
-    addCounterpartyToConfirmOrder({getState, patchState}: StateContext<SpotNegotiationStoreModel>, {payload}: SelectCounterparty) {  
-      debugger;
-        const state = getState();  
-        const selectedCounterpartyList = [...state.selectedCounterpartyList];  
-        patchState({  
-          selectedCounterpartyList: [...state.selectedCounterpartyList, payload]  
-        });  
-        return;  
-    }  
+    @Action(DeleteSeller)
+    deleteUser({getState, setState}: StateContext<SpotNegotiationStoreModel>, {RequestLocationSellerId}: DeleteSeller) {
+        const state = getState();
+        const filteredArray = state.selectedSellerList.filter(item => item.RequestLocationSellerId !== RequestLocationSellerId);
+        setState({
+            ...state,
+            selectedSellerList: filteredArray,
+        });
+        return;
+    }
+
+    @Action(SelectCounterparty)
+    addCounterpartyToConfirmOrder({getState, patchState}: StateContext<SpotNegotiationStoreModel>, {payload}: SelectCounterparty) {
+        const state = getState();
+        const selectedCounterpartyList = [...state.selectedCounterpartyList];
+        patchState({
+          selectedCounterpartyList: [...state.selectedCounterpartyList, payload]
+        });
+        return;
+    }
 
   // Rows lists
   @Action(AddCounterpartyToLocations)

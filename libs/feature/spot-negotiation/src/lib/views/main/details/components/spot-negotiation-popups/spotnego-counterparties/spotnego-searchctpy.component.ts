@@ -156,7 +156,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     if (this.AddCounterpartiesAcrossLocations) {
       let selectedCounterparties = [];
       //Looping through all the Request Locations
-      this.currentRequest[0].requestLocations.forEach(reqLoc => {
+      this.currentRequest.requestLocations.forEach(reqLoc => {
         let perLocationCtpys = this.selectedRows.map(
           val =>
             <SpnegoAddCounterpartyModel>{

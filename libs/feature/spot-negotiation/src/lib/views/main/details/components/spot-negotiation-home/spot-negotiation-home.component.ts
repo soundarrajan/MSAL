@@ -30,7 +30,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
   ];
   @ViewChild(AgGridDatetimePickerToggleComponent) child:AgGridDatetimePickerToggleComponent;
 
-  
   selectedSellerList: any[];
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private toaster: ToastrService,private store: Store,private spotNegotiationService: SpotNegotiationService) { }
 
@@ -67,7 +66,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         spotNegotiation.locationsRows.forEach(element1 => {
             if(element.locationId == element1.locationId){
               if(element1["isSelected"]){
-                  var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],'')
+                  var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,'')
                   if(Sellectedsellerdata != null && Sellectedsellerdata.length != 0){
                     this.selectedSellerList.push(Sellectedsellerdata[0]);
                   }
@@ -75,22 +74,22 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 let productLength = element.requestProducts.length;
                 for (let index = 0; index < productLength; index++) {
                   if(index == 0 && element1["checkProd1"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
                   }
                   else if(index == 1 && element1["checkProd2"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
                   }
                   else if(index == 2 && element1["checkProd3"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
                   }
                   else if(index == 3 && element1["checkProd4"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
                   }
                   else if(index == 4 && element1["checkProd5"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo[0],index)
+                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
                   }
                   else{
-                    let errormessage = "Atleast 1 counterparty should be selected in" + spotNegotiation.currentRequestSmallInfo[0].name +"-"+spotNegotiation.currentRequestSmallInfo[0].vesselName;
+                    let errormessage = "Atleast 1 counterparty should be selected in" + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
                     this.toaster.error(errormessage);
                   }
 
@@ -100,11 +99,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 }
               }
             }
-            
           });
-        
       });
-        
       });
     // Get response from server
     const response = this.spotNegotiationService.SendRFQ(

@@ -1,3 +1,8 @@
+export class SetRequests {
+  static readonly type = '[SetRequests] Set';
+
+  constructor(public payload: any) {}
+}
 export class SetCurrentRequestSmallInfo {
   static readonly type = '[Current Request Small Info] Set';
 
