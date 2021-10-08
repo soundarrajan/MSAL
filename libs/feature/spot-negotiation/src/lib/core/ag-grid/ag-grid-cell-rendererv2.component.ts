@@ -704,7 +704,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return response.toString();
   }
 
-  priceFormatValue(value, pricePrecision) {
+  priceFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
@@ -719,9 +719,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
     let productPricePrecision = this.tenantService.pricePrecision;
 
-    if (pricePrecision) {
-      productPricePrecision = pricePrecision;
-    }
+    // if (pricePrecision) {
+    //   productPricePrecision = pricePrecision;
+    // }
 
     this.priceFormat =
       '1.' + productPricePrecision + '-' + productPricePrecision;
