@@ -12,7 +12,8 @@ import { Store } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
-  SetRequestGroupId
+  SetRequestGroupId,
+  SetRequests
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
@@ -76,8 +77,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         return;
       }
 
+      // Set all request inside store
+      if (res['requests']) {
+        this.store.dispatch(new SetRequests(res['requests']));
+      }
+
       if (res['requests'][0]) {
-        this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests']));
+        // Set first request default;
+        this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests'][0]));
         this.store.dispatch(
           new SetLocations(res['requests'][0].requestLocations)
         );
@@ -85,6 +92,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  addPriceDetailsInsideLocationsRows = () => {};
 
   getGroupOfSellers(): void {
     // Get current id from url and make a request with that data.
@@ -123,11 +132,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
         editedLocation.forEach(element => {
           element.isSelected = false;
-          element.checkProd1 =false;
+          element.checkProd1 = false;
           element.checkProd2 = false;
-          element.checkProd3 =false;
+          element.checkProd3 = false;
           element.checkProd4 = false;
-          element.checkProd5 =false;
+          element.checkProd5 = false;
         });
         this.store.dispatch(new SetLocationsRows(editedLocation));
         this.changeDetector.detectChanges();
