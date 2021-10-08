@@ -1883,6 +1883,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         $('.contextmenu').css('max-height', $(currentElem).offset().top);
                         $('.contextmenu').css('overflow', 'auto !important');
                     }
+
+                    let offsetLeft = $('.contextmenu').offset().left;
+                    if (offsetLeft < 0) {
+                        $('.contextmenu').css('transform', 'translate(' + offsetLeft * (-1) + 'px )');
+                    }
+
+                    let offsetRight =  $(window).width() - ($('.contextmenu').offset().left + $('.contextmenu').outerWidth(true));
+                    if (offsetRight < 0) {
+                        $('.contextmenu').offset({top: $('.contextmenu').offset().top, left: $('.contextmenu').offset().left + offsetRight});
+                    } 
+                    console.log($('.contextmenu'));
+                    console.log(offsetRight);
                     setTimeout(function() {
                         $('.contextmenu').css("visibility", "visible");
 
