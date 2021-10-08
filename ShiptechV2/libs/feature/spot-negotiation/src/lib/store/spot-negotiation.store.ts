@@ -8,7 +8,8 @@ import {
   SetLocationsRowsPriceDetails,
   SelectSeller,
   DeleteSeller,
-  SetLocations
+  SetLocations,
+  SelectCounterparty
 } from './actions/ag-grid-row.action';
 
 import {
@@ -26,6 +27,7 @@ export class SpotNegotiationStoreModel {
   locationsRows: Array<any>;
   locationsRowsPriceDetails: Array<any>;
   selectedSellerList:Array<any>;
+  selectedCounterpartyList:Array<any>;
   additionalCost: Array<any>;
   availableTermContracts: Array<any>;
   sellerRating: Array<any>;
@@ -43,6 +45,7 @@ export class SpotNegotiationStoreModel {
     this.counterpartyList = {};
     this.locations = [];
     this.selectedSellerList = [];
+    this.selectedCounterpartyList=[];
     this.locationsRows = [];
     this.locationsRowsPriceDetails = [];
     this.additionalCost = [];
@@ -67,6 +70,7 @@ export class SpotNegotiationStoreModel {
     locations: [],
     commentsForCurrentRequest: [],
     selectedSellerList: [],
+    selectedCounterpartyList:[],
     currentRequest: null,
     locationsRows: [],
     locationsRowsPriceDetails: [],
@@ -202,6 +206,17 @@ export class SpotNegotiationStore {
         });  
         return;  
     } 
+
+    @Action(SelectCounterparty)  
+    addCounterpartyToConfirmOrder({getState, patchState}: StateContext<SpotNegotiationStoreModel>, {payload}: SelectCounterparty) {  
+      debugger;
+        const state = getState();  
+        const selectedCounterpartyList = [...state.selectedCounterpartyList];  
+        patchState({  
+          selectedCounterpartyList: [...state.selectedCounterpartyList, payload]  
+        });  
+        return;  
+    }  
 
   // Rows lists
   @Action(AddCounterpartyToLocations)

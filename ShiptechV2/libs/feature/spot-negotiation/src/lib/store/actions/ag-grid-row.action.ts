@@ -48,3 +48,10 @@ export class DeleteSeller {
   constructor(public RequestLocationSellerId: number) {  
   }  
 }   
+
+export class SelectCounterparty {  
+  static readonly type = '[selectedCounterpartyList] Add';  
+
+  constructor(public payload: any ) {  
+  }  
+}  
