@@ -74,8 +74,7 @@ const COMPONENTS = [
   AgCheckBoxHeaderComponent,
   AgCheckBoxRendererComponent,
   AgAsyncBackgroundFillComponent,
-  AgOpenPopUpComponent,
-  ControlTowerModalComponent
+  AgOpenPopUpComponent
 ];
 
 @NgModule({
@@ -122,7 +121,6 @@ const COMPONENTS = [
     MatTooltipModule
   ],
   declarations: [...COMPONENTS],
-  exports: [AgPagingModule, ...COMPONENTS],
-  entryComponents: [ControlTowerModalComponent]
+  exports: [AgPagingModule, ...COMPONENTS]
 })
 export class AgGridExtensionsModule {}

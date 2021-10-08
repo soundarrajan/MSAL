@@ -108,6 +108,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ControlTowerModalComponent } from '@shiptech/core/ui/components/control-tower-modal/control-tower-modal.component';
 
 @NgModule({
   imports: [
@@ -206,9 +207,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     ProductDetailsComponent,
     QcReportDetailsToolbarComponent,
     UomSelectorComponent,
-    RaiseClaimComponent
+    RaiseClaimComponent,
+    ControlTowerModalComponent
   ],
-  entryComponents: [RaiseClaimComponent],
+  entryComponents: [RaiseClaimComponent, ControlTowerModalComponent],
   exports: [MainControlTowerComponent],
   providers: [
     ModuleLoggerFactory,
