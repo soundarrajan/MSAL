@@ -4728,6 +4728,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         }
 
 
+        jQuery(document).on('click', '#clearUnsavedFilters', () => {
+        	$rootScope.$broadcast("clearUnsavedFilters", true);
+        });
+
         /*GET SCREEN ACTIONS*/
         //     $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
         //    $('clc-table-list').remove()

@@ -389,7 +389,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             });
         };
 
-        jQuery(document).on('click', '#clearUnsavedFilters', () => {
+		$rootScope.$on("clearUnsavedFilters", () => {
         	if ($state.current.url == '/schedule-dashboard-table') {
         		if (!$scope.selectedConfig) {
 	        		angular.element($('.clearFiltersSidebar')).scope().clearFilters();
@@ -397,7 +397,8 @@ angular.module('shiptech.components').controller('FiltersController', [
         	} else {
 	        	$scope.clearUnsavedFilters();
         	}
-        });
+		} );
+
 
         $scope.clearUnsavedFilters = function() {
     		console.log('$scope.clearUnsavedFilters', new Date() - window.lastclearUnsavedFiltersCall);
