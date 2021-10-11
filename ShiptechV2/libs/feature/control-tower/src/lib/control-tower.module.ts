@@ -113,6 +113,7 @@ import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { DSV2ComponentsModule } from '@shiptech/core/ui/components/designsystem-v2/ds-v2.module';
+import { ResidueDifferenceComponent } from './views/control-tower/view/components/residue-difference/residue-difference.component';
 
 @NgModule({
   imports: [
@@ -228,7 +229,8 @@ import { DSV2ComponentsModule } from '@shiptech/core/ui/components/designsystem-
     QcReportDetailsToolbarComponent,
     UomSelectorComponent,
     RaiseClaimComponent,
-    ControlTowerModalComponent
+    ControlTowerModalComponent,
+    ResidueDifferenceComponent
   ],
   entryComponents: [RaiseClaimComponent, ControlTowerModalComponent],
   exports: [MainControlTowerComponent],

@@ -7,6 +7,8 @@ import { MaterialModule } from '../../material.module';
 import { UIModule } from '../../ui.module';
 import { AGGridCellActionsComponent } from './ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from './ag-grid/ag-grid-cell-editable.component';
+import { AGGridCellRendererV2Component } from './ag-grid/ag-grid-cell-rendererv2.component';
+import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
 
 @NgModule({
   imports: [
@@ -18,11 +20,17 @@ import { AGGridCellEditableComponent } from './ag-grid/ag-grid-cell-editable.com
     MatRadioModule,
     AgGridModule.withComponents([
       AGGridCellActionsComponent,
-      AGGridCellEditableComponent
+      AGGridCellEditableComponent,
+      AGGridCellRendererV2Component
     ])
   ],
-  exports: [],
-  declarations: [AGGridCellActionsComponent, AGGridCellEditableComponent],
-  entryComponents: []
+  exports: [RowstatusOnchangeResiduePopupComponent],
+  declarations: [
+    AGGridCellActionsComponent,
+    AGGridCellEditableComponent,
+    AGGridCellRendererV2Component,
+    RowstatusOnchangeResiduePopupComponent
+  ],
+  entryComponents: [RowstatusOnchangeResiduePopupComponent]
 })
 export class DSV2ComponentsModule {}
