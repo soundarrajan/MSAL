@@ -29,64 +29,8 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
     <div *ngIf="params.type === 'checkbox-selection'">
       <mat-checkbox class="grid-checkbox"></mat-checkbox>
     </div>
-    <div
-      class="hover-popup-icon grid-popup"
-      *ngIf="params.type === 'grid-popup-icon'"
-    >
-      <span>{{ params.value }}</span>
-      <div
-        class="popup-icon"
-        matTooltip="View Operational Calc."
-        matTooltipShowDelay="200"
-        (click)="openOperationalAmtPopup()"
-      ></div>
-    </div>
-    <div
-      class="hover-popup-icon"
-      *ngIf="params.type === 'cell-with-popup-icon'"
-    >
-      <div>{{ params.value }}</div>
-      <div
-        class="popup-icon-inline"
-        [ngClass]="{ 'popup-icon-active': popupOpen }"
-        matTooltip="View Operational Calc."
-        matTooltipShowDelay="200"
-        (click)="openOperationalAmtPopup()"
-      ></div>
-    </div>
-    <div *ngIf="params.type === 'view-link'">
-      <span (click)="navigateTo($event)">View</span>
-    </div>
-    <div *ngIf="params.type === 'edit-link'">
-      <span (click)="navigateTo($event)">Edit</span>
-    </div>
-    <div *ngIf="params.type === 'copy-link'">
-      <span (click)="navigateTo($event)">Copy</span>
-    </div>
-    <div *ngIf="params.type === 'delete-link'">
-      <span (click)="navigateTo($event)">Delete</span>
-    </div>
-    <div *ngIf="params.type === 'run-link'">
-      <span
-        [ngClass]="{
-          'view-eye-icon': params.value == 'View EOM',
-          'run-icon': params.value == 'Run EOM'
-        }"
-      ></span>
-      <span (click)="navigateTo($event)">{{ params.value }}</span>
-    </div>
     <div *ngIf="params.type === 'download-json-btn'">
       <button mat-raised-button class="blue-button h-25">Download JSON</button>
-    </div>
-    <div *ngIf="params.type === 'view-figma-btn'">
-      <button mat-raised-button class="blue-button h-25" (click)="viewFigma()">
-        View Figma
-      </button>
-    </div>
-    <div *ngIf="params.type === 'change-logs-btn'">
-      <button mat-raised-button class="blue-button h-25" (click)="changeLog()">
-        Change Logs
-      </button>
     </div>
     <div
       *ngIf="params.type === 'cell-edit-sort-order'"
@@ -153,42 +97,9 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     this.params.action();
   }
 
-  openOperationalAmtPopup() {
-    this.popupOpen = true;
-    // const dialogRef = this.dialog.open(OperationalAmountDialog, {
-    //   width: '600px',
-    //   maxHeight: '600px',
-    //   panelClass: 'movements-popup-grid'
-    // });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   this.popupOpen = false;
-    // });
-  }
 
-  navigateTo() {
-    this.params.onClick(this.params);
-  }
 
-  viewFigma(e) {
-    const figmaLink = this.params.value;
-    this.router.navigate([]).then(result => {
-      window.open(figmaLink, '_blank');
-    });
-  }
 
-  changeLog() {
-    const changeLogsData = this.params.data.changeLogs;
-    // const dialogRef = this.dialog.open(ChangeLogPopupComponent, {
-    //   width: '100vw',
-    //   height: '95vh',
-    //   maxWidth: '95vw',
-    //   panelClass: 'mov-report-popup',
-    //   data: changeLogsData
-    // });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(`Dialog result: ${result}`);
-    // });
-  }
 }
