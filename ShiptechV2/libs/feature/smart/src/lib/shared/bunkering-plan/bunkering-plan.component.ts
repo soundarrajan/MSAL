@@ -648,7 +648,7 @@ export class BunkeringPlanComponent implements OnInit {
 
   checkBunkerPlanValidations(data){
     let isHardValidation = 0;
-    const mailPattern = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
+    const mailPattern = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$");
     let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB)
     let opUdatedColumn = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanDataOpUpdatedColumns);
     let totalTankCapacity = this.store.selectSnapshot(SaveBunkeringPlanState.getTotalTankCapacity);
