@@ -247,8 +247,9 @@
       <div class="input">
         <div>{{params.column.colDef.headerName}}</div>
         <mat-form-field appearance="fill">
-          <input type="number" matInput #inpt id="inputValue" [value]="params.value" (keyup)="onEditCell(inpt.value,cmnt.value)"
-            (click)="$event.stopPropagation();">
+          <input type="number" class="BPInNumField" matInput #inpt id="inputValue" [value]="params.value" onkeydown="javascript: return event.keyCode === 8 ||
+          event.keyCode === 46 ? true : !isNaN(Number(event.key))" (keyup)="onEditCell(inpt.value,cmnt.value)"
+            (click)="$event.stopPropagation();" placeholder="Please enter a numeric value">
         </mat-form-field>
       </div>
       <div class="comments">
