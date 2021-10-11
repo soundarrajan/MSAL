@@ -51,7 +51,9 @@
       <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
     </div>
   </div>
-
+  <button mat-raised-button color="primary" (click)="newFilters()">
+    Primary
+  </button>
   <ag-grid-angular
     #agGridAngular
     appAgGridFirstColumnLocked
