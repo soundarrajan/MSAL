@@ -2772,9 +2772,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 						    return email.process.indexOf('Contract') == -1;
                     });
 		            	if (ctrl.confirmToSellerManual) {
+                            if(defaultTemplate.length > 0){
+                                if(defaultTemplate.filter(a=>a.process.contains('Alkali')).length > 0)
+                                    var alkalitemplate = defaultTemplate.filter(a=>a.process.contains('Alkali'))[0];
+                                if(defaultTemplate.filter(a=>!a.process.contains('Alkali')).length > 0)
+                                    var othertemplate = defaultTemplate.filter(a=>!a.process.contains('Alkali'))[0];
+                            }
 			                var data = {
 			                    orderId: ctrl.orderId,
-		                        defaultTemplate : (otherprodcount ? defaultTemplate[0].template : alkaliproducttype ? defaultTemplate[1].template :  defaultTemplate[0].template),
+		                        defaultTemplate : (otherprodcount ? othertemplate.template : alkaliproducttype ? alkalitemplate.template :  othertemplate.template),
 		                        canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
 		                        canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
 		                        command: command
@@ -2791,9 +2797,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 						    return email.process.indexOf('Contract') != -1 || email.process.indexOf('Alkali') > -1;
                     });
 		            	if (ctrl.confirmToSellerContractManual) {
+                            if(defaultTemplate.length > 0){
+                                if(defaultTemplate.filter(a=>a.process.contains('Alkali')).length > 0)
+                                    var alkalitemplate = defaultTemplate.filter(a=>a.process.contains('Alkali'))[0];
+                                if(defaultTemplate.filter(a=>!a.process.contains('Alkali')).length > 0)
+                                    var othertemplate = defaultTemplate.filter(a=>!a.process.contains('Alkali'))[0];
+                            }
 			                var data = {
 			                    orderId: ctrl.orderId,
-		                        defaultTemplate : (otherprodcount ? defaultTemplate[0].template : alkaliproducttype ? defaultTemplate[1].template :  defaultTemplate[0].template),
+		                        defaultTemplate : (otherprodcount ? othertemplate.template : alkaliproducttype ? alkalitemplate.template :  othertemplate.template),
 		                        canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
 		                        canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
 		                        command: command
@@ -2860,9 +2872,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
 
             	if (defaultTemplate[0].emailType.name == 'Manual' /* && ctrl.procurementSettings.order.needConfirmationVesselEmail.name == 'HardStop'*/) {
+                        if(defaultTemplate.filter(a=>a.process.contains('LNG')).length > 0)
+                            var lngtemplate = defaultTemplate.filter(a=>a.process.contains('LNG'))[0];
+                        if(defaultTemplate.filter(a=>!a.process.contains('LNG')).length > 0)
+                            var othertemplate = defaultTemplate.filter(a=>!a.process.contains('LNG'))[0];
 	                var data = {
 	                    orderId: ctrl.orderId,
-                        defaultTemplate : (otherprodcount ? defaultTemplate[0].template : lngproducttype ? defaultTemplate[1].template :  defaultTemplate[0].template),
+                        defaultTemplate : (otherprodcount ? othertemplate.template : lngproducttype ? lngtemplate.template :  othertemplate.template),
                         canSendConfirmToSeller : ctrl.canSendConfirmToSellerForPreview(),
                         canSendConfirmToVessel : ctrl.canSendConfirmToVesselForPreview(),
                         command: command
