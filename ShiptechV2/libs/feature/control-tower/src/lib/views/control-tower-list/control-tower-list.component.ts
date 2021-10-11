@@ -147,4 +147,10 @@ export class ControlTowerListComponent implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
+
+  newFilters() {
+    console.log(this.gridViewModel);
+    this.gridViewModel.filterByStatus();
+    // this.gridViewModel.serverSideGetRows(this.gridViewModel);
+  }
 }

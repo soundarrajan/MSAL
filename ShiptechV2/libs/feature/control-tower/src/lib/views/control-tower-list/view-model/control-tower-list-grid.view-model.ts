@@ -472,7 +472,29 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     this.gridApi.purgeServerSideCache();
   }
 
+  public filterByStatus(): void {
+    let grid = this.gridApi.getFilterModel();
+    grid['vesselName'] = {
+      filterType: 'text',
+      type: 'contains',
+      filter: 'CMA'
+    };
+    this.gridApi.setFilterModel(grid);
+    let grid1 = this.gridApi.getFilterModel();
+    // this.gridApi.purgeServerSideCache();
+  }
+
+  public checkIfStatusExist() {
+    
+  }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    let values = transformLocalToServeGridInfo(
+      this.gridApi,
+      params,
+      ControlTowerListColumnServerKeys,
+      this.searchText
+    );
     this.paramsServerSide = params;
     this.exportUrl = this.reportService.getQcReportListExportUrl();
     this.reportService

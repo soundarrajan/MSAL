@@ -429,7 +429,26 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     return 'red';
   }
 
+  public filterByStatus(): void {
+    let grid = this.gridApi.getFilterModel();
+    grid['vesselName'] = {
+      filterType: 'text',
+      type: 'contains',
+      filter: 'malta'
+    };
+    this.gridApi.setFilterModel(grid);
+    let grid1 = this.gridApi.getFilterModel();
+    this.gridApi.purgeServerSideCache();
+  }
+
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    let values = transformLocalToServeGridInfo(
+      this.gridApi,
+      params,
+      InvoiceListColumnServerKeys,
+      this.searchText
+    );
     this.paramsServerSide = params;
     this.exportUrl = this.reportService.getInvoiceListExportUrl();
     this.reportService
