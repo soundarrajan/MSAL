@@ -126,14 +126,14 @@
 .p-l-3 {
   padding-left: 3px;
 }
-.p-l-6 {
-  padding-left: 6px;
+.p-l-6{
+  padding-left:6px;
 }
 .p-l-8 {
   padding-left: 8px !important;
 }
-.p-l-7 {
-  padding-left: 7px;
+.p-l-7{
+  padding-left:7px;
 }
 .p-l-10 {
   padding-left: 10px;
@@ -198,8 +198,8 @@
 .p-r-10 {
   padding-right: 10px;
 }
-.p-r-12 {
-  padding-right: 12px;
+.p-r-12{
+  padding-right:12px;
 }
 
 .p-r-15 {
@@ -209,7 +209,7 @@
 .p-r-20 {
   padding-right: 20px !important;
 }
-.p-lr-0 {
+.p-lr-0{
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
@@ -253,8 +253,8 @@
 .m-b-15 {
   margin-bottom: 15px !important;
 }
-.m-b-25 {
-  margin-bottom: 25px;
+.m-b-25{
+  margin-bottom:25px;
 }
 
 .m-b-30 {
@@ -325,11 +325,13 @@
   margin-right: 9px !important;
 }
 
+
+
 .m-r-10 {
   margin-right: 10px !important;
 }
-.m-r-20 {
-  margin-right: 20px !important;
+.m-r-20{
+  margin-right:20px !important;
 }
 
 .m-l-12 {
@@ -339,11 +341,11 @@
 .m-r-19 {
   margin-right: 19px;
 }
-.m-l-20 {
-  margin-left: 20px;
+.m-l-20{
+  margin-left:20px;
 }
-.m-r-70 {
-  margin-right: 70px;
+.m-r-70{
+  margin-right:70px;
 }
 
 .m-r-74 {
@@ -353,15 +355,15 @@
 .m-r-88 {
   margin-right: 88px;
 }
-.m-r-83 {
-  margin-right: 83px;
+.m-r-83{
+  margin-right:83px;
 }
-.m-r-77 {
-  margin-right: 77px;
+.m-r-77{
+  margin-right:77px
 }
-.m-lr-5 {
+.m-lr-5{
   margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 5px; 
 }
 .m-lr-6 {
   margin-left: 6px;
@@ -378,23 +380,23 @@
   margin-left: 2px;
 }
 
-.m-t-m30 {
-  margin-top: -30px;
+.m-t-m30{
+  margin-top:-30px;
 }
-.m-t-m10 {
-  margin-top: -10px;
+.m-t-m10{
+  margin-top:-10px;
 }
-.m-t-m18 {
-  margin-top: -18px;
+.m-t-m18{
+  margin-top:-18px;
 }
-.m-t-m19 {
-  margin-top: -19px;
+.m-t-m19{
+  margin-top:-19px;
 }
-.m-t-m20 {
-  margin-top: -20px;
+.m-t-m20{
+  margin-top:-20px;
 }
-.m-t-m25 {
-  margin-top: -25px;
+.m-t-m25{
+  margin-top:-25px;
 }
 
 /* ---- MARGINS END ---- */
@@ -460,6 +462,7 @@
 
 // Max-width truncate
 @for $maxwidth from 5 through 25 {
+
   /* max-width truncate to #{$maxwidth * 10}px */
   .truncate-#{$maxwidth * 10} {
     max-width: $maxwidth * 10px;
@@ -471,6 +474,7 @@
 
 // Fixed width truncate
 @for $width from 5 through 25 {
+
   /* fixed width truncate to #{$width * 10}px */
   .truncate-f#{$width * 10} {
     width: $width * 10px;
@@ -560,7 +564,7 @@
 
 // Checkbox ripple color
 /deep/ .mat-ripple-element {
-  background: rgba(27, 142, 241, 0.4) !important;
+  background: rgba(27, 142, 241, .4) !important;
 }
 
 .mat-icon-button {
@@ -681,12 +685,12 @@
 
 // Material radio button ripple element color
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
-  background-color: rgba(66, 134, 244, 0.26);
+  background-color: rgba(66, 134, 244, .26);
 }
 
 // Material Raised Button Shadow (Only Active)
 .mat-raised-button:not([disabled]) {
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .25) !important;
   //box-shadow: 0 3px 1px -2px rgba(0,0,0,.25), 0 2px 2px 0 rgba(0,0,0,.25), 0 1px 5px 0 rgba(0,0,0,.25) !important;
 }
 
@@ -728,33 +732,33 @@
   opacity: 1 !important;
 }
 
+
 .noborder {
   .mat-checkbox-frame {
     border-width: 0 !important;
   }
-  &.checkmenu {
-    // &.mat-checkbox-checked{
-    //   border:none !important;
-    //   position: relative;
-    //   top: 3px;
-    .mat-checkbox-inner-container {
-      width: 17px;
-      height: 18px;
-      //}
-    }
+  &.checkmenu{
+  // &.mat-checkbox-checked{
+  //   border:none !important;
+  //   position: relative;
+  //   top: 3px;
+  .mat-checkbox-inner-container{
+    width: 17px;
+    height: 18px;
+  //}
+}
   }
+
 }
 
 // Grey Slider - No BG, Border & thumb: grey
 .slider-grey {
-  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar,
-  .mat-slide-toggle-bar {
+  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar, .mat-slide-toggle-bar {
     background-color: transparent;
     border: 1px solid #bdbdbd;
   }
 
-  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb,
-  .mat-slide-toggle-thumb {
+  .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb, .mat-slide-toggle-thumb {
     background-color: #bdbdbd;
   }
 }
@@ -787,12 +791,13 @@
 }
 
 // Block Radio Buttons
-.block-radio-btn {
+.block-radio-btn{
   .mat-radio-button {
     display: block;
     margin: 5px 0;
   }
 }
+
 
 /* ---- MATERIAL OVERRIDES END ---- */
 
@@ -809,11 +814,11 @@
 }
 
 .b-bottom {
-  border-bottom: 1px solid #bdbdbd;
+  border-bottom: 1px solid #BDBDBD;
 }
 
 .b-top {
-  border-top: 1px solid #bdbdbd;
+  border-top: 1px solid #BDBDBD;
 }
 
 .red {
@@ -825,10 +830,11 @@
 }
 
 table {
-  border-color: #e5e5e5;
+  border-color: #E5E5E5;
 }
 
 .tr-shadow {
+
   tr.tr-shadow,
   .datatable-row-center,
   .ngx-datatable.material .datatable-header,
@@ -850,7 +856,7 @@ table {
   height: auto;
 }
 
-.grayscale {
+.grayscale{
   filter: grayscale(100%);
 }
 
@@ -868,25 +874,23 @@ table {
   color: $black !important;
 }
 
-// Datatable Resize Handle
+// Datatable Resize Handle 
 .ngx-datatable.material .datatable-header .resize-handle {
   border-right: 1px solid $blue;
 }
 
-// datatable cell
-.ngx-datatable.material
-  .datatable-body
-  .datatable-body-row
-  .datatable-body-cell {
+// datatable cell 
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
   border: 1px solid $tbl-border-color;
 }
 
 /* ----- DATATABLE OVERRIDES END ----- */
 
 .table {
+
   td,
   th {
-    vertical-align: middle;
+    vertical-align: middle
   }
 }
 
@@ -946,6 +950,7 @@ button:focus {
 
 /* ---- EXTRAS END ---- */
 
+
 /* ----- 9) DATATABLE OVERRIDES: SCDTOVR ----- */
 .ngx-datatable .datatable-header {
   background: $white;
@@ -966,11 +971,10 @@ button:focus {
   font-weight: 300;
 }
 
+
+
 // datatable body cell + borders
-.ngx-datatable.material
-  .datatable-body
-  .datatable-body-row
-  .datatable-body-cell {
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
   border-bottom: 2px solid $tbl-border-color;
   border-left: 1px solid $tbl-border-color;
   border-right: 1px solid $tbl-border-color;
@@ -980,110 +984,68 @@ button:focus {
 
 // datatable selected active row color
 .ngx-datatable.material.single-selection .datatable-body-row.active,
-.ngx-datatable.material.single-selection
-  .datatable-body-row.active
-  .datatable-row-group,
+.ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group,
 .ngx-datatable.material.multi-selection .datatable-body-row.active,
-.ngx-datatable.material.multi-selection
-  .datatable-body-row.active
-  .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active .datatable-row-group,
 .ngx-datatable.material.multi-click-selection .datatable-body-row.active,
-.ngx-datatable.material.multi-click-selection
-  .datatable-body-row.active
-  .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active .datatable-row-group,
 .ngx-datatable.material.multi-click-selection .datatable-body-row.active,
-.ngx-datatable.material.multi-click-selection
-  .datatable-body-row.active
-  .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active .datatable-row-group,
 .ngx-datatable.material.multi-selection .datatable-body-row.active,
-.ngx-datatable.material.multi-selection
-  .datatable-body-row.active
-  .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active .datatable-row-group,
 .ngx-datatable.material.single-selection .datatable-body-row.active,
-.ngx-datatable.material.single-selection
-  .datatable-body-row.active
-  .datatable-row-group {
-  background-color: #edffe8 !important;
+.ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group {
+  background-color: #EDFFE8 !important;
 }
 
 // Datatable Row Hover + Selected Row Hover
 .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
-.ngx-datatable.material:not(.cell-selection)
-  .datatable-body-row:hover
-  .datatable-row-group,
+.ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group,
+
 .ngx-datatable.material.single-selection .datatable-body-row.active:hover,
-.ngx-datatable.material.single-selection
-  .datatable-body-row.active:hover
-  .datatable-row-group,
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group,
 .ngx-datatable.material.multi-selection .datatable-body-row.active:hover,
-.ngx-datatable.material.multi-selection
-  .datatable-body-row.active:hover
-  .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active:hover .datatable-row-group,
 .ngx-datatable.material.multi-click-selection .datatable-body-row.active:hover,
-.ngx-datatable.material.multi-click-selection
-  .datatable-body-row.active:hover
-  .datatable-row-group {
-  background: #edffe8;
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active:hover .datatable-row-group {
+  background: #EDFFE8;
   color: #333;
 }
 
 // FREIGHT MASTERS - Datatable Row Hover
-.ngx-datatable.material#freight-masters:not(.cell-selection)
-  .datatable-body-row:hover,
-.ngx-datatable.material#freight-masters:not(.cell-selection)
-  .datatable-body-row:hover
-  .datatable-row-group,
-.ngx-datatable.material#freight-masters:not(.cell-selection)
-  .datatable-body-row:hover
-  .datatable-body-cell1,
-.ngx-datatable.material#freight-masters.single-selection
-  .datatable-body-row.active:hover,
-.ngx-datatable.material#freight-masters.single-selection
-  .datatable-body-row.active:hover
-  .datatable-row-group,
-.ngx-datatable.material#freight-masters.multi-selection
-  .datatable-body-row.active:hover,
-.ngx-datatable.material#freight-masters.multi-selection
-  .datatable-body-row.active:hover
-  .datatable-row-group,
-.ngx-datatable.material#freight-masters.multi-click-selection
-  .datatable-body-row.active:hover,
-.ngx-datatable.material#freight-masters.multi-click-selection
-  .datatable-body-row.active:hover
-  .datatable-row-group,
-.ngx-datatable.material#freight-masters
-  .datatable-body-row.active:hover
-  .datatable-body-cell {
+.ngx-datatable.material#freight-masters:not(.cell-selection) .datatable-body-row:hover,
+.ngx-datatable.material#freight-masters:not(.cell-selection) .datatable-body-row:hover .datatable-row-group,
+.ngx-datatable.material#freight-masters:not(.cell-selection) .datatable-body-row:hover .datatable-body-cell1,
+
+.ngx-datatable.material#freight-masters.single-selection .datatable-body-row.active:hover,
+.ngx-datatable.material#freight-masters.single-selection .datatable-body-row.active:hover .datatable-row-group,
+.ngx-datatable.material#freight-masters.multi-selection .datatable-body-row.active:hover,
+.ngx-datatable.material#freight-masters.multi-selection .datatable-body-row.active:hover .datatable-row-group,
+.ngx-datatable.material#freight-masters.multi-click-selection .datatable-body-row.active:hover,
+.ngx-datatable.material#freight-masters.multi-click-selection .datatable-body-row.active:hover .datatable-row-group,
+.ngx-datatable.material#freight-masters .datatable-body-row.active:hover .datatable-body-cell {
   background: none;
   box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.25);
+
 }
 
-.ngx-datatable.material#freight-masters
-  .datatable-body
-  .datatable-row-wrapper:last-child
-  .datatable-body-row
-  .datatable-body-cell,
-.ngx-datatable.material#freight-masters:not(.cell-selection)
-  .datatable-body-row:hover
-  .datatable-body-cell {
+.ngx-datatable.material#freight-masters .datatable-body .datatable-row-wrapper:last-child .datatable-body-row .datatable-body-cell,
+.ngx-datatable.material#freight-masters:not(.cell-selection) .datatable-body-row:hover .datatable-body-cell {
   border-bottom: none;
   //box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.25);
 }
 
-.ngx-datatable.material#freight-masters
-  .datatable-body
-  .datatable-row-wrapper:last-child
-  .datatable-body-row
-  .datatable-body-cell {
-  border-right: 1px solid #e9eaec;
+.ngx-datatable.material#freight-masters .datatable-body .datatable-row-wrapper:last-child .datatable-body-row .datatable-body-cell {
+  border-right: 1px solid #E9EAEC;
 }
 
 // Datatable alternate row BG color
 datatable-body-row.datatable-body-row.datatable-row-even {
-  background: #fcfcfe !important;
+  background: #FCFCFE !important;
 }
 
 /* ----- DATATABLE OVERRIDES END ----- */
+
 
 /*--- BORDER START : BOR---*/
 .no-border {
@@ -1103,37 +1065,38 @@ datatable-body-row.datatable-body-row.datatable-row-even {
 
 /*--WIDTH END : AUTO--*/
 
-.mat-select-panel {
-  .mat-option {
-    &.mat-selected {
-      &.mat-active {
-        background-color: #37414f !important;
-        color: #fff !important;
+.mat-select-panel{
+  .mat-option{
+      &.mat-selected{
+          &.mat-active{
+              background-color: #37414F !important;
+              color: #fff !important;
+          }
       }
-    }
   }
 }
 
-.mat-autocomplete-panel {
-  .mat-option {
-    &.mat-active {
+.mat-autocomplete-panel{
+  .mat-option{
+    &.mat-active{
       color: #333 !important;
       background: #fff !important;
     }
   }
 }
 
-.header-notification {
-  .mat-icon {
-    &.error {
-      content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxMSAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC4yNTM0MTgiIHk9IjAuMzc1IiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjRDlEQkRFIi8+CjxwYXRoIGQ9Ik00LjE3NTI5IDcuNTY2NDFMNC43MjYwNyA3LjQ0OTIyVjQuODI4MTJMNC4xMTY3IDQuNzEwOTRWNC4wMjM0NEg1Ljg2NjdWNy40NDkyMkw2LjQxMzU3IDcuNTY2NDFWOC4yNUg0LjE3NTI5VjcuNTY2NDFaTTUuODY2NyAzLjAxMTcySDQuNzI2MDdWMi4xNTYyNUg1Ljg2NjdWMy4wMTE3MloiIGZpbGw9IiMxRDJBNDUiLz4KPC9zdmc+Cg==);
+.header-notification{
+  .mat-icon{
+    &.error{
+      content:url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxMSAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC4yNTM0MTgiIHk9IjAuMzc1IiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjRDlEQkRFIi8+CjxwYXRoIGQ9Ik00LjE3NTI5IDcuNTY2NDFMNC43MjYwNyA3LjQ0OTIyVjQuODI4MTJMNC4xMTY3IDQuNzEwOTRWNC4wMjM0NEg1Ljg2NjdWNy40NDkyMkw2LjQxMzU3IDcuNTY2NDFWOC4yNUg0LjE3NTI5VjcuNTY2NDFaTTUuODY2NyAzLjAxMTcySDQuNzI2MDdWMi4xNTYyNUg1Ljg2NjdWMy4wMTE3MloiIGZpbGw9IiMxRDJBNDUiLz4KPC9zdmc+Cg==);
     }
   }
-  &:hover {
-    .mat-icon {
-      &.error {
-        content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxMSAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC4yNTM0MTgiIHk9IjAuMzc1IiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjNEY0RjRGIi8+CjxwYXRoIGQ9Ik00LjE3NTI5IDcuNTY2NDFMNC43MjYwNyA3LjQ0OTIyVjQuODI4MTJMNC4xMTY3IDQuNzEwOTRWNC4wMjM0NEg1Ljg2NjdWNy40NDkyMkw2LjQxMzU3IDcuNTY2NDFWOC4yNUg0LjE3NTI5VjcuNTY2NDFaTTUuODY2NyAzLjAxMTcySDQuNzI2MDdWMi4xNTYyNUg1Ljg2NjdWMy4wMTE3MloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=);
+  &:hover{
+    .mat-icon{
+      &.error{
+        content:url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxMSAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC4yNTM0MTgiIHk9IjAuMzc1IiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjNEY0RjRGIi8+CjxwYXRoIGQ9Ik00LjE3NTI5IDcuNTY2NDFMNC43MjYwNyA3LjQ0OTIyVjQuODI4MTJMNC4xMTY3IDQuNzEwOTRWNC4wMjM0NEg1Ljg2NjdWNy40NDkyMkw2LjQxMzU3IDcuNTY2NDFWOC4yNUg0LjE3NTI5VjcuNTY2NDFaTTUuODY2NyAzLjAxMTcySDQuNzI2MDdWMi4xNTYyNUg1Ljg2NjdWMy4wMTE3MloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=);
       }
     }
   }
+
 }
