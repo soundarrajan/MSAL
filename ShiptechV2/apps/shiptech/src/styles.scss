@@ -133,3 +133,6 @@ body .ui-tabmenu .ui-tabmenu-nav {
 .ng2-pdf-viewer-container {
   overflow: unset !important;
 }
+input.BPInNumField::-webkit-input-placeholder {
+  color: rgb(255, 247, 247);
+}
