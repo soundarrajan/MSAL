@@ -63,12 +63,17 @@
               "assets/theme/common/designsystem-v2-theme/_aggrid.scss",
               "assets/sass/themes/common/base.scss",
               "assets/sass/themes/defaultweb/smart-operator.scss",
-              "assets/sass/themes/defaultweb/_aggrid.scss",
               "assets/sass/themes/defaultweb/_dark_theme.scss",
               "assets/sass/themes/defaultweb/_light_theme.scss",
               "assets/sass/themes/defaultweb/_smart-operator-mixins.scss",
               "assets/sass/themes/defaultweb/_smart-operator-utils.scss",
-              "assets/sass/themes/defaultweb/_smart-operator-variables.scss"
+              "assets/sass/themes/defaultweb/_smart-operator-variables.scss",
+              "assets/sass/themes/defaultweb/_shiptech-mixins.scss",
+              "assets/sass/themes/defaultweb/_shiptech-utils.scss",
+              "assets/sass/themes/defaultweb/_shiptech-variables.scss",
+              "assets/sass/themes/defaultweb/_aggrid.scss",
+              "assets/sass/themes/defaultweb/shiptech.scss",
+              "assets/sass/themes/defaultweb/design-system.component.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
