@@ -9,13 +9,7 @@ Contains all custom resusable mixin functions
 }
 
 // REGULAR BUTTON MIXIN
-@mixin rect-button(
-  $bgcolor,
-  $border: none,
-  $bradius: 5px,
-  $padding: 0 10px,
-  $text-color: #fff
-) {
+@mixin rect-button($bgcolor, $border:none, $bradius: 5px, $padding: 0 8px, $text-color: #fff) {
   background-color: $bgcolor !important;
   border: $border;
   border-radius: $bradius;
@@ -31,7 +25,7 @@ Contains all custom resusable mixin functions
 }
 
 // BOX SHADOWS
-@mixin box-shadow($hoffset: 0px, $voffset: 5px, $blur: 7px, $spread: 0px) {
+@mixin box-shadow ($hoffset: 0px, $voffset: 5px, $blur: 7px, $spread: 0px) {
   -webkit-box-shadow: $hoffset $voffset $blur $spread rgba(0, 0, 0, 0.2);
   -moz-box-shadow: $hoffset $voffset $blur $spread rgba(0, 0, 0, 0.2);
   box-shadow: $hoffset $voffset $blur $spread rgba(0, 0, 0, 0.2);
@@ -55,45 +49,45 @@ Contains all custom resusable mixin functions
 
 /* AG-GRID MIXINS */
 @mixin aggrid-rowselection($color) {
-  .ag-theme-material {
-    @if $color == 'red' {
-      @include aggrid-rowribbon($grid_rowselection_rsc);
-      .ag-row-selected {
-        background-color: $grid_rowselection_success !important;
+  .ag-theme-material{
+      @if $color == 'red'{
+          @include aggrid-rowribbon($grid_rowselection_rsc);
+          .ag-row-selected{
+              background-color: $grid_rowselection_success !important;
+          }
       }
-    }
-  }
-  @if $color == 'green' {
-    @include aggrid-rowribbon($grid_rowselection_rer);
-    .ag-row-selected {
-      background-color: $grid_rowselection_er !important;
-    }
-  }
-  @if $color == 'blue' {
-    @include aggrid-rowribbon($grid_rowselection_rer);
-    .ag-row-selected {
-      background-color: $grid_rowselection_er !important;
-    }
-  }
+      }
+      @if $color == 'green'{
+          @include aggrid-rowribbon($grid_rowselection_rer);
+          .ag-row-selected{
+              background-color: $grid_rowselection_er !important;
+          }
+      }
+      @if $color == 'blue'{
+          @include aggrid-rowribbon($grid_rowselection_rer);
+          .ag-row-selected{
+              background-color: $grid_rowselection_er !important;
+          }
+      }       
 }
 
-@mixin aggrid-rowribbon($ribboncolor) {
+@mixin aggrid-rowribbon($ribboncolor)  {
   box-shadow: inset 5px 0 0 0 $ribboncolor, 1px 0 0 0 $gridborder;
 }
 
-@mixin aggrid-rowribbon-thin($ribboncolor) {
+@mixin aggrid-rowribbon-thin($ribboncolor)  {
   box-shadow: inset 3px 0 0 0 $ribboncolor, 1px 0 0 0 $gridborder !important;
 }
 
-@mixin aggrid-rowribbon-imp($ribboncolor) {
+@mixin aggrid-rowribbon-imp($ribboncolor)  {
   box-shadow: inset 5px 0 0 0 $ribboncolor, 1px 0 0 0 $gridborder !important;
 }
 
-@mixin aggrid-rowribbon-darktheme($ribboncolor) {
+@mixin aggrid-rowribbon-darktheme($ribboncolor)  {
   box-shadow: inset 5px 0 0 0 $ribboncolor !important;
 }
 
-@mixin aggrid-cell-bgcolor($bgcolor) {
+@mixin aggrid-cell-bgcolor($bgcolor)  {
   background-color: $bgcolor;
   color: #fff !important;
   text-align: center;
