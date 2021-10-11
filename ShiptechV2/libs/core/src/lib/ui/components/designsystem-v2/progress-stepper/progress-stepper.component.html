@@ -1,0 +1,17 @@
+<div class="stepper-container-V2">
+    <div class="stepper-container">
+        <div class="stepper-holder" *ngFor="let step of steps">
+            <div class="link  {{step.class}}" style="flex: 1 1 0%; box-sizing: border-box;"></div>
+
+            <div
+                style="flex-direction: column;box-sizing: border-box;display: flex;max-width: 15px;align-items: center;">
+                <div class="dot  {{step.class}}">
+                </div>
+                <div class="name-container">
+                    <div class="name  {{step.class}}">
+                        {{ step.name }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
