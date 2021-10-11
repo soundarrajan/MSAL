@@ -10,6 +10,7 @@ import { ControlTowerDetailsRouteResolver } from './views/control-tower/details/
 import { ControlTowerDetailsComponent } from './views/control-tower/details/control-tower-details.component';
 import { ControlTowerInvoiceListComponent } from './views/invoice-list/control-tower-invoice-list.component';
 import { ControlTowerViewComponent } from './views/control-tower/view/control-tower-view.component';
+import { ResidueDifferenceComponent } from './views/control-tower/view/components/residue-difference/residue-difference.component';
 
 interface IControlTowerDetailsRouteData {
   [KnownControlTowerRoutes.ReportIdParam]: Type<
@@ -36,7 +37,7 @@ const routes: Routes = [
           },
           {
             path: KnownControlTowerRoutes.ControlTowerList,
-            component: ControlTowerViewComponent,
+            component: ResidueDifferenceComponent,
             data: { title: 'Control Tower List' }
           },
           {
