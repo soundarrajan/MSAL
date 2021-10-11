@@ -565,15 +565,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     // dialogRef.afterClosed().subscribe(result => {});
   }
 
-  openEmailPreview() {
-    const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
-      width: '80vw',
-      height: '90vh',
-      panelClass: 'additional-cost-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {});
-  }
+  openEmailPreview() {}
 
   contactinformationpopup() {
     // const dialogRef = this.dialog.open(ContactinformationpopupComponent, {
