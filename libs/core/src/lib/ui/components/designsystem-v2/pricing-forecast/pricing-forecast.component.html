@@ -1,0 +1,41 @@
+<div id="price-forecast">
+  <div class="row">
+    <!-- border-top: 1px solid #E0E1E4;border-bottom: 1px solid #E0E1E4; -->
+    <table class="dataTable" style="display: flex;flex-wrap: wrap;border: 1px solid #E0E1E4;">
+      <div class="headerTable" style="padding: 10px 0px;">
+        <tr>
+          <th>
+            Date
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Pricing status
+          </th>
+        </tr>
+        <tr>
+          <th>
+            Exposure
+          </th>
+        </tr>
+      </div>
+      <div *ngFor="let item of items" style="padding: 10px 0px;">
+        <tr>
+          <td>
+            {{item.date}}
+          </td>
+        </tr>
+        <tr>
+          <td [ngClass]="item.status | lowercase">
+            {{item.status}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{item.exposure}}
+          </td>
+        </tr>
+      </div>
+    </table>
+  </div>
+</div>

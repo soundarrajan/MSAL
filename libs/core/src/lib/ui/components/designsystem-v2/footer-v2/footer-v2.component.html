@@ -1,0 +1,81 @@
+<div class="product-footer"  [ngStyle]="{width:footerWidth,bottom:footerPosition}">
+  <div class="page-details p-r-5">
+    <div class="total-results" style="margin-right: 7px;">
+        <div style="float:left">{{ dualfooter ? 'Total:' : 'Total Results:'}}</div>
+        <span class="count" style="margin-left: 2px;">{{rowCount}}</span>
+    </div>
+    <div class="export-excel">
+      <div class="excel-icon"></div>
+      <div class="export-icon"></div>
+    </div>
+  </div>
+  <div class="show-rows">
+    <span>Show</span>
+    <span>
+      <mat-form-field>
+        <mat-select>
+          <mat-option [value]="10">
+            10
+          </mat-option>
+          <mat-option [value]="20">
+            20
+          </mat-option>
+          <mat-option [value]="30">
+            30
+          </mat-option>
+          <mat-option [value]="40">
+            40
+          </mat-option>
+          <mat-option [value]="50">
+            50
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <span>Rows</span>
+  </div>
+  <div class="goto-page" style="display: flex;align-items: center;">
+    <div style="width: 60px">Go to page</div>
+    <mat-form-field>
+      <input matInput>
+    </mat-form-field>
+    <div class="go-icon"></div>
+  </div>
+  <!--Date picker - rack marketing footer only-->
+  <div *ngIf="showFooterDatepicker" class="footer-datepicker" style="padding: 0 10px; display: flex;align-items: center;">  
+    <span class="m-t-5 m-r-19">Showing prices valid on:</span>
+            <span>
+              <mat-form-field id="datePicker" style="width:90px" class="aggriddate-picker">
+                <input id="validFrom" class="text-center" style="width:100%" matInput [matDatepicker]="picker" />          
+                  <mat-datepicker-toggle matSuffix [for]="picker">
+                    <mat-icon matDatepickerToggleIcon svgIcon="data-picker"></mat-icon>
+                  </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+    </span>
+    <div class="right-border"></div>
+  </div>
+  <!--Date picker - rack marketing footer only-->
+  <div class="pagination" *ngIf="!doublePagination && !singleGrid">
+    <ul style="display:none">
+			<li *ngFor="let item of collection | paginate: { id: 'pagination1' ,itemsPerPage: 10, currentPage: page }"></li>
+		</ul>
+
+		<pagination-controls id="pagination1" previousLabel="" nextLabel="" maxSize= {{maxSize}} (pageChange)= pageChanged($event)></pagination-controls>
+  </div>
+  <div class="pagination" *ngIf="doublePagination && !singleGrid">
+    <ul style="display:none">
+			<li *ngFor="let item of collection | paginate: { id: 'pagination2' ,itemsPerPage: 10, currentPage: page }"></li>
+		</ul>
+
+		<pagination-controls id="pagination2" previousLabel="" nextLabel="" maxSize= {{maxSize}} (pageChange)= pageChanged($event)></pagination-controls>
+  </div>
+  <div class="pagination" *ngIf="singleGrid">
+    <ul style="display:none">
+			<li *ngFor="let item of collection | paginate: { id: id ,itemsPerPage: 10, currentPage: page }"></li>
+		</ul>
+
+		<pagination-controls id= {{id}} previousLabel="" nextLabel="" maxSize= {{maxSize}} (pageChange)= pageChanged($event)></pagination-controls>
+  </div>
+
+</div>

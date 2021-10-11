@@ -109,10 +109,30 @@ import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/brea
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ControlTowerModalComponent } from '@shiptech/core/ui/components/control-tower-modal/control-tower-modal.component';
+import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '@shiptech/core/ui/material.module';
+import { DSV2ComponentsModule } from '@shiptech/core/ui/components/designsystem-v2/ds-v2.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DynamicDialogModule,
+    MaterialModule,
+    DSV2ComponentsModule,
+    LoggingModule,
+    AuthenticationModule.forFeature(),
+    SearchBoxModule,
+    UIModule,
+    FilterPresetsModule,
+    MasterAutocompleteModule,
+    MessageBoxModule,
+    RelatedLinksModule,
+    EntityStatusModule,
+    NgxsResetPluginModule.forRoot(),
+    AgGridExtensionsModule,
     ControlTowerGridModule,
     ControlTowerRoutingModule,
     LoggingModule,
