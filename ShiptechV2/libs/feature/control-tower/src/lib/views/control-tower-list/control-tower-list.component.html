@@ -115,24 +115,32 @@
   <button mat-raised-button color="primary" (click)="newFilters()">
     Primary
   </button>
-  <ag-grid-angular
-    #agGridAngular
-    appAgGridFirstColumnLocked
-    appAgGridFilterPresets
-    appAgGridSizeToFit
-    appAgGridClearAllFilters
-    appExternalSearch
-    appAgGridEmptyFilterOption
-    #search="search-id"
-    groupId="qc-report-list-filter-presets"
-    [suppressMenuHide]="true"
-    id="qc-report-list-grid"
-    class="ag-theme-balham ag-shiptech-theme ag-shiptech-coloumnheader"
-    style="height:calc( 100vh - 352px );"
-    [gridOptions]="gridViewModel.gridOptions"
-  >
-  </ag-grid-angular>
 
+  <ng-container>
+    <div class="grid-container">
+      <div class="agGrid-v2" style="margin: 0">
+        <div style="width:100%;height: 100%;">
+          <ag-grid-angular
+            #agGridAngular
+            appAgGridFirstColumnLocked
+            appAgGridFilterPresets
+            appAgGridSizeToFit
+            appAgGridClearAllFilters
+            appExternalSearch
+            appAgGridEmptyFilterOption
+            #search="search-id"
+            groupId="qc-report-list-filter-presets"
+            domLayout="normal"
+            id="qc-report-list-grid"
+            class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+            style="width: 100%;height: calc( 100vh - 182px );;"
+            [gridOptions]="gridViewModel.gridOptions"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </div>
+  </ng-container>
   <app-ag-footer
     [page]="gridViewModel.page"
     [size]="gridViewModel.pageSize"
