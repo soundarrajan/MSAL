@@ -1,3 +1,6 @@
+@import 'shiptech-variables';
+@import 'shiptech-mixins';
+
 /* 
 ------- TABLE OF CONTENTS -------
 1) Font Sizes         : SCFS
@@ -138,7 +141,7 @@
 .pt30 {
   padding-top: 30px;
 }
-.plr0{
+.plr0 {
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -249,7 +252,7 @@
 .mb15 {
   margin-bottom: 15px;
 }
-.mb-0{
+.mb-0 {
   margin-bottom: 0px;
 }
 .ml0 {
@@ -283,7 +286,7 @@
 .m1rem {
   margin: 1rem;
 }
-.mr0{
+.mr0 {
   margin-right: 0px !important;
 }
 .mr10 {
@@ -423,7 +426,6 @@ mat-chip:hover {
   }
 }
 
-
 // Material Chip list wrapper - remove focus outline color
 .mat-chip-list-wrapper:focus,
 .mat-chip-list:focus {
@@ -453,11 +455,11 @@ mat-chip:hover {
 
 // Material Context Menu Color
 .mat-menu-item-style {
-  background-color: #37414F;
-  color: #FFF;
+  background-color: #37414f;
+  color: #fff;
 }
 
-// Individual Material Menu Item 
+// Individual Material Menu Item
 .mat-menu-item {
   display: flex !important;
   align-items: center;
@@ -465,13 +467,13 @@ mat-chip:hover {
   height: 40px !important;
   line-height: normal !important;
 }
- 
+
 /* Material Context menu hover color */
 .mat-menu-item-highlighted:not([disabled]),
 .mat-menu-item.cdk-keyboard-focused:not([disabled]),
 .mat-menu-item.cdk-program-focused:not([disabled]),
 .mat-menu-item:hover:not([disabled]) {
-  background: rgba(0,0,0,0.15);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 // Material Ink Bar
@@ -486,12 +488,12 @@ mat-chip:hover {
 
 // Checkbox ripple color
 :host ::ng-deep .mat-ripple-element {
-  background: rgba(27, 142, 241, .4) !important;
+  background: rgba(27, 142, 241, 0.4) !important;
 }
 
 // Material radio button ripple element color
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
-  background-color:rgba(66, 134, 244,.26);
+  background-color: rgba(66, 134, 244, 0.26);
 }
 
 .dark-checkbox {
@@ -517,15 +519,16 @@ mat-chip:hover {
     right: 7px;
     top: 3px;
   }
-  span{
+  span {
     border: none !important;
   }
 
-  .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
-  .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background: $dark2 !important;
   }
-  
 }
 
 .grey-checkbox {
@@ -537,8 +540,7 @@ mat-chip:hover {
   // Checkbox checked background color
   .mat-checkbox-checked.mat-accent .mat-checkbox-background,
   .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-    background-color: #8F9BAB;
-    ;
+    background-color: #8f9bab;
   }
 }
 
@@ -549,11 +551,10 @@ mat-chip:hover {
   }
 }
 
-.dark-bg-checkbox{
+.dark-bg-checkbox {
   .mat-checkbox-inner-container {
-    background-color: #54617A !important;
+    background-color: #54617a !important;
   }
-    
 }
 
 // Datepicker active date color
@@ -716,7 +717,7 @@ mat-chip:hover {
 .tbl-dark-header {
   thead {
     th {
-      background: #2F3845;
+      background: #2f3845;
       color: $dark-text;
       text-transform: uppercase;
       font-size: 0.85rem;
@@ -826,7 +827,6 @@ mat-chip:hover {
   background: $light-grey !important;
 }
 
-
 .black-circle {
   width: 8px;
   height: 8px;
@@ -857,7 +857,6 @@ mat-chip:hover {
   width: 21px;
   height: auto;
 }
-
 
 /*---- EXTRAS SECTION END  ----*/
 
@@ -911,5 +910,5 @@ mat-chip:hover {
 }
 
 .green-text2 {
-  color: #5EB591 !important;
+  color: #5eb591 !important;
 }
