@@ -8,6 +8,7 @@ import { UIModule } from '../../ui.module';
 import { AGGridCellActionsComponent } from './ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from './ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererV2Component } from './ag-grid/ag-grid-cell-rendererv2.component';
+import { FooterV2Component } from './footer-v2/footer-v2.component';
 import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
 
 @NgModule({
@@ -24,12 +25,13 @@ import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-res
       AGGridCellRendererV2Component
     ])
   ],
-  exports: [RowstatusOnchangeResiduePopupComponent],
+  exports: [RowstatusOnchangeResiduePopupComponent, FooterV2Component],
   declarations: [
     AGGridCellActionsComponent,
     AGGridCellEditableComponent,
     AGGridCellRendererV2Component,
-    RowstatusOnchangeResiduePopupComponent
+    RowstatusOnchangeResiduePopupComponent,
+    FooterV2Component
   ],
   entryComponents: [RowstatusOnchangeResiduePopupComponent]
 })
