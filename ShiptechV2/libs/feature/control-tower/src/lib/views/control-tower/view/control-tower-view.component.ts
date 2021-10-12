@@ -57,6 +57,9 @@ import { StringifyOptions } from 'querystring';
 export class ControlTowerViewComponent implements OnInit, OnDestroy {
   quantityPrecision: number;
   selectedVal: string = 'reportsList';
+  public newScreen = true;
+  public theme;
+
   constructor(
     private entityStatus: EntityStatusService,
     private store: Store,

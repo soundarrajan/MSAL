@@ -37,7 +37,7 @@ const routes: Routes = [
           },
           {
             path: KnownControlTowerRoutes.ControlTowerList,
-            component: ResidueDifferenceComponent,
+            component: ControlTowerViewComponent,
             data: { title: 'Control Tower List' }
           },
           {

@@ -1,4 +1,4 @@
-<div class="container-fluid-contract contract-container">
+<!-- <div class="container-fluid-contract contract-container">
   <div class="row m-b-4">
     <div class="col-12">
       <p-panel [showHeader]="false">
@@ -38,4 +38,10 @@
   *ngIf="selectedVal == 'reportsList'"
 ></shiptech-control-tower-list>
 <shiptech-control-tower-invoice-list *ngIf="selectedVal == 'invoiceList'">
-</shiptech-control-tower-invoice-list>
+</shiptech-control-tower-invoice-list> -->
+<div
+  class="controlTower-wrapper"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+>
+  <app-residue-difference></app-residue-difference>
+</div>
