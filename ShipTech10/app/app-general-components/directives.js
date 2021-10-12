@@ -696,26 +696,6 @@ Number(function() {
                                 }
                             }
                             
-                            if (scope.id == 'deliveries_transactionstobeinvoiced') {
-                                let obj = {
-                                    "columnValue": "ETA",
-                                    "ColumnType": "Date",
-                                    "isComputedColumn": false,
-                                    "ConditionValue": ">=",
-                                    "Values": [
-                                        moment().subtract(6, 'months').format('YYYY-MM-DD[T]00:00')
-                                    ],
-                                    "FilterOperator": 0
-                                };
-                                if (CLC.tableParams.PageFilters.length == 0) {
-                                    var originalSorting = CLC.tableParams.PageFilters.sortList;
-                                    CLC.tableParams.PageFilters = [];
-                                    CLC.tableParams.PageFilters.push(obj);
-                                    CLC.tableParams.PageFilters.sortList = originalSorting;
-                                } else {
-                                    CLC.tableParams.PageFilters.push(obj);
-                                }
-                            }
 
                             // console.log(CLC)
                             // if (CLC.tableParams.PageFilters) {
