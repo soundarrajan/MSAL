@@ -6,6 +6,7 @@ import { GridOptions } from 'ag-grid-community';
 import { RowstatusOnchangeResiduePopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
 import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
+import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
 // import { AGGridCellRendererComponent } from 'src/app/shared/ag-grid/ag-grid-cell-renderer.component';
 // import { AGGridCellActionsComponent } from 'src/app/shared/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
 // import { RowstatusOnchangeResiduePopupComponent } from 'src/app/shared/designsystem-v2/rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
@@ -37,8 +38,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -51,8 +65,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -65,8 +92,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -79,8 +119,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -93,8 +146,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -107,8 +173,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -121,8 +200,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -135,8 +227,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -149,8 +254,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -163,8 +281,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -177,8 +308,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -191,8 +335,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -205,8 +362,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -219,8 +389,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -233,8 +416,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -247,8 +443,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -261,8 +470,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -275,8 +497,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -289,8 +524,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -303,8 +551,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -317,8 +578,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -331,8 +605,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -345,8 +632,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -359,8 +659,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -373,8 +686,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -387,8 +713,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -401,8 +740,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -415,8 +767,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -429,8 +794,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -443,8 +821,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -457,8 +848,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -471,8 +875,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -485,8 +902,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -499,8 +929,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Unmatched',
-      status: 'New',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -513,8 +956,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Marked as Seen',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     },
     {
@@ -527,8 +983,21 @@ export class ResidueDifferenceComponent implements OnInit {
       diff: '-54.717',
       uom: 'MT',
       date: 'Fri 11/02/2021 05:30',
-      qtystatus: 'Matched',
-      status: 'Resolved',
+      qtystatus: {
+        code: '#a9d372',
+        displayName: 'Resolved',
+        id: 65,
+        index: 45,
+        name: null,
+        transactionTypeId: 46
+      },
+      status: {
+        id: 2,
+        name: null,
+        displayName: 'New',
+        code: '#ad93cc',
+        transactionTypeId: 1
+      },
       actions: ''
     }
   ];
@@ -1104,19 +1573,19 @@ export class ResidueDifferenceComponent implements OnInit {
       headerTooltip: 'Qty Status',
       field: 'qtystatus',
       width: 150,
-      cellRendererFramework: AGGridCellRendererV2Component,
-      cellRendererParams: function(params) {
-        const classArray: string[] = [];
-        classArray.push('aggridtextalign-center');
-        const newClass =
-          params.value === 'Matched'
-            ? 'custom-chip-v2 medium dark-green'
-            : params.value === 'Unmatched'
-            ? 'custom-chip-v2 medium dark-amber'
-            : 'custom-chip-v2 medium dark';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null };
-      }
+      cellRendererFramework: AgAsyncBackgroundFillComponent
+      // cellRendererParams: function(params) {
+      //   const classArray: string[] = [];
+      //   classArray.push('aggridtextalign-center');
+      //   const newClass =
+      //     params.value === 'Matched'
+      //       ? 'custom-chip-v2 medium dark-green'
+      //       : params.value === 'Unmatched'
+      //       ? 'custom-chip-v2 medium dark-amber'
+      //       : 'custom-chip-v2 medium dark';
+      //   classArray.push(newClass);
+      //   return { cellClass: classArray.length > 0 ? classArray : null };
+      // }
     },
     {
       headerName: 'Progress',
@@ -1125,23 +1594,26 @@ export class ResidueDifferenceComponent implements OnInit {
       headerTooltip: 'Progress',
       field: 'status',
       width: 150,
-      cellRendererFramework: AGGridCellRendererV2Component,
-      cellRendererParams: function(params) {
-        const classArray: string[] = [];
-        classArray.push('aggridtextalign-center');
-        const newClass =
-          params.value === 'New'
-            ? 'custom-chip-v2 small medium-blue'
-            : params.value === 'Marked as Seen'
-            ? 'custom-chip-v2 small medium-yellow'
-            : params.value === 'Off Spec'
-            ? 'custom-chip-v2 small medium-yellow'
-            : params.value === 'Resolved'
-            ? 'custom-chip-v2 small light-green'
-            : 'custom-chip-v2 small dark';
-        classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null };
-      }
+      cellRendererFramework: AgAsyncBackgroundFillComponent
+      // cellRendererParams: function(params) {
+      //   const classArray: string[] = [];
+      //   classArray.push('aggridtextalign-center');
+      //   const newClass =
+      //     params.value === 'New'
+      //       ? 'custom-chip-v2 small medium-blue'
+      //       : params.value === 'Marked as Seen'
+      //       ? 'custom-chip-v2 small medium-yellow'
+      //       : params.value === 'Off Spec'
+      //       ? 'custom-chip-v2 small medium-yellow'
+      //       : params.value === 'Resolved'
+      //       ? 'custom-chip-v2 small light-green'
+      //       : 'custom-chip-v2 small dark';
+      //   classArray.push(newClass);
+      //   return {
+      //     type: 'status',
+      //     cellClass: classArray.length > 0 ? classArray : null
+      //   };
+      // }
     },
     {
       headerName: 'Actions',
