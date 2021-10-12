@@ -9,6 +9,9 @@ import { AGGridCellActionsComponent } from './ag-grid/ag-grid-cell-actions.compo
 import { AGGridCellEditableComponent } from './ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererV2Component } from './ag-grid/ag-grid-cell-rendererv2.component';
 import { FooterV2Component } from './footer-v2/footer-v2.component';
+import { RowstatusOnchangePopupComponent } from './rowstatus-onchange-popup/rowstatus-onchange-popup.component';
+import { RowstatusOnchangeQualitylabPopupComponent } from './rowstatus-onchange-qualitylab-popup/rowstatus-onchange-qualitylab-popup.component';
+import { RowstatusOnchangeQuantityrobdiffPopupComponent } from './rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
 
 @NgModule({
@@ -25,14 +28,28 @@ import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-res
       AGGridCellRendererV2Component
     ])
   ],
-  exports: [RowstatusOnchangeResiduePopupComponent, FooterV2Component],
+  exports: [
+    RowstatusOnchangeResiduePopupComponent,
+    FooterV2Component,
+    RowstatusOnchangeQuantityrobdiffPopupComponent,
+    RowstatusOnchangeQualitylabPopupComponent,
+    RowstatusOnchangePopupComponent
+  ],
   declarations: [
     AGGridCellActionsComponent,
     AGGridCellEditableComponent,
     AGGridCellRendererV2Component,
     RowstatusOnchangeResiduePopupComponent,
-    FooterV2Component
+    FooterV2Component,
+    RowstatusOnchangeQuantityrobdiffPopupComponent,
+    RowstatusOnchangeQualitylabPopupComponent,
+    RowstatusOnchangePopupComponent
   ],
-  entryComponents: [RowstatusOnchangeResiduePopupComponent]
+  entryComponents: [
+    RowstatusOnchangeResiduePopupComponent,
+    RowstatusOnchangeQuantityrobdiffPopupComponent,
+    RowstatusOnchangeQualitylabPopupComponent,
+    RowstatusOnchangePopupComponent
+  ]
 })
 export class DSV2ComponentsModule {}

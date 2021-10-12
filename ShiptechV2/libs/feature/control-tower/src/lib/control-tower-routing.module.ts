@@ -11,6 +11,7 @@ import { ControlTowerDetailsComponent } from './views/control-tower/details/cont
 import { ControlTowerInvoiceListComponent } from './views/invoice-list/control-tower-invoice-list.component';
 import { ControlTowerViewComponent } from './views/control-tower/view/control-tower-view.component';
 import { ResidueDifferenceComponent } from './views/control-tower/view/components/residue-difference/residue-difference.component';
+import { ControlTowerHomeNewComponent } from './views/control-tower/view/components/control-tower-home-new/control-tower-home-new.component';
 
 interface IControlTowerDetailsRouteData {
   [KnownControlTowerRoutes.ReportIdParam]: Type<

@@ -39,9 +39,5 @@
 ></shiptech-control-tower-list>
 <shiptech-control-tower-invoice-list *ngIf="selectedVal == 'invoiceList'">
 </shiptech-control-tower-invoice-list> -->
-<div
-  class="controlTower-wrapper"
-  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
->
-  <app-residue-difference></app-residue-difference>
-</div>
+
+<app-control-tower-home-new></app-control-tower-home-new>

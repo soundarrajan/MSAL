@@ -114,6 +114,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { DSV2ComponentsModule } from '@shiptech/core/ui/components/designsystem-v2/ds-v2.module';
 import { ResidueDifferenceComponent } from './views/control-tower/view/components/residue-difference/residue-difference.component';
+import { ResidueClaimsComponent } from './views/control-tower/view/components/residue-claims/residue-claims.component';
+import { QuantityDifferenceComponent } from './views/control-tower/view/components/quantity-difference/quantity-difference.component';
+import { QuantityClaimsComponent } from './views/control-tower/view/components/quantity-claims/quantity-claims.component';
+import { QualityLabsComponent } from './views/control-tower/view/components/quality-labs/quality-labs.component';
+import { QualityClaimsComponent } from './views/control-tower/view/components/quality-claims/quality-claims.component';
+import {
+  HighlightPipe,
+  MyNotesComponent
+} from './views/control-tower/view/components/my-notes/my-notes.component';
+import { ControlTowerHomeNewComponent } from './views/control-tower/view/components/control-tower-home-new/control-tower-home-new.component';
 
 @NgModule({
   imports: [
@@ -230,10 +240,18 @@ import { ResidueDifferenceComponent } from './views/control-tower/view/component
     UomSelectorComponent,
     RaiseClaimComponent,
     ControlTowerModalComponent,
-    ResidueDifferenceComponent
+    ResidueDifferenceComponent,
+    ResidueClaimsComponent,
+    QuantityDifferenceComponent,
+    QuantityClaimsComponent,
+    QualityLabsComponent,
+    QualityClaimsComponent,
+    MyNotesComponent,
+    ControlTowerHomeNewComponent,
+    HighlightPipe
   ],
   entryComponents: [RaiseClaimComponent, ControlTowerModalComponent],
-  exports: [MainControlTowerComponent],
+  exports: [MainControlTowerComponent, HighlightPipe],
   providers: [
     ModuleLoggerFactory,
     ControlTowerModuleResolver,
