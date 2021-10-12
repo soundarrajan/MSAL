@@ -11,21 +11,21 @@
 
 /* Scrollbar */
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  background-color: transparent;
-}
+// ::-webkit-scrollbar {
+//   width: 6px;
+//   height: 6px;
+//   background-color: transparent;
+// }
 
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background-color: transparent;
-}
+// ::-webkit-scrollbar-track {
+//   border-radius: 10px;
+//   background-color: transparent;
+// }
 
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: lighten($color: #434C58, $amount: 5%);
-}
+// ::-webkit-scrollbar-thumb {
+//   border-radius: 10px;
+//   background-color: lighten($color: #434C58, $amount: 5%);
+// }
 
 :root {
   font-size: $baseFontSize;
