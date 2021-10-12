@@ -1,0 +1,51 @@
+<div class="controlTower-content" [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']">
+    <div class="header-content">
+        <div *ngIf='!newScreen' class="title">
+            <div class="head">Failed Lab Results</div>
+        </div>
+        <div class="filters">
+            <div class="by-datePicker" [ngClass]="newScreen ? 'new' : ''">
+                
+                <div id="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                    <mat-form-field class="without-search datePicker" appearance="legacy">
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                            <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
+                            </mat-icon>
+                        </mat-datepicker-toggle>
+                        <span class="from">From</span>
+                        <input matInput [matDatepicker]="picker" [formControl]="today" (focus)="picker.open()">
+                        <mat-datepicker #picker [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+                    </mat-form-field>
+                 </div>
+                 <div class="today">
+                    <span>-</span><p>To Today</p>
+                 </div>
+            </div>
+            <div class="by-action">
+                <span class="filter-by" *ngIf='newScreen'>Filter By:</span>
+                <div class="action" [ngClass]="!toggleNewFilter ? 'selected-blue' : ''" (click)="filterGridNew('New')"><span>New</span><div class="count">16</div></div>
+                <div class="action" [ngClass]="!toggleMASFilter ? 'selected-amber' : ''" (click)="filterGridMAS('Marked as Seen')"><span>Marked as seen</span><div class="count">6</div></div>
+                <div class="action" [ngClass]="!toggleResolvedFilter ? 'selected-green' : ''" (click)="filterGridResolved('Resolved')"><span>Resolved</span><div class="count">4</div></div>
+            </div>
+            <!-- <div class="splitter"></div>
+            <div class="by-nonResponseDays">
+                <div class="text">Filter by Non-Response days:</div>
+                <div class="action"><span>7 Days</span><div class="count">4</div></div>
+                <div class="action"><span>15 Days</span><div class="count">4</div></div>
+            </div> -->
+        </div>
+    </div>
+    <div class="grid-container">
+        <div class="agGrid-v2" style="margin: 0">
+            <div style="width:100%;height: 100%;">
+                <ag-grid-angular [ngStyle]="newScreen?{'height': 'calc( 100vh - 182px )'} : {'height': 'calc( 100vh - 220px'}" style="width: 100%;" [gridOptions]="gridOptions_data"
+                domLayout='normal' class="ag-theme-material ag-grid-v2 angular-v9"
+                [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged($event)" (rowSelected)="onRowSelected($event)" (rowClicked)="onrowClicked($event)"></ag-grid-angular>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <app-footer-v2 [id]="'controlTower-qualityLabs'" [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>
+    </div>
+</div>
+<div class="mainFooterWhiteSpace"  [ngClass]="newScreen ? 'new' : ''"></div>
