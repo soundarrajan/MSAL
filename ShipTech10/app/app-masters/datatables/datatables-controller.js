@@ -3138,7 +3138,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'quantity',
                         displayName: 'Qty',
-                        tenantFormat: 'quantity', // quantity or amount
+                        tenantFormat: vm.quantity, // quantity or amount
                         cellTemplate: $scope.dataTableTemplates.tenantFormattedText,
                         category: '1'
                     },
