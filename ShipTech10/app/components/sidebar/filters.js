@@ -1266,6 +1266,9 @@ angular.module('shiptech.components').controller('FiltersController', [
             $scope.columnFilters[column].splice(index, 1);
         };
         $scope.removeFilterColumn = function(column) {
+            if (column == 'Eta' && window.location.href.includes("invoices/deliveries") != -1) {
+                $rootScope.etaCleared = true;
+            }
             $scope.columnFilters[column] = [];
             var newFilter = [];
             $.each($rootScope.rawFilters, (k, v) => {

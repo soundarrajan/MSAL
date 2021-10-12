@@ -1026,6 +1026,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	                ctrl.request.footerSection.isPrerequest = ctrl.requestTenantSettings.isPrerequestEnabled;
                 }
                 if (ctrl.isNewRequest) {
+                    
                     var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
                     if (validActiveSpecGroupMessage != true) {
                         toastr.error(validActiveSpecGroupMessage);
@@ -1048,6 +1049,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
                     newRequestModel.createRequest(ctrl.request).then(
                         (responseData) => {
+                            
                             ctrl.buttonsDisabled = false;
                             $state.go(STATE.EDIT_REQUEST, {
                                 requestId: responseData.payload.id
@@ -1093,7 +1095,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 ctrl.requirementsToAmend = null;
                             }
                             screenLoader.hideLoader();
-                            $state.reload();
+                            //$state.reload();
                         },
                         () => {
                             ctrl.buttonsDisabled = false;
