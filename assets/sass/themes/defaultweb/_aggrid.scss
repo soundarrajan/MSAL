@@ -257,7 +257,7 @@
     padding: 0px;
     //background-color: white;
     // box-shadow: 0px 4px 6px -4px grey;
-    padding-left: 10px;
+    // padding-left: 10px;
     padding-right: 20px;
     &:hover {
       .ag-header-cell-menu-button {
@@ -458,7 +458,7 @@
 
   .ag-header-cell-label .ag-header-cell-text {
     width: 100%;
-    padding-left: 10px;
+    // padding-left: 10px;
     font-size: 1.214rem;
     font-weight: 300;
     font-style: normal;
@@ -2367,7 +2367,7 @@ ag-grid-angular {
     box-shadow: inset 0px -3px 0px rgb(55, 65, 79);
     border-bottom: 2px solid #28333e;
     // padding-top: 17px;
-    padding-left: 10px;
+    // padding-left: 10px;
     &.border-bottom-none {
       border-bottom: 2px solid #37414f;
     }
