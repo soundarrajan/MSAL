@@ -1078,6 +1078,30 @@ angular.module('shiptech.components').controller('FiltersController', [
                     ]                    
                 }
                 
+                if (window.location.href.includes("invoices/deliveries") && $rootScope.rawFilters.length == 0) {
+					$rootScope.rawFilters = [
+	                	{
+	                		"column": {
+	                			"columnRoute": "invoices/deliveries",
+	                			"columnName": "Eta",
+	                			"columnValue": "Eta",
+	                			"sortColumnValue": null,
+	                			"columnType": "Date",
+	                			"isComputedColumn": false
+	                		},
+	                		"condition": {
+	                			"conditionName": "Is after or equal to",
+	                			"conditionValue": ">=",
+	                			"conditionApplicable": "Date",
+	                			"conditionNrOfValues": 1
+	                		},
+	                		"filterOperator": 0,
+	                		"value": [
+	                		moment().subtract(6, 'months').format('YYYY-MM-DD[T]HH:mm:ss.SSSZZ')
+	                		]
+	                	}
+                	]                	
+                }
                 if ($rootScope.rawFilters && $state.current.url != '/schedule-dashboard-table') {
                     $scope.packedFilters = $scope.packFilters($rootScope.rawFilters);
                     $scope.packedFilters.raw = $rootScope.rawFilters;
@@ -1087,9 +1111,10 @@ angular.module('shiptech.components').controller('FiltersController', [
                     }
                 }
                 
-                if($state.current.url == '/all-requests-table') {
-                    $rootScope.filterForExport = angular.copy($scope.packedFilters);
-                }
+                if($state.current.url == '/all-requests-table' || window.location.href.includes("invoices/deliveries")) {
+					$rootScope.filterForExport = angular.copy($scope.packedFilters);
+					$rootScope.$broadcast('filters-applied', $scope.packedFilters);
+                }                
                 
                 // test = $scope.packFilters($rootScope.rawFilters);
                 // console.log($rootScope.rawFilters);
