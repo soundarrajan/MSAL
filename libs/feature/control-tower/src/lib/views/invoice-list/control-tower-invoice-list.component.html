@@ -54,6 +54,7 @@
   <button mat-raised-button color="primary" (click)="newFilters()">
     Primary
   </button>
+
   <ag-grid-angular
     #agGridAngular
     appAgGridFirstColumnLocked
@@ -64,14 +65,13 @@
     appAgGridEmptyFilterOption
     #search="search-id"
     groupId="invoice-list-filter-presets"
-    [suppressMenuHide]="true"
     id="invoice-list-grid"
-    class="ag-theme-balham ag-shiptech-theme ag-shiptech-coloumnheader"
+    domLayout="normal"
+    class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
     style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions"
   >
   </ag-grid-angular>
-
   <app-ag-footer
     [page]="gridViewModel.page"
     [size]="gridViewModel.pageSize"
