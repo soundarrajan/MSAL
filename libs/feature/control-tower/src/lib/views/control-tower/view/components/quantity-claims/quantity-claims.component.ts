@@ -30,7 +30,7 @@ export class QuantityClaimsComponent implements OnInit {
       enableColResize: true,
       defaultColDef: {
         resizable: true,
-        filtering: false,
+        filtering: true,
         sortable: false
       },
       columnDefs: this.columnDef_aggrid,
