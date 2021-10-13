@@ -8,7 +8,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { Select, Store } from '@ngxs/store'; 
+import { Select, Store } from '@ngxs/store';
 import { SelectSeller, EditLocationRow } from '../../store/actions/ag-grid-row.action';
 // import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
 
@@ -167,11 +167,11 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
       let updatedRow = { ...params.data };
       updatedRow = this.formatRowData(updatedRow, params.value);
       // Update the store
-      this.store.dispatch(new EditLocationRow(updatedRow));
+      // this.store.dispatch(new EditLocationRow(updatedRow));
       if(params.value){
         return params.value = false;
       }else{
-      
+
         return params.value = true;
       }
   }

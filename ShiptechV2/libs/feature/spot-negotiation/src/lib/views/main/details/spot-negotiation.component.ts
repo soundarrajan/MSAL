@@ -93,7 +93,42 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
 
-  addPriceDetailsInsideLocationsRows = () => {};
+  getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+
+    rowsArray.forEach((row, index) => {
+      // Suresh hack here.
+      row.isSelected = false;
+      row.checkProd1 = false;
+      row.checkProd2 = false;
+      row.checkProd3 = false;
+      row.checkProd4 = false;
+      row.checkProd5 = false;
+
+      // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
+      if (
+        index < priceDetailsArray.length &&
+        row.id ===
+        priceDetailsArray[index].requestLocationSellerId
+      ) {
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        return row;
+      }
+
+      // Else if not in the same index
+      const detailsForCurrentRow = priceDetailsArray.filter(
+        e => e.requestLocationSellerId === row.id
+      );
+
+      // We found something
+      if (detailsForCurrentRow.length > 0) {
+        row.requestOffers = detailsForCurrentRow[0].requestOffers;
+      }
+
+      return row;
+    });
+
+    return rowsArray;
+  }
 
   getGroupOfSellers(): void {
     // Get current id from url and make a request with that data.
@@ -115,8 +150,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if (res['requestLocationSellers']) {
         // Demo manipulate location before entering store;
         // TODO : get phySupplier, totalOffer, diff, amt, tPR from the endpoint directly.
-        const editedLocation = res['requestLocationSellers'];
-
         // Get response from server and populate store
         const responseGetPriceDetails = this.spotNegotiationService.getPriceDetails(
           groupRequestIdFromUrl
@@ -127,18 +160,17 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
           );
 
-          this.store.dispatch(new SetLocationsRows(editedLocation));
+          const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+            res['requestLocationSellers'],
+            priceDetailsRes['sellerOffers']
+          );
+          // Demo format data
+
+          console.log(futureLocationsRows);
+          debugger;
+          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         });
 
-        editedLocation.forEach(element => {
-          element.isSelected = false;
-          element.checkProd1 = false;
-          element.checkProd2 = false;
-          element.checkProd3 = false;
-          element.checkProd4 = false;
-          element.checkProd5 = false;
-        });
-        this.store.dispatch(new SetLocationsRows(editedLocation));
         this.changeDetector.detectChanges();
       }
     });
