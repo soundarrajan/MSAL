@@ -161,3 +161,10 @@ body .ui-tabmenu .ui-tabmenu-nav {
   > div:nth-child(1) {
   display: none !important;
 }
+
+.ag-theme-material.ag-popup
+  .ag-filter-body
+  > .ag-filter-date-to
+  > div:nth-child(1) {
+  display: none !important;
+}
