@@ -953,6 +953,7 @@ ag-grid-cell-renderer {
     }
   }
 }
+
 .aggrid-uneditable {
   .custom-chip {
     //outline: 1px dashed #C4C4c4 !important;
@@ -2957,7 +2958,7 @@ ag-grid-angular {
 }
 /* Risk simulator - Options simulator - END*/
 
-/* Angular-V9 & AG-Grid V23 - START */
+// /* Angular-V9 & AG-Grid V23 - START */
 
 .ag-theme-material {
   &.angular-v9 {
@@ -3111,59 +3112,59 @@ ag-grid-angular {
   }
 }
 
-/* Angular-V9 & AG-Grid V23 - END */
+// /* Angular-V9 & AG-Grid V23 - END */
 
-.ag-theme-material {
-  .ag-menu {
-    z-index: 1000;
-  }
-}
+// .ag-theme-material {
+//   .ag-menu {
+//     z-index: 1000;
+//   }
+// }
 
-.flexi-grid {
-  .ag-body-viewport {
-    max-height: 155px;
-    overflow-y: auto;
-  }
-  &.light {
-    .ag-floating-bottom {
-      background: #ffffff !important;
-    }
-  }
-}
+// .flexi-grid {
+//   .ag-body-viewport {
+//     max-height: 155px;
+//     overflow-y: auto;
+//   }
+//   &.light {
+//     .ag-floating-bottom {
+//       background: #ffffff !important;
+//     }
+//   }
+// }
 
-.ag-cell {
-  &.small-checkbox {
-    .ag-checkbox-input-wrapper {
-      font-size: 14px !important;
-      box-shadow: none !important;
-    }
-    .ag-selection-checkbox {
-      margin-right: 0 !important;
-    }
-  }
-}
+// .ag-cell {
+//   &.small-checkbox {
+//     .ag-checkbox-input-wrapper {
+//       font-size: 14px !important;
+//       box-shadow: none !important;
+//     }
+//     .ag-selection-checkbox {
+//       margin-right: 0 !important;
+//     }
+//   }
+// }
 
-.ag-cell {
-  &.no-shadow {
-    box-shadow: none !important;
-  }
-}
+// .ag-cell {
+//   &.no-shadow {
+//     box-shadow: none !important;
+//   }
+// }
 
-/* Figma links - row grouping - start*/
-.ag-theme-material.angular-v9.ag-row-group {
-  .ag-cell {
-    .ag-cell-wrapper {
-      &.ag-row-group-leaf-indent {
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      .ag-group-contracted,
-      .ag-group-expanded {
-        position: relative;
-        top: 5px;
-      }
-    }
-  }
-}
+// /* Figma links - row grouping - start*/
+// .ag-theme-material.angular-v9.ag-row-group {
+//   .ag-cell {
+//     .ag-cell-wrapper {
+//       &.ag-row-group-leaf-indent {
+//         margin: 0 !important;
+//         padding: 0 !important;
+//       }
+//       .ag-group-contracted,
+//       .ag-group-expanded {
+//         position: relative;
+//         top: 5px;
+//       }
+//     }
+//   }
+// }
 
 /* Figma links - row grouping - end*/
