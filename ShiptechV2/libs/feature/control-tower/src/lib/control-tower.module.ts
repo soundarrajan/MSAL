@@ -124,6 +124,7 @@ import {
   MyNotesComponent
 } from './views/control-tower/view/components/my-notes/my-notes.component';
 import { ControlTowerHomeNewComponent } from './views/control-tower/view/components/control-tower-home-new/control-tower-home-new.component';
+import { ControlTowerQualityClaimsListComponent } from './views/control-tower/view/components/control-tower-quality-claims/control-tower-quality-claims-list.component';
 
 @NgModule({
   imports: [
@@ -248,7 +249,8 @@ import { ControlTowerHomeNewComponent } from './views/control-tower/view/compone
     QualityClaimsComponent,
     MyNotesComponent,
     ControlTowerHomeNewComponent,
-    HighlightPipe
+    HighlightPipe,
+    ControlTowerQualityClaimsListComponent
   ],
   entryComponents: [RaiseClaimComponent, ControlTowerModalComponent],
   exports: [MainControlTowerComponent, HighlightPipe],

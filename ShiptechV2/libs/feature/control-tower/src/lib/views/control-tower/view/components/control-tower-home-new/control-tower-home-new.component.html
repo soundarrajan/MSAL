@@ -93,10 +93,14 @@
       ></app-quality-labs>
     </div>
     <div *ngIf="selectedVal == 'claims'">
-      <app-quality-claims
+      <!-- <app-quality-claims
         [theme]="theme"
         [newScreen]="newScreen"
-      ></app-quality-claims>
+      ></app-quality-claims> -->
+      <control-tower-quality-claims
+        [theme]="theme"
+        [newScreen]="newScreen"
+      ></control-tower-quality-claims>
     </div>
     <div *ngIf="selectedVal == 'notes'">
       <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
