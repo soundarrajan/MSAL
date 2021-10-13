@@ -1553,3 +1553,7 @@
 .mat-tab-body-content {
   overflow: hidden;
 }
+
+.ag-theme-material .ag-cell:nth-of-type(1) {
+  border: 1px solid #e0e1e4 !important;
+}

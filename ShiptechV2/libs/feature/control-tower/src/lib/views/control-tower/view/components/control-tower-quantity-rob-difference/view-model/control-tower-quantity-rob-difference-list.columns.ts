@@ -1,4 +1,4 @@
-export enum ControlTowerListColumns {
+export enum ControlTowerQuantityRobDifferenceListColumns {
   selection = 'selection',
   actions = 'actions',
   portCallId = 'portCallId',
@@ -28,7 +28,7 @@ export enum ControlTowerListColumns {
   isVerifiedSludgeQty = 'isVerifiedSludgeQty'
 }
 
-export enum ControlTowerListColumnsLabels {
+export enum ControlTowerQuantityRobDifferenceListColumnsLabels {
   actions = 'Actions',
   portCallId = 'Call ID',
   portName = 'Port call',
@@ -60,42 +60,54 @@ export enum ControlTowerListColumnsLabels {
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const ControlTowerListColumnServerKeys: Record<
-  ControlTowerListColumns,
+export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
+  ControlTowerQuantityRobDifferenceListColumns,
   string
 > = {
-  [ControlTowerListColumns.selection]: undefined,
-  [ControlTowerListColumns.actions]: undefined,
-  [ControlTowerListColumns.portCallId]: 'portCallId',
-  [ControlTowerListColumns.portName]: 'portName',
-  [ControlTowerListColumns.vesselName]: 'vesselName',
-  [ControlTowerListColumns.surveyDate]: 'surveyDate',
-  [ControlTowerListColumns.surveyStatus]: 'SurveyStatus_DisplayName',
-  [ControlTowerListColumns.qtyMatchedStatus]: 'QtyMatchedStatus_DisplayName',
-  [ControlTowerListColumns.logBookRobBeforeDelivery]:
+  [ControlTowerQuantityRobDifferenceListColumns.selection]: undefined,
+  [ControlTowerQuantityRobDifferenceListColumns.actions]: undefined,
+  [ControlTowerQuantityRobDifferenceListColumns.portCallId]: 'portCallId',
+  [ControlTowerQuantityRobDifferenceListColumns.portName]: 'portName',
+  [ControlTowerQuantityRobDifferenceListColumns.vesselName]: 'vesselName',
+  [ControlTowerQuantityRobDifferenceListColumns.surveyDate]: 'surveyDate',
+  [ControlTowerQuantityRobDifferenceListColumns.surveyStatus]:
+    'SurveyStatus_DisplayName',
+  [ControlTowerQuantityRobDifferenceListColumns.qtyMatchedStatus]:
+    'QtyMatchedStatus_DisplayName',
+  [ControlTowerQuantityRobDifferenceListColumns.logBookRobBeforeDelivery]:
     'logBookRobBeforeDelivery',
-  [ControlTowerListColumns.measuredRobBeforeDelivery]:
+  [ControlTowerQuantityRobDifferenceListColumns.measuredRobBeforeDelivery]:
     'measuredRobBeforeDelivery',
-  [ControlTowerListColumns.diffRobBeforeDelivery]: 'diffRobBeforeDelivery',
-  [ControlTowerListColumns.qtyBeforeDeliveryUom]: 'QtyBeforeDeliveryUom_Name',
-  [ControlTowerListColumns.bdnQuantity]: 'bdnQuantity',
-  [ControlTowerListColumns.measuredDeliveredQty]: 'measuredDeliveredQty',
-  [ControlTowerListColumns.diffDeliveredQty]: 'diffDeliveredQty',
-  [ControlTowerListColumns.qtyDeliveredUom]: 'QtyDeliveredUom_Name',
-  [ControlTowerListColumns.logBookRobAfterDelivery]: 'logBookRobAfterDelivery',
-  [ControlTowerListColumns.measuredRobAfterDelivery]:
+  [ControlTowerQuantityRobDifferenceListColumns.diffRobBeforeDelivery]:
+    'diffRobBeforeDelivery',
+  [ControlTowerQuantityRobDifferenceListColumns.qtyBeforeDeliveryUom]:
+    'QtyBeforeDeliveryUom_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.bdnQuantity]: 'bdnQuantity',
+  [ControlTowerQuantityRobDifferenceListColumns.measuredDeliveredQty]:
+    'measuredDeliveredQty',
+  [ControlTowerQuantityRobDifferenceListColumns.diffDeliveredQty]:
+    'diffDeliveredQty',
+  [ControlTowerQuantityRobDifferenceListColumns.qtyDeliveredUom]:
+    'QtyDeliveredUom_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.logBookRobAfterDelivery]:
+    'logBookRobAfterDelivery',
+  [ControlTowerQuantityRobDifferenceListColumns.measuredRobAfterDelivery]:
     'measuredRobAfterDelivery',
-  [ControlTowerListColumns.diffRobAfterDelivery]: 'diffRobAfterDelivery',
-  [ControlTowerListColumns.qtyAfterDeliveryUom]: 'QtyAfterDeliveryUom_Name',
-  [ControlTowerListColumns.logBookSludgeRobBeforeDischarge]:
+  [ControlTowerQuantityRobDifferenceListColumns.diffRobAfterDelivery]:
+    'diffRobAfterDelivery',
+  [ControlTowerQuantityRobDifferenceListColumns.qtyAfterDeliveryUom]:
+    'QtyAfterDeliveryUom_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.logBookSludgeRobBeforeDischarge]:
     'logBookSludgeRobBeforeDischarge',
-  [ControlTowerListColumns.measuredSludgeRobBeforeDischarge]:
+  [ControlTowerQuantityRobDifferenceListColumns.measuredSludgeRobBeforeDischarge]:
     'measuredSludgeRobBeforeDischarge',
-  [ControlTowerListColumns.diffSludgeRobBeforeDischarge]:
+  [ControlTowerQuantityRobDifferenceListColumns.diffSludgeRobBeforeDischarge]:
     'diffSludgeRobBeforeDischarge',
-  [ControlTowerListColumns.sludgeDischargedQty]: 'sludgeDischargedQty',
-  [ControlTowerListColumns.qtySludgeDischargedUom]:
+  [ControlTowerQuantityRobDifferenceListColumns.sludgeDischargedQty]:
+    'sludgeDischargedQty',
+  [ControlTowerQuantityRobDifferenceListColumns.qtySludgeDischargedUom]:
     'QtySludgeDischargedUom_Name',
-  [ControlTowerListColumns.comment]: 'comment',
-  [ControlTowerListColumns.isVerifiedSludgeQty]: 'isVerifiedSludgeQty'
+  [ControlTowerQuantityRobDifferenceListColumns.comment]: 'comment',
+  [ControlTowerQuantityRobDifferenceListColumns.isVerifiedSludgeQty]:
+    'isVerifiedSludgeQty'
 };

@@ -145,3 +145,19 @@ body .ui-tabmenu .ui-tabmenu-nav {
   > div:nth-child(3) {
   display: none !important;
 }
+
+.ag-theme-material.ag-popup
+  > .ag-menu
+  > .ag-menu-body
+  > .ag-filter
+  > .ag-filter-wrapper
+  > div:nth-child(3) {
+  display: none !important;
+}
+
+.ag-theme-material.ag-popup
+  .ag-filter-body
+  > .ag-filter-date-from
+  > div:nth-child(1) {
+  display: none !important;
+}

@@ -93,14 +93,10 @@
       ></app-quality-labs>
     </div>
     <div *ngIf="selectedVal == 'claims'">
-      <!-- <app-quality-claims
+      <app-quality-claims
         [theme]="theme"
         [newScreen]="newScreen"
-      ></app-quality-claims> -->
-      <control-tower-quality-claims
-        [theme]="theme"
-        [newScreen]="newScreen"
-      ></control-tower-quality-claims>
+      ></app-quality-claims>
     </div>
     <div *ngIf="selectedVal == 'notes'">
       <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
@@ -108,10 +104,15 @@
   </div>
   <div class="display-tab-content" *ngIf="showQuantity">
     <div *ngIf="selectedVal2 == 'differences'">
-      <app-quantity-difference
+      <!-- <app-quantity-difference
         [theme]="theme"
         [newScreen]="newScreen"
-      ></app-quantity-difference>
+      ></app-quantity-difference> -->
+      <control-tower-quantity-difference
+        [theme]="theme"
+        [newScreen]="newScreen"
+      >
+      </control-tower-quantity-difference>
     </div>
     <div *ngIf="selectedVal2 == 'claims'">
       <app-quantity-claims

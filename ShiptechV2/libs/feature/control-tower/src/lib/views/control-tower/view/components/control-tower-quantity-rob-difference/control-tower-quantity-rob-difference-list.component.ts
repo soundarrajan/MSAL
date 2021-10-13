@@ -6,15 +6,10 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { ControlTowerListGridViewModel } from './view-model/control-tower-list-grid.view-model';
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 import { Observable, Subject } from 'rxjs';
-import { KnownControlTowerRoutes } from '../../control-tower.routes';
-import { QcReportsListState } from '../../store/reports-list/qc-reports-list.state';
 import { Select } from '@ngxs/store';
-import { QcReportService } from '../../services/qc-report.service';
 import { ToastrService } from 'ngx-toastr';
-import { IQcReportsListItemDto } from '../../services/api/dto/qc-reports-list-item.dto';
 import { TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { RowNode } from '@ag-grid-community/core';
@@ -22,16 +17,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
-import { ControlTowerListColumnServerKeys } from './view-model/control-tower-list.columns';
+import { QcReportsListState } from 'libs/feature/quantity-control/src/lib/store/reports-list/qc-reports-list.state';
+import { KnownControlTowerRoutes } from 'libs/feature/control-tower/src/lib/control-tower.routes';
+import { QcReportService } from 'libs/feature/control-tower/src/lib/services/qc-report.service';
+import { IQcReportsListItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/qc-reports-list-item.dto';
+import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model/control-tower-quantity-rob-difference-list-grid.view-model';
+import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './view-model/control-tower-quantity-rob-difference-list.columns';
 
 @Component({
-  selector: 'shiptech-control-tower-list',
-  templateUrl: './control-tower-list.component.html',
-  styleUrls: ['./control-tower-list.component.scss'],
-  providers: [ControlTowerListGridViewModel],
+  selector: 'shiptech-control-tower-quantity-rob-difference-list',
+  templateUrl: './control-tower-quantity-rob-difference-list.component.html',
+  styleUrls: ['./control-tower-quantity-rob-difference-list.component.scss'],
+  providers: [ControlTowerQuantityRobDifferenceListGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ControlTowerListComponent implements OnInit, OnDestroy {
+export class ControlTowerQuantityRobDifferenceListComponent
+  implements OnInit, OnDestroy {
   @Select(QcReportsListState.nbOfMatched) nbOfMatched$: Observable<number>;
   @Select(QcReportsListState.nbOfMatchedWithinLimit)
   nbOfMatchedWithinLimit$: Observable<number>;
@@ -41,13 +42,13 @@ export class ControlTowerListComponent implements OnInit, OnDestroy {
 
   public reportDetailsRoutePath = `../${KnownControlTowerRoutes.Report}`;
   knownRoutes = KnownControlTowerRoutes;
-  qcReportListServerKeys = ControlTowerListColumnServerKeys;
+  qcReportListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
 
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   private _destroy$ = new Subject();
 
   constructor(
-    public gridViewModel: ControlTowerListGridViewModel,
+    public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,
     public appConfig: AppConfig,
     public reconStatusLookups: ReconStatusLookup,
     private messageBox: MessageBoxService,

@@ -20,10 +20,6 @@
           (search)="gridViewModel.onSearch($event)"
           [gridId]="search.id"
         ></shiptech-search-box>
-
-        <!--        <button class="ui-button mr-15  print-icon mail-icon-position" label="" pButton type="button" (click)="print()"></button>-->
-        <!--        <button (click)="openEmailPreview()" class="ui-button mr-1 mail-icon send-icon-position" label="" pButton-->
-        <!--                type="button"></button>-->
         <shiptech-export
           [gridModel]="gridViewModel"
           [gridId]="'qc-report-list-grid'"
@@ -112,35 +108,26 @@
       </div>
     </div>
   </div>
-  <button mat-raised-button color="primary" (click)="newFilters()">
-    Primary
-  </button>
 
-  <ng-container>
-    <div class="grid-container">
-      <div class="agGrid-v2" style="margin: 0">
-        <div style="width:100%;height: 100%;">
-          <ag-grid-angular
-            #agGridAngular
-            appAgGridFirstColumnLocked
-            appAgGridFilterPresets
-            appAgGridSizeToFit
-            appAgGridClearAllFilters
-            appExternalSearch
-            appAgGridEmptyFilterOption
-            #search="search-id"
-            groupId="qc-report-list-filter-presets"
-            domLayout="normal"
-            id="qc-report-list-grid"
-            class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
-            style="width: 100%;height: calc( 100vh - 182px );;"
-            [gridOptions]="gridViewModel.gridOptions"
-          >
-          </ag-grid-angular>
-        </div>
-      </div>
-    </div>
-  </ng-container>
+  <ag-grid-angular
+    #agGridAngular
+    appAgGridFirstColumnLocked
+    appAgGridFilterPresets
+    appAgGridSizeToFit
+    appAgGridClearAllFilters
+    appExternalSearch
+    appAgGridEmptyFilterOption
+    #search="search-id"
+    groupId="qc-report-list-filter-presets"
+    [suppressMenuHide]="true"
+    id="qc-report-list-grid"
+    domLayout="normal"
+    class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+    style="width: 100%; height:calc( 100vh - 182px );"
+    [gridOptions]="gridViewModel.gridOptions"
+  >
+  </ag-grid-angular>
+
   <app-ag-footer
     [page]="gridViewModel.page"
     [size]="gridViewModel.pageSize"
