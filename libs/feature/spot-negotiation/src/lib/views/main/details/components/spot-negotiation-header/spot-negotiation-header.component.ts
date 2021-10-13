@@ -49,7 +49,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList: any = [];
   visibleCounterpartyList: any = [];
-  selectedCounterparty:any = [];
+  selectedCounterparty: any = [];
 
   requestsAndVessels = [
     { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
@@ -79,27 +79,25 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     // Get data from store;
 
     setTimeout(() => {
-        this.store.subscribe(({ spotNegotiation }) => {
-
+      this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
         this.locations = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
-
-          this.SetLocationsRows(
-            spotNegotiation.currentRequestSmallInfo.requestLocations
-          );
-          if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
+          this.locations =
+            spotNegotiation.currentRequestSmallInfo.requestLocations;
+          if (
+            this.counterpartyList.length === 0 &&
+            spotNegotiation.counterpartyList
+          ) {
             this.counterpartyList = spotNegotiation.counterpartyList;
             this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
           }
         }
-    });
-  }, 100);
+      });
+    }, 100);
   }
 
-  SetLocationsRows(eLocations: any): void {
-    this.locations = eLocations;
-  }
+
 
   removeRequest(i) {
     alert('asd');
@@ -119,57 +117,57 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toBeAddedCounterparties() : SpnegoAddCounterpartyModel[] {
+  toBeAddedCounterparties(): SpnegoAddCounterpartyModel[] {
     if (this.requestOptions) {
       let selectedCounterparties = [];
 
       //current RequestGroupId
       let RequestGroupId = parseInt(this.requestOptions.requestGroupId);
 
-      debugger;
       //Looping through all the Request Locations
       this.requestOptions.requestLocations.forEach(reqLoc => {
-        let perLocationCtpys = this.selectedCounterparty.map(val => <SpnegoAddCounterpartyModel>{
-          requestGroupId: RequestGroupId,
-          requestLocationId: reqLoc.id,
-          locationId: reqLoc.locationId,
-          id: 0,
-          name: "",
-          counterpartytypeId: 0,
-          counterpartyTypeName: "",
-          genPrice: "",
-          genRating: "",
-          isDeleted: false,
-          isSelected: true,
-          mail: "",
-          portPrice: "",
-          portRating: "",
-          prefferedProductIds: "",
-          sellerComments: "",
-          sellerCounterpartyId: val.id,
-          sellerCounterpartyName: val.name,
-          senRating: "",
-        });
+        let perLocationCtpys = this.selectedCounterparty.map(
+          val =>
+            <SpnegoAddCounterpartyModel>{
+              requestGroupId: RequestGroupId,
+              requestLocationId: reqLoc.id,
+              locationId: reqLoc.locationId,
+              id: 0,
+              name: '',
+              counterpartytypeId: 0,
+              counterpartyTypeName: '',
+              genPrice: '',
+              genRating: '',
+              isDeleted: false,
+              isSelected: true,
+              mail: '',
+              portPrice: '',
+              portRating: '',
+              prefferedProductIds: '',
+              sellerComments: '',
+              sellerCounterpartyId: val.id,
+              sellerCounterpartyName: val.name,
+              senRating: ''
+            }
+        );
         selectedCounterparties.push(...perLocationCtpys);
       });
 
       return selectedCounterparties;
-    }
-    else {
-        return Array<SpnegoAddCounterpartyModel>();
+    } else {
+      return Array<SpnegoAddCounterpartyModel>();
     }
   }
 
-  addCounterpartyAcrossLocations(){
+  addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
-    if(selectedCounterparties.length == 0)
-      return;
+    if (selectedCounterparties.length == 0) return;
 
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     let payload = {
-      "requestGroupId": parseInt(RequestGroupId),
-      "isAllLocation": true,
-      "counterparties": selectedCounterparties
+      requestGroupId: parseInt(RequestGroupId),
+      isAllLocation: true,
+      counterparties: selectedCounterparties
     };
 
     const response = this._spotNegotiationService.addCounterparties(payload);
@@ -177,9 +175,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       if (res.status) {
         this.toastr.success(res.message);
         // Add in Store
-        this.store.dispatch(new AddCounterpartyToLocations(payload.counterparties));
-      }
-      else{
+        this.store.dispatch(
+          new AddCounterpartyToLocations(payload.counterparties)
+        );
+      } else {
         this.toastr.error(res.message);
         return;
       }
@@ -212,22 +211,20 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   selectRequest(event, i, selected) {
-
     event.preventDefault();
     this.selReqIndex = i;
 
     // Stop if clicked on same request;
-    if(this.selReqIndex != i){
+    if (this.selReqIndex != i) {
       return null;
     }
-      // Set current request
-      this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
+    // Set current request
+    this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
 
-
-      var obj = {
-        selReqIndex: i
-      }
-      this.selectionChange.emit(obj);
+    var obj = {
+      selReqIndex: i
+    };
+    this.selectionChange.emit(obj);
   }
 
   openRequestPopup() {
@@ -249,9 +246,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       height: '95vh',
       maxWidth: '95vw',
       panelClass: 'search-request-popup',
-      data:{
-        "AddCounterpartiesAcrossLocations":true,
-        "RequestGroupId":parseInt(RequestGroupId)
+      data: {
+        AddCounterpartiesAcrossLocations: true,
+        RequestGroupId: parseInt(RequestGroupId)
       }
     });
 
@@ -298,11 +295,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  openRequestTab(event: any, request: any){
+  openRequestTab(event: any, request: any) {
     event.preventDefault();
     event.stopPropagation();
     const baseOrigin = new URL(window.location.href).origin;
     window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
   }
 }
-
