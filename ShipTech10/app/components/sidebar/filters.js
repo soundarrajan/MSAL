@@ -1078,7 +1078,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     ]                    
                 }
                 
-                if (window.location.href.includes("invoices/deliveries") && $rootScope.rawFilters.length == 0) {
+                if (window.location.href.includes("invoices/deliveries") && $rootScope.rawFilters.length == 0 && !$rootScope.etaCleared) {
 					$rootScope.rawFilters = [
 	                	{
 	                		"column": {
