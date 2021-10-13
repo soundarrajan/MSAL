@@ -1,0 +1,197 @@
+<shiptech-wunderbar>
+  <div class="row" style="margin: 5px 0;">
+    <div class="col-3 d-flex">
+      <shiptech-presets-menu-dropdown
+        [gridModelColumnApi]="gridViewModel.gridColumnApi"
+      ></shiptech-presets-menu-dropdown>
+      <app-filter-preferences
+        appAgGridFilterPresets
+        groupId="qc-report-list-filter-presets"
+        id="qc-report-list"
+        (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
+      ></app-filter-preferences>
+    </div>
+    <div class="col-9 p-r-20">
+      <div style="float:right">
+        <shiptech-search-box
+          appExternalSearch
+          [placeholder]="'Search '"
+          class="mr-1"
+          (search)="gridViewModel.onSearch($event)"
+          [gridId]="search.id"
+        ></shiptech-search-box>
+
+        <!--        <button class="ui-button mr-15  print-icon mail-icon-position" label="" pButton type="button" (click)="print()"></button>-->
+        <!--        <button (click)="openEmailPreview()" class="ui-button mr-1 mail-icon send-icon-position" label="" pButton-->
+        <!--                type="button"></button>-->
+        <shiptech-export
+          [gridModel]="gridViewModel"
+          [gridId]="'qc-report-list-grid'"
+          [serverKeys]="qcReportListServerKeys"
+          [hasEmailPreview]="true"
+        ></shiptech-export>
+        <button
+          (click)="newReport()"
+          class="ui-button-success mr-1 btn-i-success"
+          label="New Report"
+          pButton
+          type="button"
+        ></button>
+        <button
+          (click)="verifyVessels()"
+          class="ui-button-success mr-1 btn-i-success"
+          label="Verify"
+          pButton
+          type="button"
+        ></button>
+      </div>
+    </div>
+  </div>
+</shiptech-wunderbar>
+
+<p-messages></p-messages>
+
+<div class="w-100 px-3 py-4  m-r-5 m-b-7" style="background: white;">
+  <div class="row mb-2">
+    <div class="col-1 d-flex selector-margin-right">
+      <app-page-size-selector
+        (selectedOptionChange)="onPageSizeChange($event)"
+        [options]="gridViewModel.pageSizeOptions"
+        [selectedOption]="gridViewModel.pageSize"
+      >
+      </app-page-size-selector>
+    </div>
+    <div class="col-7 d-flex p-t-4">
+      <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+    </div>
+    <div class="col-md-4 selector-margin-left">
+      <div
+        class="match-status"
+        fxLayout="row"
+        fxLayoutAlign="end center"
+        fxLayoutGap="5px"
+      >
+        <div class="match-status-item matched">
+          <i
+            class="fa fa-check"
+            [ngStyle]="{ color: reconStatusLookups.matched.code }"
+          ></i>
+          <span class="label">
+            Matched:
+          </span>
+          <span class="value">
+            {{ nbOfMatched$ | async }}
+          </span>
+        </div>
+
+        <div class="match-status-item matched-withing-limit">
+          <i
+            class="fa fa-check"
+            [ngStyle]="{ color: reconStatusLookups.withinLimit.code }"
+          ></i>
+          <span class="label">
+            Matched within Limit:
+          </span>
+          <span class="value">
+            {{ nbOfMatchedWithinLimit$ | async }}
+          </span>
+        </div>
+
+        <div class="match-status-item not-matched">
+          <i
+            class="fa fa-times"
+            [ngStyle]="{ color: reconStatusLookups.notMatched.code }"
+          ></i>
+          <span class="label">
+            Not Matched:
+          </span>
+          <span class="value">
+            {{ nbOfNotMatched$ | async }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button mat-raised-button color="primary" (click)="newFilters()">
+    Primary
+  </button>
+
+  <ng-container>
+    <div class="grid-container">
+      <div class="agGrid-v2" style="margin: 0">
+        <div style="width:100%;height: 100%;">
+          <ag-grid-angular
+            #agGridAngular
+            appAgGridFirstColumnLocked
+            appAgGridFilterPresets
+            appAgGridSizeToFit
+            appAgGridClearAllFilters
+            appExternalSearch
+            appAgGridEmptyFilterOption
+            #search="search-id"
+            groupId="qc-report-list-filter-presets"
+            domLayout="normal"
+            id="qc-report-list-grid"
+            class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+            style="width: 100%;height: calc( 100vh - 182px );;"
+            [gridOptions]="gridViewModel.gridOptions"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <app-ag-footer
+    [page]="gridViewModel.page"
+    [size]="gridViewModel.pageSize"
+    [count]="gridViewModel.totalItems"
+    (pageChange)="onPageChange($event.page)"
+  >
+  </app-ag-footer>
+</div>
+
+<ng-template
+  [columnDef]="[gridViewModel.portCallId]"
+  appAgCellTemplate
+  let-data="data"
+  let-value="value"
+>
+  <a
+    *ngIf="data && data.id"
+    [routerLink]="[reportDetailsRoutePath, data.id]"
+    href="#"
+    [target]="appConfig.openLinksInNewTab ? '_blank' : '_self'"
+    >{{ data?.portCallId }}</a
+  >
+</ng-template>
+
+<ng-template
+  [columnDef]="[gridViewModel.vesselNameCol]"
+  appAgCellTemplate
+  let-data="data"
+  let-value="value"
+>
+  <p *ngIf="value">
+    {{ data?.vesselName }}
+    <span class="badge badge-pill badge-flag" *ngIf="data?.vesselToWatchFlag"
+      ><i class="fas fa-flag fa-xs"></i
+    ></span>
+  </p>
+</ng-template>
+
+<ng-template
+  [columnDef]="[gridViewModel.isVerifiedSludgeQtyCol]"
+  appAgCellTemplate
+  let-data="data"
+  let-value="value"
+>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <p-checkbox
+      binary="true"
+      [(ngModel)]="data.isVerifiedSludgeQty"
+      (ngModelChange)="verifySludgeReport(data, $event)"
+      [disabled]="!shouldShow(data)"
+    >
+    </p-checkbox>
+  </div>
+</ng-template>
