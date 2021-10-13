@@ -6,12 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./control-tower-home-new.component.css']
 })
 export class ControlTowerHomeNewComponent implements OnInit {
-  public showQuality: boolean = true;
-  public showQuantity: boolean = false;
+  public showQuality: boolean = false;
+  public showQuantity: boolean = true;
   public showResidue: boolean = false;
   public theme;
   public newScreen = true;
-  selected = 'quality';
+  selected = 'quantity';
 
   constructor() {}
 

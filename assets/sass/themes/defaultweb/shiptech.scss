@@ -8887,10 +8887,14 @@ tr.title {
                     .aggrid-evenrow-bg,
                     .ag-row-even {
                       background: #ffffff !important;
+                      border: 1px solid #e0e1e4 !important;
+
                     }
                     .aggrid-oddrow-bg,
                     .ag-row-odd {
                       background: #f9fbfe !important;
+                      border: 1px solid #e0e1e4 !important;
+
                     }
                   }
                 }
@@ -23411,4 +23415,8 @@ mat-form-field {
   .ag-header-cell-label
   .ag-header-cell-text {
   line-height: unset !important;
+}
+
+.mat-tab-body-content { 
+  overflow: visible !important;
 }

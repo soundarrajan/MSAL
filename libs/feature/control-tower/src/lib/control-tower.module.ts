@@ -48,7 +48,6 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ExportModule } from '@shiptech/core/ui/components/export/export.module';
 import { ControlTowerRoutingModule } from './control-tower-routing.module';
-import { ControlTowerListComponent } from './views/control-tower-list/control-tower-list.component';
 import { ControlTowerDetailsComponent } from './views/control-tower/details/control-tower-details.component';
 import { EventsLogComponent } from './views/control-tower/details/components/events-log/events-log.component';
 import { ProductDetailsComponent } from './views/control-tower/details/components/port-call-grid/product-details.component';
@@ -124,7 +123,8 @@ import {
   MyNotesComponent
 } from './views/control-tower/view/components/my-notes/my-notes.component';
 import { ControlTowerHomeNewComponent } from './views/control-tower/view/components/control-tower-home-new/control-tower-home-new.component';
-import { ControlTowerQualityClaimsListComponent } from './views/control-tower/view/components/control-tower-quality-claims/control-tower-quality-claims-list.component';
+import { ControlTowerQuantityDifferenceComponent } from './views/control-tower/view/components/control-tower-quantity-difference/control-tower-quantity-difference.component';
+import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-tower/view/components/control-tower-quantity-rob-difference/control-tower-quantity-rob-difference-list.component';
 
 @NgModule({
   imports: [
@@ -231,7 +231,7 @@ import { ControlTowerQualityClaimsListComponent } from './views/control-tower/vi
   ],
   declarations: [
     MainControlTowerComponent,
-    ControlTowerListComponent,
+    ControlTowerQuantityRobDifferenceListComponent,
     ControlTowerViewComponent,
     ControlTowerInvoiceListComponent,
     ControlTowerDetailsComponent,
@@ -250,7 +250,7 @@ import { ControlTowerQualityClaimsListComponent } from './views/control-tower/vi
     MyNotesComponent,
     ControlTowerHomeNewComponent,
     HighlightPipe,
-    ControlTowerQualityClaimsListComponent
+    ControlTowerQuantityDifferenceComponent
   ],
   entryComponents: [RaiseClaimComponent, ControlTowerModalComponent],
   exports: [MainControlTowerComponent, HighlightPipe],

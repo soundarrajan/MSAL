@@ -873,6 +873,7 @@ ag-grid-cell-renderer {
 .aggrid-evenrow-bg,
 .ag-row-even {
   background-color: $gridrow_evenbg !important;
+  border: 1px solid #e0e1e4 !important;
 }
 
 .aggrid-evenrow-bg-dark {

@@ -23,11 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
-import {
-  ControlTowerListColumns,
-  ControlTowerListColumnServerKeys,
-  ControlTowerListColumnsLabels
-} from './control-tower-quality-claims-list.columns';
+
 import { AgOpenPopUpComponent } from '@shiptech/core/ui/components/ag-grid/ag-open-pop-up/ag-open-pop-up.component';
 import {
   IControlTowerListItemDto,
@@ -35,6 +31,11 @@ import {
 } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import { ModuleLoggerFactory } from 'libs/feature/control-tower/src/lib/core/logging/module-logger-factory';
 import { QcReportService } from 'libs/feature/control-tower/src/lib/services/qc-report.service';
+import {
+  ControlTowerQuantityRobDifferenceListColumns,
+  ControlTowerQuantityRobDifferenceListColumnServerKeys,
+  ControlTowerQuantityRobDifferenceListColumnsLabels
+} from './control-tower-quantity-rob-difference-list.columns';
 
 function model(
   prop: keyof IControlTowerListItemDto
@@ -43,7 +44,7 @@ function model(
 }
 
 @Injectable()
-export class ControlTowerListGridViewModel extends BaseGridViewModel {
+export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGridViewModel {
   public paramsServerSide: IServerSideGetRowsParams;
   public searchText: string;
   public exportUrl: string;
@@ -82,7 +83,7 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   selectCol: ITypedColDef<IControlTowerListItemDto> = {
-    colId: ControlTowerListColumns.selection,
+    colId: ControlTowerQuantityRobDifferenceListColumns.selection,
     width: 50,
     ...AgCheckBoxHeaderComponent.withParams({}),
     ...AgCheckBoxRendererComponent.withParams<IControlTowerListItemDto>({
@@ -108,8 +109,8 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   openPopUp: ITypedColDef<IControlTowerListItemDto> = {
-    headerName: ControlTowerListColumnsLabels.actions,
-    colId: ControlTowerListColumns.actions,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
+    colId: ControlTowerQuantityRobDifferenceListColumns.actions,
     cellRendererFramework: AgOpenPopUpComponent,
     cellRendererParams: {
       cellClass: ['open-pop-up'],
@@ -119,16 +120,16 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   portCallId: ITypedColDef<IControlTowerListItemDto, string> = {
-    headerName: ControlTowerListColumnsLabels.portCallId,
-    colId: ControlTowerListColumns.portCallId,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.portCallId,
+    colId: ControlTowerQuantityRobDifferenceListColumns.portCallId,
     field: model('portCallId'),
     cellRendererFramework: AgCellTemplateComponent,
     width: 200
   };
 
   portNameCol: ITypedColDef<IControlTowerListItemDto, string> = {
-    headerName: ControlTowerListColumnsLabels.portName,
-    colId: ControlTowerListColumns.portName,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.portName,
+    colId: ControlTowerQuantityRobDifferenceListColumns.portName,
     field: model('portName'),
     cellRenderer: params => {
       const a = document.createElement('div');
@@ -139,8 +140,8 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   vesselNameCol: ITypedColDef<IControlTowerListItemDto, string> = {
-    headerName: ControlTowerListColumnsLabels.vesselName,
-    colId: ControlTowerListColumns.vesselName,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.vesselName,
+    colId: ControlTowerQuantityRobDifferenceListColumns.vesselName,
     field: model('vesselName'),
     cellRenderer: params => {
       const a = document.createElement('div');
@@ -151,8 +152,8 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   surveyDateCol: ITypedColDef<IControlTowerListItemDto, string> = {
-    headerName: ControlTowerListColumnsLabels.surveyDate,
-    colId: ControlTowerListColumns.surveyDate,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.surveyDate,
+    colId: ControlTowerQuantityRobDifferenceListColumns.surveyDate,
     field: model('surveyDate'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
@@ -160,8 +161,8 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   surveyStatusCol: ITypedColDef<IControlTowerListItemDto, IStatusLookupDto> = {
-    headerName: ControlTowerListColumnsLabels.surveyStatus,
-    colId: ControlTowerListColumns.surveyStatus,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.surveyStatus,
+    colId: ControlTowerQuantityRobDifferenceListColumns.surveyStatus,
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
@@ -178,8 +179,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     IReconStatusLookupDto
   > = {
-    headerName: ControlTowerListColumnsLabels.qtyMatchedStatus,
-    colId: ControlTowerListColumns.qtyMatchedStatus,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.qtyMatchedStatus,
+    colId: ControlTowerQuantityRobDifferenceListColumns.qtyMatchedStatus,
     field: model('qtyMatchedStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
@@ -193,8 +195,10 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     number
   > = {
-    headerName: ControlTowerListColumnsLabels.logBookRobBeforeDelivery,
-    colId: ControlTowerListColumns.logBookRobBeforeDelivery,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobBeforeDelivery,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
     width: 170,
     valueFormatter: params => this.format.quantity(params.value),
@@ -205,8 +209,10 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     number
   > = {
-    headerName: ControlTowerListColumnsLabels.measuredRobBeforeDelivery,
-    colId: ControlTowerListColumns.measuredRobBeforeDelivery,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobBeforeDelivery,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -214,8 +220,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   diffRobBeforeDeliveryCol: ITypedColDef<IControlTowerListItemDto, number> = {
-    headerName: ControlTowerListColumnsLabels.diffRobBeforeDelivery,
-    colId: ControlTowerListColumns.diffRobBeforeDelivery,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.diffRobBeforeDelivery,
+    colId: ControlTowerQuantityRobDifferenceListColumns.diffRobBeforeDelivery,
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -231,8 +238,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     IToleranceUomDto
   > = {
-    headerName: ControlTowerListColumnsLabels.qtyBeforeDeliveryUom,
-    colId: ControlTowerListColumns.qtyBeforeDeliveryUom,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.qtyBeforeDeliveryUom,
+    colId: ControlTowerQuantityRobDifferenceListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
     cellRenderer: params => {
       const a = document.createElement('div');
@@ -243,24 +251,26 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   bdnQuantityCol: ITypedColDef<IControlTowerListItemDto, number> = {
-    headerName: ControlTowerListColumnsLabels.bdnQuantity,
-    colId: ControlTowerListColumns.bdnQuantity,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.bdnQuantity,
+    colId: ControlTowerQuantityRobDifferenceListColumns.bdnQuantity,
     field: model('bdnQuantity'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
   measuredDeliveredQtyCol: ITypedColDef<IControlTowerListItemDto, number> = {
-    headerName: ControlTowerListColumnsLabels.measuredDeliveredQty,
-    colId: ControlTowerListColumns.measuredDeliveredQty,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredDeliveredQty,
+    colId: ControlTowerQuantityRobDifferenceListColumns.measuredDeliveredQty,
     field: model('measuredDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
   diffDeliveredQtyCol: ITypedColDef<IControlTowerListItemDto, number> = {
-    headerName: ControlTowerListColumnsLabels.diffDeliveredQty,
-    colId: ControlTowerListColumns.diffDeliveredQty,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.diffDeliveredQty,
+    colId: ControlTowerQuantityRobDifferenceListColumns.diffDeliveredQty,
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -275,8 +285,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     IToleranceUomDto
   > = {
-    headerName: ControlTowerListColumnsLabels.qtyDeliveredUom,
-    colId: ControlTowerListColumns.qtyDeliveredUom,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.qtyDeliveredUom,
+    colId: ControlTowerQuantityRobDifferenceListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
     cellRenderer: params => {
       const a = document.createElement('div');
@@ -287,8 +298,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   logBookRobAfterDeliveryCol: ITypedColDef<IControlTowerListItemDto, number> = {
-    headerName: ControlTowerListColumnsLabels.logBookRobAfterDelivery,
-    colId: ControlTowerListColumns.logBookRobAfterDelivery,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobAfterDelivery,
+    colId: ControlTowerQuantityRobDifferenceListColumns.logBookRobAfterDelivery,
     field: model('logBookRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -298,16 +310,19 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     number
   > = {
-    headerName: ControlTowerListColumnsLabels.measuredRobAfterDelivery,
-    colId: ControlTowerListColumns.measuredRobAfterDelivery,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobAfterDelivery,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.measuredRobAfterDelivery,
     field: model('measuredRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
   diffRobAfterDeliveryCol: ITypedColDef<IControlTowerListItemDto, number> = {
-    headerName: ControlTowerListColumnsLabels.diffRobAfterDelivery,
-    colId: ControlTowerListColumns.diffRobAfterDelivery,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.diffRobAfterDelivery,
+    colId: ControlTowerQuantityRobDifferenceListColumns.diffRobAfterDelivery,
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -322,8 +337,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     IToleranceUomDto
   > = {
-    headerName: ControlTowerListColumnsLabels.qtyAfterDeliveryUom,
-    colId: ControlTowerListColumns.qtyAfterDeliveryUom,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.qtyAfterDeliveryUom,
+    colId: ControlTowerQuantityRobDifferenceListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
     cellRenderer: params => {
       const a = document.createElement('div');
@@ -337,8 +353,10 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     number
   > = {
-    headerName: ControlTowerListColumnsLabels.logBookSludgeRobBeforeDischarge,
-    colId: ControlTowerListColumns.logBookSludgeRobBeforeDischarge,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.logBookSludgeRobBeforeDischarge,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.logBookSludgeRobBeforeDischarge,
     field: model('logBookSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -348,8 +366,10 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     number
   > = {
-    headerName: ControlTowerListColumnsLabels.measuredSludgeRobBeforeDischarge,
-    colId: ControlTowerListColumns.measuredSludgeRobBeforeDischarge,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredSludgeRobBeforeDischarge,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -359,8 +379,10 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     number
   > = {
-    headerName: ControlTowerListColumnsLabels.diffSludgeRobBeforeDischarge,
-    colId: ControlTowerListColumns.diffSludgeRobBeforeDischarge,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.diffSludgeRobBeforeDischarge,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.diffSludgeRobBeforeDischarge,
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -372,8 +394,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   sludgeDischargedQtyCol: ITypedColDef<IControlTowerListItemDto, number> = {
-    headerName: ControlTowerListColumnsLabels.sludgeDischargedQty,
-    colId: ControlTowerListColumns.sludgeDischargedQty,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.sludgeDischargedQty,
+    colId: ControlTowerQuantityRobDifferenceListColumns.sludgeDischargedQty,
     field: model('sludgeDischargedQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -383,8 +406,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     IControlTowerListItemDto,
     IToleranceUomDto
   > = {
-    headerName: ControlTowerListColumnsLabels.qtySludgeDischargedUom,
-    colId: ControlTowerListColumns.qtySludgeDischargedUom,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.qtySludgeDischargedUom,
+    colId: ControlTowerQuantityRobDifferenceListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
     cellRenderer: params => {
       const a = document.createElement('div');
@@ -395,8 +419,8 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   commentCol: ITypedColDef<IControlTowerListItemDto, string> = {
-    headerName: ControlTowerListColumnsLabels.comment,
-    colId: ControlTowerListColumns.comment,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.comment,
+    colId: ControlTowerQuantityRobDifferenceListColumns.comment,
     field: model('comment'),
     cellRenderer: params => {
       const a = document.createElement('div');
@@ -407,8 +431,9 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
   };
 
   isVerifiedSludgeQtyCol: ITypedColDef<IControlTowerListItemDto, string> = {
-    headerName: ControlTowerListColumnsLabels.isVerifiedSludgeQty,
-    colId: ControlTowerListColumns.isVerifiedSludgeQty,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.isVerifiedSludgeQty,
+    colId: ControlTowerQuantityRobDifferenceListColumns.isVerifiedSludgeQty,
     field: model('isVerifiedSludgeQty'),
     cellRendererFramework: AgCellTemplateComponent,
     filter: 'agNumberColumnFilter',
@@ -429,10 +454,12 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     private statusLookup: StatusLookup
   ) {
     super(
-      'control-tower-grid',
+      'control-tower-quantity-rob-grid',
       columnPreferences,
       changeDetector,
-      loggerFactory.createLogger(ControlTowerListGridViewModel.name)
+      loggerFactory.createLogger(
+        ControlTowerQuantityRobDifferenceListGridViewModel.name
+      )
     );
     this.init(this.gridOptions, true);
   }
@@ -492,7 +519,7 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
     let values = transformLocalToServeGridInfo(
       this.gridApi,
       params,
-      ControlTowerListColumnServerKeys,
+      ControlTowerQuantityRobDifferenceListColumnServerKeys,
       this.searchText
     );
     this.paramsServerSide = params;
@@ -502,7 +529,7 @@ export class ControlTowerListGridViewModel extends BaseGridViewModel {
         transformLocalToServeGridInfo(
           this.gridApi,
           params,
-          ControlTowerListColumnServerKeys,
+          ControlTowerQuantityRobDifferenceListColumnServerKeys,
           this.searchText
         )
       )
