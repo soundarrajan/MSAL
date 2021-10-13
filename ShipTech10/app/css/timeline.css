@@ -553,7 +553,6 @@ timeline-right-click-popover .contextmenu {
     border: 1px solid #E0E1E4;
     box-sizing: border-box;
     border-radius: 4px;
-    margin-top: 15px;
 }
 
 .right-popup-table  thead tr td {
@@ -589,12 +588,13 @@ timeline-right-click-popover .contextmenu {
 
 .right-popup-table th {
     padding: 8px !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: normal !important;
 }
 
 .right-popup-table td {
     border-top: unset !important;
+    font-size: 12px !important;
 }
 
 
@@ -826,4 +826,11 @@ timeline-right-click-popover .contextmenu {
 .newStatusColoured.contextmenu .content .voyageDetailSection table thead tr {
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25), 0px -2px 2px rgba(0, 0, 0, 0.25);
         /*0px 2px 2px rgba(0, 0, 0, 0.25), 0px -2px 2px rgba(0, 0, 0, 0.25);*/
+}
+
+.port-details {
+    margin-left: unset !important; 
+    margin-right: unset !important;
+    margin-top: 10px;
+    border: 1px solid #E0E1E4;
 }
