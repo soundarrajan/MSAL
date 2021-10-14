@@ -9220,7 +9220,8 @@ tr.title {
       border: none;
       position: absolute;
       top: 0;
-      width: 100%;
+      // width: 100%;
+      left: calc(100% - 270px) !important;
     }
     .mat-tab-body-wrapper {
       overflow: visible !important;
