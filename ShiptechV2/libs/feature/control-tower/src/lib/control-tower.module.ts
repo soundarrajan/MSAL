@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
-import {
-  QUANTITY_CONTROL_API_SERVICE,
-  QuantityControlApi
-} from './services/api/quantity-control-api';
+
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
@@ -13,17 +10,12 @@ import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/messa
 import { MainControlTowerComponent } from './views/main-control-tower.component';
 import { ControlTowerGridModule } from './control-tower-grid.module';
 import { NgxsModule } from '@ngxs/store';
-import { QuantityControlState } from './store/quantity-control.state';
-import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportState } from './store/report/qc-report.state';
-import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
+
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { QcReportService } from './services/qc-report.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { ControlTowerModuleResolver } from './control-tower-route.resolver';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
-import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
@@ -48,18 +40,7 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ExportModule } from '@shiptech/core/ui/components/export/export.module';
 import { ControlTowerRoutingModule } from './control-tower-routing.module';
-import { ControlTowerDetailsComponent } from './views/control-tower/details/control-tower-details.component';
-import { EventsLogComponent } from './views/control-tower/details/components/events-log/events-log.component';
-import { ProductDetailsComponent } from './views/control-tower/details/components/port-call-grid/product-details.component';
-import { QcReportDetailsToolbarComponent } from './views/control-tower/toolbar/qc-report-details-toolbar.component';
-import { UomSelectorComponent } from './views/control-tower/details/components/uom-selector/uom-selector.component';
-import { RaiseClaimComponent } from './views/control-tower/details/components/raise-claim/raise-claim.component';
-import { ControlTowerDetailsRouteResolver } from './views/control-tower/details/control-tower-details-route.resolver';
-import { InvoiceCompleteService } from './services/invoice-complete.service';
-import {
-  InvoiceCompleteApi,
-  INVOICE_COMPLETE_API_SERVICE
-} from './services/api/invoice-complete-api';
+
 import { ControlTowerViewComponent } from './views/control-tower/view/control-tower-view.component';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -124,6 +105,11 @@ import {
 import { ControlTowerHomeNewComponent } from './views/control-tower/view/components/control-tower-home-new/control-tower-home-new.component';
 import { ControlTowerQuantityDifferenceComponent } from './views/control-tower/view/components/control-tower-quantity-difference/control-tower-quantity-difference.component';
 import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-tower/view/components/control-tower-quantity-rob-difference/control-tower-quantity-rob-difference-list.component';
+import {
+  ControlTowerApi,
+  CONTROL_TOWER_API_SERVICE
+} from './services/api/control-tower-api';
+import { ControlTowerService } from './services/control-tower.service';
 
 @NgModule({
   imports: [
@@ -157,11 +143,7 @@ import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-
     EntityStatusModule,
     DynamicDialogModule,
     ExportModule,
-    NgxsModule.forFeature([
-      QuantityControlState,
-      QcReportsListState,
-      QcReportState
-    ]),
+    NgxsModule.forFeature([]),
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
     AgFooterModule,
@@ -231,12 +213,6 @@ import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-
   declarations: [
     MainControlTowerComponent,
     ControlTowerViewComponent,
-    ControlTowerDetailsComponent,
-    EventsLogComponent,
-    ProductDetailsComponent,
-    QcReportDetailsToolbarComponent,
-    UomSelectorComponent,
-    RaiseClaimComponent,
     ControlTowerModalComponent,
     ResidueDifferenceComponent,
     ResidueClaimsComponent,
@@ -250,28 +226,19 @@ import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-
     ControlTowerQuantityDifferenceComponent,
     ControlTowerQuantityRobDifferenceListComponent
   ],
-  entryComponents: [RaiseClaimComponent, ControlTowerModalComponent],
+  entryComponents: [ControlTowerModalComponent],
   exports: [MainControlTowerComponent, HighlightPipe],
   providers: [
     ModuleLoggerFactory,
     ControlTowerModuleResolver,
-    ControlTowerDetailsRouteResolver,
     {
-      provide: QUANTITY_CONTROL_API_SERVICE,
-      useClass: environment.production
-        ? QuantityControlApi
-        : QuantityControlApiMock
+      provide: CONTROL_TOWER_API_SERVICE,
+      useClass: environment.production ? ControlTowerApi : ControlTowerApi
     },
-    {
-      provide: INVOICE_COMPLETE_API_SERVICE,
-      useClass: environment.production ? InvoiceCompleteApi : InvoiceCompleteApi
-    },
-    QcReportDetailsUnsavedChangesGuard,
-    QcReportService,
     DialogService,
     MessageService,
     ConfirmationService,
-    InvoiceCompleteService
+    ControlTowerService
   ]
 })
 export class ControlTowerModule {}
