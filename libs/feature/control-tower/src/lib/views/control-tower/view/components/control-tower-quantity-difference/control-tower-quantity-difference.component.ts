@@ -17,6 +17,9 @@ export class ControlTowerQuantityDifferenceComponent implements OnInit {
   public gridTitle = 'ROB Difference';
   public gridOptions_data: GridOptions;
   public gridOptions_data1: GridOptions;
+  public toggleNewFilter: boolean = true;
+  public toggleMASFilter: boolean = true;
+  public toggleResolvedFilter: boolean = true;
   public rowCount: Number;
   today = new FormControl(new Date());
   public rowSelection;
@@ -1561,5 +1564,54 @@ export class ControlTowerQuantityDifferenceComponent implements OnInit {
       });
       this.gridOptions_data.api.deselectAll(); //optional
     });
+  }
+
+  filterGridNew(text) {
+    if (this.toggleNewFilter) {
+      var instance = this.gridOptions_data.api.getFilterInstance('progress');
+      instance.setModel({
+        values: [text]
+      });
+      this.gridOptions_data.api.onFilterChanged();
+    } else {
+      var instance = this.gridOptions_data.api.getFilterInstance('progress');
+      instance.setModel(null);
+      this.gridOptions_data.api.onFilterChanged();
+    }
+    this.toggleNewFilter = !this.toggleNewFilter;
+    this.toggleMASFilter = true;
+    this.toggleResolvedFilter = true;
+  }
+  filterGridMAS(text) {
+    if (this.toggleMASFilter) {
+      var instance = this.gridOptions_data.api.getFilterInstance('progress');
+      instance.setModel({
+        values: [text]
+      });
+      this.gridOptions_data.api.onFilterChanged();
+    } else {
+      var instance = this.gridOptions_data.api.getFilterInstance('progress');
+      instance.setModel(null);
+      this.gridOptions_data.api.onFilterChanged();
+    }
+    this.toggleMASFilter = !this.toggleMASFilter;
+    this.toggleNewFilter = true;
+    this.toggleResolvedFilter = true;
+  }
+  filterGridResolved(text) {
+    if (this.toggleResolvedFilter) {
+      var instance = this.gridOptions_data.api.getFilterInstance('progress');
+      instance.setModel({
+        values: [text]
+      });
+      this.gridOptions_data.api.onFilterChanged();
+    } else {
+      var instance = this.gridOptions_data.api.getFilterInstance('progress');
+      instance.setModel(null);
+      this.gridOptions_data.api.onFilterChanged();
+    }
+    this.toggleResolvedFilter = !this.toggleResolvedFilter;
+    this.toggleNewFilter = true;
+    this.toggleMASFilter = true;
   }
 }
