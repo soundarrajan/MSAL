@@ -19,22 +19,22 @@ import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import { DatabaseManipulation } from '@shiptech/core/legacy-cache/database-manipulation.service';
 import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
-import { IInvoiceListItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/invoice-list-item.dto';
 
 import { ModuleLoggerFactory } from 'libs/feature/control-tower/src/lib/core/logging/module-logger-factory';
-import { InvoiceCompleteService } from 'libs/feature/control-tower/src/lib/services/invoice-complete.service';
 import { ModuleError } from 'libs/feature/control-tower/src/lib/core/error-handling/module-error';
-import { ICompleteListItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/invoice-complete-list-item.dto';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
-import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-async-status/ag-grid-cell-async-status.component';
 import {
   ControlTowerQuantityRobDifferenceListColumns,
   ControlTowerQuantityRobDifferenceListColumnServerKeys,
   ControlTowerQuantityRobDifferenceListColumnsLabels
 } from './control-tower-quantity-rob-difference-list.columns';
+import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
+import { IControlTowerQuantityRobDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 
-function model(prop: keyof IInvoiceListItemDto): keyof IInvoiceListItemDto {
+function model(
+  prop: keyof IControlTowerQuantityRobDifferenceItemDto
+): keyof IControlTowerQuantityRobDifferenceItemDto {
   return prop;
 }
 
@@ -68,7 +68,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
     //enableBrowserTooltips: true,
     //singleClickEdit: true,
-    getRowNodeId: (data: ICompleteListItemDto) =>
+    getRowNodeId: (data: IControlTowerQuantityRobDifferenceItemDto) =>
       data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
@@ -78,7 +78,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     }
   };
 
-  orderNoCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  orderNoCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.order,
     colId: ControlTowerQuantityRobDifferenceListColumns.order,
     field: model('order'),
@@ -87,7 +90,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerTooltip: 'Order No.'
   };
 
-  orderProductIdCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  orderProductIdCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.orderProductId,
     colId: ControlTowerQuantityRobDifferenceListColumns.orderProductId,
@@ -97,7 +103,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 150
   };
 
-  deliveryCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  deliveryCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.delivery,
     colId: ControlTowerQuantityRobDifferenceListColumns.delivery,
     field: model('delivery'),
@@ -106,7 +115,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  invoiceCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  invoiceCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.invoice,
     colId: ControlTowerQuantityRobDifferenceListColumns.invoice,
     field: model('invoice'),
@@ -115,7 +127,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  documentNoCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  documentNoCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.documentNo,
     colId: ControlTowerQuantityRobDifferenceListColumns.documentNo,
     field: model('documentNo'),
@@ -123,7 +138,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  customStatusCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  customStatusCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.customStatus,
     colId: ControlTowerQuantityRobDifferenceListColumns.customStatus,
     field: model('customStatus'),
@@ -131,7 +149,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  buyerCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  buyerCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.buyer,
     colId: ControlTowerQuantityRobDifferenceListColumns.buyer,
     field: model('buyer'),
@@ -139,7 +160,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  supplierCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  supplierCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.supplier,
     colId: ControlTowerQuantityRobDifferenceListColumns.supplier,
     field: model('buyer'),
@@ -147,7 +171,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  vesselCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  vesselCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.vessel,
     colId: ControlTowerQuantityRobDifferenceListColumns.vessel,
     field: model('vessel'),
@@ -155,7 +182,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  carrierCompanyCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  carrierCompanyCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.carrierCompany,
     colId: ControlTowerQuantityRobDifferenceListColumns.carrierCompany,
@@ -164,7 +194,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  paymentCompanyCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  paymentCompanyCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.paymentCompany,
     colId: ControlTowerQuantityRobDifferenceListColumns.paymentCompany,
@@ -173,7 +206,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  agreementTypeCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  agreementTypeCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.agreementType,
     colId: ControlTowerQuantityRobDifferenceListColumns.agreementType,
@@ -182,7 +218,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  portCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  portCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.port,
     colId: ControlTowerQuantityRobDifferenceListColumns.port,
     field: model('port'),
@@ -190,7 +229,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  etaCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  etaCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto, string> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.eta,
     colId: ControlTowerQuantityRobDifferenceListColumns.eta,
     field: model('eta'),
@@ -199,7 +238,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  deliveryDateCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  deliveryDateCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    string
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.deliveryDate,
     field: model('deliveryDate'),
@@ -207,7 +249,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  lineCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  lineCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.line,
     colId: ControlTowerQuantityRobDifferenceListColumns.line,
     field: model('line'),
@@ -215,7 +260,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  productCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  productCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.product,
     colId: ControlTowerQuantityRobDifferenceListColumns.product,
     field: model('product'),
@@ -223,7 +271,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  invoiceQuantityCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  invoiceQuantityCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.invoiceQuantity,
     colId: ControlTowerQuantityRobDifferenceListColumns.invoiceQuantity,
@@ -232,7 +283,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  priceCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  priceCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto, number> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.price,
     colId: ControlTowerQuantityRobDifferenceListColumns.price,
     field: model('price'),
@@ -240,7 +291,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  sumOfCostsCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  sumOfCostsCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.sumOfCosts,
     colId: ControlTowerQuantityRobDifferenceListColumns.sumOfCosts,
     field: model('sumOfCosts'),
@@ -248,7 +302,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  invoiceAmountCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  invoiceAmountCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.invoiceAmount,
     colId: ControlTowerQuantityRobDifferenceListColumns.invoiceAmount,
@@ -257,7 +314,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  confirmedQuantityCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  confirmedQuantityCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.confirmedQuantity,
     colId: ControlTowerQuantityRobDifferenceListColumns.confirmedQuantity,
@@ -266,7 +326,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  orderPriceCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  orderPriceCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.orderPrice,
     colId: ControlTowerQuantityRobDifferenceListColumns.orderPrice,
     field: model('orderPrice'),
@@ -274,7 +337,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  orderAmountCol: ITypedColDef<IInvoiceListItemDto, number> = {
+  orderAmountCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.orderAmount,
     colId: ControlTowerQuantityRobDifferenceListColumns.orderAmount,
     field: model('orderAmount'),
@@ -283,7 +349,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   };
 
   invoiceStatusCol: ITypedColDef<
-    IInvoiceListItemDto,
+    IControlTowerQuantityRobDifferenceItemDto,
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName:
@@ -314,7 +380,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  dueDateCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  dueDateCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    string
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.dueDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.dueDate,
     field: model('dueDate'),
@@ -322,7 +391,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  workingDueDateCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  workingDueDateCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    string
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.workingDueDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.workingDueDate,
@@ -331,7 +403,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  approvedDateCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  approvedDateCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    string
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.approvedDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.approvedDate,
     field: model('approvedDate'),
@@ -339,7 +414,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  paymentDateCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  paymentDateCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    string
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.paymentDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.paymentDate,
     field: model('paymentDate'),
@@ -347,7 +425,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  backOfficeCommentsCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  backOfficeCommentsCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    string
+  > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.backOfficeComments,
     colId: ControlTowerQuantityRobDifferenceListColumns.backOfficeComments,
@@ -355,7 +436,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  receivedDateCol: ITypedColDef<IInvoiceListItemDto, string> = {
+  receivedDateCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    string
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.receivedDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.receivedDate,
     field: model('receivedDate'),
@@ -364,7 +448,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   };
 
   orderStatusCol: ITypedColDef<
-    IInvoiceListItemDto,
+    IControlTowerQuantityRobDifferenceItemDto,
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.orderStatus,
@@ -375,7 +459,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  productTypeCol: ITypedColDef<IInvoiceListItemDto, ILookupDto> = {
+  productTypeCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.productType,
     colId: ControlTowerQuantityRobDifferenceListColumns.productType,
     field: model('productType'),
@@ -384,7 +471,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   };
 
   invoiceApprovalStatusCol: ITypedColDef<
-    IInvoiceListItemDto,
+    IControlTowerQuantityRobDifferenceItemDto,
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName:
@@ -396,7 +483,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
-  actions: ITypedColDef<IInvoiceListItemDto> = {
+  actions: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
     colId: ControlTowerQuantityRobDifferenceListColumns.actions,
     headerClass: ['aggrid-text-align-c'],
@@ -414,7 +501,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     private format: TenantFormattingService,
-    private reportService: InvoiceCompleteService,
+    private controlTowerService: ControlTowerService,
     private appErrorHandler: AppErrorHandler,
     private databaseManipulation: DatabaseManipulation
   ) {
@@ -531,8 +618,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       this.searchText
     );
     this.paramsServerSide = params;
-    this.exportUrl = this.reportService.getInvoiceListExportUrl();
-    this.reportService
+    this.exportUrl = this.controlTowerService.getInvoiceListExportUrl();
+    this.controlTowerService
       .getInvoiceList$(
         transformLocalToServeGridInfo(
           this.gridApi,
