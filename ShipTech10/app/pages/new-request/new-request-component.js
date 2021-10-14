@@ -382,7 +382,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             };
 
                             for (let j = 0; j < ctrl.request.locations.length; j++) {
-                                ctrl.request.locations[j].optionId = j+1;
+                                ctrl.request.locations[j].optionId = ctrl.request.locations[j].optionId > 0 ? ctrl.request.locations[j].optionId : j + 1;
                                 if (ctrl.requestTenantSettings.recentEta.id == 1 && ctrl.request.locations[j].eta && ctrl.request.locations[j].id) {
                                     if (!ctrl.request.locations[j].recentEta) {
                                         ctrl.request.locations[j].recentEta = ctrl.request.locations[j].eta;
@@ -391,7 +391,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
 				                $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
                                 for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
-                                    ctrl.request.locations[j].products[i].optionId = j+1;
+                                    ctrl.request.locations[j].products[i].optionId = ctrl.request.locations[j].products[i].optionId > 0 ? ctrl.request.locations[j].products[i].optionId : j + 1;
                                     var cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
                                     if (cancelAction != null) {
                                         if (ctrl.request.locations[j].products[i].screenActions == null || typeof ctrl.request.locations[j].products[i].screenActions == 'undefined') {
@@ -641,7 +641,170 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                 );
         };
+        /*update the request reload only get end point here */
+        ctrl.getResponse = function () {
 
+            if (typeof voyageId != 'undefined' && voyageId !== null) {
+                newRequestModel.newRequest(voyageId).then((newRequestData) => {
+                    ctrl.request = newRequestData.payload;
+
+                    $.each(ctrl.request.locations, (i, j) => {
+
+                        getTerminalLocations('locations', j.location.id);
+                    });
+                    setPageTitle();
+                    setRequestStatusHeader();
+
+                    $scope.productTypesLoadedPerLocation = {
+                        totalProducts: 0,
+                        loadedProducts: 0
+                    };
+
+                    for (let j = 0; j < ctrl.request.locations.length; j++) {
+                        ctrl.request.locations[j].optionId = j + 1;
+                        if (ctrl.requestTenantSettings.recentEta.id == 1 && ctrl.request.locations[j].eta && ctrl.request.locations[j].id) {
+                            if (!ctrl.request.locations[j].recentEta) {
+                                ctrl.request.locations[j].recentEta = ctrl.request.locations[j].eta;
+                            }
+                        }
+
+                        $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
+                        for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
+                            ctrl.request.locations[j].products[i].optionId = j + 1;
+                            var cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
+                            if (cancelAction != null) {
+                                if (ctrl.request.locations[j].products[i].screenActions == null || typeof ctrl.request.locations[j].products[i].screenActions == 'undefined') {
+                                    // no actions defined, add cancel
+                                    ctrl.request.locations[j].products[i].screenActions = [];
+                                    ctrl.request.locations[j].products[i].screenActions.push(cancelAction);
+                                    ctrl.request.locations[j].products[i].deliveryOption = angular.copy(ctrl.requestTenantSettings.defaultDeliveryOption);
+
+                                    if (typeof ctrl.request.destination != 'undefined') {
+                                        ctrl.request.destination[j].name = ctrl.request.destination[j].code;
+                                    }
+                                } else {
+                                    // some actions defined, add cancel too if not there
+                                    var found = _.find(ctrl.request.locations[j].products[i].screenActions, ['id', cancelAction.id]);
+                                    if (typeof found == 'undefined') {
+                                        ctrl.request.locations[j].products[i].screenActions.push(cancelAction);
+                                    }
+                                }
+                            }
+
+                            ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7);
+                            if (ctrl.request.locations[j].products[i].product) {
+                                listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
+                                    ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
+                                    if (ctrl.request.locations[server_data.id].products[server_data.id2].productType.name.includes('VLSFO')) {
+                                        ctrl.request.locations[server_data.id].products[server_data.id2].isPretestRequired = true;
+                                    }
+
+                                    $scope.productTypesLoadedPerLocation.loadedProducts += 1;
+                                });
+                            }
+                        }
+                    }
+                    addDefaultProducts();
+                    ctrl.calculateScreenActions();
+                    ctrl.isNewRequest = true;
+                    $timeout(() => {
+                        ctrl.isEnabledEta();
+                    });
+                    if (ctrl.request.id == 0) {
+                        setTimeout(() => {
+                            ctrl.robDetails = ctrl.request.vesselDetails.robDetails;
+                        }, 100);
+                    }
+                });
+            } else if (typeof requestId != 'undefined' && requestId !== null) {
+                newRequestModel.getRequest(requestId).then((newRequestData) => {
+                    ctrl.request = newRequestData.payload;
+                    ctrl.getRequestinitialSnapshot = angular.copy(newRequestData.payload);
+                    $.each(ctrl.request.locations, (i, j) => {
+                        if (j.terminal != null && j.terminal.length != 0) {
+                            j.terminal.descriptions = j.terminal.name;
+                            j.terminal.terminalCode = j.terminal.code;
+                        }
+                        //getTerminalLocations('locations',j.location.id);
+                    });
+                    ctrl.request.footerSection.comments = decodeHtmlEntity(_.unescape(ctrl.request.footerSection.comments));
+                    ctrl.getOperationalReportParameters();
+                    ctrl.disableAllFields = false;
+                    if (typeof ctrl.request.requestCompleted != 'undefined') {
+                        if (ctrl.request.requestCompleted != null) {
+                            ctrl.disableAllFields = ctrl.request.requestCompleted; // disable all fields if request is completed
+                        }
+                    }
+
+                    setPageTitle();
+                    setTimeout(() => {
+                        ctrl.robDetails = ctrl.request.vesselDetails.robDetails;
+                    }, 100);
+                    setRequestStatusHeader();
+                    uiApiModel.getListLayout('requestsContractList').then(
+                        (data) => {
+                            if (data.payload) {
+                                ctrl.tableLength.layout = angular.fromJson(data.payload.layout);
+                                ctrl.tableLength.id = data.payload.id;
+                                ctrl.tableEntries = ctrl.tableLength.layout.layout;
+                                ctrl.initContractTable();
+                            } else {
+                                ctrl.initContractTable();
+                            }
+                            // console.log(data)
+                        },
+                        (reason) => {
+                            ctrl.initContractTable();
+                        }
+                    );
+                    $scope.productTypesLoadedPerLocation = {
+                        totalProducts: 0,
+                        loadedProducts: 0
+                    };
+                    for (let j = 0; j < ctrl.request.locations.length; j++) {
+                        if (ctrl.requestTenantSettings.recentEta.id == 1 && ctrl.request.locations[j].eta && ctrl.request.locations[j].id) {
+                            if (!ctrl.request.locations[j].recentEta) {
+
+                                ctrl.request.locations[j].recentEta = ctrl.request.locations[j].eta;
+                            }
+                        }
+                        $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
+                        for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
+                            ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7);
+                            ctrl.request.locations[j].products[i].comments = decodeHtmlEntity(_.unescape(ctrl.request.locations[j].products[i].comments));
+                            if (ctrl.request.locations[j].products[i].product) {
+                                // ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
+                                if (ctrl.request.locations[j].products[i].productTypeId) {
+                                    ctrl.request.locations[j].products[i].productType = ctrl.getProductTypeObjById(ctrl.request.locations[j].products[i].productTypeId);
+                                    $scope.productTypesLoadedPerLocation.loadedProducts += 1;
+                                } else {
+                                    listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
+                                        ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
+                                        $scope.productTypesLoadedPerLocation.loadedProducts += 1;
+                                    });
+                                }
+                            }
+                        }
+                        _.each(ctrl.request.locations[j].products, (value, key) => {
+                            value.product.name = `${String(key + 1)} - ${value.product.name}`;
+                        });
+                    }
+                    addDefaultProducts();
+                    ctrl.calculateScreenActions();
+                    // if (ctrl.request.vesselDetails.vessel.id) {
+                    //     ctrl.selectVessel(ctrl.request.vesselDetails.vessel.id, true);
+                    // }
+                    ctrl.isNewRequest = false;
+                    ctrl.getCurrentProductsCurrentIds();
+                    emailModel.getTemplates(ctrl.emailTransactionTypeId).then((data) => {
+                        if (data.payload.length == 0) {
+                            ctrl.previewEmailDisabled = true;
+                        }
+                    });
+
+                });
+            }
+        };
         $scope.$watch('productTypesLoadedPerLocation.loadedProducts', (obj) => {
         	if (obj) {
 	        	if (obj == $scope.productTypesLoadedPerLocation.totalProducts) {
@@ -1096,6 +1259,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             }
                             screenLoader.hideLoader();
                             //$state.reload();
+                            ctrl.getResponse();
                         },
                         () => {
                             ctrl.buttonsDisabled = false;
@@ -1124,7 +1288,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             };
         };
         ctrl.canBeCancelledLocation = function(locationId, payload) {
-            if(!ctrl.reasonProvidedForCancellation && ctrl.selectedVessel.isVesselManagable) {
+            if (!ctrl.reasonProvidedForCancellation && ctrl.selectedVessel.isVesselManagable) {
                 locationIndex = null;
                 $.each(ctrl.request.locations, (k,v) => {
                     if (v.id == locationId) {
@@ -1214,7 +1378,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 productType: null,
                 productCategory: null,
                 specGroups: [],
-                optionId: locationIdx ? ctrl.request.locations[locationIdx].optionId : null,
+                optionId: (locationIdx > -1 && ctrl.request && ctrl.request.locations.length > 0) ? ctrl.request.locations[locationIdx].optionId : null,
                 deliveryOption: angular.copy(ctrl.requestTenantSettings.defaultDeliveryOption),
                 robOnArrival: null,
                 minQuantity: null,
@@ -1299,7 +1463,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         let productTypeGroup  = response.data.payload.productTypeGroup;
                         let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
                         let payload1 = { Payload: {} };
-
                         $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
                             if (response.data.payload != 'null') {
                                let defaultUomAndCompany = _.find(response.data.payload, function(object) {
@@ -1392,7 +1555,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // $(".confirmModal").modal();
         };
         ctrl.canBeCancelledProductFromLocation = function(location, productId, payload) {
-            if(!ctrl.reasonProvidedForCancellation && ctrl.selectedVessel.isVesselManagable) {
+            if (!ctrl.reasonProvidedForCancellation && ctrl.selectedVessel.isVesselManagable) {
                 locationIndex = null;
                 productIndex = null;
                 $.each(ctrl.request.locations, (k,v) => {
@@ -1430,7 +1593,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                     }
                     if (existingProductNr <= 1) {
-                        ctrl.addEmptyProduct(location.products);
+                        ctrl.addEmptyProduct(location.products, undefined, payload?.locationIdx);
                     }
                     ctrl.checkboxes = [];
                     ctrl.selectedContracts = [];
@@ -1563,7 +1726,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         function addDefaultProducts() {
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 if (ctrl.request.locations[i].products.length === 0) {
-                    ctrl.addEmptyProduct(ctrl.request.locations[i].products);
+                    ctrl.addEmptyProduct(ctrl.request.locations[i].products, undefined, i);
                 }
                 if (ctrl.request.locations[i].agent === null) {
                     // ctrl.request.locations[i].agent = {};
@@ -1580,7 +1743,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // Iterate Requests and their respective locations and products to extract actions.
             for (let j = 0; j < ctrl.request.locations.length; j++) {
                 if(j==ctrl.request.locations.length-1){
-                    ctrl.request.locations[j].optionId=ctrl.request.locations.length;
+                    ctrl.request.locations[j].optionId = ctrl.request.locations[j].optionId > 0 ? ctrl.request.locations[j].optionId : ctrl.request.locations.length;
                 }
                 for (let k = 0; k < ctrl.request.locations[j].products.length; k++) {
                     product = ctrl.request.locations[j].products[k];
@@ -1805,7 +1968,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         locationObject.destinationVesselVoyageDetailId = extraInfo.destinationVesselVoyageDetailId;
                         locationObject.destinationEta = extraInfo.destinationEta;
                     }
-                    locationObject.optionId = ctrl.request.locations.length+1;
+                    locationObject.optionId = locationObject.optionId > 0 ? locationObject.optionId : ctrl.request.locations.length + 1;
                     ctrl.request.locations.push(locationObject);
 
                     ctrl.etaEnabled[ctrl.request.locations.length - 1] = true;
@@ -1813,37 +1976,37 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if (ctrl.selectedVessel) {
                         // console.log('ctrl.selectedVessel',ctrl.selectedVessel);
                         if (ctrl.selectedVessel.defaultFuelOilProduct != null) {
-                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo, true, ctrl.request.locations.length - 1);
+                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo, (ctrl.request.locations.length - 1));
                         }
                         if (ctrl.selectedVessel.defaultDistillateProduct != null) {
-                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
+                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo, (ctrl.request.locations.length - 1));
                         }
                         if (ctrl.selectedVessel.defaultLsfoProduct != null) {
-                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
+                            ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo, (ctrl.request.locations.length - 1));
                         }
                         if (ctrl.selectedVessel.buyer !== null) {
                             locationObject.buyer = ctrl.buyer;
                         }
                         if (productList.length === 0) {
-                            ctrl.addEmptyProduct(productList);
+                            ctrl.addEmptyProduct(productList, undefined, (ctrl.request.locations.length - 1));
                         }
                     } else if (ctrl.request.vesselId) {
                         lookupModel.getForRequest(LOOKUP_TYPE.VESSEL, ctrl.request.vesselId).then((server_data) => {
                             ctrl.selectedVessel = server_data.payload;
                             if (ctrl.selectedVessel.defaultFuelOilProduct !== null) {
-                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
+                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo, (ctrl.request.locations.length - 1));
                             }
                             if (ctrl.selectedVessel.defaultFuelOilProduct !== null) {
-                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
+                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultDistillateProduct, ctrl.selectedVessel.distillateSpecGroup, ctrl.selectedVessel.defaultDistillateProductProductTypeId, productList, extraInfo, (ctrl.request.locations.length - 1));
                             }
                             if (ctrl.selectedVessel.defaultLsfoProduct !== null) {
-                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo,  true, ctrl.request.locations.length - 1);
+                                ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo, (ctrl.request.locations.length - 1));
                             }
                             if (ctrl.selectedVessel.buyer !== null) {
                                 locationObject.buyer = ctrl.buyer;
                             }
                             if (productList.length === 0) {
-                                ctrl.addEmptyProduct(productList);
+                                ctrl.addEmptyProduct(productList, undefined, (ctrl.request.locations.length - 1));
                             }
                         });
                     }
@@ -1873,7 +2036,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 location = ctrl.request.locations[i];
                 if(i==ctrl.request.locations.length-1){
-                    location.optionId=ctrl.request.locations.length;
+                    location.optionId = location.optionId > 0 ? location.optionId : ctrl.request.locations.length;
                 }
                 if (location.location.id === locationId && location.vesselVoyageId == vesselVoyageId && !location.eta && !location.etb && !location.etd) {
                     location.eta = eta;
@@ -2015,7 +2178,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 });
                 ctrl.etaEnabled[ctrl.request.locations.length - 1] = true;
                 // Add a blank item (table row) to the last item (the one we've just added) in the locations array.
-                ctrl.addEmptyProduct(ctrl.request.locations[ctrl.request.locations.length - 1].products);
+                ctrl.addEmptyProduct(ctrl.request.locations[ctrl.request.locations.length - 1].products, undefined, (ctrl.request.locations.length - 1));
             });
         };
         ctrl.setDialogType = function(type, input) {
@@ -4674,7 +4837,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 ctrl.reasonProvidedForCancellation = true;
                 payload = {
                     id : ctrl.request.id,
-                    reason : ctrl.buildReasonDataStructure()
+                    reason: ctrl.buildReasonDataStructure(),
+                    locationIdx: ctrl.captureReasonModalData.locationIndex
                 }
                 ctrl.canBeCancelledProductFromLocation(null, ctrl.captureReasonModalData.requestProductId, payload);                
             }
