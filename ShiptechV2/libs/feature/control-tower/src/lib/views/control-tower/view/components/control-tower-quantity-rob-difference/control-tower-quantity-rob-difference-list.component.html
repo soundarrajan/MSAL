@@ -65,11 +65,13 @@
     appAgGridEmptyFilterOption
     #search="search-id"
     groupId="control-tower-quantity-rob-difference-v2-list-filter-presets"
-    id="control-tower-quantity-rob-difference-v2-list-grid"
+    id="control-tower-quantity-rob-difference-v2-list-grid-1"
     domLayout="normal"
     class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
     style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions"
+    (rowClicked)="onrowClicked($event)"
+
   >
   </ag-grid-angular>
   <app-ag-footer

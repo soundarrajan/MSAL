@@ -29,6 +29,9 @@ import { ModuleLoggerFactory } from 'libs/feature/control-tower/src/lib/core/log
 import { InvoiceCompleteService } from 'libs/feature/control-tower/src/lib/services/invoice-complete.service';
 import { ModuleError } from 'libs/feature/control-tower/src/lib/core/error-handling/module-error';
 import { ICompleteListItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/invoice-complete-list-item.dto';
+import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
+import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
+import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-async-status/ag-grid-cell-async-status.component';
 
 function model(prop: keyof IInvoiceListItemDto): keyof IInvoiceListItemDto {
   return prop;
@@ -278,7 +281,26 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     colId: InvoiceListColumns.invoiceStatus,
     field: model('invoiceStatus'),
     valueFormatter: params => params.value?.name,
-    cellRendererFramework: AgAsyncBackgroundFillComponent,
+    cellRendererFramework: AGGridCellRendererAsyncStatusComponent,
+    // cellRendererParams: function(params) {
+    //   var classArray: string[] = [];
+    //   classArray.push('aggridtextalign-center');
+    //   let newClass =
+    //     params.value === 'New'
+    //       ? 'custom-chip-v2 small medium-blue'
+    //       : params.value === 'Marked As Seen'
+    //       ? 'custom-chip-v2 small medium-yellow'
+    //       : params.value === 'Off Spec'
+    //       ? 'custom-chip-v2 small medium-yellow'
+    //       : params.value === 'Resolved'
+    //       ? 'custom-chip-v2 small light-green'
+    //       : 'custom-chip-v2 small dark';
+    //   classArray.push(newClass);
+    //   return {
+    //     type: 'status',
+    //     cellClass: classArray.length > 0 ? classArray : null
+    //   };
+    // },
     width: 110
   };
 
@@ -361,6 +383,19 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 110
   };
 
+  actions: ITypedColDef<IInvoiceListItemDto> = {
+    headerName: InvoiceListColumnsLabels.actions,
+    colId: InvoiceListColumns.actions,
+    headerClass: ['aggrid-text-align-c'],
+    cellClass: ['aggridtextalign-center'],
+    headerTooltip: 'Actions',
+    cellRendererFramework: AGGridCellActionsComponent,
+    cellRendererParams: { type: 'actions' },
+    resizable: false,
+    suppressMovable: true,
+    width: 110
+  };
+
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -371,7 +406,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-rob-difference-v2-list-grid',
+      'control-tower-quantity-rob-difference-v2-list-grid-1',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -416,13 +451,37 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       this.receivedDateCol,
       this.orderStatusCol,
       this.productTypeCol,
-      this.invoiceApprovalStatusCol
+      this.invoiceApprovalStatusCol,
+      this.actions
     ];
   }
 
   public onSearch(value: string): void {
     this.searchText = value;
     this.gridApi.purgeServerSideCache();
+  }
+
+  updateValues(ev, values) {
+    console.log(ev);
+    console.log(values);
+    // this.gridApi.purgeServerSideCache();
+    var rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    var newPrice = Math.floor(Math.random() * 100000);
+    var newStatus = {
+      transactionTypeId: 5,
+      id: 27,
+      name: 'Discrepancy',
+      internalName: null,
+      displayName: 'Discrepancy',
+      collectionName: null,
+      customNonMandatoryAttribute1: null,
+      isDeleted: false,
+      modulePathUrl: null,
+      clientIpAddress: null,
+      userAction: null
+    };
+    rowNode.setDataValue('invoiceAmount', newPrice);
+    rowNode.setDataValue('invoiceStatus', newStatus);
   }
 
   public async getColorFromDashboard(

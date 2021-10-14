@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Input,
   OnDestroy,
   OnInit,
   TemplateRef,
@@ -11,7 +12,8 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model/control-tower-quantity-rob-difference-grid.view-model';
 import { InvoiceListColumnServerKeys } from './view-model/control-tower-quantity-rob-difference-list.columns';
-
+import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'shiptech-control-tower-quantity-rob-difference-list',
@@ -19,15 +21,19 @@ import { InvoiceListColumnServerKeys } from './view-model/control-tower-quantity
   providers: [ControlTowerQuantityRobDifferenceListGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ControlTowerQuantityRobDifferenceListComponent implements OnInit, OnDestroy {
+export class ControlTowerQuantityRobDifferenceListComponent
+  implements OnInit, OnDestroy {
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   invoiceListServerKeys = InvoiceListColumnServerKeys;
   private _destroy$ = new Subject();
+  @Input() theme: boolean;
+  @Input() newScreen: boolean;
 
   constructor(
     public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,
     public appConfig: AppConfig,
-    private urlService: UrlService
+    private urlService: UrlService,
+    public dialog: MatDialog
   ) {}
 
   onPageChange(page: number): void {
@@ -70,5 +76,44 @@ export class ControlTowerQuantityRobDifferenceListComponent implements OnInit, O
     console.log(this.gridViewModel);
     this.gridViewModel.filterByStatus();
     // this.gridViewModel.serverSideGetRows(this.gridViewModel);
+  }
+
+  public onrowClicked(ev) {
+    //console.log("hhhhhhhhh");
+    var index = ev.rowIndex;
+    var rowNode = ev.node;
+    //alert(index);
+    const dialogRef = this.dialog.open(
+      RowstatusOnchangeQuantityrobdiffPopupComponent,
+      {
+        width: '382px',
+        height: 'auto',
+        maxHeight: '536px',
+        backdropClass: 'dark-popupBackdropClass',
+        panelClass: this.theme ? 'dark-theme' : 'light-theme',
+        data: { title: 'Claims', id: 'Claim Id' }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      console.log(ev);
+      this.gridViewModel.updateValues(ev, result);
+
+      // rowNode.setDataValue('invoiceStatus', {
+      //   transactionTypeId: 5,
+      //   id: 27,
+      //   name: 'Discrepancy',
+      //   internalName: null,
+      //   displayName: 'Discrepancy',
+      //   collectionName: null,
+      //   customNonMandatoryAttribute1: null,
+      //   isDeleted: false,
+      //   modulePathUrl: null,
+      //   clientIpAddress: null,
+      //   userAction: null
+      // });
+      // console.log(rowNode);
+    });
   }
 }
