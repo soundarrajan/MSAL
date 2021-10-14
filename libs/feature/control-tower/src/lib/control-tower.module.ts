@@ -55,7 +55,6 @@ import { QcReportDetailsToolbarComponent } from './views/control-tower/toolbar/q
 import { UomSelectorComponent } from './views/control-tower/details/components/uom-selector/uom-selector.component';
 import { RaiseClaimComponent } from './views/control-tower/details/components/raise-claim/raise-claim.component';
 import { ControlTowerDetailsRouteResolver } from './views/control-tower/details/control-tower-details-route.resolver';
-import { ControlTowerInvoiceListComponent } from './views/invoice-list/control-tower-invoice-list.component';
 import { InvoiceCompleteService } from './services/invoice-complete.service';
 import {
   InvoiceCompleteApi,
@@ -231,9 +230,7 @@ import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-
   ],
   declarations: [
     MainControlTowerComponent,
-    ControlTowerQuantityRobDifferenceListComponent,
     ControlTowerViewComponent,
-    ControlTowerInvoiceListComponent,
     ControlTowerDetailsComponent,
     EventsLogComponent,
     ProductDetailsComponent,
@@ -250,7 +247,8 @@ import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-
     MyNotesComponent,
     ControlTowerHomeNewComponent,
     HighlightPipe,
-    ControlTowerQuantityDifferenceComponent
+    ControlTowerQuantityDifferenceComponent,
+    ControlTowerQuantityRobDifferenceListComponent
   ],
   entryComponents: [RaiseClaimComponent, ControlTowerModalComponent],
   exports: [MainControlTowerComponent, HighlightPipe],

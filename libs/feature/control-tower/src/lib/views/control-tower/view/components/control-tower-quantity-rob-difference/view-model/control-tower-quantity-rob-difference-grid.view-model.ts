@@ -1,4 +1,3 @@
-import { ICompleteListItemDto } from '../../../services/api/dto/invoice-complete-list-item.dto';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
@@ -7,32 +6,36 @@ import {
   RowModelType,
   RowSelection
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {
-  InvoiceListColumns,
-  InvoiceListColumnServerKeys,
-  InvoiceListColumnsLabels
-} from '../../view-model/invoice-list.columns';
+
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
-import { ModuleLoggerFactory } from '../../../../../../quantity-control/src/lib/core/logging/module-logger-factory';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { InvoiceCompleteService } from '../../../services/invoice-complete.service';
+
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { takeUntil } from 'rxjs/operators';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { IInvoiceListItemDto } from '../../../services/api/dto/invoice-list-item.dto';
-import { ModuleError } from '../../../core/error-handling/module-error';
+
 import { DatabaseManipulation } from '@shiptech/core/legacy-cache/database-manipulation.service';
 import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
+import { IInvoiceListItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/invoice-list-item.dto';
+import {
+  InvoiceListColumns,
+  InvoiceListColumnServerKeys,
+  InvoiceListColumnsLabels
+} from './control-tower-quantity-rob-difference-list.columns';
+import { ModuleLoggerFactory } from 'libs/feature/control-tower/src/lib/core/logging/module-logger-factory';
+import { InvoiceCompleteService } from 'libs/feature/control-tower/src/lib/services/invoice-complete.service';
+import { ModuleError } from 'libs/feature/control-tower/src/lib/core/error-handling/module-error';
+import { ICompleteListItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/invoice-complete-list-item.dto';
 
 function model(prop: keyof IInvoiceListItemDto): keyof IInvoiceListItemDto {
   return prop;
 }
 
 @Injectable()
-export class InvoiceListGridViewModel extends BaseGridViewModel {
+export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGridViewModel {
   public searchText: string;
   public exportUrl: string;
   public defaultColFilterParams = {
@@ -44,19 +47,17 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     enableColResize: true,
     suppressRowClickSelection: true,
     suppressCellSelection: true,
-    headerHeight: 30,
-    rowHeight: 35,
-    animateRows: false,
-    // groupHeaderHeight: 20,
-    // headerHeight: 40,
-    // rowHeight: 40,
+    animateRows: true,
+    groupHeaderHeight: 20,
+    headerHeight: 40,
+    rowHeight: 40,
 
     rowModelType: RowModelType.ServerSide,
-    // pagination: true,
+    pagination: true,
     // animateRows: true,
 
-  rowSelection: RowSelection.Single,
-   // suppressRowClickSelection: true,
+    rowSelection: RowSelection.Single,
+    // suppressRowClickSelection: true,
     //suppressContextMenu: true,
 
     //multiSortKey: 'ctrl',
@@ -370,10 +371,12 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'invoice-list-grid',
+      'control-tower-quantity-rob-difference-v2-list-grid',
       columnPreferences,
       changeDetector,
-      loggerFactory.createLogger(InvoiceListGridViewModel.name)
+      loggerFactory.createLogger(
+        ControlTowerQuantityRobDifferenceListGridViewModel.name
+      )
     );
     this.init(this.gridOptions, true);
   }
