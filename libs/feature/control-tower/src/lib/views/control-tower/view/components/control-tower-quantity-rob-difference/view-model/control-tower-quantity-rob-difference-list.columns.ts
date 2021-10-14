@@ -1,4 +1,5 @@
 export enum InvoiceListColumns {
+  actions = 'actions',
   order = 'order',
   orderProductId = 'orderProductId',
   delivery = 'delivery',
@@ -64,6 +65,7 @@ export enum InvoiceListColumns {
 }
 
 export enum InvoiceListColumnsLabels {
+  actions = 'Actions',
   order = 'Order No',
   orderProductId = 'Order Product ID',
   delivery = 'Delivery No',
@@ -132,6 +134,7 @@ export enum InvoiceListColumnsLabels {
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
 export const InvoiceListColumnServerKeys: Record<InvoiceListColumns, string> = {
+  [InvoiceListColumns.actions]: undefined,
   [InvoiceListColumns.order]: 'order_id',
   [InvoiceListColumns.orderProductId]: 'orderProductId',
   [InvoiceListColumns.delivery]: 'delivery_id',
