@@ -579,7 +579,7 @@ mat-chip:hover {
 
 .mat-option,
 .mat-option.mat-active {
-  color: $medium-grey2;
+  color: $medium-grey2 !important;
 }
 
 .mat-input-element {

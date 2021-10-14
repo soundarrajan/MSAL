@@ -8888,13 +8888,11 @@ tr.title {
                     .ag-row-even {
                       background: #ffffff !important;
                       border: 1px solid #e0e1e4 !important;
-
                     }
                     .aggrid-oddrow-bg,
                     .ag-row-odd {
                       background: #f9fbfe !important;
                       border: 1px solid #e0e1e4 !important;
-
                     }
                   }
                 }
@@ -9746,30 +9744,30 @@ tr.title {
         padding: 0 10px 0px;
         .header-right {
           float: right;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          width: 50%;
           .title-divider {
             display: inline-block;
-            color: #c4c4c4;
-            margin-left: 10px;
-            margin-right: 10px;
-            border-left: 2px solid #c4c4c4;
             color: transparent;
-            margin-bottom: 0px;
             height: 35px;
-            margin-top: -7px;
+            border-left: 1px solid rgb(229, 229, 229);
+            margin: -7px 10px 0px;
           }
           .close-circle {
             cursor: pointer;
             display: inline-block;
             width: 15px;
             height: 15px;
-            border-radius: 15px;
             align-content: center;
             text-align: center;
-            background: #fafafb;
-            box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.25);
-            padding: 1px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px inset;
             margin-bottom: 3px;
             margin-right: 3px;
+            border-radius: 15px;
+            background: rgb(250, 250, 251);
+            padding: 1px;
           }
         }
         .title {
@@ -10019,30 +10017,30 @@ tr.title {
         padding: 0 10px 0px;
         .header-right {
           float: right;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          width: 50%;
           .title-divider {
             display: inline-block;
-            color: #c4c4c4;
-            margin-left: 10px;
-            margin-right: 10px;
-            border-left: 1px solid #e5e5e5;
             color: transparent;
-            margin-bottom: 0px;
             height: 35px;
-            margin-top: -7px;
+            border-left: 1px solid rgb(229, 229, 229);
+            margin: -7px 10px 0px;
           }
           .close-circle {
             cursor: pointer;
             display: inline-block;
             width: 15px;
             height: 15px;
-            border-radius: 15px;
             align-content: center;
             text-align: center;
-            background: #fafafb;
-            box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.25);
-            padding: 1px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px inset;
             margin-bottom: 3px;
             margin-right: 3px;
+            border-radius: 15px;
+            background: rgb(250, 250, 251);
+            padding: 1px;
           }
         }
         .title {
@@ -13131,22 +13129,23 @@ tr.title {
   }
   .title-divider {
     display: inline-block;
-    color: #c4c4c4;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-left: 2px solid #c4c4c4;
     color: transparent;
+    height: 35px;
+    border-left: 1px solid rgb(229, 229, 229);
+    margin: -7px 10px 0px;
   }
   .close-circle {
     cursor: pointer;
     display: inline-block;
     width: 15px;
     height: 15px;
-    border-radius: 15px;
     align-content: center;
     text-align: center;
-    background: #fafafb;
-    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px inset;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    border-radius: 15px;
+    background: rgb(250, 250, 251);
     padding: 1px;
   }
 
@@ -23417,6 +23416,6 @@ mat-form-field {
   line-height: unset !important;
 }
 
-.mat-tab-body-content { 
+.mat-tab-body-content {
   overflow: visible !important;
 }

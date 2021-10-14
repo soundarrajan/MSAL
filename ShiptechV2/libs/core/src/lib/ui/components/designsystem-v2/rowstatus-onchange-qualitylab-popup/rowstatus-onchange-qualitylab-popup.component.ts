@@ -7,26 +7,25 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./rowstatus-onchange-qualitylab-popup.component.css']
 })
 export class RowstatusOnchangeQualitylabPopupComponent implements OnInit {
-
   public switchTheme: boolean = true;
-public status;
-public New = "New";
+  public status;
+  public New = 'New';
   constructor(
     public dialogRef: MatDialogRef<RowstatusOnchangeQualitylabPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit(): void {
-    this.status = "New";
+    this.status = 'New';
   }
-  changeStatus(status){
+  changeStatus(status) {
     //alert(status);
     this.status = status;
   }
-  statusChanged(){
-   this.dialogRef.close({data:this.status});
+  statusChanged() {
+    this.dialogRef.close({ data: this.status });
   }
   closeDialog() {
     this.dialogRef.close();
   }
 }
-
