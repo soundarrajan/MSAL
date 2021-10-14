@@ -8,7 +8,6 @@ import { MainControlTowerComponent } from './views/main-control-tower.component'
 import { ControlTowerModuleResolver } from './control-tower-route.resolver';
 import { ControlTowerDetailsRouteResolver } from './views/control-tower/details/control-tower-details-route.resolver';
 import { ControlTowerDetailsComponent } from './views/control-tower/details/control-tower-details.component';
-import { ControlTowerInvoiceListComponent } from './views/invoice-list/control-tower-invoice-list.component';
 import { ControlTowerViewComponent } from './views/control-tower/view/control-tower-view.component';
 import { ResidueDifferenceComponent } from './views/control-tower/view/components/residue-difference/residue-difference.component';
 import { ControlTowerHomeNewComponent } from './views/control-tower/view/components/control-tower-home-new/control-tower-home-new.component';
@@ -39,11 +38,6 @@ const routes: Routes = [
           {
             path: KnownControlTowerRoutes.ControlTowerList,
             component: ControlTowerViewComponent,
-            data: { title: 'Control Tower List' }
-          },
-          {
-            path: KnownControlTowerRoutes.ControlTowerInvoiceList,
-            component: ControlTowerInvoiceListComponent,
             data: { title: 'Control Tower List' }
           },
           {
