@@ -194,6 +194,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.eta,
     colId: ControlTowerQuantityRobDifferenceListColumns.eta,
     field: model('eta'),
+    filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     width: 110
   };
