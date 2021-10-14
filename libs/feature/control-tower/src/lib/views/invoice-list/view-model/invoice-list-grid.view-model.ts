@@ -41,22 +41,28 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
-    groupHeaderHeight: 20,
-    headerHeight: 40,
-    rowHeight: 40,
+    enableColResize: true,
+    suppressRowClickSelection: true,
+    suppressCellSelection: true,
+    headerHeight: 30,
+    rowHeight: 35,
+    animateRows: false,
+    // groupHeaderHeight: 20,
+    // headerHeight: 40,
+    // rowHeight: 40,
 
     rowModelType: RowModelType.ServerSide,
-    pagination: true,
-    animateRows: true,
+    // pagination: true,
+    // animateRows: true,
 
-    rowSelection: RowSelection.Multiple,
-    suppressRowClickSelection: true,
-    suppressContextMenu: true,
+  rowSelection: RowSelection.Single,
+   // suppressRowClickSelection: true,
+    //suppressContextMenu: true,
 
-    multiSortKey: 'ctrl',
+    //multiSortKey: 'ctrl',
 
-    enableBrowserTooltips: true,
-    singleClickEdit: true,
+    //enableBrowserTooltips: true,
+    //singleClickEdit: true,
     getRowNodeId: (data: ICompleteListItemDto) =>
       data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
@@ -72,7 +78,8 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     colId: InvoiceListColumns.order,
     field: model('order'),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 200
+    width: 200,
+    headerTooltip: 'Order No.'
   };
 
   orderProductIdCol: ITypedColDef<IInvoiceListItemDto, number> = {
@@ -440,7 +447,6 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     let grid1 = this.gridApi.getFilterModel();
     this.gridApi.purgeServerSideCache();
   }
-
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     let values = transformLocalToServeGridInfo(
