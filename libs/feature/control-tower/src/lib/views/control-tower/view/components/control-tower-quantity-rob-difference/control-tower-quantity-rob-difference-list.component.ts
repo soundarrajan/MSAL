@@ -11,9 +11,9 @@ import { Subject } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model/control-tower-quantity-rob-difference-grid.view-model';
-import { InvoiceListColumnServerKeys } from './view-model/control-tower-quantity-rob-difference-list.columns';
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './view-model/control-tower-quantity-rob-difference-list.columns';
 
 @Component({
   selector: 'shiptech-control-tower-quantity-rob-difference-list',
@@ -24,7 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class ControlTowerQuantityRobDifferenceListComponent
   implements OnInit, OnDestroy {
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
-  invoiceListServerKeys = InvoiceListColumnServerKeys;
+  invoiceListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
   private _destroy$ = new Subject();
   @Input() theme: boolean;
   @Input() newScreen: boolean;

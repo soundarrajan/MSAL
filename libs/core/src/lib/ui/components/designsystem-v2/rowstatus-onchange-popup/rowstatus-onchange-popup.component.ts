@@ -8,22 +8,23 @@ import { Optional } from 'ag-grid-community';
   styleUrls: ['./rowstatus-onchange-popup.component.css']
 })
 export class RowstatusOnchangePopupComponent implements OnInit {
-public switchTheme: boolean = true;
-public status;
-public New = "New";
+  public switchTheme: boolean = true;
+  public status;
+  public New = 'New';
   constructor(
     public dialogRef: MatDialogRef<RowstatusOnchangePopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit(): void {
-    this.status = "New";
+    this.status = 'New';
   }
-  changeStatus(status){
+  changeStatus(status) {
     //alert(status);
     this.status = status;
   }
-  statusChanged(){
-   this.dialogRef.close({data:this.status});
+  statusChanged() {
+    this.dialogRef.close({ data: this.status });
   }
   closeDialog() {
     this.dialogRef.close();

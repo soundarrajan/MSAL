@@ -1,4 +1,4 @@
-export enum InvoiceListColumns {
+export enum ControlTowerQuantityRobDifferenceListColumns {
   actions = 'actions',
   order = 'order',
   orderProductId = 'orderProductId',
@@ -64,7 +64,7 @@ export enum InvoiceListColumns {
   invoiceApprovalStatus = 'invoiceApprovalStatus'
 }
 
-export enum InvoiceListColumnsLabels {
+export enum ControlTowerQuantityRobDifferenceListColumnsLabels {
   actions = 'Actions',
   order = 'Order No',
   orderProductId = 'Order Product ID',
@@ -133,69 +133,103 @@ export enum InvoiceListColumnsLabels {
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const InvoiceListColumnServerKeys: Record<InvoiceListColumns, string> = {
-  [InvoiceListColumns.actions]: undefined,
-  [InvoiceListColumns.order]: 'order_id',
-  [InvoiceListColumns.orderProductId]: 'orderProductId',
-  [InvoiceListColumns.delivery]: 'delivery_id',
-  [InvoiceListColumns.invoice]: 'invoice_id',
-  [InvoiceListColumns.sellerInvoiceNo]: 'sellerInvoiceNo',
-  [InvoiceListColumns.documentNo]: 'documentNo',
-  [InvoiceListColumns.customStatus]: 'customStatus_DisplayName',
-  [InvoiceListColumns.orderProductStatus]: 'orderProductStatus_DisplayName',
-  [InvoiceListColumns.buyer]: 'buyer_Name',
-  [InvoiceListColumns.supplier]: 'supplier_Name',
-  [InvoiceListColumns.orderPhysicalSupplier]: 'orderPhysicalSupplier_Name',
-  [InvoiceListColumns.invoicePhysicalSupplier]: 'invoicePhysicalSupplier_Name',
-  [InvoiceListColumns.vessel]: 'vessel_Name',
-  [InvoiceListColumns.vesselCode]: 'vessel_Code',
-  [InvoiceListColumns.carrierCompany]: 'carrierCompany_Name',
-  [InvoiceListColumns.paymentCompany]: 'paymentCompany_Name',
-  [InvoiceListColumns.port]: 'port_Name',
-  [InvoiceListColumns.eta]: 'eta',
-  [InvoiceListColumns.deliveryDate]: 'deliveryDate',
-  [InvoiceListColumns.line]: 'line_Name',
-  [InvoiceListColumns.agreementType]: 'agreementType_Name',
-  [InvoiceListColumns.product]: 'product_Name',
-  [InvoiceListColumns.invoiceQuantity]: 'invoiceQuantity',
-  [InvoiceListColumns.price]: 'price',
-  [InvoiceListColumns.sumOfCosts]: 'sumOfCosts',
-  [InvoiceListColumns.invoiceAmount]: 'invoiceAmount',
-  [InvoiceListColumns.invoiceProductAmount]: 'invoiceProductAmount',
-  [InvoiceListColumns.totalInvoiceProductAmount]: 'totalInvoiceProductAmount',
-  [InvoiceListColumns.invoiceCurrency]: 'invoiceCurrency_Name',
-  [InvoiceListColumns.orderProduct]: 'orderProduct_Name',
-  [InvoiceListColumns.confirmedQuantity]: 'confirmedQuantity',
-  [InvoiceListColumns.finalQuantityAmount]: 'finalQuantityAmount',
-  [InvoiceListColumns.orderPrice]: 'orderPrice',
-  [InvoiceListColumns.orderPriceCurrency]: 'orderPriceCurrency_Name',
-  [InvoiceListColumns.convertedCurrency]: 'convertedCurrency_Name',
-  [InvoiceListColumns.invoiceProductAmountInOrderCurrency]:
+export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
+  ControlTowerQuantityRobDifferenceListColumns,
+  string
+> = {
+  [ControlTowerQuantityRobDifferenceListColumns.actions]: undefined,
+  [ControlTowerQuantityRobDifferenceListColumns.order]: 'order_id',
+  [ControlTowerQuantityRobDifferenceListColumns.orderProductId]:
+    'orderProductId',
+  [ControlTowerQuantityRobDifferenceListColumns.delivery]: 'delivery_id',
+  [ControlTowerQuantityRobDifferenceListColumns.invoice]: 'invoice_id',
+  [ControlTowerQuantityRobDifferenceListColumns.sellerInvoiceNo]:
+    'sellerInvoiceNo',
+  [ControlTowerQuantityRobDifferenceListColumns.documentNo]: 'documentNo',
+  [ControlTowerQuantityRobDifferenceListColumns.customStatus]:
+    'customStatus_DisplayName',
+  [ControlTowerQuantityRobDifferenceListColumns.orderProductStatus]:
+    'orderProductStatus_DisplayName',
+  [ControlTowerQuantityRobDifferenceListColumns.buyer]: 'buyer_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.supplier]: 'supplier_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.orderPhysicalSupplier]:
+    'orderPhysicalSupplier_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.invoicePhysicalSupplier]:
+    'invoicePhysicalSupplier_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.vessel]: 'vessel_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.vesselCode]: 'vessel_Code',
+  [ControlTowerQuantityRobDifferenceListColumns.carrierCompany]:
+    'carrierCompany_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.paymentCompany]:
+    'paymentCompany_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.port]: 'port_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.eta]: 'eta',
+  [ControlTowerQuantityRobDifferenceListColumns.deliveryDate]: 'deliveryDate',
+  [ControlTowerQuantityRobDifferenceListColumns.line]: 'line_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.agreementType]:
+    'agreementType_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.product]: 'product_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceQuantity]:
+    'invoiceQuantity',
+  [ControlTowerQuantityRobDifferenceListColumns.price]: 'price',
+  [ControlTowerQuantityRobDifferenceListColumns.sumOfCosts]: 'sumOfCosts',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceAmount]: 'invoiceAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceProductAmount]:
+    'invoiceProductAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.totalInvoiceProductAmount]:
+    'totalInvoiceProductAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceCurrency]:
+    'invoiceCurrency_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.orderProduct]:
+    'orderProduct_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.confirmedQuantity]:
+    'confirmedQuantity',
+  [ControlTowerQuantityRobDifferenceListColumns.finalQuantityAmount]:
+    'finalQuantityAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.orderPrice]: 'orderPrice',
+  [ControlTowerQuantityRobDifferenceListColumns.orderPriceCurrency]:
+    'orderPriceCurrency_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.convertedCurrency]:
+    'convertedCurrency_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceProductAmountInOrderCurrency]:
     'invoiceProductAmountInOrderCurrency',
-  [InvoiceListColumns.orderCost]: 'orderCost',
-  [InvoiceListColumns.orderProductAmount]: 'orderProductAmount',
-  [InvoiceListColumns.totalOrderProductAmount]: 'totalOrderProductAmount',
-  [InvoiceListColumns.orderAmount]: 'orderAmount',
-  [InvoiceListColumns.orderCurrency]: 'orderCurrency_Name',
-  [InvoiceListColumns.invoiceStatus]: 'invoiceStatus',
-  [InvoiceListColumns.dueDate]: 'dueDate',
-  [InvoiceListColumns.workingDueDate]: 'workingDueDate',
-  [InvoiceListColumns.approvedDate]: 'approvedDate',
-  [InvoiceListColumns.accountNumber]: 'accountNumber',
-  [InvoiceListColumns.paymentDate]: 'paymentDate',
-  [InvoiceListColumns.backOfficeComments]: 'backOfficeComments',
-  [InvoiceListColumns.claimNo]: 'claimNo',
-  [InvoiceListColumns.claimDate]: 'claimDate',
-  [InvoiceListColumns.claimStatus]: 'claimStatus_Name',
-  [InvoiceListColumns.actualSettlementDate]: 'actualSettlementDate',
-  [InvoiceListColumns.debunkerAmount]: 'debunkerAmount',
-  [InvoiceListColumns.resaleAmount]: 'resaleAmount',
-  [InvoiceListColumns.invoiceType]: 'invoiceType_Name',
-  [InvoiceListColumns.receivedDate]: 'receivedDate',
-  [InvoiceListColumns.sellerDueDate]: 'sellerDueDate',
-  [InvoiceListColumns.orderStatus]: 'orderStatus_Name',
-  [InvoiceListColumns.contractId]: 'contractId',
-  [InvoiceListColumns.productType]: 'productType_Name',
-  [InvoiceListColumns.fuelPriceItemDescription]: 'fuelPriceItemDescription',
-  [InvoiceListColumns.invoiceApprovalStatus]: 'invoiceApprovalStatus'
+  [ControlTowerQuantityRobDifferenceListColumns.orderCost]: 'orderCost',
+  [ControlTowerQuantityRobDifferenceListColumns.orderProductAmount]:
+    'orderProductAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.totalOrderProductAmount]:
+    'totalOrderProductAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.orderAmount]: 'orderAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.orderCurrency]:
+    'orderCurrency_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceStatus]: 'invoiceStatus',
+  [ControlTowerQuantityRobDifferenceListColumns.dueDate]: 'dueDate',
+  [ControlTowerQuantityRobDifferenceListColumns.workingDueDate]:
+    'workingDueDate',
+  [ControlTowerQuantityRobDifferenceListColumns.approvedDate]: 'approvedDate',
+  [ControlTowerQuantityRobDifferenceListColumns.accountNumber]: 'accountNumber',
+  [ControlTowerQuantityRobDifferenceListColumns.paymentDate]: 'paymentDate',
+  [ControlTowerQuantityRobDifferenceListColumns.backOfficeComments]:
+    'backOfficeComments',
+  [ControlTowerQuantityRobDifferenceListColumns.claimNo]: 'claimNo',
+  [ControlTowerQuantityRobDifferenceListColumns.claimDate]: 'claimDate',
+  [ControlTowerQuantityRobDifferenceListColumns.claimStatus]:
+    'claimStatus_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.actualSettlementDate]:
+    'actualSettlementDate',
+  [ControlTowerQuantityRobDifferenceListColumns.debunkerAmount]:
+    'debunkerAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.resaleAmount]: 'resaleAmount',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceType]:
+    'invoiceType_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.receivedDate]: 'receivedDate',
+  [ControlTowerQuantityRobDifferenceListColumns.sellerDueDate]: 'sellerDueDate',
+  [ControlTowerQuantityRobDifferenceListColumns.orderStatus]:
+    'orderStatus_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.contractId]: 'contractId',
+  [ControlTowerQuantityRobDifferenceListColumns.productType]:
+    'productType_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.fuelPriceItemDescription]:
+    'fuelPriceItemDescription',
+  [ControlTowerQuantityRobDifferenceListColumns.invoiceApprovalStatus]:
+    'invoiceApprovalStatus'
 };
