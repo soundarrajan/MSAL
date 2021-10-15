@@ -19,12 +19,6 @@
           [gridId]="search.id"
         ></shiptech-search-box>
 
-        <!-- TODO: refactor this into a component -->
-        <!--        <button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button"></button>-->
-
-        <!--        <button class="ui-button mr-15  csv-icon mail-icon-position" label="" pButton type="button"></button>-->
-
-        <!--        <button class="ui-button mr-15 pdf-icon mail-icon-position" label="" pButton type="button"></button>-->
         <shiptech-export
           [gridId]="'invoice-list-grid'"
           [gridModel]="gridViewModel"
@@ -35,6 +29,9 @@
   </div>
 </shiptech-wunderbar>
 
+<div>
+  {{ totalCount$ | async }}
+</div>
 <p-messages></p-messages>
 
 <div class="w-100 px-3 py-4  m-r-5 m-b-7" style="background: white;">
@@ -65,13 +62,12 @@
     appAgGridEmptyFilterOption
     #search="search-id"
     groupId="control-tower-quantity-rob-difference-v2-list-filter-presets"
-    id="control-tower-quantity-rob-difference-v2-list-grid-1"
+    id="v2-list-grid-7"
     domLayout="normal"
     class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
     style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions"
     (rowClicked)="onrowClicked($event)"
-
   >
   </ag-grid-angular>
   <app-ag-footer
@@ -84,7 +80,7 @@
 </div>
 
 <ng-template
-  [columnDef]="[gridViewModel.orderNoCol]"
+  [columnDef]="[gridViewModel.portCallCol]"
   appAgCellTemplate
   let-data="data"
   let-value="value"
@@ -94,7 +90,7 @@
   }}</a>
 </ng-template>
 
-<ng-template
+<!-- <ng-template
   [columnDef]="[gridViewModel.orderProductIdCol]"
   appAgCellTemplate
   let-data="data"
@@ -123,4 +119,4 @@
   <a *ngIf="value && value?.id" (click)="openEditInvoice(value.id)">{{
     value.id
   }}</a>
-</ng-template>
+</ng-template> -->

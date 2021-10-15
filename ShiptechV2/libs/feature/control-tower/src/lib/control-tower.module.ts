@@ -110,6 +110,8 @@ import {
   CONTROL_TOWER_API_SERVICE
 } from './services/api/control-tower-api';
 import { ControlTowerService } from './services/control-tower.service';
+import { ControlTowerQuantityRobDifferenceListState } from './store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
+import { ControlTowerState } from './store/control-tower.state';
 
 @NgModule({
   imports: [
@@ -143,7 +145,10 @@ import { ControlTowerService } from './services/control-tower.service';
     EntityStatusModule,
     DynamicDialogModule,
     ExportModule,
-    NgxsModule.forFeature([]),
+    NgxsModule.forFeature([
+      ControlTowerState,
+      ControlTowerQuantityRobDifferenceListState
+    ]),
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
     AgFooterModule,

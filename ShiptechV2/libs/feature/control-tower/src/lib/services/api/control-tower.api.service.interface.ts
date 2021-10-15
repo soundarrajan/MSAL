@@ -5,9 +5,9 @@ import {
 } from './dto/control-tower-list-item.dto';
 
 export interface IControlTowerApiService {
-  getInvoiceList(
+  getControlTowerQuantityRobDifferenceList(
     request: IGetControlTowerQuantityRobDifferenceListRequest
   ): Observable<IGetControlTowerQuantityRobDifferenceListResponse>;
 
-  getInvoiceListExportUrl(): string;
+  getControlTowerQuantityRobDifferenceListExportUrl(): string;
 }
