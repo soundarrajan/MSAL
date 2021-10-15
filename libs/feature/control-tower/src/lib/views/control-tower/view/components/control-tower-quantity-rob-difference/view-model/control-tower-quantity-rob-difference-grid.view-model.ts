@@ -42,6 +42,8 @@ function model(
 export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGridViewModel {
   public searchText: string;
   public exportUrl: string;
+  public numberOfNewProgress: number;
+
   public defaultColFilterParams = {
     resetButton: true,
     applyButton: true,
@@ -243,7 +245,6 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     suppressMovable: true,
     width: 110
   };
-  private numberOfNewProgress: number;
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
