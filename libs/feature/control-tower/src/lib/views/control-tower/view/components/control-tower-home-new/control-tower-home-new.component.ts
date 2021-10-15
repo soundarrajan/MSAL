@@ -13,6 +13,10 @@ export class ControlTowerHomeNewComponent implements OnInit {
   public newScreen = true;
   selected = 'quantity';
 
+  selectedVal: string = 'labs';
+  selectedVal2: string = 'differences';
+  selectedVal3: string = 'differences';
+
   constructor() {}
 
   ngOnInit(): void {
@@ -21,14 +25,11 @@ export class ControlTowerHomeNewComponent implements OnInit {
     }) */
   }
 
-  selectedVal: string = 'labs';
-  selectedVal2: string = 'differences';
-  selectedVal3: string = 'differences';
-
   public onValChange(val: string) {
     this.selectedVal = val;
     this.selectedVal2 = val;
     this.selectedVal3 = val;
+    (<any>window).numberOfCalls = 0;
   }
 
   viewChange($event) {
@@ -49,5 +50,7 @@ export class ControlTowerHomeNewComponent implements OnInit {
       this.showQuantity = false;
       this.showResidue = false;
     }
+
+    (<any>window).numberOfCalls = 0;
   }
 }
