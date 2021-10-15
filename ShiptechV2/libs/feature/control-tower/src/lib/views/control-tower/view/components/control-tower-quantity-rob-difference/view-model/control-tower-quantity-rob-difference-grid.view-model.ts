@@ -243,6 +243,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     suppressMovable: true,
     width: 110
   };
+  private numberOfNewProgress: number;
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -254,7 +255,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'v2-list-grid-7',
+      'v2-list-grid-8',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -338,6 +339,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    if (!(<any>window).numberOfCalls) {
+      (<any>window).numberOfCalls += 1;
+      return;
+    }
     const values = transformLocalToServeGridInfo(
       this.gridApi,
       params,
@@ -357,8 +362,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response =>
-          params.successCallback(response.payload, response.matchedCount),
+        response => {
+          this.numberOfNewProgress = response.matchedCount;
+          params.successCallback(response.payload, response.matchedCount);
+        },
         () => {
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
