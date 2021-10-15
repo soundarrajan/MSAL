@@ -7,13 +7,15 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model/control-tower-quantity-rob-difference-grid.view-model';
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './view-model/control-tower-quantity-rob-difference-list.columns';
+import { Select } from '@ngxs/store';
+import { ControlTowerQuantityRobDifferenceListState } from 'libs/feature/control-tower/src/lib/store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
 
 @Component({
   selector: 'shiptech-control-tower-quantity-rob-difference-list',
@@ -23,11 +25,13 @@ import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './view-mo
 })
 export class ControlTowerQuantityRobDifferenceListComponent
   implements OnInit, OnDestroy {
+  @Select(ControlTowerQuantityRobDifferenceListState.totalCount)
+  totalCount$: Observable<number>;
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   invoiceListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
-  private _destroy$ = new Subject();
   @Input() theme: boolean;
   @Input() newScreen: boolean;
+  private _destroy$ = new Subject();
 
   constructor(
     public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,
@@ -72,7 +76,7 @@ export class ControlTowerQuantityRobDifferenceListComponent
     this._destroy$.complete();
   }
 
-  newFilters() {
+  public newFilters() {
     console.log(this.gridViewModel);
     this.gridViewModel.filterByStatus();
     // this.gridViewModel.serverSideGetRows(this.gridViewModel);
@@ -80,8 +84,8 @@ export class ControlTowerQuantityRobDifferenceListComponent
 
   public onrowClicked(ev) {
     //console.log("hhhhhhhhh");
-    var index = ev.rowIndex;
-    var rowNode = ev.node;
+    const index = ev.rowIndex;
+    const rowNode = ev.node;
     //alert(index);
     const dialogRef = this.dialog.open(
       RowstatusOnchangeQuantityrobdiffPopupComponent,
@@ -98,7 +102,7 @@ export class ControlTowerQuantityRobDifferenceListComponent
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
       console.log(ev);
-      this.gridViewModel.updateValues(ev, result);
+      // this.gridViewModel.updateValues(ev, result);
 
       // rowNode.setDataValue('invoiceStatus', {
       //   transactionTypeId: 5,

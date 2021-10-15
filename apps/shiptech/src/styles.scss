@@ -168,3 +168,27 @@ body .ui-tabmenu .ui-tabmenu-nav {
 //   > div:nth-child(1) {
 //   display: none !important;
 // }
+
+.success {
+  background: #99cb82;
+  color: #ffffff !important;
+  padding: 5px 15px;
+  width: 100%;
+  display: block !important;
+  text-transform: capitalize;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.denger {
+  background: #e7505a;
+  color: #ffffff !important;
+  padding: 5px 15px;
+  width: 100%;
+  display: block !important;
+  text-transform: capitalize;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

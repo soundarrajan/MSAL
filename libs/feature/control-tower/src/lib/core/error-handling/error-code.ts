@@ -1,7 +1,7 @@
 export enum ErrorCode {
   Unknown = 0,
 
-  LoadReportListFailed = 100,
+  LoadControlTowerQuantityRobDifferenceFailed = 100,
 
   LoadPortCallDetailsFailed = 1000,
   InvalidPortCallId = 1001,
