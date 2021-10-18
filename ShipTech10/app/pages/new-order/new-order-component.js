@@ -4961,7 +4961,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         /* Capture reason for change */
 
         ctrl.captureReasonModal = (productIndex, changedFieldName, modelProperty) => {
-            if(ctrl.data.id == 0) {
+            if(ctrl.data.id == 0 || (ctrl.data.vessel && !ctrl.data.vessel.isVesselManagable)) {
                 return false;
             }
             fieldChanged = ctrl.checkIfFieldChanged(productIndex, changedFieldName, modelProperty);
