@@ -28,11 +28,7 @@ export class AGGridCellRendererAsyncStatusComponent
     private databaseManipulation: DatabaseManipulation
   ) {}
 
-  async agInit(params: any) {
-    await this.initValues(params);
-  }
-
-  async initValues(params: any): Promise<void> {
+  async agInit(params: any): Promise<void> {
     this.initParamsValues = params.value;
     this.initParamsValues.code = this.returnColor();
   }

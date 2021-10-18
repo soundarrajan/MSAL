@@ -15,6 +15,22 @@ export enum ControlTowerQuantityRobDifferenceListColumns {
   status = 'status'
 }
 
+export enum ControlTowerQuantityRobDifferenceListExportColumns {
+  order = 'order.name',
+  port = 'port',
+  vessel = 'vessel.name',
+  deliveryDate = 'deliveryDate',
+  createdOn = 'createdOn',
+  claimsRaised = 'claimsRaised',
+  isDeleted = 'isDeleted',
+  productType = 'productType.name',
+  id = 'id',
+  deliveryProductId = 'deliveryProductId',
+  totalCount = 'totalCount',
+  buyer = 'buyer.name',
+  status = 'status.name'
+}
+
 export enum ControlTowerQuantityRobDifferenceListColumnsLabels {
   actions = 'Actions',
   order = 'Port Call',
