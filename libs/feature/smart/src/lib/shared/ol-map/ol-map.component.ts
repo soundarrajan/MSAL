@@ -2067,6 +2067,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
           items[0].get('type') == 'vessel' ||
           items[0].get('type') == 'vessel-glow'
         ) {
+          if(this.showVesselPop) return;
           if (!this.displayRoute) {
             this.logger.logInfo('OlMapComponent-vesselClick', new Date());
             if (this.showPortList.length != 3) {
