@@ -23,6 +23,30 @@
 
 <p-messages></p-messages>
 
+<!-- <button
+  class="search-icon"
+  appMasterSelectorTrigger
+  [masterSelector]="masterSelector"
+  #masterSelectorTrigger="masterSelectorTrigger"
+  [header]="getHeaderNameSelector()"
+>
+  <div class="img">
+    <ng-template cdkPortal #masterSelector="cdkPortal">
+      <shiptech-shared-master-selector
+        (selectedChange)="masterSelectorTrigger.close()"
+        (shouldCloseModal)="masterSelectorTrigger.close()"
+        [selectorType]="autocompleteOrders"
+        [disabled]="false"
+        [readonly]="false"
+        [entityName]="'control-tower'"
+        [entityId]="1"
+        [vesselId]="1"
+        [headerName]="getHeaderNameSelector()"
+      ></shiptech-shared-master-selector>
+    </ng-template>
+  </div>
+</button> -->
+
 <div class="w-100 px-3 py-4  m-r-5 m-b-7" style="background: white;">
   <div class="row mb-2">
     <div class="col-12 d-flex p-t-4">
@@ -53,6 +77,10 @@
       [page]="gridViewModel.page"
       [size]="gridViewModel.pageSize"
       [count]="gridViewModel.totalItems"
+      [singleGrid]="true"
+      [doublePagination]="true"
+      [maxSize]="7"
+      [id]="'controlTower-quantitySupplyDiff'"
       [serverKeys]="controlTowerQuantityRobDifferenceListServerKeys"
       (pageChange)="onPageChange($event.page)"
     >

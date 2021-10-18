@@ -17,6 +17,8 @@ export class AgFooterNewComponent {
   _page: number = 1;
   _size: number = 0;
 
+  collection = [];
+
   @Input() gridViewModel;
 
   @Input() serverKeys;
@@ -65,6 +67,12 @@ export class AgFooterNewComponent {
     return Math.max(count || 0, 1);
   }
 
+  constructor() {
+    for (let i = 1; i <= 100; i++) {
+      this.collection.push(`item ${i}`);
+    }
+  }
+
   onPageChange(page: number): void {
     this.pageChange.emit({
       page
@@ -73,5 +81,11 @@ export class AgFooterNewComponent {
 
   onPageSizeChange(pageSize: number): void {
     this.gridViewModel.pageSize = pageSize;
+  }
+
+  pageChanged(e) {
+    this.page = e;
+    //console.log(e);
+    //this.pageChange.emit(event)
   }
 }
