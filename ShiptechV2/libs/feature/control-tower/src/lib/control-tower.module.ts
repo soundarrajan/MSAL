@@ -112,6 +112,7 @@ import {
 import { ControlTowerService } from './services/control-tower.service';
 import { ControlTowerQuantityRobDifferenceListState } from './store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
 import { ControlTowerState } from './store/control-tower.state';
+import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 
 @NgModule({
   imports: [
@@ -152,6 +153,7 @@ import { ControlTowerState } from './store/control-tower.state';
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
     AgFooterModule,
+    AgFooterNewModule,
     SelectTextOnFocusDirectiveModule,
     EmailLogModule,
     AuditLogModule,

@@ -1,0 +1,29 @@
+.rowsNumberDropdown {
+  text-align: center;
+  width: 70px;
+  height: 30px;
+  vertical-align: center;
+  .standard-line {
+    font-size: 14px;
+    line-height: 28px;
+  }
+}
+
+.widget-title {
+  line-height: 20px !important;
+  margin-right: 5px;
+  font-size: 14px;
+  color: #828282 !important;
+}
+
+.select-option {
+  border: none;
+  border-bottom: 2px solid #74cdea;
+  color: #bdbdbd;
+  line-height: 20px;
+  appearance: none;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDEyIDciIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMC42IDUuNjYwMzllLTA4TDYgNC4zNTEzNUwxLjQgNS42NjAzOWUtMDhMMCAxLjMyNDMyTDYgN0wxMiAxLjMyNDMyTDEwLjYgNS42NjAzOWUtMDhaIiBmaWxsPSIjNzRDREVBIi8+Cjwvc3ZnPgo=);
+  background-repeat: no-repeat;
+  background-position: right;
+  width: 40px;
+}

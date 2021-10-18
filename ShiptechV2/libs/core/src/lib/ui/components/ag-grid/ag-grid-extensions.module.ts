@@ -54,6 +54,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
+import { AgPagingNewModule } from '../ag-paging-new/ag-paging-new.module';
+import { PageSizeSelectorNewComponent } from '../page-size-selector-new/page-size-selector-new.component';
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -68,6 +70,7 @@ const COMPONENTS = [
   AgGridDeselectFilteredRowsDirective,
   AgGridEmptyFilterOptionDirective,
   PageSizeSelectorComponent,
+  PageSizeSelectorNewComponent,
   AgGridFirstColumnLockedDirective,
   AgGridDeselectFilteredRowsDirective,
   AgDatePickerComponent,
@@ -83,6 +86,7 @@ const COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     AgPagingModule,
+    AgPagingNewModule,
     FlexModule,
     CalendarModule,
     FormsModule,

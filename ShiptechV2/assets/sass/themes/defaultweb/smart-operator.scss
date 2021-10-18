@@ -1398,11 +1398,11 @@ label {
   padding-left: 10px;
 }
 
-.mat-tab-body {
-  height: 85vh;
-  height: calc(100vh - 99px);
-}
-
+// color: #B8B5B6;
+// .mat-tab-body {
+//   height: 85vh;
+//   height: calc(100vh - 99px);
+// }
 .custom-chip {
   width: 110px;
   height: 23px;
@@ -9479,13 +9479,11 @@ label {
                     .ag-row-even {
                       background: #ffffff !important;
                       border: 1px solid #e0e1e4 !important;
-
                     }
                     .aggrid-oddrow-bg,
                     .ag-row-odd {
                       background: #f9fbfe !important;
-                        border: 1px solid #e0e1e4 !important;
-
+                      border: 1px solid #e0e1e4 !important;
                     }
                   }
                 }
