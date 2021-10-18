@@ -574,7 +574,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   selectCounterParties(params){
       let updatedRow = { ...params.data };
-      updatedRow = this.formatRowData(updatedRow, params.value);
+      updatedRow = this.formatRowData(updatedRow, params);
       // Update the store
       this.store.dispatch(new EditLocationRow(updatedRow));
       if(params.value){
@@ -587,20 +587,40 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   }
 
-  formatRowData(row, value) {
-    if(value){
+  formatRowData(row, params) {
+    if(params.value){
       row.isSelected = false;
-      row.checkProd1 =false;
-      row.checkProd2 = false;
-      row.checkProd3 =false;
-      row.checkProd4 = false;
-      row.checkProd5 =false;
+     if(params.column.colId = 'checkProd1'){
+        row.checkProd1 =false;
+      }
+      else if(params.column.colId = 'checkProd2'){
+        row.checkProd2 = false;
+      }
+      else if(params.column.colId = 'checkProd3'){
+        row.checkProd3 =false;
+      }
+      else if(params.column.colId = 'checkProd4'){
+        row.checkProd4 = false;
+      }
+      else if(params.column.colId = 'checkProd5'){
+        row.checkProd5 =false;
+      }
     }else{
-      row.checkProd1 =true;
-      row.checkProd2 = true;
-      row.checkProd3 =true;
-      row.checkProd4 = true;
-      row.checkProd5 =true;
+      if(params.column.colId = 'checkProd1'){
+        row.checkProd1 =true;
+      }
+      else if(params.column.colId = 'checkProd2'){
+        row.checkProd2 = true;
+      }
+      else if(params.column.colId = 'checkProd3'){
+        row.checkProd3 =true;
+      }
+      else if(params.column.colId = 'checkProd4'){
+        row.checkProd4 = true;
+      }
+      else if(params.column.colId = 'checkProd5'){
+        row.checkProd5 =true;
+      }
     }
     return row;
 }

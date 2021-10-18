@@ -114,6 +114,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: 'p-1 checkbox-center ag-checkbox-v2',
           cellRendererFramework: AGGridCellActionsComponent,
+          headerCellRenderer: this.selectAllRenderer,
           cellRendererParams: { type: 'checkbox-selection' }
           //pinned: 'left'
         },
@@ -376,6 +377,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return futureRow;
   }
 
+  selectAllRenderer(params){
+  }
   getRowNodeId(data) {
     return data.id;
   }
@@ -661,7 +664,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       this.locationsRows = spotNegotiation.locationsRows;
       this.locations = spotNegotiation.locations;
-
+      
       // Set rows inside ag grid
       this.rowData_aggrid = spotNegotiation.locationsRows;
       this.currentRequestData = spotNegotiation.locations;
