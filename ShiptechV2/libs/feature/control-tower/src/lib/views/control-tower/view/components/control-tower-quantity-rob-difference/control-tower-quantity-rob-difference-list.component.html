@@ -9,6 +9,15 @@
         (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
       ></app-filter-preferences>
     </div>
+    <!-- <div class="col-6">
+      <div style="float:right">
+        <shiptech-export-new
+          [gridId]="'v2-list-grid-8'"
+          [gridModel]="gridViewModel"
+          [serverKeys]="invoiceListServerKeys"
+        ></shiptech-export-new>
+      </div>
+    </div> -->
   </div>
 </shiptech-wunderbar>
 
@@ -44,6 +53,7 @@
       [page]="gridViewModel.page"
       [size]="gridViewModel.pageSize"
       [count]="gridViewModel.totalItems"
+      [serverKeys]="controlTowerQuantityRobDifferenceListServerKeys"
       (pageChange)="onPageChange($event.page)"
     >
     </app-ag-footer-new>
