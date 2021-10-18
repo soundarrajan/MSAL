@@ -23,6 +23,7 @@ import {
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SelectSeller, EditLocationRow } from '../../../store/actions/ag-grid-row.action';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -40,6 +41,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   tenantConfiguration: any;
   staticLists: any;
   private _destroy$ = new Subject();
+  CurrentProductLength: any;
+  CurrentLocationprduct: any[];
 
   constructor(
     private http: HttpClient,
@@ -92,10 +95,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     rowsArray.forEach((row, index) => {
-      // Suresh hack here.
       row.isSelected = true;
       row.checkProd1 = true;
       row.checkProd2 = true;
@@ -165,8 +166,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           );
           // Demo format data
 
-          console.log(futureLocationsRows);
-          debugger;
           this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         });
 
