@@ -27,7 +27,8 @@ import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/compon
 import {
   ControlTowerQuantityRobDifferenceListColumns,
   ControlTowerQuantityRobDifferenceListColumnServerKeys,
-  ControlTowerQuantityRobDifferenceListColumnsLabels
+  ControlTowerQuantityRobDifferenceListColumnsLabels,
+  ControlTowerQuantityRobDifferenceListExportColumns
 } from './control-tower-quantity-rob-difference-list.columns';
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import { IControlTowerQuantityRobDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
@@ -85,15 +86,17 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.order,
     colId: ControlTowerQuantityRobDifferenceListColumns.order,
     field: model('order'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.order,
     cellRendererFramework: AgCellTemplateComponent,
     width: 200,
-    headerTooltip: 'Order No.'
+    headerTooltip: 'Port Call'
   };
 
   portCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto, string> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.port,
     colId: ControlTowerQuantityRobDifferenceListColumns.port,
     field: model('port'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.port,
     width: 150
   };
 
@@ -104,6 +107,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.vessel,
     colId: ControlTowerQuantityRobDifferenceListColumns.vessel,
     field: model('vessel'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.vessel,
     valueFormatter: params => params.value?.name,
     width: 150
   };
@@ -114,6 +118,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     field: model('deliveryDate'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.deliveryDate,
     width: 150
   };
 
@@ -124,6 +130,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.createdOn,
     colId: ControlTowerQuantityRobDifferenceListColumns.createdOn,
     field: model('createdOn'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.createdOn,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     width: 150
@@ -134,8 +141,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     boolean
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.claimsRaised,
-    colId: ControlTowerQuantityRobDifferenceListColumnsLabels.claimsRaised,
+    colId: ControlTowerQuantityRobDifferenceListColumns.claimsRaised,
     field: model('claimsRaised'),
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.claimsRaised,
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
@@ -152,8 +161,9 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     boolean
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.isDeleted,
-    colId: ControlTowerQuantityRobDifferenceListColumnsLabels.isDeleted,
+    colId: ControlTowerQuantityRobDifferenceListColumns.isDeleted,
     field: model('isDeleted'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.isDeleted,
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
@@ -172,6 +182,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.productType,
     colId: ControlTowerQuantityRobDifferenceListColumns.productType,
     field: model('productType'),
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.productType,
     valueFormatter: params => params.value?.name,
     width: 150
   };
@@ -183,6 +195,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.id,
     colId: ControlTowerQuantityRobDifferenceListColumns.id,
     field: model('id'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.id,
     filter: 'agNumberColumnFilter',
     width: 150
   };
@@ -194,6 +207,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryProductId,
     colId: ControlTowerQuantityRobDifferenceListColumns.deliveryProductId,
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.deliveryProductId,
     field: model('deliveryProductId'),
     filter: 'agNumberColumnFilter',
     width: 150
@@ -206,6 +221,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.totalCount,
     colId: ControlTowerQuantityRobDifferenceListColumns.totalCount,
     field: model('totalCount'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.totalCount,
     filter: 'agNumberColumnFilter',
     width: 150
   };
@@ -217,6 +233,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.buyer,
     colId: ControlTowerQuantityRobDifferenceListColumns.buyer,
     field: model('buyer'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.buyer,
     valueFormatter: params => params.value?.name,
     width: 150
   };
@@ -228,6 +245,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.status,
     colId: ControlTowerQuantityRobDifferenceListColumns.status,
     field: model('status'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.status,
     valueFormatter: params => params.value?.name,
     cellRendererFramework: AGGridCellRendererAsyncStatusComponent,
     width: 150

@@ -103,6 +103,7 @@ export interface ITypedColDef<TData = any, TField = any>
     params: ITypedValueParams<TData, TField>
   ) => Partial<CSSStyleDeclaration>;
   field?: keyof TData;
+  dtoForExport?: string;
   cellRendererSelector?: (
     params: ITypedCellRendererParams<TData, TField>
   ) => ITypedComponentSelectorResult;

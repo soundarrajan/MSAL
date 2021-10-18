@@ -29,6 +29,8 @@ import { AppError } from '@shiptech/core/error-handling/app-error';
 import { IQcReportsListItemDto } from '../../../../../../feature/quantity-control/src/lib/services/api/dto/qc-reports-list-item.dto';
 import { ToastrService } from 'ngx-toastr';
 import { QcReportService } from '../../../../../../feature/quantity-control/src/lib/services/qc-report.service';
+import { Column } from '@ag-grid-enterprise/all-modules';
+import jstz from 'jstz';
 
 @Component({
   selector: 'shiptech-export[gridModel][serverKeys][gridId]',
@@ -86,6 +88,22 @@ export class ExportComponent implements OnInit, OnDestroy {
     }
   }
 
+  mapVisibleColumns(gridColumns: ITypedColDef[]): IColumnsMapping[] {
+    const arr = [];
+    gridColumns.filter((item: ITypedColDef) => {
+      if (
+        this.gridModel.gridColumnApi.getColumn(item.field) &&
+        this.gridModel.gridColumnApi.getColumn(item.field).isVisible()
+      ) {
+        arr.push({
+          dtoPath: item.dtoForExport ? item.dtoForExport : item.field,
+          label: item.headerName
+        });
+      }
+    });
+    return arr;
+  }
+
   exportTo(type: string): void {
     const serverParams = transformLocalToServeGridInfo(
       this.gridModel.gridApi,
@@ -94,13 +112,16 @@ export class ExportComponent implements OnInit, OnDestroy {
       this.gridModel.searchText
     );
 
+    const timezone = jstz.determine();
+    const dOffset = new Date().getTimezoneOffset();
+
     const requestToSend = {
       exportType: KnownExportTypeLookupEnum[type].type,
       SearchText: this.gridModel.searchText,
       Pagination: serverParams.pagination,
-      columns: this.mapColumns(this.gridModel.getColumnsDefs()),
-      timezone: this.tenantSettings.getGeneralTenantSettings().tenantFormats
-        .timeZone.name,
+      columns: this.mapVisibleColumns(this.gridModel.getColumnsDefs()),
+      dateTimeOffset: dOffset,
+      timezone: timezone.name(),
       PageFilters: serverParams.pageFilters,
       SortList: serverParams.sortList
     };
