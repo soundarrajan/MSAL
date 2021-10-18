@@ -28,7 +28,7 @@ export class ControlTowerQuantityRobDifferenceListComponent
   @Select(ControlTowerQuantityRobDifferenceListState.totalCount)
   totalCount$: Observable<number>;
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
-  invoiceListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
+  public controlTowerQuantityRobDifferenceListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
   @Input() theme: boolean;
   @Input() newScreen: boolean;
   private _destroy$ = new Subject();

@@ -113,6 +113,7 @@ import { ControlTowerService } from './services/control-tower.service';
 import { ControlTowerQuantityRobDifferenceListState } from './store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
 import { ControlTowerState } from './store/control-tower.state';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
+import { ExportNewModule } from '@shiptech/core/ui/components/export-new/export-new.module';
 
 @NgModule({
   imports: [
@@ -146,6 +147,7 @@ import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag
     EntityStatusModule,
     DynamicDialogModule,
     ExportModule,
+    ExportNewModule,
     NgxsModule.forFeature([
       ControlTowerState,
       ControlTowerQuantityRobDifferenceListState

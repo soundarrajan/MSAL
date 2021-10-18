@@ -19,6 +19,8 @@ export class AgFooterNewComponent {
 
   @Input() gridViewModel;
 
+  @Input() serverKeys;
+
   @Input() rowCount;
   @Input() maxSize;
   @Input() doublePagination;

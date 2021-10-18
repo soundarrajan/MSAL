@@ -12,10 +12,11 @@
         {{ page * size > count ? count : page * size }} of {{ count }} entries
       </span>
     </div>
-    <div class="export-excel">
-      <div class="excel-icon"></div>
-      <div class="export-icon"></div>
-    </div>
+    <shiptech-export-new
+      [gridId]="'v2-list-grid-8'"
+      [gridModel]="gridViewModel"
+      [serverKeys]="serverKeys"
+    ></shiptech-export-new>
   </div>
   <div class="show-rows">
     <span>Show</span>
