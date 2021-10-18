@@ -4633,23 +4633,23 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
 
         ctrl.inputChangeProcessing = function(inputName) {
-            $timeout(() => {
-                switch(inputName) {
-                case 'eta':
-                    ctrl.data.deliveryDate = angular.copy(ctrl.data.eta);
-                    ctrl.isRecentETA ? ctrl.data.recentEta = angular.copy(ctrl.data.eta) : '';
-                    break;
-                case 'recentEta':
-                    	if (!ctrl.data.recentEta) {
-                    		if (ctrl.data.eta) {
-                    			ctrl.data.deliveryDate = angular.copy(ctrl.data.eta);
-                    		}
-                    	} else {
+            switch(inputName) {
+            case 'eta':
+                ctrl.data.deliveryDate = angular.copy(ctrl.data.eta);
+                ctrl.isRecentETA ? ctrl.data.recentEta = angular.copy(ctrl.data.eta) : '';
+                break;
+            case 'recentEta':
+                if (!ctrl.data.recentEta) {
+                    if (ctrl.data.eta) {
+                        ctrl.data.deliveryDate = angular.copy(ctrl.data.eta);
+                    }
+                } else {
+                    if(ctrl.data.recentEta) {
                         ctrl.data.deliveryDate = angular.copy(ctrl.data.recentEta);
-                    	}
-                    break;
+                    }
                 }
-            }, 1);
+                break;
+            }
         };
 
         ctrl.setIsVerifiedBool = function() {
