@@ -14,6 +14,7 @@ import { RowstatusOnchangePopupComponent } from './rowstatus-onchange-popup/rows
 import { RowstatusOnchangeQualitylabPopupComponent } from './rowstatus-onchange-qualitylab-popup/rowstatus-onchange-qualitylab-popup.component';
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from './rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-res
     ReactiveFormsModule,
     MaterialModule,
     UIModule,
+    NgxPaginationModule,
     MatRadioModule,
     AgGridModule.withComponents([
       AGGridCellActionsComponent,

@@ -74,35 +74,6 @@
     </span>
     <div class="right-border"></div>
   </div>
-  <!--Date picker - rack marketing footer only-->
-  <!-- <div class="pagination" *ngIf="!doublePagination && !singleGrid">
-    <pagination-controls
-      id="pagination1"
-      previousLabel=""
-      nextLabel=""
-      maxSize="{{ maxSize }}"
-      (pageChange)="pageChanged($event)"
-    ></pagination-controls>
-  </div>
-  <div class="pagination" *ngIf="doublePagination && !singleGrid">
-    <ul style="display:none">
-      <li
-        *ngFor="
-          let item of collection
-            | paginate
-              : { id: 'pagination2', itemsPerPage: 10, currentPage: page }
-        "
-      ></li>
-    </ul>
-
-    <pagination-controls
-      id="pagination2"
-      previousLabel=""
-      nextLabel=""
-      maxSize="{{ maxSize }}"
-      (pageChange)="pageChanged($event)"
-    ></pagination-controls>
-  </div>
   <div class="pagination" *ngIf="singleGrid">
     <ul style="display:none">
       <li
@@ -120,5 +91,5 @@
       maxSize="{{ maxSize }}"
       (pageChange)="pageChanged($event)"
     ></pagination-controls>
-  </div> -->
+  </div>
 </div>

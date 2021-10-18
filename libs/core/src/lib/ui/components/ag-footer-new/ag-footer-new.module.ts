@@ -5,6 +5,7 @@ import { AgPagingNewModule } from '../ag-paging-new/ag-paging-new.module';
 import { MaterialModule } from '../../material.module';
 import { AgGridExtensionsModule } from '../ag-grid/ag-grid-extensions.module';
 import { ExportNewModule } from '../export-new/export-new.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { ExportNewModule } from '../export-new/export-new.module';
     AgPagingNewModule,
     MaterialModule,
     ExportNewModule,
+    NgxPaginationModule,
     AgGridExtensionsModule
   ],
   declarations: [AgFooterNewComponent],

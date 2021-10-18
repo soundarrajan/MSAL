@@ -40,4 +40,22 @@
     (pageChange)="onPageChange($event.page)"
   >
   </app-ag-paging-new>
+  <div class="pagination" *ngIf="singleGrid">
+    <ul style="display:none">
+      <li
+        *ngFor="
+          let item of collection
+            | paginate: { id: id, itemsPerPage: 10, currentPage: page }
+        "
+      ></li>
+    </ul>
+
+    <pagination-controls
+      id="{{ id }}"
+      previousLabel=""
+      nextLabel=""
+      maxSize="{{ maxSize }}"
+      (pageChange)="pageChanged($event)"
+    ></pagination-controls>
+  </div>
 </div>
