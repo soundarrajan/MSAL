@@ -94,15 +94,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-
     rowsArray.forEach((row, index) => {
       // Suresh hack here.
-      row.isSelected = false;
-      row.checkProd1 = false;
-      row.checkProd2 = false;
-      row.checkProd3 = false;
-      row.checkProd4 = false;
-      row.checkProd5 = false;
+      row.isSelected = true;
+      row.checkProd1 = true;
+      row.checkProd2 = true;
+      row.checkProd3 = true;
+      row.checkProd4 = true;
+      row.checkProd5 = true;
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (

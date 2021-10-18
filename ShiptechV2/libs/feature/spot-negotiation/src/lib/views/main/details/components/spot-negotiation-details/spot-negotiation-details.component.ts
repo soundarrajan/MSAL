@@ -772,27 +772,55 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   onRowSelected(e) {
-    // Please rewrite this function and comment it
-    return;
-    const itemsToUpdate = [];
-    this.gridOptions_counterparty.api.forEachNode((rowNode, index) => {
-      rowNode.data.check = false;
-    });
-    this.gridOptions_counterparty.api.forEachNodeAfterFilterAndSort(function(
-      rowNode,
-      index
-    ) {
-      if (!rowNode.isSelected() === true) {
-        return;
+    // const itemsToUpdate = [];
+    // this.gridOptions_counterparty.api.forEachNode((rowNode, index) => {
+    //   rowNode.data.isSelected isSelected = false;
+    //   console.log("-------------&&&&&&&-- rowNode", rowNode);
+    // });
+    // this.gridOptions_counterparty.api.forEachNodeAfterFilterAndSort(function(
+    //   rowNode,
+    //   index
+    // ) {
+    //   if (!rowNode.isSelected() === true) {
+    //     return;
+    //   }
+    //   const data = rowNode.data;
+    //   data.isSelected = TextTrackCueList;
+    //   itemsToUpdate.push(data);
+    // });
+    // const res = this.gridOptions_counterparty.api.applyTransaction({
+    //   update: itemsToUpdate
+    // });
+    let updatedRow = { ...e.data };
+      updatedRow = this.formatRowselected(updatedRow, e.data.isSelected);
+      // Update the store
+      this.store.dispatch(new EditLocationRow(updatedRow));
+      if(e.data.isSelected){
+        return false
       }
-      const data = rowNode.data;
-      data.check = TextTrackCueList;
-      itemsToUpdate.push(data);
-    });
-    const res = this.gridOptions_counterparty.api.applyTransaction({
-      update: itemsToUpdate
-    });
+      else{
+        return true
+      }
   }
+
+  formatRowselected(row, value) { 
+    if(value){
+      row.isSelected = false;
+      row.checkProd1 =false;
+      row.checkProd2 = false;
+      row.checkProd3 =false;
+      row.checkProd4 = false;
+      row.checkProd5 =false;
+    }else{
+      row.isSelected = true;
+      row.checkProd1 =true;
+      row.checkProd2 = true;
+      row.checkProd3 =true;
+      row.checkProd4 = true;
+      row.checkProd5 =true;
+    }
+    return row;
+}
   onSelectionChanged(e) {}
   onCellClick(event: any) {
     let rowsSelection = this.gridOptions_counterparty.api.getSelectedRows();
