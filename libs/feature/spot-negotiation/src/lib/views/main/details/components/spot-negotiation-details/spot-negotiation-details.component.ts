@@ -307,30 +307,30 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     const payload = {
       Offers: [
         {
-          id: updatedRow.id,
-          totalOffer: 1250,
+          id: updatedRow.requestOffers[0].offerId,
+          totalOffer: updatedRow.totalOffer,
           requestOffers: [
             {
-              Id: product.id,
-              totalPrice: 120,
-              amount: 12000,
-              targetDifference: 15,
-              price: 125
+              id: updatedRow.requestOffers[0].id,
+              totalPrice: updatedRow.requestOffers[0].totalPrice,
+              amount: updatedRow.requestOffers[0].amount,
+              targetDifference: updatedRow.requestOffers[0].targetDifference,
+              price: updatedRow.requestOffers[0].price
             }
           ]
         }
       ]
     };
-
+    console.log (updatedRow); 
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       if (res.status) {
         this.toastr.success(res.message);
       } else {
-        this.toastr.error(res.message);
-        return;
+      this.toastr.error(res.message);
+      return;
       }
-    });
+     });
   }
   // Calculate row fields and return new row;
   formatRowData(row, product, field, newValue) {
