@@ -61,6 +61,42 @@ export class SpotNegotiationHomeComponent implements OnInit {
     // dialogRef.afterClosed().subscribe(result => {
     // });
     this.selectedSellerList = [];
+     var Selectedfinaldata = this.FilterselectedRow()
+     if(Selectedfinaldata.length == 0){
+      let errormessage = "Atleast 1 counterparty should be selected in";// + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
+        this.toaster.error(errormessage);
+        return
+      // }
+     }
+     else{
+        this.selectedSellerList.push(Selectedfinaldata[0]);
+        var FinalAPIdata ={
+        RequestGroupId: 1,
+        quoteByDate: new Date(),
+        quoteByCurrencyId:1,
+        quoteByTimeZoneId:1,
+        selectedSellers: this.selectedSellerList
+      }
+        
+     }
+    // Get response from server
+    const response = this.spotNegotiationService.SendRFQ(
+      FinalAPIdata
+    );
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.error(res.message);
+        return;
+      }
+    });
+  }
+
+  FilterselectedRow(){
+    debugger;
+    var Sellectedsellerdata = [];
+
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.locations.forEach(element => {
         spotNegotiation.locationsRows.forEach(element1 => {
@@ -74,46 +110,38 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 let productLength = element.requestProducts.length;
                 for (let index = 0; index < productLength; index++) {
                   if(index == 0 && element1["checkProd1"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
+                    Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index);
                   }
                   else if(index == 1 && element1["checkProd2"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
+                    Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index);
                   }
                   else if(index == 2 && element1["checkProd3"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
-                  }
-                  else if(index == 3 && element1["checkProd4"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
-                  }
-                  else if(index == 4 && element1["checkProd5"]){
-                    var Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index)
-                  }
-                  else{
-                    let errormessage = "Atleast 1 counterparty should be selected in" + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
-                    this.toaster.error(errormessage);
-                  }
-
-                  if(Sellectedsellerdata != null && Sellectedsellerdata.length != 0){
+                    Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index);
                     this.selectedSellerList.push(Sellectedsellerdata[0]);
                   }
+                  else if(index == 3 && element1["checkProd4"]){
+                    Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index);
+                    this.selectedSellerList.push(Sellectedsellerdata[0]);
+                  }
+                  else if(index == 4 && element1["checkProd5"]){
+                    Sellectedsellerdata = this.ConstuctSellerPayload(element1,element.requestProducts,spotNegotiation.currentRequestSmallInfo,index);
+                    this.selectedSellerList.push(Sellectedsellerdata[0]);
+                  }
+                  // else{
+                  //   let errormessage = "Atleast 1 counterparty should be selected in" + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
+                  //   this.toaster.error(errormessage);
+                  // }
+
+                  // if(Sellectedsellerdata != null && Sellectedsellerdata.length != 0){
+                  //   this.selectedSellerList.push(Sellectedsellerdata[0]);
+                  // }
                 }
               }
             }
           });
       });
       });
-    // Get response from server
-    const response = this.spotNegotiationService.SendRFQ(
-      this.selectedSellerList
-    );
-    response.subscribe((res: any) => {
-      if (res.status) {
-        this.toaster.success(res.message);
-      } else {
-        this.toaster.error(res.message);
-        return;
-      }
-    });
+      return this.selectedSellerList
   }
   ConstuctSellerPayload(Seller,Product,Request,index){
     let selectedproduct;
@@ -130,10 +158,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         RequestId:Request.id,
         physicalSupplierCounterpartyId:11,
         RequestProductIds: [parseInt(selectedproduct)],
-        RequestGroupId:Request.requestGroupId,
-        quoteByDate: new Date(),
-        quoteByCurrencyId:1,
-        quoteByTimeZoneId:11
       }
     ]
   }

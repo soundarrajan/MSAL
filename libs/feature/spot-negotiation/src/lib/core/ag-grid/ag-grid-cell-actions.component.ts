@@ -167,7 +167,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
       let updatedRow = { ...params.data };
       updatedRow = this.formatRowData(updatedRow, params.value);
       // Update the store
-      // this.store.dispatch(new EditLocationRow(updatedRow));
+      this.store.dispatch(new EditLocationRow(updatedRow));
       if(params.value){
         return params.value = false;
       }else{
