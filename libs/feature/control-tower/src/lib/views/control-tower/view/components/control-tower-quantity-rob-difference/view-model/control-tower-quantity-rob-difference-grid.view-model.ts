@@ -84,16 +84,17 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     ILookupDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.order,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.order,
     colId: ControlTowerQuantityRobDifferenceListColumns.order,
     field: model('order'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.order,
     cellRendererFramework: AgCellTemplateComponent,
-    width: 200,
-    headerTooltip: 'Port Call'
+    width: 200
   };
 
   portCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto, string> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.port,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.port,
     colId: ControlTowerQuantityRobDifferenceListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.port,
@@ -105,6 +106,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     ILookupDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.vessel,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.vessel,
     colId: ControlTowerQuantityRobDifferenceListColumns.vessel,
     field: model('vessel'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.vessel,
@@ -114,6 +116,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   etaCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto, string> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryDate,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.deliveryDate,
     field: model('deliveryDate'),
     filter: 'agDateColumnFilter',
@@ -128,6 +132,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     string
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.createdOn,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.createdOn,
     colId: ControlTowerQuantityRobDifferenceListColumns.createdOn,
     field: model('createdOn'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.createdOn,
@@ -141,6 +146,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     boolean
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.claimsRaised,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.claimsRaised,
     colId: ControlTowerQuantityRobDifferenceListColumns.claimsRaised,
     field: model('claimsRaised'),
     dtoForExport:
@@ -161,6 +168,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     boolean
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.isDeleted,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.isDeleted,
     colId: ControlTowerQuantityRobDifferenceListColumns.isDeleted,
     field: model('isDeleted'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.isDeleted,
@@ -180,6 +188,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     ILookupDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.productType,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.productType,
     colId: ControlTowerQuantityRobDifferenceListColumns.productType,
     field: model('productType'),
     dtoForExport:
@@ -193,6 +203,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     number
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.id,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.id,
     colId: ControlTowerQuantityRobDifferenceListColumns.id,
     field: model('id'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.id,
@@ -205,6 +216,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     number
   > = {
     headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryProductId,
+    headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryProductId,
     colId: ControlTowerQuantityRobDifferenceListColumns.deliveryProductId,
     dtoForExport:
@@ -219,6 +232,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     number
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.totalCount,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.totalCount,
     colId: ControlTowerQuantityRobDifferenceListColumns.totalCount,
     field: model('totalCount'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.totalCount,
@@ -231,6 +246,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     ILookupDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.buyer,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.buyer,
     colId: ControlTowerQuantityRobDifferenceListColumns.buyer,
     field: model('buyer'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.buyer,
@@ -243,6 +259,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.status,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.status,
     colId: ControlTowerQuantityRobDifferenceListColumns.status,
     field: model('status'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.status,
@@ -253,10 +270,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   actionsCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
     colId: ControlTowerQuantityRobDifferenceListColumns.actions,
     headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
-    headerTooltip: 'Actions',
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
     resizable: false,
