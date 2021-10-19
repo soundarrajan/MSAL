@@ -23,8 +23,7 @@ import {
   EditLocationRow,
   SetCounterpartyList,
   SetLocationsRows,
-  SetStaticLists,
-  SelectCounterparty
+  SetStaticLists
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { iif, Observable } from 'rxjs';
@@ -115,6 +114,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: 'p-1 checkbox-center ag-checkbox-v2',
           cellRendererFramework: AGGridCellActionsComponent,
+          headerCellRenderer: this.selectAllRenderer,
           cellRendererParams: { type: 'checkbox-selection' }
           //pinned: 'left'
         },
@@ -378,6 +378,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return futureRow;
   }
 
+  selectAllRenderer(params){
+  }
   getRowNodeId(data) {
     return data.id;
   }
