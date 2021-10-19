@@ -13,7 +13,7 @@
       </span>
     </div>
     <shiptech-export-new
-      [gridId]="'v2-list-grid-8'"
+      [gridId]="id"
       [gridModel]="gridViewModel"
       [serverKeys]="serverKeys"
     ></shiptech-export-new>
@@ -55,7 +55,7 @@
       previousLabel=""
       nextLabel=""
       maxSize="{{ maxSize }}"
-      (pageChange)="pageChanged($event)"
+      (pageChange)="onPageChange($event)"
     ></pagination-controls>
   </div>
 </div>

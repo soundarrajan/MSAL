@@ -9,20 +9,10 @@
         (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
       ></app-filter-preferences>
     </div>
-    <!-- <div class="col-6">
-      <div style="float:right">
-        <shiptech-export-new
-          [gridId]="'v2-list-grid-8'"
-          [gridModel]="gridViewModel"
-          [serverKeys]="invoiceListServerKeys"
-        ></shiptech-export-new>
-      </div>
-    </div> -->
   </div>
 </shiptech-wunderbar>
 
 <p-messages></p-messages>
-
 <!-- <button
   class="search-icon"
   appMasterSelectorTrigger
@@ -80,7 +70,7 @@
       [singleGrid]="true"
       [doublePagination]="true"
       [maxSize]="7"
-      [id]="'controlTower-quantitySupplyDiff'"
+      [id]="'v2-list-grid-8'"
       [serverKeys]="controlTowerQuantityRobDifferenceListServerKeys"
       (pageChange)="onPageChange($event.page)"
     >
