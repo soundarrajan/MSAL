@@ -12,6 +12,8 @@ import { MarketpricehistorypopupComponent } from '../../views/main/details/compo
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
 import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.model';
+import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -175,7 +177,7 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
               contenteditable="true"
               (keydown)="editQty($event)"
             >
-              {{ params.product.requestGroupProducts.closure }}
+             $ {{ priceFormatValue(closureValue) }}
             </div>
           </div>
           <div class="label-element red">
@@ -185,7 +187,7 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
               contenteditable="true"
               (keydown)="editQty($event)"
             >
-              {{ params.product.requestGroupProducts.benchmark }}
+             $ {{ priceFormatValue(params.product.requestGroupProducts.benchmark) }}
             </div>
           </div>
           <div class="label-element dashed">
@@ -204,7 +206,7 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              {{ targetValue }}
+             $ {{ priceFormatValue(targetValue) }}
             </div>
           </div>
           <div
@@ -253,11 +255,13 @@ export class ShiptechCustomHeaderGroup {
   isExpand: boolean;
   public resizeIconss: any;
   public expandState: string;
+  closureValue:any;
   targetValue: any;
   livePrice: any;
   benchmark: any;
   requestProductId: any;
   requestLocationId: any;
+  public priceFormat = '';
 
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [];
@@ -281,6 +285,8 @@ export class ShiptechCustomHeaderGroup {
   }
 
   constructor(
+    @Inject(DecimalPipe)
+    private _decimalPipe,
     public dialog: MatDialog,
     private el: ElementRef,
     private store: Store,
@@ -288,6 +294,7 @@ export class ShiptechCustomHeaderGroup {
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
     private changeDetector: ChangeDetectorRef,
+    private tenantService: TenantFormattingService,
     @Inject(DOCUMENT) private _document: HTMLDocument
   ) {
     this.targetValue = '';
@@ -358,8 +365,10 @@ export class ShiptechCustomHeaderGroup {
   agInit(params: any): void {
     this.params = params;
     if (this.params.product) {
-      this.livePrice = this.params.product.requestGroupProducts.livePrice;
+      let formattedLivePrice= this.priceFormatValue(this.params.product.requestGroupProducts.livePrice);
+      this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
+      this.closureValue=this.params.product.requestGroupProducts.closure;
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
       this.requestProductId = this.params.product.id;
       this.requestLocationId=this.params.requestLocationId;
@@ -473,9 +482,62 @@ export class ShiptechCustomHeaderGroup {
       return Array<SpnegoAddCounterpartyModel>();
     }
   }
-  calculateTargetPrice() {
-    this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
 
+  roundDown(value, pricePrecision) {
+    let precisionFactor = 1;
+    let response = 0;
+    const intvalue = parseFloat(value);
+    if (pricePrecision === 1) {
+      precisionFactor = 10;
+    }
+    if (pricePrecision === 2) {
+      precisionFactor = 100;
+    }
+    if (pricePrecision === 3) {
+      precisionFactor = 1000;
+    }
+    if (pricePrecision === 4) {
+      precisionFactor = 10000;
+    }
+    response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+    return response.toString();
+  }
+
+
+
+  priceFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+
+    const number = parseFloat(plainNumber);
+
+    if (isNaN(number)) {
+      return null;
+    }
+
+    let productPricePrecision = this.tenantService.pricePrecision;
+
+    this.priceFormat =
+      '1.' + productPricePrecision + '-' + productPricePrecision;
+
+    if (plainNumber) {
+      if (productPricePrecision) {
+        plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
+      } else {
+        plainNumber = Math.trunc(plainNumber);
+      }
+
+      return this._decimalPipe.transform(plainNumber, this.priceFormat);
+    }
+  } 
+
+  calculateTargetPrice() {
+    this.livePrice= this.priceFormatValue(this.livePrice);
+    this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
+    this.closureValue=parseInt(this.livePrice);
     let payload = {
       "productPrice": {
       "requestLocationId": this.requestLocationId,
