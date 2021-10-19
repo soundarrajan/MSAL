@@ -96,12 +96,6 @@ export class ControlTowerQuantityRobDifferenceListComponent
     this._destroy$.complete();
   }
 
-  public newFilters() {
-    console.log(this.gridViewModel);
-    this.gridViewModel.filterByStatus();
-    // this.gridViewModel.serverSideGetRows(this.gridViewModel);
-  }
-
   public onrowClicked(ev) {
     //console.log("hhhhhhhhh");
     const index = ev.rowIndex;
@@ -141,53 +135,35 @@ export class ControlTowerQuantityRobDifferenceListComponent
     });
   }
 
-  filterGridNew(text) {
+  filterGridNew(statusName: string): void {
     console.log(this.gridTitle);
-    // if (this.toggleNewFilter) {
-    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
-    //   instance.setModel({
-    //     values: [text]
-    //   });
-    //   this.gridOptions_data.api.onFilterChanged();
-    // } else {
-    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
-    //   instance.setModel(null);
-    //   this.gridOptions_data.api.onFilterChanged();
-    // }
+    if (this.toggleNewFilter) {
+      this.gridViewModel.filterByStatus(statusName);
+    } else {
+      this.gridViewModel.filterByStatus('');
+    }
     this.toggleNewFilter = !this.toggleNewFilter;
     this.toggleMASFilter = true;
     this.toggleResolvedFilter = true;
   }
 
-  filterGridMAS(text) {
-    // if (this.toggleMASFilter) {
-    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
-    //   instance.setModel({
-    //     values: [text]
-    //   });
-    //   this.gridOptions_data.api.onFilterChanged();
-    // } else {
-    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
-    //   instance.setModel(null);
-    //   this.gridOptions_data.api.onFilterChanged();
-    // }
+  filterGridMAS(statusName: string): void {
+    if (this.toggleMASFilter) {
+      this.gridViewModel.filterByStatus(statusName);
+    } else {
+      this.gridViewModel.filterByStatus('');
+    }
     this.toggleMASFilter = !this.toggleMASFilter;
     this.toggleNewFilter = true;
     this.toggleResolvedFilter = true;
   }
 
-  filterGridResolved(text) {
-    // if (this.toggleResolvedFilter) {
-    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
-    //   instance.setModel({
-    //     values: [text]
-    //   });
-    //   this.gridOptions_data.api.onFilterChanged();
-    // } else {
-    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
-    //   instance.setModel(null);
-    //   this.gridOptions_data.api.onFilterChanged();
-    // }
+  filterGridResolved(statusName: string): void {
+    if (this.toggleResolvedFilter) {
+      this.gridViewModel.filterByStatus(statusName);
+    } else {
+      this.gridViewModel.filterByStatus('');
+    }
     this.toggleResolvedFilter = !this.toggleResolvedFilter;
     this.toggleNewFilter = true;
     this.toggleMASFilter = true;
