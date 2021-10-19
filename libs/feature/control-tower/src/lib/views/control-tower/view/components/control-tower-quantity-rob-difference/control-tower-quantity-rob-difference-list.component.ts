@@ -20,6 +20,7 @@ import {
   knowMastersAutocompleteHeaderName,
   knownMastersAutocomplete
 } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'shiptech-control-tower-quantity-rob-difference-list',
@@ -38,6 +39,15 @@ export class ControlTowerQuantityRobDifferenceListComponent
   private _destroy$ = new Subject();
   private _autocompleteType: any;
   autocompleteOrders: string;
+
+  public switchTheme: boolean = true;
+  public gridTitle = 'ROB Difference';
+  public toggleNewFilter: boolean = true;
+  public toggleMASFilter: boolean = true;
+  public toggleResolvedFilter: boolean = true;
+  public rowCount: Number;
+  today = new FormControl(new Date());
+  public rowSelection;
 
   constructor(
     public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,

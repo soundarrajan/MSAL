@@ -3,7 +3,7 @@
   [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
   style="position: relative;"
 >
-  <div class="header-content">
+  <!-- <div class="header-content">
     <div *ngIf="!newScreen" class="title">
       <div class="head">{{ gridTitle }}</div>
     </div>
@@ -64,7 +64,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div id="custom-tabs-v2" class="level-2">
     <mat-tab-group
       mat-align-tabs="end"
@@ -81,14 +81,10 @@
           </div>
         </ng-template>
         <ng-container>
-          <div class="grid-container">
-            <div class="agGrid-v2" style="margin: 0">
-              <div style="width:100%;height: 100%;">
-                <shiptech-control-tower-quantity-rob-difference-list></shiptech-control-tower-quantity-rob-difference-list>
-              </div>
-            </div>
-          </div>
-          <div class="footer"></div>
+          <shiptech-control-tower-quantity-rob-difference-list
+            [theme]="theme"
+            [newScreen]="newScreen"
+          ></shiptech-control-tower-quantity-rob-difference-list>
         </ng-container>
       </mat-tab>
       <mat-tab>
