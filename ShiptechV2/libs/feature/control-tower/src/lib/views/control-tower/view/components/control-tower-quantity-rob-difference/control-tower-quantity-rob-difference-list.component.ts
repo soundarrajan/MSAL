@@ -16,6 +16,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './view-model/control-tower-quantity-rob-difference-list.columns';
 import { Select } from '@ngxs/store';
 import { ControlTowerQuantityRobDifferenceListState } from 'libs/feature/control-tower/src/lib/store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 
 @Component({
   selector: 'shiptech-control-tower-quantity-rob-difference-list',
@@ -32,13 +36,17 @@ export class ControlTowerQuantityRobDifferenceListComponent
   @Input() theme: boolean;
   @Input() newScreen: boolean;
   private _destroy$ = new Subject();
+  private _autocompleteType: any;
+  autocompleteOrders: string;
 
   constructor(
     public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,
     public appConfig: AppConfig,
     private urlService: UrlService,
     public dialog: MatDialog
-  ) {}
+  ) {
+    this.autocompleteOrders = knownMastersAutocomplete.products;
+  }
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
@@ -119,5 +127,14 @@ export class ControlTowerQuantityRobDifferenceListComponent
       // });
       // console.log(rowNode);
     });
+  }
+
+  getHeaderNameSelector(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.products:
+        return knowMastersAutocompleteHeaderName.products;
+      default:
+        return knowMastersAutocompleteHeaderName.products;
+    }
   }
 }
