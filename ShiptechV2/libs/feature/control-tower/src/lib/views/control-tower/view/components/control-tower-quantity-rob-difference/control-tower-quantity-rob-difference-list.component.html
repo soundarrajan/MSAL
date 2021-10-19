@@ -19,6 +19,11 @@
             matInput
             [matDatepicker]="from"
             [formControl]="gridViewModel.fromDate"
+            (dateChange)="
+              gridViewModel.fromDate.setValue(
+                formatDateForBe(gridViewModel.fromDate.value)
+              )
+            "
             (focus)="from.open()"
           />
           <mat-datepicker
