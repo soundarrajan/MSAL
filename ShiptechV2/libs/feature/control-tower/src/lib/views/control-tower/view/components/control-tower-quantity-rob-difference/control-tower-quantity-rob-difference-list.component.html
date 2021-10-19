@@ -32,17 +32,26 @@
     </div>
     <div class="by-action">
       <span class="filter-by" *ngIf="newScreen">Filter By:</span>
-      <div class="action" [ngClass]="!toggleNewFilter ? 'selected-blue' : ''">
+      <div
+        class="action"
+        [ngClass]="!toggleNewFilter ? 'selected-blue' : ''"
+        (click)="filterGridNew('New')"
+      >
         <span>New</span>
         <div class="count">16</div>
       </div>
-      <div class="action" [ngClass]="!toggleMASFilter ? 'selected-amber' : ''">
+      <div
+        class="action"
+        [ngClass]="!toggleMASFilter ? 'selected-amber' : ''"
+        (click)="filterGridMAS('Marked as Seen')"
+      >
         <span>Marked as seen</span>
         <div class="count">6</div>
       </div>
       <div
         class="action"
         [ngClass]="!toggleResolvedFilter ? 'selected-green' : ''"
+        (click)="filterGridResolved('Resolved')"
       >
         <span>Resolved</span>
         <div class="count">4</div>
