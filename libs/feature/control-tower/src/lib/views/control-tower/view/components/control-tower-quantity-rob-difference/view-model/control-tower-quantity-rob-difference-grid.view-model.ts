@@ -380,11 +380,24 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     this.gridApi.setFilterModel(grid);
   }
 
+  public filterByDate(from: string, to: string): void {
+    const grid = this.gridApi.getFilterModel();
+    grid['deliveryDate'] = {
+      dateFrom: from,
+      dateTo: to,
+      type: 'inRange',
+      filterType: 'date'
+    };
+    this.gridApi.setFilterModel(grid);
+  }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     if (!(<any>window).numberOfCalls) {
       (<any>window).numberOfCalls += 1;
       return;
     }
+    const grid = this.gridApi.getFilterModel();
+
     const values = transformLocalToServeGridInfo(
       this.gridApi,
       params,
