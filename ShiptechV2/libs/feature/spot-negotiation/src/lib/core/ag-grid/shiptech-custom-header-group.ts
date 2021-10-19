@@ -365,7 +365,8 @@ export class ShiptechCustomHeaderGroup {
   agInit(params: any): void {
     this.params = params;
     if (this.params.product) {
-      this.livePrice = this.params.product.requestGroupProducts.livePrice;
+      let formattedLivePrice= this.priceFormatValue(this.params.product.requestGroupProducts.livePrice);
+      this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.closureValue=this.params.product.requestGroupProducts.closure;
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
@@ -534,6 +535,7 @@ export class ShiptechCustomHeaderGroup {
   } 
 
   calculateTargetPrice() {
+    this.livePrice= this.priceFormatValue(this.livePrice);
     this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
     this.closureValue=parseInt(this.livePrice);
     let payload = {
