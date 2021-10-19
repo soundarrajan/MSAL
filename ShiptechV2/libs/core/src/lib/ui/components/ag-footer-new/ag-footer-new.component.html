@@ -40,12 +40,29 @@
     (pageChange)="onPageChange($event.page)"
   >
   </app-ag-paging-new>
-  <div class="pagination" *ngIf="singleGrid">
-    <ul style="display:none">
+  <div class="pagination">
+    <app-ag-pagination-new
+      [pagerLeftArrowIcon]="'fa fa-chevron-left'"
+      [pagerRightArrowIcon]="'fa fa-chevron-right'"
+      [count]="count"
+      [page]="page"
+      [size]="size"
+      [id]="id"
+      [useInputAsPageSelect]="true"
+      (pageChange)="onPageChange($event.page)"
+    >
+    </app-ag-pagination-new>
+    <!-- <ul style="display:none">
       <li
         *ngFor="
-          let item of collection
-            | paginate: { id: id, itemsPerPage: 10, currentPage: page }
+          let item of []
+            | paginate
+              : {
+                  id: id,
+                  itemsPerPage: size,
+                  currentPage: page,
+                  totalItems: count
+                }
         "
       ></li>
     </ul>
@@ -54,8 +71,7 @@
       id="{{ id }}"
       previousLabel=""
       nextLabel=""
-      maxSize="{{ maxSize }}"
       (pageChange)="onPageChange($event)"
-    ></pagination-controls>
+    ></pagination-controls> -->
   </div>
 </div>
