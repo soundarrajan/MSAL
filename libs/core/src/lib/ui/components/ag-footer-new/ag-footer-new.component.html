@@ -12,12 +12,14 @@
         {{ page * size > count ? count : page * size }} of {{ count }} entries
       </span>
     </div>
+
     <shiptech-export-new
       [gridId]="id"
       [gridModel]="gridViewModel"
       [serverKeys]="serverKeys"
     ></shiptech-export-new>
   </div>
+
   <div class="show-rows">
     <span>Show</span>
     <span>
@@ -30,6 +32,7 @@
     </span>
     <span>Rows</span>
   </div>
+
   <app-ag-paging-new
     [pagerLeftArrowIcon]="'fa fa-chevron-left'"
     [pagerRightArrowIcon]="'fa fa-chevron-right'"
@@ -40,6 +43,7 @@
     (pageChange)="onPageChange($event.page)"
   >
   </app-ag-paging-new>
+
   <div class="pagination">
     <app-ag-pagination-new
       [pagerLeftArrowIcon]="'fa fa-chevron-left'"
@@ -52,26 +56,5 @@
       (pageChange)="onPageChange($event.page)"
     >
     </app-ag-pagination-new>
-    <!-- <ul style="display:none">
-      <li
-        *ngFor="
-          let item of []
-            | paginate
-              : {
-                  id: id,
-                  itemsPerPage: size,
-                  currentPage: page,
-                  totalItems: count
-                }
-        "
-      ></li>
-    </ul>
-
-    <pagination-controls
-      id="{{ id }}"
-      previousLabel=""
-      nextLabel=""
-      (pageChange)="onPageChange($event)"
-    ></pagination-controls> -->
   </div>
 </div>

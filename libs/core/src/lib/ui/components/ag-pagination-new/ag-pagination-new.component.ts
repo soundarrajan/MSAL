@@ -38,6 +38,7 @@ export class AgPaginationNewComponent implements AfterViewInit {
   @Input()
   set count(val: number) {
     this._count = val;
+    this.setCollection();
     this.pages = this.calcPages();
   }
 
@@ -71,12 +72,6 @@ export class AgPaginationNewComponent implements AfterViewInit {
   _size: number = 0;
   pages: any;
   formControl = new FormControl();
-
-  constructor() {
-    for (let i = 1; i <= 100; i++) {
-      this.collection.push(`item ${i}`);
-    }
-  }
 
   canPrevious(): boolean {
     return this.page > 1;
@@ -135,6 +130,13 @@ export class AgPaginationNewComponent implements AfterViewInit {
     }
 
     return pages;
+  }
+
+  setCollection() {
+    this.collection = [];
+    for (let i = 1; i <= this.count; i++) {
+      this.collection.push(`item ${i}`);
+    }
   }
 
   ngAfterViewInit(): void {
