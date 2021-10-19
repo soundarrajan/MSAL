@@ -165,8 +165,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           );
           // Demo format data
 
-          console.log(futureLocationsRows);
-          debugger;
           this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         });
 
