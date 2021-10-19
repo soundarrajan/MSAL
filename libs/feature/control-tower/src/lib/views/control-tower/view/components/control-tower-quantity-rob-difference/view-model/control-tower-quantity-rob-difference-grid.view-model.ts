@@ -48,7 +48,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public numberOfNewProgress: number;
   public fromDate = new FormControl(
     moment()
-      .subtract(7, 'days')
+      .subtract(7, 'months')
       .format('YYYY-MM-DD[T]00:00')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD[T]00:00'));
@@ -404,17 +404,21 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       ControlTowerQuantityRobDifferenceListColumnServerKeys,
       this.searchText
     );
+    // const defaultFilters = {
+    //   columnType: 'date',
+    //   conditionValue: 'BETWEEN',
+    //   columnValue: 'deliveryDate',
+    //   isComputedColumn: false,
+    //   filterOperator: 0,
+    //   dateType: 'server',
+    //   values: [this.fromDate.value, this.toDate.value]
+    // };
+    // values.pageFilters.filters.push(defaultFilters);
+    // this.filterByDate(this.fromDate.value, this.toDate.value);
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityRobDifferenceListExportUrl();
     this.controlTowerService
-      .getControlTowerQuantityRobDifferenceList$(
-        transformLocalToServeGridInfo(
-          this.gridApi,
-          params,
-          ControlTowerQuantityRobDifferenceListColumnServerKeys,
-          this.searchText
-        )
-      )
+      .getControlTowerQuantityRobDifferenceList$(values)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
