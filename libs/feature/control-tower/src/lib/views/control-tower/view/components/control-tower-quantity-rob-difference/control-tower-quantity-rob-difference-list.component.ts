@@ -36,9 +36,8 @@ export class ControlTowerQuantityRobDifferenceListComponent
   public controlTowerQuantityRobDifferenceListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
   @Input() theme: boolean;
   @Input() newScreen: boolean;
+
   private _destroy$ = new Subject();
-  private _autocompleteType: any;
-  autocompleteOrders: string;
 
   public switchTheme: boolean = true;
   public gridTitle = 'ROB Difference';
@@ -48,6 +47,9 @@ export class ControlTowerQuantityRobDifferenceListComponent
   public rowCount: Number;
   today = new FormControl(new Date());
   public rowSelection;
+
+  private _autocompleteType: any;
+  autocompleteOrders: string;
 
   constructor(
     public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,
@@ -137,6 +139,58 @@ export class ControlTowerQuantityRobDifferenceListComponent
       // });
       // console.log(rowNode);
     });
+  }
+
+  filterGridNew(text) {
+    console.log(this.gridTitle);
+    // if (this.toggleNewFilter) {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel({
+    //     values: [text]
+    //   });
+    //   this.gridOptions_data.api.onFilterChanged();
+    // } else {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel(null);
+    //   this.gridOptions_data.api.onFilterChanged();
+    // }
+    this.toggleNewFilter = !this.toggleNewFilter;
+    this.toggleMASFilter = true;
+    this.toggleResolvedFilter = true;
+  }
+
+  filterGridMAS(text) {
+    // if (this.toggleMASFilter) {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel({
+    //     values: [text]
+    //   });
+    //   this.gridOptions_data.api.onFilterChanged();
+    // } else {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel(null);
+    //   this.gridOptions_data.api.onFilterChanged();
+    // }
+    this.toggleMASFilter = !this.toggleMASFilter;
+    this.toggleNewFilter = true;
+    this.toggleResolvedFilter = true;
+  }
+
+  filterGridResolved(text) {
+    // if (this.toggleResolvedFilter) {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel({
+    //     values: [text]
+    //   });
+    //   this.gridOptions_data.api.onFilterChanged();
+    // } else {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel(null);
+    //   this.gridOptions_data.api.onFilterChanged();
+    // }
+    this.toggleResolvedFilter = !this.toggleResolvedFilter;
+    this.toggleNewFilter = true;
+    this.toggleMASFilter = true;
   }
 
   getHeaderNameSelector(): string {
