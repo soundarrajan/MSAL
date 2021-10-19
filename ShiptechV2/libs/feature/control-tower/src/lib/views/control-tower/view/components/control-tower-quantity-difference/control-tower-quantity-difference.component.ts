@@ -28,30 +28,28 @@ export class ControlTowerQuantityDifferenceComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  constructor(public dialog: MatDialog) {
-  }
+  constructor(public dialog: MatDialog) {}
 
   selectedTabChange(e: MatTabChangeEvent) {
     //console.log(e);
     if (e.index == 0) this.gridTitle = 'ROB Difference';
 
     if (e.index == 1) this.gridTitle = 'Supply Difference';
-
-  
   }
 
   filterGridNew(text) {
-    if (this.toggleNewFilter) {
-      var instance = this.gridOptions_data.api.getFilterInstance('progress');
-      instance.setModel({
-        values: [text]
-      });
-      this.gridOptions_data.api.onFilterChanged();
-    } else {
-      var instance = this.gridOptions_data.api.getFilterInstance('progress');
-      instance.setModel(null);
-      this.gridOptions_data.api.onFilterChanged();
-    }
+    console.log(this.gridTitle);
+    // if (this.toggleNewFilter) {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel({
+    //     values: [text]
+    //   });
+    //   this.gridOptions_data.api.onFilterChanged();
+    // } else {
+    //   var instance = this.gridOptions_data.api.getFilterInstance('progress');
+    //   instance.setModel(null);
+    //   this.gridOptions_data.api.onFilterChanged();
+    // }
     this.toggleNewFilter = !this.toggleNewFilter;
     this.toggleMASFilter = true;
     this.toggleResolvedFilter = true;

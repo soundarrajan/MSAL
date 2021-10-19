@@ -8789,6 +8789,9 @@ tr.title {
             &.new {
               margin-left: -132px;
             }
+            &.rob-diff {
+              margin-left: unset !important;
+            }
           }
           .by-action {
             .action {
