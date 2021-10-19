@@ -21,6 +21,7 @@ import {
   knownMastersAutocomplete
 } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FormControl } from '@angular/forms';
+import moment from 'moment';
 
 @Component({
   selector: 'shiptech-control-tower-quantity-rob-difference-list',
@@ -45,7 +46,12 @@ export class ControlTowerQuantityRobDifferenceListComponent
   public toggleMASFilter: boolean = true;
   public toggleResolvedFilter: boolean = true;
   public rowCount: Number;
-  today = new FormControl(new Date());
+  fromDate = new FormControl(
+    moment()
+      .subtract(7, 'days')
+      .format('YYYY-MM-DD[T]00:00')
+  );
+  toDate = new FormControl(moment().format('YYYY-MM-DD[T]00:00'));
   public rowSelection;
 
   private _autocompleteType: any;

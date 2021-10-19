@@ -9,25 +9,45 @@
         [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
       >
         <mat-form-field class="without-search datePicker" appearance="legacy">
-          <mat-datepicker-toggle matSuffix [for]="picker">
+          <mat-datepicker-toggle matSuffix [for]="from">
             <mat-icon matDatepickerToggleIcon class="mini-dateIcon"> </mat-icon>
           </mat-datepicker-toggle>
           <span class="from">From</span>
           <input
             matInput
-            [matDatepicker]="picker"
-            [formControl]="today"
-            (focus)="picker.open()"
+            [matDatepicker]="from"
+            [formControl]="fromDate"
+            (focus)="from.open()"
           />
           <mat-datepicker
-            #picker
+            #from
             [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
           ></mat-datepicker>
         </mat-form-field>
       </div>
       <div class="today">
         <span>-</span>
-        <p>To Today</p>
+      </div>
+      <div
+        id="custom-form-field"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
+        <mat-form-field class="without-search datePicker" appearance="legacy">
+          <mat-datepicker-toggle matSuffix [for]="to">
+            <mat-icon matDatepickerToggleIcon class="mini-dateIcon"> </mat-icon>
+          </mat-datepicker-toggle>
+          <span class="from">To</span>
+          <input
+            matInput
+            [matDatepicker]="to"
+            [formControl]="toDate"
+            (focus)="to.open()"
+          />
+          <mat-datepicker
+            #to
+            [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+          ></mat-datepicker>
+        </mat-form-field>
       </div>
     </div>
     <div class="by-action">
