@@ -304,24 +304,25 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   saveRowToCloud(updatedRow, product) {
+    const productDetails = this.getRowProductDetails(updatedRow, product.id);
     const payload = {
       Offers: [
         {
-          id: updatedRow.requestOffers[0].offerId,
+          id: productDetails.offerId,
           totalOffer: updatedRow.totalOffer,
           requestOffers: [
             {
-              id: updatedRow.requestOffers[0].id,
-              totalPrice: updatedRow.requestOffers[0].totalPrice,
-              amount: updatedRow.requestOffers[0].amount,
-              targetDifference: updatedRow.requestOffers[0].targetDifference,
-              price: updatedRow.requestOffers[0].price
+              id: productDetails.id,
+              totalPrice: productDetails.totalPrice,
+              amount: productDetails.amount,
+              targetDifference: productDetails.targetDifference,
+              price: productDetails.price
             }
           ]
         }
       ]
     };
-    console.log (updatedRow); 
+    console.log (updatedRow);
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       if (res.status) {
@@ -646,6 +647,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
     this.store.subscribe(({ spotNegotiation, ...props }) => {
+
       if (!this.shouldUpdate({ spotNegotiation })) {
         return null;
       }
@@ -664,7 +666,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       this.locationsRows = spotNegotiation.locationsRows;
       this.locations = spotNegotiation.locations;
-      
+
       // Set rows inside ag grid
       this.rowData_aggrid = spotNegotiation.locationsRows;
       this.currentRequestData = spotNegotiation.locations;
@@ -805,7 +807,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
   }
 
-  formatRowselected(row, value) { 
+  formatRowselected(row, value) {
     if(value){
       row.isSelected = false;
       row.checkProd1 =false;
@@ -824,4 +826,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return row;
 }
   onSelectionChanged(e) {}
+
+  onCellClick(event: any) {
+
+    return null;
+
+    let rowsSelection = this.gridOptions_counterparty.api.getSelectedRows();
+
+    let payload = {
+      selectedCounterparties: rowsSelection
+    };
+
+    this.store.dispatch(new SelectCounterparty(payload.selectedCounterparties));
+  }
 }
