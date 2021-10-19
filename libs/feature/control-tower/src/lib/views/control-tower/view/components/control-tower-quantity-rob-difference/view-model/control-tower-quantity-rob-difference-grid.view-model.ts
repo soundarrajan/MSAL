@@ -397,6 +397,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       return;
     }
     const grid = this.gridApi.getFilterModel();
+    // this.filterByDate(this.fromDate.value, this.toDate.value);
 
     const values = transformLocalToServeGridInfo(
       this.gridApi,
@@ -414,7 +415,6 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     //   values: [this.fromDate.value, this.toDate.value]
     // };
     // values.pageFilters.filters.push(defaultFilters);
-    // this.filterByDate(this.fromDate.value, this.toDate.value);
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityRobDifferenceListExportUrl();
     this.controlTowerService
