@@ -32,6 +32,8 @@ import {
 } from './control-tower-quantity-rob-difference-list.columns';
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import { IControlTowerQuantityRobDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
+import { FormControl } from '@angular/forms';
+import moment from 'moment';
 
 function model(
   prop: keyof IControlTowerQuantityRobDifferenceItemDto
@@ -44,6 +46,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public searchText: string;
   public exportUrl: string;
   public numberOfNewProgress: number;
+  public fromDate = new FormControl(
+    moment()
+      .subtract(7, 'days')
+      .format('YYYY-MM-DD[T]00:00')
+  );
+  public toDate = new FormControl(moment().format('YYYY-MM-DD[T]00:00'));
 
   public defaultColFilterParams = {
     resetButton: true,
