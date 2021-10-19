@@ -362,16 +362,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     return 'red';
   }
 
-  public filterByStatus(): void {
+  public filterByStatus(statusName: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['vesselName'] = {
+    grid['status'] = {
       filterType: 'text',
-      type: 'contains',
-      filter: 'malta'
+      type: 'equals',
+      filter: statusName
     };
     this.gridApi.setFilterModel(grid);
-    const grid1 = this.gridApi.getFilterModel();
-    this.gridApi.purgeServerSideCache();
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
