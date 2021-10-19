@@ -46,12 +46,6 @@ export class ControlTowerQuantityRobDifferenceListComponent
   public toggleMASFilter: boolean = true;
   public toggleResolvedFilter: boolean = true;
   public rowCount: Number;
-  fromDate = new FormControl(
-    moment()
-      .subtract(7, 'days')
-      .format('YYYY-MM-DD[T]00:00')
-  );
-  toDate = new FormControl(moment().format('YYYY-MM-DD[T]00:00'));
   public rowSelection;
 
   private _autocompleteType: any;
