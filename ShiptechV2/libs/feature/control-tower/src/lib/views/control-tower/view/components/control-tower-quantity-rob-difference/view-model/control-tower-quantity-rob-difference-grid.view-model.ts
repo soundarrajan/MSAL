@@ -402,15 +402,15 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     for (let [key, value] of Object.entries(grid)) {
       if (key == 'status') {
         if ((<any>value).type == 'equals') {
-          if ((<any>value).filter == 'New') {
+          if ((<any>value).filter.toLowerCase() === 'new') {
             this.toggleNewFilter = !this.toggleNewFilter;
             this.toggleMASFilter = true;
             this.toggleResolvedFilter = true;
-          } else if ((<any>value).filter == 'Verified') {
+          } else if ((<any>value).filter.toLowerCase() === 'verified') {
             this.toggleMASFilter = !this.toggleMASFilter;
             this.toggleNewFilter = true;
             this.toggleResolvedFilter = true;
-          } else if ((<any>value).filter == 'In Spec') {
+          } else if ((<any>value).filter.toLowerCase() === 'in spec') {
             this.toggleResolvedFilter = !this.toggleResolvedFilter;
             this.toggleNewFilter = true;
             this.toggleMASFilter = true;
