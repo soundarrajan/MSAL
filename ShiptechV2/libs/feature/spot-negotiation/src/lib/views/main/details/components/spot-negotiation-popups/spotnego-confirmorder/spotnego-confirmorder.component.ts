@@ -21,7 +21,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   isBtnActive: boolean = false;
   isButtonVisible = true;
   iscontentEditable = false;
-  requests: array = [];
+  requests: any = [];
 
 
 
