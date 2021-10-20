@@ -3,8 +3,8 @@
     <div class="head">{{ gridTitle }}</div>
   </div>
   <div class="filters">
-    <!-- {{ gridViewModel.fromDate.value }}
-    {{ gridViewModel.toDate.value }} -->
+    {{ gridViewModel.fromDate.value }}
+    {{ gridViewModel.toDate.value }}
     <div class="by-datePicker" [ngClass]="newScreen ? 'new rob-diff' : ''">
       <div
         id="custom-form-field"
@@ -49,6 +49,11 @@
             [matDatepicker]="to"
             [formControl]="gridViewModel.toDate"
             (focus)="to.open()"
+            (dateChange)="
+              gridViewModel.toDate.setValue(
+                formatDateForBe(gridViewModel.toDate.value)
+              )
+            "
           />
           <mat-datepicker
             #to

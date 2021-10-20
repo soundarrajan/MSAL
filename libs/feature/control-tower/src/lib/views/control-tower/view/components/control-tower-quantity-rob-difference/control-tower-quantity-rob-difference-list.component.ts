@@ -1,6 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
+  Injectable,
   Input,
   OnDestroy,
   OnInit,
@@ -22,11 +24,71 @@ import {
 } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+
+export const PICK_FORMATS = {
+  display: {
+    dateInput: 'DD MMM YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+  parse: {
+    dateInput: 'DD MMM YYYY'
+  }
+};
+
+@Injectable()
+export class CustomDateAdapter extends MomentDateAdapter {
+  public format(value: moment.Moment, displayFormat: string): string {
+    if (value === null || value === undefined) return '';
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    currentFormat = currentFormat.split(' HH:mm')[0];
+    let formattedDate = moment.utc(value).format(currentFormat);
+    if (hasDayOfWeek) {
+      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
+    }
+    return formattedDate;
+  }
+
+  parse(value) {
+    // We have no way using the native JS Date to set the parse format or locale, so we ignore these
+    // parameters.
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    currentFormat = currentFormat.split(' HH:mm')[0];
+    const elem = moment.utc(value, currentFormat);
+    return value ? elem : null;
+  }
+}
 
 @Component({
   selector: 'shiptech-control-tower-quantity-rob-difference-list',
   templateUrl: './control-tower-quantity-rob-difference-list.component.html',
-  providers: [ControlTowerQuantityRobDifferenceListGridViewModel],
+  providers: [
+    ControlTowerQuantityRobDifferenceListGridViewModel,
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ControlTowerQuantityRobDifferenceListComponent
@@ -53,9 +115,14 @@ export class ControlTowerQuantityRobDifferenceListComponent
     public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,
     public appConfig: AppConfig,
     private urlService: UrlService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    @Inject(MAT_DATE_FORMATS) private dateFormats,
+    private format: TenantFormattingService
   ) {
     this.autocompleteOrders = knownMastersAutocomplete.products;
+    this.dateFormats.display.dateInput = this.format.dateFormat;
+    this.dateFormats.parse.dateInput = this.format.dateFormat;
+    PICK_FORMATS.display.dateInput = this.format.dateFormat;
   }
 
   onPageChange(page: number): void {
@@ -144,8 +211,8 @@ export class ControlTowerQuantityRobDifferenceListComponent
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = moment(value).format('YYYY-MM-DD[T]00:00');
-      return moment(value).format('YYYY-MM-DD[T]00:00');
+      let beValue = moment.utc(value).format('YYYY-MM-DD');
+      return moment.utc(value).format('YYYY-MM-DD');
     } else {
       return null;
     }

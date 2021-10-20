@@ -50,9 +50,9 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public fromDate = new FormControl(
     moment()
       .subtract(7, 'months')
-      .format('YYYY-MM-DD[T]00:00')
+      .format('YYYY-MM-DD')
   );
-  public toDate = new FormControl(moment().format('YYYY-MM-DD[T]00:00'));
+  public toDate = new FormControl(moment().format('YYYY-MM-DD'));
 
   public toggleNewFilter: boolean = true;
   public toggleMASFilter: boolean = true;
