@@ -826,17 +826,4 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return row;
 }
   onSelectionChanged(e) {}
-
-  onCellClick(event: any) {
-
-    return null;
-
-    let rowsSelection = this.gridOptions_counterparty.api.getSelectedRows();
-
-    let payload = {
-      selectedCounterparties: rowsSelection
-    };
-
-    this.store.dispatch(new SelectCounterparty(payload.selectedCounterparties));
-  }
 }
