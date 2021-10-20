@@ -1,5 +1,5 @@
-angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache",  "scheduleDashboardTimelineModel", "Factory_Admin", "Factory_Master", "statusColors", "$filter",   "filterConfigurationModel", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state', '$timeout', 'STATE',
-    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, Factory_Admin,  Factory_Master, statusColors, $filter, filterConfigurationModel, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state, $timeout, STATE) {
+angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$window", "$listsCache",  "scheduleDashboardTimelineModel", "Factory_Admin", "Factory_Master", "statusColors", "$filter",   "filterConfigurationModel", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state', '$timeout', 'STATE',
+    function ($scope, $rootScope, $window, $listsCache, scheduleDashboardTimelineModel, Factory_Admin,  Factory_Master, statusColors, $filter, filterConfigurationModel, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state, $timeout, STATE) {
 
         var ctrl = this;
         $scope.numberPrecision = $tenantSettings.defaultValues;
@@ -1332,6 +1332,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 //if user has a default landing page as request list
                 if (landingPage && landingPage.id == 4) {
                     $state.go(STATE.ALL_REQUESTS_TABLE);
+                } else if (landingPage && [5,6,7].indexOf(landingPage?.id)>-1) {
+                    $window.open($location.$$absUrl.replace('#'+$location.$$path, `http://localhost:9016/v2/control-tower/control-tower-list-view/${landingPage?.id}`), '_self');
+                    // $window.open(`http://localhost:9016/v2/control-tower/control-tower-list-view/${landingPage?.id}`, '_self');
                 }
             } else {
                 //if user click on schedule dahboard timeline from menu and has default landing page as request list
