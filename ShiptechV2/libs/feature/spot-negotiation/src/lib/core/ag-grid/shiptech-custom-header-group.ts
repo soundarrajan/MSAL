@@ -267,7 +267,7 @@ export class ShiptechCustomHeaderGroup {
   counterpartyList = [];
   visibleCounterpartyList = [];
   selectedCounterparty = [];
-  currentRequestInfo = [];
+  currentRequestInfo:any;
 
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
@@ -448,9 +448,9 @@ export class ShiptechCustomHeaderGroup {
   }
 
   toBeAddedCounterparties(locationId): SpnegoAddCounterpartyModel[] {
-    if (this.currentRequestInfo && this.currentRequestInfo.length > 0) {
-      let RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
-      let currentRequestLocation = this.currentRequestInfo[0].requestLocations.filter(
+    if (this.currentRequestInfo) {
+      let RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
+      let currentRequestLocation = this.currentRequestInfo.requestLocations.filter(
         x => x.locationId === locationId
       )[0];
 
