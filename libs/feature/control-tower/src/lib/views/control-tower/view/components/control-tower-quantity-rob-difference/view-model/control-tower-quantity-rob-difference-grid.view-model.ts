@@ -338,28 +338,29 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     this.gridApi.purgeServerSideCache();
   }
 
-  // public updateValues(ev, values): void {
-  //   console.log(ev);
-  //   console.log(values);
-  //   // this.gridApi.purgeServerSideCache();
-  //   const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
-  //   const newPrice = Math.floor(Math.random() * 100000);
-  //   const newStatus = {
-  //     transactionTypeId: 5,
-  //     id: 27,
-  //     name: 'Discrepancy',
-  //     internalName: null,
-  //     displayName: 'Discrepancy',
-  //     collectionName: null,
-  //     customNonMandatoryAttribute1: null,
-  //     isDeleted: false,
-  //     modulePathUrl: null,
-  //     clientIpAddress: null,
-  //     userAction: null
-  //   };
-  //   rowNode.setDataValue('invoiceAmount', newPrice);
-  //   rowNode.setDataValue('invoiceStatus', newStatus);
-  // }
+  public updateValues(ev, values): void {
+    console.log(ev);
+    console.log(values);
+    // this.gridApi.purgeServerSideCache();
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    const newPrice = Math.floor(Math.random() * 100000);
+    const newStatus = {
+      transactionTypeId: 6,
+      id: 1,
+      name: 'New',
+      internalName: null,
+      displayName: 'New',
+      code: null,
+      collectionName: null,
+      customNonMandatoryAttribute1: null,
+      isDeleted: false,
+      modulePathUrl: null,
+      clientIpAddress: null,
+      userAction: null
+    };
+    // rowNode.setDataValue('invoiceAmount', newPrice);
+    rowNode.setDataValue('status', newStatus);
+  }
 
   public async getColorFromDashboard(
     columnId: number,

@@ -114,7 +114,7 @@ export class ControlTowerQuantityRobDifferenceListComponent
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
       console.log(ev);
-      // this.gridViewModel.updateValues(ev, result);
+      this.gridViewModel.updateValues(ev, result);
 
       // rowNode.setDataValue('invoiceStatus', {
       //   transactionTypeId: 5,
@@ -132,28 +132,6 @@ export class ControlTowerQuantityRobDifferenceListComponent
       // console.log(rowNode);
     });
   }
-
-  // filterGridMAS(statusName: string): void {
-  //   if (this.toggleMASFilter) {
-  //     this.gridViewModel.filterByStatus(statusName);
-  //   } else {
-  //     this.gridViewModel.filterByStatus('');
-  //   }
-  //   this.toggleMASFilter = !this.toggleMASFilter;
-  //   this.toggleNewFilter = true;
-  //   this.toggleResolvedFilter = true;
-  // }
-
-  // filterGridResolved(statusName: string): void {
-  //   if (this.toggleResolvedFilter) {
-  //     this.gridViewModel.filterByStatus(statusName);
-  //   } else {
-  //     this.gridViewModel.filterByStatus('');
-  //   }
-  //   this.toggleResolvedFilter = !this.toggleResolvedFilter;
-  //   this.toggleNewFilter = true;
-  //   this.toggleMASFilter = true;
-  // }
 
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
