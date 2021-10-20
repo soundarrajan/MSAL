@@ -314,17 +314,9 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
     </mat-menu>
     <div *ngIf="params.type == 'phy-supplier'">
       <div
-        class="phySupplier"
-        style="opacity: 0.7;"
-        *ngIf="params.value != 'Same as seller'"
-      >
-        {{ params.value }}
-      </div>
-      <div
         class="phySupplier edit"
         matTooltip="Add physical supplier"
         matTooltipClass="lightTooltip"
-        *ngIf="params.value == 'Same as seller'"
       >
         <span
           contentEditable="true"
@@ -365,18 +357,17 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
             class="delivery-products-pop-up col-md-12 no-padding"
             mat-table
             (click)="$event.stopPropagation()"
-            [dataSource]="counterpartyList"
+            [dataSource]="visibleCounterpartyList"
           >
             <ng-container matColumnDef="counterparty">
               <th mat-header-cell *matHeaderCellDef>Counterparty</th>
               <td mat-cell *matCellDef="let element">
                 <mat-option [value]="element">
                   <mat-checkbox
-                    [value]="element.counterparty"
-                    [(ngModel)]="element.selected"
-                    (click)="selectSupplier(element.counterparty)"
+                    [value]="element.name"
+                    (click)="selectSupplier(element.name)"
                   >
-                    {{ element.counterparty }}
+                  {{ element.name }}
                   </mat-checkbox>
                 </mat-option>
               </td>
@@ -532,16 +523,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public priceFormat = '';
   public docVal = 'Document Uploaded';
   counterpartyColumns: string[] = ['counterparty', 'blank'];
-  counterpartyList = [
-    { counterparty: 'Shell North America Division', selected: false },
-    { counterparty: 'Shell North America Division', selected: false },
-    { counterparty: 'Trefoil Oil and Sales', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false },
-    { counterparty: 'Shell North America Corporation', selected: false }
-  ];
+  counterpartyList=[];
+  visibleCounterpartyList = [];
+  currentRequestInfo = [];
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -555,6 +539,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.myFormGroup = new FormGroup({
       frequency: new FormControl('')
     });
+    return this.store.selectSnapshot(({ spotNegotiation }) => {
+      this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+      // Fetching counterparty list
+      if (spotNegotiation.counterpartyList) {
+        this.counterpartyList = spotNegotiation.counterpartyList;
+        this.visibleCounterpartyList = this.counterpartyList.slice(0,7);
+      }
+    });
   }
 
   frequencyArr = [
@@ -566,7 +558,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   agInit(params: any): void {
     this.params = params;
   }
-
+  search(userInput: string): void {
+    this.visibleCounterpartyList = this.counterpartyList
+      .filter(e => {
+        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+          return true;
+        }
+        return false;
+      })
+      .slice(0, 7);
+  }
   hoverMenu(event) {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
