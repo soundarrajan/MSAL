@@ -343,7 +343,6 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     console.log(values);
     // this.gridApi.purgeServerSideCache();
     const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
-    const newPrice = Math.floor(Math.random() * 100000);
     const newStatus = {
       transactionTypeId: 6,
       id: 1,
@@ -358,22 +357,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       clientIpAddress: null,
       userAction: null
     };
-    // rowNode.setDataValue('invoiceAmount', newPrice);
     rowNode.setDataValue('status', newStatus);
-  }
-
-  public async getColorFromDashboard(
-    columnId: number,
-    transactionId: number
-  ): Promise<void> {
-    await this.databaseManipulation
-      .getStatusColorFromDashboard(columnId, transactionId)
-      .then((result: string) => result);
-  }
-
-  public getParameters(data: any): string {
-    console.log(data);
-    return 'red';
   }
 
   public filterGridNew(statusName: string): void {
@@ -415,10 +399,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     this.toggleMASFilter = true;
     this.toggleResolvedFilter = true;
     const grid = this.gridApi.getFilterModel();
-    console.log(grid);
     for (let [key, value] of Object.entries(grid)) {
-      console.log(key);
-      console.log(value);
       if (key == 'status') {
         if ((<any>value).type == 'equals') {
           if ((<any>value).filter == 'New') {
@@ -441,7 +422,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   public filterByDate(from: string, to: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['deliveryDate'] = {
+    grid['createdOn'] = {
       dateFrom: from,
       dateTo: to,
       type: 'inRange',

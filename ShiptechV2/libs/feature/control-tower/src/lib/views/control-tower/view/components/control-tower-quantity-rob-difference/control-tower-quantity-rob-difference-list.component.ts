@@ -182,21 +182,6 @@ export class ControlTowerQuantityRobDifferenceListComponent
       console.log(`Dialog result: ${result}`);
       console.log(ev);
       this.gridViewModel.updateValues(ev, result);
-
-      // rowNode.setDataValue('invoiceStatus', {
-      //   transactionTypeId: 5,
-      //   id: 27,
-      //   name: 'Discrepancy',
-      //   internalName: null,
-      //   displayName: 'Discrepancy',
-      //   collectionName: null,
-      //   customNonMandatoryAttribute1: null,
-      //   isDeleted: false,
-      //   modulePathUrl: null,
-      //   clientIpAddress: null,
-      //   userAction: null
-      // });
-      // console.log(rowNode);
     });
   }
 
