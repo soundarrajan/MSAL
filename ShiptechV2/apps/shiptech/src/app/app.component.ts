@@ -63,9 +63,6 @@ export class AppComponent {
         });
         changeDetector.markForCheck();
       }
-      if (event instanceof NavigationStart) {
-        (<any>window).numberOfCalls = 0;
-      }
     });
     this.loaderService.isLoading.subscribe(v => {
       if (v) {

@@ -450,11 +450,6 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    console.log((<any>window).numberOfCalls);
-    // if (!(<any>window).numberOfCalls) {
-    //   (<any>window).numberOfCalls += 1;
-    //   return;
-    // }
     this.checkStatusAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityRobDifferenceListExportUrl();
