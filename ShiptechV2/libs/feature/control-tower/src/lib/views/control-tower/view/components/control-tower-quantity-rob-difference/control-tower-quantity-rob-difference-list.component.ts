@@ -42,9 +42,7 @@ export class ControlTowerQuantityRobDifferenceListComponent
 
   public switchTheme: boolean = true;
   public gridTitle = 'ROB Difference';
-  public toggleNewFilter: boolean = true;
-  public toggleMASFilter: boolean = true;
-  public toggleResolvedFilter: boolean = true;
+
   public rowCount: Number;
   public rowSelection;
 
@@ -135,39 +133,27 @@ export class ControlTowerQuantityRobDifferenceListComponent
     });
   }
 
-  filterGridNew(statusName: string): void {
-    console.log(this.gridTitle);
-    if (this.toggleNewFilter) {
-      this.gridViewModel.filterByStatus(statusName);
-    } else {
-      this.gridViewModel.filterByStatus('');
-    }
-    this.toggleNewFilter = !this.toggleNewFilter;
-    this.toggleMASFilter = true;
-    this.toggleResolvedFilter = true;
-  }
+  // filterGridMAS(statusName: string): void {
+  //   if (this.toggleMASFilter) {
+  //     this.gridViewModel.filterByStatus(statusName);
+  //   } else {
+  //     this.gridViewModel.filterByStatus('');
+  //   }
+  //   this.toggleMASFilter = !this.toggleMASFilter;
+  //   this.toggleNewFilter = true;
+  //   this.toggleResolvedFilter = true;
+  // }
 
-  filterGridMAS(statusName: string): void {
-    if (this.toggleMASFilter) {
-      this.gridViewModel.filterByStatus(statusName);
-    } else {
-      this.gridViewModel.filterByStatus('');
-    }
-    this.toggleMASFilter = !this.toggleMASFilter;
-    this.toggleNewFilter = true;
-    this.toggleResolvedFilter = true;
-  }
-
-  filterGridResolved(statusName: string): void {
-    if (this.toggleResolvedFilter) {
-      this.gridViewModel.filterByStatus(statusName);
-    } else {
-      this.gridViewModel.filterByStatus('');
-    }
-    this.toggleResolvedFilter = !this.toggleResolvedFilter;
-    this.toggleNewFilter = true;
-    this.toggleMASFilter = true;
-  }
+  // filterGridResolved(statusName: string): void {
+  //   if (this.toggleResolvedFilter) {
+  //     this.gridViewModel.filterByStatus(statusName);
+  //   } else {
+  //     this.gridViewModel.filterByStatus('');
+  //   }
+  //   this.toggleResolvedFilter = !this.toggleResolvedFilter;
+  //   this.toggleNewFilter = true;
+  //   this.toggleMASFilter = true;
+  // }
 
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {

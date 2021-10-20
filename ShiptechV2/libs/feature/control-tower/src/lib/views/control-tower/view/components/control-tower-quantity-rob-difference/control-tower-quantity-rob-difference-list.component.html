@@ -61,24 +61,24 @@
       <span class="filter-by" *ngIf="newScreen">Filter By:</span>
       <div
         class="action"
-        [ngClass]="!toggleNewFilter ? 'selected-blue' : ''"
-        (click)="filterGridNew('New')"
+        [ngClass]="!gridViewModel.toggleNewFilter ? 'selected-blue' : ''"
+        (click)="gridViewModel.filterGridNew('New')"
       >
         <span>New</span>
         <div class="count">16</div>
       </div>
       <div
         class="action"
-        [ngClass]="!toggleMASFilter ? 'selected-amber' : ''"
-        (click)="filterGridMAS('Verified')"
+        [ngClass]="!gridViewModel.toggleMASFilter ? 'selected-amber' : ''"
+        (click)="gridViewModel.filterGridMAS('Verified')"
       >
         <span>Marked as seen</span>
         <div class="count">6</div>
       </div>
       <div
         class="action"
-        [ngClass]="!toggleResolvedFilter ? 'selected-green' : ''"
-        (click)="filterGridResolved('Resolved')"
+        [ngClass]="!gridViewModel.toggleResolvedFilter ? 'selected-green' : ''"
+        (click)="gridViewModel.filterGridResolved('In Spec')"
       >
         <span>Resolved</span>
         <div class="count">4</div>
@@ -97,6 +97,7 @@
               appAgGridFilterPresets
               groupId="control-tower-quantity-rob-difference-v2-list-filter-presets"
               id="qc-report-list"
+              gridId="v2-list-grid-8"
               (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
             ></app-filter-preferences>
           </div>
