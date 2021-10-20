@@ -22,6 +22,10 @@
             (dateChange)="
               gridViewModel.fromDate.setValue(
                 formatDateForBe(gridViewModel.fromDate.value)
+              );
+              gridViewModel.filterByDate(
+                gridViewModel.fromDate.value,
+                gridViewModel.toDate.value
               )
             "
             (focus)="from.open()"
@@ -52,6 +56,10 @@
             (dateChange)="
               gridViewModel.toDate.setValue(
                 formatDateForBe(gridViewModel.toDate.value)
+              );
+              gridViewModel.filterByDate(
+                gridViewModel.fromDate.value,
+                gridViewModel.toDate.value
               )
             "
           />
