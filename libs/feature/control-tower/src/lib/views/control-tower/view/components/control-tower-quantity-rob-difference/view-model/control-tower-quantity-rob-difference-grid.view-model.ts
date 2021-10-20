@@ -46,12 +46,17 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public searchText: string;
   public exportUrl: string;
   public numberOfNewProgress: number;
+  public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
       .subtract(7, 'months')
       .format('YYYY-MM-DD[T]00:00')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD[T]00:00'));
+
+  public toggleNewFilter: boolean = true;
+  public toggleMASFilter: boolean = true;
+  public toggleResolvedFilter: boolean = true;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -370,6 +375,30 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     return 'red';
   }
 
+  public filterGridNew(statusName: string): void {
+    if (this.toggleNewFilter) {
+      this.filterByStatus(statusName);
+    } else {
+      this.filterByStatus('');
+    }
+  }
+
+  public filterGridMAS(statusName: string): void {
+    if (this.toggleMASFilter) {
+      this.filterByStatus(statusName);
+    } else {
+      this.filterByStatus('');
+    }
+  }
+
+  public filterGridResolved(statusName: string): void {
+    if (this.toggleResolvedFilter) {
+      this.filterByStatus(statusName);
+    } else {
+      this.filterByStatus('');
+    }
+  }
+
   public filterByStatus(statusName: string): void {
     const grid = this.gridApi.getFilterModel();
     grid['status'] = {
@@ -378,6 +407,35 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       filter: statusName
     };
     this.gridApi.setFilterModel(grid);
+  }
+
+  public checkStatusAvailable(): void {
+    this.toggleNewFilter = true;
+    this.toggleMASFilter = true;
+    this.toggleResolvedFilter = true;
+    const grid = this.gridApi.getFilterModel();
+    console.log(grid);
+    for (let [key, value] of Object.entries(grid)) {
+      console.log(key);
+      console.log(value);
+      if (key == 'status') {
+        if ((<any>value).type == 'equals') {
+          if ((<any>value).filter == 'New') {
+            this.toggleNewFilter = !this.toggleNewFilter;
+            this.toggleMASFilter = true;
+            this.toggleResolvedFilter = true;
+          } else if ((<any>value).filter == 'Verified') {
+            this.toggleMASFilter = !this.toggleMASFilter;
+            this.toggleNewFilter = true;
+            this.toggleResolvedFilter = true;
+          } else if ((<any>value).filter == 'In Spec') {
+            this.toggleResolvedFilter = !this.toggleResolvedFilter;
+            this.toggleNewFilter = true;
+            this.toggleMASFilter = true;
+          }
+        }
+      }
+    }
   }
 
   public filterByDate(from: string, to: string): void {
@@ -392,33 +450,23 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    console.log((<any>window).numberOfCalls);
     if (!(<any>window).numberOfCalls) {
       (<any>window).numberOfCalls += 1;
       return;
     }
-    const grid = this.gridApi.getFilterModel();
-    // this.filterByDate(this.fromDate.value, this.toDate.value);
-
-    const values = transformLocalToServeGridInfo(
-      this.gridApi,
-      params,
-      ControlTowerQuantityRobDifferenceListColumnServerKeys,
-      this.searchText
-    );
-    // const defaultFilters = {
-    //   columnType: 'date',
-    //   conditionValue: 'BETWEEN',
-    //   columnValue: 'deliveryDate',
-    //   isComputedColumn: false,
-    //   filterOperator: 0,
-    //   dateType: 'server',
-    //   values: [this.fromDate.value, this.toDate.value]
-    // };
-    // values.pageFilters.filters.push(defaultFilters);
+    this.checkStatusAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityRobDifferenceListExportUrl();
     this.controlTowerService
-      .getControlTowerQuantityRobDifferenceList$(values)
+      .getControlTowerQuantityRobDifferenceList$(
+        transformLocalToServeGridInfo(
+          this.gridApi,
+          params,
+          ControlTowerQuantityRobDifferenceListColumnServerKeys,
+          this.searchText
+        )
+      )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
