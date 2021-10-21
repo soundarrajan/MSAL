@@ -1,5 +1,5 @@
 .st-main-content-menu {
-  background: #fcfdff;
+  background: #eee;
   padding: 0px 5px;
   margin-bottom: 10px;
   border-bottom: 4px solid #d5d5d5;
@@ -14,9 +14,14 @@
 }
 
 .wunderbar-fixed {
+  background: #eee;
   z-index: 9;
   position: fixed;
   width: 100%;
   top: 85px;
   left: 0px;
+}
+
+.wunderbar-white {
+  background: #fcfdff;
 }

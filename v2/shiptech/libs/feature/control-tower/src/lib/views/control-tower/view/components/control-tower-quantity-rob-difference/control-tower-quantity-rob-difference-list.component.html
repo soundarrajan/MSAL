@@ -109,7 +109,9 @@
               groupId="control-tower-quantity-rob-difference-v2-list-filter-presets"
               id="qc-report-list"
               gridId="v2-list-grid-8"
-              (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
+              (presetsLoaded)="
+                this.gridViewModel.markServerSideDataSourceReady()
+              "
             ></app-filter-preferences>
           </div>
         </div>
@@ -148,6 +150,8 @@
             ></app-ag-filter-display>
           </div>
         </div>
+
+        {{ gridViewModel.numberOfNewProgress }}
         <ag-grid-angular
           #agGridAngular
           appAgGridFirstColumnLocked

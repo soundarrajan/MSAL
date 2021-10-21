@@ -27,6 +27,7 @@ export class AgGridFilterPresetsService implements OnDestroy {
   public gridApis: Record<string, Record<string, IGetGridApi>> = {};
 
   private _filtersChanged$ = new ReplaySubject<IGridFilterChanged>(1);
+  public activeFilter: boolean = false;
 
   get filtersChanged$(): Observable<IGridFilterChanged> {
     return this._filtersChanged$.asObservable();
@@ -174,6 +175,7 @@ export class AgGridFilterPresetsService implements OnDestroy {
             activeFilter.filterModels[key]
           );
         }
+        this.activeFilter = true;
       });
     }
   }
@@ -218,6 +220,14 @@ export class AgGridFilterPresetsService implements OnDestroy {
       this.gridApis[presetGroupKey] = {};
     }
     this.gridApis[presetGroupKey][gridId] = api;
+  }
+
+  public getActiveFilter(): boolean {
+    return this.activeFilter;
+  }
+
+  public setActiveFilter(value: boolean): void {
+    this.activeFilter = value;
   }
 
   ngOnDestroy(): void {

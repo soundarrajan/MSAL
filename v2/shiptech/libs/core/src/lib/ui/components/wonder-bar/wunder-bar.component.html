@@ -1,4 +1,8 @@
-<div [ngClass]="{'wunderbar-fixed': !isQcScreen}" class="w-100 st-main-content-menu no-print wunderbar-fixed"
-  id="wunderbar" style="height:40px;line-height:38.5px;">
+<div
+  [ngClass]="{ 'wunderbar-fixed': !isQcScreen, 'wunderbar-white': isCtScreen }"
+  class="w-100 st-main-content-menu no-print"
+  id="wunderbar"
+  style="height:40px;line-height:38.5px;"
+>
   <ng-content></ng-content>
 </div>

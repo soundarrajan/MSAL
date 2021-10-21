@@ -364,7 +364,6 @@ export abstract class BaseGridViewModel implements OnDestroy {
         tap(() => {
           this.gridApi.setServerSideDatasource({
             getRows: params => {
-              console.log('getRows');
               const paramsProxy = { ...params };
 
               paramsProxy.successCallback = (
