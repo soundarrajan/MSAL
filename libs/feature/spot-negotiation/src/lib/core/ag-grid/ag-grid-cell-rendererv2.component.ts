@@ -223,7 +223,7 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
     </div>
 
     <!-- Offer price cell -->
-    <div *ngIf="params.type == 'price-calc'">
+    <div *ngIf="params.type == 'price-calc'" [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' ">
       <!-- TODO check this code... -->
       <div class="price-calc static-data" *ngIf="params.value === '100.00'">
         <span class="duplicate-icon"></span>
@@ -530,6 +530,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public editSeller: boolean = true;
   public editedSeller = '';
   public priceFormat = '';
+
   public docVal = 'Document Uploaded';
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [
@@ -555,6 +556,27 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.myFormGroup = new FormGroup({
       frequency: new FormControl('')
     });
+  }
+
+  isOfferRequestAvailable() : boolean {
+
+    // Array of requestoffers
+    const { requestOffers } = this.params.data || {};
+
+    if(!requestOffers) {
+      return false;
+    }
+
+    const productId = this.params.product.id;
+
+    const offerExists = requestOffers.find(e => e.requestProductId === productId && e.offerId);
+
+
+    if(offerExists){
+      return true;
+    }
+
+    return false;
   }
 
   frequencyArr = [
