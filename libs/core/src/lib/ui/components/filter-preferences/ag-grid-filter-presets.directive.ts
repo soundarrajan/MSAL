@@ -43,7 +43,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   @Output() presetsLoaded = new EventEmitter();
   private _destroy$: Subject<any> = new Subject();
   activeFilter: boolean;
-  autoSaveInterval: NodeJS.Timeout;
+  autoSaveInterval: any;
 
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
