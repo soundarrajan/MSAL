@@ -39,6 +39,7 @@ import moment from 'moment';
     'app-filter-preferences[appAgGridFilterPresets], ag-grid-angular[appAgGridFilterPresets]'
 })
 export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
+  @Output() public eventName = new EventEmitter();
   @Output() presetsLoaded = new EventEmitter();
   private _destroy$: Subject<any> = new Subject();
 
@@ -121,7 +122,10 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         finalize(() => {
           this.filterComponent.isLoading = false;
           this.filterComponent.refresh();
-          this.presetsLoaded.next();
+          setTimeout(() => {
+            console.log('Presets loaded');
+            this.presetsLoaded.next();
+          }, 200);
         }),
         takeUntil(this._destroy$)
       )
@@ -230,13 +234,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     const setSavedPreset$ = this.filterPresetsService.filterPresets$.pipe(
       // TODO: MAJOR hack/workaround, filters arrive before grid is ready and columns are set, which will fail when trying to apply the filter on an empty set of columns
       // TODO: These filter presets need no love, but hell fire. If they have not already laid eggs, should definitely be re-written completely.
-      switchMap(presets =>
-        of(presets).pipe(
-          delay(
-            (this.agGrid.columnApi.getAllColumns()?.length ?? 0) === 0 ? 200 : 0
-          )
-        )
-      ),
+      switchMap(presets => of(presets).pipe(delay(200))),
       map(presets => !!presets[this.groupId]),
       // Note: If the user has already changed the grid filters while presets are loading
       // Note: Do not set the default or last active filter, so we don't override the user's currently set filters.
@@ -248,6 +246,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           return;
         }
         this.filterPresetsService.setGridFilterModel(this.groupId);
+        console.log('Set Grid Filter Model');
       })
     );
 
