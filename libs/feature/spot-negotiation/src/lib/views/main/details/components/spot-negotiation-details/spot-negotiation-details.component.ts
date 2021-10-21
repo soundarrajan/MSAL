@@ -175,7 +175,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           lockPosition: true,
           pinned: 'left',
           headerClass: 'border-right',
-          field: 'phySupplier',
+          field: 'physicalSupplierCounterpartyName',
           width: 200,
           cellClass: 'line-seperator-pinned',
           cellRendererFramework: AGGridCellRendererV2Component,

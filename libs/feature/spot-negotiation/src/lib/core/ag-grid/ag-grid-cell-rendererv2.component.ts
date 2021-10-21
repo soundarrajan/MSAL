@@ -324,7 +324,8 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
           #menuTrigger="matMenuTrigger"
           (click)="editSeller = false"
         >
-          <span *ngIf="editSeller">Add P. Supplier</span>
+          <span *ngIf="editSeller&&params.data.physicalSupplierCounterpartyName">{{params.data.physicalSupplierCounterpartyName}}</span>
+          <span *ngIf="editSeller&&params.data.physicalSupplierCounterpartyName==null">Add P. Supplier</span>
           <span *ngIf="!editSeller">{{ this.editedSeller }}</span>
         </span>
         <!--<div class="addButton"></div>-->
