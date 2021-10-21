@@ -89,6 +89,9 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       resizable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams
+    },
+    onGridReady: params => {
+      params.api.sizeColumnsToFit();
     }
   };
 

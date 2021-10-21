@@ -82,6 +82,7 @@
         </ng-template>
         <ng-container>
           <shiptech-control-tower-quantity-rob-difference-list
+            *ngIf="gridTitle === 'ROB Difference'"
             [theme]="theme"
             [newScreen]="newScreen"
           ></shiptech-control-tower-quantity-rob-difference-list>
@@ -98,20 +99,11 @@
           </div>
         </ng-template>
         <ng-container>
-          <div class="grid-container">
-            <div class="agGrid-v2" style="margin: 0">
-              <div style="width:100%;height: 100%;"></div>
-            </div>
-          </div>
-          <div class="footer">
-            <app-footer-v2
-              [id]="'controlTower-quantitySupplyDiff'"
-              [singleGrid]="true"
-              [doublePagination]="true"
-              [rowCount]="rowCount"
-              [maxSize]="7"
-            ></app-footer-v2>
-          </div>
+          <shiptech-control-tower-quantity-rob-difference-list
+            *ngIf="gridTitle !== 'ROB Difference'"
+            [theme]="theme"
+            [newScreen]="newScreen"
+          ></shiptech-control-tower-quantity-rob-difference-list>
         </ng-container>
       </mat-tab>
     </mat-tab-group>
