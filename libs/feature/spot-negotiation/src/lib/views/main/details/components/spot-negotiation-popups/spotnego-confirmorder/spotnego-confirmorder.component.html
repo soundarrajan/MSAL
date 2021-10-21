@@ -65,15 +65,15 @@
                       <tr id="commentList">
                         <!-- <td class="w-80">12321</td>-->
                         <td class="table-checkbox" ><mat-checkbox class="example-margin" ></mat-checkbox></td>
-                        <td class="w-125">1Bominflot BV</td>
+                        <td class="w-125">{{locationRow.sellerCounterpartyName}}</td>
                         <!-- <td class="">Rotterdam</td> -->
                         <td class=""> 2RMG 380 0.5% </td>
                         <td class="">3 500.00 MT </td>
                         <td class="">4 500.00 MT </td>
                         <td class="text-left  cell-dashed-border" contenteditable="true">5 500.00 MT </td>
                         <td class="">6 $560.19 </td>
-                        <td class="">7 $125,000 </td>
-                        <td class="w-125">8 Bominflot BV</td>
+                        <td class="">{{locationRow.totalOffer || 0}}</td>
+                        <td class="w-125">{{locationRow.physicalSupplierCounterpartyName}}</td>
                       </tr>
                     </tbody>
                   </table>

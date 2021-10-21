@@ -38,15 +38,15 @@ export class SpotnegoConfirmorderComponent implements OnInit {
 
   getSelectedLocationRowsForLocation(locationId, requestId){
     // selectedCounterpartyList
-    const futureLocationRowsForLocation = [];
 
-    const selectedLocationRows = this.store.selectSnapshot<string>((state: any) => {
-      return state.spotNegotiation.selectedCounterpartyList
+    const locationsRows = this.store.selectSnapshot<string>((state: any) => {
+      return state.spotNegotiation.locationsRows
     });
 
 
+    const demoRow = locationsRows.find(e => e.locationId === locationId);
 
-    return [1];
+    return [demoRow];
   }
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
