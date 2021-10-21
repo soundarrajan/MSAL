@@ -225,44 +225,41 @@
     </div>
     <br/>
     <br/>
+    <div class="portlet">
+        <div class="portlet-title">
+            <span class="caption-subject ">
+                QUANTITY CONTROL
+            </span>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-3">
-            <div class="row input-quantity">
-                <label>
-                    Quantity Control Reconcillation
-                </label>
-            </div>
-        </div>
-        <div class="col-md-3">
             <div class="form-group row">
                 <label>
-                    {{ CM.app_id + '.MIN_TOLERANCE' | translate }}
+                    ROB Before delivery 
                 </label>
-                <input name="qcMinToleranceLimit" class="input-group form_input form_input_qcMinTolerance form-control" ng-required="formValues.delivery.qcMaxToleranceLimit" type="number" ng-max="formValues.delivery.qcMaxToleranceLimit" ng-model="formValues.delivery.qcMinToleranceLimit" ng-min="0.000000000000001"/>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group row">
-                <label>
-                    {{ CM.app_id + '.MAX_TOLERANCE' | translate }}
-                </label>
-                <input name="qcMaxToleranceLimit" class="input-group form_input form_input_qcMaxTolerance form-control" ng-required="formValues.delivery.qcMinToleranceLimit" type="number" ng-min="{{formValues.delivery.qcMinToleranceLimit + 0.000000000000001}}" ng-model="formValues.delivery.qcMaxToleranceLimit"/>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group row" ng-if="formValues.delivery.qcMaxToleranceLimit != null && formValues.delivery.qcMinToleranceLimit != null">
-                <div class="input-group form_input form_input_qcUom" ng-init='options.Timezone ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'>
-                    <select name="qcUom" class="form-control bs-select changeIT" ng-required="formValues.delivery.qcMaxToleranceLimit && formValues.delivery.qcMinToleranceLimit"
-                     id="qcUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.delivery.qcToleranceLimitUom">
-                    <option></option>
-                    </select>
+                <div class="input-group form_input form_input_robBeforeDelivery" ng-init='options.Timezone ? return : CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"})'>
+                    <select name="robBeforeDelivery" class="form-control bs-select changeIT" ng-required="true" id="robBeforeDelivery" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-model="formValues.delivery.robBeforeDelivery"></select>
                 </div>
             </div>
-            <div class="form-group row" ng-if="formValues.delivery.qcMaxToleranceLimit == null && formValues.delivery.qcMinToleranceLimit == null" ng-init="setQcTolleranceLimitUom(formValues.delivery.qcToleranceLimitUom)">
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    Tolerance
+                </label>
+                <input name="tolerance" class="input-group form_input form_input_tolerance form-control" type="number"  ng-model="formValues.delivery.tolerance"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <div class="input-group form_input form_input_robToleranceUom" ng-init='options.Timezone ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"})'>
+                    <select name="robToleranceUom" class="form-control bs-select changeIT" ng-required="true" id="robToleranceUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.delivery.robToleranceUom"></select>
+                </div>
             </div>
         </div>
     </div>
-
+    <br/>
     <div class="portlet">
         <div class="portlet-title">
             <span class="caption-subject ">
