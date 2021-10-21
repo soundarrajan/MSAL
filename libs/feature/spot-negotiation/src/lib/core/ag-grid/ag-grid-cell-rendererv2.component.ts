@@ -348,6 +348,7 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
                 matInput
                 placeholder="Search and select counterparty"
                 class="search-product-input"
+                (input)="search($event.target.value)"
               />
             </div>
             <div class="col-md-2">
@@ -561,13 +562,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   search(userInput: string): void {
     this.visibleCounterpartyList = this.counterpartyList
-      .filter(e => {
-        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-          return true;
-        }
-        return false;
-      })
-      .slice(0, 7);
+    .filter(e => {
+      if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+        return true;
+      }
+      return false;
+    })
+    .slice(0, 7);
   }
   hoverMenu(event) {
     event.target.classList.add('selectedIcon');
