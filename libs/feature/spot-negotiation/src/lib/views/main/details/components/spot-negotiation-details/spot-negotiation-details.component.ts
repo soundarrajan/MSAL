@@ -305,7 +305,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   saveRowToCloud(updatedRow, product) {
     const productDetails = this.getRowProductDetails(updatedRow, product.id);
-    if (!productDetails.requestOffers) {
+    if (productDetails.id == null) {
       return;
     }
     const payload = {
