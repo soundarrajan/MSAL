@@ -31,6 +31,11 @@ const routes: Routes = [
             component: ControlTowerViewComponent,
             data: { title: 'Control Tower List' }
           },
+          {
+            path: KnownControlTowerRoutes.ControlTowerList+'/:id',
+            component: ControlTowerViewComponent,
+            data: { title: 'Control Tower List' }
+          },
          
         ]
       }
