@@ -31,9 +31,9 @@
                         [rowClassRules]="rowClassRules"
                         [immutableData]="false"
                         [getRowNodeId]="getRowNodeId"
-                        (selectionChanged)="onSelectionChanged($event)"
+                        [suppressRowClickSelection]="true"
+                        (rowSelected)= "SelectionChanged($event)"
                         [context]="context"
-                        [rowSelection]="rowSelection"
                       >
                       </ag-grid-angular>
                     </div>
@@ -47,3 +47,10 @@
     </div>
   </div>
 </div>
+
+<!-- (selectionChanged)="onSelectionChanged($event)" -->
+<!-- (selectionChanged)="SelectionChanged($event)" -->
+
+<!-- (selectionChanged)="SelectionChanged1($event)" -->
+<!-- (rowSelected)= "SelectionChanged($event)" -->
+<!-- (checkboxChanged)="selectAllRenderer($event)" -->
