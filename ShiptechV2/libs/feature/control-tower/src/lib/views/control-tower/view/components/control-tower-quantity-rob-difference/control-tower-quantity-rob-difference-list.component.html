@@ -76,7 +76,7 @@
         (click)="gridViewModel.filterGridNew('New')"
       >
         <span>New</span>
-        <div class="count">16</div>
+        <div class="count">{{ newCount$ | async }}</div>
       </div>
       <div
         class="action"
@@ -84,7 +84,7 @@
         (click)="gridViewModel.filterGridMAS('Verified')"
       >
         <span>Marked as seen</span>
-        <div class="count">6</div>
+        <div class="count">{{ markAsSeenCount$ | async }}</div>
       </div>
       <div
         class="action"
@@ -92,7 +92,7 @@
         (click)="gridViewModel.filterGridResolved('In Spec')"
       >
         <span>Resolved</span>
-        <div class="count">4</div>
+        <div class="count">{{ resolvedCount$ | async }}</div>
       </div>
     </div>
   </div>

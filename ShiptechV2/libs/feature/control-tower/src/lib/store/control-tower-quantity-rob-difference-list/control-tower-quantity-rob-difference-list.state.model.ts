@@ -7,15 +7,18 @@ export class ControlTowerQuantityRobDifferenceListStateModel extends BaseModel {
     pagination: { skip: 0, take: DefaultPageSize }
   };
 
-  nbOfMatched: number;
-  nbOfNotMatched: number;
-  nbOfMatchedWithinLimit: number;
+  nbOfNewStatuses: number;
+  nbOfMarkedAsSeenStatuses: number;
+  nbOfResolvedStatuses: number;
   totalCount: number;
 
-  constructor(state: Partial<ControlTowerQuantityRobDifferenceListStateModel> = {}) {
+  constructor(
+    state: Partial<ControlTowerQuantityRobDifferenceListStateModel> = {}
+  ) {
     super();
     Object.assign(this, state);
   }
 }
 
-export interface IControlTowerQuantityRobDifferenceListState extends ControlTowerQuantityRobDifferenceListStateModel {}
+export interface IControlTowerQuantityRobDifferenceListState
+  extends ControlTowerQuantityRobDifferenceListStateModel {}

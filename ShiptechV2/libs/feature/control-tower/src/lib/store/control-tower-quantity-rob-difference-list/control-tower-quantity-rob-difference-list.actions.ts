@@ -23,17 +23,17 @@ export class LoadControlTowerQuantityRobDifferenceListSuccessfulAction {
     '[CT.RobDifference.List] Load Control Tower Rob Difference List Successful';
 
   constructor(
-    public nbOfMatched: number,
-    public nbOfNotMatched: number,
-    public nbOfMatchedWithinLimit: number,
+    public nbOfNewStatuses: number,
+    public nbOfMarkedAsSeenStatuses: number,
+    public nbOfResolvedStatuses: number,
     public totalCount: number
   ) {}
 
   public log(): any {
     return {
-      nbOfMatched: this.nbOfMatched,
-      nbOfNotMatched: this.nbOfNotMatched,
-      nbOfMatchedWithinLimit: this.nbOfMatchedWithinLimit,
+      nbOfNewStatuses: this.nbOfNewStatuses,
+      nbOfMarkedAsSeenStatuses: this.nbOfMarkedAsSeenStatuses,
+      nbOfResolvedStatuses: this.nbOfResolvedStatuses,
       totalCount: this.totalCount
     };
   }
