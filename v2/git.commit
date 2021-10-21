@@ -1,9 +1,13 @@
-﻿commit f8e4e43b0fa932c3240fa3a303fb6f8013d3e9fd
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Oct 21 10:07:51 2021 +0000
+﻿commit 83dbb43575a34097e4ee2270f48109e9fb9b3b18
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Oct 21 10:59:19 2021 +0000
 
-    Merged PR 14222: Added Control Tower - Menu Navigation in v2
+    Merged PR 14227: #33800: Admin: User Screen UI changes has done
     
-    Worked on control tower
+    #33800: Admin: User Screen UI changes has done
+    
+    (cherry picked from commit d8611270bbeae043d7f7988ccc8f04c6d7d40b85)
+    
+    Related work items: #33800
 
 branch: master
