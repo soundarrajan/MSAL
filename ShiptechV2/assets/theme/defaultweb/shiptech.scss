@@ -8974,6 +8974,15 @@ color:#ffffff;
 
 .spot-nego-content{
   padding-top: 10px;
+
+
+  .input-disabled {
+    pointer-events: none;
+    opacity: 0.4;
+    &:hover {
+      cursor:not-allowed;
+    }
+  }
   .grid-in-accordion{
     .mat-expansion-panel{
       box-shadow: none;

@@ -396,7 +396,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       price: null,
       priceQuantityUomId: null,
       quotedProductId: null,
-      requestProductId: null,
+      requestProductId: productId,
       targetDifference: null,
       totalPrice: null
     };
@@ -482,6 +482,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererParams: {
             label: 'price-calc',
             type: 'price-calc',
+            product: product,
             cellClass: ''
           }
         },
@@ -825,14 +826,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     return row;
 }
-  onSelectionChanged(e) {}
-
-  onCellClick(event: any) {
-    return null;
-    let rowsSelection = this.gridOptions_counterparty.api.getSelectedRows();
-    let payload = {
-      selectedCounterparties: rowsSelection
-    };
-    this.store.dispatch(new SetCounterpartyList(payload.selectedCounterparties));
+  onSelectionChanged(e) {
   }
+
 }
