@@ -1,0 +1,9 @@
+/* CUSTOM SASS FUNCTIONS */
+
+@function em($pixels, $root: 14px) {
+    @return ($pixels / $root) * 1em;
+}
+
+@function rem($pixels, $root: 14px) {
+    @return ($pixels / $root) * 1rem;
+}

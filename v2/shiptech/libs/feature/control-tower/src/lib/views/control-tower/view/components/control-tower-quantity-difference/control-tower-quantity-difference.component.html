@@ -1,0 +1,120 @@
+<div
+  class="controlTower-content"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+  style="position: relative;"
+>
+  <!-- <div class="header-content">
+    <div *ngIf="!newScreen" class="title">
+      <div class="head">{{ gridTitle }}</div>
+    </div>
+    <div class="filters">
+      <div class="by-datePicker" [ngClass]="newScreen ? 'new' : ''">
+        <div
+          id="custom-form-field"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
+          <mat-form-field class="without-search datePicker" appearance="legacy">
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
+              </mat-icon>
+            </mat-datepicker-toggle>
+            <span class="from">From</span>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [formControl]="today"
+              (focus)="picker.open()"
+            />
+            <mat-datepicker
+              #picker
+              [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+            ></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="today">
+          <span>-</span>
+          <p>To Today</p>
+        </div>
+      </div>
+      <div class="by-action">
+        <span class="filter-by" *ngIf="newScreen">Filter By:</span>
+        <div
+          class="action"
+          [ngClass]="!toggleNewFilter ? 'selected-blue' : ''"
+          (click)="filterGridNew('New')"
+        >
+          <span>New</span>
+          <div class="count">16</div>
+        </div>
+        <div
+          class="action"
+          [ngClass]="!toggleMASFilter ? 'selected-amber' : ''"
+          (click)="filterGridMAS('Marked as Seen')"
+        >
+          <span>Marked as seen</span>
+          <div class="count">6</div>
+        </div>
+        <div
+          class="action"
+          [ngClass]="!toggleResolvedFilter ? 'selected-green' : ''"
+          (click)="filterGridResolved('Resolved')"
+        >
+          <span>Resolved</span>
+          <div class="count">4</div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div id="custom-tabs-v2" class="level-2">
+    <mat-tab-group
+      mat-align-tabs="end"
+      (selectedTabChange)="selectedTabChange($event)"
+    >
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="custom-label-holder">
+            <div
+              [ngClass]="newScreen ? 'custom-tab-ui-new' : 'custom-tab-ui'"
+              class="rob-difference"
+            ></div>
+            <div class="custom-label">ROB Difference</div>
+          </div>
+        </ng-template>
+        <ng-container>
+          <shiptech-control-tower-quantity-rob-difference-list
+            [theme]="theme"
+            [newScreen]="newScreen"
+          ></shiptech-control-tower-quantity-rob-difference-list>
+        </ng-container>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="custom-label-holder">
+            <div
+              [ngClass]="newScreen ? 'custom-tab-ui-new' : 'custom-tab-ui'"
+              class="supply-difference"
+            ></div>
+            <div class="custom-label">Supply Difference</div>
+          </div>
+        </ng-template>
+        <ng-container>
+          <div class="grid-container">
+            <div class="agGrid-v2" style="margin: 0">
+              <div style="width:100%;height: 100%;"></div>
+            </div>
+          </div>
+          <div class="footer">
+            <app-footer-v2
+              [id]="'controlTower-quantitySupplyDiff'"
+              [singleGrid]="true"
+              [doublePagination]="true"
+              [rowCount]="rowCount"
+              [maxSize]="7"
+            ></app-footer-v2>
+          </div>
+        </ng-container>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>

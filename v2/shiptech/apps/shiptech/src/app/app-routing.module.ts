@@ -76,6 +76,24 @@ const routes: Routes = [
   {
     path: '',
     data: {
+      breadcrumb: 'Control Tower List',
+      breadcrumbUrl: '/v2/control-tower',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.ControlTower,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import('@shiptech/feature/control-tower').then(
+            m => m.ControlTowerModule
+          )
+      }
+    ]
+  },
+  {
+    path: '',
+    data: {
       breadcrumb: 'Invoice List',
       breadcrumbUrl: '/#/invoice',
       breadcrumbIcon: 'fa fa-home'
@@ -115,11 +133,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  providers:  [
+  providers: [
     AdalGuard,
     {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: InterceptorService, 
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
       multi: true
     }
   ],

@@ -30,6 +30,7 @@ import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definiti
 import { SKIP$ } from '@shiptech/core/utils/rxjs-operators';
 import { AgGridAngular } from '@ag-grid-community/angular';
 import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
+import moment from 'moment';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -45,6 +46,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     private filterPresetsService: AgGridFilterPresetsService,
     @Attribute('id') private elementId: string,
     @Attribute('groupId') private groupId: string,
+    @Attribute('gridId') private gridId: string,
     @Optional() private agGrid: AgGridAngular,
     @Optional() private filterComponent: FilterPreferencesComponent
   ) {}
@@ -55,6 +57,49 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     }
     if (this.agGrid) {
       this.processAgGridEvents();
+    }
+  }
+
+  addedLastSevenDaysByDefault() {
+    let gridIds = ['v2-list-grid-8'];
+    if (gridIds.indexOf(this.gridId) != -1) {
+      for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
+        if (this.filterComponent.filterPresets[i].filterModels) {
+          let filters = this.filterComponent.filterPresets[i].filterModels[
+            this.gridId
+          ];
+          if (filters) {
+            for (let [key, value] of Object.entries(filters)) {
+              if (key == 'createdOn') {
+                return;
+              }
+            }
+            this.filterComponent.filterPresets[i].filterModels[this.gridId][
+              'createdOn'
+            ] = {
+              dateFrom: moment()
+                .subtract(7, 'months')
+                .format('YYYY-MM-DD'),
+              dateTo: moment().format('YYYY-MM-DD'),
+              type: 'inRange',
+              filterType: 'date'
+            };
+          } else {
+            this.filterComponent.filterPresets[i].filterModels[this.gridId] = {
+              createdOn: {
+                dateFrom: moment()
+                  .subtract(7, 'months')
+                  .format('YYYY-MM-DD'),
+                dateTo: moment().format('YYYY-MM-DD'),
+                type: 'inRange',
+                filterType: 'date'
+              }
+            };
+          }
+        }
+      }
+
+      console.log(this.filterComponent.filterPresets);
     }
   }
 
@@ -71,6 +116,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           this.filterComponent.hasActiveFilterPresets = filterPresets.some(
             item => !item.isDefault && !item.isClear
           );
+          this.addedLastSevenDaysByDefault();
         }),
         finalize(() => {
           this.filterComponent.isLoading = false;

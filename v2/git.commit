@@ -1,7 +1,9 @@
-﻿commit 1e7f9012d8a1cde25343c852bf16ae564ad40a02
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Oct 6 13:33:54 2021 +0300
+﻿commit db3d9104db72b9b1b276004ae93f9a78df87faf4
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Oct 21 08:08:27 2021 +0000
 
-    Fixed 36162
+    Merged PR 14216: Added control-tower library
+    
+    Related work items: #33331
 
 branch: master

@@ -2121,7 +2121,9 @@ div.component-viewer-nav-content
   color: #f44336;
 }
 
-.custom-form-field-with-search.lightTheme .mat-form-field .mat-placeholder-required {
+.custom-form-field-with-search.lightTheme
+  .mat-form-field
+  .mat-placeholder-required {
   color: #f44336;
 }
 /****  Button-V2 - END ****/
@@ -2145,3 +2147,20 @@ div.component-viewer-nav-content
 }
 
 /* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #c4c4c4;
+}
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}

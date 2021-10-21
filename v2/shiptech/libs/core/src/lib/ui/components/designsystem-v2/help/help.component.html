@@ -1,0 +1,53 @@
+<div class="container help-component-v2">
+    <h2 class="getting-started">Getting Started with Inatech Design System</h2>
+    <div class="row help-content">
+       <p>This guide explains how to setup your Angular project to begin using Design System. We can integrate Design system in two methods.</p>
+        <ol>
+            <li>Package method</li>
+            <li>Manual method</li>
+        </ol>
+    </div> 
+    <div class="row help-content">
+        <h4 class="title">Package method</h4>
+        <p>In this method, we use the Angular CLI's install schematic to set up the Design system project by running the following command:</p>
+        <div class="package-installation">
+            npm install inatech-design-system@5.0.0
+        </div>
+        <p>You can also check the previous <a href="https://dev.azure.com/inatech/Techoil/_packaging?_a=package&feed=Techoil&package=inatech-design-system&protocolType=Npm&version=4.2.71">version</a> of design system.</p>
+    </div>
+    <h4 class="title">Manual method</h4>
+    <div class="row help-content">
+        <p>To manually add the Design System into an application, copy required folders from GitHub URL or Zip file.</p>
+        <ul>
+            <li>To add all shared components, copy the folder path src/app/shared</li>
+            <li>To add global css styles, copy the folder path src/themes/defaultweb</li>
+            <li>To add custom icons and images, copy the folder path src/assets/customicons and src/assets/customimages</li>
+        </ul>
+    </div>
+    <div class="row help-content">
+        <h4 class="title">How to use DS components?</h4>
+        <p>Let's display a label component in your app and verify that everything works. You need to add the below lines to ts and html file.</p>
+        <div class="ts-code">
+                <pre>{{ts_code}}</pre>
+        </div>
+        <div class="html-code">
+            <pre>{{html_code}}</pre>
+        </div>
+        <p>You can also check the various <a href="http://designsystem.inatech.com/">components</a> in the Design System.</p>
+        <p>We have products like ShipTech, Tech Oil in the Design System.</p>
+    </div>
+    <div class="row help-content">
+        <p>For Design System developers, below steps to be followed to create packages.</p>
+        <h4 class="title">How to do packaging in Design System?</h4>
+        <ul>
+            <li>Fetch the latest source code from the repository.</li>
+            <li>Update package version in ‘package.json’ file.</li>
+            <li>Update package version in ‘readme.md’ file.</li>
+            <li>Update package version in ‘designsystem.component.ts’ file.</li>
+            <li>Delete ‘dist’ folder.</li>
+            <li>To publish the package, use the command ‘npm run vsts-publish’.</li>
+            <li>Open artifacts in vsts and verify the package version.</li>
+            <li>Once successfully published, commit the latest version file changes into Git.</li>
+        </ul>
+    </div>
+</div>

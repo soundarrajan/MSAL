@@ -1,0 +1,198 @@
+<div class="header-content">
+  <div *ngIf="!newScreen" class="title">
+    <div class="head">{{ gridTitle }}</div>
+  </div>
+  <div class="filters">
+    <div class="by-datePicker" [ngClass]="newScreen ? 'new rob-diff' : ''">
+      <div
+        id="custom-form-field"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
+        <mat-form-field class="without-search datePicker" appearance="legacy">
+          <mat-datepicker-toggle matSuffix [for]="from">
+            <mat-icon matDatepickerToggleIcon class="mini-dateIcon"> </mat-icon>
+          </mat-datepicker-toggle>
+          <span class="from">From</span>
+          <input
+            matInput
+            [matDatepicker]="from"
+            [formControl]="gridViewModel.fromDate"
+            (dateChange)="
+              gridViewModel.fromDate.setValue(
+                formatDateForBe(gridViewModel.fromDate.value)
+              );
+              gridViewModel.filterByDate(
+                gridViewModel.fromDate.value,
+                gridViewModel.toDate.value
+              )
+            "
+            (focus)="from.open()"
+          />
+          <mat-datepicker
+            #from
+            [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+          ></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="today">
+        <span>-</span>
+      </div>
+      <div
+        id="custom-form-field"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
+        <mat-form-field class="without-search datePicker" appearance="legacy">
+          <mat-datepicker-toggle matSuffix [for]="to">
+            <mat-icon matDatepickerToggleIcon class="mini-dateIcon"> </mat-icon>
+          </mat-datepicker-toggle>
+          <span class="from">To</span>
+          <input
+            matInput
+            [matDatepicker]="to"
+            [formControl]="gridViewModel.toDate"
+            (focus)="to.open()"
+            (dateChange)="
+              gridViewModel.toDate.setValue(
+                formatDateForBe(gridViewModel.toDate.value)
+              );
+              gridViewModel.filterByDate(
+                gridViewModel.fromDate.value,
+                gridViewModel.toDate.value
+              )
+            "
+          />
+          <mat-datepicker
+            #to
+            [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+          ></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="by-action">
+      <span class="filter-by" *ngIf="newScreen">Filter By:</span>
+      <div
+        class="action"
+        [ngClass]="!gridViewModel.toggleNewFilter ? 'selected-blue' : ''"
+        (click)="gridViewModel.filterGridNew('New')"
+      >
+        <span>New</span>
+        <div class="count">16</div>
+      </div>
+      <div
+        class="action"
+        [ngClass]="!gridViewModel.toggleMASFilter ? 'selected-amber' : ''"
+        (click)="gridViewModel.filterGridMAS('Verified')"
+      >
+        <span>Marked as seen</span>
+        <div class="count">6</div>
+      </div>
+      <div
+        class="action"
+        [ngClass]="!gridViewModel.toggleResolvedFilter ? 'selected-green' : ''"
+        (click)="gridViewModel.filterGridResolved('In Spec')"
+      >
+        <span>Resolved</span>
+        <div class="count">4</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="grid-container">
+  <div class="agGrid-v2" style="margin: 0">
+    <div style="width:100%;height: 100%;">
+      <shiptech-wunderbar>
+        <div class="row" style="margin: 5px 0;">
+          <div class="col-12 d-flex">
+            <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
+            <app-filter-preferences
+              appAgGridFilterPresets
+              groupId="control-tower-quantity-rob-difference-v2-list-filter-presets"
+              id="qc-report-list"
+              gridId="v2-list-grid-8"
+              (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
+            ></app-filter-preferences>
+          </div>
+        </div>
+      </shiptech-wunderbar>
+
+      <p-messages></p-messages>
+      <!-- <button
+        class="search-icon"
+        appMasterSelectorTrigger
+        [masterSelector]="masterSelector"
+        #masterSelectorTrigger="masterSelectorTrigger"
+        [header]="getHeaderNameSelector()"
+      >
+        <div class="img">
+          <ng-template cdkPortal #masterSelector="cdkPortal">
+            <shiptech-shared-master-selector
+              (selectedChange)="masterSelectorTrigger.close()"
+              (shouldCloseModal)="masterSelectorTrigger.close()"
+              [selectorType]="autocompleteOrders"
+              [disabled]="false"
+              [readonly]="false"
+              [entityName]="'control-tower'"
+              [entityId]="1"
+              [vesselId]="1"
+              [headerName]="getHeaderNameSelector()"
+            ></shiptech-shared-master-selector>
+          </ng-template>
+        </div>
+      </button> -->
+
+      <div class="w-100 px-3 py-4  m-r-5 m-b-7" style="background: white;">
+        <div class="row mb-2">
+          <div class="col-12 d-flex p-t-4">
+            <app-ag-filter-display
+              [grid]="agGridAngular"
+            ></app-ag-filter-display>
+          </div>
+        </div>
+        <ag-grid-angular
+          #agGridAngular
+          appAgGridFirstColumnLocked
+          appAgGridFilterPresets
+          appAgGridSizeToFit
+          appAgGridClearAllFilters
+          appExternalSearch
+          appAgGridEmptyFilterOption
+          #search="search-id"
+          groupId="control-tower-quantity-rob-difference-v2-list-filter-presets"
+          id="v2-list-grid-8"
+          domLayout="normal"
+          class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+          style="height:calc( 100vh - 352px );"
+          [gridOptions]="gridViewModel.gridOptions"
+          (rowClicked)="onrowClicked($event)"
+        >
+        </ag-grid-angular>
+        <div class="footer">
+          <app-ag-footer-new
+            [gridViewModel]="gridViewModel"
+            [page]="gridViewModel.page"
+            [size]="gridViewModel.pageSize"
+            [count]="gridViewModel.totalItems"
+            [singleGrid]="true"
+            [doublePagination]="true"
+            [maxSize]="765"
+            [id]="'v2-list-grid-8'"
+            [serverKeys]="controlTowerQuantityRobDifferenceListServerKeys"
+            (pageChange)="onPageChange($event.page)"
+          >
+          </app-ag-footer-new>
+        </div>
+      </div>
+
+      <ng-template
+        [columnDef]="[gridViewModel.portCallCol]"
+        appAgCellTemplate
+        let-data="data"
+        let-value="value"
+      >
+        <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{
+          value?.id
+        }}</a>
+      </ng-template>
+    </div>
+  </div>
+</div>

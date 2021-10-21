@@ -59,16 +59,22 @@
               "assets/sass/skinning/base-skinning.scss",
               "assets/theme/common/designsystem-v2-theme/v2-component.scss",
               "assets/theme/common/designsystem-v2-theme/shiptech.scss",
+
               "assets/theme/common/designsystem-v2-theme/techoil.scss",
               "assets/theme/common/designsystem-v2-theme/_aggrid.scss",
               "assets/sass/themes/common/base.scss",
               "assets/sass/themes/defaultweb/smart-operator.scss",
-              "assets/sass/themes/defaultweb/_aggrid.scss",
               "assets/sass/themes/defaultweb/_dark_theme.scss",
               "assets/sass/themes/defaultweb/_light_theme.scss",
               "assets/sass/themes/defaultweb/_smart-operator-mixins.scss",
               "assets/sass/themes/defaultweb/_smart-operator-utils.scss",
-              "assets/sass/themes/defaultweb/_smart-operator-variables.scss"
+              "assets/sass/themes/defaultweb/_smart-operator-variables.scss",
+              "assets/sass/themes/defaultweb/shiptech.scss",
+              "assets/sass/themes/defaultweb/_shiptech-mixins.scss",
+              "assets/sass/themes/defaultweb/_shiptech-variables.scss",
+              "assets/sass/themes/defaultweb/_shiptech-utils.scss",
+              "assets/sass/themes/defaultweb/design-system.component.scss",
+              "assets/sass/themes/defaultweb/_aggrid.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
@@ -237,6 +243,40 @@
             "jestConfig": "libs/feature/contract/jest.config.js",
             "tsConfig": "libs/feature/contract/tsconfig.spec.json",
             "setupFile": "libs/feature/contract/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "control-tower": {
+      "projectType": "library",
+      "root": "libs/feature/control-tower",
+      "sourceRoot": "libs/feature/control-tower/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/control-tower/tsconfig.lib.json",
+              "libs/feature/control-tower/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/control-tower/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/control-tower/jest.config.js",
+            "tsConfig": "libs/feature/control-tower/tsconfig.spec.json",
+            "setupFile": "libs/feature/control-tower/src/test-setup.ts"
           }
         }
       },

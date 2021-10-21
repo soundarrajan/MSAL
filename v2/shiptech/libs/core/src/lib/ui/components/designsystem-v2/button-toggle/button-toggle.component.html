@@ -1,0 +1,9 @@
+<!-- Button Toggle Start-->
+<div id="custom-btn-toggle-v2">
+    <mat-button-toggle-group #btnToggle (change)="activeBtn = $event.value">
+        <mat-button-toggle *ngFor="let btn of data?.names" [value]="btn" [checked]="activeBtn == btn">
+            <span class="toggle-icon" *ngIf="activeBtn == btn"></span> {{btn}}
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+<!-- Button Toggle End-->

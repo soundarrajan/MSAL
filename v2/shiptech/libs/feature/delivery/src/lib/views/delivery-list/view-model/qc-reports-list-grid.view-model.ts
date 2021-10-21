@@ -403,7 +403,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     private statusLookup: StatusLookup
   ) {
     super(
-      'quantity-control-grid',
+      'quantity-control-grid-2',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(QcReportsListGridViewModel.name)
