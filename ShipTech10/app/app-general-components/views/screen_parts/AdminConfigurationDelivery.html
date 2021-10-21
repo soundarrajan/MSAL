@@ -259,6 +259,26 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    Sludge Percentage 
+                </label>
+                <div class="input-group form_input form_input_sludgePercentage" ng-init='options.Timezone ? return : CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"})'>
+                    <select name="sludgePercentage" class="form-control bs-select changeIT" ng-required="true" disabled id="sludgePercentage" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-model="formValues.delivery.sludgePercentage"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group row">
+                <label>
+                    Tolerance
+                </label>
+                <input name="sludgeTolerance" class="input-group form_input form_input_sludgeTolerance form-control" type="number"  ng-model="formValues.delivery.sludgeTolerance"/>
+            </div>
+        </div>
+    </div>
     <br/>
     <div class="portlet">
         <div class="portlet-title">
