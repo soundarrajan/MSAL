@@ -43,6 +43,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   @Output() presetsLoaded = new EventEmitter();
   private _destroy$: Subject<any> = new Subject();
   activeFilter: boolean;
+  autoSaveInterval: NodeJS.Timeout;
 
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
@@ -106,6 +107,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   }
 
   processFilterComponentEvents(groupId: string): void {
+    this.filterPresetsService.setActiveFilter(false);
     this.filterComponent.isLoading = true;
     this.filterComponent.refresh();
     // NOTE: Loading the saved filter presets and setting the value to the filter component
@@ -123,16 +125,20 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         finalize(() => {
           this.filterComponent.isLoading = false;
           this.filterComponent.refresh();
-          // this.filterPresetsService.setGridFilterModel(groupId);
+          this.autoSaveInterval = setInterval(
+            function() {
+              if (this.filterPresetsService.getActiveFilter()) {
+                this.filterPresetsService.setActiveFilter(false);
+                clearInterval(this.autoSaveInterval);
+                this.presetsLoaded.next();
+              }
+            }.bind(this),
+            100
+          );
         }),
         takeUntil(this._destroy$)
       )
-      .subscribe(() => {
-        setTimeout(() => {
-          console.log('Presets loaded');
-          this.presetsLoaded.next();
-        }, 500);
-      });
+      .subscribe();
 
     // NOTE: When the service is notified by the component that contains the grid and directive to open the create new filter dialog
     // the service notifies the filter component to open it
@@ -249,8 +255,6 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           return;
         }
         this.filterPresetsService.setGridFilterModel(this.groupId);
-        console.log('Set Grid Filter Model');
-        this.activeFilter = true;
       })
     );
 
