@@ -43,28 +43,25 @@ export class AppComponent {
     private loaderService: LoaderService,
     private elementRef: ElementRef
   ) {
-
     router.events.subscribe((event: RouterEvent): void => {
       if (
         event instanceof NavigationEnd ||
         event instanceof NavigationCancel ||
         event instanceof NavigationError
       ) {
-          this.isLoading = false;
-          setTimeout(()=>{
-              if(!this.loggedBootTime) {
-                  this.loggedBootTime = true;
-                  var loadTime = Date.now() - performance.timing.connectStart; 
-                  this.myMonitoringService.logMetric(
-                      `Page Load : ${window.location.href}`,
-                      loadTime,
-                      window.location
-                  );              
-              }
-          })
+        this.isLoading = false;
+        setTimeout(() => {
+          if (!this.loggedBootTime) {
+            this.loggedBootTime = true;
+            const loadTime = Date.now() - performance.timing.connectStart;
+            this.myMonitoringService.logMetric(
+              `Page Load : ${window.location.href}`,
+              loadTime,
+              window.location
+            );
+          }
+        });
         changeDetector.markForCheck();
-      }
-      if (event instanceof NavigationStart) {
       }
     });
     this.loaderService.isLoading.subscribe(v => {
@@ -86,8 +83,8 @@ export class AppComponent {
 
   @HostListener('document:click', ['$event.target'])
   public onClick(targetElement) {
-    let array = ['Documents', 'Audit Log', 'Email Log', 'Main Page'];
-    let findElement = array.find(function(element) {
+    const array = ['Documents', 'Audit Log', 'Email Log', 'Main Page'];
+    const findElement = array.find(function(element) {
       return element == targetElement.innerText;
     });
     if (findElement) {

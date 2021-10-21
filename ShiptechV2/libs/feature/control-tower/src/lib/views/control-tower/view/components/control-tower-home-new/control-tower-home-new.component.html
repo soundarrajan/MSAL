@@ -1,0 +1,138 @@
+<div
+  class="controlTower-wrapper"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+>
+  <div class="view-control-new">
+    <div style="display: flex; float: left;">
+      <span class="label">Showing:</span>
+      <div
+        id="custom-form-field"
+        style="width: 70px !important; margin: -7px 7px;"
+      >
+        <mat-form-field class="without-search" appearance="none">
+          <mat-select
+            [(value)]="selected"
+            (selectionChange)="viewChange($event)"
+            disableOptionCentering
+          >
+            <mat-option value="quality" selected="selected">Quality</mat-option>
+            <mat-option value="quantity">Quantity</mat-option>
+            <mat-option value="residue">Residue</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="toggle-tabs" *ngIf="showQuality">
+      <div id="custom-toggle-v2">
+        <mat-button-toggle-group
+          [value]="selectedVal"
+          #group="matButtonToggleGroup"
+          (change)="onValChange(group.value)"
+        >
+          <mat-button-toggle value="labs">
+            <span *ngIf="selectedVal == 'labs'"></span>
+            Labs <span class="custom-count">12</span>
+          </mat-button-toggle>
+          <mat-button-toggle value="claims">
+            <span *ngIf="selectedVal == 'claims'"></span>
+            Claims <span class="custom-count">12</span>
+          </mat-button-toggle>
+          <mat-button-toggle value="notes">
+            <span *ngIf="selectedVal == 'notes'"></span>
+            Notes
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="toggle-tabs" *ngIf="showQuantity">
+      <div id="custom-toggle-v2">
+        <mat-button-toggle-group
+          [value]="selectedVal2"
+          #group="matButtonToggleGroup"
+          (change)="onValChange(group.value)"
+        >
+          <mat-button-toggle value="differences">
+            <span *ngIf="selectedVal2 == 'differences'"></span>
+            Differences <span class="custom-count">12</span>
+          </mat-button-toggle>
+          <mat-button-toggle value="claims">
+            <span *ngIf="selectedVal2 == 'claims'"></span>
+            Claims <span class="custom-count">12</span>
+          </mat-button-toggle>
+          <mat-button-toggle value="notes">
+            <span *ngIf="selectedVal2 == 'notes'"></span>
+            Notes
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="toggle-tabs" *ngIf="showResidue">
+      <div id="custom-toggle-v2">
+        <mat-button-toggle-group
+          [value]="selectedVal3"
+          #group="matButtonToggleGroup"
+          (change)="onValChange(group.value)"
+        >
+          <mat-button-toggle value="differences">
+            <span *ngIf="selectedVal3 == 'differences'"></span>
+            Differences <span class="custom-count">12</span>
+          </mat-button-toggle>
+          <mat-button-toggle value="notes">
+            <span *ngIf="selectedVal3 == 'notes'"></span>
+            Notes
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+  </div>
+  <div class="display-tab-content" *ngIf="showQuality">
+    <div *ngIf="selectedVal == 'labs'">
+      <app-quality-labs
+        [theme]="theme"
+        [newScreen]="newScreen"
+      ></app-quality-labs>
+    </div>
+    <div *ngIf="selectedVal == 'claims'">
+      <app-quality-claims
+        [theme]="theme"
+        [newScreen]="newScreen"
+      ></app-quality-claims>
+    </div>
+    <div *ngIf="selectedVal == 'notes'">
+      <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
+    </div>
+  </div>
+  <div class="display-tab-content" *ngIf="showQuantity">
+    <div *ngIf="selectedVal2 == 'differences'">
+      <!-- <app-quantity-difference
+        [theme]="theme"
+        [newScreen]="newScreen"
+      ></app-quantity-difference> -->
+      <control-tower-quantity-difference
+        [theme]="theme"
+        [newScreen]="newScreen"
+      >
+      </control-tower-quantity-difference>
+    </div>
+    <div *ngIf="selectedVal2 == 'claims'">
+      <app-quantity-claims
+        [theme]="theme"
+        [newScreen]="newScreen"
+      ></app-quantity-claims>
+    </div>
+    <div *ngIf="selectedVal2 == 'notes'">
+      <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
+    </div>
+  </div>
+  <div class="display-tab-content" *ngIf="showResidue">
+    <div *ngIf="selectedVal3 == 'differences'">
+      <app-residue-difference
+        [theme]="theme"
+        [newScreen]="newScreen"
+      ></app-residue-difference>
+    </div>
+    <div *ngIf="selectedVal3 == 'notes'">
+      <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
+    </div>
+  </div>
+</div>

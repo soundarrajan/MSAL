@@ -1,0 +1,15 @@
+<div class="headerFilterChip-v2">
+    <mat-chip-list>
+        <mat-chip matTooltip="{{filter.name}}" [matTooltipShowDelay]="500" class="filter-chip"
+            [ngClass]="filter.selected?'active-chip':'inactive-chip'" (click)="toggleChip()">
+            <div class="chip-container">
+                <div class="filter-name">
+                    {{filter.name}}
+                </div>
+                <div class="filter-pin">
+                    <div [ngClass]="filter.defaultFilter?'filter-default-icon':'filter-pin-icon'"></div>
+                </div>
+            </div>
+        </mat-chip>
+    </mat-chip-list>
+</div>

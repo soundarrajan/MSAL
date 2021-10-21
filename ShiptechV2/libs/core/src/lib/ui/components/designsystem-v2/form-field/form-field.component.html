@@ -1,0 +1,112 @@
+<div id="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <!-- Basic Input Field -->
+    <div *ngIf="type=='input'">
+        <div>
+            <!-- Start*************************************************************************************************************-->
+            <mat-form-field class="without-search" appearance="legacy">
+                <mat-label>Input Field</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <!-- End*************************************************************************************************************-->
+        </div>
+    </div>
+
+    <!-- Basic Select Field -->
+    <div *ngIf="type=='select'">
+        <!-- Start*************************************************************************************************************-->
+        <mat-form-field class="without-search" appearance="legacy">
+            <mat-label>Select Field</mat-label>
+            <mat-select disableOptionCentering [panelClass]="{'darkPanel':switchTheme}">
+                <mat-option>Option1</mat-option>
+                <mat-option>Option2</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <!-- End*************************************************************************************************************-->
+    </div>
+
+    <!-- Datepicker -->
+    <div *ngIf="type=='datepicker'">
+        <!-- Start*************************************************************************************************************-->
+        <mat-form-field class="without-search" appearance="legacy">
+            <mat-label>Datepicker</mat-label>
+            <input matInput [matDatepicker]="picker" (focus)="picker.open()">
+            <mat-datepicker-toggle matSuffix [for]="picker">
+                <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                </mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+        </mat-form-field>
+        <!--End*************************************************************************************************************-->
+    </div>
+
+    <!-- Input with Dropdown -->
+    <div *ngIf="type=='inputwithselect'">
+        <!-- Start*************************************************************************************************************-->
+        <div class="split-field">
+            <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;"
+                appearance="legacy">
+                <mat-label>Input with Dropdown</mat-label>
+                <input matInput class="text-ellipsis" value="100">
+            </mat-form-field>
+            <mat-form-field style="width: 36%" appearance="legacy">
+                <mat-select disableRipple value="1">
+                    <mat-option value="1">1unit</mat-option>
+                    <mat-option value="3">3unit</mat-option>
+                    <mat-option value="4">4unit</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!--End*************************************************************************************************************-->
+    </div>
+
+    <!-- Input with Autocomplete -->
+    <div *ngIf="type=='inputwithautocomplete'">
+        <!-- Start*************************************************************************************************************-->
+
+        <mat-form-field class="without-search" appearance="legacy">
+            <mat-label>Trade Category</mat-label>
+            <input class="free-text-field" matInput [formControl]="myControl" [matAutocomplete]="autodyield" required>
+            <mat-autocomplete #autodyield="matAutocomplete" class="darkPanelAuto">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+
+        <!--End*************************************************************************************************************-->
+    </div>
+    <!-- Input with Labels -->
+    <div *ngIf="type=='inputwithlabels'">
+        <!-- Start*************************************************************************************************************-->
+
+        <mat-form-field class="without-search with-labels" appearance="legacy">
+            <mat-label>Premium</mat-label>
+            <input matInput value="0.1937" required>
+            <div matSuffix class="d-flex" style="align-items: center;">
+                <div class="label">USD</div>
+                <div class="label">MT</div>
+            </div>
+        </mat-form-field>
+
+        <!--End*************************************************************************************************************-->
+    </div>
+    <!-- Input with Navigation -->
+    <div *ngIf="type=='inputwithnavigationandsearch'">
+        <!-- Start*************************************************************************************************************-->
+
+        <div class="d-flex">
+            <mat-form-field class="with-search" appearance="legacy">
+                <mat-label>Trader</mat-label>
+                <input matInput required>
+                <div class="navigation-icon" (click)="navigate()"></div>
+            </mat-form-field>
+
+            <div class="search-icon" (click)="openPopup()">
+                <div class="img"></div>
+            </div>
+        </div>
+
+        <!--End*************************************************************************************************************-->
+    </div>
+</div>

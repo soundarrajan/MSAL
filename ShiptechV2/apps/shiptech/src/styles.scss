@@ -132,3 +132,69 @@ body .ui-tabmenu .ui-tabmenu-nav {
 .ng2-pdf-viewer-container {
   overflow: unset !important;
 }
+
+#pin {
+  top: -12px !important;
+}
+
+// .ag-theme-balham.ag-popup
+//   > .ag-menu
+//   > .ag-menu-body
+//   > .ag-filter
+//   > .ag-filter-wrapper
+//   > div:nth-child(3) {
+//   display: none !important;
+// }
+
+// .ag-theme-material.ag-popup
+//   > .ag-menu
+//   > .ag-menu-body
+//   > .ag-filter
+//   > .ag-filter-wrapper
+//   > div:nth-child(3) {
+//   display: none !important;
+// }
+
+// .ag-theme-material.ag-popup
+//   .ag-filter-body
+//   > .ag-filter-date-from
+//   > div:nth-child(1) {
+//   display: none !important;
+// }
+
+// .ag-theme-material.ag-popup
+//   .ag-filter-body
+//   > .ag-filter-date-to
+//   > div:nth-child(1) {
+//   display: none !important;
+// }
+
+.success {
+  background: #99cb82;
+  color: #ffffff !important;
+  padding: 5px 15px;
+  width: 100%;
+  display: block !important;
+  text-transform: capitalize;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.denger {
+  background: #e7505a;
+  color: #ffffff !important;
+  padding: 5px 15px;
+  width: 100%;
+  display: block !important;
+  text-transform: capitalize;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footer-v2 {
+  height: 50px !important;
+  top: 10px;
+  position: relative;
+}

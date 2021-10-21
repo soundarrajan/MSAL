@@ -1,0 +1,60 @@
+<div
+  class="product-footer"
+  [ngStyle]="{ width: footerWidth, bottom: footerPosition }"
+>
+  <div class="page-details p-r-5">
+    <div class="total-results" style="margin-right: 7px;">
+      <div style="float:left">
+        {{ dualfooter ? 'Total:' : 'Showing:' }}
+      </div>
+      <span class="count" style="margin-left: 2px;">
+        {{ (page - 1) * size + 1 }} to
+        {{ page * size > count ? count : page * size }} of {{ count }} entries
+      </span>
+    </div>
+
+    <shiptech-export-new
+      [gridId]="id"
+      [gridModel]="gridViewModel"
+      [serverKeys]="serverKeys"
+    ></shiptech-export-new>
+  </div>
+
+  <div class="show-rows">
+    <span>Show</span>
+    <span>
+      <app-page-size-selector-new
+        (selectedOptionChange)="onPageSizeChange($event)"
+        [options]="gridViewModel.pageSizeOptions"
+        [selectedOption]="gridViewModel.pageSize"
+      >
+      </app-page-size-selector-new>
+    </span>
+    <span>Rows</span>
+  </div>
+
+  <app-ag-paging-new
+    [pagerLeftArrowIcon]="'fa fa-chevron-left'"
+    [pagerRightArrowIcon]="'fa fa-chevron-right'"
+    [count]="count"
+    [page]="page"
+    [size]="size"
+    [useInputAsPageSelect]="true"
+    (pageChange)="onPageChange($event.page)"
+  >
+  </app-ag-paging-new>
+
+  <div class="pagination">
+    <app-ag-pagination-new
+      [pagerLeftArrowIcon]="'fa fa-chevron-left'"
+      [pagerRightArrowIcon]="'fa fa-chevron-right'"
+      [count]="count"
+      [page]="page"
+      [size]="size"
+      [id]="id"
+      [useInputAsPageSelect]="true"
+      (pageChange)="onPageChange($event.page)"
+    >
+    </app-ag-pagination-new>
+  </div>
+</div>
