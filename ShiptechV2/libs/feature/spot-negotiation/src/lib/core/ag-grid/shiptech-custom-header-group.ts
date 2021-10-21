@@ -9,11 +9,12 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
 import { AddCounterpartyToLocations } from '../../store/actions/ag-grid-row.action';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
-import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
 import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.model';
 import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
+import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -267,7 +268,7 @@ export class ShiptechCustomHeaderGroup {
   counterpartyList = [];
   visibleCounterpartyList = [];
   selectedCounterparty = [];
-  currentRequestInfo = [];
+  currentRequestInfo:any;
 
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
@@ -329,12 +330,12 @@ export class ShiptechCustomHeaderGroup {
     let RequestGroupId = 0;
     let currentRequestLocation = { id: '0', locationId: '0' };
 
-    if (this.currentRequestInfo && this.currentRequestInfo.length > 0) {
-      RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
+    if (this.currentRequestInfo) {
+      RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      if(this.currentRequestInfo[0].requestLocations
-        && this.currentRequestInfo[0].requestLocations.length > 0){
-        currentRequestLocation = this.currentRequestInfo[0].requestLocations[0];
+      if(this.currentRequestInfo.requestLocations
+        && this.currentRequestInfo.requestLocations.length > 0){
+        currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
     }
 
@@ -448,9 +449,9 @@ export class ShiptechCustomHeaderGroup {
   }
 
   toBeAddedCounterparties(locationId): SpnegoAddCounterpartyModel[] {
-    if (this.currentRequestInfo && this.currentRequestInfo.length > 0) {
-      let RequestGroupId = parseInt(this.currentRequestInfo[0].requestGroupId);
-      let currentRequestLocation = this.currentRequestInfo[0].requestLocations.filter(
+    if (this.currentRequestInfo) {
+      let RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
+      let currentRequestLocation = this.currentRequestInfo.requestLocations.filter(
         x => x.locationId === locationId
       )[0];
 
