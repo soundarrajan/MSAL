@@ -1,9 +1,9 @@
-﻿commit db3d9104db72b9b1b276004ae93f9a78df87faf4
+﻿commit f8e4e43b0fa932c3240fa3a303fb6f8013d3e9fd
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Oct 21 08:08:27 2021 +0000
+Date:   Thu Oct 21 10:07:51 2021 +0000
 
-    Merged PR 14216: Added control-tower library
+    Merged PR 14222: Added Control Tower - Menu Navigation in v2
     
-    Related work items: #33331
+    Worked on control tower
 
 branch: master
