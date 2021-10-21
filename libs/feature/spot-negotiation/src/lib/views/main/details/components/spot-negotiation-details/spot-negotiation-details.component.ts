@@ -41,7 +41,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public ETASelect: any;
   public gridOptions_counterparty: GridOptions;
   public gridOptions_details: GridOptions;
-  public rowSelection;
   public rowCount: Number;
   public counterpartyHeaderWidth;
   public expandGridHeaderWidth;
@@ -105,6 +104,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           filter: true,
           suppressMenu: true,
           maxWidth: 35,
+          checkboxSelection: true,
           headerCheckboxSelection: true,
           resizable: false,
           // suppressMovable: true,
@@ -114,7 +114,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: 'p-1 checkbox-center ag-checkbox-v2',
           cellRendererFramework: AGGridCellActionsComponent,
-          headerCellRenderer: this.selectAllRenderer,
+
           cellRendererParams: { type: 'checkbox-selection' }
           //pinned: 'left'
         },
@@ -219,6 +219,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       ]
     }
   ];
+  rowSelection: string;
+  Isspotgridrefresh: boolean;
 
   //   ngAfterViewInit() {
   //     setTimeout(()=>{
@@ -237,9 +239,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.context = { componentParent: this };
-    this.rowSelection = 'multiple';
+   // this.rowSelection = 'multiple';
     this.gridOptions_counterparty = <GridOptions>{
       enableColResize: true,
+      rowSelection: 'single',
       defaultColDef: {
         flex: 1,
         resizable: true,
@@ -247,14 +250,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         sortable: false,
         valueSetter: ({ colDef, data, newValue }) => {
           let updatedRow = { ...data };
+          let _this = this;
           // Do calculation here;
           updatedRow = this.formatRowData(updatedRow, colDef['product'], colDef.field, newValue);
 
           // Update the store
           this.store.dispatch(new EditLocationRow(updatedRow));
-
           // Save to the cloud
           this.saveRowToCloud(updatedRow, colDef['product']);
+          setTimeout(() => {
+            _this.gridOptions_counterparty.api.selectAll();
+          }, 500);
 
           return false;
         }
@@ -269,13 +275,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       onFirstDataRendered(params) {
         params.api.sizeColumnsToFit();
       },
-      rowSelection: 'single',
       onGridReady: params => {
         // Ng init for AG GRID;
+        this.Isspotgridrefresh = true;
 
         this.gridOptions_counterparty.api = params.api;
         this.gridOptions_counterparty.columnApi = params.columnApi;
         this.gridOptions_counterparty.api.sizeColumnsToFit();
+        this.gridOptions_counterparty.api.selectAll();
         // this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
         this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         this.totalOfferHeaderWidth = params.columnApi
@@ -301,6 +308,38 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         customHeaderGroupComponent: ShiptechCustomHeaderGroup
       }
     };
+  }
+
+  SelectionChanged($event) { 
+    console.log("selection", $event); 
+    // this.gridOptions_counterparty.api.deselectAll();
+    if(this.Isspotgridrefresh){
+      if(this.gridOptions_counterparty.rowData.length-1 == $event.rowIndex){
+        this.Isspotgridrefresh = false;
+      }
+      
+      return;
+    }
+    // let selected = this.gridOptions_counterparty.api.getSelectedNodes();
+    //  this.gridOptions_counterparty.api.deselectAll();
+    //   _.each(selected, function(node) {
+
+    //       if(node.rowIndex == $event.rowIndex){
+    //         node.setSelected(true, true);
+    //         // node.data.checkProd1 =  true;
+    //         // node.data.checkProd2 =  true;
+    //         // node.data.checkProd3 =  true;
+    //       }
+    //       else{
+    //         // node.data.checkProd1 =  false;
+    //         // node.data.checkProd2 =  false;
+    //         // node.data.checkProd3 =  false;
+    //       }
+
+          
+    //   });
+  
+  
   }
 
   saveRowToCloud(updatedRow, product) {
@@ -459,15 +498,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           suppressMenu: true,
           width: 35,
 
-          //checkboxSelection: true,
+          checkboxSelection: true,
           resizable: false,
           suppressMovable: true,
-          headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
-          cellClass:
-            'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
+          // headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+          // cellClass:
+          //   'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
 
-          cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'mat-check-box' }
+          // cellRendererFramework: AGGridCellRendererV2Component,
+          // cellRendererParams: { type: 'mat-check-box' }
           //pinned: 'left'
         },
         {
@@ -779,7 +818,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       7;
   }
 
-  onRowSelected(e) {
+  onRowSelected(e:any) {
     // const itemsToUpdate = [];
     // this.gridOptions_counterparty.api.forEachNode((rowNode, index) => {
     //   rowNode.data.isSelected isSelected = false;
@@ -829,6 +868,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     return row;
 }
-  onSelectionChanged(e) {}
+
 
 }

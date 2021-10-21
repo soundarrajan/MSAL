@@ -46,6 +46,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   child: AgGridDatetimePickerToggleComponent;
 
   selectedSellerList: any[];
+  RequestGroupID: number;
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -88,9 +89,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return;
       // }
     } else {
+
+      this.RequestGroupID = 1213;
+      this.store.subscribe(({ spotNegotiation }) => {
+        this.RequestGroupID = spotNegotiation.currentRequestSmallInfo.RequestGroupId;
+
+      });
       this.selectedSellerList.push(Selectedfinaldata[0]);
       var FinalAPIdata = {
-        RequestGroupId: 1,
+        RequestGroupId: this.RequestGroupID,
         quoteByDate: new Date(),
         quoteByCurrencyId: 1,
         quoteByTimeZoneId: 1,
