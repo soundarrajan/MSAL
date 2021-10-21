@@ -202,9 +202,4 @@ export class ControlTowerQuantityRobDifferenceListComponent
       return null;
     }
   }
-
-  values() {
-    console.log('here');
-    this.gridViewModel.markServerSideDataSourceReady();
-  }
 }
