@@ -93,8 +93,12 @@ export class CustomDateAdapter extends MomentDateAdapter {
 })
 export class ControlTowerQuantityRobDifferenceListComponent
   implements OnInit, OnDestroy {
-  @Select(ControlTowerQuantityRobDifferenceListState.totalCount)
-  totalCount$: Observable<number>;
+  @Select(ControlTowerQuantityRobDifferenceListState.newCount)
+  newCount$: Observable<number>;
+  @Select(ControlTowerQuantityRobDifferenceListState.masCount)
+  markAsSeenCount$: Observable<number>;
+  @Select(ControlTowerQuantityRobDifferenceListState.resolvedCount)
+  resolvedCount$: Observable<number>;
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   public controlTowerQuantityRobDifferenceListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
   @Input() theme: boolean;

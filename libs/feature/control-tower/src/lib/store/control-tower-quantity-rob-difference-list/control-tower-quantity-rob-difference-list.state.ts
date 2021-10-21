@@ -30,26 +30,21 @@ export class ControlTowerQuantityRobDifferenceListState {
     return state.totalCount;
   }
 
-
   @Selector([ControlTowerQuantityRobDifferenceListState])
-  static nbOfMatched(
-    state: IControlTowerQuantityRobDifferenceListState
-  ): number {
-    return state.nbOfMatched;
+  static newCount(state: IControlTowerQuantityRobDifferenceListState): number {
+    return state.nbOfNewStatuses;
   }
 
   @Selector([ControlTowerQuantityRobDifferenceListState])
-  static nbOfMatchedWithinLimit(
-    state: IControlTowerQuantityRobDifferenceListState
-  ): number {
-    return state.nbOfMatchedWithinLimit;
+  static masCount(state: IControlTowerQuantityRobDifferenceListState): number {
+    return state.nbOfMarkedAsSeenStatuses;
   }
 
   @Selector([ControlTowerQuantityRobDifferenceListState])
-  static nbOfNotMatched(
+  static resolvedCount(
     state: IControlTowerQuantityRobDifferenceListState
   ): number {
-    return state.nbOfNotMatched;
+    return state.nbOfResolvedStatuses;
   }
 
   @Action(LoadControlTowerQuantityRobDifferenceListAction)
@@ -84,17 +79,17 @@ export class ControlTowerQuantityRobDifferenceListState {
       )
     ) {
       const {
-        nbOfMatched,
-        nbOfMatchedWithinLimit,
-        nbOfNotMatched,
+        nbOfNewStatuses,
+        nbOfMarkedAsSeenStatuses,
+        nbOfResolvedStatuses,
         totalCount
       } = <LoadControlTowerQuantityRobDifferenceListSuccessfulAction>action;
       patchState({
         _isLoading: false,
         _hasLoaded: true,
-        nbOfMatched,
-        nbOfMatchedWithinLimit,
-        nbOfNotMatched,
+        nbOfNewStatuses,
+        nbOfMarkedAsSeenStatuses,
+        nbOfResolvedStatuses,
         totalCount: totalCount
       });
     } else if (

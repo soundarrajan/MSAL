@@ -37,9 +37,9 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       new LoadControlTowerQuantityRobDifferenceListAction(gridRequest),
       response =>
         new LoadControlTowerQuantityRobDifferenceListSuccessfulAction(
-          response.nbOfMatched,
-          response.nbOfNotMatched,
-          response.nbOfMatchedWithinLimit,
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount,
           response.matchedCount
         ),
       LoadControlTowerQuantityRobDifferenceListFailedAction,
