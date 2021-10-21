@@ -122,10 +122,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       let selectedCounterparties = [];
 
       //current RequestGroupId
-      let RequestGroupId = parseInt(this.requestOptions.requestGroupId);
+      let RequestGroupId = parseInt(this.requestOptions[0].requestGroupId);
 
       //Looping through all the Request Locations
-      this.requestOptions.requestLocations.forEach(reqLoc => {
+      this.requestOptions[0].requestLocations.forEach(reqLoc => {
         let perLocationCtpys = this.selectedCounterparty.map(
           val =>
             <SpnegoAddCounterpartyModel>{

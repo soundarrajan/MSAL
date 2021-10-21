@@ -175,7 +175,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           lockPosition: true,
           pinned: 'left',
           headerClass: 'border-right',
-          field: 'phySupplier',
+          field: 'physicalSupplierCounterpartyName',
           width: 200,
           cellClass: 'line-seperator-pinned',
           cellRendererFramework: AGGridCellRendererV2Component,
@@ -305,6 +305,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   saveRowToCloud(updatedRow, product) {
     const productDetails = this.getRowProductDetails(updatedRow, product.id);
+    if (productDetails.id == null || productDetails.price == null) {
+      return;
+    }
     const payload = {
       Offers: [
         {
@@ -340,7 +343,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     //Change with new value
     switch (field) {
       case "offPrice":
-        productDetails.price = Number(newValue)
+        productDetails.price = Number(newValue.toString().replace(/,/g, ""))
         break;
 
       default:
@@ -826,7 +829,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     return row;
 }
-  onSelectionChanged(e) {
-  }
+  onSelectionChanged(e) {}
 
 }
