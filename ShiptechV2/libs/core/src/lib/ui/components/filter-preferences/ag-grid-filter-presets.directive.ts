@@ -42,6 +42,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   @Output() public eventName = new EventEmitter();
   @Output() presetsLoaded = new EventEmitter();
   private _destroy$: Subject<any> = new Subject();
+  activeFilter: boolean;
 
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
@@ -122,14 +123,16 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         finalize(() => {
           this.filterComponent.isLoading = false;
           this.filterComponent.refresh();
-          setTimeout(() => {
-            console.log('Presets loaded');
-            this.presetsLoaded.next();
-          }, 200);
+          // this.filterPresetsService.setGridFilterModel(groupId);
         }),
         takeUntil(this._destroy$)
       )
-      .subscribe();
+      .subscribe(() => {
+        setTimeout(() => {
+          console.log('Presets loaded');
+          this.presetsLoaded.next();
+        }, 500);
+      });
 
     // NOTE: When the service is notified by the component that contains the grid and directive to open the create new filter dialog
     // the service notifies the filter component to open it
@@ -247,6 +250,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         }
         this.filterPresetsService.setGridFilterModel(this.groupId);
         console.log('Set Grid Filter Model');
+        this.activeFilter = true;
       })
     );
 

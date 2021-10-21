@@ -109,7 +109,9 @@
               groupId="control-tower-quantity-rob-difference-v2-list-filter-presets"
               id="qc-report-list"
               gridId="v2-list-grid-8"
-              (presetsLoaded)="values()"
+              (presetsLoaded)="
+                this.gridViewModel.markServerSideDataSourceReady()
+              "
             ></app-filter-preferences>
           </div>
         </div>
