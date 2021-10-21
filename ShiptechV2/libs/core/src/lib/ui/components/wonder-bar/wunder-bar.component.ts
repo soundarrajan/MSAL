@@ -9,12 +9,16 @@ import { Router } from '@angular/router';
 })
 export class WunderBarComponent implements OnInit {
   isQcScreen: boolean = false;
+  isCtScreen: boolean = false;
   constructor(private router: Router) {
     if (
       this.router.url.includes('quantity-control') ||
       this.router.url.includes('control-tower')
     ) {
       this.isQcScreen = true;
+    }
+    if (this.router.url.includes('control-tower')) {
+      this.isCtScreen = true;
     }
   }
 
