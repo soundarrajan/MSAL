@@ -82,6 +82,7 @@
         </ng-template>
         <ng-container>
           <shiptech-control-tower-quantity-rob-difference-list
+            *ngIf="gridTitle == 'ROB Difference'"
             [theme]="theme"
             [newScreen]="newScreen"
           ></shiptech-control-tower-quantity-rob-difference-list>
