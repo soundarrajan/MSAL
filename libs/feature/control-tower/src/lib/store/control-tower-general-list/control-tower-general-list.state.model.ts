@@ -2,7 +2,7 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 import { DefaultPageSize } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { BaseModel } from '../report/models/base.sub-state';
 
-export class ControlTowerQuantityRobDifferenceListStateModel extends BaseModel {
+export class ControlTowerListStateModel extends BaseModel {
   gridInfo: IServerGridInfo = {
     pagination: { skip: 0, take: DefaultPageSize }
   };
@@ -12,13 +12,10 @@ export class ControlTowerQuantityRobDifferenceListStateModel extends BaseModel {
   nbOfResolvedStatuses: number;
   totalCount: number;
 
-  constructor(
-    state: Partial<ControlTowerQuantityRobDifferenceListStateModel> = {}
-  ) {
+  constructor(state: Partial<ControlTowerListStateModel> = {}) {
     super();
     Object.assign(this, state);
   }
 }
 
-export interface IControlTowerQuantityRobDifferenceListState
-  extends ControlTowerQuantityRobDifferenceListStateModel {}
+export interface IControlTowerListState extends ControlTowerListStateModel {}

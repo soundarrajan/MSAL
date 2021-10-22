@@ -18,10 +18,50 @@ export interface IControlTowerQuantityRobDifferenceItemDto {
   status: IDisplayLookupDto;
 }
 
-export interface IGetControlTowerQuantityRobDifferenceListRequest
-  extends IServerGridInfo {}
+export interface IControlTowerQuantitySupplyRobDifferenceItemDto {
+  id: number;
+  order: IDisplayLookupDto;
+  orderProductId: number;
+  delivery: IDisplayLookupDto;
+  invoice: IDisplayLookupDto;
+  documentNo: number;
+  customStatus: IDisplayLookupDto;
+  buyer: IDisplayLookupDto;
+  supplier: IDisplayLookupDto;
+  vessel: IDisplayLookupDto;
+  carrierCompany: IDisplayLookupDto;
+  paymentCompany: IDisplayLookupDto;
+  agreementType: IDisplayLookupDto;
+  port: IDisplayLookupDto;
+  eta: string;
+  deliveryDate: string;
+  line: IDisplayLookupDto;
+  product: IDisplayLookupDto;
+  invoiceQuantity: number;
+  price: number;
+  sumOfCosts: number;
+  invoiceAmount: number;
+  confirmedQuantity: number;
+  orderPrice: number;
+  orderAmount: number;
+  invoiceStatus: IScheduleDashboardLabelConfigurationDto;
+  dueDate: string;
+  workingDueDate: string;
+  paymentDate: string;
+  receivedDate: string;
+  approvedDate: string;
+  backOfficeComments: string;
+  orderStatus: IScheduleDashboardLabelConfigurationDto;
+  productType: IDisplayLookupDto;
+  invoiceApprovalStatus: IScheduleDashboardLabelConfigurationDto;
+}
+export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
   payload: IControlTowerQuantityRobDifferenceItemDto[];
+  matchedCount: number;
+}
+export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
+  payload: IControlTowerQuantitySupplyRobDifferenceItemDto[];
   matchedCount: number;
 }
