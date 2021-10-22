@@ -34,6 +34,9 @@ import { takeUntil } from 'rxjs/operators';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { IDeliveryTenantSettings } from '../../../core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 
 function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
   return prop;
@@ -200,9 +203,9 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyle(
+      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffRobBeforeDelivery,
-        params.data?.qtyBeforeDeliveryUom
+        this.robTolerance
       ),
     width: 140
   };
@@ -245,9 +248,9 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyle(
+      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffDeliveredQty,
-        params.data?.qtyDeliveredUom
+        this.bdnTolerance
       )
   };
 
@@ -286,10 +289,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyle(
-        params.data?.diffRobAfterDelivery,
-        params?.data?.qtyAfterDeliveryUom
-      )
+      this.getMatchStatusForRobAfterDiff(params.data?.diffRobAfterDelivery, 0)
   };
 
   qtyAfterDeliveryUomCol: ITypedColDef<
@@ -339,9 +339,9 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyleSecond(
+      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffSludgeRobBeforeDischarge,
-        params?.data?.qtySludgeDischargedUom
+        this.robTolerance
       )
   };
 
@@ -391,6 +391,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       ...BooleanFilterParams
     }
   };
+  private readonly robTolerance;
+  private readonly bdnTolerance;
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -400,7 +402,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     private reconStatusLookups: ReconStatusLookup,
     private reportService: QcReportService,
     private appErrorHandler: AppErrorHandler,
-    private statusLookup: StatusLookup
+    private statusLookup: StatusLookup,
+    tenantSettings: TenantSettingsService
   ) {
     super(
       'quantity-control-grid',
@@ -408,7 +411,15 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       changeDetector,
       loggerFactory.createLogger(QcReportsListGridViewModel.name)
     );
+
     this.init(this.gridOptions, true);
+
+    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<
+      IDeliveryTenantSettings
+    >(TenantSettingsModuleName.Delivery);
+
+    this.robTolerance = deliveryTenantSettings.robTolerance;
+    this.bdnTolerance = deliveryTenantSettings.maxToleranceLimit;
   }
 
   getColumnsDefs(): ITypedColDef[] {
@@ -469,6 +480,50 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
           params.failCallback();
         }
       );
+  }
+
+  private toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+    value: number,
+    tolerance: number
+  ): Partial<CSSStyleDeclaration> {
+    if (value === null || value === undefined)
+      return {
+        backgroundColor: 'inherit',
+        color: 'inherit'
+      };
+
+    let status = this.reconStatusLookups.matched;
+
+    if (Math.abs(value) > tolerance)
+      status = this.reconStatusLookups.notMatched;
+    if (Math.abs(value) <= tolerance) status = this.reconStatusLookups.matched;
+
+    return {
+      backgroundColor: status.code,
+      color: '#fff'
+    };
+  }
+
+  public getMatchStatusForRobAfterDiff(
+    value: number,
+    tolerance: number
+  ): Partial<CSSStyleDeclaration> {
+    if (value === null || value === undefined)
+      return {
+        backgroundColor: 'inherit',
+        color: 'inherit'
+      };
+
+    let status = this.reconStatusLookups.matched;
+
+    if (Math.abs(value) != 0) status = this.reconStatusLookups.notMatched;
+
+    if (Math.abs(value) == tolerance) status = this.reconStatusLookups.matched;
+
+    return {
+      backgroundColor: status.code,
+      color: '#fff'
+    };
   }
 
   private toleranceMatchStyle(
