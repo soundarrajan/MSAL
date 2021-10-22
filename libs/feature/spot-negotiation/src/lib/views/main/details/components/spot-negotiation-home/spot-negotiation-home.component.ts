@@ -90,9 +90,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       // }
     } else {
 
-      this.RequestGroupID = 1213;
+
       this.store.subscribe(({ spotNegotiation }) => {
-        this.RequestGroupID = spotNegotiation.currentRequestSmallInfo.RequestGroupId;
+        this.RequestGroupID = spotNegotiation.currentRequestSmallInfo.requestGroupId;
 
       });
       this.selectedSellerList.push(Selectedfinaldata[0]);
@@ -275,11 +275,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     return [
       {
-        RequestLocationSellerId: Seller.sellerCounterpartyId,
+        RequestLocationSellerId: Seller.id,
+        SellerId:Seller.sellerCounterpartyId,
         RequestLocationID: Seller.locationId,
         RequestId: Request.id,
         physicalSupplierCounterpartyId: 11,
-        RequestProductIds: [parseInt(selectedproduct)]
+        RequestProductIds: [selectedproduct]
       }
     ];
   }

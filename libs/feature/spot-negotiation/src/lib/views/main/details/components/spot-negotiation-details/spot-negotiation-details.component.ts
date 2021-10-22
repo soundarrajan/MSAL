@@ -320,15 +320,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       
       return;
     }
+
+    // this.spotNegotiationService.FinalSeletedRSellerRow = [];
     // let selected = this.gridOptions_counterparty.api.getSelectedNodes();
     //  this.gridOptions_counterparty.api.deselectAll();
     //   _.each(selected, function(node) {
 
     //       if(node.rowIndex == $event.rowIndex){
     //         node.setSelected(true, true);
-    //         // node.data.checkProd1 =  true;
-    //         // node.data.checkProd2 =  true;
-    //         // node.data.checkProd3 =  true;
+    //        // this.spotNegotiationService.FinalSeletedRSellerRow.push(node.data);
+
     //       }
     //       else{
     //         // node.data.checkProd1 =  false;
