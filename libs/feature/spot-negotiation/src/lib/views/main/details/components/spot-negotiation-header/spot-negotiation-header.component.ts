@@ -81,14 +81,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
-        this.locations = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
-          this.locations =
-            spotNegotiation.currentRequestSmallInfo.requestLocations;
-          if (
-            this.counterpartyList.length === 0 &&
-            spotNegotiation.counterpartyList
-          ) {
+          this.locations = spotNegotiation.currentRequestSmallInfo.requestLocations;
+          if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
             this.counterpartyList = spotNegotiation.counterpartyList;
             this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
           }

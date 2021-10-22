@@ -106,7 +106,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // row.checkProd5 = true;
       let val = "Checkprod" + index;
       row[val] = true
-      
+
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
@@ -137,7 +137,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   getGroupOfSellers(): void {
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
-    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
 
     // Get response from server and populate store
     const response = this.spotNegotiationService.getGroupOfSellers(
@@ -160,9 +159,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         );
 
         responseGetPriceDetails.subscribe((priceDetailsRes: any) => {
-          this.store.dispatch(
-            new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
-          );
+
+          // this.store.dispatch(
+          //   new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
+          // );
 
           const futureLocationsRows = this.getLocationRowsWithPriceDetails(
             res['requestLocationSellers'],

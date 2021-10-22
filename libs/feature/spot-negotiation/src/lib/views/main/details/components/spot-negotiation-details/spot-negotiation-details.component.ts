@@ -2,14 +2,10 @@ import { DatePipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Inject,
-  Input,
   OnInit,
-  ViewChild
 } from '@angular/core';
 import _ from 'lodash';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -21,26 +17,21 @@ import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-
 import { SpotNegotiationService } from '../../../../../services/spot-negotiation.service';
 import {
   EditLocationRow,
-  SetCounterpartyList,
-  SetLocationsRows,
-  SetStaticLists
+  SetCounterpartyList
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
-import { iif, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-spot-negotiation-details',
   templateUrl: './spot-negotiation-details.component.html',
   styleUrls: ['./spot-negotiation-details.component.css']
 })
+
 export class SpotNegotiationDetailsComponent implements OnInit {
-  @ViewChild('inputSection') inputSection: ElementRef;
-  today = new FormControl(new Date());
   locations = [];
 
-  public ETASelect: any;
   public gridOptions_counterparty: GridOptions;
-  public gridOptions_details: GridOptions;
   public rowCount: Number;
   public counterpartyHeaderWidth;
   public expandGridHeaderWidth;
@@ -50,19 +41,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   rowData_aggrid: any = [];
   locationsRows: any = [];
   currentRequestSmallInfo = {};
-  agGridLoaded = false;
-  public grid1Width = {
-    width: '100%'
-  };
-
-  // highlightedCells = {
-  //   12: { <- Location id
-  //     totalOffer: 612,
-  //     123: { <- Product id
-  //       totalPrice: 152,
-  //     }
-  //   }
-  // };
   highlightedCells = {};
 
   context: any;
@@ -222,12 +200,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   rowSelection: string;
   Isspotgridrefresh: boolean;
 
-  //   ngAfterViewInit() {
-  //     setTimeout(()=>{
-  //         this.inputSection.nativeElement.focus();
-  //       },3000);
-  // }
-
   constructor(
     @Inject(DOCUMENT) private _document: HTMLDocument,
     private datePipe: DatePipe,
@@ -238,10 +210,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private toastr: ToastrService
   ) {
+
     this.context = { componentParent: this };
-   // this.rowSelection = 'multiple';
     this.gridOptions_counterparty = <GridOptions>{
-      enableColResize: true,
+      resizable: true,
       rowSelection: 'single',
       defaultColDef: {
         flex: 1,
@@ -274,6 +246,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       animateRows: false,
       onFirstDataRendered(params) {
         params.api.sizeColumnsToFit();
+        params.api.hideOverlay();
       },
       onGridReady: params => {
         // Ng init for AG GRID;
@@ -288,6 +261,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
+        this.gridOptions_counterparty.api.showLoadingOverlay();
       },
 
       onColumnResized: function(params) {
@@ -310,8 +284,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
   }
 
-  SelectionChanged($event) {
-    console.log("selection", $event);
+  selectionChanged($event) {
     // this.gridOptions_counterparty.api.deselectAll();
     if(this.Isspotgridrefresh){
       if(this.gridOptions_counterparty.rowData.length-1 == $event.rowIndex){
@@ -320,27 +293,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       return;
     }
-
-    // this.spotNegotiationService.FinalSeletedRSellerRow = [];
-    // let selected = this.gridOptions_counterparty.api.getSelectedNodes();
-    //  this.gridOptions_counterparty.api.deselectAll();
-    //   _.each(selected, function(node) {
-
-    //       if(node.rowIndex == $event.rowIndex){
-    //         node.setSelected(true, true);
-    //        // this.spotNegotiationService.FinalSeletedRSellerRow.push(node.data);
-
-    //       }
-    //       else{
-    //         // node.data.checkProd1 =  false;
-    //         // node.data.checkProd2 =  false;
-    //         // node.data.checkProd3 =  false;
-    //       }
-
-
-    //   });
-
-
   }
 
   saveRowToCloud(updatedRow, product) {
@@ -514,7 +466,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerTooltip: 'Offer price',
           field: `offPrice`,
           product: product,
-          width: 260,
+          width: 100,
+          minWidth: 100,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
           valueGetter: params => {
@@ -526,7 +479,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             type: 'price-calc',
             product: product,
             cellClass: ''
-          }
+          },
+          suppressSizeToFit: true
         },
         {
           headerName: 'T.Pr.($)',
@@ -700,10 +654,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
 
       // Set locations;
-      if (
-        !spotNegotiation.locations.length ||
-        !spotNegotiation.locationsRows.length
-      ) {
+      if (!spotNegotiation.locations.length
+        // || !spotNegotiation.locationsRows.length
+        ) {
         return null;
       }
 
