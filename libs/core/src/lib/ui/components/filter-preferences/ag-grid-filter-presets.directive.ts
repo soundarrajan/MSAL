@@ -2,6 +2,7 @@ import {
   Attribute,
   Directive,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Optional,
@@ -44,12 +45,11 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   private _destroy$: Subject<any> = new Subject();
   activeFilter: boolean;
   autoSaveInterval: any;
-
+  @Input() groupId: string;
+  @Input() gridId: string;
+  @Input() id: string;
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
-    @Attribute('id') private elementId: string,
-    @Attribute('groupId') private groupId: string,
-    @Attribute('gridId') private gridId: string,
     @Optional() private agGrid: AgGridAngular,
     @Optional() private filterComponent: FilterPreferencesComponent
   ) {}
@@ -213,7 +213,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         mergeMap(presets => {
           if (
             !this.filterPresetsService.gridApis[groupId] &&
-            !this.filterPresetsService.gridApis[groupId][this.elementId]
+            !this.filterPresetsService.gridApis[groupId][this.id]
           ) {
             return throwError('The gridApi is not loaded yet');
           }
@@ -280,13 +280,15 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
             : SKIP$
         ),
         // Note: We are registering the the grid apis so we can use them in the service to get the filter model or set the filter model
-        tap(() =>
+        tap(() => {
+          console.log(this.id);
+          console.log(this.groupId);
           this.filterPresetsService.registerGrid(
             this.groupId,
-            this.elementId,
+            this.id,
             () => this.agGrid.api
-          )
-        ),
+          );
+        }),
         // Note: Using common stream to process initial filter set events and filter change events a
         mergeMap(() => merge(setSavedPreset$, processFilterChange$)),
         takeUntil(this._destroy$)
@@ -303,7 +305,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   private onGridFilterChanged(event: FilterChangedEvent): void {
     this.filterPresetsService.emitFiltersChanged({
       groupId: this.groupId,
-      gridId: this.elementId,
+      gridId: this.id,
       filterPreset: <FilterPreferenceViewModel>event.api.getFilterModel()
     });
   }

@@ -89,6 +89,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
   templateUrl: './control-tower-general-view-list.component.html',
   providers: [
     ControlTowerQuantityRobDifferenceListGridViewModel,
+    ControlTowerQuantitySupplyDifferenceListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
@@ -106,6 +107,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   @Input() theme: boolean;
   @Input() newScreen: boolean;
 
+  @Input() gridId: string = '';
+  @Input() groupId: string = '';
+  elementId = 'qc-report-list';
   private _destroy$ = new Subject();
 
   public switchTheme: boolean = true;
@@ -117,8 +121,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   private _autocompleteType: any;
   autocompleteOrders: string;
   controlTowerListServerKeys: any;
-  gridId: string;
-  groupId: string;
 
   get selectorType(): string {
     return this._selectorType;
@@ -158,9 +160,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           ControlTowerQuantityRobDifferenceListGridViewModel
         );
         this.controlTowerListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
-        this.groupId =
-          'control-tower-quantity-rob-difference-v2-list-filter-presets';
-        this.gridId = 'v2-list-grid-8';
         break;
       }
       case 'Quantity Supply Difference': {

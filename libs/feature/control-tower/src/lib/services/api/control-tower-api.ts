@@ -18,9 +18,9 @@ export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityRobDifferenceListExportUrl = () =>
     `api/labs/export`;
   export const getControlTowerQuantitySupplyDifferenceList = () =>
-    `api/invoice/list`;
+    `api/labs/list`;
   export const getControlTowerQuantitySupplyDifferenceListExportUrl = () =>
-    `api/invoice/export`;
+    `api/labs/export`;
 }
 
 @Injectable({
@@ -29,9 +29,6 @@ export namespace ControlTowerApiPaths {
 export class ControlTowerApi implements IControlTowerApiService {
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_LABS;
-
-  @ApiCallUrl()
-  private _invoiceUrl = this.appConfig.v1.API.BASE_URL_DATA_INVOICES;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -59,7 +56,7 @@ export class ControlTowerApi implements IControlTowerApiService {
   ): Observable<IGetControlTowerQuantitySupplyDifferenceListResponse> {
     return this.http.post<IGetControlTowerQuantitySupplyDifferenceListResponse>(
       `${
-        this._invoiceUrl
+        this._apiUrl
       }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceList()}`,
       { payload: request }
     );
@@ -67,7 +64,7 @@ export class ControlTowerApi implements IControlTowerApiService {
 
   getControlTowerQuantitySupplyDifferenceListExportUrl(): string {
     return `${
-      this._invoiceUrl
+      this._apiUrl
     }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceListExportUrl()}`;
   }
 }
