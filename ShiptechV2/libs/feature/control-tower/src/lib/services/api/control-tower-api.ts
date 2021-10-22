@@ -8,14 +8,19 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 import { catchError, map } from 'rxjs/operators';
 import { IControlTowerApiService } from './control-tower.api.service.interface';
 import {
-  IGetControlTowerQuantityRobDifferenceListRequest,
-  IGetControlTowerQuantityRobDifferenceListResponse
+  IGetControlTowerListRequest,
+  IGetControlTowerQuantityRobDifferenceListResponse,
+  IGetControlTowerQuantitySupplyDifferenceListResponse
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityRobDifferenceList = () => `api/labs/list`;
   export const getControlTowerQuantityRobDifferenceListExportUrl = () =>
     `api/labs/export`;
+  export const getControlTowerQuantitySupplyDifferenceList = () =>
+    `api/invoice/list`;
+  export const getControlTowerQuantitySupplyDifferenceListExportUrl = () =>
+    `api/invoice/export`;
 }
 
 @Injectable({
@@ -25,11 +30,14 @@ export class ControlTowerApi implements IControlTowerApiService {
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_LABS;
 
+  @ApiCallUrl()
+  private _invoiceUrl = this.appConfig.v1.API.BASE_URL_DATA_INVOICES;
+
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
   @ObservableException()
   getControlTowerQuantityRobDifferenceList(
-    request: IGetControlTowerQuantityRobDifferenceListRequest
+    request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantityRobDifferenceListResponse> {
     return this.http.post<IGetControlTowerQuantityRobDifferenceListResponse>(
       `${
@@ -43,6 +51,24 @@ export class ControlTowerApi implements IControlTowerApiService {
     return `${
       this._apiUrl
     }/${ControlTowerApiPaths.getControlTowerQuantityRobDifferenceListExportUrl()}`;
+  }
+
+  @ObservableException()
+  getControlTowerQuantitySupplyDifferenceList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerQuantitySupplyDifferenceListResponse> {
+    return this.http.post<IGetControlTowerQuantitySupplyDifferenceListResponse>(
+      `${
+        this._invoiceUrl
+      }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceList()}`,
+      { payload: request }
+    );
+  }
+
+  getControlTowerQuantitySupplyDifferenceListExportUrl(): string {
+    return `${
+      this._invoiceUrl
+    }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceListExportUrl()}`;
   }
 }
 
