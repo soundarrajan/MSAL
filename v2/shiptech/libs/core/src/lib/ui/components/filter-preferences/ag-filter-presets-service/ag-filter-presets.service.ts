@@ -175,8 +175,8 @@ export class AgGridFilterPresetsService implements OnDestroy {
             activeFilter.filterModels[key]
           );
         }
-        this.activeFilter = true;
       });
+      this.activeFilter = true;
     }
   }
 
