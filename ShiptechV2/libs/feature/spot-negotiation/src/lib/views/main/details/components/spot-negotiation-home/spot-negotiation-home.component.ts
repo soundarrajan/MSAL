@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
 import {
   Component,
@@ -6,7 +7,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AgGridDatetimePickerToggleComponent } from '../../../../../core/ag-grid/ag-grid-datetimePicker-Toggle';
@@ -28,7 +28,6 @@ import {
 })
 export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
-  today = new FormControl(new Date());
   navBar: any;
   requestOptions = [
     {
@@ -53,6 +52,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     private toaster: ToastrService,
     private changeDetector: ChangeDetectorRef,
     private store: Store,
+    private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService
   ) {}
 
@@ -101,9 +101,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
         selectedSellers: this.selectedSellerList
       };
     }
+
+    this.spinner.show();
     // Get response from server
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
+      this.spinner.hide();
       this.toaster.success('RFQ(s) sent successfully.');
       if (res.message) {
         this.toaster.warning(res.message);
