@@ -46,7 +46,6 @@ function model(
 export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGridViewModel {
   public searchText: string;
   public exportUrl: string;
-  public numberOfNewProgress: number;
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
@@ -308,7 +307,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'v2-list-grid-8',
+      'control-tower-quantity-rob-list-grid-1',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -451,7 +450,6 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          this.numberOfNewProgress = response.matchedCount;
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {

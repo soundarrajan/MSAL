@@ -249,7 +249,6 @@ import { ControlTowerGeneralListComponent } from './views/control-tower/view/com
     MessageService,
     ConfirmationService,
     ControlTowerService
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+  ]
 })
 export class ControlTowerModule {}
