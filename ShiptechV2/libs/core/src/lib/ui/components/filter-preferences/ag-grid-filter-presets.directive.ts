@@ -64,12 +64,15 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   }
 
   addedLastSevenDaysByDefault() {
-    let gridIds = ['v2-list-grid-8'];
-    if (gridIds.indexOf(this.gridId) != -1) {
+    let gridIds = [
+      'control-tower-quantity-rob-list-grid-1',
+      'control-tower-quantity-supply-list-grid-1'
+    ];
+    if (gridIds.indexOf(this.id) != -1) {
       for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
         if (this.filterComponent.filterPresets[i].filterModels) {
           let filters = this.filterComponent.filterPresets[i].filterModels[
-            this.gridId
+            this.id
           ];
           if (filters) {
             for (let [key, value] of Object.entries(filters)) {
@@ -77,7 +80,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
                 return;
               }
             }
-            this.filterComponent.filterPresets[i].filterModels[this.gridId][
+            this.filterComponent.filterPresets[i].filterModels[this.id][
               'createdOn'
             ] = {
               dateFrom: moment()
@@ -88,7 +91,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
               filterType: 'date'
             };
           } else {
-            this.filterComponent.filterPresets[i].filterModels[this.gridId] = {
+            this.filterComponent.filterPresets[i].filterModels[this.id] = {
               createdOn: {
                 dateFrom: moment()
                   .subtract(7, 'months')
