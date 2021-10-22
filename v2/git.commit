@@ -1,9 +1,9 @@
-﻿commit a1d3f691e95c9d08c875b508afbb62c7c46ab178
+﻿commit 751208c006a6b98470d85bf8d9821b06c2d22fe9
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Oct 21 13:34:55 2021 +0000
+Date:   Fri Oct 22 08:51:09 2021 +0000
 
-    Merged PR 14232: Worked on Quantity View: ROB Difference  from control tower
+    Merged PR 14242: Added control-tower-general-list component
     
-    Worked on control tower
+    Related work items: #33331
 
 branch: master

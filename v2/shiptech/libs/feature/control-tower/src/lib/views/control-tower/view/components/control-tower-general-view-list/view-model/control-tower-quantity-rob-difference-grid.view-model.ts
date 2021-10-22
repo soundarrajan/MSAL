@@ -24,16 +24,17 @@ import { ModuleLoggerFactory } from 'libs/feature/control-tower/src/lib/core/log
 import { ModuleError } from 'libs/feature/control-tower/src/lib/core/error-handling/module-error';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-async-status/ag-grid-cell-async-status.component';
+
+import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
+import { IControlTowerQuantityRobDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
+import { FormControl } from '@angular/forms';
+import moment from 'moment';
 import {
   ControlTowerQuantityRobDifferenceListColumns,
   ControlTowerQuantityRobDifferenceListColumnServerKeys,
   ControlTowerQuantityRobDifferenceListColumnsLabels,
   ControlTowerQuantityRobDifferenceListExportColumns
-} from './control-tower-quantity-rob-difference-list.columns';
-import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
-import { IControlTowerQuantityRobDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
-import { FormControl } from '@angular/forms';
-import moment from 'moment';
+} from '../list-columns/control-tower-quantity-rob-difference-list.columns';
 
 function model(
   prop: keyof IControlTowerQuantityRobDifferenceItemDto
@@ -45,7 +46,6 @@ function model(
 export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGridViewModel {
   public searchText: string;
   public exportUrl: string;
-  public numberOfNewProgress: number;
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
@@ -307,7 +307,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'v2-list-grid-8',
+      'control-tower-quantity-rob-list-grid-1',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -450,7 +450,6 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          this.numberOfNewProgress = response.matchedCount;
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {

@@ -7,14 +7,17 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { CONTROL_TOWER_API_SERVICE } from './api/control-tower-api';
 import { IControlTowerApiService } from './api/control-tower.api.service.interface';
-import { IGetControlTowerQuantityRobDifferenceListResponse } from './api/dto/control-tower-list-item.dto';
+import {
+  IGetControlTowerQuantityRobDifferenceListResponse,
+  IGetControlTowerQuantitySupplyDifferenceListResponse
+} from './api/dto/control-tower-list-item.dto';
 
 import { ModuleError } from '../core/error-handling/module-error';
 import {
-  LoadControlTowerQuantityRobDifferenceListAction,
-  LoadControlTowerQuantityRobDifferenceListFailedAction,
-  LoadControlTowerQuantityRobDifferenceListSuccessfulAction
-} from '../store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.actions';
+  LoadControlTowerListAction,
+  LoadControlTowerListFailedAction,
+  LoadControlTowerListSuccessfulAction
+} from '../store/control-tower-general-list/control-tower-general-list.actions';
 
 @Injectable()
 export class ControlTowerService extends BaseStoreService implements OnDestroy {
@@ -34,15 +37,15 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
     return this.apiDispatch(
       () =>
         this.api.getControlTowerQuantityRobDifferenceList({ ...gridRequest }),
-      new LoadControlTowerQuantityRobDifferenceListAction(gridRequest),
+      new LoadControlTowerListAction(gridRequest),
       response =>
-        new LoadControlTowerQuantityRobDifferenceListSuccessfulAction(
-          response.nbOfMatched,
-          response.nbOfNotMatched,
-          response.nbOfMatchedWithinLimit,
+        new LoadControlTowerListSuccessfulAction(
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount,
           response.matchedCount
         ),
-      LoadControlTowerQuantityRobDifferenceListFailedAction,
+      LoadControlTowerListFailedAction,
       ModuleError.LoadControlTowerQuantityRobDifferenceFailed
     );
   }
@@ -50,6 +53,33 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getControlTowerQuantityRobDifferenceListExportUrl(): string {
     return this.api.getControlTowerQuantityRobDifferenceListExportUrl();
+  }
+
+  @ObservableException()
+  getControlTowerQuantitySupplyDifferenceList$(
+    gridRequest: IServerGridInfo
+  ): Observable<IGetControlTowerQuantitySupplyDifferenceListResponse> {
+    return this.apiDispatch(
+      () =>
+        this.api.getControlTowerQuantitySupplyDifferenceList({
+          ...gridRequest
+        }),
+      new LoadControlTowerListAction(gridRequest),
+      response =>
+        new LoadControlTowerListSuccessfulAction(
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount
+        ),
+      LoadControlTowerListFailedAction,
+      ModuleError.LoadControlTowerQuantitySupplyDifferenceFailed
+    );
+  }
+
+  @ObservableException()
+  getControlTowerQuantitySupplyDifferenceListExportUrl(): string {
+    return this.api.getControlTowerQuantitySupplyDifferenceListExportUrl();
   }
 
   ngOnDestroy(): void {

@@ -8,13 +8,18 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 import { catchError, map } from 'rxjs/operators';
 import { IControlTowerApiService } from './control-tower.api.service.interface';
 import {
-  IGetControlTowerQuantityRobDifferenceListRequest,
-  IGetControlTowerQuantityRobDifferenceListResponse
+  IGetControlTowerListRequest,
+  IGetControlTowerQuantityRobDifferenceListResponse,
+  IGetControlTowerQuantitySupplyDifferenceListResponse
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityRobDifferenceList = () => `api/labs/list`;
   export const getControlTowerQuantityRobDifferenceListExportUrl = () =>
+    `api/labs/export`;
+  export const getControlTowerQuantitySupplyDifferenceList = () =>
+    `api/labs/list`;
+  export const getControlTowerQuantitySupplyDifferenceListExportUrl = () =>
     `api/labs/export`;
 }
 
@@ -29,7 +34,7 @@ export class ControlTowerApi implements IControlTowerApiService {
 
   @ObservableException()
   getControlTowerQuantityRobDifferenceList(
-    request: IGetControlTowerQuantityRobDifferenceListRequest
+    request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantityRobDifferenceListResponse> {
     return this.http.post<IGetControlTowerQuantityRobDifferenceListResponse>(
       `${
@@ -43,6 +48,24 @@ export class ControlTowerApi implements IControlTowerApiService {
     return `${
       this._apiUrl
     }/${ControlTowerApiPaths.getControlTowerQuantityRobDifferenceListExportUrl()}`;
+  }
+
+  @ObservableException()
+  getControlTowerQuantitySupplyDifferenceList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerQuantitySupplyDifferenceListResponse> {
+    return this.http.post<IGetControlTowerQuantitySupplyDifferenceListResponse>(
+      `${
+        this._apiUrl
+      }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceList()}`,
+      { payload: request }
+    );
+  }
+
+  getControlTowerQuantitySupplyDifferenceListExportUrl(): string {
+    return `${
+      this._apiUrl
+    }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceListExportUrl()}`;
   }
 }
 

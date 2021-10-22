@@ -81,11 +81,16 @@
           </div>
         </ng-template>
         <ng-container>
-          <shiptech-control-tower-quantity-rob-difference-list
+          <shiptech-control-tower-general-view-list
             *ngIf="gridTitle === 'ROB Difference'"
+            [selectorType]="'Quantity ROB Difference'"
+            [groupId]="
+              'control-tower-quantity-rob-difference-v2-list-filter-presets-1'
+            "
+            [gridId]="'control-tower-quantity-rob-list-grid-1'"
             [theme]="theme"
             [newScreen]="newScreen"
-          ></shiptech-control-tower-quantity-rob-difference-list>
+          ></shiptech-control-tower-general-view-list>
         </ng-container>
       </mat-tab>
       <mat-tab>
@@ -99,11 +104,16 @@
           </div>
         </ng-template>
         <ng-container>
-          <shiptech-control-tower-quantity-rob-difference-list
-            *ngIf="gridTitle !== 'ROB Difference'"
+          <shiptech-control-tower-general-view-list
+            *ngIf="gridTitle === 'Supply Difference'"
+            [selectorType]="'Quantity Supply Difference'"
+            [groupId]="
+              'control-tower-quantity-supply-difference-v2-list-filter-presets-1'
+            "
+            [gridId]="'control-tower-quantity-supply-list-grid-1'"
             [theme]="theme"
             [newScreen]="newScreen"
-          ></shiptech-control-tower-quantity-rob-difference-list>
+          ></shiptech-control-tower-general-view-list>
         </ng-container>
       </mat-tab>
     </mat-tab-group>
