@@ -310,14 +310,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
   }
 
-  SelectionChanged($event) { 
-    console.log("selection", $event); 
+  SelectionChanged($event) {
+    console.log("selection", $event);
     // this.gridOptions_counterparty.api.deselectAll();
     if(this.Isspotgridrefresh){
       if(this.gridOptions_counterparty.rowData.length-1 == $event.rowIndex){
         this.Isspotgridrefresh = false;
       }
-      
+
       return;
     }
 
@@ -337,10 +337,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     //         // node.data.checkProd3 =  false;
     //       }
 
-          
+
     //   });
-  
-  
+
+
   }
 
   saveRowToCloud(updatedRow, product) {
@@ -369,10 +369,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       if (res.status) {
-        this.toastr.success(res.message);
+        this.toastr.success('Price update successful.');
       } else {
-      this.toastr.error(res.message);
-      return;
+        this.toastr.error(res.message);
+        return;
       }
      });
   }
@@ -498,7 +498,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           filter: true,
           suppressMenu: true,
           width: 35,
-
           checkboxSelection: true,
           resizable: false,
           suppressMovable: true,

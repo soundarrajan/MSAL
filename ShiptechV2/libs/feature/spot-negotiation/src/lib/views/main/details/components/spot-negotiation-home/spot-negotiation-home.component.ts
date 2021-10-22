@@ -89,13 +89,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return;
       // }
     } else {
-
-
       this.store.subscribe(({ spotNegotiation }) => {
         this.RequestGroupID = spotNegotiation.currentRequestSmallInfo.requestGroupId;
-
       });
-      this.selectedSellerList.push(Selectedfinaldata[0]);
+      // this.selectedSellerList.push(Selectedfinaldata[0]);
       var FinalAPIdata = {
         RequestGroupId: this.RequestGroupID,
         quoteByDate: new Date(),
@@ -107,48 +104,41 @@ export class SpotNegotiationHomeComponent implements OnInit {
     // Get response from server
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
-
-      // TODO DEMO | Please check this (the response doesn't has a status code);
+      this.toaster.success('RFQ(s) sent successfully.');
       if (res.message) {
-        this.toaster.success(res.message);
-
-        // Define
-        const locationsRows = this.store.selectSnapshot<string>(
-          (state: any) => {
-            return state.spotNegotiation.locationsRows;
-          }
-        );
-
-        const requestGroupID = this.store.selectSnapshot<string>(
-          (state: any) => {
-            return state.spotNegotiation.groupOfRequestsId;
-          }
-        );
-
-        // Here make getpricedetails get one more time;
-        const responseGetPriceDetails = this.spotNegotiationService.getPriceDetails(
-          requestGroupID
-        );
-
-        responseGetPriceDetails.subscribe((priceDetailsRes: any) => {
-          this.store.dispatch(
-            new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
-          );
-
-          const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-            JSON.parse(JSON.stringify(locationsRows)),
-            priceDetailsRes['sellerOffers']
-          );
-          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-        });
-
-        this.changeDetector.detectChanges();
-
-        // Until here
-      } else {
-        this.toaster.error(res.message);
-        return;
+        this.toaster.warning(res.message);
       }
+
+      const locationsRows = this.store.selectSnapshot<string>(
+        (state: any) => {
+          return state.spotNegotiation.locationsRows;
+        }
+      );
+
+      const requestGroupID = this.store.selectSnapshot<string>(
+        (state: any) => {
+          return state.spotNegotiation.groupOfRequestsId;
+        }
+      );
+
+      // Here make getpricedetails get one more time;
+      const responseGetPriceDetails = this.spotNegotiationService.getPriceDetails(
+        requestGroupID
+      );
+
+      responseGetPriceDetails.subscribe((priceDetailsRes: any) => {
+        this.store.dispatch(
+          new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
+        );
+
+        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+          JSON.parse(JSON.stringify(locationsRows)),
+          priceDetailsRes['sellerOffers']
+        );
+        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+      });
+
+      this.changeDetector.detectChanges();
     });
   }
 
@@ -188,7 +178,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   FilterselectedRow() {
-    debugger;
     var Sellectedsellerdata = [];
 
     this.store.subscribe(({ spotNegotiation }) => {
@@ -202,62 +191,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 spotNegotiation.currentRequestSmallInfo,
                 ''
               );
-              if (
-                Sellectedsellerdata != null &&
-                Sellectedsellerdata.length != 0
-              ) {
+              if (Sellectedsellerdata.length > 0) {
                 this.selectedSellerList.push(Sellectedsellerdata[0]);
-              }
-            } else {
-              let productLength = element.requestProducts.length;
-              for (let index = 0; index < productLength; index++) {
-                if (index == 0 && element1['checkProd1']) {
-                  Sellectedsellerdata = this.ConstuctSellerPayload(
-                    element1,
-                    element.requestProducts,
-                    spotNegotiation.currentRequestSmallInfo,
-                    index
-                  );
-                } else if (index == 1 && element1['checkProd2']) {
-                  Sellectedsellerdata = this.ConstuctSellerPayload(
-                    element1,
-                    element.requestProducts,
-                    spotNegotiation.currentRequestSmallInfo,
-                    index
-                  );
-                } else if (index == 2 && element1['checkProd3']) {
-                  Sellectedsellerdata = this.ConstuctSellerPayload(
-                    element1,
-                    element.requestProducts,
-                    spotNegotiation.currentRequestSmallInfo,
-                    index
-                  );
-                  this.selectedSellerList.push(Sellectedsellerdata[0]);
-                } else if (index == 3 && element1['checkProd4']) {
-                  Sellectedsellerdata = this.ConstuctSellerPayload(
-                    element1,
-                    element.requestProducts,
-                    spotNegotiation.currentRequestSmallInfo,
-                    index
-                  );
-                  this.selectedSellerList.push(Sellectedsellerdata[0]);
-                } else if (index == 4 && element1['checkProd5']) {
-                  Sellectedsellerdata = this.ConstuctSellerPayload(
-                    element1,
-                    element.requestProducts,
-                    spotNegotiation.currentRequestSmallInfo,
-                    index
-                  );
-                  this.selectedSellerList.push(Sellectedsellerdata[0]);
-                }
-                // else{
-                //   let errormessage = "Atleast 1 counterparty should be selected in" + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
-                //   this.toaster.error(errormessage);
-                // }
-
-                // if(Sellectedsellerdata != null && Sellectedsellerdata.length != 0){
-                //   this.selectedSellerList.push(Sellectedsellerdata[0]);
-                // }
               }
             }
           }
@@ -266,13 +201,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     return this.selectedSellerList;
   }
-  ConstuctSellerPayload(Seller, Product, Request, index) {
-    let selectedproduct;
-    if (Product.length > 0 && index == '') {
-      selectedproduct = Product.map(({ id }) => id).join(',');
-    } else {
-      selectedproduct = Product[index].id;
+  ConstuctSellerPayload(Seller, requestProducts, Request, index) {
+    let selectedproducts;
+    if (requestProducts.length > 0 && index == '') {
+      selectedproducts = requestProducts.map(({ id }) => id);
     }
+    // else {
+    //   selectedproduct = Product[index].id;
+    // }
     return [
       {
         RequestLocationSellerId: Seller.id,
@@ -280,7 +216,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         RequestLocationID: Seller.locationId,
         RequestId: Request.id,
         physicalSupplierCounterpartyId: 11,
-        RequestProductIds: [selectedproduct]
+        RequestProductIds: selectedproducts
       }
     ];
   }
