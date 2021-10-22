@@ -1,9 +1,9 @@
-﻿commit 5152f9583a692ae31c2e7f7ca5c06118f1904cd8
+﻿commit 675d38a88f264ee25a714d66d39ef37c39aed208
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Oct 22 09:36:02 2021 +0000
+Date:   Fri Oct 22 12:45:22 2021 +0000
 
-    Merged PR 14246: Worked on control tower
+    Merged PR 14250: Commit b55a2508: Added Tolerance logic for ROB before delivery, BDN Qty, ROB after delivery differences in quantity control report details
     
-    Worked on control tower
+    Related work items: #33987
 
 branch: master

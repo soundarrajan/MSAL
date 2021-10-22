@@ -33,8 +33,8 @@ export class ProductTypeListItemViewModelFactory {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return new ProductTypeListItemViewModel(
       itemState,
-      this.deliverySettings.qcMinToleranceLimit,
-      this.deliverySettings.qcMaxToleranceLimit,
+      this.deliverySettings.robTolerance,
+      this.deliverySettings.maxToleranceLimit,
       this.quantityPrecision,
       this.reconStatusLookups
     );
@@ -62,8 +62,8 @@ export class ProductTypeListItemViewModel {
 
   constructor(
     item: QcProductTypeListItemStateModel,
-    minToleranceLimit: number,
-    maxToleranceLimit: number,
+    robTolerance: number,
+    bdnTolerance: number,
     private quantityPrecision: number,
     reconStatusLookups: ReconStatusLookup
   ) {
@@ -97,28 +97,25 @@ export class ProductTypeListItemViewModel {
     );
 
     this.robBeforeDiffStatus = reconStatusLookups.toReconStatus(
-      QcReportState.getMatchStatus(
+      QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         this.robBeforeDeliveryLogBookROB,
         this.robBeforeDeliveryMeasuredROB,
-        minToleranceLimit,
-        maxToleranceLimit
+        robTolerance
       )
     );
     this.deliveredDiffStatus = reconStatusLookups.toReconStatus(
-      QcReportState.getMatchStatus(
+      QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         this.deliveredQuantityBdnQty,
         this.measuredDeliveredQty,
-        minToleranceLimit,
-        maxToleranceLimit
+        bdnTolerance
       )
     );
     this.robAfterDiffStatus = reconStatusLookups.toReconStatus(
       !this.isSludge
-        ? QcReportState.getMatchStatus(
+        ? QcReportState.getMatchStatusForRobAfterDiff(
             this.robAfterDeliveryLogBookROB,
             this.robAfterDeliveryMeasuredROB,
-            minToleranceLimit,
-            maxToleranceLimit
+            0
           )
         : undefined
     );

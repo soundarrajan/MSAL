@@ -213,6 +213,44 @@ export class QcReportState {
     return ReconStatusLookupEnum.WithinLimit;
   }
 
+  static getMatchStatusForRobBeforeDiffAndDeliveredDiff(
+    left: number,
+    right: number,
+    tolerance: number
+  ): ReconStatusLookupEnum | undefined {
+    if (
+      left === null ||
+      left === undefined ||
+      right === null ||
+      right === undefined
+    )
+      return undefined;
+
+    const diff = Math.abs(left - right);
+
+    if (diff > tolerance) return ReconStatusLookupEnum.NotMatched;
+    if (diff <= tolerance) return ReconStatusLookupEnum.Matched;
+  }
+
+  static getMatchStatusForRobAfterDiff(
+    left: number,
+    right: number,
+    tolerance: number
+  ): ReconStatusLookupEnum | undefined {
+    if (
+      left === null ||
+      left === undefined ||
+      right === null ||
+      right === undefined
+    )
+      return undefined;
+
+    const diff = Math.abs(left - right);
+
+    if (diff != 0) return ReconStatusLookupEnum.NotMatched;
+    if (diff == tolerance) return ReconStatusLookupEnum.Matched;
+  }
+
   @Selector([
     QcReportState.productTypes,
     TenantSettingsState.byModule<IDeliveryTenantSettings>(
@@ -225,32 +263,28 @@ export class QcReportState {
   ): ReconStatusLookupEnum | undefined {
     // Note: This method is called very often, so we specifically use another selector and we don't insert state!!
 
-    const minToleranceLimit = deliverySettings.qcMinToleranceLimit;
-    const maxToleranceLimit = deliverySettings.qcMaxToleranceLimit;
-
+    const robTolerance = deliverySettings.robTolerance;
+    const bdnTolerance = deliverySettings.maxToleranceLimit;
     let hasWithinLimit = false;
     let atleastOneItemHasStatus = false;
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      const robBeforeDiff = QcReportState.getMatchStatus(
+      const robBeforeDiff = QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         item.robBeforeDeliveryLogBookROB,
         item.robBeforeDeliveryMeasuredROB,
-        minToleranceLimit,
-        maxToleranceLimit
+        robTolerance
       );
-      const deliveredDiff = QcReportState.getMatchStatus(
+      const deliveredDiff = QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         item.deliveredQuantityBdnQty,
         item.measuredDeliveredQty,
-        minToleranceLimit,
-        maxToleranceLimit
+        bdnTolerance
       );
       const robAfterDiff = !item.isSludge
-        ? QcReportState.getMatchStatus(
+        ? QcReportState.getMatchStatusForRobAfterDiff(
             item.robAfterDeliveryLogBookROB,
             item.robAfterDeliveryMeasuredROB,
-            minToleranceLimit,
-            maxToleranceLimit
+            0
           )
         : undefined;
 
@@ -478,6 +512,9 @@ export class QcReportState {
     // Note: We could have use also TenantSettingService
     const defaultUom = fromLegacyLookup(
       this.store.selectSnapshot(TenantSettingsState.general).tenantFormats.uom
+    );
+    const robToleranceUom = fromLegacyLookup(
+      this.store.selectSnapshot(TenantSettingsState.delivery).robToleranceUom
     );
 
     if (isAction(action, LoadReportDetailsSuccessfulAction)) {
