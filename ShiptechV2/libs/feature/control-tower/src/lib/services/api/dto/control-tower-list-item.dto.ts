@@ -18,10 +18,29 @@ export interface IControlTowerQuantityRobDifferenceItemDto {
   status: IDisplayLookupDto;
 }
 
-export interface IGetControlTowerQuantityRobDifferenceListRequest
-  extends IServerGridInfo {}
+export interface IControlTowerQuantitySupplyDifferenceItemDto {
+  order: IDisplayLookupDto;
+  port: IDisplayLookupDto;
+  vessel: IDisplayLookupDto;
+  deliveryDate: string;
+  createdOn: string;
+  claimsRaised: boolean;
+  isDeleted: boolean;
+  productType: IDisplayLookupDto;
+  id: number;
+  deliveryProductId: number;
+  totalCount: number;
+  buyer: IDisplayLookupDto;
+  status: IDisplayLookupDto;
+}
+
+export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
   payload: IControlTowerQuantityRobDifferenceItemDto[];
+  matchedCount: number;
+}
+export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
+  payload: IControlTowerQuantitySupplyDifferenceItemDto[];
   matchedCount: number;
 }

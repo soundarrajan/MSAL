@@ -1,4 +1,8 @@
-import { NgModule } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
@@ -104,16 +108,16 @@ import {
 } from './views/control-tower/view/components/my-notes/my-notes.component';
 import { ControlTowerHomeNewComponent } from './views/control-tower/view/components/control-tower-home-new/control-tower-home-new.component';
 import { ControlTowerQuantityDifferenceComponent } from './views/control-tower/view/components/control-tower-quantity-difference/control-tower-quantity-difference.component';
-import { ControlTowerQuantityRobDifferenceListComponent } from './views/control-tower/view/components/control-tower-quantity-rob-difference/control-tower-quantity-rob-difference-list.component';
 import {
   ControlTowerApi,
   CONTROL_TOWER_API_SERVICE
 } from './services/api/control-tower-api';
 import { ControlTowerService } from './services/control-tower.service';
-import { ControlTowerQuantityRobDifferenceListState } from './store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
 import { ControlTowerState } from './store/control-tower.state';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 import { ExportNewModule } from '@shiptech/core/ui/components/export-new/export-new.module';
+import { ControlTowerListState } from './store/control-tower-general-list/control-tower-general-list.state';
+import { ControlTowerGeneralListComponent } from './views/control-tower/view/components/control-tower-general-view-list/control-tower-general-view-list.component';
 
 @NgModule({
   imports: [
@@ -148,10 +152,7 @@ import { ExportNewModule } from '@shiptech/core/ui/components/export-new/export-
     DynamicDialogModule,
     ExportModule,
     ExportNewModule,
-    NgxsModule.forFeature([
-      ControlTowerState,
-      ControlTowerQuantityRobDifferenceListState
-    ]),
+    NgxsModule.forFeature([ControlTowerState, ControlTowerListState]),
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
     AgFooterModule,
@@ -233,7 +234,7 @@ import { ExportNewModule } from '@shiptech/core/ui/components/export-new/export-
     ControlTowerHomeNewComponent,
     HighlightPipe,
     ControlTowerQuantityDifferenceComponent,
-    ControlTowerQuantityRobDifferenceListComponent
+    ControlTowerGeneralListComponent
   ],
   entryComponents: [ControlTowerModalComponent],
   exports: [MainControlTowerComponent, HighlightPipe],

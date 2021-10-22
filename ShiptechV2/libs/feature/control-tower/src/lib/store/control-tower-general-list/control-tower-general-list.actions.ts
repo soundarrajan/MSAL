@@ -1,9 +1,8 @@
 import { nullable } from '@shiptech/core/utils/nullable';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
-export class LoadControlTowerQuantityRobDifferenceListAction {
-  static readonly type =
-    '[CT.RobDifference.List] Load Control Tower Rob Difference List List';
+export class LoadControlTowerListAction {
+  static readonly type = '[CT.List] Load Control Tower  List';
 
   constructor(public serverGridInfo: IServerGridInfo) {}
 
@@ -18,30 +17,28 @@ export class LoadControlTowerQuantityRobDifferenceListAction {
   }
 }
 
-export class LoadControlTowerQuantityRobDifferenceListSuccessfulAction {
-  static readonly type =
-    '[CT.RobDifference.List] Load Control Tower Rob Difference List Successful';
+export class LoadControlTowerListSuccessfulAction {
+  static readonly type = '[CT.List] Load Control Tower List Successful';
 
   constructor(
-    public nbOfMatched: number,
-    public nbOfNotMatched: number,
-    public nbOfMatchedWithinLimit: number,
+    public nbOfNewStatuses: number,
+    public nbOfMarkedAsSeenStatuses: number,
+    public nbOfResolvedStatuses: number,
     public totalCount: number
   ) {}
 
   public log(): any {
     return {
-      nbOfMatched: this.nbOfMatched,
-      nbOfNotMatched: this.nbOfNotMatched,
-      nbOfMatchedWithinLimit: this.nbOfMatchedWithinLimit,
+      nbOfNewStatuses: this.nbOfNewStatuses,
+      nbOfMarkedAsSeenStatuses: this.nbOfMarkedAsSeenStatuses,
+      nbOfResolvedStatuses: this.nbOfResolvedStatuses,
       totalCount: this.totalCount
     };
   }
 }
 
-export class LoadControlTowerQuantityRobDifferenceListFailedAction {
-  static readonly type =
-    '[CT.RobDifference.List] Load Control Tower Rob Difference List Failed';
+export class LoadControlTowerListFailedAction {
+  static readonly type = '[CT.List] Load Control Tower  List Failed';
 
   constructor() {}
 

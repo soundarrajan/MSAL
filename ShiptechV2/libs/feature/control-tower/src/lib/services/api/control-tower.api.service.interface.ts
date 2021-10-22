@@ -1,13 +1,20 @@
 import { Observable } from 'rxjs';
 import {
-  IGetControlTowerQuantityRobDifferenceListRequest,
-  IGetControlTowerQuantityRobDifferenceListResponse
+  IGetControlTowerListRequest,
+  IGetControlTowerQuantityRobDifferenceListResponse,
+  IGetControlTowerQuantitySupplyDifferenceListResponse
 } from './dto/control-tower-list-item.dto';
 
 export interface IControlTowerApiService {
   getControlTowerQuantityRobDifferenceList(
-    request: IGetControlTowerQuantityRobDifferenceListRequest
+    request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantityRobDifferenceListResponse>;
 
   getControlTowerQuantityRobDifferenceListExportUrl(): string;
+
+  getControlTowerQuantitySupplyDifferenceList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerQuantitySupplyDifferenceListResponse>;
+
+  getControlTowerQuantitySupplyDifferenceListExportUrl(): string;
 }

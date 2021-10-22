@@ -2,12 +2,12 @@ import { Action, State, StateContext } from '@ngxs/store';
 import { ResetQcModuleStateAction } from './report/qc-module.actions';
 import { StateReset } from 'ngxs-reset-plugin';
 import { Injectable } from '@angular/core';
-import { ControlTowerQuantityRobDifferenceListState } from './control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
 import { IQcReportState } from './report/qc-report.state.model';
+import { ControlTowerListState } from './control-tower-general-list/control-tower-general-list.state';
 
 @State<IControlTowerState>({
   name: 'controlTower',
-  children: [ControlTowerQuantityRobDifferenceListState]
+  children: [ControlTowerListState]
 })
 @Injectable()
 export class ControlTowerState {
@@ -16,12 +16,10 @@ export class ControlTowerState {
     context: StateContext<IQcReportState>,
     action: ResetQcModuleStateAction
   ): void {
-    context.dispatch(
-      new StateReset(ControlTowerQuantityRobDifferenceListState)
-    );
+    context.dispatch(new StateReset(ControlTowerListState));
   }
 }
 
 export interface IControlTowerState {
-  controlTowerQuantityRobDifferenceList: Record<number, unknown>;
+  controlTowerList: Record<number, unknown>;
 }

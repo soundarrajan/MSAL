@@ -3,21 +3,19 @@ import {
   Component,
   Inject,
   Injectable,
+  Injector,
   Input,
   OnDestroy,
   OnInit,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { UrlService } from '@shiptech/core/services/url/url.service';
-import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model/control-tower-quantity-rob-difference-grid.view-model';
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './view-model/control-tower-quantity-rob-difference-list.columns';
 import { Select } from '@ngxs/store';
-import { ControlTowerQuantityRobDifferenceListState } from 'libs/feature/control-tower/src/lib/store/control-tower-quantity-rob-difference-list/control-tower-quantity-rob-difference-list.state';
 import {
   knowMastersAutocompleteHeaderName,
   knownMastersAutocomplete
@@ -30,6 +28,12 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { ControlTowerListState } from 'libs/feature/control-tower/src/lib/store/control-tower-general-list/control-tower-general-list.state';
+import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './list-columns/control-tower-quantity-rob-difference-list.columns';
+import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model/control-tower-quantity-rob-difference-grid.view-model';
+import { SelectorComponent } from '@shiptech/core/ui/components/master-selector/selector/selector.component';
+import { ControlTowerQuantitySupplyDifferenceListGridViewModel } from './view-model/control-tower-quantity-supply-difference-grid.view-model';
+import { ControlTowerQuantitySupplyDifferenceListColumnServerKeys } from './list-columns/control-tower-quantity-supply-difference-list.columns';
 
 export const PICK_FORMATS = {
   display: {
@@ -81,25 +85,31 @@ export class CustomDateAdapter extends MomentDateAdapter {
 }
 
 @Component({
-  selector: 'shiptech-control-tower-quantity-rob-difference-list',
-  templateUrl: './control-tower-quantity-rob-difference-list.component.html',
+  selector: 'shiptech-control-tower-general-view-list',
+  templateUrl: './control-tower-general-view-list.component.html',
   providers: [
     ControlTowerQuantityRobDifferenceListGridViewModel,
+    ControlTowerQuantitySupplyDifferenceListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ControlTowerQuantityRobDifferenceListComponent
-  implements OnInit, OnDestroy {
-  @Select(ControlTowerQuantityRobDifferenceListState.totalCount)
-  totalCount$: Observable<number>;
+export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
+  @Select(ControlTowerListState.newCount)
+  newCount$: Observable<number>;
+  @Select(ControlTowerListState.masCount)
+  markAsSeenCount$: Observable<number>;
+  @Select(ControlTowerListState.resolvedCount)
+  resolvedCount$: Observable<number>;
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
-  public controlTowerQuantityRobDifferenceListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
   @Input() theme: boolean;
   @Input() newScreen: boolean;
 
+  @Input() gridId: string = '';
+  @Input() groupId: string = '';
+  elementId = 'qc-report-list';
   private _destroy$ = new Subject();
 
   public switchTheme: boolean = true;
@@ -110,19 +120,59 @@ export class ControlTowerQuantityRobDifferenceListComponent
 
   private _autocompleteType: any;
   autocompleteOrders: string;
+  controlTowerListServerKeys: any;
+
+  get selectorType(): string {
+    return this._selectorType;
+  }
+
+  @Input() set selectorType(value: string) {
+    this._selectorType = value;
+    this.setGridModelType();
+
+    if (this.gridViewModel.isReady) {
+      this.gridViewModel.gridOptions.api.purgeServerSideCache();
+    }
+  }
+
+  @Input() _selectorType: string;
+
+  gridViewModel: any;
 
   constructor(
-    public gridViewModel: ControlTowerQuantityRobDifferenceListGridViewModel,
     public appConfig: AppConfig,
     private urlService: UrlService,
     public dialog: MatDialog,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
-    private format: TenantFormattingService
+    private format: TenantFormattingService,
+    private injector: Injector
   ) {
     this.autocompleteOrders = knownMastersAutocomplete.products;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
+  }
+
+  setGridModelType() {
+    switch (this.selectorType) {
+      case 'Quantity ROB Difference': {
+        this.gridViewModel = this.injector.get(
+          ControlTowerQuantityRobDifferenceListGridViewModel
+        );
+        this.controlTowerListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
+        break;
+      }
+      case 'Quantity Supply Difference': {
+        this.gridViewModel = this.injector.get(
+          ControlTowerQuantitySupplyDifferenceListGridViewModel
+        );
+        this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
+        break;
+      }
+
+      default:
+        throwError("Hasn't defined the selector type");
+    }
   }
 
   onPageChange(page: number): void {
@@ -202,4 +252,15 @@ export class ControlTowerQuantityRobDifferenceListComponent
       return null;
     }
   }
+}
+function defined(
+  arg0: string,
+  t: any,
+  defined: any,
+  the: any,
+  selector: any,
+  type: any,
+  arg6: string
+) {
+  throw new Error('Function not implemented.');
 }
