@@ -23,9 +23,7 @@ import { LocationMasterRouteResolver } from './views/contract/details/location-m
 import { ProductMasterRouteResolver } from './views/contract/details/product-master-route.resolver';
 
 interface IContractDetailsRouteData {
-  [KnownContractRoutes.ContractIdParam]: Type<
-  ContractDetailsRouteResolver
-  >;
+  [KnownContractRoutes.ContractIdParam]: Type<ContractDetailsRouteResolver>;
 }
 
 const routes: Routes = [
@@ -43,7 +41,7 @@ const routes: Routes = [
             pathMatch: 'full'
           },
           {
-            path: KnownContractRoutes.ContractList,
+            path: KnownContractRoutes.ContractList
           },
           {
             path: `${KnownContractRoutes.Contract}/:${KnownContractRoutes.ContractIdParam}`,
@@ -57,9 +55,9 @@ const routes: Routes = [
                 path: KnownContractRoutes.ContractDetails,
                 canDeactivate: [ContractDetailsUnsavedChangesGuard],
                 component: ContractDetailsComponent,
-                resolve:{
+                resolve: {
                   // Note: contractId is expected in child routes in the data.
-                  tenantConfiguration : ContractDetailsRouteResolver,
+                  tenantConfiguration: ContractDetailsRouteResolver,
                   contract: ContractRouteResolver,
                   locationList: LocationMasterRouteResolver,
                   productList: ProductMasterRouteResolver,

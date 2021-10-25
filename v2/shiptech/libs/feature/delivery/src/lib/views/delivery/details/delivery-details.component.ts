@@ -345,12 +345,14 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         savedProdForCheck: {}
       },
       deliveryProducts: [],
-      feedback: {}
+      feedback: {},
+      deliveryNotes: {}
     };
     const data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
     localStorage.removeItem('parentSplitDelivery');
     this.formValues.order = data.order;
     this.formValues.info = data.info;
+    this.formValues.deliveryNotes = data.deliveryNotes;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
     }
@@ -1070,6 +1072,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
     }
+
     data.forEach((delivery, key) => {
       this.formValues.deliveryProducts.push({
         orderedProduct: delivery.product,
@@ -1646,19 +1649,15 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
-              .navigate([
-                KnownPrimaryRoutes.Delivery,
-                `${KnownDeliverylRoutes.Delivery}`,
-                result,
-                KnownDeliverylRoutes.DeliveryDetails
-              ])
-              .then(() => {
-                this.myMonitoringService.logMetric(
-                  'Create ' + (<any>window).location.href,
-                  Date.now() - (<any>window).startCreateDeliveryTime,
-                  (<any>window).location.href
-                );
-              });
+            .navigate([
+              KnownPrimaryRoutes.Delivery,
+              `${KnownDeliverylRoutes.Delivery}`,
+              result,
+              KnownDeliverylRoutes.DeliveryDetails
+            ])
+            .then(() => {
+              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);
+            });
           }
         });
     } else {
@@ -1676,24 +1675,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
-            this.myMonitoringService.logMetric(
-              'Update ' + (<any>window).location.href,
-              Date.now() - (<any>window).startUpdateDeliveryTime,
-              (<any>window).location.href
-            );
+            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
           } else {
             this.toastrService.success('Delivery saved successfully');
             this.deliveryService
-              .loadDeliverytDetails(result.id)
-              .pipe(
-                finalize(() => {
-                  this.spinner.hide();
-                  this.myMonitoringService.logMetric(
-                    'Update ' + (<any>window).location.href,
-                    Date.now() - (<any>window).startUpdateDeliveryTime,
-                    (<any>window).location.href
-                  );
-                })
+						.loadDeliverytDetails(result.id)
+						.pipe(
+              finalize(() => {
+                this.spinner.hide();
+                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
+							})
               )
               .subscribe((data: any) => {
                 this.formValues.sampleSources = data.sampleSources;
@@ -2060,4 +2051,5 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       console.log(result);
     });
   }
+
 }

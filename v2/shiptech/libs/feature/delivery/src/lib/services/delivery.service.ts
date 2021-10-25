@@ -189,6 +189,15 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
     return this.deliveryApi.notesAutoSave(payload);
   }
 
+  /**
+ * Load order notes
+ * @param orderId
+ */
+  @ObservableException()
+  getOrderNotes(orderId: number): Observable<unknown> {
+    return this.deliveryApi.getOrderNotes(orderId);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

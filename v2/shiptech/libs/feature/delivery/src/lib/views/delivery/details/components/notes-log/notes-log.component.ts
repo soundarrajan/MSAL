@@ -87,7 +87,6 @@ import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overl
 import { throws } from 'assert';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
-import { AuthenticationService } from '@shiptech/core/authentication/authentication.service';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
@@ -477,7 +476,6 @@ export class NotesLogComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
-    public authService: AuthenticationService,
     private tenantService: TenantFormattingService,
     private deliveryService: DeliveryService
   ) {
@@ -491,6 +489,20 @@ export class NotesLogComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.store.selectSnapshot(UserProfileState.user);
+
+    // new delivery
+    if (
+      parseFloat(this._entityId) == 0 &&
+      parseFloat(this.formValues.order?.id)
+    ) {
+      // get order notes only when new invoice
+      this.deliveryService
+        .getOrderNotes(this.formValues.order.id)
+        .subscribe((response: any) => {
+          this.formValues.deliveryNotes = response;
+          this.changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   originalOrder = (
@@ -501,7 +513,6 @@ export class NotesLogComponent implements OnInit {
   };
 
   addNotesLine() {
-    console.log(this.authService);
     console.log(this.displayName$);
     if (!this.formValues.deliveryNotes) {
       this.formValues.deliveryNotes = [];
@@ -545,10 +556,10 @@ export class NotesLogComponent implements OnInit {
   }
 
   autoSave() {
-    if (parseFloat(this._entityId)) {
-      let payload = {
-        DeliveryId: parseFloat(this._entityId),
-        DeliveryNotes: this.formValues.deliveryNotes
+    if (parseFloat(this.formValues.order.id)) {
+      const payload = {
+        OrderId: this.formValues.order.id,
+        OrderNotes: this.formValues.deliveryNotes
       };
       this.deliveryService
         .notesAutoSave(payload)

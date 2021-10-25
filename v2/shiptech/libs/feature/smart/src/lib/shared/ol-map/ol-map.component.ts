@@ -202,7 +202,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       url: './assets/data/countries.json',
       format: new GeoJSON(),
       id: 'map_layer'
-    }),
+    } as any),
     style: function(feature) {
       let newStyle = countryText_Dark;
       countryText_Dark.getText().setText(feature.get('name'));
@@ -219,7 +219,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       url: './assets/data/countries.json',
       format: new GeoJSON(),
       id: 'map_layer'
-    }),
+    } as any),
     style: function(feature) {
       let newStyle = countryText;
       countryText.getText().setText(feature.get('name'));
@@ -232,7 +232,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       url: './assets/data/countries.json',
       format: new GeoJSON(),
       id: 'map_layer'
-    }),
+    } as any),
     style: function(feature) {
       let newStyle2 = countryText_dark_click;
       countryText.getText().setText(feature.get('name'));
@@ -325,10 +325,10 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         let feature1 = this.routeLayer
           .getSource()
           .getFeatures()
-          .filter(ele => ele.values_.id == 'RL');
+          .filter((ele:any) => ele.values_.id == 'RL');
 
         feature1.forEach(element => {
-          let sty = element.getStyle();
+          let sty = element.getStyle() as any;
           sty.stroke_.color_ = '#BBBDBF';
           element.setStyle(sty);
         });
@@ -336,7 +336,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         let feature2 = this.routeLayer
           .getSource()
           .getFeatures()
-          .filter(ele => ele.values_.type == 'port-on-route'); //Port Icon on Route
+          .filter((ele:any) => ele.values_.type == 'port-on-route'); //Port Icon on Route
 
         feature2.forEach(element => {
           if (
@@ -352,7 +352,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         let feature3 = this.routeLayer
           .getSource()
           .getFeatures()
-          .filter(ele => ele.values_.type == 'vessel-glow'); //Vessel Icon Glow on Route
+          .filter((ele:any) => ele.values_.type == 'vessel-glow'); //Vessel Icon Glow on Route
 
         feature3.forEach(element => {
           element.setStyle(this.getVesselGlowStyle('grey'));
@@ -361,7 +361,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         let feature4 = this.routeLayer
           .getSource()
           .getFeatures()
-          .filter(ele => ele.values_.type == 'vessel-on-route'); //Vessel Icon on Route
+          .filter((ele:any) => ele.values_.type == 'vessel-on-route'); //Vessel Icon on Route
         feature4.forEach(element => {
           element.setStyle(
             this.getGreyVesselStyle(element.getProperties().data)
@@ -371,7 +371,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         let feature5 = this.routeLayer
           .getSource()
           .getFeatures()
-          .filter(ele => ele.values_.type == 'next-port'); //Next Port Icon on Route
+          .filter((ele:any) => ele.values_.type == 'next-port'); //Next Port Icon on Route
 
         feature5.forEach(element => {
           if (
@@ -442,7 +442,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         duration: 250
       },
       zindex: 1
-    });
+    } as any);
     this.hoverCircleEffectOverlay = new Overlay({
       element: this.hoverCircleElement.nativeElement,
       positioning: 'bottom-center',
@@ -483,7 +483,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       target: this.olmapElement.nativeElement,
       view: mapView
       // interactions: olinteraction
-    });
+    } as any);
     this.localService.themeChange.subscribe(value => {
       this.theme = value;
       // if(!this.theme && !this.lightclick){
@@ -751,7 +751,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
 
         // src: "./assets/icon/ROB_red.svg",
         // src: "./assets/customicons/vessel/ROB_amber_hover_3.svg",
-      })
+      } as any)
     });
     return iconStyle;
   }
@@ -1081,25 +1081,25 @@ export class OlMapComponent implements OnInit, AfterViewInit {
           let feature1 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.id == 'RL');
+            .filter((ele:any) => ele.values_.id == 'RL');
           let feature2 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'port-on-route'); //Port Icon on Route
+            .filter((ele:any) => ele.values_.type == 'port-on-route'); //Port Icon on Route
           let feature3 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'vessel-glow'); //Vessel Icon Glow on Route
+            .filter((ele:any) => ele.values_.type == 'vessel-glow'); //Vessel Icon Glow on Route
           let feature4 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'vessel-on-route'); //Vessel Icon on Route
+            .filter((ele:any) => ele.values_.type == 'vessel-on-route'); //Vessel Icon on Route
           let feature5 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'next-port'); //Next Port Icon on Route
+            .filter((ele:any) => ele.values_.type == 'next-port'); //Next Port Icon on Route
           feature1.forEach(element => {
-            let sty = element.getStyle();
+            let sty = element.getStyle() as any;
             sty.stroke_.color_ = this.strokeColor;
             element.setStyle(sty);
           });
@@ -1154,26 +1154,26 @@ export class OlMapComponent implements OnInit, AfterViewInit {
           let feature1 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.id == 'RL'); //Route Line
+            .filter((ele:any) => ele.values_.id == 'RL'); //Route Line
           let feature3 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'vessel-glow'); //Vessel Icon Glow on Route
+            .filter((ele:any) => ele.values_.type == 'vessel-glow'); //Vessel Icon Glow on Route
           let feature4 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'vessel-on-route'); //Vessel Icon on Route
+            .filter((ele:any) => ele.values_.type == 'vessel-on-route'); //Vessel Icon on Route
           let feature5 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'next-port'); //Next Port Icon on Route
+            .filter((ele:any) => ele.values_.type == 'next-port'); //Next Port Icon on Route
           let feature2 = this.routeLayer
             .getSource()
             .getFeatures()
-            .filter(ele => ele.values_.type == 'port-on-route'); //Port Icon on Route
+            .filter((ele:any) => ele.values_.type == 'port-on-route'); //Port Icon on Route
 
           feature1.forEach(element => {
-            let sty = element.getStyle();
+            let sty = element.getStyle() as any;
             sty.stroke_.color_ = '#BBBDBF';
             element.setStyle(sty);
           });
@@ -1802,7 +1802,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       // }
     }
   }
-  addLocationPin(isStart, data): OlFeature {
+  addLocationPin(isStart, data): any {
     if (isStart) {
       let marker = new OlFeature({
         id: 'ST' + data.locationID,
@@ -2391,7 +2391,7 @@ var countryText = new Style({
       color: '#424a57'
     })
   })
-});
+}) as any;
 
 var countryText_dark_click = new Style({
   fill: new Fill({

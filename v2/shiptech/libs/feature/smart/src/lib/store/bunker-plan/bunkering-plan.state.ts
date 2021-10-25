@@ -131,7 +131,25 @@ export class SaveBunkeringPlanState{
     })
     return data;
   }
+  
+  @Selector([SaveBunkeringPlanState])
+  static getBunkeringPlanDataOpUpdatedColumns(state: SaveBunkeringPlanStateModel):any{
+    let data = [];
+    let params = state?.BPlanData;
+    params.forEach(bPlan =>{  
+      data.push({
+        detail_no: bPlan.detail_no,
+        op_updated_columns: bPlan.op_updated_columns       
+      }) ;
 
+    })
+    return data;
+  }
+
+  @Selector([SaveBunkeringPlanState])
+  static getTotalTankCapacity(state: SaveBunkeringPlanStateModel):any{
+    return state?.BPlanData[0]?.total_tank_capacity;
+  }
 
   @Action(UpdateBunkeringPlanAction)
   update({getState, patchState}: StateContext<SaveBunkeringPlanStateModel>, {payload, type, detail_no}:UpdateBunkeringPlanAction){

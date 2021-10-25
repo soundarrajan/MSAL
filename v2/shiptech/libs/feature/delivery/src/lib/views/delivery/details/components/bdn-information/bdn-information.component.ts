@@ -1019,7 +1019,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return formattedDate;
     }
   }
-
   formatDateForBeForDateWithTime(value) {
     if (value) {
       const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;

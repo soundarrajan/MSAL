@@ -68,6 +68,7 @@ import {
   IOrderResponse
 } from './request-response/delivery-by-id.request-response';
 import { catchError, map } from 'rxjs/operators';
+import { IDeliveryNotesDetailsDto } from './dto/delivery-details.dto';
 
 export namespace DeliveryApiPaths {
   export const getDeliveryDetails = () => `api/delivery/get`;
@@ -89,11 +90,12 @@ export namespace DeliveryApiPaths {
     `api/delivery/getDeliverySplitLimits`;
   export const raiseClaim = () => `api/claims/new`;
   export const deleteDeliveryProduct = () => `api/delivery/products/delete`;
-  export const sendLabsTemplateEmail = () =>
-    `api/delivery/SendLabsTemplateEmail`;
+  export const sendLabsTemplateEmail = () => `api/delivery/SendLabsTemplateEmail`;
   export const getStaticLists = () => `api/infrastructure/static/lists`;
-  export const notesAutoSave = () => `api/delivery/autosave`;
   export const deleteDelivery = () => `api/delivery/delete`;
+  // export const notesAutoSave = () => `api/delivery/autosave`;
+  export const notesAutoSave = () => `api/procurement/order/autosave`;
+  export const getOrderNotes = () => `api/procurement/order/getNotes`;
 }
 
 @Injectable({
@@ -443,9 +445,30 @@ export class DeliveryApi implements IDeliveryApiService {
   @ObservableException()
   notesAutoSave(request: any): Observable<any> {
     return this.http
-      .post<any>(`${this._apiUrl}/${DeliveryApiPaths.notesAutoSave()}`, {
+      .post<any>(`${this._procurementApiUrl}/${DeliveryApiPaths.notesAutoSave()}`, {
         payload: request
       })
+      .pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getOrderNotes(
+    request: any
+  ): Observable<IDeliveryNotesDetailsDto> {
+    return this.http
+      .post<IDeliveryNotesDetailsDto>(
+        `${this._procurementApiUrl}/${DeliveryApiPaths.getOrderNotes()}`,
+        { payload: request }
+      )
       .pipe(
         map((body: any) => body.payload),
         catchError((body: any) =>

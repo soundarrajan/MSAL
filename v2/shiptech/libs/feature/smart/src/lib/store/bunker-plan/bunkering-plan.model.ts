@@ -57,6 +57,7 @@
     request_id_lsdis: any;
     request_id_ulsfo: any;
     service_code: string;
+    total_tank_capacity: number;
     ulsfo_est_consumption_color: any;
     ulsfo_estimated_lift: number;
     ulsfo_max_lift: number;

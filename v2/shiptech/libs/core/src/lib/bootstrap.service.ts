@@ -3,11 +3,17 @@ import { LookupsCacheService } from './legacy-cache/legacy-cache.service';
 import { AdalService } from 'adal-angular-wrapper';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  filter,
+  map,
+  pairwise,
+  tap
+} from 'rxjs/operators';
 import { LicenseManager } from '@ag-grid-enterprise/all-modules';
 import { AppConfig, IAppConfig } from './config/app-config';
 import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.service';
-import { AuthenticationService } from './authentication/authentication.service';
 import { EMPTY$ } from './utils/rxjs-operators';
 import { ILegacyAppConfig } from './config/legacy-app-config';
 import {
@@ -26,11 +32,21 @@ import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { EmailStatusLookup } from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service';
+import { MsalService } from '@azure/msal-angular';
+import {
+  NavigationEnd,
+  NavigationStart,
+  Router,
+  RoutesRecognized
+} from '@angular/router';
+import { KnownPrimaryRoutes } from './enums/known-modules-routes.enum';
+import { AuthService } from './authentication/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BootstrapService {
+  previousUrl: string;
   get initialized(): Observable<void> {
     return this._initialized;
   }
@@ -40,14 +56,15 @@ export class BootstrapService {
   constructor(
     private appConfig: AppConfig,
     private legacyCache: LookupsCacheService,
-    private adal: AdalService,
+    private msalService: MsalService,
     private http: HttpClient,
-    private authService: AuthenticationService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private loggerFactory: LoggerFactory,
     private injector: Injector,
     private appErrorHandler: AppErrorHandler,
     private urlService: UrlService,
+    public router: Router,
+    public authService: AuthService,
     @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {}
 
@@ -57,13 +74,24 @@ export class BootstrapService {
     // Note: Order is very important here.
     return this.loadAppConfig().pipe(
       tap(() => this.setupLogging()),
-      concatMap(() => this.setupAuthentication()),
       concatMap(() => this.setupDeveloperToolbar()),
       concatMap(() => this.loadUserProfile()),
       concatMap(() => this.loadGeneralTenantSettings()),
       concatMap(() => this.legacyLookupsDatabase.init()),
       concatMap(() => this.legacyCache.load()),
       concatMap(() => this.loadKnownLookups()),
+      tap(() => this.setupAgGrid()),
+      tap(() => this._initialized.next())
+    );
+  }
+
+  init(): Observable<any> {
+    // TODO: Implement proper logging here
+
+    // Note: Order is very important here.
+    return this.loadAppConfig().pipe(
+      tap(() => this.setupLogging()),
+      concatMap(() => this.setupDeveloperToolbar()),
       tap(() => this.setupAgGrid()),
       tap(() => this._initialized.next())
     );
@@ -84,7 +112,9 @@ export class BootstrapService {
   private loadAppConfig(): Observable<IAppConfig> {
     const runtimeSettingsUrl = this.urlService.getRuntimeSettings();
     const legacySettingsUrl = this.urlService.getLegacySettings();
-
+    if (this.appConfig.v1) {
+      return of(this.appConfig);
+    }
     return forkJoin(
       this.http.get<ILegacyAppConfig>(legacySettingsUrl),
       this.http.get<IAppConfig>(runtimeSettingsUrl)
@@ -98,20 +128,6 @@ export class BootstrapService {
     );
   }
 
-  private setupAuthentication(): Observable<void> {
-    this.authService.init(this.appConfig.v1.auth);
-
-    if (this.authService.isAuthenticated) {
-      return EMPTY$;
-    }
-    //TODO: handle adal errors and token expire
-    this.authService.login();
-
-    return new Observable<void>(() => {
-      // Note: Intentionally left blank, this obs should never complete so we don't see a glimpse of the application before redirected to login.
-    });
-  }
-
   private setupDeveloperToolbar(): Observable<void> {
     return of(this.injector.get(DeveloperToolbarService).bootstrap());
   }
@@ -123,6 +139,11 @@ export class BootstrapService {
     return userProfileService.load().pipe(
       catchError(error => {
         // TODO: Refactor this pipe and share it with loadGeneralTenantSettings
+        if (parseInt(localStorage.getItem('userIsNotAuth'), 10)) {
+          this.appErrorHandler.handleError(error);
+          localStorage.removeItem('userIsNotAuth');
+          this.authService.logout();
+        }
         if (environment.production) {
           return throwError(error);
         } else {
@@ -172,6 +193,6 @@ export class BootstrapService {
 
 export function bootstrapApplication(
   bootstrapService: BootstrapService
-): () => Promise<any> {
-  return () => bootstrapService.initApp().toPromise();
+): () => Promise<void> {
+  return () => bootstrapService.init().toPromise();
 }

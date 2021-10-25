@@ -2423,7 +2423,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.spinner.hide();
     this.formSubmitted = false;
     if (typeof result == 'string') {
-      this.toastrService.error(result);
+      if (result) {
+        this.toastrService.error(result);
+      }
     } else {
       this.toastrService.success(successMsg);
       this.router

@@ -22,6 +22,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   @Output() changeVessel = new EventEmitter();
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
+  moment: any = moment;
   currentDate = new Date();
   defaultFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
   selectedToDate: Date = new Date();
