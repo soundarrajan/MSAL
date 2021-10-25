@@ -1,11 +1,9 @@
-﻿commit cb9d8ebb94f7196596794c0448b2d7528c571319
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Oct 22 14:33:58 2021 +0000
+﻿commit 9d8719e89a1b699188ed0b74175889c8dab31fbb
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Oct 25 11:47:13 2021 +0000
 
-    Merged PR 14252: Delivery screen css issues fixes
+    Merged PR 14266: Commit 59b099b1: Added Tolerance logic for ROB before delivery, BDN Qty, ROB after delivery differences for  quantity control list screen , Survey Report
     
-    Delivery screen css issues fixes
-    
-    Related work items: #36479
+    Related work items: #33987
 
 branch: master

@@ -17,8 +17,6 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { ToastrService } from 'ngx-toastr';
 import { SelectItem } from 'primeng/api';
 import { Observable, Subject } from 'rxjs';
-import { QcReportService } from '../../../../../services/qc-report.service';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 
 @Component({
   selector: 'shiptech-input',
@@ -28,10 +26,10 @@ import { QcReportState } from '../../../../../store/report/qc-report.state';
   encapsulation: ViewEncapsulation.None
 })
 export class InputComponent {
-  @Input('model') set _selectedOption(model) {  
+  @Input('model') set _selectedOption(model) {
     this.inputModel = model;
   }
-  @Input('label') set setLabel(label) {  
+  @Input('label') set setLabel(label) {
     this.inputLabel = label;
   }
   public options: SelectItem[];
@@ -41,11 +39,10 @@ export class InputComponent {
   @Output() changeInput = new EventEmitter<string>();
   @Input() public disabled = false;
 
-
   constructor() {}
 
   onModelChanged(value: string): void {
-   // this.inputModel = value;
-    this.changeInput.next(value)
+    // this.inputModel = value;
+    this.changeInput.next(value);
   }
 }

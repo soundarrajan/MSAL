@@ -6,7 +6,6 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { QcReportService } from '../../../services/qc-report.service';
 import { KnownDeliverylRoutes } from '../../../known-delivery.routes';
 import { catchError, finalize, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
@@ -21,17 +20,12 @@ export class DeliveryRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
-    private reportService: QcReportService,
     private deliveryService: DeliveryService,
     private bdnInformationService: BdnInformationApiService
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): any{
-    const DeliveryIdParam =
-      route.params[KnownDeliverylRoutes.DeliveryIdParam];
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    const DeliveryIdParam = route.params[KnownDeliverylRoutes.DeliveryIdParam];
     const deliveryId = Number(DeliveryIdParam ?? 0);
 
     if (!Number.isInteger(deliveryId)) {
@@ -40,7 +34,8 @@ export class DeliveryRouteResolver implements Resolve<any> {
         KnownDeliverylRoutes.DeliveryList
       ]);
     }
-    return deliveryId ? this.deliveryService.loadDeliverytDetails(deliveryId) : null;
+    return deliveryId
+      ? this.deliveryService.loadDeliverytDetails(deliveryId)
+      : null;
   }
-
 }

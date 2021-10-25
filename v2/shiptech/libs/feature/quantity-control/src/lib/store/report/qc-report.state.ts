@@ -192,27 +192,6 @@ export class QcReportState {
     return state.details?.surveyHistory?.nbOfNotMatched;
   }
 
-  static getMatchStatus(
-    left: number,
-    right: number,
-    minTolerance: number,
-    maxTolerance: number
-  ): ReconStatusLookupEnum | undefined {
-    if (
-      left === null ||
-      left === undefined ||
-      right === null ||
-      right === undefined
-    )
-      return undefined;
-
-    const diff = Math.abs(left - right);
-
-    if (diff >= maxTolerance) return ReconStatusLookupEnum.NotMatched;
-    if (diff <= minTolerance) return ReconStatusLookupEnum.Matched;
-    return ReconStatusLookupEnum.WithinLimit;
-  }
-
   static getMatchStatusForRobBeforeDiffAndDeliveredDiff(
     left: number,
     right: number,
@@ -226,7 +205,7 @@ export class QcReportState {
     )
       return undefined;
 
-    const diff = Math.abs(left - right);
+    const diff = left - right;
 
     if (diff > tolerance) return ReconStatusLookupEnum.NotMatched;
     if (diff <= tolerance) return ReconStatusLookupEnum.Matched;
@@ -245,7 +224,7 @@ export class QcReportState {
     )
       return undefined;
 
-    const diff = Math.abs(left - right);
+    const diff = left - right;
 
     if (diff != 0) return ReconStatusLookupEnum.NotMatched;
     if (diff == tolerance) return ReconStatusLookupEnum.Matched;
@@ -554,7 +533,7 @@ export class QcReportState {
           nbOfClaims: detailsDto.nbOfClaims,
           nbOfDeliveries: detailsDto.nbOfDeliveries,
           robBeforeDeliveryUom:
-            detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
+            detailsDto.uoms.robBeforeDeliveryUom ?? robToleranceUom,
           robAfterDeliveryUom:
             detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
