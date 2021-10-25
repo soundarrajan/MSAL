@@ -14,6 +14,20 @@
     "postLogoutRedirectUri": null,
     "expireOffsetSeconds": 10
   },
+  "authV2": {
+    "clientId": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01",
+    "instance": "https://login.microsoftonline.com/",
+    "tenantId": "8bc4afe0-3509-429a-ac6e-d71be32f20f5",
+    "scopes": [ "urn:spn:shiptech.api/shiptech" ],
+    "cacheLocation": "localStorage",
+    "endpoints": {
+      "https://shiptech.24software.ro:8000/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01"
+    },
+    "anonymousEndpoints": [ "https://shiptech10.24software.ro:8000/" ],
+    "postLogoutRedirectUri": null,
+    "expireOffsetSeconds": 10
+  },
+  "useAdal": false,
   "tenantConfigs": {
     "translations": "CMA"
   },
@@ -61,7 +75,7 @@
     "BASE_URL_DATA_MASTERS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Masters",
     "BASE_URL_DATA_ADMIN": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Admin",
     "BASE_URL_DATA_INFRASTRUCTURE": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Infrastructure",
-    "BASE_URL_DATA_SELLER_PORTAL": "http://shiptech10.24software.ro:8081/Integration1060/Shiptech10.Api.SellerPortal",
+    "BASE_URL_DATA_SELLER_PORTAL": "https://shiptech10.24software.ro:8000/Integration1060/Shiptech10.Api.SellerPortal",
     "BASE_URL_DATA_CLAIMS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Claims",
     "BASE_URL_DATA_LABS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Labs",
     "BASE_URL_DATA_CONTRACTS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Contracts",
