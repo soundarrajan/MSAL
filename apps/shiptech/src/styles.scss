@@ -198,3 +198,6 @@ body .ui-tabmenu .ui-tabmenu-nav {
   top: 10px;
   position: relative;
 }
+input.BPInNumField::-webkit-input-placeholder {
+  color: rgb(255, 247, 247);
+}

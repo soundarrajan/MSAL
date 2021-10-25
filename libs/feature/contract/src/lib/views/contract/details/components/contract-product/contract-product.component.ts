@@ -1355,8 +1355,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     if (typeof this.additionalCostForLocation == 'undefined') {
       this.additionalCostForLocation = [];
     }
-    if (typeof this.additionalCostForLocation == 'undefined') {
-      this.additionalCostForLocation = [];
+
+    if (typeof this.additionalCostForLocation[locationId] != 'undefined') {
+      return;
     }
 
     const payload = {
@@ -1389,10 +1390,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     if (typeof this.additionalCostForLocation == 'undefined') {
       this.additionalCostForLocation = [];
     }
-    if (typeof this.additionalCostForLocation == 'undefined') {
-      this.additionalCostForLocation = [];
-    }
 
+    if (typeof this.additionalCostForLocation[locationId] != 'undefined') {
+      return;
+    }
     const payload = {
       Payload: {
         Order: null,
@@ -1595,6 +1596,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   getAdditionalCostsComponentTypes() {
+    if (typeof this.additionalCostsComponentTypes != 'undefined') {
+      return;
+    }
     //this.spinner.show();
     this.contractService
       .getAdditionalCostsComponentTypes({})
