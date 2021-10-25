@@ -21,7 +21,7 @@
 				if (!item || item.id == -1) {
 					continue;
 				}
-				if (item[objProperty].toLowerCase().indexOf(searchTerm) == -1) {
+				if (item[objProperty] && item[objProperty].toLowerCase().indexOf(searchTerm) == -1) {
 					// Item doesn't have searchTerm
 	    			filtered.splice(i,1);
     			} else {

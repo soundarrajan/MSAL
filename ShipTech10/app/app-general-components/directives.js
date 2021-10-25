@@ -696,7 +696,6 @@ Number(function() {
                                 }
                             }
                             
-
                             // console.log(CLC)
                             // if (CLC.tableParams.PageFilters) {
 
@@ -814,7 +813,7 @@ Number(function() {
                                                     v.bcc = v.bcc.replace(/,/g, ';');
                                                 }
                                             });
-                                        }
+                                        } 
                                         var oldTableParams = angular.copy(CLC.tableParams);
                                         //  
                                         // store all grid data (rows)

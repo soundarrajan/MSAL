@@ -89,7 +89,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             $rootScope.defaultSelectedBestContracts = [];
 
         }
-   
+
         if (!ctrl.numberPrecision) {
         	ctrl.numberPrecision = {};
             ctrl.numberPrecision.quantityPrecision = 3;
@@ -276,6 +276,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 .then((data) => {
                     if ($stateParams.copyFrom) {
                         newRequestModel.getDefaultBuyer($stateParams.copyFrom.vesselId).then((data) => {
+                            
                             ctrl.disableAllFields = false;// fields enabled at copy
                             ctrl.request = angular.copy($stateParams.copyFrom);
                             ctrl.request.requestCompleted = false;// fields enabled at copy, send this to be
@@ -351,6 +352,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             });
                         });
                     } else if (typeof voyageId != 'undefined' && voyageId !== null) {
+                        
                         newRequestModel.newRequest(voyageId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
                             $.each(ctrl.request.locations, (i, j) => {
@@ -543,7 +545,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 					                ctrl.previewEmailDisabled = true;
 					            }
 					        });
-                            
+
                         });
                     } else {
                         newRequestModel.getEmptyRequest().then((newRequestData) => {
@@ -820,7 +822,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                  	allProductsIds = [...new Set(allProductsIds)] // make array unique
                     listsModel.getSpecGroupByProductAndVessel(allProductsIds.join(","), ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
-		        		
+
 	        			$.each(ctrl.request.locations, (lk, lv) => {
 		        			$.each(lv.products, (pk, pv) => {
 		                        var isInList = false;
@@ -830,7 +832,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 				                        	ctrl.request.locations[lk].products[pk].specGroups = [];
 				                        }
 				                        ctrl.request.locations[lk].products[pk].specGroups.push(v);
-				                        
+
 				                            if (v.isDefault && !ctrl.request.locations[lk].products[pk].specGroup && !ctrl.request.locations[lk].products[pk].id) {
 				                                ctrl.request.locations[lk].products[pk].specGroup = v;
 				                            }
@@ -1111,7 +1113,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             var validMQTR;
             if(ctrl.request.operatorBy && ctrl.request.operatorBy.name == '') //operator field empty
             {
-                ctrl.request.operatorBy = null;  
+                ctrl.request.operatorBy = null;
             }
             ctrl.isRequiredMinMax(false);
             if (ctrl.request.requestStatus) {
@@ -2225,6 +2227,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 	}
                 }
                 newRequestModel.getDefaultBuyer(vessel.id).then((buyer) => {
+                    
                     ctrl.buyer = buyer.payload;
                     ctrl.request.vesselDetails.vessel = angular.copy(vessel);
                     setPageTitle();
@@ -2314,7 +2317,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 	console.log(ctrl.operatorListFiltered);
                 }
             });
-		}        
+		}
         ctrl.selectOperator = function(operator) {
             ctrl.request.operatorBy = operator;
             ctrl.captureReasonModal(null,null,"REQUEST_OPERATOR", "operatorBy");
@@ -2434,6 +2437,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // });
         };
         ctrl.selectAgent = function(agentId) {
+            
             let agent;
             ctrl.lookupInput = {};
             $.each(ctrl.lists.Agent, (agK, agV) => {
@@ -3386,13 +3390,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return true;
         };
         ctrl.checkValidMQTRs = function() {
-            let text = ''; 
+            let text = '';
             if(ctrl.requestTenantSettings.isRequestMinimumQuantityToReachMandatory){
                 $.each(ctrl.request.locations, (key, val) => {
                     $.each(val.products, (key2, val2) => {
                         if(val2.id==null){
-                             if(val2.minimumQuantitiesToReach==undefined){ 
-                                text = 'The following fields are required minimumQuantitiesToReach  '+ ctrl.request.locations[key].location.name+':-'+ctrl.request.locations[key].products[key2].product.name;         
+                             if(val2.minimumQuantitiesToReach==undefined){
+                                text = 'The following fields are required minimumQuantitiesToReach  '+ ctrl.request.locations[key].location.name+':-'+ctrl.request.locations[key].products[key2].product.name;
                              }
                         }else if(val2.productStatus.id!==14 && val2.minimumQuantitiesToReach.length==0 ){
                                 text = 'The following fields are required minimumQuantitiesToReach  '+ ctrl.request.locations[key].location.name+':-'+ctrl.request.locations[key].products[key2].product.name;
@@ -3621,7 +3625,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             });
         };
 
-        ctrl.etaChanged = function(location, locationIdx) {           
+        ctrl.etaChanged = function(location, locationIdx) {
                 $timeout(() => {
                     if (!location.etb) {
                         location.etb = location.eta;
@@ -4318,6 +4322,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 			win.focus();
         }
 		ctrl.getOperationalReportParameters = function() {
+            
             if (!ctrl.requestTenantSettings.showOperationalReport || ctrl.tenantSettings.shiptechLite) return;
 			serviceId = ctrl.request.operationalReportServiceId;
 			console.log(serviceId);
@@ -4593,7 +4598,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $scope.PopupprettyCloseModal = function(){
             if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>0){
                 for(let i=0;ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>i;i++){
-                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==0 
+                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==0
                         || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].eta==null
                         || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].minQtyToReachPretest==undefined
                         || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].minQtyToReach==undefined){
@@ -4675,6 +4680,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return filterPayload;
         };
         ctrl.getVesselSchedulesSingleselect = function(key) {
+            
             ctrl.EnableSingleSelect = true;
             ctrl.CurrentSelectRow =key;
         	if (ctrl.request.vesselDetails.vessel) {
@@ -4745,7 +4751,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.request.minimumQuantitiesToReach.portid=portDetails.id;
                     }
                 }
-            }           
+            }
             ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[key]=angular.copy(ctrl.request.minimumQuantitiesToReach);
         }
 
@@ -4753,12 +4759,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $scope.openMinQtyToReach = function(productIdx, currProd,locationIdx) {
             ctrl.selectedLocationIdx=locationIdx;
             ctrl.selectedProductIdx=productIdx;
-            ctrl.selProductIdx=productIdx+locationIdx;          
+            ctrl.selProductIdx=productIdx+locationIdx;
             if(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach != undefined)
             {
                 if($rootScope.RootTempMinQtyToReach==undefined)
                 {
-                    $rootScope.RootTempMinQtyToReach = angular.copy(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach);          
+                    $rootScope.RootTempMinQtyToReach = angular.copy(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach);
                 }
             }
             if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach== undefined || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length==0 ){
@@ -4774,7 +4780,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 scope: $scope // passed current scope to the modal
             });
         };
-        
+
 
 
 /* Capture reason for change */
@@ -4806,16 +4812,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             })
             return foundField;
-        } 
+        }
         ctrl.saveCapturedReason = () => {
             if(!ctrl.captureReasonModalData.reason) {
                 toastr.error("Please select a reason for change");
                 return;
-            }  
+            }
             if(ctrl.captureReasonModalData.reason.name == "Other" && !ctrl.captureReasonModalData.comments ) {
                 toastr.error("Please select a comment for the reason");
                 return;
-            }  
+            }
 
             if(ctrl.captureReasonModalData.locationIndex == null) {
                 ctrl.request.tempReasons[ctrl.captureReasonModalData.changedFieldName] = ctrl.buildReasonDataStructure();
@@ -4832,7 +4838,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                     ctrl.request.locations[ctrl.captureReasonModalData.locationIndex].products[ctrl.captureReasonModalData.productIndex].tempReasons[ctrl.captureReasonModalData.changedFieldName] = ctrl.buildReasonDataStructure();
                 }
-            }            
+            }
             if (ctrl.captureReasonModalData.changedFieldName == "REQUEST_PRODUCT_CANCEL") {
                 ctrl.reasonProvidedForCancellation = true;
                 payload = {
@@ -4840,7 +4846,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     reason: ctrl.buildReasonDataStructure(),
                     locationIdx: ctrl.captureReasonModalData.locationIndex
                 }
-                ctrl.canBeCancelledProductFromLocation(null, ctrl.captureReasonModalData.requestProductId, payload);                
+                ctrl.canBeCancelledProductFromLocation(null, ctrl.captureReasonModalData.requestProductId, payload);
             }
             if (ctrl.captureReasonModalData.changedFieldName == "REQUEST_LOCATION_CANCEL") {
                 ctrl.reasonProvidedForCancellation = true;
@@ -4848,10 +4854,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     id : ctrl.request.id,
                     reason : ctrl.buildReasonDataStructure()
                 }
-                ctrl.canBeCancelledLocation(ctrl.captureReasonModalData.requestLocationId, payload);                
-            }            
+                ctrl.canBeCancelledLocation(ctrl.captureReasonModalData.requestLocationId, payload);
+            }
             ctrl.captureReasonModalData = null;
-        } 
+        }
         ctrl.buildReasonDataStructure = () => {
             console.log(ctrl.captureReasonModalData);
             data = {
@@ -4887,11 +4893,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.request.tempReasons[changedFieldName] = null;
                         ctrl.captureReasonModalData = null;
                         fieldChanged = false;
-                    }                    
+                    }
                 }
             } else {
                 if (productIndex == null) {
-                    if(ctrl.request.locations[locationIndex].isNew){ 
+                    if(ctrl.request.locations[locationIndex].isNew){
                         ctrl.request.locations[locationIndex].isNew = false;
                         return true;
                     }
@@ -4910,8 +4916,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             ctrl.request.locations[locationIndex].tempReasons[changedFieldName] = null;
                             ctrl.captureReasonModalData = null;
                             fieldChanged = false;
-                        }                    
-                    }                    
+                        }
+                    }
                 } else {
                     if (!ctrl.request.locations[locationIndex].products[productIndex].tempReasons) {
                         ctrl.request.locations[locationIndex].products[productIndex].tempReasons = {};
@@ -4919,7 +4925,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if(!ctrl.request.locations[locationIndex].id ) { /* is new location */
                         return false;
                     }
-                    if(ctrl.request.locations[locationIndex].products[productIndex].isNew){ 
+                    if(ctrl.request.locations[locationIndex].products[productIndex].isNew){
                         ctrl.request.locations[locationIndex].products[productIndex].isNew = false;
                         return true;
                     }
@@ -4935,8 +4941,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             ctrl.request.locations[locationIndex].products[productIndex].tempReasons[changedFieldName] = null;
                             ctrl.captureReasonModalData = null;
                             fieldChanged = false;
-                        }                    
-                    } 
+                        }
+                    }
                 }
             }
             return fieldChanged;
@@ -4945,7 +4951,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.prepareReasonsForSave = () => {
             if(!ctrl.request.id) {
                 return false;
-            }  
+            }
             if(ctrl.request.tempReasons) {
                 Object.keys(ctrl.request.tempReasons).forEach(key => {
                     if(ctrl.request.tempReasons[key]) {
@@ -4959,7 +4965,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         if( v.tempReasons[key] ) {
                             ctrl.request.reasons.push(v.tempReasons[key]);
                         }
-                    });                    
+                    });
                 }
                 $.each(v.products, (k2,v2) => {
                     if (v2.tempReasons) {
@@ -4970,11 +4976,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 }
                                 ctrl.request.reasons.push(v2.tempReasons[key]);
                             }
-                        });                    
-                    }                    
+                        });
+                    }
                 })
             })
-            
+
         }
 
 /* END Capture reason for change */

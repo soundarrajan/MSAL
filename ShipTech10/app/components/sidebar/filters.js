@@ -1030,7 +1030,7 @@ angular.module('shiptech.components').controller('FiltersController', [
         //     }
         // })
         $rootScope.getConfigurationForTableLoad = function() {
-            return $q((resolve, reject) => {
+            return $q((resolve, reject) => { 
                 // send default config to table build
                 // no default config, send false
                 if($state.current.url == '/all-requests-table' && $rootScope.rawFilters.length == 0) {

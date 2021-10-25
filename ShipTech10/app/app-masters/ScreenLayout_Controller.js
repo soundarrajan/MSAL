@@ -500,6 +500,12 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		            			id:objParams.productId,
 		            		}
 		            	};
+                        let payload = { Payload: objParams.orderId };
+                        // Factory_Master.getOrderNotes(payload, (callback3) => {
+                        //     if(callback3) {
+                        //         $scope.formValues.claimNotes =  callback3.data.payload;
+                        //     }
+                        // });
 		            	$scope.triggerChangeFields('OrderID');
 	            	});
 	            }
@@ -511,6 +517,13 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
             			data = JSON.parse(localStorage.getItem('raiseNewClaimData'));
             			localStorage.removeItem('raiseNewClaimData');
             			$rootScope.transportData = data;
+                        
+                        let payload = { Payload: data.orderDetails.order.id };
+                        // Factory_Master.getOrderNotes(payload, (callback3) => {
+                        //     if(callback3) {
+                        //         $scope.formValues.claimNotes =  callback3.data.payload;
+                        //     }
+                        // });
             		}
             	}
                 // $rootScope.transportData este variabila globala folosita pentru cazurile in care avem nevoie
@@ -605,11 +618,15 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     	});
                                         $.each($scope.formValues.vesselProducts, (k, v) => {
                                     		v.id = 0;
-                                            v.vessel.id = 0;
+                                            if(v.vessel) {
+                                                v.vessel.id = 0;
+                                            }
                                             $.each(v.vesselProductTanks, (k1, v1) => {
                                                 v1.id = 0;
                                                 v1.vesselId = 0;
-                                                v1.vesselProduct.id = 0;
+                                                if(v1.vesselProduct) {
+                                                    v1.vesselProduct.id = 0;
+                                                }
                                             });
                                     	});
                                     }

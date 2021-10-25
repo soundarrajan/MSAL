@@ -948,6 +948,11 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(result);
             });
         },
+        getOrderNotes: function(data, callback) {
+            $Api_Service.procurement.getOrderNotes(data, (result) => {
+                callback(result);
+            });
+        },
         getEnergyBlade: function(data, callback) {
             $Api_Service.procurement.getEnergyBlade(data, (result) => {
                 callback(result);

@@ -39,15 +39,17 @@ APP_CLAIMS.controller('Controller_Claims', [
             $scope.formValues = data;
             if ($scope.formValues.claimDetails && $scope.formValues.claimDetails.status) {
                 if ($scope.formValues.claimDetails.status.name != 'New') {
-                    if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
-                        $.each($scope.formFields['Order Details'].children, (k, v) => {
-                            if (v.Name == 'DeliveryDate') {
-                                v.Disabled = true;
-                            }
-                        });
-                    }
-                    if ($scope.formFields.deliveryDate) {
-                        $scope.formFields.deliveryDate.Disabled = true;
+                    if (typeof $scope.formFields != 'undefined' && $scope.formFields) {
+                        if ($scope.formFields['Order Details'] && $scope.formFields['Order Details'].children) {
+                            $.each($scope.formFields['Order Details'].children, (k, v) => {
+                                if (v.Name == 'DeliveryDate') {
+                                    v.Disabled = true;
+                                }
+                            });
+                        }
+                        if ($scope.formFields.deliveryDate) {
+                            $scope.formFields.deliveryDate.Disabled = true;
+                        }
                     }
                 }
             }
@@ -116,8 +118,6 @@ APP_CLAIMS.controller('Controller_Claims', [
             
             Factory_Claims.getRelatedClaims(id, (callback) => {
                 if (callback) {
-                    
-                   
                     if (callback.status == true) {
                         vm.relatedClaims = callback.data;
                         $scope.relatedClaims = callback.data;
@@ -387,6 +387,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                             }
                         }
                     	$scope.formValues.orderDetails.orderPrice = $scope.formValues.initialOrderPrice;
+                        $scope.formValues.claimNotes = response.orderNotes;
                         if (response.orderDate) {
                             $scope.formValues.orderDetails.orderDate = response.orderDate;
                         }

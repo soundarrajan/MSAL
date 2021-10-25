@@ -3212,11 +3212,21 @@ APP_MASTERS.controller('Controller_Datatables', [
                     },
                     {
                         name: 'min',
-                        displayName: 'Min',
+                        displayName: 'Min with tolerance',
                         cellTemplate: $scope.dataTableTemplates.text
                     },
                     {
                         name: 'max',
+                        displayName: 'Max with tolerance',
+                        cellTemplate: $scope.dataTableTemplates.text
+                    },
+                    {
+                        name: 'minIso',
+                        displayName: 'Min',
+                        cellTemplate: $scope.dataTableTemplates.text
+                    },
+                    {
+                        name: 'maxIso',
                         displayName: 'Max',
                         cellTemplate: $scope.dataTableTemplates.text
                     },
@@ -3248,13 +3258,17 @@ APP_MASTERS.controller('Controller_Datatables', [
                         enableCellEdit: false,
                         enableSorting: false,
                         cellClass: 'actionsCol',
-                        cellTemplate: $scope.dataTableTemplates.remRow,
-                        headerCellTemplate: $scope.dataTableTemplates.addRow
+                        cellTemplate: $scope.dataTableTemplates.customRemRow,
+                        headerCellTemplate: $scope.dataTableTemplates.addRow,
+                        cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.claimNotes, grid.appScope.rowIdx(row))',
+                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Cancelled\''
                     },
                     {
-                        name: 'claimNote',
+                        name: 'note',
                         displayName: 'Claim Notes',
-                        cellTemplate: $scope.dataTableTemplates.text
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.claimNotes, grid.appScope.rowIdx(row))',
+                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Cancelled\''
                     },
                     {
                         name: 'createdBy.displayName',
@@ -3263,7 +3277,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         enableCellEdit: false
                     },
                     {
-                        name: 'createdOn',
+                        name: 'createdAt',
                         width: 150,
                         displayName: 'Date & Time',
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,

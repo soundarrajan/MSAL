@@ -4885,8 +4885,8 @@
                             val.createdBy.code = null;
                             val.createdBy.collectionName = null;
                         }
-                        if (typeof val.createdOn == 'undefined') {
-                            val.createdOn = moment().format();
+                        if (typeof val.createdAt == 'undefined') {
+                            val.createdAt = moment().format();
                         }
                     }
                 });
@@ -6611,6 +6611,7 @@
                                 }
                             });
                             keysToRemove.reverse();
+
                             $.each(keysToRemove, (key, val) => {
                                 $scope.emailTemplates.splice(val, 1);
                             });
@@ -8689,7 +8690,7 @@
                         let robValues = callback.data.payload;
                         $scope.formValues.robs = robValues;
                         if(!robValues.length) {
-                            $scope.initRobTable();
+                            $scope.initRobTable('fn_triggerRobStandard');
                         }
 		            } else {
 		                toastr.error('An error has occured!');
@@ -8722,7 +8723,7 @@
             });
         };
 
-        $scope.initRobTable = function() {
+        $scope.initRobTable = function(source) {
             if (!$scope.formValues.robs || $scope.formValues.robs.length == 0) {
                 let defaultUomId = $scope.getDefaultUom().id;
                 $scope.formValues.robs = [
@@ -8744,7 +8745,7 @@
                     },
                 ];
             }
-            if ($scope.formValues.usingVesselTypeRob) {
+            if ($scope.formValues.usingVesselTypeRob && (source != 'fn_triggerRobStandard')) {
                 $scope.triggerRobStandard($scope.formValues.usingVesselTypeRob);
             }
         };
@@ -10724,8 +10725,12 @@
         }
         $scope.selectAllUserMasterCustomers = (selectState) => {
             $.each($scope.userMasterCustomerData, (k,v) => {
-                v.isSelected = true;
-                $scope.addUserMasterCustomerToSelection(v);
+            	if (selectState) {
+            		v.isSelected = true;
+            	} else {
+            		v.isSelected = false;
+            	}
+        		$scope.addUserMasterCustomerToSelection(v);
             })
         }
 /* END USER master customer lookup logic */

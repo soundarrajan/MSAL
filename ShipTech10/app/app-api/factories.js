@@ -11073,6 +11073,38 @@ APP_API.factory('$Api_Service', [
                         }
                     );
                 },
+                getOrderNotes: function(param, callback) {
+                    let url = `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/order/getNotes`;
+                    $http.post(url, param).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.data = response.data;
+                                res.status = true;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                if (response.data.ErrorMessage) {
+                                    res.message = response.data.ErrorMessage;
+                                } else {
+                                    res.message = response.data.exceptionMessage;
+                                }
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            if (response.ErrorMessage) {
+                                res.message = response.ErrorMessage;
+                            } else {
+                                res.message = response.exceptionMessage;
+                            }
+                            callback(res);
+                            console.log('HTTP ERROR while trying to getOrderNotes!');
+                        }
+                    );
+                },
                 getEnergyBlade: function(param, callback) {
                 	screenLoader.showLoader();
                     let url = `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/rfq/getEnergySpecValues`;
