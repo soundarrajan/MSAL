@@ -14,6 +14,7 @@ export const SpotNegotiationApiPaths = {
   counterpartyLists: `api/masters/counterparties/list`,
   addCounterparties: `groups/addcounterparties`,
   saveTargetPrice: `Groups/AutoSaveTargetPrice`,
+  updatePhySupplier:`RFQ/updatePhysicalSupplier`,
   sendRFQ:`RFQ/createRFQ`
 };
 
@@ -208,6 +209,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.saveTargetPrice}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  UpdatePhySupplier(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updatePhySupplier}`,
         payload
       )
       .pipe(

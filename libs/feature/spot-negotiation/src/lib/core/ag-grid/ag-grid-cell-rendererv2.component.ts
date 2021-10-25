@@ -14,8 +14,11 @@ import { SpotnegoRequestChangesComponent } from '../../views/main/details/compon
 import { SpotnegoPricingDetailsComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
 import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 
 import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.action';
+import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -352,7 +355,8 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
               />
             </div>
             <div class="col-md-2">
-              <span class="expand-img"></span>
+              <span class="expand-img" 
+              (click)="openCounterpartyPopup(params.locationId)"></span>
             </div>
           </div>
           <table
@@ -383,7 +387,7 @@ import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.ac
           </table>
 
           <div class="proceed-div">
-            <button mat-button class="mid-blue-button proceed-btn">
+            <button mat-button class="mid-blue-button proceed-btn" (click)="updatePhysicalSupplier()">
               Proceed
             </button>
           </div>
@@ -528,13 +532,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList=[];
   visibleCounterpartyList = [];
-  currentRequestInfo = [];
+  currentRequestInfo : any;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
     public router: Router,
     public dialog: MatDialog,
     public store: Store,
+    private toastr: ToastrService,
+    private _spotNegotiationService: SpotNegotiationService,
     private tenantService: TenantFormattingService
   ) {}
 
@@ -553,6 +559,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   isOfferRequestAvailable() : boolean {
+    debugger;
 
     // Array of requestoffers
     const { requestOffers } = this.params.data || {};
@@ -688,7 +695,36 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
     dialogRef.afterClosed().subscribe(result => {});
   }
+  
+  openCounterpartyPopup(locationId) {
+    let RequestGroupId = 0;
+    let currentRequestLocation = { id: '0', locationId: '0' };
 
+    if (this.currentRequestInfo) {
+      RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
+
+      if(this.currentRequestInfo.requestLocations
+        && this.currentRequestInfo.requestLocations.length > 0){
+        currentRequestLocation = this.currentRequestInfo.requestLocations[0];
+      }
+    }
+
+    const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup',
+      data: {
+        AddCounterpartiesAcrossLocations: false,
+        RequestGroupId: RequestGroupId,
+        RequestLocationId: parseInt(currentRequestLocation.id),
+        LocationId: locationId,
+        isPhysicalSupplier:true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {});
+  }
   suppliercommentspopup() {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
       width: '672px',
@@ -847,5 +883,21 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   selectSupplier(text) {
     this.editedSeller = text;
+  }
+
+  updatePhysicalSupplier(){
+    let payload = {
+      "requestOfferIds": [0],
+      "phySupplierId": 0
+    };
+    const response = this._spotNegotiationService.updatePhySupplier(payload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toastr.success(res.message);
+      } else {
+        this.toastr.error(res.message);
+        return;
+      }
+    });
   }
 }
