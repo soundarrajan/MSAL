@@ -7,7 +7,6 @@ import {
 } from '@angular/router';
 import { Observable, Observer, of } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { QcReportState } from '../store/report/qc-report.state';
 import { ConfirmationService } from 'primeng/api';
 import { ContractDetailsComponent } from '../views/contract/details/contract-details.component';
 
@@ -29,7 +28,7 @@ export class ContractDetailsUnsavedChangesGuard
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const hasChanges = this.store.selectSnapshot(QcReportState.hasChanges);
+    const hasChanges = false;
 
     if (hasChanges) {
       return new Observable((observer: Observer<boolean>) => {

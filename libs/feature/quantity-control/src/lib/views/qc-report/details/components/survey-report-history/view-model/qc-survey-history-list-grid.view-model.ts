@@ -199,7 +199,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffRobBeforeDelivery,
         this.robTolerance
       ),
@@ -245,7 +245,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffDeliveredQty,
         this.bdnTolerance
       )
@@ -348,7 +348,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffSludgeRobBeforeDischarge,
         this.robTolerance
       )
@@ -532,7 +532,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     };
   }
 
-  private toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+  private getMatchStatusForRobBeforeDiffAndDeliveredDiff(
     value: number,
     tolerance: number
   ): Partial<CSSStyleDeclaration> {
@@ -544,9 +544,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
     let status = this.reconStatusLookups.matched;
 
-    if (Math.abs(value) > tolerance)
-      status = this.reconStatusLookups.notMatched;
-    if (Math.abs(value) <= tolerance) status = this.reconStatusLookups.matched;
+    if (value > tolerance) status = this.reconStatusLookups.notMatched;
+    if (value <= tolerance) status = this.reconStatusLookups.matched;
 
     return {
       backgroundColor: status.code,
@@ -566,38 +565,13 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
     let status = this.reconStatusLookups.matched;
 
-    if (Math.abs(value) != 0) status = this.reconStatusLookups.notMatched;
+    if (value != 0) status = this.reconStatusLookups.notMatched;
 
-    if (Math.abs(value) == tolerance) status = this.reconStatusLookups.matched;
+    if (value == tolerance) status = this.reconStatusLookups.matched;
 
     return {
       backgroundColor: status.code,
       color: '#fff'
-    };
-  }
-
-  private toleranceMatchStyle(value: number): Partial<CSSStyleDeclaration> {
-    if (value === null || value === undefined)
-      return {
-        backgroundColor: 'inherit',
-        color: 'inherit'
-      };
-
-    let status = this.reconStatusLookups.matched;
-
-    if (Math.abs(value) >= this.maxToleranceLimit)
-      status = this.reconStatusLookups.notMatched;
-
-    if (
-      Math.abs(value) > this.minToleranceLimit &&
-      Math.abs(value) < this.maxToleranceLimit
-    )
-      status = this.reconStatusLookups.withinLimit;
-
-    return {
-      backgroundColor:
-        status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
-      color: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
     };
   }
 }
