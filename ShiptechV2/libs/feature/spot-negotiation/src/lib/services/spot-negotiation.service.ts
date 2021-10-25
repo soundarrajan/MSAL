@@ -134,6 +134,12 @@ export class SpotNegotiationService extends BaseStoreService
      return this.spotNegotiationApi.SaveTragetPrice(payload);
    }
 
+   @ObservableException()
+   updatePhySupplier(payload: any): Observable<unknown> {
+     return this.spotNegotiationApi.UpdatePhySupplier(payload);
+   }
+
+
 
   /**
    * Fake populate rows

@@ -216,7 +216,26 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   AddCounterparties() {
     const selectedCounterparties = this.toBeAddedCounterparties();
     if (selectedCounterparties.length == 0) return;
+    if(this.data.isPhysicalSupplier){
+      let reqPayload={
+          "requestOfferIds": [
+          0
+          ],
+          "phySupplierId": 0
+      }
 
+      const response = this._spotNegotiationService.updatePhySupplier(reqPayload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        this.toastr.success(res.message);
+      } else {
+        this.toastr.error(res.message);
+        return;
+      }
+    });
+    }
+
+    if(!this.data.isPhysicalSupplier){
     let payload = {
       requestGroupId: this.RequestGroupId,
       isAllLocation: true,
@@ -235,5 +254,6 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         return;
       }
     });
+  }
   }
 }
