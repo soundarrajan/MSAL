@@ -17,9 +17,7 @@ import {
   InjectionToken
 } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';

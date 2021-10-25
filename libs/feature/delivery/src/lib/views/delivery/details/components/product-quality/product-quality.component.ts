@@ -16,9 +16,7 @@ import {
   Injectable
 } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, pipe, Subject, Subscription } from 'rxjs';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
 import {
   finalize,
@@ -230,7 +228,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private appConfig: AppConfig,
-    private reportService: QcReportService,
     private httpClient: HttpClient,
     changeDetectorRef: ChangeDetectorRef,
     private deliveryService: DeliveryService,
