@@ -7,16 +7,13 @@ import {
 } from '@angular/router';
 import { DeliveryDetailsComponent } from '../views/delivery/details/delivery-details.component';
 import { Observable, Observer, of } from 'rxjs';
-import { QcReportService } from '../services/qc-report.service';
 import { Store } from '@ngxs/store';
-import { QcReportState } from '../store/report/qc-report.state';
 import { ConfirmationService } from 'primeng/api';
 
 @Injectable()
 export class DeliveryDetailsUnsavedChangesGuard
   implements CanDeactivate<DeliveryDetailsComponent> {
   constructor(
-    private detailsService: QcReportService,
     private store: Store,
     private confirmationService: ConfirmationService
   ) {}
@@ -31,8 +28,7 @@ export class DeliveryDetailsUnsavedChangesGuard
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const hasChanges = this.store.selectSnapshot(QcReportState.hasChanges);
-
+    let hasChanges = false;
     if (hasChanges) {
       return new Observable((observer: Observer<boolean>) => {
         this.confirmationService.confirm({
