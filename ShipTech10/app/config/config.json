@@ -57,7 +57,6 @@
   },
   "API": {
     "BASE_URL_DATA_PROCUREMENT": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Procurement",
-    "BASE_URL_DATA_NEGOTIATION": "https://shiptech.24software.ro:8000/Integration1060/Shiptech.Negotiation.Api",
     "BASE_URL_DATA_EMAIL": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Mail",
     "BASE_URL_DATA_MASTERS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Masters",
     "BASE_URL_DATA_ADMIN": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Admin",
@@ -78,8 +77,8 @@
     "BASE_URL_DATA_BOPS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.BOPS",
     "BASE_URL_DATA_SMART": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Smart",
     "BASE_URL_UI": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
-    "BASE_URL_OPEN_SERVER": "http://shiptech10.24software.ro:8160",
-    "BASE_HEADER_FOR_NOTIFICATIONS": "http://shiptech.24software.ro:8160",
+    "BASE_URL_OPEN_SERVER": "https://dev.shiptech10.24software.ro:8000",
+    "BASE_HEADER_FOR_NOTIFICATIONS": "https://dev.shiptech.24software.ro:8000",
     "BASE_URL": "https://shiptech.24software.ro:8000/Integration1060/",
     "USE_LOCAL_MOCKUPS": false
   },
