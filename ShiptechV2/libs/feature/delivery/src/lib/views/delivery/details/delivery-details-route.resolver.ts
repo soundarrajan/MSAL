@@ -6,7 +6,6 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { QcReportService } from '../../../services/qc-report.service';
 import { KnownDeliverylRoutes } from '../../../known-delivery.routes';
 import { catchError, finalize, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
@@ -22,7 +21,6 @@ export class DeliveryDetailsRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
-    private reportService: QcReportService,
     private deliveryService: DeliveryService,
     private bdnInformationService: BdnInformationApiService,
     private spinner: NgxSpinnerService
@@ -32,8 +30,7 @@ export class DeliveryDetailsRouteResolver implements Resolve<any> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> | Promise<any> | any {
-    const DeliveryIdParam =
-      route.params[KnownDeliverylRoutes.DeliveryIdParam];
+    const DeliveryIdParam = route.params[KnownDeliverylRoutes.DeliveryIdParam];
     const deliveryId = Number(DeliveryIdParam ?? 0);
 
     if (!Number.isInteger(deliveryId)) {
@@ -44,9 +41,9 @@ export class DeliveryDetailsRouteResolver implements Resolve<any> {
     }
 
     let payload = {
-      'Payload': {},
-      'UIFilters': {
-        'RequestStatuses': '13,19'
+      Payload: {},
+      UIFilters: {
+        RequestStatuses: '13,19'
       }
     };
     return this.bdnInformationService.getForTransactionForSearch(payload);
@@ -54,20 +51,20 @@ export class DeliveryDetailsRouteResolver implements Resolve<any> {
 
   getForTransactionForSearch() {
     let payload = {
-      'Payload': {},
-      'UIFilters': {
-        'RequestStatuses': '13,19'
+      Payload: {},
+      UIFilters: {
+        RequestStatuses: '13,19'
       }
     };
     this.bdnInformationService
-    .getForTransactionForSearch(payload)
-    .pipe(
+      .getForTransactionForSearch(payload)
+      .pipe(
         finalize(() => {
-            this.isLoading = false;
+          this.isLoading = false;
         })
-    )
-    .subscribe((result: any) => {
-      this.options = result;
-    }); 
+      )
+      .subscribe((result: any) => {
+        this.options = result;
+      });
   }
 }

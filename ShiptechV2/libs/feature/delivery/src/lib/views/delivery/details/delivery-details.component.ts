@@ -8,9 +8,7 @@ import {
 } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { Select, Store } from '@ngxs/store';
-import { QcReportState } from '../../../store/report/qc-report.state';
 import { BehaviorSubject, empty, Observable, Subject } from 'rxjs';
-import { QcReportService } from '../../../services/qc-report.service';
 import { NotesService } from '../../../services/notes.service';
 import {
   catchError,
@@ -23,23 +21,12 @@ import {
   takeUntil,
   tap
 } from 'rxjs/operators';
-import {
-  SwitchActiveBunkerResponseAction,
-  SwitchActiveSludgeResponseAction
-} from '../../../store/report/details/actions/qc-vessel-response.actions';
-import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
-import { ResetQcReportDetailsStateAction } from '../../../store/report/qc-report-details.actions';
 import { ToastrService } from 'ngx-toastr';
-import {
-  QcVesselResponseBunkerStateModel,
-  QcVesselResponseSludgeStateModel
-} from '../../../store/report/details/qc-vessel-responses.state';
 import {
   IDisplayLookupDto,
   IVesselToWatchLookupDto
 } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
-import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
 import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
@@ -56,7 +43,6 @@ import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status
 import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { VesselToWatchModel } from '../../../store/report/models/vessel-to-watch.model';
 import { MyMonitoringService } from '../../service/logging.service';
 import {
   FormArray,
@@ -157,7 +143,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     private store: Store,
     private router: Router,
     private location: Location,
-    private reportService: QcReportService,
     private NotesService: NotesService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
@@ -1644,12 +1629,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       (<any>window).startCreateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
-      .saveDeliveryInfo(this.formValues)
-      .pipe(
-        finalize(() => {
-          this.buttonClicked = false;
-          this.eventsSubject2.next(this.buttonClicked);
-        })
+        .saveDeliveryInfo(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
+          })
         )
         .subscribe((result: any) => {
           if (typeof result == 'string') {
@@ -1661,49 +1646,61 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
-            .navigate([
-              KnownPrimaryRoutes.Delivery,
-              `${KnownDeliverylRoutes.Delivery}`,
-              result,
-              KnownDeliverylRoutes.DeliveryDetails
-            ])
-            .then(() => {
-              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);        
-            });
+              .navigate([
+                KnownPrimaryRoutes.Delivery,
+                `${KnownDeliverylRoutes.Delivery}`,
+                result,
+                KnownDeliverylRoutes.DeliveryDetails
+              ])
+              .then(() => {
+                this.myMonitoringService.logMetric(
+                  'Create ' + (<any>window).location.href,
+                  Date.now() - (<any>window).startCreateDeliveryTime,
+                  (<any>window).location.href
+                );
+              });
           }
         });
-      } else {
-        (<any>window).startUpdateDeliveryTime = Date.now();
+    } else {
+      (<any>window).startUpdateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
-			.updateDeliveryInfo(this.formValues)
-			.pipe(
-        finalize(() => {
-          this.buttonClicked = false;
-					this.eventsSubject2.next(this.buttonClicked);
-				})
+        .updateDeliveryInfo(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
+          })
         )
         .subscribe((result: any) => {
-					if (typeof result == 'string') {
+          if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
-            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
+            this.myMonitoringService.logMetric(
+              'Update ' + (<any>window).location.href,
+              Date.now() - (<any>window).startUpdateDeliveryTime,
+              (<any>window).location.href
+            );
           } else {
             this.toastrService.success('Delivery saved successfully');
             this.deliveryService
-						.loadDeliverytDetails(result.id)
-						.pipe(
-              finalize(() => {
-                this.spinner.hide();
-                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
-							})
+              .loadDeliverytDetails(result.id)
+              .pipe(
+                finalize(() => {
+                  this.spinner.hide();
+                  this.myMonitoringService.logMetric(
+                    'Update ' + (<any>window).location.href,
+                    Date.now() - (<any>window).startUpdateDeliveryTime,
+                    (<any>window).location.href
+                  );
+                })
               )
               .subscribe((data: any) => {
-								this.formValues.sampleSources = data.sampleSources;
+                this.formValues.sampleSources = data.sampleSources;
                 this.formValues = _.merge(this.formValues, data);
                 if (typeof this.formValues.deliveryStatus != 'undefined') {
                   if (this.formValues.deliveryStatus.name) {
-										this.statusColorCode = this.getColorCodeFromLabels(
+                    this.statusColorCode = this.getColorCodeFromLabels(
                       this.formValues.deliveryStatus,
                       this.scheduleDashboardLabelConfiguration
                     );

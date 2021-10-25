@@ -8,9 +8,6 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
 import { ContractGridModule } from './contract-grid.module';
 import { NgxsModule } from '@ngxs/store';
-import { QuantityControlState } from './store/quantity-control.state';
-import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportState } from './store/report/qc-report.state';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
@@ -90,8 +87,8 @@ import {
   NgxMatTimepickerModule
 } from '@angular-material-components/datetime-picker';
 
-import { NgxSpinnerModule } from "ngx-spinner";
-import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
@@ -143,7 +140,6 @@ import { ExtendContractModalComponent } from './views/contract/details/component
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { FormulaHistoryModalComponent } from './views/contract/details/components/formula-history-modal/formula-history-modal.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -161,11 +157,7 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     EntityStatusModule,
     DynamicDialogModule,
     ExportModule,
-    NgxsModule.forFeature([
-      QuantityControlState,
-      QcReportsListState,
-      QcReportState
-    ]),
+    NgxsModule.forFeature([]),
     FormsModule,
     ReactiveFormsModule,
     NgxsResetPluginModule.forRoot(),
@@ -272,14 +264,19 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent,ExtendContractModalComponent, FormulaHistoryModalComponent],
+  entryComponents: [
+    ProductSpecGroupModalComponent,
+    CreateNewFormulaModalComponent,
+    ExtendContractModalComponent,
+    FormulaHistoryModalComponent
+  ],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
     AmountTenantFormatDirective,
     PriceTenantFormatDirective
-   // PSpinnerDisableKeysSpinDirective,
+    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
   providers: [
@@ -300,9 +297,7 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     LocationMasterRouteResolver,
     {
       provide: CONTRACT_API_SERVICE,
-      useClass: environment.production
-        ? ContractApi
-        : ContractApi
+      useClass: environment.production ? ContractApi : ContractApi
     },
     ContractDetailsUnsavedChangesGuard,
     ContractService,
@@ -310,7 +305,6 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     MessageService,
     ConfirmationService,
     DecimalPipe
-
   ]
 })
 export class ContractModule {}

@@ -15,9 +15,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -219,7 +217,6 @@ export class DeliveryProductsGroupComponent
   @Output() onProductSelected = new EventEmitter<any>();
   @Output() onConversionSelected = new EventEmitter<any>();
   constructor(
-    public qcReportService: QcReportService,
     public gridViewModel: OrderListGridViewModel,
     public bdnInformationService: BdnInformationApiService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
@@ -278,7 +275,10 @@ export class DeliveryProductsGroupComponent
       return;
     }
     this.formValues = form;
-    if (this.formValues.temp.deliverysummary && this.formValues.temp.deliverysummary.products) {
+    if (
+      this.formValues.temp.deliverysummary &&
+      this.formValues.temp.deliverysummary.products
+    ) {
       this.formValues.temp.deliverySummaryProducts = [
         ...this.formValues.temp.deliverysummary.products
       ];
@@ -311,7 +311,7 @@ export class DeliveryProductsGroupComponent
       }
     });
     if (productAlreadyExist) {
-        this.selectedProductToAddInDelivery = null;
+      this.selectedProductToAddInDelivery = null;
       return this.toastr.error(
         'The selected product is already added to delivery'
       );
@@ -1001,7 +1001,6 @@ export class DeliveryProductsGroupComponent
   }
 
   selectProduct(key) {
-    this.qcReportService.selectedProduct = key;
     this.selectedProduct = key;
     this.onProductSelected.emit(this.selectedProduct);
     this.onConversionSelected.emit(this.conversionInfoData);
@@ -1074,7 +1073,10 @@ export class DeliveryProductsGroupComponent
 
   openAddProductSelect() {
     this.searchProductInput = null;
-    if (this.formValues.temp.deliverysummary && this.formValues.temp.deliverysummary.products) {
+    if (
+      this.formValues.temp.deliverysummary &&
+      this.formValues.temp.deliverysummary.products
+    ) {
       this.formValues.temp.deliverySummaryProducts = [
         ...this.formValues.temp.deliverysummary.products
       ];
