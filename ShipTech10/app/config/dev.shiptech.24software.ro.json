@@ -8,9 +8,9 @@
     "extraQueryParameter": "nux=1",
     "logOutUri": "",
     "endpoints": {
-      "http://mail.24software.ro:8081/": "3e7b4241-b1e6-4769-bb5c-989d64458e51"
+      "https://shiptech.24software.ro:8000/": "3e7b4241-b1e6-4769-bb5c-989d64458e51"
     },
-    "anonymousEndpoints": [ "http://shiptech10.24software.ro:8081/" ],
+    "anonymousEndpoints": [ "https://shiptech10.24software.ro:8000/" ],
     "postLogoutRedirectUri": null,
     "expireOffsetSeconds": 10
   },
@@ -27,9 +27,11 @@
     "NEW_REQUEST_VIEWS": "default.new-request_r",
     "EDIT_REQUEST": "default.edit-request",
     "VIEW_REQUEST_DOCUMENTS": "default.view-request-documents",
+    "VIEW_REQUEST_REPORT": "default.view-request-report",
     "VIEW_REQUEST_AUDITLOG": "default.view-request-auditlog",
     "VIEW_REQUEST_EMAILLOG": "default.view-request-emaillog",
     "VIEW_GROUP_OF_REQUESTS_EMAILLOG": "default.group-of-requests-emaillog",
+    "VIEW_GROUP_OF_REQUESTS_REPORT": "default.group-of-requests-report",
     "COPY_REQUEST": "default.copy-request",
     "ALL_REQUESTS_TABLE": "default.all-requests-table",
     "GROUP_OF_REQUESTS": "default.group-of-requests",
@@ -54,28 +56,31 @@
     "LIST": [ "default.dashboard-table", "default.all-requests-table", "default.order-list", "default.view-rfq", "default.select-contract", "default.contract-planning", "default.contract-evaluation" ]
   },
   "API": {
-    "BASE_URL_DATA_PROCUREMENT": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Procurement",
-    "BASE_URL_DATA_EMAIL": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Mail",
-    "BASE_URL_DATA_MASTERS": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Masters",
-    "BASE_URL_DATA_ADMIN": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Admin",
-    "BASE_URL_DATA_INFRASTRUCTURE": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Infrastructure",
+    "BASE_URL_DATA_PROCUREMENT": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Procurement",
+    "BASE_URL_DATA_NEGOTIATION": "https://shiptech.24software.ro:8000/Integration1060/Shiptech.Negotiation.Api",
+    "BASE_URL_DATA_EMAIL": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Mail",
+    "BASE_URL_DATA_MASTERS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Masters",
+    "BASE_URL_DATA_ADMIN": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Admin",
+    "BASE_URL_DATA_INFRASTRUCTURE": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Infrastructure",
     "BASE_URL_DATA_SELLER_PORTAL": "http://shiptech10.24software.ro:8081/Integration1060/Shiptech10.Api.SellerPortal",
-    "BASE_URL_DATA_CLAIMS": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Claims",
-    "BASE_URL_DATA_LABS": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Labs",
-    "BASE_URL_DATA_CONTRACTS": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Contracts",
-    "BASE_URL_DATA_DELIVERY": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Delivery",
-    "BASE_URL_DATA_RECON": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Recon",
-    "BASE_URL_DATA_SELLERRATING": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.SellerRating",
-    "BASE_URL_DATA_INVOICES": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Invoice",
-    "BASE_URL_DATA_ALERTS": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.BusinessAlerts",
-    "BASE_URL_DATA_HANGFIRE": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Hangfire",
-    "BASE_URL_DATA_MAIL": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Mail",
-    "BASE_URL_DATA_ROB": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Rob",
-    "BASE_URL_DATA_IMPORTEXPORT": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.ImportExport",
-    "BASE_URL_UI": "http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
+    "BASE_URL_DATA_CLAIMS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Claims",
+    "BASE_URL_DATA_LABS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Labs",
+    "BASE_URL_DATA_CONTRACTS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Contracts",
+    "BASE_URL_DATA_DELIVERY": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Delivery",
+    "BASE_URL_DATA_RECON": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Recon",
+    "BASE_URL_DATA_SELLERRATING": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.SellerRating",
+    "BASE_URL_DATA_INVOICES": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Invoice",
+    "BASE_URL_DATA_ALERTS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.BusinessAlerts",
+    "BASE_URL_DATA_HANGFIRE": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Hangfire",
+    "BASE_URL_DATA_MAIL": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Mail",
+    "BASE_URL_DATA_ROB": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Rob",
+    "BASE_URL_DATA_IMPORTEXPORT": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.ImportExport",
+    "BASE_URL_DATA_BOPS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.BOPS",
+    "BASE_URL_DATA_SMART": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Smart",
+    "BASE_URL_UI": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
     "BASE_URL_OPEN_SERVER": "http://shiptech10.24software.ro:8160",
-    "BASE_HEADER_FOR_NOTIFICATIONS": "http://mail.24software.ro:8160",
-    "BASE_URL": "http://mail.24software.ro:8081/Integration1060/",
+    "BASE_HEADER_FOR_NOTIFICATIONS": "http://shiptech.24software.ro:8160",
+    "BASE_URL": "https://shiptech.24software.ro:8000/Integration1060/",
     "USE_LOCAL_MOCKUPS": false
   },
   "SCREEN_LAYOUTS": {
@@ -148,6 +153,7 @@
     "noQuoteReason": "noQuoteReason"
   },
   "SCREEN_ACTIONS": {
+    "CLOSE": "Close",
     "COPY": "Copy",
     "CANCEL": "Cancel",
     "CREATERFQ": "CreateRfq",
@@ -171,6 +177,7 @@
     "RECONFIRM": "ReConfirm",
     "SUBMITFORAPPROVAL": "SubmitForApproval",
     "CONFIRMSELLEREMAIL": "ConfirmSellerEmail",
+    "SHOWHARDSTOPPRETESTEMAIL": "ShowHardStopPreTestEmail",
     "CONFIRMALLEMAIL": "ConfirmAllEmail",
     "SHOWSOFTSTOPCONFIRMEMAIL": "ShowSoftStopConfirmEmail",
     "SHOWSOFTSTOPSELLEREMAIL": "ShowSoftStopSellerEmail",
@@ -228,7 +235,9 @@
   "COST_TYPE_IDS": {
     "FLAT": 1,
     "UNIT": 2,
-    "PERCENT": 3
+    "PERCENT": 3,
+    "RANGE": 4,
+    "TOTAL": 5
   },
   "COMPONENT_TYPE_IDS": {
     "TAX_COMPONENT": 1,
@@ -272,5 +281,5 @@
     "ORDER_CONFIRM": "OrderConfirmationToSellerOrVessel",
     "CONTRACT_PLANNING": "ContractPlanning"
   },
-  "INSTRUMENTATION_KEY": ""
+  "INSTRUMENTATION_KEY": "61f82289-6395-460f-81ca-9cb0da7407b2"
 }
