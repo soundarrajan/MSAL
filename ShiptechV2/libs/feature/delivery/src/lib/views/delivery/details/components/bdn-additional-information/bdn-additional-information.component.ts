@@ -763,10 +763,6 @@ export class BdnAdditionalInformationComponent
     }
   }
 
-  ngAfterViewInit(): void {
-    this.addSampleSources();
-  }
-
   formatDateForBeForDateWithTime(value) {
     if (typeof value == 'string') {
       return value;
@@ -778,4 +774,9 @@ export class BdnAdditionalInformationComponent
       return null;
     }
   }
+
+  ngAfterViewInit(): void {
+    this.addSampleSources();
+  }
+
 }

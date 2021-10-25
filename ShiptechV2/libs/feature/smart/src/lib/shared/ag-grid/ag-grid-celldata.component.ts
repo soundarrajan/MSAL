@@ -64,12 +64,12 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.toolTip = params.value;
   //**ETA/ETD date format and days calculation
   if(this.params?.data){
-    this.params.data.eta_date = moment(params.data?.eta_date).format("YYYY-MM-DD hh:mm");
-    this.etaInTime = today.getTime() - new Date(params.data?.eta_date).getTime();
-    this.etaDays = (this.etaInTime/(1000 * 3600 * 24)).toFixed(0);
-    this.params.data.etd_date = moment(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
-    this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
-    this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
+    this.params.data.eta_date = moment.utc(params.data?.eta_date).format("YYYY-MM-DD HH:mm");
+    //this.etaInTime = today.getTime() - new Date(params.data?.eta_date).getTime();
+    //this.etaDays = (this.etaInTime/(1000 * 3600 * 24)).toFixed(0);
+    this.params.data.etd_date = moment.utc(params.data?.etd_date).format("YYYY-MM-DD HH:mm");
+    //this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
+    //this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
 
     //to get Operator Ack.
     this.isOperatorAck = params.data?.is_new_port == 'Y' ? true : (params.data?.operator_ack == 1 ? true : false) ;
@@ -180,7 +180,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                       newClass = 'aggrid-link-bplan aggrid-red-cell'
                                       classArray.push(newClass);
                                     }
-                                    else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo && params.data?.is_alt_port_hsfo != 'N'){
+                                    else if((params.data?.request_id_hsfo || params.data?.request_id_vlsfo) && !params.data?.order_id_hsfo && params.data?.is_alt_port_hsfo != 'N'){
                                       newClass = 'aggrid-link-bplan aggrid-blue-cell';
                                       classArray.push(newClass);
                                     }
@@ -280,7 +280,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.menuTrigger.openMenu();
   }
 
-  toggleMenuInfo(event, data) {//onenter
+  toggleMenuInfo(event, data?:any) {//onenter
     this.infomenuTrigger.openMenu();
     var overlay = document.querySelector('.cdk-overlay-container');
     overlay.classList.add('removeOverlay');
@@ -624,13 +624,19 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.usercomments = comment;
   }
 
-  saveInput(value,params,column) {
+  saveInput(inputElem: HTMLInputElement,value,params,column) {
     let commentType;
+    let totalTankCapacity = params?.data?.total_tank_capacity;
     switch(column){
       case 'eca_min_sod': {commentType = 'eca_sod_comment'; break;}
       case 'hsfo_min_sod':{commentType = 'hsfo_sod_comment'; break;}
       case 'max_sod': {commentType = 'max_sod_comment'; break;}
       case 'min_sod': {commentType = 'min_sod_comment'; break;}
+    }
+    // check and truncate to totalTankCapacity, if the total max sod input greater then totalTankCapacity
+    if(column == "max_sod" && value>totalTankCapacity) {
+      value = totalTankCapacity;
+      inputElem.value = value;
     }
     if (params.value != value || this.params?.data[commentType] != this.usercomments) {
       this.showInfoIcon = true;
@@ -707,8 +713,12 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       let url;
       switch(params.colDef.field){
         case 'hsfo_estimated_lift' : { 
-                                          if(params.data?.request_id_hsfo && params.data?.is_alt_port != 'N')
-                                            url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_hsfo}`
+                                          let requestId = (params.data?.request_id_hsfo)? (params.data.request_id_hsfo): (params.data?.request_id_vlsfo);
+                                          if(params.data?.order_id_hsfo && params.data?.is_alt_port_hsfo != 'N') {
+                                            url = `${this.shiptechUrl}/#/edit-order/${params.data?.order_id_hsfo}`
+
+                                          } else if((requestId) && params.data?.is_alt_port_hsfo != 'N')
+                                            url = `${this.shiptechUrl}/#/edit-request/${requestId}`
                                           
                                           else
                                             url = `#`
@@ -716,7 +726,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                           break;
                                      }
         case 'ulsfo_estimated_lift' : { 
-                                        if(params.data?.request_id_ulsfo && params.data?.is_alt_port != 'N')
+                                        if(params.data?.order_id_ulsfo && params.data?.is_alt_port_ulsfo != 'N') {
+                                          url = `${this.shiptechUrl}/#/edit-order/${params.data?.order_id_ulsfo}`
+
+                                        } else if(params.data?.request_id_ulsfo && params.data?.is_alt_port_ulsfo != 'N')
                                           url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_ulsfo}`
                                         
                                         else
@@ -725,7 +738,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                         break;
                                       }
         case 'lsdis_estimated_lift': {  
-                                        if(params.data?.request_id_lsdis && params.data?.is_alt_port != 'N' )
+                                        if(params.data?.order_id_lsdis && params.data?.is_alt_port_lsdis != 'N') {
+                                          url = `${this.shiptechUrl}/#/edit-order/${params.data?.order_id_lsdis}`
+
+                                        } else if(params.data?.request_id_lsdis && params.data?.is_alt_port_lsdis != 'N' )
                                           url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_lsdis}`
                                         
                                         else
@@ -734,7 +750,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                         break;
                                       }
         case 'hsdis_estimated_lift': {  
-                                        if(params.data?.request_id_hsdis && params.data?.is_alt_port != 'N')
+                                        if(params.data?.order_id_hsdis && params.data?.is_alt_port_hsdis != 'N') {
+                                          url = `${this.shiptechUrl}/#/edit-order/${params.data?.order_id_hsdis}`
+
+                                        } else if(params.data?.request_id_hsdis && params.data?.is_alt_port_hsdis != 'N')
                                           url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_hsdis}`
                                         
                                         else
@@ -752,7 +771,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   checkAltPort(params) {
     switch (params?.colDef?.field) {
       case 'hsfo_estimated_lift':
-        return params?.data?.is_alt_port_hsfo;
+        return (params?.data?.is_alt_port_hsfo);
         break;
       case 'ulsfo_estimated_lift':
         return params?.data?.is_alt_port_ulsfo;
@@ -765,11 +784,67 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         break;
     }
   }
+  showProductRequestInfo(params) {
+    let requestInfo = [];
+    let data = params?.data;
+    let requestSchemaModel= {request_id: '', request_product: '', estimated_lift: ''};
+    let requestModel;
+    switch (params?.colDef?.field) {
+      case 'hsfo_estimated_lift':
+        if(data?.request_id_hsfo && data?.hsfo_estimated_lift>0) {
+          requestModel = {...requestSchemaModel};
+          requestModel.request_id = data?.request_id_hsfo;
+          requestModel.request_product = data?.request_product_hsfo;
+          requestModel.estimated_lift = data?.hsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        if(data?.request_id_vlsfo && data?.vlsfo_estimated_lift>0) {
+          requestModel = {...requestSchemaModel};
+          requestModel.request_id = data?.request_id_vlsfo;
+          requestModel.request_product = data?.request_product_vlsfo;
+          requestModel.estimated_lift = data?.vlsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+        case 'ulsfo_estimated_lift':
+          requestModel = {...requestSchemaModel};
+        if(data?.request_id_ulsfo) {
+          requestModel.request_id = data?.request_id_ulsfo;
+          requestModel.request_product = data?.request_product_ulsfo;
+          requestModel.estimated_lift = data?.ulsfo_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'lsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
+        if(data?.request_id_lsdis) {
+          requestModel.request_id = data?.request_id_lsdis;
+          requestModel.request_product = data?.request_product_lsdis;
+          requestModel.estimated_lift = data?.lsdis_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+      case 'hsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
+        if(data?.request_id_hsdis) {
+          requestModel.request_id = data?.request_id_hsdis;
+          requestModel.request_product = data?.request_product_hsdis;
+          requestModel.estimated_lift = data?.hsdis_estimated_lift;
+          requestInfo.push(requestModel);
+        }
+        return requestInfo;
+        break;
+    }
+  }
   requestAvailable(params){
     let isRequestAvailable = false;
     switch(params?.colDef?.field){
       case 'hsfo_estimated_lift' : { 
                                         isRequestAvailable = params.data?.request_id_hsfo ? true : false;
+                                        isRequestAvailable = (isRequestAvailable || (params.data?.request_id_vlsfo)) ? true : false;
                                         break;
                                    }
       case 'ulsfo_estimated_lift' : { 

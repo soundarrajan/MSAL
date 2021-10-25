@@ -144,8 +144,8 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment(value, currentFormat);
-    let date = elem.toDate();
+    const elem = moment(value, currentFormat);
+    const date = elem.toDate();
     return value ? date : null;
   }
 }
@@ -302,7 +302,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    let elem = moment(value, currentFormat);
+    const elem = moment(value, currentFormat);
     const isValid = this.isValid(elem);
     return this.isValid(elem) ? elem : null;
   }
@@ -362,8 +362,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
-      let newVal = moment(elem).format(currentFormat);
+      const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      const newVal = moment(elem).format(currentFormat);
       console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
@@ -476,7 +476,6 @@ export class NotesDetailsComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
-    public authService: AuthenticationService,
     private tenantService: TenantFormattingService,
     private invoiceService: InvoiceDetailsService
   ) {
@@ -490,6 +489,20 @@ export class NotesDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.store.selectSnapshot(UserProfileState.user);
+
+    // new invoice
+    if (
+      !parseFloat(this._entityId) &&
+      parseFloat(this.formValues.orderDetails.order.id)
+    ) {
+      // get order notes only when new invoice
+      this.invoiceService
+        .getOrderNotes(this.formValues.orderDetails.order.id)
+        .subscribe((response: any) => {
+          this.formValues.invoiceNotes = response;
+          this.changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   originalOrder = (
@@ -500,8 +513,8 @@ export class NotesDetailsComponent implements OnInit {
   };
 
   addNotesLine() {
-    console.log(this.authService);
-    console.log(this.displayName$);
+    // console.log(this.authService);
+    // console.log(this.displayName$);
     if (!this.formValues.invoiceNotes) {
       this.formValues.invoiceNotes = [];
     }
@@ -514,34 +527,38 @@ export class NotesDetailsComponent implements OnInit {
       collectionName: null
     };
 
-    let notesLine = {
+    const notesLine = {
       id: 0,
       note: '',
       createdBy: createdBy,
-      createdAt: this.formatDateForBe(new Date()),
+      createdAt: new Date(),
       lastModifiedAt: ''
     };
-
     this.formValues.invoiceNotes.push(notesLine);
-
     this.changeDetectorRef.detectChanges();
   }
 
-  updateNotes(key) {
-    this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(
-      this.formatDateForBe(new Date())
-    );
+  updateNotes(event, key) {
+    this.formValues.invoiceNotes[key].createdAt = _.cloneDeep(new Date()); //_.cloneDeep(this.formatDateForBe(new Date()));
     this.changeDetectorRef.detectChanges();
-    console.log(this.formValues.invoiceNotes);
-    console.log(this._entityId);
-    this.autoSave();
+
+    // if the blur was because of outside focus
+    //  relatedTarget is the clicked element
+    if (
+      event.relatedTarget &&
+      event.relatedTarget.classList.contains('cust-btn1')
+    ) {
+      console.log('Click on button');
+    } else {
+      this.autoSave();
+    }
   }
 
   autoSave() {
-    if (parseFloat(this._entityId)) {
-      let payload = {
-        InvoiceId: parseFloat(this._entityId),
-        InvoiceNotes: this.formValues.invoiceNotes
+    if (parseFloat(this.formValues.orderDetails.order.id)) {
+      const payload = {
+        OrderId: this.formValues.orderDetails.order.id,
+        OrderNotes: this.formValues.invoiceNotes
       };
       this.invoiceService
         .notesAutoSave(payload)
@@ -555,7 +572,7 @@ export class NotesDetailsComponent implements OnInit {
             this.spinner.hide();
             this.toastr.error(result);
           } else {
-            console.log(result);
+            // console.log(result);
             this.formValues.invoiceNotes = _.cloneDeep(result);
           }
         });
