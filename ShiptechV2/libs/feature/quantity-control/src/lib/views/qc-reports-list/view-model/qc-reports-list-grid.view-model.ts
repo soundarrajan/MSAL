@@ -203,7 +203,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffRobBeforeDelivery,
         this.robTolerance
       ),
@@ -248,7 +248,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffDeliveredQty,
         this.bdnTolerance
       )
@@ -339,7 +339,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         params.data?.diffSludgeRobBeforeDischarge,
         this.robTolerance
       )
@@ -482,7 +482,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       );
   }
 
-  private toleranceMatchStyleForRobBeforeDiffAndDeliveredDiff(
+  private getMatchStatusForRobBeforeDiffAndDeliveredDiff(
     value: number,
     tolerance: number
   ): Partial<CSSStyleDeclaration> {
@@ -523,72 +523,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     return {
       backgroundColor: status.code,
       color: '#fff'
-    };
-  }
-
-  private toleranceMatchStyle(
-    value: number,
-    toleranceUom: IToleranceUomDto
-  ): Partial<CSSStyleDeclaration> {
-    if (
-      value === null ||
-      value === undefined ||
-      toleranceUom === null ||
-      toleranceUom === undefined
-    )
-      return {
-        backgroundColor: 'inherit',
-        color: 'inherit'
-      };
-
-    let status = this.reconStatusLookups.matched;
-
-    if (Math.abs(value) >= toleranceUom.maxTolerance)
-      status = this.reconStatusLookups.notMatched;
-
-    if (
-      Math.abs(value) > toleranceUom.minTolerance &&
-      Math.abs(value) < toleranceUom.maxTolerance
-    )
-      status = this.reconStatusLookups.withinLimit;
-
-    return {
-      backgroundColor:
-        status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
-      color: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
-    };
-  }
-
-  private toleranceMatchStyleSecond(
-    value: number,
-    toleranceUom: IToleranceUomDto
-  ): Partial<CSSStyleDeclaration> {
-    if (
-      value === null ||
-      value === undefined ||
-      toleranceUom === null ||
-      toleranceUom === undefined
-    )
-      return {
-        backgroundColor: 'inherit',
-        color: 'inherit'
-      };
-
-    let status = this.reconStatusLookups.matched;
-
-    if (Math.abs(value) >= toleranceUom.maxTolerance)
-      status = this.reconStatusLookups.notMatched;
-
-    if (
-      Math.abs(value) > toleranceUom.minTolerance &&
-      Math.abs(value) < toleranceUom.maxTolerance
-    )
-      status = this.reconStatusLookups.withinLimit;
-
-    return {
-      backgroundColor:
-        status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
-      color: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
     };
   }
 }

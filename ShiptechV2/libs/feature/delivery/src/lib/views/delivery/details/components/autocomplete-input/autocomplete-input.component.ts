@@ -18,8 +18,6 @@ import { ToastrService } from 'ngx-toastr';
 import { SelectItem } from 'primeng/api';
 import { Observable, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { QcReportService } from '../../../../../services/qc-report.service';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 
 @Component({
   selector: 'shiptech-autocomplete-input',
@@ -29,7 +27,7 @@ import { QcReportState } from '../../../../../store/report/qc-report.state';
   encapsulation: ViewEncapsulation.None
 })
 export class AutocompleteInputComponent implements OnInit {
-  @Input('options') set _options(options) {  
+  @Input('options') set _options(options) {
     this.options = options;
   }
 
@@ -40,12 +38,11 @@ export class AutocompleteInputComponent implements OnInit {
     this.selectedOptionId = option.id;
   }
 
-  @Input('model') set _setInputModel(model) {  
+  @Input('model') set _setInputModel(model) {
     this.inputModel = model;
   }
 
   @Output() changeInput = new EventEmitter<string>();
-
 
   filteredOptions: any;
   options: any;
@@ -54,20 +51,21 @@ export class AutocompleteInputComponent implements OnInit {
 
   myControl = new FormControl();
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder) {}
+  ngOnInit() {}
 
-  }
-  ngOnInit() {
-  }
-
-  filterOptionsList() : any{
+  filterOptionsList(): any {
     const filterValue = this.myControl.value ? this.myControl.value : '';
-    return this.options ? this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-                        .splice(0, 10) : [];
+    return this.options
+      ? this.options
+          .filter(
+            option => option.name.toLowerCase().indexOf(filterValue) === 0
+          )
+          .splice(0, 10)
+      : [];
   }
 
-  
   onModelChanged(value: string): void {
-     this.changeInput.next(value)
-   }
+    this.changeInput.next(value);
+  }
 }
