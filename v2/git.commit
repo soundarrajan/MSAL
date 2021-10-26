@@ -1,7 +1,7 @@
-﻿commit b0700aad7c9cc93cccf47b5e1f98a7761287afa9
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Oct 26 13:48:36 2021 +0300
+﻿commit 5b20e854b9b46549397b9e1cd54230c2d95bbe86
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Oct 26 13:26:22 2021 +0000
 
-    Fixed control tower module
+    Merged PR 14294: Merge support_10_10_1 into dev master - ol map merge conflict issue has fixed
 
 branch: master

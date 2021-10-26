@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnDestroy,
-  OnInit
+  OnInit,
+  ViewEncapsulation
 } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { Select, Store } from '@ngxs/store';
@@ -45,13 +46,16 @@ import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { VesselToWatchModel } from '../../../store/report/models/vessel-to-watch.model';
 import { MyMonitoringService } from '../../service/logging.service';
+import { IDeliveryTenantSettings } from '../../../core/settings/delivery-tenant-settings';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 
 @Component({
   selector: 'shiptech-port-call',
   templateUrl: './qc-report-details.component.html',
   styleUrls: ['./qc-report-details.component.scss'],
   providers: [ConfirmationService, DialogService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class QcReportDetailsComponent implements OnInit, OnDestroy {
   categories$: Observable<IDisplayLookupDto[]>;
@@ -66,6 +70,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   sludgeSelectedCategory$: Observable<IDisplayLookupDto>;
   sludge$: Observable<number>;
+  tolerance$: Observable<number>;
   sludgeVerified$: Observable<boolean>;
   sludgeDescription$: Observable<string>;
 
@@ -88,6 +93,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   private quantityPrecision: number;
   
   private firstApiCallStartTime: any;
+  deliverySettings: IDeliveryTenantSettings;
 
   constructor(
     private entityStatus: EntityStatusService,
@@ -104,6 +110,11 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     private myMonitoringService: MyMonitoringService
   ) {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
+    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<
+    IDeliveryTenantSettings
+  >(TenantSettingsModuleName.Delivery);
+  this.deliverySettings = {...deliveryTenantSettings};
+  // this.deliverySettings['sludgeTolerance'] = 3; //test
     this.quantityPrecision =
       generalTenantSettings.defaultValues.quantityPrecision;
 
@@ -165,6 +176,9 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     );
     this.sludge$ = this.selectReportDetails(
       state => state.vesselResponse?.sludge?.sludge
+    );
+    this.tolerance$ = this.selectReportDetails(
+      state => state.vesselResponse?.sludge?.tolerance
     );
     this.sludgeVerified$ = this.selectReportDetails(
       state => state.vesselResponse?.sludge?.sludgeVerified

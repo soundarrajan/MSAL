@@ -15,5 +15,6 @@ export interface IQcVesselSludgeResponseDto {
   activeCategory: IDisplayLookupDto;
   description: string;
   sludge?: number;
+  tolerance?: number;
   sludgeVerified?: boolean;
 }

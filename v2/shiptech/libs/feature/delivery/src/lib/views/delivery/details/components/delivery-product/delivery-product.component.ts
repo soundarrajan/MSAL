@@ -84,11 +84,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { throws } from 'assert';
 
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import {
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MomentDateAdapter
-} from '@angular/material-moment-adapter';
-
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
