@@ -176,6 +176,7 @@
                 [size]="2"
                 [ngModel]="sludge$ | async"
                 [step]="0.25"
+                [ngClass]="(sludge$ | async)>(deliverySettings?.sludgeTolerance)? 'sludge-red': ((sludge$ | async)<=(deliverySettings?.sludgeTolerance)? 'sludge-green': '')"
                 thousandSeparator=","
                 decimalSeparator="."
               ></p-spinner>

@@ -3,4 +3,5 @@ import { IModuleTenantSettings } from '@shiptech/core/store/states/tenant/tenant
 export interface IDeliveryTenantSettings extends IModuleTenantSettings {
   qcMaxToleranceLimit: number;
   qcMinToleranceLimit: number;
+  sludgeTolerance: number;
 }
