@@ -34,13 +34,29 @@ export interface IControlTowerQuantitySupplyDifferenceItemDto {
   status: IDisplayLookupDto;
 }
 
+export interface IControlTowerQuantityClaimsItemDto {
+  order: IDisplayLookupDto;
+  lab: IDisplayLookupDto;
+  id: number;
+  port: string;
+  vessel: string;
+  eta: string;
+  product: string;
+}
+
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
   payload: IControlTowerQuantityRobDifferenceItemDto[];
   matchedCount: number;
 }
+
 export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
   payload: IControlTowerQuantitySupplyDifferenceItemDto[];
+  matchedCount: number;
+}
+
+export interface IGetControlTowerQuantityClaimsListResponse {
+  payload: IControlTowerQuantityClaimsItemDto[];
   matchedCount: number;
 }

@@ -20,6 +20,12 @@ export class ModuleError<T = any> extends AppError<T> {
     }
   );
 
+  static readonly LoadControlTowerQuantityClaimsFailed = new ModuleError({
+    code: ErrorCode.LoadControlTowerQuantityClaimsFailed,
+    message:
+      'Could not load control tower quantity rob difference list. Please try again later.'
+  });
+
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);
   }

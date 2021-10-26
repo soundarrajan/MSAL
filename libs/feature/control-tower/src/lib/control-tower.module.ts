@@ -99,7 +99,6 @@ import { DSV2ComponentsModule } from '@shiptech/core/ui/components/designsystem-
 import { ResidueDifferenceComponent } from './views/control-tower/view/components/residue-difference/residue-difference.component';
 import { ResidueClaimsComponent } from './views/control-tower/view/components/residue-claims/residue-claims.component';
 import { QuantityDifferenceComponent } from './views/control-tower/view/components/quantity-difference/quantity-difference.component';
-import { QuantityClaimsComponent } from './views/control-tower/view/components/quantity-claims/quantity-claims.component';
 import { QualityLabsComponent } from './views/control-tower/view/components/quality-labs/quality-labs.component';
 import { QualityClaimsComponent } from './views/control-tower/view/components/quality-claims/quality-claims.component';
 import {
@@ -118,6 +117,7 @@ import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag
 import { ExportNewModule } from '@shiptech/core/ui/components/export-new/export-new.module';
 import { ControlTowerListState } from './store/control-tower-general-list/control-tower-general-list.state';
 import { ControlTowerGeneralListComponent } from './views/control-tower/view/components/control-tower-general-view-list/control-tower-general-view-list.component';
+import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/components/control-tower-quantity-claims/control-tower-quantity-claims.component';
 
 @NgModule({
   imports: [
@@ -227,7 +227,7 @@ import { ControlTowerGeneralListComponent } from './views/control-tower/view/com
     ResidueDifferenceComponent,
     ResidueClaimsComponent,
     QuantityDifferenceComponent,
-    QuantityClaimsComponent,
+    ControlTowerQuantityClaimsComponent,
     QualityLabsComponent,
     QualityClaimsComponent,
     MyNotesComponent,

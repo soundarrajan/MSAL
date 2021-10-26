@@ -3,68 +3,6 @@
   [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
   style="position: relative;"
 >
-  <!-- <div class="header-content">
-    <div *ngIf="!newScreen" class="title">
-      <div class="head">{{ gridTitle }}</div>
-    </div>
-    <div class="filters">
-      <div class="by-datePicker" [ngClass]="newScreen ? 'new' : ''">
-        <div
-          id="custom-form-field"
-          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-        >
-          <mat-form-field class="without-search datePicker" appearance="legacy">
-            <mat-datepicker-toggle matSuffix [for]="picker">
-              <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
-              </mat-icon>
-            </mat-datepicker-toggle>
-            <span class="from">From</span>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              [formControl]="today"
-              (focus)="picker.open()"
-            />
-            <mat-datepicker
-              #picker
-              [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
-            ></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="today">
-          <span>-</span>
-          <p>To Today</p>
-        </div>
-      </div>
-      <div class="by-action">
-        <span class="filter-by" *ngIf="newScreen">Filter By:</span>
-        <div
-          class="action"
-          [ngClass]="!toggleNewFilter ? 'selected-blue' : ''"
-          (click)="filterGridNew('New')"
-        >
-          <span>New</span>
-          <div class="count">16</div>
-        </div>
-        <div
-          class="action"
-          [ngClass]="!toggleMASFilter ? 'selected-amber' : ''"
-          (click)="filterGridMAS('Marked as Seen')"
-        >
-          <span>Marked as seen</span>
-          <div class="count">6</div>
-        </div>
-        <div
-          class="action"
-          [ngClass]="!toggleResolvedFilter ? 'selected-green' : ''"
-          (click)="filterGridResolved('Resolved')"
-        >
-          <span>Resolved</span>
-          <div class="count">4</div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <div id="custom-tabs-v2" class="level-2">
     <mat-tab-group
       mat-align-tabs="end"
