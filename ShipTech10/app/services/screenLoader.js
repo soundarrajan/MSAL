@@ -80,6 +80,10 @@ angular.module('shiptech').config([
             'api/claims/getQuantityShortage',
             'api/procurement/request/isAuthorizedForReportsTab',
             'api/masters/exchangeRates/convert',
+            'api/claims/getDeliveryLookup',
+            'api/claims/getLabResultLookup',
+            'api/claims/getClaimsListForOrder',
+            'api/claims/getProductDropdown',
             'api/procurement/rfq/isAuthorizedForReportsTab'
         ];
         $httpProvider.interceptors.push([
@@ -231,6 +235,7 @@ angular.module('shiptech').config([
                             routeCall = `api/${ config.config.url.split('/api/')[1]}`;
                         }
                         if (routeExceptions.indexOf(routeCall) == -1) {
+                        	console.log("loader*****************", routeCall);
                             /* APP INSIGHTS LOGGER*/
                             if (typeof window.intervalLoaderWatch == 'undefined' || !window.intervalLoaderWatch) {
                                 window.intervalLoaderWatch = setInterval(() => {
