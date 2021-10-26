@@ -559,8 +559,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   isOfferRequestAvailable() : boolean {
-    debugger;
-
     // Array of requestoffers
     const { requestOffers } = this.params.data || {};
 
@@ -719,7 +717,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         RequestGroupId: RequestGroupId,
         RequestLocationId: parseInt(currentRequestLocation.id),
         LocationId: locationId,
-        isPhysicalSupplier:true
+        isPhysicalSupplier:true,
+        phySupplierId:this.params.data.physicalSupplierCounterpartyId,
+        requestLocationSellerId:this.params.data.id
       }
     });
 
@@ -887,8 +887,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   updatePhysicalSupplier(){
     let payload = {
-      "requestOfferIds": [0],
-      "phySupplierId": 0
+      "RequestLocationSellerId": this.params.data.id,
+      "PhySupplierId": this.params.data.physicalSupplierCounterpartyId
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
