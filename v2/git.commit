@@ -1,7 +1,7 @@
-﻿commit 57af61efe2e85a0a0656c5ad427c241dc5e57db3
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Mon Oct 25 16:35:30 2021 +0300
+﻿commit b0700aad7c9cc93cccf47b5e1f98a7761287afa9
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Tue Oct 26 13:48:36 2021 +0300
 
-    Merge 10.10.1 in master
+    Fixed control tower module
 
 branch: master
