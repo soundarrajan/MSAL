@@ -115,6 +115,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         priceDetailsArray[index].requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.totalOffer = priceDetailsArray[index].totalOffer;
         return row;
       }
 
@@ -126,8 +127,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // We found something
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
+        row.totalOffer = detailsForCurrentRow[0].totalOffer;
       }
 
+      
       return row;
     });
 

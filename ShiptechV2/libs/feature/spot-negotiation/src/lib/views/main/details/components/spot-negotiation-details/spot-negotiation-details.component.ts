@@ -190,6 +190,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
             return null;
           },
+          valueGetter: params => {
+                  return params.data.totalOffer;
+          },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' }
           //suppressNavigable: true,lockPosition: true, pinned:'left',
@@ -362,11 +365,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       e => e.id
     );
 
-    let totalOffer = productDetails.price;
+    let calcTotalOffer = 0;
     currentLocationAllProductsIds.map(id => {
-      totalOffer += Number(this.getRowProductDetails(row, id).price)
+      calcTotalOffer += Number(this.getRowProductDetails(row, id).price)
     });
-    row.totalOffer = totalOffer;
+    row.totalOffer = calcTotalOffer;
 
     let futureRow = this.setRowProductDetails(row, productDetails, product.id);
 
