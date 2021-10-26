@@ -87,7 +87,6 @@ import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overl
 import { throws } from 'assert';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
-import { AuthenticationService } from '@shiptech/core/authentication/authentication.service';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -508,9 +507,7 @@ export class NotesDetailsComponent implements OnInit {
   originalOrder = (
     a: KeyValue<number, any>,
     b: KeyValue<number, any>
-  ): number => {
-    return 0;
-  };
+  ): number => 0;
 
   addNotesLine() {
     // console.log(this.authService);
@@ -519,7 +516,7 @@ export class NotesDetailsComponent implements OnInit {
       this.formValues.invoiceNotes = [];
     }
 
-    let createdBy = {
+    const createdBy = {
       id: this.user.id,
       name: this.user.name,
       displayName: this.user.displayName,
@@ -621,7 +618,6 @@ export class NotesDetailsComponent implements OnInit {
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
