@@ -117,7 +117,10 @@ const routes: Routes = [
         loadChildren: () =>
           import('@shiptech/feature/control-tower').then(
             m => m.ControlTowerModule
-          )
+          ),
+        resolve: {
+          data: BootstrapResolver
+        }
       }
     ]
   },
