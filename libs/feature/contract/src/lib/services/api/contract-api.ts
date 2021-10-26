@@ -573,7 +573,7 @@ export class ContractApi implements IContractApiService {
           of(
             body.error && body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : ''
+              : null
           )
         )
       );
