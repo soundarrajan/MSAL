@@ -134,7 +134,6 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   public hoverPortName;
   public hoverPortColor;
   public isLoading: boolean = true;
-  private selectedVessel;
   public vessel_view;
   public hoverPopupColor;
   public maxZoomLimit: boolean;
@@ -189,6 +188,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       lonlat: []
     }
   ];
+  private selectedVessel;
 
   //Layers
   // Global Map
@@ -460,7 +460,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   }
 
   loadMap() {
-    let mapView = new OlView({
+    const mapView = new OlView({
       center: fromLonLat(this.mapCenterValues),
       zoom: this.minZoomLevel,
       minZoom: this.minZoomLevel,
@@ -1084,7 +1084,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       }
     }
 
-    var overlay = new Overlay({
+    const overlay = new Overlay({
       element: element,
       positioning: 'center-left'
     });
@@ -1215,7 +1215,7 @@ export class OlMapComponent implements OnInit, AfterViewInit {
           [pathArr[index + 1].lon, pathArr[index + 1].lat]
         ]);
         lineString.transform('EPSG:4326', 'EPSG:3857');
-        let featureLineString = new OlFeature({
+        const featureLineString = new OlFeature({
           geometry: lineString,
           name: 'vesselLine',
           id: 'RL'
@@ -1338,13 +1338,29 @@ export class OlMapComponent implements OnInit, AfterViewInit {
           featureRoutes.push(portGlow);
         }
 
-  private loadRoute() {
-    // var route = new OlFeature();
-    // var coordinates = [[2.173403, 40.385064], [2.273403,41.385064]];
-    // var geometry = new LineString(coordinates);
-    // geometry.transform('EPSG:4326', 'EPSG:3857'); //Transform to your map projection
-    // route.setGeometry(geometry);
-    // this.routeLayer.getSource().addFeature(route);
+        const portMarker = new OlFeature({
+          id: 'PM' + routes.id,
+          type: 'port-marker',
+          data: port,
+          geometry: new OlPoint(
+            fromLonLat([
+              routes.nextLocationLongitude,
+              routes.nextLocationLatitude
+            ])
+          )
+        });
+        portMarker.setStyle(this.getPortMarkerStyle(routes.nextLocation));
+        featureRoutes.push(portMarker);
+        this.routeLayer.getSource().addFeatures(featureRoutes);
+        this.routeLayer.setVisible(true);
+        this.setMapOpacity(0.3);
+        this.vesselMakersLayer.setOpacity(0.3);
+        this.portMakersLayer.setOpacity(0.3);
+        break;
+      }
+    }
+    // }
+    // });
   }
 
   /**
@@ -1361,11 +1377,11 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     const y1 = elon;
     const radians = Math.atan2(y1 - y2, x1 - x2);
 
-    var compassReading = radians * (180 / Math.PI);
+    const compassReading = radians * (180 / Math.PI);
 
-    var coordNames = [0, 0.75, 1.5, 2, 3.05, 4, 4.75, 5.25, 0];
+    const coordNames = [0, 0.75, 1.5, 2, 3.05, 4, 4.75, 5.25, 0];
     // var coordNames = ["N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"];
-    var coordIndex = Math.round(compassReading / 45);
+    let coordIndex = Math.round(compassReading / 45);
     if (coordIndex < 0) {
       coordIndex = coordIndex + 8;
     }
@@ -1405,11 +1421,11 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   // var bern = fromLonLat([7.4458, 46.95]);
   //MOVE TO THE LOCATION
   flyTo(location, done, zoom) {
-    var duration = 200; //2000
+    const duration = 200; //2000
     // var zoom = this.map.getView().getZoom();
     var zoom = zoom ? zoom : this.map.getView().getZoom();
-    var parts = 1;
-    var called = false;
+    let parts = 1;
+    let called = false;
     function callback(complete) {
       --parts;
       if (called) {
@@ -1697,7 +1713,128 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   removeOverlayMapColor() {
     countryText.fill_.color_ = '#C8D7D4';
   }
-}
+  private loadVessels(filter) {
+    this.isLoading = true;
+    this.vesselMakersLayer.getSource().clear();
+    if (filter == ' ') {
+      this.createVesselMakeSrs(this.vesselList);
+    } else if (filter == 'Unmanageable Vessels') {
+      this.createVesselMakeSrs(
+        this.vesselList.filter(item => item.isUnmanagable == 1),
+        true
+      );
+    } else {
+      this.createVesselMakeSrs(
+        this.vesselList.filter(item => item.regionName == filter),
+        true
+      );
+    }
+  }
+
+  //Hover Circle Style
+  private getHoverVesselCircle(vesselDetail?): Style {
+    const iconStyle = new Style({
+      image: new Icon({
+        anchor: [0.47, 0.47],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        rotation: this.getRotationForVessel(
+          vesselDetail.vesselLatitude,
+          vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude,
+          vesselDetail.destinationLongitude
+        ),
+        src: './assets/customicons/vessel/hover-blue.svg' //vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/customicons/vessel/hover-red.svg" : "./assets/customicons/vessel/hover-blue.svg",
+      })
+    });
+    return iconStyle;
+  }
+
+  //Hover Circle Style
+  private getHoverPortCircle(portDetail?): Style {
+    const iconStyle = new Style({
+      image: new Icon({
+        rotation: 0,
+        anchor: [0.8, 0.8],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        src: './assets/customicons/port/hover' + '-blue' + '.svg' //+ (portDetail.flag == 'higher-warning-view' ? '-red' : (portDetail.flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg', //portType -major:minor
+      })
+    });
+    return iconStyle;
+  }
+
+  //Vessel Style
+  private getVesselStyle(vesselDetail): Style {
+    const iconStyle = new Style({
+      image: new Icon({
+        anchor: [0.47, 0.47],
+        anchorOrigin: 'bottom-left',
+        // anchorXUnits: 'pixels',
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        rotation: this.getRotationForVessel(
+          vesselDetail.vesselLatitude,
+          vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude,
+          vesselDetail.destinationLongitude
+        ),
+        // src: "http://cdn.mapmarker.io/api/v1/pin?text=P&size=50&hoffset=1",
+        // src: vesselDetail.ColorFlag == 0 ? "./assets/icon/ROB_blue.svg" : vesselDetail.ColorFlag == 1 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_amber.svg",
+        src: './assets/customicons/vessel/ROB_blue.svg' //vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
+      })
+    });
+    return iconStyle;
+  }
+
+  private getVesselStyle1(vesselDetail): Style {
+    const iconStyle = new Style({
+      image: new Icon({
+        anchor: [0.47, 0.47],
+        anchorOrigin: 'bottom-left',
+        // anchorXUnits: 'pixels',
+        zIndex: Infinity,
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        rotation: this.getRotationForVessel(
+          vesselDetail.vesselLatitude,
+          vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude,
+          vesselDetail.destinationLongitude
+        ),
+        src:
+          vesselDetail.ROB.Color.indexOf('orange') > 0
+            ? './assets/icon/ROB_amber.svg'
+            : vesselDetail.ROB.Color.indexOf('red') > 0
+            ? './assets/icon/ROB_red.svg'
+            : './assets/icon/ROB_blue.svg'
+
+        // src: "./assets/icon/ROB_red.svg",
+        // src: "./assets/customicons/vessel/ROB_amber_hover_3.svg",
+      } as any)
+    } as any);
+    return iconStyle;
+  }
+
+  private getGreyVesselStyle(vesselDetail): Style {
+    const iconStyle = new Style({
+      image: new Icon({
+        anchor: [0.47, 0.47],
+        opacity: 1,
+        anchorOrigin: 'bottom-left',
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        rotation: this.getRotationForVessel(
+          vesselDetail.vesselLatitude,
+          vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude,
+          vesselDetail.destinationLongitude
+        ),
+        src: './assets/customicons/vessel/vessel_grey.svg'
+      })
+    });
+    return iconStyle;
+  }
 
   private getVesselGlowStyle(color): Style {
     if (color == 'grey') {
@@ -2275,7 +2412,7 @@ var countryText_dark_click = new Style({
     //   width: 2
     // }),
   })
-});
+}) as any;
 var countryText_Dark = new Style({
   fill: new Fill({
     color: '#777F8C'
@@ -2294,4 +2431,4 @@ var countryText_Dark = new Style({
     //   width: 2
     // }),
   })
-});
+}) as any;
