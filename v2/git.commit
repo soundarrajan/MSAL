@@ -1,11 +1,7 @@
-﻿commit b649306d6085c1356521fc7a6149b7a1c6c07d54
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Oct 27 06:43:02 2021 +0000
+﻿commit 7d63775f90dee8513146f1a88a4545ba2090dcad
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Oct 27 13:03:29 2021 +0300
 
-    Merged PR 14302: Worked on quantity claims
-    
-    Worked on quantity claims
-    
-    Related work items: #33650
+    Changed config file for Rob
 
 branch: master
