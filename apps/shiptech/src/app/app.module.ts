@@ -57,16 +57,21 @@ import {
 } from '@azure/msal-browser';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
+import { map } from 'rxjs/operators';
 
-let legacyConfig = null;
+export const MQTT_SERVICE_OPTIONS: any = {};
 
-export function getLegacySettings(): string {
-  var hostName = window.location.hostname;
-  var config = '/config/' + hostName + '.json';
-  if (['localhost'].indexOf(hostName) != -1) {
-    config = '/config/config.json';
-  }
-  return config;
+export function wssConfig(http: HttpClient) {
+  return () =>
+    http
+      .get<any>('config/config.json')
+      .pipe(
+        map(response => {
+          MQTT_SERVICE_OPTIONS.url = response.data;
+          return response;
+        })
+      )
+      .toPromise();
 }
 
 @NgModule({
@@ -92,7 +97,9 @@ export function getLegacySettings(): string {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    MsalConfigDynamicModule.forRoot(getLegacySettings())
+    !environment.production
+      ? MsalConfigDynamicModule.forRoot(MQTT_SERVICE_OPTIONS)
+      : []
   ],
   providers: [
     {
@@ -100,9 +107,18 @@ export function getLegacySettings(): string {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: wssConfig,
+      deps: [HttpClient],
+      multi: true
+    },
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [
+    AppComponent,
+    !environment.production ? MsalRedirectComponent : []
+  ]
 })
 export class AppModule {
   constructor() {
