@@ -86,7 +86,7 @@ export function getLegacySettings(): string {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    MsalConfigDynamicModule.forRoot()
+    !environment.userAdal ? MsalConfigDynamicModule.forRoot() : []
   ],
   providers: [
     {
@@ -102,7 +102,7 @@ export function getLegacySettings(): string {
     },
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent, !environment.userAdal ? MsalRedirectComponent : []]
 })
 export class AppModule {
   constructor() {
