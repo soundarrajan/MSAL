@@ -575,7 +575,7 @@ export class ShiptechCustomHeaderGroup {
         this.toastr.success(res.message);
         // Add in Store
         this.store.dispatch(
-          new AddCounterpartyToLocations(payload.counterparties)
+          new AddCounterpartyToLocations(res.counterparties)
         );
         this.changeDetector.markForCheck();
       } else {
