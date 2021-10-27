@@ -3,7 +3,15 @@
     <div class="head">{{ gridTitle }}</div>
   </div>
   <div class="filters">
-    <div class="by-datePicker" [ngClass]="newScreen ? 'new rob-diff' : ''">
+    <div
+      class="by-datePicker"
+      [ngClass]="{
+        new: newScreen,
+        'rob-diff':
+          selectorType === 'Quantity ROB Difference' ||
+          selectorType === 'Quantity Supply Difference'
+      }"
+    >
       <div
         id="custom-form-field"
         [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
@@ -188,6 +196,7 @@
   </div>
 </div>
 <ng-template
+  *ngIf="gridViewModel.portCallCol"
   [columnDef]="[gridViewModel.portCallCol]"
   appAgCellTemplate
   let-data="data"
@@ -196,4 +205,38 @@
   <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{
     value?.id
   }}</a>
+</ng-template>
+
+<ng-template
+  *ngIf="gridViewModel.orderNoCol"
+  [columnDef]="[gridViewModel.orderNoCol]"
+  appAgCellTemplate
+  let-data="data"
+  let-value="value"
+>
+  <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{
+    value?.id
+  }}</a>
+</ng-template>
+
+<ng-template
+  *ngIf="gridViewModel.labIdCol"
+  [columnDef]="[gridViewModel.labIdCol]"
+  appAgCellTemplate
+  let-data="data"
+  let-value="value"
+>
+  <a *ngIf="value && value?.id" (click)="openEditLab(value.id)">{{
+    value?.id
+  }}</a>
+</ng-template>
+
+<ng-template
+  *ngIf="gridViewModel.claimNoCol"
+  [columnDef]="[gridViewModel.claimNoCol]"
+  appAgCellTemplate
+  let-data="data"
+  let-value="value"
+>
+  <a *ngIf="value" (click)="openEditClaim(value)">{{ value }}</a>
 </ng-template>
