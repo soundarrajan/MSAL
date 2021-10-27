@@ -17,7 +17,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../authentication/auth.service';
 
 @Injectable()
-export class AuthenticationInterceptor implements HttpInterceptor {
+export class AuthenticationMsalInterceptor implements HttpInterceptor {
   private logger: ILogger;
 
   constructor(
@@ -26,7 +26,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     loggerFactory: LoggerFactory,
     public authService: AuthService
   ) {
-    this.logger = loggerFactory.createLogger(AuthenticationInterceptor.name);
+    this.logger = loggerFactory.createLogger(
+      AuthenticationMsalInterceptor.name
+    );
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {

@@ -3,10 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import {
-  bootstrapApplication,
-  BootstrapService
-} from '@shiptech/core/bootstrap.service';
+
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { environment } from '@shiptech/environment';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
@@ -20,7 +17,8 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/developer-toolbar.module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { CoreModule } from '@shiptech/core/core.module';
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import { TitleModule } from '@shiptech/core/services/title/title.module';
@@ -54,6 +52,14 @@ import {
 } from '@azure/msal-browser';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
+import {
+  bootstrapForMsalApplication,
+  BootstrapForMsalService
+} from '@shiptech/core/bootstrap-for-msal.service';
+import {
+  bootstrapForAdalApplication,
+  BootstrapForAdalService
+} from '@shiptech/core/bootstrap-for-adal.service';
 export function getLegacySettings(): string {
   var hostName = window.location.hostname;
   var config = '/config/' + hostName + '.json';
@@ -74,7 +80,9 @@ export function getLegacySettings(): string {
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    AuthenticationModule.forRoot(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forRoot()
+      : AuthenticationAdalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
     TitleModule,
@@ -86,7 +94,7 @@ export function getLegacySettings(): string {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !environment.userAdal ? MsalConfigDynamicModule.forRoot() : []
+    !environment.useAdal ? MsalConfigDynamicModule.forRoot() : []
   ],
   providers: [
     {
@@ -94,15 +102,22 @@ export function getLegacySettings(): string {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: bootstrapApplication,
-      multi: true,
-      deps: [BootstrapService]
-    },
+    !environment.useAdal
+      ? {
+          provide: APP_INITIALIZER,
+          useFactory: bootstrapForMsalApplication,
+          multi: true,
+          deps: [BootstrapForMsalService]
+        }
+      : {
+          provide: APP_INITIALIZER,
+          useFactory: bootstrapForAdalApplication,
+          multi: true,
+          deps: [BootstrapForAdalService]
+        },
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, !environment.userAdal ? MsalRedirectComponent : []]
+  bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
 })
 export class AppModule {
   constructor() {
