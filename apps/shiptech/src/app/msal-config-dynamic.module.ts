@@ -20,9 +20,11 @@ import {
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
-  const config = JSON.parse((<any>window).config);
+  const config = (<any>window).config;
   console.log('msal-config-dynamic', config);
-
+  if (config.useAdal) {
+    return null;
+  }
   return new PublicClientApplication({
     auth: {
       clientId: config.authV2.clientId,
@@ -36,7 +38,10 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const config = JSON.parse((<any>window).config);
+  const config = (<any>window).config;
+  if (config.useAdal) {
+    return null;
+  }
 
   const protectedResourceMap = new Map<string, Array<string>>();
   Object.keys(config.authV2.endpoints).forEach(prop => {
@@ -50,6 +55,10 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  const config = (<any>window).config;
+  if (config.useAdal) {
+    return null;
+  }
   return {
     interactionType: InteractionType.Redirect
   };
