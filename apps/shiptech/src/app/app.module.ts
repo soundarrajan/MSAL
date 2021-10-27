@@ -36,20 +36,17 @@ export function getAppBaseHref(doc: Document): string {
   }
   return new URL(base.href).pathname;
 }
+
 import {
-  MsalGuard,
+  MsalGuardConfiguration,
   MsalInterceptor,
-  MsalBroadcastService,
   MsalInterceptorConfiguration,
   MsalModule,
-  MsalService,
+  MsalRedirectComponent,
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
-  MSAL_INTERCEPTOR_CONFIG,
-  MsalGuardConfiguration,
-  MsalRedirectComponent
+  MSAL_INTERCEPTOR_CONFIG
 } from '@azure/msal-angular';
-
 import {
   InteractionType,
   IPublicClientApplication,
@@ -57,21 +54,13 @@ import {
 } from '@azure/msal-browser';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
 import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
-import { map } from 'rxjs/operators';
-
-export const MQTT_SERVICE_OPTIONS: any = {};
-
-export function wssConfig(http: HttpClient) {
-  return () =>
-    http
-      .get<any>('config/config.json')
-      .pipe(
-        map(response => {
-          MQTT_SERVICE_OPTIONS.url = response.data;
-          return response;
-        })
-      )
-      .toPromise();
+export function getLegacySettings(): string {
+  var hostName = window.location.hostname;
+  var config = '/config/' + hostName + '.json';
+  if (['localhost'].indexOf(hostName) != -1) {
+    config = '/config/config.json';
+  }
+  return config;
 }
 
 @NgModule({
@@ -97,7 +86,7 @@ export function wssConfig(http: HttpClient) {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    MsalConfigDynamicModule.forRoot('config/config.json')
+    MsalConfigDynamicModule.forRoot()
   ],
   providers: [
     {
@@ -105,12 +94,15 @@ export function wssConfig(http: HttpClient) {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: bootstrapApplication,
+      multi: true,
+      deps: [BootstrapService]
+    },
     BootstrapResolver
   ],
-  bootstrap: [
-    AppComponent,
-    !environment.production ? MsalRedirectComponent : []
-  ]
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule {
   constructor() {
