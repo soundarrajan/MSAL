@@ -21,7 +21,7 @@ export class AuthenticationGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    if (!this.authService.isAuthenticated) {
+    if (!this.authService.userInfo.authenticated) {
       this.toastr.warning('You are not authorized, redirecting');
 
       // Note: using timeout to give user some time to read the toaster
@@ -29,6 +29,6 @@ export class AuthenticationGuard implements CanActivate {
         this.authService.login();
       }, 2000);
     }
-    return this.authService.isAuthenticated;
+    return this.authService.userInfo.authenticated;
   }
 }

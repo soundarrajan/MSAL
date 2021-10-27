@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { TitleService } from '@shiptech/core/services/title/title.service';
-import { AuthService } from '@shiptech/core/authentication/auth.service';
+// import { AuthService } from '@shiptech/core/authentication/auth.service';
 
 @Component({
   selector: 'shiptech-topbar',
@@ -19,7 +19,7 @@ export class TopbarComponent {
 
   constructor(
     public app: LayoutMainComponent,
-    public authService: AuthService,
+    // public authService: AuthService,
     titleService: TitleService
   ) {
     this.pageTitle$ = titleService.title$;

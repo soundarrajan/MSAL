@@ -22,7 +22,6 @@ import {
 } from '@angular/router';
 import { MyMonitoringService } from './service/logging.service';
 import { LoaderService } from './service/loader.service';
-import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { filter, takeUntil } from 'rxjs/operators';
 import {
   InteractionStatus,
@@ -55,8 +54,6 @@ import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { BootstrapService } from '@shiptech/core/bootstrap.service';
-import { AuthService } from '@shiptech/core/authentication/auth.service';
 @Component({
   selector: 'shiptech-root',
   templateUrl: './app.component.html',
@@ -82,15 +79,11 @@ export class AppComponent implements OnInit {
 
   private _initialized = new ReplaySubject<void>(1);
   constructor(
-    private msalService: MsalService,
-    public authService: AuthService,
     private router: Router,
     changeDetector: ChangeDetectorRef,
     private myMonitoringService: MyMonitoringService,
     private loaderService: LoaderService,
     private elementRef: ElementRef,
-    private broadcastService: MsalBroadcastService,
-    private bootstrapService: BootstrapService,
     @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {
     router.events.subscribe((event: RouterEvent): void => {
@@ -144,8 +137,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isIframe = window !== window.parent && !window.opener;
-
-    this.authService.updateLoggedInStatus();
   }
 
   ngOnDestroy(): void {
