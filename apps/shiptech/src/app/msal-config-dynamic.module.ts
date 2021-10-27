@@ -19,12 +19,6 @@ import {
 } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
-const AUTH_CONFIG_URL_TOKEN = new InjectionToken<string>('AUTH_CONFIG_URL');
-
-const isIE =
-  window.navigator.userAgent.indexOf('MSIE ') > -1 ||
-  window.navigator.userAgent.indexOf('Trident/') > -1; // Remove this line to use Angular Universal
-
 export function MSALInstanceFactory(): IPublicClientApplication {
   const config = JSON.parse((<any>window).config);
   console.log('msal-config-dynamic', config);
