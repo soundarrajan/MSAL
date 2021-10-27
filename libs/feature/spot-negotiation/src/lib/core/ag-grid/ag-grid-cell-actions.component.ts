@@ -165,29 +165,48 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   }
 
   selectCounterParties(params){
-    let updatedRow = { ...params.data };
-    updatedRow = this.formatRowData(updatedRow, params);
+    let updatedRow = { ...Object.assign({}, params.data) };
+    updatedRow = this.formatRowData(updatedRow,params);
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
     params.node.setData(updatedRow);
 }
+
+setproductvalid(row, currentLocProdCount,paramsvalue){
+  for (let index = 0; index < currentLocProdCount; index++) {
+    if(paramsvalue){
+      let indx = index +1;
+      let val = "checkProd" + indx;
+      row[val] = false;
+    }else{
+      let indx = index +1;
+      let val = "checkProd" + indx;
+      row[val] = true;
+    }
+  }
+  return row
+}
   formatRowData(row, params) {
-    if(params.value){
-          row.isSelected = false;
-          row.checkProd1 =false;
-          row.checkProd2 = false;
-          row.checkProd3 =false;
-          row.checkProd4 = false;
-          row.checkProd5 =false;
+  //  alert(4); 
+    let row1
+    this.store.subscribe(({ spotNegotiation }) => {
+      let Currentproduct = spotNegotiation.locations;
+      let currentLocProd= Currentproduct.filter(row2 => row2.locationId == row.locationId);
+      if(currentLocProd.length != 0){
+        let currentLocProdCount = currentLocProd[0].requestProducts.length;
+
+        row1 = { ...Object.assign({}, row) };      
+        if(params.value){
+          row1.isSelected = false;
+          row1 = this.setproductvalid(row1,currentLocProdCount,params.value)
+          
         }else{
-          row.isSelected = true;
-          row.checkProd1 =true;
-          row.checkProd2 = true;
-          row.checkProd3 =true;
-          row.checkProd4 = true;
-          row.checkProd5 =true;
+          row1.isSelected = true;
+          row1 = this.setproductvalid(row1,currentLocProdCount,params.value)
         }
-        return row;
+      }
+    });
+    return row1;
   }
   viewFigma() {
     const figmaLink = this.params.value;
