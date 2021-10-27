@@ -18,29 +18,16 @@ import {
   MsalGuardConfiguration
 } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ConfigService } from './service/config.service';
 
 const AUTH_CONFIG_URL_TOKEN = new InjectionToken<string>('AUTH_CONFIG_URL');
-
-export function initializerFactory(env: ConfigService, configUrl: string): any {
-  const promise = env.init(configUrl).then(value => {
-    console.log('finished getting configurations dynamically.');
-  });
-  return () => promise;
-}
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
   window.navigator.userAgent.indexOf('Trident/') > -1; // Remove this line to use Angular Universal
 
-export function loggerCallback(logLevel: LogLevel, message: string) {
-  console.log(message);
-}
-
-export function MSALInstanceFactory(
-  configService: ConfigService
-): IPublicClientApplication {
-  const config = JSON.parse(localStorage.getItem('config'));
+export function MSALInstanceFactory(): IPublicClientApplication {
+  const config = JSON.parse((<any>window).config);
+  console.log('msal-config-dynamic', config);
 
   return new PublicClientApplication({
     auth: {
@@ -54,10 +41,8 @@ export function MSALInstanceFactory(
   });
 }
 
-export function MSALInterceptorConfigFactory(
-  configService: ConfigService
-): MsalInterceptorConfiguration {
-  const config = JSON.parse(localStorage.getItem('config'));
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const config = JSON.parse((<any>window).config);
 
   const protectedResourceMap = new Map<string, Array<string>>();
   Object.keys(config.authV2.endpoints).forEach(prop => {
@@ -81,32 +66,21 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   imports: [MsalModule]
 })
 export class MsalConfigDynamicModule {
-  static forRoot(configFile: string) {
+  static forRoot() {
     return {
       ngModule: MsalConfigDynamicModule,
       providers: [
-        ConfigService,
-        { provide: AUTH_CONFIG_URL_TOKEN, useValue: configFile },
-        {
-          provide: APP_INITIALIZER,
-          useFactory: initializerFactory,
-          deps: [ConfigService, AUTH_CONFIG_URL_TOKEN],
-          multi: true
-        },
         {
           provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory,
-          deps: [ConfigService]
+          useFactory: MSALInstanceFactory
         },
         {
           provide: MSAL_GUARD_CONFIG,
-          useFactory: MSALGuardConfigFactory,
-          deps: [ConfigService]
+          useFactory: MSALGuardConfigFactory
         },
         {
           provide: MSAL_INTERCEPTOR_CONFIG,
-          useFactory: MSALInterceptorConfigFactory,
-          deps: [ConfigService]
+          useFactory: MSALInterceptorConfigFactory
         },
         MsalService,
         MsalGuard,
