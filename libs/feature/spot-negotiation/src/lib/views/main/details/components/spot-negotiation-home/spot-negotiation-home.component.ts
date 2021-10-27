@@ -17,7 +17,8 @@ import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
-  SetLocationsRowsPriceDetails
+  SetLocationsRowsPriceDetails,
+  SetLocations
 } from '../../../../../store/actions/ag-grid-row.action';
 
 @Component({
@@ -53,7 +54,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private store: Store,
     private spinner: NgxSpinnerService,
-    private spotNegotiationService: SpotNegotiationService
+    private spotNegotiationService: SpotNegotiationService,
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +63,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
   }
 
+  // @HostListener('document:click', ['$event'])
+  // clickout(event) {
+  //   //if(event.target.className.indexOf('mat-button-wrapper')>=0) return false;
+  //   if($('.checkgrid').find(event.target).length == 0 && this.spotNegotiationService.FinalOutputdata.length !=0){
+  //     this.store.dispatch(
+  //       new SetLocationsRows(this.spotNegotiationService.FinalOutputdata)
+  //     );
+  //   }
+  // }
   confirmorderpopup() {
     const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
       width: '1045px',
@@ -84,7 +94,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
     if (Selectedfinaldata.length == 0) {
-      let errormessage = 'Atleast 1 counterparty should be selected in'; // + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
+      let errormessage = 'Atleast 1 counterparty should be selected'; // + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
       this.toaster.error(errormessage);
       return;
       // }
@@ -147,12 +157,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     rowsArray.forEach((row, index) => {
-      row.isSelected = true;
-      row.checkProd1 = true;
-      row.checkProd2 = true;
-      row.checkProd3 = true;
-      row.checkProd4 = true;
-      row.checkProd5 = true;
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
@@ -187,12 +191,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
       spotNegotiation.locations.forEach(element => {
         spotNegotiation.locationsRows.forEach(element1 => {
           if (element.locationId == element1.locationId) {
-            if (element1['isSelected']) {
+            if (element1['checkProd1'] || element1['checkProd2'] || element1['checkProd3'] || element1['checkProd4'] || element1['checkProd5']) {
               var Sellectedsellerdata = this.ConstuctSellerPayload(
                 element1,
                 element.requestProducts,
-                spotNegotiation.currentRequestSmallInfo,
-                ''
+                spotNegotiation.currentRequestSmallInfo
               );
               if (Sellectedsellerdata.length > 0) {
                 this.selectedSellerList.push(Sellectedsellerdata[0]);
@@ -204,14 +207,23 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     return this.selectedSellerList;
   }
-  ConstuctSellerPayload(Seller, requestProducts, Request, index) {
-    let selectedproducts;
-    if (requestProducts.length > 0 && index == '') {
-      selectedproducts = requestProducts.map(({ id }) => id);
+  ConstuctSellerPayload(Seller, requestProducts, Request) {
+    let selectedproducts = [];
+    if(Seller['checkProd1']){
+      selectedproducts.push(requestProducts[0].id)
     }
-    // else {
-    //   selectedproduct = Product[index].id;
-    // }
+    if(Seller['checkProd2']){
+      selectedproducts.push(requestProducts[1].id)
+    }
+    if(Seller['checkProd3']){
+      selectedproducts.push(requestProducts[2].id)
+    }
+    if(Seller['checkProd4']){
+      selectedproducts.push(requestProducts[3].id)
+    }
+    if(Seller['checkProd5']){
+      selectedproducts.push(requestProducts[4].id)
+    }
     return [
       {
         RequestLocationSellerId: Seller.id,
