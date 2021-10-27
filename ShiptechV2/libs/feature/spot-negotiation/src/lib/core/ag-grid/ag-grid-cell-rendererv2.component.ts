@@ -371,7 +371,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
                 <mat-option [value]="element">
                   <mat-checkbox
                     [value]="element.name"
-                    (click)="selectSupplier(element.name)"
+                    (click)="selectSupplier(element.name,element.id)"
                   >
                   {{ element.name }}
                   </mat-checkbox>
@@ -526,6 +526,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public myFormGroup;
   public editSeller: boolean = true;
   public editedSeller = '';
+  public phySupplierId=0;
   public priceFormat = '';
 
   public docVal = 'Document Uploaded';
@@ -713,7 +714,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         RequestLocationId: parseInt(currentRequestLocation.id),
         LocationId: locationId,
         isPhysicalSupplier:true,
-        phySupplierId:this.params.data.physicalSupplierCounterpartyId,
+        phySupplierId:this.phySupplierId,
         requestLocationSellerId:this.params.data.id
       }
     });
@@ -876,14 +877,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     newData = rowData.splice(index, 1);
     this.params.api.applyTransaction({ remove: newData });
   }
-  selectSupplier(text) {
+  selectSupplier(text,id) {
     this.editedSeller = text;
+    this.phySupplierId=id;
   }
 
   updatePhysicalSupplier(){
     let payload = {
       "RequestLocationSellerId": this.params.data.id,
-      "PhySupplierId": this.params.data.physicalSupplierCounterpartyId
+      "PhySupplierId": this.phySupplierId
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
