@@ -7,7 +7,7 @@ import { AppConfig } from '@shiptech/core/config/app-config';
   providedIn: 'root'
 })
 export class ConfigService {
-  private settings: any;
+  config: any;
   private http: HttpClient;
 
   constructor(
@@ -24,9 +24,8 @@ export class ConfigService {
         .pipe(map(result => result))
         .subscribe(
           value => {
-            this.settings = value;
-            localStorage.setItem('config', JSON.stringify(value));
-
+            this.config = value;
+            console.log(this.config);
             resolve(true);
           },
           error => {
@@ -37,8 +36,8 @@ export class ConfigService {
   }
 
   getConfigValue() {
-    console.log(this.settings);
-    return this.settings;
+    console.log(this.config);
+    return this.config;
   }
 }
 
