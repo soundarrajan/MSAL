@@ -8,7 +8,7 @@
 <div class="tab-content">
     <div class="tab-pane fade" ng-repeat="(key, value) in formValues.deepmerge" id="tab_{{ key.split(' ').join('') }}" ng-class="$index == 0 ? 'active in ' : ''">
         <div class="custom-hardcoded-table admin">
-            <table class="table-head" style="width:100%">
+            <table class="table-head" style="width:100%">   
                 <tr>
                     <td style="width:5%" class="text-center">
                         Expand
@@ -46,7 +46,7 @@
 	                    	<div class="col-sm-6">
 
 	                    	<span ng-init="!val1.selectedScreenTemplate ? val1.selectedScreenTemplate = val1.definedScreenTemplates[0] : '' "></span>
-		                        <select class="form-control" ng-model="val1.selectedScreenTemplate" ng-options="item as item.name for item in val1.definedScreenTemplates track by item.id" name="{{key}}_{{ key1 }}_screenTemplate" id="{{key}}_{{ key1 }}_screenTemplate" ng-required="false" style="float:right" >
+		                        <select class="form-control" ng-model="val1.selectedScreenTemplate" ng-options="item as item.name for item in val1.definedScreenTemplates track by item.id" name="{{key.split(' ').join('')}}_{{ key1 }}_screenTemplate" id="{{key.split(' ').join('')}}_{{ key1 }}_screenTemplate" ng-required="false" style="float:right" >
 		                        </select>
 	                    	</div>
 	                    </div>
