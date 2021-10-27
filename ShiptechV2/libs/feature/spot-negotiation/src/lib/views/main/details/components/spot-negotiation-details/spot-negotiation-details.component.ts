@@ -17,7 +17,9 @@ import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-
 import { SpotNegotiationService } from '../../../../../services/spot-negotiation.service';
 import {
   EditLocationRow,
-  SetCounterpartyList
+  SetCounterpartyList,
+  SetLocations,
+  SetLocationsRows
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
@@ -82,7 +84,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           filter: true,
           suppressMenu: true,
           maxWidth: 35,
-          checkboxSelection: true,
+          // checkboxSelection: true,
           headerCheckboxSelection: true,
           resizable: false,
           // suppressMovable: true,
@@ -202,6 +204,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   ];
   rowSelection: string;
   Isspotgridrefresh: boolean;
+  CurrentRequestLocationsData: any[];
 
   constructor(
     @Inject(DOCUMENT) private _document: HTMLDocument,
@@ -217,7 +220,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.context = { componentParent: this };
     this.gridOptions_counterparty = <GridOptions>{
       resizable: true,
-      rowSelection: 'single',
+      rowSelection: 'multiple',
       defaultColDef: {
         flex: 1,
         resizable: true,
@@ -233,9 +236,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.store.dispatch(new EditLocationRow(updatedRow));
           // Save to the cloud
           this.saveRowToCloud(updatedRow, colDef['product']);
-          setTimeout(() => {
-            _this.gridOptions_counterparty.api.selectAll();
-          }, 500);
+          // setTimeout(() => {
+          // //  alert(1)
+          //   _this.gridOptions_counterparty.api.selectAll();
+          // }, 100);
 
           return false;
         }
@@ -258,7 +262,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.gridOptions_counterparty.api = params.api;
         this.gridOptions_counterparty.columnApi = params.columnApi;
         this.gridOptions_counterparty.api.sizeColumnsToFit();
-        this.gridOptions_counterparty.api.selectAll();
+      //  this.gridOptions_counterparty.api.selectAll();
         // this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
         this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         this.totalOfferHeaderWidth = params.columnApi
@@ -286,16 +290,32 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
     };
   }
-
-  selectionChanged($event) {
-    // this.gridOptions_counterparty.api.deselectAll();
-    if(this.Isspotgridrefresh){
-      if(this.gridOptions_counterparty.rowData.length-1 == $event.rowIndex){
-        this.Isspotgridrefresh = false;
-      }
-
-      return;
+  isselectedrowfun(row , isSelected){
+    if(isSelected){
+      row.isSelected = true;
+      row.checkProd1 = true;
+      row.checkProd2 = true;
+      row.checkProd3 = true;
+    }else{
+      row.isSelected = false;
+      row.checkProd1 = false;
+      row.checkProd2 = false;
+      row.checkProd3 = false;
     }
+    return row
+  }
+  
+  rowSelected(event){
+      let displayRowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
+      let selectedNodes = this.gridOptions_counterparty.api.getSelectedNodes();
+      let Selecteddata = selectedNodes.map(node => node.data);
+      if(Selecteddata.length !=0 && Selecteddata.length != displayRowCount){
+          let rowdata = Object.assign({}, event.data)
+          let updatedRow = { ...rowdata };
+          updatedRow = this.isselectedrowfun(updatedRow, event.node.selected);
+          this.store.dispatch(new EditLocationRow(updatedRow));
+          event.node.setData(updatedRow);
+      }
   }
 
   saveRowToCloud(updatedRow, product) {
@@ -454,16 +474,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           filter: true,
           suppressMenu: true,
           width: 35,
-          checkboxSelection: true,
+          // checkboxSelection: true,
           resizable: false,
           suppressMovable: true,
-          // headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
-          // cellClass:
-          //   'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
+            headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+          cellClass:
+            'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
 
-          // cellRendererFramework: AGGridCellRendererV2Component,
-          // cellRendererParams: { type: 'mat-check-box' }
-          //pinned: 'left'
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'mat-check-box' },
+
         },
         {
           headerName: 'Offer price',
@@ -703,10 +723,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ][0].headerGroupComponentParams.locationId = locationId;
 
         // These are locations!!
-        currentRequest.requestProducts.map(product => {
+        currentRequest.requestProducts.map((product, index) => {
           this.checkHighlight({ product: product });
           this.columnDef_aggridObj[i].push(
-            this.createProductHeader(product, currentRequest.id, i)
+            this.createProductHeader(product, currentRequest.id, index)
           );
         });
       });
@@ -775,38 +795,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       7;
   }
 
-  onRowSelected(e:any) {
-    // const itemsToUpdate = [];
-    // this.gridOptions_counterparty.api.forEachNode((rowNode, index) => {
-    //   rowNode.data.isSelected isSelected = false;
-    //   console.log("-------------&&&&&&&-- rowNode", rowNode);
-    // });
-    // this.gridOptions_counterparty.api.forEachNodeAfterFilterAndSort(function(
-    //   rowNode,
-    //   index
-    // ) {
-    //   if (!rowNode.isSelected() === true) {
-    //     return;
-    //   }
-    //   const data = rowNode.data;
-    //   data.isSelected = TextTrackCueList;
-    //   itemsToUpdate.push(data);
-    // });
-    // const res = this.gridOptions_counterparty.api.applyTransaction({
-    //   update: itemsToUpdate
-    // });
-    let updatedRow = { ...e.data };
-      updatedRow = this.formatRowselected(updatedRow, e.data.isSelected);
-      // Update the store
-      this.store.dispatch(new EditLocationRow(updatedRow));
-      if(e.data.isSelected){
-        return false
-      }
-      else{
-        return true
-      }
-  }
-
+  
   formatRowselected(row, value) {
     if(value){
       row.isSelected = false;

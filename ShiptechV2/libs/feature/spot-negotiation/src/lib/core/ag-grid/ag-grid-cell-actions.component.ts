@@ -33,11 +33,12 @@ import { SelectSeller, EditLocationRow } from '../../store/actions/ag-grid-row.a
     <div *ngIf="params.type === 'radio-button-selection'">
       <mat-radio-button
         [checked]="params.value"
+        
         class="grid-radio-btn"
       ></mat-radio-button>
     </div>
     <div *ngIf="params.type === 'checkbox-selection'">
-      <mat-checkbox class="grid-checkbox test22" [checked]="params.value"></mat-checkbox>
+      <mat-checkbox class="grid-checkbox test22" [checked]="params.value" (click)="selectCounterParties(params)"></mat-checkbox>
     </div>
     <div
       class="hover-popup-icon grid-popup"
@@ -164,20 +165,14 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   }
 
   selectCounterParties(params){
-      debugger;
-      let updatedRow = { ...params.data };
-      updatedRow = this.formatRowData(updatedRow, params.value);
-      // Update the store
-      this.store.dispatch(new EditLocationRow(updatedRow));
-      if(params.value){
-        return params.value = false;
-      }else{
-
-        return params.value = true;
-      }
-  }
-  formatRowData(row, value) {
-        if(value){
+    let updatedRow = { ...params.data };
+    updatedRow = this.formatRowData(updatedRow, params);
+    // Update the store
+    this.store.dispatch(new EditLocationRow(updatedRow));
+    params.node.setData(updatedRow);
+}
+  formatRowData(row, params) {
+    if(params.value){
           row.isSelected = false;
           row.checkProd1 =false;
           row.checkProd2 = false;

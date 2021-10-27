@@ -22,7 +22,7 @@
                         [gridOptions]="gridOptions_counterparty"
                         [rowClassRules]="rowClassRules" [immutableData]="false"
                         [getRowNodeId]="getRowNodeId" [suppressRowClickSelection]="true"
-                        (rowSelected)="selectionChanged($event)"
+                        (rowSelected)="rowSelected($event)"
                         [context]="context">
                       </ag-grid-angular>
                     </div>

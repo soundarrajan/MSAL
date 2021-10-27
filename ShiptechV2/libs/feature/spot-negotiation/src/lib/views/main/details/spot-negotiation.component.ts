@@ -43,6 +43,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
   CurrentProductLength: any;
   CurrentLocationprduct: any[];
+  currentRequestData: any[];
 
   constructor(
     private http: HttpClient,
@@ -96,17 +97,24 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestData = spotNegotiation.locations;
+    });
+    debugger;
+
     rowsArray.forEach((row, index) => {
+      let currentLocProd= this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
+      if(currentLocProd.length != 0){
+        let currentLocProdCount = currentLocProd[0].requestProducts.length;
+        for (let index = 0; index < currentLocProdCount; index++) {
 
-      row.isSelected = true;
-      // row.checkProd1 = true;
-      // row.checkProd2 = true;
-      // row.checkProd3 = true;
-      // row.checkProd4 = true;
-      // row.checkProd5 = true;
-      let val = "Checkprod" + index;
-      row[val] = true
-
+          let indx = index +1;
+          let val = "checkProd" + indx;
+          row[val] = true
+          row.isSelected = true;
+        }
+      }
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
