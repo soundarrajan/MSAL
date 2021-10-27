@@ -1,6 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-control-tower-home-new',
@@ -14,10 +20,10 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   public showResidue: boolean = false;
   public theme;
   public newScreen = true;
-  selected:string;
+  selected: string;
 
   selectedVal: string = 'labs';
-  selectedVal2: string = 'differences';
+  selectedVal2: string = 'claims';
   selectedVal3: string = 'differences';
 
   constructor(private route: ActivatedRoute) {
@@ -34,31 +40,31 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.viewChange(this.controlViewRef);
   }
-  
+
   public onValChange(val: string) {
     this.selectedVal = val;
     this.selectedVal2 = val;
     this.selectedVal3 = val;
   }
-  
+
   loadDefaultLandingPage() {
     let selectedId = this.route.snapshot.paramMap.get('id');
     // load default landing screen based on quality, quantity, residue view
-    if(selectedId) {
+    if (selectedId) {
       switch (Number(selectedId)) {
         case 5:
           this.selected = 'quality';
           break;
-          case 6:
-            this.selected = 'quantity';
-            break;
-            case 7:
-              this.selected = 'residue';
-              break;
-              default:
-                this.selected = 'quantity';
-                break;
-              }
+        case 6:
+          this.selected = 'quantity';
+          break;
+        case 7:
+          this.selected = 'residue';
+          break;
+        default:
+          this.selected = 'quantity';
+          break;
+      }
     } else {
       // load default landing screen quantity view, if there is no default view based on user
       this.selected = 'quantity';

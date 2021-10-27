@@ -1,0 +1,15 @@
+<div
+  class="controlTower-content new"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+>
+  <ng-container>
+    <shiptech-control-tower-general-view-list
+      [selectorType]="'Quantity Claims'"
+      [groupId]="'control-tower-quantity-claims-v2-list-filter-presets-1'"
+      [gridId]="'control-tower-quantity-claims-2'"
+      [theme]="theme"
+      [newScreen]="newScreen"
+    ></shiptech-control-tower-general-view-list>
+  </ng-container>
+</div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>
