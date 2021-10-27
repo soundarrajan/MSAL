@@ -1,7 +1,11 @@
-﻿commit 5b20e854b9b46549397b9e1cd54230c2d95bbe86
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Oct 26 13:26:22 2021 +0000
+﻿commit b649306d6085c1356521fc7a6149b7a1c6c07d54
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Oct 27 06:43:02 2021 +0000
 
-    Merged PR 14294: Merge support_10_10_1 into dev master - ol map merge conflict issue has fixed
+    Merged PR 14302: Worked on quantity claims
+    
+    Worked on quantity claims
+    
+    Related work items: #33650
 
 branch: master

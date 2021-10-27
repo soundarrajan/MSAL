@@ -8,6 +8,7 @@ import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { CONTROL_TOWER_API_SERVICE } from './api/control-tower-api';
 import { IControlTowerApiService } from './api/control-tower.api.service.interface';
 import {
+  IGetControlTowerQuantityClaimsListResponse,
   IGetControlTowerQuantityRobDifferenceListResponse,
   IGetControlTowerQuantitySupplyDifferenceListResponse
 } from './api/dto/control-tower-list-item.dto';
@@ -80,6 +81,33 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getControlTowerQuantitySupplyDifferenceListExportUrl(): string {
     return this.api.getControlTowerQuantitySupplyDifferenceListExportUrl();
+  }
+
+  @ObservableException()
+  getControlTowerQuantityClaimsList$(
+    gridRequest: IServerGridInfo
+  ): Observable<IGetControlTowerQuantityClaimsListResponse> {
+    return this.apiDispatch(
+      () =>
+        this.api.getControlTowerQuantityClaimsList({
+          ...gridRequest
+        }),
+      new LoadControlTowerListAction(gridRequest),
+      response =>
+        new LoadControlTowerListSuccessfulAction(
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount
+        ),
+      LoadControlTowerListFailedAction,
+      ModuleError.LoadControlTowerQuantityClaimsFailed
+    );
+  }
+
+  @ObservableException()
+  getControlTowerQuantityClaimsListExportUrl(): string {
+    return this.api.getControlTowerQuantityClaimsListExportUrl();
   }
 
   ngOnDestroy(): void {

@@ -34,6 +34,7 @@ import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model
 import { SelectorComponent } from '@shiptech/core/ui/components/master-selector/selector/selector.component';
 import { ControlTowerQuantitySupplyDifferenceListGridViewModel } from './view-model/control-tower-quantity-supply-difference-grid.view-model';
 import { ControlTowerQuantitySupplyDifferenceListColumnServerKeys } from './list-columns/control-tower-quantity-supply-difference-list.columns';
+import { ControlTowerQuantityClaimsListGridViewModel } from './view-model/control-tower-quantity-claims-grid.view-model';
 
 export const PICK_FORMATS = {
   display: {
@@ -90,6 +91,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
   providers: [
     ControlTowerQuantityRobDifferenceListGridViewModel,
     ControlTowerQuantitySupplyDifferenceListGridViewModel,
+    ControlTowerQuantityClaimsListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
@@ -169,6 +171,13 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
         break;
       }
+      case 'Quantity Claims': {
+        this.gridViewModel = this.injector.get(
+          ControlTowerQuantityClaimsListGridViewModel
+        );
+        this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
+        break;
+      }
 
       default:
         throwError("Hasn't defined the selector type");
@@ -186,6 +195,20 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   openEditOrder(orderId: number): void {
     window.open(
       this.urlService.editOrder(orderId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
+  }
+
+  openEditLab(labId: number): void {
+    window.open(
+      this.urlService.editLabResults(labId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
+  }
+
+  openEditClaim(claimId: number): void {
+    window.open(
+      this.urlService.editClaim(claimId),
       this.appConfig.openLinksInNewTab ? '_blank' : '_self'
     );
   }
@@ -212,27 +235,32 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   }
 
   public onrowClicked(ev) {
-    //console.log("hhhhhhhhh");
-    const index = ev.rowIndex;
-    const rowNode = ev.node;
-    //alert(index);
-    const dialogRef = this.dialog.open(
-      RowstatusOnchangeQuantityrobdiffPopupComponent,
-      {
-        width: '382px',
-        height: 'auto',
-        maxHeight: '536px',
-        backdropClass: 'dark-popupBackdropClass',
-        panelClass: this.theme ? 'dark-theme' : 'light-theme',
-        data: { title: 'Claims', id: 'Claim Id' }
-      }
-    );
+    if (
+      this.selectorType == 'Quantity ROB Difference' ||
+      this.selectorType == 'Quantity Supply Difference'
+    ) {
+      //console.log("hhhhhhhhh");
+      const index = ev.rowIndex;
+      const rowNode = ev.node;
+      //alert(index);
+      const dialogRef = this.dialog.open(
+        RowstatusOnchangeQuantityrobdiffPopupComponent,
+        {
+          width: '382px',
+          height: 'auto',
+          maxHeight: '536px',
+          backdropClass: 'dark-popupBackdropClass',
+          panelClass: this.theme ? 'dark-theme' : 'light-theme',
+          data: { title: 'Claims', id: 'Claim Id' }
+        }
+      );
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-      console.log(ev);
-      this.gridViewModel.updateValues(ev, result);
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+        console.log(ev);
+        this.gridViewModel.updateValues(ev, result);
+      });
+    }
   }
 
   getHeaderNameSelector(): string {
