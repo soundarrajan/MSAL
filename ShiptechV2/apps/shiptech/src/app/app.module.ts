@@ -97,21 +97,13 @@ export function wssConfig(http: HttpClient) {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !environment.production
-      ? MsalConfigDynamicModule.forRoot(MQTT_SERVICE_OPTIONS)
-      : []
+    MsalConfigDynamicModule.forRoot('config/config.json')
   ],
   providers: [
     {
       provide: APP_BASE_HREF,
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: wssConfig,
-      deps: [HttpClient],
-      multi: true
     },
     BootstrapResolver
   ],
