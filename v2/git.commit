@@ -1,8 +1,10 @@
-﻿commit 042e3b569d6dcec2b4bfb6c41aba65ec5b3f952e
+﻿commit 585a6c388532e57086f31b093415517eb0c5f2a1
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Oct 28 09:55:55 2021 +0000
+Date:   Thu Oct 28 10:23:59 2021 +0000
 
-    Merged PR 14342: Added authentication configuration for MSAL and ADAL
+    Merged PR 14345: Worked on 36542
+    
+    Worked on 36542
     
     Related work items: #36542
 
