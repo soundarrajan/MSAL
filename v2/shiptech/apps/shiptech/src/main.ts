@@ -21,7 +21,7 @@ fetch(getLegacySettings())
   .then(response => response.json())
   .then(config => {
     console.log('config ');
-    console.log((<any>window).config);
+    localStorage.setItem('config', JSON.stringify(config));
     (<any>window).config = config;
     console.log((<any>window).config);
     platformBrowserDynamic()

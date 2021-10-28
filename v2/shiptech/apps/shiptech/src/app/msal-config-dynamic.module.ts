@@ -18,10 +18,12 @@ import {
   MsalGuardConfiguration
 } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+let legacyConfig = null;
 
 export function MSALInstanceFactory(): IPublicClientApplication {
-  const config = (<any>window).config;
-  console.log('msal-config-dynamic', config);
+  const config = JSON.parse(localStorage.getItem('config'));
+  const baseOrigin = new URL(window.location.href).origin;
+  legacyConfig = config;
   return new PublicClientApplication({
     auth: {
       clientId: config.authV2.clientId,
@@ -34,12 +36,18 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   });
 }
 
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const config = (<any>window).config;
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return {
+    interactionType: InteractionType.Redirect
+  };
+}
 
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const config = JSON.parse(localStorage.getItem('config'));
+  legacyConfig = config;
   const protectedResourceMap = new Map<string, Array<string>>();
-  Object.keys(config.authV2.endpoints).forEach(prop => {
-    protectedResourceMap.set(prop, config.authV2.scopes);
+  Object.keys(legacyConfig.authV2.endpoints).forEach(prop => {
+    protectedResourceMap.set(prop, legacyConfig.authV2.scopes);
   });
 
   return {
@@ -48,7 +56,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   };
 }
 
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+// eslint-disable-next-line @typescript-eslint/tslint/config
+export function MSALInterceptConfigFactory() {
   return {
     interactionType: InteractionType.Redirect
   };
