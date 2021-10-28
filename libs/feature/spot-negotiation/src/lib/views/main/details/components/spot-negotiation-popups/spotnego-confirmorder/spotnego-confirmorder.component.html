@@ -56,7 +56,8 @@
             </div>
           </div>
 
-          <div class="row " *ngFor="let locationRow of getSelectedLocationRowsForLocation(location.locationId, request.id)">
+          <!--  //getSelectedLocationRowsForLocation(location.locationId, request.id) -->
+          <div class="row " *ngFor="let requestOfferItem of requestOfferItems; let i = index" [attr.data-index]="i"> 
             <div class="product-terms ">
               <div class="operations-details-block" style="height: auto;">
                 <div style="height: auto;">
@@ -65,15 +66,16 @@
                       <tr id="commentList">
                         <!-- <td class="w-80">12321</td>-->
                         <td class="table-checkbox" ><mat-checkbox class="example-margin" ></mat-checkbox></td>
-                        <td class="w-125">{{locationRow.sellerCounterpartyName}}</td>
+                        <td class="w-125">{{requestOfferItem.SellerName}}</td>
                         <!-- <td class="">Rotterdam</td> -->
-                        <td class=""> 2RMG 380 0.5% </td>
-                        <td class="">3 500.00 MT </td>
-                        <td class="">4 500.00 MT </td>
-                        <td class="text-left  cell-dashed-border" contenteditable="true">5 500.00 MT </td>
-                        <td class="">6 $560.19 </td>
-                        <td class="">{{locationRow.totalOffer || 0}}</td>
-                        <td class="w-125">{{locationRow.physicalSupplierCounterpartyName}}</td>
+                        <td class=""> {{requestOfferItem.ProductName}}</td>
+                        <td class="">{{requestOfferItem.minQuantity}} {{requestOfferItem.UomName}}</td>
+                        <td class="">{{requestOfferItem.MaxQuantity}} {{requestOfferItem.UomName}}</td>
+                        <td class="text-left  cell-dashed-border"  contenteditable="true" >{{requestOfferItem.MaxQuantity}}<span>{{requestOfferItem.UomName}}</span></td>  
+                        <!-- (change)="totalprice(requestOfferItem,requestOfferItem.MaxQuantity)" [ngModel]="requestOfferItem.MaxQuantity" -->
+                        <td class="">{{requestOfferItem.OfferPrice||0}}</td>
+                        <td class="">{{requestOfferItem.TotalPrice}}</td>
+                        <td class="w-125">{{requestOfferItem.PhysicalSupplierName}}</td>
                       </tr>
                     </tbody>
                   </table>
