@@ -61,13 +61,14 @@ export class AgColumnPreferencesService implements OnDestroy {
     // Note: Aligned grids will each try to save it's preferences when a column state changes.
     // Note: We only want to save one of them.
     // if ((<any>window).savePreferenceCall) {
-      this._savePreferences
+    this._savePreferences
       .pipe(
         groupBy(request => request.gridName),
         mergeMap(group =>
           group.pipe(
             throttleTime(1000),
-            switchMap((request) =>  this._storage.set(this._storageKey(request.gridName), request)
+            switchMap(request =>
+              this._storage.set(this._storageKey(request.gridName), request)
             )
           )
         )
@@ -76,7 +77,6 @@ export class AgColumnPreferencesService implements OnDestroy {
     // } else {
     //   (<any>window).savePreferenceCall = true;
     // }
-   
   }
 
   registerWatch(gridName: string, gridOptions: GridOptions): void {
@@ -137,7 +137,7 @@ export class AgColumnPreferencesService implements OnDestroy {
 
   restoreToGrid(gridName: string, options: GridOptions): Observable<any> {
     return this._storage.get<IGridPreferences>(this._storageKey(gridName)).pipe(
-      filter(p => !!p),
+      // filter(p => !!p),
       tap(preferences => {
         const columnsState = preferences.columnState;
         const sortState = preferences.sortState;

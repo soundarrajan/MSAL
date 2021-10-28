@@ -149,7 +149,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.eta,
     field: model('eta'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
+    valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.eta,
     width: 200
   };
@@ -185,6 +185,56 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     width: 150
   };
 
+  quantityUomCol: ITypedColDef<
+    IControlTowerQuantityClaimsItemDto,
+    ILookupDto
+  > = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.quantityUom,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.quantityUom,
+    colId: ControlTowerQuantityClaimsListColumns.quantityUom,
+    field: model('quantityUom'),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityUom,
+    valueFormatter: params => params.value?.name,
+    width: 150
+  };
+
+  estimatedSettlementAmountCol: ITypedColDef<
+    IControlTowerQuantityClaimsItemDto,
+    number
+  > = {
+    headerName:
+      ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
+    headerTooltip:
+      ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
+    colId: ControlTowerQuantityClaimsListColumns.estimatedSettlementAmount,
+    field: model('estimatedSettlementAmount'),
+    valueFormatter: params => this.format.amount(params.value),
+    dtoForExport:
+      ControlTowerQuantityClaimsListExportColumns.estimatedSettlementAmount,
+    width: 150
+  };
+
+  createdDateCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.createdDate,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.createdDate,
+    colId: ControlTowerQuantityClaimsListColumns.createdDate,
+    field: model('createdDate'),
+    filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.createdDate,
+    width: 200
+  };
+
+  createdByCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.createdBy,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.createdBy,
+    colId: ControlTowerQuantityClaimsListColumns.createdBy,
+    field: model('createdBy'),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.createdBy,
+    valueFormatter: params => params.value?.name,
+    width: 200
+  };
+
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -195,7 +245,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-3',
+      'control-tower-quantity-claims-8',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -215,7 +265,11 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       this.etaCol,
       this.productCol,
       this.sellerCol,
-      this.quantityShortageCol
+      this.quantityShortageCol,
+      this.quantityUomCol,
+      this.estimatedSettlementAmountCol,
+      this.createdDateCol,
+      this.createdByCol
     ];
   }
 
@@ -318,6 +372,14 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    const grid1 = this.gridApi.getSortModel();
+    // this.gridApi.setSortModel([
+    //   {
+    //     colId: 'createdDate',
+    //     sort: 'asc'
+    //   }
+    // ]);
+    console.log(grid1);
     this.checkStatusAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityClaimsListExportUrl();

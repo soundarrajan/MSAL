@@ -82,6 +82,12 @@ export class TenantFormattingService {
   public date(value: string): string | undefined {
     if (value === null || value === undefined) return undefined;
 
+    return moment(value).format(dateTimeAdapter.fromDotNet(this.dateFormat));
+  }
+
+  public dateUtc(value: string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+
     return moment
       .utc(value)
       .format(dateTimeAdapter.fromDotNet(this.dateFormat));

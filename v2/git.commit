@@ -1,7 +1,7 @@
-﻿commit 1af0850a4b4fce129954db27c43520524d77088f
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Oct 28 15:24:10 2021 +0300
+﻿commit e8a373cf53771c6b898e89352c36bec3fea5ebfa
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Oct 28 16:22:27 2021 +0000
 
-    Worked on control tower - quantity claims view
+    Merged PR 14364: Fixed error in v2
 
 branch: master
