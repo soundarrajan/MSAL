@@ -231,7 +231,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           let _this = this;
           // Do calculation here;
           updatedRow = this.formatRowData(updatedRow, colDef['product'], colDef.field, newValue);
-
+          
           // Update the store
           this.store.dispatch(new EditLocationRow(updatedRow));
           // Save to the cloud
@@ -386,13 +386,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       e => e.id
     );
 
+    let futureRow = this.setRowProductDetails(row, productDetails, product.id);
+    
     let calcTotalOffer = 0;
     currentLocationAllProductsIds.map(id => {
-      calcTotalOffer += Number(this.getRowProductDetails(row, id).price)
+      calcTotalOffer += Number(this.getRowProductDetails(futureRow, id).price)
     });
-    row.totalOffer = calcTotalOffer;
-
-    let futureRow = this.setRowProductDetails(row, productDetails, product.id);
+    futureRow.totalOffer = calcTotalOffer;
 
     return futureRow;
   }
