@@ -345,7 +345,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       if (res.status) {
-       // this.toastr.success('Price update successful.');
+        this.toastr.success('Price update successful.');
       } else {
         this.toastr.error(res.message);
         return;
