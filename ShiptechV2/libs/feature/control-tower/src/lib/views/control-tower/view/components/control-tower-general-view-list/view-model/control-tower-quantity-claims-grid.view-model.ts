@@ -102,7 +102,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     field: model('order'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.order,
     cellRendererFramework: AgCellTemplateComponent,
-    width: 200
+    width: 150
   };
 
   labIdCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
@@ -112,7 +112,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     field: model('lab'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.lab,
     cellRendererFramework: AgCellTemplateComponent,
-    width: 200
+    width: 150
   };
 
   claimNoCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
@@ -122,7 +122,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     field: model('id'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.id,
     cellRendererFramework: AgCellTemplateComponent,
-    width: 200
+    width: 150
   };
 
   portCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
@@ -163,6 +163,28 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     width: 200
   };
 
+  sellerCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.seller,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.seller,
+    colId: ControlTowerQuantityClaimsListColumns.seller,
+    field: model('seller'),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.seller,
+    width: 200
+  };
+
+  quantityShortageCol: ITypedColDef<
+    IControlTowerQuantityClaimsItemDto,
+    number
+  > = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
+    colId: ControlTowerQuantityClaimsListColumns.quantityShortage,
+    field: model('quantityShortage'),
+    valueFormatter: params => this.format.quantity(params.value),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityShortage,
+    width: 200
+  };
+
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -173,7 +195,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-2',
+      'control-tower-quantity-claims-3',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -191,7 +213,9 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       this.portCol,
       this.vesselCol,
       this.etaCol,
-      this.productCol
+      this.productCol,
+      this.sellerCol,
+      this.quantityShortageCol
     ];
   }
 
