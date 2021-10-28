@@ -182,7 +182,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     field: model('quantityShortage'),
     valueFormatter: params => this.format.quantity(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityShortage,
-    width: 200
+    width: 150
   };
 
   constructor(
