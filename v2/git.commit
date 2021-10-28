@@ -1,11 +1,7 @@
-﻿commit 585a6c388532e57086f31b093415517eb0c5f2a1
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Oct 28 10:23:59 2021 +0000
+﻿commit 88ccae6af2f2b02d1ea9504dd73ed175fe57ef3f
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Thu Oct 28 15:00:25 2021 +0300
 
-    Merged PR 14345: Worked on 36542
-    
     Worked on 36542
-    
-    Related work items: #36542
 
 branch: master

@@ -5,7 +5,9 @@ export enum ControlTowerQuantityClaimsListColumns {
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
-  product = 'product'
+  product = 'product',
+  seller = 'seller',
+  quantityShortage = 'quantityShortage'
 }
 
 export enum ControlTowerQuantityClaimsListExportColumns {
@@ -15,7 +17,9 @@ export enum ControlTowerQuantityClaimsListExportColumns {
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
-  product = 'product'
+  product = 'product',
+  seller = 'seller',
+  quantityShortage = 'quantityShortage'
 }
 
 export enum ControlTowerQuantityClaimsListColumnsLabels {
@@ -25,7 +29,9 @@ export enum ControlTowerQuantityClaimsListColumnsLabels {
   port = 'Port',
   vessel = 'Vessel',
   eta = 'ETA',
-  product = 'Product'
+  product = 'Product',
+  seller = 'Seller',
+  quantityShortage = 'Qty Shortage'
 }
 
 /**
@@ -41,5 +47,7 @@ export const ControlTowerQuantityClaimsListColumnServerKeys: Record<
   [ControlTowerQuantityClaimsListColumns.port]: 'port',
   [ControlTowerQuantityClaimsListColumns.vessel]: 'vessel',
   [ControlTowerQuantityClaimsListColumns.eta]: 'eta',
-  [ControlTowerQuantityClaimsListColumns.product]: 'product'
+  [ControlTowerQuantityClaimsListColumns.product]: 'product',
+  [ControlTowerQuantityClaimsListColumns.seller]: 'seller',
+  [ControlTowerQuantityClaimsListColumns.quantityShortage]: 'quantityShortage'
 };
