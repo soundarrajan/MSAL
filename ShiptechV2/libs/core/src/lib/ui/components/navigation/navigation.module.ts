@@ -8,12 +8,14 @@ import { AccessDeniedComponent } from '../access-denied/access-denied.component'
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { TopbarAdalComponent } from './topbar-adal/topbar-adal.component';
 
 @NgModule({
   declarations: [
     SidebarComponent,
     AppSubMenuComponent,
     TopbarComponent,
+    TopbarAdalComponent,
     BlankComponent,
     AccessDeniedComponent
   ],
@@ -22,6 +24,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
     SidebarComponent,
     AppSubMenuComponent,
     TopbarComponent,
+    TopbarAdalComponent,
     BlankComponent,
     AccessDeniedComponent
   ]
