@@ -45,7 +45,7 @@ import { AuthService } from './authentication/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class BootstrapService {
+export class BootstrapForMsalService {
   previousUrl: string;
   get initialized(): Observable<void> {
     return this._initialized;
@@ -191,8 +191,8 @@ export class BootstrapService {
   }
 }
 
-export function bootstrapApplication(
-  bootstrapService: BootstrapService
+export function bootstrapForMsalApplication(
+  bootstrapService: BootstrapForMsalService
 ): () => Promise<void> {
   return () => bootstrapService.init().toPromise();
 }

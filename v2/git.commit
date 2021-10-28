@@ -1,7 +1,9 @@
-﻿commit 7d63775f90dee8513146f1a88a4545ba2090dcad
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Oct 27 13:03:29 2021 +0300
+﻿commit 042e3b569d6dcec2b4bfb6c41aba65ec5b3f952e
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Oct 28 09:55:55 2021 +0000
 
-    Changed config file for Rob
+    Merged PR 14342: Added authentication configuration for MSAL and ADAL
+    
+    Related work items: #36542
 
 branch: master

@@ -30,7 +30,8 @@ import { EventsLogComponent } from './views/qc-report/details/components/events-
 import { SurveyReportHistoryComponent } from './views/qc-report/details/components/survey-report-history/survey-report-history.component';
 import { ProductDetailsComponent } from './views/qc-report/details/components/port-call-grid/product-details.component';
 import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-report-details-route.resolver';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { QcReportDetailsToolbarComponent } from './views/qc-report/toolbar/qc-report-details-toolbar.component';
 import { UomSelectorComponent } from './views/qc-report/details/components/uom-selector/uom-selector.component';
 import { RaiseClaimComponent } from './views/qc-report/details/components/raise-claim/raise-claim.component';
@@ -70,7 +71,9 @@ import { ExportModule } from '@shiptech/core/ui/components/export/export.module'
     QuantityControlGridModule,
     QuantityControlRoutingModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,

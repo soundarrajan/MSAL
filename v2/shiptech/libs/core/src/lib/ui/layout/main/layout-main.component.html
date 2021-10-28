@@ -9,7 +9,8 @@
   [class]="topbarColor"
   (click)="onLayoutClick()"
 >
-  <shiptech-topbar></shiptech-topbar>
+  <shiptech-topbar *ngIf="!useAdal"></shiptech-topbar>
+  <shiptech-topbar-adal *ngIf="useAdal"></shiptech-topbar-adal>
 
   <shiptech-sidebar [reset]="resetMenu"></shiptech-sidebar>
 

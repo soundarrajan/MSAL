@@ -19,7 +19,8 @@ import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { ControlTowerModuleResolver } from './control-tower-route.resolver';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
@@ -128,7 +129,9 @@ import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/
     MaterialModule,
     DSV2ComponentsModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,
@@ -141,7 +144,6 @@ import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/
     ControlTowerGridModule,
     ControlTowerRoutingModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,

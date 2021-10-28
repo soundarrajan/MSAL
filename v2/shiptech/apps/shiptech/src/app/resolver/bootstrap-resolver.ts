@@ -4,12 +4,12 @@ import {
   Resolve,
   RouterStateSnapshot
 } from '@angular/router';
-import { BootstrapService } from '@shiptech/core/bootstrap.service';
 import { Observable } from 'rxjs';
+import { BootstrapForMsalService } from '@shiptech/core/bootstrap-for-msal.service';
 
 @Injectable({ providedIn: 'root' })
 export class BootstrapResolver implements Resolve<any> {
-  constructor(private bootstrapService: BootstrapService) {}
+  constructor(private bootstrapService: BootstrapForMsalService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,

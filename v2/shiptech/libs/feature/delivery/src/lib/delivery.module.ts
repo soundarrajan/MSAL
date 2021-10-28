@@ -25,7 +25,8 @@ import { DeliveryModuleResolver } from './delivery-route.resolver';
 import { NotesLogComponent } from './views/delivery/details/components/notes-log/notes-log.component';
 import { DeliveryDetailsRouteResolver } from './views/delivery/details/delivery-details-route.resolver';
 import { DeliveryRouteResolver } from './views/delivery/details/delivery-route.resolver';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { DeliveryDetailsToolbarComponent } from './views/delivery/toolbar/delivery-details-toolbar.component';
 import { UomSelectorComponent } from './views/delivery/details/components/uom-selector/uom-selector.component';
 import { DeliveryDetailsUnsavedChangesGuard } from './guards/delivery-details-unsaved-changes-guard.service';
@@ -151,7 +152,9 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
     DeliveryGridModule,
     DeliveryRoutingModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,

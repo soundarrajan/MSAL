@@ -2,7 +2,8 @@ import { AgGridModule } from '@ag-grid-community/angular';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import { AgFooterModule } from '@shiptech/core/ui/components/ag-footer/ag-footer.module';
@@ -29,7 +30,7 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { environment } from '@shiptech/environment';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
@@ -37,7 +38,8 @@ import { ModuleLoggerFactory } from '../../../quantity-control/src/lib/core/logg
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import {
-  InvoiceCompleteApi, INVOICE_COMPLETE_API_SERVICE
+  InvoiceCompleteApi,
+  INVOICE_COMPLETE_API_SERVICE
 } from './services/api/invoice-complete-api';
 import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock';
 import { InvoiceCompleteService } from './services/invoice-complete.service';
@@ -49,7 +51,7 @@ import { InvoiceViewComponent } from './views/invoice-view/invoice-view.componen
 import { InvoiceSplitviewComponent } from './views/split-view/invoice-splitview.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
-import { AddProductDetailsComponent} from './views/invoice-view/details/component/add-product/add-product.component';
+import { AddProductDetailsComponent } from './views/invoice-view/details/component/add-product/add-product.component';
 import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolver';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
@@ -126,7 +128,9 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/detai
     DSComponentsModule,
     InvoiceRoutingModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,
@@ -239,7 +243,7 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/detai
     NumberOnlyDirective,
     AmountTenantFormatDirective,
     PriceTenantFormatDirective
-   // PSpinnerDisableKeysSpinDirective,
+    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
   providers: [
@@ -259,9 +263,9 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/detai
     StaticListsRouteResolver,
     GeneralSettingsRouteResolver,
     ScheduleDashboardLabelsRouteResolver,
-    ContractService,
+    ContractService
   ],
-  entryComponents:[
+  entryComponents: [
     InvoiceTypeSelectionComponent,
     CurrencyConvertorModalComponent
   ]
