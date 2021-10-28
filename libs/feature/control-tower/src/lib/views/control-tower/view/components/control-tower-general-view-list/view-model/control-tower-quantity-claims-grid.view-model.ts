@@ -245,7 +245,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-6',
+      'control-tower-quantity-claims-8',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -372,6 +372,14 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    const grid1 = this.gridApi.getSortModel();
+    // this.gridApi.setSortModel([
+    //   {
+    //     colId: 'createdDate',
+    //     sort: 'asc'
+    //   }
+    // ]);
+    console.log(grid1);
     this.checkStatusAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityClaimsListExportUrl();
