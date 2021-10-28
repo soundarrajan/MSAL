@@ -22,7 +22,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   isButtonVisible = true;
   iscontentEditable = false;
   requests: any = [];
-
+  requestOfferItems:any=[];
+  totalPriceValue:number;
 
 
   getRequests() {
@@ -33,24 +34,83 @@ export class SpotnegoConfirmorderComponent implements OnInit {
 
   ngOnInit() {
     this.getRequests();
+    this.getSelectedLocationRowsForLocation();
     // this.scrollToBottom();
   }
 
-  getSelectedLocationRowsForLocation(locationId, requestId){
+  getSelectedLocationRowsForLocation(){
     // selectedCounterpartyList
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      console.log("spotNegotiation",spotNegotiation);
+    });
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows
     });
-
+    const locations = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations
+    });
     if(!locationsRows){
       return [];
     }
-
-    const demoRow = locationsRows.find(e => e.locationId === locationId);
-
-    return [demoRow];
+    var requestOfferItemPayload=[];
+      locations.forEach(element => {
+      locationsRows.forEach(element1 => {
+        if (element.locationId == element1.locationId  ) { //&& element1.locationId==locationId
+          if(element1.checkProd1 && element1.requestOffers[0].quotedProductId==element.requestProducts[0].productId){
+             requestOfferItemPayload = this.ConstuctRequestOfferItemPayload(
+                element1,
+                element1.requestOffers[0],
+                element.requestProducts[0]
+                //requestId
+              );
+              if (requestOfferItemPayload.length > 0) {
+                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              }
+          }
+          if(element1.checkProd2 && element1.requestOffers[1].quotedProductId==element.requestProducts[1].productId){
+            requestOfferItemPayload = this.ConstuctRequestOfferItemPayload(
+               element1,
+               element1.requestOffers[1],
+               element.requestProducts[1]
+               //requestId
+             );
+             if (requestOfferItemPayload.length > 0) {
+               this.requestOfferItems.push(requestOfferItemPayload[0]);
+             }
+         }
+        }
+      });
+    });
+    return this.requestOfferItems;
   }
-
+  ConstuctRequestOfferItemPayload(seller, requestOffers,requestProducts) {
+    return [
+      {
+        RequestId: 1,//default pass now not use
+        RequestGroupId:seller.requestGroupId,
+        RequestLocationSellerId: seller.id,
+        SellerId:seller.sellerCounterpartyId,
+        SellerName:seller.sellerCounterpartyName,
+        RequestLocationID: seller.locationId,
+        PhysicalSupplierId: seller.physicalSupplierCounterpartyId,
+        PhysicalSupplierName: seller.physicalSupplierCounterpartyName,
+        RequestProduct:requestProducts.id,
+        ProductId: requestProducts.productId,
+        ProductName: requestProducts.productName,
+        minQuantity: requestProducts.minQuantity,
+        MaxQuantity: requestProducts.maxQuantity,
+        ConfirmedQuantity: requestProducts.maxQuantity,
+        UomId: requestProducts.uomId,
+        UomName:"MT", //requestProducts.uomName,
+        OfferPrice:requestOffers.price,
+        TotalPrice:requestOffers.totalPrice*requestProducts.maxQuantity
+      }
+    ];
+  }
+  totalprice(requestOfferItem,maxQuantity){
+    requestOfferItem.TotalPrice=requestOfferItem.OfferPrice*maxQuantity
+    return requestOfferItem;
+  }
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
     private store: Store,

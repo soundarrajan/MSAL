@@ -101,7 +101,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
     });
-    debugger;
 
     rowsArray.forEach((row, index) => {
       let currentLocProd= this.currentRequestData.filter(row1 => row1.locationId == row.locationId);

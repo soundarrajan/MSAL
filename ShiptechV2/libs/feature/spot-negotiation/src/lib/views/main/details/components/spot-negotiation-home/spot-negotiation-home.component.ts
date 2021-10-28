@@ -230,7 +230,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         SellerId:Seller.sellerCounterpartyId,
         RequestLocationID: Seller.locationId,
         RequestId: Request.id,
-        physicalSupplierCounterpartyId: 11,
+        physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
         RequestProductIds: selectedproducts
       }
     ];
