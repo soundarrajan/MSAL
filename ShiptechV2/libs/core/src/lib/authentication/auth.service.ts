@@ -81,6 +81,10 @@ export class AuthService {
     this.loggedIn = this.authService.instance.getAllAccounts().length > 0;
   }
 
+  public getLoggedUser() {
+    return this.authService.instance.getAllAccounts().length > 0;
+  }
+
   private loginWithPopup() {
     if (this.msalGuardConfig.authRequest) {
       this.authService

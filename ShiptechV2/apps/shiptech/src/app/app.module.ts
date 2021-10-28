@@ -3,10 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import {
-  bootstrapApplication,
-  BootstrapService
-} from '@shiptech/core/bootstrap.service';
+
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { environment } from '@shiptech/environment';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
@@ -20,7 +17,8 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { DeveloperToolbarModule } from '@shiptech/core/developer-toolbar/developer-toolbar.module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { CoreModule } from '@shiptech/core/core.module';
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import { TitleModule } from '@shiptech/core/services/title/title.module';
@@ -36,70 +34,39 @@ export function getAppBaseHref(doc: Document): string {
   }
   return new URL(base.href).pathname;
 }
+
 import {
-  MsalGuard,
+  MsalGuardConfiguration,
   MsalInterceptor,
-  MsalBroadcastService,
   MsalInterceptorConfiguration,
   MsalModule,
-  MsalService,
+  MsalRedirectComponent,
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
-  MSAL_INTERCEPTOR_CONFIG,
-  MsalGuardConfiguration,
-  MsalRedirectComponent
+  MSAL_INTERCEPTOR_CONFIG
 } from '@azure/msal-angular';
-
 import {
   InteractionType,
   IPublicClientApplication,
   PublicClientApplication
 } from '@azure/msal-browser';
 import { BootstrapResolver } from './resolver/bootstrap-resolver';
-
-let legacyConfig = null;
-
-export function MSALInstanceFactory(): IPublicClientApplication {
-  const config = JSON.parse(localStorage.getItem('config'));
-  const baseOrigin = new URL(window.location.href).origin;
-  legacyConfig = config;
-  return new PublicClientApplication({
-    auth: {
-      clientId: config.authV2.clientId,
-      authority: config.authV2.instance + config.authV2.tenantId,
-      redirectUri: '/v2/'
-    },
-    cache: {
-      cacheLocation: 'localStorage'
-    }
-  });
-}
-
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return {
-    interactionType: InteractionType.Redirect
-  };
-}
-
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const config = JSON.parse(localStorage.getItem('config'));
-  legacyConfig = config;
-  const protectedResourceMap = new Map<string, Array<string>>();
-  Object.keys(legacyConfig.authV2.endpoints).forEach(prop => {
-    protectedResourceMap.set(prop, legacyConfig.authV2.scopes);
-  });
-
-  return {
-    interactionType: InteractionType.Redirect,
-    protectedResourceMap
-  };
-}
-
-// eslint-disable-next-line @typescript-eslint/tslint/config
-export function MSALInterceptConfigFactory() {
-  return {
-    interactionType: InteractionType.Redirect
-  };
+import { MsalConfigDynamicModule } from './msal-config-dynamic.module';
+import {
+  bootstrapForMsalApplication,
+  BootstrapForMsalService
+} from '@shiptech/core/bootstrap-for-msal.service';
+import {
+  bootstrapForAdalApplication,
+  BootstrapForAdalService
+} from '@shiptech/core/bootstrap-for-adal.service';
+export function getLegacySettings(): string {
+  var hostName = window.location.hostname;
+  var config = '/config/' + hostName + '.json';
+  if (['localhost'].indexOf(hostName) != -1) {
+    config = '/config/config.json';
+  }
+  return config;
 }
 
 @NgModule({
@@ -113,7 +80,9 @@ export function MSALInterceptConfigFactory() {
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    AuthenticationModule.forRoot(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forRoot()
+      : AuthenticationAdalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
     TitleModule,
@@ -125,7 +94,7 @@ export function MSALInterceptConfigFactory() {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    MsalModule
+    !environment.useAdal ? MsalConfigDynamicModule.forRoot() : []
   ],
   providers: [
     {
@@ -133,35 +102,22 @@ export function MSALInterceptConfigFactory() {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: bootstrapApplication,
-      multi: true,
-      deps: [BootstrapService]
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true
-    },
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory
-    },
-    MsalService,
-    MsalGuard,
-    MsalBroadcastService,
+    !environment.useAdal
+      ? {
+          provide: APP_INITIALIZER,
+          useFactory: bootstrapForMsalApplication,
+          multi: true,
+          deps: [BootstrapForMsalService]
+        }
+      : {
+          provide: APP_INITIALIZER,
+          useFactory: bootstrapForAdalApplication,
+          multi: true,
+          deps: [BootstrapForAdalService]
+        },
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
 })
 export class AppModule {
   constructor() {

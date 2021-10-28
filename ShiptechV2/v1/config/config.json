@@ -27,6 +27,7 @@
     "postLogoutRedirectUri": null,
     "expireOffsetSeconds": 10
   },
+  "useAdal": false,
   "tenantConfigs": {
     "translations": "CMA"
   },

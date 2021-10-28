@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '@shiptech/environment';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -7,7 +8,6 @@ import { Router } from '@angular/router';
   templateUrl: './layout-main.component.html'
 })
 export class LayoutMainComponent implements AfterViewInit {
-
   menuMode = 'static';
 
   overlayMenuActive: boolean;
@@ -47,18 +47,24 @@ export class LayoutMainComponent implements AfterViewInit {
   moduleLoaded: any;
   isDelivery: boolean = false;
   isInvoicesplitview: boolean = false;
+  useAdal: boolean;
 
   constructor(private router: Router) {
     this.isDelivery = false;
     if (this.router.url.includes('email-template-editor')) {
       this.isEmailTemplateEditor = true;
     }
-    if (this.router.url.includes('delivery') || this.router.url.includes('contract') || this.router.url.includes('invoices/edit')) {
-        this.isDelivery = true;
+    if (
+      this.router.url.includes('delivery') ||
+      this.router.url.includes('contract') ||
+      this.router.url.includes('invoices/edit')
+    ) {
+      this.isDelivery = true;
     }
     if (this.router.url.includes('split-view')) {
       this.isDelivery = true;
     }
+    this.useAdal = environment.useAdal;
   }
 
   onLayoutClick(): void {

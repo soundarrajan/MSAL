@@ -1,6 +1,5 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { BootstrapService } from '@shiptech/core/bootstrap.service';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
@@ -21,8 +20,10 @@ export function getLegacySettings(): string {
 fetch(getLegacySettings())
   .then(response => response.json())
   .then(config => {
-    console.log(config);
-    localStorage.setItem('config', JSON.stringify(config));
+    console.log('config ');
+    console.log((<any>window).config);
+    (<any>window).config = config;
+    console.log((<any>window).config);
     platformBrowserDynamic()
       .bootstrapModule(AppModule)
       .catch(err => console.error(err));
