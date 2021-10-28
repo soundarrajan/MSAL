@@ -137,7 +137,7 @@ export class AgColumnPreferencesService implements OnDestroy {
 
   restoreToGrid(gridName: string, options: GridOptions): Observable<any> {
     return this._storage.get<IGridPreferences>(this._storageKey(gridName)).pipe(
-      // filter(p => !!p),
+      filter(p => !!p),
       tap(preferences => {
         const columnsState = preferences.columnState;
         const sortState = preferences.sortState;
