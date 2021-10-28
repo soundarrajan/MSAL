@@ -42,6 +42,8 @@ export interface IControlTowerQuantityClaimsItemDto {
   vessel: string;
   eta: string;
   product: string;
+  seller: string;
+  quantityShortage: number;
 }
 
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
