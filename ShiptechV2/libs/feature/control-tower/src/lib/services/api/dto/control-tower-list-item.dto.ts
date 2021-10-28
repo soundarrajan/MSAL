@@ -44,6 +44,10 @@ export interface IControlTowerQuantityClaimsItemDto {
   product: string;
   seller: string;
   quantityShortage: number;
+  quantityUom: IDisplayLookupDto;
+  estimatedSettlementAmount: number;
+  createdDate: string;
+  createdBy: IDisplayLookupDto;
 }
 
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
