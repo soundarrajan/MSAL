@@ -118,6 +118,12 @@ import { ContractService } from '../../../contract/src/lib/services/contract.ser
 import { NotesDetailsComponent } from './views/invoice-view/details/component/notes-details/notes-details.component';
 import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/details/schedule-dashboard-labels-route.resolver';
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -128,7 +134,7 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/detai
     DSComponentsModule,
     InvoiceRoutingModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,

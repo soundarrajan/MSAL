@@ -141,13 +141,19 @@ import { ExtendContractModalComponent } from './views/contract/details/component
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { FormulaHistoryModalComponent } from './views/contract/details/components/formula-history-modal/formula-history-modal.component';
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   imports: [
     CommonModule,
     ContractGridModule,
     ContractRoutingModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
