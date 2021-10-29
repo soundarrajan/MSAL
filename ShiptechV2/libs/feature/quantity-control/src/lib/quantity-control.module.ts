@@ -71,7 +71,7 @@ import { ExportModule } from '@shiptech/core/ui/components/export/export.module'
     QuantityControlGridModule,
     QuantityControlRoutingModule,
     LoggingModule,
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
