@@ -48,6 +48,9 @@ export interface IControlTowerQuantityClaimsItemDto {
   estimatedSettlementAmount: number;
   createdDate: string;
   createdBy: IDisplayLookupDto;
+  orderPrice: number;
+  priceCurrency: IDisplayLookupDto;
+  noResponse: number;
 }
 
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
@@ -63,6 +66,11 @@ export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
 }
 
 export interface IGetControlTowerQuantityClaimsListResponse {
-  payload: IControlTowerQuantityClaimsItemDto[];
+  payload: {
+    items: IControlTowerQuantityClaimsItemDto[];
+    noOf15: number;
+    noOf714: number;
+    noOfNew: number;
+  };
   matchedCount: number;
 }

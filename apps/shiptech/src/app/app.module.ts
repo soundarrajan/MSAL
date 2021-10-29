@@ -118,6 +118,12 @@ export function MSALInterceptConfigFactory() {
   };
 }
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -129,7 +135,7 @@ export function MSALInterceptConfigFactory() {
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    !environment.useAdal
+    !useAdal
       ? AuthenticationMsalModule.forRoot()
       : AuthenticationAdalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
@@ -143,7 +149,7 @@ export function MSALInterceptConfigFactory() {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !environment.useAdal ? MsalModule : []
+    !useAdal ? MsalConfigDynamicModule.forRoot() : []
   ],
   providers: [
     {
@@ -151,7 +157,7 @@ export function MSALInterceptConfigFactory() {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    !environment.useAdal
+    !useAdal
       ? {
           provide: APP_INITIALIZER,
           useFactory: bootstrapForMsalApplication,
@@ -164,37 +170,9 @@ export function MSALInterceptConfigFactory() {
           multi: true,
           deps: [BootstrapForAdalService]
         },
-    !environment.useAdal
-      ? {
-          provide: HTTP_INTERCEPTORS,
-          useClass: MsalInterceptor,
-          multi: true
-        }
-      : [],
-    !environment.useAdal
-      ? {
-          provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory
-        }
-      : [],
-    !environment.useAdal
-      ? {
-          provide: MSAL_GUARD_CONFIG,
-          useFactory: MSALGuardConfigFactory
-        }
-      : [],
-    !environment.useAdal
-      ? {
-          provide: MSAL_INTERCEPTOR_CONFIG,
-          useFactory: MSALInterceptorConfigFactory
-        }
-      : [],
-    !environment.useAdal ? MsalService : [],
-    !environment.useAdal ? MsalGuard : [],
-    !environment.useAdal ? MsalBroadcastService : [],
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
+  bootstrap: [AppComponent, !useAdal ? MsalRedirectComponent : []]
 })
 export class AppModule {
   constructor() {
