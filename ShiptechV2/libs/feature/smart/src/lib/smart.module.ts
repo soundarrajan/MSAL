@@ -28,7 +28,7 @@ import { environment } from '@shiptech/environment';
   imports: [
     SmartRoutingModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     // HttpClientModule,

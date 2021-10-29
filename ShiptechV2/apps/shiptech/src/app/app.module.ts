@@ -151,7 +151,7 @@ export function MSALInterceptConfigFactory() {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? {
           provide: APP_INITIALIZER,
           useFactory: bootstrapForMsalApplication,
@@ -194,10 +194,7 @@ export function MSALInterceptConfigFactory() {
     !environment.useAdal ? MsalBroadcastService : [],
     BootstrapResolver
   ],
-  bootstrap: [
-    AppComponent,
-    !window.location.hostname.includes('cma') ? MsalRedirectComponent : []
-  ]
+  bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
 })
 export class AppModule {
   constructor() {
