@@ -7,9 +7,9 @@ export class ControlTowerListStateModel extends BaseModel {
     pagination: { skip: 0, take: DefaultPageSize }
   };
 
-  nbOfNewStatuses: number;
-  nbOfMarkedAsSeenStatuses: number;
-  nbOfResolvedStatuses: number;
+  firstStatusCount: number;
+  secondStatusCount: number;
+  thirdStatusCount: number;
   totalCount: number;
 
   constructor(state: Partial<ControlTowerListStateModel> = {}) {
