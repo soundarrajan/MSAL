@@ -129,7 +129,7 @@ export function MSALInterceptConfigFactory() {
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? AuthenticationMsalModule.forRoot()
       : AuthenticationAdalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
@@ -143,7 +143,9 @@ export function MSALInterceptConfigFactory() {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !environment.useAdal ? MsalModule : []
+    !window.location.hostname.includes('cma')
+      ? MsalConfigDynamicModule.forRoot()
+      : []
   ],
   providers: [
     {
@@ -151,7 +153,7 @@ export function MSALInterceptConfigFactory() {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? {
           provide: APP_INITIALIZER,
           useFactory: bootstrapForMsalApplication,
@@ -164,37 +166,12 @@ export function MSALInterceptConfigFactory() {
           multi: true,
           deps: [BootstrapForAdalService]
         },
-    !environment.useAdal
-      ? {
-          provide: HTTP_INTERCEPTORS,
-          useClass: MsalInterceptor,
-          multi: true
-        }
-      : [],
-    !environment.useAdal
-      ? {
-          provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory
-        }
-      : [],
-    !environment.useAdal
-      ? {
-          provide: MSAL_GUARD_CONFIG,
-          useFactory: MSALGuardConfigFactory
-        }
-      : [],
-    !environment.useAdal
-      ? {
-          provide: MSAL_INTERCEPTOR_CONFIG,
-          useFactory: MSALInterceptorConfigFactory
-        }
-      : [],
-    !environment.useAdal ? MsalService : [],
-    !environment.useAdal ? MsalGuard : [],
-    !environment.useAdal ? MsalBroadcastService : [],
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
+  bootstrap: [
+    AppComponent,
+    !window.location.hostname.includes('cma') ? MsalRedirectComponent : []
+  ]
 })
 export class AppModule {
   constructor() {
