@@ -128,7 +128,7 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/detai
     DSComponentsModule,
     InvoiceRoutingModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,

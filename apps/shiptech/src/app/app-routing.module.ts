@@ -10,7 +10,7 @@ import { BootstrapResolver } from './resolver/bootstrap-resolver';
 import { MsalGuard } from '@azure/msal-angular';
 import { environment } from '@shiptech/environment';
 
-const routes: Routes = window.location.hostname.includes('cma')
+const routes: Routes = environment.useAdal
   ? [
       {
         path: '',

@@ -129,7 +129,7 @@ import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/
     MaterialModule,
     DSV2ComponentsModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
