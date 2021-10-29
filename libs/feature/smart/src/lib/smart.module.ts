@@ -23,12 +23,18 @@ import {
 } from '../lib/store/bunker-plan/bunkering-plan.state';
 import { environment } from '@shiptech/environment';
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   declarations: [SmartComponent, LoginViewComponent],
   imports: [
     SmartRoutingModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     // HttpClientModule,

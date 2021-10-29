@@ -146,13 +146,19 @@ import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/inv
 import { RemoveDeliveryModalComponent } from './views/delivery/details/components/remove-delivery-modal/remove-delivery-modal.component';
 import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   imports: [
     CommonModule,
     DeliveryGridModule,
     DeliveryRoutingModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
