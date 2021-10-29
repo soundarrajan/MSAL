@@ -129,7 +129,7 @@ export function MSALInterceptConfigFactory() {
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? AuthenticationMsalModule.forRoot()
       : AuthenticationAdalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
@@ -143,7 +143,7 @@ export function MSALInterceptConfigFactory() {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !window.location.hostname.includes('cma') ? MsalModule : []
+    !environment.useAdal ? MsalModule : []
   ],
   providers: [
     {
@@ -164,34 +164,34 @@ export function MSALInterceptConfigFactory() {
           multi: true,
           deps: [BootstrapForAdalService]
         },
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? {
           provide: HTTP_INTERCEPTORS,
           useClass: MsalInterceptor,
           multi: true
         }
       : [],
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? {
           provide: MSAL_INSTANCE,
           useFactory: MSALInstanceFactory
         }
       : [],
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? {
           provide: MSAL_GUARD_CONFIG,
           useFactory: MSALGuardConfigFactory
         }
       : [],
-    !window.location.hostname.includes('cma')
+    !environment.useAdal
       ? {
           provide: MSAL_INTERCEPTOR_CONFIG,
           useFactory: MSALInterceptorConfigFactory
         }
       : [],
-    !window.location.hostname.includes('cma') ? MsalService : [],
-    !window.location.hostname.includes('cma') ? MsalGuard : [],
-    !window.location.hostname.includes('cma') ? MsalBroadcastService : [],
+    !environment.useAdal ? MsalService : [],
+    !environment.useAdal ? MsalGuard : [],
+    !environment.useAdal ? MsalBroadcastService : [],
     BootstrapResolver
   ],
   bootstrap: [
