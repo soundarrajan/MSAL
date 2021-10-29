@@ -152,7 +152,7 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
     DeliveryGridModule,
     DeliveryRoutingModule,
     LoggingModule,
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,

@@ -129,7 +129,7 @@ export function MSALInterceptConfigFactory() {
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? AuthenticationMsalModule.forRoot()
       : AuthenticationAdalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
@@ -143,7 +143,7 @@ export function MSALInterceptConfigFactory() {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !environment.useAdal ? MsalModule : []
+    !window.location.hostname.includes('cma') ? MsalModule : []
   ],
   providers: [
     {
@@ -151,7 +151,7 @@ export function MSALInterceptConfigFactory() {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? {
           provide: APP_INITIALIZER,
           useFactory: bootstrapForMsalApplication,
@@ -164,37 +164,40 @@ export function MSALInterceptConfigFactory() {
           multi: true,
           deps: [BootstrapForAdalService]
         },
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? {
           provide: HTTP_INTERCEPTORS,
           useClass: MsalInterceptor,
           multi: true
         }
       : [],
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? {
           provide: MSAL_INSTANCE,
           useFactory: MSALInstanceFactory
         }
       : [],
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? {
           provide: MSAL_GUARD_CONFIG,
           useFactory: MSALGuardConfigFactory
         }
       : [],
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? {
           provide: MSAL_INTERCEPTOR_CONFIG,
           useFactory: MSALInterceptorConfigFactory
         }
       : [],
-    !environment.useAdal ? MsalService : [],
-    !environment.useAdal ? MsalGuard : [],
-    !environment.useAdal ? MsalBroadcastService : [],
+    !window.location.hostname.includes('cma') ? MsalService : [],
+    !window.location.hostname.includes('cma') ? MsalGuard : [],
+    !window.location.hostname.includes('cma') ? MsalBroadcastService : [],
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
+  bootstrap: [
+    AppComponent,
+    !window.location.hostname.includes('cma') ? MsalRedirectComponent : []
+  ]
 })
 export class AppModule {
   constructor() {
