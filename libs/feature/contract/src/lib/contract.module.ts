@@ -147,7 +147,7 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     ContractGridModule,
     ContractRoutingModule,
     LoggingModule,
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
