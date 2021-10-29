@@ -20,7 +20,7 @@ import { environment } from '@shiptech/environment';
   ],
   imports: [
     CommonModule,
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     MapViewRoutingModule,

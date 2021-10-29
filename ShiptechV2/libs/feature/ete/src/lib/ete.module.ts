@@ -15,7 +15,7 @@ import { environment } from '@shiptech/environment';
     CommonModule,
     UIModule,
     EmailTemplatePageModule,
-    !environment.useAdal
+    !window.location.hostname.includes('cma')
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     EteRoutingModule
