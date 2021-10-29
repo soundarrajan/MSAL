@@ -377,6 +377,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       (product.requestGroupProducts
         ? product.requestGroupProducts.targetPrice
         : 0);
+        productDetails.targetDifference = product.requestGroupProducts.targetPrice == 0 ? 0 : productDetails.targetDifference;    
 
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
     const currentLocation = this.locations.filter(
