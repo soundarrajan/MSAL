@@ -1,7 +1,7 @@
-﻿commit 56c444a1cd49c6cb40a8c3ccce5eeefb9d4b2794
+﻿commit ddaad92ba57179800b80c73b2df4670061212498
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Oct 28 19:53:43 2021 +0300
+Date:   Fri Oct 29 09:18:00 2021 +0300
 
-    Fixed error on v2 pages
+    Worked on error from v2 pages
 
 branch: master

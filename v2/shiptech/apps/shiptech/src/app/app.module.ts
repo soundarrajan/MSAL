@@ -36,11 +36,14 @@ export function getAppBaseHref(doc: Document): string {
 }
 
 import {
+  MsalBroadcastService,
+  MsalGuard,
   MsalGuardConfiguration,
   MsalInterceptor,
   MsalInterceptorConfiguration,
   MsalModule,
   MsalRedirectComponent,
+  MsalService,
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
   MSAL_INTERCEPTOR_CONFIG
@@ -60,6 +63,7 @@ import {
   bootstrapForAdalApplication,
   BootstrapForAdalService
 } from '@shiptech/core/bootstrap-for-adal.service';
+
 export function getLegacySettings(): string {
   var hostName = window.location.hostname;
   var config = '/config/' + hostName + '.json';
@@ -67,6 +71,51 @@ export function getLegacySettings(): string {
     config = '/config/config.json';
   }
   return config;
+}
+
+let legacyConfig = null;
+
+export function MSALInstanceFactory(): IPublicClientApplication {
+  const config = JSON.parse(localStorage.getItem('config'));
+  const baseOrigin = new URL(window.location.href).origin;
+  legacyConfig = config;
+  return new PublicClientApplication({
+    auth: {
+      clientId: config.authV2.clientId,
+      authority: config.authV2.instance + config.authV2.tenantId,
+      redirectUri: '/v2/'
+    },
+    cache: {
+      cacheLocation: 'localStorage'
+    }
+  });
+}
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return {
+    interactionType: InteractionType.Redirect
+  };
+}
+
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const config = JSON.parse(localStorage.getItem('config'));
+  legacyConfig = config;
+  const protectedResourceMap = new Map<string, Array<string>>();
+  Object.keys(legacyConfig.authV2.endpoints).forEach(prop => {
+    protectedResourceMap.set(prop, legacyConfig.authV2.scopes);
+  });
+
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/tslint/config
+export function MSALInterceptConfigFactory() {
+  return {
+    interactionType: InteractionType.Redirect
+  };
 }
 
 @NgModule({
@@ -94,7 +143,7 @@ export function getLegacySettings(): string {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !environment.useAdal ? MsalConfigDynamicModule.forRoot() : []
+    !environment.useAdal ? MsalModule : []
   ],
   providers: [
     {
@@ -115,6 +164,34 @@ export function getLegacySettings(): string {
           multi: true,
           deps: [BootstrapForAdalService]
         },
+    !environment.useAdal
+      ? {
+          provide: HTTP_INTERCEPTORS,
+          useClass: MsalInterceptor,
+          multi: true
+        }
+      : [],
+    !environment.useAdal
+      ? {
+          provide: MSAL_INSTANCE,
+          useFactory: MSALInstanceFactory
+        }
+      : [],
+    !environment.useAdal
+      ? {
+          provide: MSAL_GUARD_CONFIG,
+          useFactory: MSALGuardConfigFactory
+        }
+      : [],
+    !environment.useAdal
+      ? {
+          provide: MSAL_INTERCEPTOR_CONFIG,
+          useFactory: MSALInterceptorConfigFactory
+        }
+      : [],
+    !environment.useAdal ? MsalService : [],
+    !environment.useAdal ? MsalGuard : [],
+    !environment.useAdal ? MsalBroadcastService : [],
     BootstrapResolver
   ],
   bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
