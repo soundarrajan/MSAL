@@ -1,7 +1,7 @@
-﻿commit ddaad92ba57179800b80c73b2df4670061212498
+﻿commit ea7636b382e1e190df9472a61846d56dcd842b87
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Oct 29 09:18:00 2021 +0300
+Date:   Fri Oct 29 11:57:27 2021 +0300
 
-    Worked on error from v2 pages
+    Reverted 671b880ba315430e02ee478e94b7883ae832a983
 
 branch: master
