@@ -21,17 +21,17 @@ export class LoadControlTowerListSuccessfulAction {
   static readonly type = '[CT.List] Load Control Tower List Successful';
 
   constructor(
-    public nbOfNewStatuses: number,
-    public nbOfMarkedAsSeenStatuses: number,
-    public nbOfResolvedStatuses: number,
+    public firstStatusCount: number,
+    public secondStatusCount: number,
+    public thirdStatusCount: number,
     public totalCount: number
   ) {}
 
   public log(): any {
     return {
-      nbOfNewStatuses: this.nbOfNewStatuses,
-      nbOfMarkedAsSeenStatuses: this.nbOfMarkedAsSeenStatuses,
-      nbOfResolvedStatuses: this.nbOfResolvedStatuses,
+      firstStatusCount: this.firstStatusCount,
+      secondStatusCount: this.secondStatusCount,
+      thirdStatusCount: this.thirdStatusCount,
       totalCount: this.totalCount
     };
   }

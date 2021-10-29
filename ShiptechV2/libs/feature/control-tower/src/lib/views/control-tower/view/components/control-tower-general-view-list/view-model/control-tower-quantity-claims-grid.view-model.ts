@@ -44,6 +44,10 @@ function model(
 
 @Injectable()
 export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewModel {
+  public noOf15: number;
+  public noOf714: number;
+  public noOfNew: number;
+
   public searchText: string;
   public exportUrl: string;
   public newFilterSelected: boolean = false;
@@ -180,6 +184,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
     colId: ControlTowerQuantityClaimsListColumns.quantityShortage,
     field: model('quantityShortage'),
+    filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityShortage,
     width: 150
@@ -208,9 +213,34 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
     colId: ControlTowerQuantityClaimsListColumns.estimatedSettlementAmount,
     field: model('estimatedSettlementAmount'),
+    filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.amount(params.value),
     dtoForExport:
       ControlTowerQuantityClaimsListExportColumns.estimatedSettlementAmount,
+    width: 150
+  };
+
+  orderPriceCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
+    colId: ControlTowerQuantityClaimsListColumns.orderPrice,
+    field: model('orderPrice'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.price(params.value),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.orderPrice,
+    width: 150
+  };
+
+  priceCurrencyCol: ITypedColDef<
+    IControlTowerQuantityClaimsItemDto,
+    ILookupDto
+  > = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.priceCurrency,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.priceCurrency,
+    colId: ControlTowerQuantityClaimsListColumns.priceCurrency,
+    field: model('priceCurrency'),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.priceCurrency,
+    valueFormatter: params => params.value?.name,
     width: 150
   };
 
@@ -235,6 +265,17 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     width: 200
   };
 
+  noResponseCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
+    colId: ControlTowerQuantityClaimsListColumns.noResponse,
+    field: model('noResponse'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => params.value,
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.noResponse,
+    width: 150
+  };
+
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -245,7 +286,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-8',
+      'control-tower-quantity-claims-9',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -268,8 +309,11 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       this.quantityShortageCol,
       this.quantityUomCol,
       this.estimatedSettlementAmountCol,
+      this.orderPriceCol,
+      this.priceCurrencyCol,
       this.createdDateCol,
-      this.createdByCol
+      this.createdByCol,
+      this.noResponseCol
     ];
   }
 
@@ -395,7 +439,10 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          params.successCallback(response.payload, response.matchedCount);
+          this.noOf15 = response.payload.noOf15;
+          this.noOf714 = response.payload.noOf714;
+          this.noOfNew = response.payload.noOfNew;
+          params.successCallback(response.payload.items, response.matchedCount);
         },
         () => {
           this.appErrorHandler.handleError(

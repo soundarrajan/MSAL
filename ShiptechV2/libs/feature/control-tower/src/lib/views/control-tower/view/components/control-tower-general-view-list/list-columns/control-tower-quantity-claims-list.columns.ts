@@ -11,7 +11,10 @@ export enum ControlTowerQuantityClaimsListColumns {
   quantityUom = 'quantityUom',
   estimatedSettlementAmount = 'estimatedSettlementAmount',
   createdDate = 'createdDate',
-  createdBy = 'createdBy'
+  createdBy = 'createdBy',
+  orderPrice = 'orderPrice',
+  priceCurrency = 'priceCurrency',
+  noResponse = 'noResponse'
 }
 
 export enum ControlTowerQuantityClaimsListExportColumns {
@@ -27,7 +30,10 @@ export enum ControlTowerQuantityClaimsListExportColumns {
   quantityUom = 'quantityUom.name',
   estimatedSettlementAmount = 'estimatedSettlementAmount',
   createdDate = 'createdDate',
-  createdBy = 'createdBy'
+  createdBy = 'createdBy',
+  orderPrice = 'orderPrice',
+  priceCurrency = 'priceCurrency',
+  noResponse = 'noResponse'
 }
 
 export enum ControlTowerQuantityClaimsListColumnsLabels {
@@ -43,7 +49,10 @@ export enum ControlTowerQuantityClaimsListColumnsLabels {
   quantityUom = 'Qty UOM',
   estimatedSettlementAmount = 'Estimated Settlement Amount',
   createdDate = 'Created Date',
-  createdBy = 'Created By'
+  createdBy = 'Created By',
+  orderPrice = 'Order Price',
+  priceCurrency = 'Currency',
+  noResponse = 'No Response'
 }
 
 /**
@@ -66,5 +75,8 @@ export const ControlTowerQuantityClaimsListColumnServerKeys: Record<
   [ControlTowerQuantityClaimsListColumns.estimatedSettlementAmount]:
     'estimatedSettlementAmount',
   [ControlTowerQuantityClaimsListColumns.createdDate]: 'createdDate',
-  [ControlTowerQuantityClaimsListColumns.createdBy]: 'createdBy_name'
+  [ControlTowerQuantityClaimsListColumns.createdBy]: 'createdBy_name',
+  [ControlTowerQuantityClaimsListColumns.orderPrice]: 'orderPrice',
+  [ControlTowerQuantityClaimsListColumns.priceCurrency]: 'priceCurrency',
+  [ControlTowerQuantityClaimsListColumns.noResponse]: 'noResponse'
 };
