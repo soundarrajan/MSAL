@@ -231,15 +231,12 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     width: 150
   };
 
-  priceCurrencyCol: ITypedColDef<
-    IControlTowerQuantityClaimsItemDto,
-    ILookupDto
-  > = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.priceCurrency,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.priceCurrency,
-    colId: ControlTowerQuantityClaimsListColumns.priceCurrency,
-    field: model('priceCurrency'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.priceCurrency,
+  currencyCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
+    headerName: ControlTowerQuantityClaimsListColumnsLabels.currency,
+    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.currency,
+    colId: ControlTowerQuantityClaimsListColumns.currency,
+    field: model('currency'),
+    dtoForExport: ControlTowerQuantityClaimsListExportColumns.currency,
     valueFormatter: params => params.value?.name,
     width: 150
   };
@@ -286,7 +283,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-9',
+      'control-tower-quantity-claims-10',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -310,7 +307,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       this.quantityUomCol,
       this.estimatedSettlementAmountCol,
       this.orderPriceCol,
-      this.priceCurrencyCol,
+      this.currencyCol,
       this.createdDateCol,
       this.createdByCol,
       this.noResponseCol

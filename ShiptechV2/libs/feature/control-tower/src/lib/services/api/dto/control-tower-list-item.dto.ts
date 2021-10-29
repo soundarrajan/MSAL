@@ -49,7 +49,7 @@ export interface IControlTowerQuantityClaimsItemDto {
   createdDate: string;
   createdBy: IDisplayLookupDto;
   orderPrice: number;
-  priceCurrency: IDisplayLookupDto;
+  currency: IDisplayLookupDto;
   noResponse: number;
 }
 

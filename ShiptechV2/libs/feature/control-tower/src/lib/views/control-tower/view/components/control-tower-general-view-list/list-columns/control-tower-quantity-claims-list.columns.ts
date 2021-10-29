@@ -13,7 +13,7 @@ export enum ControlTowerQuantityClaimsListColumns {
   createdDate = 'createdDate',
   createdBy = 'createdBy',
   orderPrice = 'orderPrice',
-  priceCurrency = 'priceCurrency',
+  currency = 'currency',
   noResponse = 'noResponse'
 }
 
@@ -32,7 +32,7 @@ export enum ControlTowerQuantityClaimsListExportColumns {
   createdDate = 'createdDate',
   createdBy = 'createdBy',
   orderPrice = 'orderPrice',
-  priceCurrency = 'priceCurrency',
+  currency = 'currency',
   noResponse = 'noResponse'
 }
 
@@ -51,7 +51,7 @@ export enum ControlTowerQuantityClaimsListColumnsLabels {
   createdDate = 'Created Date',
   createdBy = 'Created By',
   orderPrice = 'Order Price',
-  priceCurrency = 'Currency',
+  currency = 'Currency',
   noResponse = 'No Response'
 }
 
@@ -77,6 +77,6 @@ export const ControlTowerQuantityClaimsListColumnServerKeys: Record<
   [ControlTowerQuantityClaimsListColumns.createdDate]: 'createdDate',
   [ControlTowerQuantityClaimsListColumns.createdBy]: 'createdBy_name',
   [ControlTowerQuantityClaimsListColumns.orderPrice]: 'orderPrice',
-  [ControlTowerQuantityClaimsListColumns.priceCurrency]: 'priceCurrency',
+  [ControlTowerQuantityClaimsListColumns.currency]: 'currency_name',
   [ControlTowerQuantityClaimsListColumns.noResponse]: 'noResponse'
 };
