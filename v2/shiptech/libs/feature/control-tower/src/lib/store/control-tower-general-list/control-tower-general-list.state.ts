@@ -30,18 +30,18 @@ export class ControlTowerListState {
   }
 
   @Selector([ControlTowerListState])
-  static newCount(state: IControlTowerListState): number {
-    return state.nbOfNewStatuses;
+  static firstStatusCount(state: IControlTowerListState): number {
+    return state.firstStatusCount;
   }
 
   @Selector([ControlTowerListState])
-  static masCount(state: IControlTowerListState): number {
-    return state.nbOfMarkedAsSeenStatuses;
+  static secondStatusCount(state: IControlTowerListState): number {
+    return state.secondStatusCount;
   }
 
   @Selector([ControlTowerListState])
-  static resolvedCount(state: IControlTowerListState): number {
-    return state.nbOfResolvedStatuses;
+  static thirdStatusCount(state: IControlTowerListState): number {
+    return state.thirdStatusCount;
   }
 
   @Action(LoadControlTowerListAction)
@@ -68,17 +68,17 @@ export class ControlTowerListState {
   ): void {
     if (isAction(action, LoadControlTowerListSuccessfulAction)) {
       const {
-        nbOfNewStatuses,
-        nbOfMarkedAsSeenStatuses,
-        nbOfResolvedStatuses,
+        firstStatusCount,
+        secondStatusCount,
+        thirdStatusCount,
         totalCount
       } = <LoadControlTowerListSuccessfulAction>action;
       patchState({
         _isLoading: false,
         _hasLoaded: true,
-        nbOfNewStatuses,
-        nbOfMarkedAsSeenStatuses,
-        nbOfResolvedStatuses,
+        firstStatusCount,
+        secondStatusCount,
+        thirdStatusCount,
         totalCount: totalCount
       });
     } else if (isAction(action, LoadControlTowerListFailedAction)) {

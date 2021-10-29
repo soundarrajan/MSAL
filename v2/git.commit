@@ -1,7 +1,9 @@
-﻿commit 58cdb017d41c8e7e84b0dac6371a18d044e887fc
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Oct 29 14:20:21 2021 +0300
+﻿commit e7da8a3975d60e1824cb2cc0389124587a6224ce
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Oct 29 13:28:57 2021 +0000
 
-    try to fix error from v2 pages
+    Merged PR 14385: Added Order Price, Currency, Created Date, Created By,No Response in quantity claims view
+    
+    Related work items: #33650
 
 branch: master

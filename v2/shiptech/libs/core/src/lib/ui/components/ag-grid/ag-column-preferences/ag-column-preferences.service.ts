@@ -137,42 +137,51 @@ export class AgColumnPreferencesService implements OnDestroy {
 
   restoreToGrid(gridName: string, options: GridOptions): Observable<any> {
     return this._storage.get<IGridPreferences>(this._storageKey(gridName)).pipe(
-      filter(p => !!p),
+      // filter(p => !!p),
       tap(preferences => {
-        const columnsState = preferences.columnState;
-        const sortState = preferences.sortState;
+        if (!preferences) {
+          options.api.setSortModel([
+            {
+              colId: 'createdDate',
+              sort: 'desc'
+            }
+          ]);
+        } else {
+          const columnsState = preferences.columnState;
+          const sortState = preferences.sortState;
 
-        if (!Array.isArray(columnsState) || columnsState.length === 0) {
-          this._storage.remove(this._storageKey(gridName));
+          if (!Array.isArray(columnsState) || columnsState.length === 0) {
+            this._storage.remove(this._storageKey(gridName));
 
-          throw Error('Invalid grid state json.');
+            throw Error('Invalid grid state json.');
+          }
+
+          const allColumnsSet = new Set<string>(
+            options.columnApi.getAllColumns().map(column => column.getColId())
+          );
+
+          // Note: Restore only existing columns.
+          const columns = columnsState.filter(columnState =>
+            allColumnsSet.has(columnState.colId)
+          );
+
+          if (columns.length === 0) {
+            throw Error('Preferences contains no valid columns.');
+          }
+
+          if (columns && columns.length > 0 && columns.some(c => !c.hide)) {
+            options.columnApi.setColumnState(columns);
+          }
+
+          // Note: Restore Sort
+          // Note: Restore sort only existing columns.
+          const sortModels = sortState.filter(sortModel =>
+            allColumnsSet.has(sortModel.colId)
+          );
+
+          // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
+          options.api.setSortModel(sortModels);
         }
-
-        const allColumnsSet = new Set<string>(
-          options.columnApi.getAllColumns().map(column => column.getColId())
-        );
-
-        // Note: Restore only existing columns.
-        const columns = columnsState.filter(columnState =>
-          allColumnsSet.has(columnState.colId)
-        );
-
-        if (columns.length === 0) {
-          throw Error('Preferences contains no valid columns.');
-        }
-
-        if (columns && columns.length > 0 && columns.some(c => !c.hide)) {
-          options.columnApi.setColumnState(columns);
-        }
-
-        // Note: Restore Sort
-        // Note: Restore sort only existing columns.
-        const sortModels = sortState.filter(sortModel =>
-          allColumnsSet.has(sortModel.colId)
-        );
-
-        // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
-        options.api.setSortModel(sortModels);
       })
     );
   }

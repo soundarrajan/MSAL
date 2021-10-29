@@ -76,7 +76,13 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="by-action">
+    <div
+      class="by-action"
+      *ngIf="
+        selectorType == 'Quantity ROB Difference' ||
+        selectorType == 'Quantity Supply Difference'
+      "
+    >
       <span class="filter-by" *ngIf="newScreen">Filter By:</span>
       <div
         class="action"
@@ -84,7 +90,7 @@
         (click)="gridViewModel.filterGridNew('New')"
       >
         <span>New</span>
-        <div class="count">{{ newCount$ | async }}</div>
+        <div class="count">{{ firstStatusCount$ | async }}</div>
       </div>
       <div
         class="action"
@@ -92,7 +98,7 @@
         (click)="gridViewModel.filterGridMAS('Verified')"
       >
         <span>Marked as seen</span>
-        <div class="count">{{ markAsSeenCount$ | async }}</div>
+        <div class="count">{{ secondStatusCount$ | async }}</div>
       </div>
       <div
         class="action"
@@ -100,7 +106,34 @@
         (click)="gridViewModel.filterGridResolved('In Spec')"
       >
         <span>Resolved</span>
-        <div class="count">{{ resolvedCount$ | async }}</div>
+        <div class="count">{{ thirdStatusCount$ | async }}</div>
+      </div>
+    </div>
+    <div class="by-action" *ngIf="selectorType == 'Quantity Claims'">
+      <span class="filter-by" *ngIf="newScreen">Filter By:</span>
+      <div
+        class="action"
+        [ngClass]="!gridViewModel.toggleNewFilter ? 'selected-blue' : ''"
+        (click)="gridViewModel.filterGridNew('New')"
+      >
+        <span>New</span>
+        <div class="count">{{ gridViewModel.noOfNew }}</div>
+      </div>
+      <div
+        class="action"
+        [ngClass]="!gridViewModel.toggleMASFilter ? 'selected-amber' : ''"
+        (click)="gridViewModel.filterGridMAS('Verified')"
+      >
+        <span>7-14 Days</span>
+        <div class="count">{{ gridViewModel.noOf714 }}</div>
+      </div>
+      <div
+        class="action"
+        [ngClass]="!gridViewModel.toggleResolvedFilter ? 'selected-green' : ''"
+        (click)="gridViewModel.filterGridResolved('In Spec')"
+      >
+        <span>15+ Days</span>
+        <div class="count">{{ gridViewModel.noOf15 }}</div>
       </div>
     </div>
   </div>

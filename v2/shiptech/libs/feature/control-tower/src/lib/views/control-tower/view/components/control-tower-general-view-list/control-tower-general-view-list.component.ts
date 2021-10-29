@@ -99,12 +99,12 @@ export class CustomDateAdapter extends MomentDateAdapter {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
-  @Select(ControlTowerListState.newCount)
-  newCount$: Observable<number>;
-  @Select(ControlTowerListState.masCount)
-  markAsSeenCount$: Observable<number>;
-  @Select(ControlTowerListState.resolvedCount)
-  resolvedCount$: Observable<number>;
+  @Select(ControlTowerListState.firstStatusCount)
+  firstStatusCount$: Observable<number>;
+  @Select(ControlTowerListState.secondStatusCount)
+  secondStatusCount$: Observable<number>;
+  @Select(ControlTowerListState.thirdStatusCount)
+  thirdStatusCount$: Observable<number>;
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   @Input() theme: boolean;
   @Input() newScreen: boolean;

@@ -95,9 +95,9 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       new LoadControlTowerListAction(gridRequest),
       response =>
         new LoadControlTowerListSuccessfulAction(
-          response.matchedCount,
-          response.matchedCount,
-          response.matchedCount,
+          response.payload.noOf15,
+          response.payload.noOf714,
+          response.payload.noOfNew,
           response.matchedCount
         ),
       LoadControlTowerListFailedAction,
