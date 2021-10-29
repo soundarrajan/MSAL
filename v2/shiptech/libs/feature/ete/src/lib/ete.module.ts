@@ -10,12 +10,18 @@ import { AuthenticationMsalModule } from '@shiptech/core/authentication/authenti
 import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { environment } from '@shiptech/environment';
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   imports: [
     CommonModule,
     UIModule,
     EmailTemplatePageModule,
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     EteRoutingModule

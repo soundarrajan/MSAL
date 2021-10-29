@@ -118,6 +118,12 @@ export function MSALInterceptConfigFactory() {
   };
 }
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -129,7 +135,7 @@ export function MSALInterceptConfigFactory() {
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? AuthenticationMsalModule.forRoot()
       : AuthenticationAdalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
@@ -143,9 +149,7 @@ export function MSALInterceptConfigFactory() {
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !window.location.hostname.includes('cma')
-      ? MsalConfigDynamicModule.forRoot()
-      : []
+    !useAdal ? MsalConfigDynamicModule.forRoot() : []
   ],
   providers: [
     {
@@ -153,7 +157,7 @@ export function MSALInterceptConfigFactory() {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? {
           provide: APP_INITIALIZER,
           useFactory: bootstrapForMsalApplication,
@@ -168,10 +172,7 @@ export function MSALInterceptConfigFactory() {
         },
     BootstrapResolver
   ],
-  bootstrap: [
-    AppComponent,
-    !window.location.hostname.includes('cma') ? MsalRedirectComponent : []
-  ]
+  bootstrap: [AppComponent, !useAdal ? MsalRedirectComponent : []]
 })
 export class AppModule {
   constructor() {

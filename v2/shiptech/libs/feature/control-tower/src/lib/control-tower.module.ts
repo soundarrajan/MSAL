@@ -120,6 +120,12 @@ import { ControlTowerListState } from './store/control-tower-general-list/contro
 import { ControlTowerGeneralListComponent } from './views/control-tower/view/components/control-tower-general-view-list/control-tower-general-view-list.component';
 import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/components/control-tower-quantity-claims/control-tower-quantity-claims.component';
 
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -129,7 +135,7 @@ import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/
     MaterialModule,
     DSV2ComponentsModule,
     LoggingModule,
-    !window.location.hostname.includes('cma')
+    !useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
