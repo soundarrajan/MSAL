@@ -96,17 +96,17 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
       >
         <span
           class="counterpartytype-icon type-physicalsupplier"
-          *ngIf="params.data.counterpartytype == 'physicalsupplier'"
+          *ngIf="params.data.counterpartyTypeName == 'Supplier'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
           class="counterpartytype-icon type-broker"
-          *ngIf="params.data.counterpartytype == 'broker'"
+          *ngIf="params.data.counterpartyTypeName == 'Broker'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
           class="counterpartytype-icon type-seller"
-          *ngIf="params.data.counterpartytype == 'seller'"
+          *ngIf="params.data.counterpartyTypeName == 'Seller'"
           ><i class="fas fa-circle"></i
         ></span>
         <span
@@ -355,7 +355,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
               />
             </div>
             <div class="col-md-2">
-              <span class="expand-img" 
+              <span class="expand-img"
               (click)="openCounterpartyPopup(params.locationId)"></span>
             </div>
           </div>
@@ -689,7 +689,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
     dialogRef.afterClosed().subscribe(result => {});
   }
-  
+
   openCounterpartyPopup(locationId) {
     let RequestGroupId = 0;
     let currentRequestLocation = { id: '0', locationId: '0' };
