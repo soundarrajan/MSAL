@@ -193,8 +193,8 @@ export class QcReportState {
   }
 
   static getMatchStatusForRobBeforeDiffAndDeliveredDiff(
-    left: number,
     right: number,
+    left: number,
     tolerance: number
   ): ReconStatusLookupEnum | undefined {
     if (
@@ -205,15 +205,15 @@ export class QcReportState {
     )
       return undefined;
 
-    const diff = left - right;
+    const diff = Math.abs(right - left);
 
     if (diff > tolerance) return ReconStatusLookupEnum.NotMatched;
     if (diff <= tolerance) return ReconStatusLookupEnum.Matched;
   }
 
   static getMatchStatusForRobAfterDiff(
-    left: number,
     right: number,
+    left: number,
     tolerance: number
   ): ReconStatusLookupEnum | undefined {
     if (
@@ -224,7 +224,7 @@ export class QcReportState {
     )
       return undefined;
 
-    const diff = left - right;
+    const diff = Math.abs(right - left);
 
     if (diff != 0) return ReconStatusLookupEnum.NotMatched;
     if (diff == tolerance) return ReconStatusLookupEnum.Matched;
@@ -250,19 +250,19 @@ export class QcReportState {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const robBeforeDiff = QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
-        item.robBeforeDeliveryLogBookROB,
         item.robBeforeDeliveryMeasuredROB,
+        item.robBeforeDeliveryLogBookROB,
         robTolerance
       );
       const deliveredDiff = QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
-        item.deliveredQuantityBdnQty,
         item.measuredDeliveredQty,
+        item.deliveredQuantityBdnQty,
         bdnTolerance
       );
       const robAfterDiff = !item.isSludge
         ? QcReportState.getMatchStatusForRobAfterDiff(
-            item.robAfterDeliveryLogBookROB,
             item.robAfterDeliveryMeasuredROB,
+            item.robAfterDeliveryLogBookROB,
             0
           )
         : undefined;

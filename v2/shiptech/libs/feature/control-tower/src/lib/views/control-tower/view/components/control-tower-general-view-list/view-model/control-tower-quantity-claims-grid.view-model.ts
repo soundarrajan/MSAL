@@ -59,8 +59,8 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
 
   public toggleNewFilter: boolean = true;
-  public toggleMASFilter: boolean = true;
-  public toggleResolvedFilter: boolean = true;
+  public toggle714DaysFilter: boolean = true;
+  public toggleGreaterThan15DaysFilter: boolean = true;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -308,7 +308,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-10',
+      'control-tower-quantity-claims-11',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -344,28 +344,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     this.gridApi.purgeServerSideCache();
   }
 
-  public updateValues(ev, values): void {
-    console.log(ev);
-    console.log(values);
-    // this.gridApi.purgeServerSideCache();
-    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
-    const newStatus = {
-      transactionTypeId: 6,
-      id: 1,
-      name: 'New',
-      internalName: null,
-      displayName: 'New',
-      code: null,
-      collectionName: null,
-      customNonMandatoryAttribute1: null,
-      isDeleted: false,
-      modulePathUrl: null,
-      clientIpAddress: null,
-      userAction: null
-    };
-    rowNode.setDataValue('status', newStatus);
-  }
-
   public filterGridNew(statusName: string): void {
     if (this.toggleNewFilter) {
       this.filterByStatus(statusName);
@@ -374,16 +352,16 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     }
   }
 
-  public filterGridMAS(statusName: string): void {
-    if (this.toggleMASFilter) {
+  public filterGrid714Days(statusName: string): void {
+    if (this.toggle714DaysFilter) {
       this.filterByStatus(statusName);
     } else {
       this.filterByStatus('');
     }
   }
 
-  public filterGridResolved(statusName: string): void {
-    if (this.toggleResolvedFilter) {
+  public filterGridGreaterThan15Days(statusName: string): void {
+    if (this.toggleGreaterThan15DaysFilter) {
       this.filterByStatus(statusName);
     } else {
       this.filterByStatus('');
@@ -402,24 +380,25 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   public checkStatusAvailable(): void {
     this.toggleNewFilter = true;
-    this.toggleMASFilter = true;
-    this.toggleResolvedFilter = true;
+    this.toggle714DaysFilter = true;
+    this.toggleGreaterThan15DaysFilter = true;
     const grid = this.gridApi.getFilterModel();
     for (let [key, value] of Object.entries(grid)) {
       if (key == 'status') {
         if ((<any>value).type == 'equals') {
           if ((<any>value).filter.toLowerCase() === 'new') {
             this.toggleNewFilter = !this.toggleNewFilter;
-            this.toggleMASFilter = true;
-            this.toggleResolvedFilter = true;
+            this.toggle714DaysFilter = true;
+            this.toggleGreaterThan15DaysFilter = true;
           } else if ((<any>value).filter.toLowerCase() === 'verified') {
-            this.toggleMASFilter = !this.toggleMASFilter;
+            this.toggle714DaysFilter = !this.toggle714DaysFilter;
             this.toggleNewFilter = true;
-            this.toggleResolvedFilter = true;
+            this.toggleGreaterThan15DaysFilter = true;
           } else if ((<any>value).filter.toLowerCase() === 'in spec') {
-            this.toggleResolvedFilter = !this.toggleResolvedFilter;
+            this.toggleGreaterThan15DaysFilter = !this
+              .toggleGreaterThan15DaysFilter;
             this.toggleNewFilter = true;
-            this.toggleMASFilter = true;
+            this.toggle714DaysFilter = true;
           }
         }
       }

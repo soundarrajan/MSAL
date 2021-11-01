@@ -121,16 +121,18 @@
       </div>
       <div
         class="action"
-        [ngClass]="!gridViewModel.toggleMASFilter ? 'selected-amber' : ''"
-        (click)="gridViewModel.filterGridMAS('Verified')"
+        [ngClass]="!gridViewModel.toggle714DaysFilter ? 'selected-amber' : ''"
+        (click)="gridViewModel.filterGrid714Days('7-14 Days')"
       >
         <span>7-14 Days</span>
         <div class="count">{{ gridViewModel.noOf714 }}</div>
       </div>
       <div
         class="action"
-        [ngClass]="!gridViewModel.toggleResolvedFilter ? 'selected-green' : ''"
-        (click)="gridViewModel.filterGridResolved('In Spec')"
+        [ngClass]="
+          !gridViewModel.toggleGreaterThan15DaysFilter ? 'selected-green' : ''
+        "
+        (click)="gridViewModel.filterGridGreaterThan15Days('In Spec')"
       >
         <span>15+ Days</span>
         <div class="count">{{ gridViewModel.noOf15 }}</div>

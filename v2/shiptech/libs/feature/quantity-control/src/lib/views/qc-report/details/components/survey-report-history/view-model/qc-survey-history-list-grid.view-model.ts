@@ -544,8 +544,9 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
     let status = this.reconStatusLookups.matched;
 
-    if (value > tolerance) status = this.reconStatusLookups.notMatched;
-    if (value <= tolerance) status = this.reconStatusLookups.matched;
+    if (Math.abs(value) > tolerance)
+      status = this.reconStatusLookups.notMatched;
+    if (Math.abs(value) <= tolerance) status = this.reconStatusLookups.matched;
 
     return {
       backgroundColor: status.code,
@@ -565,9 +566,9 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
     let status = this.reconStatusLookups.matched;
 
-    if (value != 0) status = this.reconStatusLookups.notMatched;
+    if (Math.abs(value) != 0) status = this.reconStatusLookups.notMatched;
 
-    if (value == tolerance) status = this.reconStatusLookups.matched;
+    if (Math.abs(value) == tolerance) status = this.reconStatusLookups.matched;
 
     return {
       backgroundColor: status.code,

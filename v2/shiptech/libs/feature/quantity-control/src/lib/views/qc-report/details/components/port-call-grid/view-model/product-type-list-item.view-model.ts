@@ -98,39 +98,39 @@ export class ProductTypeListItemViewModel {
 
     this.robBeforeDiffStatus = reconStatusLookups.toReconStatus(
       QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
-        this.robBeforeDeliveryLogBookROB,
         this.robBeforeDeliveryMeasuredROB,
+        this.robBeforeDeliveryLogBookROB,
         robTolerance
       )
     );
     this.deliveredDiffStatus = reconStatusLookups.toReconStatus(
       QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
-        this.deliveredQuantityBdnQty,
         this.measuredDeliveredQty,
+        this.deliveredQuantityBdnQty,
         bdnTolerance
       )
     );
     this.robAfterDiffStatus = reconStatusLookups.toReconStatus(
       !this.isSludge
         ? QcReportState.getMatchStatusForRobAfterDiff(
-            this.robAfterDeliveryLogBookROB,
             this.robAfterDeliveryMeasuredROB,
+            this.robAfterDeliveryLogBookROB,
             0
           )
         : undefined
     );
 
     this.robBeforeDiff = this.safeDiff(
-      this.robBeforeDeliveryLogBookROB,
-      this.robBeforeDeliveryMeasuredROB
+      this.robBeforeDeliveryMeasuredROB,
+      this.robBeforeDeliveryLogBookROB
     );
     this.deliveredDiff = this.safeDiff(
-      this.deliveredQuantityBdnQty,
-      this.measuredDeliveredQty
+      this.measuredDeliveredQty,
+      this.deliveredQuantityBdnQty
     );
     this.robAfterDiff = this.safeDiff(
-      this.robAfterDeliveryLogBookROB,
-      this.robAfterDeliveryMeasuredROB
+      this.robAfterDeliveryMeasuredROB,
+      this.robAfterDeliveryLogBookROB
     );
   }
 
