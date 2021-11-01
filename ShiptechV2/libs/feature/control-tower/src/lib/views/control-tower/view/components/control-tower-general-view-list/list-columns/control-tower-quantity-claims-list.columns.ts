@@ -30,7 +30,7 @@ export enum ControlTowerQuantityClaimsListExportColumns {
   quantityUom = 'quantityUom.name',
   estimatedSettlementAmount = 'estimatedSettlementAmount',
   createdDate = 'createdDate',
-  createdBy = 'createdBy',
+  createdBy = 'createdBy.name',
   orderPrice = 'orderPrice',
   currency = 'currency',
   noResponse = 'noResponse'

@@ -21,7 +21,8 @@
     "scopes": ["urn:spn:shiptech.api/shiptech"],
     "cacheLocation": "localStorage",
     "endpoints": {
-      "http://shiptech.24software.ro:8081/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01"
+      "http://shiptech.24software.ro:8081/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01",
+      "https://shiptech.24software.ro:8000/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01"
     },
     "anonymousEndpoints": [ "http://shiptech10.24software.ro:8081/" ],
     "postLogoutRedirectUri": null,
@@ -75,7 +76,7 @@
     "BASE_URL_DATA_ADMIN": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Admin",
     "BASE_URL_DATA_INFRASTRUCTURE": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Infrastructure",
     "BASE_URL_DATA_SELLER_PORTAL": "http://shiptech10.24software.ro:8081/Integration1060/Shiptech10.Api.SellerPortal",
-    "BASE_URL_DATA_CLAIMS": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Claims",
+    "BASE_URL_DATA_CLAIMS": "https://shiptech.24software.ro:8000/Integration1060/Shiptech10.Api.Claims",
     "BASE_URL_DATA_LABS": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Labs",
     "BASE_URL_DATA_CONTRACTS": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Contracts",
     "BASE_URL_DATA_DELIVERY": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Delivery",
