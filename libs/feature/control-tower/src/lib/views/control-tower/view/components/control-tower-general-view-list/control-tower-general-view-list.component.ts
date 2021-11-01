@@ -35,6 +35,7 @@ import { SelectorComponent } from '@shiptech/core/ui/components/master-selector/
 import { ControlTowerQuantitySupplyDifferenceListGridViewModel } from './view-model/control-tower-quantity-supply-difference-grid.view-model';
 import { ControlTowerQuantitySupplyDifferenceListColumnServerKeys } from './list-columns/control-tower-quantity-supply-difference-list.columns';
 import { ControlTowerQuantityClaimsListGridViewModel } from './view-model/control-tower-quantity-claims-grid.view-model';
+import { ControlTowerQuantityClaimsListColumnServerKeys } from './list-columns/control-tower-quantity-claims-list.columns';
 
 export const PICK_FORMATS = {
   display: {
@@ -175,7 +176,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         this.gridViewModel = this.injector.get(
           ControlTowerQuantityClaimsListGridViewModel
         );
-        this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
+        this.controlTowerListServerKeys = ControlTowerQuantityClaimsListColumnServerKeys;
         break;
       }
 
