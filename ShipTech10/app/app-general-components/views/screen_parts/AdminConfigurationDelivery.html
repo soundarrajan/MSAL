@@ -237,9 +237,10 @@
             <div class="form-group row">
                 <label>
                     ROB Before delivery 
+                    {{options}}
                 </label>
-                <div class="input-group form_input form_input_robBeforeDelivery" ng-init='options.Timezone ? return : CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"})'>
-                    <select name="robBeforeDelivery" class="form-control bs-select changeIT" ng-required="true" id="robBeforeDelivery" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-model="formValues.delivery.robBeforeDelivery"></select>
+                <div class="input-group form_input form_input_robBeforeDelivery" ng-init='options.Timezone ? return : CM.getOptions({"Name": "ConfigurationToleranceType", "Type": "dropdown", "masterSource": "ConfigurationToleranceType"})'>
+                    <select name="robBeforeDelivery" class="form-control bs-select changeIT" ng-required="true" id="robBeforeDelivery" ng-options="item as item.name for item in options.ConfigurationToleranceType track by item.id" ng-model="formValues.delivery.robBeforeDelivery"></select>
                 </div>
             </div>
         </div>
