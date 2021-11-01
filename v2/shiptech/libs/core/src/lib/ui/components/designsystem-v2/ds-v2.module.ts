@@ -15,6 +15,7 @@ import { RowstatusOnchangeQualitylabPopupComponent } from './rowstatus-onchange-
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from './rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
       AGGridCellActionsComponent,
       AGGridCellEditableComponent,
       AGGridCellRendererV2Component,
-      AGGridCellRendererAsyncStatusComponent
+      AGGridCellRendererAsyncStatusComponent,
+      AGGridCellRendererStatusComponent
     ])
   ],
   exports: [
@@ -38,7 +40,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RowstatusOnchangeQuantityrobdiffPopupComponent,
     RowstatusOnchangeQualitylabPopupComponent,
     RowstatusOnchangePopupComponent,
-    AGGridCellRendererAsyncStatusComponent
+    AGGridCellRendererAsyncStatusComponent,
+    AGGridCellRendererStatusComponent
   ],
   declarations: [
     AGGridCellActionsComponent,
@@ -49,7 +52,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RowstatusOnchangeQuantityrobdiffPopupComponent,
     RowstatusOnchangeQualitylabPopupComponent,
     RowstatusOnchangePopupComponent,
-    AGGridCellRendererAsyncStatusComponent
+    AGGridCellRendererAsyncStatusComponent,
+    AGGridCellRendererStatusComponent
   ],
   entryComponents: [
     RowstatusOnchangeResiduePopupComponent,

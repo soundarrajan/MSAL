@@ -1,7 +1,9 @@
-﻿commit 64bd95256ec94b37c1df67ce3dc1673117cf0f97
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 1 09:03:43 2021 +0200
+﻿commit 71b572e3bb4d3c864045096cef219ec8ab3169a0
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Nov 1 10:15:27 2021 +0000
 
-    Worked on 33987
+    Merged PR 14407: Worked on 33987
+    
+    Related work items: #33987
 
 branch: master

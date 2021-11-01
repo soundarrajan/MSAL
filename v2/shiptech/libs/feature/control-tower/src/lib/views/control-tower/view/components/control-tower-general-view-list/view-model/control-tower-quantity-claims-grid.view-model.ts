@@ -23,7 +23,6 @@ import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-
 import { ModuleLoggerFactory } from 'libs/feature/control-tower/src/lib/core/logging/module-logger-factory';
 import { ModuleError } from 'libs/feature/control-tower/src/lib/core/error-handling/module-error';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
-import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-async-status/ag-grid-cell-async-status.component';
 
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import { FormControl } from '@angular/forms';
@@ -35,6 +34,7 @@ import {
   ControlTowerQuantityClaimsListColumnsLabels,
   ControlTowerQuantityClaimsListExportColumns
 } from '../list-columns/control-tower-quantity-claims-list.columns';
+import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 
 function model(
   prop: keyof IControlTowerQuantityClaimsItemDto
@@ -268,8 +268,33 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.noResponse,
     field: model('noResponse'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value,
+    valueFormatter: function(params) {
+      if (params.value < 7) {
+        return 'New';
+      } else if (params.value >= 7 && params.value <= 14) {
+        return '7-14 Days';
+      } else if (params.value > 14) {
+        return '15+ Days';
+      }
+    },
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.noResponse,
+    cellRendererParams: function(params) {
+      var classArray: string[] = [];
+      let newClass = '';
+      if (params.value < 7) {
+        newClass = 'medium-blue';
+      } else if (params.value >= 7 && params.value <= 14) {
+        newClass = 'medium-yellow';
+      } else if (params.value > 14) {
+        newClass = 'medium-red';
+      }
+      classArray.push(newClass);
+      return {
+        cellClass: classArray.length > 0 ? classArray : null,
+        type: 'no-response'
+      };
+    },
+    cellRendererFramework: AGGridCellRendererStatusComponent,
     width: 150
   };
 
