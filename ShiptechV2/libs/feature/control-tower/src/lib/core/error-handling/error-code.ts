@@ -3,5 +3,6 @@ export enum ErrorCode {
 
   LoadControlTowerQuantityRobDifferenceFailed = 100,
   LoadControlTowerQuantitySupplyDifferenceFailed = 101,
-  LoadControlTowerQuantityClaimsFailed = 102
+  LoadControlTowerQuantityClaimsFailed = 102,
+  LoadControlTowerQualityClaimsFailed = 102
 }

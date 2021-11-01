@@ -53,6 +53,22 @@ export interface IControlTowerQuantityClaimsItemDto {
   noResponse: number;
 }
 
+export interface IControlTowerQualityClaimsItemDto {
+  order: IDisplayLookupDto;
+  lab: IDisplayLookupDto;
+  id: number;
+  port: string;
+  vessel: string;
+  eta: string;
+  product: string;
+  seller: string;
+  claimSubType: string;
+  estimatedSettlementAmount: number;
+  createdDate: string;
+  createdBy: IDisplayLookupDto;
+  noResponse: number;
+}
+
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
@@ -68,6 +84,16 @@ export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
 export interface IGetControlTowerQuantityClaimsListResponse {
   payload: {
     items: IControlTowerQuantityClaimsItemDto[];
+    noOf15: number;
+    noOf714: number;
+    noOfNew: number;
+  };
+  matchedCount: number;
+}
+
+export interface IGetControlTowerQualityClaimsListResponse {
+  payload: {
+    items: IControlTowerQualityClaimsItemDto[];
     noOf15: number;
     noOf714: number;
     noOfNew: number;
