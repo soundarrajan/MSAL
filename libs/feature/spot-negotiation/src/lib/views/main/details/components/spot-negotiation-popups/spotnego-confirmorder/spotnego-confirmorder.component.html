@@ -47,6 +47,7 @@
                     <th class="text-left">Min Qty</th>
                     <th class="text-left">Max Qty</th>
                     <th class="text-left">Confirmed Qty</th>
+                    <th class="text-left">UOM</th>
                     <th class="text-left">Offer Price</th>
                     <th class="text-left">Total Price</th>
                     <th class="text-left w-125">Phy.Supplier</th>
@@ -57,7 +58,7 @@
           </div>
 
           <!--  //getSelectedLocationRowsForLocation(location.locationId, request.id) -->
-          <div class="row " *ngFor="let requestOfferItem of requestOfferItems; let i = index" [attr.data-index]="i"> 
+          <div class="row " *ngFor="let requestOfferItem of requestOfferItems | keyvalue: originalOrder" [attr.data-index]="i"> 
             <div class="product-terms ">
               <div class="operations-details-block" style="height: auto;">
                 <div style="height: auto;">
@@ -66,16 +67,22 @@
                       <tr id="commentList">
                         <!-- <td class="w-80">12321</td>-->
                         <td class="table-checkbox" ><mat-checkbox class="example-margin" ></mat-checkbox></td>
-                        <td class="w-125">{{requestOfferItem.SellerName}}</td>
+                        <td class="w-125">{{requestOfferItem.value.SellerName}}</td>
                         <!-- <td class="">Rotterdam</td> -->
-                        <td class=""> {{requestOfferItem.ProductName}}</td>
-                        <td class="">{{requestOfferItem.minQuantity}} {{requestOfferItem.UomName}}</td>
-                        <td class="">{{requestOfferItem.MaxQuantity}} {{requestOfferItem.UomName}}</td>
-                        <td class="text-left  cell-dashed-border"  contenteditable="true" >{{requestOfferItem.MaxQuantity}}<span>{{requestOfferItem.UomName}}</span></td>  
-                        <!-- (change)="totalprice(requestOfferItem,requestOfferItem.MaxQuantity)" [ngModel]="requestOfferItem.MaxQuantity" -->
-                        <td class="">{{requestOfferItem.OfferPrice||0}}</td>
-                        <td class="">{{requestOfferItem.TotalPrice}}</td>
-                        <td class="w-125">{{requestOfferItem.PhysicalSupplierName}}</td>
+                        <td class=""> {{requestOfferItem.value.ProductName}}</td>
+                        <td class="">{{requestOfferItem.value.minQuantity}} {{requestOfferItem.value.UomName}}</td>
+                        <td class="">{{requestOfferItem.value.MaxQuantity}} {{requestOfferItem.value.UomName}}</td>
+                        <td class="text-left  cell-dashed-border"  contenteditable="true" >
+                          <input
+                          matInput
+                          [(ngModel)]="requestOfferItem.value.ConfirmedQuantity"
+                          autocomplete="off"
+                          (ngModelChange)="totalprice(requestOfferItem, requestOfferItem.key)"
+                        /></td>  
+                        <td class=""> {{requestOfferItem.value.UomName}}</td>
+                        <td class="">{{requestOfferItem.value.OfferPrice||0}}</td>
+                        <td class="">{{requestOfferItem.value.TotalPrice}}</td>
+                        <td class="w-125">{{requestOfferItem.value.PhysicalSupplierName}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -90,7 +97,7 @@
   </div>
 
   <!-- Related -->
-  <div class="p-l-15">
+  <!-- <div class="p-l-15">
   <div class="confirm-order-subheader-text">Related Confirmed Order</div>
 
     <div class="mtb-2"><i class="fas fa-circle dot-icon-solid"></i>Req 12321 - Al Mashrab</div>
@@ -99,6 +106,6 @@
     <div class="col-12">1.<span class="confirm-order-bold-text"> RMD 80 0.1% </span>- 600.00 MT : BP Nederland BV</div>
     <div class="col-12">2.<span class="confirm-order-bold-text"> RMK 500 </span>- 600.00 MT : Shell North America</div>
   </div>
-</div>
+</div> -->
 </div>
 <!-- </mat-dialog-content> -->

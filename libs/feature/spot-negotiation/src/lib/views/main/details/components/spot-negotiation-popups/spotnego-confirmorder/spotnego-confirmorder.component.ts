@@ -8,7 +8,7 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Store } from '@ngxs/store';
-
+import { DecimalPipe, KeyValue } from '@angular/common';
 @Component({
   selector: 'app-spotnego-confirmorder',
   templateUrl: './spotnego-confirmorder.component.html',
@@ -55,8 +55,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     var requestOfferItemPayload=[];
       locations.forEach(element => {
       locationsRows.forEach(element1 => {
-        if (element.locationId == element1.locationId  ) { //&& element1.locationId==locationId
-          if(element1.checkProd1 && element1.requestOffers[0].quotedProductId==element.requestProducts[0].productId){
+        if (element.locationId == element1.locationId ) { //&& element1.locationId==locationId
+          if(element1.checkProd1 && element1.requestOffers[0].quotedProductId==element.requestProducts[0].productId ){
              requestOfferItemPayload = this.ConstuctRequestOfferItemPayload(
                 element1,
                 element1.requestOffers[0],
@@ -77,7 +77,29 @@ export class SpotnegoConfirmorderComponent implements OnInit {
              if (requestOfferItemPayload.length > 0) {
                this.requestOfferItems.push(requestOfferItemPayload[0]);
              }
-         }
+          }
+         if(element1.checkProd3 && element1.requestOffers[2].quotedProductId==element.requestProducts[2].productId){
+          requestOfferItemPayload = this.ConstuctRequestOfferItemPayload(
+             element1,
+             element1.requestOffers[2],
+             element.requestProducts[2]
+             //requestId
+           );
+           if (requestOfferItemPayload.length > 0) {
+             this.requestOfferItems.push(requestOfferItemPayload[0]);
+           }
+          }
+          if(element1.checkProd4 && element1.requestOffers[3].quotedProductId==element.requestProducts[3].productId){
+            requestOfferItemPayload = this.ConstuctRequestOfferItemPayload(
+               element1,
+               element1.requestOffers[3],
+               element.requestProducts[3]
+               //requestId
+             );
+             if (requestOfferItemPayload.length > 0) {
+               this.requestOfferItems.push(requestOfferItemPayload[0]);
+             }
+          }
         }
       });
     });
@@ -103,13 +125,23 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         UomId: requestProducts.uomId,
         UomName:"MT", //requestProducts.uomName,
         OfferPrice:requestOffers.price,
-        TotalPrice:requestOffers.totalPrice*requestProducts.maxQuantity
+        TotalPrice:requestOffers.price*requestProducts.maxQuantity
       }
     ];
   }
-  totalprice(requestOfferItem,maxQuantity){
-    requestOfferItem.TotalPrice=requestOfferItem.OfferPrice*maxQuantity
-    return requestOfferItem;
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => 0;
+  totalprice(requestOfferItem,rowIndex) {
+     debugger;
+    console.log(rowIndex);
+    const currentRowIndex = rowIndex;
+    const offers=this.requestOfferItems[currentRowIndex];
+    if(offers.ConfirmedQuantity != 'undefined' && offers.OfferPrice!= 'undefined' ){
+      this.requestOfferItems[currentRowIndex].TotalPrice=offers.OfferPrice*offers.ConfirmedQuantity;
+    }
+    return this.requestOfferItems;
   }
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
