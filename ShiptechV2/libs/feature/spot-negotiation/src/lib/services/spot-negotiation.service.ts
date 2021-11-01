@@ -138,7 +138,14 @@ export class SpotNegotiationService extends BaseStoreService
    updatePhySupplier(payload: any): Observable<unknown> {
      return this.spotNegotiationApi.UpdatePhySupplier(payload);
    }
-
+  /**
+   * Amend RFQ
+   * @param payload = 
+   */
+ @ObservableException()
+ AmendRFQ(payload: any): Observable<unknown> {
+   return this.spotNegotiationApi.AmendRFQ(payload);
+ }
 
 
   /**

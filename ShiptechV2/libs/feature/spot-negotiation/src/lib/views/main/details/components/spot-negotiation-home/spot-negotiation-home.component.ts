@@ -102,7 +102,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.store.subscribe(({ spotNegotiation }) => {
         this.RequestGroupID = spotNegotiation.currentRequestSmallInfo.requestGroupId;
       });
-      // this.selectedSellerList.push(Selectedfinaldata[0]);
+       // this.selectedSellerList.push(Selectedfinaldata[0]);
       var FinalAPIdata = {
         RequestGroupId: this.RequestGroupID,
         quoteByDate: new Date(),
@@ -117,7 +117,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
       this.spinner.hide();
-      this.toaster.success('RFQ(s) sent successfully.');
+      //this.toaster.success('RFQ(s) sent successfully.');
       if (res.message) {
         this.toaster.warning(res.message);
       }
@@ -134,22 +134,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       );
 
-      // Here make getpricedetails get one more time;
-      const responseGetPriceDetails = this.spotNegotiationService.getPriceDetails(
-        requestGroupID
-      );
-
-      responseGetPriceDetails.subscribe((priceDetailsRes: any) => {
         this.store.dispatch(
-          new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
+          new SetLocationsRowsPriceDetails(res['sellerOffers'])
         );
 
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
           JSON.parse(JSON.stringify(locationsRows)),
-          priceDetailsRes['sellerOffers']
+          res['sellerOffers']
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-      });
 
       this.changeDetector.detectChanges();
     });
@@ -209,6 +202,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
   ConstuctSellerPayload(Seller, requestProducts, Request) {
     let selectedproducts = [];
+    let rfqId = null;
     if(Seller['checkProd1']){
       selectedproducts.push(requestProducts[0].id)
     }
@@ -224,6 +218,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     if(Seller['checkProd5']){
       selectedproducts.push(requestProducts[4].id)
     }
+    if((Seller.requestOffers  !== undefined) && Seller.requestOffers.length >0){
+      rfqId = Seller.requestOffers[0].rfqId;
+    }
     return [
       {
         RequestLocationSellerId: Seller.id,
@@ -231,7 +228,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         RequestLocationID: Seller.locationId,
         RequestId: Request.id,
         physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
-        RequestProductIds: selectedproducts
+        RequestProductIds: selectedproducts,
+        RfqId: rfqId
       }
     ];
   }
@@ -252,5 +250,28 @@ export class SpotNegotiationHomeComponent implements OnInit {
         timeOut: 2000
       }
     );
+  }
+  amendRFQ() {
+    this.selectedSellerList = [];
+    var Selectedfinaldata = this.FilterselectedRow();
+    if (Selectedfinaldata.length == 0) {
+      this.toaster.error('Atleast 1 product should be selected');
+      return;
+    }
+    else if(this.selectedSellerList.find(x=>x.RfqId===null)){
+      this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
+      return;
+    }     
+    else {
+      var amendRFQRequestPayload = this.selectedSellerList;
+    }
+
+    this.spinner.show();
+    // Get response from server
+    const response = this.spotNegotiationService.AmendRFQ(amendRFQRequestPayload);
+    response.subscribe((res: any) => {      
+      this.spinner.hide();      
+      this.toaster.success('Amend RFQ(s) sent successfully.');
+    });
   }
 }

@@ -54,7 +54,7 @@
                   [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
                 </span>
                 <mat-menu #clickmenupopup="matMenu" class="menu-panel-eta small-menu darkPanel">
-                  <div class="p-tb-5" style="display:flex;align-items:center;">
+                  <div class="p-tb-5" style="display:flex;align-items:center;" (click)="amendRFQ()">
                     <span>
                       <div class="amend-icon"></div>
                     </span>
