@@ -26,7 +26,7 @@ export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityClaimsList = () =>
     `api/controlTower/getQuantityControlList`;
   export const getControlTowerQuantityClaimsListExportUrl = () =>
-    `api/controlTower/getQuantityControlList/export`;
+    `api/controlTower/exportQuantityControlList`;
   export const getControlTowerQualityClaimsListUrl = () =>
     `/api/controlTower/getQualityControlList`;
   export const getControlTowerQualityClaimsListExportUrl = () =>
@@ -80,7 +80,7 @@ export class ControlTowerApi implements IControlTowerApiService {
       this._apiUrl
     }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceListExportUrl()}`;
   }
-  
+
   @ObservableException()
   getControlTowerQuantityClaimsList(
     request: IGetControlTowerListRequest
@@ -98,7 +98,7 @@ export class ControlTowerApi implements IControlTowerApiService {
     }/${ControlTowerApiPaths.getControlTowerQuantityClaimsListExportUrl()}`;
   }
 
-  //control tower quality claims api service 
+  //control tower quality claims api service
   @ObservableException()
   getControlTowerQualityClaimsList(
     request: IGetControlTowerListRequest
