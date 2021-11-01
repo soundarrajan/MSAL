@@ -179,7 +179,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   FilterselectedRow() {
     var Sellectedsellerdata = [];
-
+    
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.locations.forEach(element => {
         spotNegotiation.locationsRows.forEach(element1 => {
@@ -220,16 +220,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     if((Seller.requestOffers  !== undefined) && Seller.requestOffers.length >0){
       rfqId = Seller.requestOffers[0].rfqId;
-    }
+    }    
     return [
       {
-        RequestLocationSellerId: Seller.id,
-        SellerId:Seller.sellerCounterpartyId,
-        RequestLocationID: Seller.locationId,
-        RequestId: Request.id,
-        physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
-        RequestProductIds: selectedproducts,
-        RfqId: rfqId
+        
+          RequestLocationSellerId: Seller.id,
+          SellerId:Seller.sellerCounterpartyId,
+          RequestLocationID: Seller.requestLocationId,
+          RequestId: Request.id,
+          physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,             
+          RequestProductIds: selectedproducts,
+          RfqId: rfqId  
       }
     ];
   }
