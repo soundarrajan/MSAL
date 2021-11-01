@@ -21,7 +21,8 @@
     "scopes": ["urn:spn:shiptech.api/shiptech"],
     "cacheLocation": "localStorage",
     "endpoints": {
-      "http://shiptech.24software.ro:8081/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01"
+      "http://shiptech.24software.ro:8081/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01",
+      "https://shiptech.24software.ro:8000/": "58f5f432-b33e-4c2e-872c-3aec8ffbbc01"
     },
     "anonymousEndpoints": [ "http://shiptech10.24software.ro:8081/" ],
     "postLogoutRedirectUri": null,

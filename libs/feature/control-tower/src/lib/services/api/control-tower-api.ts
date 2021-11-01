@@ -89,7 +89,7 @@ export class ControlTowerApi implements IControlTowerApiService {
   getControlTowerQuantityClaimsListExportUrl(): string {
     return `${
       this._claimsApiUrl
-    }/${ControlTowerApiPaths.getControlTowerQuantityRobDifferenceListExportUrl()}`;
+    }/${ControlTowerApiPaths.getControlTowerQuantityClaimsListExportUrl()}`;
   }
 }
 
