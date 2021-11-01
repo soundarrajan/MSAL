@@ -1,7 +1,7 @@
-﻿commit 5543df95b60187380ab16ecc31555f9c96e83dc2
+﻿commit 4c0555701a7e68c790db4945282bbfdfb35d6ea2
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 1 16:44:47 2021 +0200
+Date:   Mon Nov 1 16:59:16 2021 +0200
 
-    Added export on quantity claims list
+    Worked on export
 
 branch: master
