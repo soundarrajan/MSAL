@@ -1,4 +1,20 @@
 <div
+  class="controlTower-content new"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+>
+  <ng-container>
+    <shiptech-control-tower-general-view-list
+      [selectorType]="'Quality Claims'"
+      [groupId]="'control-tower-quantity-claims-v2-list-filter-presets-1'"
+      [gridId]="'control-tower-quantity-claims-2'"
+      [theme]="theme"
+      [newScreen]="newScreen"
+    ></shiptech-control-tower-general-view-list>
+  </ng-container>
+</div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>
+
+<!-- <div
   class="controlTower-content"
   [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
 >
@@ -37,25 +53,25 @@
       </div>
       <div class="by-action">
         <span class="filter-by" *ngIf="newScreen">Filter By:</span>
-        <div class="action">
+        <div class="action" (click)="filterByStatus('new')">
           <span>New</span>
           <div class="count">4</div>
         </div>
-        <div class="action">
+        <div class="action" (click)="filterByStatus('7-14 days')">
           <span>7-14 days</span>
           <div class="count">4</div>
         </div>
-        <div class="action">
+        <div class="action" (click)="filterByStatus('15+ days')">
           <span>15+ days</span>
           <div class="count">4</div>
         </div>
       </div>
-      <!-- <div class="splitter"></div>
+      <!- <div class="splitter"></div>
             <div class="by-nonResponseDays">
                 <div class="text">Filter by Non-Response days:</div>
                 <div class="action"><span>7 Days</span><div class="count">4</div></div>
                 <div class="action"><span>15 Days</span><div class="count">4</div></div>
-            </div> -->
+            </div> ->
     </div>
   </div>
   <div class="grid-container">
@@ -88,4 +104,4 @@
     ></app-footer-v2>
   </div>
 </div>
-<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div> -->
