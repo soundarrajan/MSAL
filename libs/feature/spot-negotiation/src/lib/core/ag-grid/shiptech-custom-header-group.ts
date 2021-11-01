@@ -563,10 +563,14 @@ export class ShiptechCustomHeaderGroup {
     if (selectedCounterparties.length == 0) return;
 
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+    let currentRequestLocationName = this.currentRequestInfo.requestLocations.filter(
+      x => x.locationId === locationId
+    )[0];
     let payload = {
       requestGroupId: parseInt(RequestGroupId),
       isAllLocation: false,
-      counterparties: selectedCounterparties
+      counterparties: selectedCounterparties,
+      locationName:currentRequestLocationName.locationName
     };
 
     const response = this._spotNegotiationService.addCounterparties(payload);
