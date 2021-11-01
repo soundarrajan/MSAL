@@ -186,7 +186,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         this.gridViewModel = this.injector.get(
           ControlTowerQualityClaimsListGridViewModel
         );
-        this.controlTowerListServerKeys = ControlTowerQuantityClaimsListColumnServerKeys;
+        this.controlTowerListServerKeys = ControlTowerQualityClaimsListColumnServerKeys;
         break;
       }
 
