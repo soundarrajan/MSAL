@@ -10,7 +10,8 @@ import { IControlTowerApiService } from './api/control-tower.api.service.interfa
 import {
   IGetControlTowerQuantityClaimsListResponse,
   IGetControlTowerQuantityRobDifferenceListResponse,
-  IGetControlTowerQuantitySupplyDifferenceListResponse
+  IGetControlTowerQuantitySupplyDifferenceListResponse,
+  IGetControlTowerQualityClaimsListResponse
 } from './api/dto/control-tower-list-item.dto';
 
 import { ModuleError } from '../core/error-handling/module-error';
@@ -103,6 +104,47 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       LoadControlTowerListFailedAction,
       ModuleError.LoadControlTowerQuantityClaimsFailed
     );
+  }
+  
+  @ObservableException()
+  getControlTowerQualityClaimsList$(
+    gridRequest: IServerGridInfo
+    ): Observable<IGetControlTowerQualityClaimsListResponse> {
+      return this.apiDispatch(
+        () =>
+          this.api.getControlTowerQualityClaimsList({
+            ...gridRequest
+          }),
+        new LoadControlTowerListAction(gridRequest),
+        response =>
+          new LoadControlTowerListSuccessfulAction(
+            response.payload.noOf15,
+            response.payload.noOf714,
+            response.payload.noOfNew,
+            response.matchedCount
+          ),
+        LoadControlTowerListFailedAction,
+        ModuleError.LoadControlTowerQualityClaimsFailed
+      );
+  //   gridRequest: IServerGridInfo
+  // ): Observable<IGetControlTowerQualityClaimsListResponse> {
+  //   return this.apiDispatch(
+  //     () =>
+  //       this.api.getControlTowerQuantityClaimsList({
+  //         ...gridRequest
+  //       }),
+  //     new LoadControlTowerListAction(gridRequest),
+  //     response =>
+  //       new LoadControlTowerListSuccessfulAction(
+  //         response.matchedCount,
+  //         response.matchedCount,
+  //         response.matchedCount,
+  //         response.matchedCount
+  //       ),
+  //     LoadControlTowerListFailedAction,
+  //     ModuleError.LoadControlTowerQuantityClaimsFailed
+  //   );
+  
   }
 
   @ObservableException()

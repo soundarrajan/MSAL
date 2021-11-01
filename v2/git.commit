@@ -1,7 +1,9 @@
-﻿commit 884f028c5d1ce9b7d1a12bf727c134eb5a0ef7de
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 1 10:59:54 2021 +0000
+﻿commit 0d8b45319393573ba6f187ac3fb55f778cabf282
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Nov 1 13:22:39 2021 +0000
 
-    Merged PR 14409: Worked on 33987
+    Merged PR 14416: Requirement 33673: Quality View: Claims has done
+    
+    Related work items: #33673
 
 branch: master

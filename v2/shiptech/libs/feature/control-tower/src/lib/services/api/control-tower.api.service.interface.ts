@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import {
   IGetControlTowerListRequest,
+  IGetControlTowerQualityClaimsListResponse,
   IGetControlTowerQuantityClaimsListResponse,
   IGetControlTowerQuantityRobDifferenceListResponse,
   IGetControlTowerQuantitySupplyDifferenceListResponse
@@ -24,4 +25,10 @@ export interface IControlTowerApiService {
   ): Observable<IGetControlTowerQuantityClaimsListResponse>;
 
   getControlTowerQuantityClaimsListExportUrl(): string;
+
+  getControlTowerQualityClaimsList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerQualityClaimsListResponse>;
+
+  getControlTowerQualityClaimsListExportUrl(): string;
 }
