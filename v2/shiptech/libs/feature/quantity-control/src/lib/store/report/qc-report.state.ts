@@ -533,7 +533,7 @@ export class QcReportState {
           nbOfClaims: detailsDto.nbOfClaims,
           nbOfDeliveries: detailsDto.nbOfDeliveries,
           robBeforeDeliveryUom:
-            detailsDto.uoms.robBeforeDeliveryUom ?? robToleranceUom,
+            detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
           robAfterDeliveryUom:
             detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
