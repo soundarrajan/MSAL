@@ -37,6 +37,7 @@ import { ControlTowerQuantitySupplyDifferenceListColumnServerKeys } from './list
 import { ControlTowerQuantityClaimsListGridViewModel } from './view-model/control-tower-quantity-claims-grid.view-model';
 import { ControlTowerQualityClaimsListGridViewModel } from './view-model/control-tower-quality-claims-grid.view-model';
 import { ControlTowerQualityClaimsListColumnServerKeys } from './list-columns/control-tower-quality-claims-list.columns';
+import { ControlTowerQuantityClaimsListColumnServerKeys } from './list-columns/control-tower-quantity-claims-list.columns';
 
 export const PICK_FORMATS = {
   display: {
@@ -185,7 +186,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         this.gridViewModel = this.injector.get(
           ControlTowerQualityClaimsListGridViewModel
         );
-        this.controlTowerListServerKeys = ControlTowerQualityClaimsListColumnServerKeys;
+        this.controlTowerListServerKeys = ControlTowerQuantityClaimsListColumnServerKeys;
         break;
       }
 

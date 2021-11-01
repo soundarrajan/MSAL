@@ -1,9 +1,7 @@
-﻿commit 0d8b45319393573ba6f187ac3fb55f778cabf282
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Nov 1 13:22:39 2021 +0000
+﻿commit 5543df95b60187380ab16ecc31555f9c96e83dc2
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Nov 1 16:44:47 2021 +0200
 
-    Merged PR 14416: Requirement 33673: Quality View: Claims has done
-    
-    Related work items: #33673
+    Added export on quantity claims list
 
 branch: master
