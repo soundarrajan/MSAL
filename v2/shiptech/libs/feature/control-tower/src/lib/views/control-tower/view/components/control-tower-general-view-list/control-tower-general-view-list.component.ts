@@ -179,7 +179,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         this.gridViewModel = this.injector.get(
           ControlTowerQuantityClaimsListGridViewModel
         );
-        this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
+        this.controlTowerListServerKeys = ControlTowerQuantityClaimsListColumnServerKeys;
         break;
       }
       case 'Quality Claims': {
