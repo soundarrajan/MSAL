@@ -78,17 +78,17 @@
         </div>
     </div>
     <div class="row">
-	    <div class="col-md-3">
-	        <div class="form-group row">
+        <div class="col-md-3">
+            <div class="form-group row">
 
                 <label>
                     {{ CM.app_id + '.DELIVERY_DATE_FLOW' | translate }}
                 </label>
-	            <div class="input-group form_input form_input_deliveryDateFlow">
-	                <select name="deliveryDateFlow" class="form-control bs-select changeIT" ng-required="true" id="deliveryDateFlow" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.delivery.deliveryDateFlow"></select>
-	            </div>
-	        </div>
-	    </div>    
+                <div class="input-group form_input form_input_deliveryDateFlow">
+                    <select name="deliveryDateFlow" class="form-control bs-select changeIT" ng-required="true" id="deliveryDateFlow" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.delivery.deliveryDateFlow"></select>
+                </div>
+            </div>
+        </div>    
     </div>
     <div class="portlet">
         <div class="portlet-title">
@@ -99,59 +99,59 @@
     </div>
     <div class="row">
 
-		<span ng-init='CM.getOptions({"Name": "QuantityCategory", "Type": "dropdown", "masterSource": "QuantityCategory"})'></span>
-		<span ng-init="initAdminPrecedenceRules()" ng-if="formValues.delivery"></span>
-		<div class="col-sm-12">
-			<div class="row">
-				<div class="col-sm-2">
-		            <label class="pull-left">
-		                {{ CM.app_id + '.BUYER' | translate }}
-		            </label>
-				</div>
-				<div class="col-sm-10">
-					<select class="form-control admin-precedence-select" name="buyer-ord-1" data-ord="1" ng-change="precedenceRuleChanged('buyer', '1')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_1" id="buyer-ord-1" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="buyer-ord-2" data-ord="2" ng-change="precedenceRuleChanged('buyer', '2')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_2" id="buyer-ord-2" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="buyer-ord-3" data-ord="3" ng-change="precedenceRuleChanged('buyer', '3')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_3" id="buyer-ord-3" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="buyer-ord-4" data-ord="4" ng-change="precedenceRuleChanged('buyer', '4')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_4" id="buyer-ord-4" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="buyer-ord-5" data-ord="5" ng-change="precedenceRuleChanged('buyer', '5')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_5" id="buyer-ord-5" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select>
-				</div>
-			</div>
-		</div>
-		<div class="clearfix"></div>
-		<br>
-		<div class="col-sm-12">
-			<div class="row">
-				<div class="col-sm-2">
-		            <label class="pull-left">
-		                {{ CM.app_id + '.SELLER' | translate }}
-		            </label>
-				</div>
-				<div class="col-sm-10">
-					<select class="form-control admin-precedence-select" name="seller-ord-1" data-ord="1" ng-change="precedenceRuleChanged('seller', '1')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_1" id="seller-ord-1" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="seller-ord-2" data-ord="2" ng-change="precedenceRuleChanged('seller', '2')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_2" id="seller-ord-2" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="seller-ord-3" data-ord="3" ng-change="precedenceRuleChanged('seller', '3')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_3" id="seller-ord-3" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="seller-ord-4" data-ord="4" ng-change="precedenceRuleChanged('seller', '4')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_4" id="seller-ord-4" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="seller-ord-5" data-ord="5" ng-change="precedenceRuleChanged('seller', '5')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_5" id="seller-ord-5" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select>
-				</div>
-			</div>
-		</div>
-		<div class="clearfix"></div>
+        <span ng-init='CM.getOptions({"Name": "QuantityCategory", "Type": "dropdown", "masterSource": "QuantityCategory"})'></span>
+        <span ng-init="initAdminPrecedenceRules()" ng-if="formValues.delivery"></span>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label class="pull-left">
+                        {{ CM.app_id + '.BUYER' | translate }}
+                    </label>
+                </div>
+                <div class="col-sm-10">
+                    <select class="form-control admin-precedence-select" name="buyer-ord-1" data-ord="1" ng-change="precedenceRuleChanged('buyer', '1')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_1" id="buyer-ord-1" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="buyer-ord-2" data-ord="2" ng-change="precedenceRuleChanged('buyer', '2')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_2" id="buyer-ord-2" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="buyer-ord-3" data-ord="3" ng-change="precedenceRuleChanged('buyer', '3')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_3" id="buyer-ord-3" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="buyer-ord-4" data-ord="4" ng-change="precedenceRuleChanged('buyer', '4')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_4" id="buyer-ord-4" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="buyer-ord-5" data-ord="5" ng-change="precedenceRuleChanged('buyer', '5')" ng-model="formValues.temp.buyerPrecedence.buyerOrd_5" id="buyer-ord-5" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <br>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label class="pull-left">
+                        {{ CM.app_id + '.SELLER' | translate }}
+                    </label>
+                </div>
+                <div class="col-sm-10">
+                    <select class="form-control admin-precedence-select" name="seller-ord-1" data-ord="1" ng-change="precedenceRuleChanged('seller', '1')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_1" id="seller-ord-1" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="seller-ord-2" data-ord="2" ng-change="precedenceRuleChanged('seller', '2')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_2" id="seller-ord-2" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="seller-ord-3" data-ord="3" ng-change="precedenceRuleChanged('seller', '3')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_3" id="seller-ord-3" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="seller-ord-4" data-ord="4" ng-change="precedenceRuleChanged('seller', '4')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_4" id="seller-ord-4" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="seller-ord-5" data-ord="5" ng-change="precedenceRuleChanged('seller', '5')" ng-model="formValues.temp.sellerPrecedence.sellerOrd_5" id="seller-ord-5" ng-options="item as item.name for item in options['QuantityCategory'] track by item.id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
         <br>
         <span ng-init='CM.getOptions({"Name": "FinalQtyPick", "Type": "dropdown", "masterSource": "FinalQtyPick"})'></span>
-		<div class="col-sm-12">
-			<div class="row">
-				<div class="col-sm-2">
-		            <label class="pull-left">
-		                {{ CM.app_id + '.AUTO_FINAL_QUANTITY' | translate }}
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label class="pull-left">
+                        {{ CM.app_id + '.AUTO_FINAL_QUANTITY' | translate }}
                     </label>
-				</div>
-				<div class="col-sm-10" ng-init="getOptions('finalQtyPrecedenceRules')">
-					<select class="form-control admin-precedence-select" name="finalQty-ord-1" data-ord="1" ng-change="precedenceRuleChanged('finalQty', '1')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_1" id="finalQty-ord-1" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="finalQty-ord-2" data-ord="2" ng-change="precedenceRuleChanged('finalQty', '2')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_2" id="finalQty-ord-2" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
-					<select class="form-control admin-precedence-select" name="finalQty-ord-3" data-ord="3" ng-change="precedenceRuleChanged('finalQty', '3')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_3" id="finalQty-ord-3" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> 
-				</div>
-			</div>
-		</div>
+                </div>
+                <div class="col-sm-10" ng-init="getOptions('finalQtyPrecedenceRules')">
+                    <select class="form-control admin-precedence-select" name="finalQty-ord-1" data-ord="1" ng-change="precedenceRuleChanged('finalQty', '1')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_1" id="finalQty-ord-1" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="finalQty-ord-2" data-ord="2" ng-change="precedenceRuleChanged('finalQty', '2')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_2" id="finalQty-ord-2" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> <i class="fa fa-angle-right" style="float:left; line-height:32px"></i>
+                    <select class="form-control admin-precedence-select" name="finalQty-ord-3" data-ord="3" ng-change="precedenceRuleChanged('finalQty', '3')" ng-model="formValues.temp.finalQtyPrecedence.finalOrd_3" id="finalQty-ord-3" ng-options="item as item.name for item in options['FinalQtyPick'] track by item.id"></select> 
+                </div>
+            </div>
+        </div>
 
     </div>
     <br/>
@@ -237,7 +237,6 @@
             <div class="form-group row">
                 <label>
                     ROB Before delivery 
-                    {{options}}
                 </label>
                 <div class="input-group form_input form_input_robBeforeDelivery" ng-init='options.Timezone ? return : CM.getOptions({"Name": "ConfigurationToleranceType", "Type": "dropdown", "masterSource": "ConfigurationToleranceType"})'>
                     <select name="robBeforeDelivery" class="form-control bs-select changeIT" ng-required="true" id="robBeforeDelivery" ng-options="item as item.name for item in options.ConfigurationToleranceType track by item.id" ng-model="formValues.delivery.robBeforeDelivery"></select>
