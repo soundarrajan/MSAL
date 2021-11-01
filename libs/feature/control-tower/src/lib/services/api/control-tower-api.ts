@@ -25,7 +25,7 @@ export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityClaimsList = () =>
     `api/controlTower/getQuantityControlList`;
   export const getControlTowerQuantityClaimsListExportUrl = () =>
-    `api/controlTower/getQuantityControlList/export`;
+    `api/controlTower/exportQuantityControlList`;
 }
 
 @Injectable({
