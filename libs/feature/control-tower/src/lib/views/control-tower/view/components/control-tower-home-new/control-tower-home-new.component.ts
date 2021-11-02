@@ -16,14 +16,14 @@ import { ActivatedRoute } from '@angular/router';
 export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   @ViewChild('controlViewElem') controlViewRef!: MatSelectChange;
   public showQuality: boolean = false;
-  public showQuantity: boolean = true;
+  public showQuantity: boolean = false;
   public showResidue: boolean = false;
   public theme;
   public newScreen = true;
   selected: string;
 
   selectedVal: string = 'labs';
-  selectedVal2: string = 'claims';
+  selectedVal2: string = 'differences';
   selectedVal3: string = 'differences';
 
   constructor(private route: ActivatedRoute) {
@@ -67,7 +67,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
       }
     } else {
       // load default landing screen quantity view, if there is no default view based on user
-      this.selected = 'quantity';
+      this.selected = 'quality';
     }
   }
 
