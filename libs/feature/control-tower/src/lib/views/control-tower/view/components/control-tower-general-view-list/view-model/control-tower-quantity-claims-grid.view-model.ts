@@ -384,6 +384,13 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
         filter: 7,
         filterTo: 14
       };
+    } else if (statusName == '15+ Days') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'greaterThan',
+        filter: 15,
+        filterTo: null
+      };
     } else {
       grid['noResponse'] = null;
     }
@@ -408,7 +415,9 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
             this.toggle714DaysFilter = !this.toggle714DaysFilter;
             this.toggleNewFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'in spec') {
+          }
+        } else if ((<any>value).type == 'greaterThan') {
+          if ((<any>value).filter === 15) {
             this.toggleGreaterThan15DaysFilter = !this
               .toggleGreaterThan15DaysFilter;
             this.toggleNewFilter = true;
