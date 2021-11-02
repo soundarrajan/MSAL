@@ -398,7 +398,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
     <div
       *ngIf="params.type == 'mat-check-box'"
       style="height:100%;display:flex;align-items:center;justify-content:center"
-      [matTooltip]="params.value == 'preferred' ? 'Preffered product' : null"
+      [matTooltip]="params.data.preferredProducts.includes(params.productId) ? 'Preferred product' : null"
       matTooltipClass="lightTooltip"
     >
       <!--<input type="checkbox" (click)="checkedHandler($event)"[checked]="params.value"/>-->
@@ -406,7 +406,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
         [checked]="params.value"
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
-        [ngClass]="params.value == 'preferred' ? 'darkBorder' : ''"
+        [ngClass]="params.data.preferredProducts.includes(params.productId) ? 'darkBorder' : ''"
       ></mat-checkbox>
     </div>
 
@@ -896,5 +896,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return;
       }
     });
+  }
+
+  isPreferredProduct(params : any){
+    if(params.productId && params.data && params.data.preferredProducts){
+      return params.data.preferredProducts.includes(params.productId);
+    }
+    return false;
   }
 }
