@@ -1,7 +1,11 @@
-﻿commit 28de65f667a779b9df6917fd3353ef359753c03d
+﻿commit d2009618a908312685b3ed6a41126f86e4b9f1bf
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Nov 2 12:42:54 2021 +0000
+Date:   Tue Nov 2 13:30:06 2021 +0000
 
-    Merged PR 14450: Merged control_tower branch in master
+    Merged PR 14455: Added error   'You do not have authorization to perform this action.' if user doesn't have permission in control tower page
+    
+    Added error   'You do not have authorization to perform this action.' if user doesn't have permission in control tower page
+    
+    Related work items: #33650
 
 branch: master
