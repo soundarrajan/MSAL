@@ -307,7 +307,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-rob-list-grid-1',
+      'control-tower-quantity-rob-list-grid-2',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(

@@ -63,49 +63,94 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     }
   }
 
-  addedLastSevenDaysByDefault() {
+  addedFilterByFromAndToByDefault() {
     let gridIds = [
-      'control-tower-quantity-rob-list-grid-1',
+      'control-tower-quantity-rob-list-grid-2',
       'control-tower-quantity-supply-list-grid-1'
     ];
+    let last6MonthsOfDataGridIds = [
+      'control-tower-quantity-claims-list-grid-5'
+    ];
     if (gridIds.indexOf(this.id) != -1) {
-      for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
-        if (this.filterComponent.filterPresets[i].filterModels) {
-          let filters = this.filterComponent.filterPresets[i].filterModels[
-            this.id
-          ];
-          if (filters) {
-            for (let [key, value] of Object.entries(filters)) {
-              if (key == 'createdOn') {
-                return;
-              }
+      this.last7MonthsOfData();
+    } else if (last6MonthsOfDataGridIds.indexOf(this.id) != -1) {
+      this.last6MonthsOfData();
+    }
+  }
+
+  last7MonthsOfData() {
+    for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
+      if (this.filterComponent.filterPresets[i].filterModels) {
+        let filters = this.filterComponent.filterPresets[i].filterModels[
+          this.id
+        ];
+        if (filters) {
+          for (let [key, value] of Object.entries(filters)) {
+            if (key == 'createdOn') {
+              return;
             }
-            this.filterComponent.filterPresets[i].filterModels[this.id][
-              'createdOn'
-            ] = {
+          }
+          this.filterComponent.filterPresets[i].filterModels[this.id][
+            'createdOn'
+          ] = {
+            dateFrom: moment()
+              .subtract(7, 'months')
+              .format('YYYY-MM-DD'),
+            dateTo: moment().format('YYYY-MM-DD'),
+            type: 'inRange',
+            filterType: 'date'
+          };
+        } else {
+          this.filterComponent.filterPresets[i].filterModels[this.id] = {
+            createdOn: {
               dateFrom: moment()
                 .subtract(7, 'months')
                 .format('YYYY-MM-DD'),
               dateTo: moment().format('YYYY-MM-DD'),
               type: 'inRange',
               filterType: 'date'
-            };
-          } else {
-            this.filterComponent.filterPresets[i].filterModels[this.id] = {
-              createdOn: {
-                dateFrom: moment()
-                  .subtract(7, 'months')
-                  .format('YYYY-MM-DD'),
-                dateTo: moment().format('YYYY-MM-DD'),
-                type: 'inRange',
-                filterType: 'date'
-              }
-            };
-          }
+            }
+          };
         }
       }
+    }
+  }
 
-      console.log(this.filterComponent.filterPresets);
+  last6MonthsOfData() {
+    for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
+      if (this.filterComponent.filterPresets[i].filterModels) {
+        let filters = this.filterComponent.filterPresets[i].filterModels[
+          this.id
+        ];
+        if (filters) {
+          for (let [key, value] of Object.entries(filters)) {
+            if (key == 'createdDate') {
+              return;
+            }
+          }
+          this.filterComponent.filterPresets[i].filterModels[this.id][
+            'createdDate'
+          ] = {
+            dateFrom: moment()
+              .subtract(6, 'months')
+              .format('YYYY-MM-DD'),
+            dateTo: moment().format('YYYY-MM-DD'),
+            type: 'inRange',
+            filterType: 'date'
+          };
+        } else {
+          this.filterComponent.filterPresets[i].filterModels[this.id] = {
+            createdDate: {
+              dateFrom: moment()
+                .subtract(6, 'months')
+                .format('YYYY-MM-DD'),
+              dateTo: moment().format('YYYY-MM-DD'),
+              type: 'inRange',
+              filterType: 'date'
+            }
+          };
+        }
+      }
     }
   }
 
@@ -123,7 +168,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           this.filterComponent.hasActiveFilterPresets = filterPresets.some(
             item => !item.isDefault && !item.isClear
           );
-          this.addedLastSevenDaysByDefault();
+          this.addedFilterByFromAndToByDefault();
         }),
         finalize(() => {
           this.filterComponent.isLoading = false;

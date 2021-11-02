@@ -1,7 +1,11 @@
-﻿commit f8d4f75519226aba60914553e7a09376f5deca9a
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue Nov 2 06:48:17 2021 +0000
+﻿commit 903ff558210ced3753a44fcc98e8959c446b0085
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Nov 2 07:48:15 2021 +0000
 
-    Updated environment.prod.ts
+    Merged PR 14425: Added export endpoint on quantity claims view list
+    
+    Fixed quantity claims list export
+    
+    Related work items: #33650
 
 branch: master
