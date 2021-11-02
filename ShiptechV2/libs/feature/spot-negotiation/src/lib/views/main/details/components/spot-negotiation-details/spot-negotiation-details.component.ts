@@ -231,7 +231,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           let _this = this;
           // Do calculation here;
           updatedRow = this.formatRowData(updatedRow, colDef['product'], colDef.field, newValue);
-          
+
           // Update the store
           this.store.dispatch(new EditLocationRow(updatedRow));
           // Save to the cloud
@@ -304,7 +304,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     return row
   }
-  
+
   rowSelected(event){
       let displayRowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
       let selectedNodes = this.gridOptions_counterparty.api.getSelectedNodes();
@@ -377,7 +377,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       (product.requestGroupProducts
         ? product.requestGroupProducts.targetPrice
         : 0);
-        productDetails.targetDifference = product.requestGroupProducts.targetPrice == 0 ? 0 : productDetails.targetDifference;    
+        productDetails.targetDifference = product.requestGroupProducts.targetPrice == 0 ? 0 : productDetails.targetDifference;
 
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
     const currentLocation = this.locations.filter(
@@ -388,7 +388,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     );
 
     let futureRow = this.setRowProductDetails(row, productDetails, product.id);
-    
+
     let calcTotalOffer = 0;
     currentLocationAllProductsIds.map(id => {
       calcTotalOffer += Number(this.getRowProductDetails(futureRow, id).price)
@@ -478,13 +478,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           // checkboxSelection: true,
           resizable: false,
           suppressMovable: true,
-            headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
-          cellClass:
-            'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
-
+          headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+          cellClass: 'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'mat-check-box' },
-
+          cellRendererParams: { type: 'mat-check-box', productId: product.productId },
         },
         {
           headerName: 'Offer price',
@@ -796,7 +793,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       7;
   }
 
-  
+
   formatRowselected(row, value) {
     if(value){
       row.isSelected = false;
