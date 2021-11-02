@@ -1,7 +1,9 @@
-﻿commit 8c4bdb5f1abefc40345815410ecaa0dcdcce8027
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 1 17:12:24 2021 +0200
+﻿commit 73d4942903e141f28b962b98b11eae38db0d0670
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Nov 2 06:35:34 2021 +0000
 
-    Added export on quantity claims view
+    Merged PR 14433: #NoJira - pmg config temporarily has updated
+    
+    #NoJira - pmg config temporarily has updated
 
 branch: master
