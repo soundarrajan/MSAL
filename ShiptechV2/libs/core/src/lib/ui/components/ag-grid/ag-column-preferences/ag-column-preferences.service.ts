@@ -98,13 +98,28 @@ export class AgColumnPreferencesService implements OnDestroy {
         debounceTime(100),
         // Note: gridOptions may already by uninitializing
         filter(() => !!gridOptions.columnApi),
-        tap(() =>
-          this._savePreferences.next({
-            gridName,
-            columnState: gridOptions.columnApi.getColumnState(),
-            sortState: gridOptions.api.getSortModel()
-          })
-        )
+        tap(() => {
+          if (gridName == 'control-tower-quantity-claims-list-grid-7') {
+            this._savePreferences.next({
+              gridName,
+              columnState: gridOptions.columnApi.getColumnState(),
+              sortState: gridOptions.api.getSortModel().length
+                ? gridOptions.api.getSortModel()
+                : gridOptions.api.setSortModel([
+                    {
+                      colId: 'createdDate',
+                      sort: 'desc'
+                    }
+                  ])
+            });
+          } else {
+            this._savePreferences.next({
+              gridName,
+              columnState: gridOptions.columnApi.getColumnState(),
+              sortState: gridOptions.api.getSortModel()
+            });
+          }
+        })
       )
       .subscribe();
 
@@ -140,12 +155,14 @@ export class AgColumnPreferencesService implements OnDestroy {
       // filter(p => !!p),
       tap(preferences => {
         if (!preferences) {
-          options.api.setSortModel([
-            {
-              colId: 'createdDate',
-              sort: 'desc'
-            }
-          ]);
+          if (gridName == 'control-tower-quantity-claims-list-grid-7') {
+            options.api.setSortModel([
+              {
+                colId: 'createdDate',
+                sort: 'desc'
+              }
+            ]);
+          }
         } else {
           const columnsState = preferences.columnState;
           const sortState = preferences.sortState;
