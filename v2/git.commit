@@ -1,9 +1,7 @@
-﻿commit 73d4942903e141f28b962b98b11eae38db0d0670
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Nov 2 06:35:34 2021 +0000
+﻿commit f8d4f75519226aba60914553e7a09376f5deca9a
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Tue Nov 2 06:48:17 2021 +0000
 
-    Merged PR 14433: #NoJira - pmg config temporarily has updated
-    
-    #NoJira - pmg config temporarily has updated
+    Updated environment.prod.ts
 
 branch: master
