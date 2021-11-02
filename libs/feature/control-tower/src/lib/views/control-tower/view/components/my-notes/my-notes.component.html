@@ -96,9 +96,16 @@
       Results
       <div class="close-icon" (click)="closeFilter()"></div>
     </div>
-    <!-- <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Start searching for a hero by id or name or country"> -->
-    <!-- <div class="filter-data">
-      <div
+    <input
+      class="form-control"
+      type="text"
+      name="search"
+      [(ngModel)]="searchText"
+      autocomplete="off"
+      placeholder="&#61442;  Start searching for a hero by id or name or country"
+    />
+    <div class="filter-data">
+      <!-- <div
         class="titleBlockx"
         *ngFor="let content of allContent | filter: searchText; let i = index"
         [ngClass]="selectedSearchIndex === i ? 'select' : ''"
@@ -107,8 +114,18 @@
         <div [innerHTML]="content.date | highlight: searchText"></div>
         <span [innerHTML]="content.titleHead | highlight: searchText"></span>
         <p [innerHTML]="content.title | highlight: searchText"></p>
+      </div> -->
+      <div
+        class="titleBlockx"
+        *ngFor="let content of allContent; let i = index"
+        [ngClass]="selectedSearchIndex === i ? 'select' : ''"
+        (click)="selectFilterTitle(content, i)"
+      >
+        <div [innerHTML]="content.date | highlight: searchText"></div>
+        <span [innerHTML]="content.titleHead | highlight: searchText"></span>
+        <p [innerHTML]="content.title | highlight: searchText"></p>
       </div>
-    </div> -->
+    </div>
   </div>
   <div class="notes-section" *ngIf="!isFiltered">
     <div class="header-section">
