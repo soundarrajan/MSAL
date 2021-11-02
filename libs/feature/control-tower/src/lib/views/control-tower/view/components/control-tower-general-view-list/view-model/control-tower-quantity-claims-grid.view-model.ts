@@ -370,11 +370,23 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   public filterByStatus(statusName: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['status'] = {
-      filterType: 'text',
-      type: 'equals',
-      filter: statusName
-    };
+    if (statusName == 'New') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'lessThan',
+        filter: 7,
+        filterTo: null
+      };
+    } else if (statusName == '7-14 Days') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'inRange',
+        filter: 7,
+        filterTo: 14
+      };
+    } else {
+      grid['noResponse'] = null;
+    }
     this.gridApi.setFilterModel(grid);
   }
 
@@ -384,13 +396,15 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     this.toggleGreaterThan15DaysFilter = true;
     const grid = this.gridApi.getFilterModel();
     for (let [key, value] of Object.entries(grid)) {
-      if (key == 'status') {
-        if ((<any>value).type == 'equals') {
-          if ((<any>value).filter.toLowerCase() === 'new') {
+      if (key == 'noResponse') {
+        if ((<any>value).type == 'lessThan') {
+          if ((<any>value).filter === 7) {
             this.toggleNewFilter = !this.toggleNewFilter;
             this.toggle714DaysFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'verified') {
+          }
+        } else if ((<any>value).type == 'inRange') {
+          if ((<any>value).filter === 7 && (<any>value).filterTo === 14) {
             this.toggle714DaysFilter = !this.toggle714DaysFilter;
             this.toggleNewFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
@@ -417,13 +431,8 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const grid1 = this.gridApi.getSortModel();
-    // this.gridApi.setSortModel([
-    //   {
-    //     colId: 'createdDate',
-    //     sort: 'asc'
-    //   }
-    // ]);
+    const grid1 = this.gridApi.getFilterModel();
+
     console.log(grid1);
     this.checkStatusAvailable();
     this.paramsServerSide = params;
