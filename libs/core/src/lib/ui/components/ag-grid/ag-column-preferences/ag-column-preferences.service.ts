@@ -99,26 +99,11 @@ export class AgColumnPreferencesService implements OnDestroy {
         // Note: gridOptions may already by uninitializing
         filter(() => !!gridOptions.columnApi),
         tap(() => {
-          if (gridName == 'control-tower-quantity-claims-list-grid-7') {
-            this._savePreferences.next({
-              gridName,
-              columnState: gridOptions.columnApi.getColumnState(),
-              sortState: gridOptions.api.getSortModel().length
-                ? gridOptions.api.getSortModel()
-                : gridOptions.api.setSortModel([
-                    {
-                      colId: 'createdDate',
-                      sort: 'desc'
-                    }
-                  ])
-            });
-          } else {
-            this._savePreferences.next({
-              gridName,
-              columnState: gridOptions.columnApi.getColumnState(),
-              sortState: gridOptions.api.getSortModel()
-            });
-          }
+          this._savePreferences.next({
+            gridName,
+            columnState: gridOptions.columnApi.getColumnState(),
+            sortState: gridOptions.api.getSortModel()
+          });
         })
       )
       .subscribe();
