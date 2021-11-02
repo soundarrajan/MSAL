@@ -16,6 +16,9 @@ export class LocPanDataComponent implements OnInit {
   selectedETATime: any;
   ETASelectTime: any = '12:12';
   ETAdatetime = new FormControl(new Date());
+  ETBdatetime = new FormControl(new Date());
+  ETDdatetime = new FormControl(new Date());
+
 
   @Input() reqLocation: any;
 
@@ -32,6 +35,8 @@ export class LocPanDataComponent implements OnInit {
   ngOnInit(): void {
     if(this.reqLocation.eta){
       this.ETAdatetime = new FormControl(new Date(this.reqLocation.eta));
+      this.ETBdatetime = new FormControl(new Date(this.reqLocation.etb));
+      this.ETDdatetime = new FormControl(new Date(this.reqLocation.etd));
     }
     this.title = this.reqLocation.locationName;
     this.deliveryFrom = this.reqLocation.deliveryFrom;

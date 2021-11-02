@@ -10,37 +10,78 @@
     <span class="title">View location cost</span>
     <span class="eye-icon"></span>
   </div>
-  <div class="terminal">
+  <!-- <div class="terminal">
     <span class="title">Terminal:</span>
     <div class="location w-180" style="margin-bottom: 3px;">
       <div id="custom-form-field">
         <mat-form-field class="without-search terminal-select" appearance="none">
           <mat-select
-
             disableOptionCentering
             disabled
             [(ngModel)]="terminal"
-            (click)="$event.stopPropagation()"
-          >
+            (click)="$event.stopPropagation()">
             <mat-option value="{{ terminal }}">{{ terminal }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
-  </div>
-
-  <!-- Eta -->
-  <div class="date">
-    <span class="title">ETA:</span>
-    <span class="text">{{ formatDate(ETAdatetime.value) }}</span>
-  </div>
+  </div> -->
 
   <div class="labels">
     <div class="content">
-      <span class="title">Delivery Window</span>
-      <span class="text"
-        >{{ formatDate(deliveryFrom) }} - {{ formatDate(deliveryTo) }}</span
-      >
+      <span class="title">Terminal:</span>
+      <span class="text" *ngIf='terminal'>{{ terminal }}</span>
+      <span class="text" *ngIf='!terminal'>--</span>
+    </div>
+  </div>
+
+  <!-- Eta -->
+  <div class="date" [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger">
+    <span class="title">ETA:</span>
+    <span class="text">{{ formatDate(ETAdatetime.value) }}</span>
+    <span class="dropdown-icon"></span>
+  </div>
+  <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-eta" xPosition="after"
+    style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;">
+    <div>
+      <div class="more-options-menu-inv no-border p-lr-0">
+        <div class="date" (click)="ETASelected()">
+          <span class="title">ETA:</span>
+          <!-- <div class="by-datePicker">
+            <div id="custom-form-field">
+              <app-date-time-toggle (onDatePicked)="doSomething($event)"></app-date-time-toggle>
+            </div>
+          </div> -->
+          <span class="text">{{ formatDate(ETAdatetime.value) }}</span>
+        </div>
+        <div class="date" (click)="ETASelected()">
+          <span class="title">ETB:</span>
+          <!-- <div class="by-datePicker">
+            <div id="custom-form-field">
+              <app-date-time-toggle></app-date-time-toggle>
+            </div>
+          </div> -->
+          <span class="text">{{ formatDate(ETBdatetime.value) }}</span>
+        </div>
+        <div class="date" (click)="ETASelected()">
+          <span class="title">ETD:</span>
+          <!-- <div class="by-datePicker">
+            <div id="custom-form-field">
+              <app-date-time-toggle></app-date-time-toggle>
+            </div>
+          </div> -->
+          <span class="text">{{ formatDate(ETDdatetime.value) }}</span>
+        </div>
+      </div>
+    </div>
+  </mat-menu>
+
+
+  <div class="labels">
+    <div class="content">
+      <span class="title">Delivery Window:</span>
+      <span class="text" *ngIf='deliveryFrom'>{{ formatDate(deliveryFrom) }} - {{ formatDate(deliveryTo) }}</span>
+      <span class="text" *ngIf='!deliveryFrom'>--</span>
     </div>
   </div>
 </div>
