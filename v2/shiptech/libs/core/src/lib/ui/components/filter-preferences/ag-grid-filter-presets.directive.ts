@@ -69,7 +69,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
       'control-tower-quantity-supply-list-grid-1'
     ];
     let last6MonthsOfDataGridIds = [
-      'control-tower-quantity-claims-list-grid-5'
+      'control-tower-quantity-claims-list-grid-7'
     ];
     if (gridIds.indexOf(this.id) != -1) {
       this.last7MonthsOfData();

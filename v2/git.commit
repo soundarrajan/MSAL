@@ -1,8 +1,8 @@
-﻿commit 74ab526d717b00a5d19516aa35082cfd1ead8ca4
+﻿commit 28d2d51985d8e924e96775b447bc55ec0f0d9d1e
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Nov 2 09:48:05 2021 +0000
+Date:   Tue Nov 2 12:04:07 2021 +0000
 
-    Merged PR 14443:  Added filter for New, 7-14 Days, 15+ Days from the header of quantity claims list
+    Merged PR 14449:  Loaded last 6 months by default and added Created Date - from Descending to Ascending order sorting
     
     Related work items: #33650
 

@@ -48,9 +48,8 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   public noOf714: number;
   public noOfNew: number;
 
-  public searchText: string;
   public exportUrl: string;
-  public newFilterSelected: boolean = false;
+
   public fromDate = new FormControl(
     moment()
       .subtract(6, 'months')
@@ -70,7 +69,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   gridOptions: GridOptions = {
     enableColResize: true,
     suppressRowClickSelection: true,
-    // suppressCellSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -84,7 +82,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
     multiSortKey: 'ctrl',
 
-    //enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: (data: IControlTowerQuantityClaimsItemDto) =>
       data?.id?.toString() ?? Math.random().toString(),
@@ -93,9 +90,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       resizable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams
-    },
-    onGridReady: params => {
-      params.api.sizeColumnsToFit();
     }
   };
 
@@ -308,7 +302,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-list-grid-5',
+      'control-tower-quantity-claims-list-grid-7',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -337,11 +331,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       this.createdByCol,
       this.noResponseCol
     ];
-  }
-
-  public onSearch(value: string): void {
-    this.searchText = value;
-    this.gridApi.purgeServerSideCache();
   }
 
   public filterGridNew(statusName: string): void {
