@@ -116,7 +116,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           matTooltip="Temporary suspended counterparty"
           matTooltipClass="lightTooltip"
         ></span>
-        <span class="m-l-7">{{ params.value }}</span>
+        <span class="m-l-7" matTooltip="{{params.value}}">{{ params.value }}</span>
         <span class="sticky-icon">
           <!--span class="hover-lookup-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger"></span>-->
           <span
@@ -898,10 +898,4 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
 
-  isPreferredProduct(params : any){
-    if(params.productId && params.data && params.data.preferredProducts){
-      return params.data.preferredProducts.includes(params.productId);
-    }
-    return false;
-  }
 }
