@@ -1,9 +1,7 @@
-﻿commit 28d2d51985d8e924e96775b447bc55ec0f0d9d1e
+﻿commit 28de65f667a779b9df6917fd3353ef359753c03d
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Nov 2 12:04:07 2021 +0000
+Date:   Tue Nov 2 12:42:54 2021 +0000
 
-    Merged PR 14449:  Loaded last 6 months by default and added Created Date - from Descending to Ascending order sorting
-    
-    Related work items: #33650
+    Merged PR 14450: Merged control_tower branch in master
 
 branch: master
