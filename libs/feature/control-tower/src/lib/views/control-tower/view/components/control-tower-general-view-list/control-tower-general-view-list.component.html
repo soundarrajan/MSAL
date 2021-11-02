@@ -109,7 +109,12 @@
         <div class="count">{{ thirdStatusCount$ | async }}</div>
       </div>
     </div>
-    <div class="by-action" *ngIf="selectorType == 'Quantity Claims'">
+    <div
+      class="by-action"
+      *ngIf="
+        selectorType == 'Quantity Claims' || selectorType == 'Quality Claims'
+      "
+    >
       <span class="filter-by" *ngIf="newScreen">Filter By:</span>
       <div
         class="action"

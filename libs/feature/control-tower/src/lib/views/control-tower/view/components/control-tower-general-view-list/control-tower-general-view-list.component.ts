@@ -35,6 +35,9 @@ import { SelectorComponent } from '@shiptech/core/ui/components/master-selector/
 import { ControlTowerQuantitySupplyDifferenceListGridViewModel } from './view-model/control-tower-quantity-supply-difference-grid.view-model';
 import { ControlTowerQuantitySupplyDifferenceListColumnServerKeys } from './list-columns/control-tower-quantity-supply-difference-list.columns';
 import { ControlTowerQuantityClaimsListGridViewModel } from './view-model/control-tower-quantity-claims-grid.view-model';
+import { ControlTowerQualityClaimsListGridViewModel } from './view-model/control-tower-quality-claims-grid.view-model';
+import { ControlTowerQualityClaimsListColumnServerKeys } from './list-columns/control-tower-quality-claims-list.columns';
+import { ControlTowerQuantityClaimsListColumnServerKeys } from './list-columns/control-tower-quantity-claims-list.columns';
 
 export const PICK_FORMATS = {
   display: {
@@ -92,6 +95,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     ControlTowerQuantityRobDifferenceListGridViewModel,
     ControlTowerQuantitySupplyDifferenceListGridViewModel,
     ControlTowerQuantityClaimsListGridViewModel,
+    ControlTowerQualityClaimsListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
@@ -175,7 +179,14 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         this.gridViewModel = this.injector.get(
           ControlTowerQuantityClaimsListGridViewModel
         );
-        this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
+        this.controlTowerListServerKeys = ControlTowerQuantityClaimsListColumnServerKeys;
+        break;
+      }
+      case 'Quality Claims': {
+        this.gridViewModel = this.injector.get(
+          ControlTowerQualityClaimsListGridViewModel
+        );
+        this.controlTowerListServerKeys = ControlTowerQualityClaimsListColumnServerKeys;
         break;
       }
 

@@ -11,7 +11,8 @@ import {
   IGetControlTowerListRequest,
   IGetControlTowerQuantityClaimsListResponse,
   IGetControlTowerQuantityRobDifferenceListResponse,
-  IGetControlTowerQuantitySupplyDifferenceListResponse
+  IGetControlTowerQuantitySupplyDifferenceListResponse,
+  IGetControlTowerQualityClaimsListResponse
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
@@ -26,6 +27,10 @@ export namespace ControlTowerApiPaths {
     `api/controlTower/getQuantityControlList`;
   export const getControlTowerQuantityClaimsListExportUrl = () =>
     `api/controlTower/exportQuantityControlList`;
+  export const getControlTowerQualityClaimsListUrl = () =>
+    `/api/controlTower/getQualityControlList`;
+  export const getControlTowerQualityClaimsListExportUrl = () =>
+    `/api/controlTower/exportQualityControlList`;
 }
 
 @Injectable({
@@ -76,6 +81,7 @@ export class ControlTowerApi implements IControlTowerApiService {
     }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceListExportUrl()}`;
   }
 
+  @ObservableException()
   getControlTowerQuantityClaimsList(
     request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantityClaimsListResponse> {
@@ -90,6 +96,24 @@ export class ControlTowerApi implements IControlTowerApiService {
     return `${
       this._claimsApiUrl
     }/${ControlTowerApiPaths.getControlTowerQuantityClaimsListExportUrl()}`;
+  }
+
+  //control tower quality claims api service
+  @ObservableException()
+  getControlTowerQualityClaimsList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerQualityClaimsListResponse> {
+    return this.http.post<IGetControlTowerQualityClaimsListResponse>(
+      `${
+        this._claimsApiUrl
+      }/${ControlTowerApiPaths.getControlTowerQualityClaimsListUrl()}`,
+      { payload: request }
+    );
+  }
+  getControlTowerQualityClaimsListExportUrl(): string {
+    return `${
+      this._claimsApiUrl
+    }/${ControlTowerApiPaths.getControlTowerQualityClaimsListExportUrl()}`;
   }
 }
 
