@@ -19,9 +19,9 @@ export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityRobDifferenceListExportUrl = () =>
     `api/labs/export`;
   export const getControlTowerQuantitySupplyDifferenceList = () =>
-    `api/labs/list`;
+    `api/controlTower/supplyDifferenceList`;
   export const getControlTowerQuantitySupplyDifferenceListExportUrl = () =>
-    `api/labs/export`;
+    `api/controlTower/supplyDifferenceList/export`;
   export const getControlTowerQuantityClaimsList = () =>
     `api/controlTower/getQuantityControlList`;
   export const getControlTowerQuantityClaimsListExportUrl = () =>
@@ -33,7 +33,7 @@ export namespace ControlTowerApiPaths {
 })
 export class ControlTowerApi implements IControlTowerApiService {
   @ApiCallUrl()
-  private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_LABS;
+  private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_ROB;
 
   @ApiCallUrl()
   private _claimsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_CLAIMS;
