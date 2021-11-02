@@ -1,11 +1,7 @@
-﻿commit 903ff558210ced3753a44fcc98e8959c446b0085
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Nov 2 07:48:15 2021 +0000
+﻿commit 3edc8258638cf643640150867786cc524afe9018
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Tue Nov 2 10:28:25 2021 +0200
 
-    Merged PR 14425: Added export endpoint on quantity claims view list
-    
-    Fixed quantity claims list export
-    
-    Related work items: #33650
+    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
 
 branch: master

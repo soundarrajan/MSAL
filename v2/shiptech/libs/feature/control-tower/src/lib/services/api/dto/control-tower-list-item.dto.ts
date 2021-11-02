@@ -27,8 +27,9 @@ export interface IControlTowerQuantitySupplyDifferenceItemDto {
   claimsRaised: boolean;
   isDeleted: boolean;
   productType: IDisplayLookupDto;
+  progress: IDisplayLookupDto;
   id: number;
-  deliveryProductId: number;
+  measuredDeliveryQty: number;
   totalCount: number;
   buyer: IDisplayLookupDto;
   status: IDisplayLookupDto;

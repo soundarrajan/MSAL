@@ -8,8 +8,10 @@ export enum ControlTowerQuantitySupplyDifferenceListColumns {
   claimsRaised = 'claimsRaised',
   isDeleted = 'isDeleted',
   productType = 'productType',
+  progress = 'progress',
+  bdnQuantity = 'bdnQuantity',
   id = 'id',
-  deliveryProductId = 'deliveryProductId',
+  measuredDeliveryQty = 'measuredDeliveryQty',
   totalCount = 'totalCount',
   buyer = 'buyer',
   status = 'status'
@@ -24,8 +26,10 @@ export enum ControlTowerQuantitySupplyDifferenceListExportColumns {
   claimsRaised = 'claimsRaised',
   isDeleted = 'isDeleted',
   productType = 'productType.name',
+  progress = 'progress.name',
+  bdnQuantity = 'bdnQuantity',
   id = 'id',
-  deliveryProductId = 'deliveryProductId',
+  measuredDeliveryQty = 'measuredDeliveryQty',
   totalCount = 'totalCount',
   buyer = 'buyer.name',
   status = 'status.name'
@@ -41,8 +45,10 @@ export enum ControlTowerQuantitySupplyDifferenceListColumnsLabels {
   claimsRaised = 'Email To Vessel',
   isDeleted = 'Vessel To Watch',
   productType = 'Product Type',
+  progress = 'Progress',
   id = 'Log Book ROB',
-  deliveryProductId = 'Measured ROB',
+  bdnQuantity = 'BDN Quantity',
+  measuredDeliveryQty = 'Measured ROB',
   totalCount = 'Difference in Qty',
   buyer = 'Qty UOM',
   status = 'Progress'
@@ -59,17 +65,15 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantitySupplyDifferenceListColumns.order]: 'order_id',
   [ControlTowerQuantitySupplyDifferenceListColumns.port]: 'port',
   [ControlTowerQuantitySupplyDifferenceListColumns.vessel]: 'vessel_name',
-  [ControlTowerQuantitySupplyDifferenceListColumns.deliveryDate]:
-    'deliveryDate',
-  [ControlTowerQuantitySupplyDifferenceListColumns.createdOn]: 'createdOn',
-  [ControlTowerQuantitySupplyDifferenceListColumns.claimsRaised]:
-    'claimsRaised',
+  [ControlTowerQuantitySupplyDifferenceListColumns.deliveryDate]: 'deliveryDate',
+  [ControlTowerQuantitySupplyDifferenceListColumns.createdOn]: 'eta',
+  [ControlTowerQuantitySupplyDifferenceListColumns.claimsRaised]: 'claimsRaised',
   [ControlTowerQuantitySupplyDifferenceListColumns.isDeleted]: 'isDeleted',
-  [ControlTowerQuantitySupplyDifferenceListColumns.productType]:
-    'producttype_name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.productType]: 'producttype_name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'progress_name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]: 'bdnQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.id]: 'id',
-  [ControlTowerQuantitySupplyDifferenceListColumns.deliveryProductId]:
-    'deliveryProductId',
+  [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveryQty]: 'measuredDeliveryQty',
   [ControlTowerQuantitySupplyDifferenceListColumns.totalCount]: 'totalCount',
   [ControlTowerQuantitySupplyDifferenceListColumns.buyer]: 'buyer_name',
   [ControlTowerQuantitySupplyDifferenceListColumns.status]: 'status_name'

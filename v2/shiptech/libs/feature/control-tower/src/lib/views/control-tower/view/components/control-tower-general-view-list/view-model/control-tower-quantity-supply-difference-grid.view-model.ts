@@ -50,7 +50,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
-      .subtract(7, 'months')
+      .subtract(7, 'days')
       .format('YYYY-MM-DD')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
@@ -100,7 +100,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     IControlTowerQuantitySupplyDifferenceItemDto,
     ILookupDto
   > = {
-    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.order,
+    headerName: "Port Call",
     headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.order,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.order,
     field: model('order'),
@@ -135,16 +135,13 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   };
 
   etaCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto, string> = {
-    headerName:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryDate,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryDate,
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryDate,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryDate,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.deliveryDate,
     field: model('deliveryDate'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
-    dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.deliveryDate,
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.deliveryDate,
     width: 150
   };
 
@@ -225,7 +222,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     width: 150
   };
 
-  logBookROBCol: ITypedColDef<
+  bdnQuantity: ITypedColDef<
     IControlTowerQuantitySupplyDifferenceItemDto,
     number
   > = {
@@ -238,18 +235,18 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     width: 150
   };
 
-  measuredROBCol: ITypedColDef<
+  measuredDeliveryQty: ITypedColDef<
     IControlTowerQuantitySupplyDifferenceItemDto,
     number
   > = {
     headerName:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryProductId,
+      ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveryQty,
     headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryProductId,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.deliveryProductId,
+      ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveryQty,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveryQty,
     dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.deliveryProductId,
-    field: model('deliveryProductId'),
+      ControlTowerQuantitySupplyDifferenceListExportColumns.measuredDeliveryQty,
+    field: model('measuredDeliveryQty'),
     filter: 'agNumberColumnFilter',
     width: 150
   };
@@ -287,11 +284,11 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     IControlTowerQuantitySupplyDifferenceItemDto,
     IScheduleDashboardLabelConfigurationDto
   > = {
-    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.status,
-    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.status,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.status,
-    field: model('status'),
-    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.status,
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.progress,
+    field: model('progress'),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.name,
     cellRendererFramework: AGGridCellRendererAsyncStatusComponent,
     width: 150
@@ -341,8 +338,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       this.emailToVesselCol,
       this.vesselToWatchCall,
       this.productTypeCol,
-      this.logBookROBCol,
-      this.measuredROBCol,
+      this.measuredDeliveryQty,
       this.differenceInQtyCol,
       this.qtyUomCol,
       this.progressCol,
@@ -439,7 +435,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
 
   public filterByDate(from: string, to: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['createdOn'] = {
+    grid['surveyDate'] = {
       dateFrom: from,
       dateTo: to,
       type: 'inRange',
