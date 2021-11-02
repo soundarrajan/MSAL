@@ -27,23 +27,23 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designs
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
-import { IControlTowerQuantityClaimsItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
+import { IControlTowerQualityClaimsItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import {
-  ControlTowerQuantityClaimsListColumns,
-  ControlTowerQuantityClaimsListColumnServerKeys,
-  ControlTowerQuantityClaimsListColumnsLabels,
-  ControlTowerQuantityClaimsListExportColumns
-} from '../list-columns/control-tower-quantity-claims-list.columns';
+    ControlTowerQualityClaimsListColumns,
+    ControlTowerQualityClaimsListColumnsLabels,
+    ControlTowerQualityClaimsListColumnServerKeys,
+    ControlTowerQualityClaimsListExportColumns
+} from '../list-columns/control-tower-quality-claims-list.columns';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 
 function model(
-  prop: keyof IControlTowerQuantityClaimsItemDto
-): keyof IControlTowerQuantityClaimsItemDto {
+  prop: keyof IControlTowerQualityClaimsItemDto
+): keyof IControlTowerQualityClaimsItemDto {
   return prop;
 }
 
 @Injectable()
-export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewModel {
+export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewModel {
   public noOf15: number;
   public noOf714: number;
   public noOfNew: number;
@@ -53,7 +53,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
-      .subtract(6, 'months')
+      .subtract(7, 'months')
       .format('YYYY-MM-DD')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
@@ -86,7 +86,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
     //enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IControlTowerQuantityClaimsItemDto) =>
+    getRowNodeId: (data: IControlTowerQualityClaimsItemDto) =>
       data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
@@ -99,173 +99,139 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     }
   };
 
-  orderNoCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.order,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.order,
-    colId: ControlTowerQuantityClaimsListColumns.order,
+  orderNoCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.order,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.order,
+    colId: ControlTowerQualityClaimsListColumns.order,
     field: model('order'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.order,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.order,
     cellRendererFramework: AgCellTemplateComponent,
     width: 150
   };
 
-  labIdCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.lab,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.lab,
-    colId: ControlTowerQuantityClaimsListColumns.lab,
+  labIdCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.lab,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.lab,
+    colId: ControlTowerQualityClaimsListColumns.lab,
     field: model('lab'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.lab,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.lab,
     cellRendererFramework: AgCellTemplateComponent,
     width: 150
   };
 
-  claimNoCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.id,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.id,
-    colId: ControlTowerQuantityClaimsListColumns.id,
+  claimNoCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.id,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.id,
+    colId: ControlTowerQualityClaimsListColumns.id,
     field: model('id'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.id,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.id,
     cellRendererFramework: AgCellTemplateComponent,
     width: 150
   };
 
-  portCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.port,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.port,
-    colId: ControlTowerQuantityClaimsListColumns.port,
+  portCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.port,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.port,
+    colId: ControlTowerQualityClaimsListColumns.port,
     field: model('port'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.port,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.port,
     width: 200
   };
 
-  vesselCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.vessel,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.vessel,
-    colId: ControlTowerQuantityClaimsListColumns.vessel,
+  vesselCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.vessel,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.vessel,
+    colId: ControlTowerQualityClaimsListColumns.vessel,
     field: model('vessel'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.vessel,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.vessel,
     width: 200
   };
 
-  etaCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.eta,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.eta,
-    colId: ControlTowerQuantityClaimsListColumns.eta,
+  etaCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.eta,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.eta,
+    colId: ControlTowerQualityClaimsListColumns.eta,
     field: model('eta'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateUtc(params.value),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.eta,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.eta,
     width: 200
   };
 
-  productCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.product,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.product,
-    colId: ControlTowerQuantityClaimsListColumns.product,
+  productCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.product,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.product,
+    colId: ControlTowerQualityClaimsListColumns.product,
     field: model('product'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.product,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.product,
     width: 200
   };
 
-  sellerCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.seller,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.seller,
-    colId: ControlTowerQuantityClaimsListColumns.seller,
+  sellerCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.seller,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.seller,
+    colId: ControlTowerQualityClaimsListColumns.seller,
     field: model('seller'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.seller,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.seller,
     width: 200
   };
 
-  quantityShortageCol: ITypedColDef<
-    IControlTowerQuantityClaimsItemDto,
+  claimSubTypeCol: ITypedColDef<
+    IControlTowerQualityClaimsItemDto,
     number
   > = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
-    colId: ControlTowerQuantityClaimsListColumns.quantityShortage,
-    field: model('quantityShortage'),
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.claimSubType,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.claimSubType,
+    colId: ControlTowerQualityClaimsListColumns.claimSubType,
+    field: model('claimSubType'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityShortage,
-    width: 150
-  };
-
-  quantityUomCol: ITypedColDef<
-    IControlTowerQuantityClaimsItemDto,
-    ILookupDto
-  > = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.quantityUom,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.quantityUom,
-    colId: ControlTowerQuantityClaimsListColumns.quantityUom,
-    field: model('quantityUom'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityUom,
-    valueFormatter: params => params.value?.name,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.claimSubType,
     width: 150
   };
 
   estimatedSettlementAmountCol: ITypedColDef<
-    IControlTowerQuantityClaimsItemDto,
+    IControlTowerQualityClaimsItemDto,
     number
   > = {
     headerName:
-      ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
+      ControlTowerQualityClaimsListColumnServerKeys.estimatedSettlementAmount,
     headerTooltip:
-      ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
-    colId: ControlTowerQuantityClaimsListColumns.estimatedSettlementAmount,
+      ControlTowerQualityClaimsListColumnServerKeys.estimatedSettlementAmount,
+    colId: ControlTowerQualityClaimsListColumns.estimatedSettlementAmount,
     field: model('estimatedSettlementAmount'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.amount(params.value),
     dtoForExport:
-      ControlTowerQuantityClaimsListExportColumns.estimatedSettlementAmount,
+      ControlTowerQualityClaimsListExportColumns.estimatedSettlementAmount,
     width: 150
   };
 
-  orderPriceCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
-    colId: ControlTowerQuantityClaimsListColumns.orderPrice,
-    field: model('orderPrice'),
-    filter: 'agNumberColumnFilter',
-    valueFormatter: params => this.format.price(params.value),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.orderPrice,
-    width: 150
-  };
-
-  currencyCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.currency,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.currency,
-    colId: ControlTowerQuantityClaimsListColumns.currency,
-    field: model('currency'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.currency,
-    valueFormatter: params => params.value?.name,
-    width: 150
-  };
-
-  createdDateCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, string> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.createdDate,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.createdDate,
-    colId: ControlTowerQuantityClaimsListColumns.createdDate,
+  createdDateCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.createdDate,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.createdDate,
+    colId: ControlTowerQualityClaimsListColumns.createdDate,
     field: model('createdDate'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.createdDate,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.createdDate,
     width: 200
   };
 
-  createdByCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.createdBy,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.createdBy,
-    colId: ControlTowerQuantityClaimsListColumns.createdBy,
+  createdByCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.createdBy,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.createdBy,
+    colId: ControlTowerQualityClaimsListColumns.createdBy,
     field: model('createdBy'),
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.createdBy,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.createdBy,
     valueFormatter: params => params.value?.name,
     width: 200
   };
 
-  noResponseCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
-    headerName: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
-    headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
-    colId: ControlTowerQuantityClaimsListColumns.noResponse,
+  noResponseCol: ITypedColDef<IControlTowerQualityClaimsItemDto, number> = {
+    headerName: ControlTowerQualityClaimsListColumnServerKeys.noResponse,
+    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.noResponse,
+    colId: ControlTowerQualityClaimsListColumns.noResponse,
     field: model('noResponse'),
     filter: 'agNumberColumnFilter',
     valueFormatter: function(params) {
@@ -277,7 +243,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
         return '15+ Days';
       }
     },
-    dtoForExport: ControlTowerQuantityClaimsListExportColumns.noResponse,
+    dtoForExport: ControlTowerQualityClaimsListExportColumns.noResponse,
     cellRendererParams: function(params) {
       var classArray: string[] = [];
       let newClass = '';
@@ -308,11 +274,11 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-list-grid-5',
+      'control-tower-quantity-claims-11',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
-        ControlTowerQuantityClaimsListGridViewModel.name
+        ControlTowerQualityClaimsListGridViewModel.name
       )
     );
     this.init(this.gridOptions, true);
@@ -328,11 +294,8 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       this.etaCol,
       this.productCol,
       this.sellerCol,
-      this.quantityShortageCol,
-      this.quantityUomCol,
+      this.claimSubTypeCol,
       this.estimatedSettlementAmountCol,
-      this.orderPriceCol,
-      this.currencyCol,
       this.createdDateCol,
       this.createdByCol,
       this.noResponseCol
@@ -407,7 +370,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   public filterByDate(from: string, to: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['createdDate'] = {
+    grid['createdOn'] = {
       dateFrom: from,
       dateTo: to,
       type: 'inRange',
@@ -429,11 +392,11 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityClaimsListExportUrl();
     this.controlTowerService
-      .getControlTowerQuantityClaimsList$(
+      .getControlTowerQualityClaimsList$(
         transformLocalToServeGridInfo(
           this.gridApi,
           params,
-          ControlTowerQuantityClaimsListColumnServerKeys,
+          ControlTowerQualityClaimsListColumnServerKeys,
           this.searchText
         )
       )
