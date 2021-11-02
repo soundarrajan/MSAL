@@ -53,7 +53,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
-      .subtract(7, 'months')
+      .subtract(6, 'months')
       .format('YYYY-MM-DD')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
@@ -308,7 +308,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-11',
+      'control-tower-quantity-claims-list-grid-5',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -407,7 +407,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   public filterByDate(from: string, to: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['createdOn'] = {
+    grid['createdDate'] = {
       dateFrom: from,
       dateTo: to,
       type: 'inRange',
