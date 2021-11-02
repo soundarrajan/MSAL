@@ -1,7 +1,9 @@
-﻿commit 3edc8258638cf643640150867786cc524afe9018
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Tue Nov 2 10:28:25 2021 +0200
+﻿commit 74ab526d717b00a5d19516aa35082cfd1ead8ca4
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Nov 2 09:48:05 2021 +0000
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+    Merged PR 14443:  Added filter for New, 7-14 Days, 15+ Days from the header of quantity claims list
+    
+    Related work items: #33650
 
 branch: master
