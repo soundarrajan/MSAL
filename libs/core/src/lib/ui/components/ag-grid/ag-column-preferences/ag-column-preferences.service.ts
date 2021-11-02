@@ -182,7 +182,19 @@ export class AgColumnPreferencesService implements OnDestroy {
           );
 
           // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
-          options.api.setSortModel(sortModels);
+          if (
+            gridName == 'control-tower-quantity-claims-list-grid-7' &&
+            !sortModels.length
+          ) {
+            options.api.setSortModel([
+              {
+                colId: 'createdDate',
+                sort: 'desc'
+              }
+            ]);
+          } else {
+            options.api.setSortModel(sortModels);
+          }
         }
       })
     );
