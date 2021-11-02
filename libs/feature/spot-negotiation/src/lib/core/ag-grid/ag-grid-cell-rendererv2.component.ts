@@ -122,7 +122,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           <span
             class="mail-icon mail-active"
             (click)="openEmailPreview()"
-            *ngIf="params.data.mail == 'mail-active'"
+            *ngIf="params.data.requestOffers?.length > 0"
             matTooltip="View preview email"
             matTooltipClass="lightTooltip"
             >a</span
@@ -138,7 +138,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           <span
             class="mail-icon mail-none"
             (click)="openEmailPreview()"
-            *ngIf="params.data.mail == 'mail-none'"
+            *ngIf="params.data.mail == 'mail-inactive'"
             matTooltipClass=""
             matTooltip=""
             >n</span
@@ -317,6 +317,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
     </mat-menu>
     <div *ngIf="params.type == 'phy-supplier'">
       <div
+        *ngIf="params.data.requestOffers?.length > 0"
         class="phySupplier edit"
         matTooltip="Add physical supplier"
         matTooltipClass="lightTooltip"
@@ -327,8 +328,8 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           #menuTrigger="matMenuTrigger"
           (click)="editSeller = false"
         >
-          <span *ngIf="editSeller&&params.data.physicalSupplierCounterpartyName">{{params.data.physicalSupplierCounterpartyName}}</span>
-          <span *ngIf="editSeller&&params.data.physicalSupplierCounterpartyName==null">Add P. Supplier</span>
+          <span *ngIf="editSeller && params.data.physicalSupplierCounterpartyName">{{params.data.physicalSupplierCounterpartyName}}</span>
+          <span *ngIf="editSeller && params.data.physicalSupplierCounterpartyName==null">Add P. Supplier</span>
           <span *ngIf="!editSeller">{{ this.editedSeller }}</span>
         </span>
         <!--<div class="addButton"></div>-->
@@ -398,15 +399,14 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
     <div
       *ngIf="params.type == 'mat-check-box'"
       style="height:100%;display:flex;align-items:center;justify-content:center"
-      [matTooltip]="params.data.preferredProducts.includes(params.productId) ? 'Preferred product' : null"
-      matTooltipClass="lightTooltip"
-    >
+      [matTooltip]="params.data.preferredProducts?.includes(params.productId) ? 'Preferred product' : null"
+      matTooltipClass="lightTooltip">
       <!--<input type="checkbox" (click)="checkedHandler($event)"[checked]="params.value"/>-->
       <mat-checkbox
         [checked]="params.value"
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
-        [ngClass]="params.data.preferredProducts.includes(params.productId) ? 'darkBorder' : ''"
+        [ngClass]="params.data.preferredProducts?.includes(params.productId) ? 'darkBorder' : ''"
       ></mat-checkbox>
     </div>
 
