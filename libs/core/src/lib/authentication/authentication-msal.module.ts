@@ -42,6 +42,11 @@ export class AuthenticationMsalModule {
           provide: HTTP_INTERCEPTORS, // Provides as HTTP Interceptor
           useClass: MsalInterceptor,
           multi: true
+        },
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthenticationMsalInterceptor,
+          multi: true
         }
       ]
     };
