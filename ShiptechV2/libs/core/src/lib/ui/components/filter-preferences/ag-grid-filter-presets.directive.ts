@@ -77,12 +77,12 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
       'control-tower-quantity-supply-list-grid-1': {
         timeDeltaValue: 7,
         timeDeltaUnit: "month",
-        mappedKey: "createdOn"
+        mappedKey: ControlTowerQuantityRobDifferenceListColumns.createdOn
       },
       'control-tower-quantity-claims-list-grid-7': {
         timeDeltaValue: 6,
         timeDeltaUnit: "month",
-        mappedKey: "createdOn"
+        mappedKey: "createdDate"
       }
     };
     let last6MonthsOfDataGridIds = [
