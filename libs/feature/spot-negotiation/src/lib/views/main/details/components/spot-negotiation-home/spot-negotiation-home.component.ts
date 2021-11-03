@@ -12,8 +12,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AgGridDatetimePickerToggleComponent } from '../../../../../core/ag-grid/ag-grid-datetimePicker-Toggle';
 import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 import { Store } from '@ngxs/store';
-// import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
-// import { SpotnegoSendRfqComponent } from '../spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
@@ -30,22 +28,11 @@ import {
 export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
-  requestOptions = [
-    {
-      request: 'Req 12321',
-      vessel: 'Merlion',
-      selected: true
-    },
-    {
-      request: 'Req 12322',
-      vessel: 'Afif',
-      selected: false
-    }
-  ];
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
 
   selectedSellerList: any[];
+  currentRequestInfo: any;
   RequestGroupID: number;
   constructor(
     private route: ActivatedRoute,
@@ -61,17 +48,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.navBar = data.navBar;
     });
+    this.store.subscribe(({ spotNegotiation }) => {
+       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+     });
   }
 
-  // @HostListener('document:click', ['$event'])
-  // clickout(event) {
-  //   //if(event.target.className.indexOf('mat-button-wrapper')>=0) return false;
-  //   if($('.checkgrid').find(event.target).length == 0 && this.spotNegotiationService.FinalOutputdata.length !=0){
-  //     this.store.dispatch(
-  //       new SetLocationsRows(this.spotNegotiationService.FinalOutputdata)
-  //     );
-  //   }
-  // }
   confirmorderpopup() {
     const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
       width: '1045px',
@@ -81,30 +62,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {});
   }
-
+  
   sendRFQpopup() {
-    // const dialogRef = this.dialog.open(SpotnegoSendRfqComponent, {
-    //   width: '600px',
-    //   height: '220px',
-    //   panelClass: 'additional-cost-popup'
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    // });
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
     if (Selectedfinaldata.length == 0) {
-      let errormessage = 'Atleast 1 counterparty should be selected'; // + spotNegotiation.currentRequestSmallInfo.name +"-"+spotNegotiation.currentRequestSmallInfo.vesselName;
+      let errormessage = 'Atleast 1 counterparty should be selected in '+ this.currentRequestInfo.name +' - '+ this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
-      return;
-      // }
+      return;      
     } else {
-      this.store.subscribe(({ spotNegotiation }) => {
-        this.RequestGroupID = spotNegotiation.currentRequestSmallInfo.requestGroupId;
-      });
-       // this.selectedSellerList.push(Selectedfinaldata[0]);
+
       var FinalAPIdata = {
-        RequestGroupId: this.RequestGroupID,
+        RequestGroupId: this.currentRequestInfo.requestGroupId,
         quoteByDate: new Date(),
         quoteByCurrencyId: 1,
         quoteByTimeZoneId: 1,
@@ -117,10 +86,16 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
       this.spinner.hide();
-      //this.toaster.success('RFQ(s) sent successfully.');
-      if (res.message) {
-        this.toaster.warning(res.message);
+      if(res instanceof Object && res['sellerOffers'].length > 0 ){
+        this.toaster.success('RFQ(s) sent successfully.')
       }
+      else if(res instanceof Object){
+        this.toaster.warning(res.Message);
+      }
+      else{
+        this.toaster.error(res);
+        return;
+      } 
 
       const locationsRows = this.store.selectSnapshot<string>(
         (state: any) => {
@@ -252,6 +227,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     );
   }
+  
   amendRFQ() {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
@@ -270,9 +246,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.spinner.show();
     // Get response from server
     const response = this.spotNegotiationService.AmendRFQ(amendRFQRequestPayload);
-    response.subscribe((res: any) => {      
-      this.spinner.hide();      
-      this.toaster.success('Amend RFQ(s) sent successfully.');
+    response.subscribe((res: any) => {   
+      this.spinner.hide();
+      if(res instanceof Array && res.length>0 ){
+        this.toaster.success('Amend RFQ(s) sent successfully.');
+      }
+      else{
+        this.toaster.error(res);
+      } 
     });
   }
 }
