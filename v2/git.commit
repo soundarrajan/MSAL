@@ -1,9 +1,9 @@
-﻿commit d17e2a6bd6ee17b22ba728f722b78be645e6fffa
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 3 09:03:05 2021 +0000
+﻿commit 126038ca5a9eea3136b33de37cb1b217f4941613
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Nov 3 09:47:37 2021 +0000
 
-    Merged PR 14468: Added quantity claims sorting by default
+    Merged PR 14469: Requirement 33673: Quality View: Claims filter and default load list status issues fixed
     
-    Added quantity claims sorting by default
+    Related work items: #33673
 
 branch: master

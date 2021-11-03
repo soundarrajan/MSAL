@@ -63,7 +63,7 @@ export enum ControlTowerQualityClaimsListColumns {
     [ControlTowerQualityClaimsListColumns.eta]: 'eta',
     [ControlTowerQualityClaimsListColumns.product]: 'product',
     [ControlTowerQualityClaimsListColumns.seller]: 'seller',
-    [ControlTowerQualityClaimsListColumns.claimSubType]: 'quantityShortage',
+    [ControlTowerQualityClaimsListColumns.claimSubType]: 'claimSubType',
     [ControlTowerQualityClaimsListColumns.estimatedSettlementAmount]:
       'estimatedSettlementAmount',
     [ControlTowerQualityClaimsListColumns.createdDate]: 'createdDate',

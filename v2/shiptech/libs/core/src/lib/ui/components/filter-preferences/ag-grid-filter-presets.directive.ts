@@ -34,6 +34,7 @@ import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings
 import moment from 'moment';
 import { ControlTowerQuantityRobDifferenceListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-rob-difference-list.columns';
 import { ControlTowerQuantityClaimsListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-claims-list.columns';
+import { ControlTowerQualityClaimsListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list/list-columns/control-tower-quality-claims-list.columns';
 
 // import { timeEnd } from 'console';
 
@@ -83,8 +84,16 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         timeDeltaValue: 6,
         timeDeltaUnit: 'month',
         mappedKey: ControlTowerQuantityClaimsListColumns.createdDate
+      },
+      'control-tower-quality-claims-list-grid-7': {
+        timeDeltaValue: 6,
+        timeDeltaUnit: 'month',
+        mappedKey: ControlTowerQualityClaimsListColumns.createdDate
       }
     };
+    let loadNewStatusOfDataGridIds = [
+      'control-tower-quality-claims-list-grid-7'
+    ];
     // let last6MonthsOfDataGridIds = [
     //   'control-tower-quantity-claims-list-grid-8'
     // ];
@@ -94,8 +103,12 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         gridIds[this.id].timeDeltaValue,
         gridIds[this.id].timeDeltaUnit,
         gridIds[this.id].mappedKey
-      );
-    }
+        );
+      }
+      
+      if (loadNewStatusOfDataGridIds.indexOf(this.id) != -1) {
+        this.filterByStatus();
+      }
   }
 
   setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string) {
@@ -206,6 +219,40 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
               dateTo: moment().format('YYYY-MM-DD'),
               type: 'inRange',
               filterType: 'date'
+            }
+          };
+        }
+      }
+    }
+  }
+
+  filterByStatus() {
+    for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
+      if (this.filterComponent.filterPresets[i].filterModels) {
+        let filters = this.filterComponent.filterPresets[i].filterModels[
+          this.id
+        ];
+        if (filters) {
+          for (let [key, value] of Object.entries(filters)) {
+            if (key == 'noResponse') {
+              return;
+            }
+          }
+          this.filterComponent.filterPresets[i].filterModels[this.id][
+            'noResponse'
+          ] = {
+            filterType: 'number',
+            type: 'lessThan',
+            filter: 7,
+            filterTo: null
+          };
+        } else {
+          this.filterComponent.filterPresets[i].filterModels[this.id] = {
+            noResponse: {
+              filterType: 'number',
+              type: 'lessThan',
+              filter: 7,
+              filterTo: null
             }
           };
         }
