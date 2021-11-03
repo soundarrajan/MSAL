@@ -210,6 +210,13 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     );
   }
 
+  openEditQuantityControlReport(reportId: number): void {
+    window.open(
+      this.urlService.editReport(reportId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
+  }
+
   openEditLab(labId: number): void {
     window.open(
       this.urlService.editLabResults(labId),
@@ -251,6 +258,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     //   || this.selectorType == 'Quantity Supply Difference'
     ) {
       //console.log("hhhhhhhhh");
+      
       const index = ev.rowIndex;
       const rowNode = ev.node;
       //alert(index);

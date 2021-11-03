@@ -274,7 +274,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-11',
+      'control-tower-quality-claims-list-grid-7',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -333,11 +333,30 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
 
   public filterByStatus(statusName: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['status'] = {
-      filterType: 'text',
-      type: 'equals',
-      filter: statusName
-    };
+    if (statusName == 'New') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'lessThan',
+        filter: 7,
+        filterTo: null
+      };
+    } else if (statusName == '7-14 Days') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'inRange',
+        filter: 7,
+        filterTo: 14
+      };
+    } else if (statusName == '15+ Days') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'greaterThan',
+        filter: 15,
+        filterTo: null
+      };
+    } else {
+      grid['noResponse'] = null;
+    }
     this.gridApi.setFilterModel(grid);
   }
 
@@ -370,7 +389,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
 
   public filterByDate(from: string, to: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['createdOn'] = {
+    grid['createdDate'] = {
       dateFrom: from,
       dateTo: to,
       type: 'inRange',
