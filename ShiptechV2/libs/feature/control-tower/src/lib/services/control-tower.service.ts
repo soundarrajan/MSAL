@@ -69,10 +69,9 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       new LoadControlTowerListAction(gridRequest),
       response =>
         new LoadControlTowerListSuccessfulAction(
-          response.matchedCount,
-          response.matchedCount,
-          response.matchedCount,
-          response.matchedCount
+          response.payload.noOfNew,
+          response.payload.noOfMarkedAsSeen,
+          response.payload.noOfResolved,
         ),
       LoadControlTowerListFailedAction,
       ModuleError.LoadControlTowerQuantitySupplyDifferenceFailed

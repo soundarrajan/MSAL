@@ -19,18 +19,19 @@ export interface IControlTowerQuantityRobDifferenceItemDto {
 }
 
 export interface IControlTowerQuantitySupplyDifferenceItemDto {
-  order: IDisplayLookupDto;
+  portCall: object;
   port: IDisplayLookupDto;
   vessel: IDisplayLookupDto;
-  deliveryDate: string;
-  createdOn: string;
-  claimsRaised: boolean;
-  isDeleted: boolean;
+  eta: string;
+  surveyorDate: string;
+  emailToVessel: boolean;
+  vesselToWatch: boolean;
   productType: IDisplayLookupDto;
   progress: IDisplayLookupDto;
   id: number;
-  measuredDeliveryQty: number;
+  measuredDeliveredQty: number;
   totalCount: number;
+  sumOfOrderQtyCol: string;
   buyer: IDisplayLookupDto;
   status: IDisplayLookupDto;
 }
@@ -78,8 +79,12 @@ export interface IGetControlTowerQuantityRobDifferenceListResponse {
 }
 
 export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
-  payload: IControlTowerQuantitySupplyDifferenceItemDto[];
-  matchedCount: number;
+  payload: {
+      items : IControlTowerQuantitySupplyDifferenceItemDto[];
+      noOfMarkedAsSeen: number
+      noOfNew: number
+      noOfResolved: number      
+  };
 }
 
 export interface IGetControlTowerQuantityClaimsListResponse {
