@@ -225,24 +225,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         flex: 1,
         resizable: true,
         filter: true,
-        sortable: false,
-        valueSetter: ({ colDef, data, newValue }) => {
-          let updatedRow = { ...data };
-          let _this = this;
-          // Do calculation here;
-          updatedRow = this.formatRowData(updatedRow, colDef['product'], colDef.field, newValue);
-
-          // Update the store
-          this.store.dispatch(new EditLocationRow(updatedRow));
-          // Save to the cloud
-          this.saveRowToCloud(updatedRow, colDef['product']);
-          // setTimeout(() => {
-          // //  alert(1)
-          //   _this.gridOptions_counterparty.api.selectAll();
-          // }, 100);
-
-          return false;
-        }
+        sortable: false
       },
 
       columnDefs: this.columnDef_aggrid,
@@ -492,6 +475,23 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 100,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
+          valueSetter: ({ colDef, data, newValue }) => {
+            let updatedRow = { ...data };
+            let _this = this;
+            // Do calculation here;
+            updatedRow = this.formatRowData(updatedRow, colDef['product'], colDef.field, newValue);
+
+            // Update the store
+            this.store.dispatch(new EditLocationRow(updatedRow));
+            // Save to the cloud
+            this.saveRowToCloud(updatedRow, colDef['product']);
+            // setTimeout(() => {
+            // //  alert(1)
+            //   _this.gridOptions_counterparty.api.selectAll();
+            // }, 100);
+
+            return false;
+          },
           valueGetter: params => {
             const details = this.getRowProductDetails(params.data, product.id);
             return details.price;

@@ -110,8 +110,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
           let indx = index +1;
           let val = "checkProd" + indx;
-          row[val] = true
-          row.isSelected = true;
+          row[val] = row.isSelected;
+          //row.isSelected = true;
         }
       }
 
@@ -137,7 +137,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
       }
 
-      
+
       return row;
     });
 
