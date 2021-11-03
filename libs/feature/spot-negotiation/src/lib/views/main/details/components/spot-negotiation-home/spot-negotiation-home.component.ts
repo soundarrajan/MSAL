@@ -28,6 +28,19 @@ import {
 export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
+  requestOptions = [
+    {
+      request: 'Req 12321',
+      vessel: 'Merlion',
+      selected: true
+    },
+    {
+      request: 'Req 12322',
+      vessel: 'Afif',
+      selected: false
+    }
+  ];
+  
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
 
@@ -227,7 +240,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     );
   }
-  
+
   amendRFQ() {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
