@@ -219,10 +219,10 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     if(this.data.isPhysicalSupplier){
       let reqPayload={
           "RequestLocationSellerId":this.data.requestLocationSellerId,
-          "phySupplierId": this.data.phySupplierId
+          "phySupplierId": selectedCounterparties[0].sellerCounterpartyId
       }
 
-      const response = this._spotNegotiationService.updatePhySupplier(reqPayload);
+    const response = this._spotNegotiationService.updatePhySupplier(reqPayload);
     response.subscribe((res: any) => {
       if (res.status) {
         this.toastr.success(res.message);
