@@ -1,9 +1,9 @@
-﻿commit 1c59892232b3d0979289059798e9073f61dfc0d8
+﻿commit 79bf09c1322fa4ce57999d35581fbbb611b4916e
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 3 07:57:59 2021 +0000
+Date:   Wed Nov 3 08:21:34 2021 +0000
 
-    Merged PR 14464: Worked on control tower quantity claims
+    Merged PR 14466: Displayed last 6 months data by default
     
-    Worked on control tower quantity claims
+    Displayed last 6 months data by default
 
 branch: master
