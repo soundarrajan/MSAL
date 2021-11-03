@@ -33,6 +33,8 @@ import { AgGridAngular } from '@ag-grid-community/angular';
 import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
 import moment from 'moment';
 import { ControlTowerQuantityRobDifferenceListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-rob-difference-list.columns';
+import { ControlTowerQuantityClaimsListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-claims-list.columns';
+
 // import { timeEnd } from 'console';
 
 @Directive({
@@ -76,16 +78,16 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         timeDeltaValue: 7,
         timeDeltaUnit: 'month',
         mappedKey: ControlTowerQuantityRobDifferenceListColumns.createdOn
+      },
+      'control-tower-quantity-claims-list-grid-8': {
+        timeDeltaValue: 6,
+        timeDeltaUnit: 'month',
+        mappedKey: ControlTowerQuantityClaimsListColumns.createdDate
       }
-      // 'control-tower-quantity-claims-list-grid-8': {
-      //   timeDeltaValue: 6,
-      //   timeDeltaUnit: 'month',
-      //   mappedKey: 'createdDate'
-      // }
     };
-    let last6MonthsOfDataGridIds = [
-      'control-tower-quantity-claims-list-grid-8'
-    ];
+    // let last6MonthsOfDataGridIds = [
+    //   'control-tower-quantity-claims-list-grid-8'
+    // ];
 
     if (gridIds[this.id]) {
       this.setRangeUntilNow(
@@ -93,8 +95,6 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         gridIds[this.id].timeDeltaUnit,
         gridIds[this.id].mappedKey
       );
-    } else if (last6MonthsOfDataGridIds.indexOf(this.id) != -1) {
-      this.last6MonthsOfData();
     }
   }
 
