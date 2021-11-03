@@ -302,7 +302,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-list-grid-9',
+      'control-tower-quantity-claims-list-grid-10',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(

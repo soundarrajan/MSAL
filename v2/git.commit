@@ -1,9 +1,7 @@
-﻿commit 126038ca5a9eea3136b33de37cb1b217f4941613
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Nov 3 09:47:37 2021 +0000
+﻿commit 79662eecf99038f42cf46f8109a2b5240ba81367
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Nov 3 13:13:47 2021 +0200
 
-    Merged PR 14469: Requirement 33673: Quality View: Claims filter and default load list status issues fixed
-    
-    Related work items: #33673
+    Merged control_tower branch in master
 
 branch: master
