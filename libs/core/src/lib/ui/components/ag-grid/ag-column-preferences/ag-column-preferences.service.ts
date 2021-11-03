@@ -140,7 +140,7 @@ export class AgColumnPreferencesService implements OnDestroy {
       // filter(p => !!p),
       tap(preferences => {
         if (!preferences) {
-          if (gridName == 'control-tower-quantity-claims-list-grid-9') {
+          if (gridName == 'control-tower-quantity-claims-list-grid-9' || gridName == 'control-tower-quality-claims-list-grid-7') {
             options.api.setSortModel([
               {
                 colId: 'createdDate',
