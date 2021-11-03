@@ -7922,6 +7922,16 @@ tr.title {
                   background: #ffffff;
                 }
               }
+              &.selected-red {
+                background: #eb5757 !important;
+                span {
+                  color: #ffffff;
+                }
+                .count {
+                  color: #333333;
+                  background: #ffffff;
+                }
+              }
               &.selected-green {
                 background: #8bae8b !important;
                 span {
@@ -8621,6 +8631,16 @@ tr.title {
                   background: #ffffff;
                 }
               }
+              &.selected-red {
+                background: #eb5757 !important;
+                span {
+                  color: #ffffff;
+                }
+                .count {
+                  color: #333333;
+                  background: #ffffff;
+                }
+              }
               &.selected-green {
                 background: #8bae8b !important;
                 span {
@@ -8815,6 +8835,16 @@ tr.title {
               }
               &.selected-amber {
                 background: #e8ac55 !important;
+                span {
+                  color: #ffffff;
+                }
+                .count {
+                  color: #333333;
+                  background: #ffffff;
+                }
+              }
+              &.selected-red {
+                background: #eb5757 !important;
                 span {
                   color: #ffffff;
                 }

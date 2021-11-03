@@ -48,9 +48,8 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   public noOf714: number;
   public noOfNew: number;
 
-  public searchText: string;
   public exportUrl: string;
-  public newFilterSelected: boolean = false;
+
   public fromDate = new FormControl(
     moment()
       .subtract(6, 'months')
@@ -70,7 +69,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   gridOptions: GridOptions = {
     enableColResize: true,
     suppressRowClickSelection: true,
-    // suppressCellSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -84,7 +82,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
     multiSortKey: 'ctrl',
 
-    //enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: (data: IControlTowerQuantityClaimsItemDto) =>
       data?.id?.toString() ?? Math.random().toString(),
@@ -93,9 +90,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       resizable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams
-    },
-    onGridReady: params => {
-      params.api.sizeColumnsToFit();
     }
   };
 
@@ -308,7 +302,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-claims-list-grid-5',
+      'control-tower-quantity-claims-list-grid-9',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -339,11 +333,6 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     ];
   }
 
-  public onSearch(value: string): void {
-    this.searchText = value;
-    this.gridApi.purgeServerSideCache();
-  }
-
   public filterGridNew(statusName: string): void {
     if (this.toggleNewFilter) {
       this.filterByStatus(statusName);
@@ -370,11 +359,30 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   public filterByStatus(statusName: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['status'] = {
-      filterType: 'text',
-      type: 'equals',
-      filter: statusName
-    };
+    if (statusName == 'New') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'lessThan',
+        filter: 7,
+        filterTo: null
+      };
+    } else if (statusName == '7-14 Days') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'inRange',
+        filter: 7,
+        filterTo: 14
+      };
+    } else if (statusName == '15+ Days') {
+      grid['noResponse'] = {
+        filterType: 'number',
+        type: 'greaterThan',
+        filter: 15,
+        filterTo: null
+      };
+    } else {
+      grid['noResponse'] = null;
+    }
     this.gridApi.setFilterModel(grid);
   }
 
@@ -384,17 +392,21 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     this.toggleGreaterThan15DaysFilter = true;
     const grid = this.gridApi.getFilterModel();
     for (let [key, value] of Object.entries(grid)) {
-      if (key == 'status') {
-        if ((<any>value).type == 'equals') {
-          if ((<any>value).filter.toLowerCase() === 'new') {
+      if (key == 'noResponse') {
+        if ((<any>value).type == 'lessThan') {
+          if ((<any>value).filter === 7) {
             this.toggleNewFilter = !this.toggleNewFilter;
             this.toggle714DaysFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'verified') {
+          }
+        } else if ((<any>value).type == 'inRange') {
+          if ((<any>value).filter === 7 && (<any>value).filterTo === 14) {
             this.toggle714DaysFilter = !this.toggle714DaysFilter;
             this.toggleNewFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'in spec') {
+          }
+        } else if ((<any>value).type == 'greaterThan') {
+          if ((<any>value).filter === 15) {
             this.toggleGreaterThan15DaysFilter = !this
               .toggleGreaterThan15DaysFilter;
             this.toggleNewFilter = true;
@@ -417,13 +429,8 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const grid1 = this.gridApi.getSortModel();
-    // this.gridApi.setSortModel([
-    //   {
-    //     colId: 'createdDate',
-    //     sort: 'asc'
-    //   }
-    // ]);
+    const grid1 = this.gridApi.getFilterModel();
+
     console.log(grid1);
     this.checkStatusAvailable();
     this.paramsServerSide = params;

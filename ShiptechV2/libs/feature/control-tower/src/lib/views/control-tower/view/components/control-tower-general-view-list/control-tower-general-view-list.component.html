@@ -135,9 +135,9 @@
       <div
         class="action"
         [ngClass]="
-          !gridViewModel.toggleGreaterThan15DaysFilter ? 'selected-green' : ''
+          !gridViewModel.toggleGreaterThan15DaysFilter ? 'selected-red' : ''
         "
-        (click)="gridViewModel.filterGridGreaterThan15Days('In Spec')"
+        (click)="gridViewModel.filterGridGreaterThan15Days('15+ Days')"
       >
         <span>15+ Days</span>
         <div class="count">{{ gridViewModel.noOf15 }}</div>
@@ -166,29 +166,6 @@
       </shiptech-wunderbar>
 
       <p-messages></p-messages>
-      <!-- <button
-        class="search-icon"
-        appMasterSelectorTrigger
-        [masterSelector]="masterSelector"
-        #masterSelectorTrigger="masterSelectorTrigger"
-        [header]="getHeaderNameSelector()"
-      >
-        <div class="img">
-          <ng-template cdkPortal #masterSelector="cdkPortal">
-            <shiptech-shared-master-selector
-              (selectedChange)="masterSelectorTrigger.close()"
-              (shouldCloseModal)="masterSelectorTrigger.close()"
-              [selectorType]="autocompleteOrders"
-              [disabled]="false"
-              [readonly]="false"
-              [entityName]="'control-tower'"
-              [entityId]="1"
-              [vesselId]="1"
-              [headerName]="getHeaderNameSelector()"
-            ></shiptech-shared-master-selector>
-          </ng-template>
-        </div>
-      </button> -->
 
       <div class="w-100 px-3 py-4  m-r-5 m-b-7" style="background: white;">
         <div class="row mb-2">
@@ -212,7 +189,6 @@
           class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
           style="height:calc( 100vh - 352px );"
           [gridOptions]="gridViewModel.gridOptions"
-          (rowClicked)="onrowClicked($event)"
         >
         </ag-grid-angular>
 
@@ -236,15 +212,16 @@
   </div>
 </div>
 <ng-template
-  *ngIf="gridViewModel.portCallCol"
+*ngIf="gridViewModel.portCallCol"
   [columnDef]="[gridViewModel.portCallCol]"
   appAgCellTemplate
   let-data="data"
   let-value="value"
 >
-  <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{
-    value?.id
-  }}</a>
+  <a
+  *ngIf="data && data?.quantityControlReport?.id" (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
+  >{{ data?.portCall?.portCallId }}</a
+  >
 </ng-template>
 
 <ng-template
