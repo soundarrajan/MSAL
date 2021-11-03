@@ -90,6 +90,7 @@
     "BASE_URL_DATA_IMPORTEXPORT": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.ImportExport",
     "BASE_URL_DATA_BOPS": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.BOPS",
     "BASE_URL_DATA_SMART": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Smart",
+    "BASE_URL_DATA_ROB": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Rob",
     "BASE_URL_UI": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
     "BASE_URL_OPEN_SERVER": "http://10.10.1.shiptech.24software.ro:8170",
     "BASE_HEADER_FOR_NOTIFICATIONS": "http://10.10.1.shiptech.24software.ro:8170",

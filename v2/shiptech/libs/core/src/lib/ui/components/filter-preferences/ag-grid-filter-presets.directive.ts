@@ -70,16 +70,16 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   addedFilterByFromAndToByDefault() {
     let gridIds = {
       'control-tower-quantity-rob-list-grid-2': {
-        timeDeltaValue: 7,
-        timeDeltaUnit: 'days',
-        mappedKey: ControlTowerQuantityRobDifferenceListColumns.createdOn
+        timeDeltaValue: 1,
+        timeDeltaUnit: 'year',
+        mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
       },
       'control-tower-quantity-supply-list-grid-1': {
         timeDeltaValue: 7,
         timeDeltaUnit: 'month',
-        mappedKey: ControlTowerQuantityRobDifferenceListColumns.createdOn
+        mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
       },
-      'control-tower-quantity-claims-list-grid-8': {
+      'control-tower-quantity-claims-list-grid-9': {
         timeDeltaValue: 6,
         timeDeltaUnit: 'month',
         mappedKey: ControlTowerQuantityClaimsListColumns.createdDate

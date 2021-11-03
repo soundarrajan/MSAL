@@ -189,7 +189,6 @@
           class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
           style="height:calc( 100vh - 352px );"
           [gridOptions]="gridViewModel.gridOptions"
-          (rowClicked)="onrowClicked($event)"
         >
         </ag-grid-angular>
 
@@ -213,15 +212,16 @@
   </div>
 </div>
 <ng-template
-  *ngIf="gridViewModel.portCallCol"
+*ngIf="gridViewModel.portCallCol"
   [columnDef]="[gridViewModel.portCallCol]"
   appAgCellTemplate
   let-data="data"
   let-value="value"
 >
-  <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{
-    value?.id
-  }}</a>
+  <a
+  *ngIf="data && data?.quantityControlReport?.id" (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
+  >{{ data?.portCall?.portCallId }}</a
+  >
 </ng-template>
 
 <ng-template

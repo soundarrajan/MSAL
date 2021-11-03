@@ -2,16 +2,26 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 
+export interface IPortCallLookupDto {
+  voyageReference: any,
+  portCallId: string,
+  vesselVoyageDetailId: number,
+  modulePathUrl: string,
+  clientIpAddress: string,
+  userAction: string
+}
+
 export interface IControlTowerQuantityRobDifferenceItemDto {
   order: IDisplayLookupDto;
-  port: IDisplayLookupDto;
+  portCall: IPortCallLookupDto;
+  port: string;
   vessel: IDisplayLookupDto;
-  deliveryDate: string;
-  createdOn: string;
-  claimsRaised: boolean;
-  isDeleted: boolean;
-  productType: IDisplayLookupDto;
-  id: number;
+  eta: string;
+  surveyorDate: string;
+  emailToVessel: boolean;
+  vesselToWatch: boolean;
+  quantityReportDetails: IDisplayLookupDto;
+  logBookRob: number;
   deliveryProductId: number;
   totalCount: number;
   buyer: IDisplayLookupDto;
@@ -73,7 +83,12 @@ export interface IControlTowerQualityClaimsItemDto {
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
-  payload: IControlTowerQuantityRobDifferenceItemDto[];
+  payload: {
+    items: IControlTowerQuantityRobDifferenceItemDto[];
+    noOfNew: number,
+    noOfMarkedAsSeen: number,
+    noOfResolved: number
+  };
   matchedCount: number;
 }
 

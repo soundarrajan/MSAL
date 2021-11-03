@@ -1,9 +1,9 @@
-﻿commit 79bf09c1322fa4ce57999d35581fbbb611b4916e
+﻿commit d17e2a6bd6ee17b22ba728f722b78be645e6fffa
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 3 08:21:34 2021 +0000
+Date:   Wed Nov 3 09:03:05 2021 +0000
 
-    Merged PR 14466: Displayed last 6 months data by default
+    Merged PR 14468: Added quantity claims sorting by default
     
-    Displayed last 6 months data by default
+    Added quantity claims sorting by default
 
 branch: master

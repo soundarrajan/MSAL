@@ -57,6 +57,10 @@ export class UrlService {
     return `${this.baseOrigin}/#/edit-order/${orderId}`;
   }
 
+  public editReport(reportId: string | number): string {
+    return `${this.baseOrigin}/v2/quantity-control/report/${reportId}/details`;
+  }
+
   public editDelivery(deliveryId: string | number): string {
     return `${this.baseOrigin}/#/delivery/delivery/edit/${deliveryId}`;
   }

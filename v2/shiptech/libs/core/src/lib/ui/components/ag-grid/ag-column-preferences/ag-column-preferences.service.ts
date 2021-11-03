@@ -140,7 +140,7 @@ export class AgColumnPreferencesService implements OnDestroy {
       // filter(p => !!p),
       tap(preferences => {
         if (!preferences) {
-          if (gridName == 'control-tower-quantity-claims-list-grid-7') {
+          if (gridName == 'control-tower-quantity-claims-list-grid-9') {
             options.api.setSortModel([
               {
                 colId: 'createdDate',
@@ -183,7 +183,7 @@ export class AgColumnPreferencesService implements OnDestroy {
 
           // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
           if (
-            gridName == 'control-tower-quantity-claims-list-grid-7' &&
+            gridName == 'control-tower-quantity-claims-list-grid-9' &&
             !sortModels.length
           ) {
             options.api.setSortModel([
