@@ -714,7 +714,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         RequestLocationId: parseInt(currentRequestLocation.id),
         LocationId: locationId,
         isPhysicalSupplier:true,
-        phySupplierId:this.phySupplierId,
         requestLocationSellerId:this.params.data.id
       }
     });
