@@ -281,7 +281,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
         </div>
         <input
           class="inputField"
-          (blur)="onBlur($event, params)"
+          (change)="onPriceChange($event, params)"
           autofocus
           #inputSection
           value="{{priceFormatValue(params.value)}}"
@@ -846,13 +846,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   onRightClickMenuOpened(e) {
     e.target.parentElement.classList.add('active');
   }
-  onBlur(e, params) {
+
+  onPriceChange(e, params) {
     const futureValue = e.target.value;
 
     if (!futureValue) {
       return null;
     }
-
 
     params.colDef.valueSetter({
       colDef: params.colDef,
@@ -860,6 +860,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       newValue: futureValue
     });
   }
+
   checkedHandler(event) {
     let checked = event.target.checked;
     let colId = this.params.column.colId;
@@ -868,6 +869,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   refresh(): boolean {
     return false;
   }
+
   deleteRow() {
     let rowData = [];
     this.params.api.forEachNode(node => rowData.push(node.data));
