@@ -1,11 +1,7 @@
-﻿commit d2009618a908312685b3ed6a41126f86e4b9f1bf
+﻿commit e95038125b61e72f96b56d9937187d9e7c1dc785
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Nov 2 13:30:06 2021 +0000
+Date:   Wed Nov 3 07:31:30 2021 +0000
 
-    Merged PR 14455: Added error   'You do not have authorization to perform this action.' if user doesn't have permission in control tower page
-    
-    Added error   'You do not have authorization to perform this action.' if user doesn't have permission in control tower page
-    
-    Related work items: #33650
+    Merged PR 14462: Worked on rob difference ag grid
 
 branch: master
