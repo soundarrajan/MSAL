@@ -52,6 +52,8 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   autoSaveInterval: any;
   @Input() groupId: string;
   @Input() gridId: string;
+  @Input() gridIds: any;
+
   @Input() id: string;
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
@@ -69,46 +71,20 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   }
 
   addedFilterByFromAndToByDefault() {
-    let gridIds = {
-      'control-tower-quantity-rob-list-grid-2': {
-        timeDeltaValue: 1,
-        timeDeltaUnit: 'year',
-        mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
-      },
-      'control-tower-quantity-supply-list-grid-1': {
-        timeDeltaValue: 7,
-        timeDeltaUnit: 'month',
-        mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
-      },
-      'control-tower-quantity-claims-list-grid-9': {
-        timeDeltaValue: 6,
-        timeDeltaUnit: 'month',
-        mappedKey: ControlTowerQuantityClaimsListColumns.createdDate
-      },
-      'control-tower-quality-claims-list-grid-7': {
-        timeDeltaValue: 6,
-        timeDeltaUnit: 'month',
-        mappedKey: ControlTowerQualityClaimsListColumns.createdDate
-      }
-    };
     let loadNewStatusOfDataGridIds = [
       'control-tower-quality-claims-list-grid-7'
     ];
-    // let last6MonthsOfDataGridIds = [
-    //   'control-tower-quantity-claims-list-grid-8'
-    // ];
-
-    if (gridIds[this.id]) {
+    if (this.gridIds[this.id]) {
       this.setRangeUntilNow(
-        gridIds[this.id].timeDeltaValue,
-        gridIds[this.id].timeDeltaUnit,
-        gridIds[this.id].mappedKey
-        );
-      }
-      
-      if (loadNewStatusOfDataGridIds.indexOf(this.id) != -1) {
-        this.filterByStatus();
-      }
+        this.gridIds[this.id].timeDeltaValue,
+        this.gridIds[this.id].timeDeltaUnit,
+        this.gridIds[this.id].mappedKey
+      );
+    }
+
+    if (loadNewStatusOfDataGridIds.indexOf(this.id) != -1) {
+      this.filterByStatus();
+    }
   }
 
   setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string) {
@@ -139,82 +115,6 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
             [mappingKey]: {
               dateFrom: moment()
                 .subtract(timeDeltaValue, timeDeltaUnit)
-                .format('YYYY-MM-DD'),
-              dateTo: moment().format('YYYY-MM-DD'),
-              type: 'inRange',
-              filterType: 'date'
-            }
-          };
-        }
-      }
-    }
-  }
-
-  last7MonthsOfData() {
-    for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
-      if (this.filterComponent.filterPresets[i].filterModels) {
-        let filters = this.filterComponent.filterPresets[i].filterModels[
-          this.id
-        ];
-        if (filters) {
-          for (let [key, value] of Object.entries(filters)) {
-            if (key == 'createdOn') {
-              return;
-            }
-          }
-          this.filterComponent.filterPresets[i].filterModels[this.id][
-            'createdOn'
-          ] = {
-            dateFrom: moment()
-              .subtract(7, 'months')
-              .format('YYYY-MM-DD'),
-            dateTo: moment().format('YYYY-MM-DD'),
-            type: 'inRange',
-            filterType: 'date'
-          };
-        } else {
-          this.filterComponent.filterPresets[i].filterModels[this.id] = {
-            createdOn: {
-              dateFrom: moment()
-                .subtract(7, 'months')
-                .format('YYYY-MM-DD'),
-              dateTo: moment().format('YYYY-MM-DD'),
-              type: 'inRange',
-              filterType: 'date'
-            }
-          };
-        }
-      }
-    }
-  }
-
-  last6MonthsOfData() {
-    for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
-      if (this.filterComponent.filterPresets[i].filterModels) {
-        let filters = this.filterComponent.filterPresets[i].filterModels[
-          this.id
-        ];
-        if (filters) {
-          for (let [key, value] of Object.entries(filters)) {
-            if (key == 'createdDate') {
-              return;
-            }
-          }
-          this.filterComponent.filterPresets[i].filterModels[this.id][
-            'createdDate'
-          ] = {
-            dateFrom: moment()
-              .subtract(6, 'months')
-              .format('YYYY-MM-DD'),
-            dateTo: moment().format('YYYY-MM-DD'),
-            type: 'inRange',
-            filterType: 'date'
-          };
-        } else {
-          this.filterComponent.filterPresets[i].filterModels[this.id] = {
-            createdDate: {
-              dateFrom: moment()
-                .subtract(6, 'months')
                 .format('YYYY-MM-DD'),
               dateTo: moment().format('YYYY-MM-DD'),
               type: 'inRange',
