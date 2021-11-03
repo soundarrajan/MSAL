@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
-import { GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
+import { GridOptions, IServerSideGetRowsParams, RowNode } from '@ag-grid-community/core';
 import {
   ITypedColDef,
   RowModelType,
@@ -28,14 +28,20 @@ import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/compon
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import { IControlTowerQuantitySupplyDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import { FormControl } from '@angular/forms';
+
 import moment from 'moment';
 
 import {
   ControlTowerQuantitySupplyDifferenceListColumns,
   ControlTowerQuantitySupplyDifferenceListColumnServerKeys,
   ControlTowerQuantitySupplyDifferenceListColumnsLabels,
-  ControlTowerQuantitySupplyDifferenceListExportColumns
+  ControlTowerQuantitySupplyDifferenceListExportColumns,
 } from '../list-columns/control-tower-quantity-supply-difference-list.columns';
+import {
+  ControlTowerProgressColors,
+} from '../control-tower-general-enums';
+import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 function model(
   prop: keyof IControlTowerQuantitySupplyDifferenceItemDto
@@ -45,6 +51,7 @@ function model(
 
 @Injectable()
 export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseGridViewModel {
+
   public searchText: string;
   public exportUrl: string;
   public newFilterSelected: boolean = false;
@@ -58,6 +65,9 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   public toggleNewFilter: boolean = true;
   public toggleMASFilter: boolean = true;
   public toggleResolvedFilter: boolean = true;
+  public noOfNew : number;  
+  public noOfMarkedAsSeen : number;  
+  public noOfResolved : number;  
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -67,52 +77,47 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   gridOptions: GridOptions = {
     enableColResize: true,
     suppressRowClickSelection: true,
-    // suppressCellSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
     rowHeight: 40,
-
     rowModelType: RowModelType.ServerSide,
     pagination: true,
-
     rowSelection: RowSelection.Single,
     suppressContextMenu: true,
-
     multiSortKey: 'ctrl',
-
-    //enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IControlTowerQuantitySupplyDifferenceItemDto) =>
-      data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: IControlTowerQuantitySupplyDifferenceItemDto) => {
+      return data?.id?.toString() ?? Math.random().toString();
+    },
     defaultColDef: {
       sortable: true,
       resizable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams
     },
-    onGridReady: params => {
+    onGridReady: (params) => {
       params.api.sizeColumnsToFit();
     }
   };
 
-  portCallCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    ILookupDto
-  > = {
-    headerName: "Port Call",
-    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.order,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.order,
-    field: model('order'),
-    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.order,
-    cellRendererFramework: AgCellTemplateComponent,
+  portCallCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,ILookupDto> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.portCall,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.portCall,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.portCall,
+    field: model('portCall'),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.portCall,
+    cellRenderer: (params) => {
+      const a = document.createElement('a');
+      a.innerHTML = params.value.portCallId;
+      a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
+      a.setAttribute("target", "_blank");
+      return a;
+    },
     width: 200
   };
 
-  portCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    string
-  > = {
+  portCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,string> = {
     headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.port,
     headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.port,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.port,
@@ -121,62 +126,47 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     width: 150
   };
 
-  vesselCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    ILookupDto
-  > = {
+  vesselCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,ILookupDto> = {
     headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.vessel,
     headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.vessel,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.vessel,
     field: model('vessel'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.vessel,
-    valueFormatter: params => params.value?.name,
+    valueFormatter: (params) => params.value?.name,
     width: 150
   };
 
   etaCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto, string> = {
-    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryDate,
-    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.deliveryDate,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.deliveryDate,
-    field: model('deliveryDate'),
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.eta,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.eta,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.eta,
+    field: model('eta'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
-    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.deliveryDate,
+    valueFormatter: (params) => this.format.date(params.value),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.eta,
     width: 150
   };
 
-  surveyDate: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    string
-  > = {
-    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.createdOn,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.createdOn,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.createdOn,
-    field: model('createdOn'),
-    dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.createdOn,
+  surveyorDate: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,string> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.surveyorDate,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.surveyorDate,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate,
+    field: model('surveyorDate'),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
+    valueFormatter: (params) => this.format.date(params.value),
     width: 150
   };
 
-  emailToVesselCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    boolean
-  > = {
-    headerName:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.claimsRaised,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.claimsRaised,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.claimsRaised,
-    field: model('claimsRaised'),
-    dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.claimsRaised,
-    cellRenderer: params => {
+  emailToVesselCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,boolean> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.emailToVessel,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.emailToVessel,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.emailToVessel,
+    field: model('emailToVessel'),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.emailToVessel,
+    cellRenderer: (params) => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      // eslint-disable-next-line no-unused-expressions
       params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;
     },
@@ -184,21 +174,15 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     width: 150
   };
 
-  vesselToWatchCall: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    boolean
-  > = {
-    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.isDeleted,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.isDeleted,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.isDeleted,
-    field: model('isDeleted'),
-    dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.isDeleted,
-    cellRenderer: params => {
+  vesselToWatchCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,boolean> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.vesselToWatch,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.vesselToWatch,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.vesselToWatch,
+    field: model('vesselToWatch'),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.vesselToWatch,
+    cellRenderer: (params) => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      // eslint-disable-next-line no-unused-expressions
       !params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;
     },
@@ -206,98 +190,102 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     width: 150
   };
 
-  productTypeCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    ILookupDto
-  > = {
-    headerName:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.productType,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.productType,
+  productTypeCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,ILookupDto> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.productType,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.productType,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.productType,
     field: model('productType'),
-    dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.productType,
-    valueFormatter: params => params.value?.name,
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.productType,
+    cellRenderer: (params) => {
+      let mergedValues = params.data.quantityReportDetails.map(a => a.productType?.name ?? "-" );
+      return mergedValues.join("<br>");
+    },
     width: 150
   };
 
-  bdnQuantity: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    number
-  > = {
-    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.id,
-    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.id,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.id,
+  bdnQuantityCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,number> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.bdnQuantity,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.bdnQuantity,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity,
     field: model('id'),
-    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.id,
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.bdnQuantity,
+    cellRenderer: (params) => {
+      let mergedValues = params.data.quantityReportDetails.map(a => a.bdnQuantity ?? "-" );
+      return mergedValues.join("<br>");
+    },    
     filter: 'agNumberColumnFilter',
     width: 150
   };
-
-  measuredDeliveryQty: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    number
-  > = {
-    headerName:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveryQty,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveryQty,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveryQty,
-    dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.measuredDeliveryQty,
-    field: model('measuredDeliveryQty'),
+  
+  measuredDeliveredQty: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,number> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveredQty,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveredQty,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty,
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.measuredDeliveredQty,
+    cellRenderer: (params) => {
+      let mergedValues = params.data.quantityReportDetails.map(a => a.measuredDeliveredQuantity ?? "-" );
+      return mergedValues.join("<br>");
+    },    
+    field: model('measuredDeliveredQty'),
     filter: 'agNumberColumnFilter',
     width: 150
   };
-
-  differenceInQtyCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    number
-  > = {
-    headerName:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.totalCount,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.totalCount,
+  
+  differenceInQtyCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,number> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.totalCount,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.totalCount,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.totalCount,
     field: model('totalCount'),
-    dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.totalCount,
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.totalCount,
+    cellRenderer: (params) => {
+      let mergedValues = params.data.quantityReportDetails.map(a => a.differenceInSupplyQuantity ?? "-" );
+      return mergedValues.join("<br>");
+    },    
     filter: 'agNumberColumnFilter',
     width: 150
   };
-
-  qtyUomCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    ILookupDto
-  > = {
+  sumOfOrderQtyCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,number> = {
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.sumOfOrderQtyCol,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.sumOfOrderQtyCol,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol,
+    field: model('sumOfOrderQtyCol'),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.sumOfOrderQtyCol,
+    cellRenderer: (params) => {
+      let mergedValues = params.data.quantityReportDetails.map(a => a.sumOfOrderQuantity ?? "-" );
+      return mergedValues.join("<br>");
+    },    
+    filter: 'agNumberColumnFilter',
+    width: 150
+  };
+  
+  qtyUomCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,ILookupDto> = {
     headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.buyer,
     headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.buyer,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.buyer,
     field: model('buyer'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.buyer,
-    valueFormatter: params => params.value?.name,
+    cellRenderer: (params) => {
+      let mergedValues = params.data.quantityReportDetails.map(a => a.supplyUom?.name ?? "-" );
+      return mergedValues.join("<br>");
+    },    
     width: 150
   };
 
-  progressCol: ITypedColDef<
-    IControlTowerQuantitySupplyDifferenceItemDto,
-    IScheduleDashboardLabelConfigurationDto
-  > = {
+  progressCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,IScheduleDashboardLabelConfigurationDto> = {
     headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
     headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.progress,
     field: model('progress'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
-    valueFormatter: params => params.value?.name,
-    cellRendererFramework: AGGridCellRendererAsyncStatusComponent,
+    cellRenderer: (params) => {
+      return this.computeProgressCellColor(params.value);
+    },    
     width: 150
   };
 
   actionsCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto> = {
     headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.actions,
-    headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.actions,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.actions,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.actions,
     headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
@@ -305,13 +293,17 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRendererParams: { type: 'actions' },
     resizable: false,
     suppressMovable: true,
-    width: 110
+    width: 110,
+    onCellClicked : (event) => {
+      this.actionCellClicked(event);
+    }
   };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
+    public dialog: MatDialog,
     private format: TenantFormattingService,
     private controlTowerService: ControlTowerService,
     private appErrorHandler: AppErrorHandler,
@@ -334,12 +326,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       this.portCol,
       this.vesselCol,
       this.etaCol,
-      this.surveyDate,
+      this.surveyorDate,
       this.emailToVesselCol,
-      this.vesselToWatchCall,
+      this.vesselToWatchCol,
       this.productTypeCol,
-      this.measuredDeliveryQty,
+      this.bdnQuantityCol,
+      this.measuredDeliveredQty,
       this.differenceInQtyCol,
+      this.sumOfOrderQtyCol,
       this.qtyUomCol,
       this.progressCol,
       this.actionsCol
@@ -352,10 +346,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public updateValues(ev, values): void {
-    console.log(ev);
     console.log(values);
     // this.gridApi.purgeServerSideCache();
-    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    let rowNode:any = 0;
+    if(ev.data.id) {
+      rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    } 
     const newStatus = {
       transactionTypeId: 6,
       id: 1,
@@ -370,7 +366,9 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       clientIpAddress: null,
       userAction: null
     };
-    rowNode.setDataValue('status', newStatus);
+    if(rowNode) {
+      rowNode.setDataValue('status', newStatus);
+    }
   }
 
   public filterGridNew(statusName: string): void {
@@ -399,7 +397,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
 
   public filterByStatus(statusName: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['status'] = {
+    grid['progress'] = {
       filterType: 'text',
       type: 'equals',
       filter: statusName
@@ -413,7 +411,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     this.toggleResolvedFilter = true;
     const grid = this.gridApi.getFilterModel();
     for (let [key, value] of Object.entries(grid)) {
-      if (key == 'status') {
+      if (key == 'progress') {
         if ((<any>value).type == 'equals') {
           if ((<any>value).filter.toLowerCase() === 'new') {
             this.toggleNewFilter = !this.toggleNewFilter;
@@ -459,8 +457,11 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {
-          params.successCallback(response.payload, response.matchedCount);
+        (response) => {
+          this.noOfNew =  response.payload.noOfNew;
+          this.noOfMarkedAsSeen =  response.payload.noOfMarkedAsSeen;
+          this.noOfResolved =  response.payload.noOfResolved;
+          params.successCallback(response.payload.items, response.payload.items[0]?.totalCount ?? 0);
         },
         () => {
           this.appErrorHandler.handleError(
@@ -470,4 +471,42 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
         }
       );
   }
+
+  computeProgressCellColor(value: ILookupDto) {
+    let bgColor = "none";
+    switch (value.name) {
+      case "New":
+        bgColor = ControlTowerProgressColors.new;
+      break;
+      case "Marked as Seen":
+        bgColor = ControlTowerProgressColors.markedAsSeen;
+      break;
+      case "Resolved":
+        bgColor = ControlTowerProgressColors.resolved;
+      break;                
+    }
+    return `<a class="btn-25" style="background-color:${bgColor}; color:#fff">${value.name}</a>`;      
+  }
+
+  actionCellClicked = (ev : any) => {
+    let dialogData = { title: 'Florin', id: 'Florin' };
+    const dialogRef = this.dialog.open(
+        RowstatusOnchangeQuantityrobdiffPopupComponent,
+        {
+          width: '382px',
+          height: 'auto',
+          maxHeight: '536px',
+          backdropClass: 'dark-popupBackdropClass',
+          panelClass: 'light-theme',
+          data: dialogData
+        }
+      );
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+        console.log(ev);
+        this.updateValues(ev, result);
+      });
+  }
+
 }

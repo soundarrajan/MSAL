@@ -103,12 +103,12 @@ export class CustomDateAdapter extends MomentDateAdapter {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
-  @Select(ControlTowerListState.firstStatusCount)
-  firstStatusCount$: Observable<number>;
-  @Select(ControlTowerListState.secondStatusCount)
-  secondStatusCount$: Observable<number>;
-  @Select(ControlTowerListState.thirdStatusCount)
-  thirdStatusCount$: Observable<number>;
+  @Select(ControlTowerListState.noOfNew)
+  noOfNew$: Observable<number>;
+  @Select(ControlTowerListState.noOfMarkedAsSeen)
+  noOfMarkedAsSeen$: Observable<number>;
+  @Select(ControlTowerListState.noOfResolved)
+  noOfResolved$: Observable<number>;
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
   @Input() theme: boolean;
   @Input() newScreen: boolean;
@@ -247,8 +247,8 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   public onrowClicked(ev) {
     if (
-      this.selectorType == 'Quantity ROB Difference' ||
-      this.selectorType == 'Quantity Supply Difference'
+      this.selectorType == 'Quantity ROB Difference' 
+    //   || this.selectorType == 'Quantity Supply Difference'
     ) {
       //console.log("hhhhhhhhh");
       const index = ev.rowIndex;
@@ -290,7 +290,8 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     } else {
       return null;
     }
-  }
+  }  
+
 }
 function defined(
   arg0: string,
