@@ -32,9 +32,7 @@ import { SKIP$ } from '@shiptech/core/utils/rxjs-operators';
 import { AgGridAngular } from '@ag-grid-community/angular';
 import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
 import moment from 'moment';
-import {
-  ControlTowerQuantityRobDifferenceListColumns
-} from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-rob-difference-list.columns';
+import { ControlTowerQuantityRobDifferenceListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-rob-difference-list.columns';
 // import { timeEnd } from 'console';
 
 @Directive({
@@ -71,36 +69,36 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     let gridIds = {
       'control-tower-quantity-rob-list-grid-2': {
         timeDeltaValue: 7,
-        timeDeltaUnit: "days",
+        timeDeltaUnit: 'days',
         mappedKey: ControlTowerQuantityRobDifferenceListColumns.createdOn
       },
       'control-tower-quantity-supply-list-grid-1': {
         timeDeltaValue: 7,
-        timeDeltaUnit: "month",
+        timeDeltaUnit: 'month',
         mappedKey: ControlTowerQuantityRobDifferenceListColumns.createdOn
-      },
-      'control-tower-quantity-claims-list-grid-7': {
-        timeDeltaValue: 6,
-        timeDeltaUnit: "month",
-        mappedKey: "createdDate"
       }
+      // 'control-tower-quantity-claims-list-grid-8': {
+      //   timeDeltaValue: 6,
+      //   timeDeltaUnit: 'month',
+      //   mappedKey: 'createdDate'
+      // }
     };
     let last6MonthsOfDataGridIds = [
-      'control-tower-quantity-claims-list-grid-7'
+      'control-tower-quantity-claims-list-grid-8'
     ];
-    
+
     if (gridIds[this.id]) {
-      this.setRangeUntilNow(gridIds[this.id].timeDeltaValue, gridIds[this.id].timeDeltaUnit, gridIds[this.id].mappedKey);
+      this.setRangeUntilNow(
+        gridIds[this.id].timeDeltaValue,
+        gridIds[this.id].timeDeltaUnit,
+        gridIds[this.id].mappedKey
+      );
     } else if (last6MonthsOfDataGridIds.indexOf(this.id) != -1) {
       this.last6MonthsOfData();
     }
   }
 
-  setRangeUntilNow(
-    timeDeltaValue: number,
-    timeDeltaUnit,
-    mappingKey: string
-  ) {
+  setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string) {
     for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
       if (this.filterComponent.filterPresets[i].filterModels) {
         let filters = this.filterComponent.filterPresets[i].filterModels[
@@ -127,7 +125,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           this.filterComponent.filterPresets[i].filterModels[this.id] = {
             [mappingKey]: {
               dateFrom: moment()
-              .subtract(timeDeltaValue, timeDeltaUnit)
+                .subtract(timeDeltaValue, timeDeltaUnit)
                 .format('YYYY-MM-DD'),
               dateTo: moment().format('YYYY-MM-DD'),
               type: 'inRange',

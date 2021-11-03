@@ -1,7 +1,9 @@
-﻿commit e95038125b61e72f96b56d9937187d9e7c1dc785
+﻿commit 1c59892232b3d0979289059798e9073f61dfc0d8
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 3 07:31:30 2021 +0000
+Date:   Wed Nov 3 07:57:59 2021 +0000
 
-    Merged PR 14462: Worked on rob difference ag grid
+    Merged PR 14464: Worked on control tower quantity claims
+    
+    Worked on control tower quantity claims
 
 branch: master
