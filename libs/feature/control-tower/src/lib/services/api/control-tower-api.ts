@@ -16,7 +16,8 @@ import {
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
-  export const getControlTowerQuantityRobDifferenceList = () => `api/labs/list`;
+  export const getControlTowerQuantityRobDifferenceList = () => 
+    `api/controlTower/robDifferenceList`;
   export const getControlTowerQuantityRobDifferenceListExportUrl = () =>
     `api/labs/export`;
   export const getControlTowerQuantitySupplyDifferenceList = () =>
