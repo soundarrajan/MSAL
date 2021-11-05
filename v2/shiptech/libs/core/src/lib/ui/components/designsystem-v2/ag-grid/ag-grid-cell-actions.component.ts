@@ -96,10 +96,4 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     this.params.api.applyTransaction({ remove: newData });
     this.params.action();
   }
-
-
-
-
-
-
 }

@@ -19,6 +19,14 @@ export class ModuleError<T = any> extends AppError<T> {
         'Could not load control tower quantity supply difference list. Please try again later.'
     }
   );
+  
+  static readonly LoadControlTowerQuantitySupplyDifferencePopupFailed = new ModuleError(
+    {
+      code: ErrorCode.LoadControlTowerQuantitySupplyDifferencePopupFailed,
+      message:
+        'Could not load control tower quantity supply popup. Please try again later.'
+    }
+  );
 
   static readonly LoadControlTowerQuantityClaimsFailed = new ModuleError({
     code: ErrorCode.LoadControlTowerQuantityClaimsFailed,

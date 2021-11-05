@@ -1,6 +1,6 @@
 <div class="statusChange">
   <div class="header">
-    <div class="title">Quantity ROB Difference</div>
+    <div class="title">{{data.title}}</div>
     <!-- <div class="id"><span> </span><b></b></div> -->
 
     <div class="header-right">
@@ -26,39 +26,49 @@
     </div>
     <div class="header-title mg-t-5 plr-0 col-6 ">
       <span class="subheader-field">Vessel:</span>
-      <span class="subheader-value">CMA CGM White...</span>
+      <span class="subheader-value">{{data.vessel}}</span>
     </div>
     <div class="col-6 header-title mg-t-5 plr-0 text-right ">
       <span class="subheader-field">Port:</span>
-      <span class="subheader-value">Algeciras</span>
+      <span class="subheader-value">{{data.port}}</span>
     </div>
   </div>
   <div class="more-info mg-b-0 ">
     <div class="row info-section">
       <div class=" w-20p plr-0">
         <div class="col-header">Product Type</div>
-        <div class="col-value">HSFO</div>
-        <div class="col-value">LSFO</div>
+        <div *ngFor='let value of data.productTypeList' class="col-value">
+          {{value.productType}}
+        </div>
       </div>
-      <div class="w-24p plr-0 ">
+      <div class="w-24p plr-0" *ngIf="data.popupType != 'supply'">
         <div class="col-header">Log Book ROB</div>
         <div class="col-value">1295.930</div>
         <div class="col-value">1000.000</div>
       </div>
+      <div class="w-24p plr-0" *ngIf="data.popupType == 'supply'">
+        <div class="col-header">BDN Quantity</div>
+        <div *ngFor='let value of data.productTypeList' class="col-value">
+          {{value.bdnQuantity}}
+        </div>
+      </div>      
       <div class=" w-24p plr-0">
-        <div class="col-header">Measured ROB</div>
-        <div class="col-value">1350.647</div>
-        <div class="col-value">1010.000</div>
+        <div class="col-header">{{data.measuredQuantityLabel}}</div>
+        <div *ngFor='let value of data.productTypeList' class="col-value">
+          {{value.measuredQuantity}}
+        </div>
       </div>
       <div class=" w-20p plr-0">
-        <div class="col-header">Difference</div>
-        <div class="col-value">-54.72</div>
-        <div class="col-value">-10.00</div>
+        <div class="col-header">{{data.differenceQuantityLabel}}</div>
+        <div *ngFor='let value of data.productTypeList' class="col-value">
+          {{value.differenceQuantity}}
+        </div>
       </div>
       <div class=" w-10p plr-0">
         <div class="col-header">UOM</div>
-        <div class="col-value">MT</div>
-        <div class="col-value">MT</div>
+        <div *ngFor='let value of data.productTypeList' class="col-value">
+          {{value.uom}}
+        </div>
       </div>
     </div>
   </div>
@@ -71,53 +81,39 @@
     >
       <mat-form-field class="without-search" appearance="none">
         <mat-label>Select Field</mat-label>
-        <mat-select
+        <mat-select 
           disableOptionCentering
-          [(ngModel)]="New"
+          [(ngModel)]="status"
+          [(value)]="defaultStatus"
           [panelClass]="{ darkPanelBg: switchTheme }"
           (selectionChange)="changeStatus($event.value)"
         >
-          <mat-option value="New">New</mat-option>
-          <mat-option value="Marked as Seen">Marked as Seen</mat-option>
-          <mat-option value="Resolved">Resolved</mat-option>
+          <mat-option *ngFor='let value of controlTowerActionStatus' value="{{value.id}}">{{value.displayName}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="header-title">Comments</div>
-    <textarea spellcheck="false"></textarea>
+    <textarea [(ngModel)]="comments" spellcheck="false"></textarea>
     <div class="link">
       <span>In relation to:</span>
-      <span
-        >Port Call:<span class="aggridlink-darktheme">
-          000050001536482</span
-        ></span
-      >
+      <span>
+        Port Call:
+        <a href="/v2/quantity-control/report/{{data.quantityReportId}}/details" target="_blank">
+          <span class="aggridlink-darktheme">{{data.portCall}}</span>
+        </a>
+      </span>
     </div>
   </div>
   <div class="change-log">
     <div class="header-title">Change Log</div>
     <div class="list-section">
-      <div class="list">
-        <span></span>
-        <p>Mar 12, 2020 12:43 pm</p>
-        <div class="description">Issue marked as seen by John Smith</div>
-      </div>
-      <div class="list">
+
+      <div class="list" style="width:100%" *ngFor='let value of data.changeLog'>
         <span></span>
         <p>Mar 12, 2020 12:43 pm</p>
         <div class="description">Issue marked as seen by John Smith</div>
       </div>
 
-      <div class="list">
-        <span></span>
-        <p>Mar 12, 2020 12:43 pm</p>
-        <div class="description">Issue marked as seen by John Smith</div>
-      </div>
-      <div class="list">
-        <span></span>
-        <p>Mar 12, 2020 12:43 pm</p>
-        <div class="description">Issue marked as seen by John Smith</div>
-      </div>
     </div>
   </div>
 </div>

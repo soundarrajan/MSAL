@@ -1,11 +1,7 @@
-﻿commit 516a8759e6ea0880985fc91bbc87a8e05c0b9f1d
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 5 07:07:24 2021 +0000
+﻿commit 34b1b96d8193d62ea7f4ceb9d01f5826c65fd1d2
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Fri Nov 5 12:44:21 2021 +0200
 
-    Merged PR 14480: Added pmg hostname to use adal library
-    
-    Added pmg hostname to use adal library
-    
-    Related work items: #36542
+    Fixed build error
 
 branch: master
