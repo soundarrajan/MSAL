@@ -10,16 +10,16 @@ import {
 } from '@angular/core';
 import { ICellEditorAngularComp } from 'ag-grid-angular';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
-import * as _moment from 'moment';
+import _moment from "moment"
+import {default as _rollupMoment} from 'moment';
+const moment = _rollupMoment || _moment;
 import { MatMenuTrigger } from '@angular/material/menu';
-const moment = _moment;
 import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-date-time-toggle',
-  template: `
-    <div
+  template: `    
+  <div
       (click)="$event.stopPropagation(); picker.open()"
       style="cursor:pointer;float: left;position:relative;font-size: 12px;color: #ffffff;
   font-weight: 500;"
@@ -64,15 +64,16 @@ import { FormControl } from '@angular/forms';
                width: 100px;visibility:hidden;border: none"
     />
     <div class="time-pick-container">
-      <owl-date-time
-        [pickerType]="'timer'"
-        #dt
+    <!-- <span [owlDateTimeTrigger]="dt"><i style="font-size:24px" class="fa">&#xf017;</i></span>  -->
+      <owl-date-time [pickerType]="'timer'"
+        #dt        
         [panelClass]="
           dark ? ['timerPanelClass', 'darktheme'] : 'timerPanelClass'
         "
         (afterPickerClosed)="timepickerClosed()"
         (afterPickerOpen)="timepickerOpened()"
       ></owl-date-time>
+    
     </div>
   `
 })
@@ -87,7 +88,7 @@ export class AgGridDatetimePickerToggleComponent
   timerValue: any;
   newFormattedValue: string;
   matDateFieldWidth = '100px';
-  initialDate = new FormControl(new Date());
+  initialDate = new FormControl(moment());
   public dateTime;
   @Input() dark: any;
   constructor() {
@@ -222,14 +223,15 @@ export class AgGridDatetimePickerToggleComponent
 
   getValue(): any {
     this.valueField = this.initialDate.value;
+
     // adjust 0 before single digit date
-    let date = ('0' + this.valueField.getDate()).slice(-2);
+    let date = ('0' + this.valueField.date()).slice(-2);
 
     // current month
-    let month = ('0' + (this.valueField.getMonth() + 1)).slice(-2);
+    let month = ('0' + (this.valueField.month() + 1)).slice(-2);
 
     // current year
-    let year = this.valueField.getFullYear();
+    let year = this.valueField.year();
     if (this.timeValue) {
       return month + '/' + date + '/' + year + ' ' + this.timeValue;
       //return( month + "/" + date+ "/" + year);

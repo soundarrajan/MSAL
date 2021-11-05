@@ -40,7 +40,7 @@
     "@ag-grid-community/angular": "^24.1.0",
     "@ag-grid-enterprise/all-modules": "^24.1.0",
     "@angular-builders/custom-webpack": "^8.4.1",
-    "@angular-material-components/datetime-picker": "^5.1.0",
+    "@angular-material-components/datetime-picker": "^5.1.1",
     "@angular-material-components/moment-adapter": "^5.0.0",
     "@angular/animations": "10.2.0",
     "@angular/cdk": "10.2.0",

@@ -55,9 +55,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -74,9 +72,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -93,9 +89,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -112,9 +106,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -130,9 +122,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -148,9 +138,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -164,9 +152,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -181,9 +167,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -197,9 +181,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -216,9 +198,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -229,15 +209,13 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updatePhySupplier}`,
-        payload
+        payload        
       )
       .pipe(
         map((body: any) => body),
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );
@@ -245,6 +223,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
 
   @ObservableException()
   AmendRFQ(payload: any): Observable<any> {    
+    debugger;
     return this.http
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.amendRFQ}`,
@@ -254,9 +233,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),        
         catchError((body: any) =>
           of(
-            body.error.Reference && body.error.ErrorMessage
-              ? body.error.Reference + ' - ' + body.error.ErrorMessage
-              : body.error.reference + ' - ' + body.error.errorMessage
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
           )
         )
       );

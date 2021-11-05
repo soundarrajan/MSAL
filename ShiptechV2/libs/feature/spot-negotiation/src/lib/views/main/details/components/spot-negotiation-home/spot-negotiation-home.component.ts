@@ -28,19 +28,8 @@ import {
 export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
-  requestOptions = [
-    {
-      request: 'Req 12321',
-      vessel: 'Merlion',
-      selected: true
-    },
-    {
-      request: 'Req 12322',
-      vessel: 'Afif',
-      selected: false
-    }
-  ];
-  
+  requestOptions: any;
+
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
 
@@ -63,6 +52,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     this.store.subscribe(({ spotNegotiation }) => {
        this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+       this.requestOptions = spotNegotiation.requests;
      });
   }
 
@@ -87,7 +77,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       var FinalAPIdata = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
-        quoteByDate: new Date(),
+        quoteByDate: this.child.getValue(),
         quoteByCurrencyId: 1,
         quoteByTimeZoneId: 1,
         selectedSellers: this.selectedSellerList
@@ -261,6 +251,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.AmendRFQ(amendRFQRequestPayload);
     response.subscribe((res: any) => {   
       this.spinner.hide();
+      debugger;
       if(res instanceof Array && res.length>0 ){
         this.toaster.success('Amend RFQ(s) sent successfully.');
       }
