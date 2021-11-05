@@ -1,7 +1,7 @@
-﻿commit c637c8560cfd772b72e0e9de58f04312a9236339
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Nov 5 16:43:22 2021 +0200
+﻿commit 7fd23f534c2b49a13a5b3bff174a4eb692558a9c
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Fri Nov 5 22:55:55 2021 +0200
 
-    In Progress - Control Tower Rob Difference
+    Added Filters in Control Tower SupplyDiffernce- fixed conflicts
 
 branch: master

@@ -122,12 +122,8 @@
   </div>
   <div class="change-log">
     <div class="header-title">Change Log</div>
-    <div class="list-section">
-      <div
-        class="list"
-        style="width:100%"
-        *ngFor="let value of data.changeLog?.slice()?.reverse()"
-      >
+    <div class="list-section" *ngIf="data.changeLog">
+      <div class="list" style="width:100%" *ngFor='let value of data.changeLog.slice().reverse()'>
         <span></span>
         <p>{{ formatDate(value.date) }}</p>
         <div class="description">
