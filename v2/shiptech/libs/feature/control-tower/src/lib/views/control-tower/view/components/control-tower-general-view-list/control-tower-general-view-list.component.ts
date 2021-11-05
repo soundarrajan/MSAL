@@ -144,6 +144,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   private _autocompleteType: any;
   autocompleteOrders: string;
   controlTowerListServerKeys: any;
+  differenceType: any;
 
   get selectorType(): string {
     return this._selectorType;
@@ -207,6 +208,11 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           ControlTowerQuantityRobDifferenceListGridViewModel
         );
         this.controlTowerListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
+        this.legacyLookupsDatabase
+          .getTableByName('robDifferenceType')
+          .then(response => {
+            this.differenceType = response.filter(obj => obj.name == 'Rob')[0];
+          });
         break;
       }
       case 'Quantity Supply Difference': {
@@ -214,6 +220,13 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           ControlTowerQuantitySupplyDifferenceListGridViewModel
         );
         this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
+        this.legacyLookupsDatabase
+          .getTableByName('robDifferenceType')
+          .then(response => {
+            this.differenceType = response.filter(
+              obj => obj.name == 'Supply'
+            )[0];
+          });
         break;
       }
       case 'Quantity Claims': {
@@ -332,23 +345,13 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           }
           return rowObj;
         });
-        if (this.selectorType == 'Quantity Supply Difference') {
-          this.openQuantitySupplyDifferencePopUp(
-            ev,
-            response,
-            rowData,
-            productTypeList,
-            'Supply'
-          );
-        } else if (this.selectorType == 'Quantity ROB Difference') {
-          this.openQuantitySupplyDifferencePopUp(
-            ev,
-            response,
-            rowData,
-            productTypeList,
-            'Rob'
-          );
-        }
+        this.openQuantitySupplyDifferencePopUp(
+          ev,
+          response,
+          rowData,
+          productTypeList,
+          this.differenceType.name
+        );
       });
   };
 
@@ -391,7 +394,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       .pipe()
       .subscribe(
         response => {
-          dialogData.changeLog = response.changeLog;
+          dialogData.changeLog = response.payload.changeLog;
           const dialogRef = this.dialog.open(
             RowstatusOnchangeQuantityrobdiffPopupComponent,
             {
@@ -406,7 +409,8 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           dialogRef.afterClosed().subscribe(result => {
             console.log(`Dialog result: ${result}`);
             console.log(ev);
-            this.gridViewModel.updateValues(ev, result);
+            // this.gridViewModel.updateValues(ev, result);
+            this.savePopupChanges(ev, result);
           });
         },
         () => {
@@ -416,6 +420,25 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         }
       );
   }
+
+  savePopupChanges = (ev, result) => {
+    if (result) {
+      let payloadData = {
+        differenceType: this.differenceType,
+        quantityControlReport: {
+          id: ev.data.quantityControlReport.id
+        },
+        status: result.data.status,
+        comments: result.data.comments
+      };
+      this.controlTowerService
+        .saveQuantityResiduePopUp(payloadData, payloadData => {
+          console.log('asd');
+        })
+        .pipe()
+        .subscribe();
+    }
+  };
 
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
