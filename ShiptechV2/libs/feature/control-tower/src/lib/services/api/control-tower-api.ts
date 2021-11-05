@@ -32,6 +32,8 @@ export namespace ControlTowerApiPaths {
     `/api/controlTower/getQualityControlList`;
   export const getControlTowerQualityClaimsListExportUrl = () =>
     `/api/controlTower/exportQualityControlList`;
+  export const getQuantityResiduePopUpUrl = () =>
+    `/api/controlTower/QuantityResiduePopUp`;
 }
 
 @Injectable({
@@ -91,6 +93,14 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
   getControlTowerQuantityClaimsListExportUrl(): string {
     return `${this._claimsApiUrl}/${ControlTowerApiPaths.getControlTowerQuantityClaimsListExportUrl()}`;
+  }
+
+  @ObservableException()
+  getQuantityResiduePopUp(request):any {    
+    return this.http.post(
+      `${this._apiUrl}/api/controlTower/QuantityResiduePopUp`,
+      { payload: request }
+    );
   }
 
   //control tower quality claims api service

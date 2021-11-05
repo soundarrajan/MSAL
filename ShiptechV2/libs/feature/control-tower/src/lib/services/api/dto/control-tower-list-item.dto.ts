@@ -42,7 +42,7 @@ export interface IControlTowerQuantitySupplyDifferenceItemDto {
   measuredDeliveredQty: number;
   totalCount: number;
   sumOfOrderQtyCol: string;
-  buyer: IDisplayLookupDto;
+  qtyUom: IDisplayLookupDto;
   status: IDisplayLookupDto;
 }
 
@@ -113,6 +113,16 @@ export interface IGetControlTowerQuantityClaimsListResponse {
 }
 
 export interface IGetControlTowerQualityClaimsListResponse {
+  payload: {
+    items: IControlTowerQualityClaimsItemDto[];
+    noOf15: number;
+    noOf714: number;
+    noOfNew: number;
+  };
+  matchedCount: number;
+}
+
+export interface IgetControlTowerQualityClaimsListExportUrlResponse {
   payload: {
     items: IControlTowerQualityClaimsItemDto[];
     noOf15: number;
