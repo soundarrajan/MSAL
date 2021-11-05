@@ -1,7 +1,9 @@
-﻿commit 34b1b96d8193d62ea7f4ceb9d01f5826c65fd1d2
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Nov 5 12:44:21 2021 +0200
+﻿commit 0628f991fbd19c27daf2f1f8ac655aa39cd44b3b
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Nov 5 12:38:36 2021 +0000
 
-    Fixed build error
+    Merged PR 14490: Mapped columns in Quantity View: ROB Difference (Bunker Products)
+    
+    Related work items: #33331
 
 branch: master

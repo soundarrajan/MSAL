@@ -26,7 +26,10 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designs
 import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-async-status/ag-grid-cell-async-status.component';
 
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
-import { IControlTowerQuantityRobDifferenceItemDto, IPortCallLookupDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
+import {
+  IControlTowerQuantityRobDifferenceItemDto,
+  IPortCallLookupDto
+} from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import {
@@ -35,6 +38,8 @@ import {
   ControlTowerQuantityRobDifferenceListColumnsLabels,
   ControlTowerQuantityRobDifferenceListExportColumns
 } from '../list-columns/control-tower-quantity-rob-difference-list.columns';
+import { ControlTowerProgressColors } from '../control-tower-general-enums';
+import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 
 function model(
   prop: keyof IControlTowerQuantityRobDifferenceItemDto
@@ -49,7 +54,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
-      .subtract(7, 'days')
+      .subtract(1, 'year')
       .format('YYYY-MM-DD')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
@@ -57,6 +62,9 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public toggleNewFilter: boolean = true;
   public toggleMASFilter: boolean = true;
   public toggleResolvedFilter: boolean = true;
+  public noOfNew: number;
+  public noOfMarkedAsSeen: number;
+  public noOfResolved: number;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -66,24 +74,19 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   gridOptions: GridOptions = {
     enableColResize: true,
     suppressRowClickSelection: true,
-    // suppressCellSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
     rowHeight: 40,
-
     rowModelType: RowModelType.ServerSide,
     pagination: true,
-
     rowSelection: RowSelection.Single,
     suppressContextMenu: true,
-
     multiSortKey: 'ctrl',
-
-    //enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IControlTowerQuantityRobDifferenceItemDto) =>
-    data?.portCall?.portCallId?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: IControlTowerQuantityRobDifferenceItemDto) => {
+      return data?.id?.toString() ?? Math.random().toString();
+    },
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -104,15 +107,17 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     colId: ControlTowerQuantityRobDifferenceListColumns.portCall,
     field: model('portCall'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.portCall,
-    cellRendererFramework: AgCellTemplateComponent,
-    valueFormatter: params => params.value?.name,
+    cellRenderer: params => {
+      const a = document.createElement('a');
+      a.innerHTML = params.value.portCallId;
+      a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
+      a.setAttribute('target', '_blank');
+      return a;
+    },
     width: 200
   };
 
-  portCol: ITypedColDef<
-    IControlTowerQuantityRobDifferenceItemDto, 
-    string
-  > = {
+  portCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto, string> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.port,
     headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.port,
     colId: ControlTowerQuantityRobDifferenceListColumns.port,
@@ -136,26 +141,26 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   etaCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto, string> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.eta,
-    headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.eta,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.eta,
     colId: ControlTowerQuantityRobDifferenceListColumns.eta,
     field: model('eta'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
-    dtoForExport:
-      ControlTowerQuantityRobDifferenceListExportColumns.eta,
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.eta,
     width: 150
   };
 
-  surveyDate: ITypedColDef<
+  surveyorDate: ITypedColDef<
     IControlTowerQuantityRobDifferenceItemDto,
     string
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.surveyorDate,
-    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.surveyorDate,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.surveyorDate,
     colId: ControlTowerQuantityRobDifferenceListColumns.surveyorDate,
     field: model('surveyorDate'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.surveyorDate,
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     width: 150
@@ -165,7 +170,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     IControlTowerQuantityRobDifferenceItemDto,
     boolean
   > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.emailToVessel,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.emailToVessel,
     headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.emailToVessel,
     colId: ControlTowerQuantityRobDifferenceListColumns.emailToVessel,
@@ -175,11 +181,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      // eslint-disable-next-line no-unused-expressions
-      params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;
     },
-    cellClass: 'cell-background',
     width: 150
   };
 
@@ -187,19 +190,19 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     IControlTowerQuantityRobDifferenceItemDto,
     boolean
   > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.vesselToWatch,
-    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.vesselToWatch,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.vesselToWatch,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.vesselToWatch,
     colId: ControlTowerQuantityRobDifferenceListColumns.vesselToWatch,
     field: model('vesselToWatch'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.vesselToWatch,
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.vesselToWatch,
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      // eslint-disable-next-line no-unused-expressions
-      !params.value ? a.classList.add('denger') : a.classList.add('success');
       return a;
     },
-    cellClass: 'cell-background',
     width: 150
   };
 
@@ -207,99 +210,105 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     IControlTowerQuantityRobDifferenceItemDto,
     ILookupDto
   > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.quantityReportDetails,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.productType,
     headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.quantityReportDetails,
-    colId: ControlTowerQuantityRobDifferenceListColumns.quantityReportDetails,
-    field: model('quantityReportDetails'),
+      ControlTowerQuantityRobDifferenceListColumnsLabels.productType,
+    colId: ControlTowerQuantityRobDifferenceListColumns.productType,
+    field: model('productType'),
     dtoForExport:
-    ControlTowerQuantityRobDifferenceListExportColumns.quantityReportDetails,
+      ControlTowerQuantityRobDifferenceListExportColumns.productType,
     cellRenderer: params => {
-      let productTypes = params.value;
-      var productNames = [];
-      productTypes.forEach(product => {
-        if(product?.productType?.name == "DOGO") {
-          productNames.push("LOGO");  
-        }
-        productNames.push(product?.productType?.name);
-      });
-
-      const a = document.createElement('span');
-      a.innerHTML = productNames.join(",");
-      // eslint-disable-next-line no-unused-expressions
-      
-      return a;
+      let mergedValues = params.data.quantityReportDetails.map(
+        a => a.productType?.name ?? '-'
+      );
+      return mergedValues.join('<br>');
     },
     width: 150
   };
 
-  logBookROBCol: ITypedColDef<
-    IControlTowerQuantityRobDifferenceItemDto,
-    number
-  > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRob,
-    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRob,
-    colId: ControlTowerQuantityRobDifferenceListColumns.logBookRob,
-    field: model('quantityReportDetails'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.logBookRob,
-    cellRenderer: params => {
-      let productTypes = params.value;
-      var bookRobLogs = [];
-      productTypes.forEach(product => {
-        let value = this.format.quantity(product?.logBookRobQtyBeforeDelivery)
-        bookRobLogs.push(value);
-      });
-
-      const a = document.createElement('span');
-      a.innerHTML = bookRobLogs.join("<br />");
-      // eslint-disable-next-line no-unused-expressions
-      
-      return a;
-    },
-    filter: 'agNumberColumnFilter',
-    width: 150
-  };
-
-  measuredROBCol: ITypedColDef<
+  logBookRobQtyBeforeDeliveryCol: ITypedColDef<
     IControlTowerQuantityRobDifferenceItemDto,
     number
   > = {
     headerName:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryProductId,
+      ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
     headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.deliveryProductId,
-    colId: ControlTowerQuantityRobDifferenceListColumns.deliveryProductId,
+      ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.logBookRobQtyBeforeDelivery,
+    field: model('logBookRobQtyBeforeDelivery'),
     dtoForExport:
-      ControlTowerQuantityRobDifferenceListExportColumns.deliveryProductId,
-    field: model('deliveryProductId'),
+      ControlTowerQuantityRobDifferenceListExportColumns.logBookRobQtyBeforeDelivery,
+    cellRenderer: params => {
+      let mergedValues = params.data.quantityReportDetails.map(
+        a => this.format.quantity(a.logBookRobQtyBeforeDelivery) ?? '-'
+      );
+      return mergedValues.join('<br>');
+    },
     filter: 'agNumberColumnFilter',
     width: 150
   };
 
-  differenceInQtyCol: ITypedColDef<
+  measuredRobQtyBeforeDeliveryCol: ITypedColDef<
     IControlTowerQuantityRobDifferenceItemDto,
     number
   > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.totalCount,
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
     headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.totalCount,
-    colId: ControlTowerQuantityRobDifferenceListColumns.totalCount,
-    field: model('totalCount'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.totalCount,
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.measuredRobQtyBeforeDelivery,
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.measuredRobQtyBeforeDelivery,
+    cellRenderer: params => {
+      let mergedValues = params.data.quantityReportDetails.map(
+        a => this.format.quantity(a.measuredRobQtyBeforeDelivery) ?? '-'
+      );
+      return mergedValues.join('<br>');
+    },
+    field: model('measuredRobQtyBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     width: 150
   };
 
-  qtyUomCol: ITypedColDef<
+  differenceInRobQuantityCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
+    colId: ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity,
+    field: model('differenceInRobQuantity'),
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.differenceInRobQuantity,
+    cellRenderer: params => {
+      let mergedValues = params.data.quantityReportDetails.map(
+        a => this.format.quantity(a.differenceInRobQuantity) ?? '-'
+      );
+      return mergedValues.join('<br>');
+    },
+    filter: 'agNumberColumnFilter',
+    width: 150
+  };
+
+  robUomCol: ITypedColDef<
     IControlTowerQuantityRobDifferenceItemDto,
     ILookupDto
   > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.buyer,
-    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.buyer,
-    colId: ControlTowerQuantityRobDifferenceListColumns.buyer,
-    field: model('buyer'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.buyer,
-    valueFormatter: params => params.value?.name,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.robUom,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.robUom,
+    colId: ControlTowerQuantityRobDifferenceListColumns.robUom,
+    field: model('robUom'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.robUom,
+    cellRenderer: params => {
+      let mergedValues = params.data.quantityReportDetails.map(
+        a => a.robUom?.name ?? '-'
+      );
+      return mergedValues.join('<br>');
+    },
     width: 150
   };
 
@@ -307,13 +316,33 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     IControlTowerQuantityRobDifferenceItemDto,
     IScheduleDashboardLabelConfigurationDto
   > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.status,
-    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.status,
-    colId: ControlTowerQuantityRobDifferenceListColumns.status,
-    field: model('status'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.status,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
+    colId: ControlTowerQuantityRobDifferenceListColumns.progress,
+    field: model('progress'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.name,
-    cellRendererFramework: AGGridCellRendererAsyncStatusComponent,
+    cellRendererParams: function(params) {
+      var classArray: string[] = [];
+      let newClass = '';
+      switch (params?.value.name) {
+        case 'New':
+          newClass = 'medium-blue';
+          break;
+        case 'Marked as Seen':
+          newClass = 'medium-yellow';
+          break;
+        case 'Resolved':
+          newClass = 'light-green';
+          break;
+      }
+      classArray.push(newClass);
+      return {
+        cellClass: classArray.length > 0 ? classArray : null,
+        type: 'progress'
+      };
+    },
+    cellRendererFramework: AGGridCellRendererStatusComponent,
     width: 150
   };
 
@@ -340,7 +369,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-rob-list-grid-3',
+      'control-tower-quantity-rob-list-grid-5',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -357,27 +386,26 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       this.portCol,
       this.vesselCol,
       this.etaCol,
-      this.surveyDate,
+      this.surveyorDate,
       this.emailToVesselCol,
       this.vesselToWatchCol,
       this.productTypeCol,
-      this.logBookROBCol,
-      // this.measuredROBCol,
-      // this.differenceInQtyCol,
-      // this.qtyUomCol,
-      // this.progressCol,
-      // this.actionsCol
+      this.logBookRobQtyBeforeDeliveryCol,
+      this.measuredRobQtyBeforeDeliveryCol,
+      this.differenceInRobQuantityCol,
+      this.robUomCol,
+      this.progressCol,
+      this.actionsCol
     ];
   }
 
-  public onSearch(value: string): void {
-    this.searchText = value;
-    this.gridApi.purgeServerSideCache();
-  }
-
   public updateValues(ev, values): void {
+    console.log(values);
     // this.gridApi.purgeServerSideCache();
-    const rowNode = this.gridApi.getRowNode(ev.data?.quantityControlReport?.id.toString());
+    let rowNode: any = 0;
+    if (ev.data.id) {
+      rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    }
     const newStatus = {
       transactionTypeId: 6,
       id: 1,
@@ -387,12 +415,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       code: null,
       collectionName: null,
       customNonMandatoryAttribute1: null,
-      vesselToWatch: false,
+      isDeleted: false,
       modulePathUrl: null,
       clientIpAddress: null,
       userAction: null
     };
-    // rowNode.setDataValue('status', newStatus);
+    if (rowNode) {
+      rowNode.setDataValue('status', newStatus);
+    }
   }
 
   public filterGridNew(statusName: string): void {
@@ -421,7 +451,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   public filterByStatus(statusName: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['status'] = {
+    grid['progress'] = {
       filterType: 'text',
       type: 'equals',
       filter: statusName
@@ -435,7 +465,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     this.toggleResolvedFilter = true;
     const grid = this.gridApi.getFilterModel();
     for (let [key, value] of Object.entries(grid)) {
-      if (key == 'status') {
+      if (key == 'progress') {
         if ((<any>value).type == 'equals') {
           if ((<any>value).filter.toLowerCase() === 'new') {
             this.toggleNewFilter = !this.toggleNewFilter;
@@ -456,17 +486,15 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public filterByDate(from: string, to: string): void {
-    let grid = this.gridApi.getFilterModel();
-    grid[ControlTowerQuantityRobDifferenceListColumns.surveyorDate] = {
+    const grid = this.gridApi.getFilterModel();
+    grid['surveyorDate'] = {
       dateFrom: from,
       dateTo: to,
       type: 'inRange',
       filterType: 'date'
     };
-    
     this.gridApi.setFilterModel(grid);
   }
-
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.checkStatusAvailable();
     this.paramsServerSide = params;
@@ -483,7 +511,13 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          params.successCallback(response.payload.items, response.matchedCount);
+          this.noOfNew = response.payload.noOfNew;
+          this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
+          this.noOfResolved = response.payload.noOfResolved;
+          params.successCallback(
+            response.payload.items,
+            response.payload.items[0]?.totalCount ?? 0
+          );
         },
         () => {
           this.appErrorHandler.handleError(
