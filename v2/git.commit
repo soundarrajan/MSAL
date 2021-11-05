@@ -1,7 +1,11 @@
-﻿commit 79662eecf99038f42cf46f8109a2b5240ba81367
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Nov 3 13:13:47 2021 +0200
+﻿commit 516a8759e6ea0880985fc91bbc87a8e05c0b9f1d
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Nov 5 07:07:24 2021 +0000
 
-    Merged control_tower branch in master
+    Merged PR 14480: Added pmg hostname to use adal library
+    
+    Added pmg hostname to use adal library
+    
+    Related work items: #36542
 
 branch: master
