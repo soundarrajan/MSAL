@@ -47,7 +47,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
       />
     </div>
     <div *ngIf="params.type == 'actions'">
-      <div class="action-icon-dark" (cellClicked)="onCellClicked(event)"></div>
+      <div class="action-icon-dark"></div>
       <div *ngIf="params.type === 'border-cell'">
         <div class="border-cell">
           <span class="left-data">{{ params.value }}</span>
@@ -96,10 +96,4 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     this.params.api.applyTransaction({ remove: newData });
     this.params.action();
   }
-
-
-
-
-
-
 }
