@@ -27,7 +27,7 @@
                         style="margin: 7px 5px;">
                         <div class="checkboxOptions" *ngFor="let item of requestOptions">
                           <mat-checkbox [disabled]="item.selected == false" [checked]="item.selected">
-                            {{ item.request }} - {{ item.vessel }}</mat-checkbox>
+                            {{ item.name }} - {{ item.vesselName }}</mat-checkbox>
                         </div>
                       </div>
                       <div class="proceed-div">
@@ -90,7 +90,7 @@
                   </div>
                   <hr class="menu-divider-line" />
 
-                  <div class="date" style="padding-left:0" (click)="dateTimePicker($event)">
+                  <div class="date" style="padding-left:0">
                     <span class="title" style="width: 48px;">Quote by:</span>
                     <div class="by-datePicker">
                       <div id="custom-form-field">
