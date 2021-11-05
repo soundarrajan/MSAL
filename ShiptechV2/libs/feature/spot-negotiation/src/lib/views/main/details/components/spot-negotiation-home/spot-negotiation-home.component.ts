@@ -77,9 +77,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       var FinalAPIdata = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
-        quoteByDate: this.child.getValue(),
-        quoteByCurrencyId: 1,
-        quoteByTimeZoneId: 1,
+        quoteByDate: new Date(this.child.getValue()),
         selectedSellers: this.selectedSellerList
       };
     }
