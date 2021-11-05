@@ -144,6 +144,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   private _autocompleteType: any;
   autocompleteOrders: string;
   controlTowerListServerKeys: any;
+  differenceType: any;
 
   get selectorType(): string {
     return this._selectorType;
@@ -207,6 +208,11 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           ControlTowerQuantityRobDifferenceListGridViewModel
         );
         this.controlTowerListServerKeys = ControlTowerQuantityRobDifferenceListColumnServerKeys;
+        this.legacyLookupsDatabase
+          .getTableByName('robDifferenceType')
+          .then(response => {
+            this.differenceType = response.filter(obj => obj.name == 'Rob')[0];
+          });
         break;
       }
       case 'Quantity Supply Difference': {
@@ -214,6 +220,13 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           ControlTowerQuantitySupplyDifferenceListGridViewModel
         );
         this.controlTowerListServerKeys = ControlTowerQuantitySupplyDifferenceListColumnServerKeys;
+        this.legacyLookupsDatabase
+          .getTableByName('robDifferenceType')
+          .then(response => {
+            this.differenceType = response.filter(
+              obj => obj.name == 'Supply'
+            )[0];
+          });
         break;
       }
       case 'Quantity Claims': {
@@ -314,64 +327,117 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         let productTypeList = rowData.quantityReportDetails.map(obj => {
           let rowObj = {};
           rowObj['productType'] = obj.productType.name;
-          rowObj['bdnQuantity'] = obj.bdnQuantity;
-          rowObj['measuredQuantity'] = obj.measuredDeliveredQuantity;
-          rowObj['differenceQuantity'] = obj.differenceInSupplyQuantity;
-          rowObj['uom'] = obj.supplyUom.name;
+          /**
+           * For quantity rob difference
+           */
+          if (this.selectorType == 'Quantity ROB Difference') {
+            rowObj['logBookRobQtyBeforeDelivery'] =
+              obj.logBookRobQtyBeforeDelivery;
+            rowObj['measuredRobQtyBeforeDelivery'] =
+              obj.measuredRobQtyBeforeDelivery;
+            rowObj['differenceInRobQuantity'] = obj.differenceInRobQuantity;
+            rowObj['uom'] = obj.robUom.name;
+          } else if (this.selectorType == 'Quantity Supply Difference') {
+            rowObj['bdnQuantity'] = obj.bdnQuantity;
+            rowObj['measuredQuantity'] = obj.measuredDeliveredQuantity;
+            rowObj['differenceQuantity'] = obj.differenceInSupplyQuantity;
+            rowObj['uom'] = obj.supplyUom.name;
+          }
           return rowObj;
         });
+        this.openQuantitySupplyDifferencePopUp(
+          ev,
+          response,
+          rowData,
+          productTypeList,
+          this.differenceType.name
+        );
+      });
+  };
 
-        let dialogData: IControlTowerRowPopup = {
-          popupType: 'supply',
-          title: 'Quantity Supply Difference',
-          measuredQuantityLabel: 'Measured Delivered Qty',
-          differenceQuantityLabel: 'Difference in Qty',
-          vessel: rowData.vessel,
-          port: rowData.port,
-          portCall: rowData.portCall.portCallId,
-          quantityReportId: rowData.quantityControlReport.id,
-          productTypeList: productTypeList
-        };
+  openQuantitySupplyDifferencePopUp(
+    ev,
+    response,
+    rowData,
+    productTypeList,
+    type
+  ) {
+    let dialogData: IControlTowerRowPopup = {
+      popupType: type == 'Supply' ? 'supply' : 'rob',
+      title:
+        type == 'Supply'
+          ? 'Quantity Supply Difference'
+          : 'Quantity ROB Difference',
+      measuredQuantityLabel:
+        type == 'Supply' ? 'Measured Delivered Qty' : 'Measured ROB',
+      differenceQuantityLabel:
+        type == 'Supply' ? 'Difference in Qty' : 'Difference in Qty',
+      vessel: rowData.vessel,
+      port: rowData.port,
+      portCall: rowData.portCall.portCallId,
+      quantityReportId: rowData.quantityControlReport.id,
+      progressId: rowData.progress.id,
+      productTypeList: productTypeList
+    };
 
-        let payloadData = {
-          differenceType: response.filter(obj => obj.name == 'Supply')[0],
-          quantityControlReport: {
-            id: rowData.quantityControlReport.id
-          }
-        };
+    let payloadData = {
+      differenceType: response.filter(obj => obj.name == type)[0],
+      quantityControlReport: {
+        id: rowData.quantityControlReport.id
+      }
+    };
 
-        this.controlTowerService
-          .getQuantityResiduePopUp(payloadData, payloadData => {
-            console.log('asd');
-          })
-          .pipe()
-          .subscribe(
-            response => {
-              dialogData.changeLog = response.payload.changeLog;
-              const dialogRef = this.dialog.open(
-                RowstatusOnchangeQuantityrobdiffPopupComponent,
-                {
-                  width: '520px',
-                  height: 'auto',
-                  maxHeight: '536px',
-                  backdropClass: 'dark-popupBackdropClass',
-                  panelClass: 'light-theme',
-                  data: dialogData
-                }
-              );
-              dialogRef.afterClosed().subscribe(result => {
-                console.log(`Dialog result: ${result}`);
-                console.log(ev);
-                this.gridViewModel.updateValues(ev, result);
-              });
-            },
-            () => {
-              this.appErrorHandler.handleError(
-                ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
-              );
+    this.controlTowerService
+      .getQuantityResiduePopUp(payloadData, payloadData => {
+        console.log('asd');
+      })
+      .pipe()
+      .subscribe(
+        response => {
+          dialogData.changeLog = response.payload.changeLog;
+          const dialogRef = this.dialog.open(
+            RowstatusOnchangeQuantityrobdiffPopupComponent,
+            {
+              width: '520px',
+              height: 'auto',
+              maxHeight: '536px',
+              backdropClass: 'dark-popupBackdropClass',
+              panelClass: 'light-theme',
+              data: dialogData
             }
           );
-      });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+            console.log(ev);
+            // this.gridViewModel.updateValues(ev, result);
+            this.savePopupChanges(ev, result);
+          });
+        },
+        () => {
+          this.appErrorHandler.handleError(
+            ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
+          );
+        }
+      );
+  }
+
+  savePopupChanges = (ev, result) => {
+    if (result) {
+      let payloadData = {
+        differenceType: this.differenceType,
+        quantityControlReport: {
+          id: ev.data.quantityControlReport.id
+        },
+        status: result.data.status,
+        comments: result.data.comments
+      };
+      this.controlTowerService
+        .saveQuantityResiduePopUp(payloadData, payloadData => {
+          console.log('asd');
+        })
+        .pipe()
+        .subscribe();
+    }
   };
 
   getHeaderNameSelector(): string {
