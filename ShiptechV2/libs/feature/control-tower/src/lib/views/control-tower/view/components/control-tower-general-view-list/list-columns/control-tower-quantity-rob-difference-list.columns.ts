@@ -51,12 +51,14 @@ export enum ControlTowerQuantityRobDifferenceListColumnsLabels {
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
+
 export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   ControlTowerQuantityRobDifferenceListColumns,
   string
 > = {
   [ControlTowerQuantityRobDifferenceListColumns.actions]: undefined,
-  [ControlTowerQuantityRobDifferenceListColumns.portCall]: 'portCall_portCallId',
+  [ControlTowerQuantityRobDifferenceListColumns.portCall]:
+    'portCall_portCallId',
   [ControlTowerQuantityRobDifferenceListColumns.port]: 'port',
   [ControlTowerQuantityRobDifferenceListColumns.vessel]: 'vessel',
   [ControlTowerQuantityRobDifferenceListColumns.eta]: 'eta',
@@ -65,7 +67,8 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantityRobDifferenceListColumns.vesselToWatch]: 'vesselToWatch',
   [ControlTowerQuantityRobDifferenceListColumns.quantityReportDetails]:
     'quantityReportDetails',
-  [ControlTowerQuantityRobDifferenceListColumns.logBookRob]: 'quantityReportDetails',
+  [ControlTowerQuantityRobDifferenceListColumns.logBookRob]:
+    'quantityReportDetails',
   [ControlTowerQuantityRobDifferenceListColumns.deliveryProductId]:
     'deliveryProductId',
   [ControlTowerQuantityRobDifferenceListColumns.totalCount]: 'totalCount',
