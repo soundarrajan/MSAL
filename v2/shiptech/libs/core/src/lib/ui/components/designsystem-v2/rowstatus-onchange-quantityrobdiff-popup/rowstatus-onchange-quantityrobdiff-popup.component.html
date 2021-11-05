@@ -107,11 +107,15 @@
   <div class="change-log">
     <div class="header-title">Change Log</div>
     <div class="list-section">
-
-      <div class="list" style="width:100%" *ngFor='let value of data.changeLog'>
+      <div class="list" style="width:100%" *ngFor='let value of data.changeLog.slice().reverse()'>
         <span></span>
-        <p>Mar 12, 2020 12:43 pm</p>
-        <div class="description">Issue marked as seen by John Smith</div>
+        <p>{{formatDate(value.date)}}</p>
+        <div class="description">
+          {{value.newStatus.displayName}} by {{value.user.name}}
+          <p class="p-0 pt-1 pb-2">
+            Comments: <em>{{value.newComments}}</em>
+          </p>
+        </div>
       </div>
 
     </div>
