@@ -59,6 +59,7 @@ function model(
 @Injectable()
 export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseGridViewModel {
   public searchText: string;
+  public differenceType: ILookupDto;
   public exportUrl: string;
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
@@ -382,6 +383,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     width: 110
   };
 
+  
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -402,7 +404,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       )
     );
     this.init(this.gridOptions, true);
+    this.legacyLookupsDatabase.getTableByName("robDifferenceType")
+      .then( (response) => {
+      this.differenceType = response.filter( obj => obj.name == "Supply")[0]
+    })    
   }
+
+
+
 
   getColumnsDefs(): any[] {
     return [
@@ -572,6 +581,96 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
         bgColor = ControlTowerProgressColors.resolved;
         break;
     }
-    return `<a class="btn-25" style="background-color:${bgColor}; color:#fff">${value.name}</a>`;
+    return `<a class="btn-25" style="background-color:${bgColor}; color:#fff">${value.name}</a>`;      
   }
+
+  actionCellClicked = (ev : any) => {
+    this.legacyLookupsDatabase.getTableByName("robDifferenceType")
+    .then( (response) => {
+      let rowData = ev.node.data;
+
+      let productTypeList = rowData.quantityReportDetails.map(obj => {
+        let rowObj = {};
+        rowObj["productType"] = obj.productType.name;
+        rowObj["bdnQuantity"] = obj.bdnQuantity;
+        rowObj["measuredQuantity"] = obj.measuredDeliveredQuantity;
+        rowObj["differenceQuantity"] = obj.differenceInSupplyQuantity;
+        rowObj["uom"] = obj.supplyUom.name;
+        return rowObj;
+      }) 
+      
+      let dialogData : IControlTowerRowPopup = { 
+        popupType : "supply",
+        title: 'Quantity Supply Difference', 
+        measuredQuantityLabel: "Measured Delivered Qty",
+        differenceQuantityLabel: "Difference in Qty",
+        vessel : rowData.vessel,
+        port : rowData.port,
+        portCall : rowData.portCall.portCallId,
+        quantityReportId : rowData.quantityControlReport.id,
+        productTypeList : productTypeList,
+      };
+
+      let payloadData = {
+        "differenceType" : response.filter( obj => obj.name == "Supply")[0],
+        "quantityControlReport" : {
+          id : rowData.quantityControlReport.id
+        },
+      }
+
+      this.controlTowerService.getQuantityResiduePopUp(payloadData, (payloadData) => {
+        console.log("asd");
+      }).pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (response) => {
+            dialogData.changeLog = response.payload.changeLog; 
+            const dialogRef = this.dialog.open(
+              RowstatusOnchangeQuantityrobdiffPopupComponent,
+              {
+                width: '520px',
+                height: 'auto',
+                maxHeight: '536px',
+                backdropClass: 'dark-popupBackdropClass',
+                panelClass: 'light-theme',
+                data: dialogData
+              }
+            );
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(`Dialog result: ${result}`);
+              console.log(ev);
+              this.savePopupChanges(ev, result);
+            });
+          },
+          () => {
+            this.appErrorHandler.handleError(
+              ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
+            );
+          }
+        );
+    
+    })
+  }
+
+  savePopupChanges = (ev, result) => {
+    if(result) {
+
+      let payloadData = {
+        "differenceType" : this.differenceType,
+        "quantityControlReport" : {
+          id : ev.data.quantityControlReport.id
+        },
+        "status" : result.data.status,
+        "comments" : result.data.comments
+      }
+
+      this.controlTowerService.saveQuantityResiduePopUp(payloadData, (payloadData) => {
+        console.log("asd");
+      }).pipe(takeUntil(this.destroy$))
+        .subscribe(
+      );    
+
+    }
+  }
+
+
 }
