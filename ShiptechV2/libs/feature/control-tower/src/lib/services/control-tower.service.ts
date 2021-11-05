@@ -155,6 +155,11 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   getQuantityResiduePopUp(data, response) {
     return this.api.getQuantityResiduePopUp(data);
   }
+  
+  @ObservableException()
+  saveQuantityResiduePopUp(data, response) {
+    return this.api.saveQuantityResiduePopUp(data);
+  }
 
 
   ngOnDestroy(): void {
