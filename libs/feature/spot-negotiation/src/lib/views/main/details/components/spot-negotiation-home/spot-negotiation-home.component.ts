@@ -125,7 +125,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+    
+    let currentRequestData: any;
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+     currentRequestData = spotNegotiation.locations;
+    });
+
     rowsArray.forEach((row, index) => {
+      let currentLocProd = currentRequestData.filter(row1 => row1.locationId == row.locationId);
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
@@ -134,6 +141,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         priceDetailsArray[index].requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.isSelected = priceDetailsArray[index].isSelected;
+        this.UpdateProductsSelection(currentLocProd,row);
+        
         return row;
       }
 
@@ -145,13 +155,26 @@ export class SpotNegotiationHomeComponent implements OnInit {
       // We found something
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
+        row.isSelected = detailsForCurrentRow[0].isSelected;
+        this.UpdateProductsSelection(currentLocProd,row);
       }
-
       return row;
     });
 
     return rowsArray;
   }
+
+ UpdateProductsSelection(currentLocProd,row){
+  if(currentLocProd.length != 0){
+    debugger;
+    let currentLocProdCount = currentLocProd[0].requestProducts.length;
+    for (let index = 0; index < currentLocProdCount; index++) {
+      let indx = index +1;
+      let val = "checkProd" + indx;
+      row[val] = row.isSelected;
+    }
+  }
+ }
 
   FilterselectedRow() {
     var Sellectedsellerdata = [];
