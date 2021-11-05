@@ -162,7 +162,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   gridViewModel: any;
   gridIds = {
-    'control-tower-quantity-rob-list-grid-2': {
+    'control-tower-quantity-rob-list-grid-5': {
       timeDeltaValue: 1,
       timeDeltaUnit: 'year',
       mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
