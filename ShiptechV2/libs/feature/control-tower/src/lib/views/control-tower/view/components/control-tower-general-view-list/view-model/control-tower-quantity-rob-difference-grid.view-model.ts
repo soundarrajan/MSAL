@@ -53,7 +53,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
-      .subtract(7, 'days')
+      .subtract(1, 'year')
       .format('YYYY-MM-DD')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
@@ -369,7 +369,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quantity-rob-list-grid-3',
+      'control-tower-quantity-rob-list-grid-5',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(

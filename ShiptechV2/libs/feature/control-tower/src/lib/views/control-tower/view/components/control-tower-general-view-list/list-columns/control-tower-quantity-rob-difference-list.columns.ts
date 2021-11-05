@@ -68,7 +68,7 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantityRobDifferenceListColumns.port]: 'port',
   [ControlTowerQuantityRobDifferenceListColumns.vessel]: 'vessel_name',
   [ControlTowerQuantityRobDifferenceListColumns.eta]: 'eta',
-  [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'eta',
+  [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'surveyorDate',
   [ControlTowerQuantityRobDifferenceListColumns.emailToVessel]: 'emailToVessel',
   [ControlTowerQuantityRobDifferenceListColumns.vesselToWatch]: 'vesselToWatch',
   [ControlTowerQuantityRobDifferenceListColumns.productType]:
