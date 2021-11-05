@@ -3,28 +3,29 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 
 export interface IPortCallLookupDto {
-  voyageReference: any,
-  portCallId: string,
-  vesselVoyageDetailId: number,
-  modulePathUrl: string,
-  clientIpAddress: string,
-  userAction: string
+  voyageReference: any;
+  portCallId: string;
+  vesselVoyageDetailId: number;
+  modulePathUrl: string;
+  clientIpAddress: string;
+  userAction: string;
 }
 
 export interface IControlTowerQuantityRobDifferenceItemDto {
-  order: IDisplayLookupDto;
-  portCall: IPortCallLookupDto;
-  port: string;
+  portCall: IDisplayLookupDto;
+  port: IDisplayLookupDto;
   vessel: IDisplayLookupDto;
   eta: string;
   surveyorDate: string;
   emailToVessel: boolean;
   vesselToWatch: boolean;
-  quantityReportDetails: IDisplayLookupDto;
-  logBookRob: number;
-  deliveryProductId: number;
+  productType: IDisplayLookupDto;
+  progress: IDisplayLookupDto;
+  id: number;
+  measuredDeliveredQty: number;
   totalCount: number;
-  buyer: IDisplayLookupDto;
+  sumOfOrderQtyCol: string;
+  qtyUom: IDisplayLookupDto;
   status: IDisplayLookupDto;
 }
 
@@ -86,19 +87,19 @@ export interface IGetControlTowerListRequest extends IServerGridInfo {}
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
   payload: {
     items: IControlTowerQuantityRobDifferenceItemDto[];
-    noOfNew: number,
-    noOfMarkedAsSeen: number,
-    noOfResolved: number
+    noOfNew: number;
+    noOfMarkedAsSeen: number;
+    noOfResolved: number;
   };
   matchedCount: number;
 }
 
 export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
   payload: {
-      items : IControlTowerQuantitySupplyDifferenceItemDto[];
-      noOfMarkedAsSeen: number
-      noOfNew: number
-      noOfResolved: number      
+    items: IControlTowerQuantitySupplyDifferenceItemDto[];
+    noOfMarkedAsSeen: number;
+    noOfNew: number;
+    noOfResolved: number;
   };
 }
 

@@ -1,33 +1,38 @@
 export enum ControlTowerQuantityRobDifferenceListColumns {
   actions = 'actions',
-  portCall = 'portCall',
+  portCall = 'portcall.portCallId',
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
   surveyorDate = 'surveyorDate',
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
-  quantityReportDetails = 'quantityReportDetails',
-  logBookRob = 'quantityReportDetails',
-  deliveryProductId = 'deliveryProductId',
+  productType = 'productType',
+  progress = 'progress',
+  bdnQuantity = 'bdnQuantity',
+  measuredDeliveredQty = 'measuredDeliveredQty',
+  sumOfOrderQtyCol = 'sumOfOrderQtyCol',
   totalCount = 'totalCount',
-  buyer = 'buyer',
+  qtyUom = 'buyer',
   status = 'status'
 }
 
 export enum ControlTowerQuantityRobDifferenceListExportColumns {
-  portCall = 'portCall.portCallId',
+  portCall = 'portcall.portCallId',
   port = 'port',
-  vessel = 'vessel',
+  vessel = 'vessel.name',
   eta = 'eta',
   surveyorDate = 'surveyorDate',
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
-  quantityReportDetails = 'quantityReportDetails',
-  logBookRob = 'quantityReportDetails',
-  deliveryProductId = 'deliveryProductId',
+  productType = 'productType.name',
+  progress = 'progress.name',
+  bdnQuantity = 'bdnQuantity',
+  id = 'id',
+  measuredDeliveredQty = 'measuredDeliveredQty',
+  sumOfOrderQtyCol = 'sumOfOrderQtyCol',
   totalCount = 'totalCount',
-  buyer = 'buyer.name',
+  qtyUom = 'buyer.name',
   status = 'status.name'
 }
 
@@ -40,38 +45,42 @@ export enum ControlTowerQuantityRobDifferenceListColumnsLabels {
   surveyorDate = 'Surveyor Date',
   emailToVessel = 'Email To Vessel',
   vesselToWatch = 'Vessel To Watch',
-  quantityReportDetails = 'Product Type',
-  logBookRob = 'Log Book ROB',
-  deliveryProductId = 'Measured ROB',
+  productType = 'Product Type',
+  progress = 'Progress',
+  id = 'Log Book ROB',
+  bdnQuantity = 'BDN Quantity',
+  measuredDeliveredQty = 'Measured Delivered Quantity',
+  sumOfOrderQtyCol = 'Sum Of Order Qty',
   totalCount = 'Difference in Qty',
-  buyer = 'Qty UOM',
+  qtyUom = 'Qty UOM',
   status = 'Progress'
 }
 
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-
 export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   ControlTowerQuantityRobDifferenceListColumns,
   string
 > = {
   [ControlTowerQuantityRobDifferenceListColumns.actions]: undefined,
-  [ControlTowerQuantityRobDifferenceListColumns.portCall]:
-    'portCall_portCallId',
+  [ControlTowerQuantityRobDifferenceListColumns.portCall]: 'order_id',
   [ControlTowerQuantityRobDifferenceListColumns.port]: 'port',
-  [ControlTowerQuantityRobDifferenceListColumns.vessel]: 'vessel',
+  [ControlTowerQuantityRobDifferenceListColumns.vessel]: 'vessel_name',
   [ControlTowerQuantityRobDifferenceListColumns.eta]: 'eta',
-  [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'surveyorDate',
+  [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'eta',
   [ControlTowerQuantityRobDifferenceListColumns.emailToVessel]: 'emailToVessel',
   [ControlTowerQuantityRobDifferenceListColumns.vesselToWatch]: 'vesselToWatch',
-  [ControlTowerQuantityRobDifferenceListColumns.quantityReportDetails]:
-    'quantityReportDetails',
-  [ControlTowerQuantityRobDifferenceListColumns.logBookRob]:
-    'quantityReportDetails',
-  [ControlTowerQuantityRobDifferenceListColumns.deliveryProductId]:
-    'deliveryProductId',
+  [ControlTowerQuantityRobDifferenceListColumns.productType]:
+    'producttype_name',
+  [ControlTowerQuantityRobDifferenceListColumns.progress]: 'progress',
+  [ControlTowerQuantityRobDifferenceListColumns.bdnQuantity]: 'bdnQuantity',
+  //   [ControlTowerQuantityRobDifferenceListColumns.id]: 'id',
+  [ControlTowerQuantityRobDifferenceListColumns.measuredDeliveredQty]:
+    'measuredDeliveredQty',
+  [ControlTowerQuantityRobDifferenceListColumns.sumOfOrderQtyCol]:
+    'sumOfOrderQty',
   [ControlTowerQuantityRobDifferenceListColumns.totalCount]: 'totalCount',
-  [ControlTowerQuantityRobDifferenceListColumns.buyer]: 'buyer_name',
+  [ControlTowerQuantityRobDifferenceListColumns.qtyUom]: 'qtyUom',
   [ControlTowerQuantityRobDifferenceListColumns.status]: 'status_name'
 };
