@@ -2,7 +2,8 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
-import { FormControl } from '@angular/forms';  
+import { FormControl } from '@angular/forms';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'app-rowstatus-onchange-quantityrobdiff-popup',
@@ -11,14 +12,15 @@ import { FormControl } from '@angular/forms';
 })
 export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
   public switchTheme: boolean = true;
-  public status : string;
-  public comments : string;
-  public controlTowerActionStatus : any;
-  public defaultStatus : string;
+  public status: string;
+  public comments: string;
+  public controlTowerActionStatus: any;
+  public defaultStatus: string;
   public controlTowePopupForm = new FormControl();
   constructor(
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private changeDetectorRef: ChangeDetectorRef,
+    private format: TenantFormattingService,
     public dialogRef: MatDialogRef<
       RowstatusOnchangeQuantityrobdiffPopupComponent
     >,
@@ -26,13 +28,14 @@ export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.defaultStatus = "1";
-    this.legacyLookupsDatabase.getTableByName("controlTowerActionStatus").then( (response) => {
-      this.controlTowerActionStatus = response;
-      console.log(this.controlTowePopupForm);
-      this.status = "1";
-      // this.changeStatus(this.controlTowerActionStatus[0]);
-    });
+    this.defaultStatus = this.data.progressId.toString();
+    this.legacyLookupsDatabase
+      .getTableByName('controlTowerActionStatus')
+      .then(response => {
+        this.controlTowerActionStatus = response;
+        console.log(this.controlTowePopupForm);
+        this.status = this.data.progressId.toString();
+      });
   }
   changeStatus(status) {
     //alert(status);
@@ -40,9 +43,9 @@ export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
   }
   statusChanged() {
     let data = {
-      status : { id : +this.status},
-      comments : this.comments
-    } 
+      status: { id: +this.status },
+      comments: this.comments
+    };
     this.dialogRef.close({ data: data });
   }
   closeDialog() {

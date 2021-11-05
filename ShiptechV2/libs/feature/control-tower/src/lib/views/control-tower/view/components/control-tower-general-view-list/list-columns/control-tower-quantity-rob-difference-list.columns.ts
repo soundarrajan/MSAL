@@ -23,11 +23,11 @@ export enum ControlTowerQuantityRobDifferenceListExportColumns {
   surveyorDate = 'surveyorDate',
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
-  productType = 'productType.name',
-  logBookRobQtyBeforeDelivery = 'logBookRobQtyBeforeDelivery',
-  measuredRobQtyBeforeDelivery = 'measuredRobQtyBeforeDelivery',
-  differenceInRobQuantity = 'differenceInRobQuantity',
-  robUom = 'robUom.name',
+  productType = 'quantityReportDetails.productType.name',
+  logBookRobQtyBeforeDelivery = 'quantityReportDetails.logBookRobQtyBeforeDelivery',
+  measuredRobQtyBeforeDelivery = 'quantityReportDetails.measuredRobQtyBeforeDelivery',
+  differenceInRobQuantity = 'quantityReportDetails.differenceInRobQuantity',
+  robUom = 'quantityReportDetails.robUom.name',
   progress = 'progress.name'
 }
 
