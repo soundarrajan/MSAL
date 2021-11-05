@@ -49,6 +49,7 @@ import {
 } from '../control-tower-general-enums';
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { __values } from 'tslib';
 
 function model(
   prop: keyof IControlTowerQuantitySupplyDifferenceItemDto
@@ -120,11 +121,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.portCall,
     cellRenderer: params => {
-      const a = document.createElement('a');
-      a.innerHTML = params.value.portCallId;
-      a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
-      a.setAttribute('target', '_blank');
-      return a;
+      if(params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value?.portCallId;
+        a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     width: 200
   };
@@ -239,10 +243,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.productType,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.productType?.name ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if(params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.productType?.name ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     width: 150
   };
@@ -260,10 +266,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.bdnQuantity,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.bdnQuantity ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if(params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.bdnQuantity ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     filter: 'agNumberColumnFilter',
     width: 150
@@ -281,10 +289,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.measuredDeliveredQty,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.measuredDeliveredQuantity ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if(params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.measuredDeliveredQuantity ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     field: model('measuredDeliveredQty'),
     filter: 'agNumberColumnFilter',
@@ -296,18 +306,20 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     number
   > = {
     headerName:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.totalCount,
+      ControlTowerQuantitySupplyDifferenceListColumnsLabels.differenceInQty,
     headerTooltip:
-      ControlTowerQuantitySupplyDifferenceListColumnsLabels.totalCount,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.totalCount,
-    field: model('totalCount'),
+      ControlTowerQuantitySupplyDifferenceListColumnsLabels.differenceInQty,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty,
+    field: model('differenceInQty'),
     dtoForExport:
-      ControlTowerQuantitySupplyDifferenceListExportColumns.totalCount,
+      ControlTowerQuantitySupplyDifferenceListExportColumns.differenceInQty,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.differenceInSupplyQuantity ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if(params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.differenceInSupplyQuantity ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     filter: 'agNumberColumnFilter',
     width: 150
@@ -325,10 +337,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.sumOfOrderQtyCol,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.sumOfOrderQuantity ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if(params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.sumOfOrderQuantity ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     filter: 'agNumberColumnFilter',
     width: 150
@@ -344,10 +358,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     field: model('qtyUom'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.qtyUom,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.supplyUom?.name ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if(params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.supplyUom?.name ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     width: 150
   };
@@ -364,7 +380,9 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
     cellRenderer: params => {
-      return this.computeProgressCellColor(params.value);
+      if(params.value) {
+        return this.computeProgressCellColor(params.value);
+      }
     },
     width: 150
   };
@@ -439,6 +457,25 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public updateValues(ev, values): void {
+    if(values) {
+
+      let payloadData = {
+        "differenceType" : this.differenceType,
+        "quantityControlReport" : {
+          id : ev.data.quantityControlReport.id
+        },
+        "status" : values.data.status,
+        "comments" : values.data.comments
+      }
+
+      this.controlTowerService.saveQuantityResiduePopUp(payloadData, (payloadData) => {
+        console.log("asd");
+      }).pipe(takeUntil(this.destroy$))
+        .subscribe(
+      );    
+
+    }    
+    return;
     console.log(values);
     // this.gridApi.purgeServerSideCache();
     let rowNode: any = 0;

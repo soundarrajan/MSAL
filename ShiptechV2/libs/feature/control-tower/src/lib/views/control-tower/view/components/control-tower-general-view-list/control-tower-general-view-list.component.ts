@@ -347,7 +347,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           .pipe()
           .subscribe(
             response => {
-              dialogData.changeLog = response.changeLog;
+              dialogData.changeLog = response.payload.changeLog;
               const dialogRef = this.dialog.open(
                 RowstatusOnchangeQuantityrobdiffPopupComponent,
                 {
