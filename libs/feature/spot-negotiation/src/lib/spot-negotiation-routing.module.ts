@@ -6,6 +6,7 @@ import { NgModule, Type } from '@angular/core';
 import { KnownSpotNegotiationRoutes } from './known-spot-negotiation.routes';
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
+import { UomsRouteResolver } from './uoms-route.resolver';
 
 const routes: Routes = [
   {
@@ -35,7 +36,7 @@ const routes: Routes = [
               {
                 path: KnownSpotNegotiationRoutes.details,
                 component: SpotNegotiationComponent,
-                resolve: { staticLists: StaticListsRouteResolver, navBar: NavBarResolver },
+                resolve: { staticLists: StaticListsRouteResolver, navBar: NavBarResolver, uoms: UomsRouteResolver },
                 data: {
                   title: 'Negotiation',
                   breadcrumb: 'Negotiation'

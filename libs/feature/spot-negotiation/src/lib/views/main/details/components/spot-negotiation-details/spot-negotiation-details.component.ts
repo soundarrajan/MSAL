@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -5,7 +6,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -18,8 +19,6 @@ import { SpotNegotiationService } from '../../../../../services/spot-negotiation
 import {
   EditLocationRow,
   SetCounterpartyList,
-  SetLocations,
-  SetLocationsRows
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
@@ -44,6 +43,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   locationsRows: any = [];
   currentRequestSmallInfo = {};
   highlightedCells = {};
+  uomsMap: any;
 
   context: any;
 
@@ -216,10 +216,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private toastr: ToastrService
   ) {
-
     this.context = { componentParent: this };
     this.gridOptions_counterparty = <GridOptions>{
-      resizable: true,
+      // resizable: true,
       rowSelection: 'multiple',
       defaultColDef: {
         flex: 1,
@@ -272,6 +271,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         customHeaderGroupComponent: ShiptechCustomHeaderGroup
       }
     };
+
   }
   isselectedrowfun(row , isSelected){
     if(isSelected){
@@ -437,18 +437,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
   createProductHeader(product, requestLocationId, index) {
     var checkprodindex = index + 1;
+    var productData = cloneDeep(product);
+    productData.uomName = this.uomsMap.get(product.uomId);
     return {
       headerName: '',
       headerTooltip: '',
       headerGroupComponent: 'customHeaderGroupComponent',
       headerGroupComponentParams: {
         type: 'bg-header',
-        product: product,
+        product: productData,
         requestLocationId: requestLocationId
       },
       marryChildren: true,
-      resizable: false,
-      name: 'grid1',
+      // resizable: false,
+      // name: 'grid1',
       groupId: 'grid1',
 
       children: [
@@ -663,6 +665,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     // Set Counterparty list;
     this.route.data.subscribe(data => {
       this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
+
+      this.uomsMap = new Map(data.uoms.map(key => [key.id, key.name]));
     });
 
     this.store.subscribe(({ spotNegotiation, ...props }) => {
@@ -716,9 +720,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Assign ColumnDef_aggrid with dynamic location id
         this.columnDef_aggridObj[i] = _.cloneDeep(this.columnDef_aggrid);
 
-        this.columnDef_aggridObj[
-          i
-        ][0].headerGroupComponentParams.locationId = locationId;
+        this.columnDef_aggridObj[i][0].headerGroupComponentParams.locationId = locationId;
 
         // These are locations!!
         currentRequest.requestProducts.map((product, index) => {

@@ -26,8 +26,8 @@ export class SpotnegoemaillogComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
-        this.gridOptions_data.api.sizeColumnsToFit();
-        params.api.sizeColumnsToFit();
+        // this.gridOptions_data.api.sizeColumnsToFit();
+        // params.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_grid);
 
       },

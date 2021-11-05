@@ -65,14 +65,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {});
   }
-  
+
   sendRFQpopup() {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
     if (Selectedfinaldata.length == 0) {
       let errormessage = 'Atleast 1 counterparty should be selected in '+ this.currentRequestInfo.name +' - '+ this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
-      return;      
+      return;
     } else {
 
       var FinalAPIdata = {
@@ -98,7 +98,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       else{
         this.toaster.error(res);
         return;
-      } 
+      }
 
       const locationsRows = this.store.selectSnapshot<string>(
         (state: any) => {
@@ -157,7 +157,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   FilterselectedRow() {
     var Sellectedsellerdata = [];
-    
+
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.locations.forEach(element => {
         spotNegotiation.locationsRows.forEach(element1 => {
@@ -198,17 +198,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     if((Seller.requestOffers  !== undefined) && Seller.requestOffers.length >0){
       rfqId = Seller.requestOffers[0].rfqId;
-    }    
+    }
     return [
       {
-        
+
           RequestLocationSellerId: Seller.id,
           SellerId:Seller.sellerCounterpartyId,
           RequestLocationID: Seller.requestLocationId,
           RequestId: Request.id,
-          physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,             
+          physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
           RequestProductIds: selectedproducts,
-          RfqId: rfqId  
+          RfqId: rfqId
       }
     ];
   }
@@ -241,7 +241,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     else if(this.selectedSellerList.find(x=>x.RfqId===null)){
       this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
       return;
-    }     
+    }
     else {
       var amendRFQRequestPayload = this.selectedSellerList;
     }
@@ -249,7 +249,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.spinner.show();
     // Get response from server
     const response = this.spotNegotiationService.AmendRFQ(amendRFQRequestPayload);
-    response.subscribe((res: any) => {   
+    response.subscribe((res: any) => {
       this.spinner.hide();
       debugger;
       if(res instanceof Array && res.length>0 ){
@@ -257,7 +257,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
       else{
         this.toaster.error(res);
-      } 
+      }
     });
   }
 }
