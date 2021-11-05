@@ -39,6 +39,7 @@ import {
   ControlTowerQuantityRobDifferenceListExportColumns
 } from '../list-columns/control-tower-quantity-rob-difference-list.columns';
 import { ControlTowerProgressColors } from '../control-tower-general-enums';
+import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 
 function model(
   prop: keyof IControlTowerQuantityRobDifferenceItemDto
@@ -180,10 +181,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;
     },
-    cellClass: 'cell-background',
     width: 150
   };
 
@@ -202,10 +201,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      !params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;
     },
-    cellClass: 'cell-background',
     width: 150
   };
 
@@ -340,9 +337,28 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     colId: ControlTowerQuantityRobDifferenceListColumns.progress,
     field: model('progress'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.progress,
-    cellRenderer: params => {
-      return this.computeProgressCellColor(params.value);
+    valueFormatter: params => params.value?.name,
+    cellRendererParams: function(params) {
+      var classArray: string[] = [];
+      let newClass = '';
+      switch (params?.value.name) {
+        case 'New':
+          newClass = 'medium-blue';
+          break;
+        case 'Marked as Seen':
+          newClass = 'medium-yellow';
+          break;
+        case 'Resolved':
+          newClass = 'light-green';
+          break;
+      }
+      classArray.push(newClass);
+      return {
+        cellClass: classArray.length > 0 ? classArray : null,
+        type: 'progress'
+      };
     },
+    cellRendererFramework: AGGridCellRendererStatusComponent,
     width: 150
   };
 
@@ -527,21 +543,5 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           params.failCallback();
         }
       );
-  }
-
-  computeProgressCellColor(value: ILookupDto) {
-    let bgColor = 'none';
-    switch (value?.name) {
-      case 'New':
-        bgColor = ControlTowerProgressColors.new;
-        break;
-      case 'Marked as Seen':
-        bgColor = ControlTowerProgressColors.markedAsSeen;
-        break;
-      case 'Resolved':
-        bgColor = ControlTowerProgressColors.resolved;
-        break;
-    }
-    return `<a class="btn-25" style="background-color:${bgColor}; color:#fff">${value?.name}</a>`;
   }
 }
