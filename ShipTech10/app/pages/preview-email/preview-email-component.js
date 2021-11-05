@@ -1015,7 +1015,11 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                                     window.history.back();
                                 });
                             } else {
-                                window.history.back();
+                                $http.post(`${API.BASE_URL_DATA_ROB }/api/quantityControlReport/markMailSent`, {
+                                    Payload: ctrl.reportId
+                                }).then((response) => {
+                                    window.history.back();
+                                });                                
                             }
 	                    }
                     }
