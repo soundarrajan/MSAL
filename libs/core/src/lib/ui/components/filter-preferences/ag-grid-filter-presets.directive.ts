@@ -71,28 +71,6 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   }
 
   addedFilterByFromAndToByDefault() {
-    let gridIds = {
-      'control-tower-quantity-rob-list-grid-2': {
-        timeDeltaValue: 1,
-        timeDeltaUnit: 'year',
-        mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
-      },
-      'control-tower-quantity-supply-list-grid-1': {
-        timeDeltaValue: 7,
-        timeDeltaUnit: 'months',
-        mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
-      },
-      'control-tower-quantity-claims-list-grid-9': {
-        timeDeltaValue: 6,
-        timeDeltaUnit: 'month',
-        mappedKey: ControlTowerQuantityClaimsListColumns.createdDate
-      },
-      'control-tower-quality-claims-list-grid-7': {
-        timeDeltaValue: 6,
-        timeDeltaUnit: 'month',
-        mappedKey: ControlTowerQualityClaimsListColumns.createdDate
-      }
-    };
     let loadNewStatusOfDataGridIds = [
       'control-tower-quality-claims-list-grid-7'
     ];
