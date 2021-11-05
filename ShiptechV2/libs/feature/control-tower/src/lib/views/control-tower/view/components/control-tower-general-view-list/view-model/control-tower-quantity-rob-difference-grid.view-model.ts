@@ -226,83 +226,67 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 150
   };
 
-  bdnQuantityCol: ITypedColDef<
-    IControlTowerQuantityRobDifferenceItemDto,
-    number
-  > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.bdnQuantity,
-    headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.bdnQuantity,
-    colId: ControlTowerQuantityRobDifferenceListColumns.bdnQuantity,
-    field: model('id'),
-    dtoForExport:
-      ControlTowerQuantityRobDifferenceListExportColumns.bdnQuantity,
-    cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.bdnQuantity ?? '-'
-      );
-      return mergedValues.join('<br>');
-    },
-    filter: 'agNumberColumnFilter',
-    width: 150
-  };
-
-  measuredDeliveredQty: ITypedColDef<
+  logBookRobQtyBeforeDeliveryCol: ITypedColDef<
     IControlTowerQuantityRobDifferenceItemDto,
     number
   > = {
     headerName:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredDeliveredQty,
+      ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
     headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredDeliveredQty,
-    colId: ControlTowerQuantityRobDifferenceListColumns.measuredDeliveredQty,
+      ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.logBookRobQtyBeforeDelivery,
+    field: model('logBookRobQtyBeforeDelivery'),
     dtoForExport:
-      ControlTowerQuantityRobDifferenceListExportColumns.measuredDeliveredQty,
+      ControlTowerQuantityRobDifferenceListExportColumns.logBookRobQtyBeforeDelivery,
     cellRenderer: params => {
       let mergedValues = params.data.quantityReportDetails.map(
-        a => a.measuredDeliveredQuantity ?? '-'
+        a => this.format.quantity(a.logBookRobQtyBeforeDelivery) ?? '-'
       );
       return mergedValues.join('<br>');
     },
-    field: model('measuredDeliveredQty'),
     filter: 'agNumberColumnFilter',
     width: 150
   };
 
-  differenceInQtyCol: ITypedColDef<
-    IControlTowerQuantityRobDifferenceItemDto,
-    number
-  > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.totalCount,
-    headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.totalCount,
-    colId: ControlTowerQuantityRobDifferenceListColumns.totalCount,
-    field: model('totalCount'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.totalCount,
-    cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.differenceInSupplyQuantity ?? '-'
-      );
-      return mergedValues.join('<br>');
-    },
-    filter: 'agNumberColumnFilter',
-    width: 150
-  };
-  sumOfOrderQtyCol: ITypedColDef<
+  measuredRobQtyBeforeDeliveryCol: ITypedColDef<
     IControlTowerQuantityRobDifferenceItemDto,
     number
   > = {
     headerName:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.sumOfOrderQtyCol,
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
     headerTooltip:
-      ControlTowerQuantityRobDifferenceListColumnsLabels.sumOfOrderQtyCol,
-    colId: ControlTowerQuantityRobDifferenceListColumns.sumOfOrderQtyCol,
-    field: model('sumOfOrderQtyCol'),
+      ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
+    colId:
+      ControlTowerQuantityRobDifferenceListColumns.measuredRobQtyBeforeDelivery,
     dtoForExport:
-      ControlTowerQuantityRobDifferenceListExportColumns.sumOfOrderQtyCol,
+      ControlTowerQuantityRobDifferenceListExportColumns.measuredRobQtyBeforeDelivery,
     cellRenderer: params => {
       let mergedValues = params.data.quantityReportDetails.map(
-        a => a.sumOfOrderQuantity ?? '-'
+        a => this.format.quantity(a.measuredRobQtyBeforeDelivery) ?? '-'
+      );
+      return mergedValues.join('<br>');
+    },
+    field: model('measuredRobQtyBeforeDelivery'),
+    filter: 'agNumberColumnFilter',
+    width: 150
+  };
+
+  differenceInRobQuantityCol: ITypedColDef<
+    IControlTowerQuantityRobDifferenceItemDto,
+    number
+  > = {
+    headerName:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
+    headerTooltip:
+      ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
+    colId: ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity,
+    field: model('differenceInRobQuantity'),
+    dtoForExport:
+      ControlTowerQuantityRobDifferenceListExportColumns.differenceInRobQuantity,
+    cellRenderer: params => {
+      let mergedValues = params.data.quantityReportDetails.map(
+        a => this.format.quantity(a.differenceInRobQuantity) ?? '-'
       );
       return mergedValues.join('<br>');
     },
@@ -310,18 +294,18 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     width: 150
   };
 
-  qtyUomCol: ITypedColDef<
+  robUomCol: ITypedColDef<
     IControlTowerQuantityRobDifferenceItemDto,
     ILookupDto
   > = {
-    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.qtyUom,
-    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.qtyUom,
-    colId: ControlTowerQuantityRobDifferenceListColumns.qtyUom,
-    field: model('qtyUom'),
-    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.qtyUom,
+    headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.robUom,
+    headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.robUom,
+    colId: ControlTowerQuantityRobDifferenceListColumns.robUom,
+    field: model('robUom'),
+    dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.robUom,
     cellRenderer: params => {
       let mergedValues = params.data.quantityReportDetails.map(
-        a => a.supplyUom?.name ?? '-'
+        a => a.robUom?.name ?? '-'
       );
       return mergedValues.join('<br>');
     },
@@ -406,11 +390,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       this.emailToVesselCol,
       this.vesselToWatchCol,
       this.productTypeCol,
-      this.bdnQuantityCol,
-      this.measuredDeliveredQty,
-      this.differenceInQtyCol,
-      this.sumOfOrderQtyCol,
-      this.qtyUomCol,
+      this.logBookRobQtyBeforeDeliveryCol,
+      this.measuredRobQtyBeforeDeliveryCol,
+      this.differenceInRobQuantityCol,
+      this.robUomCol,
       this.progressCol,
       this.actionsCol
     ];

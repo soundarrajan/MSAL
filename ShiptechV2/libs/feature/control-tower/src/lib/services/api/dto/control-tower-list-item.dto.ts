@@ -22,10 +22,11 @@ export interface IControlTowerQuantityRobDifferenceItemDto {
   productType: IDisplayLookupDto;
   progress: IDisplayLookupDto;
   id: number;
-  measuredDeliveredQty: number;
+  logBookRobQtyBeforeDelivery: number;
+  measuredRobQtyBeforeDelivery: number;
+  differenceInRobQuantity: number;
   totalCount: number;
-  sumOfOrderQtyCol: string;
-  qtyUom: IDisplayLookupDto;
+  robUom: IDisplayLookupDto;
   status: IDisplayLookupDto;
 }
 

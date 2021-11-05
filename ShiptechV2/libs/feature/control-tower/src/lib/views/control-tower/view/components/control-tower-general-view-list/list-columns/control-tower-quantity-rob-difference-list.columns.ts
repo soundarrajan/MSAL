@@ -9,12 +9,10 @@ export enum ControlTowerQuantityRobDifferenceListColumns {
   vesselToWatch = 'vesselToWatch',
   productType = 'productType',
   progress = 'progress',
-  bdnQuantity = 'bdnQuantity',
-  measuredDeliveredQty = 'measuredDeliveredQty',
-  sumOfOrderQtyCol = 'sumOfOrderQtyCol',
-  totalCount = 'totalCount',
-  qtyUom = 'buyer',
-  status = 'status'
+  logBookRobQtyBeforeDelivery = 'logBookRobQtyBeforeDelivery',
+  measuredRobQtyBeforeDelivery = 'measuredRobQtyBeforeDelivery',
+  differenceInRobQuantity = 'differenceInRobQuantity',
+  robUom = 'robUom'
 }
 
 export enum ControlTowerQuantityRobDifferenceListExportColumns {
@@ -26,14 +24,11 @@ export enum ControlTowerQuantityRobDifferenceListExportColumns {
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
   productType = 'productType.name',
-  progress = 'progress.name',
-  bdnQuantity = 'bdnQuantity',
-  id = 'id',
-  measuredDeliveredQty = 'measuredDeliveredQty',
-  sumOfOrderQtyCol = 'sumOfOrderQtyCol',
-  totalCount = 'totalCount',
-  qtyUom = 'buyer.name',
-  status = 'status.name'
+  logBookRobQtyBeforeDelivery = 'logBookRobQtyBeforeDelivery',
+  measuredRobQtyBeforeDelivery = 'measuredRobQtyBeforeDelivery',
+  differenceInRobQuantity = 'differenceInRobQuantity',
+  robUom = 'robUom.name',
+  progress = 'progress.name'
 }
 
 export enum ControlTowerQuantityRobDifferenceListColumnsLabels {
@@ -46,14 +41,11 @@ export enum ControlTowerQuantityRobDifferenceListColumnsLabels {
   emailToVessel = 'Email To Vessel',
   vesselToWatch = 'Vessel To Watch',
   productType = 'Product Type',
-  progress = 'Progress',
-  id = 'Log Book ROB',
-  bdnQuantity = 'BDN Quantity',
-  measuredDeliveredQty = 'Measured Delivered Quantity',
-  sumOfOrderQtyCol = 'Sum Of Order Qty',
-  totalCount = 'Difference in Qty',
-  qtyUom = 'Qty UOM',
-  status = 'Progress'
+  logBookRobQtyBeforeDelivery = 'Log Book ROB',
+  measuredRobQtyBeforeDelivery = 'Measured ROB',
+  differenceInRobQuantity = 'Difference in Qty',
+  robUom = 'Qty UOM',
+  progress = 'Progress'
 }
 
 /**
@@ -74,13 +66,12 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantityRobDifferenceListColumns.productType]:
     'producttype_name',
   [ControlTowerQuantityRobDifferenceListColumns.progress]: 'progress',
-  [ControlTowerQuantityRobDifferenceListColumns.bdnQuantity]: 'bdnQuantity',
+  [ControlTowerQuantityRobDifferenceListColumns.logBookRobQtyBeforeDelivery]:
+    'logBookRobQtyBeforeDelivery',
   //   [ControlTowerQuantityRobDifferenceListColumns.id]: 'id',
-  [ControlTowerQuantityRobDifferenceListColumns.measuredDeliveredQty]:
-    'measuredDeliveredQty',
-  [ControlTowerQuantityRobDifferenceListColumns.sumOfOrderQtyCol]:
+  [ControlTowerQuantityRobDifferenceListColumns.measuredRobQtyBeforeDelivery]:
+    'measuredRobQtyBeforeDelivery',
+  [ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity]:
     'sumOfOrderQty',
-  [ControlTowerQuantityRobDifferenceListColumns.totalCount]: 'totalCount',
-  [ControlTowerQuantityRobDifferenceListColumns.qtyUom]: 'qtyUom',
-  [ControlTowerQuantityRobDifferenceListColumns.status]: 'status_name'
+  [ControlTowerQuantityRobDifferenceListColumns.robUom]: 'robUom_name'
 };
