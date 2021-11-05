@@ -86,7 +86,6 @@
     "BASE_URL_DATA_ALERTS": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.BusinessAlerts",
     "BASE_URL_DATA_HANGFIRE": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Hangfire",
     "BASE_URL_DATA_MAIL": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Mail",
-    "BASE_URL_DATA_ROB": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Rob",
     "BASE_URL_DATA_IMPORTEXPORT": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.ImportExport",
     "BASE_URL_DATA_BOPS": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.BOPS",
     "BASE_URL_DATA_SMART": "http://shiptech.24software.ro:8081/Integration1060/Shiptech10.Api.Smart",

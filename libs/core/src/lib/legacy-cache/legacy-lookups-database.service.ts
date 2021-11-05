@@ -32,10 +32,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly reconMatch: Dexie.Table<IReconStatusLookupDto, number>;
   readonly documentType: Dexie.Table<IDisplayLookupDto, number>;
   readonly emailStatus: Dexie.Table<IDisplayLookupDto, number>;
-  readonly scheduleDashboardLabelConfiguration: Dexie.Table<
-    IScheduleDashboardLabelConfigurationDto,
-    number
-  >;
+  readonly scheduleDashboardLabelConfiguration: Dexie.Table<IScheduleDashboardLabelConfigurationDto,number>;
   readonly transactionType: Dexie.Table<IDisplayLookupDto, number>;
   readonly invoiceCustomStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly paymentStatus: Dexie.Table<IStatusLookupDto, number>;
@@ -56,6 +53,8 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly quantityCategory: Dexie.Table<IDisplayLookupDto, number>;
   readonly pumpingRateUom: Dexie.Table<IDisplayLookupDto, number>;
   readonly sampleSource: Dexie.Table<IDisplayLookupDto, number>;
+  readonly robDifferenceType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly controlTowerActionStatus: Dexie.Table<IDisplayLookupDto, number>;
 
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
@@ -159,7 +158,9 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('portRemarks')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('portSeverities')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('portStatuses')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('portType')]: lookupSchema
+      [nameof<LegacyLookupsDatabase>('portType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('robDifferenceType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('controlTowerActionStatus')]: lookupSchema
     };
   }
 
@@ -169,19 +170,25 @@ export class LegacyLookupsDatabase extends Dexie {
 
   public async initInternal(): Promise<any> {
     await this.ensureVersion();
-
+    
     this.version(1).stores(this.schema);
-
+    
     Object.keys(this.schema).forEach(tableName => {
       this[tableName] = this.table(tableName);
     });
   }
-
+  
   async getScheduleDashboardLabelConfiguration(){
     const db = this.table('scheduleDashboardLabelConfiguration');
     let getScheduleDashboardLabelConfigurationList = await db.toArray();
     return getScheduleDashboardLabelConfigurationList;
   }
+  
+  async getTableByName(name: string){
+    const db = this.table(name);
+    let tableData = await db.toArray();
+    return tableData;
+  }  
 
   async getTable(statusName: string): Promise<number[]> {
     const db = this.table('status');

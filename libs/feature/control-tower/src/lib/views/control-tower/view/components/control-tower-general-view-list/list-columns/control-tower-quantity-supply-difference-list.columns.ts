@@ -14,7 +14,7 @@ export enum ControlTowerQuantitySupplyDifferenceListColumns {
   measuredDeliveredQty = 'measuredDeliveredQty',
   sumOfOrderQtyCol = 'sumOfOrderQtyCol',
   totalCount = 'totalCount',
-  buyer = 'buyer',
+  qtyUom = 'buyer',
   status = 'status'
 }
 
@@ -33,7 +33,7 @@ export enum ControlTowerQuantitySupplyDifferenceListExportColumns {
   measuredDeliveredQty = 'measuredDeliveredQty',
   sumOfOrderQtyCol = 'sumOfOrderQtyCol',
   totalCount = 'totalCount',
-  buyer = 'buyer.name',
+  qtyUom = 'buyer.name',
   status = 'status.name'
 }
 
@@ -53,7 +53,7 @@ export enum ControlTowerQuantitySupplyDifferenceListColumnsLabels {
   measuredDeliveredQty = 'Measured Delivered Quantity',
   sumOfOrderQtyCol = 'Sum Of Order Qty',
   totalCount = 'Difference in Qty',
-  buyer = 'Qty UOM',
+  qtyUom = 'Qty UOM',
   status = 'Progress'
 }
 
@@ -79,6 +79,6 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]: 'measuredDeliveredQty',
   [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]: 'sumOfOrderQty',
   [ControlTowerQuantitySupplyDifferenceListColumns.totalCount]: 'totalCount',
-  [ControlTowerQuantitySupplyDifferenceListColumns.buyer]: 'buyer_name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.qtyUom]: 'qtyUom',
   [ControlTowerQuantitySupplyDifferenceListColumns.status]: 'status_name'
 };

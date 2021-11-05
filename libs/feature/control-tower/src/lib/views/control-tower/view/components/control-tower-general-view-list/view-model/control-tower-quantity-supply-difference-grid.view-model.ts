@@ -28,6 +28,7 @@ import { AGGridCellRendererAsyncStatusComponent } from '@shiptech/core/ui/compon
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import { IControlTowerQuantitySupplyDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import { FormControl } from '@angular/forms';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 import moment from 'moment';
 
@@ -37,8 +38,11 @@ import {
   ControlTowerQuantitySupplyDifferenceListColumnsLabels,
   ControlTowerQuantitySupplyDifferenceListExportColumns,
 } from '../list-columns/control-tower-quantity-supply-difference-list.columns';
+
+
 import {
   ControlTowerProgressColors,
+  IControlTowerRowPopup
 } from '../control-tower-general-enums';
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -259,11 +263,11 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   };
   
   qtyUomCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto,ILookupDto> = {
-    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.buyer,
-    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.buyer,
-    colId: ControlTowerQuantitySupplyDifferenceListColumns.buyer,
-    field: model('buyer'),
-    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.buyer,
+    headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.qtyUom,
+    headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.qtyUom,
+    colId: ControlTowerQuantitySupplyDifferenceListColumns.qtyUom,
+    field: model('qtyUom'),
+    dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.qtyUom,
     cellRenderer: (params) => {
       let mergedValues = params.data.quantityReportDetails.map(a => a.supplyUom?.name ?? "-" );
       return mergedValues.join("<br>");
@@ -305,6 +309,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     loggerFactory: ModuleLoggerFactory,
     public dialog: MatDialog,
     private format: TenantFormattingService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
     private controlTowerService: ControlTowerService,
     private appErrorHandler: AppErrorHandler,
     private databaseManipulation: DatabaseManipulation
@@ -433,7 +438,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
 
   public filterByDate(from: string, to: string): void {
     const grid = this.gridApi.getFilterModel();
-    grid['surveyDate'] = {
+    grid['surveyorDate'] = {
       dateFrom: from,
       dateTo: to,
       type: 'inRange',
@@ -489,24 +494,71 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   actionCellClicked = (ev : any) => {
-    let dialogData = { title: 'Florin', id: 'Florin' };
-    const dialogRef = this.dialog.open(
-        RowstatusOnchangeQuantityrobdiffPopupComponent,
-        {
-          width: '382px',
-          height: 'auto',
-          maxHeight: '536px',
-          backdropClass: 'dark-popupBackdropClass',
-          panelClass: 'light-theme',
-          data: dialogData
-        }
-      );
+    this.legacyLookupsDatabase.getTableByName("robDifferenceType")
+    .then( (response) => {
+      let rowData = ev.node.data;
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
-        console.log(ev);
-        this.updateValues(ev, result);
-      });
+      let productTypeList = rowData.quantityReportDetails.map(obj => {
+        let rowObj = {};
+        rowObj["productType"] = obj.productType.name;
+        rowObj["bdnQuantity"] = obj.bdnQuantity;
+        rowObj["measuredQuantity"] = obj.measuredDeliveredQuantity;
+        rowObj["differenceQuantity"] = obj.differenceInSupplyQuantity;
+        rowObj["uom"] = obj.supplyUom.name;
+        return rowObj;
+      }) 
+      
+      let dialogData : IControlTowerRowPopup = { 
+        popupType : "supply",
+        title: 'Quantity Supply Difference', 
+        measuredQuantityLabel: "Measured Delivered Qty",
+        differenceQuantityLabel: "Difference in Qty",
+        vessel : rowData.vessel,
+        port : rowData.port,
+        portCall : rowData.portCall.portCallId,
+        quantityReportId : rowData.quantityControlReport.id,
+        productTypeList : productTypeList,
+      };
+
+      let payloadData = {
+        "differenceType" : response.filter( obj => obj.name == "Supply")[0],
+        "quantityControlReport" : {
+          id : rowData.quantityControlReport.id
+        },
+      }
+
+      this.controlTowerService.getQuantityResiduePopUp(payloadData, (payloadData) => {
+        console.log("asd");
+      }).pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (response) => {
+            dialogData.changeLog = response.changeLog; 
+            const dialogRef = this.dialog.open(
+              RowstatusOnchangeQuantityrobdiffPopupComponent,
+              {
+                width: '520px',
+                height: 'auto',
+                maxHeight: '536px',
+                backdropClass: 'dark-popupBackdropClass',
+                panelClass: 'light-theme',
+                data: dialogData
+              }
+            );
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(`Dialog result: ${result}`);
+              console.log(ev);
+              this.updateValues(ev, result);
+            });
+          },
+          () => {
+            this.appErrorHandler.handleError(
+              ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
+            );
+          }
+        );
+    
+    })
   }
+
 
 }
