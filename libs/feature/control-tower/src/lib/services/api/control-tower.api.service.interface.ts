@@ -18,6 +18,10 @@ export interface IControlTowerApiService {
   getQuantityResiduePopUp(
     request: any
   );
+  
+  saveQuantityResiduePopUp(
+    request: any
+  );
     
   getControlTowerQuantitySupplyDifferenceList(
     request: IGetControlTowerListRequest
