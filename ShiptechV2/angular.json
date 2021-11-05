@@ -39,7 +39,12 @@
               "path": "./tools/custom-build.options.js",
               "mergeStrategies": {
                 "externals": "replace"
-              }
+              },
+              "allowedCommonJsDependencies": [
+                "lodash",
+                "chance",
+                "highcharts"
+             ]
             },
             "outputPath": "dist/apps/shiptech",
             "index": "apps/shiptech/src/index.html",

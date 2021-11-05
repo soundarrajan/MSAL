@@ -75,6 +75,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-negotiation-details-toolbar.component';
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
+import { UomsRouteResolver } from './uoms-route.resolver';
 
 @NgModule({
   imports: [
@@ -188,7 +189,8 @@ import { PriceTenantFormatDirective } from './views/main/details/directives/pric
     DecimalPipe,
     DatePipe,
     StaticListsRouteResolver,
-    NavBarResolver
+    NavBarResolver,
+    UomsRouteResolver
   ]
 })
 export class SpotNegotiationModule {}
