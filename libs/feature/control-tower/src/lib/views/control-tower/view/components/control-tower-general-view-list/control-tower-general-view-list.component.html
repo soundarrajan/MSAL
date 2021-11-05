@@ -157,6 +157,7 @@
               [groupId]="groupId"
               [id]="gridId"
               [gridId]="gridId"
+              [gridIds]="gridIds"
               (presetsLoaded)="
                 this.gridViewModel.markServerSideDataSourceReady()
               "
@@ -212,15 +213,16 @@
   </div>
 </div>
 <ng-template
-*ngIf="gridViewModel.portCallCol"
+  *ngIf="gridViewModel.portCallCol"
   [columnDef]="[gridViewModel.portCallCol]"
   appAgCellTemplate
   let-data="data"
   let-value="value"
 >
   <a
-  *ngIf="data && data?.quantityControlReport?.id" (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
-  >{{ data?.portCall?.portCallId }}</a
+    *ngIf="data && data?.quantityControlReport?.id"
+    (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
+    >{{ data?.portCall?.portCallId }}</a
   >
 </ng-template>
 

@@ -29,15 +29,27 @@ import {
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { ControlTowerListState } from 'libs/feature/control-tower/src/lib/store/control-tower-general-list/control-tower-general-list.state';
-import { ControlTowerQuantityRobDifferenceListColumnServerKeys } from './list-columns/control-tower-quantity-rob-difference-list.columns';
+import {
+  ControlTowerQuantityRobDifferenceListColumns,
+  ControlTowerQuantityRobDifferenceListColumnServerKeys
+} from './list-columns/control-tower-quantity-rob-difference-list.columns';
 import { ControlTowerQuantityRobDifferenceListGridViewModel } from './view-model/control-tower-quantity-rob-difference-grid.view-model';
 import { SelectorComponent } from '@shiptech/core/ui/components/master-selector/selector/selector.component';
 import { ControlTowerQuantitySupplyDifferenceListGridViewModel } from './view-model/control-tower-quantity-supply-difference-grid.view-model';
-import { ControlTowerQuantitySupplyDifferenceListColumnServerKeys } from './list-columns/control-tower-quantity-supply-difference-list.columns';
+import {
+  ControlTowerQuantitySupplyDifferenceListColumns,
+  ControlTowerQuantitySupplyDifferenceListColumnServerKeys
+} from './list-columns/control-tower-quantity-supply-difference-list.columns';
 import { ControlTowerQuantityClaimsListGridViewModel } from './view-model/control-tower-quantity-claims-grid.view-model';
 import { ControlTowerQualityClaimsListGridViewModel } from './view-model/control-tower-quality-claims-grid.view-model';
-import { ControlTowerQualityClaimsListColumnServerKeys } from './list-columns/control-tower-quality-claims-list.columns';
-import { ControlTowerQuantityClaimsListColumnServerKeys } from './list-columns/control-tower-quantity-claims-list.columns';
+import {
+  ControlTowerQualityClaimsListColumns,
+  ControlTowerQualityClaimsListColumnServerKeys
+} from './list-columns/control-tower-quality-claims-list.columns';
+import {
+  ControlTowerQuantityClaimsListColumns,
+  ControlTowerQuantityClaimsListColumnServerKeys
+} from './list-columns/control-tower-quantity-claims-list.columns';
 
 export const PICK_FORMATS = {
   display: {
@@ -144,7 +156,28 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   @Input() _selectorType: string;
 
   gridViewModel: any;
-
+  gridIds = {
+    'control-tower-quantity-rob-list-grid-2': {
+      timeDeltaValue: 1,
+      timeDeltaUnit: 'year',
+      mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
+    },
+    'control-tower-quantity-supply-list-grid-1': {
+      timeDeltaValue: 7,
+      timeDeltaUnit: 'month',
+      mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
+    },
+    'control-tower-quantity-claims-list-grid-10': {
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'month',
+      mappedKey: ControlTowerQuantityClaimsListColumns.createdDate
+    },
+    'control-tower-quality-claims-list-grid-7': {
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'month',
+      mappedKey: ControlTowerQualityClaimsListColumns.createdDate
+    }
+  };
   constructor(
     public appConfig: AppConfig,
     private urlService: UrlService,
@@ -258,7 +291,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     //   || this.selectorType == 'Quantity Supply Difference'
     ) {
       //console.log("hhhhhhhhh");
-      
+
       const index = ev.rowIndex;
       const rowNode = ev.node;
       //alert(index);
