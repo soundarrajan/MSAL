@@ -50,6 +50,11 @@ import {
   ControlTowerQuantityClaimsListColumns,
   ControlTowerQuantityClaimsListColumnServerKeys
 } from './list-columns/control-tower-quantity-claims-list.columns';
+import { ModuleError } from 'libs/feature/control-tower/src/lib/core/error-handling/module-error';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { IControlTowerRowPopup } from './control-tower-general-enums';
 
 export const PICK_FORMATS = {
   display: {
@@ -157,15 +162,15 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   gridViewModel: any;
   gridIds = {
-    'control-tower-quantity-rob-list-grid-2': {
+    'control-tower-quantity-rob-list-grid-5': {
       timeDeltaValue: 1,
       timeDeltaUnit: 'year',
       mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
     },
-    'control-tower-quantity-supply-list-grid-1': {
-      timeDeltaValue: 7,
-      timeDeltaUnit: 'month',
-      mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
+    'control-tower-quantity-supply-list-grid-5': {
+      timeDeltaValue: 1,
+      timeDeltaUnit: 'year',
+      mappedKey: ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate
     },
     'control-tower-quantity-claims-list-grid-10': {
       timeDeltaValue: 6,
@@ -184,7 +189,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     private format: TenantFormattingService,
-    private injector: Injector
+    private injector: Injector,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private controlTowerService: ControlTowerService,
+    private appErrorHandler: AppErrorHandler
   ) {
     this.autocompleteOrders = knownMastersAutocomplete.products;
     this.dateFormats.display.dateInput = this.format.dateFormat;
@@ -287,33 +295,84 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   public onrowClicked(ev) {
     if (
-      this.selectorType == 'Quantity ROB Difference' 
-    //   || this.selectorType == 'Quantity Supply Difference'
+      this.selectorType == 'Quantity ROB Difference' ||
+      this.selectorType == 'Quantity Supply Difference'
     ) {
-      //console.log("hhhhhhhhh");
-
-      const index = ev.rowIndex;
-      const rowNode = ev.node;
-      //alert(index);
-      const dialogRef = this.dialog.open(
-        RowstatusOnchangeQuantityrobdiffPopupComponent,
-        {
-          width: '382px',
-          height: 'auto',
-          maxHeight: '536px',
-          backdropClass: 'dark-popupBackdropClass',
-          panelClass: this.theme ? 'dark-theme' : 'light-theme',
-          data: { title: 'Claims', id: 'Claim Id' }
-        }
-      );
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
-        console.log(ev);
-        this.gridViewModel.updateValues(ev, result);
-      });
+      if (ev.event.target.nodeName == 'A') {
+        return;
+      }
+      this.actionCellClicked(ev);
     }
   }
+
+  actionCellClicked = (ev: any) => {
+    this.legacyLookupsDatabase
+      .getTableByName('robDifferenceType')
+      .then(response => {
+        let rowData = ev.node.data;
+
+        let productTypeList = rowData.quantityReportDetails.map(obj => {
+          let rowObj = {};
+          rowObj['productType'] = obj.productType.name;
+          rowObj['bdnQuantity'] = obj.bdnQuantity;
+          rowObj['measuredQuantity'] = obj.measuredDeliveredQuantity;
+          rowObj['differenceQuantity'] = obj.differenceInSupplyQuantity;
+          rowObj['uom'] = obj.supplyUom.name;
+          return rowObj;
+        });
+
+        let dialogData: IControlTowerRowPopup = {
+          popupType: 'supply',
+          title: 'Quantity Supply Difference',
+          measuredQuantityLabel: 'Measured Delivered Qty',
+          differenceQuantityLabel: 'Difference in Qty',
+          vessel: rowData.vessel,
+          port: rowData.port,
+          portCall: rowData.portCall.portCallId,
+          quantityReportId: rowData.quantityControlReport.id,
+          productTypeList: productTypeList
+        };
+
+        let payloadData = {
+          differenceType: response.filter(obj => obj.name == 'Supply')[0],
+          quantityControlReport: {
+            id: rowData.quantityControlReport.id
+          }
+        };
+
+        this.controlTowerService
+          .getQuantityResiduePopUp(payloadData, payloadData => {
+            console.log('asd');
+          })
+          .pipe()
+          .subscribe(
+            response => {
+              dialogData.changeLog = response.changeLog;
+              const dialogRef = this.dialog.open(
+                RowstatusOnchangeQuantityrobdiffPopupComponent,
+                {
+                  width: '520px',
+                  height: 'auto',
+                  maxHeight: '536px',
+                  backdropClass: 'dark-popupBackdropClass',
+                  panelClass: 'light-theme',
+                  data: dialogData
+                }
+              );
+              dialogRef.afterClosed().subscribe(result => {
+                console.log(`Dialog result: ${result}`);
+                console.log(ev);
+                this.gridViewModel.updateValues(ev, result);
+              });
+            },
+            () => {
+              this.appErrorHandler.handleError(
+                ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
+              );
+            }
+          );
+      });
+  };
 
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
@@ -331,8 +390,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     } else {
       return null;
     }
-  }  
-
+  }
 }
 function defined(
   arg0: string,

@@ -190,6 +190,7 @@
           class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
           style="height:calc( 100vh - 352px );"
           [gridOptions]="gridViewModel.gridOptions"
+          (rowClicked)="onrowClicked($event)"
         >
         </ag-grid-angular>
 
