@@ -1,6 +1,6 @@
 <div class="statusChange">
   <div class="header">
-    <div class="title">{{data.title}}</div>
+    <div class="title">{{ data.title }}</div>
     <!-- <div class="id"><span> </span><b></b></div> -->
 
     <div class="header-right">
@@ -26,48 +26,57 @@
     </div>
     <div class="header-title mg-t-5 plr-0 col-6 ">
       <span class="subheader-field">Vessel:</span>
-      <span class="subheader-value">{{data.vessel}}</span>
+      <span class="subheader-value">{{ data.vessel }}</span>
     </div>
     <div class="col-6 header-title mg-t-5 plr-0 text-right ">
       <span class="subheader-field">Port:</span>
-      <span class="subheader-value">{{data.port}}</span>
+      <span class="subheader-value">{{ data.port }}</span>
     </div>
   </div>
   <div class="more-info mg-b-0 ">
     <div class="row info-section">
       <div class=" w-20p plr-0">
         <div class="col-header">Product Type</div>
-        <div *ngFor='let value of data.productTypeList' class="col-value">
-          {{value.productType}}
+        <div *ngFor="let value of data.productTypeList" class="col-value">
+          {{ value.productType }}
         </div>
       </div>
-      <div class="w-24p plr-0" *ngIf="data.popupType != 'supply'">
+      <div class="w-24p plr-0" *ngIf="data.popupType == 'rob'">
         <div class="col-header">Log Book ROB</div>
-        <div class="col-value">1295.930</div>
-        <div class="col-value">1000.000</div>
+        <div *ngFor="let value of data.productTypeList" class="col-value">
+          {{ format.quantity(value.logBookRobQtyBeforeDelivery) }}
+        </div>
       </div>
       <div class="w-24p plr-0" *ngIf="data.popupType == 'supply'">
         <div class="col-header">BDN Quantity</div>
-        <div *ngFor='let value of data.productTypeList' class="col-value">
-          {{value.bdnQuantity}}
+        <div *ngFor="let value of data.productTypeList" class="col-value">
+          {{ format.quantity(value.bdnQuantity) }}
         </div>
-      </div>      
+      </div>
       <div class=" w-24p plr-0">
-        <div class="col-header">{{data.measuredQuantityLabel}}</div>
-        <div *ngFor='let value of data.productTypeList' class="col-value">
-          {{value.measuredQuantity}}
+        <div class="col-header">{{ data.measuredQuantityLabel }}</div>
+        <div *ngFor="let value of data.productTypeList" class="col-value">
+          {{
+            data.popupType == 'rob'
+              ? format.quantity(value.measuredRobQtyBeforeDelivery)
+              : format.quantity(value.measuredQuantity)
+          }}
         </div>
       </div>
       <div class=" w-20p plr-0">
-        <div class="col-header">{{data.differenceQuantityLabel}}</div>
-        <div *ngFor='let value of data.productTypeList' class="col-value">
-          {{value.differenceQuantity}}
+        <div class="col-header">{{ data.differenceQuantityLabel }}</div>
+        <div *ngFor="let value of data.productTypeList" class="col-value">
+          {{
+            data.popupType == 'rob'
+              ? format.quantity(value.differenceInRobQuantity)
+              : format.quantity(value.differenceQuantity)
+          }}
         </div>
       </div>
       <div class=" w-10p plr-0">
         <div class="col-header">UOM</div>
-        <div *ngFor='let value of data.productTypeList' class="col-value">
-          {{value.uom}}
+        <div *ngFor="let value of data.productTypeList" class="col-value">
+          {{ value.uom }}
         </div>
       </div>
     </div>
@@ -81,14 +90,18 @@
     >
       <mat-form-field class="without-search" appearance="none">
         <mat-label>Select Field</mat-label>
-        <mat-select 
+        <mat-select
           disableOptionCentering
           [(ngModel)]="status"
           [(value)]="defaultStatus"
           [panelClass]="{ darkPanelBg: switchTheme }"
           (selectionChange)="changeStatus($event.value)"
         >
-          <mat-option *ngFor='let value of controlTowerActionStatus' value="{{value.id}}">{{value.displayName}}</mat-option>
+          <mat-option
+            *ngFor="let value of controlTowerActionStatus"
+            value="{{ value.id }}"
+            >{{ value.displayName }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
     </div>
@@ -98,8 +111,11 @@
       <span>In relation to:</span>
       <span>
         Port Call:
-        <a href="/v2/quantity-control/report/{{data.quantityReportId}}/details" target="_blank">
-          <span class="aggridlink-darktheme">{{data.portCall}}</span>
+        <a
+          href="/v2/quantity-control/report/{{ data.quantityReportId }}/details"
+          target="_blank"
+        >
+          <span class="aggridlink-darktheme">{{ data.portCall }}</span>
         </a>
       </span>
     </div>
@@ -107,13 +123,11 @@
   <div class="change-log">
     <div class="header-title">Change Log</div>
     <div class="list-section">
-
-      <div class="list" style="width:100%" *ngFor='let value of data.changeLog'>
+      <div class="list" style="width:100%" *ngFor="let value of data.changeLog">
         <span></span>
         <p>Mar 12, 2020 12:43 pm</p>
         <div class="description">Issue marked as seen by John Smith</div>
       </div>
-
     </div>
   </div>
 </div>
