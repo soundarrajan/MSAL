@@ -2047,6 +2047,7 @@
                 vm.invalid_form = true;
                 let message = 'Please fill in required fields:';
                 let message_min = 'Please enter a value greater than zero for:';
+                let message_max = 'Please enter a value less than or equal to 100 for:';
                 let hasMessage = false;
                 let isMin = false;
                 let names = [];
@@ -2069,6 +2070,10 @@
 
                 $.each(vm.editInstance.$error.min, (key, val) => {
                     message_min = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
+                    isMin = true;
+                });
+                $.each(vm.editInstance.$error.max, (key, val) => {
+                    message_min = `${message_max }<br>${val.$name ? val.$name : val.$$attr.id}`;
                     isMin = true;
                 });
                 if (hasMessage) {

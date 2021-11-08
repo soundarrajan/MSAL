@@ -275,7 +275,7 @@
                 <label>
                     Tolerance
                 </label>
-                <input name="sludgeTolerance" class="input-group form_input form_input_sludgeTolerance form-control" type="number"  ng-model="formValues.delivery.sludgeTolerance"/>
+                <input name="sludgeTolerance" ng-min="0" ng-max="100" class="input-group form_input form_input_sludgeTolerance form-control" type="number"  ng-model="formValues.delivery.sludgeTolerance"/>
             </div>
         </div>
     </div>
