@@ -163,10 +163,11 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   @Input() _selectorType: string;
 
   gridViewModel: any;
+
   gridIds = {
-    'control-tower-quantity-rob-list-grid-5': {
-      timeDeltaValue: 1,
-      timeDeltaUnit: 'year',
+    'control-tower-quantity-rob-list-grid-6': {
+      timeDeltaValue: 7,
+      timeDeltaUnit: 'days',
       mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
     },
     'control-tower-quantity-supply-list-grid-5': {
