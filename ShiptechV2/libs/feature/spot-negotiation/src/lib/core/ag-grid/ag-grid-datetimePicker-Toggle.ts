@@ -64,7 +64,7 @@ import { FormControl } from '@angular/forms';
                width: 100px;visibility:hidden;border: none"
     />
     <div class="time-pick-container">
-    <!-- <span [owlDateTimeTrigger]="dt"><i style="font-size:24px" class="fa">&#xf017;</i></span>  -->
+    <span [owlDateTimeTrigger]="dt"><i style="font-size:20px" class="fa">&#xf017;</i></span>
       <owl-date-time [pickerType]="'timer'"
         #dt        
         [panelClass]="
@@ -233,9 +233,9 @@ export class AgGridDatetimePickerToggleComponent
     // current year
     let year = this.valueField.year();
     if (this.timeValue) {
-      return month + '/' + date + '/' + year + ' ' + this.timeValue;
+      return moment.utc(month + '/' + date + '/' + year + ' ' + this.timeValue);
       //return( month + "/" + date+ "/" + year);
-    } else return month + '/' + date + '/' + year;
+    } else return moment.utc(month + '/' + date + '/' + year);
     //return(this.valueField.getMonth()+'/'+this.valueField.getDate()+'/'+this.valueField.getFullYear()+" "+this.timeValue.getHours()+":"+this.timeValue.getMinutes())
     // .format(this.appContext.tenantSettingsContext.dateTimeFormat)
     // .substring(0, 19);
