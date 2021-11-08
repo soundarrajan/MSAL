@@ -95,7 +95,7 @@
       <div
         class="action"
         [ngClass]="!gridViewModel.toggleMASFilter ? 'selected-amber' : ''"
-        (click)="gridViewModel.filterGridMAS('Verified')"
+        (click)="gridViewModel.filterGridMAS('MarkedAsSeen')"
       >
         <span>Marked as seen</span>
         <div class="count">{{ gridViewModel.noOfMarkedAsSeen }}</div>
@@ -103,7 +103,7 @@
       <div
         class="action"
         [ngClass]="!gridViewModel.toggleResolvedFilter ? 'selected-green' : ''"
-        (click)="gridViewModel.filterGridResolved('In Spec')"
+        (click)="gridViewModel.filterGridResolved('Resolved')"
       >
         <span>Resolved</span>
         <div class="count">{{ gridViewModel.noOfResolved }}</div>

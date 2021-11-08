@@ -1,11 +1,9 @@
-﻿commit e6a70396d84cf6dcdfa71022f4bf08f8aabc2d8c
+﻿commit f4dfa5a0a6ab7a7912eb8d409bb4f7836b552087
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 8 07:54:41 2021 +0000
+Date:   Mon Nov 8 08:33:45 2021 +0000
 
-    Merged PR 14493: Added filters in quantity  rob differences
+    Merged PR 14495: Worked on progress filters
     
-    Added filters in quantity  rob differences
-    
-    Related work items: #33331
+    Worked on progress filters
 
 branch: master
