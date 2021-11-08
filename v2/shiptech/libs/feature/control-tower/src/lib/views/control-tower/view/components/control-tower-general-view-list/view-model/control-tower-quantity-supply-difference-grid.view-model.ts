@@ -51,6 +51,7 @@ import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/u
 import { MatDialog } from '@angular/material/dialog';
 import { __values } from 'tslib';
 import { ToastrService } from 'ngx-toastr';
+import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 
 function model(
   prop: keyof IControlTowerQuantitySupplyDifferenceItemDto
@@ -241,6 +242,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.productType,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.productType,
     field: model('productType'),
+    autoHeight:true,
+    wrapText:true,
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.productType,
     cellRenderer: params => {
@@ -264,6 +267,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.bdnQuantity,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity,
     field: model('id'),
+    autoHeight:true,
+    wrapText:true,    
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.bdnQuantity,
     cellRenderer: params => {
@@ -298,6 +303,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     field: model('measuredDeliveredQty'),
+    autoHeight:true,
+    wrapText:true,    
     filter: 'agNumberColumnFilter',
     width: 150
   };
@@ -337,6 +344,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.sumOfOrderQtyCol,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol,
     field: model('sumOfOrderQtyCol'),
+    autoHeight:true,
+    wrapText:true,    
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.sumOfOrderQtyCol,
     cellRenderer: params => {
@@ -359,6 +368,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.qtyUom,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.qtyUom,
     field: model('qtyUom'),
+    autoHeight:true,
+    wrapText:true,    
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.qtyUom,
     cellRenderer: params => {
       if (params.data) {
@@ -380,13 +391,34 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.progress,
     field: model('progress'),
+    autoHeight:true,
+    wrapText:true,    
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
-    cellRenderer: params => {
+    valueFormatter: params => params.value?.displayName,
+    cellRendererParams: function(params) {
       if (params.value) {
-        return this.computeProgressCellColor(params.value);
+        var classArray: string[] = [];
+        let newClass = '';
+        switch (params?.value.displayName) {
+          case 'New':
+            newClass = 'medium-blue';
+            break;
+          case 'Marked as Seen':
+            newClass = 'medium-yellow';
+            break;
+          case 'Resolved':
+            newClass = 'light-green';
+            break;
+        }
+        classArray.push(newClass);
+        return {
+          cellClass: classArray.length > 0 ? classArray : null,
+          type: 'progress'
+        };
       }
     },
+    cellRendererFramework: AGGridCellRendererStatusComponent,
     width: 150
   };
 

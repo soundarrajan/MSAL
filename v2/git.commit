@@ -1,9 +1,7 @@
-﻿commit ae6cd6df65647b97bdd7c73388cde925e86107c9
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Nov 8 13:18:04 2021 +0000
+﻿commit d0a23f23cfb14efe763ac1de1df2847c10c199ed
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Mon Nov 8 15:37:25 2021 +0200
 
-    Merged PR 14510: #36709: Control Tower-Claim id column name displaying incorrectly issue has fixed
-    
-    Related work items: #36709
+    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
 
 branch: master

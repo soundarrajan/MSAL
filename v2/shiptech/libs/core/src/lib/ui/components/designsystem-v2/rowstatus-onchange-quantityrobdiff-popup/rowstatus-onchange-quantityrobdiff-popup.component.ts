@@ -85,4 +85,8 @@ export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
       this.toastr.warning('Maximum 500 characters allowed!');
     }
   }
+
+  getStatusId() {
+    return parseFloat(this.status);
+  }
 }

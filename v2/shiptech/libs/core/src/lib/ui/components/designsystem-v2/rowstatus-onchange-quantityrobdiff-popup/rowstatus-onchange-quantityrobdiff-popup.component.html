@@ -108,7 +108,6 @@
     <div class="header-title">Comments</div>
     <textarea
       [(ngModel)]="comments"
-      (ngModelChange)="checkLengthOfTextarea($event)"
       spellcheck="false"
       maxlength="500"
     ></textarea>
@@ -125,7 +124,7 @@
       </span>
     </div>
   </div>
-  <div class="change-log">
+  <div class="change-log" *ngIf="getStatusId() != 1">
     <div class="header-title">Change Log</div>
     <div class="list-section" *ngIf="data.changeLog">
       <div
