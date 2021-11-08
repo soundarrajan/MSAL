@@ -1,11 +1,9 @@
-﻿commit 29429e13333b89cd7550797b44c921524b17c801
+﻿commit 9483e8b284aaec3acc9ec359883262972ec8b14c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 8 10:33:03 2021 +0000
+Date:   Mon Nov 8 10:57:22 2021 +0000
 
-    Merged PR 14502: Added api/controlTower/exportRobDifferenceList for exporting rob differences...
+    Merged PR 14506: Fixed port call link in rob differences
     
-    Added api/controlTower/exportRobDifferenceList for exporting rob differences list
-    
-    Related work items: #33331
+    Fixed port call link in rob differences
 
 branch: master

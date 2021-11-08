@@ -116,7 +116,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       if (params.value) {
         const a = document.createElement('a');
         a.innerHTML = params.value?.portCallId;
-        a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
+        a.href = `/v2/quantity-control/report/${params.data.quantityControlReport.id}/details`;
         a.setAttribute('target', '_blank');
         return a;
       }
@@ -302,8 +302,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
     colId: ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity,
     field: model('differenceInRobQuantity'),
-    autoHeight:true,
-    wrapText:true,
+    autoHeight: true,
+    wrapText: true,
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.differenceInRobQuantity,
     cellRenderer: params => {
