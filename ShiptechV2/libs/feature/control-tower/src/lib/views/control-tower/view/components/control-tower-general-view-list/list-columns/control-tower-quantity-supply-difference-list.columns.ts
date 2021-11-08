@@ -27,7 +27,7 @@ export enum ControlTowerQuantitySupplyDifferenceListExportColumns {
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
   productType = 'quantityReportDetails.productType.Name',
-  progress = 'progress.id',
+  progress = 'supplyProgress.name',
   bdnQuantity = 'quantityReportDetails.bdnQuantity',
   // id = 'id',
   measuredDeliveredQty = 'quantityReportDetails.measuredDeliveredQuantity',
@@ -78,7 +78,7 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
     'VesselToWatch',
   [ControlTowerQuantitySupplyDifferenceListColumns.productType]:
     'QuantityReportDetails_ProductType_Name' /* TO DO */,
-  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'Progress_Id',
+  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'SupplyProgress_Name',
   [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]:
     'QuantityReportDetails_BdnQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:
