@@ -74,7 +74,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     let loadNewStatusOfDataGridIds = [
       'control-tower-quality-claims-list-grid-7'
     ];
-    if (this.gridIds[this.id]) {
+    if (this.gridIds && this.gridIds[this.id]) {
       this.setRangeUntilNow(
         this.gridIds[this.id].timeDeltaValue,
         this.gridIds[this.id].timeDeltaUnit,

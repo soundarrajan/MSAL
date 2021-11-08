@@ -126,7 +126,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       if (params.value) {
         const a = document.createElement('a');
         a.innerHTML = params.value?.portCallId;
-        a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
+        a.href = `/v2/quantity-control/report/${params.data.quantityControlReport.id}/details`;
         a.setAttribute('target', '_blank');
         return a;
       }
@@ -319,8 +319,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.differenceInQty,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty,
     field: model('differenceInQty'),
-    autoHeight:true,
-    wrapText:true,
+    autoHeight: true,
+    wrapText: true,
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.differenceInQty,
     cellRenderer: params => {
