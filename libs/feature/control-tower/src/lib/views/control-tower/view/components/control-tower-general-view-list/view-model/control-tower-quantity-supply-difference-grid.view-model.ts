@@ -525,15 +525,15 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     for (let [key, value] of Object.entries(grid)) {
       if (key == 'progress') {
         if ((<any>value).type == 'equals') {
-          if ((<any>value).filter.toLowerCase() === 'new') {
+          if ((<any>value).filter === 'New') {
             this.toggleNewFilter = !this.toggleNewFilter;
             this.toggleMASFilter = true;
             this.toggleResolvedFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'verified') {
+          } else if ((<any>value).filter === 'MarkedAsSeen') {
             this.toggleMASFilter = !this.toggleMASFilter;
             this.toggleNewFilter = true;
             this.toggleResolvedFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'in spec') {
+          } else if ((<any>value).filter === 'Resolved') {
             this.toggleResolvedFilter = !this.toggleResolvedFilter;
             this.toggleNewFilter = true;
             this.toggleMASFilter = true;

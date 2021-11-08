@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-rowstatus-onchange-quantityrobdiff-popup',
@@ -20,6 +21,7 @@ export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
   public defaultStatus: string;
   public controlTowePopupForm = new FormControl();
   constructor(
+    private toastr: ToastrService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private changeDetectorRef: ChangeDetectorRef,
     public format: TenantFormattingService,
@@ -75,6 +77,12 @@ export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
         formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
       }
       return formattedDate;
+    }
+  }
+
+  checkLengthOfTextarea(value) {
+    if (value.length == 500) {
+      this.toastr.warning('Maximum 500 characters allowed!');
     }
   }
 }
