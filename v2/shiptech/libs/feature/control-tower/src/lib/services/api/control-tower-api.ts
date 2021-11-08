@@ -19,7 +19,7 @@ export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityRobDifferenceList = () =>
     `api/controlTower/robDifferenceList`;
   export const getControlTowerQuantityRobDifferenceListExportUrl = () =>
-    `api/controlTower/robDifferenceList/export`;
+    `api/controlTower/exportRobDifferenceList`;
   export const getControlTowerQuantitySupplyDifferenceList = () =>
     `api/controlTower/supplyDifferenceList`;
   export const getControlTowerQuantitySupplyDifferenceListExportUrl = () =>

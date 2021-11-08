@@ -1,10 +1,10 @@
-﻿commit 63e689bafb75bfe0d542194abddca17b06270e07
+﻿commit 29429e13333b89cd7550797b44c921524b17c801
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 8 09:55:44 2021 +0000
+Date:   Mon Nov 8 10:33:03 2021 +0000
 
-    Merged PR 14500: Displayed last seven days records as default  for control tower - quantity ro...
+    Merged PR 14502: Added api/controlTower/exportRobDifferenceList for exporting rob differences...
     
-    Displayed last seven days records as default  for control tower - quantity rob differences
+    Added api/controlTower/exportRobDifferenceList for exporting rob differences list
     
     Related work items: #33331
 
