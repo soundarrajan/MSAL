@@ -534,6 +534,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   counterpartyList=[];
   visibleCounterpartyList = [];
   currentRequestInfo : any;
+  currentRequestData: any[];
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -630,7 +631,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.checkProd5 = false;
       }
     }else{
-      row.isSelected = false;
+      var checkallprod = this.checkallProd(row,params)
+      if(!checkallprod){
+        row.isSelected = true;
+      }
      if(params.column.colId == 'checkProd1'){
         row.checkProd1 =true;
 
@@ -649,6 +653,23 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     }
     return row;
+}
+checkallProd(row,params){
+  this.store.subscribe(({ spotNegotiation, ...props }) => {
+    this.currentRequestData = spotNegotiation.locations;
+  });
+  let currentLocProd= this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
+  if(currentLocProd.length != 0){
+    let currentLocProdCount = currentLocProd[0].requestProducts.length;
+    for (let index = 0; index < currentLocProdCount; index++) {
+      let indx = index +1;
+      let val = "checkProd" + indx;
+      if(!row[val] && val != params.column.colId){
+        return true
+      }
+    }
+  }
+  return false
 }
   additionalcostpopup() {
     const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
