@@ -312,6 +312,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.differenceInQty,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty,
     field: model('differenceInQty'),
+    autoHeight:true,
+    wrapText:true,
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.differenceInQty,
     cellRenderer: params => {
