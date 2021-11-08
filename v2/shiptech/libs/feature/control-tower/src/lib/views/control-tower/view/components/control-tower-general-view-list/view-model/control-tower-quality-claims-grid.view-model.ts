@@ -100,8 +100,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   orderNoCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.order,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.order,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.order,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.order,
     colId: ControlTowerQualityClaimsListColumns.order,
     field: model('order'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.order,
@@ -110,8 +110,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   labIdCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.lab,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.lab,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.lab,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.lab,
     colId: ControlTowerQualityClaimsListColumns.lab,
     field: model('lab'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.lab,
@@ -120,8 +120,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   claimNoCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.id,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.id,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.id,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.id,
     colId: ControlTowerQualityClaimsListColumns.id,
     field: model('id'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.id,
@@ -130,8 +130,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   portCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.port,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.port,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.port,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.port,
     colId: ControlTowerQualityClaimsListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.port,
@@ -139,8 +139,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   vesselCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.vessel,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.vessel,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.vessel,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.vessel,
     colId: ControlTowerQualityClaimsListColumns.vessel,
     field: model('vessel'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.vessel,
@@ -148,8 +148,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   etaCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.eta,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.eta,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.eta,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.eta,
     colId: ControlTowerQualityClaimsListColumns.eta,
     field: model('eta'),
     filter: 'agDateColumnFilter',
@@ -159,8 +159,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   productCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.product,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.product,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.product,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.product,
     colId: ControlTowerQualityClaimsListColumns.product,
     field: model('product'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.product,
@@ -168,8 +168,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   sellerCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.seller,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.seller,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.seller,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.seller,
     colId: ControlTowerQualityClaimsListColumns.seller,
     field: model('seller'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.seller,
@@ -180,8 +180,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     IControlTowerQualityClaimsItemDto,
     number
   > = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.claimSubType,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.claimSubType,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
     colId: ControlTowerQualityClaimsListColumns.claimSubType,
     field: model('claimSubType'),
     filter: 'agNumberColumnFilter',
@@ -195,9 +195,9 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     number
   > = {
     headerName:
-      ControlTowerQualityClaimsListColumnServerKeys.estimatedSettlementAmount,
+      ControlTowerQualityClaimsListColumnsLabels.estimatedSettlementAmount,
     headerTooltip:
-      ControlTowerQualityClaimsListColumnServerKeys.estimatedSettlementAmount,
+      ControlTowerQualityClaimsListColumnsLabels.estimatedSettlementAmount,
     colId: ControlTowerQualityClaimsListColumns.estimatedSettlementAmount,
     field: model('estimatedSettlementAmount'),
     filter: 'agNumberColumnFilter',
@@ -208,8 +208,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   createdDateCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.createdDate,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.createdDate,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.createdDate,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.createdDate,
     colId: ControlTowerQualityClaimsListColumns.createdDate,
     field: model('createdDate'),
     filter: 'agDateColumnFilter',
@@ -219,8 +219,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   createdByCol: ITypedColDef<IControlTowerQualityClaimsItemDto, ILookupDto> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.createdBy,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.createdBy,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.createdBy,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.createdBy,
     colId: ControlTowerQualityClaimsListColumns.createdBy,
     field: model('createdBy'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.createdBy,
@@ -229,8 +229,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   };
 
   noResponseCol: ITypedColDef<IControlTowerQualityClaimsItemDto, number> = {
-    headerName: ControlTowerQualityClaimsListColumnServerKeys.noResponse,
-    headerTooltip: ControlTowerQualityClaimsListColumnServerKeys.noResponse,
+    headerName: ControlTowerQualityClaimsListColumnsLabels.noResponse,
+    headerTooltip: ControlTowerQualityClaimsListColumnsLabels.noResponse,
     colId: ControlTowerQualityClaimsListColumns.noResponse,
     field: model('noResponse'),
     filter: 'agNumberColumnFilter',
