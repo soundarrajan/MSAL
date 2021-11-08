@@ -64,15 +64,15 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'SurveyorDate',
   [ControlTowerQuantityRobDifferenceListColumns.emailToVessel]: 'VesselEmail',
   [ControlTowerQuantityRobDifferenceListColumns.vesselToWatch]: 'VesselToWatch',
-  [ControlTowerQuantityRobDifferenceListColumns.progress]: 'Progress_Name',
+  [ControlTowerQuantityRobDifferenceListColumns.progress]: 'RobProgress_Name',
   [ControlTowerQuantityRobDifferenceListColumns.productType]:
     'quantityReportDetails_ProductType_Name',
   [ControlTowerQuantityRobDifferenceListColumns.logBookRobQtyBeforeDelivery]:
-    'quantityReportDetails_LogBookRobQtyBeforeDelivery',
+    'QuantityReportDetails_LogBookRobQtyBeforeDelivery',
   [ControlTowerQuantityRobDifferenceListColumns.measuredRobQtyBeforeDelivery]:
-    'quantityReportDetails_MeasuredRobQtyBeforeDelivery',
+    'QuantityReportDetails_MeasuredRobQtyBeforeDelivery',
   [ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity]:
-    'quantityReportDetails_DifferenceInQty',
+    'QuantityReportDetails_DifferenceInRobQty',
   [ControlTowerQuantityRobDifferenceListColumns.robUom]:
-    'quantityReportDetails_BeforeDeliveryUom_Name'
+    'QuantityReportDetails_RobUom_Name'
 };
