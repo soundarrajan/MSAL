@@ -1,7 +1,7 @@
-﻿commit d0a23f23cfb14efe763ac1de1df2847c10c199ed
+﻿commit 2444484e7d356894722da5302bf4cee07fe75150
 Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Mon Nov 8 15:37:25 2021 +0200
+Date:   Mon Nov 8 16:49:20 2021 +0200
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+    Filter mapping fixes
 
 branch: master
