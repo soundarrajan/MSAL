@@ -148,10 +148,7 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
 
 let useAdal = false;
 
-if (
-  window.location.hostname.includes('cma') ||
-  window.location.hostname.includes('pmg')
-) {
+if (window.location.hostname.includes('cma')) {
   useAdal = true;
 }
 
