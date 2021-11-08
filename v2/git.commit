@@ -1,7 +1,11 @@
-﻿commit 9f930a518f5ba14f16b77becbe929c259574bca1
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Mon Nov 8 11:44:52 2021 +0200
+﻿commit 63e689bafb75bfe0d542194abddca17b06270e07
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Nov 8 09:55:44 2021 +0000
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+    Merged PR 14500: Displayed last seven days records as default  for control tower - quantity ro...
+    
+    Displayed last seven days records as default  for control tower - quantity rob differences
+    
+    Related work items: #33331
 
 branch: master

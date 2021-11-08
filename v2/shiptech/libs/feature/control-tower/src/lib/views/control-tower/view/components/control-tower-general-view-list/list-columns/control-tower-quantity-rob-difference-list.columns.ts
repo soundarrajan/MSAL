@@ -18,7 +18,7 @@ export enum ControlTowerQuantityRobDifferenceListColumns {
 export enum ControlTowerQuantityRobDifferenceListExportColumns {
   portCall = 'portcall.portCallId',
   port = 'port',
-  vessel = 'vessel.name',
+  vessel = 'vessel',
   eta = 'eta',
   surveyorDate = 'surveyorDate',
   emailToVessel = 'emailToVessel',
