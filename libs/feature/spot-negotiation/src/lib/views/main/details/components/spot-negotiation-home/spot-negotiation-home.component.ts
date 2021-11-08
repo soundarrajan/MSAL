@@ -166,7 +166,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
  UpdateProductsSelection(currentLocProd,row){
   if(currentLocProd.length != 0){
-    debugger;
     let currentLocProdCount = currentLocProd[0].requestProducts.length;
     for (let index = 0; index < currentLocProdCount; index++) {
       let indx = index +1;
@@ -272,7 +271,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.AmendRFQ(amendRFQRequestPayload);
     response.subscribe((res: any) => {
       this.spinner.hide();
-      debugger;
       if(res instanceof Array && res.length>0 ){
         this.toaster.success('Amend RFQ(s) sent successfully.');
       }
