@@ -55,6 +55,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { IControlTowerRowPopup } from './control-tower-general-enums';
+import { ToastrService } from 'ngx-toastr';
 
 export const PICK_FORMATS = {
   display: {
@@ -193,7 +194,8 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private controlTowerService: ControlTowerService,
-    private appErrorHandler: AppErrorHandler
+    private appErrorHandler: AppErrorHandler,
+    private toastr: ToastrService
   ) {
     this.autocompleteOrders = knownMastersAutocomplete.products;
     this.dateFormats.display.dateInput = this.format.dateFormat;
@@ -323,6 +325,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       .getTableByName('robDifferenceType')
       .then(response => {
         let rowData = ev.node.data;
+        if (!rowData) {
+          return;
+        }
 
         let productTypeList = rowData.quantityReportDetails.map(obj => {
           let rowObj = {};
@@ -393,25 +398,29 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       })
       .pipe()
       .subscribe(
-        response => {
-          dialogData.changeLog = response.payload.changeLog;
-          const dialogRef = this.dialog.open(
-            RowstatusOnchangeQuantityrobdiffPopupComponent,
-            {
-              width: '520px',
-              height: 'auto',
-              maxHeight: '536px',
-              backdropClass: 'dark-popupBackdropClass',
-              panelClass: 'light-theme',
-              data: dialogData
-            }
-          );
-          dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
-            console.log(ev);
-            // this.gridViewModel.updateValues(ev, result);
-            this.savePopupChanges(ev, result);
-          });
+        (response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            dialogData.changeLog = response.changeLog;
+            const dialogRef = this.dialog.open(
+              RowstatusOnchangeQuantityrobdiffPopupComponent,
+              {
+                width: '520px',
+                height: 'auto',
+                maxHeight: '536px',
+                backdropClass: 'dark-popupBackdropClass',
+                panelClass: 'light-theme',
+                data: dialogData
+              }
+            );
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(`Dialog result: ${result}`);
+              console.log(ev);
+              this.gridViewModel.updateValues(ev, result);
+              // this.savePopupChanges(ev, result);
+            });
+          }
         },
         () => {
           this.appErrorHandler.handleError(

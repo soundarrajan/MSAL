@@ -56,13 +56,15 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   string
 > = {
   [ControlTowerQuantityRobDifferenceListColumns.actions]: undefined,
-  [ControlTowerQuantityRobDifferenceListColumns.portCall]: 'order_id',
-  [ControlTowerQuantityRobDifferenceListColumns.port]: 'port',
-  [ControlTowerQuantityRobDifferenceListColumns.vessel]: 'vessel_name',
-  [ControlTowerQuantityRobDifferenceListColumns.eta]: 'eta',
-  [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'surveyorDate',
-  [ControlTowerQuantityRobDifferenceListColumns.emailToVessel]: 'emailToVessel',
-  [ControlTowerQuantityRobDifferenceListColumns.vesselToWatch]: 'vesselToWatch',
+  [ControlTowerQuantityRobDifferenceListColumns.portCall]:
+    'PortCall_PortCallId',
+  [ControlTowerQuantityRobDifferenceListColumns.port]: 'Port',
+  [ControlTowerQuantityRobDifferenceListColumns.vessel]: 'Vessel',
+  [ControlTowerQuantityRobDifferenceListColumns.eta]: 'Eta',
+  [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'SurveyorDate',
+  [ControlTowerQuantityRobDifferenceListColumns.emailToVessel]: 'VesselEmail',
+  [ControlTowerQuantityRobDifferenceListColumns.vesselToWatch]: 'VesselToWatch',
+  [ControlTowerQuantityRobDifferenceListColumns.progress]: 'Progress_Name',
   [ControlTowerQuantityRobDifferenceListColumns.productType]:
     'quantityReportDetails_ProductType_Name',
   [ControlTowerQuantityRobDifferenceListColumns.logBookRobQtyBeforeDelivery]:
@@ -72,6 +74,5 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity]:
     'quantityReportDetails_DifferenceInQty',
   [ControlTowerQuantityRobDifferenceListColumns.robUom]:
-    'quantityReportDetails_BeforeDeliveryUom_Name',
-  [ControlTowerQuantityRobDifferenceListColumns.progress]: 'progress_name'
+    'quantityReportDetails_BeforeDeliveryUom_Name'
 };

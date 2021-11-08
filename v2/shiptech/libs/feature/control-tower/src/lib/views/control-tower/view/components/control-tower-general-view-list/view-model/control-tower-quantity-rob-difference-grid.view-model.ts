@@ -40,6 +40,9 @@ import {
 } from '../list-columns/control-tower-quantity-rob-difference-list.columns';
 import { ControlTowerProgressColors } from '../control-tower-general-enums';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { ToastrService } from 'ngx-toastr';
+import _ from 'lodash';
 
 function model(
   prop: keyof IControlTowerQuantityRobDifferenceItemDto
@@ -65,6 +68,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public noOfNew: number;
   public noOfMarkedAsSeen: number;
   public noOfResolved: number;
+
+  public differenceType: ILookupDto;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -108,11 +113,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     field: model('portCall'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.portCall,
     cellRenderer: params => {
-      const a = document.createElement('a');
-      a.innerHTML = params.value.portCallId;
-      a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
-      a.setAttribute('target', '_blank');
-      return a;
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value?.portCallId;
+        a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     width: 200
   };
@@ -179,9 +187,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.emailToVessel,
     cellRenderer: params => {
-      const a = document.createElement('span');
-      a.innerHTML = params.value ? 'Yes' : 'No';
-      return a;
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
     },
     width: 150
   };
@@ -199,9 +210,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.vesselToWatch,
     cellRenderer: params => {
-      const a = document.createElement('span');
-      a.innerHTML = params.value ? 'Yes' : 'No';
-      return a;
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
     },
     width: 150
   };
@@ -218,10 +232,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.productType,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.productType?.name ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.productType?.name ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     width: 150
   };
@@ -240,10 +256,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.logBookRobQtyBeforeDelivery,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => this.format.quantity(a.logBookRobQtyBeforeDelivery) ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.logBookRobQtyBeforeDelivery) ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     filter: 'agNumberColumnFilter',
     width: 150
@@ -262,10 +280,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.measuredRobQtyBeforeDelivery,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => this.format.quantity(a.measuredRobQtyBeforeDelivery) ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.measuredRobQtyBeforeDelivery) ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     field: model('measuredRobQtyBeforeDelivery'),
     filter: 'agNumberColumnFilter',
@@ -285,10 +305,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.differenceInRobQuantity,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => this.format.quantity(a.differenceInRobQuantity) ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.differenceInRobQuantity) ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     filter: 'agNumberColumnFilter',
     width: 150
@@ -304,10 +326,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     field: model('robUom'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.robUom,
     cellRenderer: params => {
-      let mergedValues = params.data.quantityReportDetails.map(
-        a => a.robUom?.name ?? '-'
-      );
-      return mergedValues.join('<br>');
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.robUom?.name ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
     },
     width: 150
   };
@@ -321,26 +345,28 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     colId: ControlTowerQuantityRobDifferenceListColumns.progress,
     field: model('progress'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.progress,
-    valueFormatter: params => params.value?.name,
+    valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
-      var classArray: string[] = [];
-      let newClass = '';
-      switch (params?.value.name) {
-        case 'New':
-          newClass = 'medium-blue';
-          break;
-        case 'Marked as Seen':
-          newClass = 'medium-yellow';
-          break;
-        case 'Resolved':
-          newClass = 'light-green';
-          break;
+      if (params.value) {
+        var classArray: string[] = [];
+        let newClass = '';
+        switch (params?.value.displayName) {
+          case 'New':
+            newClass = 'medium-blue';
+            break;
+          case 'Marked as Seen':
+            newClass = 'medium-yellow';
+            break;
+          case 'Resolved':
+            newClass = 'light-green';
+            break;
+        }
+        classArray.push(newClass);
+        return {
+          cellClass: classArray.length > 0 ? classArray : null,
+          type: 'progress'
+        };
       }
-      classArray.push(newClass);
-      return {
-        cellClass: classArray.length > 0 ? classArray : null,
-        type: 'progress'
-      };
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
     width: 150
@@ -366,7 +392,9 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private format: TenantFormattingService,
     private controlTowerService: ControlTowerService,
     private appErrorHandler: AppErrorHandler,
-    private databaseManipulation: DatabaseManipulation
+    private databaseManipulation: DatabaseManipulation,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private toastr: ToastrService
   ) {
     super(
       'control-tower-quantity-rob-list-grid-5',
@@ -376,6 +404,11 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
         ControlTowerQuantityRobDifferenceListGridViewModel.name
       )
     );
+    this.legacyLookupsDatabase
+      .getTableByName('robDifferenceType')
+      .then(response => {
+        this.differenceType = response.filter(obj => obj.name == 'Rob')[0];
+      });
 
     this.init(this.gridOptions, true);
   }
@@ -400,29 +433,30 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public updateValues(ev, values): void {
-    console.log(values);
-    // this.gridApi.purgeServerSideCache();
-    let rowNode: any = 0;
-    if (ev.data.id) {
-      rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values) {
+      let payloadData = {
+        differenceType: this.differenceType,
+        quantityControlReport: {
+          id: ev.data.quantityControlReport.id
+        },
+        status: values.data.status,
+        comments: values.data.comments
+      };
+
+      this.controlTowerService
+        .saveQuantityResiduePopUp(payloadData, payloadData => {
+          console.log('asd');
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.gridApi.purgeServerSideCache();
+          }
+        });
     }
-    const newStatus = {
-      transactionTypeId: 6,
-      id: 1,
-      name: 'New',
-      internalName: null,
-      displayName: 'New',
-      code: null,
-      collectionName: null,
-      customNonMandatoryAttribute1: null,
-      isDeleted: false,
-      modulePathUrl: null,
-      clientIpAddress: null,
-      userAction: null
-    };
-    if (rowNode) {
-      rowNode.setDataValue('status', newStatus);
-    }
+    return;
   }
 
   public filterGridNew(statusName: string): void {

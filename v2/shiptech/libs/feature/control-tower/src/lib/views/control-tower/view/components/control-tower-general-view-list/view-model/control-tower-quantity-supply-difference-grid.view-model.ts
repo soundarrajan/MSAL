@@ -50,6 +50,7 @@ import {
 import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { __values } from 'tslib';
+import { ToastrService } from 'ngx-toastr';
 
 function model(
   prop: keyof IControlTowerQuantitySupplyDifferenceItemDto
@@ -121,7 +122,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.portCall,
     cellRenderer: params => {
-      if(params.value) {
+      if (params.value) {
         const a = document.createElement('a');
         a.innerHTML = params.value?.portCallId;
         a.href = `/quantity-control/report/${params.data.quantityControlReport.id}/details`;
@@ -243,7 +244,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.productType,
     cellRenderer: params => {
-      if(params.data) {
+      if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.productType?.name ?? '-'
         );
@@ -266,7 +267,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.bdnQuantity,
     cellRenderer: params => {
-      if(params.data) {
+      if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.bdnQuantity ?? '-'
         );
@@ -289,7 +290,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.measuredDeliveredQty,
     cellRenderer: params => {
-      if(params.data) {
+      if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.measuredDeliveredQuantity ?? '-'
         );
@@ -314,7 +315,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.differenceInQty,
     cellRenderer: params => {
-      if(params.data) {
+      if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.differenceInSupplyQuantity ?? '-'
         );
@@ -337,7 +338,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.sumOfOrderQtyCol,
     cellRenderer: params => {
-      if(params.data) {
+      if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.sumOfOrderQuantity ?? '-'
         );
@@ -358,7 +359,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     field: model('qtyUom'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.qtyUom,
     cellRenderer: params => {
-      if(params.data) {
+      if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.supplyUom?.name ?? '-'
         );
@@ -380,7 +381,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
     cellRenderer: params => {
-      if(params.value) {
+      if (params.value) {
         return this.computeProgressCellColor(params.value);
       }
     },
@@ -410,7 +411,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private controlTowerService: ControlTowerService,
     private appErrorHandler: AppErrorHandler,
-    private databaseManipulation: DatabaseManipulation
+    private databaseManipulation: DatabaseManipulation,
+    private toastr: ToastrService
   ) {
     super(
       'control-tower-quantity-supply-list-grid-5',
@@ -454,50 +456,31 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public updateValues(ev, values): void {
-    if(values) {
-
+    if (values) {
       let payloadData = {
-        "differenceType" : this.differenceType,
-        "quantityControlReport" : {
-          id : ev.data.quantityControlReport.id
+        differenceType: this.differenceType,
+        quantityControlReport: {
+          id: ev.data.quantityControlReport.id
         },
-        "status" : values.data.status,
-        "comments" : values.data.comments
-      }
+        status: values.data.status,
+        comments: values.data.comments
+      };
 
-      this.controlTowerService.saveQuantityResiduePopUp(payloadData, (payloadData) => {
-        console.log("asd");
-      }).pipe(takeUntil(this.destroy$))
-        .subscribe(
-      );    
-
-    }    
+      this.controlTowerService
+        .saveQuantityResiduePopUp(payloadData, payloadData => {
+          console.log('asd');
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.gridApi.purgeServerSideCache();
+          }
+        });
+    }
     return;
-    console.log(values);
-    // this.gridApi.purgeServerSideCache();
-    let rowNode: any = 0;
-    if (ev.data.id) {
-      rowNode = this.gridApi.getRowNode(ev.data.id.toString());
-    }
-    const newStatus = {
-      transactionTypeId: 6,
-      id: 1,
-      name: 'New',
-      internalName: null,
-      displayName: 'New',
-      code: null,
-      collectionName: null,
-      customNonMandatoryAttribute1: null,
-      isDeleted: false,
-      modulePathUrl: null,
-      clientIpAddress: null,
-      userAction: null
-    };
-    if (rowNode) {
-      rowNode.setDataValue('status', newStatus);
-    }
   }
-
   public filterGridNew(statusName: string): void {
     if (this.toggleNewFilter) {
       this.filterByStatus(statusName);

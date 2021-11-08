@@ -5,6 +5,7 @@ import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-rowstatus-onchange-quantityrobdiff-popup',
@@ -43,9 +44,14 @@ export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
     this.status = status;
   }
   statusChanged() {
+    let statusFromPopUp = this.status;
+    let actionStatus = _.find(this.controlTowerActionStatus, function(object) {
+      return object.id == statusFromPopUp;
+    });
     let data = {
       status: { id: +this.status },
-      comments: this.comments
+      comments: this.comments,
+      actionStatus: actionStatus
     };
     this.dialogRef.close({ data: data });
   }

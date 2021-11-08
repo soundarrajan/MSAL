@@ -1,7 +1,11 @@
-﻿commit 7fd23f534c2b49a13a5b3bff174a4eb692558a9c
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Fri Nov 5 22:55:55 2021 +0200
+﻿commit e6a70396d84cf6dcdfa71022f4bf08f8aabc2d8c
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Nov 8 07:54:41 2021 +0000
 
-    Added Filters in Control Tower SupplyDiffernce- fixed conflicts
+    Merged PR 14493: Added filters in quantity  rob differences
+    
+    Added filters in quantity  rob differences
+    
+    Related work items: #33331
 
 branch: master
