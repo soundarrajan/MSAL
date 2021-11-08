@@ -106,7 +106,12 @@
       </mat-form-field>
     </div>
     <div class="header-title">Comments</div>
-    <textarea [(ngModel)]="comments" spellcheck="false"></textarea>
+    <textarea
+      [(ngModel)]="comments"
+      (ngModelChange)="checkLengthOfTextarea($event)"
+      spellcheck="false"
+      maxlength="500"
+    ></textarea>
     <div class="link">
       <span>In relation to:</span>
       <span>
@@ -123,7 +128,11 @@
   <div class="change-log">
     <div class="header-title">Change Log</div>
     <div class="list-section" *ngIf="data.changeLog">
-      <div class="list" style="width:100%" *ngFor='let value of data.changeLog.slice().reverse()'>
+      <div
+        class="list"
+        style="width:100%"
+        *ngFor="let value of data.changeLog.slice().reverse()"
+      >
         <span></span>
         <p>{{ formatDate(value.date) }}</p>
         <div class="description">

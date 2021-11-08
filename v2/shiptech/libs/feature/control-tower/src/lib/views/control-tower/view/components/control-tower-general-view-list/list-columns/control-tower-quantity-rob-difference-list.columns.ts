@@ -72,7 +72,7 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantityRobDifferenceListColumns.measuredRobQtyBeforeDelivery]:
     'QuantityReportDetails_MeasuredRobQtyBeforeDelivery',
   [ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity]:
-    'QuantityReportDetails_DifferenceInRobQty',
+    'QuantityReportDetails_DifferenceInRobQuantity',
   [ControlTowerQuantityRobDifferenceListColumns.robUom]:
     'QuantityReportDetails_RobUom_Name'
 };
