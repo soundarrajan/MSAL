@@ -1,7 +1,7 @@
-﻿commit 16788ed2c95ec74bc62e278a2abe7a04e1aee885
+﻿commit a532f2525328624b13a6452f4a4b30062071b7ac
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 8 17:11:41 2021 +0200
+Date:   Mon Nov 8 18:38:36 2021 +0200
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+    Used adal only for hostname which contains cma
 
 branch: master
