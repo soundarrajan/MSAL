@@ -302,6 +302,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
     colId: ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity,
     field: model('differenceInRobQuantity'),
+    autoHeight:true,
+    wrapText:true,
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.differenceInRobQuantity,
     cellRenderer: params => {
