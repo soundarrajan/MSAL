@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { Store } from '@ngxs/store';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
@@ -20,6 +20,7 @@ import {
   LoadControlTowerListFailedAction,
   LoadControlTowerListSuccessfulAction
 } from '../store/control-tower-general-list/control-tower-general-list.actions';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class ControlTowerService extends BaseStoreService implements OnDestroy {
@@ -71,7 +72,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
         new LoadControlTowerListSuccessfulAction(
           response.payload.noOfNew,
           response.payload.noOfMarkedAsSeen,
-          response.payload.noOfResolved,
+          response.payload.noOfResolved
         ),
       LoadControlTowerListFailedAction,
       ModuleError.LoadControlTowerQuantitySupplyDifferenceFailed
@@ -104,46 +105,45 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       ModuleError.LoadControlTowerQuantityClaimsFailed
     );
   }
-  
+
   @ObservableException()
   getControlTowerQualityClaimsList$(
     gridRequest: IServerGridInfo
-    ): Observable<IGetControlTowerQualityClaimsListResponse> {
-      return this.apiDispatch(
-        () =>
-          this.api.getControlTowerQualityClaimsList({
-            ...gridRequest
-          }),
-        new LoadControlTowerListAction(gridRequest),
-        response =>
-          new LoadControlTowerListSuccessfulAction(
-            response.payload.noOf15,
-            response.payload.noOf714,
-            response.payload.noOfNew,
-            response.matchedCount
-          ),
-        LoadControlTowerListFailedAction,
-        ModuleError.LoadControlTowerQualityClaimsFailed
-      );
-  //   gridRequest: IServerGridInfo
-  // ): Observable<IGetControlTowerQualityClaimsListResponse> {
-  //   return this.apiDispatch(
-  //     () =>
-  //       this.api.getControlTowerQuantityClaimsList({
-  //         ...gridRequest
-  //       }),
-  //     new LoadControlTowerListAction(gridRequest),
-  //     response =>
-  //       new LoadControlTowerListSuccessfulAction(
-  //         response.matchedCount,
-  //         response.matchedCount,
-  //         response.matchedCount,
-  //         response.matchedCount
-  //       ),
-  //     LoadControlTowerListFailedAction,
-  //     ModuleError.LoadControlTowerQuantityClaimsFailed
-  //   );
-  
+  ): Observable<IGetControlTowerQualityClaimsListResponse> {
+    return this.apiDispatch(
+      () =>
+        this.api.getControlTowerQualityClaimsList({
+          ...gridRequest
+        }),
+      new LoadControlTowerListAction(gridRequest),
+      response =>
+        new LoadControlTowerListSuccessfulAction(
+          response.payload.noOf15,
+          response.payload.noOf714,
+          response.payload.noOfNew,
+          response.matchedCount
+        ),
+      LoadControlTowerListFailedAction,
+      ModuleError.LoadControlTowerQualityClaimsFailed
+    );
+    //   gridRequest: IServerGridInfo
+    // ): Observable<IGetControlTowerQualityClaimsListResponse> {
+    //   return this.apiDispatch(
+    //     () =>
+    //       this.api.getControlTowerQuantityClaimsList({
+    //         ...gridRequest
+    //       }),
+    //     new LoadControlTowerListAction(gridRequest),
+    //     response =>
+    //       new LoadControlTowerListSuccessfulAction(
+    //         response.matchedCount,
+    //         response.matchedCount,
+    //         response.matchedCount,
+    //         response.matchedCount
+    //       ),
+    //     LoadControlTowerListFailedAction,
+    //     ModuleError.LoadControlTowerQuantityClaimsFailed
+    //   );
   }
 
   @ObservableException()
@@ -153,14 +153,31 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   getQuantityResiduePopUp(data, response) {
-    return this.api.getQuantityResiduePopUp(data);
-  }
-  
-  @ObservableException()
-  saveQuantityResiduePopUp(data, response) {
-    return this.api.saveQuantityResiduePopUp(data);
+    return this.api.getQuantityResiduePopUp(data).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
   }
 
+  @ObservableException()
+  saveQuantityResiduePopUp(data, response) {
+    return this.api.saveQuantityResiduePopUp(data).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
 
   ngOnDestroy(): void {
     super.onDestroy();
