@@ -23464,3 +23464,14 @@ mat-form-field {
 .controlTower-wrapper .controlTower-content .filters .by-datePicker #custom-form-field .mat-form-field.datePicker .mat-form-field-infix input {
   width: 85px !important;
 }
+
+.controlTower-wrapper .controlTower-content shiptech-control-tower-general-view-list .grid-container .agGrid-v2 .ag-root {
+  .ag-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .ag-cell {
+      height: auto !important;
+    }
+  }  
+}

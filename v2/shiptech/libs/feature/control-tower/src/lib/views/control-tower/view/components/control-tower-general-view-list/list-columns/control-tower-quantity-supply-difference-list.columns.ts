@@ -84,7 +84,7 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:
     'QuantityReportDetails_MeasuredDeliveredQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]:
-    'sumOfOrderQty' /* TO DO */,
+    'QuantityReportDetails_SumOfOrderQuantity' /* TO DO */,
   [ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty]:
     'QuantityReportDetails_DifferenceInSupplyQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.qtyUom]:

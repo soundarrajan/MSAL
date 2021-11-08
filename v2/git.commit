@@ -1,11 +1,7 @@
-﻿commit cc010fb0995cd6d133ed60cb9d98b2adbca48b6a
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 8 09:35:36 2021 +0000
+﻿commit 9f930a518f5ba14f16b77becbe929c259574bca1
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Mon Nov 8 11:44:52 2021 +0200
 
-    Merged PR 14499: Worked on rob differences
-    
-    Worked on rob differences
-    
-    Related work items: #33331
+    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
 
 branch: master
