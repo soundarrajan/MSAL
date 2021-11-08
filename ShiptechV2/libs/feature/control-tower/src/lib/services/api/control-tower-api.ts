@@ -16,10 +16,10 @@ import {
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
-  export const getControlTowerQuantityRobDifferenceList = () => 
+  export const getControlTowerQuantityRobDifferenceList = () =>
     `api/controlTower/robDifferenceList`;
   export const getControlTowerQuantityRobDifferenceListExportUrl = () =>
-    `api/labs/export`;
+    `api/controlTower/robDifferenceList/export`;
   export const getControlTowerQuantitySupplyDifferenceList = () =>
     `api/controlTower/supplyDifferenceList`;
   export const getControlTowerQuantitySupplyDifferenceListExportUrl = () =>
@@ -52,7 +52,7 @@ export class ControlTowerApi implements IControlTowerApiService {
 
   @ObservableException()
   getControlTowerQuantityRobDifferenceList(
-    request: IGetControlTowerListRequest 
+    request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantityRobDifferenceListResponse> {
     return this.http.post<IGetControlTowerQuantityRobDifferenceListResponse>(
       `${
@@ -73,7 +73,9 @@ export class ControlTowerApi implements IControlTowerApiService {
     request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantitySupplyDifferenceListResponse> {
     return this.http.post<IGetControlTowerQuantitySupplyDifferenceListResponse>(
-      `${this._apiUrl}/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceList()}`,
+      `${
+        this._apiUrl
+      }/${ControlTowerApiPaths.getControlTowerQuantitySupplyDifferenceList()}`,
       { payload: request }
     );
   }
@@ -89,16 +91,20 @@ export class ControlTowerApi implements IControlTowerApiService {
     request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantityClaimsListResponse> {
     return this.http.post<IGetControlTowerQuantityClaimsListResponse>(
-      `${this._claimsApiUrl}/${ControlTowerApiPaths.getControlTowerQuantityClaimsList()}`,
+      `${
+        this._claimsApiUrl
+      }/${ControlTowerApiPaths.getControlTowerQuantityClaimsList()}`,
       { payload: request }
     );
   }
   getControlTowerQuantityClaimsListExportUrl(): string {
-    return `${this._claimsApiUrl}/${ControlTowerApiPaths.getControlTowerQuantityClaimsListExportUrl()}`;
+    return `${
+      this._claimsApiUrl
+    }/${ControlTowerApiPaths.getControlTowerQuantityClaimsListExportUrl()}`;
   }
 
   @ObservableException()
-  getQuantityResiduePopUp(request):any {    
+  getQuantityResiduePopUp(request): any {
     return this.http.post(
       `${this._apiUrl}/api/controlTower/QuantityResiduePopUp`,
       { payload: request }
@@ -106,7 +112,7 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
 
   @ObservableException()
-  saveQuantityResiduePopUp(request):any {    
+  saveQuantityResiduePopUp(request): any {
     return this.http.post(
       `${this._apiUrl}/api/controlTower/saveQuantityResiduePopUp`,
       { payload: request }
