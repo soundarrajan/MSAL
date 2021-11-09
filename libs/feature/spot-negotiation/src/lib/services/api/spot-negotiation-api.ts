@@ -18,7 +18,9 @@ export const SpotNegotiationApiPaths = {
   sendRFQ:`RFQ/createRFQ`,
   amendRFQ: `RFQ/amendRfq`,
   UpdateSelectSeller: `Groups/toggleReqSellerSelection`,
-  previewRfqMail:`RFQ/previewRfqMail`
+  previewRfqMail:`RFQ/previewRfqMail`,
+  getExistingOrders:`api/procurement/order/getExistingOrders`,
+  confirmRfq:`api/procurement/rfq/confirm`
 };
 
 @Injectable({
@@ -271,6 +273,38 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
           )
         )
       );
+  }
+  @ObservableException()
+  GetExistingOrders(
+    request: any
+  ): Observable<any> {
+    const requestUrl = `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getExistingOrders}`;
+    return this.http.post<any>(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
+  @ObservableException()
+  ConfirmRfq(
+    request: any
+  ): Observable<any> {
+    const requestUrl = `${this._procurementApiUrl}/${SpotNegotiationApiPaths.confirmRfq}`;
+    return this.http.post<any>(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
   }
 }
 

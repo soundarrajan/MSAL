@@ -164,6 +164,21 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.PreviewRfqMail(payload);
   }
 
+   /* Get Existing Order's
+   * @param payload = 
+   */
+   @ObservableException()
+   GetExistingOrders(payload: any): Observable<unknown> {
+     return this.spotNegotiationApi.GetExistingOrders(payload);
+   }
+  /**
+   * Get Confirm Offer's
+   * @param payload = 
+   */
+   @ObservableException()
+   ConfirmRfq(payload: any): Observable<unknown> {
+     return this.spotNegotiationApi.ConfirmRfq(payload);
+   }
 
   /**
    * Fake populate rows
