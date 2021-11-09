@@ -1,7 +1,11 @@
-﻿commit e858bb545b9448cfe9bce6abec6a67d9d70c9730
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Nov 9 09:59:50 2021 +0200
+﻿commit caab3f68ff4e6136bc8b633a261510f356ec2e40
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Nov 9 11:26:39 2021 +0000
 
-    Used adal for hostname which contains cma or pmg
+    Merged PR 14608: Added export file name as  fileName from header response, added tooltip in quantity claims, quantity rob difference and quantity supply difference
+    
+    Added export file name as  fileName from header response, added tooltip in quantity claims, quantity rob difference and quantity supply difference
+    
+    Related work items: #33331, #33650
 
 branch: master

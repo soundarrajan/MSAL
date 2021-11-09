@@ -82,15 +82,25 @@ export class TenantFormattingService {
   public date(value: string): string | undefined {
     if (value === null || value === undefined) return undefined;
 
-    return moment(value).format(dateTimeAdapter.fromDotNet(this.dateFormat));
+    let formattedDate = moment(value).format(
+      dateTimeAdapter.fromDotNet(this.dateFormat)
+    );
+    if (formattedDate.endsWith('00:00')) {
+      formattedDate = formattedDate.split('00:00')[0];
+    }
+    return formattedDate;
   }
 
   public dateUtc(value: string): string | undefined {
     if (value === null || value === undefined) return undefined;
 
-    return moment
+    let formattedDate = moment
       .utc(value)
       .format(dateTimeAdapter.fromDotNet(this.dateFormat));
+    if (formattedDate.endsWith('00:00')) {
+      formattedDate = formattedDate.split('00:00')[0];
+    }
+    return formattedDate;
   }
 
   htmlDecode(str: string): string {

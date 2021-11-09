@@ -129,7 +129,10 @@ export class ExportNewComponent implements OnInit, OnDestroy {
       .exportDocument(this.gridModel.exportUrl, requestToSend)
       .subscribe(
         result => {
-          this._FileSaverService.save(result);
+          this._FileSaverService.save(
+            result.body,
+            result.headers.get('Filename')
+          );
         },
         () => {
           this.appErrorHandler.handleError(this.getModuleError(type));

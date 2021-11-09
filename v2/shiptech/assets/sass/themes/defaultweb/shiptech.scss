@@ -10313,7 +10313,7 @@ tr.title {
             clear: both;
             margin: 15px 0;
             color: #364150;
-            overflow:hidden;
+            overflow: hidden;
           }
         }
       }
@@ -23457,16 +23457,31 @@ mat-form-field {
   overflow: visible !important;
 }
 
-
-.controlTower-wrapper .controlTower-content .filters .by-datePicker #custom-form-field {
+.controlTower-wrapper
+  .controlTower-content
+  .filters
+  .by-datePicker
+  #custom-form-field {
   width: 100px !important;
 }
 
-.controlTower-wrapper .controlTower-content .filters .by-datePicker #custom-form-field .mat-form-field.datePicker .mat-form-field-infix input {
+.controlTower-wrapper
+  .controlTower-content
+  .filters
+  .by-datePicker
+  #custom-form-field
+  .mat-form-field.datePicker
+  .mat-form-field-infix
+  input {
   width: 85px !important;
 }
 
-.controlTower-wrapper .controlTower-content shiptech-control-tower-general-view-list .grid-container .agGrid-v2 .ag-root {
+.controlTower-wrapper
+  .controlTower-content
+  shiptech-control-tower-general-view-list
+  .grid-container
+  .agGrid-v2
+  .ag-root {
   .ag-row {
     display: flex;
     justify-content: center;
@@ -23474,5 +23489,17 @@ mat-form-field {
     .ag-cell {
       height: auto !important;
     }
-  }  
+  }
+}
+
+.controlTower-wrapper.light-theme
+  .controlTower-content.light-theme
+  .grid-container
+  .agGrid-v2
+  .ag-grid-v2
+  .ag-cell {
+  a:hover,
+  a:active {
+    text-decoration: underline !important;
+  }
 }
