@@ -2,7 +2,7 @@
   <div class="spot-popup-header-container">
     <div class="spot-nego-title">Confirm Order</div>
     <div class="spot-dialog-title-right">
-      <button class="proceed-btn" mat-button [mat-dialog-close]="true">Proceed</button>
+      <button class="proceed-btn" mat-button (click)="confirmOffers(true)"[mat-dialog-close]="true">Proceed</button>
       <div class="title-divider">|</div>
       <div class="close-circle">
         <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
@@ -21,7 +21,10 @@
             <div class="accordion-detail confirmorder-checkbox">
               <div class="open-close-arrow"></div>
               <span class="panel-title m-l-9" (click)="$event.stopPropagation();">
-                <mat-checkbox class="header-checkbox" ></mat-checkbox> <span>Request {{ request.id }} - {{request.vesselName}}</span>
+                <mat-checkbox
+                [value]="request.id"
+                (change)="onConfirmOfferALLCheckboxChange($event,request,requestOfferItems)"
+              ></mat-checkbox> <span>Request {{ request.id }} - {{request.vesselName}}</span>
               </span>
               <div class="comments-type"> </div>
             </div>
@@ -62,11 +65,17 @@
             <div class="product-terms ">
               <div class="operations-details-block" style="height: auto;">
                 <div style="height: auto;">
-                  <table>
-                    <tbody #scrollMe1 [scrollTop]="scrollMe1.scrollHeight">
+                  <table *ngIf="location.locationId==requestOfferItem.value.LocationId">
+                    <tbody > 
+                      <!-- #scrollMe1 [scrollTop]="scrollMe1.scrollHeight" -->
                       <tr id="commentList">
                         <!-- <td class="w-80">12321</td>-->
-                        <td class="table-checkbox" ><mat-checkbox class="example-margin" ></mat-checkbox></td>
+                        <td class="table-checkbox" >
+                          <mat-checkbox
+                          [checked]="requestOfferItem.value.isCheckBox"
+                          (change)="onConfirmOfferCheckboxChange($event,requestOfferItem.value)"
+                        >
+                        </mat-checkbox></td>
                         <td class="w-125">{{requestOfferItem.value.SellerName}}</td>
                         <!-- <td class="">Rotterdam</td> -->
                         <td class=""> {{requestOfferItem.value.ProductName}}</td>
@@ -77,7 +86,7 @@
                           matInput
                           [(ngModel)]="requestOfferItem.value.ConfirmedQuantity"
                           autocomplete="off"
-                          (ngModelChange)="totalprice(requestOfferItem, requestOfferItem.key)"
+                          (ngModelChange)="totalprice(requestOfferItem.key)"
                         /></td>  
                         <td class=""> {{requestOfferItem.value.UomName}}</td>
                         <td class="">{{requestOfferItem.value.OfferPrice||0}}</td>
