@@ -64,7 +64,9 @@ export class LayoutMainComponent implements AfterViewInit {
     if (this.router.url.includes('split-view')) {
       this.isDelivery = true;
     }
-    this.useAdal = !window.location.hostname.includes('cma');
+    this.useAdal =
+      window.location.hostname.includes('cma') ||
+      window.location.hostname.includes('pmg');
   }
 
   onLayoutClick(): void {

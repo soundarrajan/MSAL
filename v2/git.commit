@@ -1,7 +1,7 @@
-﻿commit 7f4f58e8a5a02c4495088944a7424c8b127b608f
+﻿commit e858bb545b9448cfe9bce6abec6a67d9d70c9730
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Nov 9 09:10:06 2021 +0200
+Date:   Tue Nov 9 09:59:50 2021 +0200
 
-    Used adal on all enviroment
+    Used adal for hostname which contains cma or pmg
 
 branch: master
