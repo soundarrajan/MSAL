@@ -150,6 +150,11 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   getControlTowerQuantityClaimsListExportUrl(): string {
     return this.api.getControlTowerQuantityClaimsListExportUrl();
   }
+  
+  @ObservableException()
+  getControlTowerQualityClaimsListExportUrl(): string {
+    return this.api.getControlTowerQualityClaimsListExportUrl();
+  }
 
   @ObservableException()
   getQuantityResiduePopUp(data, response) {

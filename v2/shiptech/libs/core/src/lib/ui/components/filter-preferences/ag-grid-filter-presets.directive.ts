@@ -71,9 +71,9 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   }
 
   addedFilterByFromAndToByDefault() {
-    let loadNewStatusOfDataGridIds = [
-      // 'control-tower-quality-claims-list-grid-7'
-    ];
+    // let loadNewStatusOfDataGridIds = [
+    //   // 'control-tower-quality-claims-list-grid-7'
+    // ];
     if (this.gridIds && this.gridIds[this.id]) {
       this.setRangeUntilNow(
         this.gridIds[this.id].timeDeltaValue,
@@ -82,9 +82,9 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
       );
     }
 
-    if (loadNewStatusOfDataGridIds.indexOf(this.id) != -1) {
-      this.filterByStatus();
-    }
+    // if (loadNewStatusOfDataGridIds.indexOf(this.id) != -1) {
+    //   this.filterByStatus();
+    // }
   }
 
   setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string) {
@@ -126,39 +126,39 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     }
   }
 
-  filterByStatus() {
-    for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
-      if (this.filterComponent.filterPresets[i].filterModels) {
-        let filters = this.filterComponent.filterPresets[i].filterModels[
-          this.id
-        ];
-        if (filters) {
-          for (let [key, value] of Object.entries(filters)) {
-            if (key == 'noResponse') {
-              return;
-            }
-          }
-          this.filterComponent.filterPresets[i].filterModels[this.id][
-            'noResponse'
-          ] = {
-            filterType: 'number',
-            type: 'lessThan',
-            filter: 7,
-            filterTo: null
-          };
-        } else {
-          this.filterComponent.filterPresets[i].filterModels[this.id] = {
-            noResponse: {
-              filterType: 'number',
-              type: 'lessThan',
-              filter: 7,
-              filterTo: null
-            }
-          };
-        }
-      }
-    }
-  }
+  // filterByStatus() {
+  //   for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
+  //     if (this.filterComponent.filterPresets[i].filterModels) {
+  //       let filters = this.filterComponent.filterPresets[i].filterModels[
+  //         this.id
+  //       ];
+  //       if (filters) {
+  //         for (let [key, value] of Object.entries(filters)) {
+  //           if (key == 'noResponse') {
+  //             return;
+  //           }
+  //         }
+  //         this.filterComponent.filterPresets[i].filterModels[this.id][
+  //           'noResponse'
+  //         ] = {
+  //           filterType: 'number',
+  //           type: 'lessThan',
+  //           filter: 7,
+  //           filterTo: null
+  //         };
+  //       } else {
+  //         this.filterComponent.filterPresets[i].filterModels[this.id] = {
+  //           noResponse: {
+  //             filterType: 'number',
+  //             type: 'lessThan',
+  //             filter: 7,
+  //             filterTo: null
+  //           }
+  //         };
+  //       }
+  //     }
+  //   }
+  // }
 
   processFilterComponentEvents(groupId: string): void {
     this.filterPresetsService.setActiveFilter(false);

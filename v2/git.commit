@@ -1,11 +1,9 @@
-﻿commit 50a44c0e7aa6abdac96c8a88115bfa492a29adbc
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Nov 9 15:08:56 2021 +0000
+﻿commit 8ac8ef043341fccf78515641185cbac4ba7b658e
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Nov 9 15:56:56 2021 +0000
 
-    Merged PR 14618: CSS fixes invoice screen
+    Merged PR 14620: #36790: Control Tower-Special characters displaying incorrectly in the quality view claim issue fixed
     
-    CSS fixes invoice screen
-    
-    Related work items: #36453
+    Related work items: #36790
 
 branch: master
