@@ -46,7 +46,9 @@ export class DeliveryDetailsRouteResolver implements Resolve<any> {
         RequestStatuses: '13,19'
       }
     };
-    return this.bdnInformationService.getForTransactionForSearch(payload);
+    if(!deliveryId) {
+      return this.bdnInformationService.getForTransactionForSearch(payload);
+    }
   }
 
   getForTransactionForSearch() {
