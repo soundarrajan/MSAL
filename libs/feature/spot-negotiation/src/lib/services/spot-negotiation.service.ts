@@ -73,6 +73,14 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.SendRFQ(payload);
   }
 
+  /**
+   * Updated Selected Seller
+   * @param payload = int
+   */
+   @ObservableException()
+   UpdateSelectSeller(payload: any): Observable<unknown> {
+     return this.spotNegotiationApi.UpdateSelectSeller(payload);
+   }
    
   /**
    * Get group of request when window loads.

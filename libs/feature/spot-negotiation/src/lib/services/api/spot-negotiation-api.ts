@@ -16,6 +16,7 @@ export const SpotNegotiationApiPaths = {
   saveTargetPrice: `Groups/saveTargetPrice`,
   updatePhySupplier:`RFQ/updatePhysicalSupplier`,
   sendRFQ:`RFQ/createRFQ`,
+  UpdateSelectSeller: `Groups/toggleReqSellerSelection`,
   amendRFQ:`RFQ/amendRfq`
 };
 
@@ -144,6 +145,22 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       );
   }
 
+  @ObservableException()
+  UpdateSelectSeller(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.UpdateSelectSeller}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
   @ObservableException()
   updatePrices(payload: any): Observable<any> {
     return this.http
