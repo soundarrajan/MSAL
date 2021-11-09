@@ -1,9 +1,11 @@
-﻿commit 174e34757c054fa62f9f88fd7be502f881545414
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Nov 9 14:06:36 2021 +0000
+﻿commit 50a44c0e7aa6abdac96c8a88115bfa492a29adbc
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Nov 9 15:08:56 2021 +0000
 
-    Merged PR 14617: #36718: Control Tower-Default quality view claim displaying incorrectly issue has fixed
+    Merged PR 14618: CSS fixes invoice screen
     
-    Related work items: #36718
+    CSS fixes invoice screen
+    
+    Related work items: #36453
 
 branch: master

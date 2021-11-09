@@ -1155,7 +1155,7 @@
   display: flex;
   background: #f1f1f2;
   border-radius: 4px;
-  width: 450px;
+  // width: 450px;
   min-height: 40px;
   padding: 0px 10px;
   .details-content-holder {
@@ -1185,7 +1185,7 @@
     }
     .label_text {
       display: block;
-      width: 100px;
+      width: 100px !important;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -1197,7 +1197,7 @@
     }
   }
   &.section2-details {
-    width: 325px !important;
+    // width: 325px !important;
   }
 }
 
