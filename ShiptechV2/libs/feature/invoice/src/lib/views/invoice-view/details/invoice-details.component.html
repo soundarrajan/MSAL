@@ -635,10 +635,11 @@
           </div>
           <div class="section-content order-details">
             <div style="display: flex;">
-              <readonly-details [options]="orderDetails"></readonly-details>
+              <readonly-details style="flex-basis:50%" [options]="orderDetails"></readonly-details>
+              <span style="flex-basis:10px"></span>
               <readonly-details
+                style="flex-basis:50%"
                 [options]="orderDetails2"
-                style="margin: 0px 15px;"
               ></readonly-details>
             </div>
             <div class="row">
