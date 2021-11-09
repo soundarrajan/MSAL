@@ -57,7 +57,8 @@
                         <span class="text">Subject:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%">
-                        <span class="subject">AMENDMENT CHANGES: REQ226533 - ACHIEVER in AARHUS on Wed 30/06/2021 00:00:00</span>
+                        
+                        <span class="subject">{{subject}}</span>
                     </div>                 
                 </div>
             </div>
@@ -78,17 +79,7 @@
                     <div>
                         <span class="email-editor"></span>
                     </div>
-                    <div style="padding: 18px;">
-                        <p>Good day dear Captain and Chief,</p>
-                        <p>Please kindly let me know your bunker requirement for the following</p>
-                        <p>Option 1. - BOSTON, MA on 28062020 00:00:00</p>
-                        <p>1. Bunker ROB on arrival 28062020 00:00:00</p>
-                        <p>2. Minimum quantity you need to bunker in BOSTON, MA to safely reach Barbados ?</p>
-                        <p>3. Maximum quantity you can lift without mixing?</p>
-                        <p>4. Best for your vessels stability if relevant?</p>
-                        <br>
-                        <p>Please justify your request with figures and calculations.</p>
-                        <p>Thanks in advance for your prompt reply!</p>
+                    <div style="padding: 18px;" [innerHtml]="content">
                     </div>
                 </div>
                 
