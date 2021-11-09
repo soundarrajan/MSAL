@@ -122,6 +122,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
+    tooltip: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };
 
@@ -131,6 +132,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     colId: ControlTowerQuantityRobDifferenceListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.port,
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -143,7 +145,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     colId: ControlTowerQuantityRobDifferenceListColumns.vessel,
     field: model('vessel'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.vessel,
-    valueFormatter: params => params.value?.name,
+    valueFormatter: params => params.value,
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -155,6 +158,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.eta,
+    tooltip: params => (params.value ? this.format.date(params.value) : ''),
     width: 150
   };
 
@@ -171,6 +175,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       ControlTowerQuantityRobDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
+    tooltip: params => (params.value ? this.format.date(params.value) : ''),
     width: 150
   };
 
@@ -194,6 +199,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -217,6 +223,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -237,6 +244,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           a => a.productType?.name ?? '-'
         );
         return mergedValues.join('<br>');
+      }
+    },
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.productType?.name ?? '-'
+        );
+        return mergedValues.join(',');
       }
     },
     width: 150
@@ -264,6 +279,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
     },
     filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.logBookRobQtyBeforeDelivery) ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
     width: 150
   };
 
@@ -289,6 +312,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     },
     field: model('measuredRobQtyBeforeDelivery'),
     filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.measuredRobQtyBeforeDelivery) ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
     width: 150
   };
 
@@ -315,6 +346,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
     },
     filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.differenceInRobQuantity) ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
     width: 150
   };
 
@@ -333,6 +372,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           a => a.robUom?.name ?? '-'
         );
         return mergedValues.join('<br>');
+      }
+    },
+    tooltip: function(params) {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.robUom?.name ?? '-'
+        );
+        return mergedValues.join(',');
       }
     },
     width: 150
@@ -371,6 +418,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
+    tooltip: params => (params.value ? params.value?.displayName : ''),
     width: 150
   };
 
@@ -531,8 +579,21 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     };
     this.gridApi.setFilterModel(grid);
   }
+
+  public checkFromAndToAvailable(): void {
+    const grid = this.gridApi.getFilterModel();
+    for (let [key, value] of Object.entries(grid)) {
+      if (key == 'surveyorDate') {
+        if ((<any>value).type == 'inRange') {
+          this.fromDate.setValue((<any>value).dateFrom);
+          this.toDate.setValue((<any>value).dateTo);
+        }
+      }
+    }
+  }
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.checkStatusAvailable();
+    this.checkFromAndToAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantityRobDifferenceListExportUrl();
     this.controlTowerService
