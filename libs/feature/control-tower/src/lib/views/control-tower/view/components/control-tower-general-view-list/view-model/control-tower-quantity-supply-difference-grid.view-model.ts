@@ -132,6 +132,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
       return null;
     },
+    tooltip: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };
 
@@ -144,6 +145,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     colId: ControlTowerQuantitySupplyDifferenceListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.port,
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -157,6 +159,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     field: model('vessel'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.vessel,
     valueFormatter: params => params.value?.name,
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -168,6 +171,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.eta,
+    tooltip: params => (params.value ? this.format.date(params.value) : ''),
     width: 150
   };
 
@@ -185,6 +189,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
+    tooltip: params => (params.value ? this.format.date(params.value) : ''),
     width: 150
   };
 
@@ -207,6 +212,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       return a;
     },
     cellClass: 'cell-background',
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -229,6 +235,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       return a;
     },
     cellClass: 'cell-background',
+    tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -242,8 +249,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.productType,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.productType,
     field: model('productType'),
-    autoHeight:true,
-    wrapText:true,
+    autoHeight: true,
+    wrapText: true,
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.productType,
     cellRenderer: params => {
@@ -252,6 +259,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           a => a.productType?.name ?? '-'
         );
         return mergedValues.join('<br>');
+      }
+    },
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.productType?.name ?? '-'
+        );
+        return mergedValues.join(',');
       }
     },
     width: 150
@@ -267,8 +282,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.bdnQuantity,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity,
     field: model('id'),
-    autoHeight:true,
-    wrapText:true,    
+    autoHeight: true,
+    wrapText: true,
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.bdnQuantity,
     cellRenderer: params => {
@@ -280,6 +295,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.bdnQuantity ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
     width: 150
   };
 
@@ -303,9 +326,17 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     field: model('measuredDeliveredQty'),
-    autoHeight:true,
-    wrapText:true,    
+    autoHeight: true,
+    wrapText: true,
     filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.measuredDeliveredQuantity ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
     width: 150
   };
 
@@ -332,6 +363,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.differenceInSupplyQuantity ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
+    },
     width: 150
   };
   sumOfOrderQtyCol: ITypedColDef<
@@ -344,8 +383,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.sumOfOrderQtyCol,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol,
     field: model('sumOfOrderQtyCol'),
-    autoHeight:true,
-    wrapText:true,    
+    autoHeight: true,
+    wrapText: true,
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.sumOfOrderQtyCol,
     cellRenderer: params => {
@@ -357,6 +396,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.sumOfOrderQuantity ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
     width: 150
   };
 
@@ -368,8 +415,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     headerTooltip: ControlTowerQuantitySupplyDifferenceListColumnsLabels.qtyUom,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.qtyUom,
     field: model('qtyUom'),
-    autoHeight:true,
-    wrapText:true,    
+    autoHeight: true,
+    wrapText: true,
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.qtyUom,
     cellRenderer: params => {
       if (params.data) {
@@ -377,6 +424,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           a => a.supplyUom?.name ?? '-'
         );
         return mergedValues.join('<br>');
+      }
+    },
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => a.supplyUom?.name ?? '-'
+        );
+        return mergedValues.join(',');
       }
     },
     width: 150
@@ -391,8 +446,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.progress,
     field: model('progress'),
-    autoHeight:true,
-    wrapText:true,    
+    autoHeight: true,
+    wrapText: true,
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
@@ -419,6 +474,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
+    tooltip: params => (params.value ? params.value?.displayName : ''),
     width: 150
   };
 
@@ -586,8 +642,21 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     this.gridApi.setFilterModel(grid);
   }
 
+  public checkFromAndToAvailable(): void {
+    const grid = this.gridApi.getFilterModel();
+    for (let [key, value] of Object.entries(grid)) {
+      if (key == 'surveyorDate') {
+        if ((<any>value).type == 'inRange') {
+          this.fromDate.setValue((<any>value).dateFrom);
+          this.toDate.setValue((<any>value).dateTo);
+        }
+      }
+    }
+  }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.checkStatusAvailable();
+    this.checkFromAndToAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQuantitySupplyDifferenceListExportUrl();
     this.controlTowerService
