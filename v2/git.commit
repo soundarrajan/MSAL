@@ -1,11 +1,9 @@
-﻿commit 460f4a8de492dea7c96de31f80d8c676fa1c8ad0
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Nov 9 12:08:53 2021 +0000
+﻿commit 174e34757c054fa62f9f88fd7be502f881545414
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Nov 9 14:06:36 2021 +0000
 
-    Merged PR 14609: Removed order/getForTransactionForSearch call on existing deliveries
+    Merged PR 14617: #36718: Control Tower-Default quality view claim displaying incorrectly issue has fixed
     
-    Removed order/getForTransactionForSearch call on existing deliveries
-    
-    Related work items: #35837
+    Related work items: #36718
 
 branch: master
