@@ -233,7 +233,7 @@ export class SpotNegotiationStore {
   }
 
   @Selector()
-  static getLocations(state: SpotNegotiationStoreModel) {
+  static locationRows(state: SpotNegotiationStoreModel) {
     return state.locationsRows;
   }
 
@@ -245,5 +245,10 @@ export class SpotNegotiationStore {
   @Selector()
   static getCounterpartyList(state: SpotNegotiationStoreModel) {
     return state.counterpartyList;
+  }
+
+  @Selector()
+  static selectedSellers(state: SpotNegotiationStoreModel) {
+    return state.locationsRows.filter(row=> row.requestId === state.currentRequestSmallInfo['id'] && row.isSelected);
   }
 }

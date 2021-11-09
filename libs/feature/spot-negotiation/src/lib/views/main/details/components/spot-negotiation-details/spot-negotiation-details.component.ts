@@ -51,9 +51,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   isEnabledView: boolean = false;
   currentRequestData: any[];
   columnDef_aggridObj: any[];
-  @Select(SpotNegotiationStore.getLocations) rowData_aggridObj: Observable<
-    any[]
-  >;
+  @Select(SpotNegotiationStore.locationRows) rowData_aggridObj: Observable<any[]>;
 
   public rowClassRules = {
     customRowClass: function(params) {
@@ -250,7 +248,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
-        this.gridOptions_counterparty.api.showLoadingOverlay();
+        // this.gridOptions_counterparty.api.showLoadingOverlay();
       },
 
       onColumnResized: function(params) {
@@ -260,12 +258,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
         //   //params.api.sizeColumnsToFit();
         // }
+        // params.api.hideOverlay();
       },
       onColumnVisible: function(params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8) {
           params.api.sizeColumnsToFit();
         }
         params.api.sizeColumnsToFit();
+        // params.api.hideOverlay();
       },
       frameworkComponents: {
         customHeaderGroupComponent: ShiptechCustomHeaderGroup
@@ -680,9 +680,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
 
       // Set locations;
-      if (!spotNegotiation.locations.length
-        // || !spotNegotiation.locationsRows.length
-        ) {
+      if (!spotNegotiation.locations.length) // || !spotNegotiation.locationsRows.length
+      {
         return null;
       }
 
@@ -698,7 +697,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return null;
       }
 
-      this.columnDef_aggrid[1].headerGroupComponentParams.currentReqProdcutsLength = this.locations[0].requestProducts.length;
+      this.columnDef_aggrid[1].headerGroupComponentParams.currentReqProductsLength = this.locations[0].requestProducts.length;
 
       // Set headers of products;
       this.columnDef_aggridObj = [];
