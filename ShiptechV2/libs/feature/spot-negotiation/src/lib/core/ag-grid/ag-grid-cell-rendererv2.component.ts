@@ -121,7 +121,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           <!--span class="hover-lookup-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger"></span>-->
           <span
             class="mail-icon mail-active"
-            (click)="openEmailPreview()"
+            (click)="openEmailPreview(params)"
             *ngIf="params.data.requestOffers?.length > 0"
             matTooltip="View preview email"
             matTooltipClass="lightTooltip"
@@ -206,7 +206,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="view-rfq-icon"></div></span>
-        <span class="fs-12" (click)="openEmailPreview()">Preview Email</span>
+        <span class="fs-12" (click)="openEmailPreview(params)">Preview Email</span>
       </div>
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="no-quote-icon"></div></span>
@@ -535,6 +535,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   visibleCounterpartyList = [];
   currentRequestInfo : any;
   currentRequestData: any[];
+
+
+
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -691,11 +694,12 @@ checkallProd(row,params){
     dialogRef.afterClosed().subscribe(result => {});
   }
 
-  openEmailPreview() {
-    const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
+  openEmailPreview(params) {
+    const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {      
       width: '80vw',
       height: '90vh',
-      panelClass: 'additional-cost-popup'
+      panelClass: 'additional-cost-popup',
+      data: params.data
     });
 
     dialogRef.afterClosed().subscribe(result => {});

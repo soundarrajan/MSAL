@@ -16,8 +16,9 @@ export const SpotNegotiationApiPaths = {
   saveTargetPrice: `Groups/saveTargetPrice`,
   updatePhySupplier:`RFQ/updatePhysicalSupplier`,
   sendRFQ:`RFQ/createRFQ`,
+  amendRFQ: `RFQ/amendRfq`,
   UpdateSelectSeller: `Groups/toggleReqSellerSelection`,
-  amendRFQ:`RFQ/amendRfq`
+  previewRfqMail:`RFQ/previewRfqMail`
 };
 
 @Injectable({
@@ -239,12 +240,28 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
-  AmendRFQ(payload: any): Observable<any> {    
-    debugger;
+  AmendRFQ(payload: any): Observable<any> {
     return this.http
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.amendRFQ}`,
         payload
+      )
+      .pipe(
+        map((body: any) => body),        
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  PreviewRfqMail(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.previewRfqMail}`,
+        request
       )
       .pipe(
         map((body: any) => body),        

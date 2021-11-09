@@ -155,6 +155,15 @@ export class SpotNegotiationService extends BaseStoreService
    return this.spotNegotiationApi.AmendRFQ(payload);
  }
 
+  /**
+ * Preview RFQ email
+ * @param payload = 
+ */
+  @ObservableException()
+  PreviewRfqMail(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.PreviewRfqMail(payload);
+  }
+
 
   /**
    * Fake populate rows
