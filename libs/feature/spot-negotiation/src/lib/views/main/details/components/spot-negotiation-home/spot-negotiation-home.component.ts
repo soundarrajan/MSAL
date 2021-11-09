@@ -89,6 +89,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.spinner.hide();
       if(res instanceof Object && res['sellerOffers'].length > 0 ){
         this.toaster.success('RFQ(s) sent successfully.')
+        if(res['message'].length>5)
+          this.toaster.warning(res['message']);
       }
       else if(res instanceof Object){
         this.toaster.warning(res.Message);
@@ -271,11 +273,16 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.AmendRFQ(amendRFQRequestPayload);
     response.subscribe((res: any) => {
       this.spinner.hide();
-      if(res instanceof Array && res.length>0 ){
+      if(res instanceof Object && res['rfqIds'].length>0 ){
         this.toaster.success('Amend RFQ(s) sent successfully.');
+        if(res['message'].length>5)
+        this.toaster.warning(res['message']);
+      }
+      else if(res instanceof Object){
+        this.toaster.warning(res.Message);
       }
       else{
-        this.toaster.error(res);
+          this.toaster.error(res);
       }
     });
   }
