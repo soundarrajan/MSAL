@@ -1077,14 +1077,37 @@ angular.module('shiptech.components').controller('FiltersController', [
                         }
                     ]                    
                 }
-                
-                if (window.location.href.includes("invoices/deliveries") && $rootScope.rawFilters.length == 0 && !$rootScope.etaCleared) {
+                else if (window.location.href.includes("invoices/deliveries") && $rootScope.rawFilters.length == 0 && !$rootScope.etaCleared) {
 					$rootScope.rawFilters = [
 	                	{
 	                		"column": {
 	                			"columnRoute": "invoices/deliveries",
 	                			"columnName": "Eta",
 	                			"columnValue": "Eta",
+	                			"sortColumnValue": null,
+	                			"columnType": "Date",
+	                			"isComputedColumn": false
+	                		},
+	                		"condition": {
+	                			"conditionName": "Is after or equal to",
+	                			"conditionValue": ">=",
+	                			"conditionApplicable": "Date",
+	                			"conditionNrOfValues": 1
+	                		},
+	                		"filterOperator": 0,
+	                		"value": [
+	                		moment().subtract(6, 'months').format('YYYY-MM-DD[T]HH:mm:ss.SSSZZ')
+	                		]
+	                	}
+                	]                	
+                }
+                else if (window.location.href.includes("labs/labresult") && $rootScope.rawFilters.length == 0) {
+					$rootScope.rawFilters = [
+	                	{
+	                		"column": {
+	                			"columnRoute": "labs/labresult",
+	                			"columnName": "Created On",
+	                			"columnValue": "CreatedOn",
 	                			"sortColumnValue": null,
 	                			"columnType": "Date",
 	                			"isComputedColumn": false
