@@ -67,7 +67,7 @@ import { ExportModule } from '@shiptech/core/ui/components/export/export.module'
 
 let useAdal = false;
 
-if (window.location.hostname.includes('cma')) {
+if (!window.location.hostname.includes('cma')) {
   useAdal = true;
 }
 

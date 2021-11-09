@@ -1,7 +1,7 @@
-﻿commit a532f2525328624b13a6452f4a4b30062071b7ac
+﻿commit 7f4f58e8a5a02c4495088944a7424c8b127b608f
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 8 18:38:36 2021 +0200
+Date:   Tue Nov 9 09:10:06 2021 +0200
 
-    Used adal only for hostname which contains cma
+    Used adal on all enviroment
 
 branch: master
