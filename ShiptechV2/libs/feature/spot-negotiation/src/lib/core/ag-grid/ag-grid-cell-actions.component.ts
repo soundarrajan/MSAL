@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { Select, Store } from '@ngxs/store';
 import { SelectSeller, EditLocationRow } from '../../store/actions/ag-grid-row.action';
+import { SpotNegotiationService } from '../../services/spot-negotiation.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 // import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
 
 // Not found
@@ -142,7 +145,7 @@ import { SelectSeller, EditLocationRow } from '../../store/actions/ag-grid-row.a
 export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   public params: any;
   public popupOpen: boolean;
-  constructor(public router: Router, public dialog: MatDialog,private store: Store,private changeDetector: ChangeDetectorRef) {}
+  constructor(private toaster: ToastrService,private spinner: NgxSpinnerService,public router: Router, public dialog: MatDialog,private store: Store,private changeDetector: ChangeDetectorRef,private spotNegotiationService: SpotNegotiationService,) {}
 
   agInit(params: any): void {
     this.params = params;
@@ -167,9 +170,27 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   selectCounterParties(params){
     let updatedRow = { ...Object.assign({}, params.data) };
     updatedRow = this.formatRowData(updatedRow,params);
-    // Update the store
-    this.store.dispatch(new EditLocationRow(updatedRow));
-    params.node.setData(updatedRow);
+    var FinalAPIdata = {
+      reqLocSellers: [{
+        requestLocationSellerId: updatedRow.locationId,
+        isSelected: params.value
+      }]
+      
+    };
+    this.spinner.show();
+    const response = this.spotNegotiationService.UpdateSelectSeller(FinalAPIdata);
+    response.subscribe((res: any) => {
+      this.spinner.hide();
+      if(res['isUpdated']){
+        // this.toaster.success('Updated successfully.');
+        // Update the store
+        this.store.dispatch(new EditLocationRow(updatedRow));
+        params.node.setData(updatedRow);
+      }
+      else{
+        this.toaster.error("Something went wrong")
+      }
+    });
 }
 
 setproductvalid(row, currentLocProdCount,paramsvalue){
