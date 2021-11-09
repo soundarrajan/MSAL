@@ -1,3 +1,4 @@
+import { SpotnegoSendRfqComponent } from './../spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -16,7 +17,6 @@ import { SpotNegotiationService } from '../../../../../../../../spot-negotiation
 import {
   SetLocationsRows,
   SetLocationsRowsPriceDetails,
-  SetLocations
 } from '../../../../../store/actions/ag-grid-row.action';
 
 @Component({
@@ -70,17 +70,47 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
     if (Selectedfinaldata.length == 0) {
-      let errormessage = 'Atleast 1 counterparty should be selected in '+ this.currentRequestInfo.name +' - '+ this.currentRequestInfo.vesselName;
+      let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
       return;
     } else {
+      if (this.requestOptions.length > 0) {
+        const dialogRef = this.dialog.open(SpotnegoSendRfqComponent, {
+          width: '600px',
+          height: '220px',
+          panelClass: 'additional-cost-popup'
+        });
 
-      var FinalAPIdata = {
-        RequestGroupId: this.currentRequestInfo.requestGroupId,
-        quoteByDate: new Date(this.child.getValue()),
-        selectedSellers: this.selectedSellerList
-      };
+        dialogRef.afterClosed().subscribe(result => {
+          //console.log(result);
+          if(result && result instanceof Array){
+            var sellers = []
+            result.forEach(element => {
+              const selectItems = this.selectedSellerList.filter(item=> item.RequestId === element.id);
+              if(selectItems.length > 0){
+                sellers.push(...selectItems);
+              }
+            });
+            this.selectedSellerList = sellers;
+            if(this.selectedSellerList.length >0)
+            {
+              this.sendRFQs();
+            }
+          }
+        });
+      }
+      else {
+        this.sendRFQs();
+      }
     }
+  }
+
+  sendRFQs(){
+    var FinalAPIdata = {
+      RequestGroupId: this.currentRequestInfo.requestGroupId,
+      quoteByDate: new Date(this.child.getValue()),
+      selectedSellers: this.selectedSellerList
+    };
 
     this.spinner.show();
     // Get response from server
@@ -127,7 +157,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-    
+
     let currentRequestData: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
      currentRequestData = spotNegotiation.locations;
@@ -145,7 +175,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
         this.UpdateProductsSelection(currentLocProd,row);
-        
+
         return row;
       }
 
@@ -190,8 +220,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 element.requestProducts,
                 spotNegotiation.currentRequestSmallInfo
               );
-              if (Sellectedsellerdata.length > 0) {
-                this.selectedSellerList.push(Sellectedsellerdata[0]);
+              if (Sellectedsellerdata) {
+                this.selectedSellerList.push(Sellectedsellerdata);
               }
             }
           }
@@ -200,6 +230,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     return this.selectedSellerList;
   }
+
   ConstuctSellerPayload(Seller, requestProducts, Request) {
     let selectedproducts = [];
     let rfqId = null;
@@ -221,18 +252,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
     if((Seller.requestOffers  !== undefined) && Seller.requestOffers.length >0){
       rfqId = Seller.requestOffers[0].rfqId;
     }
-    return [
-      {
-
-          RequestLocationSellerId: Seller.id,
-          SellerId:Seller.sellerCounterpartyId,
-          RequestLocationID: Seller.requestLocationId,
-          RequestId: Request.id,
-          physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
-          RequestProductIds: selectedproducts,
-          RfqId: rfqId
-      }
-    ];
+    return {
+      RequestLocationSellerId: Seller.id,
+      SellerId: Seller.sellerCounterpartyId,
+      RequestLocationID: Seller.requestLocationId,
+      RequestId: Request.id,
+      physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
+      RequestProductIds: selectedproducts,
+      RfqId: rfqId
+    };
   }
 
   dateTimePicker(e) {

@@ -120,7 +120,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
         <span class="sticky-icon">
           <!--span class="hover-lookup-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger"></span>-->
           <span
-            class="mail-icon mail-active"
+            class="mail-icon-new mail-active"
             (click)="openEmailPreview(params)"
             *ngIf="params.data.requestOffers?.length > 0"
             matTooltip="View preview email"
@@ -128,16 +128,16 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
             >a</span
           >
           <span
-            class="mail-icon mail-none"
-            (click)="openEmailPreview()"
+            class="mail-icon-new mail-none"
+            (click)="openEmailPreview(params)"
             *ngIf="params.data.mail == 'mail-inactive'"
             matTooltipClass=""
             matTooltip=""
             >i</span
           >
           <span
-            class="mail-icon mail-none"
-            (click)="openEmailPreview()"
+            class="mail-icon-new mail-none"
+            (click)="openEmailPreview(params)"
             *ngIf="params.data.mail == 'mail-inactive'"
             matTooltipClass=""
             matTooltip=""
@@ -695,7 +695,7 @@ checkallProd(row,params){
   }
 
   openEmailPreview(params) {
-    const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {      
+    const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
