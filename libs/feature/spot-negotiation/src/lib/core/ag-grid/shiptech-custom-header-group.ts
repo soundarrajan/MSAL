@@ -550,7 +550,7 @@ export class ShiptechCustomHeaderGroup {
     const response = this._spotNegotiationService.saveTragetPrice(payload);
     response.subscribe((res: any) => {
       if (res.status) {
-        this.toastr.success(res.message);
+        //this.toastr.success(res.message);
       } else {
         this.toastr.error(res.message);
         return;
