@@ -212,7 +212,20 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       );
     }
   }
-
+  search(userInput: string): void {
+    this.store.subscribe(({ spotNegotiation }) => {
+      if (spotNegotiation.counterpartyList) {
+        this.rowData = spotNegotiation.counterpartyList
+          .filter(e => {
+            if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+              return true;
+            }
+            return false;
+          });
+          this.dialog_gridOptions.api.setRowData(this.rowData);
+      }
+    });
+  }
   AddCounterparties() {
     const selectedCounterparties = this.toBeAddedCounterparties();
     if (selectedCounterparties.length == 0) return;
