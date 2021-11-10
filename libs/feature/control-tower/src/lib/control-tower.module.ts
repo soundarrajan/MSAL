@@ -97,9 +97,7 @@ import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { DSV2ComponentsModule } from '@shiptech/core/ui/components/designsystem-v2/ds-v2.module';
-import { ResidueDifferenceComponent } from './views/control-tower/view/components/residue-difference/residue-difference.component';
 import { ResidueClaimsComponent } from './views/control-tower/view/components/residue-claims/residue-claims.component';
-import { QuantityDifferenceComponent } from './views/control-tower/view/components/quantity-difference/quantity-difference.component';
 import { QualityLabsComponent } from './views/control-tower/view/components/quality-labs/quality-labs.component';
 import { QualityClaimsComponent } from './views/control-tower/view/components/quality-claims/quality-claims.component';
 import {
@@ -119,6 +117,7 @@ import { ExportNewModule } from '@shiptech/core/ui/components/export-new/export-
 import { ControlTowerListState } from './store/control-tower-general-list/control-tower-general-list.state';
 import { ControlTowerGeneralListComponent } from './views/control-tower/view/components/control-tower-general-view-list/control-tower-general-view-list.component';
 import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/components/control-tower-quantity-claims/control-tower-quantity-claims.component';
+import { ControlTowerResidueDifferenceComponent } from './views/control-tower/view/components/control-tower-residue-difference/control-tower-residue-difference.component';
 
 let useAdal = false;
 
@@ -235,9 +234,8 @@ if (
     MainControlTowerComponent,
     ControlTowerViewComponent,
     ControlTowerModalComponent,
-    ResidueDifferenceComponent,
+    ControlTowerResidueDifferenceComponent,
     ResidueClaimsComponent,
-    QuantityDifferenceComponent,
     ControlTowerQuantityClaimsComponent,
     QualityLabsComponent,
     QualityClaimsComponent,
