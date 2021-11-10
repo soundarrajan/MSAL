@@ -1101,7 +1101,7 @@ angular.module('shiptech.components').controller('FiltersController', [
 	                	}
                 	]                	
                 }
-                else if (window.location.href.includes("labs/labresult") && $rootScope.rawFilters.length == 0) {
+                else if (window.location.href.includes("labs/labresult") && $rootScope.rawFilters.length == 0 && !$rootScope.createdOnCleared) {
 					$rootScope.rawFilters = [
 	                	{
 	                		"column": {
@@ -1316,6 +1316,9 @@ angular.module('shiptech.components').controller('FiltersController', [
         $scope.removeFilterColumn = function(column) {
             if (column == 'Eta' && window.location.href.includes("invoices/deliveries") != -1) {
                 $rootScope.etaCleared = true;
+            }
+            else if (column == 'CreatedOn' && window.location.href.includes("labs/labresult") != -1) {
+                $rootScope.createdOnCleared = true;
             }
             $scope.columnFilters[column] = [];
             var newFilter = [];
