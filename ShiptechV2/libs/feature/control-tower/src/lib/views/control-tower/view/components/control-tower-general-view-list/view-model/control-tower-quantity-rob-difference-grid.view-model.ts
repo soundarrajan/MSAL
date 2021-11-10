@@ -43,6 +43,7 @@ import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(
   prop: keyof IControlTowerQuantityRobDifferenceItemDto
@@ -200,7 +201,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       return null;
     },
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }     
   };
 
   vesselToWatchCol: ITypedColDef<
@@ -224,7 +230,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       return null;
     },
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }     
   };
 
   productTypeCol: ITypedColDef<
