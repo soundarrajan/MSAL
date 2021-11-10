@@ -26,4 +26,5 @@ export interface IControlTowerRowPopup {
     }
   ];
   changeLog?: [];
+  comments?: string;
 }
