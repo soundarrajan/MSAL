@@ -12,6 +12,14 @@ export class ModuleError<T = any> extends AppError<T> {
     }
   );
 
+  static readonly LoadControlTowerResidueSludgeDifferenceFailed = new ModuleError(
+    {
+      code: ErrorCode.LoadControlTowerResidueSludgeDifferenceFailed,
+      message:
+        'Could not load control tower residue sludge difference list. Please try again later.'
+    }
+  );
+
   static readonly LoadControlTowerQuantitySupplyDifferenceFailed = new ModuleError(
     {
       code: ErrorCode.LoadControlTowerQuantitySupplyDifferenceFailed,
@@ -19,7 +27,7 @@ export class ModuleError<T = any> extends AppError<T> {
         'Could not load control tower quantity supply difference list. Please try again later.'
     }
   );
-  
+
   static readonly LoadControlTowerQuantitySupplyDifferencePopupFailed = new ModuleError(
     {
       code: ErrorCode.LoadControlTowerQuantitySupplyDifferencePopupFailed,
