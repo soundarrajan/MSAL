@@ -1,11 +1,7 @@
-﻿commit 7882afb11e14db49436c145f38a75e738188635e
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 10 11:50:26 2021 +0000
+﻿commit 91915701c5022c6ffe209ebeddb99170670bc6ad
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Nov 10 14:22:52 2021 +0200
 
-    Merged PR 14631: Worked on residue sludge difference
-    
-    Worked on residue sludge difference
-    
-    Related work items: #33665, #36659
+     Mapped comments from 'api/controlTower/QuantityResiduePopUp' in the alert pop-up
 
 branch: master
