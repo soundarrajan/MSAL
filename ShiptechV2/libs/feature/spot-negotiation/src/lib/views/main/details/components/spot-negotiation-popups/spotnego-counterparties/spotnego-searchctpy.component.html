@@ -2,7 +2,8 @@
     <div class="header">
         <div class="title">Search Counterparties</div>
         <div style="display:flex">
-            <input type="text" placeholder="Search request here" class="search-box">
+            <input type="text" placeholder="Search request here" class="search-product-input"
+            (input)="search($event.target.value)">
             <button class="searchButton" type="submit">
                 <i class="fa fa-search"></i>
             </button>
