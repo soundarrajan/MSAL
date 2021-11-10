@@ -12,10 +12,10 @@ import { AGGridCellRendererV2Component } from './ag-grid/ag-grid-cell-rendererv2
 import { FooterV2Component } from './footer-v2/footer-v2.component';
 import { RowstatusOnchangePopupComponent } from './rowstatus-onchange-popup/rowstatus-onchange-popup.component';
 import { RowstatusOnchangeQualitylabPopupComponent } from './rowstatus-onchange-qualitylab-popup/rowstatus-onchange-qualitylab-popup.component';
-import { RowstatusOnchangeQuantityrobdiffPopupComponent } from './rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
+import { ControlTowerPopupComponent } from './control-tower-popup/control-tower-popup.component';
 
 @NgModule({
   imports: [
@@ -37,7 +37,7 @@ import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status
   exports: [
     RowstatusOnchangeResiduePopupComponent,
     FooterV2Component,
-    RowstatusOnchangeQuantityrobdiffPopupComponent,
+    ControlTowerPopupComponent,
     RowstatusOnchangeQualitylabPopupComponent,
     RowstatusOnchangePopupComponent,
     AGGridCellRendererAsyncStatusComponent,
@@ -49,7 +49,7 @@ import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status
     AGGridCellRendererV2Component,
     RowstatusOnchangeResiduePopupComponent,
     FooterV2Component,
-    RowstatusOnchangeQuantityrobdiffPopupComponent,
+    ControlTowerPopupComponent,
     RowstatusOnchangeQualitylabPopupComponent,
     RowstatusOnchangePopupComponent,
     AGGridCellRendererAsyncStatusComponent,
@@ -57,7 +57,7 @@ import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status
   ],
   entryComponents: [
     RowstatusOnchangeResiduePopupComponent,
-    RowstatusOnchangeQuantityrobdiffPopupComponent,
+    ControlTowerPopupComponent,
     RowstatusOnchangeQualitylabPopupComponent,
     RowstatusOnchangePopupComponent
   ]

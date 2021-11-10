@@ -35,13 +35,25 @@
   </div>
   <div class="more-info mg-b-0 ">
     <div class="row info-section">
-      <div class=" w-20p plr-0">
+      <div
+        class=" w-20p plr-0"
+        *ngIf="data.popupType == 'rob' || data.popupType == 'supply'"
+      >
         <div class="col-header">Product Type</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{ value.productType }}
         </div>
       </div>
-      <div class="w-24p plr-0" *ngIf="data.popupType == 'rob'">
+      <div class=" w-20p plr-0" *ngIf="data.popupType == 'sludge'">
+        <div class="col-header">Sludge %</div>
+        <div *ngFor="let value of data.productTypeList" class="col-value">
+          {{ format.quantity(value.sludgePercentage) }}
+        </div>
+      </div>
+      <div
+        class="w-24p plr-0"
+        *ngIf="data.popupType == 'rob' || data.popupType == 'sludge'"
+      >
         <div class="col-header">Log Book ROB</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{ format.quantity(value.logBookRobQtyBeforeDelivery) }}
@@ -57,7 +69,7 @@
         <div class="col-header">{{ data.measuredQuantityLabel }}</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{
-            data.popupType == 'rob'
+            data.popupType == 'rob' || data.popupType == 'sludge'
               ? format.quantity(value.measuredRobQtyBeforeDelivery)
               : format.quantity(value.measuredQuantity)
           }}
@@ -67,7 +79,7 @@
         <div class="col-header">{{ data.differenceQuantityLabel }}</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{
-            data.popupType == 'rob'
+            data.popupType == 'rob' || data.popupType == 'sludge'
               ? format.quantity(value.differenceInRobQuantity)
               : format.quantity(value.differenceQuantity)
           }}
