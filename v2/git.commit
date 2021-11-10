@@ -1,9 +1,11 @@
-﻿commit 8ac8ef043341fccf78515641185cbac4ba7b658e
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Nov 9 15:56:56 2021 +0000
+﻿commit 7882afb11e14db49436c145f38a75e738188635e
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Nov 10 11:50:26 2021 +0000
 
-    Merged PR 14620: #36790: Control Tower-Special characters displaying incorrectly in the quality view claim issue fixed
+    Merged PR 14631: Worked on residue sludge difference
     
-    Related work items: #36790
+    Worked on residue sludge difference
+    
+    Related work items: #33665, #36659
 
 branch: master

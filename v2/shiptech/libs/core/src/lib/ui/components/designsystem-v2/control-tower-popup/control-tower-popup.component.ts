@@ -9,11 +9,11 @@ import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-rowstatus-onchange-quantityrobdiff-popup',
-  templateUrl: './rowstatus-onchange-quantityrobdiff-popup.component.html',
-  styleUrls: ['./rowstatus-onchange-quantityrobdiff-popup.component.css']
+  selector: 'control-tower-popup',
+  templateUrl: './control-tower-popup.component.html',
+  styleUrls: ['./control-tower-popup.component.css']
 })
-export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
+export class ControlTowerPopupComponent implements OnInit {
   public switchTheme: boolean = true;
   public status: string;
   public comments: string;
@@ -25,9 +25,7 @@ export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private changeDetectorRef: ChangeDetectorRef,
     public format: TenantFormattingService,
-    public dialogRef: MatDialogRef<
-      RowstatusOnchangeQuantityrobdiffPopupComponent
-    >,
+    public dialogRef: MatDialogRef<ControlTowerPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
