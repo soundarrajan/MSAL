@@ -74,7 +74,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error(errormessage);
       return;
     } else {
-      if (this.requestOptions.length > 0) {
+      if (this.requestOptions.length > 1) {
         const dialogRef = this.dialog.open(SpotnegoSendRfqComponent, {
           width: '600px',
           height: '220px',
@@ -82,7 +82,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          //console.log(result);
           if(result && result instanceof Array){
             var sellers = []
             result.forEach(element => {
