@@ -42,6 +42,7 @@ import {
   ControlTowerResidueSludgeDifferenceListColumnsLabels,
   ControlTowerResidueSludgeDifferenceListExportColumns
 } from '../list-columns/control-tower-residue-sludge-difference-list.columns';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(
   prop: keyof IControlTowerResidueSludgeDifferenceItemDto
@@ -201,7 +202,12 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       return null;
     },
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   vesselToWatchCol: ITypedColDef<
@@ -225,7 +231,12 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       return null;
     },
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   sludgePercentageCol: ITypedColDef<
