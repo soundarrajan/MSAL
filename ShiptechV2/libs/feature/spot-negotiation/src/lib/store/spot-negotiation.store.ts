@@ -250,5 +250,8 @@ export class SpotNegotiationStore {
   @Selector()
   static selectedSellers(state: SpotNegotiationStoreModel) {
     return state.locationsRows.filter(row=> row.requestId === state.currentRequestSmallInfo['id'] && row.isSelected);
+    // return (reqLocationId: number) =>
+    //     state.locationsRows.filter(row=> row.requestId === state.currentRequestSmallInfo['id'] &&
+    //       row.isSelected && row.requestLocationId === reqLocationId);
   }
 }

@@ -180,18 +180,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'border-right',
           cellClass: 'line-seperator',
           cellStyle: params => {
-            if (
-              this.highlightedCells[params.data.locationId] &&
-              params.data.id ==
-                this.highlightedCells[params.data.locationId].totalOffer
-            ) {
-              return { background: '#C5DCCF' };
+            const highlightedCells = this.highlightedCells[params.data.locationId];
+            if (highlightedCells && params.data.id == highlightedCells.totalOffer) {
+                return { background: '#C5DCCF' };
             }
-
             return null;
           },
           valueGetter: params => {
-                  return params.data.totalOffer;
+              return params.data.totalOffer;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' }
@@ -690,43 +686,35 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       // Set rows inside ag grid
       this.rowData_aggrid = spotNegotiation.locationsRows;
-      this.currentRequestData = spotNegotiation.locations;
+      // this.currentRequestData = spotNegotiation.locations;
 
       // Spot function if we don't have any requests available
-      if (!this.currentRequestData || this.currentRequestData.length <= 0) {
+      if (!this.locations || this.locations.length <= 0) {
         return null;
       }
 
-      this.columnDef_aggrid[1].headerGroupComponentParams.currentReqProductsLength = this.locations[0].requestProducts.length;
+      //this.columnDef_aggrid[1].headerGroupComponentParams.currentReqProductsLength = this.locations[0].requestProducts.length;
 
       // Set headers of products;
       this.columnDef_aggridObj = [];
 
-      this.currentRequestData.map((currentRequest, i) => {
+      this.locations.forEach((reqLocation, i) => {
         // Separate rows for each location;
         // Sord data
 
-        const filterobj = this.rowData_aggrid.filter(row => {
-          if (row.locationId !== currentRequest.locationId) {
-            return false;
-          }
-          return true;
-        });
-
-        const locationId = currentRequest.locationId;
+        const filterobj = this.rowData_aggrid.filter(row => row.requestLocationId !== reqLocation.id);
         this.rowData_aggridObj[i] = filterobj;
 
         // Assign ColumnDef_aggrid with dynamic location id
-        this.columnDef_aggridObj[i] = _.cloneDeep(this.columnDef_aggrid);
+        this.columnDef_aggridObj.push(_.cloneDeep(this.columnDef_aggrid)); //;
 
-        this.columnDef_aggridObj[i][0].headerGroupComponentParams.locationId = locationId;
+        // this.columnDef_aggridObj[i].headerGroupComponentParams.locationId = locationId;
+        this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts = reqLocation.requestProducts.length;
 
         // These are locations!!
-        currentRequest.requestProducts.map((product, index) => {
-          this.checkHighlight({ product: product });
-          this.columnDef_aggridObj[i].push(
-            this.createProductHeader(product, currentRequest.id, index)
-          );
+        reqLocation.requestProducts.map((reqProduct, index) => {
+          this.checkHighlight({ product: reqProduct });
+          this.columnDef_aggridObj[i].push(this.createProductHeader(reqProduct, reqLocation.id, index));
         });
       });
 

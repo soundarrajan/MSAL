@@ -1,9 +1,10 @@
+import { Observable, pipe } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { AddCounterpartyToLocations } from '../../store/actions/ag-grid-row.action';
@@ -15,6 +16,8 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
 import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+import { SpotNegotiationStore, SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
+import { count, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -92,7 +95,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           </div>
         </mat-menu>
         <div class="text">Counterparty Details</div>
-        <div class="count">{{ selectedCounterparty.length }}</div>
+        <div class="count">{{ (selectedSellers$ | async)?.length }}</div>
       </div>
       <!--<div class="action">
         <div class="search"></div>
@@ -134,7 +137,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
         <div class="label-content" style="width:95%;">
         <div class="label-element w-100" style="width:100%;">
         <div class="title">No. of Products</div>
-        <div class="value">{{params.currentReqProdcutsLength}}</div>
+        <div class="value">{{ params.noOfProducts }}</div>
           </div>
         </div>
       </div>
@@ -269,19 +272,22 @@ export class ShiptechCustomHeaderGroup {
   visibleCounterpartyList = [];
   selectedCounterparty = [];
   currentRequestInfo:any;
+  sellersCount$: Observable<number>;
+
+  // selectedSellers$: Observable<any[]>;
+  @Select(SpotNegotiationStore.selectedSellers) selectedSellers$: Observable<any[]>;
 
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
 
       // Fetching counterparty list
-      if (
-        this.counterpartyList.length === 0 &&
-        spotNegotiation.counterpartyList
-      ) {
+      if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
+
+      //this.selectedSellers = spotNegotiation.selectedSellers ?? [];
     });
   }
 
@@ -302,7 +308,7 @@ export class ShiptechCustomHeaderGroup {
   }
 
   onCounterpartyCheckboxChange(checkbox: any, element: any): void {
-    if (checkbox.checked) {
+   if (checkbox.checked) {
       // Add to selected counterparty list
       this.selectedCounterparty.push(element);
     }
@@ -372,7 +378,15 @@ export class ShiptechCustomHeaderGroup {
       this.closureValue=this.params.product.requestGroupProducts.closure;
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
       this.requestProductId = this.params.product.id;
-      this.requestLocationId=this.params.requestLocationId;
+      this.requestLocationId = this.params.requestLocationId;
+      //this.sellersCount$ = this.selectedSellers$.pipe(map(filterFn=> filterFn(this.requestLocationId))).pipe(count());
+
+      // this.noOfSelectedSellers = selectedSellers.pipe(count());
+      // var locationRows = this.store.select(state=> state.spotNegotiation.locationRows);
+      // this.selectedSellers$ = locationRows.pipe(filter(row=> row.requestId == this.currentRequestInfo.id));
+      // this.selectedSellers$ = this.selectedSellers$.pipe(
+      //   filter(item=> item['requestLocationId'] === this.requestLocationId)
+      // );
     }
 
     this.params.columnGroup
@@ -455,8 +469,7 @@ export class ShiptechCustomHeaderGroup {
         x => x.locationId === locationId
       )[0];
 
-      return this.selectedCounterparty.map(
-        val =>
+      return this.selectedCounterparty.map(val =>
           <SpnegoAddCounterpartyModel>{
             requestGroupId: RequestGroupId,
             requestLocationId: parseInt(currentRequestLocation.id),
@@ -533,7 +546,7 @@ export class ShiptechCustomHeaderGroup {
 
       return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
-  } 
+  }
 
   calculateTargetPrice() {
     this.livePrice= this.priceFormatValue(this.livePrice);
