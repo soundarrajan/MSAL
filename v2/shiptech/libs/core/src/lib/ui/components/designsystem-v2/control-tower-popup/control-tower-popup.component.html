@@ -148,9 +148,10 @@
         <p>{{ formatDate(value.date) }}</p>
         <div class="description">
           {{ value.newStatus.displayName }} by {{ value.user.name }}
-          <p class="p-0 pt-1 pb-2">
-            Comments: <em>{{ value.newComments }}</em>
-          </p>
+          <div class="p-0 pt-1 pb-2 description-comments">
+            Comments:
+            <em>{{ value.newComments }}</em>
+          </div>
         </div>
       </div>
     </div>
