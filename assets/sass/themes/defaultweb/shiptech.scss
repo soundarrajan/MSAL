@@ -8812,6 +8812,9 @@ tr.title {
             &.rob-diff {
               margin-left: unset !important;
             }
+            &.residue-diff {
+              margin-left: unset !important;
+            }
           }
           .by-action {
             .action {
@@ -9248,6 +9251,8 @@ tr.title {
     .custom-label-holder {
       margin: 0 !important;
     }
+
+
     .mat-tab-header {
       background: none !important;
       box-shadow: none;
@@ -9255,7 +9260,7 @@ tr.title {
       position: absolute;
       top: 0;
       // width: 100%;
-      left: calc(100% - 270px) !important;
+      left: calc(100% - 270px) ;
     }
     .mat-tab-body-wrapper {
       overflow: visible !important;
@@ -23502,4 +23507,20 @@ mat-form-field {
   a:active {
     text-decoration: underline !important;
   }
+}
+
+.controlTower-wrapper .custom-residue-difference .mat-tab-header {
+  background: none !important;
+  box-shadow: none;
+  border: none;
+  position: absolute;
+  top: 0;
+  left: calc(100% - 330px) !important;
+}
+
+.change-log .description-comments {
+  color: #9d9fa2;
+  font-size: 14px;
+  margin: 0;
+  float: left;
 }
