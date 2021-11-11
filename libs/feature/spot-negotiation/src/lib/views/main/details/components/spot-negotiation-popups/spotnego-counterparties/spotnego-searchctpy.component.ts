@@ -57,7 +57,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         this.dialog_gridOptions.api.sizeColumnsToFit();
 
         this.store.subscribe(({ spotNegotiation }) => {
-          if (spotNegotiation.counterpartyList) {
+          if (spotNegotiation.counterpartyList && this.dialog_gridOptions.api) {
             this.rowData = spotNegotiation.counterpartyList;
             this.dialog_gridOptions.api.setRowData(this.rowData);
             this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
@@ -161,6 +161,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
           val =>
             <SpnegoAddCounterpartyModel>{
               requestGroupId: this.RequestGroupId,
+              requestId: reqLoc.requestId,
               requestLocationId: reqLoc.id,
               locationId: reqLoc.locationId,
               id: 0,
@@ -190,6 +191,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         val =>
           <SpnegoAddCounterpartyModel>{
             requestGroupId: this.RequestGroupId,
+            requestId: val.requestId,
             requestLocationId: this.RequestLocationId,
             locationId: this.LocationId,
             id: 0,

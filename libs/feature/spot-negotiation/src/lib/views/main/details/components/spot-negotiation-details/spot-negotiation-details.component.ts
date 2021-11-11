@@ -693,8 +693,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return null;
       }
 
-      //this.columnDef_aggrid[1].headerGroupComponentParams.currentReqProductsLength = this.locations[0].requestProducts.length;
-
       // Set headers of products;
       this.columnDef_aggridObj = [];
 
@@ -708,7 +706,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Assign ColumnDef_aggrid with dynamic location id
         this.columnDef_aggridObj.push(_.cloneDeep(this.columnDef_aggrid)); //;
 
-        this.columnDef_aggridObj[i][0].headerGroupComponentParams.locationId = reqLocation.locationId;
+        this.columnDef_aggridObj[i][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
+        this.columnDef_aggridObj[i][0].headerGroupComponentParams.selectedSellersCount = filterobj.filter(row=> row.isSelected).length;
         this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts = reqLocation.requestProducts.length;
 
         // These are locations!!

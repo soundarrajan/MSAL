@@ -536,8 +536,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currentRequestInfo : any;
   currentRequestData: any[];
 
-
-
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -592,6 +590,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   agInit(params: any): void {
     this.params = params;
   }
+
   search(userInput: string): void {
     this.visibleCounterpartyList = this.counterpartyList
     .filter(e => {
@@ -657,11 +656,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
     return row;
 }
+
 checkallProd(row,params){
   this.store.subscribe(({ spotNegotiation, ...props }) => {
     this.currentRequestData = spotNegotiation.locations;
   });
-  let currentLocProd= this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
+  let currentLocProd= this.currentRequestData.filter(loc => loc.id == row.requestLocationId);
   if(currentLocProd.length != 0){
     let currentLocProdCount = currentLocProd[0].requestProducts.length;
     for (let index = 0; index < currentLocProdCount; index++) {
