@@ -702,7 +702,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Separate rows for each location;
         // Sord data
 
-        const filterobj = this.rowData_aggrid.filter(row => row.requestLocationId !== reqLocation.id);
+        const filterobj = this.rowData_aggrid.filter(row => row.requestLocationId === reqLocation.id);
         this.rowData_aggridObj[i] = filterobj;
 
         // Assign ColumnDef_aggrid with dynamic location id

@@ -472,6 +472,7 @@ export class ShiptechCustomHeaderGroup {
       return this.selectedCounterparty.map(val =>
           <SpnegoAddCounterpartyModel>{
             requestGroupId: RequestGroupId,
+            requestId: this.currentRequestInfo.id,
             requestLocationId: parseInt(currentRequestLocation.id),
             locationId: parseInt(currentRequestLocation.locationId),
             id: 0,
