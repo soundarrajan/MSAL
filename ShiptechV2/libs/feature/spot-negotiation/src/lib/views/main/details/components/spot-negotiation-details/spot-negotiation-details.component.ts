@@ -708,7 +708,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Assign ColumnDef_aggrid with dynamic location id
         this.columnDef_aggridObj.push(_.cloneDeep(this.columnDef_aggrid)); //;
 
-        // this.columnDef_aggridObj[i].headerGroupComponentParams.locationId = locationId;
+        this.columnDef_aggridObj[i][0].headerGroupComponentParams.locationId = reqLocation.locationId;
         this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts = reqLocation.requestProducts.length;
 
         // These are locations!!
