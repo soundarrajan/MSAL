@@ -12,7 +12,8 @@ import {
   IGetControlTowerQuantityClaimsListResponse,
   IGetControlTowerQuantityRobDifferenceListResponse,
   IGetControlTowerQuantitySupplyDifferenceListResponse,
-  IGetControlTowerQualityClaimsListResponse
+  IGetControlTowerQualityClaimsListResponse,
+  IGetControlTowerResidueSludgeDifferenceListResponse
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
@@ -36,6 +37,12 @@ export namespace ControlTowerApiPaths {
     `/api/controlTower/QuantityResiduePopUp`;
   export const saveQuantityResiduePopUpUrl = () =>
     `/api/controlTower/QuantityResiduePopUp`;
+  export const getControlTowerResidueSludgeDifferenceList = () =>
+    `api/controlTower/sludgeDifferenceList`;
+  export const getControlTowerResidueSludgeDifferenceListExportUrl = () =>
+    `api/controlTower/exportSludgeDifferenceList`;
+  export const getResiduePopUpUrl = () => `api/controlTower/ResiduePopUp`;
+  export const saveResiduePopUpUrl = () => `api/controlTower/SaveResiduePopUp`;
 }
 
 @Injectable({
@@ -134,6 +141,40 @@ export class ControlTowerApi implements IControlTowerApiService {
     return `${
       this._claimsApiUrl
     }/${ControlTowerApiPaths.getControlTowerQualityClaimsListExportUrl()}`;
+  }
+
+  @ObservableException()
+  getControlTowerResidueSludgeDifferenceList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerResidueSludgeDifferenceListResponse> {
+    return this.http.post<IGetControlTowerResidueSludgeDifferenceListResponse>(
+      `${
+        this._apiUrl
+      }/${ControlTowerApiPaths.getControlTowerResidueSludgeDifferenceList()}`,
+      { payload: request }
+    );
+  }
+
+  getControlTowerResidueSludgeDifferenceListExportUrl(): string {
+    return `${
+      this._apiUrl
+    }/${ControlTowerApiPaths.getControlTowerResidueSludgeDifferenceListExportUrl()}`;
+  }
+
+  @ObservableException()
+  getResiduePopUp(request): any {
+    return this.http.post(
+      `${this._apiUrl}/${ControlTowerApiPaths.getResiduePopUpUrl()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  saveResiduePopUp(request): any {
+    return this.http.post(
+      `${this._apiUrl}/${ControlTowerApiPaths.saveResiduePopUpUrl()}`,
+      { payload: request }
+    );
   }
 }
 

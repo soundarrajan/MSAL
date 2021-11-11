@@ -9,7 +9,8 @@
         new: newScreen,
         'rob-diff':
           selectorType === 'Quantity ROB Difference' ||
-          selectorType === 'Quantity Supply Difference'
+          selectorType === 'Quantity Supply Difference',
+        'residue-diff': selectorType === 'Residue Sludge Difference'
       }"
     >
       <div
@@ -80,7 +81,8 @@
       class="by-action"
       *ngIf="
         selectorType == 'Quantity ROB Difference' ||
-        selectorType == 'Quantity Supply Difference'
+        selectorType == 'Quantity Supply Difference' ||
+        selectorType == 'Residue Sludge Difference'
       "
     >
       <span class="filter-by" *ngIf="newScreen">Filter By:</span>
@@ -226,37 +228,3 @@
     >{{ data?.portCall?.portCallId }}</a
   >
 </ng-template>
-
-<!-- <ng-template
-  *ngIf="gridViewModel.orderNoCol"
-  [columnDef]="[gridViewModel.orderNoCol]"
-  appAgCellTemplate
-  let-data="data"
-  let-value="value"
->
-  <a *ngIf="value && value?.id" (click)="openEditOrder(value.id)">{{
-    value?.id
-  }}</a>
-</ng-template>
-
-<ng-template
-  *ngIf="gridViewModel.labIdCol"
-  [columnDef]="[gridViewModel.labIdCol]"
-  appAgCellTemplate
-  let-data="data"
-  let-value="value"
->
-  <a *ngIf="value && value?.id" (click)="openEditLab(value.id)">{{
-    value?.id
-  }}</a>
-</ng-template>
-
-<ng-template
-  *ngIf="gridViewModel.claimNoCol"
-  [columnDef]="[gridViewModel.claimNoCol]"
-  appAgCellTemplate
-  let-data="data"
-  let-value="value"
->
-  <a *ngIf="value" (click)="openEditClaim(value)">{{ value }}</a>
-</ng-template> -->

@@ -1,11 +1,15 @@
-﻿commit 41f764e89056b821267a0235c0c0f5ecfd310f1d
+﻿commit 6ba2bf072e356ef2ad95e5278c04ffb09a1d45a9
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Nov 11 08:11:33 2021 +0000
+Date:   Thu Nov 11 08:23:31 2021 +0000
 
-    Merged PR 14644: Revert "34103 - special characters display issue fix"
+    Merged PR 14645: Worked on residue sludge difference
     
-    Revert "34103 - special characters display issue fix"
+    Worked on residue sludge difference
     
-    Reverted commit `1c7c422e`.
+    Cherry picked from !14631
+    
+    Cherry-picked from commit `7882afb1`.
+    
+    Related work items: #33665, #36659
 
 branch: master
