@@ -9,7 +9,6 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TopbarAdalComponent } from './topbar-adal/topbar-adal.component';
-import { HtmlDecodeReadonly } from '@shiptech/core/pipes/htmlDecode/html-decode-readonly.pipe';
 
 @NgModule({
   declarations: [
@@ -18,8 +17,7 @@ import { HtmlDecodeReadonly } from '@shiptech/core/pipes/htmlDecode/html-decode-
     TopbarComponent,
     TopbarAdalComponent,
     BlankComponent,
-    AccessDeniedComponent,
-    HtmlDecodeReadonly
+    AccessDeniedComponent
   ],
   imports: [CommonModule, RouterModule, ButtonModule, ScrollPanelModule],
   exports: [

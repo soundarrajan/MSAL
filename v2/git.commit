@@ -1,9 +1,11 @@
-﻿commit 0c62591b00821fd898b8e93f316a957aa3f6315f
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Nov 10 15:50:09 2021 +0000
+﻿commit 41f764e89056b821267a0235c0c0f5ecfd310f1d
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Nov 11 08:11:33 2021 +0000
 
-    Merged PR 14639: #36766: Control Tower-System throws red error while filtering the claim sub type column issue has fixed
+    Merged PR 14644: Revert "34103 - special characters display issue fix"
     
-    Related work items: #36766
+    Revert "34103 - special characters display issue fix"
+    
+    Reverted commit `1c7c422e`.
 
 branch: master

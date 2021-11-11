@@ -13,6 +13,7 @@ import {
 import { Observable, Subject, throwError } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { UrlService } from '@shiptech/core/services/url/url.service';
+import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import {
@@ -55,12 +56,6 @@ import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { IControlTowerRowPopup } from './control-tower-general-enums';
 import { ToastrService } from 'ngx-toastr';
-import { ControlTowerResidueDifferenceListGridViewModel } from './view-model/control-tower-residue-sludge-difference-grid.view-model';
-import {
-  ControlTowerResidueSludgeDifferenceListColumns,
-  ControlTowerResidueSludgeDifferenceListColumnServerKeys
-} from './list-columns/control-tower-residue-sludge-difference-list.columns';
-import { ControlTowerPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/control-tower-popup/control-tower-popup.component';
 
 export const PICK_FORMATS = {
   display: {
@@ -119,7 +114,6 @@ export class CustomDateAdapter extends MomentDateAdapter {
     ControlTowerQuantitySupplyDifferenceListGridViewModel,
     ControlTowerQuantityClaimsListGridViewModel,
     ControlTowerQualityClaimsListGridViewModel,
-    ControlTowerResidueDifferenceListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
@@ -190,11 +184,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       timeDeltaValue: 6,
       timeDeltaUnit: 'month',
       mappedKey: ControlTowerQualityClaimsListColumns.createdDate
-    },
-    'control-tower-residue-sludge-list-grid-2': {
-      timeDeltaValue: 1,
-      timeDeltaUnit: 'year',
-      mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate
     }
   };
   constructor(
@@ -255,20 +244,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           ControlTowerQualityClaimsListGridViewModel
         );
         this.controlTowerListServerKeys = ControlTowerQualityClaimsListColumnServerKeys;
-        break;
-      }
-      case 'Residue Sludge Difference': {
-        this.gridViewModel = this.injector.get(
-          ControlTowerResidueDifferenceListGridViewModel
-        );
-        this.controlTowerListServerKeys = ControlTowerResidueSludgeDifferenceListColumnServerKeys;
-        this.legacyLookupsDatabase
-          .getTableByName('robDifferenceType')
-          .then(response => {
-            this.differenceType = response.filter(
-              obj => obj.name == 'Sludge'
-            )[0];
-          });
         break;
       }
 
@@ -343,11 +318,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         return;
       }
       this.actionCellClicked(ev);
-    } else if (this.selectorType == 'Residue Sludge Difference') {
-      if (ev.event.target.nodeName == 'A') {
-        return;
-      }
-      this.actionCellClickedResidue(ev);
     }
   }
 
@@ -434,15 +404,17 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             this.toastr.error(response);
           } else {
             dialogData.changeLog = response.changeLog;
-            dialogData.comments = response.comments;
-            const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
-              height: 'auto',
-              maxHeight: '536px',
-              backdropClass: 'dark-popupBackdropClass',
-              panelClass: 'light-theme',
-              data: dialogData
-            });
+            const dialogRef = this.dialog.open(
+              RowstatusOnchangeQuantityrobdiffPopupComponent,
+              {
+                width: '520px',
+                height: 'auto',
+                maxHeight: '536px',
+                backdropClass: 'dark-popupBackdropClass',
+                panelClass: 'light-theme',
+                data: dialogData
+              }
+            );
             dialogRef.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
               console.log(ev);
@@ -478,103 +450,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     }
   };
 
-  actionCellClickedResidue = (ev: any) => {
-    this.legacyLookupsDatabase
-      .getTableByName('robDifferenceType')
-      .then(response => {
-        let rowData = ev.node.data;
-        if (!rowData) {
-          return;
-        }
-
-        let productTypeList = rowData.quantityReportDetails.map(obj => {
-          let rowObj = {};
-          /**
-           * For residue sludge difference
-           */
-          rowObj['sludgePercentage'] = rowData.sludgePercentage;
-          rowObj['logBookRobQtyBeforeDelivery'] =
-            obj.logBookRobQtyBeforeDelivery;
-          rowObj['measuredRobQtyBeforeDelivery'] =
-            obj.measuredRobQtyBeforeDelivery;
-          rowObj['differenceInRobQuantity'] = obj.differenceInRobQuantity;
-          rowObj['uom'] = obj.robUom.name;
-
-          return rowObj;
-        });
-        this.openResidueSludgeDifferencePopUp(
-          ev,
-          response,
-          rowData,
-          productTypeList,
-          this.differenceType.name
-        );
-      });
-  };
-
-  openResidueSludgeDifferencePopUp(
-    ev,
-    response,
-    rowData,
-    productTypeList,
-    type
-  ) {
-    let dialogData: IControlTowerRowPopup = {
-      popupType: 'sludge',
-      title: 'Residue Sludge Difference',
-      measuredQuantityLabel: 'Measured ROB',
-      differenceQuantityLabel: 'Difference in Qty',
-      vessel: rowData.vessel,
-      port: rowData.port,
-      portCall: rowData.portCall.portCallId,
-      quantityReportId: rowData.quantityControlReport.id,
-      progressId: rowData.progress.id,
-      productTypeList: productTypeList
-    };
-
-    let payloadData = {
-      differenceType: response.filter(obj => obj.name == type)[0],
-      quantityControlReport: {
-        id: rowData.quantityControlReport.id
-      }
-    };
-
-    this.controlTowerService
-      .getResiduePopUp(payloadData, payloadData => {
-        console.log('asd');
-      })
-      .pipe()
-      .subscribe(
-        (response: any) => {
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            dialogData.changeLog = response.changeLog;
-            dialogData.comments = response.comments;
-            const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
-              height: 'auto',
-              maxHeight: '536px',
-              backdropClass: 'dark-popupBackdropClass',
-              panelClass: 'light-theme',
-              data: dialogData
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log(`Dialog result: ${result}`);
-              console.log(ev);
-              this.gridViewModel.updateValues(ev, result);
-              // this.savePopupChanges(ev, result);
-            });
-          }
-        },
-        () => {
-          this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
-          );
-        }
-      );
-  }
-
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
       case knownMastersAutocomplete.products:
@@ -592,4 +467,15 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       return null;
     }
   }
+}
+function defined(
+  arg0: string,
+  t: any,
+  defined: any,
+  the: any,
+  selector: any,
+  type: any,
+  arg6: string
+) {
+  throw new Error('Function not implemented.');
 }
