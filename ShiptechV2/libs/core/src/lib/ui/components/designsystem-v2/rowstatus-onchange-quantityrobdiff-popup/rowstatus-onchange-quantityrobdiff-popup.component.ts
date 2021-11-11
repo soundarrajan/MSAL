@@ -9,11 +9,11 @@ import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'control-tower-popup',
-  templateUrl: './control-tower-popup.component.html',
-  styleUrls: ['./control-tower-popup.component.css']
+  selector: 'app-rowstatus-onchange-quantityrobdiff-popup',
+  templateUrl: './rowstatus-onchange-quantityrobdiff-popup.component.html',
+  styleUrls: ['./rowstatus-onchange-quantityrobdiff-popup.component.css']
 })
-export class ControlTowerPopupComponent implements OnInit {
+export class RowstatusOnchangeQuantityrobdiffPopupComponent implements OnInit {
   public switchTheme: boolean = true;
   public status: string;
   public comments: string;
@@ -25,11 +25,11 @@ export class ControlTowerPopupComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private changeDetectorRef: ChangeDetectorRef,
     public format: TenantFormattingService,
-    public dialogRef: MatDialogRef<ControlTowerPopupComponent>,
+    public dialogRef: MatDialogRef<
+      RowstatusOnchangeQuantityrobdiffPopupComponent
+    >,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    this.comments = data.comments;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.defaultStatus = this.data.progressId.toString();
