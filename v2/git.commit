@@ -1,9 +1,11 @@
-﻿commit 638b05738814e00174792a66edefb186ab6bfa62
+﻿commit ccf98ee3a019314243d1ce9d602d75547c61a224
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 11 13:04:52 2021 +0000
+Date:   Thu Nov 11 13:43:44 2021 +0000
 
-    Merged PR 14664: Displayed change log for new status in alert action popup
+    Merged PR 14667: Fixed comments  displaying  in the change log section
     
-    Related work items: #36892
+    Fixed comments  displaying  in the change log section
+    
+    Related work items: #36859
 
 branch: master
