@@ -96,7 +96,7 @@ export interface IControlTowerQualityClaimsItemDto {
   eta: string;
   product: string;
   seller: string;
-  claimSubType: string;
+  claimSubTypes: string;
   estimatedSettlementAmount: number;
   createdDate: string;
   createdBy: IDisplayLookupDto;
