@@ -44,7 +44,8 @@
                   <mat-form-field class="without-search"
                     appearance="legacy" style="height: 30px;">
                     <input
-                      [(ngModel)]="noteLine.value.note"
+                      [ngModel]="noteLine.value.note | htmlDecodeReadonly"
+                      (ngModelChange)="noteLine.value.note = $event"
                       (blur)="updateNotes($event, noteLine.key)"
                       [disabled]="detectCurrentUser(noteLine.value)"
                       matInput
@@ -53,7 +54,7 @@
                 </div>
               </td>
               <td style="width:33%">
-                {{noteLine.value.createdBy ? noteLine.value.createdBy.displayName : ''}}
+                {{noteLine.value.createdBy ? (noteLine.value.createdBy.displayName | htmlDecodeReadonly) : ''}}
               </td>
               <td style="width:33%">
                 {{noteLine.value.createdAt ? formatDate(noteLine.value.createdAt) : ''}}
