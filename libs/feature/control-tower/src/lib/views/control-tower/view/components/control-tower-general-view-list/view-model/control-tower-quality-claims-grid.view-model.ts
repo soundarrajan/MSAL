@@ -212,15 +212,11 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     width: 200
   };
 
-  claimSubTypeCol: ITypedColDef<
-    IControlTowerQualityClaimsItemDto,
-    number
-  > = {
+  claimSubTypeCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
     headerName: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
     headerTooltip: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
     colId: ControlTowerQualityClaimsListColumns.claimSubType,
     field: model('claimSubType'),
-    filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.htmlDecode(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.claimSubType,
     tooltip: params => (params.value ? this.format.htmlDecode(params.value) : ''),
