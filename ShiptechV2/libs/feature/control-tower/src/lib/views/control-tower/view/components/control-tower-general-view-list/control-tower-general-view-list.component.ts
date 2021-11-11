@@ -191,7 +191,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       timeDeltaUnit: 'month',
       mappedKey: ControlTowerQualityClaimsListColumns.createdDate
     },
-    'control-tower-residue-sludge-list-grid-2': {
+    'control-tower-residue-sludge-list-grid-3': {
       timeDeltaValue: 1,
       timeDeltaUnit: 'year',
       mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate
