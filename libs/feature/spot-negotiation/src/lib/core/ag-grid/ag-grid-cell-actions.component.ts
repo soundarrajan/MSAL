@@ -36,7 +36,7 @@ import { ToastrService } from 'ngx-toastr';
     <div *ngIf="params.type === 'radio-button-selection'">
       <mat-radio-button
         [checked]="params.value"
-        
+
         class="grid-radio-btn"
       ></mat-radio-button>
     </div>
@@ -172,10 +172,10 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     updatedRow = this.formatRowData(updatedRow,params);
     var FinalAPIdata = {
       reqLocSellers: [{
-        requestLocationSellerId: updatedRow.locationId,
+        requestLocationSellerId: updatedRow.id,
         isSelected: params.value
       }]
-      
+
     };
     this.spinner.show();
     const response = this.spotNegotiationService.UpdateSelectSeller(FinalAPIdata);
@@ -208,7 +208,7 @@ setproductvalid(row, currentLocProdCount,paramsvalue){
   return row
 }
   formatRowData(row, params) {
-  //  alert(4); 
+  //  alert(4);
     let row1
     this.store.subscribe(({ spotNegotiation }) => {
       let Currentproduct = spotNegotiation.locations;
@@ -216,11 +216,11 @@ setproductvalid(row, currentLocProdCount,paramsvalue){
       if(currentLocProd.length != 0){
         let currentLocProdCount = currentLocProd[0].requestProducts.length;
 
-        row1 = { ...Object.assign({}, row) };      
+        row1 = { ...Object.assign({}, row) };
         if(params.value){
           row1.isSelected = false;
           row1 = this.setproductvalid(row1,currentLocProdCount,params.value)
-          
+
         }else{
           row1.isSelected = true;
           row1 = this.setproductvalid(row1,currentLocProdCount,params.value)
