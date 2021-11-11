@@ -412,6 +412,7 @@ export class ExtendContractModalComponent implements OnInit{
   switchTheme; //false-Light Theme, true- Dark Theme
   isEffectiveFromDateInvalid: boolean;
   scheduleDashboardLabelConfiguration: any;
+  public contractExtendLoading = false;
   constructor(
     public dialogRef: MatDialogRef<ExtendContractModalComponent>,
     private ren: Renderer2,
@@ -441,7 +442,6 @@ export class ExtendContractModalComponent implements OnInit{
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.formValues = data.formValues;
-
   }
 
   ngOnInit(){  
@@ -454,19 +454,22 @@ export class ExtendContractModalComponent implements OnInit{
   }
 
   sendExtendContractData() {
-    //this.spinner.show();
+    this.contractExtendLoading = true;
+    this.spinner.show();
     this.contractService
     .extendContract(this.formValues)
     .pipe(
         finalize(() => {
 
         })
-    )
+        )
     .subscribe((result: any) => {
+        this.contractExtendLoading = false;
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
         } else {
+          this.spinner.hide();
           this.toastr.success('Contract extended!');
           this.formValues.status = result;
           this.dialogRef.close(this.formValues);
@@ -494,8 +497,8 @@ export class ExtendContractModalComponent implements OnInit{
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
     } else {
       return null;
     }

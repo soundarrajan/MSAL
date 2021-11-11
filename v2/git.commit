@@ -1,11 +1,11 @@
-﻿commit ccf98ee3a019314243d1ce9d602d75547c61a224
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 11 13:43:44 2021 +0000
+﻿commit 7146ed62e2334c4613fea5f35c23861acf5995f5
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Nov 11 14:25:38 2021 +0000
 
-    Merged PR 14667: Fixed comments  displaying  in the change log section
+    Merged PR 14669: Fix contract extend modal
     
-    Fixed comments  displaying  in the change log section
+    Fix contract extend modal
     
-    Related work items: #36859
+    Related work items: #32807
 
 branch: master

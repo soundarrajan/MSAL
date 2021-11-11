@@ -26,7 +26,7 @@
             autocomplete="off"
             placeholder="Effective From"
             (dateInput)="onChange($event, 'effectiveFrom')"
-            (dateChange)="formValues.effectiveFrom= formatDateForBe(formValues.effectiveFrom)">
+            (dateChange)="formValues.effectiveFrom = formatDateForBe(formValues.effectiveFrom)">
             <mat-datepicker-toggle matSuffix [for]="effectiveFrom">
               <mat-icon matDatepickerToggleIcon class="icon-date">
               </mat-icon>
@@ -44,7 +44,7 @@
           type="button"
         ></button>
         <button  class="ui-button-info mr-1 btn-i-blue-color" label="Ok"
-          [disabled]="!formValues.effectiveFrom"
+          [disabled]="!formValues.effectiveFrom || contractExtendLoading"
           (click)="sendExtendContractData()"
           pButton
           type="button"
