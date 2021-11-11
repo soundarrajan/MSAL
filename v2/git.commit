@@ -1,9 +1,9 @@
-﻿commit e16ec8473d657d8a9fdbadce6604db52703ec4ff
+﻿commit 638b05738814e00174792a66edefb186ab6bfa62
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 11 12:50:08 2021 +0000
+Date:   Thu Nov 11 13:04:52 2021 +0000
 
-    Merged PR 14663: Displayed last 7 days in residue sludge view
+    Merged PR 14664: Displayed change log for new status in alert action popup
     
-    Related work items: #33665
+    Related work items: #36892
 
 branch: master
