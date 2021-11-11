@@ -5,9 +5,7 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
 
 @NgModule({
   declarations: [HtmlDecodeReadonly, HtmlDecode],
-  imports: [
-    CommonModule
-  ],
+  imports: [],
   exports: [HtmlDecodeReadonly, HtmlDecode]
 })
 export class SharedModule { }
