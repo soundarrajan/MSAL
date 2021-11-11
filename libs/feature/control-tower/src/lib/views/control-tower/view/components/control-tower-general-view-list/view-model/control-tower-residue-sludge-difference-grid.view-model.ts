@@ -55,6 +55,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   public searchText: string;
   public exportUrl: string;
   public newFilterSelected: boolean = false;
+
   public fromDate = new FormControl(
     moment()
       .subtract(1, 'year')
