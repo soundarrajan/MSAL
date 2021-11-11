@@ -172,13 +172,13 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   gridIds = {
     'control-tower-quantity-rob-list-grid-6': {
-      timeDeltaValue: 7,
+      timeDeltaValue: 6,
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
     },
     'control-tower-quantity-supply-list-grid-5': {
-      timeDeltaValue: 1,
-      timeDeltaUnit: 'year',
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'days',
       mappedKey: ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate
     },
     'control-tower-quantity-claims-list-grid-10': {
