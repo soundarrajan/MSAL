@@ -907,7 +907,8 @@
                 [disabled]="true"
                 placeholder="Type Front office comments here"
                 name="frontOfficeComments"
-                [(ngModel)]="formValues.orderDetails.frontOfficeComments"
+                [ngModel]="formValues.orderDetails.frontOfficeComments | htmlDecodeReadonly"
+                (ngModelChange)="formValues.orderDetails.frontOfficeComments = $event"
               ></textarea>
             </div>
           </div>
@@ -1078,7 +1079,8 @@
                     cols="50"
                     placeholder="Type back office comments here"
                     name="backOfficeComments"
-                    [(ngModel)]="formValues.backOfficeComments"
+                    [ngModel]="formValues.backOfficeComments | htmlDecodeReadonly"
+                    (ngModelChange)="formValues.backOfficeComments = $event"
                   ></textarea>
                 </div>
               </div>
@@ -1204,7 +1206,8 @@
                     placeholder="Payment Proof comments"
                     name="paymentDetailscomments"
                     [disabled]="!formValues.paymentDetails.paymentProofReceived"
-                    [(ngModel)]="formValues.paymentDetails.comments"
+                    [ngModel]="formValues.paymentDetails.comments | htmlDecodeReadonly"
+                    (ngModelChange)="formValues.paymentDetails.comments = $event"
                   ></textarea>
                 </div>
               </div>

@@ -1,11 +1,13 @@
-﻿commit 7146ed62e2334c4613fea5f35c23861acf5995f5
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Nov 11 14:25:38 2021 +0000
+﻿commit 3b872177304f2a7f8df00108ca2fccfb7af5300e
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Nov 11 15:01:51 2021 +0000
 
-    Merged PR 14669: Fix contract extend modal
+    Merged PR 14670: 36830 - Merge with master
     
-    Fix contract extend modal
+    Special characters display issue fix in various fields of Invoice screen and common Login label.
+    - Special chars display issue fix - Invoice Screen
+    - Issue - Multiple declarations of module fixed
     
-    Related work items: #32807
+    Related work items: #36830
 
 branch: master
