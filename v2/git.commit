@@ -1,11 +1,9 @@
-﻿commit 63b3f130fad04d4663e6c991ab7a0cbcd986a095
+﻿commit c9c27f2c57c36978dc67cf8386f431a20494c092
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 11 08:32:06 2021 +0000
+Date:   Thu Nov 11 08:53:25 2021 +0000
 
-    Merged PR 14647: Mapped comments from 'api/controlTower/QuantityResiduePopUp' in the alert pop-up
+    Merged PR 14648: Loaded last 7 days by default in quantity difference list
     
-    Mapped comments from 'api/controlTower/QuantityResiduePopUp' in the alert pop-up
-    
-    Cherry-picked from commit `91915701`.
+    Loaded last 7 days by default in quantity difference list
 
 branch: master
