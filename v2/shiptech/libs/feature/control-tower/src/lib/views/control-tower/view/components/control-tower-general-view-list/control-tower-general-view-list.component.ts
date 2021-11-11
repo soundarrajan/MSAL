@@ -434,8 +434,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             this.toastr.error(response);
           } else {
             dialogData.changeLog = response.changeLog;
+            dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '520px',
+              width: '540px',
               height: 'auto',
               maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
@@ -549,8 +550,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             this.toastr.error(response);
           } else {
             dialogData.changeLog = response.changeLog;
+            dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '520px',
+              width: '540px',
               height: 'auto',
               maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
@@ -590,15 +592,4 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       return null;
     }
   }
-}
-function defined(
-  arg0: string,
-  t: any,
-  defined: any,
-  the: any,
-  selector: any,
-  type: any,
-  arg6: string
-) {
-  throw new Error('Function not implemented.');
 }

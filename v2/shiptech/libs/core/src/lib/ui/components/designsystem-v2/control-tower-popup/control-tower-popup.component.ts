@@ -27,7 +27,9 @@ export class ControlTowerPopupComponent implements OnInit {
     public format: TenantFormattingService,
     public dialogRef: MatDialogRef<ControlTowerPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.comments = data.comments;
+  }
 
   ngOnInit(): void {
     this.defaultStatus = this.data.progressId.toString();
