@@ -47,6 +47,7 @@ import {
   ControlTowerProgressColors,
   IControlTowerRowPopup
 } from '../control-tower-general-enums';
+import { RowstatusOnchangeQuantityrobdiffPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/rowstatus-onchange-quantityrobdiff-popup/rowstatus-onchange-quantityrobdiff-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { __values } from 'tslib';
 import { ToastrService } from 'ngx-toastr';
@@ -711,6 +712,76 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     }
     return `<a class="btn-25" style="background-color:${bgColor}; color:#fff">${value.name}</a>`;
   }
+
+  actionCellClicked = (ev: any) => {
+    this.legacyLookupsDatabase
+      .getTableByName('robDifferenceType')
+      .then(response => {
+        let rowData = ev.node.data;
+
+        let productTypeList = rowData.quantityReportDetails.map(obj => {
+          let rowObj = {};
+          rowObj['productType'] = obj.productType.name;
+          rowObj['bdnQuantity'] = obj.bdnQuantity;
+          rowObj['measuredQuantity'] = obj.measuredDeliveredQuantity;
+          rowObj['differenceQuantity'] = obj.differenceInSupplyQuantity;
+          rowObj['uom'] = obj.supplyUom.name;
+          return rowObj;
+        });
+
+        let dialogData: IControlTowerRowPopup = {
+          popupType: 'supply',
+          title: 'Quantity Supply Difference',
+          measuredQuantityLabel: 'Measured Delivered Qty',
+          differenceQuantityLabel: 'Difference in Qty',
+          vessel: rowData.vessel,
+          port: rowData.port,
+          portCall: rowData.portCall.portCallId,
+          quantityReportId: rowData.quantityControlReport.id,
+          progressId: rowData.progress.id,
+          productTypeList: productTypeList
+        };
+
+        let payloadData = {
+          differenceType: response.filter(obj => obj.name == 'Supply')[0],
+          quantityControlReport: {
+            id: rowData.quantityControlReport.id
+          }
+        };
+
+        this.controlTowerService
+          .getQuantityResiduePopUp(payloadData, payloadData => {
+            console.log('asd');
+          })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(
+            response => {
+              dialogData.changeLog = response.payload.changeLog;
+              const dialogRef = this.dialog.open(
+                RowstatusOnchangeQuantityrobdiffPopupComponent,
+                {
+                  width: '520px',
+                  height: 'auto',
+                  maxHeight: '536px',
+                  backdropClass: 'dark-popupBackdropClass',
+                  panelClass: 'light-theme',
+                  data: dialogData
+                }
+              );
+              dialogRef.afterClosed().subscribe(result => {
+                console.log(`Dialog result: ${result}`);
+                console.log(ev);
+                this.savePopupChanges(ev, result);
+              });
+            },
+            () => {
+              this.appErrorHandler.handleError(
+                ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
+              );
+            }
+          );
+      });
+  };
 
   savePopupChanges = (ev, result) => {
     if (result) {

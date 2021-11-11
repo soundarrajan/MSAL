@@ -68,25 +68,6 @@ export interface IControlTowerQuantityClaimsItemDto {
   noResponse: number;
 }
 
-export interface IControlTowerResidueSludgeDifferenceItemDto {
-  portCall: IDisplayLookupDto;
-  port: IDisplayLookupDto;
-  vessel: IDisplayLookupDto;
-  eta: string;
-  surveyorDate: string;
-  emailToVessel: boolean;
-  vesselToWatch: boolean;
-  sludgePercentage: number;
-  progress: IDisplayLookupDto;
-  id: number;
-  logBookRobQtyBeforeDelivery: number;
-  measuredRobQtyBeforeDelivery: number;
-  differenceInRobQuantity: number;
-  totalCount: number;
-  robUom: IDisplayLookupDto;
-  status: IDisplayLookupDto;
-}
-
 export interface IControlTowerQualityClaimsItemDto {
   order: IDisplayLookupDto;
   lab: IDisplayLookupDto;
@@ -122,16 +103,6 @@ export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
     noOfNew: number;
     noOfResolved: number;
   };
-}
-
-export interface IGetControlTowerResidueSludgeDifferenceListResponse {
-  payload: {
-    items: IControlTowerResidueSludgeDifferenceItemDto[];
-    noOfNew: number;
-    noOfMarkedAsSeen: number;
-    noOfResolved: number;
-  };
-  matchedCount: number;
 }
 
 export interface IGetControlTowerQuantityClaimsListResponse {

@@ -11,8 +11,7 @@ import {
   IGetControlTowerQuantityClaimsListResponse,
   IGetControlTowerQuantityRobDifferenceListResponse,
   IGetControlTowerQuantitySupplyDifferenceListResponse,
-  IGetControlTowerQualityClaimsListResponse,
-  IGetControlTowerResidueSludgeDifferenceListResponse
+  IGetControlTowerQualityClaimsListResponse
 } from './api/dto/control-tower-list-item.dto';
 
 import { ModuleError } from '../core/error-handling/module-error';
@@ -174,59 +173,6 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   saveQuantityResiduePopUp(data, response) {
     return this.api.saveQuantityResiduePopUp(data).pipe(
-      map((body: any) => body.payload),
-      catchError((body: any) =>
-        of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
-        )
-      )
-    );
-  }
-
-  @ObservableException()
-  getControlTowerResidueSludgeDifferenceList$(
-    gridRequest: IServerGridInfo
-  ): Observable<IGetControlTowerResidueSludgeDifferenceListResponse> {
-    return this.apiDispatch(
-      () =>
-        this.api.getControlTowerResidueSludgeDifferenceList({ ...gridRequest }),
-      new LoadControlTowerListAction(gridRequest),
-      response =>
-        new LoadControlTowerListSuccessfulAction(
-          response.matchedCount,
-          response.matchedCount,
-          response.matchedCount,
-          response.matchedCount
-        ),
-      LoadControlTowerListFailedAction,
-      ModuleError.LoadControlTowerQuantityRobDifferenceFailed
-    );
-  }
-
-  @ObservableException()
-  getControlTowerResidueSludgeDifferenceListExportUrl(): string {
-    return this.api.getControlTowerResidueSludgeDifferenceListExportUrl();
-  }
-
-  @ObservableException()
-  getResiduePopUp(data, response) {
-    return this.api.getResiduePopUp(data).pipe(
-      map((body: any) => body.payload),
-      catchError((body: any) =>
-        of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
-        )
-      )
-    );
-  }
-
-  @ObservableException()
-  saveResiduePopUp(data, response) {
-    return this.api.saveResiduePopUp(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
