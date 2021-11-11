@@ -216,7 +216,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     headerName: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
     headerTooltip: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
     colId: ControlTowerQualityClaimsListColumns.claimSubType,
-    field: model('claimSubTypes'),
+    field: model('claimSubtypes'),
     valueFormatter: params => this.format.htmlDecode(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.claimSubType,
     tooltip: params => (params.value ? this.format.htmlDecode(params.value) : ''),

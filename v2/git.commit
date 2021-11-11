@@ -1,10 +1,10 @@
-﻿commit ca1470d313b9722459ab80e24dc58018f923906f
+﻿commit 9ae26f1a22bb55a1a3160cd13d830269c7a8153f
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Nov 11 16:37:01 2021 +0000
+Date:   Thu Nov 11 17:12:22 2021 +0000
 
-    Merged PR 14671: changed control tower quality claim mapping
+    Merged PR 14672: Fix mapping
     
-    changed control tower quality claim mapping
+    Fix mapping
     
     Related work items: #36779
 
