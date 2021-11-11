@@ -1,13 +1,11 @@
-﻿commit 3b872177304f2a7f8df00108ca2fccfb7af5300e
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Nov 11 15:01:51 2021 +0000
+﻿commit ca1470d313b9722459ab80e24dc58018f923906f
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Nov 11 16:37:01 2021 +0000
 
-    Merged PR 14670: 36830 - Merge with master
+    Merged PR 14671: changed control tower quality claim mapping
     
-    Special characters display issue fix in various fields of Invoice screen and common Login label.
-    - Special chars display issue fix - Invoice Screen
-    - Issue - Multiple declarations of module fixed
+    changed control tower quality claim mapping
     
-    Related work items: #36830
+    Related work items: #36779
 
 branch: master
