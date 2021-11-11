@@ -51,6 +51,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { __values } from 'tslib';
 import { ToastrService } from 'ngx-toastr';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(
   prop: keyof IControlTowerQuantitySupplyDifferenceItemDto
@@ -207,12 +208,16 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;
     },
     cellClass: 'cell-background',
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }    
   };
 
   vesselToWatchCol: ITypedColDef<
@@ -230,12 +235,16 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRenderer: params => {
       const a = document.createElement('span');
       a.innerHTML = params.value ? 'Yes' : 'No';
-      !params.value ? a.classList.add('success') : a.classList.add('denger');
       return a;
     },
     cellClass: 'cell-background',
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }     
   };
 
   productTypeCol: ITypedColDef<

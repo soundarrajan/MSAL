@@ -1,11 +1,9 @@
-﻿commit ef27790844644cb5eff554d3f4fde6e4e57f3034
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 10 13:02:47 2021 +0000
+﻿commit 0c62591b00821fd898b8e93f316a957aa3f6315f
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Nov 10 15:50:09 2021 +0000
 
-    Merged PR 14634: Fixed UI issues in change log on alert pop-up
+    Merged PR 14639: #36766: Control Tower-System throws red error while filtering the claim sub type column issue has fixed
     
-    Fixed UI issues in change log on alert pop-up
-    
-    Related work items: #36852
+    Related work items: #36766
 
 branch: master

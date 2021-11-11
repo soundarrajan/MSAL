@@ -212,15 +212,11 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     width: 200
   };
 
-  claimSubTypeCol: ITypedColDef<
-    IControlTowerQualityClaimsItemDto,
-    number
-  > = {
+  claimSubTypeCol: ITypedColDef<IControlTowerQualityClaimsItemDto, string> = {
     headerName: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
     headerTooltip: ControlTowerQualityClaimsListColumnsLabels.claimSubType,
     colId: ControlTowerQualityClaimsListColumns.claimSubType,
     field: model('claimSubType'),
-    filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.htmlDecode(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.claimSubType,
     tooltip: params => (params.value ? this.format.htmlDecode(params.value) : ''),
@@ -399,7 +395,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     } else if (statusName == '15+ Days') {
       grid['noResponse'] = {
         filterType: 'number',
-        type: 'greaterThan',
+        type: 'greaterThanOrEqual',
         filter: 15,
         filterTo: null
       };
@@ -415,17 +411,21 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     this.toggleGreaterThan15DaysFilter = true;
     const grid = this.gridApi.getFilterModel();
     for (let [key, value] of Object.entries(grid)) {
-      if (key == 'status') {
-        if ((<any>value).type == 'equals') {
-          if ((<any>value).filter.toLowerCase() === 'new') {
+      if (key == 'noResponse') {
+        if ((<any>value).type == 'lessThan') {
+          if ((<any>value).filter === 7) {
             this.toggleNewFilter = !this.toggleNewFilter;
             this.toggle714DaysFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'verified') {
+          }
+        } else if ((<any>value).type == 'inRange') {
+          if ((<any>value).filter === 7 && (<any>value).filterTo === 14) {
             this.toggle714DaysFilter = !this.toggle714DaysFilter;
             this.toggleNewFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
-          } else if ((<any>value).filter.toLowerCase() === 'in spec') {
+          }
+        } else if ((<any>value).type == 'greaterThan' || (<any>value).type == 'greaterThanOrEqual') {
+          if ((<any>value).filter === 15) {
             this.toggleGreaterThan15DaysFilter = !this
               .toggleGreaterThan15DaysFilter;
             this.toggleNewFilter = true;
