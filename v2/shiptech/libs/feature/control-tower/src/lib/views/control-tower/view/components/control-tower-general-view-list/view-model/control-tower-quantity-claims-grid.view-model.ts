@@ -55,11 +55,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       .subtract(6, 'months')
       .format('YYYY-MM-DD')
   );
-  public toDate = new FormControl(
-    moment()
-      .subtract(1, 'days')
-      .format('YYYY-MM-DD')
-  );
+  public toDate = new FormControl(moment().format('YYYY-MM-DD'));
 
   public toggleNewFilter: boolean = true;
   public toggle714DaysFilter: boolean = true;

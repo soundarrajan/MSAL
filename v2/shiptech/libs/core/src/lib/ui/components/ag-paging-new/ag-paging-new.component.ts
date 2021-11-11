@@ -130,14 +130,14 @@ export class AgPagingNewComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.useInputAsPageSelect) {
-      this.formControl.valueChanges
-        .pipe(
-          distinctUntilChanged(),
-          debounceTime(300),
-          tap(this.selectPage.bind(this))
-        )
-        .subscribe();
-    }
+    // if (this.useInputAsPageSelect) {
+    //   this.formControl.valueChanges
+    //     .pipe(
+    //       distinctUntilChanged(),
+    //       debounceTime(300),
+    //       tap(this.selectPage.bind(this))
+    //     )
+    //     .subscribe();
+    // }
   }
 }

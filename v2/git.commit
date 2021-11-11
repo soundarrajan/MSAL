@@ -1,9 +1,9 @@
-﻿commit 55f7a30fc53db0827ae28ab3bd7a4b6b9a367af8
+﻿commit e16ec8473d657d8a9fdbadce6604db52703ec4ff
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 11 10:52:46 2021 +0000
+Date:   Thu Nov 11 12:50:08 2021 +0000
 
-    Merged PR 14649:  Fixed From and To date filters from the top in quantity difference views
+    Merged PR 14663: Displayed last 7 days in residue sludge view
     
-    Related work items: #36865
+    Related work items: #33665
 
 branch: master
