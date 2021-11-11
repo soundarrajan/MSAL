@@ -48,7 +48,7 @@ import { count, filter, map } from 'rxjs/operators';
                 <div class="col-md-2">
                   <span
                     class="expand-img"
-                    (click)="openCounterpartyPopup(params.locationId)"
+                    (click)="openCounterpartyPopup(params.reqLocationId)"
                   ></span>
                 </div>
               </div>
@@ -86,7 +86,7 @@ import { count, filter, map } from 'rxjs/operators';
                 <button
                   mat-button
                   class="mid-blue-button proceed-btn"
-                  (click)="addCounterpartiesToLocation(params.locationId)"
+                  (click)="addCounterpartiesToLocation(params.reqLocationId)"
                 >
                   Proceed
                 </button>
@@ -95,7 +95,7 @@ import { count, filter, map } from 'rxjs/operators';
           </div>
         </mat-menu>
         <div class="text">Counterparty Details</div>
-        <div class="count">{{ (selectedSellers$ | async)?.length }}</div>
+        <div class="count">{{ params.selectedSellersCount }}</div>
       </div>
       <!--<div class="action">
         <div class="search"></div>
@@ -274,9 +274,6 @@ export class ShiptechCustomHeaderGroup {
   currentRequestInfo:any;
   sellersCount$: Observable<number>;
 
-  // selectedSellers$: Observable<any[]>;
-  @Select(SpotNegotiationStore.selectedSellers) selectedSellers$: Observable<any[]>;
-
   ngOnInit(): any {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
@@ -286,8 +283,6 @@ export class ShiptechCustomHeaderGroup {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
-
-      //this.selectedSellers = spotNegotiation.selectedSellers ?? [];
     });
   }
 
@@ -332,16 +327,16 @@ export class ShiptechCustomHeaderGroup {
       .slice(0, 7);
   }
 
-  openCounterpartyPopup(locationId) {
+  openCounterpartyPopup(reqLocationId: number) {
     let RequestGroupId = 0;
     let currentRequestLocation = { id: '0', locationId: '0' };
 
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      if(this.currentRequestInfo.requestLocations
-        && this.currentRequestInfo.requestLocations.length > 0){
-        currentRequestLocation = this.currentRequestInfo.requestLocations[0];
+      if(this.currentRequestInfo.requestLocations &&
+          this.currentRequestInfo.requestLocations.length > 0){
+            currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
     }
 
@@ -354,7 +349,7 @@ export class ShiptechCustomHeaderGroup {
         AddCounterpartiesAcrossLocations: false,
         RequestGroupId: RequestGroupId,
         RequestLocationId: parseInt(currentRequestLocation.id),
-        LocationId: locationId
+        LocationId: parseInt(currentRequestLocation.locationId),
       }
     });
 
@@ -379,14 +374,6 @@ export class ShiptechCustomHeaderGroup {
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
-      //this.sellersCount$ = this.selectedSellers$.pipe(map(filterFn=> filterFn(this.requestLocationId))).pipe(count());
-
-      // this.noOfSelectedSellers = selectedSellers.pipe(count());
-      // var locationRows = this.store.select(state=> state.spotNegotiation.locationRows);
-      // this.selectedSellers$ = locationRows.pipe(filter(row=> row.requestId == this.currentRequestInfo.id));
-      // this.selectedSellers$ = this.selectedSellers$.pipe(
-      //   filter(item=> item['requestLocationId'] === this.requestLocationId)
-      // );
     }
 
     this.params.columnGroup
@@ -462,19 +449,16 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-  toBeAddedCounterparties(locationId): SpnegoAddCounterpartyModel[] {
+  toBeAddedCounterparties(reqLocation: any): SpnegoAddCounterpartyModel[] {
     if (this.currentRequestInfo) {
       let RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
-      let currentRequestLocation = this.currentRequestInfo.requestLocations.filter(
-        x => x.locationId === locationId
-      )[0];
 
       return this.selectedCounterparty.map(val =>
           <SpnegoAddCounterpartyModel>{
             requestGroupId: RequestGroupId,
             requestId: this.currentRequestInfo.id,
-            requestLocationId: parseInt(currentRequestLocation.id),
-            locationId: parseInt(currentRequestLocation.locationId),
+            requestLocationId: parseInt(reqLocation.id),
+            locationId: parseInt(reqLocation.locationId),
             id: 0,
             name: '',
             counterpartytypeId: 0,
@@ -572,19 +556,18 @@ export class ShiptechCustomHeaderGroup {
     });
   }
 
-  addCounterpartiesToLocation(locationId) {
-    const selectedCounterparties = this.toBeAddedCounterparties(locationId);
+  addCounterpartiesToLocation(reqLocationId: number) {
+    const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+    let requestLocation = this.currentRequestInfo.requestLocations.filter(x => x.id === reqLocationId)[0];
+
+    const selectedCounterparties = this.toBeAddedCounterparties(requestLocation);
     if (selectedCounterparties.length == 0) return;
 
-    const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    let currentRequestLocationName = this.currentRequestInfo.requestLocations.filter(
-      x => x.locationId === locationId
-    )[0];
     let payload = {
       requestGroupId: parseInt(RequestGroupId),
       isAllLocation: false,
       counterparties: selectedCounterparties,
-      locationName:currentRequestLocationName.locationName
+      locationName: requestLocation.locationName
     };
 
     const response = this._spotNegotiationService.addCounterparties(payload);
@@ -592,9 +575,7 @@ export class ShiptechCustomHeaderGroup {
       if (res.status) {
         this.toastr.success(res.message);
         // Add in Store
-        this.store.dispatch(
-          new AddCounterpartyToLocations(res.counterparties)
-        );
+        this.store.dispatch(new AddCounterpartyToLocations(res.counterparties));
         this.changeDetector.markForCheck();
       } else {
         this.toastr.error(res.message);
