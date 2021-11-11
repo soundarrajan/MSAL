@@ -70,7 +70,11 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       .subtract(7, 'days')
       .format('YYYY-MM-DD')
   );
-  public toDate = new FormControl(moment().format('YYYY-MM-DD'));
+  public toDate = new FormControl(
+    moment()
+      .subtract(1, 'days')
+      .format('YYYY-MM-DD')
+  );
 
   public toggleNewFilter: boolean = true;
   public toggleMASFilter: boolean = true;
@@ -217,7 +221,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     filterParams: {
       ...this.defaultColFilterParams,
       ...BooleanFilterParams
-    }    
+    }
   };
 
   vesselToWatchCol: ITypedColDef<
@@ -244,7 +248,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     filterParams: {
       ...this.defaultColFilterParams,
       ...BooleanFilterParams
-    }     
+    }
   };
 
   productTypeCol: ITypedColDef<
