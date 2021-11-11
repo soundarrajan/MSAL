@@ -117,6 +117,7 @@ import { ContractService } from '../../../contract/src/lib/services/contract.ser
 
 import { NotesDetailsComponent } from './views/invoice-view/details/component/notes-details/notes-details.component';
 import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/details/schedule-dashboard-labels-route.resolver';
+import { SharedModule } from '@shiptech/core/shared/shared.module';
 
 let useAdal = false;
 
@@ -224,7 +225,8 @@ if (
     OverlayModule,
     PortalModule,
     ScrollingModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    SharedModule
   ],
   declarations: [
     MainInvoiceComponent,
