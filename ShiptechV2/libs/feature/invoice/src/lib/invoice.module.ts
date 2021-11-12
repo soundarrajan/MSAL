@@ -119,12 +119,6 @@ import { NotesDetailsComponent } from './views/invoice-view/details/component/no
 import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/details/schedule-dashboard-labels-route.resolver';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 
-let useAdal = false;
-
-if (window.location.hostname.includes('cma')) {
-  useAdal = true;
-}
-
 @NgModule({
   imports: [
     CommonModule,
@@ -135,7 +129,7 @@ if (window.location.hostname.includes('cma')) {
     DSComponentsModule,
     InvoiceRoutingModule,
     LoggingModule,
-    !useAdal
+    !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,

@@ -119,12 +119,6 @@ import { ControlTowerGeneralListComponent } from './views/control-tower/view/com
 import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/components/control-tower-quantity-claims/control-tower-quantity-claims.component';
 import { ControlTowerResidueDifferenceComponent } from './views/control-tower/view/components/control-tower-residue-difference/control-tower-residue-difference.component';
 
-let useAdal = false;
-
-if (window.location.hostname.includes('cma')) {
-  useAdal = true;
-}
-
 @NgModule({
   imports: [
     CommonModule,
@@ -134,7 +128,7 @@ if (window.location.hostname.includes('cma')) {
     MaterialModule,
     DSV2ComponentsModule,
     LoggingModule,
-    !useAdal
+    !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
