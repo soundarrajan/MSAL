@@ -8,6 +8,7 @@ import { environment } from '@shiptech/environment';
 import { AuthService } from './auth.service';
 import { AuthenticationMsalInterceptor } from '../interceptors/authentication-msal-http.interceptor.service.';
 import { MsalInterceptor } from '@azure/msal-angular';
+import { AuthenticationAdalModule } from './authentication-adal.module';
 
 // Note: Workaround angular aot: Function calls are not supported in decorators
 export function authContextFactory(): AuthenticationContext {
@@ -17,21 +18,44 @@ export function authContextFactory(): AuthenticationContext {
 @NgModule()
 export class AuthenticationMsalModule {
   static forRoot(): ModuleWithProviders<any> {
-    return {
-      ngModule: AuthenticationMsalModule,
-      providers: [
-        AuthService,
-        {
-          provide: AuthenticationContext,
-          useFactory: authContextFactory
-        },
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: AuthenticationMsalInterceptor,
-          multi: true
-        }
-      ]
-    };
+    let config: any;
+    if (window.location.hostname.includes('cma')) {
+      config = {
+        ngModule: AuthenticationAdalModule,
+        providers: [
+          AdalService,
+          AuthenticationService,
+          {
+            provide: AuthenticationContext,
+            useFactory: authContextFactory
+          },
+          {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthenticationAdalInterceptor,
+            multi: true
+          }
+        ]
+      };
+    } else {
+      config = {
+        ngModule: AuthenticationMsalModule,
+        providers: [
+          AdalService,
+          AuthenticationService,
+          AuthService,
+          {
+            provide: AuthenticationContext,
+            useFactory: authContextFactory
+          },
+          {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthenticationMsalInterceptor,
+            multi: true
+          }
+        ]
+      };
+    }
+    return config;
   }
 
   static forFeature(): ModuleWithProviders<any> {
