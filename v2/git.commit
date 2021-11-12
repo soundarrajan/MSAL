@@ -1,11 +1,7 @@
-﻿commit 9ae26f1a22bb55a1a3160cd13d830269c7a8153f
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Nov 11 17:12:22 2021 +0000
+﻿commit 0d7324b0dc185cddee7d3ade4565c2f1af71b288
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Fri Nov 12 08:57:41 2021 +0200
 
-    Merged PR 14672: Fix mapping
-    
-    Fix mapping
-    
-    Related work items: #36779
+    Applied adal only for hostname which contains cma(removed pmg)
 
 branch: master
