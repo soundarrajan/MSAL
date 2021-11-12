@@ -106,9 +106,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
             dateFrom: moment()
               .subtract(timeDeltaValue, timeDeltaUnit)
               .format('YYYY-MM-DD'),
-            dateTo: moment()
-              .subtract(1, 'day')
-              .format('YYYY-MM-DD'),
+            dateTo: moment().format('YYYY-MM-DD'),
             type: 'inRange',
             filterType: 'date'
           };
@@ -118,9 +116,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
               dateFrom: moment()
                 .subtract(timeDeltaValue, timeDeltaUnit)
                 .format('YYYY-MM-DD'),
-              dateTo: moment()
-                .subtract(1, 'day')
-                .format('YYYY-MM-DD'),
+              dateTo: moment().format('YYYY-MM-DD'),
               type: 'inRange',
               filterType: 'date'
             }

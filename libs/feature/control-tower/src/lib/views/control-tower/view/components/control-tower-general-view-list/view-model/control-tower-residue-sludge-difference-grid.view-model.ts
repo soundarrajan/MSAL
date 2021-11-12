@@ -42,6 +42,7 @@ import {
   ControlTowerResidueSludgeDifferenceListColumnsLabels,
   ControlTowerResidueSludgeDifferenceListExportColumns
 } from '../list-columns/control-tower-residue-sludge-difference-list.columns';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(
   prop: keyof IControlTowerResidueSludgeDifferenceItemDto
@@ -54,9 +55,10 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   public searchText: string;
   public exportUrl: string;
   public newFilterSelected: boolean = false;
+
   public fromDate = new FormControl(
     moment()
-      .subtract(7, 'days')
+      .subtract(6, 'days')
       .format('YYYY-MM-DD')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
@@ -201,7 +203,12 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       return null;
     },
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   vesselToWatchCol: ITypedColDef<
@@ -225,7 +232,12 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       return null;
     },
     tooltip: params => (params.value ? params.value : ''),
-    width: 150
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   sludgePercentageCol: ITypedColDef<
@@ -437,7 +449,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-residue-sludge-list-grid-2',
+      'control-tower-residue-sludge-list-grid-3',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
