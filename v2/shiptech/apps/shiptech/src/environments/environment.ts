@@ -2,20 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-let environmentBuild: any = {
+export let environment = {
   production: false,
-
-  instrumentationKey: '61f82289-6395-460f-81ca-9cb0da7407b2'
+  instrumentationKey: '61f82289-6395-460f-81ca-9cb0da7407b2',
+  useAdal: false
 };
-
-if (window.location.hostname.includes('cma')) {
-  environmentBuild.useAdal = true;
-} else {
-  environmentBuild.useAdal = false;
-}
-console.log(environmentBuild);
-export let environment = environmentBuild;
-console.log(environment);
 
 /*
  * For easier debugging in development mode, you can import the following file
