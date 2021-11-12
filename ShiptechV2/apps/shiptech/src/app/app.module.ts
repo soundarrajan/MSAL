@@ -64,60 +64,11 @@ import {
   BootstrapForAdalService
 } from '@shiptech/core/bootstrap-for-adal.service';
 
-export function getLegacySettings(): string {
-  var hostName = window.location.hostname;
-  var config = '/config/' + hostName + '.json';
-  if (['localhost'].indexOf(hostName) != -1) {
-    config = '/config/config.json';
-  }
-  return config;
+if (
+  document.getElementsByTagName('body')[0].getAttribute('auth-lib') == 'adal'
+) {
+  environment.useAdal = true;
 }
-
-let legacyConfig = null;
-
-export function MSALInstanceFactory(): IPublicClientApplication {
-  const config = JSON.parse(localStorage.getItem('config'));
-  const baseOrigin = new URL(window.location.href).origin;
-  legacyConfig = config;
-  return new PublicClientApplication({
-    auth: {
-      clientId: config.authV2.clientId,
-      authority: config.authV2.instance + config.authV2.tenantId,
-      redirectUri: '/v2/'
-    },
-    cache: {
-      cacheLocation: 'localStorage'
-    }
-  });
-}
-
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return {
-    interactionType: InteractionType.Redirect
-  };
-}
-
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const config = JSON.parse(localStorage.getItem('config'));
-  legacyConfig = config;
-  const protectedResourceMap = new Map<string, Array<string>>();
-  Object.keys(legacyConfig.authV2.endpoints).forEach(prop => {
-    protectedResourceMap.set(prop, legacyConfig.authV2.scopes);
-  });
-
-  return {
-    interactionType: InteractionType.Redirect,
-    protectedResourceMap
-  };
-}
-
-// eslint-disable-next-line @typescript-eslint/tslint/config
-export function MSALInterceptConfigFactory() {
-  return {
-    interactionType: InteractionType.Redirect
-  };
-}
-console.log(environment.useAdal);
 
 @NgModule({
   declarations: [AppComponent],
