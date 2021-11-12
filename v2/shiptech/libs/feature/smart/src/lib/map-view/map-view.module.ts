@@ -11,12 +11,6 @@ import { ComponentsComponent } from './components/components.component';
 import { PortDetailsComponent } from './port-details/port-details.component';
 import { environment } from '@shiptech/environment';
 
-let useAdal = false;
-
-if (window.location.hostname.includes('cma')) {
-  useAdal = true;
-}
-
 @NgModule({
   declarations: [
     MapViewHomeComponent,
@@ -26,7 +20,7 @@ if (window.location.hostname.includes('cma')) {
   ],
   imports: [
     CommonModule,
-    !useAdal
+    !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     MapViewRoutingModule,

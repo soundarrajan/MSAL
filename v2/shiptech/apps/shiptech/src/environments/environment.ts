@@ -1,11 +1,16 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+let useAdal = false;
+
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
+}
 
 export let environment = {
   production: false,
   instrumentationKey: '61f82289-6395-460f-81ca-9cb0da7407b2',
-  useAdal: window.location.hostname.indexOf('cma') != -1 ? true : false
+  useAdal: true
 };
 
 /*
