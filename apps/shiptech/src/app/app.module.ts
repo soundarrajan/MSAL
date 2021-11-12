@@ -130,9 +130,7 @@ console.log(environment.useAdal);
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    !environment.useAdal
-      ? AuthenticationMsalModule.forRoot()
-      : AuthenticationAdalModule.forRoot(),
+    AuthenticationMsalModule.forRoot(),
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
     TitleModule,
@@ -144,7 +142,7 @@ console.log(environment.useAdal);
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
-    !environment.useAdal ? MsalConfigDynamicModule.forRoot() : []
+    MsalConfigDynamicModule.forRoot()
   ],
   providers: [
     {
@@ -152,22 +150,16 @@ console.log(environment.useAdal);
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
-    !environment.useAdal
-      ? {
-          provide: APP_INITIALIZER,
-          useFactory: bootstrapForMsalApplication,
-          multi: true,
-          deps: [BootstrapForMsalService]
-        }
-      : {
-          provide: APP_INITIALIZER,
-          useFactory: bootstrapForAdalApplication,
-          multi: true,
-          deps: [BootstrapForAdalService]
-        },
+
+    {
+      provide: APP_INITIALIZER,
+      useFactory: bootstrapForAdalApplication,
+      multi: true,
+      deps: [BootstrapForAdalService]
+    },
     BootstrapResolver
   ],
-  bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {

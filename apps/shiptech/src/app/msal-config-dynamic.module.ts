@@ -15,7 +15,8 @@ import {
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
   MSAL_INTERCEPTOR_CONFIG,
-  MsalGuardConfiguration
+  MsalGuardConfiguration,
+  MsalRedirectComponent
 } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 let legacyConfig = null;
@@ -69,30 +70,34 @@ export function MSALInterceptConfigFactory() {
 })
 export class MsalConfigDynamicModule {
   static forRoot() {
-    return {
-      ngModule: MsalConfigDynamicModule,
-      providers: [
-        {
-          provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory
-        },
-        {
-          provide: MSAL_GUARD_CONFIG,
-          useFactory: MSALGuardConfigFactory
-        },
-        {
-          provide: MSAL_INTERCEPTOR_CONFIG,
-          useFactory: MSALInterceptorConfigFactory
-        },
-        MsalService,
-        MsalGuard,
-        MsalBroadcastService,
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: MsalInterceptor,
-          multi: true
-        }
-      ]
-    };
+    if (!window.location.hostname.includes('cma')) {
+      return {
+        ngModule: MsalConfigDynamicModule,
+        providers: [
+          {
+            provide: MSAL_INSTANCE,
+            useFactory: MSALInstanceFactory
+          },
+          {
+            provide: MSAL_GUARD_CONFIG,
+            useFactory: MSALGuardConfigFactory
+          },
+          {
+            provide: MSAL_INTERCEPTOR_CONFIG,
+            useFactory: MSALInterceptorConfigFactory
+          },
+          MsalService,
+          MsalGuard,
+          MsalBroadcastService,
+          {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MsalInterceptor,
+            multi: true
+          }
+        ],
+        bootstrap: [MsalRedirectComponent]
+      };
+    }
+    return [];
   }
 }
