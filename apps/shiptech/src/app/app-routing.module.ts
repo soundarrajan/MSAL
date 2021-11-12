@@ -10,6 +10,11 @@ import { BootstrapResolver } from './resolver/bootstrap-resolver';
 import { MsalGuard } from '@azure/msal-angular';
 import { environment } from '@shiptech/environment';
 
+if (
+  document.getElementsByTagName('body')[0].getAttribute('auth-lib') == 'adal'
+) {
+  environment.useAdal = true;
+}
 console.log(environment.useAdal);
 const routes: Routes = environment.useAdal
   ? [
