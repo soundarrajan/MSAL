@@ -13,8 +13,9 @@ if (window.location.hostname.includes('cma')) {
 } else {
   environmentBuild.useAdal = false;
 }
-
+console.log(environmentBuild);
 export let environment = environmentBuild;
+console.log(environment);
 
 /*
  * For easier debugging in development mode, you can import the following file
