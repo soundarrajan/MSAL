@@ -1,7 +1,7 @@
-﻿commit 70773a92e3345210431a2e2c5b8185195359f23e
+﻿commit 83f1e5e0afee6d0ad622b991cc537d20fb7874e7
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Nov 12 13:25:52 2021 +0200
+Date:   Fri Nov 12 13:42:42 2021 +0200
 
-    Fixed build error
+    Try to fix adal auth
 
 branch: master
