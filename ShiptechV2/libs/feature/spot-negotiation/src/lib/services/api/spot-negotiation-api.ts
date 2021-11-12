@@ -9,7 +9,8 @@ import { catchError, map } from 'rxjs/operators';
 import { ISpotNegotiationApiService } from './spot-negotiation.api.service.interface';
 
 export const SpotNegotiationApiPaths = {
-  tenantConfiguration: `api/admin/tenantConfiguration/get`,
+  // tenantConfiguration: `api/admin/tenantConfiguration/get`,
+  tenantConfiguration: `api/admin/getTenantConfiguration`,
   staticLists: `api/infrastructure/static/lists`,
   counterpartyLists: `api/masters/counterparties/list`,
   addCounterparties: `groups/addSellers`,
@@ -49,11 +50,11 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
   @ObservableException()
-  getTenantConfiguration(request: any): Observable<any> {
+  getTenantConfiguration(): Observable<any> {
     return this.http
-      .post<any>(
-        `${this._adminApiUrl}/${SpotNegotiationApiPaths.tenantConfiguration}`,
-        { Payload: request }
+      .get<any>(
+        //`${this._adminApiUrl}/${SpotNegotiationApiPaths.tenantConfiguration}`,
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.tenantConfiguration}`
       )
       .pipe(
         map((body: any) => body),
