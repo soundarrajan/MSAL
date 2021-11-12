@@ -2,17 +2,14 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const useAdal = window.location.hostname.includes('cma');
-export class UseAdalSelectors {
-  static get useAdalSelector() {
-    return useAdal;
-  }
+let useAdal = false;
+if (window.location.hostname.includes('cma')) {
+  useAdal = true;
 }
-
 export let environment = {
   production: false,
   instrumentationKey: '61f82289-6395-460f-81ca-9cb0da7407b2',
-  useAdal: UseAdalSelectors.useAdalSelector
+  useAdal: useAdal
 };
 
 /*
