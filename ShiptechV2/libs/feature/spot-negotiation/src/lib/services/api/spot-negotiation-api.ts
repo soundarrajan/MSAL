@@ -10,7 +10,7 @@ import { ISpotNegotiationApiService } from './spot-negotiation.api.service.inter
 
 export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
-  tenantConfiguration: `api/admin/getTenantConfiguration`,
+  tenantConfiguration: `Groups/getTenantConfiguration`,
   staticLists: `api/infrastructure/static/lists`,
   counterpartyLists: `api/masters/counterparties/list`,
   addCounterparties: `groups/addSellers`,
@@ -53,8 +53,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   getTenantConfiguration(): Observable<any> {
     return this.http
       .get<any>(
-        //`${this._adminApiUrl}/${SpotNegotiationApiPaths.tenantConfiguration}`,
-        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.tenantConfiguration}`
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.tenantConfiguration}`
       )
       .pipe(
         map((body: any) => body),

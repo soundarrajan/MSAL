@@ -28,8 +28,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload = False
    */
   @ObservableException()
-  getTenantConfiguration(payload: boolean): Observable<unknown> {
-    return this.spotNegotiationApi.getTenantConfiguration(payload);
+  getTenantConfiguration(): Observable<unknown> {
+    return this.spotNegotiationApi.getTenantConfiguration();
   }
 
   /**

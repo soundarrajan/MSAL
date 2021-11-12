@@ -15,7 +15,8 @@ import {
   SetRequestGroupId,
   SetCurrentRequest,
   SetCurrentRequestSmallInfo,
-  SetRequests
+  SetRequests,
+  SetTenantConfigurations
 } from './actions/request-group-actions';
 
 export class SpotNegotiationStoreModel {
@@ -36,6 +37,7 @@ export class SpotNegotiationStoreModel {
   currentRequestSmallInfo: object | null;
   requests: Array<any>;
   formulaPricingDetails: object | null;
+  tenantConfigurations:object|null;
   marketPriceHistory: object | null;
   offerPriceHistory: object | null;
 
@@ -53,6 +55,7 @@ export class SpotNegotiationStoreModel {
     this.currentRequestSmallInfo = null;
     this.currentRequest = null;
     this.formulaPricingDetails = null;
+    this.tenantConfigurations=null;
     this.marketPriceHistory = null;
     this.commentsForCurrentRequest = [];
     this.sellerComments = [];
@@ -77,6 +80,7 @@ export class SpotNegotiationStoreModel {
     additionalCost: [],
     availableTermContracts: [],
     formulaPricingDetails: {},
+    tenantConfigurations:{},
     sellerRating: [],
     offerPriceHistory: {},
     sellerComments: [],
@@ -115,6 +119,16 @@ export class SpotNegotiationStore {
   ): void {
     patchState({
       requests: payload
+    });
+  }
+  // Tenant Configuration
+  @Action(SetTenantConfigurations)
+  setTenantConfigurations(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetTenantConfigurations
+  ): void {
+    patchState({
+      tenantConfigurations: payload
     });
   }
 

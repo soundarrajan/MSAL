@@ -34,3 +34,8 @@ export class AddCounterpartyToLocations{
 
   constructor(public payload: any) {}
 }
+export class SetTenantConfigurations {
+  static readonly type = '[TenantConfigurations] Set';
+
+  constructor(public payload: any) {}
+}

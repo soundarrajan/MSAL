@@ -13,7 +13,8 @@ import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
   SetRequestGroupId,
-  SetRequests
+  SetRequests,
+  SetTenantConfigurations
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
@@ -61,6 +62,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.getRequestGroup();
     this.getGroupOfSellers();
     this.getCounterpartyList();
+    this.getTenantConfugurations();
   }
 
   getRequestGroup(): void {
@@ -211,5 +213,17 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
 
+  getTenantConfugurations():void{
+    const response = this.spotNegotiationService.getTenantConfiguration();
+    response.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      } else {
+        // Populate Store
+        this.store.dispatch(new SetTenantConfigurations(res.tenantConfiguration));
+      }
+    });
+  }
   ngOnDestroy(): void {}
 }

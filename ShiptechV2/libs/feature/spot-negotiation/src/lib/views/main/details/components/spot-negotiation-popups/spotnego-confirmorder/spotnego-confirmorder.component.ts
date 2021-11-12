@@ -37,6 +37,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   requestOfferItems:any=[];
   selectedOffers:any=[];
   currentRequestInfo: any=[];
+  tenantConfiguration:any;
   responseOrderData:any;
   totalPriceValue:number;
   errorMessages: string;
@@ -72,10 +73,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       this.appConfig.openLinksInNewTab ? '_blank' : '_self'
     );
   }
-  //popup grid fill the value's..
+  //popup grid data fill the value's..
   getSelectedLocationRowsForLocation(){
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo[0] = spotNegotiation.currentRequestSmallInfo;
+      this.tenantConfiguration=spotNegotiation.tenantConfigurations;
     });
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows
@@ -326,21 +328,21 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           rqV.ExistingOrderId = foundRelatedOrder;
         }
       });
-      // if capture conf qty == "Offer", confirmed qty is visible & required
-      //TODO if(this.captureConfirmedQuantity.name == 'Offer') {
-      let errorConf = false;
-      // this.selectedOffers.foreach(( val,key) => {
-      //   if (!val.confirmedQuantity && val.isCheckBox) {
-      //     this.requestOffers[`confirmedQuantity_${key}`].$setValidity('required', false);
-      //     errorConf = true;
-      //   }
-      // });
-      if (errorConf) {
-        this.toaster.error('Confirmed Quantity is required!');
-        this.buttonsDisabled = false;
-        return;
+      // if capture conf qty == "Offer", confirmed qty is visible & required..Id-1 means offer
+     if(this.tenantConfiguration.captureConfirmedQuantityId == 1) {
+        let errorConf = false;
+        this.selectedOffers.foreach(( val,key) => {
+          if (!val.ConfirmedQuantity ) {
+            this.selectedOffers[`confirmedQuantity_${key}`].$setValidity('required', false);
+            errorConf = true;
+          }
+        });
+          if (errorConf) {
+            this.toaster.error('Confirmed Quantity is required!');
+            this.buttonsDisabled = false;
+            return;
+          }
       }
-      //}
       this.errorMessages = errorMessages.join('\n\n');
       if (errorMessages.length > 0) {
         this.toaster.error(this.errorMessages);
@@ -362,7 +364,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           var receivedOffers = res;
           this.spinner.hide();
           if(res instanceof Object && res.payload.length > 0 ){
-            this.openEditOrder(receivedOffers.payload);
+            //this.openEditOrder(receivedOffers.payload);
+            const baseOrigin = new URL(window.location.href).origin;
+            window.open(`${baseOrigin}/#/edit-order/${receivedOffers.payload}`, '_blank');
             this.toaster.success('order created successfully.')
           }
           else if(res instanceof Object){
@@ -430,9 +434,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   requirementsAreCorrectForConfirm() {
     var requirement;
     var isCorrect = true;
-    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.locationsRows
-    });
     var existingRequestProductIds = [];
     if (this.selectedOffers.length == 0) {
         return false;
