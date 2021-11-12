@@ -120,10 +120,7 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/invoice-view/detai
 
 let useAdal = false;
 
-if (
-  window.location.hostname.includes('cma') ||
-  window.location.hostname.includes('pmg')
-) {
+if (window.location.hostname.includes('cma')) {
   useAdal = true;
 }
 
