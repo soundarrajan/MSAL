@@ -55,27 +55,18 @@ export class BootstrapForAdalService {
     // TODO: Implement proper logging here
 
     // Note: Order is very important here.
-    if (window.location.hostname.includes('cma')) {
-      return this.loadAppConfig().pipe(
-        tap(() => this.setupLogging()),
-        concatMap(() => this.setupAuthentication()),
-        concatMap(() => this.setupDeveloperToolbar()),
-        concatMap(() => this.loadUserProfile()),
-        concatMap(() => this.loadGeneralTenantSettings()),
-        concatMap(() => this.legacyLookupsDatabase.init()),
-        concatMap(() => this.legacyCache.load()),
-        concatMap(() => this.loadKnownLookups()),
-        tap(() => this.setupAgGrid()),
-        tap(() => this._initialized.next())
-      );
-    } else {
-      return this.loadAppConfig().pipe(
-        tap(() => this.setupLogging()),
-        concatMap(() => this.setupDeveloperToolbar()),
-        tap(() => this.setupAgGrid()),
-        tap(() => this._initialized.next())
-      );
-    }
+    return this.loadAppConfig().pipe(
+      tap(() => this.setupLogging()),
+      concatMap(() => this.setupAuthentication()),
+      concatMap(() => this.setupDeveloperToolbar()),
+      concatMap(() => this.loadUserProfile()),
+      concatMap(() => this.loadGeneralTenantSettings()),
+      concatMap(() => this.legacyLookupsDatabase.init()),
+      concatMap(() => this.legacyCache.load()),
+      concatMap(() => this.loadKnownLookups()),
+      tap(() => this.setupAgGrid()),
+      tap(() => this._initialized.next())
+    );
   }
 
   private setupLogging(): void {
