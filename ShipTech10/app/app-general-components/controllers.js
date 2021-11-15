@@ -2137,7 +2137,8 @@
                 };
                 var formGotoDocument = function(cellValue, options, rowObject) {
                     // return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ')" title="Download">' + cellValue + '</a>';
-                    return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ",'" + rowObject.name + "','" + rowObject.content +  '\'  )" title="Download">' + cellValue + "</a>";
+                    let fileName = rowObject.name.replaceAll(`'`,"-").replaceAll(`"`,"-");
+                    return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ",'" + fileName + "','" + rowObject.content +  '\'  )" title="Download">' + cellValue + "</a>";
                 };
                 // collection Read -- {code, collectionName, id, name}
                 var collectionRead = function(cellValue, options, rowObject) {
