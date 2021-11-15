@@ -1,11 +1,11 @@
-﻿commit 2aca31ad01c382f2f598f250f4e953baec7e4dbe
+﻿commit fe48601d4867deaa2f4fc5eadb19ed50f4d79223
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 15 09:47:27 2021 +0000
+Date:   Mon Nov 15 12:56:07 2021 +0000
 
-    Merged PR 14701: Fixed refreshing the quantity view page(36890)
+    Merged PR 14708: Fixed saving of comments in the alert action pop-up
     
-    Fixed refreshing the quantity view page(36890)
+    Fixed saving of comments in the alert action pop-up
     
-    Related work items: #36890
+    Related work items: #36852
 
 branch: master

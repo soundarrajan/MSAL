@@ -7,6 +7,7 @@ import moment from 'moment';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
+import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 
 @Component({
   selector: 'control-tower-popup',
@@ -26,6 +27,7 @@ export class ControlTowerPopupComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     public format: TenantFormattingService,
     public dialogRef: MatDialogRef<ControlTowerPopupComponent>,
+    private controlTowerService: ControlTowerService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.comments = data.comments;
@@ -46,16 +48,27 @@ export class ControlTowerPopupComponent implements OnInit {
     this.status = status;
   }
   statusChanged() {
-    let statusFromPopUp = this.status;
-    let actionStatus = _.find(this.controlTowerActionStatus, function(object) {
-      return object.id == statusFromPopUp;
-    });
-    let data = {
+    let payloadData = {
+      differenceType: this.data.differenceType,
+      quantityControlReport: {
+        id: this.data.quantityControlReport.id
+      },
       status: { id: +this.status },
-      comments: this.comments,
-      actionStatus: actionStatus
+      comments: this.comments
     };
-    this.dialogRef.close({ data: data });
+
+    this.controlTowerService
+      .saveQuantityResiduePopUp(payloadData, payloadData => {
+        console.log('asd');
+      })
+      .pipe()
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.dialogRef.close();
+        }
+      });
   }
   closeDialog() {
     this.dialogRef.close();
