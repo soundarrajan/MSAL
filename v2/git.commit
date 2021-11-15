@@ -1,11 +1,11 @@
-﻿commit 2e1683c44fb6357d0ed0f324beca4e57e7bbd507
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 15 13:35:29 2021 +0000
+﻿commit b0652a1c43f3c9d0d519cfb1269c0d520b7d1a1e
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Nov 15 15:33:59 2021 +0000
 
-    Merged PR 14712: Used adal authentication
+    Merged PR 14714: Added default sorting based on SurveyorDate
     
-    Used adal authentication
+    Added default sorting based on SurveyorDate
     
-    Related work items: #36542
+    Related work items: #36873
 
 branch: master
