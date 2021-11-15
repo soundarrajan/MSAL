@@ -1,7 +1,11 @@
-﻿commit a6f7db620317183e419337e205dc2ab593c9f46e
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 15 10:09:04 2021 +0200
+﻿commit 2aca31ad01c382f2f598f250f4e953baec7e4dbe
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Nov 15 09:47:27 2021 +0000
 
-    Used msal authentication
+    Merged PR 14701: Fixed refreshing the quantity view page(36890)
+    
+    Fixed refreshing the quantity view page(36890)
+    
+    Related work items: #36890
 
 branch: master
