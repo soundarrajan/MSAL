@@ -493,31 +493,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     ];
   }
 
-  public updateValues(ev, values): void {
-    if (values) {
-      let payloadData = {
-        differenceType: this.differenceType,
-        quantityControlReport: {
-          id: ev.data.quantityControlReport.id
-        },
-        status: values.data.status,
-        comments: values.data.comments
-      };
-
-      this.controlTowerService
-        .saveQuantityResiduePopUp(payloadData, payloadData => {
-          console.log('asd');
-        })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((response: any) => {
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            this.gridApi.purgeServerSideCache();
-          }
-        });
-    }
-    return;
+  public updateValues(): void {
+    this.gridApi.purgeServerSideCache();
   }
 
   public filterGridNew(statusName: string): void {

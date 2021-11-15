@@ -399,6 +399,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     type
   ) {
     let dialogData: IControlTowerRowPopup = {
+      differenceType: this.differenceType,
+      quantityControlReport: {
+        id: ev.data.quantityControlReport.id
+      },
       popupType: type == 'Supply' ? 'supply' : 'rob',
       title:
         type == 'Supply'
@@ -446,8 +450,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogRef.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
               console.log(ev);
-              this.gridViewModel.updateValues(ev, result);
-              // this.savePopupChanges(ev, result);
+              this.gridViewModel.updateValues();
             });
           }
         },
@@ -458,25 +461,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  savePopupChanges = (ev, result) => {
-    if (result) {
-      let payloadData = {
-        differenceType: this.differenceType,
-        quantityControlReport: {
-          id: ev.data.quantityControlReport.id
-        },
-        status: result.data.status,
-        comments: result.data.comments
-      };
-      this.controlTowerService
-        .saveQuantityResiduePopUp(payloadData, payloadData => {
-          console.log('asd');
-        })
-        .pipe()
-        .subscribe();
-    }
-  };
 
   actionCellClickedResidue = (ev: any) => {
     this.legacyLookupsDatabase
@@ -520,6 +504,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     type
   ) {
     let dialogData: IControlTowerRowPopup = {
+      differenceType: this.differenceType,
+      quantityControlReport: {
+        id: ev.data.quantityControlReport.id
+      },
       popupType: 'sludge',
       title: 'Residue Sludge Difference',
       measuredQuantityLabel: 'Measured ROB',
@@ -562,8 +550,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogRef.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
               console.log(ev);
-              this.gridViewModel.updateValues(ev, result);
-              // this.savePopupChanges(ev, result);
+              this.gridViewModel.updateValues();
             });
           }
         },
