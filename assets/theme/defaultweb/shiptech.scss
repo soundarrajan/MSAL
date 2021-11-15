@@ -10708,7 +10708,10 @@ width: 25px;
     opacity: 0.4;
     &:hover {
       cursor:not-allowed;
-    }
+    };
+  }
+  .no-price-data{
+    text-align: center;
   }
   .grid-in-accordion{
     .mat-expansion-panel{

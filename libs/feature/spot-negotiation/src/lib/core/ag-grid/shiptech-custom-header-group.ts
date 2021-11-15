@@ -144,7 +144,7 @@ import { count, filter, map } from 'rxjs/operators';
     </div>
     <div class="resize-grid-header" *ngIf="params.type == 'bg-header'">
       <div class="options">
-        <div class="checkBox">
+        <div class="checkBox" matTooltip="{{params.product.productName}}">
           <mat-checkbox class="noborder" [checked]="true">{{
             params.product.productName
           }}</mat-checkbox>
@@ -548,7 +548,7 @@ export class ShiptechCustomHeaderGroup {
       "targetPrice": parseInt(this.targetValue)
       }
     };
-    const response = this._spotNegotiationService.saveTragetPrice(payload);
+    const response = this._spotNegotiationService.saveTargetPrice(payload);
     response.subscribe((res: any) => {
       if (res.status) {
         //this.toastr.success(res.message);

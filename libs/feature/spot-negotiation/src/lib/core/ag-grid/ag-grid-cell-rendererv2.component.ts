@@ -226,14 +226,16 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
     </div>
 
     <!-- Offer price cell -->
-    <div *ngIf="params.type == 'price-calc'" [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' ">
+    <!-- [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' " -->
+    <div *ngIf="params.type == 'price-calc'" [ngClass] = "!isOfferRequestAvailable()? 'no-price-data' : ''">
       <!-- TODO check this code... -->
+      <span *ngIf="!isOfferRequestAvailable()">-</span>
+      <div *ngIf="isOfferRequestAvailable()">
       <div class="price-calc static-data" *ngIf="params.value === '100.00'">
         <span class="duplicate-icon"></span>
         $ {{ params.value }}
       </div>
-      <div
-        [ngClass]="params.value ? 'price-calc active' : 'price-calc'"
+      <div class='price-calc active'
         [matMenuTriggerFor]="priceMenupopup"
         #pricePopupTrigger="matMenuTrigger"
         (click)="pricePopupTrigger.closeMenu()"
@@ -300,6 +302,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           #menuTriggerHover="matMenuTrigger"
           *ngIf="showFormula"
         ></div>
+      </div>
       </div>
     </div>
     <!-- End offer price cell -->
@@ -423,7 +426,7 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
 
     <div *ngIf="params.type == 'diff'" class="addTpr">
     <span *ngIf="!params.value">-</span>
-      <span>{{ priceFormatValue(params.value) }}</span>
+    <span>{{ priceFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
