@@ -6,7 +6,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { KnownControlTowerRoutes } from 'libs/feature/control-tower/src/lib/control-tower.routes';
 
 @Component({
   selector: 'app-control-tower-home-new',
@@ -26,7 +28,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   selectedVal2: string = 'differences';
   selectedVal3: string = 'differences';
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     //load default landing page screen based on user preference
     this.loadDefaultLandingPage();
   }
@@ -76,14 +78,35 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
       this.showQuality = true;
       this.showQuantity = false;
       this.showResidue = false;
+      this.router
+        .navigate([
+          KnownPrimaryRoutes.ControlTower,
+          `${KnownControlTowerRoutes.ControlTowerList}`,
+          5
+        ])
+        .then(() => {});
     } else if ($event.value == 'quantity') {
       this.showQuality = false;
       this.showQuantity = true;
       this.showResidue = false;
+      this.router
+        .navigate([
+          KnownPrimaryRoutes.ControlTower,
+          `${KnownControlTowerRoutes.ControlTowerList}`,
+          6
+        ])
+        .then(() => {});
     } else if ($event.value == 'residue') {
       this.showQuality = false;
       this.showQuantity = false;
       this.showResidue = true;
+      this.router
+        .navigate([
+          KnownPrimaryRoutes.ControlTower,
+          `${KnownControlTowerRoutes.ControlTowerList}`,
+          7
+        ])
+        .then(() => {});
     } else {
       this.showQuality = true;
       this.showQuantity = false;
