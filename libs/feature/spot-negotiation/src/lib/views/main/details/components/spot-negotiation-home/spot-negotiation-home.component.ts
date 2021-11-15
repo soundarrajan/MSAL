@@ -35,6 +35,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   selectedSellerList: any[];
   currentRequestInfo: any;
+  tenantConfiguration:any;
   RequestGroupID: number;
   constructor(
     private route: ActivatedRoute,
@@ -53,6 +54,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
        this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
        this.requestOptions = spotNegotiation.requests;
+       this.tenantConfiguration=spotNegotiation.tenantConfigurations;
      });
   }
 
