@@ -370,7 +370,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     let calcTotalOffer = 0;
     currentLocationAllProductsIds.map(id => {
-      calcTotalOffer += Number(this.getRowProductDetails(futureRow, id).price)
+      calcTotalOffer += Number(this.getRowProductDetails(futureRow, id).amount)
     });
     futureRow.totalOffer = calcTotalOffer;
 
