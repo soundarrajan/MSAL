@@ -1,11 +1,11 @@
-﻿commit b0652a1c43f3c9d0d519cfb1269c0d520b7d1a1e
+﻿commit 1d5e1a561176537dc6727462f2e5aa0c84461a78
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Nov 15 15:33:59 2021 +0000
+Date:   Mon Nov 15 15:42:53 2021 +0000
 
-    Merged PR 14714: Added default sorting based on SurveyorDate
+    Merged PR 14715: Fix export
     
-    Added default sorting based on SurveyorDate
+    Fix export
     
-    Related work items: #36873
+    Related work items: #36869
 
 branch: master
