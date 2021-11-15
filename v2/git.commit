@@ -1,7 +1,7 @@
-﻿commit 3da31a20b952e81b09c4fe8323f4d36f71492342
+﻿commit e967fdc4f2404b7fb2e6bacc49cde7867ede5353
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Nov 12 17:08:17 2021 +0200
+Date:   Mon Nov 15 09:40:13 2021 +0200
 
-    Worked on adal error
+    Use adal
 
 branch: master
