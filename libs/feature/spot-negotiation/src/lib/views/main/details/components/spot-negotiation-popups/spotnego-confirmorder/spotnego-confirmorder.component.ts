@@ -2,24 +2,18 @@ import {
   Component,
   OnInit,
   Inject,
-  ViewChild,
-  ElementRef
+  ViewChild
 } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { Store } from '@ngxs/store';
-import { DecimalPipe, KeyValue } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { ValueService } from 'ag-grid-community';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.filter';
-import { now } from 'moment';
 import { AgGridDatetimePickerToggleComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-datetimePicker-Toggle';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
-import { groupBy } from 'lodash';
-import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { KeyValue } from '@angular/common';
 @Component({
   selector: 'app-spotnego-confirmorder',
   templateUrl: './spotnego-confirmorder.component.html',
@@ -42,6 +36,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   responseOrderData:any;
   totalPriceValue:number;
   errorMessages: string;
+  private quantityFormatter: Intl.NumberFormat;
+  private priceFormatter: Intl.NumberFormat;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
     private store: Store,
@@ -51,11 +47,18 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     private urlService: UrlService,
     public appConfig: AppConfig,
-    public format:TenantFormattingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.getRequests();
     this.getSelectedLocationRowsForLocation();
+    this.quantityFormatter = new Intl.NumberFormat('en', {
+      minimumFractionDigits: this.tenantConfiguration.quantityPrecision,
+      maximumFractionDigits: this.tenantConfiguration.quantityPrecision
+    });
+    this.priceFormatter = new Intl.NumberFormat('en', {
+      minimumFractionDigits: this.tenantConfiguration.pricePrecision,
+      maximumFractionDigits: this.tenantConfiguration.pricePrecision
+    });
   }
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
@@ -165,7 +168,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         ProductName: requestProducts.productName,
         minQuantity: requestProducts.minQuantity,
         MaxQuantity: requestProducts.maxQuantity,
-        ConfirmedQuantity: this.format.quantity(requestProducts.maxQuantity),
+        ConfirmedQuantity: this.price(requestProducts.maxQuantity),
         UomId: requestProducts.uomId,
         WorkflowId:requestProducts.workflowId,
         productStatus:{
@@ -213,16 +216,41 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     a: KeyValue<number, any>,
     b: KeyValue<number, any>
   ): number => 0;
+
   //Calculate TatalPrice
   totalprice(rowIndex) {
-    let pricePrecision;
-    pricePrecision=this.tenantConfiguration.pricePrecision;
     const currentRowIndex = rowIndex;
     const offers=this.requestOfferItems[currentRowIndex];
     if(offers.ConfirmedQuantity != 'undefined' && offers.OfferPrice!= 'undefined' ){
-          this.requestOfferItems[currentRowIndex].TotalPrice=offers.OfferPrice*offers.ConfirmedQuantity;
+      this.requestOfferItems[currentRowIndex].TotalPrice=offers.OfferPrice*offers.ConfirmedQuantity;
     }
     return this.requestOfferItems;
+  }
+  //quantity is precision based on tenant settings
+  quantity(value: number | string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+
+    const actualValue =
+      typeof value !== 'number'
+        ? parseFloat(value.toString().replace(',', ''))
+        : value;
+
+    if (isNaN(actualValue)) return undefined;
+
+    return this.quantityFormatter.format(actualValue);
+  }
+  //Price
+  price(value: number | string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+
+    const actualValue =
+      typeof value !== 'number'
+        ? parseFloat(value.toString().replace(',', ''))
+        : value;
+
+    if (isNaN(actualValue)) return undefined;
+
+    return this.priceFormatter.format(actualValue);
   }
   //popup all select/deselct
   onConfirmOfferALLCheckboxChange(ev,req,requestoffer){
