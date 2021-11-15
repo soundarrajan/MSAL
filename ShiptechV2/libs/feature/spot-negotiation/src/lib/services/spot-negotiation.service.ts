@@ -81,7 +81,7 @@ export class SpotNegotiationService extends BaseStoreService
    UpdateSelectSeller(payload: any): Observable<unknown> {
      return this.spotNegotiationApi.UpdateSelectSeller(payload);
    }
-   
+
   /**
    * Get group of request when window loads.
    * @param payload
@@ -138,8 +138,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload = False
    */
    @ObservableException()
-   saveTragetPrice(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.SaveTragetPrice(payload);
+   saveTargetPrice(payload: any): Observable<unknown> {
+     return this.spotNegotiationApi.SaveTargetPrice(payload);
    }
 
    @ObservableException()
@@ -148,7 +148,7 @@ export class SpotNegotiationService extends BaseStoreService
    }
   /**
    * Amend RFQ
-   * @param payload = 
+   * @param payload =
    */
  @ObservableException()
  AmendRFQ(payload: any): Observable<unknown> {
@@ -157,7 +157,7 @@ export class SpotNegotiationService extends BaseStoreService
 
   /**
  * Preview RFQ email
- * @param payload = 
+ * @param payload =
  */
   @ObservableException()
   PreviewRfqMail(payload: any): Observable<unknown> {
@@ -165,7 +165,7 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
    /* Get Existing Order's
-   * @param payload = 
+   * @param payload =
    */
    @ObservableException()
    GetExistingOrders(payload: any): Observable<unknown> {
@@ -173,7 +173,7 @@ export class SpotNegotiationService extends BaseStoreService
    }
   /**
    * Get Confirm Offer's
-   * @param payload = 
+   * @param payload =
    */
    @ObservableException()
    ConfirmRfq(payload: any): Observable<unknown> {

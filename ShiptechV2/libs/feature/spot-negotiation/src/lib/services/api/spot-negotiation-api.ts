@@ -209,7 +209,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
-  SaveTragetPrice(payload: any): Observable<any> {
+  SaveTargetPrice(payload: any): Observable<any> {
     return this.http
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.saveTargetPrice}`,
@@ -230,7 +230,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updatePhySupplier}`,
-        payload        
+        payload
       )
       .pipe(
         map((body: any) => body),
@@ -250,7 +250,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         payload
       )
       .pipe(
-        map((body: any) => body),        
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
@@ -267,7 +267,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         request
       )
       .pipe(
-        map((body: any) => body),        
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
