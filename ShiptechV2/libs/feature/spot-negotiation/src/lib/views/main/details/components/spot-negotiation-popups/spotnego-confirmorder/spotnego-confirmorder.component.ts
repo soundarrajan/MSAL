@@ -19,6 +19,7 @@ import { AgGridDatetimePickerToggleComponent } from 'libs/feature/spot-negotiati
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { groupBy } from 'lodash';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'app-spotnego-confirmorder',
   templateUrl: './spotnego-confirmorder.component.html',
@@ -50,6 +51,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     private urlService: UrlService,
     public appConfig: AppConfig,
+    public format:TenantFormattingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.getRequests();
@@ -157,13 +159,13 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         LocationId:seller.locationId,
         RequestLocationId: seller.requestLocationId,
         PhysicalSupplierCounterpartyId: seller.physicalSupplierCounterpartyId,
-       // PhysicalSupplierName: seller.physicalSupplierCounterpartyName,
+        PhysicalSupplierName: seller.physicalSupplierCounterpartyName,
         RequestProductId:requestProducts.id,
         ProductId: requestProducts.productId,
         ProductName: requestProducts.productName,
         minQuantity: requestProducts.minQuantity,
         MaxQuantity: requestProducts.maxQuantity,
-        ConfirmedQuantity: requestProducts.maxQuantity,
+        ConfirmedQuantity: this.format.quantity(requestProducts.maxQuantity),
         UomId: requestProducts.uomId,
         WorkflowId:requestProducts.workflowId,
         productStatus:{
@@ -181,6 +183,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         currencyId:requestOffers.currencyId,
         PricingTypeId: requestOffers.priceQuantityUomId,
         QuoteByDate: requestOffers.quoteByDate,
+        QuoteByTimeZoneId:requestOffers.quoteByTimeZoneId,
+        QuoteByCurrencyId:requestOffers.currencyId,
         ProductTypeId:1,
         //need to check this value
         productHasOffer: true,
@@ -211,10 +215,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   ): number => 0;
   //Calculate TatalPrice
   totalprice(rowIndex) {
+    let pricePrecision;
+    pricePrecision=this.tenantConfiguration.pricePrecision;
     const currentRowIndex = rowIndex;
     const offers=this.requestOfferItems[currentRowIndex];
     if(offers.ConfirmedQuantity != 'undefined' && offers.OfferPrice!= 'undefined' ){
-      this.requestOfferItems[currentRowIndex].TotalPrice=offers.OfferPrice*offers.ConfirmedQuantity;
+          this.requestOfferItems[currentRowIndex].TotalPrice=offers.OfferPrice*offers.ConfirmedQuantity;
     }
     return this.requestOfferItems;
   }
@@ -351,8 +357,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         Requirements:this.selectedOffers, //this.requestOfferItems.filter(row1 => row1.isCheckBox == true),
         RequestGroupId:this.selectedOffers[0].RequestGroupId,
         QuoteByDate:this.selectedOffers[0].QuoteByDate,
-        QuoteByCurrencyId: "1",
-        QuoteByTimeZoneId: "11",//this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
+        QuoteByCurrencyId: this.selectedOffers[0].QuoteByCurrencyId,
+        QuoteByTimeZoneId:this.selectedOffers[0].QuoteByTimeZoneId,//this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
         Comments: ""
       };
       this.toaster.info('Please wait while the offer is confirmed');

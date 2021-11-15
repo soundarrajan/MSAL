@@ -45,7 +45,7 @@
                     class="mid-blue-button cust-header-btn" (click)="sendRFQpopup()">
                     Send RFQ
                   </button>
-                  <button matTooltip="Confirm Order" matTooltipShowDelay="500" mat-button
+                  <button matTooltip="Confirm Order" *ngIf="tenantConfiguration.isSkipOfferConfirmation==false" matTooltipShowDelay="500" mat-button
                     class="mid-blue-button cust-header-btn" (click)="confirmorderpopup()">
                     Confirm Order
                   </button>
