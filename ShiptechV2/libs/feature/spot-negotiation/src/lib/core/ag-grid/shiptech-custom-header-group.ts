@@ -178,6 +178,7 @@ import { count, filter, map } from 'rxjs/operators';
             <div class="title">Closure</div>
             <div
               class="value"
+              [matTooltip]="'Pricing published on: ' + quoteDate " 
               contenteditable="true"
               (keydown)="editQty($event)"
             >
@@ -260,6 +261,7 @@ export class ShiptechCustomHeaderGroup {
   public resizeIconss: any;
   public expandState: string;
   closureValue:any;
+  quoteDate:any;
   targetValue: any;
   livePrice: any;
   benchmark: any;
@@ -371,6 +373,7 @@ export class ShiptechCustomHeaderGroup {
       this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.closureValue=this.params.product.requestGroupProducts.closure;
+      this.quoteDate=this.params.product.requestGroupProducts.quoteDate;
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
