@@ -313,4 +313,68 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     });
   }
+
+  skipRFQ() {
+
+    this.selectedSellerList = [];
+    var Selectedfinaldata = this.FilterselectedRow();
+    if (Selectedfinaldata.length == 0) {
+      let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
+      this.toaster.error(errormessage);
+      return;
+    }
+    else if(this.selectedSellerList.find(x=>x.RfqId!==null)){
+      this.toaster.error('RFQ communicated to the counterparty already.');
+      return;
+    } 
+    else{      
+    var FinalAPIPayload = {
+      RequestGroupId: this.currentRequestInfo.requestGroupId,
+      quoteByDate: new Date(this.child.getValue()),
+      selectedSellers: this.selectedSellerList
+    };
+    this.spinner.show();
+    // Get response from server
+    const response = this.spotNegotiationService.SkipRFQ(FinalAPIPayload);
+    response.subscribe((res: any) => {
+      this.spinner.hide();
+      if(res instanceof Object && res['sellerOffers'].length > 0 ){
+        this.toaster.success('RFQ(s) skipped successfully.')
+        if(res['message'].length>5)
+          this.toaster.warning(res['message']);
+      }
+      else if(res instanceof Object){
+        this.toaster.warning(res.Message);
+      }
+      else{
+        this.toaster.error(res);
+        return;
+      }
+
+      const locationsRows = this.store.selectSnapshot<string>(
+        (state: any) => {
+          return state.spotNegotiation.locationsRows;
+        }
+      );
+
+      const requestGroupID = this.store.selectSnapshot<string>(
+        (state: any) => {
+          return state.spotNegotiation.groupOfRequestsId;
+        }
+      );
+
+        this.store.dispatch(
+          new SetLocationsRowsPriceDetails(res['sellerOffers'])
+        );
+
+        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+          JSON.parse(JSON.stringify(locationsRows)),
+          res['sellerOffers']
+        );
+        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+
+      this.changeDetector.detectChanges();
+    });
+  }    
+  }
 }
