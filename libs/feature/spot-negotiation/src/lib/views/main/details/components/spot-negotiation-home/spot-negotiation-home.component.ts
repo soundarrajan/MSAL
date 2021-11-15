@@ -175,6 +175,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
+        row.physicalSupplierCounterpartyId =  priceDetailsArray[index].physicalSupplierCounterpartyId;
         this.UpdateProductsSelection(currentLocProd,row);
 
         return row;
@@ -189,6 +190,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.isSelected = detailsForCurrentRow[0].isSelected;
+        row.physicalSupplierCounterpartyId =  detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         this.UpdateProductsSelection(currentLocProd,row);
       }
       return row;
@@ -317,7 +319,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   skipRFQ() {
-
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
     if (Selectedfinaldata.length == 0) {
