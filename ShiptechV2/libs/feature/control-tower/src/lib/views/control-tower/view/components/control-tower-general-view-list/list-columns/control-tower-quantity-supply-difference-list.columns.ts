@@ -27,7 +27,7 @@ export enum ControlTowerQuantitySupplyDifferenceListExportColumns {
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
   productType = 'quantityReportDetails.productType.Name',
-  progress = 'supplyProgress.name',
+  progress = 'progress.name',
   bdnQuantity = 'quantityReportDetails.bdnQuantity',
   // id = 'id',
   measuredDeliveredQty = 'quantityReportDetails.measuredDeliveredQuantity',
@@ -77,14 +77,14 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantitySupplyDifferenceListColumns.vesselToWatch]:
     'VesselToWatch',
   [ControlTowerQuantitySupplyDifferenceListColumns.productType]:
-    'QuantityReportDetails_ProductType_Name' /* TO DO */,
-  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'SupplyProgress_Name',
+    'QuantityReportDetails_ProductType_Name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'progress_name',
   [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]:
     'QuantityReportDetails_BdnQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:
     'QuantityReportDetails_MeasuredDeliveredQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]:
-    'QuantityReportDetails_SumOfOrderQuantity' /* TO DO */,
+    'QuantityReportDetails_SumOfOrderQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty]:
     'QuantityReportDetails_DifferenceInSupplyQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.qtyUom]:
