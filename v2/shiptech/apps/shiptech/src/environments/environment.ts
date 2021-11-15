@@ -5,9 +5,8 @@
 export let environment = {
   production: false,
   instrumentationKey: '61f82289-6395-460f-81ca-9cb0da7407b2',
-  useAdal: true
+  useAdal: false
 };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

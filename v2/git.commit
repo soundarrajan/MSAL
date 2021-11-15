@@ -1,7 +1,7 @@
-﻿commit e967fdc4f2404b7fb2e6bacc49cde7867ede5353
+﻿commit a6f7db620317183e419337e205dc2ab593c9f46e
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 15 09:40:13 2021 +0200
+Date:   Mon Nov 15 10:09:04 2021 +0200
 
-    Use adal
+    Used msal authentication
 
 branch: master
