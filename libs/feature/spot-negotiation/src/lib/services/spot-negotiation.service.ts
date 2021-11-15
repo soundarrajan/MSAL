@@ -180,6 +180,15 @@ export class SpotNegotiationService extends BaseStoreService
      return this.spotNegotiationApi.ConfirmRfq(payload);
    }
 
+   /**
+   * Skip RFQ
+   * @param payload = 
+   */
+ @ObservableException()
+ SkipRFQ(payload: any): Observable<unknown> {
+   return this.spotNegotiationApi.SkipRFQ(payload);
+ }
+
   /**
    * Fake populate rows
    */

@@ -18,6 +18,7 @@ export const SpotNegotiationApiPaths = {
   updatePhySupplier:`RFQ/updatePhysicalSupplier`,
   sendRFQ:`RFQ/createRFQ`,
   amendRFQ: `RFQ/amendRfq`,
+  skipRFQ: `RFQ/skipRFQ`,
   UpdateSelectSeller: `Groups/toggleReqSellerSelection`,
   previewRfqMail:`RFQ/previewRfqMail`,
   getExistingOrders:`api/procurement/order/getExistingOrders`,
@@ -290,6 +291,24 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
     );
   }
+
+  @ObservableException()
+  SkipRFQ(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.skipRFQ}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),        
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
   @ObservableException()
   ConfirmRfq(
     request: any
