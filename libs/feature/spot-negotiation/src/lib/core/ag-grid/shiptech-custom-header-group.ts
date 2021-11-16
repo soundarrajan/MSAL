@@ -18,6 +18,7 @@ import { DecimalPipe } from '@angular/common';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotNegotiationStore, SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
 import { count, filter, map } from 'rxjs/operators';
+import moment from 'moment';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -377,6 +378,7 @@ export class ShiptechCustomHeaderGroup {
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
+      this.quoteDate = moment(this.quoteDate).format('DD-MMM-YYYY');
     }
 
     this.params.columnGroup
