@@ -14,6 +14,7 @@ import { AgGridDatetimePickerToggleComponent } from 'libs/feature/spot-negotiati
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { KeyValue } from '@angular/common';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'app-spotnego-confirmorder',
   templateUrl: './spotnego-confirmorder.component.html',
@@ -36,8 +37,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   responseOrderData:any;
   totalPriceValue:number;
   errorMessages: string;
-  private quantityFormatter: Intl.NumberFormat;
-  private priceFormatter: Intl.NumberFormat;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
     private store: Store,
@@ -47,18 +46,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     private urlService: UrlService,
     public appConfig: AppConfig,
+    public format:TenantFormattingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.getRequests();
     this.getSelectedLocationRowsForLocation();
-    this.quantityFormatter = new Intl.NumberFormat('en', {
-      minimumFractionDigits: this.tenantConfiguration.quantityPrecision,
-      maximumFractionDigits: this.tenantConfiguration.quantityPrecision
-    });
-    this.priceFormatter = new Intl.NumberFormat('en', {
-      minimumFractionDigits: this.tenantConfiguration.pricePrecision,
-      maximumFractionDigits: this.tenantConfiguration.pricePrecision
-    });
   }
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
@@ -93,6 +85,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     if(!locationsRows){
       return [];
     }
+
     var requestOfferItemPayload=[];
       locations.forEach(element => {
       locationsRows.forEach(element1 => {
@@ -168,7 +161,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         ProductName: requestProducts.productName,
         minQuantity: requestProducts.minQuantity,
         MaxQuantity: requestProducts.maxQuantity,
-        ConfirmedQuantity: this.price(requestProducts.maxQuantity),
+        ConfirmedQuantity: requestProducts.maxQuantity,
         UomId: requestProducts.uomId,
         WorkflowId:requestProducts.workflowId,
         productStatus:{
@@ -225,32 +218,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       this.requestOfferItems[currentRowIndex].TotalPrice=offers.OfferPrice*offers.ConfirmedQuantity;
     }
     return this.requestOfferItems;
-  }
-  //quantity is precision based on tenant settings
-  quantity(value: number | string): string | undefined {
-    if (value === null || value === undefined) return undefined;
-
-    const actualValue =
-      typeof value !== 'number'
-        ? parseFloat(value.toString().replace(',', ''))
-        : value;
-
-    if (isNaN(actualValue)) return undefined;
-
-    return this.quantityFormatter.format(actualValue);
-  }
-  //Price
-  price(value: number | string): string | undefined {
-    if (value === null || value === undefined) return undefined;
-
-    const actualValue =
-      typeof value !== 'number'
-        ? parseFloat(value.toString().replace(',', ''))
-        : value;
-
-    if (isNaN(actualValue)) return undefined;
-
-    return this.priceFormatter.format(actualValue);
   }
   //popup all select/deselct
   onConfirmOfferALLCheckboxChange(ev,req,requestoffer){
