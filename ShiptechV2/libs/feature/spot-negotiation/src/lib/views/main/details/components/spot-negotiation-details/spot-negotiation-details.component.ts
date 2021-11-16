@@ -1,3 +1,4 @@
+import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
 import { map } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import {
@@ -314,12 +315,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   saveRowToCloud(updatedRow, product) {
+    const tenantConfig = this.store.select((state: SpotNegotiationStoreModel) => {
+        return state.tenantConfigurations;
+    });
+
+    if(tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierId){
+      this.toastr.error('Physical supplier is mandatory for quoting the price.');
+      return;
+    }
+
     const productDetails = this.getRowProductDetails(updatedRow, product.id);
     if (productDetails.id == null || productDetails.price == null) {
       return;
     }
     const payload = {
-      phySupplierId : updatedRow.physicalSupplierCounterpartyId,
       Offers: [
         {
           id: productDetails.offerId,
@@ -336,7 +345,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
       ]
     };
-    console.log (updatedRow);
+    // console.log (updatedRow);
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       if (res.status) {
