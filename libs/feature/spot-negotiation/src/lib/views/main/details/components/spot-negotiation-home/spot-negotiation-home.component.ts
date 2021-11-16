@@ -178,8 +178,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =  priceDetailsArray[index].physicalSupplierCounterpartyId;
+        if(priceDetailsArray[index].physicalSupplierCounterpartyId){
         row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
-
+        }
         this.UpdateProductsSelection(currentLocProd,row);
 
         return row;
@@ -195,7 +196,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId =  detailsForCurrentRow[0].physicalSupplierCounterpartyId;
-        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
+        if(detailsForCurrentRow[0].physicalSupplierCounterpartyId){
+        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;}
         this.UpdateProductsSelection(currentLocProd,row);
       }
       return row;
@@ -242,6 +244,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   ConstuctSellerPayload(Seller, requestProducts, Request) {
     let selectedproducts = [];
     let rfqId = null;
+    let isRfqSkipped= null;
     if(Seller['checkProd1']){
       selectedproducts.push(requestProducts[0].id)
     }
@@ -259,6 +262,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     if((Seller.requestOffers  !== undefined) && Seller.requestOffers.length >0){
       rfqId = Seller.requestOffers[0].rfqId;
+      isRfqSkipped = Seller.requestOffers[0].isRfqskipped;
     }
     return {
       RequestLocationSellerId: Seller.id,
@@ -267,7 +271,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
       RequestId: Request.id,
       physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
       RequestProductIds: selectedproducts,
-      RfqId: rfqId
+      RfqId: rfqId,
+      IsRfqSkipped: isRfqSkipped,
     };
   }
 
@@ -298,6 +303,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     else if(this.selectedSellerList.find(x=>x.RfqId===null)){
       this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
+      return;
+    }
+    else if(this.selectedSellerList.find(x=>x.RfqId!==null && x.IsRfqSkipped === true)){
+      this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
       return;
     }
     else {
@@ -331,8 +340,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error(errormessage);
       return;
     }
-    else if(this.selectedSellerList.find(x=>x.RfqId!==null)){
+    else if(this.selectedSellerList.find(x=>x.RfqId!==null && x.IsRfqSkipped === false)){
       this.toaster.error('RFQ communicated to the counterparty already.');
+      return;
+    } 
+    else if(this.selectedSellerList.find(x=>x.RfqId!==null && x.IsRfqSkipped === true)){
+      this.toaster.error('RFQ is already skipped for the counterparty.');
       return;
     } 
     else{      

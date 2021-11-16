@@ -9,7 +9,7 @@
         "logOutUri": "",
         "endpoints": {
             "https://euw-sh-int-dev-api.azurewebsites.net": "47592693-174d-4576-8a4a-98f50040682d",
-            "https://localhost:5001": "47592693-174d-4576-8a4a-98f50040682d"
+            "https://euw-sh-int-dev-api01.azurewebsites.net": "47592693-174d-4576-8a4a-98f50040682d"
         },
         "anonymousEndpoints": [
             "https://euw-sh-int-dev-sp.azurewebsites.net"
@@ -68,7 +68,7 @@
     },
     "API": {
         "BASE_URL_DATA_PROCUREMENT": "https://euw-sh-int-dev-api.azurewebsites.net/Shiptech10.Api.Procurement",
-        "BASE_URL_DATA_NEGOTIATION": "https://localhost:5001",
+        "BASE_URL_DATA_NEGOTIATION": "https://euw-sh-int-dev-api.azurewebsites.net/Shiptech.Negotiation.Api",
         "BASE_URL_DATA_EMAIL": "https://euw-sh-int-dev-api.azurewebsites.net/Shiptech10.Api.Mail",
         "BASE_URL_DATA_MASTERS": "https://euw-sh-int-dev-api.azurewebsites.net/Shiptech10.Api.Masters",
         "BASE_URL_DATA_ADMIN": "https://euw-sh-int-dev-api.azurewebsites.net/Shiptech10.Api.Admin",
