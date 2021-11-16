@@ -172,12 +172,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         RequestStatus:requestInfo[0].status,
         VesselId:requestInfo[0].vesselId,
         VesselVoyageDetailId: null,
-        UomName:"MT", //requestProducts.uomName,
+        UomName:requestProducts.uomName,
         OfferPrice:requestOffers.price,
         ContactCounterpartyId: requestOffers.contactCounterpartyId,
 				BrokerCounterpartyId: requestOffers.brokerCounterpartyId,
         currencyId:requestOffers.currencyId,
-        PricingTypeId: requestOffers.priceQuantityUomId,
+        PricingTypeId: requestProducts.uomId,
         QuoteByDate: requestOffers.quoteByDate,
         QuoteByTimeZoneId:requestOffers.quoteByTimeZoneId,
         QuoteByCurrencyId:requestOffers.currencyId,
@@ -353,6 +353,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       this.errorMessages = errorMessages.join('\n\n');
       if (errorMessages.length > 0) {
         this.toaster.error(this.errorMessages);
+        return;
       }
       let rfq_data = {
         Requirements:this.selectedOffers, //this.requestOfferItems.filter(row1 => row1.isCheckBox == true),
@@ -373,7 +374,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           if(res instanceof Object && res.payload.length > 0 ){
             //this.openEditOrder(receivedOffers.payload);
             const baseOrigin = new URL(window.location.href).origin;
-            window.open(`${baseOrigin}/#/edit-order/${receivedOffers.payload}`, '_blank');
+            window.open(`${ baseOrigin }/#/edit-order/${receivedOffers.payload}`, '_blank');
             this.toaster.success('order created successfully.')
           }
           else if(res instanceof Object){
