@@ -5809,7 +5809,7 @@
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
                     .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
             }
-            $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityM3 = sum;
+            $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityM3 = sum.toFixed($tenantSettings.defaultValues.quantityPrecision);
         }
 
         $scope.calculateStorageCapacityMt = function (vesselProdIdx) {
@@ -5822,7 +5822,7 @@
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
                     .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
             }
-            $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityMt = sum * density * mtConversionFactor;
+            $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityMt = (sum * density * mtConversionFactor).toFixed($tenantSettings.defaultValues.quantityPrecision);
         }
 
         $scope.vpKey = 0;
