@@ -1,11 +1,11 @@
-﻿commit 1d5e1a561176537dc6727462f2e5aa0c84461a78
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Nov 15 15:42:53 2021 +0000
+﻿commit 85936ea2cf40c3ae0604a32a9134bad722f344eb
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Nov 16 13:17:11 2021 +0000
 
-    Merged PR 14715: Fix export
+    Merged PR 14736: Fixed 36981
     
-    Fix export
+    Fixed 36981
     
-    Related work items: #36869
+    Related work items: #36981
 
 branch: master
