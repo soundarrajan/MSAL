@@ -6,8 +6,12 @@
             <div id="custom-form-field" style="width: 100px !important; margin: 0px 7px;">
                 <mat-form-field class="without-search" appearance="none">
                     <mat-select [(value)]="selected" disableOptionCentering>
-                        <mat-option value="Amend RFQ" selected="selected">Amend RFQ</mat-option>
-                        <mat-option value="Amend RFQ1">Amend RFQ1</mat-option>
+                        <mat-option *ngFor="let item of items" [value]="item.value">
+                            {{item.viewValue}}
+                          </mat-option>
+                        <!-- <mat-option value="MultipleRfqNewRFQEmailTemplate">New RFQ</mat-option>
+                        <mat-option value="MultipleRfqAmendRFQEmailTemplate">Amend RFQ</mat-option>
+                        <mat-option value="Revoke RFQ">Revoke RFQ</mat-option> -->
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -87,3 +91,9 @@
         </div>
     </mat-dialog-content>
 </div>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>
