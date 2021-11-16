@@ -929,7 +929,7 @@ checkallProd(row,params){
           JSON.parse(JSON.stringify(locationsRows))
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-        this.toastr.success(res.message);
+        this.toastr.success("Phy. Supplier added successfully");
       } else {
         this.toastr.error(res.message);
         return;
