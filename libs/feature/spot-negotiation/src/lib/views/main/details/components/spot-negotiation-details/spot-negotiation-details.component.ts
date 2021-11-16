@@ -319,7 +319,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       return;
     }
     const payload = {
-      phySupplierId : null,
+      phySupplierId : updatedRow.physicalSupplierCounterpartyId,
       Offers: [
         {
           id: productDetails.offerId,
