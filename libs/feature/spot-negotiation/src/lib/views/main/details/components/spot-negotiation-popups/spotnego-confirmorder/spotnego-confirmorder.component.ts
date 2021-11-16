@@ -265,6 +265,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     let payload = {
       filters
     };
+    this.selectedOffers.forEach((va,k)=>{
+      if(va.OfferPrice==null || va.OfferPrice==undefined || va.OfferPrice==0){
+        this.toaster.error('Cannot confirm offer as no offer price available');
+        return;
+      }
+    });
     this.setConfirmedQuantities();
     // if ((this.selectedOffers, 'quotedProductGroupId').length != 1) {
     //   this.buttonsDisabled = false;
