@@ -17,7 +17,7 @@ import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 
-import { SelectSeller,EditLocationRow } from '../../store/actions/ag-grid-row.action';
+import { SelectSeller,EditLocationRow, SetLocationsRows } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 @Component({
   selector: 'ag-grid-cell-renderer',
@@ -547,7 +547,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public store: Store,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
-    private tenantService: TenantFormattingService
+    private tenantService: TenantFormattingService,
+    private changeDetector: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -912,6 +913,11 @@ checkallProd(row,params){
   }
 
   updatePhysicalSupplier(){
+    const locationsRows = this.store.selectSnapshot<string>(
+      (state: any) => {
+        return state.spotNegotiation.locationsRows;
+      }
+    );
     let payload = {
       "RequestLocationSellerId": this.params.data.id,
       "PhySupplierId": this.phySupplierId
@@ -919,12 +925,25 @@ checkallProd(row,params){
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
       if (res.status) {
+        const futureLocationsRows = this.getLocationRowsAddPhySupplier(
+          JSON.parse(JSON.stringify(locationsRows))
+        );
+        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         this.toastr.success(res.message);
       } else {
         this.toastr.error(res.message);
         return;
       }
     });
+  }
+  getLocationRowsAddPhySupplier(locationrow){
+    locationrow.forEach((element,key) => {
+      if(element.id==this.params.data.id){
+        element.physicalSupplierCounterpartyId=this.phySupplierId;
+        element.physicalSupplierCounterpartyName=this.editedSeller;
+      }
+    });
+    return locationrow;
   }
 
 }
