@@ -143,9 +143,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       );
 
-        this.store.dispatch(
-          new SetLocationsRowsPriceDetails(res['sellerOffers'])
-        );
+        // this.store.dispatch(
+        //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
+        // );
 
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
           JSON.parse(JSON.stringify(locationsRows)),
@@ -343,12 +343,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
     else if(this.selectedSellerList.find(x=>x.RfqId!==null && x.IsRfqSkipped === false)){
       this.toaster.error('RFQ communicated to the counterparty already.');
       return;
-    } 
-    else if(this.selectedSellerList.find(x=>x.RfqId!==null && x.IsRfqSkipped === true)){
-      this.toaster.error('RFQ is already skipped for the counterparty.');
-      return;
-    } 
-    else{      
+    }
+    else{
     var FinalAPIPayload = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       quoteByDate: new Date(this.child.getValue()),
@@ -396,6 +392,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       this.changeDetector.detectChanges();
     });
-  }    
+  }
   }
 }
