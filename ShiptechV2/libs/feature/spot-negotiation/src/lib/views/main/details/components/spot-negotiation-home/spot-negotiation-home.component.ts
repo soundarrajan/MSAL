@@ -160,8 +160,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
 
     let currentRequestData: any;
+    let counterpartyList : any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
      currentRequestData = spotNegotiation.locations;
+     counterpartyList = spotNegotiation.counterpartyList;
     });
 
     rowsArray.forEach((row, index) => {
@@ -176,6 +178,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =  priceDetailsArray[index].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+
         this.UpdateProductsSelection(currentLocProd,row);
 
         return row;
@@ -191,6 +195,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId =  detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
         this.UpdateProductsSelection(currentLocProd,row);
       }
       return row;
