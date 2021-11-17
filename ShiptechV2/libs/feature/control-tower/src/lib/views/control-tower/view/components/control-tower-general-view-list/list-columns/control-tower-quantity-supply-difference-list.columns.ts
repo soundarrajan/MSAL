@@ -1,6 +1,6 @@
 export enum ControlTowerQuantitySupplyDifferenceListColumns {
   actions = 'actions',
-  portCall = 'portcall.portCallId',
+  portCall = 'portCall',
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
@@ -14,26 +14,26 @@ export enum ControlTowerQuantitySupplyDifferenceListColumns {
   measuredDeliveredQty = 'measuredDeliveredQty',
   sumOfOrderQtyCol = 'sumOfOrderQtyCol',
   differenceInQty = 'differenceInQty',
-  qtyUom = 'buyer'
+  qtyUom = 'qtyUom'
   // status = 'status'
 }
 
 export enum ControlTowerQuantitySupplyDifferenceListExportColumns {
-  portCall = 'portcall.portCallId',
+  portCall = 'portCall',
   port = 'port',
-  vessel = 'vessel.name',
+  vessel = 'vessel',
   eta = 'eta',
   surveyorDate = 'surveyorDate',
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
   productType = 'quantityReportDetails.productType.Name',
   progress = 'progress.name',
-  bdnQuantity = 'quantityReportDetails.bdnQuantity',
+  bdnQuantity = 'bdnQuantity',
   // id = 'id',
   measuredDeliveredQty = 'quantityReportDetails.measuredDeliveredQuantity',
   sumOfOrderQtyCol = 'quantityReportDetails.sumOfOrderQuantity',
   differenceInQty = 'quantityReportDetails.differenceInSupplyQuantity',
-  qtyUom = 'buyer.name',
+  qtyUom = 'qtyUom',
   status = 'status.name'
 }
 
@@ -65,28 +65,18 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
   string
 > = {
   [ControlTowerQuantitySupplyDifferenceListColumns.actions]: undefined,
-  [ControlTowerQuantitySupplyDifferenceListColumns.portCall]:
-    'PortCall_PortCallId',
+  [ControlTowerQuantitySupplyDifferenceListColumns.portCall]:'PortCall_PortCallId',
   [ControlTowerQuantitySupplyDifferenceListColumns.port]: 'Port',
   [ControlTowerQuantitySupplyDifferenceListColumns.vessel]: 'Vessel',
   [ControlTowerQuantitySupplyDifferenceListColumns.eta]: 'Eta',
-  [ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate]:
-    'SurveyorDate',
-  [ControlTowerQuantitySupplyDifferenceListColumns.emailToVessel]:
-    'VesselEmail',
-  [ControlTowerQuantitySupplyDifferenceListColumns.vesselToWatch]:
-    'VesselToWatch',
-  [ControlTowerQuantitySupplyDifferenceListColumns.productType]:
-    'QuantityReportDetails_ProductType_Name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate]:'SurveyorDate',
+  [ControlTowerQuantitySupplyDifferenceListColumns.emailToVessel]:'VesselEmail',
+  [ControlTowerQuantitySupplyDifferenceListColumns.vesselToWatch]:'VesselToWatch',
+  [ControlTowerQuantitySupplyDifferenceListColumns.productType]:'QuantityReportDetails_ProductType_Name',
   [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'progress_name',
-  [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]:
-    'QuantityReportDetails_BdnQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:
-    'QuantityReportDetails_MeasuredDeliveredQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]:
-    'QuantityReportDetails_SumOfOrderQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty]:
-    'QuantityReportDetails_DifferenceInSupplyQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.qtyUom]:
-    'QuantityReportDetails_SupplyUom_Name'
+  [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]:'QuantityReportDetails_BdnQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:'QuantityReportDetails_MeasuredDeliveredQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]:'QuantityReportDetails_SumOfOrderQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty]:'QuantityReportDetails_DifferenceInSupplyQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.qtyUom]:'QuantityReportDetails_SupplyUom_Name'
 };
