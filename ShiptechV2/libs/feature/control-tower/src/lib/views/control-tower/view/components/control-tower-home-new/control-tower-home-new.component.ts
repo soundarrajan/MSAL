@@ -8,6 +8,7 @@ import {
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { KnownControlTowerRoutes } from 'libs/feature/control-tower/src/lib/control-tower.routes';
 
 @Component({
@@ -27,8 +28,24 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   selectedVal: string = 'labs';
   selectedVal2: string = 'differences';
   selectedVal3: string = 'differences';
+  controlTowerNotesViewType: any[];
+  screen: any[];
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private legacyLookupsDatabase: LegacyLookupsDatabase
+  ) {
+    this.legacyLookupsDatabase
+      .getTableByName('controlTowerNotesViewType')
+      .then(response => {
+        this.controlTowerNotesViewType = response;
+        console.log(response);
+      });
+    this.legacyLookupsDatabase.getTableByName('screen').then(response => {
+      this.screen = response;
+      console.log(response);
+    });
     //load default landing page screen based on user preference
     this.loadDefaultLandingPage();
   }

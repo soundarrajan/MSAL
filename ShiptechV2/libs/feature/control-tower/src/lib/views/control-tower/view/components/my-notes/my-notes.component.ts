@@ -73,6 +73,26 @@ export class MyNotesComponent implements OnInit {
   @Input() theme: boolean;
   @Input() newScreen: boolean;
 
+  get controlTowerNotesViewType(): any[] {
+    return this._controlTowerNotesViewType;
+  }
+
+  @Input() set controlTowerNotesViewType(value: any[]) {
+    this._controlTowerNotesViewType = value;
+  }
+
+  @Input() _controlTowerNotesViewType: any[];
+
+  get screen(): any {
+    return this._screen;
+  }
+
+  @Input() set screen(value: string) {
+    this._screen = value;
+  }
+
+  @Input() _screen: any;
+
   @ViewChild('notesSection') notesSection: ElementRef;
   @ViewChild('titleSection') titleSection: ElementRef;
   public text: String = `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, 
@@ -81,33 +101,11 @@ export class MyNotesComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private controlTowerService: ControlTowerService,
     private toastr: ToastrService
-  ) {
-    // this.legacyLookupsDatabase.getTableByName('timeView ').then(response => {
-    //   console.log(response);
-    // });
-    let payload: IControlTowerGetMyNotesDto = {
-      view: {
-        id: 131,
-        name: 'test'
-      },
-      timeView: {
-        id: 1,
-        name: 'test'
-      }
-    };
-
-    this.controlTowerService
-      .getMyNotes(payload)
-      .pipe()
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-        }
-      });
-  }
+  ) {}
 
   ngOnInit(): void {
+    console.log(this.screen);
+    console.log(this.controlTowerNotesViewType);
     this.filterDate = 'Today';
     this.index = 1;
     this.allContent = [
