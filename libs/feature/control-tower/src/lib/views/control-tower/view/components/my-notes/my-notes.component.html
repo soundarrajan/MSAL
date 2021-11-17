@@ -12,16 +12,19 @@
         [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
       >
         <mat-form-field class="without-search" appearance="none">
-          <mat-label>Select Field</mat-label>
+          <mat-label>Select Field </mat-label>
           <mat-select
             disableOptionCentering
-            [(ngModel)]="daily"
-            [panelClass]="{ darkPanelShiptech: switchTheme }"
-            (selectionChange)="dropChange($event)"
+            [(ngModel)]="timeView"
+            [(value)]="defaultTimeView"
+            [panelClass]="{ darkPanelBg: switchTheme }"
+            (selectionChange)="getMyNotes()"
           >
-            <mat-option value="daily">Daily</mat-option>
-            <mat-option value="weekly">Weekly</mat-option>
-            <mat-option value="monthly">Monthly</mat-option>
+            <mat-option
+              *ngFor="let value of controlTowerNotesViewType"
+              value="{{ value.id }}"
+              >{{ value.displayName }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </div>
@@ -33,7 +36,7 @@
         [ngClass]="content.selected ? 'select' : ''"
         (click)="selectDate(content)"
       >
-        {{ content.date }}
+        {{ content?.displayName }}
       </div>
     </div>
   </div>
@@ -130,6 +133,8 @@
   <div class="notes-section" *ngIf="!isFiltered">
     <div class="header-section">
       Last updated on: 2-07-2020 10:45
+      {{ isFiltered }}
+      {{ selectedTitleIndex }}
     </div>
     <div class="notesBlock">
       <div
@@ -143,7 +148,7 @@
           type="text"
           name="sameName{{ i }}"
           [(ngModel)]="filterHeadTitle1[i]"
-          (keyup)="handle($event)"
+          (keyup)="autoSaveNotes($event)"
         />
       </div>
       <!-- <textarea *ngIf="selectedTitleIndex === i" spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]' (keyup)="handle($event)" style="height: 25px;"></textarea> -->
@@ -159,6 +164,7 @@
           type="text"
           name="sameName{{ i }}"
           [(ngModel)]="filterTitle1[i]"
+          (blur)="autoSaveNotes($event)"
         ></textarea>
       </div>
       <!-- <input *ngIf="selectedTitleIndex === i" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]'>
