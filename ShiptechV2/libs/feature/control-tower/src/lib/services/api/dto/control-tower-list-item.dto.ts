@@ -35,7 +35,6 @@ export interface IControlTowerQuantitySupplyDifferenceItemDto {
   port: IDisplayLookupDto;
   vessel: IDisplayLookupDto;
   eta: string;
-  id: number;
   surveyorDate: string;
   emailToVessel: boolean;
   vesselToWatch: boolean;

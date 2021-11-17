@@ -118,7 +118,6 @@ import { ControlTowerListState } from './store/control-tower-general-list/contro
 import { ControlTowerGeneralListComponent } from './views/control-tower/view/components/control-tower-general-view-list/control-tower-general-view-list.component';
 import { ControlTowerQuantityClaimsComponent } from './views/control-tower/view/components/control-tower-quantity-claims/control-tower-quantity-claims.component';
 import { ControlTowerResidueDifferenceComponent } from './views/control-tower/view/components/control-tower-residue-difference/control-tower-residue-difference.component';
-import { MyNotesOldComponent } from './views/control-tower/view/components/my-notes-old/my-notes-old.component';
 
 @NgModule({
   imports: [
@@ -232,7 +231,6 @@ import { MyNotesOldComponent } from './views/control-tower/view/components/my-no
     QualityLabsComponent,
     QualityClaimsComponent,
     MyNotesComponent,
-    MyNotesOldComponent,
     ControlTowerHomeNewComponent,
     HighlightPipe,
     ControlTowerQuantityDifferenceComponent,
