@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { KnownControlTowerRoutes } from 'libs/feature/control-tower/src/lib/control-tower.routes';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-control-tower-home-new',
@@ -29,7 +30,8 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   selectedVal2: string = 'differences';
   selectedVal3: string = 'differences';
   controlTowerNotesViewType: any[];
-  screen: any[];
+  screenList: any[];
+  screenType: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +45,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
         console.log(response);
       });
     this.legacyLookupsDatabase.getTableByName('screen').then(response => {
-      this.screen = response;
+      this.screenList = response;
       console.log(response);
     });
     //load default landing page screen based on user preference
@@ -95,6 +97,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
       this.showQuality = true;
       this.showQuantity = false;
       this.showResidue = false;
+      this.screenType = 'QualityView';
       this.router
         .navigate([
           KnownPrimaryRoutes.ControlTower,
@@ -106,6 +109,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
       this.showQuality = false;
       this.showQuantity = true;
       this.showResidue = false;
+      this.screenType = 'QuantityView';
       this.router
         .navigate([
           KnownPrimaryRoutes.ControlTower,
@@ -117,6 +121,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
       this.showQuality = false;
       this.showQuantity = false;
       this.showResidue = true;
+      this.screenType = 'ResidueView';
       this.router
         .navigate([
           KnownPrimaryRoutes.ControlTower,
