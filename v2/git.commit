@@ -1,7 +1,11 @@
-﻿commit a39eda235fb95bbfaf4bcb7cfac4082b7d972a32
+﻿commit a232a2fd0f47b53e43ad7165dfd4aedeeafb407b
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 17 13:41:05 2021 +0000
+Date:   Wed Nov 17 14:06:27 2021 +0000
 
-    Merged PR 14758: Fixed build error and worked on my notes
+    Merged PR 14760: Fixed port call missing in the rob difference xcel
+    
+    Fixed port call missing in the rob difference xcel
+    
+    Related work items: #37025
 
 branch: master

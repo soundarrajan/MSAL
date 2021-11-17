@@ -519,17 +519,17 @@ export const BASE_MENU: KeyedMenuItems = {
         label: 'Schedule Dashboard',
         items: {
           schedule_dashboard_calendar: {
-            label: 'Schedule Dashboard Calendar',
+            label: 'Schedule Dashboard Calendarz',
             url: '/#/schedule-dashboard-calendar',
             target: '_blank'
           },
           schedule_dashboard_table: {
-            label: 'Schedule Dashboard Table',
+            label: 'Schedule Dashboard Tablez',
             url: '/#/schedule-dashboard-table',
             target: '_blank'
           },
           schedule_dashboard_timeline: {
-            label: 'Schedule Dashboard Timeline',
+            label: 'Schedule Dashboard Timelinez',
             url: '/#/schedule-dashboard-timeline',
             target: '_blank'
           }
@@ -776,8 +776,5 @@ export const BASE_MENU: KeyedMenuItems = {
     label: 'Reports',
     url: '/#/reports',
     target: '_blank'
-  },
-  integrations: {
-    label: 'Integrations'
   }
 };

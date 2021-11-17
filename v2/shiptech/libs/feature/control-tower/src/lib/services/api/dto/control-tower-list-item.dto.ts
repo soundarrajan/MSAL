@@ -12,7 +12,7 @@ export interface IPortCallLookupDto {
 }
 
 export interface IControlTowerQuantityRobDifferenceItemDto {
-  portCall: IDisplayLookupDto;
+  portCall: object;
   port: IDisplayLookupDto;
   vessel: IDisplayLookupDto;
   eta: string;
