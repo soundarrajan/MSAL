@@ -39,8 +39,9 @@ export interface IControlTowerQuantitySupplyDifferenceItemDto {
   emailToVessel: boolean;
   vesselToWatch: boolean;
   productType: IDisplayLookupDto;
-  progress: number;
   id: number;
+  progress: number;
+  bdnQuantity: number;
   measuredDeliveredQty: number;
   differenceInQty: number;
   totalCount: number;
@@ -162,4 +163,27 @@ export interface IgetControlTowerQualityClaimsListExportUrlResponse {
     noOfNew: number;
   };
   matchedCount: number;
+}
+
+export interface ILookupDto {
+  id: number;
+}
+
+export interface IControlTowerSaveNotesItemDto {
+  view: ILookupDto;
+  id: number;
+  title: string;
+  message: string;
+}
+
+export interface IControlTowerGetMyNotesDto {
+  view: ILookupDto;
+  timeView: ILookupDto;
+}
+
+export interface IControlTowerGetFilteredNotesDto {
+  view: ILookupDto;
+  startDate: string;
+  endDate: string;
+  searchText: string;
 }
