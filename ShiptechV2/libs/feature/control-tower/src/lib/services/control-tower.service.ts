@@ -12,7 +12,10 @@ import {
   IGetControlTowerQuantityRobDifferenceListResponse,
   IGetControlTowerQuantitySupplyDifferenceListResponse,
   IGetControlTowerQualityClaimsListResponse,
-  IGetControlTowerResidueSludgeDifferenceListResponse
+  IGetControlTowerResidueSludgeDifferenceListResponse,
+  IControlTowerSaveNotesItemDto,
+  IControlTowerGetMyNotesDto,
+  IControlTowerGetFilteredNotesDto
 } from './api/dto/control-tower-list-item.dto';
 
 import { ModuleError } from '../core/error-handling/module-error';
@@ -239,7 +242,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getMyNotes(data, response) {
+  getMyNotes(data: IControlTowerGetMyNotesDto) {
     return this.api.getMyNotes(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
@@ -252,7 +255,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
     );
   }
   @ObservableException()
-  getFilteredNotes(data, response) {
+  getFilteredNotes(data: IControlTowerGetFilteredNotesDto) {
     return this.api.getFilteredNotes(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
@@ -279,7 +282,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  saveControlTowerNote(data, response) {
+  saveControlTowerNote(data: IControlTowerSaveNotesItemDto) {
     return this.api.saveControlTowerNote(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>

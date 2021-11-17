@@ -13,7 +13,10 @@ import {
   IGetControlTowerQuantityRobDifferenceListResponse,
   IGetControlTowerQuantitySupplyDifferenceListResponse,
   IGetControlTowerQualityClaimsListResponse,
-  IGetControlTowerResidueSludgeDifferenceListResponse
+  IGetControlTowerResidueSludgeDifferenceListResponse,
+  IControlTowerSaveNotesItemDto,
+  IControlTowerGetMyNotesDto,
+  IControlTowerGetFilteredNotesDto
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
@@ -183,14 +186,14 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
 
   @ObservableException()
-  getMyNotes(request): any {
+  getMyNotes(request: IControlTowerGetMyNotesDto): any {
     return this.http.post(
       `${this._apiUrl}/${ControlTowerApiPaths.getMyNotesUrl()}`,
       { payload: request }
     );
   }
   @ObservableException()
-  getFilteredNotes(request): any {
+  getFilteredNotes(request: IControlTowerGetFilteredNotesDto): any {
     return this.http.post(
       `${this._apiUrl}/${ControlTowerApiPaths.getFilteredNotesUrl()}`,
       { payload: request }
@@ -198,7 +201,7 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
 
   @ObservableException()
-  getNoteById(request): any {
+  getNoteById(request: any): any {
     return this.http.post(
       `${this._apiUrl}/${ControlTowerApiPaths.getNoteByIdUrl()}`,
       { payload: request }
@@ -206,7 +209,7 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
 
   @ObservableException()
-  saveControlTowerNote(request): any {
+  saveControlTowerNote(request: IControlTowerSaveNotesItemDto): any {
     return this.http.post(
       `${this._apiUrl}/${ControlTowerApiPaths.saveControlTowerNoteUrl()}`,
       { payload: request }

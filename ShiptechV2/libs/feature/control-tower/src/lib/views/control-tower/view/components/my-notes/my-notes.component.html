@@ -130,6 +130,8 @@
   <div class="notes-section" *ngIf="!isFiltered">
     <div class="header-section">
       Last updated on: 2-07-2020 10:45
+      {{ isFiltered }}
+      {{ selectedTitleIndex }}
     </div>
     <div class="notesBlock">
       <div
@@ -143,7 +145,7 @@
           type="text"
           name="sameName{{ i }}"
           [(ngModel)]="filterHeadTitle1[i]"
-          (keyup)="handle($event)"
+          (keyup)="autoSaveNotes($event)"
         />
       </div>
       <!-- <textarea *ngIf="selectedTitleIndex === i" spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]' (keyup)="handle($event)" style="height: 25px;"></textarea> -->
@@ -159,6 +161,7 @@
           type="text"
           name="sameName{{ i }}"
           [(ngModel)]="filterTitle1[i]"
+          (blur)="autoSaveNotes($event)"
         ></textarea>
       </div>
       <!-- <input *ngIf="selectedTitleIndex === i" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]'>

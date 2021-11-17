@@ -6,7 +6,10 @@ import {
   IGetControlTowerQuantityRobDifferenceListResponse,
   IGetControlTowerQuantitySupplyDifferenceListResponse,
   IgetControlTowerQualityClaimsListExportUrlResponse,
-  IGetControlTowerResidueSludgeDifferenceListResponse
+  IGetControlTowerResidueSludgeDifferenceListResponse,
+  IControlTowerSaveNotesItemDto,
+  IControlTowerGetMyNotesDto,
+  IControlTowerGetFilteredNotesDto
 } from './dto/control-tower-list-item.dto';
 
 export interface IControlTowerApiService {
@@ -48,11 +51,11 @@ export interface IControlTowerApiService {
 
   getControlTowerQualityClaimsListExportUrl(): string;
 
-  getMyNotes(request: any): any;
+  getMyNotes(request: IControlTowerGetMyNotesDto): any;
 
-  getFilteredNotes(request: any): any;
+  getFilteredNotes(request: IControlTowerGetFilteredNotesDto): any;
 
   getNoteById(request: any): any;
 
-  saveControlTowerNote(request: any): any;
+  saveControlTowerNote(request: IControlTowerSaveNotesItemDto): any;
 }
