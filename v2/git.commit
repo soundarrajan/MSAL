@@ -1,7 +1,7 @@
-﻿commit f23a68180871fb01a6e4b85bfe5fc80fbf91db6a
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 17 12:00:37 2021 +0000
+﻿commit 0720257e38fe916b29e3997fe65f4af6698b83fa
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Nov 17 15:19:58 2021 +0200
 
-    Merged PR 14753: Fixed build error
+    Fixed progress filtering
 
 branch: master
