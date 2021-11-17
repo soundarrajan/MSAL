@@ -50,6 +50,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   counterpartyList: any = [];
   visibleCounterpartyList: any = [];
   selectedCounterparty: any = [];
+  currentRequestInfo:any;
 
   requestsAndVessels = [
     { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
@@ -81,6 +82,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
+        this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations = spotNegotiation.currentRequestSmallInfo.requestLocations;
           if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
@@ -161,6 +163,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     let payload = {
       requestGroupId: parseInt(RequestGroupId),
+      requestId: this.currentRequestInfo.id,
       isAllLocation: true,
       counterparties: selectedCounterparties
     };
