@@ -12,19 +12,16 @@
         [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
       >
         <mat-form-field class="without-search" appearance="none">
-          <mat-label>Select Field </mat-label>
+          <mat-label>Select Field</mat-label>
           <mat-select
             disableOptionCentering
-            [(ngModel)]="timeView"
-            [(value)]="defaultTimeView"
-            [panelClass]="{ darkPanelBg: switchTheme }"
-            (selectionChange)="getMyNotes()"
+            [(ngModel)]="daily"
+            [panelClass]="{ darkPanelShiptech: switchTheme }"
+            (selectionChange)="dropChange($event)"
           >
-            <mat-option
-              *ngFor="let value of controlTowerNotesViewType"
-              value="{{ value.id }}"
-              >{{ value.displayName }}</mat-option
-            >
+            <mat-option value="daily">Daily</mat-option>
+            <mat-option value="weekly">Weekly</mat-option>
+            <mat-option value="monthly">Monthly</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -36,7 +33,7 @@
         [ngClass]="content.selected ? 'select' : ''"
         (click)="selectDate(content)"
       >
-        {{ content?.displayName }}
+        {{ content.date }}
       </div>
     </div>
   </div>
@@ -47,7 +44,7 @@
     </div>
     <div
       class="titleBlock"
-      *ngFor="let content1 of filterHeadTitle; let i = index"
+      *ngFor="let content1 of filterHeadTitle1; let i = index"
       [ngClass]="selectedTitleIndex === i ? 'select' : ''"
       (click)="selectTitle(content1, i)"
     >
@@ -99,14 +96,7 @@
       Results
       <div class="close-icon" (click)="closeFilter()"></div>
     </div>
-    <input
-      class="form-control"
-      type="text"
-      name="search"
-      [(ngModel)]="searchText"
-      autocomplete="off"
-      placeholder="&#61442;  Start searching for a hero by id or name or country"
-    />
+    <!-- <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Start searching for a hero by id or name or country"> -->
     <div class="filter-data">
       <div
         class="titleBlockx"
@@ -123,12 +113,10 @@
   <div class="notes-section" *ngIf="!isFiltered">
     <div class="header-section">
       Last updated on: 2-07-2020 10:45
-      {{ isFiltered }}
-      {{ selectedTitleIndex }}
     </div>
     <div class="notesBlock">
       <div
-        *ngFor="let content1 of filterHeadTitle;let i = index;;trackBy: customTrackBy"
+        *ngFor="let content1 of filterHeadTitle1;let i = index;;trackBy: customTrackBy"
       >
         <input
           #titleSection
@@ -137,13 +125,14 @@
           spellcheck="false"
           type="text"
           name="sameName{{ i }}"
-          [(ngModel)]="filterHeadTitle[i]"
-          (keyup)="autoSaveNotes($event)"
+          [(ngModel)]="filterHeadTitle1[i]"
+          (keyup)="handle($event)"
         />
       </div>
+      <!-- <textarea *ngIf="selectedTitleIndex === i" spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]' (keyup)="handle($event)" style="height: 25px;"></textarea> -->
       <div
         class="m-t-10"
-        *ngFor="let content1 of filterBodyContent;let i = index;;trackBy: customTrackBy"
+        *ngFor="let content1 of filterTitle1;let i = index;;trackBy: customTrackBy"
       >
         <textarea
           #notesSection
@@ -152,10 +141,12 @@
           spellcheck="false"
           type="text"
           name="sameName{{ i }}"
-          [(ngModel)]="filterBodyContent[i]"
-          (blur)="autoSaveNotes($event)"
+          [(ngModel)]="filterTitle1[i]"
         ></textarea>
       </div>
+      <!-- <input *ngIf="selectedTitleIndex === i" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]'>
+            <div *ngIf="selectedTitleIndex === i">{{filterTitle1[i]}}</div> -->
+      <!-- <div contenteditable="true" spellcheck="false" *ngIf="selectedTitleIndex === i">{{content1}}</div> -->
     </div>
   </div>
   <div class="notes-section" *ngIf="isFiltered">
@@ -186,6 +177,13 @@
           [(ngModel)]="content1.title"
         ></textarea>
       </div>
+      <!-- <textarea *ngIf="selectedTitleIndex === i" spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]' (keyup)="handle($event)" style="height: 25px;"></textarea> -->
+      <!-- <div *ngFor="let content1 of loadnotesContent;let i = index;;trackBy: customTrackBy">
+            <textarea #notesSection spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='loadnotesContent.title'></textarea>
+            </div> -->
+      <!-- <input *ngIf="selectedTitleIndex === i" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]'>
+            <div *ngIf="selectedTitleIndex === i">{{filterTitle1[i]}}</div> -->
+      <!-- <div contenteditable="true" spellcheck="false" *ngIf="selectedTitleIndex === i">{{content1}}</div> -->
     </div>
   </div>
 </div>

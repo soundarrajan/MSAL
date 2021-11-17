@@ -1,11 +1,7 @@
-﻿commit e2250f897c90463d97a34a14ee2bf978b5ead784
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Nov 17 13:25:02 2021 +0000
+﻿commit a39eda235fb95bbfaf4bcb7cfac4082b7d972a32
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Nov 17 13:41:05 2021 +0000
 
-    Merged PR 14757: Fixed Progress column FIlter
-    
-    Fixed Progress column FIlter
-    
-    Related work items: #36996
+    Merged PR 14758: Fixed build error and worked on my notes
 
 branch: master
