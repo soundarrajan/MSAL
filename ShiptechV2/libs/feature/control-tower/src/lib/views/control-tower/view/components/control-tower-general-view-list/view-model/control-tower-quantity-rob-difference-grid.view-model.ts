@@ -441,8 +441,6 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
-    resizable: false,
-    suppressMovable: true,
     width: 110
   };
 
