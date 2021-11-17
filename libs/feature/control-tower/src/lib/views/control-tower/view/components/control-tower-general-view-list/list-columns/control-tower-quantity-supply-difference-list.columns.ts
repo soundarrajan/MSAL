@@ -53,7 +53,7 @@ export enum ControlTowerQuantitySupplyDifferenceListColumnsLabels {
   measuredDeliveredQty = 'Measured Delivered Quantity',
   sumOfOrderQtyCol = 'Sum Of Order Qty',
   differenceInQty = 'Difference in Qty',
-  qtyUom = 'Qty UOM',
+  qtyUom = 'Qty UOM', 
   status = 'Progress'
 }
 
