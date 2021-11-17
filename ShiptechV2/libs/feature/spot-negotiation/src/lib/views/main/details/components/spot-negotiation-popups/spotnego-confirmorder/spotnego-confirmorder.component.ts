@@ -138,6 +138,18 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                this.requestOfferItems.push(requestOfferItemPayload[0]);
              }
           }
+          if(element1.checkProd5 && element1.requestOffers[4].quotedProductId==element.requestProducts[4].productId){
+            requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+               element1,
+               element1.requestOffers[4],
+               element.requestProducts[4],
+               element.eta,
+               this.currentRequestInfo
+             );
+             if (requestOfferItemPayload.length > 0) {
+               this.requestOfferItems.push(requestOfferItemPayload[0]);
+             }
+          }
         }
       });
     });

@@ -59,13 +59,43 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   confirmorderpopup() {
-    const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
-      width: '1045px',
-      height: '555px',
-      panelClass: 'additional-cost-popup'
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows
     });
-
+    let isallow=false;
+    locationsRows.forEach(element => {
+      if (element.requestOffers!=undefined ){
+        if(element.checkProd1 && element.requestOffers[0].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd2 && element.requestOffers[1].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd3 && element.requestOffers[2].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd4 && element.requestOffers[3].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd5 && element.requestOffers[4].price>0 ){
+          isallow=true;
+        }
+      }
+    });
+    if(isallow){
+      const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
+        width: '1045px',
+        height: '555px',
+        panelClass: 'additional-cost-popup'
+      });
+      
     dialogRef.afterClosed().subscribe(result => {});
+    }
+    else{
+      this.toaster.warning('Cannot confirm offer as no offer price available');
+      return;
+    }
+
   }
 
   sendRFQpopup() {
@@ -219,7 +249,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   FilterselectedRow() {
     var Sellectedsellerdata = [];
-
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.locations.forEach(element => {
         spotNegotiation.locationsRows.forEach(element1 => {
