@@ -95,6 +95,11 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
         "
       >
         <span
+          class="counterpartytype-icon type-seller"
+          *ngIf="params.data.counterpartyTypeName == 'Seller'"
+          ><i class="fas fa-circle"></i
+        ></span>
+        <span
           class="counterpartytype-icon type-physicalsupplier"
           *ngIf="params.data.counterpartyTypeName == 'Supplier'"
           ><i class="fas fa-circle"></i
@@ -105,8 +110,8 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           ><i class="fas fa-circle"></i
         ></span>
         <span
-          class="counterpartytype-icon type-seller"
-          *ngIf="params.data.counterpartyTypeName == 'Seller'"
+          class="counterpartytype-icon type-sludge"
+          *ngIf="params.data.counterpartyTypeName == 'Sludge'"
           ><i class="fas fa-circle"></i
         ></span>
         <span

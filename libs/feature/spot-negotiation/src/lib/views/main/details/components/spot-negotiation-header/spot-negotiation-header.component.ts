@@ -132,7 +132,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               id: 0,
               name: '',
               counterpartytypeId: 0,
-              counterpartyTypeName: '',
+              counterpartyTypeName: (val.seller)? 'Seller': (val.supplier)? 'Supplier' : (val.broker)? 'Broker' : (val.sludge)? 'Sludge' : '',
               genPrice: '',
               genRating: '',
               isDeleted: false,

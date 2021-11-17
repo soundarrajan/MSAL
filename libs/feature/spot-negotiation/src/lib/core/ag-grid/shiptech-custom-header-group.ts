@@ -121,6 +121,12 @@ import moment from 'moment';
           ><i class="fas fa-circle"></i>
           <span class="text">Physical Supplier</span></span
         >
+        <span
+          style="margin-left: 10px;"
+          class="counterpartytype-icon type-sludge"
+          ><i class="fas fa-circle"></i>
+          <span class="text">Sludge</span></span
+        >
       </div>
     </div>
     <div
@@ -179,7 +185,7 @@ import moment from 'moment';
             <div class="title">Closure</div>
             <div
               class="value"
-              [matTooltip]="'Pricing published on: ' + quoteDate " 
+              [matTooltip]="'Pricing published on: ' + quoteDate "
               contenteditable="true"
               (keydown)="editQty($event)"
             >
@@ -467,7 +473,7 @@ export class ShiptechCustomHeaderGroup {
             id: 0,
             name: '',
             counterpartytypeId: 0,
-            counterpartyTypeName: '',
+            counterpartyTypeName: (val.seller)? 'Seller': (val.supplier)? 'Supplier' : (val.broker)? 'Broker' : (val.sludge)? 'Sludge' : '',
             genPrice: '',
             genRating: '',
             isDeleted: false,

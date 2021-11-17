@@ -812,7 +812,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       7;
   }
 
-
   formatRowselected(row, value) {
     if(value){
       row.isSelected = false;
@@ -830,7 +829,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       row.checkProd5 =true;
     }
     return row;
-}
-
+  }
 
 }
