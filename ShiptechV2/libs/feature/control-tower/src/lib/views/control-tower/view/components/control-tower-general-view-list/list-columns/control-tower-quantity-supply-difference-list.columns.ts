@@ -65,29 +65,18 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
   string
 > = {
   [ControlTowerQuantitySupplyDifferenceListColumns.actions]: undefined,
-  [ControlTowerQuantitySupplyDifferenceListColumns.portCall]:
-    'PortCall_PortCallId',
+  [ControlTowerQuantitySupplyDifferenceListColumns.portCall]: 'PortCall_PortCallId',
   [ControlTowerQuantitySupplyDifferenceListColumns.port]: 'Port',
   [ControlTowerQuantitySupplyDifferenceListColumns.vessel]: 'Vessel',
   [ControlTowerQuantitySupplyDifferenceListColumns.eta]: 'Eta',
-  [ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate]:
-    'SurveyorDate',
-  [ControlTowerQuantitySupplyDifferenceListColumns.emailToVessel]:
-    'VesselEmail',
-  [ControlTowerQuantitySupplyDifferenceListColumns.vesselToWatch]:
-    'VesselToWatch',
-  [ControlTowerQuantitySupplyDifferenceListColumns.productType]:
-    'QuantityReportDetails_ProductType_Name',
-  [ControlTowerQuantitySupplyDifferenceListColumns.progress]:
-    'SupplyProgress_DisplayName',
-  [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]:
-    'QuantityReportDetails_BdnQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:
-    'QuantityReportDetails_MeasuredDeliveredQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]:
-    'QuantityReportDetails_SumOfOrderQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty]:
-    'QuantityReportDetails_DifferenceInSupplyQuantity',
-  [ControlTowerQuantitySupplyDifferenceListColumns.qtyUom]:
-    'QuantityReportDetails_SupplyUom_Name'
+  [ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate]: 'SurveyorDate',
+  [ControlTowerQuantitySupplyDifferenceListColumns.emailToVessel]: 'VesselEmail',
+  [ControlTowerQuantitySupplyDifferenceListColumns.vesselToWatch]: 'VesselToWatch',
+  [ControlTowerQuantitySupplyDifferenceListColumns.productType]: 'QuantityReportDetails_ProductType_Name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'SupplyProgress_DisplayName',
+  [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]: 'QuantityReportDetails_BdnQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]: 'QuantityReportDetails_MeasuredDeliveredQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]: 'QuantityReportDetails_SumOfOrderQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty]: 'QuantityReportDetails_DifferenceInSupplyQuantity',
+  [ControlTowerQuantitySupplyDifferenceListColumns.qtyUom]: 'QuantityReportDetails_SupplyUom_Name'
 };
