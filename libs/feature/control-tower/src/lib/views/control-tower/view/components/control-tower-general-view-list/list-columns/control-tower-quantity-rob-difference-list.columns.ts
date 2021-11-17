@@ -64,8 +64,7 @@ export const ControlTowerQuantityRobDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantityRobDifferenceListColumns.surveyorDate]: 'SurveyorDate',
   [ControlTowerQuantityRobDifferenceListColumns.emailToVessel]: 'VesselEmail',
   [ControlTowerQuantityRobDifferenceListColumns.vesselToWatch]: 'VesselToWatch',
-  [ControlTowerQuantityRobDifferenceListColumns.progress]:
-    'RobProgress_DisplayName',
+  [ControlTowerQuantityRobDifferenceListColumns.progress]: 'RobProgress_Name',
   [ControlTowerQuantityRobDifferenceListColumns.productType]:
     'quantityReportDetails_ProductType_Name',
   [ControlTowerQuantityRobDifferenceListColumns.logBookRobQtyBeforeDelivery]:
