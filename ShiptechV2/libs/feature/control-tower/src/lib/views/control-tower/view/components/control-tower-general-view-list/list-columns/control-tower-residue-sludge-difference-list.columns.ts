@@ -66,7 +66,7 @@ export const ControlTowerResidueSludgeDifferenceListColumnServerKeys: Record<
   [ControlTowerResidueSludgeDifferenceListColumns.vesselToWatch]:
     'VesselToWatch',
   [ControlTowerResidueSludgeDifferenceListColumns.progress]:
-    'SludgeProgress_Name',
+    'SludgeProgress_DisplayName',
   [ControlTowerResidueSludgeDifferenceListColumns.sludgePercentage]:
     'SludgePercentage',
   [ControlTowerResidueSludgeDifferenceListColumns.logBookRobQtyBeforeDelivery]:
