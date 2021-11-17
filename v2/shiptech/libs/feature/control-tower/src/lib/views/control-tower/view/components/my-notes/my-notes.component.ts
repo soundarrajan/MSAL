@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
@@ -45,7 +52,7 @@ export class HighlightPipe implements PipeTransform {
   styleUrls: ['./my-notes.component.css']
 })
 export class MyNotesComponent implements OnInit {
-  public notesContent: any;
+  public notesContent: any = [];
   public savedContent: any;
   public selectedDeleteTitleIndex: any;
   public monthlynotesContent: any;
@@ -97,7 +104,7 @@ export class MyNotesComponent implements OnInit {
 
   @Input() _screenList: any[];
 
-  get screenType(): any {
+  get screenType(): string {
     return this._screenType;
   }
 
@@ -112,9 +119,9 @@ export class MyNotesComponent implements OnInit {
   public text: String = `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, 
   consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`;
   constructor(
-    private legacyLookupsDatabase: LegacyLookupsDatabase,
     private controlTowerService: ControlTowerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -642,6 +649,11 @@ export class MyNotesComponent implements OnInit {
           this.toastr.error(response);
         } else {
           console.log(response);
+          this.notesContent = response;
+          if (this.notesContent.length) {
+            this.notesContent[0].selected = true;
+          }
+          this.changeDetectorRef.detectChanges();
         }
       });
   }

@@ -12,17 +12,7 @@
         [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
       >
         <mat-form-field class="without-search" appearance="none">
-          <mat-label>Select Field</mat-label>
-          <!-- <mat-select
-            disableOptionCentering
-            [(ngModel)]="daily"
-            [panelClass]="{ darkPanelShiptech: switchTheme }"
-            (selectionChange)="dropChange($event)"
-          >
-            <mat-option value="daily">Daily</mat-option>
-            <mat-option value="weekly">Weekly</mat-option>
-            <mat-option value="monthly">Monthly</mat-option>
-          </mat-select> -->
+          <mat-label>Select Field </mat-label>
           <mat-select
             disableOptionCentering
             [(ngModel)]="timeView"
@@ -46,7 +36,7 @@
         [ngClass]="content.selected ? 'select' : ''"
         (click)="selectDate(content)"
       >
-        {{ content.date }}
+        {{ content?.displayName }}
       </div>
     </div>
   </div>
