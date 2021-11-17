@@ -65,7 +65,7 @@
                 <span class="created-by-field">
                   {{
                     formValues.createdByUser
-                      ? formValues.createdByUser.displayName
+                      ? (formValues.createdByUser.displayName | htmlDecodeReadonly)
                       : ''
                   }}
                 </span>

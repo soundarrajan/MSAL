@@ -1,7 +1,11 @@
-﻿commit caafb8fec05947f3802cce1baf6cac1adc308d2f
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Nov 17 17:00:52 2021 +0200
+﻿commit 91b3f99d975efeaad92b77b4e5866e0cf1b1d27a
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Nov 17 15:36:32 2021 +0000
 
-    Fixed progress filter
+    Merged PR 14762: Fix supply export
+    
+    Fix supply export
+    
+    Related work items: #36990
 
 branch: master

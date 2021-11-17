@@ -28,12 +28,11 @@ export enum ControlTowerQuantitySupplyDifferenceListExportColumns {
   vesselToWatch = 'vesselToWatch',
   productType = 'quantityReportDetails.productType.Name',
   progress = 'progress.name',
-  bdnQuantity = 'bdnQuantity',
-  // id = 'id',
+  bdnQuantity = 'quantityReportDetails.BDNQuantity',
   measuredDeliveredQty = 'quantityReportDetails.measuredDeliveredQuantity',
   sumOfOrderQtyCol = 'quantityReportDetails.sumOfOrderQuantity',
   differenceInQty = 'quantityReportDetails.differenceInSupplyQuantity',
-  qtyUom = 'qtyUom',
+  qtyUom = 'quantityReportDetails.SupplyUom.Name',
   status = 'status.name'
 }
 
@@ -53,7 +52,7 @@ export enum ControlTowerQuantitySupplyDifferenceListColumnsLabels {
   measuredDeliveredQty = 'Measured Delivered Quantity',
   sumOfOrderQtyCol = 'Sum Of Order Qty',
   differenceInQty = 'Difference in Qty',
-  qtyUom = 'Qty UOM',
+  qtyUom = 'Qty UOM', 
   status = 'Progress'
 }
 

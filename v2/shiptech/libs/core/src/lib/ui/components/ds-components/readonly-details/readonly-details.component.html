@@ -8,7 +8,7 @@
       <div
         class="value label_text"
         Class="customValueClass"
-        matTooltip="{{ item.value }}"
+        matTooltip="{{ item.value | htmlDecodeReadonly }}"
       >
         {{ item.value | htmlDecodeReadonly }}
       </div>
