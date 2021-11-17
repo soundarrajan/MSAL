@@ -24,12 +24,12 @@ export enum ControlTowerQualityClaimsListColumns {
     vessel = 'vessel',
     eta = 'eta',
     product = 'product',
-    seller = 'seller',
     claimSubType = 'claimSubtypes',
+    seller = 'seller',
     estimatedSettlementAmount = 'estimatedSettlementAmount',
     createdDate = 'createdDate',
     createdBy = 'createdBy.name',
-    noResponse = 'noResponse'
+    noResponse = 'noResponseText'
   }
   
   export enum ControlTowerQualityClaimsListColumnsLabels {
@@ -62,8 +62,8 @@ export enum ControlTowerQualityClaimsListColumns {
     [ControlTowerQualityClaimsListColumns.vessel]: 'vessel',
     [ControlTowerQualityClaimsListColumns.eta]: 'eta',
     [ControlTowerQualityClaimsListColumns.product]: 'product',
-    [ControlTowerQualityClaimsListColumns.seller]: 'seller',
     [ControlTowerQualityClaimsListColumns.claimSubType]: 'claimSubtypes',
+    [ControlTowerQualityClaimsListColumns.seller]: 'seller',
     [ControlTowerQualityClaimsListColumns.estimatedSettlementAmount]:
       'estimatedSettlementAmount',
     [ControlTowerQualityClaimsListColumns.createdDate]: 'createdDate',
