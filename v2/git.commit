@@ -1,11 +1,11 @@
-﻿commit fbf3023ce84504ff223455498addfd4b97826cc6
+﻿commit d6e608699cc9d563fb66115046243bbb2dec8e04
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Nov 17 16:01:50 2021 +0000
+Date:   Wed Nov 17 16:21:35 2021 +0000
 
-    Merged PR 14766: rename bdnQuantity mapping for export
+    Merged PR 14767: Fix sumOfOrderQuantity precision
     
-    rename bdnQuantity mapping for export
+    Fix sumOfOrderQuantity precision
     
-    Related work items: #36990
+    Related work items: #36998
 
 branch: master
