@@ -104,7 +104,7 @@ export class MyNotesComponent implements OnInit {
 
   @Input() _screenList: any[];
 
-  get screenType(): any {
+  get screenType(): string {
     return this._screenType;
   }
 
@@ -650,6 +650,9 @@ export class MyNotesComponent implements OnInit {
         } else {
           console.log(response);
           this.notesContent = response;
+          if (this.notesContent.length) {
+            this.notesContent[0].selected = true;
+          }
           this.changeDetectorRef.detectChanges();
         }
       });
