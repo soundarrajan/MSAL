@@ -43,6 +43,11 @@ export namespace ControlTowerApiPaths {
     `api/controlTower/exportSludgeDifferenceList`;
   export const getResiduePopUpUrl = () => `api/controlTower/ResiduePopUp`;
   export const saveResiduePopUpUrl = () => `api/controlTower/SaveResiduePopUp`;
+  export const getMyNotesUrl = () => `api/controlTower/getMyNotes`;
+  export const getFilteredNotesUrl = () => `api/controlTower/getFilteredNotes`;
+  export const getNoteByIdUrl = () => `api/controlTower/getNoteById`;
+  export const saveControlTowerNoteUrl = () =>
+    `api/controlTower/saveControlTowerNote`;
 }
 
 @Injectable({
@@ -173,6 +178,37 @@ export class ControlTowerApi implements IControlTowerApiService {
   saveResiduePopUp(request): any {
     return this.http.post(
       `${this._apiUrl}/${ControlTowerApiPaths.saveResiduePopUpUrl()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  getMyNotes(request): any {
+    return this.http.post(
+      `${this._apiUrl}/${ControlTowerApiPaths.getMyNotesUrl()}`,
+      { payload: request }
+    );
+  }
+  @ObservableException()
+  getFilteredNotes(request): any {
+    return this.http.post(
+      `${this._apiUrl}/${ControlTowerApiPaths.getFilteredNotesUrl()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  getNoteById(request): any {
+    return this.http.post(
+      `${this._apiUrl}/${ControlTowerApiPaths.getNoteByIdUrl()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  saveControlTowerNote(request): any {
+    return this.http.post(
+      `${this._apiUrl}/${ControlTowerApiPaths.saveControlTowerNoteUrl()}`,
       { payload: request }
     );
   }

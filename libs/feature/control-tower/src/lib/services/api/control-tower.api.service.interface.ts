@@ -47,4 +47,12 @@ export interface IControlTowerApiService {
   ): Observable<IGetControlTowerQualityClaimsListResponse>;
 
   getControlTowerQualityClaimsListExportUrl(): string;
+
+  getMyNotes(request: any): any;
+
+  getFilteredNotes(request: any): any;
+
+  getNoteById(request: any): any;
+
+  saveControlTowerNote(request: any): any;
 }
