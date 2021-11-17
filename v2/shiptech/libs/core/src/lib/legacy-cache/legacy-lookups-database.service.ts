@@ -188,7 +188,7 @@ export class LegacyLookupsDatabase extends Dexie {
     return getScheduleDashboardLabelConfigurationList;
   }
 
-  async getTableByName(name: string) {
+  public async getTableByName(name: string) {
     const db = this.table(name);
     let tableData = await db.toArray();
     return tableData;

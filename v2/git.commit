@@ -1,7 +1,11 @@
-﻿commit 0720257e38fe916b29e3997fe65f4af6698b83fa
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Nov 17 15:19:58 2021 +0200
+﻿commit e2250f897c90463d97a34a14ee2bf978b5ead784
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Nov 17 13:25:02 2021 +0000
 
-    Fixed progress filtering
+    Merged PR 14757: Fixed Progress column FIlter
+    
+    Fixed Progress column FIlter
+    
+    Related work items: #36996
 
 branch: master
