@@ -289,7 +289,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     headerTooltip:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.bdnQuantity,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity,
-    field: model('id'),
+    field: model('bdnQuantity'),
     autoHeight: true,
     wrapText: true,
     dtoForExport:

@@ -40,7 +40,7 @@ export interface IControlTowerQuantitySupplyDifferenceItemDto {
   vesselToWatch: boolean;
   productType: IDisplayLookupDto;
   progress: number;
-  id: number;
+  bdnQuantity: number;
   measuredDeliveredQty: number;
   differenceInQty: number;
   totalCount: number;
