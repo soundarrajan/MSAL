@@ -171,7 +171,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
   gridViewModel: any;
 
   gridIds = {
-    'control-tower-quantity-rob-list-grid-8': {
+    'control-tower-quantity-rob-list-grid-9': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
@@ -191,7 +191,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       timeDeltaUnit: 'month',
       mappedKey: ControlTowerQualityClaimsListColumns.createdDate
     },
-    'control-tower-residue-sludge-list-grid-3': {
+    'control-tower-residue-sludge-list-grid-4': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate
