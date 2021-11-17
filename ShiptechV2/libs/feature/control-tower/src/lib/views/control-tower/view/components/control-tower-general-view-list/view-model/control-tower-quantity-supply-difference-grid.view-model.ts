@@ -297,7 +297,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRenderer: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.bdnQuantity ?? '-'
+          a => this.format.quantity(a.bdnQuantity) ?? '-'
         );
         return mergedValues.join('<br>');
       }
@@ -306,7 +306,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     tooltip: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.bdnQuantity ?? '-'
+          a => this.format.quantity(a.bdnQuantity) ?? '-'
         );
         return mergedValues.join(',');
       }
@@ -495,8 +495,6 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
-    resizable: false,
-    suppressMovable: true,
     width: 110
   };
 
