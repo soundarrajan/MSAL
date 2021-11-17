@@ -1,6 +1,6 @@
 export enum ControlTowerResidueSludgeDifferenceListColumns {
   actions = 'actions',
-  portCall = 'portcall.portCallId',
+  portCall = 'portCall',
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
@@ -16,7 +16,7 @@ export enum ControlTowerResidueSludgeDifferenceListColumns {
 }
 
 export enum ControlTowerResidueSludgeDifferenceListExportColumns {
-  portCall = 'portcall.portCallId',
+  portCall = 'portCall.portCallId',
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
