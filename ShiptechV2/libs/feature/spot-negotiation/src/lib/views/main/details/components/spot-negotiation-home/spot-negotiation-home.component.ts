@@ -54,7 +54,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
        this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
        this.requestOptions = spotNegotiation.requests;
-       this.tenantConfiguration=spotNegotiation.tenantConfigurations;
+       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
      });
   }
 
@@ -167,21 +167,20 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
 
     rowsArray.forEach((row, index) => {
-      let currentLocProd = currentRequestData.filter(row1 => row1.locationId == row.locationId);
+      let requestLocations = currentRequestData.filter(row1 => row1.locationId == row.locationId);
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray.length &&
-        row.id ===
-        priceDetailsArray[index].requestLocationSellerId
+        row.id === priceDetailsArray[index].requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =  priceDetailsArray[index].physicalSupplierCounterpartyId;
         if(priceDetailsArray[index].physicalSupplierCounterpartyId){
-        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+            row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
         }
-        this.UpdateProductsSelection(currentLocProd,row);
+        this.UpdateProductsSelection(requestLocations,row);
 
         return row;
       }
@@ -198,7 +197,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.physicalSupplierCounterpartyId =  detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if(detailsForCurrentRow[0].physicalSupplierCounterpartyId){
         row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;}
-        this.UpdateProductsSelection(currentLocProd,row);
+        this.UpdateProductsSelection(requestLocations,row);
       }
       return row;
     });
@@ -206,9 +205,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     return rowsArray;
   }
 
- UpdateProductsSelection(currentLocProd,row){
-  if(currentLocProd.length != 0){
-    let currentLocProdCount = currentLocProd[0].requestProducts.length;
+ UpdateProductsSelection(requestLocations, row){
+  if(requestLocations.length != 0){
+    let currentLocProdCount = requestLocations[0].requestProducts.length;
     for (let index = 0; index < currentLocProdCount; index++) {
       let indx = index +1;
       let val = "checkProd" + indx;
