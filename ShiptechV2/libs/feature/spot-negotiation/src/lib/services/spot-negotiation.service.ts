@@ -184,10 +184,21 @@ export class SpotNegotiationService extends BaseStoreService
    * Skip RFQ
    * @param payload = 
    */
- @ObservableException()
- SkipRFQ(payload: any): Observable<unknown> {
-   return this.spotNegotiationApi.SkipRFQ(payload);
- }
+  @ObservableException()
+  SkipRFQ(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.SkipRFQ(payload);
+  }
+
+ 
+  /**
+ * Save and Send RFQ
+ * @param payload = 
+ */
+  @ObservableException()
+  SaveAndSendRFQ(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.SaveAndSendRFQ(payload);
+  }
+   
 
   /**
    * Fake populate rows
