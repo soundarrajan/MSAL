@@ -73,7 +73,7 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
   [ControlTowerQuantitySupplyDifferenceListColumns.emailToVessel]:'VesselEmail',
   [ControlTowerQuantitySupplyDifferenceListColumns.vesselToWatch]:'VesselToWatch',
   [ControlTowerQuantitySupplyDifferenceListColumns.productType]:'QuantityReportDetails_ProductType_Name',
-  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'progress_name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'SupplyProgress_name',
   [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]:'QuantityReportDetails_BdnQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:'QuantityReportDetails_MeasuredDeliveredQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol]:'QuantityReportDetails_SumOfOrderQuantity',
