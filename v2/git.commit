@@ -1,9 +1,7 @@
-﻿commit 35980ddf882277c7e0cf1394e0a7de54d3cd15ab
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 17 14:30:22 2021 +0000
+﻿commit caafb8fec05947f3802cce1baf6cac1adc308d2f
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Wed Nov 17 17:00:52 2021 +0200
 
-    Merged PR 14761: Worked on my notes
-    
-    Worked on my notes
+    Fixed progress filter
 
 branch: master
