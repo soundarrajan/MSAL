@@ -449,7 +449,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-residue-sludge-list-grid-3',
+      'control-tower-residue-sludge-list-grid-4',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(

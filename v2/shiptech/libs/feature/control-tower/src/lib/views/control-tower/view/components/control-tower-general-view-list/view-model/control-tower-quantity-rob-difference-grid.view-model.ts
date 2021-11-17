@@ -458,7 +458,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-quantity-rob-list-grid-8',
+      'control-tower-quantity-rob-list-grid-9',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
