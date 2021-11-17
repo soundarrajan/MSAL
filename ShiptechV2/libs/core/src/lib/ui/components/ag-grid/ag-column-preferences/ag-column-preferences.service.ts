@@ -150,17 +150,17 @@ export class AgColumnPreferencesService implements OnDestroy {
                 sort: 'desc'
               }
             ]);
-          } else if (
-            gridName == 'control-tower-quantity-rob-list-grid-8' ||
-            gridName == 'control-tower-residue-sludge-list-grid-3'
-          ) {
+          } else if (gridName == 'control-tower-residue-sludge-list-grid-4') {
             options.api.setSortModel([
               {
                 colId: 'differenceInRobQuantity',
                 sort: 'desc'
               }
             ]);
-          } else if (gridName == 'control-tower-quantity-supply-list-grid-5') {
+          } else if (
+            gridName == 'control-tower-quantity-rob-list-grid-9' ||
+            gridName == 'control-tower-quantity-supply-list-grid-5'
+          ) {
             options.api.setSortModel([
               {
                 colId: 'surveyorDate',
@@ -213,8 +213,7 @@ export class AgColumnPreferencesService implements OnDestroy {
               }
             ]);
           } else if (
-            (gridName == 'control-tower-quantity-rob-list-grid-8' ||
-              gridName == 'control-tower-residue-sludge-list-grid-3') &&
+            gridName == 'control-tower-residue-sludge-list-grid-4' &&
             !sortModels.length
           ) {
             options.api.setSortModel([
@@ -224,7 +223,8 @@ export class AgColumnPreferencesService implements OnDestroy {
               }
             ]);
           } else if (
-            gridName == 'control-tower-quantity-supply-list-grid-5' &&
+            (gridName == 'control-tower-quantity-rob-list-grid-9' ||
+              gridName == 'control-tower-quantity-supply-list-grid-5') &&
             !sortModels.length
           ) {
             options.api.setSortModel([
