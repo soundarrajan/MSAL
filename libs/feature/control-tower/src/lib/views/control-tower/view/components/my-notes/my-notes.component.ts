@@ -7,6 +7,7 @@ import {
   IControlTowerSaveNotesItemDto
 } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
+import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 
 @Pipe({
@@ -72,6 +73,39 @@ export class MyNotesComponent implements OnInit {
   public deletingTitle: boolean = false;
   @Input() theme: boolean;
   @Input() newScreen: boolean;
+  view: any;
+  timeView: string;
+  defaultTimeView: string;
+
+  get controlTowerNotesViewType(): any[] {
+    return this._controlTowerNotesViewType;
+  }
+
+  @Input() set controlTowerNotesViewType(value: any[]) {
+    this._controlTowerNotesViewType = value;
+  }
+
+  @Input() _controlTowerNotesViewType: any[];
+
+  get screenList(): any[] {
+    return this._screenList;
+  }
+
+  @Input() set screenList(value: any[]) {
+    this._screenList = value;
+  }
+
+  @Input() _screenList: any[];
+
+  get screenType(): any {
+    return this._screenType;
+  }
+
+  @Input() set screenType(value: string) {
+    this._screenType = value;
+  }
+
+  @Input() _screenType: any;
 
   @ViewChild('notesSection') notesSection: ElementRef;
   @ViewChild('titleSection') titleSection: ElementRef;
@@ -81,437 +115,425 @@ export class MyNotesComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private controlTowerService: ControlTowerService,
     private toastr: ToastrService
-  ) {
-    // this.legacyLookupsDatabase.getTableByName('timeView ').then(response => {
-    //   console.log(response);
-    // });
-    let payload: IControlTowerGetMyNotesDto = {
-      view: {
-        id: 131,
-        name: 'test'
-      },
-      timeView: {
-        id: 1,
-        name: 'test'
-      }
-    };
-
-    this.controlTowerService
-      .getMyNotes(payload)
-      .pipe()
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-        }
-      });
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.filterDate = 'Today';
-    this.index = 1;
-    this.allContent = [
-      {
-        date: 'Today',
-        titleHead: 'title',
-        title: `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: 'Today',
-        titleHead: 'title2',
-        title: `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: 'Today',
-        titleHead: 'title3',
-        title: `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: 'Yesterday',
-        titleHead: 'title11',
-        title: `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: 'Yesterday',
-        titleHead: 'title22',
-        title: `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: 'Yesterday',
-        titleHead: 'title33',
-        title: `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: '2-07-2020',
-        titleHead: 'title111',
-        title: `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: '2-07-2020',
-        titleHead: 'title222',
-        title: `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: '2-07-2020',
-        titleHead: 'title333',
-        title: `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: '1-07-2020',
-        titleHead: 'title 1',
-        title: `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: '1-07-2020',
-        titleHead: 'title 2',
-        title: `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      },
-      {
-        date: '1-07-2020',
-        titleHead: 'title 3',
-        title: `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-      }
-    ];
-    this.notesContent = [
-      {
-        date: 'Today',
-        selected: true,
-        titleHead: ['title', 'title2', 'title3'],
-        title: [
-          `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: 'Yesterday',
-        selected: false,
-        titleHead: ['title11', 'title22', 'title33'],
-        title: [
-          `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '2-07-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '1-07-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '20-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '19-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '18-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '17-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '16-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '15-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '14-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '13-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '12-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '11-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '10-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '9-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '8-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '7-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '6-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '5-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '4-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '3-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '2-01-2020',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '1-01-2020',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      }
-    ];
-    this.weeklynotesContent = [
-      {
-        date: '25 July To 31st July',
-        selected: true,
-        titleHead: ['title', 'title2', 'title3'],
-        title: [
-          `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '18 July To 24 July',
-        selected: false,
-        titleHead: ['title11', 'title22', 'title33'],
-        title: [
-          `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: ' 11 July to 17 July',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: '04 July to 10 July',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      }
-    ];
-    this.monthlynotesContent = [
-      {
-        date: 'April',
-        selected: true,
-        titleHead: ['title', 'title2', 'title3'],
-        title: [
-          `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: 'March',
-        selected: false,
-        titleHead: ['title11', 'title22', 'title33'],
-        title: [
-          `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: 'February',
-        selected: false,
-        titleHead: ['title111', 'title222', 'title3333'],
-        title: [
-          `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      },
-      {
-        date: 'January',
-        selected: false,
-        titleHead: ['title 1', 'title 2', 'title 3'],
-        title: [
-          `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
-          `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
-        ]
-      }
-    ];
-    //this.loadnotesContent = this.notesContent;
-    this.savedContent = this.notesContent;
-    this.filterTitle = this.notesContent.filter(
-      t => t.date === this.filterDate
-    );
-    this.filterHeadTitle = this.notesContent.filter(
-      t => t.date === this.filterDate
-    );
-    // console.log("ffffffffffffffffff");
-    this.filterTitle1 = this.filterTitle[0].title;
-    this.filterHeadTitle1 = this.filterTitle[0].titleHead;
-    this.filterNotes = this.notesContent.filter(
-      t => t.date === this.filterDate
-    );
+    console.log(this.screenList);
+    console.log(this.controlTowerNotesViewType);
+    console.log(this.screenType);
+    let screenType = this.screenType;
+    this.view = _.find(this.screenList, function(object) {
+      return object.name == screenType;
+    });
+    this.timeView = this.controlTowerNotesViewType[0].id.toString();
+    this.defaultTimeView = this.controlTowerNotesViewType[0].id.toString();
+
+    console.log(this.view);
+    this.getMyNotes();
+
+    // this.filterDate = 'Today';
+    // this.index = 1;
+    // this.allContent = [
+    //   {
+    //     date: 'Today',
+    //     titleHead: 'title',
+    //     title: `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: 'Today',
+    //     titleHead: 'title2',
+    //     title: `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: 'Today',
+    //     titleHead: 'title3',
+    //     title: `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: 'Yesterday',
+    //     titleHead: 'title11',
+    //     title: `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: 'Yesterday',
+    //     titleHead: 'title22',
+    //     title: `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: 'Yesterday',
+    //     titleHead: 'title33',
+    //     title: `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: '2-07-2020',
+    //     titleHead: 'title111',
+    //     title: `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: '2-07-2020',
+    //     titleHead: 'title222',
+    //     title: `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: '2-07-2020',
+    //     titleHead: 'title333',
+    //     title: `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: '1-07-2020',
+    //     titleHead: 'title 1',
+    //     title: `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: '1-07-2020',
+    //     titleHead: 'title 2',
+    //     title: `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   },
+    //   {
+    //     date: '1-07-2020',
+    //     titleHead: 'title 3',
+    //     title: `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //   }
+    // ];
+    // this.notesContent = [
+    //   {
+    //     date: 'Today',
+    //     selected: true,
+    //     titleHead: ['title', 'title2', 'title3'],
+    //     title: [
+    //       `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: 'Yesterday',
+    //     selected: false,
+    //     titleHead: ['title11', 'title22', 'title33'],
+    //     title: [
+    //       `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '2-07-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '1-07-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '20-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '19-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '18-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '17-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '16-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '15-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '14-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '13-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '12-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '11-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '10-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '9-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '8-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '7-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '6-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '5-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '4-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '3-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '2-01-2020',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '1-01-2020',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   }
+    // ];
+    // this.weeklynotesContent = [
+    //   {
+    //     date: '25 July To 31st July',
+    //     selected: true,
+    //     titleHead: ['title', 'title2', 'title3'],
+    //     title: [
+    //       `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '18 July To 24 July',
+    //     selected: false,
+    //     titleHead: ['title11', 'title22', 'title33'],
+    //     title: [
+    //       `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: ' 11 July to 17 July',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: '04 July to 10 July',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   }
+    // ];
+    // this.monthlynotesContent = [
+    //   {
+    //     date: 'April',
+    //     selected: true,
+    //     titleHead: ['title', 'title2', 'title3'],
+    //     title: [
+    //       `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: 'March',
+    //     selected: false,
+    //     titleHead: ['title11', 'title22', 'title33'],
+    //     title: [
+    //       `a Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `a What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `a People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: 'February',
+    //     selected: false,
+    //     titleHead: ['title111', 'title222', 'title3333'],
+    //     title: [
+    //       `1 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `1 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   },
+    //   {
+    //     date: 'January',
+    //     selected: false,
+    //     titleHead: ['title 1', 'title 2', 'title 3'],
+    //     title: [
+    //       `2 Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 What I am working on Today Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`,
+    //       `2 People I need to talk to Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`
+    //     ]
+    //   }
+    // ];
+    // //this.loadnotesContent = this.notesContent;
+    // this.savedContent = this.notesContent;
+    // this.filterTitle = this.notesContent.filter(
+    //   t => t.date === this.filterDate
+    // );
+    // this.filterHeadTitle = this.notesContent.filter(
+    //   t => t.date === this.filterDate
+    // );
+    // this.filterTitle1 = this.filterTitle[0].title;
+    // this.filterHeadTitle1 = this.filterTitle[0].titleHead;
+    // this.filterNotes = this.notesContent.filter(
+    //   t => t.date === this.filterDate
+    // );
   }
 
   selectDate(selectDate) {
@@ -589,17 +611,6 @@ export class MyNotesComponent implements OnInit {
     this.isFiltered = false;
     //this.notesContent = this.notesContent;
   }
-  dropChange(e) {
-    //alert(e.value);
-
-    if (e.value == 'weekly') {
-      this.notesContent = this.weeklynotesContent;
-    } else if (e.value == 'monthly') {
-      this.notesContent = this.monthlynotesContent;
-    } else {
-      this.notesContent = this.savedContent;
-    }
-  }
 
   closeDelete() {
     //e.stopPropagation();
@@ -618,13 +629,27 @@ export class MyNotesComponent implements OnInit {
     //console.log(this.filterHeadTitle1);
   }
 
+  getMyNotes() {
+    let payload: IControlTowerGetMyNotesDto = {
+      view: this.view,
+      timeView: { id: +this.timeView }
+    };
+    this.controlTowerService
+      .getMyNotes(payload)
+      .pipe()
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+        }
+      });
+  }
+
   autoSaveNotes(value) {
     console.log(value);
     let payload: IControlTowerSaveNotesItemDto = {
-      view: {
-        id: 131,
-        name: 'test'
-      },
+      view: this.view,
       id: 0,
       title: 'New Test',
       message: 'This Note was added'
