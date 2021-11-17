@@ -543,7 +543,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
             this.toggleNewFilter = !this.toggleNewFilter;
             this.toggleMASFilter = true;
             this.toggleResolvedFilter = true;
-          } else if ((<any>value).filter === 'MarkedAsSeen') {
+          } else if ((<any>value).filter === 'Marked As Seen') {
             this.toggleMASFilter = !this.toggleMASFilter;
             this.toggleNewFilter = true;
             this.toggleResolvedFilter = true;
