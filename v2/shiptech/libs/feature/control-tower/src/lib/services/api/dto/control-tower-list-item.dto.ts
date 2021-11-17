@@ -163,3 +163,27 @@ export interface IgetControlTowerQualityClaimsListExportUrlResponse {
   };
   matchedCount: number;
 }
+
+export interface ILookupDto {
+  id: number;
+  name: string;
+}
+
+export interface IControlTowerSaveNotesItemDto {
+  view: ILookupDto;
+  id: number;
+  title: string;
+  message: string;
+}
+
+export interface IControlTowerGetMyNotesDto {
+  view: ILookupDto;
+  timeView: ILookupDto;
+}
+
+export interface IControlTowerGetFilteredNotesDto {
+  view: ILookupDto;
+  startDate: string;
+  endDate: string;
+  searchText: string;
+}

@@ -1,11 +1,9 @@
-﻿commit 85936ea2cf40c3ae0604a32a9134bad722f344eb
+﻿commit bad014e6ec0a48fb2aedcfca795c8de0972d21a5
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Nov 16 13:17:11 2021 +0000
+Date:   Wed Nov 17 08:55:54 2021 +0000
 
-    Merged PR 14736: Fixed 36981
+    Merged PR 14743: Worked on my notes requirement
     
-    Fixed 36981
-    
-    Related work items: #36981
+    Related work items: #33663
 
 branch: master
