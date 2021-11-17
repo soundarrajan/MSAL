@@ -28,7 +28,7 @@ export enum ControlTowerQuantitySupplyDifferenceListExportColumns {
   vesselToWatch = 'vesselToWatch',
   productType = 'quantityReportDetails.productType.Name',
   progress = 'progress.name',
-  bdnQuantity = 'quantityReportDetails.BDNQuantity',
+  bdnQuantity = 'quantityReportDetails.bdnQuantity',
   measuredDeliveredQty = 'quantityReportDetails.measuredDeliveredQuantity',
   sumOfOrderQtyCol = 'quantityReportDetails.sumOfOrderQuantity',
   differenceInQty = 'quantityReportDetails.differenceInSupplyQuantity',

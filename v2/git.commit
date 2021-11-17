@@ -1,10 +1,10 @@
-﻿commit 91b3f99d975efeaad92b77b4e5866e0cf1b1d27a
+﻿commit fbf3023ce84504ff223455498addfd4b97826cc6
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Nov 17 15:36:32 2021 +0000
+Date:   Wed Nov 17 16:01:50 2021 +0000
 
-    Merged PR 14762: Fix supply export
+    Merged PR 14766: rename bdnQuantity mapping for export
     
-    Fix supply export
+    rename bdnQuantity mapping for export
     
     Related work items: #36990
 
