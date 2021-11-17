@@ -328,7 +328,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRenderer: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.measuredDeliveredQuantity ?? '-'
+          a => this.format.quantity(a.measuredDeliveredQuantity) ?? '-'
         );
         return mergedValues.join('<br>');
       }
@@ -340,7 +340,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     tooltip: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.measuredDeliveredQuantity ?? '-'
+          a => this.format.quantity(a.measuredDeliveredQuantity) ?? '-'
         );
         return mergedValues.join(',');
       }
@@ -365,7 +365,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRenderer: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.differenceInSupplyQuantity ?? '-'
+          a => this.format.quantity(a.differenceInSupplyQuantity) ?? '-'
         );
         return mergedValues.join('<br>');
       }
@@ -374,7 +374,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     tooltip: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.differenceInSupplyQuantity ?? '-'
+          a => this.format.quantity(a.differenceInSupplyQuantity) ?? '-'
         );
         return mergedValues.join('<br>');
       }
@@ -398,7 +398,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRenderer: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.sumOfOrderQuantity ?? '-'
+          a => this.format.amount(a.sumOfOrderQuantity) ?? '-'
         );
         return mergedValues.join('<br>');
       }
@@ -407,7 +407,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     tooltip: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
-          a => a.sumOfOrderQuantity ?? '-'
+          a => this.format.amount(a.sumOfOrderQuantity) ?? '-'
         );
         return mergedValues.join(',');
       }

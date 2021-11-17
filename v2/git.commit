@@ -1,9 +1,11 @@
-﻿commit bad014e6ec0a48fb2aedcfca795c8de0972d21a5
+﻿commit 3c29b0f2c3f6efa275204e1c0615ff1b67693edf
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 17 08:55:54 2021 +0000
+Date:   Wed Nov 17 09:19:06 2021 +0000
 
-    Merged PR 14743: Worked on my notes requirement
+    Merged PR 14745: Fixed rounding off after UOM conversion for Sum of Order quantity(36998)
     
-    Related work items: #33663
+    Fixed rounding off after UOM conversion for Sum of Order quantity(36998)
+    
+    Related work items: #36998
 
 branch: master
