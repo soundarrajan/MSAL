@@ -36,7 +36,7 @@
         [ngClass]="content.selected ? 'select' : ''"
         (click)="selectDate(content)"
       >
-        {{ content?.displayName }}
+        {{ content?.date }}
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@
     </div>
     <div
       class="titleBlock"
-      *ngFor="let content1 of filterHeadTitle; let i = index"
+      *ngFor="let content1 of filterHeadTitle1; let i = index"
       [ngClass]="selectedTitleIndex === i ? 'select' : ''"
       (click)="selectTitle(content1, i)"
     >
@@ -108,6 +108,16 @@
       placeholder="&#61442;  Start searching for a hero by id or name or country"
     />
     <div class="filter-data">
+      <!-- <div
+        class="titleBlockx"
+        *ngFor="let content of allContent | filter: searchText; let i = index"
+        [ngClass]="selectedSearchIndex === i ? 'select' : ''"
+        (click)="selectFilterTitle(content, i)"
+      >
+        <div [innerHTML]="content.date | highlight: searchText"></div>
+        <span [innerHTML]="content.titleHead | highlight: searchText"></span>
+        <p [innerHTML]="content.title | highlight: searchText"></p>
+      </div> -->
       <div
         class="titleBlockx"
         *ngFor="let content of allContent; let i = index"
@@ -128,7 +138,7 @@
     </div>
     <div class="notesBlock">
       <div
-        *ngFor="let content1 of filterHeadTitle;let i = index;;trackBy: customTrackBy"
+        *ngFor="let content1 of filterHeadTitle1;let i = index;;trackBy: customTrackBy"
       >
         <input
           #titleSection
@@ -137,13 +147,14 @@
           spellcheck="false"
           type="text"
           name="sameName{{ i }}"
-          [(ngModel)]="filterHeadTitle[i]"
+          [(ngModel)]="filterHeadTitle1[i]"
           (keyup)="autoSaveNotes($event)"
         />
       </div>
+      <!-- <textarea *ngIf="selectedTitleIndex === i" spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]' (keyup)="handle($event)" style="height: 25px;"></textarea> -->
       <div
         class="m-t-10"
-        *ngFor="let content1 of filterBodyContent;let i = index;;trackBy: customTrackBy"
+        *ngFor="let content1 of filterTitle1;let i = index;;trackBy: customTrackBy"
       >
         <textarea
           #notesSection
@@ -152,10 +163,13 @@
           spellcheck="false"
           type="text"
           name="sameName{{ i }}"
-          [(ngModel)]="filterBodyContent[i]"
+          [(ngModel)]="filterTitle1[i]"
           (blur)="autoSaveNotes($event)"
         ></textarea>
       </div>
+      <!-- <input *ngIf="selectedTitleIndex === i" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]'>
+            <div *ngIf="selectedTitleIndex === i">{{filterTitle1[i]}}</div> -->
+      <!-- <div contenteditable="true" spellcheck="false" *ngIf="selectedTitleIndex === i">{{content1}}</div> -->
     </div>
   </div>
   <div class="notes-section" *ngIf="isFiltered">
@@ -186,6 +200,13 @@
           [(ngModel)]="content1.title"
         ></textarea>
       </div>
+      <!-- <textarea *ngIf="selectedTitleIndex === i" spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]' (keyup)="handle($event)" style="height: 25px;"></textarea> -->
+      <!-- <div *ngFor="let content1 of loadnotesContent;let i = index;;trackBy: customTrackBy">
+            <textarea #notesSection spellcheck="false" type='text' name='sameName{{i}}' [(ngModel)]='loadnotesContent.title'></textarea>
+            </div> -->
+      <!-- <input *ngIf="selectedTitleIndex === i" type='text' name='sameName{{i}}' [(ngModel)]='filterTitle1[i]'>
+            <div *ngIf="selectedTitleIndex === i">{{filterTitle1[i]}}</div> -->
+      <!-- <div contenteditable="true" spellcheck="false" *ngIf="selectedTitleIndex === i">{{content1}}</div> -->
     </div>
   </div>
 </div>
