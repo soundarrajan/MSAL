@@ -1101,7 +1101,7 @@ angular.module('shiptech.components').controller('FiltersController', [
 	                	}
                 	]                	
                 } 
-                else if (window.location.href.includes("labs/labresult") && !$rootScope.entity_id && $rootScope.rawFilters.length == 0 && !$rootScope.createdOnCleared) {
+                else if (window.location.href.includes("labs/labresult") && !$rootScope.isModal && $rootScope.rawFilters.length == 0 && !$rootScope.createdOnCleared) {
 					$rootScope.rawFilters = [
 	                	{
 	                		"column": {
