@@ -101,7 +101,13 @@
       ></app-quality-claims>
     </div>
     <div *ngIf="selectedVal == 'notes'">
-      <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
+      <app-my-notes
+        [theme]="theme"
+        [newScreen]="newScreen"
+        [controlTowerNotesViewType]="controlTowerNotesViewType"
+        [screenList]="screenList"
+        [screenType]="screenType"
+      ></app-my-notes>
     </div>
   </div>
   <div class="display-tab-content" *ngIf="showQuantity">
@@ -123,7 +129,13 @@
       ></app-control-tower-quantity-claims>
     </div>
     <div *ngIf="selectedVal2 == 'notes'">
-      <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
+      <app-my-notes
+        [theme]="theme"
+        [newScreen]="newScreen"
+        [controlTowerNotesViewType]="controlTowerNotesViewType"
+        [screenList]="screenList"
+        [screenType]="screenType"
+      ></app-my-notes>
     </div>
   </div>
   <div class="display-tab-content" *ngIf="showResidue">
@@ -134,7 +146,13 @@
       ></app-residue-difference>
     </div>
     <div *ngIf="selectedVal3 == 'notes'">
-      <app-my-notes [theme]="theme" [newScreen]="newScreen"></app-my-notes>
+      <app-my-notes
+        [theme]="theme"
+        [newScreen]="newScreen"
+        [controlTowerNotesViewType]="controlTowerNotesViewType"
+        [screenList]="screenList"
+        [screenType]="screenType"
+      ></app-my-notes>
     </div>
   </div>
 </div>

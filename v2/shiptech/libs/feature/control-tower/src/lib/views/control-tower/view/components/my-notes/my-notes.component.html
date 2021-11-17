@@ -13,7 +13,7 @@
       >
         <mat-form-field class="without-search" appearance="none">
           <mat-label>Select Field</mat-label>
-          <mat-select
+          <!-- <mat-select
             disableOptionCentering
             [(ngModel)]="daily"
             [panelClass]="{ darkPanelShiptech: switchTheme }"
@@ -22,6 +22,19 @@
             <mat-option value="daily">Daily</mat-option>
             <mat-option value="weekly">Weekly</mat-option>
             <mat-option value="monthly">Monthly</mat-option>
+          </mat-select> -->
+          <mat-select
+            disableOptionCentering
+            [(ngModel)]="timeView"
+            [(value)]="defaultTimeView"
+            [panelClass]="{ darkPanelBg: switchTheme }"
+            (selectionChange)="getMyNotes()"
+          >
+            <mat-option
+              *ngFor="let value of controlTowerNotesViewType"
+              value="{{ value.id }}"
+              >{{ value.displayName }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </div>
