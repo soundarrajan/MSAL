@@ -78,7 +78,8 @@ export const ControlTowerQuantitySupplyDifferenceListColumnServerKeys: Record<
     'VesselToWatch',
   [ControlTowerQuantitySupplyDifferenceListColumns.productType]:
     'QuantityReportDetails_ProductType_Name',
-  [ControlTowerQuantitySupplyDifferenceListColumns.progress]: 'progress_name',
+  [ControlTowerQuantitySupplyDifferenceListColumns.progress]:
+    'SupplyProgress_DisplayName',
   [ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity]:
     'QuantityReportDetails_BdnQuantity',
   [ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty]:
