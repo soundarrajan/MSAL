@@ -338,8 +338,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       this.vesselCol,
       this.etaCol,
       this.productCol,
-      this.sellerCol,
       this.claimSubTypeCol,
+      this.sellerCol,
       this.estimatedSettlementAmountCol,
       this.createdDateCol,
       this.createdByCol,
@@ -478,7 +478,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityClaimsFailed
+            ModuleError.LoadControlTowerQualityClaimsFailed
           );
           params.failCallback();
         }
