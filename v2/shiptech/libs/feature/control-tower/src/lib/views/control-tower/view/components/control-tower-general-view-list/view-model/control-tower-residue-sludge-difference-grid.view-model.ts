@@ -432,8 +432,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
-    resizable: false,
-    suppressMovable: true,
     width: 110
   };
 

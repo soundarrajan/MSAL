@@ -1,11 +1,11 @@
-﻿commit 3c29b0f2c3f6efa275204e1c0615ff1b67693edf
+﻿commit 98ec6c581941aa0bd173d694b4d9c52390874f5e
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 17 09:19:06 2021 +0000
+Date:   Wed Nov 17 09:30:30 2021 +0000
 
-    Merged PR 14745: Fixed rounding off after UOM conversion for Sum of Order quantity(36998)
+    Merged PR 14746: Fixed 37018
     
-    Fixed rounding off after UOM conversion for Sum of Order quantity(36998)
+    Fixed 37018
     
-    Related work items: #36998
+    Related work items: #37018
 
 branch: master
