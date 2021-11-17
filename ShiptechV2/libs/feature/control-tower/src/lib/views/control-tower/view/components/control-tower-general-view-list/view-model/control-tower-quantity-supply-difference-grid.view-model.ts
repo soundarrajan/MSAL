@@ -495,7 +495,9 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
-    width: 110
+    width: 110,
+    sortable: false,
+    filter: false
   };
 
   constructor(

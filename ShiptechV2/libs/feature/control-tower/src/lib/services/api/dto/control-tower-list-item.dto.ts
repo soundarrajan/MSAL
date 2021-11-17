@@ -166,7 +166,6 @@ export interface IgetControlTowerQualityClaimsListExportUrlResponse {
 
 export interface ILookupDto {
   id: number;
-  name: string;
 }
 
 export interface IControlTowerSaveNotesItemDto {
