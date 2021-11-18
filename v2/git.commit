@@ -1,11 +1,11 @@
-﻿commit 8df346df4269686457c594ab16b07baae89ff13a
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Nov 18 10:19:40 2021 +0000
+﻿commit fd154ceb6f79e726d06adf6238e85adbb1bf07d0
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Nov 18 12:40:19 2021 +0000
 
-    Merged PR 14780: UI fixes
+    Merged PR 14786: Get all notes based on the view and timeView
     
-    UI fixes
+    Get all notes based on the view and timeView
     
-    Related work items: #37051
+    Related work items: #33663
 
 branch: master

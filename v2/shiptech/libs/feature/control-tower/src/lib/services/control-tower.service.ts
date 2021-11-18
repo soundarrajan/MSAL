@@ -255,7 +255,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
     );
   }
   @ObservableException()
-  getFilteredNotes(data: IControlTowerGetFilteredNotesDto) {
+  getFilteredNotes(data: any) {
     return this.api.getFilteredNotes(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
