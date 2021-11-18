@@ -660,7 +660,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             if(response?.length) {
               dialogData.changeLog = response[0]?.controlTowerLabChangeLogResults.map(logObj=>{
                 logObj['user'] = {name:logObj.createdBy?.displayName};
-                logObj['newStatus'] = {displayName:'Resolved'};
                 logObj['date'] = logObj.createdOn;
                 logObj['newComments'] = logObj.comments;
                 return logObj;
