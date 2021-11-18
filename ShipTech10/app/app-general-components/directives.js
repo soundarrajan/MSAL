@@ -480,8 +480,12 @@ Number(function() {
                                     if (scope.tenantSetting.shiptechLite) {
                                         newValue.colModel.splice(i, 1);
                                     }
-                                }  else if (newValue.colModel[i].name == 'terminal.name' ) {
+                                } else if (newValue.colModel[i].name == 'terminal.name' ) {
                                     if (procurementSettings.request.isRequestTerminalHidden) {
+                                        newValue.colModel.splice(i, 1);
+                                    }
+                                } else if (newValue.colModel[i].name == 'productType.name' ) {
+                                    if (procurementSettings.request.productTypeInRequest.name.toUpperCase() === 'NO') {
                                         newValue.colModel.splice(i, 1);
                                     }
                                 }
