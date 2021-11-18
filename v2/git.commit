@@ -1,11 +1,11 @@
-﻿commit d6e608699cc9d563fb66115046243bbb2dec8e04
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Nov 17 16:21:35 2021 +0000
+﻿commit 0ede0f3d62f6eab1d0269b2ba88648bae1e49dd5
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Nov 18 07:30:37 2021 +0000
 
-    Merged PR 14767: Fix sumOfOrderQuantity precision
+    Merged PR 14773: Fixed eta column in residue, quantity view and displaying correctly special c...
     
-    Fix sumOfOrderQuantity precision
+    Fixed eta column in residue, quantity view and displaying correctly special characters  in the alert pop up
     
-    Related work items: #36998
+    Related work items: #36999, #37007
 
 branch: master

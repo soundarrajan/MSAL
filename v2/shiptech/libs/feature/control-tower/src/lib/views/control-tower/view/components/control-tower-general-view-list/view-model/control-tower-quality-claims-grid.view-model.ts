@@ -29,10 +29,10 @@ import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { IControlTowerQualityClaimsItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import {
-    ControlTowerQualityClaimsListColumns,
-    ControlTowerQualityClaimsListColumnsLabels,
-    ControlTowerQualityClaimsListColumnServerKeys,
-    ControlTowerQualityClaimsListExportColumns
+  ControlTowerQualityClaimsListColumns,
+  ControlTowerQualityClaimsListColumnsLabels,
+  ControlTowerQualityClaimsListColumnServerKeys,
+  ControlTowerQualityClaimsListExportColumns
 } from '../list-columns/control-tower-quality-claims-list.columns';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 
@@ -106,14 +106,14 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('order'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.order,
     cellRenderer: params => {
-        if (params.value) {
-            const a = document.createElement('a');
-            a.innerHTML = params.value?.id;
-            a.href = `/#/edit-order/${params.value?.id}`;
-            a.setAttribute('target', '_blank');
-            return a;
-        }
-        return null;
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value?.id;
+        a.href = `/#/edit-order/${params.value?.id}`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     tooltip: params => (params.value ? params.value?.id : ''),
     width: 150
@@ -126,14 +126,14 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('lab'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.lab,
     cellRenderer: params => {
-        if (params.value) {
-            const a = document.createElement('a');
-            a.innerHTML = params.value?.id;
-            a.href = `/#/labs/labresult/edit/${params.value?.id}`;
-            a.setAttribute('target', '_blank');
-            return a;
-        }
-        return null;
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value?.id;
+        a.href = `/#/labs/labresult/edit/${params.value?.id}`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     tooltip: params => (params.value ? params.value?.id : ''),
     width: 150
@@ -146,14 +146,14 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('id'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.id,
     cellRenderer: params => {
-        if (params.value) {
-          const a = document.createElement('a');
-          a.innerHTML = params.value;
-          a.href = `/#/claims/claim/edit/${params.value}`;
-          a.setAttribute('target', '_blank');
-          return a;
-        }
-        return null;
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value;
+        a.href = `/#/claims/claim/edit/${params.value}`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     tooltip: params => (params.value ? params.value : ''),
     width: 150
@@ -185,9 +185,9 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     colId: ControlTowerQualityClaimsListColumns.eta,
     field: model('eta'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.dateUtc(params.value),
+    valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    tooltip: params => (params.value ? this.format.date(params.value) : ''),
     width: 200
   };
 
@@ -208,7 +208,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('seller'),
     valueFormatter: params => this.format.htmlDecode(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.seller,
-    tooltip: params => (params.value ? this.format.htmlDecode(params.value) : ''),
+    tooltip: params =>
+      params.value ? this.format.htmlDecode(params.value) : '',
     width: 200
   };
 
@@ -219,7 +220,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('claimSubtypes'),
     valueFormatter: params => this.format.htmlDecode(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.claimSubType,
-    tooltip: params => (params.value ? this.format.htmlDecode(params.value) : ''),
+    tooltip: params =>
+      params.value ? this.format.htmlDecode(params.value) : '',
     width: 150
   };
 
@@ -247,9 +249,9 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     colId: ControlTowerQualityClaimsListColumns.createdDate,
     field: model('createdDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
+    valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.createdDate,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 200
   };
 
@@ -298,13 +300,13 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
     tooltip: params => {
-        if (params.value < 7) {
-          return 'New';
-        } else if (params.value >= 7 && params.value <= 14) {
-          return '7-14 Days';
-        } else if (params.value > 14) {
-          return '15+ Days';
-        }
+      if (params.value < 7) {
+        return 'New';
+      } else if (params.value >= 7 && params.value <= 14) {
+        return '7-14 Days';
+      } else if (params.value > 14) {
+        return '15+ Days';
+      }
     },
     width: 150
   };
@@ -424,7 +426,10 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
             this.toggleNewFilter = true;
             this.toggleGreaterThan15DaysFilter = true;
           }
-        } else if ((<any>value).type == 'greaterThan' || (<any>value).type == 'greaterThanOrEqual') {
+        } else if (
+          (<any>value).type == 'greaterThan' ||
+          (<any>value).type == 'greaterThanOrEqual'
+        ) {
           if ((<any>value).filter === 15) {
             this.toggleGreaterThan15DaysFilter = !this
               .toggleGreaterThan15DaysFilter;
