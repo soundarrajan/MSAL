@@ -639,7 +639,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       vessel: rowData.vessel?.name,
       lab: rowData?.id,
       port: rowData.port,
-      portCall: rowData.port,
       quantityReportId: rowData.id,
       progressId: rowData.progress.id,
       productTypeList: productTypeList
