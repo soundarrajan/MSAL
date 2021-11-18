@@ -254,6 +254,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     dtoForExport:
       ControlTowerResidueSludgeDifferenceListExportColumns.sludgePercentage,
     tooltip: params => (params.value ? this.format.quantity(params.value) : ''),
+    filter: 'agNumberColumnFilter',
     width: 150
   };
 
@@ -395,7 +396,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       ControlTowerResidueSludgeDifferenceListColumnsLabels.progress,
     colId: ControlTowerResidueSludgeDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: "aggrid-text-align-c",
+    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
