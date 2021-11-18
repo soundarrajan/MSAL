@@ -1,8 +1,8 @@
-﻿commit a58104ade9122f04dd3307c5df360474945a4833
+﻿commit 6c6dc69d3b41c7440d1ef30301adfe36b90558b4
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 18 22:09:15 2021 +0000
+Date:   Thu Nov 18 22:34:51 2021 +0000
 
-    Merged PR 14797: #33672 - save action popup issue fixed in control tower labs and residue sludge screen
+    Merged PR 14798: #33672 - save action popup functionality changes for sludge and quality labs has done
     
     Related work items: #33672
 

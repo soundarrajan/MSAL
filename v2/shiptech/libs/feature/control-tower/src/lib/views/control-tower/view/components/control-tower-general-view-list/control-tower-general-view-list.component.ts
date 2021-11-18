@@ -473,7 +473,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogRef.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
               console.log(ev);
-              this.gridViewModel.updateValues();
+              this.gridViewModel.updateValues(ev, result);
             });
           }
         },
@@ -573,7 +573,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogRef.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
               console.log(ev);
-              this.gridViewModel.updateValues();
+              this.gridViewModel.updateValues(ev, result);
             });
           }
         },

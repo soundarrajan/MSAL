@@ -343,7 +343,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
 
   @ObservableException()
   saveQualityLabsPopUp(data, response) {
-    return this.api.saveResiduePopUp(data).pipe(
+    return this.api.saveQualityLabsPopUp(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
