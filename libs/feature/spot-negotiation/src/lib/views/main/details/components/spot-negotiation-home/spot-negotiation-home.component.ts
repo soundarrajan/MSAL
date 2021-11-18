@@ -59,13 +59,43 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   confirmorderpopup() {
-    const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
-      width: '1045px',
-      height: '555px',
-      panelClass: 'additional-cost-popup'
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows
     });
-
+    let isallow=false;
+    locationsRows.forEach(element => {
+      if (element.requestOffers!=undefined ){
+        if(element.checkProd1 && element.requestOffers[0].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd2 && element.requestOffers[1].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd3 && element.requestOffers[2].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd4 && element.requestOffers[3].price>0 ){
+          isallow=true;
+        }
+        if(element.checkProd5 && element.requestOffers[4].price>0 ){
+          isallow=true;
+        }
+      }
+    });
+    if(isallow){
+      const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
+        width: '1045px',
+        height: '555px',
+        panelClass: 'additional-cost-popup'
+      });
+      
     dialogRef.afterClosed().subscribe(result => {});
+    }
+    else{
+      this.toaster.warning('Cannot confirm offer as no offer price available');
+      return;
+    }
+
   }
 
   sendRFQpopup() {
@@ -218,7 +248,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   FilterselectedRow() {
     var Sellectedsellerdata = [];
-
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.locations.forEach(element => {
         spotNegotiation.locationsRows.forEach(element1 => {
@@ -242,7 +271,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   ConstuctSellerPayload(Seller, requestProducts, Request) {
     let selectedproducts = [];
-    let rfqId = null;
+    let rfqId = 0;
     let isRfqSkipped= null;
     if(Seller['checkProd1']){
       selectedproducts.push(requestProducts[0].id)
@@ -267,6 +296,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       RequestLocationSellerId: Seller.id,
       SellerId: Seller.sellerCounterpartyId,
       RequestLocationID: Seller.requestLocationId,
+      LocationID: Seller.locationId,
       RequestId: Request.id,
       physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
       RequestProductIds: selectedproducts,
@@ -300,11 +330,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Atleast 1 product should be selected');
       return;
     }
-    else if(this.selectedSellerList.find(x=>x.RfqId===null)){
+    else if(this.selectedSellerList.find(x=>x.RfqId===0)){
       this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
       return;
     }
-    else if(this.selectedSellerList.find(x=>x.RfqId!==null && x.IsRfqSkipped === true)){
+    else if(this.selectedSellerList.find(x=>x.RfqId!==0 && x.IsRfqSkipped === true)){
       this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
       return;
     }
@@ -339,7 +369,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error(errormessage);
       return;
     }
-    else if(this.selectedSellerList.find(x=>x.RfqId!==null && x.IsRfqSkipped === false)){
+    else if(this.selectedSellerList.find(x=>x.RfqId!==0 && x.IsRfqSkipped === false)){
       this.toaster.error('RFQ communicated to the counterparty already.');
       return;
     }
