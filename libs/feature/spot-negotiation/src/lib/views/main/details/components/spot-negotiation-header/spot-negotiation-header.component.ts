@@ -6,7 +6,8 @@ import {
   Renderer2,
   AfterViewInit,
   ViewChild,
-  EventEmitter
+  EventEmitter,
+  Input
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';

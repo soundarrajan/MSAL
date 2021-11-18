@@ -88,7 +88,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         height: '555px',
         panelClass: 'additional-cost-popup'
       });
-      
+
     dialogRef.afterClosed().subscribe(result => {});
     }
     else{
@@ -197,7 +197,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
 
     rowsArray.forEach((row, index) => {
-      let requestLocations = currentRequestData.filter(row1 => row1.locationId == row.locationId);
+      let requestLocations = currentRequestData.filter(row1 => row1.id == row.requestLocationId);
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
