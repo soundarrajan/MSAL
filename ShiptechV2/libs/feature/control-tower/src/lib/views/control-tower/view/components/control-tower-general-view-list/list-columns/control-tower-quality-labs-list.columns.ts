@@ -11,8 +11,8 @@ export enum ControlTowerQualityLabsListColumns {
     product = 'product',
     labStatus = 'status',
     claimRaised = 'claimsRaised',
-    createdDate = 'createdDate',
     createdBy = 'createdBy',
+    createdDate = 'createdDate',
     progress = 'progress',
     action = 'action'
   }
@@ -28,9 +28,9 @@ export enum ControlTowerQualityLabsListColumns {
     product = 'product.name',
     labStatus = 'status.name',
     claimRaised = 'claimsRaised',
-    createdDate = 'createdDate',
     createdBy = 'createdBy.name',
-    progress = 'progress.name'
+    createdDate = 'createdDate',
+    progress = 'progress.displayName'
   }
   
   export enum ControlTowerQualityLabsListColumnsLabels {
@@ -44,8 +44,8 @@ export enum ControlTowerQualityLabsListColumns {
     product = 'Product',
     labStatus = 'Lab Status',
     claimRaised = 'Claim Raised',
-    createdDate = 'Created On',
     createdBy = 'Created By',
+    createdDate = 'Created On',
     progress = 'Progress',
     action = 'Actions'
   }
@@ -67,8 +67,8 @@ export enum ControlTowerQualityLabsListColumns {
     [ControlTowerQualityLabsListColumns.product]: 'product_name',
     [ControlTowerQualityLabsListColumns.labStatus]: 'status_name',
     [ControlTowerQualityLabsListColumns.claimRaised]: 'claimsRaised',
-    [ControlTowerQualityLabsListColumns.createdDate]: 'createdDate',
     [ControlTowerQualityLabsListColumns.createdBy]: 'createdBy_name',
+    [ControlTowerQualityLabsListColumns.createdDate]: 'createdDate',
     [ControlTowerQualityLabsListColumns.progress]: 'Progress_Name',
     [ControlTowerQualityLabsListColumns.action]: 'userAction'
   };
