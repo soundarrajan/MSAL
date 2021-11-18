@@ -179,9 +179,9 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.eta,
     field: model('eta'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.dateUtc(params.value),
+    valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    tooltip: params => (params.value ? this.format.date(params.value) : ''),
     width: 200
   };
 
@@ -281,9 +281,9 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.createdDate,
     field: model('createdDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
+    valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.createdDate,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 200
   };
 
