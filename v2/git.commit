@@ -1,8 +1,8 @@
-﻿commit cbde1efcd93ae0881b477488074390c037d1185b
+﻿commit a6cdac3d50f4e87cf838e3878e87cd7a81799a32
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 18 19:02:18 2021 +0000
+Date:   Thu Nov 18 21:08:04 2021 +0000
 
-    Merged PR 14795: #Requirement 33672: Quality View: Labs test case bugs fixed
+    Merged PR 14796: #33672 - MarkedAsSeen filter value updated for control tower labs
     
     Related work items: #33672
 
