@@ -53,7 +53,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   public newFilterSelected: boolean = false;
   public fromDate = new FormControl(
     moment()
-      .subtract(7, 'months')
+      .subtract(6, 'months')
       .format('YYYY-MM-DD')
   );
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));

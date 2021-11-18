@@ -1,8 +1,8 @@
-﻿commit e32870bcfae0540a594b8aad0b1debcd8844e54b
+﻿commit b7c84e5a80ddb52b017945fcadc5edc367eb6822
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 18 15:10:02 2021 +0000
+Date:   Thu Nov 18 15:28:35 2021 +0000
 
-    Merged PR 14793: #33672 - Empty relation to case handled forcontrol tower action popup
+    Merged PR 14794: #33672: Quality View: Labs date filter range to 6 days has updated
     
     Related work items: #33672
 
