@@ -404,6 +404,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantityRobDifferenceListColumns.progress,
     field: model('progress'),
+    headerClass: "aggrid-text-align-c",
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
