@@ -356,8 +356,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   public updateValues(ev, values): void {
     if (values) {
       let payloadData = {
-        "controlTowerActionStatusId": values?.data?.status?.id,
-        "comments": values.data?.comments,
+        "controlTowerActionStatusId": values?.status,
+        "comments": values?.comments,
         "labResultId": ev.data?.id
       };
 
