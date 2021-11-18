@@ -48,6 +48,20 @@ export class ModuleError<T = any> extends AppError<T> {
       'Could not load control tower quality claims list. Please try again later.'
   });
 
+  static readonly LoadControlTowerQualityLabsFailed = new ModuleError({
+    code: ErrorCode.LoadControlTowerQualityLabsFailed,
+    message:
+      'Could not load control tower quality labs list. Please try again later.'
+  });
+
+  static readonly LoadControlTowerQualityLabsPopupFailed = new ModuleError(
+    {
+      code: ErrorCode.LoadControlTowerQualityLabsPopupFailed,
+      message:
+        'Could not load control tower quality labs popup. Please try again later.'
+    }
+  );
+
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);
   }
