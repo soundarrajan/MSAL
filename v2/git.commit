@@ -1,8 +1,8 @@
-﻿commit a6cdac3d50f4e87cf838e3878e87cd7a81799a32
+﻿commit a58104ade9122f04dd3307c5df360474945a4833
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 18 21:08:04 2021 +0000
+Date:   Thu Nov 18 22:09:15 2021 +0000
 
-    Merged PR 14796: #33672 - MarkedAsSeen filter value updated for control tower labs
+    Merged PR 14797: #33672 - save action popup issue fixed in control tower labs and residue sludge screen
     
     Related work items: #33672
 
