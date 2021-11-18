@@ -167,7 +167,7 @@
     ></textarea>
     <div class="link">
       <span>In relation to:</span>
-      <span>
+      <span *ngIf="data.portCall else NoRelation">
         Port Call:
         <a
           href="/v2/quantity-control/report/{{ data.quantityReportId }}/details"
@@ -176,6 +176,7 @@
           <span class="aggridlink-darktheme">{{ data.portCall }}</span>
         </a>
       </span>
+      <ng-template #NoRelation>-</ng-template>
     </div>
   </div>
   <div class="change-log col-12">
