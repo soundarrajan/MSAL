@@ -174,6 +174,7 @@ export interface IControlTowerSaveNotesItemDto {
   id: number;
   title: string;
   message: string;
+  isDeleted: boolean;
 }
 
 export interface IControlTowerGetMyNotesDto {
@@ -181,8 +182,16 @@ export interface IControlTowerGetMyNotesDto {
   timeView: ILookupDto;
 }
 
+export interface IControlTowerGetByIdDto {
+  view: ILookupDto;
+  timeView: ILookupDto;
+  startDate: string;
+  endDate: string;
+}
+
 export interface IControlTowerGetFilteredNotesDto {
   view: ILookupDto;
+  timeView: ILookupDto;
   startDate: string;
   endDate: string;
   searchText: string;
