@@ -316,7 +316,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   saveRowToCloud(updatedRow, product) {
     const tenantConfig = this.store.select((state: SpotNegotiationStoreModel) => {
-        return state.tenantConfigurations;
+      return state.tenantConfigurations;
     });
 
     if(tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierId){
@@ -722,6 +722,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return null;
       }
 
+      if(spotNegotiation.tenantConfigurations && spotNegotiation.tenantConfigurations['isDisplaySellerRating'] === false){
+        this.columnDef_aggrid[0].children = this.columnDef_aggrid[0].children.filter(col=> col.field != 'genRating'
+          && col.field != 'portRating');
+      }
       // Set headers of products;
       this.columnDef_aggridObj = [];
 
