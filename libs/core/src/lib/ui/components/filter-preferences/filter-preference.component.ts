@@ -42,33 +42,45 @@ export class FilterPreferencesComponent implements OnDestroy {
   // NOTE: These are the presets that the component displays and works with and are set by the directive after they are loaded by the service
   @Input() filterPresets: FilterPreferenceViewModel[];
   @Input() hasActiveFilterPresets: boolean;
+  @Input() systemDefaultFilters: any;
+  @Input() gridId: string;
+  @Input() gridIds: {};
+  @Input() groupedCountValues: any;
   // NOTE: This is the current active preset and is set when a filter preset is clicked from the list
   @Input() activePreset: FilterPreferenceViewModel;
-
+  
   @Input() isLoading: boolean = false;
-
+  
   @Input() maxPinnedItems: number = 3;
   // NOTE: Emits when a change occurs on the presets
   @Output() filterPresetsUpdate$ = new EventEmitter<
     FilterPreferenceViewModel[]
-  >();
-  // NOTE: This event occurs when any modification occurs on the filters
-  @Output() savePresets$ = new EventEmitter<any>();
-  // NOTE: This event occurs when the active filter is changed by selecting a different preset
+    >();
+    // NOTE: This event occurs when any modification occurs on the filters
+    @Output() savePresets$ = new EventEmitter<any>();
+    // NOTE: This event occurs when the active filter is changed by selecting a different preset
   @Output() activePresetChange$ = new EventEmitter<
-    FilterPreferenceViewModel[]
+  FilterPreferenceViewModel[]
   >();
   // NOTE: This is used to get the template for creating a new preset
   @ViewChild('createPreset', { static: false })
   createFilterTemplate: TemplateRef<any>;
   private _destroy$: Subject<any> = new Subject();
-
+  public currentSystemFilters : [
+    {
+      id: string,
+      label : string,
+      countId : string,
+      count: number
+    }
+  ]
+  
   constructor(
     public matDialog: MatDialog,
     private toastr: ToastrService,
     private changeDetector: ChangeDetectorRef
-  ) {}
-
+    ) {}
+    
   // NOTE: This occurs when a modification occurs on a filter item to set the has changes property true
   isDirty(isDirty: boolean): void {
     const currentFilter = this.filterPresets.find(preset => preset.isActive);
@@ -78,13 +90,29 @@ export class FilterPreferencesComponent implements OnDestroy {
     }
   }
 
+  ngOnInit() {
+    if (this.gridIds[this.gridId]?.systemDefaultFilters) {
+      this.currentSystemFilters = this.gridIds[this.gridId].systemDefaultFilters;
+    }  
+  }
   // NOTE: Setting a preset as pinned when it's pin icon is pressed
-
+  
   // NOTE: Setting a preset as pinned displays it on the list above the grid
   public setPinned(id: string): void {
     this.filterPresets.find(
       preset => preset.id === id
     ).isPinned = !this.filterPresets.find(preset => preset.id === id).isPinned;
+  }
+  
+  public updateSystemPreferencesCount(values) {
+    for (const countId in values) {
+      let countValue = values[countId];
+      this.currentSystemFilters.forEach(systemFilter => {
+        if(systemFilter.countId == countId) {
+          systemFilter.count = countValue
+        }        
+      });
+    }
   }
 
   // NOTE: This is used to set a preference as active when it's clicked from the list above the grid

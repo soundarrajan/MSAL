@@ -160,6 +160,7 @@
               [id]="gridId"
               [gridId]="gridId"
               [gridIds]="gridIds"
+              [groupedCountValues]="gridViewModel.groupedCounts"
               (presetsLoaded)="
                 this.gridViewModel.markServerSideDataSourceReady()
               "
@@ -192,7 +193,7 @@
           class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
           style="height:calc( 100vh - 352px );"
           [gridOptions]="gridViewModel.gridOptions"
-          (rowClicked)="onrowClicked($event)"
+          (rowClicked)="onrowClicked($event)"          
         >
         </ag-grid-angular>
 
