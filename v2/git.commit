@@ -1,8 +1,8 @@
-﻿commit b7f659a62ba7cb1b546c5e5bf4401379143a596a
+﻿commit e32870bcfae0540a594b8aad0b1debcd8844e54b
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 18 14:25:11 2021 +0000
+Date:   Thu Nov 18 15:10:02 2021 +0000
 
-    Merged PR 14791: Requirement 33672: Quality View: Labs has done
+    Merged PR 14793: #33672 - Empty relation to case handled forcontrol tower action popup
     
     Related work items: #33672
 

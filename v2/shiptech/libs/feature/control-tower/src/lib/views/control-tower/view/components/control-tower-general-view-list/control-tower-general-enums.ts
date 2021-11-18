@@ -14,7 +14,7 @@ export interface IControlTowerRowPopup {
   vessel: string;
   lab?: string;
   port: string;
-  portCall: string;
+  portCall?: string;
   measuredQuantityLabel?: string;
   differenceQuantityLabel?: string;
   quantityReportId: string;
