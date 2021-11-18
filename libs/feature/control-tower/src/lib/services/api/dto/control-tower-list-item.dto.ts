@@ -104,6 +104,23 @@ export interface IControlTowerQualityClaimsItemDto {
   noResponse: number;
 }
 
+export interface IControlTowerQualityLabsItemDto {
+  order: IDisplayLookupDto;
+  id: string;
+  counterparty: IDisplayLookupDto;
+  deliveryId: string;
+  vessel: IDisplayLookupDto;
+  port: string;
+  recentEta: string;
+  product: IDisplayLookupDto;
+  status: IDisplayLookupDto;
+  claimsRaised: boolean;
+  createdDate: string;
+  createdBy: IDisplayLookupDto;
+  progress: IDisplayLookupDto;
+  userAction: string;
+}
+
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
@@ -161,6 +178,16 @@ export interface IgetControlTowerQualityClaimsListExportUrlResponse {
     noOf15: number;
     noOf714: number;
     noOfNew: number;
+  };
+  matchedCount: number;
+}
+
+export interface IGetControlTowerQualityLabsListResponse {
+  payload: {
+    items: IControlTowerQualityLabsItemDto[];
+    noOfNew: number;
+    noOfMarkedAsSeen: number;
+    noOfResolved: number;
   };
   matchedCount: number;
 }

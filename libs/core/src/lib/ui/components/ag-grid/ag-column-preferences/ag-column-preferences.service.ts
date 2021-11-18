@@ -142,7 +142,8 @@ export class AgColumnPreferencesService implements OnDestroy {
         if (!preferences) {
           if (
             gridName == 'control-tower-quantity-claims-list-grid-10' ||
-            gridName == 'control-tower-quality-claims-list-grid-7'
+            gridName == 'control-tower-quality-claims-list-grid-7' ||
+            gridName == 'control-tower-quality-labs-list-grid-7'
           ) {
             options.api.setSortModel([
               {
@@ -164,6 +165,15 @@ export class AgColumnPreferencesService implements OnDestroy {
             options.api.setSortModel([
               {
                 colId: 'surveyorDate',
+                sort: 'desc'
+              }
+            ]);
+          } else if (
+            gridName == 'control-tower-quality-labs-list-grid-7'
+          ) {
+            options.api.setSortModel([
+              {
+                colId: 'createdDate',
                 sort: 'desc'
               }
             ]);

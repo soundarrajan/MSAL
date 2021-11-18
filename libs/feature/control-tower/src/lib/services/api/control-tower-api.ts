@@ -14,6 +14,7 @@ import {
   IGetControlTowerQuantitySupplyDifferenceListResponse,
   IGetControlTowerQualityClaimsListResponse,
   IGetControlTowerResidueSludgeDifferenceListResponse,
+  IGetControlTowerQualityLabsListResponse,
   IControlTowerSaveNotesItemDto,
   IControlTowerGetMyNotesDto,
   IControlTowerGetFilteredNotesDto
@@ -36,6 +37,10 @@ export namespace ControlTowerApiPaths {
     `/api/controlTower/getQualityControlList`;
   export const getControlTowerQualityClaimsListExportUrl = () =>
     `/api/controlTower/exportQualityControlList`;
+  export const getControlTowerQualityLabsListUrl = () =>
+    `/api/controlTower/getQualityLabControlList`;
+  export const getControlTowerQualityLabsListExportUrl = () =>
+    `/api/controlTower/exportQualityLabControlList`;
   export const getQuantityResiduePopUpUrl = () =>
     `/api/controlTower/QuantityResiduePopUp`;
   export const saveQuantityResiduePopUpUrl = () =>
@@ -46,6 +51,8 @@ export namespace ControlTowerApiPaths {
     `api/controlTower/exportSludgeDifferenceList`;
   export const getResiduePopUpUrl = () => `api/controlTower/ResiduePopUp`;
   export const saveResiduePopUpUrl = () => `api/controlTower/SaveResiduePopUp`;
+  export const getQualityLabsPopUpUrl = () => `api/controlTower/getControlTowerQualityLabPopUpData`;
+  export const saveQualityLabsPopUpUrl = () => `api/controlTower/saveControlTowerQualityLabPopUpData`;
   export const getMyNotesUrl = () => `api/controlTower/getMyNotes`;
   export const getFilteredNotesUrl = () => `api/controlTower/getFilteredNotes`;
   export const getNoteByIdUrl = () => `api/controlTower/getNoteById`;
@@ -62,6 +69,9 @@ export class ControlTowerApi implements IControlTowerApiService {
 
   @ApiCallUrl()
   private _claimsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_CLAIMS;
+  
+  @ApiCallUrl()
+  private _labsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_LABS;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -151,6 +161,24 @@ export class ControlTowerApi implements IControlTowerApiService {
     }/${ControlTowerApiPaths.getControlTowerQualityClaimsListExportUrl()}`;
   }
 
+  //control tower quality labs api service
+  @ObservableException()
+  getControlTowerQualityLabsList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerQualityLabsListResponse> {
+    return this.http.post<IGetControlTowerQualityLabsListResponse>(
+      `${
+        this._labsApiUrl
+      }/${ControlTowerApiPaths.getControlTowerQualityLabsListUrl()}`,
+      { payload: request }
+    );
+  }
+  getControlTowerQualityLabsListExportUrl(): string {
+    return `${
+      this._labsApiUrl
+    }/${ControlTowerApiPaths.getControlTowerQualityLabsListExportUrl()}`;
+  }
+
   @ObservableException()
   getControlTowerResidueSludgeDifferenceList(
     request: IGetControlTowerListRequest
@@ -186,6 +214,14 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
 
   @ObservableException()
+  getQualityLabsPopUp(request): any {
+    return this.http.post(
+      `${this._labsApiUrl}/${ControlTowerApiPaths.getQualityLabsPopUpUrl()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
   getMyNotes(request: IControlTowerGetMyNotesDto): any {
     return this.http.post(
       `${this._apiUrl}/${ControlTowerApiPaths.getMyNotesUrl()}`,
@@ -207,6 +243,14 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+
+  @ObservableException()
+  saveQualityLabsPopUp(request): any {
+    return this.http.post(
+      `${this._labsApiUrl}/${ControlTowerApiPaths.saveQualityLabsPopUpUrl()}`,
+      { payload: request }
+      );
+    }
 
   @ObservableException()
   saveControlTowerNote(request: IControlTowerSaveNotesItemDto): any {
