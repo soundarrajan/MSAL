@@ -202,11 +202,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => {
-      if (params.data) {
-        return params.value ? 'Yes' : 'No';
-      }
-    },
+    tooltip: params => (params.value ? params.value : ''),
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
@@ -235,11 +231,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => {
-      if (params.data) {
-        return params.value ? 'Yes' : 'No';
-      }
-    },
+    tooltip: params => (params.value ? params.value : ''),
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
@@ -262,7 +254,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     dtoForExport:
       ControlTowerResidueSludgeDifferenceListExportColumns.sludgePercentage,
     tooltip: params => (params.value ? this.format.quantity(params.value) : ''),
-    filter: 'agNumberColumnFilter',
     width: 150
   };
 
@@ -404,7 +395,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       ControlTowerResidueSludgeDifferenceListColumnsLabels.progress,
     colId: ControlTowerResidueSludgeDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
@@ -442,8 +432,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
-    sortable: false,
-    filter: false,
+    resizable: false,
+    suppressMovable: true,
     width: 110
   };
 
@@ -459,7 +449,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-residue-sludge-list-grid-4',
+      'control-tower-residue-sludge-list-grid-3',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -494,8 +484,31 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     ];
   }
 
-  public updateValues(): void {
-    this.gridApi.purgeServerSideCache();
+  public updateValues(ev, values): void {
+    if (values) {
+      let payloadData = {
+        differenceType: this.differenceType,
+        quantityControlReport: {
+          id: ev.data.quantityControlReport.id
+        },
+        status: values.status,
+        comments: values.comments
+      };
+
+      this.controlTowerService
+        .saveQuantityResiduePopUp(payloadData, payloadData => {
+          console.log('asd');
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.gridApi.purgeServerSideCache();
+          }
+        });
+    }
+    return;
   }
 
   public filterGridNew(statusName: string): void {
@@ -544,7 +557,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
             this.toggleNewFilter = !this.toggleNewFilter;
             this.toggleMASFilter = true;
             this.toggleResolvedFilter = true;
-          } else if ((<any>value).filter === 'Marked As Seen') {
+          } else if ((<any>value).filter === 'MarkedAsSeen') {
             this.toggleMASFilter = !this.toggleMASFilter;
             this.toggleNewFilter = true;
             this.toggleResolvedFilter = true;
