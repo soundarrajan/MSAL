@@ -119,7 +119,8 @@
     </div>
     <div class="header-title">Comments</div>
     <textarea
-      [(ngModel)]="comments"
+      [ngModel]="comments | htmlDecodeReadonly"
+      (ngModelChange)="comments = $event"
       spellcheck="false"
       maxlength="500"
     ></textarea>
@@ -147,10 +148,11 @@
         <span></span>
         <p>{{ formatDate(value.date) }}</p>
         <div class="description">
-          {{ value.newStatus.displayName }} by {{ value.user.name }}
+          {{ value.newStatus.displayName | htmlDecodeReadonly }} by
+          {{ value.user.name | htmlDecodeReadonly }}
           <div class="p-0 pt-1 pb-2 description-comments">
             Comments:
-            <em>{{ value.newComments }}</em>
+            <em>{{ value.newComments | htmlDecodeReadonly }}</em>
           </div>
         </div>
       </div>
