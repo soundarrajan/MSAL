@@ -387,7 +387,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
 
   public filterGridMAS(statusName: string): void {
     if (this.toggleMASFilter) {
-      this.filterByStatus(statusName);
+        //MarkedAsSeen hard coded to avoid other screen MAS filter impact
+      this.filterByStatus('MarkedAsSeen');
     } else {
       this.filterByStatus('');
     }
