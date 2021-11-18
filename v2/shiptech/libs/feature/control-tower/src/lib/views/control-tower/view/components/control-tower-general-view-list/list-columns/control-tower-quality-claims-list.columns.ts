@@ -11,8 +11,8 @@ export enum ControlTowerQualityClaimsListColumns {
     seller = 'seller',
     claimSubType = 'claimSubtypes',
     estimatedSettlementAmount = 'estimatedSettlementAmount',
-    createdDate = 'createdDate',
     createdBy = 'createdBy',
+    createdDate = 'createdDate',
     noResponse = 'noResponse'
   }
   
@@ -27,8 +27,8 @@ export enum ControlTowerQualityClaimsListColumns {
     claimSubType = 'claimSubtypes',
     seller = 'seller',
     estimatedSettlementAmount = 'estimatedSettlementAmount',
-    createdDate = 'createdDate',
     createdBy = 'createdBy.name',
+    createdDate = 'createdDate',
     noResponse = 'noResponseText'
   }
   
@@ -43,8 +43,8 @@ export enum ControlTowerQualityClaimsListColumns {
     seller = 'Seller',
     claimSubType = 'Claim Sub Type',
     estimatedSettlementAmount = 'Estimated Settlement Amount',
-    createdDate = 'Created Date',
     createdBy = 'Created By',
+    createdDate = 'Created Date',
     noResponse = 'No Response'
   }
   
@@ -66,8 +66,8 @@ export enum ControlTowerQualityClaimsListColumns {
     [ControlTowerQualityClaimsListColumns.seller]: 'seller',
     [ControlTowerQualityClaimsListColumns.estimatedSettlementAmount]:
       'estimatedSettlementAmount',
+      [ControlTowerQualityClaimsListColumns.createdBy]: 'createdBy_name',
     [ControlTowerQualityClaimsListColumns.createdDate]: 'createdDate',
-    [ControlTowerQualityClaimsListColumns.createdBy]: 'createdBy_name',
     [ControlTowerQualityClaimsListColumns.noResponse]: 'noResponse'
   };
   

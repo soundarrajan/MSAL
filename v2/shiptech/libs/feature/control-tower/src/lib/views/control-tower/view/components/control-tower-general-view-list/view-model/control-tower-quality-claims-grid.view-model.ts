@@ -343,8 +343,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       this.claimSubTypeCol,
       this.sellerCol,
       this.estimatedSettlementAmountCol,
-      this.createdDateCol,
       this.createdByCol,
+      this.createdDateCol,
       this.noResponseCol
     ];
   }

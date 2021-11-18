@@ -127,7 +127,7 @@
       <div
         class=" w-20p plr-0"
       >
-        <div class="col-header">claim Raised</div>
+        <div class="col-header">Claim Raised</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{ value.claimRaised }}
         </div>
@@ -167,7 +167,7 @@
     ></textarea>
     <div class="link">
       <span>In relation to:</span>
-      <span *ngIf="data.portCall else NoRelation">
+      <span *ngIf="data.portCall">
         Port Call:
         <a
           href="/v2/quantity-control/report/{{ data.quantityReportId }}/details"
@@ -176,10 +176,29 @@
           <span class="aggridlink-darktheme">{{ data.portCall }}</span>
         </a>
       </span>
-      <ng-template #NoRelation>-</ng-template>
+      <ng-container *ngIf="data.popupType == 'qualityLabs'">
+        <span>
+          Order No:
+          <a
+            href="/#/edit-order/{{ data.orderId }}"
+            target="_blank"
+          >
+            <span class="aggridlink-darktheme">{{ data.orderId }}</span>
+          </a>
+        </span>
+        <span>
+          Delivery No:
+          <a
+            href="/v2/delivery/delivery/{{ data.deliveryId }}/details"
+            target="_blank"
+          >
+            <span class="aggridlink-darktheme">{{ data.deliveryId }}</span>
+          </a>
+        </span>
+      </ng-container>
     </div>
   </div>
-  <div class="change-log col-12">
+  <div class="change-log col-12" *ngIf="data.changeLog?.length">
     <div class="header-title">Change Log</div>
     <div class="list-section" *ngIf="data.changeLog">
       <div

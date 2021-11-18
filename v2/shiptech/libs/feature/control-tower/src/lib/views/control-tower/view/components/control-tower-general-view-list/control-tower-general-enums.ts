@@ -13,6 +13,8 @@ export interface IControlTowerRowPopup {
   title: string;
   vessel: string;
   lab?: string;
+  orderId?: string;
+  deliveryId?: string;
   port: string;
   portCall?: string;
   measuredQuantityLabel?: string;

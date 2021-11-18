@@ -638,6 +638,8 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       differenceQuantityLabel: '',
       vessel: rowData.vessel?.name,
       lab: rowData?.id,
+      orderId: rowData?.order?.id,
+      deliveryId: rowData?.deliveryId,
       port: rowData.port,
       quantityReportId: rowData.id,
       progressId: rowData.progress.id,

@@ -264,13 +264,13 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.progress,
     colId: ControlTowerQualityLabsListColumns.progress,
     field: model('progress'),
-    valueFormatter: params => params.value?.name,
+    valueFormatter: params => params.value?.displayName,
     dtoForExport: ControlTowerQualityLabsListExportColumns.progress,
     cellRendererParams: function(params) {
         if (params.value) {
           var classArray: string[] = [];
           let newClass = '';
-          switch (params?.value.name) {
+          switch (params?.value.displayName) {
             case 'New':
               newClass = 'medium-blue';
               break;
@@ -341,8 +341,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         this.productCol,
         this.labStatusCol,
         this.claimRaisedCol,
-        this.createdDateCol,
         this.createdByCol,
+        this.createdDateCol,
         this.progressCol,
         this.actionCol
     ];
