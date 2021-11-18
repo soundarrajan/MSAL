@@ -456,6 +456,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     field: model('progress'),
     autoHeight: true,
     wrapText: true,
+    headerClass: "aggrid-text-align-c",
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
