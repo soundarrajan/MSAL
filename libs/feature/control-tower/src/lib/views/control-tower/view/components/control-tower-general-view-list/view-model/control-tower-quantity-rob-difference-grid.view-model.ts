@@ -200,7 +200,11 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
@@ -229,7 +233,11 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
@@ -404,7 +412,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantityRobDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: "aggrid-text-align-c",
+    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
