@@ -148,10 +148,8 @@
         <span></span>
         <p>{{ formatDate(value.date) }}</p>
         <div class="description">
-          {{ value.newStatus.displayName | htmlDecodeReadonly }} by
-          {{ value.user.name | htmlDecodeReadonly }}
           <div class="p-0 pt-1 pb-2 description-comments">
-            Comments:
+            {{ value.user.name | htmlDecodeReadonly }} :
             <em>{{ value.newComments | htmlDecodeReadonly }}</em>
           </div>
         </div>

@@ -1,11 +1,11 @@
-﻿commit 41cd64c5495f5a609d6a6f6f065e91e69d063e70
+﻿commit db21743a3878ae362ee774d1447dcdca7c51fb1c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 18 12:49:12 2021 +0000
+Date:   Thu Nov 18 13:25:17 2021 +0000
 
-    Merged PR 14787: Fixed action button, default sorting of difference quantity in sludge residue...
+    Merged PR 14788: Fixed vessel to watch and email to vessel tooltip, displayed user name in the...
     
-    Fixed action button, default sorting of difference quantity in sludge residue view and filtering conditions displaying  for the sludge % column
+    Fixed vessel to watch and email to vessel tooltip, displayed user name in the alert pop-up
     
-    Related work items: #37024, #37034, #37037
+    Related work items: #37019, #37028
 
 branch: master

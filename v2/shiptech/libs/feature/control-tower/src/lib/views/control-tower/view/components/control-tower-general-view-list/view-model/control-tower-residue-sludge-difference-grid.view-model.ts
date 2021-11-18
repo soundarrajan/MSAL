@@ -202,7 +202,11 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
@@ -231,7 +235,11 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
