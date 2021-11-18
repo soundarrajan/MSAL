@@ -179,7 +179,27 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     'control-tower-quantity-supply-list-grid-5': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'days',
-      mappedKey: ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate
+      mappedKey: ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate,
+      systemDefaultFilters: [
+        {
+          id: "new",
+          label : "New",
+          countId : "noOfNew",
+          count: 0
+        },
+        {
+          id: "marked-as-seen",
+          label : "Marked As Seen",
+          countId : "noOfMarkedAsSeen",
+          count: 0
+        },
+        {
+          id: "resolved",
+          label : "Resolved",
+          countId : "noOfResolved",
+          count: 0
+        }                        
+      ]
     },
     'control-tower-quantity-claims-list-grid-10': {
       timeDeltaValue: 6,
@@ -329,6 +349,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
+  ngOnChanges() : void {
+    console.log(this.gridViewModel.groupedCountValues);
+  }
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();

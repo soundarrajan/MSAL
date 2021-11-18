@@ -53,6 +53,19 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   @Input() groupId: string;
   @Input() gridId: string;
   @Input() gridIds: any;
+  
+  
+  @Input() _groupedCountValues: any;
+  get groupedCountValues(): any {
+    return this._groupedCountValues;
+  }
+  @Input() set groupedCountValues(value: any) {
+    this._groupedCountValues = value;
+    if(this._groupedCountValues) {
+      this.filterComponent.updateSystemPreferencesCount(this._groupedCountValues);
+    }  
+    console.log(value);
+  }
 
   @Input() id: string;
   constructor(
