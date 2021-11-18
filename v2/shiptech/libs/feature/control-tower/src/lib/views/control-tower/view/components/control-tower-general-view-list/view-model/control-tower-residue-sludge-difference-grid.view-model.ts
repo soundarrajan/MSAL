@@ -395,6 +395,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       ControlTowerResidueSludgeDifferenceListColumnsLabels.progress,
     colId: ControlTowerResidueSludgeDifferenceListColumns.progress,
     field: model('progress'),
+    headerClass: "aggrid-text-align-c",
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
