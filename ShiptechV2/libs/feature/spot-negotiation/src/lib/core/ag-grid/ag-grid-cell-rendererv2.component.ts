@@ -542,6 +542,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   counterpartyList=[];
   visibleCounterpartyList = [];
   currentRequestInfo : any;
+  tenantService:any;
   currentRequestData: any[];
 
   constructor(
@@ -552,7 +553,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public store: Store,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
-    private tenantService: TenantFormattingService,
     private changeDetector: ChangeDetectorRef,
   ) {}
 
@@ -562,6 +562,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+      this.tenantService=spotNegotiation.tenantConfigurations;
       // Fetching counterparty list
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
