@@ -530,8 +530,19 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       });
   }
 
-  public onSystemFilterUpdate(value) {
-      console.log("888*********-*-*----***",value);
+  public systemFilterUpdate(value) {
+    let currentFilter = value.filter(o => o.isActive); 
+    switch (currentFilter[0].id) {
+      case "new":
+        this.filterGridNew(currentFilter[0].label);
+        break;
+      case "marked-as-seen":
+        this.filterGridMAS(currentFilter[0].label);
+        break;
+      case "resolved":
+        this.filterGridResolved(currentFilter[0].label);
+        break;                
+    }
   }
     
   getColumnsDefs(): any[] {
@@ -588,7 +599,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public filterByStatus(statusName: string): void {
-    const grid = this.gridApi.getFilterModel();
+    const grid = [];
     grid['progress'] = {
       filterType: 'text',
       type: 'equals',

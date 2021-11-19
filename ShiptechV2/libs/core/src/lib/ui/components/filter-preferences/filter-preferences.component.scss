@@ -122,6 +122,14 @@ $red: red;
       color: #364150;
       position: absolute;
     }
+    &.active-chip {
+      width: auto;
+      .chip-circle {
+        span.fas {
+          color: #fff;
+        }
+      }
+    }
   }
 }
 .icon-chip{

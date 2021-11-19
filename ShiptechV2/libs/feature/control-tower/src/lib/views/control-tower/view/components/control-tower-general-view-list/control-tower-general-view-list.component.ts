@@ -157,6 +157,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     return this._selectorType;
   }
 
+  public systemFilterUpdate(value) {
+    this.gridViewModel.systemFilterUpdate(value);
+  }
+  
   @Input() set selectorType(value: string) {
     this._selectorType = value;
     this.setGridModelType();
@@ -170,17 +174,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   gridViewModel: any;
 
-  gridIds = {
-    'control-tower-quantity-rob-list-grid-9': {
-      timeDeltaValue: 6,
-      timeDeltaUnit: 'days',
-      mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate
-    },
-    'control-tower-quantity-supply-list-grid-5': {
-      timeDeltaValue: 6,
-      timeDeltaUnit: 'days',
-      mappedKey: ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate,
-      systemDefaultFilters: [
+  public SystemDefaultFilters = [
         {
           id: "new",
           label : "New",
@@ -199,22 +193,60 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           countId : "noOfResolved",
           count: 0
         }                        
-      ]
+      ] 
+
+
+  public ClaimsSystemDefaultFilters = [
+        {
+          id: "new",
+          label : "New",
+          countId : "noOfNew",
+          count: 0
+        },
+        {
+          id: "marked-as-seen",
+          label : "7-14 Days",
+          countId : "noOf714",
+          count: 0
+        },
+        {
+          id: "resolved",
+          label : "15+ Days",
+          countId : "noOf15",
+          count: 0
+        }                        
+      ]  
+
+  gridIds = {
+    'control-tower-quantity-rob-list-grid-9': {
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'days',
+      mappedKey: ControlTowerQuantityRobDifferenceListColumns.surveyorDate,
+      systemDefaultFilters: this.SystemDefaultFilters,    
+    },
+    'control-tower-quantity-supply-list-grid-5': {
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'days',
+      mappedKey: ControlTowerQuantitySupplyDifferenceListColumns.surveyorDate,
+      systemDefaultFilters: this.SystemDefaultFilters,
     },
     'control-tower-quantity-claims-list-grid-10': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'month',
-      mappedKey: ControlTowerQuantityClaimsListColumns.createdDate
+      mappedKey: ControlTowerQuantityClaimsListColumns.createdDate,
+      systemDefaultFilters: this.ClaimsSystemDefaultFilters,
     },
     'control-tower-quality-claims-list-grid-7': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'month',
-      mappedKey: ControlTowerQualityClaimsListColumns.createdDate
+      mappedKey: ControlTowerQualityClaimsListColumns.createdDate,
+      systemDefaultFilters: this.ClaimsSystemDefaultFilters,
     },
     'control-tower-residue-sludge-list-grid-4': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'days',
-      mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate
+      mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate,
+      systemDefaultFilters: this.SystemDefaultFilters,
     }
   };
   constructor(

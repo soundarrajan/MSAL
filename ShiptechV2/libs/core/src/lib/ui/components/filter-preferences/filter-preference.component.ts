@@ -160,9 +160,7 @@ export class FilterPreferencesComponent implements OnDestroy {
     this.currentSystemFilters.map( o => o.isActive = false);
     this.filterPresets.map( o => o.isActive = false);
     filter.isActive = true;
-    console.log(`FIlter applied ${filter}`);
     this.systemFilterUpdate$.next(this.currentSystemFilters);
-    this.toastr.info(PreferenceLoaded, '', ToastPosition);
   }
 
   public createNewFilter(): void {

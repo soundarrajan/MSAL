@@ -437,6 +437,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     filter: false,
     width: 110
   };
+  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -464,6 +465,21 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       });
 
     this.init(this.gridOptions, true);
+  }
+
+  public systemFilterUpdate(value) {
+    let currentFilter = value.filter(o => o.isActive); 
+    switch (currentFilter[0].id) {
+      case "new":
+        this.filterGridNew(currentFilter[0].label);
+        break;
+      case "marked-as-seen":
+        this.filterGridMAS(currentFilter[0].label);
+        break;
+      case "resolved":
+        this.filterGridResolved(currentFilter[0].label);
+        break;                
+    }
   }
 
   getColumnsDefs(): any[] {
@@ -514,7 +530,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   }
 
   public filterByStatus(statusName: string): void {
-    const grid = this.gridApi.getFilterModel();
+    const grid = [];
     grid['progress'] = {
       filterType: 'text',
       type: 'equals',
@@ -591,6 +607,11 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
           this.noOfNew = response.payload.noOfNew;
           this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
           this.noOfResolved = response.payload.noOfResolved;
+          this.groupedCounts = {
+            noOfNew : this.noOfNew,
+            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+            noOfResolved : this.noOfResolved,
+          }          
           params.successCallback(
             response.payload.items,
             response.payload.items[0]?.totalCount ?? 0
