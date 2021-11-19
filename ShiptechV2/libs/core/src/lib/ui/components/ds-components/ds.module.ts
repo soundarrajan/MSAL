@@ -1,3 +1,4 @@
+import { NumberOnlyDirective } from './directives/number-only.directive';
 import { AgGridModule } from '@ag-grid-community/angular';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -18,6 +19,8 @@ import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
 import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { StAutosearchSelectorComponent } from './st-autosearch-selector/st-autosearch-selector.component';
+import { QuantityTenantFormatDirective } from './directives/quantity-tenant-format.directive';
+import { PriceTenantFormatDirective } from './directives/price-tenant-format.directive';
 import { AmountTenantFormatDirective } from './directives/amount-tenant-format.directive';
 import { HtmlDecodeReadonly } from '@shiptech/core/pipes/htmlDecode/html-decode-readonly.pipe';
 @NgModule({
@@ -56,6 +59,9 @@ import { HtmlDecodeReadonly } from '@shiptech/core/pipes/htmlDecode/html-decode-
     FooterV2Component,
     StAutosearchSelectorComponent,
     AmountTenantFormatDirective,
+    QuantityTenantFormatDirective,
+    PriceTenantFormatDirective,
+    NumberOnlyDirective,
     HtmlDecodeReadonly
   ],
   entryComponents: [MasterSelectionDialog]
