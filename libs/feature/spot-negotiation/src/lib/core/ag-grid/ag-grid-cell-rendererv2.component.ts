@@ -451,19 +451,19 @@ import { RemoveCounterpartyComponent } from '../../views/main/details/components
     </div>
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
-      <span *ngIf="!params.value">-</span>
-      <span>{{ priceFormatValue(params.value) }}</span>
+    <span *ngIf="!params.value">-</span>
+      <span>{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
     <div *ngIf="params.type == 'amt'" class="addTpr">
       <span *ngIf="!params.value">-</span>
-      <span>{{ priceFormatValue(params.value) }}</span>
+      <span>{{ priceCalFormatValue(params.value) }}</span>
     </div>
 
     <div *ngIf="params.type == 'diff'" class="addTpr">
-      <span *ngIf="!params.value">-</span>
-      <span>{{ priceFormatValue(params.value) }}</span>
+    <span *ngIf="!params.value">-</span>
+    <span>{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
@@ -482,7 +482,7 @@ import { RemoveCounterpartyComponent } from '../../views/main/details/components
       "
     >
       <span (click)="additionalcostpopup()">{{
-        priceFormatValue(params.value)
+        priceCalFormatValue(params.value)
       }}</span>
       <div class="dollarButton" *ngIf="params.value == '500.00'"></div>
     </div>
@@ -846,27 +846,24 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   priceFormatValue(value) {
+
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
-
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-
     const number = parseFloat(plainNumber);
-
     if (isNaN(number)) {
       return null;
     }
-
     let productPricePrecision = this.tenantService.pricePrecision;
-
-    // if (pricePrecision) {
-    //   productPricePrecision = pricePrecision;
-    // }
-
-    this.priceFormat =
+    let num=plainNumber.split(".", 2); 
+    //Offer Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
+    if(plainNumber==num){
+      this.priceFormat='';
+    }else{
+      this.priceFormat =
       '1.' + productPricePrecision + '-' + productPricePrecision;
-
+    }
     if (plainNumber) {
       if (productPricePrecision) {
         plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
@@ -877,6 +874,28 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
   }
+  priceCalFormatValue(value) {
+
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    let productPricePrecision = this.tenantService.pricePrecision;
+    if (plainNumber) {
+      if (productPricePrecision) {
+        plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
+      } else {
+        plainNumber = Math.trunc(plainNumber);
+      }
+
+      return this._decimalPipe.transform(plainNumber, this.priceFormat);
+    }
+  }
+ 
 
   pricingdetailspopup(e, params) {
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
