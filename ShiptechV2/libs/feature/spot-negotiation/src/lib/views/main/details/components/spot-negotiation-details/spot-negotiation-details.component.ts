@@ -312,8 +312,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   saveRowToCloud(updatedRow, product) {
-    const tenantConfig = this.store.select((state: SpotNegotiationStoreModel) => {
-      return state.tenantConfigurations;
+    const tenantConfig = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+      return state['spotNegotiation'].tenantConfigurations;
     });
 
     if(tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierId){
