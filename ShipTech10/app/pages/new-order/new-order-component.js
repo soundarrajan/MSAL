@@ -1998,10 +1998,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if(selectedLocation.eta) {
                     selectedLocations = [];
                     selectedLocations.push(selectedLocation);
-                } else {
-                    // ctrl.data.vesselVoyageDetailId = null;
                 }
                 if (isManualChange) {
+                    ctrl.data.vesselVoyageDetailId = null;
                     ctrl.selectVesselSchedulesPort(selectedLocations);
                 }
                 
