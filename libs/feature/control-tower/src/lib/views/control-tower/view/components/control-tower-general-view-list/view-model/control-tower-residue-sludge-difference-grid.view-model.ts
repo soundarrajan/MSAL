@@ -202,7 +202,11 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
@@ -231,7 +235,11 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
     width: 150,
     filter: 'agNumberColumnFilter',
     filterParams: {
@@ -254,6 +262,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     dtoForExport:
       ControlTowerResidueSludgeDifferenceListExportColumns.sludgePercentage,
     tooltip: params => (params.value ? this.format.quantity(params.value) : ''),
+    filter: 'agNumberColumnFilter',
     width: 150
   };
 
@@ -395,7 +404,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       ControlTowerResidueSludgeDifferenceListColumnsLabels.progress,
     colId: ControlTowerResidueSludgeDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: "aggrid-text-align-c",
+    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
@@ -501,7 +510,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     ];
   }
 
-  public updateValues(): void {
+  public updateValues(ev, values): void {
     this.gridApi.purgeServerSideCache();
   }
 

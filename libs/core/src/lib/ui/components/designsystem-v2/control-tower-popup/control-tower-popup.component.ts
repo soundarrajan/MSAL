@@ -48,28 +48,67 @@ export class ControlTowerPopupComponent implements OnInit {
     this.status = status;
   }
   statusChanged() {
-    let payloadData = {
-      differenceType: this.data.differenceType,
-      quantityControlReport: {
-        id: this.data.quantityControlReport.id
-      },
-      status: { id: +this.status },
-      comments: this.comments
-    };
-
-    this.controlTowerService
-      .saveQuantityResiduePopUp(payloadData, payloadData => {
-        console.log('asd');
-      })
-      .pipe()
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-          this.dialogRef.close();
-        }
-      });
-  }
+    if(this.data?.popupType == "qualityLabs") {
+      let payloadData = {
+        "controlTowerActionStatusId": this.status,
+        "comments": this.comments,
+        "labResultId": this.data?.lab
+      };
+  
+      this.controlTowerService
+        .saveQualityLabsPopUp(payloadData, payloadData => {
+          console.log('labs changes updated..');
+        })
+        .pipe()
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.dialogRef.close();
+          }
+        });
+    } else {
+      console.log(this.data.differenceType);
+      let payloadData = {
+        differenceType: this.data.differenceType,
+        quantityControlReport: {
+          id: this.data.quantityControlReport.id
+        },
+        status: { id: +this.status },
+        comments: this.comments
+      };
+      if (
+        this.data.differenceType.name == 'Rob' ||
+        this.data.differenceType.name == 'Supply'
+      ) {
+        this.controlTowerService
+          .saveQuantityResiduePopUp(payloadData, payloadData => {
+            console.log('asd');
+          })
+          .pipe()
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else {
+              this.dialogRef.close();
+            }
+          });
+      } else if (this.data.differenceType.name == 'Sludge') {
+        this.controlTowerService
+          .saveResiduePopUp(payloadData, payloadData => {
+            console.log('asd');
+          })
+          .pipe()
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else {
+              this.dialogRef.close();
+            }
+          });
+      }
+    }
+}
   closeDialog() {
     this.dialogRef.close();
   }

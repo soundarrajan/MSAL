@@ -41,10 +41,15 @@ import {
 } from './list-columns/control-tower-quantity-supply-difference-list.columns';
 import { ControlTowerQuantityClaimsListGridViewModel } from './view-model/control-tower-quantity-claims-grid.view-model';
 import { ControlTowerQualityClaimsListGridViewModel } from './view-model/control-tower-quality-claims-grid.view-model';
+import { ControlTowerQualityLabsListGridViewModel } from './view-model/control-tower-quality-labs-grid.view-model';
 import {
   ControlTowerQualityClaimsListColumns,
   ControlTowerQualityClaimsListColumnServerKeys
 } from './list-columns/control-tower-quality-claims-list.columns';
+import {
+  ControlTowerQualityLabsListColumns,
+  ControlTowerQualityLabsListColumnServerKeys
+} from './list-columns/control-tower-quality-labs-list.columns';
 import {
   ControlTowerQuantityClaimsListColumns,
   ControlTowerQuantityClaimsListColumnServerKeys
@@ -119,6 +124,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     ControlTowerQuantitySupplyDifferenceListGridViewModel,
     ControlTowerQuantityClaimsListGridViewModel,
     ControlTowerQualityClaimsListGridViewModel,
+    ControlTowerQualityLabsListGridViewModel,
     ControlTowerResidueDifferenceListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
@@ -247,6 +253,12 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate,
       systemDefaultFilters: this.SystemDefaultFilters,
+    },
+    'control-tower-quality-labs-list-grid-7': {
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'days',
+      mappedKey: ControlTowerQualityLabsListColumns.createdDate,
+      systemDefaultFilters: this.SystemDefaultFilters,
     }
   };
   constructor(
@@ -307,6 +319,13 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           ControlTowerQualityClaimsListGridViewModel
         );
         this.controlTowerListServerKeys = ControlTowerQualityClaimsListColumnServerKeys;
+        break;
+      }
+      case 'Quality Labs': {
+        this.gridViewModel = this.injector.get(
+          ControlTowerQualityLabsListGridViewModel
+        );
+        this.controlTowerListServerKeys = ControlTowerQualityLabsListColumnServerKeys;
         break;
       }
       case 'Residue Sludge Difference': {
@@ -403,6 +422,11 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         return;
       }
       this.actionCellClickedResidue(ev);
+    } else if (this.selectorType == 'Quality Labs') {
+      if (ev.event.target.nodeName == 'A') {
+        return;
+      }
+      this.actionCellClickedQuality(ev);
     }
   }
 
@@ -505,7 +529,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogRef.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
               console.log(ev);
-              this.gridViewModel.updateValues();
+              this.gridViewModel.updateValues(ev, result);
             });
           }
         },
@@ -605,7 +629,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogRef.afterClosed().subscribe(result => {
               console.log(`Dialog result: ${result}`);
               console.log(ev);
-              this.gridViewModel.updateValues();
+              this.gridViewModel.updateValues(ev, result);
             });
           }
         },
@@ -614,6 +638,99 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             ModuleError.LoadControlTowerQuantitySupplyDifferencePopupFailed
           );
         }
+      );
+  }
+
+  actionCellClickedQuality = (ev: any) => {
+    this.legacyLookupsDatabase
+      .getTableByName('robDifferenceType')
+      .then(response => {
+        let rowData = ev.node.data;
+        if (!rowData) {
+          return;
+        }
+        let productTypeList = [
+          {
+            labCounterParty: rowData?.counterparty?.name,
+            product: rowData?.product?.name,
+            labStatus: rowData?.status?.name,
+            claimRaised: rowData?.claimsRaised ? 'Yes' : 'No'
+          }
+        ];
+        // let productTypeList = rowData.quantityReportDetails.map(obj => {
+        //   let rowObj = {};
+        //   /**
+        //    * For residue sludge difference
+        //    */
+        //   rowObj['sludgePercentage'] = rowData.sludgePercentage;
+        //   rowObj['logBookRobQtyBeforeDelivery'] =
+        //     obj.logBookRobQtyBeforeDelivery;
+        //   rowObj['measuredRobQtyBeforeDelivery'] =
+        //     obj.measuredRobQtyBeforeDelivery;
+        //   rowObj['differenceInRobQuantity'] = obj.differenceInRobQuantity;
+        //   rowObj['uom'] = obj.robUom.name;
+
+        //   return rowObj;
+        // });
+        this.openQualityLabsPopUp(ev, response, rowData, productTypeList);
+      });
+  };
+
+  openQualityLabsPopUp(ev, response, rowData, productTypeList) {
+    let dialogData: IControlTowerRowPopup = {
+      popupType: 'qualityLabs',
+      title: 'Quality Labs',
+      measuredQuantityLabel: '',
+      differenceQuantityLabel: '',
+      vessel: rowData.vessel?.name,
+      lab: rowData?.id,
+      orderId: rowData?.order?.id,
+      deliveryId: rowData?.deliveryId,
+      port: rowData.port,
+      quantityReportId: rowData.id,
+      progressId: rowData.progress.id,
+      productTypeList: productTypeList
+    };
+
+    let payloadData = rowData?.id;
+
+    this.controlTowerService
+      .getQualityLabsPopUp(payloadData, payloadData => {
+        console.log('asd');
+      })
+      .pipe()
+      .subscribe(
+        (response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            if (response?.length) {
+              dialogData.changeLog =
+                response[0]?.controlTowerLabChangeLogResults.map(logObj => {
+                  logObj['user'] = { name: logObj.createdBy?.displayName };
+                  logObj['date'] = logObj.createdOn;
+                  logObj['newComments'] = logObj.comments;
+                  return logObj;
+                }) ?? [];
+              dialogData.comments = response[0]?.comments;
+            }
+            const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
+              width: '540px',
+              height: 'auto',
+              maxHeight: '536px',
+              backdropClass: 'dark-popupBackdropClass',
+              panelClass: 'light-theme',
+              data: dialogData
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(`Dialog result: ${result}`);
+              console.log(ev);
+              this.gridViewModel.updateValues(ev, result);
+              // this.savePopupChanges(ev, result);
+            });
+          }
+        },
+        () => {}
       );
   }
 

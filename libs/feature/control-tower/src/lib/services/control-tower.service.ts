@@ -13,6 +13,7 @@ import {
   IGetControlTowerQuantitySupplyDifferenceListResponse,
   IGetControlTowerQualityClaimsListResponse,
   IGetControlTowerResidueSludgeDifferenceListResponse,
+  IGetControlTowerQualityLabsListResponse,
   IControlTowerSaveNotesItemDto,
   IControlTowerGetMyNotesDto,
   IControlTowerGetFilteredNotesDto
@@ -151,6 +152,46 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
+  getControlTowerQualityLabsList$(
+    gridRequest: IServerGridInfo
+  ): Observable<IGetControlTowerQualityLabsListResponse> {
+    return this.apiDispatch(
+      () =>
+        this.api.getControlTowerQualityLabsList({
+          ...gridRequest
+        }),
+      new LoadControlTowerListAction(gridRequest),
+      response =>
+        new LoadControlTowerListSuccessfulAction(
+          response.payload.noOf15,
+          response.payload.noOf714,
+          response.payload.noOfNew,
+          response.matchedCount
+        ),
+      LoadControlTowerListFailedAction,
+      ModuleError.LoadControlTowerQualityLabsFailed
+    );
+    //   gridRequest: IServerGridInfo
+    // ): Observable<IGetControlTowerQualityClaimsListResponse> {
+    //   return this.apiDispatch(
+    //     () =>
+    //       this.api.getControlTowerQuantityClaimsList({
+    //         ...gridRequest
+    //       }),
+    //     new LoadControlTowerListAction(gridRequest),
+    //     response =>
+    //       new LoadControlTowerListSuccessfulAction(
+    //         response.matchedCount,
+    //         response.matchedCount,
+    //         response.matchedCount,
+    //         response.matchedCount
+    //       ),
+    //     LoadControlTowerListFailedAction,
+    //     ModuleError.LoadControlTowerQuantityClaimsFailed
+    //   );
+  }
+
+  @ObservableException()
   getControlTowerQuantityClaimsListExportUrl(): string {
     return this.api.getControlTowerQuantityClaimsListExportUrl();
   }
@@ -158,6 +199,11 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getControlTowerQualityClaimsListExportUrl(): string {
     return this.api.getControlTowerQualityClaimsListExportUrl();
+  }
+
+  @ObservableException()
+  getControlTowerQualityLabsListExportUrl(): string {
+    return this.api.getControlTowerQualityLabsListExportUrl();
   }
 
   @ObservableException()
@@ -242,34 +288,8 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  getMyNotes(data: IControlTowerGetMyNotesDto) {
-    return this.api.getMyNotes(data).pipe(
-      map((body: any) => body.payload),
-      catchError((body: any) =>
-        of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
-        )
-      )
-    );
-  }
-  @ObservableException()
-  getFilteredNotes(data: IControlTowerGetFilteredNotesDto) {
-    return this.api.getFilteredNotes(data).pipe(
-      map((body: any) => body.payload),
-      catchError((body: any) =>
-        of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
-        )
-      )
-    );
-  }
-  @ObservableException()
-  getNoteById(data, response) {
-    return this.api.getNoteById(data).pipe(
+  getQualityLabsPopUp(data, response) {
+    return this.api.getQualityLabsPopUp(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
@@ -282,8 +302,50 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  saveControlTowerNote(data: IControlTowerSaveNotesItemDto) {
-    return this.api.saveControlTowerNote(data).pipe(
+  getNotes(data: IControlTowerGetMyNotesDto, view: any) {
+    return this.api.getNotes(data, view).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
+
+  @ObservableException()
+  saveControlTowerNote(data: IControlTowerSaveNotesItemDto, view: any) {
+    return this.api.saveControlTowerNote(data, view).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
+
+  @ObservableException()
+  getFilteredNotes(data: any, view: any) {
+    return this.api.getFilteredNotes(data, view).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
+
+  @ObservableException()
+  saveQualityLabsPopUp(data, response) {
+    return this.api.saveQualityLabsPopUp(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
