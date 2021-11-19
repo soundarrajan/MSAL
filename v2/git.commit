@@ -1,8 +1,8 @@
-﻿commit 2b57272d402119f66b8759e23439765f954b33f8
+﻿commit a3932a8c18277e7b895047b1cd7ae8538d26ec55
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Nov 19 00:39:26 2021 +0000
+Date:   Fri Nov 19 01:15:00 2021 +0000
 
-    Merged PR 14799: #33672 - control tower labs sorting issue has fixed
+    Merged PR 14800: #33672 - claimRaised Column tooltip has update
     
     Related work items: #33672
 

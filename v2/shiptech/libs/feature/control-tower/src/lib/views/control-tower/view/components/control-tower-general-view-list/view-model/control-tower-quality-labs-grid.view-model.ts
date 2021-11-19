@@ -226,7 +226,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('claimsRaised'),
     valueFormatter: params => (params.value)? 'Yes': 'No',
     dtoForExport: ControlTowerQualityLabsListExportColumns.claimRaised,
-    tooltip: params => (params.value ? this.format.htmlDecode(params.value) : ''),
+    tooltip: params => (params.value)? 'Yes': 'No',
     width: 150
   };
 
