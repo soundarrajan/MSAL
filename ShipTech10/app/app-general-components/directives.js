@@ -488,6 +488,9 @@ Number(function() {
                                     if (procurementSettings.request.productTypeInRequest.name.toUpperCase() === 'NO') {
                                         newValue.colModel.splice(i, 1);
                                     }
+                                } else if (newValue.colModel[i].name == 'serviceLevelConsumption' ) {
+                                    /* Hiding 'Service Level Consumption' column as per workitem #36282 */
+                                    newValue.colModel.splice(i, 1);
                                 }
                             }  
                         }
@@ -506,8 +509,10 @@ Number(function() {
                                     if (procurementSettings.request.isRequestTerminalHidden) {
                                         newValue.colModel.splice(i, 1);
                                     }
+                                } else if (newValue.colModel[i].name == 'serviceLevelConsumption' ) {
+                                    /* Hiding 'Service Level Consumption' column as per workitem #36282 */
+                                    newValue.colModel.splice(i, 1);
                                 }
-
                             }
                             for (var i = newValue.rowActions.length - 1; i >= 0; i--) {
                                 if (newValue.rowActions[i].name == '') {
