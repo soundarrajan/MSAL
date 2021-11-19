@@ -598,9 +598,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             labCounterParty: rowData?.counterparty?.name,
             product: rowData?.counterparty?.name,
             labStatus: rowData?.status?.name,
-            claimRaised: (rowData?.claimsRaised)? 'Yes': 'No',
+            claimRaised: rowData?.claimsRaised ? 'Yes' : 'No'
           }
-        ]
+        ];
         // let productTypeList = rowData.quantityReportDetails.map(obj => {
         //   let rowObj = {};
         //   /**
@@ -616,21 +616,11 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
         //   return rowObj;
         // });
-        this.openQualityLabsPopUp(
-          ev,
-          response,
-          rowData,
-          productTypeList
-        );
+        this.openQualityLabsPopUp(ev, response, rowData, productTypeList);
       });
   };
 
-  openQualityLabsPopUp(
-    ev,
-    response,
-    rowData,
-    productTypeList
-  ) {
+  openQualityLabsPopUp(ev, response, rowData, productTypeList) {
     let dialogData: IControlTowerRowPopup = {
       popupType: 'qualityLabs',
       title: 'Quality Labs',
@@ -646,7 +636,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       productTypeList: productTypeList
     };
 
-    let payloadData = rowData?.id
+    let payloadData = rowData?.id;
 
     this.controlTowerService
       .getQualityLabsPopUp(payloadData, payloadData => {
@@ -658,13 +648,14 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           if (typeof response == 'string') {
             this.toastr.error(response);
           } else {
-            if(response?.length) {
-              dialogData.changeLog = response[0]?.controlTowerLabChangeLogResults.map(logObj=>{
-                logObj['user'] = {name:logObj.createdBy?.displayName};
-                logObj['date'] = logObj.createdOn;
-                logObj['newComments'] = logObj.comments;
-                return logObj;
-              })??[];
+            if (response?.length) {
+              dialogData.changeLog =
+                response[0]?.controlTowerLabChangeLogResults.map(logObj => {
+                  logObj['user'] = { name: logObj.createdBy?.displayName };
+                  logObj['date'] = logObj.createdOn;
+                  logObj['newComments'] = logObj.comments;
+                  return logObj;
+                }) ?? [];
               dialogData.comments = response[0]?.comments;
             }
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
@@ -683,11 +674,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             });
           }
         },
-        () => {
-          this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQualityLabsPopupFailed
-          );
-        }
+        () => {}
       );
   }
 
