@@ -7,6 +7,7 @@ import {
   IGetControlTowerQuantitySupplyDifferenceListResponse,
   IgetControlTowerQualityClaimsListExportUrlResponse,
   IGetControlTowerResidueSludgeDifferenceListResponse,
+  IGetControlTowerQualityLabsListResponse,
   IControlTowerSaveNotesItemDto,
   IControlTowerGetMyNotesDto,
   IControlTowerGetFilteredNotesDto
@@ -39,6 +40,10 @@ export interface IControlTowerApiService {
 
   saveResiduePopUp(request: any);
 
+  getQualityLabsPopUp(request: any);
+
+  saveQualityLabsPopUp(request: any);
+
   getControlTowerQuantityClaimsList(
     request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQuantityClaimsListResponse>;
@@ -51,11 +56,15 @@ export interface IControlTowerApiService {
 
   getControlTowerQualityClaimsListExportUrl(): string;
 
-  getMyNotes(request: IControlTowerGetMyNotesDto): any;
+  getControlTowerQualityLabsList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerQualityLabsListResponse>;
 
-  getFilteredNotes(request: IControlTowerGetFilteredNotesDto): any;
+  getControlTowerQualityLabsListExportUrl(): string;
 
-  getNoteById(request: any): any;
+  getNotes(request: IControlTowerGetMyNotesDto, view: any): any;
 
-  saveControlTowerNote(request: IControlTowerSaveNotesItemDto): any;
+  getFilteredNotes(request: IControlTowerGetFilteredNotesDto, view: any): any;
+
+  saveControlTowerNote(request: IControlTowerSaveNotesItemDto, view: any): any;
 }

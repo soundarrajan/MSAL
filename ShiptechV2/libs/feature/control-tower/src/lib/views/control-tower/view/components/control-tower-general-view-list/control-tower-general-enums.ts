@@ -7,15 +7,18 @@ export enum ControlTowerProgressColors {
 }
 
 export interface IControlTowerRowPopup {
-  differenceType: ILookupDto;
-  quantityControlReport: any;
+  differenceType?: ILookupDto;
+  quantityControlReport?: any;
   popupType: string;
   title: string;
   vessel: string;
+  lab?: string;
+  orderId?: string;
+  deliveryId?: string;
   port: string;
-  portCall: string;
-  measuredQuantityLabel: string;
-  differenceQuantityLabel: string;
+  portCall?: string;
+  measuredQuantityLabel?: string;
+  differenceQuantityLabel?: string;
   quantityReportId: string;
   progressId: string;
   productTypeList: [

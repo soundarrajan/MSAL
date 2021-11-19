@@ -104,6 +104,23 @@ export interface IControlTowerQualityClaimsItemDto {
   noResponse: number;
 }
 
+export interface IControlTowerQualityLabsItemDto {
+  id: string;
+  counterparty: IDisplayLookupDto;
+  deliveryId: string;
+  order: IDisplayLookupDto;
+  vessel: IDisplayLookupDto;
+  port: string;
+  recentEta: string;
+  product: IDisplayLookupDto;
+  status: IDisplayLookupDto;
+  claimsRaised: boolean;
+  createdBy: IDisplayLookupDto;
+  createdDate: string;
+  progress: IDisplayLookupDto;
+  // userAction: string;
+}
+
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
@@ -165,6 +182,16 @@ export interface IgetControlTowerQualityClaimsListExportUrlResponse {
   matchedCount: number;
 }
 
+export interface IGetControlTowerQualityLabsListResponse {
+  payload: {
+    items: IControlTowerQualityLabsItemDto[];
+    noOfNew: number;
+    noOfMarkedAsSeen: number;
+    noOfResolved: number;
+  };
+  matchedCount: number;
+}
+
 export interface ILookupDto {
   id: number;
 }
@@ -174,6 +201,7 @@ export interface IControlTowerSaveNotesItemDto {
   id: number;
   title: string;
   message: string;
+  isDeleted: boolean;
 }
 
 export interface IControlTowerGetMyNotesDto {
@@ -181,8 +209,16 @@ export interface IControlTowerGetMyNotesDto {
   timeView: ILookupDto;
 }
 
+export interface IControlTowerGetByIdDto {
+  view: ILookupDto;
+  timeView: ILookupDto;
+  startDate: string;
+  endDate: string;
+}
+
 export interface IControlTowerGetFilteredNotesDto {
   view: ILookupDto;
+  timeView: ILookupDto;
   startDate: string;
   endDate: string;
   searchText: string;

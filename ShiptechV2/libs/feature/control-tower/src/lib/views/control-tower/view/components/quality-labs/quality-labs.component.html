@@ -1,4 +1,19 @@
 <div
+class="controlTower-content new"
+[ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+>
+<ng-container>
+  <shiptech-control-tower-general-view-list
+    [selectorType]="'Quality Labs'"
+    [groupId]="'control-tower-quantity-labs-v2-list-filter-presets-1'"
+    [gridId]="'control-tower-quality-labs-list-grid-7'"
+    [theme]="theme"
+    [newScreen]="newScreen"
+  ></shiptech-control-tower-general-view-list>
+</ng-container>
+</div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>
+<!-- <div
   class="controlTower-content"
   [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
 >
@@ -62,12 +77,12 @@
           <div class="count">4</div>
         </div>
       </div>
-      <!-- <div class="splitter"></div>
+      <!- <div class="splitter"></div>
             <div class="by-nonResponseDays">
                 <div class="text">Filter by Non-Response days:</div>
                 <div class="action"><span>7 Days</span><div class="count">4</div></div>
                 <div class="action"><span>15 Days</span><div class="count">4</div></div>
-            </div> -->
+            </div> ->
     </div>
   </div>
   <div class="grid-container">
@@ -101,4 +116,4 @@
     ></app-footer-v2>
   </div>
 </div>
-<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div> -->
