@@ -1,9 +1,11 @@
-﻿commit 1284fa892bffbcd8d60b74d83ebaf71abf266dd9
+﻿commit 075131a0db0f1bb3b88dd7355167d2dd7c0c93a4
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 19 07:40:06 2021 +0000
+Date:   Fri Nov 19 13:22:00 2021 +0000
 
-    Merged PR 14804: Fixed build error
+    Merged PR 14819: Added endpoints for quantity, quality and residue view
     
-    Fixed build error
+    Added endpoints for quantity, quality and residue view
+    
+    Related work items: #33663
 
 branch: master

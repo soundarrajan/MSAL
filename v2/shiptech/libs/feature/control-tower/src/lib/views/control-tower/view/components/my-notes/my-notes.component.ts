@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -8,8 +9,11 @@ import {
 } from '@angular/core';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Store } from '@ngxs/store';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import {
   IControlTowerGetByIdDto,
   IControlTowerGetFilteredNotesDto,
@@ -93,6 +97,7 @@ export class MyNotesComponent implements OnInit {
   displayNameOfSelectedLine: any;
   selectedLineContent: any[] = [];
   filteredNotes: any;
+  user: IDisplayLookupDto<number, string>;
 
   get controlTowerNotesViewType(): any[] {
     return this._controlTowerNotesViewType;
@@ -133,10 +138,13 @@ export class MyNotesComponent implements OnInit {
     private toastr: ToastrService,
     private changeDetectorRef: ChangeDetectorRef,
     public format: TenantFormattingService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
+    this.user = this.store.selectSnapshot(UserProfileState.user);
+
     console.log(this.screenList);
     console.log(this.controlTowerNotesViewType);
     console.log(this.screenType);
@@ -151,14 +159,6 @@ export class MyNotesComponent implements OnInit {
     this.getMyNotes();
   }
 
-  selectDate(selectedLine) {
-    this.notesContent.forEach(element => {
-      if (element.displayName == selectedLine.displayName) {
-        element.selected = true;
-      } else element.selected = false;
-    });
-  }
-
   selectTitle(selectDate, index) {
     this.selectedTitleIndex = index;
   }
@@ -170,6 +170,37 @@ export class MyNotesComponent implements OnInit {
     if (index != -1) {
       return index;
     }
+  }
+
+  selectDate(selectedLine) {
+    this.notesContent.forEach(element => {
+      if (element.displayName == selectedLine.displayName) {
+        element.selected = true;
+      } else {
+        element.selected = false;
+      }
+    });
+
+    let index = this.findIndexForSelectedLinePeriod();
+    let selectedLinePeriod = this.notesContent[index];
+    let payload: IControlTowerGetFilteredNotesDto = {
+      view: this.view,
+      timeView: { id: +this.timeView },
+      startDate: selectedLinePeriod.startDate,
+      endDate: selectedLinePeriod.endDate,
+      searchText: this.searchText
+    };
+
+    this.controlTowerService
+      .getFilteredNotes(payload, this.view)
+      .pipe()
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+        }
+      });
   }
 
   addNotes() {
@@ -186,9 +217,19 @@ export class MyNotesComponent implements OnInit {
     );
     this.notesContent[index].notes = _.cloneDeep(newContentForNotes);
     this.selectedTitleIndex = 0;
-    setTimeout(() => {
-      this.titleSection.nativeElement.focus();
-    }, 0);
+
+    // setTimeout(() => {
+    //   this.titleSection.nativeElement.focus();
+    // }, 0);
+  }
+
+  getFirstIndexWithNotes() {
+    let findFirstIndex = _.findIndex(this.notesContent, function(object: any) {
+      return object?.notes?.length > 0;
+    });
+    if (findFirstIndex != -1) {
+      return findFirstIndex;
+    }
   }
 
   getMyNotes() {
@@ -198,7 +239,7 @@ export class MyNotesComponent implements OnInit {
     };
     this.spinner.show();
     this.controlTowerService
-      .getMyNotes(payload)
+      .getNotes(payload, this.view)
       .pipe()
       .subscribe((response: any) => {
         if (typeof response == 'string') {
@@ -206,74 +247,110 @@ export class MyNotesComponent implements OnInit {
           this.spinner.hide();
         } else {
           this.spinner.hide();
-          console.log(response);
           this.notesContent = response;
-          if (this.notesContent.length) {
-            if (this.notesContent[0].displayName != 'Today') {
-              let todayElement = {
-                notes: [],
-                displayName: 'Today'
-              };
-              const newContentForNotes = [todayElement].concat(
-                this.notesContent
-              );
-              this.notesContent = _.cloneDeep(newContentForNotes);
-            }
-            this.notesContent[0].selected = true;
+          this.addTodayIfNotExist();
+          let index = this.getFirstIndexWithNotes();
+          if (typeof index != 'undefined') {
+            this.notesContent[index].selected = true;
           } else {
-            // let todayElement = {
-            //   notes: [],
-            //   displayName: 'Today'
-            // };
-            // const newContentForNotes = [todayElement];
-            // this.notesContent = _.cloneDeep(newContentForNotes);
-            // this.notesContent[0].selected = true;
+            this.notesContent[0].selected = true;
           }
           this.changeDetectorRef.detectChanges();
         }
       });
   }
 
+  addTodayIfNotExist() {
+    if (parseFloat(this.timeView) == 1) {
+      if (this.notesContent.length) {
+        if (this.notesContent[0].displayName != 'Today') {
+          let todayElement = {
+            notes: [],
+            displayName: 'Today',
+            startDate: moment().format('YYYY-MM-DD') + 'T00:00:00Z',
+            endDate: moment().format('YYYY-MM-DD') + 'T23:59:59.999Z'
+          };
+          const newContentForNotes = [todayElement].concat(this.notesContent);
+          this.notesContent = _.cloneDeep(newContentForNotes);
+        }
+      } else {
+        let todayElement = {
+          notes: [],
+          displayName: 'Today',
+          startDate: moment().format('YYYY-MM-DD') + 'T00:00:00Z',
+          endDate: moment().format('YYYY-MM-DD') + 'T23:59:59.999Z'
+        };
+        const newContentForNotes = [todayElement];
+        this.notesContent = _.cloneDeep(newContentForNotes);
+      }
+    }
+  }
+
+  getUntitledIndex(notes) {
+    let indexArray = [];
+    for (let i = 0; i < notes.length; i++) {
+      if (notes[i].title.includes('Untitled ')) {
+        let titleIndex = parseFloat(notes[i].title.split('Untitled ')[1]);
+        indexArray.push(titleIndex);
+      }
+    }
+    if (indexArray.length) {
+      let findMaxIndex = _.max(indexArray);
+      return findMaxIndex + 1;
+    } else {
+      return 1;
+    }
+  }
+
   autoSaveNotes(noteLine, selectedPeriodLine) {
     let payload: IControlTowerSaveNotesItemDto = {
       view: this.view,
       id: noteLine.id,
-      title: noteLine.title,
+      title: noteLine.title
+        ? noteLine.title
+        : 'Untitled ' + this.getUntitledIndex(selectedPeriodLine.notes),
       message: noteLine.message,
       isDeleted: noteLine.isDeleted
     };
     console.log(payload);
     this.controlTowerService
-      .saveControlTowerNote(payload)
+      .saveControlTowerNote(payload, this.view)
       .pipe()
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          this.getAllNotesAfterSave(selectedPeriodLine);
+          noteLine.id = response.id;
+          noteLine.lastModifiedOn = response.lastModifiedOn;
+          noteLine.isDeleted = response.isDeleted;
+          noteLine.title = response.title;
+
+          this.changeDetectorRef.detectChanges();
+          if (noteLine.isDeleted) {
+            selectedPeriodLine.notes.splice(this.selectedDeleteTitleIndex, 1);
+          }
+          if (parseFloat(this.timeView) == 1) {
+            if (selectedPeriodLine.displayName != 'Today') {
+              if (!noteLine.isDeleted) {
+                this.moveNoteToToday(noteLine, selectedPeriodLine);
+              }
+            }
+          }
         }
       });
   }
 
-  getAllNotesAfterSave(selectedPeriod) {
-    let payload: IControlTowerGetByIdDto = {
-      view: this.view,
-      timeView: { id: +this.timeView },
-      startDate: selectedPeriod.startDate,
-      endDate: selectedPeriod.endDate
-    };
-    this.controlTowerService
-      .getFilteredNotes(payload)
-      .pipe()
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-          selectedPeriod.notes = response;
-          console.log(this.notesContent);
-          this.changeDetectorRef.detectChanges();
-        }
-      });
+  moveNoteToToday(noteLine, selectedPeriodLine) {
+    let findNoteIndex = _.findIndex(selectedPeriodLine.notes, function(
+      note: any
+    ) {
+      return note.id == noteLine.id;
+    });
+    if (findNoteIndex != -1) {
+      selectedPeriodLine?.notes.splice(findNoteIndex, 1);
+      this.changeDetectorRef.detectChanges();
+      console.log(selectedPeriodLine);
+    }
   }
 
   closeDelete() {
@@ -308,7 +385,7 @@ export class MyNotesComponent implements OnInit {
     this.isFiltered = true;
 
     this.controlTowerService
-      .getFilteredNotes(payload)
+      .getFilteredNotes(payload, this.view)
       .pipe()
       .subscribe((response: any) => {
         if (typeof response == 'string') {
@@ -316,6 +393,9 @@ export class MyNotesComponent implements OnInit {
         } else {
           console.log(response);
           this.filteredNotes = _.cloneDeep(response);
+          for (let i = 0; i < this.filteredNotes.length; i++) {
+            this.filteredNotes[i].displayName = selectedLinePeriod.displayName;
+          }
           this.changeDetectorRef.detectChanges();
         }
       });
@@ -345,20 +425,14 @@ export class MyNotesComponent implements OnInit {
 
   formatDate(date?: any) {
     if (date) {
-      let currentFormat = this.format.dateFormat;
-      let hasDayOfWeek;
-      if (currentFormat.startsWith('DDD ')) {
-        hasDayOfWeek = true;
-        currentFormat = currentFormat.split('DDD ')[1];
-      }
-      currentFormat = currentFormat.replace(/d/g, 'D');
-      currentFormat = currentFormat.replace(/y/g, 'Y');
-      const elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
-      let formattedDate = moment(elem).format(currentFormat);
-      if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
-      }
-      return formattedDate;
+      return this.format.dateUtc(date);
     }
+  }
+
+  detectCurrentUser(noteLine) {
+    if (noteLine && noteLine.createdBy && this.user) {
+      return this.user.id != noteLine.createdBy.id ? true : false;
+    }
+    return false;
   }
 }

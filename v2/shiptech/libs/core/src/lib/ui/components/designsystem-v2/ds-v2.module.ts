@@ -16,7 +16,6 @@ import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-res
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ControlTowerPopupComponent } from './control-tower-popup/control-tower-popup.component';
-import { HtmlDecodeReadonly } from '@shiptech/core/pipes/htmlDecode/html-decode-readonly.pipe';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 
 @NgModule({
