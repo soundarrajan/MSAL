@@ -74,10 +74,13 @@ import { SpotnegoRequestChangesComponent } from './views/main/details/components
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-negotiation-details-toolbar.component';
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
-import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from './views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
+import { PriceTenantFormatDirective } from '@shiptech/core/ui/components/ds-components/directives/price-tenant-format.directive';
+import { AmountTenantFormatDirective } from '@shiptech/core/ui/components/ds-components/directives/amount-tenant-format.directive';
+import { QuantityTenantFormatDirective } from './../../../../core/src/lib/ui/components/ds-components/directives/quantity-tenant-format.directive';
+import { NumberOnlyDirective } from '@shiptech/core/ui/components/ds-components/directives/number-only.directive';
 
 @NgModule({
   imports: [
@@ -113,7 +116,6 @@ import { RemoveCounterpartyNoRFQComponent } from './views/main/details/component
     NgxSpinnerModule
   ],
   declarations: [
-    PriceTenantFormatDirective,
     MainSpotNegotiationComponent,
     SpotNegotiationComponent,
     SpotNegotiationHomeComponent,
@@ -156,7 +158,11 @@ import { RemoveCounterpartyNoRFQComponent } from './views/main/details/component
     SpotnegoRequestChangesComponent,
     NegotiationDetailsToolbarComponent,
     RemoveCounterpartyComponent,
-    RemoveCounterpartyNoRFQComponent
+    RemoveCounterpartyNoRFQComponent,
+    QuantityTenantFormatDirective,
+    AmountTenantFormatDirective,
+    PriceTenantFormatDirective,
+    NumberOnlyDirective,
   ],
   entryComponents: [
     MainSpotNegotiationComponent,
