@@ -1,4 +1,10 @@
-import { Component, ElementRef, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  ChangeDetectorRef,
+  Inject
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -17,7 +23,11 @@ import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 
-import { SelectSeller,EditLocationRow, SetLocationsRows } from '../../store/actions/ag-grid-row.action';
+import {
+  SelectSeller,
+  EditLocationRow,
+  SetLocationsRows
+} from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 @Component({
@@ -589,8 +599,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   ) {}
 
   ngOnInit() {
-    let requestOffers=this.params.data.requestOffers;
-    
+    let requestOffers = this.params.data.requestOffers;
+
     this.myFormGroup = new FormGroup({
       frequency: new FormControl('')
     });
@@ -936,41 +946,45 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   deleteRow() {
-    let sellerCounterpartyId = this.params.data.sellerCounterpartyId;
-    const response = this._spotNegotiationService.RemoveCounterparty(
-      sellerCounterpartyId
-    );
-    response.subscribe((res: any) => {
-      if (res.status && !res.isRequestStemmed) {
-        let rowData = [];
-        this.params.api.forEachNode(node => rowData.push(node.data));
-        let index = this.params.node.rowIndex;
-        let newData = [];
-        newData = rowData.splice(index, 1);
-        this.params.api.applyTransaction({ remove: newData });
-      } else if (res.status && res.isRequestStemmed) {
-        this.toastr.warning(
-          'Counterparty has a stemmed order and cannot be removed from negotiation.'
-        );
-        return;
-      } else {
-        return;
-      }
-      // if (this.params.data.requestOffers) {
-      //   debugger;
-      //   const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-      //     width: '600px',
-      //     data: {
-      //       counterpartyId: this.params.data.sellerCounterpartyId
-      //     }
-      //   });
+    if (this.params.data.requestOffers) {
+      const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+        width: '600px',
+        data: {
+          counterpartyId: this.params.data.sellerCounterpartyId
+        }
+      });
 
-      //   dialogRef.afterClosed().subscribe(result => {
-      //     console.log(result);
-      //   });
-      // }
-     });
-    
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          let sellerCounterpartyId = this.params.data.sellerCounterpartyId;
+          const response = this._spotNegotiationService.RemoveCounterparty(
+            sellerCounterpartyId
+          );
+          response.subscribe((res: any) => {
+            if (res.status && !res.isRequestStemmed) {
+              let rowData = [];
+              this.params.api.forEachNode(node => rowData.push(node.data));
+              let index = this.params.node.rowIndex;
+              let newData = [];
+              newData = rowData.splice(index, 1);
+              this.params.api.applyTransaction({ remove: newData });
+              this.toastr.success(
+                'Counterparty has been removed from negotiation succesfully.'
+              );
+            } else if (res.status && res.isRequestStemmed) {
+              this.toastr.warning(
+                'Counterparty has a stemmed order and cannot be removed from negotiation.'
+              );
+              return;
+            } else {
+              return;
+            }
+          });
+        } else {
+          return;
+        }
+      });
+    }
   }
   selectSupplier(text, id) {
     this.editedSeller = text;

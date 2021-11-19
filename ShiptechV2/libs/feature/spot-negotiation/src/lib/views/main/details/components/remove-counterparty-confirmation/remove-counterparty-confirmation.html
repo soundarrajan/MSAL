@@ -20,10 +20,10 @@
   <div class="row">
     <div class="col-md-12">
       <div style="float:right;position: relative;">
-        <button type="button" class="delete-delivery-button cancel-button" (click)="closeClick()">
+        <button type="button" class="delete-delivery-button cancel-button" (click)="confirm(false)">
           No
         </button>
-        <button type="button" class="delete-delivery-button" (click)="deleteCounterparty()">
+        <button type="button" class="delete-delivery-button" (click)="confirm(true)">
           Yes
         </button>
       </div>
