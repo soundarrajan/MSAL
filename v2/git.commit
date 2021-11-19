@@ -1,11 +1,9 @@
-﻿commit 075131a0db0f1bb3b88dd7355167d2dd7c0c93a4
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 19 13:22:00 2021 +0000
+﻿commit 889926544f886c176af916c6cecb0373fa886037
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Nov 19 13:38:06 2021 +0000
 
-    Merged PR 14819: Added endpoints for quantity, quality and residue view
+    Merged PR 14820: #33672 - control tower lab action popup save functionality flow has updated
     
-    Added endpoints for quantity, quality and residue view
-    
-    Related work items: #33663
+    Related work items: #33672
 
 branch: master
