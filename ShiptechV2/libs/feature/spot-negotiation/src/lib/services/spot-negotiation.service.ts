@@ -198,6 +198,11 @@ export class SpotNegotiationService extends BaseStoreService
   SaveAndSendRFQ(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.SaveAndSendRFQ(payload);
   }
+
+  @ObservableException()
+  RemoveCounterparty(counterpartyId: any): Observable<unknown> {
+    return this.spotNegotiationApi.RemoveCounterparty(counterpartyId);
+  }
    
 
   /**

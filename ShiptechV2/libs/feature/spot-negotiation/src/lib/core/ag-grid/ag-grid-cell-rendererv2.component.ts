@@ -19,6 +19,7 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
 
 import { SelectSeller,EditLocationRow, SetLocationsRows } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -121,7 +122,9 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           matTooltip="Temporary suspended counterparty"
           matTooltipClass="lightTooltip"
         ></span>
-        <span class="m-l-7" matTooltip="{{params.value}}">{{ params.value }}</span>
+        <span class="m-l-7" matTooltip="{{ params.value }}">{{
+          params.value
+        }}</span>
         <span class="sticky-icon">
           <!--span class="hover-lookup-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger"></span>-->
           <span
@@ -211,7 +214,9 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="view-rfq-icon"></div></span>
-        <span class="fs-12" (click)="openEmailPreview(params)">Preview Email</span>
+        <span class="fs-12" (click)="openEmailPreview(params)"
+          >Preview Email</span
+        >
       </div>
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="no-quote-icon"></div></span>
@@ -232,82 +237,86 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
 
     <!-- Offer price cell -->
     <!-- [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' " -->
-    <div *ngIf="params.type == 'price-calc'" [ngClass] = "!isOfferRequestAvailable()? 'no-price-data' : ''">
+    <div
+      *ngIf="params.type == 'price-calc'"
+      [ngClass]="!isOfferRequestAvailable() ? 'no-price-data' : ''"
+    >
       <!-- TODO check this code... -->
       <span *ngIf="!isOfferRequestAvailable()">-</span>
       <div *ngIf="isOfferRequestAvailable()">
-      <div class="price-calc static-data" *ngIf="params.value === '100.00'">
-        <span class="duplicate-icon"></span>
-        $ {{ params.value }}
-      </div>
-      <div class='price-calc active'
-        [matMenuTriggerFor]="priceMenupopup"
-        #pricePopupTrigger="matMenuTrigger"
-        (click)="pricePopupTrigger.closeMenu()"
-        (contextmenu)="
-          $event.preventDefault();
-          $event.stopPropagation();
-          onRightClickMenuOpened($event);
-          pricePopupTrigger.openMenu()
-        "
-      >
-        <div
-          id="custom-form-field"
-          style="display:relative;"
-          [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
-        >
-          <mat-form-field
-            class="without-search currency-select-trigger"
-            appearance="none"
-            [formGroup]="myFormGroup"
-          >
-            <mat-label>Select Field</mat-label>
-            <mat-select
-              disableOptionCentering
-              [(ngModel)]="select"
-              formControlName="frequency"
-              panelClass="currencyselecttrigger"
-            >
-              <mat-select-trigger overlayPanelClass="123class">
-                {{ myFormGroup.controls['frequency'].value }}
-              </mat-select-trigger>
-              <mat-option [disabled]>Change Currency </mat-option>
-              <mat-option
-                class="currency-mat-select"
-                *ngFor="let frequency of frequencyArr"
-                [value]="frequency.key"
-              >
-                <span>
-                  <mat-radio-button>{{
-                    frequency.abbriviation
-                  }}</mat-radio-button></span
-                >
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="price-calc static-data" *ngIf="params.value === '100.00'">
+          <span class="duplicate-icon"></span>
+          $ {{ params.value }}
         </div>
-        <input
-          class="inputField"
-          (change)="onPriceChange($event, params)"
-          autofocus
-          #inputSection
-          value="{{priceFormatValue(params.value)}}"
-          autocomplete="off"
-          name="inputField"
-          spellcheck="false"
-          type="text"
-          style="display:inline"
-        />
-        <!--<div class="addButton" (click)="pricingdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>-->
         <div
-          class="formulaButton"
-          style="display:inline; position:absolute; left:78px;"
-          (mouseenter)="hoverMenu($event)"
-          [matMenuTriggerFor]="formulamenu"
-          #menuTriggerHover="matMenuTrigger"
-          *ngIf="showFormula"
-        ></div>
-      </div>
+          class="price-calc active"
+          [matMenuTriggerFor]="priceMenupopup"
+          #pricePopupTrigger="matMenuTrigger"
+          (click)="pricePopupTrigger.closeMenu()"
+          (contextmenu)="
+            $event.preventDefault();
+            $event.stopPropagation();
+            onRightClickMenuOpened($event);
+            pricePopupTrigger.openMenu()
+          "
+        >
+          <div
+            id="custom-form-field"
+            style="display:relative;"
+            [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
+          >
+            <mat-form-field
+              class="without-search currency-select-trigger"
+              appearance="none"
+              [formGroup]="myFormGroup"
+            >
+              <mat-label>Select Field</mat-label>
+              <mat-select
+                disableOptionCentering
+                [(ngModel)]="select"
+                formControlName="frequency"
+                panelClass="currencyselecttrigger"
+              >
+                <mat-select-trigger overlayPanelClass="123class">
+                  {{ myFormGroup.controls['frequency'].value }}
+                </mat-select-trigger>
+                <mat-option [disabled]>Change Currency </mat-option>
+                <mat-option
+                  class="currency-mat-select"
+                  *ngFor="let frequency of frequencyArr"
+                  [value]="frequency.key"
+                >
+                  <span>
+                    <mat-radio-button>{{
+                      frequency.abbriviation
+                    }}</mat-radio-button></span
+                  >
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <input
+            class="inputField"
+            (change)="onPriceChange($event, params)"
+            autofocus
+            #inputSection
+            value="{{ priceFormatValue(params.value) }}"
+            autocomplete="off"
+            name="inputField"
+            spellcheck="false"
+            type="text"
+            style="display:inline"
+          />
+          <!--<div class="addButton" (click)="pricingdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>-->
+          <div
+            class="formulaButton"
+            style="display:inline; position:absolute; left:78px;"
+            (mouseenter)="hoverMenu($event)"
+            [matMenuTriggerFor]="formulamenu"
+            #menuTriggerHover="matMenuTrigger"
+            *ngIf="showFormula"
+          ></div>
+        </div>
       </div>
     </div>
     <!-- End offer price cell -->
@@ -336,8 +345,16 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           #menuTrigger="matMenuTrigger"
           (click)="editSeller = false"
         >
-          <span *ngIf="editSeller && params.data.physicalSupplierCounterpartyName">{{params.data.physicalSupplierCounterpartyName}}</span>
-          <span *ngIf="editSeller && params.data.physicalSupplierCounterpartyName==null">Add P. Supplier</span>
+          <span
+            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            >{{ params.data.physicalSupplierCounterpartyName }}</span
+          >
+          <span
+            *ngIf="
+              editSeller && params.data.physicalSupplierCounterpartyName == null
+            "
+            >Add P. Supplier</span
+          >
           <span *ngIf="!editSeller">{{ this.editedSeller }}</span>
         </span>
         <!--<div class="addButton"></div>-->
@@ -364,8 +381,10 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
               />
             </div>
             <div class="col-md-2">
-              <span class="expand-img"
-              (click)="openCounterpartyPopup(params.locationId)"></span>
+              <span
+                class="expand-img"
+                (click)="openCounterpartyPopup(params.locationId)"
+              ></span>
             </div>
           </div>
           <table
@@ -380,9 +399,9 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
                 <mat-option [value]="element">
                   <mat-checkbox
                     [value]="element.name"
-                    (click)="selectSupplier(element.name,element.id)"
+                    (click)="selectSupplier(element.name, element.id)"
                   >
-                  {{ element.name }}
+                    {{ element.name }}
                   </mat-checkbox>
                 </mat-option>
               </td>
@@ -396,7 +415,11 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
           </table>
 
           <div class="proceed-div">
-            <button mat-button class="mid-blue-button proceed-btn" (click)="updatePhysicalSupplier()">
+            <button
+              mat-button
+              class="mid-blue-button proceed-btn"
+              (click)="updatePhysicalSupplier()"
+            >
               Proceed
             </button>
           </div>
@@ -407,19 +430,28 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
     <div
       *ngIf="params.type == 'mat-check-box'"
       style="height:100%;display:flex;align-items:center;justify-content:center"
-      [matTooltip]="params.data.preferredProducts?.includes(params.productId) ? 'Preferred product' : null"
-      matTooltipClass="lightTooltip">
+      [matTooltip]="
+        params.data.preferredProducts?.includes(params.productId)
+          ? 'Preferred product'
+          : null
+      "
+      matTooltipClass="lightTooltip"
+    >
       <!--<input type="checkbox" (click)="checkedHandler($event)"[checked]="params.value"/>-->
       <mat-checkbox
         [checked]="params.value"
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
-        [ngClass]="params.data.preferredProducts?.includes(params.productId) ? 'darkBorder' : ''"
+        [ngClass]="
+          params.data.preferredProducts?.includes(params.productId)
+            ? 'darkBorder'
+            : ''
+        "
       ></mat-checkbox>
     </div>
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
-    <span *ngIf="!params.value">-</span>
+      <span *ngIf="!params.value">-</span>
       <span>{{ priceFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
@@ -430,8 +462,8 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
     </div>
 
     <div *ngIf="params.type == 'diff'" class="addTpr">
-    <span *ngIf="!params.value">-</span>
-    <span>{{ priceFormatValue(params.value) }}</span>
+      <span *ngIf="!params.value">-</span>
+      <span>{{ priceFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
@@ -534,15 +566,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public myFormGroup;
   public editSeller: boolean = true;
   public editedSeller = '';
-  public phySupplierId=0;
+  public phySupplierId = 0;
   public priceFormat = '';
 
   public docVal = 'Document Uploaded';
   counterpartyColumns: string[] = ['counterparty', 'blank'];
-  counterpartyList=[];
+  counterpartyList = [];
   visibleCounterpartyList = [];
-  currentRequestInfo : any;
-  tenantService:any;
+  currentRequestInfo: any;
+  tenantService: any;
   currentRequestData: any[];
 
   constructor(
@@ -553,38 +585,41 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public store: Store,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
-    private changeDetector: ChangeDetectorRef,
+    private changeDetector: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    let requestOffers=this.params.data.requestOffers;
+    
     this.myFormGroup = new FormGroup({
       frequency: new FormControl('')
     });
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      this.tenantService=spotNegotiation.tenantConfigurations;
+      this.tenantService = spotNegotiation.tenantConfigurations;
       // Fetching counterparty list
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
-        this.visibleCounterpartyList = this.counterpartyList.slice(0,7);
+        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
     });
   }
 
-  isOfferRequestAvailable() : boolean {
+  isOfferRequestAvailable(): boolean {
     // Array of requestoffers
     const { requestOffers } = this.params.data || {};
 
-    if(!requestOffers) {
+    if (!requestOffers) {
       return false;
     }
 
     const productId = this.params.product.id;
 
-    const offerExists = requestOffers.find(e => e.requestProductId === productId && e.offerId);
+    const offerExists = requestOffers.find(
+      e => e.requestProductId === productId && e.offerId
+    );
 
-
-    if(offerExists){
+    if (offerExists) {
       return true;
     }
 
@@ -603,87 +638,80 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   search(userInput: string): void {
     this.visibleCounterpartyList = this.counterpartyList
-    .filter(e => {
-      if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-        return true;
-      }
-      return false;
-    })
-    .slice(0, 7);
+      .filter(e => {
+        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+          return true;
+        }
+        return false;
+      })
+      .slice(0, 7);
   }
   hoverMenu(event) {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
   }
 
-  selectCounterParties(params){
-      let updatedRow = { ...params.data };
-      updatedRow = this.formatRowData(updatedRow, params);
-      // Update the store
-      this.store.dispatch(new EditLocationRow(updatedRow));
-      params.node.setData(updatedRow);
+  selectCounterParties(params) {
+    let updatedRow = { ...params.data };
+    updatedRow = this.formatRowData(updatedRow, params);
+    // Update the store
+    this.store.dispatch(new EditLocationRow(updatedRow));
+    params.node.setData(updatedRow);
   }
 
   formatRowData(row, params) {
-    if(params.value){
+    if (params.value) {
       row.isSelected = false;
-     if(params.column.colId == 'checkProd1'){
-        row.checkProd1 =false;
-      }
-      else if(params.column.colId == 'checkProd2'){
+      if (params.column.colId == 'checkProd1') {
+        row.checkProd1 = false;
+      } else if (params.column.colId == 'checkProd2') {
         row.checkProd2 = false;
-      }
-      else if(params.column.colId == 'checkProd3'){
+      } else if (params.column.colId == 'checkProd3') {
         row.checkProd3 = false;
-      }
-      else if(params.column.colId == 'checkProd4'){
+      } else if (params.column.colId == 'checkProd4') {
         row.checkProd4 = false;
-      }
-      else if(params.column.colId == 'checkProd5'){
+      } else if (params.column.colId == 'checkProd5') {
         row.checkProd5 = false;
       }
-    }else{
-      var checkallprod = this.checkallProd(row,params)
-      if(!checkallprod){
+    } else {
+      var checkallprod = this.checkallProd(row, params);
+      if (!checkallprod) {
         row.isSelected = true;
       }
-     if(params.column.colId == 'checkProd1'){
-        row.checkProd1 =true;
-
-      }
-      else if(params.column.colId == 'checkProd2'){
+      if (params.column.colId == 'checkProd1') {
+        row.checkProd1 = true;
+      } else if (params.column.colId == 'checkProd2') {
         row.checkProd2 = true;
-      }
-      else if(params.column.colId == 'checkProd3'){
+      } else if (params.column.colId == 'checkProd3') {
         row.checkProd3 = true;
-      }
-      else if(params.column.colId == 'checkProd4'){
+      } else if (params.column.colId == 'checkProd4') {
         row.checkProd4 = true;
-      }
-      else if(params.column.colId == 'checkProd5'){
+      } else if (params.column.colId == 'checkProd5') {
         row.checkProd5 = true;
       }
     }
     return row;
-}
+  }
 
-checkallProd(row,params){
-  this.store.subscribe(({ spotNegotiation, ...props }) => {
-    this.currentRequestData = spotNegotiation.locations;
-  });
-  let currentLocProd= this.currentRequestData.filter(loc => loc.id == row.requestLocationId);
-  if(currentLocProd.length != 0){
-    let currentLocProdCount = currentLocProd[0].requestProducts.length;
-    for (let index = 0; index < currentLocProdCount; index++) {
-      let indx = index +1;
-      let val = "checkProd" + indx;
-      if(!row[val] && val != params.column.colId){
-        return true
+  checkallProd(row, params) {
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestData = spotNegotiation.locations;
+    });
+    let currentLocProd = this.currentRequestData.filter(
+      loc => loc.id == row.requestLocationId
+    );
+    if (currentLocProd.length != 0) {
+      let currentLocProdCount = currentLocProd[0].requestProducts.length;
+      for (let index = 0; index < currentLocProdCount; index++) {
+        let indx = index + 1;
+        let val = 'checkProd' + indx;
+        if (!row[val] && val != params.column.colId) {
+          return true;
+        }
       }
     }
+    return false;
   }
-  return false
-}
   additionalcostpopup() {
     const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
       width: '1170px',
@@ -732,8 +760,10 @@ checkallProd(row,params){
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      if(this.currentRequestInfo.requestLocations
-        && this.currentRequestInfo.requestLocations.length > 0){
+      if (
+        this.currentRequestInfo.requestLocations &&
+        this.currentRequestInfo.requestLocations.length > 0
+      ) {
         currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
     }
@@ -748,8 +778,8 @@ checkallProd(row,params){
         RequestGroupId: RequestGroupId,
         RequestLocationId: parseInt(currentRequestLocation.id),
         LocationId: locationId,
-        isPhysicalSupplier:true,
-        requestLocationSellerId:this.params.data.id
+        isPhysicalSupplier: true,
+        requestLocationSellerId: this.params.data.id
       }
     });
 
@@ -906,27 +936,54 @@ checkallProd(row,params){
   }
 
   deleteRow() {
-    let rowData = [];
-    this.params.api.forEachNode(node => rowData.push(node.data));
-    let index = this.params.node.rowIndex;
-    let newData = [];
-    newData = rowData.splice(index, 1);
-    this.params.api.applyTransaction({ remove: newData });
+    let sellerCounterpartyId = this.params.data.sellerCounterpartyId;
+    const response = this._spotNegotiationService.RemoveCounterparty(
+      sellerCounterpartyId
+    );
+    response.subscribe((res: any) => {
+      if (res.status && !res.isRequestStemmed) {
+        let rowData = [];
+        this.params.api.forEachNode(node => rowData.push(node.data));
+        let index = this.params.node.rowIndex;
+        let newData = [];
+        newData = rowData.splice(index, 1);
+        this.params.api.applyTransaction({ remove: newData });
+      } else if (res.status && res.isRequestStemmed) {
+        this.toastr.warning(
+          'Counterparty has a stemmed order and cannot be removed from negotiation.'
+        );
+        return;
+      } else {
+        return;
+      }
+      // if (this.params.data.requestOffers) {
+      //   debugger;
+      //   const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+      //     width: '600px',
+      //     data: {
+      //       counterpartyId: this.params.data.sellerCounterpartyId
+      //     }
+      //   });
+
+      //   dialogRef.afterClosed().subscribe(result => {
+      //     console.log(result);
+      //   });
+      // }
+     });
+    
   }
-  selectSupplier(text,id) {
+  selectSupplier(text, id) {
     this.editedSeller = text;
-    this.phySupplierId=id;
+    this.phySupplierId = id;
   }
 
-  updatePhysicalSupplier(){
-    const locationsRows = this.store.selectSnapshot<string>(
-      (state: any) => {
-        return state.spotNegotiation.locationsRows;
-      }
-    );
+  updatePhysicalSupplier() {
+    const locationsRows = this.store.selectSnapshot<string>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
     let payload = {
-      "RequestLocationSellerId": this.params.data.id,
-      "PhySupplierId": this.phySupplierId
+      RequestLocationSellerId: this.params.data.id,
+      PhySupplierId: this.phySupplierId
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
@@ -935,21 +992,20 @@ checkallProd(row,params){
           JSON.parse(JSON.stringify(locationsRows))
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-        this.toastr.success("Phy. Supplier added successfully");
+        this.toastr.success('Phy. Supplier added successfully');
       } else {
         this.toastr.error(res.message);
         return;
       }
     });
   }
-  getLocationRowsAddPhySupplier(locationrow){
-    locationrow.forEach((element,key) => {
-      if(element.id==this.params.data.id){
-        element.physicalSupplierCounterpartyId=this.phySupplierId;
-        element.physicalSupplierCounterpartyName=this.editedSeller;
+  getLocationRowsAddPhySupplier(locationrow) {
+    locationrow.forEach((element, key) => {
+      if (element.id == this.params.data.id) {
+        element.physicalSupplierCounterpartyId = this.phySupplierId;
+        element.physicalSupplierCounterpartyName = this.editedSeller;
       }
     });
     return locationrow;
   }
-
 }
