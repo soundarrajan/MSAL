@@ -30,6 +30,7 @@ import {
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
+import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -461,7 +462,7 @@ import { RemoveCounterpartyComponent } from '../../views/main/details/components
     </div>
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
-    <span *ngIf="!params.value">-</span>
+      <span *ngIf="!params.value">-</span>
       <span>{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
@@ -472,8 +473,8 @@ import { RemoveCounterpartyComponent } from '../../views/main/details/components
     </div>
 
     <div *ngIf="params.type == 'diff'" class="addTpr">
-    <span *ngIf="!params.value">-</span>
-    <span>{{ priceCalFormatValue(params.value) }}</span>
+      <span *ngIf="!params.value">-</span>
+      <span>{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
@@ -905,7 +906,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
   }
- 
+  
 
   pricingdetailspopup(e, params) {
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
@@ -967,6 +968,44 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   deleteRow() {
     if (this.params.data.requestOffers) {
       const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+        width: '600px',
+        data: {
+          counterpartyId: this.params.data.sellerCounterpartyId
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          let sellerCounterpartyId = this.params.data.sellerCounterpartyId;
+          const response = this._spotNegotiationService.RemoveCounterparty(
+            sellerCounterpartyId
+          );
+          response.subscribe((res: any) => {
+            if (res.status && !res.isRequestStemmed) {
+              let rowData = [];
+              this.params.api.forEachNode(node => rowData.push(node.data));
+              let index = this.params.node.rowIndex;
+              let newData = [];
+              newData = rowData.splice(index, 1);
+              this.params.api.applyTransaction({ remove: newData });
+              this.toastr.success(
+                'Counterparty has been removed from negotiation succesfully.'
+              );
+            } else if (res.status && res.isRequestStemmed) {
+              this.toastr.warning(
+                'Counterparty has a stemmed order and cannot be removed from negotiation.'
+              );
+              return;
+            } else {
+              return;
+            }
+          });
+        } else {
+          return;
+        }
+      });
+    }else{
+      const dialogRef = this.dialog.open(RemoveCounterpartyNoRFQComponent, {
         width: '600px',
         data: {
           counterpartyId: this.params.data.sellerCounterpartyId
