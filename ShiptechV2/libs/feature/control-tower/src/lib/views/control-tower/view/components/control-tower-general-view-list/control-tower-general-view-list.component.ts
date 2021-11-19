@@ -596,7 +596,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         let productTypeList = [
           {
             labCounterParty: rowData?.counterparty?.name,
-            product: rowData?.counterparty?.name,
+            product: rowData?.product?.name,
             labStatus: rowData?.status?.name,
             claimRaised: rowData?.claimsRaised ? 'Yes' : 'No'
           }
