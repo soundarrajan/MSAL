@@ -62,6 +62,7 @@ export class FilterPreferencesComponent implements OnDestroy {
   @Output() activePresetChange$ = new EventEmitter<
   FilterPreferenceViewModel[]
   >();
+  @Output() systemFilterUpdate$ = new EventEmitter<any>();
   // NOTE: This is used to get the template for creating a new preset
   @ViewChild('createPreset', { static: false })
   createFilterTemplate: TemplateRef<any>;
@@ -71,7 +72,8 @@ export class FilterPreferencesComponent implements OnDestroy {
       id: string,
       label : string,
       countId : string,
-      count: number
+      count: number,
+      isActive: boolean
     }
   ]
   
@@ -148,7 +150,19 @@ export class FilterPreferencesComponent implements OnDestroy {
     // NOTE: The presets directive will tell the service to update the presets store and set the selected preset to the grid
     this.activePresetChange$.next(this.filterPresets);
 
+    // reset SystemFilters
+    this.currentSystemFilters.map( o => o.isActive = false);
+    
     this.changeDetector.markForCheck();
+  }
+  
+  public systemFilterUpdate(filter):void {
+    this.currentSystemFilters.map( o => o.isActive = false);
+    this.filterPresets.map( o => o.isActive = false);
+    filter.isActive = true;
+    console.log(`FIlter applied ${filter}`);
+    this.systemFilterUpdate$.next(this.currentSystemFilters);
+    this.toastr.info(PreferenceLoaded, '', ToastPosition);
   }
 
   public createNewFilter(): void {
