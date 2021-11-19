@@ -23,7 +23,8 @@ export const SpotNegotiationApiPaths = {
   UpdateSelectSeller: `Groups/toggleReqSellerSelection`,
   previewRfqMail:`RFQ/previewRfqMail`,
   getExistingOrders:`api/procurement/order/getExistingOrders`,
-  confirmRfq:`api/procurement/rfq/confirm`
+  confirmRfq:`api/procurement/rfq/confirm`,
+  removeCounterparty:`Groups/removeSeller`
 };
 
 @Injectable({
@@ -317,6 +318,22 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.saveAndSendRFQ}`,
         payload
+      )
+      .pipe(
+        map((body: any) => body),        
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  RemoveCounterparty(request: any): Observable<any> {
+    return this.http
+      .delete<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.removeCounterparty}/${request}`
       )
       .pipe(
         map((body: any) => body),        

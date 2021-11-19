@@ -76,6 +76,7 @@ import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-ne
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
 import { UomsRouteResolver } from './uoms-route.resolver';
+import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 
 @NgModule({
   imports: [
@@ -152,7 +153,8 @@ import { UomsRouteResolver } from './uoms-route.resolver';
     // FooterV2Component,
     AgGridDatetimePickerToggleComponent,
     SpotnegoRequestChangesComponent,
-    NegotiationDetailsToolbarComponent
+    NegotiationDetailsToolbarComponent,
+    RemoveCounterpartyComponent
   ],
   entryComponents: [
     MainSpotNegotiationComponent,
@@ -173,7 +175,8 @@ import { UomsRouteResolver } from './uoms-route.resolver';
     SpotnegoPricingDetailsComponent,
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
-    SpotnegoSearchCtpyComponent
+    SpotnegoSearchCtpyComponent,
+    RemoveCounterpartyComponent
   ],
   exports: [PriceTenantFormatDirective],
   providers: [
