@@ -4,7 +4,7 @@
     <!-- <div class="id"><span> </span><b></b></div> -->
 
     <div class="header-right">
-      <button mat-raised-button (click)="statusChanged({'status': status, 'comments': comments})">Save</button>
+      <button mat-raised-button (click)="statusChanged()">Save</button>
       <div class="title-divider">|</div>
       <div class="close-circle">
         <mat-icon
@@ -22,12 +22,9 @@
     <div class="header-title mg-b-5  plr-0 col-6 ">Main info:</div>
     <div class="header-title text-right mg-b-5 plr-0 col-6 " *ngIf="data?.lab">
       <span>Labs ID:</span>
-          <a
-          href="/#/labs/labresult/edit/{{ data.lab }}"
-          target="_blank"
-        >
-          <span class="aggridlink-darktheme">{{ data.lab }}</span>
-        </a>
+      <a href="/#/labs/labresult/edit/{{ data.lab }}" target="_blank">
+        <span class="aggridlink-darktheme">{{ data.lab }}</span>
+      </a>
     </div>
     <div class="header-title mg-t-5 plr-0 col-6 ">
       <span class="subheader-field">Vessel:</span>
@@ -40,7 +37,7 @@
   </div>
   <div class="more-info mg-b-0 ">
     <div class="row info-section">
-      <ng-container *ngIf="data.popupType != 'qualityLabs' else qualityLabs">
+      <ng-container *ngIf="data.popupType != 'qualityLabs'; else qualityLabs">
         <div
           class=" w-20p plr-0"
           *ngIf="data.popupType == 'rob' || data.popupType == 'supply'"
@@ -100,33 +97,25 @@
       </ng-container>
     </div>
     <ng-template #qualityLabs>
-      <div
-        class=" w-28 plr-0"
-      >
+      <div class=" w-28 plr-0">
         <div class="col-header">Lab Counterparty</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{ value.labCounterParty }}
         </div>
       </div>
-      <div
-        class=" w-28 plr-0"
-      >
+      <div class=" w-28 plr-0">
         <div class="col-header">Product</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{ value.product }}
         </div>
       </div>
-      <div
-        class=" w-24p plr-0"
-      >
+      <div class=" w-24p plr-0">
         <div class="col-header">Lab Status</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{ value.labStatus }}
         </div>
       </div>
-      <div
-        class=" w-20p plr-0"
-      >
+      <div class=" w-20p plr-0">
         <div class="col-header">Claim Raised</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
           {{ value.claimRaised }}
@@ -179,10 +168,7 @@
       <ng-container *ngIf="data.popupType == 'qualityLabs'">
         <span>
           Order No:
-          <a
-            href="/#/edit-order/{{ data.orderId }}"
-            target="_blank"
-          >
+          <a href="/#/edit-order/{{ data.orderId }}" target="_blank">
             <span class="aggridlink-darktheme">{{ data.orderId }}</span>
           </a>
         </span>
