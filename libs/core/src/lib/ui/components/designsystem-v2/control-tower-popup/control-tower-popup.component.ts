@@ -47,29 +47,46 @@ export class ControlTowerPopupComponent implements OnInit {
     //alert(status);
     this.status = status;
   }
-  statusChanged(data) {
-    this.dialogRef.close(data);
-    // let payloadData = {
-    //   differenceType: this.data.differenceType,
-    //   quantityControlReport: {
-    //     id: this.data.quantityControlReport.id
-    //   },
-    //   status: { id: +this.status },
-    //   comments: this.comments
-    // };
-
-    // this.controlTowerService
-    //   .saveQuantityResiduePopUp(payloadData, payloadData => {
-    //     console.log('asd');
-    //   })
-    //   .pipe()
-    //   .subscribe((response: any) => {
-    //     if (typeof response == 'string') {
-    //       this.toastr.error(response);
-    //     } else {
-    //       this.dialogRef.close();
-    //     }
-    //   });
+  statusChanged() {
+    console.log(this.data.differenceType);
+    let payloadData = {
+      differenceType: this.data.differenceType,
+      quantityControlReport: {
+        id: this.data.quantityControlReport.id
+      },
+      status: { id: +this.status },
+      comments: this.comments
+    };
+    if (
+      this.data.differenceType.name == 'Rob' ||
+      this.data.differenceType.name == 'Supply'
+    ) {
+      this.controlTowerService
+        .saveQuantityResiduePopUp(payloadData, payloadData => {
+          console.log('asd');
+        })
+        .pipe()
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.dialogRef.close();
+          }
+        });
+    } else if (this.data.differenceType.name == 'Sludge') {
+      this.controlTowerService
+        .saveResiduePopUp(payloadData, payloadData => {
+          console.log('asd');
+        })
+        .pipe()
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.dialogRef.close();
+          }
+        });
+    }
   }
   closeDialog() {
     this.dialogRef.close();
