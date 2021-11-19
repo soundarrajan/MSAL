@@ -30,14 +30,16 @@
       </div>
     </div>
     <div id="dateContainer">
-      <div
-        class="dateBlock"
-        *ngFor="let content of notesContent"
-        [ngClass]="content.selected ? 'select' : ''"
-        (click)="selectDate(content)"
-      >
-        {{ content?.displayName }}
-      </div>
+      <ng-container *ngFor="let content of notesContent">
+        <div
+          class="dateBlock"
+          [ngClass]="content.selected ? 'select' : ''"
+          (click)="selectDate(content)"
+          *ngIf="content.notes.length"
+        >
+          {{ content?.displayName }}
+        </div>
+      </ng-container>
     </div>
   </div>
   <div class="title-section" *ngIf="!isFiltered">
@@ -63,7 +65,7 @@
           [ngClass]="selectedTitleIndex === noteIndex ? 'select' : ''"
           (click)="selectTitle(noteLine.title, noteIndex)"
         >
-          <p>{{ noteLine.title }}</p>
+          <p>{{ noteLine.title | htmlDecodeReadonly }}</p>
           <div
             class="delete-menu"
             [matMenuTriggerFor]="deleteTitle"
@@ -104,7 +106,7 @@
   <div class="title-section" *ngIf="isFiltered">
     <div class="header-section">
       Results
-      <div class="close-icon" (click)="closeFilter()"></div>
+      <div class="close-icon" (click)="searchText = ''; closeFilter()"></div>
     </div>
 
     <div class="filter-data">
@@ -114,6 +116,7 @@
         [ngClass]="selectedSearchIndex === i ? 'select' : ''"
         (click)="selectFilterTitle(i)"
       >
+        <div [innerHTML]="content.displayName | highlight: searchText"></div>
         <span [innerHTML]="content.title | highlight: searchText"></span>
         <p [innerHTML]="content.message | highlight: searchText"></p>
       </div>
@@ -151,8 +154,10 @@
               spellcheck="false"
               type="text"
               name="sameName{{ noteIndex }}"
-              [(ngModel)]="line.notes[noteIndex].title"
+              [ngModel]="line.notes[noteIndex].title | htmlDecodeReadonly"
+              (ngModelChange)="line.notes[noteIndex].title = $event"
               (blur)="autoSaveNotes(noteLine, line)"
+              [disabled]="detectCurrentUser(noteLine)"
               maxlength="100"
             />
           </div>
@@ -171,8 +176,10 @@
               spellcheck="false"
               type="text"
               name="sameName{{ noteIndex }}"
-              [(ngModel)]="line.notes[noteIndex].message"
+              [ngModel]="line.notes[noteIndex].message | htmlDecodeReadonly"
+              (ngModelChange)="line.notes[noteIndex].message = $event"
               (blur)="autoSaveNotes(noteLine, line)"
+              [disabled]="detectCurrentUser(noteLine)"
               maxlength="1000"
             ></textarea>
           </div>

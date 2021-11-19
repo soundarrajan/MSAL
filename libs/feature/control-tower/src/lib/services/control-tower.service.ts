@@ -191,7 +191,6 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
     //   );
   }
 
-
   @ObservableException()
   getControlTowerQuantityClaimsListExportUrl(): string {
     return this.api.getControlTowerQuantityClaimsListExportUrl();
@@ -301,9 +300,10 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
-  getMyNotes(data: IControlTowerGetMyNotesDto) {
-    return this.api.getMyNotes(data).pipe(
+  getNotes(data: IControlTowerGetMyNotesDto, view: any) {
+    return this.api.getNotes(data, view).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
@@ -314,9 +314,10 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
-  getFilteredNotes(data: any) {
-    return this.api.getFilteredNotes(data).pipe(
+  saveControlTowerNote(data: IControlTowerSaveNotesItemDto, view: any) {
+    return this.api.saveControlTowerNote(data, view).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
@@ -327,9 +328,10 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
-  getNoteById(data, response) {
-    return this.api.getNoteById(data).pipe(
+  getFilteredNotes(data: any, view: any) {
+    return this.api.getFilteredNotes(data, view).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
@@ -344,20 +346,6 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   saveQualityLabsPopUp(data, response) {
     return this.api.saveQualityLabsPopUp(data).pipe(
-      map((body: any) => body.payload),
-      catchError((body: any) =>
-        of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
-        )
-      )
-    );
-  }
-
-  @ObservableException()
-  saveControlTowerNote(data: IControlTowerSaveNotesItemDto) {
-    return this.api.saveControlTowerNote(data).pipe(
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
