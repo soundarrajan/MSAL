@@ -18,16 +18,11 @@ import { ContactinformationpopupComponent } from '../../views/main/details/compo
 import { SupplierCommentsPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/supplier-comments-popup/supplier-comments-popup.component';
 import { SpotnegoRequestChangesComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
 import { SpotnegoPricingDetailsComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
-import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 
-import {
-  SelectSeller,
-  EditLocationRow,
-  SetLocationsRows
-} from '../../store/actions/ag-grid-row.action';
+import { EditLocationRow, SetLocationsRows } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
@@ -316,7 +311,7 @@ import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/compo
             name="inputField"
             spellcheck="false"
             type="text"
-            style="display:inline"
+            style="display:inline" [matTooltip]="params.value"
           />
           <!--<div class="addButton" (click)="pricingdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>-->
           <div
@@ -347,7 +342,7 @@ import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/compo
       <div
         *ngIf="params.data.requestOffers?.length > 0"
         class="phySupplier edit"
-        matTooltip="Add physical supplier"
+        [matTooltip]="(editSeller && params.data.physicalSupplierCounterpartyName)? params.data.physicalSupplierCounterpartyName : 'Add physical supplier'"
         matTooltipClass="lightTooltip"
       >
         <span
@@ -463,25 +458,25 @@ import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/compo
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
       <span *ngIf="!params.value">-</span>
-      <span>{{ priceCalFormatValue(params.value) }}</span>
+      <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
     <div *ngIf="params.type == 'amt'" class="addTpr">
       <span *ngIf="!params.value">-</span>
-      <span>{{ priceCalFormatValue(params.value) }}</span>
+      <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
     </div>
 
     <div *ngIf="params.type == 'diff'" class="addTpr">
       <span *ngIf="!params.value">-</span>
-      <span>{{ priceCalFormatValue(params.value) }}</span>
+      <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
     <div
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
-      [matTooltip]="params.value != '-' ? 'includes additional costs' : null"
+      [matTooltip]="params.value? params.value : null"
       matTooltipClass="lightTooltip"
       [matMenuTriggerFor]="totalOfferMenupopup"
       #totalOfferPopupTrigger="matMenuTrigger"
@@ -492,9 +487,10 @@ import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/compo
         totalOfferPopupTrigger.openMenu()
       "
     >
-      <span (click)="additionalcostpopup()">{{
+      <span *ngIf="params.value" (click)="additionalcostpopup()">{{
         priceCalFormatValue(params.value)
       }}</span>
+      <span *ngIf="!params.value">-</span>
       <div class="dollarButton" *ngIf="params.value == '500.00'"></div>
     </div>
     <mat-menu #totalOfferMenupopup="matMenu" class="darkPanel-add big">
@@ -715,13 +711,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       let currentLocProdCount = currentLocProd[0].requestProducts.length;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
-        let val = 'checkProd' + indx;
+        let val = "checkProd" + indx;
         if (!row[val] && val != params.column.colId) {
-          return true;
+          return true
         }
       }
     }
-    return false;
+    return false
   }
   additionalcostpopup() {
     const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
@@ -740,7 +736,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       height: '562px',
       panelClass: 'additional-cost-popup'
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   openEmailPreview(params) {
@@ -751,7 +747,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       data: params.data
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   contactinformationpopup() {
@@ -761,7 +757,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   openCounterpartyPopup(locationId) {
@@ -771,10 +767,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      if (
-        this.currentRequestInfo.requestLocations &&
-        this.currentRequestInfo.requestLocations.length > 0
-      ) {
+      if (this.currentRequestInfo.requestLocations
+        && this.currentRequestInfo.requestLocations.length > 0) {
         currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
     }
@@ -794,7 +788,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
   suppliercommentspopup() {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
@@ -803,7 +797,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   requestChange(e, params) {
@@ -818,7 +812,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -867,7 +861,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return null;
     }
     let productPricePrecision = this.tenantService.pricePrecision;
-    let num=plainNumber.split(".", 2); 
+    let num=plainNumber.split(".", 2);
     //Offer Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
     if(plainNumber==num){
       this.priceFormat='';
@@ -906,7 +900,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
   }
-  
+
 
   pricingdetailspopup(e, params) {
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
@@ -920,7 +914,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }

@@ -184,7 +184,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Total Offer($)',
           headerTooltip: 'Total Offer($)',
           field: 'totalOffer',
-          tooltipField: '',
           flex:1,
           width:100,
           minWidth: 90,
@@ -196,9 +195,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 return { background: '#C5DCCF' };
             }
             return null;
-          },
-          valueGetter: params => {
-              return params.data.totalOffer;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
@@ -230,7 +226,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         flex: 1,
         resizable: true,
         filter: true,
-        sortable: false
+        sortable: false,
+        suppressMenu: true
       },
 
       columnDefs: this.columnDef_aggrid,
@@ -496,6 +493,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Offer price',
           headerTooltip: 'Offer price',
           field: `offPrice`,
+          tooltipField: 'offerPrice',
           product: product,
           flex: 2,
           width: 200,
@@ -520,6 +518,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return false;
           },
           valueGetter: params => {
+            const details = this.getRowProductDetails(params.data, product.id);
+            return details.price;
+          },
+          tooltipValueGetter: params => {
             const details = this.getRowProductDetails(params.data, product.id);
             return details.price;
           },
