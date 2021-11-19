@@ -1,10 +1,10 @@
 import { ControlTowerQualityLabsListGridViewModel } from "../view-model/control-tower-quality-labs-grid.view-model";
 
 export enum ControlTowerQualityLabsListColumns {
-    order = 'order',
     lab = 'id',
     labcounterparty = 'counterparty',
     deliveryNo = 'deliveryId',
+    order = 'order',
     vessel = 'vessel',
     port = 'port',
     eta = 'recentEta',
@@ -14,14 +14,14 @@ export enum ControlTowerQualityLabsListColumns {
     createdBy = 'createdBy',
     createdDate = 'createdDate',
     progress = 'progress',
-    action = 'action'
+    // action = 'action'
   }
   
   export enum ControlTowerQualityLabsListExportColumns {
-    order = 'order.id',
-    lab = 'id',
-    labcounterparty = 'counterparty.name',
-    deliveryNo = 'deliveryId',
+      lab = 'id',
+      labcounterparty = 'counterparty.name',
+      deliveryNo = 'deliveryId',
+      order = 'order.id',
     vessel = 'vessel.name',
     port = 'port',
     eta = 'recentEta',
@@ -34,10 +34,10 @@ export enum ControlTowerQualityLabsListColumns {
   }
   
   export enum ControlTowerQualityLabsListColumnsLabels {
-    order = 'Order No',
-    lab = 'Lab ID',
-    labcounterparty = 'Lab Counterparty',
-    deliveryNo = 'Delivery No',
+      lab = 'Lab ID',
+      labcounterparty = 'Lab Counterparty',
+      deliveryNo = 'Delivery No',
+      order = 'Order No',
     vessel = 'Vessel',
     port = 'Port',
     eta = 'ETA',
@@ -57,10 +57,10 @@ export enum ControlTowerQualityLabsListColumns {
   ControlTowerQualityLabsListColumns,
     string
   > = {
-    [ControlTowerQualityLabsListColumns.order]: 'order_id',
-    [ControlTowerQualityLabsListColumns.lab]: 'id',
-    [ControlTowerQualityLabsListColumns.labcounterparty]: 'counterparty_name',
-    [ControlTowerQualityLabsListColumns.deliveryNo]: 'deliveryId',
+      [ControlTowerQualityLabsListColumns.lab]: 'id',
+      [ControlTowerQualityLabsListColumns.labcounterparty]: 'counterparty_name',
+      [ControlTowerQualityLabsListColumns.deliveryNo]: 'deliveryId',
+      [ControlTowerQualityLabsListColumns.order]: 'order_id',
     [ControlTowerQualityLabsListColumns.vessel]: 'vessel_name',
     [ControlTowerQualityLabsListColumns.port]: 'port',
     [ControlTowerQualityLabsListColumns.eta]: 'recentEta',
@@ -69,7 +69,7 @@ export enum ControlTowerQualityLabsListColumns {
     [ControlTowerQualityLabsListColumns.claimRaised]: 'claimsRaised',
     [ControlTowerQualityLabsListColumns.createdBy]: 'createdBy_name',
     [ControlTowerQualityLabsListColumns.createdDate]: 'createdDate',
-    [ControlTowerQualityLabsListColumns.progress]: 'Progress_Name',
-    [ControlTowerQualityLabsListColumns.action]: 'userAction'
+    [ControlTowerQualityLabsListColumns.progress]: 'Progress_Name'
+    // [ControlTowerQualityLabsListColumns.action]: 'action'
   };
   

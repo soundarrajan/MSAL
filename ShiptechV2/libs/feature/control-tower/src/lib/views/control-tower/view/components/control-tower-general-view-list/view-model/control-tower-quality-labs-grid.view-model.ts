@@ -70,24 +70,18 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   gridOptions: GridOptions = {
     enableColResize: true,
     suppressRowClickSelection: true,
-    // suppressCellSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
     rowHeight: 40,
-
     rowModelType: RowModelType.ServerSide,
     pagination: true,
-
     rowSelection: RowSelection.Single,
     suppressContextMenu: true,
-
     multiSortKey: 'ctrl',
-
-    //enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: (data: IControlTowerQualityLabsItemDto) =>
-      data?.order?.toString() ?? Math.random().toString(),
+      data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
