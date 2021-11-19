@@ -37,9 +37,9 @@ export interface IControlTowerApiService {
   getControlTowerResidueSludgeDifferenceListExportUrl(): string;
 
   getResiduePopUp(request: any);
-  
+
   saveResiduePopUp(request: any);
-  
+
   getQualityLabsPopUp(request: any);
 
   saveQualityLabsPopUp(request: any);
@@ -53,21 +53,18 @@ export interface IControlTowerApiService {
   getControlTowerQualityClaimsList(
     request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQualityClaimsListResponse>;
-  
+
   getControlTowerQualityClaimsListExportUrl(): string;
-  
+
   getControlTowerQualityLabsList(
     request: IGetControlTowerListRequest
   ): Observable<IGetControlTowerQualityLabsListResponse>;
 
   getControlTowerQualityLabsListExportUrl(): string;
 
+  getNotes(request: IControlTowerGetMyNotesDto, view: any): any;
 
-  getMyNotes(request: IControlTowerGetMyNotesDto): any;
+  getFilteredNotes(request: IControlTowerGetFilteredNotesDto, view: any): any;
 
-  getFilteredNotes(request: IControlTowerGetFilteredNotesDto): any;
-
-  getNoteById(request: any): any;
-
-  saveControlTowerNote(request: IControlTowerSaveNotesItemDto): any;
+  saveControlTowerNote(request: IControlTowerSaveNotesItemDto, view: any): any;
 }
