@@ -34,7 +34,6 @@ export class RemoveCounterpartyComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
      this.sellerCounterpartyId = data.sellerCounterpartyId;
-    // this.relatedDeliveries = data.relatedDeliveries;
   }
 
   ngOnInit() {}
@@ -42,8 +41,8 @@ export class RemoveCounterpartyComponent implements OnInit {
   closeClick(): void {
     this.dialogRef.close();
   }
-  deleteCounterparty(){
-
+  confirm(value: boolean): void {
+    this.dialogRef.close(value);
   }
 
 }
