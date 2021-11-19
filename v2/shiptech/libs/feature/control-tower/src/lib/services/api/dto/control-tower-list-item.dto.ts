@@ -105,20 +105,20 @@ export interface IControlTowerQualityClaimsItemDto {
 }
 
 export interface IControlTowerQualityLabsItemDto {
-  order: IDisplayLookupDto;
   id: string;
   counterparty: IDisplayLookupDto;
   deliveryId: string;
+  order: IDisplayLookupDto;
   vessel: IDisplayLookupDto;
   port: string;
   recentEta: string;
   product: IDisplayLookupDto;
   status: IDisplayLookupDto;
   claimsRaised: boolean;
-  createdDate: string;
   createdBy: IDisplayLookupDto;
+  createdDate: string;
   progress: IDisplayLookupDto;
-  userAction: string;
+  // userAction: string;
 }
 
 export interface IGetControlTowerListRequest extends IServerGridInfo {}

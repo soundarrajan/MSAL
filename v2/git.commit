@@ -1,8 +1,8 @@
-﻿commit 6c6dc69d3b41c7440d1ef30301adfe36b90558b4
+﻿commit 2b57272d402119f66b8759e23439765f954b33f8
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 18 22:34:51 2021 +0000
+Date:   Fri Nov 19 00:39:26 2021 +0000
 
-    Merged PR 14798: #33672 - save action popup functionality changes for sludge and quality labs has done
+    Merged PR 14799: #33672 - control tower labs sorting issue has fixed
     
     Related work items: #33672
 
