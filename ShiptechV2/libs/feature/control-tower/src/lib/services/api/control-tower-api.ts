@@ -51,13 +51,25 @@ export namespace ControlTowerApiPaths {
     `api/controlTower/exportSludgeDifferenceList`;
   export const getResiduePopUpUrl = () => `api/controlTower/ResiduePopUp`;
   export const saveResiduePopUpUrl = () => `api/controlTower/SaveResiduePopUp`;
-  export const getQualityLabsPopUpUrl = () => `api/controlTower/getControlTowerQualityLabPopUpData`;
-  export const saveQualityLabsPopUpUrl = () => `api/controlTower/saveControlTowerQualityLabPopUpData`;
-  export const getMyNotesUrl = () => `api/controlTower/getMyNotes`;
-  export const getFilteredNotesUrl = () => `api/controlTower/getFilteredNotes`;
-  export const getNoteByIdUrl = () => `api/controlTower/getNoteById`;
-  export const saveControlTowerNoteUrl = () =>
-    `api/controlTower/saveControlTowerNote`;
+  export const getQualityLabsPopUpUrl = () =>
+    `api/controlTower/getControlTowerQualityLabPopUpData`;
+  export const saveQualityLabsPopUpUrl = () =>
+    `api/controlTower/saveControlTowerQualityLabPopUpData`;
+  export const saveControlTowerQuantityNoteUrl = () =>
+    `api/controlTower/saveControlTowerQuantityNote`;
+  export const saveControlTowerQualityNoteUrl = () =>
+    `api/controlTower/saveControlTowerQualityNote`;
+  export const saveControlTowerResidueNoteUrl = () =>
+    `api/controlTower/saveControlTowerResidueNote`;
+  export const getQuantityNotesUrl = () => `api/controlTower/getQuantityNotes`;
+  export const getQualityNotesUrl = () => `api/controlTower/getQualityNotes`;
+  export const getResidueNotesUrl = () => `api/controlTower/getResidueNotes`;
+  export const getFilteredQuantityNotesUrl = () =>
+    `api/controlTower/getFilteredQuantityNotes`;
+  export const getFilteredQualityNotesUrl = () =>
+    `api/controlTower/getFilteredQualityNotes`;
+  export const getFilteredResidueNotesUrl = () =>
+    `api/controlTower/getFilteredResidueNotes`;
 }
 
 @Injectable({
@@ -69,7 +81,7 @@ export class ControlTowerApi implements IControlTowerApiService {
 
   @ApiCallUrl()
   private _claimsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_CLAIMS;
-  
+
   @ApiCallUrl()
   private _labsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_LABS;
 
@@ -222,40 +234,75 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
 
   @ObservableException()
-  getMyNotes(request: IControlTowerGetMyNotesDto): any {
-    return this.http.post(
-      `${this._apiUrl}/${ControlTowerApiPaths.getMyNotesUrl()}`,
-      { payload: request }
-    );
-  }
-  @ObservableException()
-  getFilteredNotes(request: IControlTowerGetFilteredNotesDto): any {
-    return this.http.post(
-      `${this._apiUrl}/${ControlTowerApiPaths.getFilteredNotesUrl()}`,
-      { payload: request }
-    );
+  getNotes(request: IControlTowerGetMyNotesDto, view: any): any {
+    if (view.displayName === 'QuantityView') {
+      return this.http.post(
+        `${this._apiUrl}/${ControlTowerApiPaths.getQuantityNotesUrl()}`,
+        { payload: request }
+      );
+    } else if (view.displayName === 'QualityView') {
+      return this.http.post(
+        `${this._apiUrl}/${ControlTowerApiPaths.getQualityNotesUrl()}`,
+        { payload: request }
+      );
+    } else if (view.displayName === 'ResidueView') {
+      return this.http.post(
+        `${this._apiUrl}/${ControlTowerApiPaths.getResidueNotesUrl()}`,
+        { payload: request }
+      );
+    }
   }
 
   @ObservableException()
-  getNoteById(request: any): any {
-    return this.http.post(
-      `${this._apiUrl}/${ControlTowerApiPaths.getNoteByIdUrl()}`,
-      { payload: request }
-    );
+  saveControlTowerNote(request: IControlTowerSaveNotesItemDto, view: any): any {
+    if (view.displayName === 'QuantityView') {
+      return this.http.post(
+        `${
+          this._apiUrl
+        }/${ControlTowerApiPaths.saveControlTowerQuantityNoteUrl()}`,
+        { payload: request }
+      );
+    } else if (view.displayName === 'QualityView') {
+      return this.http.post(
+        `${
+          this._apiUrl
+        }/${ControlTowerApiPaths.saveControlTowerQualityNoteUrl()}`,
+        { payload: request }
+      );
+    } else if (view.displayName === 'ResidueView') {
+      return this.http.post(
+        `${
+          this._apiUrl
+        }/${ControlTowerApiPaths.saveControlTowerResidueNoteUrl()}`,
+        { payload: request }
+      );
+    }
+  }
+
+  @ObservableException()
+  getFilteredNotes(request: IControlTowerGetFilteredNotesDto, view: any): any {
+    if (view.displayName === 'QuantityView') {
+      return this.http.post(
+        `${this._apiUrl}/${ControlTowerApiPaths.getFilteredQuantityNotesUrl()}`,
+        { payload: request }
+      );
+    } else if (view.displayName === 'QualityView') {
+      return this.http.post(
+        `${this._apiUrl}/${ControlTowerApiPaths.getFilteredQualityNotesUrl()}`,
+        { payload: request }
+      );
+    } else if (view.displayName === 'ResidueView') {
+      return this.http.post(
+        `${this._apiUrl}/${ControlTowerApiPaths.getFilteredResidueNotesUrl()}`,
+        { payload: request }
+      );
+    }
   }
 
   @ObservableException()
   saveQualityLabsPopUp(request): any {
     return this.http.post(
       `${this._labsApiUrl}/${ControlTowerApiPaths.saveQualityLabsPopUpUrl()}`,
-      { payload: request }
-      );
-    }
-
-  @ObservableException()
-  saveControlTowerNote(request: IControlTowerSaveNotesItemDto): any {
-    return this.http.post(
-      `${this._apiUrl}/${ControlTowerApiPaths.saveControlTowerNoteUrl()}`,
       { payload: request }
     );
   }
