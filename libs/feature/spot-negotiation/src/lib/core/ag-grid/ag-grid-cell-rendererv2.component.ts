@@ -896,6 +896,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return null;
     }
     let productPricePrecision = this.tenantService.pricePrecision;
+    
+    this.priceFormat =
+    '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
       if (productPricePrecision) {
         plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
