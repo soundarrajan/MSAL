@@ -161,9 +161,8 @@
               [gridId]="gridId"
               [gridIds]="gridIds"
               [groupedCountValues]="gridViewModel.groupedCounts"
-              (presetsLoaded)="
-                this.gridViewModel.markServerSideDataSourceReady()
-              "
+              (systemFilterUpdate)="this.gridViewModel.systemFilterUpdate()"
+              (presetsLoaded)="this.gridViewModel.markServerSideDataSourceReady()"
             ></app-filter-preferences>
           </div>
         </div>

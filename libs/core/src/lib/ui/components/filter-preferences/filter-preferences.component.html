@@ -10,7 +10,10 @@
     </mat-chip>
   </ng-container>
   <ng-container *ngFor="let filter of currentSystemFilters">
-    <mat-chip [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']" class="system-preference" [matTooltip]="filter.label">
+    <mat-chip [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']" 
+        class="system-preference" 
+        (click)="systemFilterUpdate(filter)"
+        [matTooltip]="filter.label">
       <!-- NOTE: Add track by -->
       <div matPrefix class="count-circle">
         <span>{{ filter.count }}</span>

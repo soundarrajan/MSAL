@@ -530,6 +530,10 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       });
   }
 
+  public onSystemFilterUpdate(value) {
+      console.log("888*********-*-*----***",value);
+  }
+    
   getColumnsDefs(): any[] {
     return [
       this.portCallCol,
