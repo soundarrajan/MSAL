@@ -372,7 +372,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       // if capture conf qty == "Offer", confirmed qty is visible & required..Id-1 means offer
      if(this.tenantConfiguration.captureConfirmedQuantityId == 1) {
         let errorConf = false;
-        this.selectedOffers.foreach(( val,key) => {
+        this.selectedOffers.forEach(( val,key) => {
           if (!val.ConfirmedQuantity ) {
             this.selectedOffers[`confirmedQuantity_${key}`].$setValidity('required', false);
             errorConf = true;
