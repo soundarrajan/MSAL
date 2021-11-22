@@ -100,13 +100,13 @@
       <div class=" w-28 plr-0">
         <div class="col-header">Lab Counterparty</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
-          {{ value.labCounterParty }}
+          {{ this.format.htmlDecode(value.labCounterParty) }}
         </div>
       </div>
       <div class=" w-28 plr-0">
         <div class="col-header">Product</div>
         <div *ngFor="let value of data.productTypeList" class="col-value">
-          {{ value.product }}
+          {{ this.format.htmlDecode(value.product) }}
         </div>
       </div>
       <div class=" w-24p plr-0">
