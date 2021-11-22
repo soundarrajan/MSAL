@@ -301,6 +301,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     suppressMovable: true,
     width: 110
   };
+  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -321,6 +322,21 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       )
     );
     this.init(this.gridOptions, true);
+  }
+
+  public systemFilterUpdate(value) {
+    let currentFilter = value.filter(o => o.isActive); 
+    switch (currentFilter[0].id) {
+      case "new":
+        this.filterGridNew(currentFilter[0].label);
+        break;
+      case "marked-as-seen":
+        this.filterGridMAS(currentFilter[0].label);
+        break;
+      case "resolved":
+        this.filterGridResolved(currentFilter[0].label);
+        break;                
+    }
   }
 
   getColumnsDefs(): any[] {
@@ -397,7 +413,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
 public filterByStatus(statusName: string): void {
-    const grid = this.gridApi.getFilterModel();
+    const grid = [];
     grid['progress'] = {
       filterType: 'text',
       type: 'equals',
@@ -470,6 +486,11 @@ public checkStatusAvailable(): void {
           this.noOfNew = response.payload.noOfNew;
           this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
           this.noOfResolved = response.payload.noOfResolved;
+          this.groupedCounts = {
+            noOfNew : this.noOfNew,
+            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+            noOfResolved : this.noOfResolved,
+          }          
           params.successCallback(response.payload.items, response.matchedCount);
         },
         () => {

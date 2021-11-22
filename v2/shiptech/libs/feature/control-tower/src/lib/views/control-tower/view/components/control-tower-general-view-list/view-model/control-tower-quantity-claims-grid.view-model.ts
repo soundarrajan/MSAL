@@ -342,6 +342,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     },
     width: 150
   };
+  groupedCounts: { noOfNew: number; noOf15: number; noOf714: number; };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -361,6 +362,21 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       )
     );
     this.init(this.gridOptions, true);
+  }
+
+  public systemFilterUpdate(value) {
+    let currentFilter = value.filter(o => o.isActive); 
+    switch (currentFilter[0].id) {
+      case "new":
+        this.filterGridNew(currentFilter[0].label);
+        break;
+      case "marked-as-seen":
+        this.filterGrid714Days(currentFilter[0].label);
+        break;
+      case "resolved":
+        this.filterGridGreaterThan15Days(currentFilter[0].label);
+        break;                
+    }
   }
 
   getColumnsDefs(): any[] {
@@ -409,7 +425,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public filterByStatus(statusName: string): void {
-    const grid = this.gridApi.getFilterModel();
+    const grid = [];
     if (statusName == 'New') {
       grid['noResponse'] = {
         filterType: 'number',
@@ -511,6 +527,11 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
           this.noOf15 = response.payload.noOf15;
           this.noOf714 = response.payload.noOf714;
           this.noOfNew = response.payload.noOfNew;
+          this.groupedCounts = {
+            noOfNew : this.noOfNew,
+            noOf15 : this.noOf15,
+            noOf714 : this.noOf714,
+          }          
           params.successCallback(response.payload.items, response.matchedCount);
         },
         () => {
