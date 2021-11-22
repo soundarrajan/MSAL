@@ -65,7 +65,7 @@ export class ControlTowerPopupComponent implements OnInit {
           if (typeof response == 'string') {
             this.toastr.error(response);
           } else {
-            this.dialogRef.close();
+            // this.dialogRef.close();
           }
         });
     } else {
@@ -91,7 +91,7 @@ export class ControlTowerPopupComponent implements OnInit {
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else {
-              this.dialogRef.close();
+              // this.dialogRef.close();
             }
           });
       } else if (this.data.differenceType.name == 'Sludge') {
@@ -104,7 +104,7 @@ export class ControlTowerPopupComponent implements OnInit {
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else {
-              this.dialogRef.close();
+              // this.dialogRef.close();
             }
           });
       }
