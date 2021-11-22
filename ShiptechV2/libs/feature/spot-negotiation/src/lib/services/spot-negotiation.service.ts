@@ -205,6 +205,16 @@ export class SpotNegotiationService extends BaseStoreService
   }
    
 
+    /**
+ * Revoke RFQ
+ * @param payload = 
+ */
+  @ObservableException()
+  RevokeFQ(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.RevokeRFQ(payload);
+  }
+   
+
   /**
    * Fake populate rows
    */
