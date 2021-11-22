@@ -1,9 +1,9 @@
-﻿commit e75421d4cdd96a7cdf10144b0f0550e1ec82052a
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Nov 22 16:04:24 2021 +0000
+﻿commit 55b9dbeb070fd80cd14dfd765bbe2ed85d1e35a9
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Nov 22 16:07:53 2021 +0000
 
-    Merged PR 14843: #37087, 37110: Control tower(Quality view Labs)-disable sort filter, Unable to drag the action alert column.
+    Merged PR 14845: fix console error
     
-    Related work items: #36679, #37087
+    fix console error
 
 branch: master
