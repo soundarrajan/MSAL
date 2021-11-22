@@ -325,7 +325,7 @@ export class MyNotesComponent implements OnInit {
       noteLine.isDeleted = true;
       this.autoSaveNotes(noteLine, selectedPeriodLine);
     } else {
-      selectedPeriodLine.splice(this.selectedDeleteTitleIndex, 1);
+      selectedPeriodLine.notes.splice(this.selectedDeleteTitleIndex, 1);
     }
   }
 
