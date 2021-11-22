@@ -162,7 +162,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   //Construct UI Value's to bind the popup grid
   ConstructRequestOfferItemPayload(seller, requestOffers,requestProducts,etaDate,requestInfo) {
-    if(requestOffers.currencyId==null){1}else{requestOffers.currencyId} //Default Currency is Id:1 Name:"USD".
+    if(requestOffers.currencyId==null){requestOffers.currencyId=1;}else{requestOffers.currencyId} //Default Currency is Id:1 Name:"USD".
     return [
       {
         RequestId: this.requests[0].id,//Single request pass
@@ -179,7 +179,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         ProductName: requestProducts.productName,
         minQuantity: requestProducts.minQuantity,
         MaxQuantity: requestProducts.maxQuantity,
-        ConfirmedQuantity: requestProducts.maxQuantity,
+        ConfirmedQuantity: this.format.quantity(requestProducts.maxQuantity),
         UomId: requestProducts.uomId,
         WorkflowId:requestProducts.workflowId,
         productStatus:{
@@ -242,7 +242,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     const currentRowIndex = rowIndex;
     const offers=this.requestOfferItems[currentRowIndex];
     if(offers.ConfirmedQuantity != 'undefined' && offers.OfferPrice!= 'undefined' ){
-      this.requestOfferItems[currentRowIndex].TotalPrice=offers.OfferPrice*offers.ConfirmedQuantity;
+      this.requestOfferItems[currentRowIndex].TotalPrice=this.format.quantity(offers.OfferPrice*offers.ConfirmedQuantity);
+      this.requestOfferItems[currentRowIndex].ConfirmedQuantity=this.format.quantity(offers.ConfirmedQuantity);
     }
     return this.requestOfferItems;
   }
@@ -281,13 +282,16 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         this.selectedOffers.push(itemVal);
       }
     });
-    if (RequestProductIds) {
+    if (RequestProductIds.length>0) {
       filters = [
         {
           columnName: 'RequestProductIds',
           value:"["+RequestProductIds.join(",")+"]"
         }
       ];
+    }else{
+      this.toaster.warning('Please select at least one products');
+      return;
     }
     let payload = {
       filters
