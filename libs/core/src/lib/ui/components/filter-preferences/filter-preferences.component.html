@@ -5,10 +5,25 @@
       <!-- NOTE: Add track by -->
       <div class="truncate-f85 text-center">{{ filter.name }}{{ filter.hasChanges ? '*' : '' }}</div>
       <div matSuffix class="chip-circle" [ngStyle]="{ pointerEvents: filter.isClear ? 'none' : 'auto' }" z (click)="setPinned(filter.id)" [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'">
-        <i id="pin" class="fas fa-thumbtack aggrid-rotate-45"></i>
+        <i id="pin" class="fas fa-thumbtack aggrid-rotate-45 pin"></i>
       </div>
     </mat-chip>
   </ng-container>
+  <ng-container *ngFor="let filter of currentSystemFilters">
+    <mat-chip [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']" 
+        class="system-preference" 
+        (click)="systemFilterUpdate(filter)"
+        [matTooltip]="filter.label">
+      <!-- NOTE: Add track by -->
+      <div matPrefix class="count-circle">
+        <span>{{ filter.count }}</span>
+      </div>      
+      <div class="text-center">{{ filter.label }}</div>
+      <div matSuffix class="chip-circle">
+        <span class="fas fa-circle pin"></span>
+      </div>
+    </mat-chip>
+  </ng-container>  
   <mat-chip class="icon-chip text-center" matTooltip="Expand Filters" [matTooltipShowDelay]="500" *ngIf="hasActiveFilterPresets" (click)="openAvailablePresetsDialog()">
     <div class="mx-auto d-block">
       <i class="fas fa-ellipsis-h"></i>
