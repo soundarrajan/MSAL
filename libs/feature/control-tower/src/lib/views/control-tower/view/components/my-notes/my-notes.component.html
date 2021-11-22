@@ -100,7 +100,7 @@
     <span
       *ngIf="searchText"
       class="search-close-icon"
-      (click)="searchText = ''; filteringNotes()"
+      (click)="searchText = ''; closeFilter()"
     ></span>
   </div>
   <div class="title-section" *ngIf="isFiltered">
