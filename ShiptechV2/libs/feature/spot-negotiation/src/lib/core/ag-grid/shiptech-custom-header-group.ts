@@ -186,7 +186,7 @@ import moment from 'moment';
             <div
               class="value"
               [matTooltip]="'Pricing published on: ' + quoteDate "
-              contenteditable="true"
+              contenteditable="false"
               (keydown)="editQty($event)"
             >
              $ {{ priceFormatValue(closureValue) }}
