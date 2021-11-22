@@ -1,7 +1,9 @@
-﻿commit 151661068d32cd4d3910bf1b9714d6d21934310f
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 22 18:41:18 2021 +0200
+﻿commit 4af162eaa975acf1f938150f3e2b2ea291f32212
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Nov 22 17:06:26 2021 +0000
 
-    Fixed console log error
+    Merged PR 14849: #37085 - action popup close behavior removed post save in control tower action column
+    
+    Related work items: #37085
 
 branch: master
