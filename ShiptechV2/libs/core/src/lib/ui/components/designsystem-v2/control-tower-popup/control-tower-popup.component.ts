@@ -167,6 +167,9 @@ export class ControlTowerPopupComponent implements OnInit {
   }
 
   canSave() {
+    if( !this.data.changeLog ) {
+      return true;
+    }
     if(
       this.data.changeLog[this.data.changeLog.length - 1].newComments != this.comments
       || this.data.changeLog[this.data.changeLog.length - 1].newStatus.id != +this.status
