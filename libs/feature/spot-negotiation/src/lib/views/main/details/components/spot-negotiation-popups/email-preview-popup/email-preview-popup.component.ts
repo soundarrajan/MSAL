@@ -49,6 +49,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       if(this.SelectedSellerWithProds.requestOffers?.length > 0){
         this.items =  [
           {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ'},
+          {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ'},
         ];
         this.selected = 'MultipleRfqAmendRFQEmailTemplate';
       }

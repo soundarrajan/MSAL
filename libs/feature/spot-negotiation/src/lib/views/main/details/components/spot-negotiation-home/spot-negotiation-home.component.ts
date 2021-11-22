@@ -88,7 +88,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         height: '555px',
         panelClass: 'additional-cost-popup'
       });
-
+      
     dialogRef.afterClosed().subscribe(result => {});
     }
     else{
@@ -340,7 +340,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     else {
       var amendRFQRequestPayload = this.selectedSellerList;
-    }
+    
 
     this.spinner.show();
     // Get response from server
@@ -360,6 +360,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     });
   }
+}
 
   skipRFQ() {
     this.selectedSellerList = [];
@@ -374,7 +375,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return;
     }
     else{
-    var FinalAPIPayload = {
+    var FinalAPIPayload =  {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       quoteByDate: new Date(this.child.getValue()),
       selectedSellers: this.selectedSellerList
@@ -387,6 +388,70 @@ export class SpotNegotiationHomeComponent implements OnInit {
       if(res instanceof Object && res['sellerOffers'].length > 0 ){
         this.toaster.success('RFQ(s) skipped successfully.')
         if(res['message'].length>5)
+          this.toaster.warning(res['message']);
+      }
+      else if(res instanceof Object){
+        this.toaster.warning(res.Message);
+      }
+      else{
+        this.toaster.error(res);
+        return;
+      }
+
+      const locationsRows = this.store.selectSnapshot<string>(
+        (state: any) => {
+          return state.spotNegotiation.locationsRows;
+        }
+      );
+
+      const requestGroupID = this.store.selectSnapshot<string>(
+        (state: any) => {
+          return state.spotNegotiation.groupOfRequestsId;
+        }
+      );
+
+        this.store.dispatch(
+          new SetLocationsRowsPriceDetails(res['sellerOffers'])
+        );
+
+        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+          JSON.parse(JSON.stringify(locationsRows)),
+          res['sellerOffers']
+        );
+        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+
+      this.changeDetector.detectChanges();
+    });
+  }
+  }
+
+  revokeRFQ() {
+    this.selectedSellerList = [];
+    var Selectedfinaldata = this.FilterselectedRow();
+    if (Selectedfinaldata.length == 0) {
+      let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
+      this.toaster.error(errormessage);
+      return;
+    }
+    else if(this.selectedSellerList.find(x=>x.RfqId ==0)){
+      this.toaster.error('Revoke RFQ cannot be sent as RFQ was not communicated.');
+      return;
+    }
+    else if(this.selectedSellerList.find(x=>x.RfqId !==0 && x.IsRfqSkipped === true)){
+      this.toaster.error('Revoke RFQ mail cannot be sent as RFQ was not communicated to the counterparty.');
+      return;
+    }
+    else{
+    var FinalAPIPayload =  this.selectedSellerList;
+    this.spinner.show();
+    // Get response from server
+    const response = this.spotNegotiationService.RevokeFQ(FinalAPIPayload);
+    response.subscribe((res: any) => {
+      this.spinner.hide();
+      debugger;
+      if(res instanceof Object && res['sellerOffers'].length > 0 ){
+        this.toaster.success('RFQ(s) revoked successfully.')
+        if(res['message'].length>3)
           this.toaster.warning(res['message']);
       }
       else if(res instanceof Object){
