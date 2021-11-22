@@ -1,9 +1,9 @@
-﻿commit 77575169a2cc53f3a7437f45cdc2498c6e986805
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Nov 22 14:34:58 2021 +0000
+﻿commit 1d8051f35ec35046530601468c9dbc69e6dd6643
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Nov 22 15:27:49 2021 +0000
 
-    Merged PR 14840: Fixed deleting seach value using 'x' icon
+    Merged PR 14842: Fix Quantity control list
     
-    Related work items: #33663
+    Fix Quantity control list
 
 branch: master
