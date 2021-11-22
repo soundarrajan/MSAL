@@ -1,7 +1,9 @@
-﻿commit 5d8cc4a77f6e8f74bf7d4adca13257a6a14c6a6f
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Nov 22 17:58:50 2021 +0200
+﻿commit e75421d4cdd96a7cdf10144b0f0550e1ec82052a
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Nov 22 16:04:24 2021 +0000
 
-    Fixed Default sorting of difference quantity for residue view
+    Merged PR 14843: #37087, 37110: Control tower(Quality view Labs)-disable sort filter, Unable to drag the action alert column.
+    
+    Related work items: #36679, #37087
 
 branch: master

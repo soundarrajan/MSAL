@@ -298,7 +298,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
     resizable: false,
-    suppressMovable: true,
+    suppressMovable: false,
+    suppressMenu: true,
+    suppressSorting: true,
     width: 110
   };
   groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; };
