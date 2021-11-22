@@ -1,9 +1,9 @@
-﻿commit 55b9dbeb070fd80cd14dfd765bbe2ed85d1e35a9
+﻿commit ced429c178c41b4b4f4d2516cd1dc9c174441527
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Nov 22 16:07:53 2021 +0000
+Date:   Mon Nov 22 16:32:40 2021 +0000
 
-    Merged PR 14845: fix console error
+    Merged PR 14848: Fix menu items typo
     
-    fix console error
+    Fix menu items typo
 
 branch: master

@@ -191,9 +191,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     colId: ControlTowerQualityLabsListColumns.eta,
     field: model('recentEta'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.dateUtc(params.value),
+    valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQualityLabsListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    tooltip: params => (params.value ? this.format.date(params.value) : ''),
     width: 200
   };
 
