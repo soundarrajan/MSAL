@@ -66,10 +66,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
     });
-    this.getPreviewTemplate();   
+    this.getPreviewTemplate();  
   }
 
-getPreviewTemplate(){
+  getPreviewTemplate(){
 
   //this.selected = this.SelectedSellerWithProds.requestOffers?.length > 0 ? "MultipleRfqAmendRFQEmailTemplate" : "MultipleRfqNewRFQEmailTemplate";
   var FinalAPIdata = {
