@@ -13,6 +13,7 @@ import { SpotNegotiationApi } from './api/spot-negotiation-api';
 export class SpotNegotiationService extends BaseStoreService
   implements OnDestroy {
   private futureSetTabIndex = new Subject<any>();
+  QuoteByDate: any;
 
   constructor(
     protected store: Store,

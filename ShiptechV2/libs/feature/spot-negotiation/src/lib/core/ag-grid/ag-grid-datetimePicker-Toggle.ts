@@ -15,6 +15,7 @@ import {default as _rollupMoment} from 'moment';
 const moment = _rollupMoment || _moment;
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
+import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 
 @Component({
   selector: 'app-date-time-toggle',
@@ -91,7 +92,7 @@ export class AgGridDatetimePickerToggleComponent
   initialDate = new FormControl(moment());
   public dateTime;
   @Input() dark: any;
-  constructor() {
+  constructor(private spotNegotiationService: SpotNegotiationService) {
     //this.appContext = appContext || AppContext.instance;
   }
   @ViewChild('dateInputFlde', { read: ViewContainerRef }) public input;
@@ -130,6 +131,7 @@ export class AgGridDatetimePickerToggleComponent
       (event.value.getMinutes() < 10 ? '0' : '') + event.value.getMinutes();
     this.timeValue = h + ':' + m;
     //this.timeValue = "10:15";
+    this.spotNegotiationService.QuoteByDate = this.getValue();
   }
   dateChanged(event) {
     const closeFn = this.picker.close;
@@ -140,6 +142,7 @@ export class AgGridDatetimePickerToggleComponent
     setTimeout(() => {
       this.picker.close = closeFn;
     });
+    this.spotNegotiationService.QuoteByDate = this.getValue();
   }
 
   timepickerClosed() {
