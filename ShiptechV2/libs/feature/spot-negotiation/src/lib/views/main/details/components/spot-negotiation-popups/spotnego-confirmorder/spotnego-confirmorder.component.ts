@@ -243,7 +243,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     const offers=this.requestOfferItems[currentRowIndex];
     if(offers.ConfirmedQuantity != 'undefined' && offers.OfferPrice!= 'undefined' ){
       this.requestOfferItems[currentRowIndex].TotalPrice=this.format.quantity(offers.OfferPrice*offers.ConfirmedQuantity);
-      this.requestOfferItems[currentRowIndex].ConfirmedQuantity=this.format.quantity(offers.ConfirmedQuantity);
+      this.requestOfferItems[currentRowIndex].ConfirmedQuantity=this.format.quantity(offers.ConfirmedQuantity);      
+      this.requestOfferItems[currentRowIndex].OrderFields = {
+        ConfirmedQuantity: this.format.quantity(offers.ConfirmedQuantity)
+      };
     }
     return this.requestOfferItems;
   }
@@ -302,7 +305,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         return;
       }
     });
-    this.setConfirmedQuantities();
+    //this.setConfirmedQuantities();
     // if ((this.selectedOffers, 'quotedProductGroupId').length != 1) {
     //   this.buttonsDisabled = false;
     //   this.toaster.error('Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed');
@@ -452,24 +455,25 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   /**
     * Set confirmed quantites on the requirements depending on user input on offers
   */
-   setConfirmedQuantities() {
-    var requirement, offer,o;
-    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.locationsRows
-    });
-    for (var i = 0; i < locationsRows.length; i++) {
-        requirement = locationsRows[i];
-        for (var j = 0; j < this.selectedOffers.length; j++) {
-            offer = this.selectedOffers[i];
-            if (offer  && offer.LocationId === requirement.locationId && offer.ProductId === requirement.productId && offer.SellerId === requirement.sellerCounterpartyId) {  //&& offer.RequestId === requirement.RequestId
-               var OrderFields = {
-                    ConfirmedQuantity: offer.confirmedQuantity
-                };
-                this.selectedOffers[i].add(OrderFields);
-            }
-        }
-    }
-}
+  //  setConfirmedQuantities() {
+  //   var requirement, offer,o;
+  //   const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+  //     return state.spotNegotiation.locationsRows
+  //   });
+  //   for (var i = 0; i < locationsRows.length; i++) {
+  //       requirement = locationsRows[i];
+  //       for(var k=0;k<locationsRows[i].requestOffers.length;k++){
+  //         for (var j = 0; j < this.selectedOffers.length; j++) {
+  //           offer = this.selectedOffers[i];
+  //           if (offer  && offer.LocationId === requirement.locationId && offer.ProductId === locationsRows[i].requestOffers[k].quotedProductId && offer.SellerId === requirement.sellerCounterpartyId &&  offer.RequestId === requirement.requestId) {  //
+  //             this.selectedOffers[i].OrderFields = {
+  //                   ConfirmedQuantity: offer.ConfirmedQuantity
+  //               };
+  //           }
+  //       }
+  //       }
+  //   }
+  // }
   requirementsAreCorrectForConfirm() {
     var requirement;
     var isCorrect = true;
