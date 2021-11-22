@@ -53,6 +53,19 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   @Input() groupId: string;
   @Input() gridId: string;
   @Input() gridIds: any;
+  
+  
+  @Input() _groupedCountValues: any;
+  get groupedCountValues(): any {
+    return this._groupedCountValues;
+  }
+  @Input() set groupedCountValues(value: any) {
+    this._groupedCountValues = value;
+    if(this._groupedCountValues) {
+      this.filterComponent.updateSystemPreferencesCount(this._groupedCountValues);
+    }  
+    console.log(value);
+  }
 
   @Input() id: string;
   constructor(
@@ -352,6 +365,10 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
+  public systemFilterUpdate(value) {
+      console.log("7777*********-*-*----***",value);
+  }
+    
 
   // NOTE: This gets called when FilterChangedEvent gets fired by the grid and updates tells the service that the current preset has changes
   private onGridFilterChanged(event: FilterChangedEvent): void {
