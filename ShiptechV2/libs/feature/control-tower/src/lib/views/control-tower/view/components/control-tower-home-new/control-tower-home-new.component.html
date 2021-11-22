@@ -64,10 +64,6 @@
             <span *ngIf="selectedVal2 == 'notes'"></span>
             Notes
           </mat-button-toggle>
-          <mat-button-toggle value="notes-old">
-            <span *ngIf="selectedVal2 == 'note-old'"></span>
-            Notes Old
-          </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
     </div>
@@ -140,12 +136,6 @@
         [screenList]="screenList"
         [screenType]="screenType"
       ></app-my-notes>
-    </div>
-    <div *ngIf="selectedVal2 == 'notes-old'">
-      <app-my-notes-old
-        [theme]="theme"
-        [newScreen]="newScreen"
-      ></app-my-notes-old>
     </div>
   </div>
   <div class="display-tab-content" *ngIf="showResidue">
