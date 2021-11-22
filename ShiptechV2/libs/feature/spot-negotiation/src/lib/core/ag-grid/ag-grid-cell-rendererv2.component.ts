@@ -124,7 +124,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
         ></span>
         <span
           class="info-flag"
-          *ngIf="params.data.infoIcon == 'Yes'"
+          *ngIf="params.data.isSellerSuspended"
           matTooltipClass="darkTooltip"
           matTooltip="Temporary suspended counterparty"
           matTooltipClass="lightTooltip"
@@ -895,7 +895,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return null;
     }
     let productPricePrecision = this.tenantService.pricePrecision;
-    
+
     this.priceFormat =
     '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
