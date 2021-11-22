@@ -1,9 +1,11 @@
-﻿commit f707cd233b94230131e2227f3ceda2e38d4d1b57
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Nov 19 14:13:46 2021 +0000
+﻿commit 1d25523d34cd884835984cd673f65b412901e4a2
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Nov 22 08:24:04 2021 +0000
 
-    Merged PR 14821: #37084: Control tower(Quality view Labs)-In the alert action pop up, Product name displaying incorrectly issue fixed
+    Merged PR 14828: Worked on control tower my notes view
     
-    Related work items: #37084
+    Worked on control tower my notes view
+    
+    Related work items: #33663
 
 branch: master

@@ -180,27 +180,6 @@ export class MyNotesComponent implements OnInit {
         element.selected = false;
       }
     });
-
-    let index = this.findIndexForSelectedLinePeriod();
-    let selectedLinePeriod = this.notesContent[index];
-    let payload: IControlTowerGetFilteredNotesDto = {
-      view: this.view,
-      timeView: { id: +this.timeView },
-      startDate: selectedLinePeriod.startDate,
-      endDate: selectedLinePeriod.endDate,
-      searchText: this.searchText
-    };
-
-    this.controlTowerService
-      .getFilteredNotes(payload, this.view)
-      .pipe()
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-          console.log(response);
-        }
-      });
   }
 
   addNotes() {
@@ -248,7 +227,6 @@ export class MyNotesComponent implements OnInit {
         } else {
           this.spinner.hide();
           this.notesContent = response;
-          this.addTodayIfNotExist();
           let index = this.getFirstIndexWithNotes();
           if (typeof index != 'undefined') {
             this.notesContent[index].selected = true;
@@ -258,32 +236,6 @@ export class MyNotesComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
         }
       });
-  }
-
-  addTodayIfNotExist() {
-    if (parseFloat(this.timeView) == 1) {
-      if (this.notesContent.length) {
-        if (this.notesContent[0].displayName != 'Today') {
-          let todayElement = {
-            notes: [],
-            displayName: 'Today',
-            startDate: moment().format('YYYY-MM-DD') + 'T00:00:00Z',
-            endDate: moment().format('YYYY-MM-DD') + 'T23:59:59.999Z'
-          };
-          const newContentForNotes = [todayElement].concat(this.notesContent);
-          this.notesContent = _.cloneDeep(newContentForNotes);
-        }
-      } else {
-        let todayElement = {
-          notes: [],
-          displayName: 'Today',
-          startDate: moment().format('YYYY-MM-DD') + 'T00:00:00Z',
-          endDate: moment().format('YYYY-MM-DD') + 'T23:59:59.999Z'
-        };
-        const newContentForNotes = [todayElement];
-        this.notesContent = _.cloneDeep(newContentForNotes);
-      }
-    }
   }
 
   getUntitledIndex(notes) {
@@ -324,15 +276,16 @@ export class MyNotesComponent implements OnInit {
           noteLine.lastModifiedOn = response.lastModifiedOn;
           noteLine.isDeleted = response.isDeleted;
           noteLine.title = response.title;
-
-          this.changeDetectorRef.detectChanges();
           if (noteLine.isDeleted) {
             selectedPeriodLine.notes.splice(this.selectedDeleteTitleIndex, 1);
           }
-          if (parseFloat(this.timeView) == 1) {
-            if (selectedPeriodLine.displayName != 'Today') {
+          this.changeDetectorRef.detectChanges();
+          if (parseFloat(this.timeView)) {
+            if (
+              selectedPeriodLine.displayName != this.notesContent[0].displayName
+            ) {
               if (!noteLine.isDeleted) {
-                this.moveNoteToToday(noteLine, selectedPeriodLine);
+                this.selectCurrentDate(noteLine, selectedPeriodLine);
               }
             }
           }
@@ -340,7 +293,7 @@ export class MyNotesComponent implements OnInit {
       });
   }
 
-  moveNoteToToday(noteLine, selectedPeriodLine) {
+  selectCurrentDate(noteLine, selectedPeriodLine) {
     let findNoteIndex = _.findIndex(selectedPeriodLine.notes, function(
       note: any
     ) {
@@ -348,8 +301,12 @@ export class MyNotesComponent implements OnInit {
     });
     if (findNoteIndex != -1) {
       selectedPeriodLine?.notes.splice(findNoteIndex, 1);
+      let firstDate = this.notesContent[0];
+      const newContentForNotes = [noteLine].concat(this.notesContent[0].notes);
+      this.notesContent[0].notes = _.cloneDeep(newContentForNotes);
+      this.selectedTitleIndex = 0;
+      this.selectDate(firstDate);
       this.changeDetectorRef.detectChanges();
-      console.log(selectedPeriodLine);
     }
   }
 
