@@ -19,6 +19,7 @@ export const SpotNegotiationApiPaths = {
   sendRFQ:`RFQ/createRFQ`,
   amendRFQ: `RFQ/amendRfq`,
   skipRFQ: `RFQ/skipRFQ`,
+  revokeRFQ: `RFQ/revokeRFQ`,
   saveAndSendRFQ: `RFQ/saveAndSendRFQ`,
   UpdateSelectSeller: `Groups/toggleReqSellerSelection`,
   previewRfqMail:`RFQ/previewRfqMail`,
@@ -41,8 +42,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
   @ApiCallUrl()
-  private _infrastructureApiUrl = this.appConfig.v1.API
-    .BASE_URL_DATA_INFRASTRUCTURE;
+  private _infrastructureApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
   @ApiCallUrl()
   private _negotiationApiUrl = this.appConfig.v1.API.BASE_URL_DATA_NEGOTIATION;
@@ -286,9 +286,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
+          body.error.ErrorMessage 
+            ? body.error.ErrorMessage 
+            : body.error.errorMessage 
         )
       )
     );
@@ -346,6 +346,23 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
+  RevokeRFQ(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.revokeRFQ}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),        
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
   ConfirmRfq(
     request: any
   ): Observable<any> {
@@ -354,9 +371,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
+          body.error.ErrorMessage 
+            ? body.error.ErrorMessage 
+            : body.error.errorMessage 
         )
       )
     );

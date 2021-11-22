@@ -14,7 +14,8 @@ import {
   SetCurrentRequestSmallInfo,
   SetRequestGroupId,
   SetRequests,
-  SetTenantConfigurations
+  SetTenantConfigurations,
+  SetStaticLists
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
@@ -63,6 +64,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.getGroupOfSellers();
     this.getCounterpartyList();
     this.getTenantConfugurations();
+    this.getStaticLists();
   }
 
   getRequestGroup(): void {
@@ -222,6 +224,19 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       } else {
         // Populate Store
         this.store.dispatch(new SetTenantConfigurations(res.tenantConfiguration));
+      }
+    });
+  }
+  getStaticLists():void{
+    let request=(['currency']);//only currency add ,if required add here
+    const response = this.spotNegotiationService.getStaticLists(request);
+    response.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      } else {
+        // Populate Store
+        this.store.dispatch(new SetStaticLists(res));
       }
     });
   }

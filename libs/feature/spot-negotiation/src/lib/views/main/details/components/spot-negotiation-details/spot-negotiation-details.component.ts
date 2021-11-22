@@ -316,7 +316,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       return state['spotNegotiation'].tenantConfigurations;
     });
 
-    if(tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierId){
+    if(tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierCounterpartyId){
       this.toastr.error('Physical supplier is mandatory for quoting the price.');
       return;
     }
