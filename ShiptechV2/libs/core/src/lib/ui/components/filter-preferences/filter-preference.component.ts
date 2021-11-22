@@ -93,9 +93,11 @@ export class FilterPreferencesComponent implements OnDestroy {
   }
 
   ngOnInit() {
-    if (this.gridIds[this.gridId]?.systemDefaultFilters) {
-      this.currentSystemFilters = this.gridIds[this.gridId].systemDefaultFilters;
-    }  
+    if (this.gridIds)  {
+      if (this.gridIds[this.gridId]?.systemDefaultFilters) {
+        this.currentSystemFilters = this.gridIds[this.gridId].systemDefaultFilters;
+      }  
+    }
   }
   // NOTE: Setting a preset as pinned when it's pin icon is pressed
   
