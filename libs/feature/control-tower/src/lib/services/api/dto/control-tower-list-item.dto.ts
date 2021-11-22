@@ -221,5 +221,5 @@ export interface IControlTowerGetFilteredNotesDto {
   timeView: ILookupDto;
   startDate: string;
   endDate: string;
-  searchText: string;
+  searchText?: string;
 }
