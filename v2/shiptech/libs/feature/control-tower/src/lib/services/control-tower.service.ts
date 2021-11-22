@@ -226,9 +226,9 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
+          body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
+            : null
         )
       )
     );
@@ -279,9 +279,9 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
+          body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
+            : null
         )
       )
     );
