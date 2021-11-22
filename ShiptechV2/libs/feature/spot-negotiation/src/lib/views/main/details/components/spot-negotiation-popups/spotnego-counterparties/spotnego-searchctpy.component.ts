@@ -255,7 +255,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     if(!this.data.isPhysicalSupplier){
     let payload = {
       requestGroupId: this.RequestGroupId,
-      isAllLocation: true,
+      isAllLocation: this.data.AddCounterpartiesAcrossLocations,
       counterparties: selectedCounterparties
     };
     const response = this._spotNegotiationService.addCounterparties(payload);
