@@ -178,6 +178,7 @@ import { RemoveCounterpartyNoRFQComponent } from './views/main/details/component
     EmailPreviewPopupComponent,
     ContactinformationpopupComponent,
     SpotnegoPricingDetailsComponent,
+    SpotnegoOtherdetails2Component,
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,

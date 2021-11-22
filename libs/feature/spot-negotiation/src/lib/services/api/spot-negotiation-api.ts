@@ -42,8 +42,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
   @ApiCallUrl()
-  private _infrastructureApiUrl = this.appConfig.v1.API
-    .BASE_URL_DATA_INFRASTRUCTURE;
+  private _infrastructureApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
   @ApiCallUrl()
   private _negotiationApiUrl = this.appConfig.v1.API.BASE_URL_DATA_NEGOTIATION;

@@ -89,8 +89,8 @@
                           (ngModelChange)="totalprice(requestOfferItem.key)"
                         /></td>  
                         <td class=""> {{requestOfferItem.value.UomName}}</td>
-                        <td class="">{{format.price(requestOfferItem.value.OfferPrice)||0}}</td>
-                        <td class="">{{format.price(requestOfferItem.value.TotalPrice)}}</td>
+                        <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.OfferPrice)||0}}</td>
+                        <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.TotalPrice)}}</td>
                         <td class="w-125">{{requestOfferItem.value.PhysicalSupplierName}}</td>
                       </tr>
                     </tbody>
