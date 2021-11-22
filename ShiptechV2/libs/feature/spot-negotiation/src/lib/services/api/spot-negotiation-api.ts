@@ -286,9 +286,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
+          body.error.ErrorMessage 
+            ? body.error.ErrorMessage 
+            : body.error.errorMessage 
         )
       )
     );
@@ -371,9 +371,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
-            ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : body.error.errorMessage + ' ' + body.error.reference
+          body.error.ErrorMessage 
+            ? body.error.ErrorMessage 
+            : body.error.errorMessage 
         )
       )
     );
