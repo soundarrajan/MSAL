@@ -58,6 +58,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
      });
   }
 
+  ngAfterViewInit(): void {
+    this.spotNegotiationService.QuoteByDate = this.child.getValue();
+  }
+
   confirmorderpopup() {
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows
@@ -448,7 +452,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.RevokeFQ(FinalAPIPayload);
     response.subscribe((res: any) => {
       this.spinner.hide();
-      debugger;
       if(res instanceof Object && res['sellerOffers'].length > 0 ){
         this.toaster.success('RFQ(s) revoked successfully.')
         if(res['message'].length>3)
