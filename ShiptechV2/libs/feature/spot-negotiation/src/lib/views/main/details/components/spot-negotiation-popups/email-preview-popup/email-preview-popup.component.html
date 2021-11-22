@@ -60,9 +60,9 @@
                     <div style="flex: 0 0 5%">
                         <span class="text">Subject:</span>
                     </div>
-                    <div style="display: flex; flex: 0 0 95%">
-                        
-                        <span class="subject">{{subject}}</span>
+                    <div style="display: flex; flex: 0 0 95%">                        
+                        <!-- <span class="subject">{{subject}}</span> -->
+                        <input matInput class="subject" value= "{{subject}}" [(ngModel)]="subject">
                     </div>                 
                 </div>
             </div>
@@ -85,6 +85,14 @@
                     </div>
                     <div style="padding: 18px;" [innerHtml]="content">
                     </div>
+                    <!-- <div style="padding: 18px;" contenteditable="true"  [innerHtml]="content"
+                    (input)="this.content = $event.target.innerText">
+                    </div> -->
+                    <!-- <p [(ngModel)]="content" contenteditable [innerHtml]="content"
+                    name="fieldName" ngDefaultControl></p> -->
+                    <!-- <textarea matInput style="padding: 18px;">
+                        <p  [innerHtml]="content"></p>
+                    </textarea> -->
                 </div>
 
             </div>

@@ -88,7 +88,6 @@ export class EmailPreviewPopupComponent implements OnInit {
   };
   this.spinner.show();
   // Get response from server
-  let date = this.spotNegotiationService.QuoteByDate;
   const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
   response.subscribe((res: any) => { 
     this.spinner.hide();   
@@ -148,7 +147,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       RequestGroupId:this.currentRequestInfo.requestGroupId,
       IsSendMail: isSendEmail,
       PreviewResponse:this.previewTemplate,
-      QuoteByDate: new Date()
+      QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
     };
 
     this.spinner.show();
