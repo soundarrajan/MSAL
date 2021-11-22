@@ -4,7 +4,7 @@
     <!-- <div class="id"><span> </span><b></b></div> -->
 
     <div class="header-right">
-      <button mat-raised-button (click)="statusChanged()">Save</button>
+      <button class="save-popup" mat-raised-button (click)="statusChanged()" [disabled]="!canSave()">Save</button>
       <div class="title-divider">|</div>
       <div class="close-circle">
         <mat-icon

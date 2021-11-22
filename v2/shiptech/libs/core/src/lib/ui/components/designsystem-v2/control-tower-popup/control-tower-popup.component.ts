@@ -165,4 +165,14 @@ export class ControlTowerPopupComponent implements OnInit {
   getStatusId() {
     return parseFloat(this.status);
   }
+
+  canSave() {
+    if(
+      this.data.changeLog[this.data.changeLog.length - 1].newComments != this.comments
+      || this.data.changeLog[this.data.changeLog.length - 1].newStatus.id != +this.status
+    ) {
+      return true;
+    }
+    return false;
+  }
 }

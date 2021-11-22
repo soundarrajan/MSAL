@@ -1,9 +1,11 @@
-﻿commit 33da53c6d1957eac096210c07dfd44ce082fc26c
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Nov 22 14:03:20 2021 +0000
+﻿commit a522faa8d37b4f4cccd1c71c428309f68bcd1416
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Nov 22 14:26:39 2021 +0000
 
-    Merged PR 14837: #37086: Control tower(Quality view Labs)-In the alert action pop up, Changed log time displaying incorrectly issue fixed
+    Merged PR 14838: DIsabled popup save if no changes since last log
     
-    Related work items: #37086
+    DIsabled popup save if no changes since last log
+    
+    Related work items: #37001
 
 branch: master
