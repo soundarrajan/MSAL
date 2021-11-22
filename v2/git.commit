@@ -1,11 +1,9 @@
-﻿commit 81880ef609325bec61fdb0dd435fed94e17c5c4d
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Nov 22 08:57:26 2021 +0000
+﻿commit 05f2b1d27ba067420c7314ee1df3219d2ac23346
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Nov 22 12:20:06 2021 +0000
 
-    Merged PR 14829: Save Preference redesign
+    Merged PR 14833: #36679: All Control Tower Screens_ If the user do not have access, proper validation message required issue fixed
     
-    Save Preference redesign
-    
-    Related work items: #33632
+    Related work items: #36679
 
 branch: master

@@ -93,6 +93,10 @@ export class AppErrorHandler implements ErrorHandler {
         'Unhandled App Error has occurred. See props for details.'
       );
     }
+    
+    if (this.toastr && parseInt(localStorage.getItem("authorization"), 10) == 0) {
+      return;
+    }
 
     const showToastr = appError.treatAsWarning
       ? this.toastr.warning
