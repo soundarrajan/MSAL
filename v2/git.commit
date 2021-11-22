@@ -1,11 +1,9 @@
-﻿commit a522faa8d37b4f4cccd1c71c428309f68bcd1416
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Nov 22 14:26:39 2021 +0000
+﻿commit 77575169a2cc53f3a7437f45cdc2498c6e986805
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Nov 22 14:34:58 2021 +0000
 
-    Merged PR 14838: DIsabled popup save if no changes since last log
+    Merged PR 14840: Fixed deleting seach value using 'x' icon
     
-    DIsabled popup save if no changes since last log
-    
-    Related work items: #37001
+    Related work items: #33663
 
 branch: master
