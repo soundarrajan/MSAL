@@ -24,7 +24,7 @@ interface EmailAddress {
   styleUrls: ['./email-preview-popup.component.css']
 })
 export class EmailPreviewPopupComponent implements OnInit {
-  public SelectedSellerWithProds: any;  
+  public SelectedSellerWithProds: any;
   currentRequestInfo: any;
   selected: any;
   toEmail = '';
@@ -58,16 +58,16 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.items =  [
           {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'New RFQ'},
         ];
-        this.selected = 'MultipleRfqNewRFQEmailTemplate';        
+        this.selected = 'MultipleRfqNewRFQEmailTemplate';
       }
      }
 
-    
-  ngOnInit(): void {    
+
+  ngOnInit(): void {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
     });
-    this.getPreviewTemplate();  
+    this.getPreviewTemplate();
   }
 
   getPreviewTemplate(){
@@ -83,27 +83,27 @@ export class EmailPreviewPopupComponent implements OnInit {
         prod.requestProducts.map(i =>i.id)
       )[0],
     RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId:0,
-    TemplateName: this.selected,    
+    TemplateName: this.selected,
     QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
   };
   this.spinner.show();
   // Get response from server
   const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
-  response.subscribe((res: any) => { 
-    this.spinner.hide();   
+  response.subscribe((res: any) => {
+    this.spinner.hide();
     this.previewTemplate = res["previewResponse"];
     this.rfqTemplate = this.previewTemplate
     this.to =(this.previewTemplate.to.map(to => to.idEmailAddress));
     this.cc =(this.previewTemplate.cc.map(cc => cc.idEmailAddress));
     this.subject =  this.previewTemplate.subject;
-    this.content =  this.previewTemplate.content; 
+    this.content =  this.previewTemplate.content;
     this.from = this.previewTemplate.From;
     this.filesList = this.previewTemplate.AttachmentsList;
   });
 }
 
   addTo(item){
-    
+
     this.to.push(item);
     this.previewTemplate.to.push({IdEmailAddress: item});
     this.toEmail = '';
@@ -138,7 +138,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     }];
 
     this.previewTemplate.subject = this.subject;
-    this.previewTemplate.content = this.content; 
+    this.previewTemplate.content = this.content;
     this.previewTemplate.From = this.from;
     this.previewTemplate.AttachmentsList = this.filesList;
 
@@ -162,11 +162,11 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.toaster.warning(res['validationMessage']);
       }
       else if(res instanceof Object && isSendEmail && res['validationMessage'].length == 0 ){
-         this.toaster.success('RFQ(s) sent successfully.');  
-         this.dialogRef.close();   
+         this.toaster.success('RFQ(s) sent successfully.');
+         this.dialogRef.close();
       }
       else if(res instanceof Object && !isSendEmail &&  res['validationMessage'].length == 0 ){
-        this.toaster.success('Template saved successfully.');    
+        this.toaster.success('Template saved successfully.');
         this.rfqTemplate = this.previewTemplate;
      }
       else if(res instanceof Object){
@@ -259,7 +259,9 @@ export class EmailPreviewPopupComponent implements OnInit {
     for (let index = 0; index < currentLocProdCount; index++) {
       let indx = index +1;
       let val = "checkProd" + indx;
-      row[val] = row.isSelected;
+      const status = currentLocProd[0].requestProducts[index].status;
+      row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : row.isSelected;
+      //row[val] = row.isSelected;
     }
   }
  }
@@ -268,7 +270,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   this.to = (this.rfqTemplate.to.map(to => to.idEmailAddress));
   this.cc =(this.rfqTemplate.cc.map(cc => cc.idEmailAddress));
   this.subject =  this.rfqTemplate.subject;
-  this.content =  this.rfqTemplate.content; 
+  this.content =  this.rfqTemplate.content;
   this.from = this.rfqTemplate.From;
   this.filesList = this.rfqTemplate.AttachmentsList;
   this.previewTemplate = this.rfqTemplate;

@@ -440,13 +440,14 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
       [matTooltip]="
         params.data.preferredProducts?.includes(params.productId)
           ? 'Preferred product'
-          : null
+          : (params.status === 'Stemmed' || params.status === 'Confirmed')? params.status : null
       "
       matTooltipClass="lightTooltip"
     >
       <!--<input type="checkbox" (click)="checkedHandler($event)"[checked]="params.value"/>-->
       <mat-checkbox
-        [checked]="params.value"
+        [disabled]="params.status === 'Stemmed' || params.status === 'Confirmed'"
+        [checked]="params.value && (params.status !== 'Stemmed' && params.status !== 'Confirmed')"
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="

@@ -114,7 +114,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
           let indx = index +1;
           let val = "checkProd" + indx;
-          row[val] = row.isSelected;
+          const status = currentLocProd[0].requestProducts[index].status;
+          row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : row.isSelected;
+
+          // row[val] = row.isSelected;
           //row.isSelected = true;
         }
       }
