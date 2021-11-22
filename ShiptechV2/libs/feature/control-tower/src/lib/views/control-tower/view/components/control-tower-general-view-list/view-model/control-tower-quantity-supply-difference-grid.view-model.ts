@@ -33,7 +33,7 @@ import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services
 import { IControlTowerQuantitySupplyDifferenceItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import { FormControl } from '@angular/forms';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
-
+import { Output, EventEmitter } from '@angular/core';
 import moment from 'moment';
 
 import {
@@ -78,6 +78,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   public noOfNew: number;
   public noOfMarkedAsSeen: number;
   public noOfResolved: number;
+  public groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; };
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -508,7 +509,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     sortable: false,
     filter: false
   };
-
+  
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -537,6 +538,21 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       });
   }
 
+  public systemFilterUpdate(value) {
+    let currentFilter = value.filter(o => o.isActive); 
+    switch (currentFilter[0].id) {
+      case "new":
+        this.filterGridNew(currentFilter[0].label);
+        break;
+      case "marked-as-seen":
+        this.filterGridMAS(currentFilter[0].label);
+        break;
+      case "resolved":
+        this.filterGridResolved(currentFilter[0].label);
+        break;                
+    }
+  }
+    
   getColumnsDefs(): any[] {
     return [
       this.portCallCol,
@@ -591,7 +607,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public filterByStatus(statusName: string): void {
-    const grid = this.gridApi.getFilterModel();
+    const grid = [];
     grid['progress'] = {
       filterType: 'text',
       type: 'equals',
@@ -648,7 +664,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     }
   }
-
+  @Output() emitCountValues = new EventEmitter();
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
@@ -669,6 +685,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           this.noOfNew = response.payload.noOfNew;
           this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
           this.noOfResolved = response.payload.noOfResolved;
+          this.groupedCounts = {
+            noOfNew : this.noOfNew,
+            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+            noOfResolved : this.noOfResolved,
+          }
+          this.changeDetector.detectChanges();
           params.successCallback(
             response.payload.items,
             response.payload.items[0]?.totalCount ?? 0
