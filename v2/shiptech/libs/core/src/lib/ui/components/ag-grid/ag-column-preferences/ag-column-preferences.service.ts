@@ -151,7 +151,7 @@ export class AgColumnPreferencesService implements OnDestroy {
                 sort: 'desc'
               }
             ]);
-          } else if (gridName == 'control-tower-residue-sludge-list-grid-4') {
+          } else if (gridName == 'control-tower-residue-sludge-list-grid-5') {
             options.api.setSortModel([
               {
                 colId: 'differenceInRobQuantity',
@@ -168,9 +168,7 @@ export class AgColumnPreferencesService implements OnDestroy {
                 sort: 'desc'
               }
             ]);
-          } else if (
-            gridName == 'control-tower-quality-labs-list-grid-7'
-          ) {
+          } else if (gridName == 'control-tower-quality-labs-list-grid-7') {
             options.api.setSortModel([
               {
                 colId: 'createdDate',
@@ -223,7 +221,7 @@ export class AgColumnPreferencesService implements OnDestroy {
               }
             ]);
           } else if (
-            gridName == 'control-tower-residue-sludge-list-grid-4' &&
+            gridName == 'control-tower-residue-sludge-list-grid-5' &&
             !sortModels.length
           ) {
             options.api.setSortModel([

@@ -1,9 +1,7 @@
-﻿commit 1d8051f35ec35046530601468c9dbc69e6dd6643
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Nov 22 15:27:49 2021 +0000
+﻿commit 5d8cc4a77f6e8f74bf7d4adca13257a6a14c6a6f
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Nov 22 17:58:50 2021 +0200
 
-    Merged PR 14842: Fix Quantity control list
-    
-    Fix Quantity control list
+    Fixed Default sorting of difference quantity for residue view
 
 branch: master
