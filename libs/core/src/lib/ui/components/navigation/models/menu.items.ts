@@ -524,12 +524,12 @@ export const BASE_MENU: KeyedMenuItems = {
             target: '_blank'
           },
           schedule_dashboard_table: {
-            label: 'Schedule Dashboard Tablez',
+            label: 'Schedule Dashboard Table',
             url: '/#/schedule-dashboard-table',
             target: '_blank'
           },
           schedule_dashboard_timeline: {
-            label: 'Schedule Dashboard Timelinez',
+            label: 'Schedule Dashboard Timeline',
             url: '/#/schedule-dashboard-timeline',
             target: '_blank'
           }
