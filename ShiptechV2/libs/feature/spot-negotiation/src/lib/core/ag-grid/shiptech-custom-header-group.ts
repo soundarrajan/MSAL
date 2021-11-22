@@ -170,8 +170,8 @@ import moment from 'moment';
             >
           </div>
           <div class="arrow" (click)="pricinghistorypopup()">
-            <span class="title">ICE Brent</span>
-            <span class="image"></span>
+            <span class="title" >{{ params.product.indexCode }}</span>
+            <span class="image" title = "{{ params.product.indexName }}"></span>
           </div>
           <div class="offer" (click)="offerpricehistorypopup()">
             <span class="title">Offer</span>
