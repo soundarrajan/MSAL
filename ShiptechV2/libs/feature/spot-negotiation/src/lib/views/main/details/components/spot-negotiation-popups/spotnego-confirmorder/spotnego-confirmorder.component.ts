@@ -15,6 +15,7 @@ import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { KeyValue } from '@angular/common';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import _ from 'lodash';
 @Component({
   selector: 'app-spotnego-confirmorder',
   templateUrl: './spotnego-confirmorder.component.html',
@@ -35,8 +36,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   currentRequestInfo: any=[];
   tenantConfiguration:any;
   responseOrderData:any;
+  currencyList:any;
   totalPriceValue:number;
   errorMessages: string;
+  staticLists: any;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
     private store: Store,
@@ -75,7 +78,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo[0] = spotNegotiation.currentRequestSmallInfo;
       this.tenantConfiguration=spotNegotiation.tenantConfigurations;
+      this.staticLists = spotNegotiation.staticLists;
     });
+    this.currencyList = this.setListFromStaticLists('Currency');
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows
     });
@@ -157,6 +162,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   //Construct UI Value's to bind the popup grid
   ConstructRequestOfferItemPayload(seller, requestOffers,requestProducts,etaDate,requestInfo) {
+    if(requestOffers.currencyId==null){1}else{requestOffers.currencyId} //Default Currency is Id:1 Name:"USD".
     return [
       {
         RequestId: this.requests[0].id,//Single request pass
@@ -189,6 +195,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         ContactCounterpartyId: requestOffers.contactCounterpartyId,
 				BrokerCounterpartyId: requestOffers.brokerCounterpartyId,
         currencyId:requestOffers.currencyId,
+        currencyName:this.currencyList.find(x=>x.id == requestOffers.currencyId).code,
         PricingTypeId: requestProducts.uomId,
         QuoteByDate: requestOffers.quoteByDate,
         QuoteByTimeZoneId:requestOffers.quoteByTimeZoneId,
@@ -222,6 +229,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     b: KeyValue<number, any>
   ): number => 0;
 
+  setListFromStaticLists(name) {
+    const findList = _.find(this.staticLists, function(object) {
+      return object.name == name;
+    });
+    if (findList != -1) {
+      return findList?.items;
+    }
+  }
   //Calculate TatalPrice
   totalprice(rowIndex) {
     const currentRowIndex = rowIndex;
