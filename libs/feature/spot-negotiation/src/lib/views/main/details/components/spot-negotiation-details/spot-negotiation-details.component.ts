@@ -487,7 +487,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: 'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'mat-check-box', productId: product.productId },
+          cellRendererParams: { type: 'mat-check-box',
+            productId: product.productId, status: product.status },
         },
         {
           headerName: 'Offer price',

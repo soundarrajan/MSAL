@@ -92,7 +92,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         height: '555px',
         panelClass: 'additional-cost-popup'
       });
-      
+
     dialogRef.afterClosed().subscribe(result => {});
     }
     else{
@@ -245,7 +245,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     for (let index = 0; index < currentLocProdCount; index++) {
       let indx = index +1;
       let val = "checkProd" + indx;
-      row[val] = row.isSelected;
+      const status = requestLocations[0].requestProducts[index].status;
+      row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : row.isSelected;
+      //row[val] = row.isSelected;
     }
   }
  }
@@ -344,7 +346,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     else {
       var amendRFQRequestPayload = this.selectedSellerList;
-    
+
 
     this.spinner.show();
     // Get response from server

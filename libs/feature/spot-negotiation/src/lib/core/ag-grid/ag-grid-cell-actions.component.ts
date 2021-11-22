@@ -193,8 +193,8 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     });
 }
 
-setproductvalid(row, currentLocProdCount,paramsvalue){
-  for (let index = 0; index < currentLocProdCount; index++) {
+setProductSelection(row, currentLocProducts, paramsvalue){
+  for (let index = 0; index < currentLocProducts.length; index++) {
     if(paramsvalue){
       let indx = index +1;
       let val = "checkProd" + indx;
@@ -202,7 +202,9 @@ setproductvalid(row, currentLocProdCount,paramsvalue){
     }else{
       let indx = index +1;
       let val = "checkProd" + indx;
-      row[val] = true;
+      // set product selection false while request product status is stemmed or confirmed.
+      const status = currentLocProducts[index].status;
+      row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : true;
     }
   }
   return row
@@ -214,16 +216,14 @@ setproductvalid(row, currentLocProdCount,paramsvalue){
       let Currentproduct = spotNegotiation.locations;
       let currentLocProd= Currentproduct.filter(row2 => row2.locationId == row.locationId);
       if(currentLocProd.length != 0){
-        let currentLocProdCount = currentLocProd[0].requestProducts.length;
-
         row1 = { ...Object.assign({}, row) };
         if(params.value){
           row1.isSelected = false;
-          row1 = this.setproductvalid(row1,currentLocProdCount,params.value)
+          row1 = this.setProductSelection(row1, currentLocProd[0].requestProducts, params.value)
 
         }else{
           row1.isSelected = true;
-          row1 = this.setproductvalid(row1,currentLocProdCount,params.value)
+          row1 = this.setProductSelection(row1, currentLocProd[0].requestProducts, params.value)
         }
       }
     });
