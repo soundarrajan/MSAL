@@ -49,6 +49,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       if(this.SelectedSellerWithProds.requestOffers?.length > 0){
         this.items =  [
           {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ'},
+          {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ'},
         ];
         this.selected = 'MultipleRfqAmendRFQEmailTemplate';
       }
@@ -65,10 +66,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
     });
-    this.getPreviewTemplate();   
+    this.getPreviewTemplate();  
   }
 
-getPreviewTemplate(){
+  getPreviewTemplate(){
 
   //this.selected = this.SelectedSellerWithProds.requestOffers?.length > 0 ? "MultipleRfqAmendRFQEmailTemplate" : "MultipleRfqNewRFQEmailTemplate";
   var FinalAPIdata = {

@@ -26,6 +26,7 @@ import { EditLocationRow, SetLocationsRows } from '../../store/actions/ag-grid-r
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
+import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -123,7 +124,7 @@ import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/compo
         ></span>
         <span
           class="info-flag"
-          *ngIf="params.data.infoIcon == 'Yes'"
+          *ngIf="params.data.isSellerSuspended"
           matTooltipClass="darkTooltip"
           matTooltip="Temporary suspended counterparty"
           matTooltipClass="lightTooltip"
@@ -313,7 +314,7 @@ import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/compo
             type="text"
             style="display:inline" [matTooltip]="params.value"
           />
-          <!--<div class="addButton" (click)="pricingdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>-->
+          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>
           <div
             class="formulaButton"
             style="display:inline; position:absolute; left:78px;"
@@ -788,7 +789,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.editedSeller=result.sellerName;
+     }
+     });
   }
   suppliercommentspopup() {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
@@ -890,7 +895,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return null;
     }
     let productPricePrecision = this.tenantService.pricePrecision;
-    
+
     this.priceFormat =
     '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
@@ -934,7 +939,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.showFormula = true;
     });
   }
+  otherdetailspopup(e, params) {
+    const dialogRef = this.dialog.open(SpotnegoOtherdetails2Component, {
+      width: '1164px',
+      height: 'auto',
+      maxHeight: '536px',
+      panelClass: ['additional-cost-popup']
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      // this.savePopupChanges(ev, result);
+    });
+  }
   onRightClickMenuOpened(e) {
     e.target.parentElement.classList.add('active');
   }
