@@ -28,7 +28,6 @@ import { environment } from '@shiptech/environment';
 import { SpotNegotiationService } from './services/spot-negotiation.service';
 import { SpotNegotiationGridModule } from './spot-negotiation-grid.module';
 import { SpotNegotiationRoutingModule } from './spot-negotiation-routing.module';
-import { DSComponentsModule } from '@shiptech/core/ui/components/ds-components/ds.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { AGGridCellActionsComponent } from './core/ag-grid/ag-grid-cell-actions.component';
@@ -77,10 +76,8 @@ import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from './views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
-import { PriceTenantFormatDirective } from '@shiptech/core/ui/components/ds-components/directives/price-tenant-format.directive';
-import { AmountTenantFormatDirective } from '@shiptech/core/ui/components/ds-components/directives/amount-tenant-format.directive';
-import { QuantityTenantFormatDirective } from './../../../../core/src/lib/ui/components/ds-components/directives/quantity-tenant-format.directive';
-import { NumberOnlyDirective } from '@shiptech/core/ui/components/ds-components/directives/number-only.directive';
+
+
 
 @NgModule({
   imports: [
@@ -159,10 +156,10 @@ import { NumberOnlyDirective } from '@shiptech/core/ui/components/ds-components/
     NegotiationDetailsToolbarComponent,
     RemoveCounterpartyComponent,
     RemoveCounterpartyNoRFQComponent,
-    QuantityTenantFormatDirective,
-    AmountTenantFormatDirective,
-    PriceTenantFormatDirective,
-    NumberOnlyDirective,
+    // QuantityTenantFormatDirective,
+    // AmountTenantFormatDirective,
+    // PriceTenantFormatDirective,
+    // NumberOnlyDirective,
   ],
   entryComponents: [
     MainSpotNegotiationComponent,
@@ -187,7 +184,7 @@ import { NumberOnlyDirective } from '@shiptech/core/ui/components/ds-components/
     RemoveCounterpartyComponent,
     RemoveCounterpartyNoRFQComponent
   ],
-  exports: [PriceTenantFormatDirective],
+  exports: [],
   providers: [
     ModuleLoggerFactory,
     {
