@@ -789,7 +789,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.editedSeller=result.sellerName;
+     }
+     });
   }
   suppliercommentspopup() {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {

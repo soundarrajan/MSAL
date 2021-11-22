@@ -246,6 +246,10 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         return;
       }
     });
+    this.dialogRef.close({
+      sellerName: selectedCounterparties[0].sellerCounterpartyName
+    }
+    );
     }
 
     if(!this.data.isPhysicalSupplier){
