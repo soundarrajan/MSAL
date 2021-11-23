@@ -69,6 +69,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   public noOfNew: number;
   public noOfMarkedAsSeen: number;
   public noOfResolved: number;
+  public noOfDefault: any;
 
   public differenceType: ILookupDto;
 
@@ -454,7 +455,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     sortable: false,
     filter: false
   };
-  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; };
+  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; noOfDefault: number};
+
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -604,7 +606,45 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
     }
   }
+
+  public getFiltersCount() {
+      if(this.groupedCounts) {
+        return false;
+      }
+      let payload = {
+        "differenceType" : {
+          "name" : "Rob"
+          },
+          "startDate": moment()
+            .subtract(6, "days")
+            .format('YYYY-MM-DD'),
+          "endDate": moment().format('YYYY-MM-DD'),          
+      };
+      this.controlTowerService.getRobDifferenceFiltersCount(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        response => {
+          this.noOfDefault = response.noOfLastSevenDays;
+          this.noOfNew = response.noOfNew;
+          this.noOfMarkedAsSeen = response.noOfMarkedAsSeen;
+          this.noOfResolved = response.noOfResolved;
+          this.groupedCounts = {
+            noOfDefault: this.noOfDefault,
+            noOfNew : this.noOfNew,
+            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+            noOfResolved : this.noOfResolved,
+          }
+          this.changeDetector.detectChanges();
+        },
+        () => {
+          this.appErrorHandler.handleError(
+            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+          );
+        }
+      );    
+  }
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.getFiltersCount();
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
     this.paramsServerSide = params;
@@ -620,16 +660,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {
-          // this.noOfNew = response.payload.noOfNew;
-          // this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
-          // this.noOfResolved = response.payload.noOfResolved;
-          // this.groupedCounts = {
-          //   noOfNew : this.noOfNew,
-          //   noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-          //   noOfResolved : this.noOfResolved,
-          // }
-          this.changeDetector.detectChanges();          
+        response => {      
           params.successCallback(
             response.payload,
             response.payload[0]?.totalCount ?? 0

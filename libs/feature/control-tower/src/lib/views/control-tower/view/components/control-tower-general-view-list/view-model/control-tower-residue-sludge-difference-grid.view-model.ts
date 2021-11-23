@@ -69,6 +69,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   public noOfNew: number;
   public noOfMarkedAsSeen: number;
   public noOfResolved: number;
+  public noOfDefault: number;
 
   public differenceType: ILookupDto;
 
@@ -450,6 +451,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     noOfNew: number;
     noOfMarkedAsSeen: number;
     noOfResolved: number;
+    noOfDefault: number;
   };
 
   constructor(
@@ -600,7 +602,48 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
     }
   }
+
+
+  public getFiltersCount() {
+      if(this.groupedCounts) {
+        return false;
+      }
+      let payload = {
+        "differenceType" : {
+          "name" : "Sludge"
+          },
+          "startDate": moment()
+            .subtract(6, "days")
+            .format('YYYY-MM-DD'),
+          "endDate": moment().format('YYYY-MM-DD'),          
+      };
+      this.controlTowerService.getSludgeDifferenceFiltersCount(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        response => {
+          this.noOfDefault = response.noOfLastSevenDays;
+          this.noOfNew = response.noOfNew;
+          this.noOfMarkedAsSeen = response.noOfMarkedAsSeen;
+          this.noOfResolved = response.noOfResolved;
+          this.groupedCounts = {
+            noOfDefault : this.noOfDefault,
+            noOfNew : this.noOfNew,
+            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+            noOfResolved : this.noOfResolved,
+          }
+          this.changeDetector.detectChanges();
+        },
+        () => {
+          this.appErrorHandler.handleError(
+            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+          );
+        }
+      );    
+  }
+
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.getFiltersCount();
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
     this.paramsServerSide = params;
@@ -617,14 +660,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          // this.noOfNew = response.payload.noOfNew;
-          // this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
-          // this.noOfResolved = response.payload.noOfResolved;
-          // this.groupedCounts = {
-          //   noOfNew: this.noOfNew,
-          //   noOfMarkedAsSeen: this.noOfMarkedAsSeen,
-          //   noOfResolved: this.noOfResolved
-          // };
           params.successCallback(
             response.payload,
             response.payload[0]?.totalCount ?? 0
