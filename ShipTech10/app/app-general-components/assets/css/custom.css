@@ -383,10 +383,10 @@ th#master_list_table_cb .cbox, th#master_list_table_cb .s-ico {
     }
 /* } */
 
-#gview_flat_available_contracts > div.ui-jqgrid-bdiv {
+/*#gview_flat_available_contracts > div.ui-jqgrid-bdiv {
     overflow: unset !important;
     min-width: unset !important;
-}
+}*/
 
 .ui-jqgrid-bdiv {
     /*height: 100%!important;*/
