@@ -3,7 +3,12 @@
   <ng-container *ngFor="let filter of filterPresets">
     <mat-chip *ngIf="filter.isPinned" [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']" (click)="applyFilter(filter.id)" [matTooltip]="filter.name">
       <!-- NOTE: Add track by -->
-      <div class="truncate-f85 text-center">{{ filter.name }}{{ filter.hasChanges ? '*' : '' }}</div>
+      <div matPrefix class="count-circle" *ngIf="filter.name == 'Default' && noOfDefault!==undefined">
+        <span>{{ noOfDefault }}</span>
+      </div>       
+      <div class="truncate-f85 text-center">
+        {{ filter.name }}{{ filter.hasChanges ? '*' : '' }}
+      </div>
       <div matSuffix class="chip-circle" [ngStyle]="{ pointerEvents: filter.isClear ? 'none' : 'auto' }" z (click)="setPinned(filter.id)" [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'">
         <i id="pin" class="fas fa-thumbtack aggrid-rotate-45 pin"></i>
       </div>
