@@ -492,15 +492,15 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          this.noOf15 = response.payload.noOf15;
-          this.noOf714 = response.payload.noOf714;
-          this.noOfNew = response.payload.noOfNew;
-          this.groupedCounts = {
-            noOfNew : this.noOfNew,
-            noOf15 : this.noOf15,
-            noOf714 : this.noOf714,
-          }            
-          params.successCallback(response.payload.items, response.matchedCount);
+          // this.noOf15 = response.payload.noOf15;
+          // this.noOf714 = response.payload.noOf714;
+          // this.noOfNew = response.payload.noOfNew;
+          // this.groupedCounts = {
+          //   noOfNew : this.noOfNew,
+          //   noOf15 : this.noOf15,
+          //   noOf714 : this.noOf714,
+          // }            
+          params.successCallback(response.payload, response.matchedCount);
         },
         () => {
           this.appErrorHandler.handleError(

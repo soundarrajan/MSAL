@@ -365,9 +365,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
-  public systemFilterUpdate(value) {
-      console.log("7777*********-*-*----***",value);
-  }
+
     
 
   // NOTE: This gets called when FilterChangedEvent gets fired by the grid and updates tells the service that the current preset has changes

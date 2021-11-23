@@ -485,15 +485,15 @@ public checkStatusAvailable(): void {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          this.noOfNew = response.payload.noOfNew;
-          this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
-          this.noOfResolved = response.payload.noOfResolved;
-          this.groupedCounts = {
-            noOfNew : this.noOfNew,
-            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-            noOfResolved : this.noOfResolved,
-          }          
-          params.successCallback(response.payload.items, response.matchedCount);
+          // this.noOfNew = response.payload.noOfNew;
+          // this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
+          // this.noOfResolved = response.payload.noOfResolved;
+          // this.groupedCounts = {
+          //   noOfNew : this.noOfNew,
+          //   noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+          //   noOfResolved : this.noOfResolved,
+          // }          
+          params.successCallback(response.payload, response.matchedCount);
         },
         () => {
           this.appErrorHandler.handleError(
