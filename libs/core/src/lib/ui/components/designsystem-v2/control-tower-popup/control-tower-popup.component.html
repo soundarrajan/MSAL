@@ -204,7 +204,7 @@
       <div style="width:100%" class="list" *ngFor="let value of data.changeLog.slice().reverse()">
         <span></span>
         <p class="log_status" *ngIf="value.newStatus?.displayName">Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by {{ value.user.name | htmlDecodeReadonly }}</p><br>
-        <p style="padding-left: 13px;" class="log_comment" *ngIf="value.newComments">{{ value.user.name | htmlDecodeReadonly }} : <em>{{ value.newComments | htmlDecodeReadonly }}</em></p>
+        <p style="padding-left: 13px;line-height: 14px;" class="log_comment" *ngIf="value.newComments">{{ value.user.name | htmlDecodeReadonly }} : <em>{{ value.newComments | htmlDecodeReadonly }}</em></p>
         <div class="description">{{ formatDateTo12Hrs(value.date) }}</div></div>
     </div>
   </div>
