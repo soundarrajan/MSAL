@@ -124,51 +124,26 @@ export interface IControlTowerQualityLabsItemDto {
 export interface IGetControlTowerListRequest extends IServerGridInfo {}
 
 export interface IGetControlTowerQuantityRobDifferenceListResponse {
-  payload: {
-    items: IControlTowerQuantityRobDifferenceItemDto[];
-    noOfNew: number;
-    noOfMarkedAsSeen: number;
-    noOfResolved: number;
-  };
+  payload: IControlTowerQuantityRobDifferenceItemDto[];
   matchedCount: number;
 }
 
 export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
-  payload: {
-    items: IControlTowerQuantitySupplyDifferenceItemDto[];
-    noOfMarkedAsSeen: number;
-    noOfNew: number;
-    noOfResolved: number;
-  };
+  payload: IControlTowerQuantitySupplyDifferenceItemDto[];
 }
 
 export interface IGetControlTowerResidueSludgeDifferenceListResponse {
-  payload: {
-    items: IControlTowerResidueSludgeDifferenceItemDto[];
-    noOfNew: number;
-    noOfMarkedAsSeen: number;
-    noOfResolved: number;
-  };
+  payload: IControlTowerResidueSludgeDifferenceItemDto[];
   matchedCount: number;
 }
 
 export interface IGetControlTowerQuantityClaimsListResponse {
-  payload: {
-    items: IControlTowerQuantityClaimsItemDto[];
-    noOf15: number;
-    noOf714: number;
-    noOfNew: number;
-  };
+  payload: IControlTowerQuantityClaimsItemDto[];
   matchedCount: number;
 }
 
 export interface IGetControlTowerQualityClaimsListResponse {
-  payload: {
-    items: IControlTowerQualityClaimsItemDto[];
-    noOf15: number;
-    noOf714: number;
-    noOfNew: number;
-  };
+  payload: IControlTowerQualityClaimsItemDto[];
   matchedCount: number;
 }
 
@@ -183,12 +158,7 @@ export interface IgetControlTowerQualityClaimsListExportUrlResponse {
 }
 
 export interface IGetControlTowerQualityLabsListResponse {
-  payload: {
-    items: IControlTowerQualityLabsItemDto[];
-    noOfNew: number;
-    noOfMarkedAsSeen: number;
-    noOfResolved: number;
-  };
+  payload: IControlTowerQualityLabsItemDto[];
   matchedCount: number;
 }
 

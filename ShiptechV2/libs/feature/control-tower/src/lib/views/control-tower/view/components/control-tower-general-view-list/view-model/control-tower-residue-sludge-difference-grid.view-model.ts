@@ -617,17 +617,17 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          this.noOfNew = response.payload.noOfNew;
-          this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
-          this.noOfResolved = response.payload.noOfResolved;
-          this.groupedCounts = {
-            noOfNew: this.noOfNew,
-            noOfMarkedAsSeen: this.noOfMarkedAsSeen,
-            noOfResolved: this.noOfResolved
-          };
+          // this.noOfNew = response.payload.noOfNew;
+          // this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
+          // this.noOfResolved = response.payload.noOfResolved;
+          // this.groupedCounts = {
+          //   noOfNew: this.noOfNew,
+          //   noOfMarkedAsSeen: this.noOfMarkedAsSeen,
+          //   noOfResolved: this.noOfResolved
+          // };
           params.successCallback(
-            response.payload.items,
-            response.payload.items[0]?.totalCount ?? 0
+            response.payload,
+            response.payload[0]?.totalCount ?? 0
           );
         },
         () => {
