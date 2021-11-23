@@ -63,8 +63,15 @@ export interface IControlTowerApiService {
   getControlTowerQualityLabsListExportUrl(): string;
 
   getNotes(request: IControlTowerGetMyNotesDto, view: any): any;
-
+  
   getFilteredNotes(request: IControlTowerGetFilteredNotesDto, view: any): any;
-
+  
   saveControlTowerNote(request: IControlTowerSaveNotesItemDto, view: any): any;
+  
+  /* Default Filters counts */
+  getRobDifferenceFiltersCount(request: any): any;
+  getSupplyDifferenceFiltersCount(request: any): any;
+  getSludgeDifferenceFiltersCount(request: any): any;
+  /* END Default Filters counts */
+  
 }
