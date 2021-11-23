@@ -250,7 +250,8 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
     >
       <!-- TODO check this code... -->
       <span *ngIf="!isOfferRequestAvailable()">-</span>
-      <div *ngIf="isOfferRequestAvailable()">
+      <div *ngIf="isOfferRequestAvailable()"
+        [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'input-disabled' : ''">
         <div class="price-calc static-data" *ngIf="params.value === '100.00'">
           <span class="duplicate-icon"></span>
           $ {{ params.value }}
@@ -313,6 +314,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
             spellcheck="false"
             type="text"
             style="display:inline" [matTooltip]="params.value"
+            [disabled] = "params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
           />
           <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>
           <div
@@ -435,19 +437,18 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
     </mat-menu>
 
     <div
-      *ngIf="params.type == 'mat-check-box'"
+      *ngIf="params.type == 'mat-check-box' && params.status !== 'Stemmed' && params.status !== 'Confirmed'"
       style="height:100%;display:flex;align-items:center;justify-content:center"
       [matTooltip]="
         params.data.preferredProducts?.includes(params.productId)
           ? 'Preferred product'
-          : (params.status === 'Stemmed' || params.status === 'Confirmed')? params.status : null
+          : null
       "
       matTooltipClass="lightTooltip"
     >
       <!--<input type="checkbox" (click)="checkedHandler($event)"[checked]="params.value"/>-->
       <mat-checkbox
-        [disabled]="params.status === 'Stemmed' || params.status === 'Confirmed'"
-        [checked]="params.value && (params.status !== 'Stemmed' && params.status !== 'Confirmed')"
+        [checked]="params.value"
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="
