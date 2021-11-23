@@ -76,6 +76,7 @@ export class FilterPreferencesComponent implements OnDestroy {
       isActive: boolean
     }
   ]
+  public noOfDefault: number;
   
   constructor(
     public matDialog: MatDialog,
@@ -91,13 +92,15 @@ export class FilterPreferencesComponent implements OnDestroy {
       this.changeDetector.markForCheck();
     }
   }
-
+  
   ngOnInit() {
+    this.noOfDefault = 0;
     if (this.gridIds)  {
       if (this.gridIds[this.gridId]?.systemDefaultFilters) {
         this.currentSystemFilters = this.gridIds[this.gridId].systemDefaultFilters;
       }  
     }
+    // this.countOfDefault = this.currentSystemFilters.filter( o => o.name == "noOfDefault")
   }
   // NOTE: Setting a preset as pinned when it's pin icon is pressed
   
@@ -109,6 +112,9 @@ export class FilterPreferencesComponent implements OnDestroy {
   }
   
   public updateSystemPreferencesCount(values) {
+    if(typeof values.noOfDefault !== "undefined" ) {
+      this.noOfDefault = values.noOfDefault;
+    }
     for (const countId in values) {
       let countValue = values[countId];
       this.currentSystemFilters.forEach(systemFilter => {

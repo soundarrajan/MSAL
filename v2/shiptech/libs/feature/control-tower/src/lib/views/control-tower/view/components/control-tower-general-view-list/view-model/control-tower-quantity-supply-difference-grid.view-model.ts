@@ -78,7 +78,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   public noOfNew: number;
   public noOfMarkedAsSeen: number;
   public noOfResolved: number;
-  public groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; };
+  public noOfDefault: any;
+  public groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; noOfDefault:number };
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -664,8 +665,48 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     }
   }
+
+  public getFiltersCount() {
+      if(this.groupedCounts) {
+        return false;
+      }
+      let payload = {
+        "differenceType" : {
+          "name" : "Supply"
+          },
+          "startDate": moment()
+            .subtract(6, "days")
+            .format('YYYY-MM-DD'),
+          "endDate": moment().format('YYYY-MM-DD'),          
+      };
+      this.controlTowerService.getSupplyDifferenceFiltersCount(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        response => {
+          this.noOfDefault = response.noOfLastSevenDays;
+          this.noOfNew = response.noOfNew;
+          this.noOfMarkedAsSeen = response.noOfMarkedAsSeen;
+          this.noOfResolved = response.noOfResolved;
+          this.groupedCounts = {
+            noOfDefault : this.noOfDefault,
+            noOfNew : this.noOfNew,
+            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+            noOfResolved : this.noOfResolved,
+          }
+          this.changeDetector.detectChanges();
+        },
+        () => {
+          this.appErrorHandler.handleError(
+            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+          );
+        }
+      );    
+  }
+
+
   @Output() emitCountValues = new EventEmitter();
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.getFiltersCount();
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
     this.paramsServerSide = params;
@@ -682,15 +723,6 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          // this.noOfNew = response.payload.noOfNew;
-          // this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
-          // this.noOfResolved = response.payload.noOfResolved;
-          // this.groupedCounts = {
-          //   noOfNew : this.noOfNew,
-          //   noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-          //   noOfResolved : this.noOfResolved,
-          // }
-          this.changeDetector.detectChanges();
           params.successCallback(
             response.payload,
             response.payload[0]?.totalCount ?? 0

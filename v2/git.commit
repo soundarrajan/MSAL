@@ -1,9 +1,9 @@
-﻿commit c14ef1589fbc4ee231e7fbabca1024ecf82188fb
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Nov 23 13:51:27 2021 +0000
+﻿commit 9ae04b943701136daec3c03ed3a2145f1f5fd7e7
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Nov 23 16:35:48 2021 +0000
 
-    Merged PR 14882: #37092: Control tower(Quality view Labs)-System throws an red error while filtering the claim raised column issue has fixed
+    Merged PR 14888: Added new counts for control tower differences
     
-    Related work items: #37092
+    Added new counts for control tower differences
 
 branch: master
