@@ -1,9 +1,9 @@
-﻿commit a96045fb0ffb96b5efc2d60ae34069bd76ccee85
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Nov 23 12:22:58 2021 +0000
+﻿commit 4355d0bb612b1a49166a7b521b7a6d661c451e7e
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Nov 23 13:23:45 2021 +0000
 
-    Merged PR 14876: #37085 - UI for this change log section based on design system
+    Merged PR 14879: removed logic for old counts
     
-    Related work items: #37085
+    removed logic for old counts
 
 branch: master

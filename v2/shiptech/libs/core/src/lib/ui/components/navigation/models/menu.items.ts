@@ -519,7 +519,7 @@ export const BASE_MENU: KeyedMenuItems = {
         label: 'Schedule Dashboard',
         items: {
           schedule_dashboard_calendar: {
-            label: 'Schedule Dashboard Calendarz',
+            label: 'Schedule Dashboard Calendar',
             url: '/#/schedule-dashboard-calendar',
             target: '_blank'
           },
