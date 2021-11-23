@@ -1,9 +1,9 @@
-﻿commit 4355d0bb612b1a49166a7b521b7a6d661c451e7e
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Nov 23 13:23:45 2021 +0000
+﻿commit c14ef1589fbc4ee231e7fbabca1024ecf82188fb
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Nov 23 13:51:27 2021 +0000
 
-    Merged PR 14879: removed logic for old counts
+    Merged PR 14882: #37092: Control tower(Quality view Labs)-System throws an red error while filtering the claim raised column issue has fixed
     
-    removed logic for old counts
+    Related work items: #37092
 
 branch: master

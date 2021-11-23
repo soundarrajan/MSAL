@@ -460,7 +460,26 @@ public checkStatusAvailable(): void {
     };
     this.gridApi.setFilterModel(grid);
   }
-
+  
+  public formatFilterModel(params) {
+    let {filterModel} = params?.request;
+    // claimsRaised column filter value format
+    if (Object.keys(filterModel).indexOf('claimsRaised') !== -1) {
+        let claimRaisedFilterVal = filterModel.claimsRaised?.filter;
+        if(!claimRaisedFilterVal || !(claimRaisedFilterVal.trim())) { return; }
+        claimRaisedFilterVal = claimRaisedFilterVal.trim().toLowerCase();
+        var updatedFilter = {
+            ...filterModel,
+            claimsRaised: {
+                ...filterModel.claimsRaised,
+                filter: (claimRaisedFilterVal)=='no' || (['n','o'].indexOf(claimRaisedFilterVal)!=-1)? '0': '1'
+            }
+        }
+        params['request']['filterModel'] = updatedFilter;
+    }
+    console.log(params);
+    
+  }
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const grid1 = this.gridApi.getSortModel();
     // this.gridApi.setSortModel([
@@ -470,6 +489,7 @@ public checkStatusAvailable(): void {
     //   }
     // ]);
     console.log(grid1);
+    this.formatFilterModel(params);
     this.checkStatusAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQualityLabsListExportUrl();
