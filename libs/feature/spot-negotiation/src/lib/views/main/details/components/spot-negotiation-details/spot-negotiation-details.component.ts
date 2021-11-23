@@ -312,14 +312,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   saveRowToCloud(updatedRow, product) {
-    const tenantConfig = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-      return state['spotNegotiation'].tenantConfigurations;
-    });
-
-    if(tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierCounterpartyId){
-      this.toastr.error('Physical supplier is mandatory for quoting the price.');
-      return;
-    }
 
     const productDetails = this.getRowProductDetails(updatedRow, product.id);
     if (productDetails.id == null || productDetails.price == null) {
@@ -504,9 +496,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           valueSetter: ({ colDef, data, newValue }) => {
             let updatedRow = { ...data };
             let _this = this;
+
+            //avoid calculation based on physical supplier mandatory configurations.
+            const tenantConfig = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+              return state['spotNegotiation'].tenantConfigurations;
+            });
+
+            if (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierCounterpartyId) {
+              this.toastr.error('Physical supplier is mandatory for quoting the price.');
+              return false;
+            }
+
             // Do calculation here;
             updatedRow = this.formatRowData(updatedRow, colDef['product'], colDef.field, newValue);
-
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
             // Save to the cloud
