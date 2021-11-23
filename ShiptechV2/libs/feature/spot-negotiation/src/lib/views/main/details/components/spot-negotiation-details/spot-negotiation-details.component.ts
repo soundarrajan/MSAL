@@ -1,5 +1,5 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -190,15 +190,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'border-right',
           cellClass: 'line-seperator',
           cellStyle: params => {
-            const highlightedCells = this.highlightedCells[params.data.locationId];
-            if (highlightedCells && params.data.id == highlightedCells.totalOffer) {
+            if (this.highlightedCells['lowestTotalOfferRowId'] &&
+            params.data.id == this.highlightedCells['lowestTotalOfferRowId']) {
                 return { background: '#C5DCCF' };
             }
             return null;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
-          suppressNavigable: true,lockPosition: true
+          suppressNavigable: true, lockPosition: true
           //, pinned:'left',
         }
       ]
@@ -546,13 +546,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 95,
           cellClass: 'grey-opacity-cell pad-lr-0',
           cellStyle: params => {
-            if (
-              this.highlightedCells[params.data.locationId] &&
-              this.highlightedCells[params.data.locationId][product.id] &&
-              params.data.id ==
-                this.highlightedCells[params.data.locationId][product.id]
-                  .totalPrice
-            ) {
+            if (this.highlightedCells[product.productId] &&
+               params.data.id === this.highlightedCells[product.productId].rowId &&
+               product.id === this.highlightedCells[product.productId].requestProductId) {
               return { background: '#C5DCCF' };
             }
 
@@ -616,43 +612,48 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
   }
 
-  checkHighlight({ product }) {
+  checkHighlight({ product }, requestProductsLength) {
     var smallestTotalPrice = Infinity;
-    var smallesOffer = Infinity;
+    var smallestOffer = Infinity;
 
-    this.locationsRows.map(row => {
-      // Create key with id if dosen't exists;
-      if (!this.highlightedCells[row.locationId]) {
-        this.highlightedCells[row.locationId] = {};
+    if (this.locationsRows && this.locationsRows.length > 0) {
+      if (this.highlightedCells[product.productId]) {
+        const smallestRow = this.locationsRows.find(x => x.id === this.highlightedCells[product.productId].rowId);
+        const offerDetails = smallestRow?.requestOffers?.find(x => x.requestProductId === this.highlightedCells[product.productId].requestProductId);
+        if(offerDetails) smallestTotalPrice = offerDetails.totalPrice;
       }
 
-      if (!this.highlightedCells[row.locationId][product.id]) {
-        this.highlightedCells[row.locationId][product.id] = {};
+      if(this.highlightedCells['lowestTotalOfferRowId']){
+        const lowestTotalOfferRow = this.locationsRows.find(x => x.id === this.highlightedCells['lowestTotalOfferRowId']);
+        if(lowestTotalOfferRow.totalOffer) smallestOffer = lowestTotalOfferRow.totalOffer;
       }
 
-      if (!this.highlightedCells[row.locationId]) {
-        this.highlightedCells[row.locationId] = {};
-      }
-
-      // Set smallest total price
-      const productDetails = this.getRowProductDetails(row, product.id)
-
-      if (
-        productDetails.totalPrice &&
-        Number(smallestTotalPrice) > Number(productDetails.totalPrice)
-      ) {
-        smallestTotalPrice = productDetails.totalPrice;
-        this.highlightedCells[row.locationId][product.id].totalPrice = row.id;
-      }
-
-      // Set smallest offer price
-      if (row.totalOffer && Number(smallesOffer) > Number(row.totalOffer)) {
-        smallesOffer = row.totalOffer;
+      this.locationsRows.map(row => {
         // Create key with id if dosen't exists;
+        if (!this.highlightedCells[product.productId]) {
+          this.highlightedCells[product.productId] = {};
+        }
 
-        this.highlightedCells[row.locationId].totalOffer = row.id;
-      }
-    });
+        // Set smallest total price
+        const productDetails = this.getRowProductDetails(row, product.id)
+
+        if (productDetails.totalPrice && Number(smallestTotalPrice) > Number(productDetails.totalPrice)) {
+          smallestTotalPrice = productDetails.totalPrice;
+          this.highlightedCells[product.productId].rowId = row.id;
+          this.highlightedCells[product.productId].requestProductId = product.id;
+        }
+
+        // Set smallest offer price
+        const quotedProductsLength = row.requestOffers?.filter(x => x.Price !== null).length;
+        if (row.totalOffer && quotedProductsLength === requestProductsLength &&
+          Number(smallestOffer) > Number(row.totalOffer)) {
+            smallestOffer = row.totalOffer;
+          // Create key with id if dosen't exists;
+
+          this.highlightedCells['lowestTotalOfferRowId'] = row.id;
+        }
+      });
+    }
   }
 
   shouldUpdate({ spotNegotiation }): boolean {
@@ -747,8 +748,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts = reqLocation.requestProducts.length;
 
         // These are locations!!
+        const requestProductsLength = reqLocation.requestProducts.length;
         reqLocation.requestProducts.map((reqProduct, index) => {
-          this.checkHighlight({ product: reqProduct });
+          this.checkHighlight({ product: reqProduct }, requestProductsLength);
           this.columnDef_aggridObj[i].push(this.createProductHeader(reqProduct, reqLocation.id, index));
         });
 
