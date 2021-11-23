@@ -10303,12 +10303,12 @@ tr.title {
             width: 8px;
             height: 8px;
             border-radius: 8px;
-            background: #527292;
+            background: #c4c4ce;
             display: inline-block;
             float: left;
           }
           p {
-            color: #9d9fa2;
+            color: #364150;
             font-size: 14px;
             margin: 0;
             float: left;
@@ -10317,9 +10317,9 @@ tr.title {
           }
           .description {
             clear: both;
-            margin: 15px 0;
-            color: #364150;
-            overflow: hidden;
+            margin: 15px 14px;
+            color: #595959;
+            font-size: 12px;
           }
         }
       }

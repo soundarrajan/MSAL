@@ -1,8 +1,8 @@
-﻿commit 4af162eaa975acf1f938150f3e2b2ea291f32212
+﻿commit a96045fb0ffb96b5efc2d60ae34069bd76ccee85
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Nov 22 17:06:26 2021 +0000
+Date:   Tue Nov 23 12:22:58 2021 +0000
 
-    Merged PR 14849: #37085 - action popup close behavior removed post save in control tower action column
+    Merged PR 14876: #37085 - UI for this change log section based on design system
     
     Related work items: #37085
 

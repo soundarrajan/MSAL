@@ -21,9 +21,9 @@
   <div class="more-info row">
     <div class="header-title mg-b-5  plr-0 col-6 ">Main info:</div>
     <div class="header-title text-right mg-b-5 plr-0 col-6 " *ngIf="data?.lab">
-      <span>Labs ID:</span>
+      <span class="subheader-field">Labs ID:</span>
       <a href="/#/labs/labresult/edit/{{ data.lab }}" target="_blank">
-        <span class="aggridlink-darktheme">{{ data.lab }}</span>
+        <span class="aggridlink-darktheme" [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }">{{ data.lab }}</span>
       </a>
     </div>
     <div class="header-title mg-t-5 plr-0 col-6 ">
@@ -162,14 +162,14 @@
           href="/v2/quantity-control/report/{{ data.quantityReportId }}/details"
           target="_blank"
         >
-          <span class="aggridlink-darktheme">{{ data.portCall }}</span>
+          <span class="aggridlink-darktheme" [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }">{{ data.portCall }}</span>
         </a>
       </span>
       <ng-container *ngIf="data.popupType == 'qualityLabs'">
         <span>
           Order No:
           <a href="/#/edit-order/{{ data.orderId }}" target="_blank">
-            <span class="aggridlink-darktheme">{{ data.orderId }}</span>
+            <span class="aggridlink-darktheme" [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }">{{ data.orderId }}</span>
           </a>
         </span>
         <span>
@@ -187,7 +187,7 @@
   <div class="change-log col-12" *ngIf="data.changeLog?.length">
     <div class="header-title">Change Log</div>
     <div class="list-section" *ngIf="data.changeLog">
-      <div
+      <!-- <div
         class="list"
         style="width:100%"
         *ngFor="let value of data.changeLog.slice().reverse()"
@@ -200,7 +200,12 @@
             <em>{{ value.newComments | htmlDecodeReadonly }}</em>
           </div>
         </div>
-      </div>
+      </div> -->
+      <div style="width:100%" class="list" *ngFor="let value of data.changeLog.slice().reverse()">
+        <span></span>
+        <p class="log_status" *ngIf="value.newStatus?.displayName">Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by {{ value.user.name | htmlDecodeReadonly }}</p><br>
+        <p style="padding-left: 13px;" class="log_comment" *ngIf="value.newComments">{{ value.user.name | htmlDecodeReadonly }} : <em>{{ value.newComments | htmlDecodeReadonly }}</em></p>
+        <div class="description">{{ formatDateTo12Hrs(value.date) }}</div></div>
     </div>
   </div>
 </div>
