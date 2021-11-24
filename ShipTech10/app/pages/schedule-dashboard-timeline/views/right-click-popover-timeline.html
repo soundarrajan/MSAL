@@ -91,9 +91,9 @@
 						</span>
 					</div>
 					<div class="action-btn-container">
-						<span>
+						<span ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite && $ctrl.checkProductTypeView($ctrl.productTypeView)">
 							<i class="contract-planning"></i>
-							<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite && $ctrl.checkProductTypeView($ctrl.productTypeView)">Contract Planning  </a> 
+							<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;">Contract Planning  </a> 
 						</span>
 						<span>
 							<i class="contract-planning"></i> 
