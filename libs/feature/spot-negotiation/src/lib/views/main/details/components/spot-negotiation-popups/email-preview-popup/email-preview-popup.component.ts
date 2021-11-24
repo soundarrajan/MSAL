@@ -8,6 +8,7 @@ import {
   SetLocationsRows,
   SetLocationsRowsPriceDetails,
 } from '../../../../../../store/actions/ag-grid-row.action';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 interface Items {
   value: string;
@@ -37,7 +38,8 @@ export class EmailPreviewPopupComponent implements OnInit {
   content: any;
   previewTemplate: any;
   rfqTemplate: any;
-  items: Items[];
+  items: Items[]; 
+  public Editor = ClassicEditor;
 
   constructor(public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
     private store: Store,
@@ -60,6 +62,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         ];
         this.selected = 'MultipleRfqNewRFQEmailTemplate';
       }
+      this.content = "";
      }
 
 
@@ -72,8 +75,7 @@ export class EmailPreviewPopupComponent implements OnInit {
 
   getPreviewTemplate(){
 
-  //this.selected = this.SelectedSellerWithProds.requestOffers?.length > 0 ? "MultipleRfqAmendRFQEmailTemplate" : "MultipleRfqNewRFQEmailTemplate";
-  var FinalAPIdata = {
+    var FinalAPIdata = {
     RequestLocationSellerId: this.SelectedSellerWithProds.id,
     RequestId: this.SelectedSellerWithProds.requestId,
     CounterpartyId: this.SelectedSellerWithProds.sellerCounterpartyId,
