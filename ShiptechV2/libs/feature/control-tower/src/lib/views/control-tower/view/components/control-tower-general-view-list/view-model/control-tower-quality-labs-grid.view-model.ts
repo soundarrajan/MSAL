@@ -513,7 +513,7 @@ public checkStatusAvailable(): void {
           //   noOfMarkedAsSeen : this.noOfMarkedAsSeen,
           //   noOfResolved : this.noOfResolved,
           // }          
-          params.successCallback(response.payload, response.matchedCount);
+          params.successCallback(response.payload.items, response.matchedCount);
         },
         () => {
           this.appErrorHandler.handleError(
