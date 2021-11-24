@@ -47,6 +47,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   public noOf15: number;
   public noOf714: number;
   public noOfNew: number;
+  public noOfDefault: number;
 
   public searchText: string;
   public exportUrl: string;
@@ -310,7 +311,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     },
     width: 150
   };
-  groupedCounts: { noOfNew: number; noOf15: number; noOf714: number; };
+  groupedCounts: { noOfNew: number; noOf15: number; noOf714: number; noOfDefault: number};
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -468,14 +469,43 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     this.gridApi.setFilterModel(grid);
   }
 
+   public getFiltersCount() {
+      if(this.groupedCounts) {
+        return false;
+      }
+      let payload = {
+          "startDate": moment()
+            .subtract(6, "months")
+            .format('YYYY-MM-DD'),
+          "endDate": moment().format('YYYY-MM-DD'),          
+      };
+      this.controlTowerService.getQualityClaimCounts(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        response => {
+          this.noOfDefault = response.noOfLastSixMonths;
+          this.noOf15 = response.noOf15;
+          this.noOf714 = response.noOf714;
+          this.noOfNew = response.noOfNew;
+          this.groupedCounts = {
+            noOfDefault : this.noOfDefault,
+            noOfNew : this.noOfNew,
+            noOf15 : this.noOf15,
+            noOf714 : this.noOf714,
+          } 
+          this.changeDetector.detectChanges();
+        },
+        () => {
+          this.appErrorHandler.handleError(
+            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+          );
+        }
+      );    
+  }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const grid1 = this.gridApi.getSortModel();
-    // this.gridApi.setSortModel([
-    //   {
-    //     colId: 'createdDate',
-    //     sort: 'asc'
-    //   }
-    // ]);
+    this.getFiltersCount();
     console.log(grid1);
     this.checkStatusAvailable();
     this.paramsServerSide = params;
@@ -491,15 +521,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {
-          // this.noOf15 = response.payload.noOf15;
-          // this.noOf714 = response.payload.noOf714;
-          // this.noOfNew = response.payload.noOfNew;
-          // this.groupedCounts = {
-          //   noOfNew : this.noOfNew,
-          //   noOf15 : this.noOf15,
-          //   noOf714 : this.noOf714,
-          // }            
+        response => {       
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {

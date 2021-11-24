@@ -1,9 +1,9 @@
-﻿commit 5608bab867a5592cd8e1128765e2c91d447e2c85
+﻿commit f93e378ea23b8221d85369b85ac7aae7a701f551
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Nov 24 08:49:00 2021 +0000
+Date:   Wed Nov 24 11:09:52 2021 +0000
 
-    Merged PR 14893: Temporary fix for quality labs
+    Merged PR 14898: Added counts for claims
     
-    Temporary fix for quality labs
+    Added counts for claims
 
 branch: master
