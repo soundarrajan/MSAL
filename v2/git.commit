@@ -1,9 +1,11 @@
-﻿commit 9ae04b943701136daec3c03ed3a2145f1f5fd7e7
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Nov 23 16:35:48 2021 +0000
+﻿commit 11d2a0cf95a937771370af41386033f8f25c1501
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Nov 24 07:46:06 2021 +0000
 
-    Merged PR 14888: Added new counts for control tower differences
+    Merged PR 14891: Fixed 37151
     
-    Added new counts for control tower differences
+    Fixed 37151
+    
+    Related work items: #37151
 
 branch: master
