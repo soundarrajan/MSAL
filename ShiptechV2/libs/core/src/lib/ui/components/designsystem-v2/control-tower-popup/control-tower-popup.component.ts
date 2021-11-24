@@ -65,7 +65,7 @@ export class ControlTowerPopupComponent implements OnInit {
           if (typeof response == 'string') {
             this.toastr.error(response);
           } else {
-            // this.dialogRef.close();
+            this.resetUserChanges();
           }
         });
     } else {
@@ -91,7 +91,7 @@ export class ControlTowerPopupComponent implements OnInit {
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else {
-              // this.dialogRef.close();
+              this.resetUserChanges();
             }
           });
       } else if (this.data.differenceType.name == 'Sludge') {
@@ -104,7 +104,7 @@ export class ControlTowerPopupComponent implements OnInit {
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else {
-              // this.dialogRef.close();
+              this.resetUserChanges();
             }
           });
       }
@@ -178,4 +178,15 @@ export class ControlTowerPopupComponent implements OnInit {
     }
     return false;
   }
+
+  resetUserChanges() {
+    if( !this.data.changeLog ) {
+      this.comments = "";
+    } else {
+      this.comments =  this.data.changeLog[this.data.changeLog.length - 1].newComments;
+      this.status = this.data.changeLog[this.data.changeLog.length - 1].newStatus.id.toString();
+      this.changeDetectorRef.detectChanges();
+    }
+  }  
+
 }
