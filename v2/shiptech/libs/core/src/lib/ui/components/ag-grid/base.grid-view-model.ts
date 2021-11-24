@@ -319,6 +319,12 @@ export abstract class BaseGridViewModel implements OnDestroy {
     this.gridApi = this.gridOptions.api;
     this.gridColumnApi = this.gridOptions.columnApi;
 
+    try {
+      (this.gridOptions
+        .api as any).context.beanWrappers.tooltipManager.beanInstance.MOUSEOVER_SHOW_TOOLTIP_TIMEOUT = 0;
+    } catch (e) {
+      console.log(e);
+    }
     this.gridApi.setColumnDefs(<ColDef[]>this.getColumnsDefs());
 
     // Note: It's important to set pagination before setting the datasource otherwise multiple call to the dataSource will be made

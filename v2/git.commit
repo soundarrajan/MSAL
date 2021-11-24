@@ -1,11 +1,11 @@
-﻿commit 95edf52ec9eed49ed458b3a775b8c673236cd147
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Nov 24 12:34:00 2021 +0000
+﻿commit 56fc452a64ad1dd6c6fd79adc34d698f60fbcd2c
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Nov 24 13:22:24 2021 +0000
 
-    Merged PR 14902: Reset user changes  when not authorized
+    Merged PR 14903: Added  tooltipShowDelay  as zero for control tower screens
     
-    Reset user changes  when not authorized
+    Added  tooltipShowDelay  as zero for control tower screens
     
-    Related work items: #37176
+    Related work items: #37002
 
 branch: master
