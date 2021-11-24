@@ -158,7 +158,9 @@ export interface IgetControlTowerQualityClaimsListExportUrlResponse {
 }
 
 export interface IGetControlTowerQualityLabsListResponse {
-  payload: IControlTowerQualityLabsItemDto[];
+  payload: {
+    items : IControlTowerQualityLabsItemDto[]
+  };
   matchedCount: number;
 }
 

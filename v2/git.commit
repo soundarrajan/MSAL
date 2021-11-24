@@ -1,11 +1,9 @@
-﻿commit 11d2a0cf95a937771370af41386033f8f25c1501
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 24 07:46:06 2021 +0000
+﻿commit 5608bab867a5592cd8e1128765e2c91d447e2c85
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Nov 24 08:49:00 2021 +0000
 
-    Merged PR 14891: Fixed 37151
+    Merged PR 14893: Temporary fix for quality labs
     
-    Fixed 37151
-    
-    Related work items: #37151
+    Temporary fix for quality labs
 
 branch: master
