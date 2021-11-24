@@ -89,12 +89,11 @@ $blue:#1CABE0;
 }
 
 .tbl-context {
-  width: 240px;
-  padding: 5px;
+  padding: 0px;
   background: #fff;
   color: black;
   border-radius: 5px;
-  border: 1px solid #656565;
+  border: 1px solid #656565 !important;
   cursor: context-menu;
   font-weight: 500;
 

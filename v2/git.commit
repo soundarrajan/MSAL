@@ -1,11 +1,11 @@
-﻿commit 56fc452a64ad1dd6c6fd79adc34d698f60fbcd2c
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 24 13:22:24 2021 +0000
+﻿commit 7dd304541de256dde3d3f67a9f1eeeeb324fde93
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Nov 24 15:26:35 2021 +0000
 
-    Merged PR 14903: Added  tooltipShowDelay  as zero for control tower screens
+    Merged PR 14904: UI Fixes control tower
     
-    Added  tooltipShowDelay  as zero for control tower screens
+    UI Fixes control tower
     
-    Related work items: #37002
+    Related work items: #37188, #37189, #37197, #37199
 
 branch: master
