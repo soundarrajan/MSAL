@@ -646,7 +646,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
 
         // Set smallest offer price
-        const quotedProductsLength = row.requestOffers?.filter(x => x.Price !== null).length;
+        const quotedProductsLength = row.requestOffers?.filter(x => x.price).length;
         if (row.totalOffer && quotedProductsLength === requestProductsLength &&
           Number(smallestOffer) > Number(row.totalOffer)) {
             smallestOffer = row.totalOffer;
