@@ -1,9 +1,9 @@
-﻿commit 965f8a58940243391f000b9203e913107f9b474a
+﻿commit 689fc1276abf579866cd8315180cf56216abbae6
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Nov 24 19:25:03 2021 +0000
+Date:   Wed Nov 24 21:17:45 2021 +0000
 
-    Merged PR 14905: #37085: Control tower(Quality view Labs)-In the alert action pop up auto update after save has done
+    Merged PR 14906: #37092: Control tower(Quality view Labs)-System throws an red error while filtering the claim raised column changes updated
     
-    Related work items: #37085
+    Related work items: #37092
 
 branch: master
