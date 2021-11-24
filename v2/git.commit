@@ -1,9 +1,11 @@
-﻿commit ca74efc9072529af3f45c51da7776743671df64d
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Nov 24 11:54:13 2021 +0000
+﻿commit 95edf52ec9eed49ed458b3a775b8c673236cd147
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Nov 24 12:34:00 2021 +0000
 
-    Merged PR 14900: Fixed tooltip UI for the table contents and the filter chips
+    Merged PR 14902: Reset user changes  when not authorized
     
-    Related work items: #37002, #37019
+    Reset user changes  when not authorized
+    
+    Related work items: #37176
 
 branch: master

@@ -259,7 +259,7 @@
           class="log_comment"
           *ngIf="value.newComments"
         >
-          {{ value.user.name | htmlDecodeReadonly }} :
+          <!-- {{ value.user.name | htmlDecodeReadonly }} : -->
           <em>{{ value.newComments | htmlDecodeReadonly }}</em>
         </p>
         <div class="description">{{ formatDateTo12Hrs(value.date) }}</div>
