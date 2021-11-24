@@ -211,6 +211,20 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
+  getMarketPriceHistory(payload: any): Observable<any> {
+    return this.http
+      .post<any>(`${this._negotiationApiUrl}/Price/getMarketPriceHistory`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
   SaveTargetPrice(payload: any): Observable<any> {
     return this.http
       .put<any>(

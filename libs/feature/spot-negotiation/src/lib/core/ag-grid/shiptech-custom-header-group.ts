@@ -435,7 +435,8 @@ export class ShiptechCustomHeaderGroup {
     const dialogRef = this.dialog.open(MarketpricehistorypopupComponent, {
       width: '500vw',
       height: '90vh',
-      panelClass: 'additional-cost-popup'
+      panelClass: 'additional-cost-popup',
+      data: { LocationId : this.currentRequestInfo.requestLocations[0].locationId, ProductId : this.params.product.productId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
