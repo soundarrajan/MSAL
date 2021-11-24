@@ -158,7 +158,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     response.subscribe((res: any) => {
       this.spinner.hide();
 
-      if(res instanceof Object && res['validationMessage'].length > 3 ){
+      if(res instanceof Object && res['validationMessage'].length > 0 ){
         // this.toaster.success('RFQ(s) skipped successfully.')
         // if(res['message'].length>5)
           this.toaster.warning(res['validationMessage']);
@@ -178,7 +178,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.toaster.error(res);
         return;
       }
-    if(res['sellerOffers'].length>0){
+    if(res['sellerOffers'] && res['sellerOffers'].length>0){
       const locationsRows = this.store.selectSnapshot<string>(
         (state: any) => {
           return state.spotNegotiation.locationsRows;
