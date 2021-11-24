@@ -1888,10 +1888,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
 
                     let offsetLeft = $('.contextmenu').offset().left;
-                    if (offsetLeft < 0) {
-                        $('.contextmenu').css('transform', 'translate(' + offsetLeft * (-1) + 'px )');
+                    if (offsetLeft <= 0) {
+                        let value = offsetLeft * (-1)  + 25;
+                        $('.contextmenu').css('transform', 'translate(' + value + 'px )');
+                    } else if (offsetLeft <= 25) {
+                        let value = offsetLeft + 25;
+                        $('.contextmenu').css('transform', 'translate(' + value + 'px )');
                     }
-
                     let offsetRight =  $(window).width() - ($('.contextmenu').offset().left + $('.contextmenu').outerWidth(true));
                     if (offsetRight < 0) {
                         $('.contextmenu').offset({top: $('.contextmenu').offset().top, left: $('.contextmenu').offset().left + offsetRight});
@@ -1902,6 +1905,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         $('.contextmenu').css("visibility", "visible");
 
                     });
+
+                    let  elements = $('.first-col-with-request-id');
+                    let containers = $('.right-click-pop-up-table-container');
+                    for (let i = 0; i < containers.length; i++) {
+                        $(elements[i]).css('position', 'absolute');
+                        $(elements[i]).css('height', parseFloat($(containers[i]).height()) + 'px');
+                    }
 
                }, 50)
 
@@ -2267,9 +2277,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
  
         document.addEventListener('scroll', function (e) {
             if (!$(event.target).hasClass("contextmenu")) {
-                if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
-                    $(".contextmenu").css("display", "none");
-                } 
+                // if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
+                //     $(".contextmenu").css("display", "none");
+                // } 
             }  
         }, true);
 

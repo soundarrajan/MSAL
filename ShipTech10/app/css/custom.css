@@ -3192,7 +3192,7 @@ Uncomment to see border around all .col-*
                 padding: 1px 10px!important;
                 line-height: 1 !important;
                 font-size: 14px !important;
-                height: 24px!important
+                height: 24px;
             }
 
             .modal .dataTable {

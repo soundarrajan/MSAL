@@ -85,14 +85,20 @@
 						 	<a ng-if="$ctrl.collapseContainer[voyage]" class="collapse-icon" ng-click="$ctrl.collapseContainer[voyage] = false;"> </a>
 						 	<b> Port of {{$ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.request.requestDetail.location}} ({{ $ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.locationCode }})</b>
 						 	<span class="border-line"></span>
-						 	<b>
+						 	<b class="eta-container">
 						 		ETA: {{$ctrl.formatDateUtc($ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.eta)}}
 						 	</b>
 						</span>
 					</div>
-					<div style="float: right; margin-left: 20px !important; margin-top: 6px;">
-						<a class="action-btn" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank"> <i class="contract-planning"></i> Create Request</a>
-						<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite && $ctrl.checkProductTypeView($ctrl.productTypeView)"> <i class="contract-planning"></i> Contract Planning  </a> 
+					<div class="action-btn-container">
+						<span>
+							<i class="contract-planning"></i>
+							<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite && $ctrl.checkProductTypeView($ctrl.productTypeView)">Contract Planning  </a> 
+						</span>
+						<span>
+							<i class="contract-planning"></i> 
+							<a class="action-btn" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank"> Create Request</a>
+						</span>
 					</div>
 				</div>
 				<table class="right-popup-table table table-stripped table-hover"  ng-if="!$ctrl.collapseContainer[voyage] && ($ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder)">
@@ -112,9 +118,9 @@
 	
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="right-click-pop-up-voyage-table-container"> 
 						<tr ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan && !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
-							<td style="width: 90px;max-width: 100px; padding-left: 0">
+							<td style="width: 90px;max-width: 100px; padding-left: 0" class="first-col">
 								{{voyage}}
 							</td>
 							<td ng-repeat="(ptkey, voyageDetail) in $ctrl.getBunkerPlan($ctrl.groupedVoyages.allProductTypes[voyage] , $ctrl.groupedVoyages.groupedVoyagesBunker[voyage]) track by $index" class="cancelBunkerStrategyCell" style="padding: 3px; position: relative; border-radius: 1px !important; ">
@@ -125,11 +131,11 @@
 							</td>
 						</tr>
 					</tbody>
-					<tbody ng-repeat="(key2, requests) in $ctrl.groupedVoyages.groupedVoyagesRequestForRightClickPopup[voyage] track by $index" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasRequest && !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
+					<tbody class="right-click-pop-up-table-container" ng-repeat="(key2, requests) in $ctrl.groupedVoyages.groupedVoyagesRequestForRightClickPopup[voyage] track by $index" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasRequest && !$ctrl.groupedVoyages.groupedVoyagesAllRequestProductsAreStemmed[voyage]">
 						<span>
 							<tr ng-repeat="key3 in $ctrl.getElementsFromArray($ctrl.groupedVoyages.maxLengthForGroupedVoyagesRequest[voyage][key2])">
 								<span >
-									<td ng-if="key3 == 0" class="first-col-with-request-id">
+									<td ng-if="key3 == 0" class="first-col-with-request-id first-col">
 										<a href="/#/edit-request/{{key2}}" target="_blank">
 											REQ{{key2}}
 										</a>									
@@ -149,11 +155,11 @@
 							</tr>
 						</span>
 					</tbody>
-					<tbody  ng-repeat="(key2, orders) in $ctrl.groupedVoyages.groupedVoyagesOrderForRightClickPopup[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasOrder">
+					<tbody  class="right-click-pop-up-table-container" ng-repeat="(key2, orders) in $ctrl.groupedVoyages.groupedVoyagesOrderForRightClickPopup[voyage]" ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasOrder">
 						<span>
 							<tr ng-repeat="key3 in $ctrl.getElementsFromArray($ctrl.groupedVoyages.maxLengthForGroupedVoyagesOrder[voyage][key2])">
 								<span >
-									<td ng-if="key3 == 0" class="first-col-with-request-id">
+									<td ng-if="key3 == 0" class="first-col-with-request-id first-col">
 										<a href="/#/edit-order/{{key2}}" target="_blank">
 											ORD{{key2}}
 										</a>								
