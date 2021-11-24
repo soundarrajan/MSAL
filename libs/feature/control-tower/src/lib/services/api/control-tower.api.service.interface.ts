@@ -72,6 +72,8 @@ export interface IControlTowerApiService {
   getRobDifferenceFiltersCount(request: any): any;
   getSupplyDifferenceFiltersCount(request: any): any;
   getSludgeDifferenceFiltersCount(request: any): any;
+  getQuantityClaimCounts(request: any): any;
+  getQualityClaimCounts(request: any): any;
   /* END Default Filters counts */
   
 }
