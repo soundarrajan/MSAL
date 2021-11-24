@@ -62,7 +62,7 @@
                     </div>
                     <div style="display: flex; flex: 0 0 95%">                        
                         <!-- <span class="subject">{{subject}}</span> -->
-                        <input matInput class="subject" value= "{{subject}}" [(ngModel)]="subject">
+                        <input matInput class="subject" [(ngModel)]="subject">
                     </div>                 
                 </div>
             </div>
@@ -79,22 +79,9 @@
                         <span>{{item}}</span>
                     </div>    
                 </div>
-                <div class="email-draft">
-                    <div>
-                        <span class="email-editor"></span>
-                    </div>
-                    <div style="padding: 18px;" [innerHtml]="content">
-                    </div>
-                    <!-- <div style="padding: 18px;" contenteditable="true"  [innerHtml]="content"
-                    (input)="this.content = $event.target.innerText">
-                    </div> -->
-                    <!-- <p [(ngModel)]="content" contenteditable [innerHtml]="content"
-                    name="fieldName" ngDefaultControl></p> -->
-                    <!-- <textarea matInput style="padding: 18px;">
-                        <p  [innerHtml]="content"></p>
-                    </textarea> -->
+                <div class="email-draft">    
+                    <ckeditor [editor]="Editor" [(ngModel)]="content"></ckeditor>
                 </div>
-
             </div>
         </div>
     </mat-dialog-content>

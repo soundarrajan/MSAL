@@ -76,6 +76,7 @@ import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from './views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 
@@ -110,7 +111,8 @@ import { RemoveCounterpartyNoRFQComponent } from './views/main/details/component
     DocumentsModule,
     BreadcrumbsModule,
     HighchartsChartModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    CKEditorModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
