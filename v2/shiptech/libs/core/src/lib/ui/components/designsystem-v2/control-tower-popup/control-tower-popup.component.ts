@@ -19,6 +19,7 @@ export class ControlTowerPopupComponent implements OnInit {
   public switchTheme: boolean = true;
   public status: string;
   public comments: string;
+  public logStatus: string = '';
   public controlTowerActionStatus: any;
   public defaultStatus: string;
   public controlTowePopupForm = new FormControl();
@@ -48,12 +49,58 @@ export class ControlTowerPopupComponent implements OnInit {
     //alert(status);
     this.status = status;
   }
+  isDataChanged($event, field) {
+    if(field == 'status') {
+      if(this.data.progressId.toString() == $event || $event == '') {
+        this.logStatus = ((this.logStatus != '' && this.logStatus == 'both'))? 'comment': '';
+      } else if(this.data.progressId.toString() != $event) {
+        this.logStatus = (this.logStatus == '' || this.logStatus=='status')? 'status': 'both';
+      }
+    } else if(field == 'comments') {
+      if(this.data?.comments == $event || $event.trim() == '') {
+        this.logStatus = ((this.logStatus != '' && this.logStatus == 'both'))? 'status': '';
+      } else if(this.data?.comments != $event) {
+        this.logStatus = (this.logStatus == '' || this.logStatus=='comment')? 'comment': 'both';
+      }
+    }
+    console.log($event);
+    
+  }
+  fetchLabsActionPopup(payloadData) {
+    this.controlTowerService
+    .getQualityLabsPopUp(payloadData, payloadData => {
+      console.log('asd');
+      })
+      .pipe()
+      .subscribe(
+        (response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            if (response?.length) {
+              this.data.changeLog =
+                response[0]?.controlTowerLabChangeLogResults.map(logObj => {
+                  logObj['user'] = { name: logObj.createdBy?.displayName };
+                  logObj['date'] = logObj.createdOn;
+                  logObj['newComments'] = logObj.comments;
+                  return logObj;
+                }) ?? [];
+                this.data.comments = response[0]?.comments;
+                this.data.status = response[0]?.controlTowerActionStatusId;
+            }
+          }
+        },
+        () => {}
+      );
+  }
   statusChanged() {
     if(this.data?.popupType == "qualityLabs") {
+      if(!this.logStatus && (this.status != '1')) { return; }
       let payloadData = {
         "controlTowerActionStatusId": this.status,
-        "comments": this.comments,
-        "labResultId": this.data?.lab
+        "comments": (this.comments && this.comments.trim()!='')? this.comments : '',
+        "labResultId": this.data?.lab,
+        "logStatus": (!this.logStatus && this.status == '1') ? 'status': this.logStatus
       };
   
       this.controlTowerService
@@ -65,7 +112,7 @@ export class ControlTowerPopupComponent implements OnInit {
           if (typeof response == 'string') {
             this.toastr.error(response);
           } else {
-            this.resetUserChanges();
+            this.fetchLabsActionPopup(payloadData?.labResultId);
           }
         });
     } else {

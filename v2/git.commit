@@ -1,11 +1,9 @@
-﻿commit 7dd304541de256dde3d3f67a9f1eeeeb324fde93
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Nov 24 15:26:35 2021 +0000
+﻿commit 965f8a58940243391f000b9203e913107f9b474a
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Nov 24 19:25:03 2021 +0000
 
-    Merged PR 14904: UI Fixes control tower
+    Merged PR 14905: #37085: Control tower(Quality view Labs)-In the alert action pop up auto update after save has done
     
-    UI Fixes control tower
-    
-    Related work items: #37188, #37189, #37197, #37199
+    Related work items: #37085
 
 branch: master
