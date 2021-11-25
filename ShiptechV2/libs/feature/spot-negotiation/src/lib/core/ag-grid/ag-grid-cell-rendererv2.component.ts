@@ -406,12 +406,12 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
               <th mat-header-cell *matHeaderCellDef>Counterparty</th>
               <td mat-cell *matCellDef="let element">
                 <mat-option [value]="element">
-                  <mat-checkbox
+                  <mat-radio-button
                     [value]="element.name"
                     (click)="selectSupplier(element.name, element.id)"
                   >
                     {{ element.name }}
-                  </mat-checkbox>
+                  </mat-radio-button>
                 </mat-option>
               </td>
             </ng-container>
@@ -1070,6 +1070,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
   selectSupplier(text, id) {
+   // this.selectedRowCount=this.
     this.editedSeller = text;
     this.phySupplierId = id;
   }
