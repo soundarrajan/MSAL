@@ -1,11 +1,11 @@
-﻿commit 45843d63a0acd777d704ea5965290634994bdc25
+﻿commit a2f3aa6d890a198dc9201195c442347aafefe469
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 25 11:22:03 2021 +0000
+Date:   Thu Nov 25 11:47:32 2021 +0000
 
-    Merged PR 14933: Worked on change log from alert popup
+    Merged PR 14936: Fixed Surveyor date column in quantity and residue view
     
-    Worked on change log from alert popup
+    Fixed Surveyor date column in quantity and residue view
     
-    Related work items: #37175
+    Related work items: #37196
 
 branch: master
