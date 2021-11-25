@@ -78,7 +78,7 @@
           ></div>
         </div>
         <mat-menu #deleteTitle="matMenu" class="darkPanel-delete">
-          <div class="delete-block" (click)="deleteTitles(line)">
+          <div class="delete-block" (click)="deleteTitles(line, lineIndex)">
             <div></div>
             <span>Delete Note</span>
           </div>
@@ -157,7 +157,7 @@
               name="sameName{{ noteIndex }}"
               [ngModel]="line.notes[noteIndex].title | htmlDecodeReadonly"
               (ngModelChange)="line.notes[noteIndex].title = $event"
-              (blur)="autoSaveNotes(noteLine, line)"
+              (blur)="autoSaveNotes(noteLine, line, lineIndex, noteIndex)"
               [disabled]="detectCurrentUser(noteLine)"
               maxlength="100"
             />
@@ -179,7 +179,7 @@
               name="sameName{{ noteIndex }}"
               [ngModel]="line.notes[noteIndex].message | htmlDecodeReadonly"
               (ngModelChange)="line.notes[noteIndex].message = $event"
-              (blur)="autoSaveNotes(noteLine, line)"
+              (blur)="autoSaveNotes(noteLine, line, lineIndex, noteIndex)"
               [disabled]="detectCurrentUser(noteLine)"
               maxlength="1000"
             ></textarea>
