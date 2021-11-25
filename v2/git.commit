@@ -1,11 +1,11 @@
-﻿commit a2f3aa6d890a198dc9201195c442347aafefe469
+﻿commit f84289b8426de9ae17a59667ab0935b1c044a322
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 25 11:47:32 2021 +0000
+Date:   Thu Nov 25 12:35:04 2021 +0000
 
-    Merged PR 14936: Fixed Surveyor date column in quantity and residue view
+    Merged PR 14939: Fixed Default tabs for control tower views
     
-    Fixed Surveyor date column in quantity and residue view
+    Fixed Default tabs for control tower views
     
-    Related work items: #37196
+    Related work items: #37204
 
 branch: master
