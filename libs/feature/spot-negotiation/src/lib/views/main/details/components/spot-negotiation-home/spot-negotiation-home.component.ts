@@ -307,7 +307,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
       RequestProductIds: selectedproducts,
       RfqId: rfqId,
-      RequestOffers: Seller.requestOffers
+      RequestOffers: Seller.requestOffers?.filter(row => selectedproducts.includes(row.requestProductId))
     };
   }
 
