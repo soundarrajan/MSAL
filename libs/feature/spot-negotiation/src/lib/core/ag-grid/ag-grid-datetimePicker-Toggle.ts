@@ -38,10 +38,10 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
         />
         <div
           style="height:15px;float:right;line-height:15px;width:30px;position: absolute;
-    right: -1px;"
+    right: -6px;"
         >
           {{ timeValue }}
-        </div>
+        </div>        
       </div>
     </div>
     <mat-datepicker-toggle matSuffix [for]="picker">
@@ -53,19 +53,18 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
       "
       #picker
       (opened)="opened()"
-    ></mat-datepicker>
-
+    ></mat-datepicker>    
     <input
       #timepicker
       [(ngModel)]="timerValue"
       (dateTimeChange)="onChange($event)"
       [owlDateTimeTrigger]="dt"
       [owlDateTime]="dt"
-      style="position: relative;top: -19px;
+      style="position: absolute;top: -19px;
                width: 100px;visibility:hidden;border: none"
     />
-    <div class="time-pick-container">
-    <span [owlDateTimeTrigger]="dt"><i style="font-size:20px" class="fa">&#xf017;</i></span>
+    
+    <span [owlDateTimeTrigger]="dt" style="position: absolute;top: 7px;left: 116px;"><i class="fa">&#xf017;</i></span>
       <owl-date-time [pickerType]="'timer'"
         #dt        
         [panelClass]="
@@ -75,7 +74,7 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
         (afterPickerOpen)="timepickerOpened()"
       ></owl-date-time>
     
-    </div>
+    
   `
 })
 export class AgGridDatetimePickerToggleComponent
