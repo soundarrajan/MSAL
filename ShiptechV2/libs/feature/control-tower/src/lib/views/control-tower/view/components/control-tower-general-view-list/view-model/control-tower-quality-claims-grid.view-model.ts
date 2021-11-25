@@ -477,7 +477,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
           "startDate": moment()
             .subtract(6, "months")
             .format('YYYY-MM-DD'),
-          "endDate": moment().format('YYYY-MM-DD'),          
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
       };
       this.controlTowerService.getQualityClaimCounts(payload)
       .pipe(takeUntil(this.destroy$))

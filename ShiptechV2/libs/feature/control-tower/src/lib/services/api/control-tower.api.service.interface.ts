@@ -74,6 +74,7 @@ export interface IControlTowerApiService {
   getSludgeDifferenceFiltersCount(request: any): any;
   getQuantityClaimCounts(request: any): any;
   getQualityClaimCounts(request: any): any;
+  getqualityLabCounts(request: any): any;
   /* END Default Filters counts */
   
 }

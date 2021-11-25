@@ -612,20 +612,19 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public getFiltersCount() {
-    if (this.groupedCounts) {
-      return false;
-    }
-    let payload = {
-      differenceType: {
-        name: 'Rob'
-      },
-      startDate: moment()
-        .subtract(6, 'days')
-        .format('YYYY-MM-DD'),
-      endDate: moment().format('YYYY-MM-DD')
-    };
-    this.controlTowerService
-      .getRobDifferenceFiltersCount(payload)
+      if(this.groupedCounts) {
+        return false;
+      }
+      let payload = {
+        "differenceType" : {
+          "name" : "Rob"
+          },
+          "startDate": moment()
+            .subtract(6, "days")
+            .format('YYYY-MM-DD'),
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
+      };
+      this.controlTowerService.getRobDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
