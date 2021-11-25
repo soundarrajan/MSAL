@@ -2,7 +2,7 @@
     <div class="spot-nego-title">Other Details</div>
     <div class="spot-dialog-title-right">
       <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button>
-      <button class="proceed-btn w-104" mat-button [mat-dialog-close]="true">Save</button>
+      <button class="proceed-btn w-104" mat-button [mat-dialog-close]="true" (click)="saveOtherDetails()">Save</button>
       <div class="title-divider">|</div>
       <div class="close-circle">
         <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
@@ -220,49 +220,95 @@
                           <div class="d-flex">
                             <mat-form-field class="with-search" appearance="legacy">
                               <mat-label>Quoted Product</mat-label>
-                              <input class="free-text-field" type="text" matInput required placeholder="Quoted Product">
+                              <input
+                                class="free-text-field"
+                                type="text"
+                                matInput
+                                [(ngModel)]="otherDetailsItems[productIndex].product"
+                                [matAutocomplete]="auto"
+                                placeholder="Quoted Product"
+                                required
+                              />
+                              <mat-autocomplete
+                                #auto="matAutocomplete"
+                                class="darkPanelAuto"
+                                [displayWith]="displayFn"
+                              >
+                                <mat-option *ngFor="let product of filterProductList()" [value]="product">
+                                  {{ product.name }}
+                                </mat-option>
+                              </mat-autocomplete>
                             </mat-form-field>
-                            <button class="search-icon">
-                              <div class="img">
-                              </div>
-                            </button>
+                            <button
+                            class="search-icon"
+                            appMasterSelectorTrigger
+                            [masterSelector]="masterSelector"
+                            #masterSelectorTrigger="masterSelectorTrigger"
+                            [header]="getHeaderNameSelector()"
+                          >
+                            <div class="img">
+                              <ng-template cdkPortal #masterSelector="cdkPortal">
+                                <shiptech-shared-master-selector
+                                  (selectedChange)="
+                                    selectorProductSelectionChange($event);
+                                    masterSelectorTrigger.close()
+                                  "
+                                  (shouldCloseModal)="masterSelectorTrigger.close()"
+                                  [selectorType]="autocompleteProducts"
+                                  [headerName]="getHeaderNameSelector()"
+                                ></shiptech-shared-master-selector>
+                              </ng-template>
+                            </div>
+                          </button>
                           </div>
                         </div>
   
-                        <div class="custom-form-field create-new-formula-form-field"
-                          [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                          <mat-form-field class="without-search">
+                        <div class="custom-form-field create-new-formula-form-field">
+                          <mat-form-field
+                            class="without-search long-label-field input-field-container"
+                            style="width: 64%;border: none;"
+                            appearance="legacy"
+                          >
                             <mat-label>Supply Qty</mat-label>
-                            <mat-select placeholder="Supply Qty">
-                              <mat-option>
-                                Discount
-                              </mat-option>
+                            <input
+                              [(ngModel)]="
+                              otherDetailsItems[productIndex].SupplyQuantity
+                              "
+                              matInput
+                              class="text-ellipsis"
+                              autocomplete="off"
+                              placeholder="Supply Qty"
+                              quantityFormat
+                              (keypress)="keyPressNumber($event)"
+                            />
+                          </mat-form-field>
+                          <mat-form-field style="width: 36%" appearance="legacy">
+                            <mat-select
+                              disableRipple
+                              [(ngModel)]="
+                              otherDetailsItems[productIndex].uom
+                              "
+                              [compareWith]="compareUomObjects"
+                              [disableOptionCentering]="true"
+                              
+                            >
+                              <mat-option *ngFor="let uom of uomList" [value]="uom">{{
+                                uom.name
+                              }}</mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
-                        <!-- <div class="custom-form-field create-new-formula-form-field supply-date"
-                          [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                          <mat-form-field  appearance="legacy">
-                           
-                            <input matInput placeholder="Supply Date">
-                            <mat-datepicker-toggle matSuffix [for]="picker">
-                              <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
-                              </mat-icon>
-                          </mat-datepicker-toggle>
-                         <input matInput [matDatepicker]="picker" [formControl]="today" (focus)="picker.open()">
-                          <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
-                        </div> -->
                         <div id="custom-form-field" class="lightTheme supply-date m-l-0">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Supply Date</mat-label>
                                 <input name="Supply date" 
-                                matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date">
-                                <mat-datepicker-toggle matSuffix [for]="invoiceDate">
+                                [(ngModel)]="otherDetailsItems[productIndex].SupplyDeliveryDate"
+                                matInput [matDatepicker]="SupplyDeliveryDate" (focus)="SupplyDeliveryDate.open()" autocomplete="off" placeholder="Supply Date">
+                                <mat-datepicker-toggle matSuffix [for]="SupplyDeliveryDate">
                                     <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #invoiceDate></mat-datepicker>
+                                <mat-datepicker #SupplyDeliveryDate></mat-datepicker>
                             </mat-form-field>
                          </div>
                       </div>

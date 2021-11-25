@@ -25,7 +25,8 @@ export const SpotNegotiationApiPaths = {
   previewRfqMail:`RFQ/previewRfqMail`,
   getExistingOrders:`api/procurement/order/getExistingOrders`,
   confirmRfq:`api/procurement/rfq/confirm`,
-  removeCounterparty:`Groups/removeSeller`
+  removeCounterparty:`Groups/removeSeller`,
+  otherDetails:`RFQ/otherDetails/requestChange`
 };
 
 @Injectable({
@@ -391,6 +392,23 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       )
     );
+  }
+
+  @ObservableException()
+  OtherDetails(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.otherDetails}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
   }
 }
 

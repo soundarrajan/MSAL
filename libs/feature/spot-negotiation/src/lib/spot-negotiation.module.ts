@@ -77,7 +77,11 @@ import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from './views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
+import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { PortalModule } from '@angular/cdk/portal';
+import { DeliveryModule } from '@shiptech/feature/delivery';
+import { DeliveryRoutingModule } from 'libs/feature/delivery/src/lib/delivery-routing.module';
 
 
 @NgModule({
@@ -88,16 +92,19 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ReactiveFormsModule,
     MaterialModule,
     FilterPresetsModule,
+    MasterSelectorModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     SpotNegotiationGridModule,
     SpotNegotiationRoutingModule,
     LoggingModule,
+    PortalModule,
     AuthenticationModule.forFeature(),
     SearchBoxModule,
     UIModule,
 
     MasterAutocompleteModule,
+    AutoCompleteModule,
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
@@ -112,7 +119,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     BreadcrumbsModule,
     HighchartsChartModule,
     NgxSpinnerModule,
-    CKEditorModule
+    CKEditorModule,
+    DeliveryModule,
+    DeliveryRoutingModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
