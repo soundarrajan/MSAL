@@ -3,11 +3,8 @@
   <ng-container *ngFor="let filter of filterPresets">
     <mat-chip
       *ngIf="filter.isPinned"
-      [ngClass]="[
-        filter.isActive
-          ? 'active-chip text-center'
-          : 'inactive-chip text-center'
-      ]"
+      class="{{filter.name == 'Default' ? 'is-default system-preference ' : ''}}"
+      [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']"
       (click)="applyFilter(filter.id)"
       [matTooltip]="filter.name"
       matTooltipClass="custom-tooltip-filter"
@@ -32,7 +29,8 @@
         [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'"
         matTooltipClass="custom-tooltip-filter"
       >
-        <i id="pin" class="fas fa-thumbtack aggrid-rotate-45 pin"></i>
+        <i *ngIf="filter.name !== 'Default'" id="pin" class="fas fa-thumbtack aggrid-rotate-45 pin"></i>
+        <span *ngIf="filter.name == 'Default'" class="fas fa-circle pin"></span>
       </div>
     </mat-chip>
     <!-- Insert system preferences after Default-->
