@@ -23,6 +23,8 @@ export class ControlTowerPopupComponent implements OnInit {
   public controlTowerActionStatus: any;
   public defaultStatus: string;
   public controlTowePopupForm = new FormControl();
+  initialDefaultStatus: string;
+  initialComments: string;
   constructor(
     private toastr: ToastrService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -33,10 +35,12 @@ export class ControlTowerPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.comments = data.comments;
+    this.initialComments = data.comments;
   }
 
   ngOnInit(): void {
     this.defaultStatus = this.data.progressId.toString();
+    this.initialDefaultStatus = this.data.progressId.toString();
     this.legacyLookupsDatabase
       .getTableByName('controlTowerActionStatus')
       .then(response => {
@@ -49,30 +53,34 @@ export class ControlTowerPopupComponent implements OnInit {
     //alert(status);
     this.status = status;
   }
+
   isDataChanged($event, field) {
-    if (field == 'status') {
-      if (this.data.progressId.toString() == $event || $event == '') {
-        this.logStatus =
-          this.logStatus != '' && this.logStatus == 'both' ? 'comment' : '';
-      } else if (this.data.progressId.toString() != $event) {
-        this.logStatus =
-          this.logStatus == '' || this.logStatus == 'status'
-            ? 'status'
-            : 'both';
-      }
-    } else if (field == 'comments') {
-      if (this.data?.comments == $event || $event.trim() == '') {
-        this.logStatus =
-          this.logStatus != '' && this.logStatus == 'both' ? 'status' : '';
-      } else if (this.data?.comments != $event) {
-        this.logStatus =
-          this.logStatus == '' || this.logStatus == 'comment'
-            ? 'comment'
-            : 'both';
+    if (this.data?.popupType == 'qualityLabs') {
+      if (field == 'status') {
+        if (this.data.progressId.toString() == $event || $event == '') {
+          this.logStatus =
+            this.logStatus != '' && this.logStatus == 'both' ? 'comment' : '';
+        } else if (this.data.progressId.toString() != $event) {
+          this.logStatus =
+            this.logStatus == '' || this.logStatus == 'status'
+              ? 'status'
+              : 'both';
+        }
+      } else if (field == 'comments') {
+        if (this.data?.comments == $event || $event.trim() == '') {
+          this.logStatus =
+            this.logStatus != '' && this.logStatus == 'both' ? 'status' : '';
+        } else if (this.data?.comments != $event) {
+          this.logStatus =
+            this.logStatus == '' || this.logStatus == 'comment'
+              ? 'comment'
+              : 'both';
+        }
       }
     }
     console.log($event);
   }
+
   fetchLabsActionPopup(payloadData) {
     this.controlTowerService
       .getQualityLabsPopUp(payloadData, payloadData => {
@@ -133,6 +141,22 @@ export class ControlTowerPopupComponent implements OnInit {
       });
   }
 
+  checkChangedFields() {
+    this.logStatus = null;
+    if (
+      parseFloat(this.initialDefaultStatus) != parseFloat(this.status) &&
+      this.initialComments != this.comments
+    ) {
+      this.logStatus = 'both';
+    } else if (
+      parseFloat(this.initialDefaultStatus) != parseFloat(this.status)
+    ) {
+      this.logStatus = 'status';
+    } else if (this.initialComments != this.comments) {
+      this.logStatus = 'comments';
+    }
+  }
+
   statusChanged() {
     if (this.data?.popupType == 'qualityLabs') {
       if (!this.logStatus && this.status != '1') {
@@ -160,6 +184,7 @@ export class ControlTowerPopupComponent implements OnInit {
           }
         });
     } else {
+      this.checkChangedFields();
       console.log(this.data.differenceType);
       let payloadData = {
         differenceType: this.data.differenceType,

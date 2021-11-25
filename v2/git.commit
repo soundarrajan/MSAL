@@ -1,11 +1,9 @@
-﻿commit f84289b8426de9ae17a59667ab0935b1c044a322
+﻿commit 779d0aff5501eb1000190ee3c96a1536e05121e4
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 25 12:35:04 2021 +0000
+Date:   Thu Nov 25 13:07:33 2021 +0000
 
-    Merged PR 14939: Fixed Default tabs for control tower views
+    Merged PR 14940: Worked on change log section from alert pop-up
     
-    Fixed Default tabs for control tower views
-    
-    Related work items: #37204
+    Worked on change log section from alert pop-up
 
 branch: master
