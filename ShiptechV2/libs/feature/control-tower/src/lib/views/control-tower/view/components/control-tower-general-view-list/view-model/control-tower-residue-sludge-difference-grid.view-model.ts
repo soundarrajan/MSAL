@@ -178,8 +178,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     dtoForExport:
       ControlTowerResidueSludgeDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    valueFormatter: params => this.format.dateUtc(params.value),
+    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 150
   };
 
@@ -603,7 +603,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     }
   }
 
-
   public getFiltersCount() {
       if(this.groupedCounts) {
         return false;
@@ -626,11 +625,11 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
           this.noOfMarkedAsSeen = response.noOfMarkedAsSeen;
           this.noOfResolved = response.noOfResolved;
           this.groupedCounts = {
-            noOfDefault : this.noOfDefault,
-            noOfNew : this.noOfNew,
-            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-            noOfResolved : this.noOfResolved,
-          }
+            noOfDefault: this.noOfDefault,
+            noOfNew: this.noOfNew,
+            noOfMarkedAsSeen: this.noOfMarkedAsSeen,
+            noOfResolved: this.noOfResolved
+          };
           this.changeDetector.detectChanges();
         },
         () => {
@@ -638,9 +637,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );
         }
-      );    
+      );
   }
-
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.getFiltersCount();

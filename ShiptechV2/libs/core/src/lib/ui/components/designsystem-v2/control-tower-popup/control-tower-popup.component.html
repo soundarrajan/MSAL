@@ -171,7 +171,9 @@
           [(ngModel)]="status"
           [(value)]="defaultStatus"
           [panelClass]="{ darkPanelBg: switchTheme }"
-          (selectionChange)="changeStatus($event.value)"
+          (selectionChange)="
+            changeStatus($event.value); isDataChanged($event.value, 'status')
+          "
         >
           <mat-option
             *ngFor="let value of controlTowerActionStatus"
@@ -184,10 +186,13 @@
     <div class="header-title">Comments</div>
     <textarea
       [ngModel]="comments | htmlDecodeReadonly"
-      (ngModelChange)="comments = $event"
+      (ngModelChange)="comments = $event; isDataChanged($event, 'comments')"
       spellcheck="false"
       maxlength="500"
     ></textarea>
+    <span class="text-danger" *ngIf="comments && comments.trim() == ''"
+      >Please enter valid comments</span
+    >
     <div class="link">
       <span>In relation to:</span>
       <span *ngIf="data.portCall">
@@ -229,40 +234,51 @@
   <div class="change-log col-12" *ngIf="data.changeLog?.length">
     <div class="header-title">Change Log</div>
     <div class="list-section" *ngIf="data.changeLog">
-      <!-- <div
-        class="list"
-        style="width:100%"
-        *ngFor="let value of data.changeLog.slice().reverse()"
-      >
-        <span></span>
-        <p>{{ formatDateTo12Hrs(value.date) }}</p>
-        <div class="description">
-          <div class="p-0 pt-1 pb-2 description-comments">
-            {{ value.user.name | htmlDecodeReadonly }} :
-            <em>{{ value.newComments | htmlDecodeReadonly }}</em>
-          </div>
-        </div>
-      </div> -->
       <div
-        style="width:100%"
-        class="list"
+        class="list col-md-12 log-container"
         *ngFor="let value of data.changeLog.slice().reverse()"
       >
-        <span></span>
-        <p class="log_status" *ngIf="value.newStatus?.displayName">
-          Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by
-          {{ value.user.name | htmlDecodeReadonly }}
-        </p>
-        <br />
-        <p
-          style="padding-left: 13px;line-height: 14px;"
-          class="log_comment"
-          *ngIf="value.newComments"
-        >
-          <!-- {{ value.user.name | htmlDecodeReadonly }} : -->
-          <em>{{ value.newComments | htmlDecodeReadonly }}</em>
-        </p>
-        <div class="description">{{ formatDateTo12Hrs(value.date) }}</div>
+        <ng-container *ngIf="!value?.logStatus">
+          <span></span>
+          <div class="col-md-12">
+            Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by
+            {{ value.user.name | htmlDecodeReadonly }}
+          </div>
+          <div class="col-md-12 comments-container">
+            {{ value.newComments | htmlDecodeReadonly }}
+          </div>
+          <div class="description">{{ formatDateTo12Hrs(value.date) }}</div>
+        </ng-container>
+
+        <ng-container *ngIf="value?.logStatus">
+          <span></span>
+          <div
+            class="col-md-12"
+            *ngIf="
+              value.newStatus?.displayName &&
+              (value?.logStatus == 'status' || value?.logStatus == 'both')
+            "
+          >
+            Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by
+            {{ value.user.name | htmlDecodeReadonly }}
+          </div>
+          <div
+            class="col-md-12"
+            [ngClass]="{ 'comments-container': value?.logStatus == 'both' }"
+            *ngIf="
+              value.newComments &&
+              (value?.logStatus == 'comment' || value?.logStatus == 'both')
+            "
+          >
+            <ng-container
+              *ngIf="value.logStatus && value?.logStatus == 'comment'"
+            >
+              {{ value.user.name | htmlDecodeReadonly }} :
+            </ng-container>
+            {{ value.newComments | htmlDecodeReadonly }}
+          </div>
+          <div class="description">{{ formatDateTo12Hrs(value.date) }}</div>
+        </ng-container>
       </div>
     </div>
   </div>
