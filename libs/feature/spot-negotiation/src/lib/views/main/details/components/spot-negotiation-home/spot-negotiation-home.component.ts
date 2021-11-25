@@ -278,7 +278,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   ConstuctSellerPayload(Seller, requestProducts, Request) {
     let selectedproducts = [];
     let rfqId = 0;
-    let isRfqSkipped= null;
+
     if(Seller['checkProd1']){
       selectedproducts.push(requestProducts[0].id)
     }
@@ -296,7 +296,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
     if((Seller.requestOffers  !== undefined) && Seller.requestOffers.length >0){
       rfqId = Seller.requestOffers[0].rfqId;
-      isRfqSkipped = Seller.requestOffers[0].isRfqskipped;
+      //isRfqSkipped = Seller.requestOffers[0].isRfqskipped;
     }
     return {
       RequestLocationSellerId: Seller.id,
@@ -307,7 +307,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
       RequestProductIds: selectedproducts,
       RfqId: rfqId,
-      IsRfqSkipped: isRfqSkipped,
+      RequestOffers: Seller.requestOffers
     };
   }
 
@@ -340,7 +340,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
       return;
     }
-    else if(this.selectedSellerList.find(x=>x.RfqId!==0 && x.IsRfqSkipped === true)){
+    else if(this.selectedSellerList.find(x=>x.RfqId!==0 && x.RequestOffers?.find(x=>x.isRfqskipped === true))){
       this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
       return;
     }
@@ -376,7 +376,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error(errormessage);
       return;
     }
-    else if(this.selectedSellerList.find(x=>x.RfqId!==0 && x.IsRfqSkipped === false)){
+    else if(this.selectedSellerList.find(x=>x.RfqId!==0 && x.RequestOffers?.find(x=>x.isRfqskipped === false))){
       this.toaster.error('RFQ communicated to the counterparty already.');
       return;
     }
@@ -434,6 +434,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   revokeRFQ() {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
+    debugger;
     if (Selectedfinaldata.length == 0) {
       let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
@@ -443,7 +444,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Revoke RFQ cannot be sent as RFQ was not communicated.');
       return;
     }
-    else if(this.selectedSellerList.find(x=>x.RfqId !==0 && x.IsRfqSkipped === true)){
+    else if(this.selectedSellerList.find(x=>x.RfqId !==0 && x.RequestOffers?.find(x=>x.isRfqskipped === true))){
       this.toaster.error('Revoke RFQ mail cannot be sent as RFQ was not communicated to the counterparty.');
       return;
     }
