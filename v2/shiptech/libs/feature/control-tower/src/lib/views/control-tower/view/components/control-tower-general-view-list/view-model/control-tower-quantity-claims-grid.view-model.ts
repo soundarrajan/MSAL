@@ -516,7 +516,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
           "startDate": moment()
             .subtract(6, "months")
             .format('YYYY-MM-DD'),
-          "endDate": moment().format('YYYY-MM-DD'),          
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`         
       };
       this.controlTowerService.getQuantityClaimCounts(payload)
       .pipe(takeUntil(this.destroy$))

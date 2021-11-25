@@ -604,20 +604,19 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   }
 
   public getFiltersCount() {
-    if (this.groupedCounts) {
-      return false;
-    }
-    let payload = {
-      differenceType: {
-        name: 'Sludge'
-      },
-      startDate: moment()
-        .subtract(6, 'days')
-        .format('YYYY-MM-DD'),
-      endDate: moment().format('YYYY-MM-DD')
-    };
-    this.controlTowerService
-      .getSludgeDifferenceFiltersCount(payload)
+      if(this.groupedCounts) {
+        return false;
+      }
+      let payload = {
+        "differenceType" : {
+          "name" : "Sludge"
+          },
+          "startDate": moment()
+            .subtract(6, "days")
+            .format('YYYY-MM-DD'),
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
+      };
+      this.controlTowerService.getSludgeDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
