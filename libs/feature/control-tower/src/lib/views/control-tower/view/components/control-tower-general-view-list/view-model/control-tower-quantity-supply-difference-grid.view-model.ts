@@ -677,7 +677,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           "startDate": moment()
             .subtract(6, "days")
             .format('YYYY-MM-DD'),
-          "endDate": moment().format('YYYY-MM-DD'),          
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
       };
       this.controlTowerService.getSupplyDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))

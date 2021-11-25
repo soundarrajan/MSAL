@@ -615,7 +615,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
           "startDate": moment()
             .subtract(6, "days")
             .format('YYYY-MM-DD'),
-          "endDate": moment().format('YYYY-MM-DD'),          
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
       };
       this.controlTowerService.getSludgeDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))

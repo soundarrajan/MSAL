@@ -618,7 +618,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           "startDate": moment()
             .subtract(6, "days")
             .format('YYYY-MM-DD'),
-          "endDate": moment().format('YYYY-MM-DD'),          
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
       };
       this.controlTowerService.getRobDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))

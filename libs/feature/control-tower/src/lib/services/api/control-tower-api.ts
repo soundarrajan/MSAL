@@ -345,6 +345,13 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+  @ObservableException()
+  getqualityLabCounts(request): any {
+    return this.http.post(
+      `${this._labsApiUrl}/api/controlTower/qualityLabCounts`,
+      { payload: request }
+    );
+  }
 
 }
 
