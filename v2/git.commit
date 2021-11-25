@@ -1,11 +1,9 @@
-﻿commit cfa26e8d2b637f1c47490e03663c8097ebd2b6cf
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Nov 25 10:09:52 2021 +0000
+﻿commit de2d839b1ecf5899ebab75b1457d31872aec24a0
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Nov 25 10:31:13 2021 +0000
 
-    Merged PR 14924: 36971 - special char issue fix
+    Merged PR 14928: Bug 37085: Control tower(Quality view Labs)-In the alert action pop up, Status changed information is missed in the change log section.
     
-    36971 - special char issue fix
-    
-    Related work items: #36971
+    Related work items: #37085
 
 branch: master
