@@ -51,6 +51,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   public noOfNew: number;
   public noOfMarkedAsSeen: number;
   public noOfResolved: number;
+  public noOfDefault: number;
 
   public searchText: string;
   public exportUrl: string;
@@ -303,7 +304,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     suppressSorting: true,
     width: 110
   };
-  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; };
+  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; noOfDefault: number};
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -480,14 +481,44 @@ public checkStatusAvailable(): void {
     console.log(params);
     
   }
+
+  public getFiltersCount() {
+      if(this.groupedCounts) {
+        return false;
+      }
+      let payload = {
+          "startDate": moment()
+            .subtract(6, "days")
+            .format('YYYY-MM-DD'),
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`         
+      };
+      this.controlTowerService.getqualityLabCounts(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        response => {
+          this.noOfDefault = response.noOfLastSevenDays;
+          this.noOfNew = response.noOfNew;
+          this.noOfMarkedAsSeen = response.noOfMarkedAsSeen;
+          this.noOfResolved = response.noOfResolved;
+          this.groupedCounts = {
+            noOfDefault: this.noOfDefault,
+            noOfNew : this.noOfNew,
+            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
+            noOfResolved : this.noOfResolved,
+          }
+          this.changeDetector.detectChanges();
+        },
+        () => {
+          this.appErrorHandler.handleError(
+            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+          );
+        }
+      );    
+  }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const grid1 = this.gridApi.getSortModel();
-    // this.gridApi.setSortModel([
-    //   {
-    //     colId: 'createdDate',
-    //     sort: 'asc'
-    //   }
-    // ]);
+    this.getFiltersCount();
     console.log(grid1);
     this.formatFilterModel(params);
     this.checkStatusAvailable();
@@ -504,16 +535,8 @@ public checkStatusAvailable(): void {
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {
-          // this.noOfNew = response.payload.noOfNew;
-          // this.noOfMarkedAsSeen = response.payload.noOfMarkedAsSeen;
-          // this.noOfResolved = response.payload.noOfResolved;
-          // this.groupedCounts = {
-          //   noOfNew : this.noOfNew,
-          //   noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-          //   noOfResolved : this.noOfResolved,
-          // }          
-          params.successCallback(response.payload.items, response.matchedCount);
+        response => {    
+          params.successCallback(response.payload, response.matchedCount);
         },
         () => {
           this.appErrorHandler.handleError(
