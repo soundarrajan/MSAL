@@ -1,9 +1,9 @@
-﻿commit 04d38ffbdf8899894718eeeefe5479e5ab156b0f
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 25 09:11:02 2021 +0000
+﻿commit 6c12f652b9d2ec0ea23610107490bf7eec633c99
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Nov 25 09:54:01 2021 +0000
 
-    Merged PR 14919: #33672: Quality View: Labs createdDate UTC format has updated
+    Merged PR 14921: Fixed tooltip UI for the table contents and the filter chips
     
-    Related work items: #33672
+    Fixed tooltip UI for the table contents and the filter chips
 
 branch: master

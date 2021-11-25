@@ -228,7 +228,9 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
         of(
           body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : null
+            : body.status == 401
+            ? { message: 'Unauthorized' }
+            : body.error.errorMessage + ' ' + body.error.reference
         )
       )
     );
@@ -281,7 +283,9 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
         of(
           body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
-            : null
+            : body.status == 401
+            ? { message: 'Unauthorized' }
+            : body.error.errorMessage + ' ' + body.error.reference
         )
       )
     );

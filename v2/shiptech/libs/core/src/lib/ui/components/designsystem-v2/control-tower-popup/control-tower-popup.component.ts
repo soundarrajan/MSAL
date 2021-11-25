@@ -50,26 +50,33 @@ export class ControlTowerPopupComponent implements OnInit {
     this.status = status;
   }
   isDataChanged($event, field) {
-    if(field == 'status') {
-      if(this.data.progressId.toString() == $event || $event == '') {
-        this.logStatus = ((this.logStatus != '' && this.logStatus == 'both'))? 'comment': '';
-      } else if(this.data.progressId.toString() != $event) {
-        this.logStatus = (this.logStatus == '' || this.logStatus=='status')? 'status': 'both';
+    if (field == 'status') {
+      if (this.data.progressId.toString() == $event || $event == '') {
+        this.logStatus =
+          this.logStatus != '' && this.logStatus == 'both' ? 'comment' : '';
+      } else if (this.data.progressId.toString() != $event) {
+        this.logStatus =
+          this.logStatus == '' || this.logStatus == 'status'
+            ? 'status'
+            : 'both';
       }
-    } else if(field == 'comments') {
-      if(this.data?.comments == $event || $event.trim() == '') {
-        this.logStatus = ((this.logStatus != '' && this.logStatus == 'both'))? 'status': '';
-      } else if(this.data?.comments != $event) {
-        this.logStatus = (this.logStatus == '' || this.logStatus=='comment')? 'comment': 'both';
+    } else if (field == 'comments') {
+      if (this.data?.comments == $event || $event.trim() == '') {
+        this.logStatus =
+          this.logStatus != '' && this.logStatus == 'both' ? 'status' : '';
+      } else if (this.data?.comments != $event) {
+        this.logStatus =
+          this.logStatus == '' || this.logStatus == 'comment'
+            ? 'comment'
+            : 'both';
       }
     }
     console.log($event);
-    
   }
   fetchLabsActionPopup(payloadData) {
     this.controlTowerService
-    .getQualityLabsPopUp(payloadData, payloadData => {
-      console.log('asd');
+      .getQualityLabsPopUp(payloadData, payloadData => {
+        console.log('asd');
       })
       .pipe()
       .subscribe(
@@ -85,24 +92,59 @@ export class ControlTowerPopupComponent implements OnInit {
                   logObj['newComments'] = logObj.comments;
                   return logObj;
                 }) ?? [];
-                this.data.comments = response[0]?.comments;
-                this.data.status = response[0]?.controlTowerActionStatusId;
+              this.data.comments = response[0]?.comments;
+              this.data.status = response[0]?.controlTowerActionStatusId;
             }
           }
         },
         () => {}
       );
   }
+
+  getQuantityResiduePopUp(payloadData) {
+    this.controlTowerService
+      .getQuantityResiduePopUp(payloadData, payloadData => {
+        console.log('asd');
+      })
+      .pipe()
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.data.changeLog = _.cloneDeep(response.changeLog);
+        }
+      });
+  }
+
+  getResiduePopUp(payloadData) {
+    this.controlTowerService
+      .getResiduePopUp(payloadData, payloadData => {
+        console.log('asd');
+      })
+      .pipe()
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.data.changeLog = _.cloneDeep(response.changeLog);
+        }
+      });
+  }
+
   statusChanged() {
-    if(this.data?.popupType == "qualityLabs") {
-      if(!this.logStatus && (this.status != '1')) { return; }
+    if (this.data?.popupType == 'qualityLabs') {
+      if (!this.logStatus && this.status != '1') {
+        return;
+      }
       let payloadData = {
-        "controlTowerActionStatusId": this.status,
-        "comments": (this.comments && this.comments.trim()!='')? this.comments : '',
-        "labResultId": this.data?.lab,
-        "logStatus": (!this.logStatus && this.status == '1') ? 'status': this.logStatus
+        controlTowerActionStatusId: this.status,
+        comments:
+          this.comments && this.comments.trim() != '' ? this.comments : '',
+        labResultId: this.data?.lab,
+        logStatus:
+          !this.logStatus && this.status == '1' ? 'status' : this.logStatus
       };
-  
+
       this.controlTowerService
         .saveQualityLabsPopUp(payloadData, payloadData => {
           console.log('labs changes updated..');
@@ -137,8 +179,16 @@ export class ControlTowerPopupComponent implements OnInit {
           .subscribe((response: any) => {
             if (typeof response == 'string') {
               this.toastr.error(response);
-            } else {
+            } else if (response?.message === 'Unauthorized') {
               this.resetUserChanges();
+            } else {
+              let payload = {
+                differenceType: this.data.differenceType,
+                quantityControlReport: {
+                  id: this.data.quantityControlReport.id
+                }
+              };
+              this.getQuantityResiduePopUp(payload);
             }
           });
       } else if (this.data.differenceType.name == 'Sludge') {
@@ -150,13 +200,21 @@ export class ControlTowerPopupComponent implements OnInit {
           .subscribe((response: any) => {
             if (typeof response == 'string') {
               this.toastr.error(response);
-            } else {
+            } else if (response?.message === 'Unauthorized') {
               this.resetUserChanges();
+            } else {
+              let payload = {
+                differenceType: this.data.differenceType,
+                quantityControlReport: {
+                  id: this.data.quantityControlReport.id
+                }
+              };
+              this.getResiduePopUp(payload);
             }
           });
       }
     }
-}
+  }
   closeDialog() {
     this.dialogRef.close();
   }
@@ -192,10 +250,11 @@ export class ControlTowerPopupComponent implements OnInit {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       //convert tenant setting format to 24 hrs as per requirement design
       currentFormat = currentFormat.replace(/H/g, 'h').concat(' a');
-      
+
       // let formattedDate = moment(elem).format(currentFormat);
       let formattedDate = moment(date).format(
-        dateTimeAdapter.fromDotNet(currentFormat));
+        dateTimeAdapter.fromDotNet(currentFormat)
+      );
       if (hasDayOfWeek) {
         formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
       }
@@ -214,12 +273,14 @@ export class ControlTowerPopupComponent implements OnInit {
   }
 
   canSave() {
-    if( !this.data.changeLog ) {
+    if (!this.data.changeLog) {
       return true;
     }
-    if(
-      this.data.changeLog[this.data.changeLog.length - 1].newComments != this.comments
-      || this.data.changeLog[this.data.changeLog.length - 1].newStatus.id != +this.status
+    if (
+      this.data.changeLog[this.data.changeLog.length - 1].newComments !=
+        this.comments ||
+      this.data.changeLog[this.data.changeLog.length - 1].newStatus.id !=
+        +this.status
     ) {
       return true;
     }
@@ -227,13 +288,16 @@ export class ControlTowerPopupComponent implements OnInit {
   }
 
   resetUserChanges() {
-    if( !this.data.changeLog ) {
-      this.comments = "";
+    if (!this.data.changeLog) {
+      this.comments = '';
     } else {
-      this.comments =  this.data.changeLog[this.data.changeLog.length - 1].newComments;
-      this.status = this.data.changeLog[this.data.changeLog.length - 1].newStatus.id.toString();
+      this.comments = this.data.changeLog[
+        this.data.changeLog.length - 1
+      ].newComments;
+      this.status = this.data.changeLog[
+        this.data.changeLog.length - 1
+      ].newStatus.id.toString();
       this.changeDetectorRef.detectChanges();
     }
-  }  
-
+  }
 }

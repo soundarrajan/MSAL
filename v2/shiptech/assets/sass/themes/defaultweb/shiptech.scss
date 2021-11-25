@@ -8310,13 +8310,11 @@ tr.title {
       background: none !important;
       border: none !important;
       .ag-tooltip {
-        height: 28px;
-        // background: #37414f !important;
+        border: unset !important;
         border-radius: 5px;
-        // font-weight: 500;
-        // font-size: 14px;
-        font-size: 12px;
-        // color: #ffffff !important;
+        color: white;
+        font-weight: 500;
+        font-size: 14px;
       }
     }
     .search-notes {
@@ -9071,13 +9069,11 @@ tr.title {
       background: none !important;
       border: none !important;
       .ag-tooltip {
-        height: 28px;
-        // background: #37414f !important;
+        border: unset !important;
         border-radius: 5px;
-        font-size: 12px;
-        // font-weight: 500;
-        // font-size: 14px;
-        // color: #ffffff !important;
+        color: white;
+        font-weight: 500;
+        font-size: 14px;
       }
     }
 
@@ -23629,4 +23625,13 @@ mat-form-field {
 
 .text-danger {
   color: #bd2130 !important;
+}
+
+.custom-tooltip-filter {
+  border: unset !important;
+  background: none !important;
+  border-radius: 5px;
+  color: white;
+  font-weight: 500 !important;
+  font-size: 14px !important;
 }
