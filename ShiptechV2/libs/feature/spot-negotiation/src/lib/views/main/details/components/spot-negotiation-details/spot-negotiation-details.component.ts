@@ -104,6 +104,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerTooltip: 'Name',
           field: 'sellerCounterpartyName',
           width: 250,
+          minWidth: 150,
           cellClass: 'suppress-movable-col remove-option hoverCell',
           pinned: 'left',
           headerClass: 'm-l-7',
@@ -126,6 +127,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           pinned: 'left',
           field: 'genRating',
           width: 95,
+          minWidth: 85,
           suppressSizeToFit: true,
           cellClass: 'aggridtextalign-center',
           cellRendererFramework: AGGridCellRendererV2Component,
@@ -143,6 +145,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           pinned: 'left',
           field: 'portRating',
           width: 95,
+          minWidth: 85,
           suppressSizeToFit: true,
           cellClass: 'aggridtextalign-center',
           cellRendererFramework: AGGridCellRendererV2Component,
@@ -161,6 +164,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'border-right',
           field: 'physicalSupplierCounterpartyName',
           width: 150,
+          minWidth: 100,
           suppressSizeToFit: true,
           cellClass: 'line-seperator-pinned',
           cellRendererFramework: AGGridCellRendererV2Component,
@@ -232,6 +236,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
+      suppressMovable: true,
+      suppressDragLeaveHidesColumns: true,
+      lockPosition: true,
       headerHeight: 30,
       groupHeaderHeight: 80,
       rowHeight: 35,
@@ -462,6 +469,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       marryChildren: true,
       resizable: false,
       groupId: 'grid1',
+      suppressMovable: true,
+      lockPosition: true,
 
       children: [
         {
@@ -475,12 +484,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           maxWidth: 30,
           // checkboxSelection: true,
           resizable: false,
-          suppressMovable: true,
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: 'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'mat-check-box',
             productId: product.productId, status: product.status },
+          lockPosition: true
         },
         {
           headerName: 'Offer price',
@@ -493,7 +502,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 125,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
-          valueSetter: ({ colDef, data, newValue }) => {
+          valueSetter: ({ colDef, data, newValue, event }) => {
             let updatedRow = { ...data };
             let _this = this;
 
@@ -504,6 +513,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
             if (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierCounterpartyId) {
               this.toastr.error('Physical supplier is mandatory for quoting the price.');
+              event.target.value = '';
+              event.target.focus();
               return false;
             }
 
@@ -534,7 +545,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             product: product,
             cellClass: ''
           },
-          suppressSizeToFit: true
+          suppressSizeToFit: true,
+          lockPosition: true
         },
         {
           headerName: 'T.Pr.($)',
@@ -557,7 +569,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return null;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'addTpr', cellClass: '' }
+          cellRendererParams: { type: 'addTpr', cellClass: '' },
+          lockPosition: true
         },
         {
           headerName: 'Amt ($)',
@@ -571,7 +584,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 95,
           cellClass: 'grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'amt', cellClass: '' }
+          cellRendererParams: { type: 'amt', cellClass: '' },
+          lockPosition: true
         },
         {
           headerName: 'Tar. diff',
@@ -586,21 +600,24 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'border-right',
           cellClass: 'line-seperator grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'diff', cellClass: '' }
+          cellRendererParams: { type: 'diff', cellClass: '' },
+          lockPosition: true
         },
         {
           headerName: 'MJ/KJ',
           headerTooltip: 'MJ/KJ',
           field: `mj$`,
           columnGroupShow: 'open',
-          cellClass: 'grey-opacity-cell pad-lr-0'
+          cellClass: 'grey-opacity-cell pad-lr-0',
+          lockPosition: true
         },
         {
           headerName: 'TCO ($)',
           headerTooltip: 'TCO ($)',
           field: `tco$`,
           columnGroupShow: 'open',
-          cellClass: 'grey-opacity-cell pad-lr-0'
+          cellClass: 'grey-opacity-cell pad-lr-0',
+          lockPosition: true
         },
         {
           headerName: 'E. diff',
@@ -608,7 +625,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           field: `ediff`,
           columnGroupShow: 'open',
           headerClass: 'border-right',
-          cellClass: 'line-seperator grey-opacity-cell pad-lr-5'
+          cellClass: 'line-seperator grey-opacity-cell pad-lr-5',
+          lockPosition: true
         }
       ]
     };
