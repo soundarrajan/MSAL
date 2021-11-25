@@ -232,7 +232,8 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     const selectedCounterparties = this.toBeAddedCounterparties();
     if (selectedCounterparties.length == 0) return;
     if(this.data.isPhysicalSupplier){
-      let reqPayload={
+      if(selectedCounterparties.length==1){
+        let reqPayload={
           "RequestLocationSellerId":this.data.requestLocationSellerId,
           "phySupplierId": selectedCounterparties[0].sellerCounterpartyId
       }
@@ -246,6 +247,10 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         return;
       }
     });
+      }else{
+        this.toastr.error("Please select single counterparty to proceed");
+      }
+      
     this.dialogRef.close({
       sellerName: selectedCounterparties[0].sellerCounterpartyName
     }
