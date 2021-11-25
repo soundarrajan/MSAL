@@ -659,7 +659,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Set smallest total price
         const productDetails = this.getRowProductDetails(row, product.id)
 
-        if (productDetails.totalPrice && Number(smallestTotalPrice) > Number(productDetails.totalPrice)) {
+        if (productDetails.totalPrice && Number(productDetails.totalPrice) > 0 && Number(smallestTotalPrice) > Number(productDetails.totalPrice)) {
           smallestTotalPrice = productDetails.totalPrice;
           this.highlightedCells[product.productId].rowId = row.id;
           this.highlightedCells[product.productId].requestProductId = product.id;
@@ -668,7 +668,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Set smallest offer price
         const quotedProductsLength = row.requestOffers?.filter(x => x.price).length;
         if (row.totalOffer && quotedProductsLength === requestProductsLength &&
-          Number(smallestOffer) > Number(row.totalOffer)) {
+          Number(smallestOffer) > Number(row.totalOffer) && Number(row.totalOffer) > 0) {
             smallestOffer = row.totalOffer;
           // Create key with id if dosen't exists;
 
@@ -754,6 +754,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
       // Set headers of products;
       this.columnDef_aggridObj = [];
+      this.highlightedCells = {};
 
       this.locations.forEach((reqLocation, i) => {
         // Separate rows for each location;
