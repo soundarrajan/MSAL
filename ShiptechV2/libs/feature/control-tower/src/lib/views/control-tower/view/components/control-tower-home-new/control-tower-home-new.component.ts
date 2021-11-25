@@ -104,7 +104,9 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
           `${KnownControlTowerRoutes.ControlTowerList}`,
           5
         ])
-        .then(() => {});
+        .then(() => {
+          this.selectedVal = 'labs';
+        });
     } else if ($event.value == 'quantity') {
       this.showQuality = false;
       this.showQuantity = true;
@@ -116,7 +118,9 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
           `${KnownControlTowerRoutes.ControlTowerList}`,
           6
         ])
-        .then(() => {});
+        .then(() => {
+          this.selectedVal2 = 'differences';
+        });
     } else if ($event.value == 'residue') {
       this.showQuality = false;
       this.showQuantity = false;
@@ -128,11 +132,14 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
           `${KnownControlTowerRoutes.ControlTowerList}`,
           7
         ])
-        .then(() => {});
+        .then(() => {
+          this.selectedVal3 = 'differences';
+        });
     } else {
       this.showQuality = true;
       this.showQuantity = false;
       this.showResidue = false;
+      this.selectedVal = 'labs';
     }
   }
 }
