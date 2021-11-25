@@ -237,9 +237,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     colId: ControlTowerQualityLabsListColumns.createdDate,
     field: model('createdDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
+    valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQualityLabsListExportColumns.createdDate,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 200
   };
 
@@ -469,11 +469,22 @@ public checkStatusAvailable(): void {
         let claimRaisedFilterVal = filterModel.claimsRaised?.filter;
         if(!claimRaisedFilterVal || !(claimRaisedFilterVal.trim())) { return; }
         claimRaisedFilterVal = claimRaisedFilterVal.trim().toLowerCase();
+        let filterClaimCondition = '';
+        if(filterModel.claimsRaised?.type == 'equals' || filterModel.claimsRaised?.type == 'notEqual') {
+            filterClaimCondition = (claimRaisedFilterVal=='no')? '0': ((claimRaisedFilterVal=='yes')? '1': '2');
+        } else if(filterModel.claimsRaised?.type == 'startsWith') {
+            filterClaimCondition = ('no'.startsWith(claimRaisedFilterVal))? '0': (('yes'.startsWith(claimRaisedFilterVal))? '1': '2');
+        } else if(filterModel.claimsRaised?.type == 'endsWith') {
+            filterClaimCondition = ('no'.endsWith(claimRaisedFilterVal))? '0': (('yes'.endsWith(claimRaisedFilterVal))? '1': '2');
+        } else {
+            filterClaimCondition = (claimRaisedFilterVal)=='no' || (['n','o'].indexOf(claimRaisedFilterVal)!=-1)? '0': 
+        ((claimRaisedFilterVal)=='yes' || (['y','e', 's', 'ye', 'es'].indexOf(claimRaisedFilterVal)!=-1)? '1': '2');
+        }
         var updatedFilter = {
             ...filterModel,
             claimsRaised: {
                 ...filterModel.claimsRaised,
-                filter: (claimRaisedFilterVal)=='no' || (['n','o'].indexOf(claimRaisedFilterVal)!=-1)? '0': '1'
+                filter: filterClaimCondition
             }
         }
         params['request']['filterModel'] = updatedFilter;

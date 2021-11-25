@@ -176,8 +176,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     dtoForExport:
       ControlTowerQuantityRobDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    valueFormatter: params => this.format.dateUtc(params.value),
+    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 150
   };
 
@@ -455,8 +455,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     sortable: false,
     filter: false
   };
-  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; noOfDefault: number};
-
+  groupedCounts: {
+    noOfNew: number;
+    noOfMarkedAsSeen: number;
+    noOfResolved: number;
+    noOfDefault: number;
+  };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -487,17 +491,17 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public systemFilterUpdate(value) {
-    let currentFilter = value.filter(o => o.isActive); 
+    let currentFilter = value.filter(o => o.isActive);
     switch (currentFilter[0].id) {
-      case "new":
+      case 'new':
         this.filterGridNew(currentFilter[0].label);
         break;
-      case "marked-as-seen":
+      case 'marked-as-seen':
         this.filterGridMAS(currentFilter[0].label);
         break;
-      case "resolved":
+      case 'resolved':
         this.filterGridResolved(currentFilter[0].label);
-        break;                
+        break;
     }
   }
 
@@ -630,10 +634,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           this.noOfResolved = response.noOfResolved;
           this.groupedCounts = {
             noOfDefault: this.noOfDefault,
-            noOfNew : this.noOfNew,
-            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-            noOfResolved : this.noOfResolved,
-          }
+            noOfNew: this.noOfNew,
+            noOfMarkedAsSeen: this.noOfMarkedAsSeen,
+            noOfResolved: this.noOfResolved
+          };
           this.changeDetector.detectChanges();
         },
         () => {
@@ -641,7 +645,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );
         }
-      );    
+      );
   }
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.getFiltersCount();
@@ -660,7 +664,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {      
+        response => {
           params.successCallback(
             response.payload,
             response.payload[0]?.totalCount ?? 0
