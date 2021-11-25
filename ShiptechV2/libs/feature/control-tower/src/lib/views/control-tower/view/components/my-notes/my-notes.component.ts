@@ -25,6 +25,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { title } from 'process';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Pipe({
@@ -63,14 +64,8 @@ export class HighlightPipe implements PipeTransform {
 })
 export class MyNotesComponent implements OnInit {
   public notesContent: any = [];
-  public savedContent: any;
   public selectedDeleteTitleIndex: any;
-  public monthlynotesContent: any;
-  public weeklynotesContent: any;
-  public loadnotesContent = [];
   public clickFiltered: boolean = true;
-  public allContent;
-  any;
   public searchText;
   public filterTitle: any;
   public filterHeadTitle: any;
@@ -98,6 +93,7 @@ export class MyNotesComponent implements OnInit {
   selectedLineContent: any[] = [];
   filteredNotes: any;
   user: IDisplayLookupDto<number, string>;
+  initialNotesContent: any = [];
 
   get controlTowerNotesViewType(): any[] {
     return this._controlTowerNotesViewType;
@@ -131,8 +127,7 @@ export class MyNotesComponent implements OnInit {
 
   @ViewChild('notesSection') notesSection: ElementRef;
   @ViewChild('titleSection') titleSection: ElementRef;
-  public text: String = `Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore Lorem Ipsum dolor sit amet, 
-  consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore`;
+
   constructor(
     private controlTowerService: ControlTowerService,
     private toastr: ToastrService,
@@ -226,13 +221,14 @@ export class MyNotesComponent implements OnInit {
           this.spinner.hide();
         } else {
           this.spinner.hide();
-          this.notesContent = response;
+          this.notesContent = _.cloneDeep(response);
           let index = this.getFirstIndexWithNotes();
           if (typeof index != 'undefined') {
             this.notesContent[index].selected = true;
           } else {
             this.notesContent[0].selected = true;
           }
+          this.initialNotesContent = _.cloneDeep(this.notesContent);
           this.changeDetectorRef.detectChanges();
         }
       });
@@ -254,7 +250,7 @@ export class MyNotesComponent implements OnInit {
     }
   }
 
-  autoSaveNotes(noteLine, selectedPeriodLine) {
+  autoSaveNotes(noteLine, selectedPeriodLine, lineIndex, noteIndex) {
     let payload: IControlTowerSaveNotesItemDto = {
       view: this.view,
       id: noteLine.id,
@@ -271,6 +267,18 @@ export class MyNotesComponent implements OnInit {
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
+        } else if (response.message === 'Unauthorized') {
+          console.log(response);
+          if (!noteLine.id) {
+            selectedPeriodLine.notes.splice(0, 1);
+          } else {
+            let initialNote = this.initialNotesContent[lineIndex]?.notes[
+              noteIndex
+            ];
+            console.log(initialNote);
+            noteLine.title = initialNote.title;
+            noteLine.message = initialNote.message;
+          }
         } else {
           noteLine.id = response.id;
           noteLine.lastModifiedOn = response.lastModifiedOn;
@@ -319,11 +327,16 @@ export class MyNotesComponent implements OnInit {
     this.deletingTitle = true;
   }
 
-  deleteTitles(selectedPeriodLine) {
+  deleteTitles(selectedPeriodLine, lineIndex) {
     let noteLine = selectedPeriodLine.notes[this.selectedDeleteTitleIndex];
     if (noteLine.id) {
       noteLine.isDeleted = true;
-      this.autoSaveNotes(noteLine, selectedPeriodLine);
+      this.autoSaveNotes(
+        noteLine,
+        selectedPeriodLine,
+        lineIndex,
+        this.selectedDeleteTitleIndex
+      );
     } else {
       selectedPeriodLine.notes.splice(this.selectedDeleteTitleIndex, 1);
     }
