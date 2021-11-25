@@ -981,11 +981,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onPriceChange(e, params) {
-    const futureValue = e.target.value;
+    // const futureValue = e.target.value;
 
-    if (!futureValue) {
-      return null;
-    }
+    // if (!futureValue) {
+    //   return null;
+    // }
 
     if( (document.getElementById("Enabledconfirm") as any).length > 0){
       (document.getElementById("Enabledconfirm") as any).disabled = false;
@@ -993,7 +993,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     params.colDef.valueSetter({
       colDef: params.colDef,
       data: params.data,
-      newValue: futureValue,
+      newValue: e.target.value,
       event: e
     });
   }
