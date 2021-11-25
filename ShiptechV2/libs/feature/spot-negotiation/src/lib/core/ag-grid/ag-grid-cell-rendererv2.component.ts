@@ -316,7 +316,8 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
             style="display:inline" [matTooltip]="params.value"
             [disabled] = "params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
           />
-          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="ispriceCalculated"></div>
+          <!--TODO isCheckOfferPriceAvailable(params) -->
+          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="params.value>0 && ispriceCalculated "></div>
           <div
             class="formulaButton"
             style="display:inline; position:absolute; left:78px;"
@@ -516,10 +517,10 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
-        (click)="requestChange($event, params)"
+        (click)="otherdetailspopup($event, params)"
       >
         <span><div class="infocircle-icon"></div></span>
-        <span class="fs-13">Quotation different from Request</span>
+        <span class="fs-13">Other Details</span>
       </div>
     </mat-menu>
     <div
@@ -567,6 +568,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   @ViewChild('menuTriggerHover') menuTriggerHover: MatMenuTrigger;
 
   public showDollar: boolean = false;
+  locations: any;
   public params: any;
   public select = '$';
   public inputValue = '';
@@ -596,7 +598,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
     private changeDetector: ChangeDetectorRef
-  ) {}
+  ) {
+
+  }
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
@@ -677,7 +681,31 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
   }
-
+  getPriceRowData(row, params) {
+    let productrow;
+    if (params.value) {
+      productrow = {
+        RequestProductId: params.column.userProvidedColDef.product.id,
+        RequestLocationSellerId: row.id,
+      };
+    }
+    return productrow;
+  }
+  isCheckOfferPriceAvailable(param) {
+    let object = { ...param.data };
+    this.locations = [];
+    this.locations.push(object);
+    this.locations.forEach(element1 => {
+      if (element1.requestOffers != undefined) {
+        element1.requestOffers.forEach(reqOff => {
+          if (reqOff.supplyQuantity != null) {
+            this.ispriceCalculated = false;
+          }
+        });
+      }
+    });
+    return this.ispriceCalculated;
+  }
   selectCounterParties(params) {
     let updatedRow = { ...params.data };
     if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
@@ -814,10 +842,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.editedSeller=result.sellerName;
-     }
-     });
+      if (result) {
+        this.editedSeller = result.sellerName;
+      }
+    });
   }
   suppliercommentspopup() {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
@@ -890,13 +918,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return null;
     }
     let productPricePrecision = this.tenantService.pricePrecision;
-    let num=plainNumber.split(".", 2);
+    let num = plainNumber.split(".", 2);
     //Offer Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
-    if(plainNumber==num){
-      this.priceFormat='';
-    }else{
+    if (plainNumber == num) {
+      this.priceFormat = '';
+    } else {
       this.priceFormat =
-      '1.' + productPricePrecision + '-' + productPricePrecision;
+        '1.' + productPricePrecision + '-' + productPricePrecision;
     }
     if (plainNumber) {
       if (productPricePrecision) {
@@ -921,7 +949,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let productPricePrecision = this.tenantService.pricePrecision;
 
     this.priceFormat =
-    '1.' + productPricePrecision + '-' + productPricePrecision;
+      '1.' + productPricePrecision + '-' + productPricePrecision;
     if (plainNumber) {
       if (productPricePrecision) {
         plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
@@ -964,15 +992,22 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
   otherdetailspopup(e, params) {
+    let updatedRow = { ...params.data };
+    updatedRow = this.getPriceRowData(updatedRow, params);
     const dialogRef = this.dialog.open(SpotnegoOtherdetails2Component, {
       width: '1164px',
       height: 'auto',
       maxHeight: '536px',
-      panelClass: ['additional-cost-popup']
+      panelClass: ['additional-cost-popup'],
+      data: updatedRow
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if (result) {
+        this.ispriceCalculated = false;
+        this.showFormula = true;
+      }
       // this.savePopupChanges(ev, result);
     });
   }
@@ -987,7 +1022,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     //   return null;
     // }
 
-    if( (document.getElementById("Enabledconfirm") as any).length > 0){
+    if ((document.getElementById("Enabledconfirm") as any).length > 0) {
       (document.getElementById("Enabledconfirm") as any).disabled = false;
     }
     params.colDef.valueSetter({
@@ -1046,7 +1081,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           return;
         }
       });
-    }else{
+    } else {
       const dialogRef = this.dialog.open(RemoveCounterpartyNoRFQComponent, {
         width: '600px',
         data: {

@@ -231,7 +231,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getStaticLists():void{
-    let request=(['currency']);//only currency add ,if required add here
+    let request=(['currency','product','uom']);//only currency add ,if required add here
     const response = this.spotNegotiationService.getStaticLists(request);
     response.subscribe((res: any) => {
       if (res.error) {

@@ -91,6 +91,15 @@ export class SpotNegotiationService extends BaseStoreService
      return this.spotNegotiationApi.UpdateSelectSeller(payload);
    }
 
+     /**
+   * Updated supply qty,product & date
+   * @param payload = False
+   */
+    @ObservableException()
+    OtherDetails(payload: any): Observable<unknown> {
+      return this.spotNegotiationApi.OtherDetails(payload);
+    }
+
   /**
    * Get group of request when window loads.
    * @param payload

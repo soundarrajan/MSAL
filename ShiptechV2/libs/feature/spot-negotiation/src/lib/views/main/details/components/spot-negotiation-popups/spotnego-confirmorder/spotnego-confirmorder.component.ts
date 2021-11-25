@@ -162,7 +162,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   //Construct UI Value's to bind the popup grid
   ConstructRequestOfferItemPayload(seller, requestOffers,requestProducts,etaDate,requestInfo) {
-    if(requestOffers.currencyId==null){requestOffers.currencyId=1;}else{requestOffers.currencyId} //Default Currency is Id:1 Name:"USD".
     return [
       {
         RequestId: this.requests[0].id,//Single request pass
@@ -194,8 +193,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         OfferPrice:requestOffers.price,
         ContactCounterpartyId: requestOffers.contactCounterpartyId,
 				BrokerCounterpartyId: requestOffers.brokerCounterpartyId,
-        currencyId:requestOffers.currencyId,
-        currencyName:this.currencyList.find(x=>x.id == requestOffers.currencyId).code,
+        currencyId:requestOffers.currencyId?requestOffers.currencyId:1,
+        currencyName:this.currencyList.find(x=>x.id == requestOffers.currencyId?null:1).code,
         PricingTypeId: requestProducts.uomId,
         QuoteByDate: requestOffers.quoteByDate,
         QuoteByTimeZoneId:requestOffers.quoteByTimeZoneId,
