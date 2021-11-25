@@ -10020,6 +10020,8 @@ tr.title {
             background: #527292;
             display: inline-block;
             float: left;
+            position: relative;
+            top: 4px;
           }
           p {
             color: #9d9fa2;
@@ -10031,7 +10033,7 @@ tr.title {
           }
           .description {
             clear: both;
-            margin: 15px 0;
+            // margin: 15px 0;
             color: #ffffff;
           }
         }
@@ -10302,6 +10304,8 @@ tr.title {
             background: #c4c4ce;
             display: inline-block;
             float: left;
+            position: relative;
+            top: 4px;
           }
           p {
             color: #364150;
@@ -10313,7 +10317,10 @@ tr.title {
           }
           .description {
             clear: both;
-            margin: 15px 14px;
+            margin-top: 10px;
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-bottom: 10px;
             color: #595959;
             font-size: 12px;
           }
