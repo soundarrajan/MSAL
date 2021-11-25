@@ -137,7 +137,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
           <span
             class="mail-icon-new mail-active"
             (click)="openEmailPreview(params)"
-            *ngIf="params.data.requestOffers?.length > 0"
+            *ngIf="isRfqSendForAnyProduct()"
             matTooltip="View preview email"
             matTooltipClass="lightTooltip"
             >a</span
@@ -615,6 +615,23 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
 
+  isRfqSendForAnyProduct():boolean{
+    const { requestOffers } = this.params.data || {};
+
+    if (!requestOffers) {
+      return false;
+    }
+
+    const isRfqSend = requestOffers?.find(
+      off => off.isRfqskipped === false
+    );
+
+    if (isRfqSend) {
+      return true;
+    }
+
+    return false;
+  }
   isOfferRequestAvailable(): boolean {
     // Array of requestoffers
     const { requestOffers } = this.params.data || {};
@@ -663,7 +680,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   selectCounterParties(params) {
     let updatedRow = { ...params.data };
-    if(updatedRow.requestOffers[0].price != null){
+    if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
       if( (document.getElementById("Enabledconfirm") as any).length > 0){
         (document.getElementById("Enabledconfirm") as any).disabled = false;
       }
