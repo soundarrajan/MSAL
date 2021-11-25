@@ -1,9 +1,11 @@
-﻿commit 6c12f652b9d2ec0ea23610107490bf7eec633c99
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 25 09:54:01 2021 +0000
+﻿commit cfa26e8d2b637f1c47490e03663c8097ebd2b6cf
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Nov 25 10:09:52 2021 +0000
 
-    Merged PR 14921: Fixed tooltip UI for the table contents and the filter chips
+    Merged PR 14924: 36971 - special char issue fix
     
-    Fixed tooltip UI for the table contents and the filter chips
+    36971 - special char issue fix
+    
+    Related work items: #36971
 
 branch: master

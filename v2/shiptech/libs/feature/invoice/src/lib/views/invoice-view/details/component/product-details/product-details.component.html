@@ -855,7 +855,8 @@
                           >
                             <input
                               matInput
-                              [(ngModel)]="productDetail.value.description"
+                              [ngModel]="productDetail.value.description | htmlDecodeReadonly"
+                              (ngModelChange)="productDetail.value.description = $event"
                             />
                           </mat-form-field>
                         </div>
