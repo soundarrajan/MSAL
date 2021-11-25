@@ -1,11 +1,9 @@
-﻿commit 1d5d1789f61e66a779886db280e4dede63b45b33
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Nov 25 08:47:38 2021 +0000
+﻿commit 04d38ffbdf8899894718eeeefe5479e5ab156b0f
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Thu Nov 25 09:11:02 2021 +0000
 
-    Merged PR 14916: Reset user changes  when not authorized in my notes
+    Merged PR 14919: #33672: Quality View: Labs createdDate UTC format has updated
     
-    Reset user changes  when not authorized in my notes
-    
-    Related work items: #37200
+    Related work items: #33672
 
 branch: master
