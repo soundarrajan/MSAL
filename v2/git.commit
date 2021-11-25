@@ -1,9 +1,11 @@
-﻿commit de2d839b1ecf5899ebab75b1457d31872aec24a0
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Thu Nov 25 10:31:13 2021 +0000
+﻿commit 45843d63a0acd777d704ea5965290634994bdc25
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Nov 25 11:22:03 2021 +0000
 
-    Merged PR 14928: Bug 37085: Control tower(Quality view Labs)-In the alert action pop up, Status changed information is missed in the change log section.
+    Merged PR 14933: Worked on change log from alert popup
     
-    Related work items: #37085
+    Worked on change log from alert popup
+    
+    Related work items: #37175
 
 branch: master

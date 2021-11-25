@@ -87,15 +87,15 @@ export class ControlTowerPopupComponent implements OnInit {
             if (response?.length) {
               this.data.changeLog =
                 response[0]?.controlTowerLabChangeLogResults.map(logObj => {
-                  logObj['user'] = { name: logObj.createdBy?.displayName };
+                  logObj['user'] = { name: logObj.createdBy?.name };
                   logObj['date'] = logObj.createdOn;
                   logObj['newComments'] = logObj.comments;
                   return logObj;
                 }) ?? [];
-                this.data.comments = response[0]?.comments;
-                this.data.status = response[0]?.controlTowerActionStatusId;
-                this.data.progressId = response[0]?.controlTowerActionStatusId;
-                this.logStatus = '';
+              this.data.comments = response[0]?.comments;
+              this.data.status = response[0]?.controlTowerActionStatusId;
+              this.data.progressId = response[0]?.controlTowerActionStatusId;
+              this.logStatus = '';
             }
           }
         },
