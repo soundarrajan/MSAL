@@ -79,7 +79,12 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   public noOfMarkedAsSeen: number;
   public noOfResolved: number;
   public noOfDefault: any;
-  public groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; noOfDefault:number };
+  public groupedCounts: {
+    noOfNew: number;
+    noOfMarkedAsSeen: number;
+    noOfResolved: number;
+    noOfDefault: number;
+  };
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -190,8 +195,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    valueFormatter: params => this.format.dateUtc(params.value),
+    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 150
   };
 
@@ -510,7 +515,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     sortable: false,
     filter: false
   };
-  
+
   constructor(
     columnPreferences: AgColumnPreferencesService,
     changeDetector: ChangeDetectorRef,
@@ -540,20 +545,20 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public systemFilterUpdate(value) {
-    let currentFilter = value.filter(o => o.isActive); 
+    let currentFilter = value.filter(o => o.isActive);
     switch (currentFilter[0].id) {
-      case "new":
+      case 'new':
         this.filterGridNew(currentFilter[0].label);
         break;
-      case "marked-as-seen":
+      case 'marked-as-seen':
         this.filterGridMAS(currentFilter[0].label);
         break;
-      case "resolved":
+      case 'resolved':
         this.filterGridResolved(currentFilter[0].label);
-        break;                
+        break;
     }
   }
-    
+
   getColumnsDefs(): any[] {
     return [
       this.portCallCol,
@@ -667,19 +672,20 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-        "differenceType" : {
-          "name" : "Supply"
-          },
-          "startDate": moment()
-            .subtract(6, "days")
-            .format('YYYY-MM-DD'),
-          "endDate": moment().format('YYYY-MM-DD'),          
-      };
-      this.controlTowerService.getSupplyDifferenceFiltersCount(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    let payload = {
+      differenceType: {
+        name: 'Supply'
+      },
+      startDate: moment()
+        .subtract(6, 'days')
+        .format('YYYY-MM-DD'),
+      endDate: moment().format('YYYY-MM-DD')
+    };
+    this.controlTowerService
+      .getSupplyDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
@@ -688,11 +694,11 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           this.noOfMarkedAsSeen = response.noOfMarkedAsSeen;
           this.noOfResolved = response.noOfResolved;
           this.groupedCounts = {
-            noOfDefault : this.noOfDefault,
-            noOfNew : this.noOfNew,
-            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-            noOfResolved : this.noOfResolved,
-          }
+            noOfDefault: this.noOfDefault,
+            noOfNew: this.noOfNew,
+            noOfMarkedAsSeen: this.noOfMarkedAsSeen,
+            noOfResolved: this.noOfResolved
+          };
           this.changeDetector.detectChanges();
         },
         () => {
@@ -700,9 +706,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );
         }
-      );    
+      );
   }
-
 
   @Output() emitCountValues = new EventEmitter();
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
