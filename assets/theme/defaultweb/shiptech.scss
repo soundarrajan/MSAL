@@ -10710,6 +10710,10 @@ width: 25px;
       cursor:not-allowed;
     };
   }
+  .input-disabled-new {
+    pointer-events: none;
+    background-color: #eee;
+  }
   .no-price-data{
     text-align: center;
   }

@@ -251,7 +251,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
       <!-- TODO check this code... -->
       <span *ngIf="!isOfferRequestAvailable()">-</span>
       <div *ngIf="isOfferRequestAvailable()"
-        [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'input-disabled' : ''">
+        [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'input-disabled-new' : ''">
         <div class="price-calc static-data" *ngIf="params.value === '100.00'">
           <span class="duplicate-icon"></span>
           $ {{ params.value }}
@@ -976,7 +976,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     params.colDef.valueSetter({
       colDef: params.colDef,
       data: params.data,
-      newValue: futureValue
+      newValue: futureValue,
+      event: e
     });
   }
 
