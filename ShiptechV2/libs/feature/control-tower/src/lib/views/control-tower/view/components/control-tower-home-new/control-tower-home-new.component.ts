@@ -10,7 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { KnownControlTowerRoutes } from 'libs/feature/control-tower/src/lib/control-tower.routes';
+import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import _ from 'lodash';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-control-tower-home-new',
@@ -32,10 +34,14 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   controlTowerNotesViewType: any[];
   screenList: any[];
   screenType: any;
+  quantityCounts: any;
+  qualityCounts: any;
+  residueCounts: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private controlTowerService: ControlTowerService,
     private legacyLookupsDatabase: LegacyLookupsDatabase
   ) {
     this.legacyLookupsDatabase
@@ -106,6 +112,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
         ])
         .then(() => {
           this.selectedVal = 'labs';
+          this.getGlobalCount($event.value);
         });
     } else if ($event.value == 'quantity') {
       this.showQuality = false;
@@ -120,6 +127,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
         ])
         .then(() => {
           this.selectedVal2 = 'differences';
+          this.getGlobalCount($event.value);
         });
     } else if ($event.value == 'residue') {
       this.showQuality = false;
@@ -134,12 +142,44 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
         ])
         .then(() => {
           this.selectedVal3 = 'differences';
+          this.getGlobalCount($event.value);
         });
     } else {
       this.showQuality = true;
       this.showQuantity = false;
       this.showResidue = false;
       this.selectedVal = 'labs';
+    }
+  }
+  getGlobalCount(view) {
+    console.log("************",view);
+    switch (view) {
+      case "quality":
+        this.controlTowerService.getQualityViewCounts({})
+        .subscribe(
+          response => {
+            this.qualityCounts = response;
+          }
+        );
+        break;
+      case "quantity":
+        this.controlTowerService.getQuantityViewCounts({})
+        .subscribe(
+          response => {
+            this.quantityCounts = response;
+          }
+        );
+        
+        break;
+      case "residue":
+        this.controlTowerService.getResidueViewCounts({})
+        .subscribe(
+          response => {
+            this.residueCounts = response;
+          }
+        );
+
+        break;
     }
   }
 }
