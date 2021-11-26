@@ -1,9 +1,11 @@
-﻿commit 32519b1c34881b3353d83aab1f5c9aacbd98f580
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Nov 25 15:14:16 2021 +0000
+﻿commit a73c4adec3639cb6a80e96e371305642d64d39f4
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Nov 26 07:38:09 2021 +0000
 
-    Merged PR 14943: Added system preference counts for Labs
+    Merged PR 14951: Fixed filtering condition name, while using the "is empty" and "is not empty"...
     
-    Added system preference counts for Labs
+    Fixed filtering condition name, while using the "is empty" and "is not empty" conditions
+    
+    Related work items: #37090
 
 branch: master
