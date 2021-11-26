@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as Highcharts from 'highcharts';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-marketpricehistorypopup',
@@ -54,11 +56,14 @@ export class MarketpricehistorypopupComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  constructor(private _spotNegotiationService: SpotNegotiationService, public dialogRef: MatDialogRef<MarketpricehistorypopupComponent>,    @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public format: TenantFormattingService, private _spotNegotiationService: SpotNegotiationService, public dialogRef: MatDialogRef<MarketpricehistorypopupComponent>,    @Inject(MAT_DIALOG_DATA) public data: any) {
      let payload = {LocationId : this.data.LocationId, ProductId : this.data.ProductId };
      const response = this._spotNegotiationService.getMarketPriceHistory(payload);
      response.subscribe((res: any) => {
-       this.tabledata = res.marketPriceHistory;
+      // this.priceHistoryData =  {date : res.marketPriceHistory.map(item => item.date), price : res.marketPriceHistory.map(item => item.price)};
+         res.marketPriceHistory.forEach(item=>{
+        this.tabledata.push({price:item.price,date:this.formatDate(item.date)})
+        })
      });
      
    }
@@ -68,4 +73,39 @@ export class MarketpricehistorypopupComponent implements OnInit {
     
     } 
     
+    formatDate(date?: any) {
+
+      if (date) {
+  
+        let currentFormat = this.format.dateFormat;
+  
+        let hasDayOfWeek;
+  
+        if (currentFormat.startsWith('DDD ')) {
+  
+          hasDayOfWeek = true;
+  
+          currentFormat = currentFormat.split('DDD ')[1];
+  
+        }
+  
+        currentFormat = currentFormat.replace(/d/g, 'D');
+  
+        currentFormat = currentFormat.replace(/y/g, 'Y');
+  
+        const elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+  
+        let formattedDate = moment(elem).format(currentFormat);
+  
+        if (hasDayOfWeek) {
+  
+          formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+  
+        }
+  
+        return formattedDate;
+  
+      }
+  
+    }
 }
