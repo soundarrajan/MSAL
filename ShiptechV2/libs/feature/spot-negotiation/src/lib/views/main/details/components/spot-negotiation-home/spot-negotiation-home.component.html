@@ -49,8 +49,8 @@
                     class="mid-blue-button cust-header-btn" (click)="confirmorderpopup()">
                     Confirm Offer
                   </button>
-                  <button matTooltip="Confirm Order" disabled *ngIf="tenantConfiguration.isSkipOfferConfirmation" matTooltipShowDelay="500" mat-button
-                    class="mid-blue-button cust-header-btn Enabledconfirm" id="Enabledconfirm" (click)="confirmorderpopup()">
+                  <button matTooltip="Confirm Order" *ngIf="tenantConfiguration.isSkipOfferConfirmation" matTooltipShowDelay="500" mat-button
+                    class="mid-blue-button cust-header-btn" (click)="confirmorderpopup()">
                     Confirm Order
                   </button>
                 </div>

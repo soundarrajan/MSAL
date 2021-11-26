@@ -434,7 +434,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
   revokeRFQ() {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRow();
-    debugger;
     if (Selectedfinaldata.length == 0) {
       let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);

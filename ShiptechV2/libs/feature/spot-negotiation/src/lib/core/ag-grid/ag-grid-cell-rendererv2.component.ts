@@ -708,11 +708,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   selectCounterParties(params) {
     let updatedRow = { ...params.data };
-    if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
-      if( (document.getElementById("Enabledconfirm") as any).length > 0){
-        (document.getElementById("Enabledconfirm") as any).disabled = false;
-      }
-    }
+    // if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
+    //   if( (document.getElementsByClassName("Enabledconfirm") as any).length > 0){
+    //     (document.getElementsByClassName("Enabledconfirm") as any).disabled = false;
+    //   }
+    // }
     updatedRow = this.formatRowData(updatedRow, params);
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
@@ -1022,9 +1022,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     //   return null;
     // }
 
-    if ((document.getElementById("Enabledconfirm") as any).length > 0) {
-      (document.getElementById("Enabledconfirm") as any).disabled = false;
-    }
+    // if ((document.getElementsByClassName("Enabledconfirm") as any).length > 0) {
+    //   (document.getElementsByClassName("Enabledconfirm") as any).disabled = false;
+    // }
     params.colDef.valueSetter({
       colDef: params.colDef,
       data: params.data,
