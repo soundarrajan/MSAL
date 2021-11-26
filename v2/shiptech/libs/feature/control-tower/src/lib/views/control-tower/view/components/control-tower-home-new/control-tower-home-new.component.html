@@ -32,11 +32,11 @@
         >
           <mat-button-toggle value="labs">
             <span *ngIf="selectedVal == 'labs'"></span>
-            Labs <span class="custom-count">12</span>
+            Labs <span class="custom-count">{{qualityCounts?.noOfLabs}}</span>
           </mat-button-toggle>
           <mat-button-toggle value="claims">
             <span *ngIf="selectedVal == 'claims'"></span>
-            Claims <span class="custom-count">12</span>
+            Claims <span class="custom-count">{{qualityCounts?.noOfClaims}}</span>
           </mat-button-toggle>
           <mat-button-toggle value="notes">
             <span *ngIf="selectedVal == 'notes'"></span>
@@ -54,11 +54,11 @@
         >
           <mat-button-toggle value="differences">
             <span *ngIf="selectedVal2 == 'differences'"></span>
-            Differences <span class="custom-count">12</span>
+            Differences <span class="custom-count">{{quantityCounts?.noOfDifferences}}</span>
           </mat-button-toggle>
           <mat-button-toggle value="claims">
             <span *ngIf="selectedVal2 == 'claims'"></span>
-            Claims <span class="custom-count">12</span>
+            Claims <span class="custom-count">{{quantityCounts?.noOfClaims}}</span>
           </mat-button-toggle>
           <mat-button-toggle value="notes">
             <span *ngIf="selectedVal2 == 'notes'"></span>
@@ -76,7 +76,7 @@
         >
           <mat-button-toggle value="differences">
             <span *ngIf="selectedVal3 == 'differences'"></span>
-            Differences <span class="custom-count">12</span>
+            Differences <span class="custom-count">{{residueCounts?.noOfDifferences}}</span>
           </mat-button-toggle>
           <mat-button-toggle value="notes">
             <span *ngIf="selectedVal3 == 'notes'"></span>

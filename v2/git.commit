@@ -1,11 +1,11 @@
-﻿commit 409488ade0d7031952781352413f64097d1057bc
+﻿commit 20d54ff25b8adaf67062c1d0118e4321b1abb8af
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Nov 26 10:07:16 2021 +0000
+Date:   Fri Nov 26 11:28:38 2021 +0000
 
-    Merged PR 14952: Fix 37189
+    Merged PR 14955: Added global counts for Control Tower
     
-    Fix 37189
+    Added global counts for Control Tower
     
-    Related work items: #37189
+    Related work items: #37112
 
 branch: master

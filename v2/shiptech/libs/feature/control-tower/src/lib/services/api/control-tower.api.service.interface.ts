@@ -75,6 +75,9 @@ export interface IControlTowerApiService {
   getQuantityClaimCounts(request: any): any;
   getQualityClaimCounts(request: any): any;
   getqualityLabCounts(request: any): any;
+  getQualityViewCounts(request: any): any;
+  getQuantityViewCounts(request: any): any;
+  getResidueViewCounts(request: any): any;
   /* END Default Filters counts */
   
 }

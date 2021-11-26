@@ -352,6 +352,27 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+  @ObservableException()
+  getQualityViewCounts(request): any {
+    return this.http.post(
+      `${this._apiUrl}/api/controlTower/getQualityViewCounts`,
+      { }
+    );
+  }
+  @ObservableException()
+  getQuantityViewCounts(request): any {
+    return this.http.post(
+      `${this._apiUrl}/api/controlTower/getQuantityViewCounts`,
+      { }
+    );
+  } 
+  @ObservableException()
+  getResidueViewCounts(request): any {
+    return this.http.post(
+      `${this._apiUrl}/api/controlTower/getResidueViewCounts`,
+      { }
+    );
+  } 
 
 }
 
