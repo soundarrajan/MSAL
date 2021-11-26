@@ -1,9 +1,11 @@
-﻿commit 60c3cc8ee64d460f7140f88f1b0edbfc101d8e2c
+﻿commit a506aba25805da62143eb17639cd1fe8cceb3ee1
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 26 12:48:26 2021 +0000
+Date:   Fri Nov 26 13:03:56 2021 +0000
 
-    Merged PR 14957: Set useAdal as true
+    Merged PR 14958: Reset user changes  when not authorized
     
-    Set useAdal as true
+    Reset user changes  when not authorized
+    
+    Related work items: #37176
 
 branch: master

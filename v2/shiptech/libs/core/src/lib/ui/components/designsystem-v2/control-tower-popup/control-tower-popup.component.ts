@@ -193,6 +193,8 @@ export class ControlTowerPopupComponent implements OnInit {
         .subscribe((response: any) => {
           if (typeof response == 'string') {
             this.toastr.error(response);
+          } else if (response?.message === 'Unauthorized') {
+            this.resetUserChanges();
           } else {
             this.fetchLabsActionPopup(payloadData?.labResultId);
           }
