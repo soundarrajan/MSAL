@@ -1,11 +1,11 @@
-﻿commit 20d54ff25b8adaf67062c1d0118e4321b1abb8af
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Nov 26 11:28:38 2021 +0000
+﻿commit 8bdf084f618f0456d741b7bd480ebd53ca1d4833
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Nov 26 11:42:30 2021 +0000
 
-    Merged PR 14955: Added global counts for Control Tower
+    Merged PR 14956: Worked on changes for change log in all screens. Displayed user.displayName i...
     
-    Added global counts for Control Tower
+    Worked on changes for change log in all screens. Displayed user.displayName instead of user.name
     
-    Related work items: #37112
+    Related work items: #37085, #37175
 
 branch: master

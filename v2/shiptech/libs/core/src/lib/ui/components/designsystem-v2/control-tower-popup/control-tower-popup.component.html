@@ -171,9 +171,7 @@
           [(ngModel)]="status"
           [(value)]="defaultStatus"
           [panelClass]="{ darkPanelBg: switchTheme }"
-          (selectionChange)="
-            changeStatus($event.value); isDataChanged($event.value, 'status')
-          "
+          (selectionChange)="changeStatus($event.value)"
         >
           <mat-option
             *ngFor="let value of controlTowerActionStatus"
@@ -186,7 +184,7 @@
     <div class="header-title">Comments</div>
     <textarea
       [ngModel]="comments | htmlDecodeReadonly"
-      (ngModelChange)="comments = $event; isDataChanged($event, 'comments')"
+      (ngModelChange)="comments = $event"
       spellcheck="false"
       maxlength="500"
     ></textarea>
@@ -238,40 +236,32 @@
         class="list col-md-12 log-container"
         *ngFor="let value of data.changeLog.slice().reverse()"
       >
-        <ng-container *ngIf="!value?.logStatus">
-          <span></span>
-          <div class="col-md-12">
-            Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by
-            {{ value.user.name | htmlDecodeReadonly }}
-          </div>
-          <div class="col-md-12 comments-container">
-            {{ value.newComments | htmlDecodeReadonly }}
-          </div>
-          <div class="description">{{ formatDateTo12Hrs(value.date) }}</div>
-        </ng-container>
-
         <ng-container *ngIf="value?.logStatus">
           <span></span>
           <div
             class="col-md-12"
             *ngIf="
               value.newStatus?.displayName &&
-              (value?.logStatus == 'status' || value?.logStatus == 'both')
+              (value?.logStatus?.name == 'Status' ||
+                value?.logStatus?.name == 'Both')
             "
           >
             Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by
-            {{ value.user.name | htmlDecodeReadonly }}
+            {{ value.user.displayName | htmlDecodeReadonly }}
           </div>
           <div
             class="col-md-12"
-            [ngClass]="{ 'comments-container': value?.logStatus == 'both' }"
+            [ngClass]="{
+              'comments-container': value?.logStatus?.name == 'Both'
+            }"
             *ngIf="
               value.newComments &&
-              (value?.logStatus == 'comment' || value?.logStatus == 'both')
+              (value?.logStatus?.name == 'Comments' ||
+                value?.logStatus?.name == 'Both')
             "
           >
             <ng-container
-              *ngIf="value.logStatus && value?.logStatus == 'comment'"
+              *ngIf="value.logStatus && value?.logStatus?.name == 'Comments'"
             >
               {{ value.user.name | htmlDecodeReadonly }} :
             </ng-container>

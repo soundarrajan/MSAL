@@ -60,6 +60,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly controlTowerActionStatus: Dexie.Table<IDisplayLookupDto, number>;
   readonly screen: Dexie.Table<IDisplayLookupDto, number>;
   readonly controlTowerNotesViewType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly controlTowerLogStatus: Dexie.Table<IDisplayLookupDto, number>;
 
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
@@ -164,7 +165,10 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('robDifferenceType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('controlTowerActionStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('screen')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('controlTowerNotesViewType')]: lookupSchema
+      [nameof<LegacyLookupsDatabase>(
+        'controlTowerNotesViewType'
+      )]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('controlTowerLogStatus')]: lookupSchema
     };
   }
 
