@@ -90,6 +90,17 @@ export class TenantFormattingService {
     }
     return formattedDate;
   }
+  public dateOnly(value: string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+    let newValue = value.split("T")[0];
+    let formattedDate = moment
+      .utc(newValue)
+      .format(dateTimeAdapter.fromDotNet(this.dateFormat));
+    if (formattedDate.endsWith('00:00')) {
+      formattedDate = formattedDate.split('00:00')[0];
+    }
+    return formattedDate;
+  }  
 
   public dateUtc(value: string): string | undefined {
     if (value === null || value === undefined) return undefined;
