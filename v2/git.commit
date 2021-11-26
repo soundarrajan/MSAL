@@ -1,11 +1,9 @@
-﻿commit a506aba25805da62143eb17639cd1fe8cceb3ee1
+﻿commit 001b2afa7aeec988f4ebb856ef225d632818e161
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 26 13:03:56 2021 +0000
+Date:   Fri Nov 26 13:37:16 2021 +0000
 
-    Merged PR 14958: Reset user changes  when not authorized
+    Merged PR 14959: Fixed saveControlTowerNote endpoint
     
-    Reset user changes  when not authorized
-    
-    Related work items: #37176
+    Fixed saveControlTowerNote endpoint
 
 branch: master
