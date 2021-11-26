@@ -1,11 +1,9 @@
-﻿commit 8bdf084f618f0456d741b7bd480ebd53ca1d4833
+﻿commit 60c3cc8ee64d460f7140f88f1b0edbfc101d8e2c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 26 11:42:30 2021 +0000
+Date:   Fri Nov 26 12:48:26 2021 +0000
 
-    Merged PR 14956: Worked on changes for change log in all screens. Displayed user.displayName i...
+    Merged PR 14957: Set useAdal as true
     
-    Worked on changes for change log in all screens. Displayed user.displayName instead of user.name
-    
-    Related work items: #37085, #37175
+    Set useAdal as true
 
 branch: master
