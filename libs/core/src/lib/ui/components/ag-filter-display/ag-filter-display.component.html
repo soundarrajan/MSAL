@@ -1,9 +1,26 @@
 <div>
   <ng-container *ngIf="filterParts?.length > 0">Filter: </ng-container>
   <ng-container *ngFor="let filterPart of filterParts">
-     <span [ngSwitch]="filterPart.type">
-        <span *ngSwitchCase='filterPartType'>{{ filterPart.column }} {{ filterPart.condition }} <span *ngIf="filterPart.value" class="filter-value">{{ filterPart.value }}&nbsp;<span *ngIf='filterPart.column=="No Response"'>Days&nbsp;</span></span></span>
-        <span *ngSwitchCase='logicalOpPartType'>&nbsp;{{ filterPart.value }}&nbsp;</span>
+    <span [ngSwitch]="filterPart.type">
+      <span *ngSwitchCase="filterPartType"
+        >{{ filterPart.column }}
+        {{
+          filterPart.condition == 'is null'
+            ? 'is empty'
+            : filterPart.condition == 'is not null'
+            ? 'is not empty '
+            : filterPart.condition
+        }}
+        <span *ngIf="filterPart.value" class="filter-value"
+          >{{ filterPart.value }} &nbsp;<span
+            *ngIf="filterPart.column == 'No Response'"
+            >Days&nbsp;</span
+          ></span
+        ></span
+      >
+      <span *ngSwitchCase="logicalOpPartType">
+        &nbsp;{{ filterPart.value }} &nbsp;</span
+      >
     </span>
   </ng-container>
 </div>
