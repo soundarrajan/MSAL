@@ -25,6 +25,7 @@ export class ControlTowerPopupComponent implements OnInit {
   public controlTowePopupForm = new FormControl();
   initialDefaultStatus: string;
   initialComments: string;
+  controlTowerLogStatus: any[];
   constructor(
     private toastr: ToastrService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -35,12 +36,12 @@ export class ControlTowerPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.comments = data.comments;
-    this.initialComments = data.comments;
+    this.initialComments = _.cloneDeep(data.comments);
   }
 
   ngOnInit(): void {
     this.defaultStatus = this.data.progressId.toString();
-    this.initialDefaultStatus = this.data.progressId.toString();
+    this.initialDefaultStatus = _.cloneDeep(this.data.progressId.toString());
     this.legacyLookupsDatabase
       .getTableByName('controlTowerActionStatus')
       .then(response => {
@@ -48,37 +49,29 @@ export class ControlTowerPopupComponent implements OnInit {
         console.log(this.controlTowePopupForm);
         this.status = this.data.progressId.toString();
       });
+    this.legacyLookupsDatabase
+      .getTableByName('controlTowerLogStatus')
+      .then(response => {
+        this.controlTowerLogStatus = response;
+        console.log(this.controlTowerLogStatus);
+      });
   }
   changeStatus(status) {
     //alert(status);
     this.status = status;
   }
 
-  isDataChanged($event, field) {
-    if (this.data?.popupType == 'qualityLabs') {
-      if (field == 'status') {
-        if (this.data.progressId.toString() == $event || $event == '') {
-          this.logStatus =
-            this.logStatus != '' && this.logStatus == 'both' ? 'comment' : '';
-        } else if (this.data.progressId.toString() != $event) {
-          this.logStatus =
-            this.logStatus == '' || this.logStatus == 'status'
-              ? 'status'
-              : 'both';
-        }
-      } else if (field == 'comments') {
-        if (this.data?.comments == $event || $event.trim() == '') {
-          this.logStatus =
-            this.logStatus != '' && this.logStatus == 'both' ? 'status' : '';
-        } else if (this.data?.comments != $event) {
-          this.logStatus =
-            this.logStatus == '' || this.logStatus == 'comment'
-              ? 'comment'
-              : 'both';
-        }
-      }
+  transform(str: any, property?: string): any {
+    var decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+    if (str && str[property]) {
+      str[property] = decode(_.unescape(str[property]));
+      return str;
     }
-    console.log($event);
+    return decode(_.unescape(str));
   }
 
   fetchLabsActionPopup(payloadData) {
@@ -95,15 +88,15 @@ export class ControlTowerPopupComponent implements OnInit {
             if (response?.length) {
               this.data.changeLog =
                 response[0]?.controlTowerLabChangeLogResults.map(logObj => {
-                  logObj['user'] = { name: logObj.createdBy?.name };
+                  logObj['user'] = logObj.createdBy;
                   logObj['date'] = logObj.createdOn;
                   logObj['newComments'] = logObj.comments;
                   return logObj;
                 }) ?? [];
-              this.data.comments = response[0]?.comments;
+              this.data.comments = this.transform(response[0]?.comments);
               this.data.status = response[0]?.controlTowerActionStatusId;
               this.data.progressId = response[0]?.controlTowerActionStatusId;
-              this.logStatus = '';
+              this.logStatus = null;
             }
           }
         },
@@ -114,7 +107,7 @@ export class ControlTowerPopupComponent implements OnInit {
   getQuantityResiduePopUp(payloadData) {
     this.controlTowerService
       .getQuantityResiduePopUp(payloadData, payloadData => {
-        console.log('asd');
+        console.log('Get quantity popup details!');
       })
       .pipe()
       .subscribe((response: any) => {
@@ -122,6 +115,11 @@ export class ControlTowerPopupComponent implements OnInit {
           this.toastr.error(response);
         } else {
           this.data.changeLog = _.cloneDeep(response.changeLog);
+          this.initialComments = _.cloneDeep(response.comments);
+          this.initialDefaultStatus = _.cloneDeep(
+            response?.progress?.id.toString()
+          );
+          this.logStatus = null;
         }
       });
   }
@@ -129,7 +127,7 @@ export class ControlTowerPopupComponent implements OnInit {
   getResiduePopUp(payloadData) {
     this.controlTowerService
       .getResiduePopUp(payloadData, payloadData => {
-        console.log('asd');
+        console.log('Get residue popup details!');
       })
       .pipe()
       .subscribe((response: any) => {
@@ -137,6 +135,11 @@ export class ControlTowerPopupComponent implements OnInit {
           this.toastr.error(response);
         } else {
           this.data.changeLog = _.cloneDeep(response.changeLog);
+          this.initialComments = _.cloneDeep(response.comments);
+          this.initialDefaultStatus = _.cloneDeep(
+            response?.progress?.id.toString()
+          );
+          this.logStatus = null;
         }
       });
   }
@@ -145,19 +148,31 @@ export class ControlTowerPopupComponent implements OnInit {
     this.logStatus = null;
     if (
       parseFloat(this.initialDefaultStatus) != parseFloat(this.status) &&
-      this.initialComments != this.comments
+      this.transform(this.initialComments) != this.transform(this.comments)
     ) {
-      this.logStatus = 'both';
+      this.logStatus = this.controlTowerLogStatus.filter(
+        obj => obj.name == 'Both'
+      )[0];
     } else if (
       parseFloat(this.initialDefaultStatus) != parseFloat(this.status)
     ) {
-      this.logStatus = 'status';
-    } else if (this.initialComments != this.comments) {
-      this.logStatus = 'comments';
+      this.logStatus = this.controlTowerLogStatus.filter(
+        obj => obj.name == 'Status'
+      )[0];
+    } else if (
+      this.transform(this.initialComments) != this.transform(this.comments)
+    ) {
+      this.logStatus = this.controlTowerLogStatus.filter(
+        obj => obj.name == 'Comments'
+      )[0];
     }
+
+    console.log(this.logStatus);
   }
 
   statusChanged() {
+    this.checkChangedFields();
+
     if (this.data?.popupType == 'qualityLabs') {
       if (!this.logStatus && this.status != '1') {
         return;
@@ -167,8 +182,7 @@ export class ControlTowerPopupComponent implements OnInit {
         comments:
           this.comments && this.comments.trim() != '' ? this.comments : '',
         labResultId: this.data?.lab,
-        logStatus:
-          !this.logStatus && this.status == '1' ? 'status' : this.logStatus
+        logStatus: this.logStatus
       };
 
       this.controlTowerService
@@ -184,7 +198,6 @@ export class ControlTowerPopupComponent implements OnInit {
           }
         });
     } else {
-      this.checkChangedFields();
       console.log(this.data.differenceType);
       let payloadData = {
         differenceType: this.data.differenceType,
@@ -192,7 +205,8 @@ export class ControlTowerPopupComponent implements OnInit {
           id: this.data.quantityControlReport.id
         },
         status: { id: +this.status },
-        comments: this.comments
+        comments: this.comments,
+        logStatus: this.logStatus
       };
       if (
         this.data.differenceType.name == 'Rob' ||
@@ -200,7 +214,7 @@ export class ControlTowerPopupComponent implements OnInit {
       ) {
         this.controlTowerService
           .saveQuantityResiduePopUp(payloadData, payloadData => {
-            console.log('asd');
+            console.log('Quantity changes updated!');
           })
           .pipe()
           .subscribe((response: any) => {
@@ -221,7 +235,7 @@ export class ControlTowerPopupComponent implements OnInit {
       } else if (this.data.differenceType.name == 'Sludge') {
         this.controlTowerService
           .saveResiduePopUp(payloadData, payloadData => {
-            console.log('asd');
+            console.log('Residue changes updated!');
           })
           .pipe()
           .subscribe((response: any) => {
