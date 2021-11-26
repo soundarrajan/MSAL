@@ -442,6 +442,45 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+  @ObservableException()
+  getQualityViewCounts(data: any) {
+    return this.api.getQualityViewCounts(data).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
+  @ObservableException()
+  getQuantityViewCounts(data: any) {
+    return this.api.getQuantityViewCounts(data).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
+  @ObservableException()
+  getResidueViewCounts(data: any) {
+    return this.api.getResidueViewCounts(data).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
 
   ngOnDestroy(): void {
     super.onDestroy();
