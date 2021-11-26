@@ -195,8 +195,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.dateUtc(params.value),
-    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    valueFormatter: params => this.format.dateOnly(params.value),
+    tooltip: params => (params.value ? this.format.dateOnly(params.value) : ''),
     width: 150
   };
 

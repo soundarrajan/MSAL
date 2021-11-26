@@ -1,11 +1,11 @@
-﻿commit 77966274a193a6a6e6a4eb31d829f172f7c98461
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 26 14:45:19 2021 +0000
+﻿commit f4b146d34a9c108fd4578a77f4fa9c85d8c77ffe
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Nov 26 15:47:46 2021 +0000
 
-    Merged PR 14960: Fixed estimatedSettlementAmount column tooltip in quality claims
+    Merged PR 14961: Removed time for Surveyor date column
     
-    Fixed estimatedSettlementAmount column tooltip in quality claims
+    Removed time for Surveyor date column
     
-    Related work items: #37002
+    Related work items: #37196
 
 branch: master
