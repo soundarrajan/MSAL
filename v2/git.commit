@@ -1,11 +1,11 @@
-﻿commit a73c4adec3639cb6a80e96e371305642d64d39f4
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 26 07:38:09 2021 +0000
+﻿commit 409488ade0d7031952781352413f64097d1057bc
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Nov 26 10:07:16 2021 +0000
 
-    Merged PR 14951: Fixed filtering condition name, while using the "is empty" and "is not empty"...
+    Merged PR 14952: Fix 37189
     
-    Fixed filtering condition name, while using the "is empty" and "is not empty" conditions
+    Fix 37189
     
-    Related work items: #37090
+    Related work items: #37189
 
 branch: master

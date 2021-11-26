@@ -91,6 +91,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     suppressContextMenu: true,
     multiSortKey: 'ctrl',
     singleClickEdit: true,
+
     getRowNodeId: (data: IControlTowerResidueSludgeDifferenceItemDto) => {
       return data?.id?.toString() ?? Math.random().toString();
     },
@@ -99,9 +100,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       resizable: true,
       filter: 'agTextColumnFilter',
       filterParams: this.defaultColFilterParams
-    },
-    onGridReady: params => {
-      params.api.sizeColumnsToFit();
     }
   };
 
@@ -466,7 +464,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-residue-sludge-list-grid-5',
+      'control-tower-residue-sludge-list-grid-7',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
@@ -604,19 +602,20 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-        "differenceType" : {
-          "name" : "Sludge"
-          },
-          "startDate": moment()
-            .subtract(6, "days")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
-      };
-      this.controlTowerService.getSludgeDifferenceFiltersCount(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    let payload = {
+      differenceType: {
+        name: 'Sludge'
+      },
+      startDate: moment()
+        .subtract(6, 'days')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getSludgeDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
@@ -640,11 +639,34 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       );
   }
 
+  setDefaultSorting(sortModel, colId) {
+    let findElemIndex = _.findIndex(sortModel, function(option: any) {
+      return option.colId == colId;
+    });
+    if (findElemIndex == -1) {
+      let newSortModel = [
+        {
+          colId: colId,
+          sort: 'desc'
+        }
+      ].concat(sortModel);
+
+      console.log(newSortModel);
+      return newSortModel;
+    } else {
+      return sortModel;
+    }
+  }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.getFiltersCount();
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
     this.paramsServerSide = params;
+    params.request.sortModel = this.setDefaultSorting(
+      params.request.sortModel,
+      'differenceInRobQuantity'
+    );
     this.exportUrl = this.controlTowerService.getControlTowerResidueSludgeDifferenceListExportUrl();
     this.controlTowerService
       .getControlTowerResidueSludgeDifferenceList$(
