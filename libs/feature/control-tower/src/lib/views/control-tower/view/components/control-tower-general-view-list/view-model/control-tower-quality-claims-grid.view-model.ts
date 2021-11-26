@@ -240,7 +240,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     valueFormatter: params => this.format.amount(params.value),
     dtoForExport:
       ControlTowerQualityClaimsListExportColumns.estimatedSettlementAmount,
-    tooltip: params => (params.value ? this.format.amount(params.value) : ''),
+    tooltip: params => this.format.amount(params.value),
     width: 150
   };
 
@@ -311,7 +311,12 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     },
     width: 150
   };
-  groupedCounts: { noOfNew: number; noOf15: number; noOf714: number; noOfDefault: number};
+  groupedCounts: {
+    noOfNew: number;
+    noOf15: number;
+    noOf714: number;
+    noOfDefault: number;
+  };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -334,17 +339,17 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   }
 
   public systemFilterUpdate(value) {
-    let currentFilter = value.filter(o => o.isActive); 
+    let currentFilter = value.filter(o => o.isActive);
     switch (currentFilter[0].id) {
-      case "new":
+      case 'new':
         this.filterGridNew(currentFilter[0].label);
         break;
-      case "marked-as-seen":
+      case 'marked-as-seen':
         this.filterGrid714Days(currentFilter[0].label);
         break;
-      case "resolved":
+      case 'resolved':
         this.filterGridGreaterThan15Days(currentFilter[0].label);
-        break;                
+        break;
     }
   }
 
@@ -469,17 +474,18 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     this.gridApi.setFilterModel(grid);
   }
 
-   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-          "startDate": moment()
-            .subtract(6, "months")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
-      };
-      this.controlTowerService.getQualityClaimCounts(payload)
+  public getFiltersCount() {
+    if (this.groupedCounts) {
+      return false;
+    }
+    let payload = {
+      startDate: moment()
+        .subtract(6, 'months')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getQualityClaimCounts(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
@@ -488,11 +494,11 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
           this.noOf714 = response.noOf714;
           this.noOfNew = response.noOfNew;
           this.groupedCounts = {
-            noOfDefault : this.noOfDefault,
-            noOfNew : this.noOfNew,
-            noOf15 : this.noOf15,
-            noOf714 : this.noOf714,
-          } 
+            noOfDefault: this.noOfDefault,
+            noOfNew: this.noOfNew,
+            noOf15: this.noOf15,
+            noOf714: this.noOf714
+          };
           this.changeDetector.detectChanges();
         },
         () => {
@@ -500,7 +506,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );
         }
-      );    
+      );
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -521,7 +527,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {       
+        response => {
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {
