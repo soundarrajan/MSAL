@@ -74,16 +74,29 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   getPreviewTemplate(){
-
+    // let requestProducts: any;
+    // if(this.SelectedSellerWithProds.requestOffers?.length > 0){
+    //   requestProducts = this.SelectedSellerWithProds.requestOffers?.filter(row => row.isRfqskipped === false)
+    //   .map(prod =>
+    //     prod.requestProductId
+    //   );
+    // }
+    // else{
+    //   requestProducts = this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
+    //     ).map(prod =>
+    //       prod.requestProducts.map(i =>i.id)
+    //     )[0];
+    // }
+    
     var FinalAPIdata = {
     RequestLocationSellerId: this.SelectedSellerWithProds.id,
     RequestId: this.SelectedSellerWithProds.requestId,
     CounterpartyId: this.SelectedSellerWithProds.sellerCounterpartyId,
     CounterpartyName: this.SelectedSellerWithProds.sellerCounterpartyName,
     RequestProductIds: this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
-      ).map(prod =>
-        prod.requestProducts.map(i =>i.id)
-      )[0],
+          ).map(prod =>
+            prod.requestProducts.map(i =>i.id)
+          )[0],
     RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId:0,
     TemplateName: this.selected,
     QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
