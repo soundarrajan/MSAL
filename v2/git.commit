@@ -1,9 +1,11 @@
-﻿commit 001b2afa7aeec988f4ebb856ef225d632818e161
+﻿commit 77966274a193a6a6e6a4eb31d829f172f7c98461
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Nov 26 13:37:16 2021 +0000
+Date:   Fri Nov 26 14:45:19 2021 +0000
 
-    Merged PR 14959: Fixed saveControlTowerNote endpoint
+    Merged PR 14960: Fixed estimatedSettlementAmount column tooltip in quality claims
     
-    Fixed saveControlTowerNote endpoint
+    Fixed estimatedSettlementAmount column tooltip in quality claims
+    
+    Related work items: #37002
 
 branch: master
