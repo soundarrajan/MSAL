@@ -231,6 +231,16 @@ export class SpotNegotiationService extends BaseStoreService
   RevokeFQ(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.RevokeRFQ(payload);
   }
+
+  
+ /**
+ * Discard saved mail
+ * @param payload = 
+ */
+     @ObservableException()
+     RevertSavedComments(payload: any): Observable<unknown> {
+       return this.spotNegotiationApi.RevertSavedComments(payload);
+     }
    
 
   /**

@@ -23,6 +23,7 @@ export const SpotNegotiationApiPaths = {
   saveAndSendRFQ: `RFQ/saveAndSendRFQ`,
   UpdateSelectSeller: `Groups/toggleReqSellerSelection`,
   previewRfqMail:`RFQ/previewRfqMail`,
+  revertSavedComments:`RFQ/discardSavedComments`,
   getExistingOrders:`api/procurement/order/getExistingOrders`,
   confirmRfq:`api/procurement/rfq/confirm`,
   removeCounterparty:`Groups/removeSeller`,
@@ -292,6 +293,24 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
+
+  @ObservableException()
+  RevertSavedComments(request: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.revertSavedComments}`,
+        request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
   @ObservableException()
   GetExistingOrders(
     request: any
