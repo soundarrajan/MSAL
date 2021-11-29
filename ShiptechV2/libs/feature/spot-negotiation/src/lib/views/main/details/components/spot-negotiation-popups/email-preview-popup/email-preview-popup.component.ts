@@ -37,7 +37,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   subject: any;
   content: any;
   previewTemplate: any;
-  rfqTemplate: any;
+  //rfqTemplate: any;
   items: Items[]; 
   public Editor = ClassicEditor;
 
@@ -107,7 +107,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   response.subscribe((res: any) => {
     this.spinner.hide();
     this.previewTemplate = res["previewResponse"];
-    this.rfqTemplate = this.previewTemplate
+    //this.rfqTemplate = this.previewTemplate
     this.to =(this.previewTemplate.to.map(to => to.idEmailAddress));
     this.cc =(this.previewTemplate.cc.map(cc => cc.idEmailAddress));
     this.subject =  this.previewTemplate.subject;
@@ -182,7 +182,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       }
       else if(res instanceof Object && !isSendEmail &&  res['validationMessage'].length == 0 ){
         this.toaster.success('Template saved successfully.');
-        this.rfqTemplate = this.previewTemplate;
+        this.previewTemplate = res["previewResponse"];
      }
       else if(res instanceof Object){
         this.toaster.warning(res.Message);
@@ -282,13 +282,26 @@ export class EmailPreviewPopupComponent implements OnInit {
  }
 
  revertChanges(){
-  this.to = (this.rfqTemplate.to.map(to => to.idEmailAddress));
-  this.cc =(this.rfqTemplate.cc.map(cc => cc.idEmailAddress));
-  this.subject =  this.rfqTemplate.subject;
-  this.content =  this.rfqTemplate.content;
-  this.from = this.rfqTemplate.From;
-  this.filesList = this.rfqTemplate.AttachmentsList;
-  this.previewTemplate = this.rfqTemplate;
- }
+   if(this.previewTemplate.comment.id === 0){
+    this.toaster.error("No saved template.");
+   }
+   else{
+  let requestPayload = {
+    Id: this.previewTemplate.comment.id,
+    EmailTemplateId: this.previewTemplate.comment.emailTemplate.id,
+    // BusinessId: this.previewTemplate.comment.businessId,
+    // SecondBusinessId: this.previewTemplate.comment.secondBusinessId,
+    // ThirdBusinessId: this.previewTemplate.comment.thirdBusinessId,
+    AttachmentsList: this.previewTemplate.comment.attachmentsList  
+  };
 
+
+  const response = this.spotNegotiationService.RevertSavedComments(requestPayload);
+    response.subscribe((res: any) => {
+      this.spinner.hide();
+      if(res)
+      this.dialogRef.close();
+    });
+ }
+ }
 }
