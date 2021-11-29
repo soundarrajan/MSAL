@@ -82,6 +82,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PortalModule } from '@angular/cdk/portal';
 import { DeliveryModule } from '@shiptech/feature/delivery';
 import { DeliveryRoutingModule } from 'libs/feature/delivery/src/lib/delivery-routing.module';
+import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 
 
 @NgModule({
@@ -104,6 +105,7 @@ import { DeliveryRoutingModule } from 'libs/feature/delivery/src/lib/delivery-ro
     UIModule,
 
     MasterAutocompleteModule,
+    NgxMatDatetimePickerModule,
     AutoCompleteModule,
     MessageBoxModule,
     RelatedLinksModule,
