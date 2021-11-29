@@ -49,12 +49,19 @@ export class EmailPreviewPopupComponent implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.SelectedSellerWithProds =  data;
+
       if(this.SelectedSellerWithProds.requestOffers?.length > 0){
-        this.items =  [
-          {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ'},
-          {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ'},
-        ];
-        this.selected = 'MultipleRfqAmendRFQEmailTemplate';
+          if(this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
+          this.items =  [
+            {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ'},
+            {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ'},
+          ];
+          this.selected = 'MultipleRfqAmendRFQEmailTemplate';
+        }
+        else{
+          this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
+          this.dialogRef.close();
+        }
       }
       else{
         this.items =  [
@@ -70,7 +77,8 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
     });
-    this.getPreviewTemplate();
+    if(this.selected){
+    this.getPreviewTemplate();}
   }
 
   getPreviewTemplate(){
