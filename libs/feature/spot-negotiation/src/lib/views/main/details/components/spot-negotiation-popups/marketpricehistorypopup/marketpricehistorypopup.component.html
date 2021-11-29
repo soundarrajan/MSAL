@@ -36,7 +36,7 @@
                 <tr id="commentList" *ngFor="let tabledata of tabledata;let i = index">
                   
                   <td class="border-bottom-1 fz-13" [width]=90>{{tabledata.date}}</td>
-                  <td class="border-bottom-1 text-left fz-13 w-95" >{{tabledata.price ? 0 : '--'}}</td>
+                  <td class="border-bottom-1 text-left fz-13 w-95" >{{tabledata.price == 0 ? '--' : tabledata.price}}</td>
                   
                   
                 </tr>
