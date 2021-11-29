@@ -22,6 +22,7 @@ import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/ac
 })
 export class SpotnegoOtherdetails2Component implements OnInit {
   uomList: any;
+  switchTheme; //false-Light Theme, true- Dark Theme
   SupplyQuantityUoms: any;
   disableScrollDown = false;
   public showaddbtn = true;
@@ -29,7 +30,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   isBtnActive: boolean = false;
   isButtonVisible = true;
   iscontentEditable = false;
-  public switchTheme: boolean = false;
+  isSupplyDeliveryDateInvalid: boolean;
   public selectedFormulaTab;
   public initialized;
   otherDetailsItems: any = [];
@@ -38,6 +39,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   selectedProductList: any;
   productIndex: any = 0;
   locationsRows: any;
+  locations: any;
   dateFormat;
   SupplyDeliveryDate: '';
   dateFormat_rel_SupplyDate: any;
@@ -73,6 +75,31 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   displayFn(product): string {
     return product && product.name ? product.name : '';
   }
+
+  onChange($event, field) {
+    if ($event.value) {
+      const beValue = `${moment($event.value).format(
+        'YYYY-MM-DDTHH:mm:ss'
+      )}+00:00`;
+      if (field == 'SupplyDeliveryDate') {
+        this.isSupplyDeliveryDateInvalid = false;
+      }
+    } else {
+      if (field == 'SupplyDeliveryDate') {
+        this.isSupplyDeliveryDateInvalid = true;
+      }
+      this.toastr.error('Please enter the correct format');
+    }
+  }
+
+  formatDateForBe(value) {
+    if (value) {
+      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+    } else {
+      return null;
+    }
+  }
   format(value: Date, displayFormat: string): string {
     if (value === null || value === undefined) return '';
     let currentFormat = displayFormat;
@@ -83,8 +110,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment(value).format(currentFormat);
+    const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+    let formattedDate = moment(elem).format(currentFormat);
     if (hasDayOfWeek) {
       formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
@@ -95,17 +122,26 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.locationsRows = spotNegotiation.locationsRows;
       this.staticLists = spotNegotiation.staticLists;
+      this.locations = spotNegotiation.locations;
     });
     var otherDetailsPayload = [];
-    this.locationsRows.forEach(element1 => {
-      if (element1.requestOffers != undefined) {
-        element1.requestOffers.forEach(reqOff => {
-          if (reqOff.requestProductId == this.selectedProductList.RequestProductId && element1.id == this.selectedProductList.RequestLocationSellerId) {
-            otherDetailsPayload = this.ConstructOtherDetailsPayload(reqOff);
-            this.otherDetailsItems.push(otherDetailsPayload[0]);
-          }
-        });
-      }
+    this.locations.forEach(ele => {
+      this.locationsRows.forEach(element1 => {
+        if (element1.requestOffers != undefined) {
+          element1.requestOffers.forEach(reqOff => {
+            if (reqOff.requestProductId == this.selectedProductList.RequestProductId && element1.id == this.selectedProductList.RequestLocationSellerId && ele.locationId == element1.locationId) {
+              let etaDate;
+              if (reqOff.supplyDeliveryDate == null) {
+                etaDate = ele.eta;
+              } else {
+                etaDate = reqOff.supplyDeliveryDate;
+              }
+              otherDetailsPayload = this.ConstructOtherDetailsPayload(reqOff, etaDate);
+              this.otherDetailsItems.push(otherDetailsPayload[0]);
+            }
+          });
+        }
+      });
     });
   }
   ///product lookup filter
@@ -132,7 +168,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     }
   }
   //Construct UI Value's to bind the popup grid
-  ConstructOtherDetailsPayload(requestOffers) {
+  ConstructOtherDetailsPayload(requestOffers, etaDate) {
     let QtyUomId;
     if (requestOffers.supplyQuantityUomId == null) {
       QtyUomId = 5;
@@ -144,8 +180,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       {
         OfferId: requestOffers.offerId,
         RequestOfferId: requestOffers.id,
-        SupplyQuantity: requestOffers.supplyQuantity ? requestOffers.supplyQuantity : 0,
-        SupplyDeliveryDate: requestOffers.supplyDeliveryDate ? moment(requestOffers.supplyDeliveryDate).format(this.dateFormat_rel_SupplyDate) : '',
+        SupplyQuantity: this.tenantFormat.quantity(requestOffers.supplyQuantity) ? this.tenantFormat.quantity(requestOffers.supplyQuantity) : '',
+        SupplyDeliveryDate: etaDate ? moment(etaDate).format(this.dateFormat_rel_SupplyDate) : '',
         product: {
           id: requestOffers.quotedProductId,
           name: this.productList.find(x => x.id == requestOffers.quotedProductId).name,
@@ -220,11 +256,11 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     }
     let isAllow = false;
     /// If the user is trying to capture product same as that in the request under same location
-    this.locationsRows.forEach(element1 => {
-      if (element1.requestOffers != undefined) {
-        element1.requestOffers.forEach(reqOff => {
-          if (reqOff.requestProductId == this.selectedProductList.RequestProductId && element1.id == this.selectedProductList.RequestLocationSellerId) {
-            if (reqOff.quotedProductId == this.otherDetailsItems[this.productIndex].product.id) {
+    this.locations.forEach(ele => {
+      if (ele.requestProducts != undefined) {
+        ele.requestProducts.forEach(reqOff => {
+          if (reqOff.id == this.selectedProductList.RequestProductId && ele.locationId == this.selectedProductList.LocationId) {
+            if (reqOff.productId == this.otherDetailsItems[this.productIndex].product.id) {
               isAllow = true;
             }
           }
@@ -248,7 +284,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     const response = this.spotNegotiationService.OtherDetails(otherDetails_data);
     response.subscribe((res: any) => {
       if (res.status) {
-        this.toastr.success('Request changes update Successfully..');
+        this.toastr.success('Saved successfully..');
         const futureLocationsRows = this.getLocationRowsWithOtherDetails(
           JSON.parse(JSON.stringify(this.locationsRows)),
           otherDetails_data

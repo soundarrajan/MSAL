@@ -317,7 +317,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
             [disabled] = "params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
           />
           <!--TODO isCheckOfferPriceAvailable(params) -->
-          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="params.value>0 && ispriceCalculated "></div>
+          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="params.value>0 && isCheckOfferPriceAvailable(params)==true && !this.showFormula "></div>
           <div
             class="formulaButton"
             style="display:inline; position:absolute; left:78px;"
@@ -687,11 +687,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       productrow = {
         RequestProductId: params.column.userProvidedColDef.product.id,
         RequestLocationSellerId: row.id,
+        LocationId:row.locationId
       };
     }
     return productrow;
   }
-  isCheckOfferPriceAvailable(param) {
+  isCheckOfferPriceAvailable(param): boolean {
     let object = { ...param.data };
     this.locations = [];
     this.locations.push(object);
@@ -699,12 +700,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       if (element1.requestOffers != undefined) {
         element1.requestOffers.forEach(reqOff => {
           if (reqOff.supplyQuantity != null) {
-            this.ispriceCalculated = false;
+            this.showFormula = true;
+            return false;
           }
         });
       }
     });
-    return this.ispriceCalculated;
+    return true;
   }
   selectCounterParties(params) {
     let updatedRow = { ...params.data };

@@ -298,7 +298,43 @@
                             </mat-select>
                           </mat-form-field>
                         </div>
-                        <div id="custom-form-field" class="lightTheme supply-date m-l-0">
+                        <div
+                        class="custom-form-field"
+                        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+                      >
+                        <mat-form-field
+                          class="without-search"
+                          appearance="legacy"
+                          [ngClass]="{
+                            'date-invalid': isSupplyDeliveryDateInvalid,
+                            'date-valid': !isSupplyDeliveryDateInvalid
+                          }"
+                        >
+
+                          <mat-label>Supply date</mat-label>
+                          <input
+                            [(ngModel)]="otherDetailsItems[productIndex].SupplyDeliveryDate"
+                            matInput
+                            [ngxMatDatetimePicker]="SupplyDeliveryDate"
+                            (focus)="SupplyDeliveryDate.open()"
+                            (onInput)="onChange($event, 'SupplyDeliveryDate')"
+                            (dateChange)="
+                            otherDetailsItems[productIndex].SupplyDeliveryDate = formatDateForBe(otherDetailsItems[productIndex].SupplyDeliveryDate)
+                            "
+                            autocomplete="off"
+                            placeholder="Supply Delivery Date"
+                          />
+                          <button
+                          mat-icon-button
+                          matSuffix
+                          (click)="SupplyDeliveryDate.open(); $event.stopPropagation()"
+                        >
+                          <mat-icon class="icon-date"> </mat-icon>
+                        </button>
+                        <ngx-mat-datetime-picker #SupplyDeliveryDate></ngx-mat-datetime-picker>
+                        </mat-form-field>
+                      </div>
+                        <!-- <div id="custom-form-field" class="lightTheme supply-date m-l-0">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Supply Date</mat-label>
                                 <input name="Supply date" 
@@ -310,7 +346,7 @@
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #SupplyDeliveryDate></mat-datepicker>
                             </mat-form-field>
-                         </div>
+                         </div> -->
                       </div>
                     </div>
                   </div>
@@ -322,7 +358,13 @@
       </mat-tab>
     </mat-tab-group>
   </div>
-  
+  <ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>
   
   
   
