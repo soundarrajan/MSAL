@@ -67,26 +67,28 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return state.spotNegotiation.locationsRows
     });
     let isallow=false;
+    console.log("4444444444444444", locationsRows);
     locationsRows.forEach(element => {
       if (element.requestOffers!=undefined ){
-        if(element.checkProd1 && element.requestOffers[0].price>0 ){
+        if(element.checkProd1 && (element.requestOffers[0].price < 0 || element.requestOffers[0].price == null)){
+          isallow=true;
+          
+        }
+        if(element.checkProd2 && (element.requestOffers[1].price < 0 || element.requestOffers[1].price == null)){
           isallow=true;
         }
-        if(element.checkProd2 && element.requestOffers[1].price>0 ){
+        if(element.checkProd3 && (element.requestOffers[2].price < 0 || element.requestOffers[2].price == null)){
           isallow=true;
         }
-        if(element.checkProd3 && element.requestOffers[2].price>0 ){
+        if(element.checkProd4 && (element.requestOffers[3].price < 0 || element.requestOffers[3].price == null)){
           isallow=true;
         }
-        if(element.checkProd4 && element.requestOffers[3].price>0 ){
-          isallow=true;
-        }
-        if(element.checkProd5 && element.requestOffers[4].price>0 ){
+        if(element.checkProd5 && (element.requestOffers[4].price < 0 || element.requestOffers[4].price == null)){
           isallow=true;
         }
       }
     });
-    if(isallow){
+    if(!isallow){
       const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
         width: '1045px',
         height: '555px',
