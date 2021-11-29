@@ -114,6 +114,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
   response.subscribe((res: any) => {
     this.spinner.hide();
+    if(res["previewResponse"]){
     this.previewTemplate = res["previewResponse"];
     //this.rfqTemplate = this.previewTemplate
     this.to =(this.previewTemplate.to.map(to => to.idEmailAddress));
@@ -121,7 +122,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.subject =  this.previewTemplate.subject;
     this.content =  this.previewTemplate.content;
     this.from = this.previewTemplate.From;
-    this.filesList = this.previewTemplate.AttachmentsList;
+    this.filesList = this.previewTemplate.AttachmentsList;}
+    else{
+      this.toaster.error(res);
+    }
   });
 }
 
