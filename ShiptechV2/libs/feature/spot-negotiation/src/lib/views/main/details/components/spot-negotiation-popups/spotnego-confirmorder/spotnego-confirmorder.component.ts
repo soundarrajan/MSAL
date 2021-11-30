@@ -407,7 +407,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           if(res instanceof Object && res.payload.length > 0 ){
             //this.openEditOrder(receivedOffers.payload);
             const baseOrigin = new URL(window.location.href).origin;
-            window.open(`${ baseOrigin }/#/edit-order/${receivedOffers.payload[0]}`, '_blank');
+            window.open(`${ baseOrigin }/#/edit-order/${receivedOffers.payload[0]}`, '_self');
             this.toaster.success('order created successfully.')
           }
           else if(res instanceof Object){
