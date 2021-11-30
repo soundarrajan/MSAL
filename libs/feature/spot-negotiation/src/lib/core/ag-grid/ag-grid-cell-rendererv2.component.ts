@@ -313,7 +313,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
             name="inputField"
             spellcheck="false"
             type="text"
-            style="display:inline" [matTooltip]="params.value"
+            style="display:inline" [matTooltip]="priceFormatValue(params.value)"
             [disabled] = "params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
           />
           <!--TODO isCheckOfferPriceAvailable(params) -->
@@ -926,7 +926,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.priceFormat = '';
     } else {
       this.priceFormat =
-        '1.' + productPricePrecision + '-' + productPricePrecision;
+        '1.' + 0 + '-' + productPricePrecision;
     }
     if (plainNumber) {
       if (productPricePrecision) {
