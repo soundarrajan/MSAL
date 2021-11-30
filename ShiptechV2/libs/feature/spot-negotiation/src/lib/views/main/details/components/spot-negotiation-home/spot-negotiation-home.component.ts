@@ -67,7 +67,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return state.spotNegotiation.locationsRows
     });
     let isallow=false;
-    console.log("4444444444444444", locationsRows);
     locationsRows.forEach(element => {
       if (element.requestOffers!=undefined ){
         if(element.checkProd1 && (element.requestOffers[0].price < 0 || element.requestOffers[0].price == null)){

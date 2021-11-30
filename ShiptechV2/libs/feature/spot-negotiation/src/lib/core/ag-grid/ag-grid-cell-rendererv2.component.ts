@@ -344,7 +344,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
     </mat-menu>
     <div *ngIf="params.type == 'phy-supplier'">
       <div
-        *ngIf="params.data.requestOffers?.length > 0"
+        *ngIf="params.data.requestOffers?.length > 0" id="EnabledPhySup{{params.data.id}}"
         class="phySupplier edit"
         [matTooltip]="(editSeller && params.data.physicalSupplierCounterpartyName)? params.data.physicalSupplierCounterpartyName : 'Add physical supplier'"
         matTooltipClass="lightTooltip"
