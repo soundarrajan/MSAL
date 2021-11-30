@@ -200,7 +200,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       Order: null,
       PageFilters: { Filters: [] },
       SortList: { SortList: [] },
-      Filters: [],
+      Filters: [{"ColumnName":"CounterpartyTypes","Value":"1,2,3,11"}],
       SearchText: null,
       Pagination: { Skip: 0, Take: 1000 }
     };
