@@ -818,6 +818,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   openCounterpartyPopup(locationId) {
     let RequestGroupId = 0;
     let currentRequestLocation = { id: '0', locationId: '0' };
+    let sellerCounterpartyId=0;
+    let physicalSupplierCounterpartyName='';
 
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
@@ -827,6 +829,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
     }
+
+    if (this.params.data.requestOffers) {
+      sellerCounterpartyId= this.params.data.sellerCounterpartyId,
+      physicalSupplierCounterpartyName=this.params.data.sellerCounterpartyName
+      }
 
     const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
       width: '100vw',
@@ -839,7 +846,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         RequestLocationId: parseInt(currentRequestLocation.id),
         LocationId: locationId,
         isPhysicalSupplier: true,
-        requestLocationSellerId: this.params.data.id
+        requestLocationSellerId: this.params.data.id,
+        SellerCounterpartyId:sellerCounterpartyId,
+        PhysicalSupplierCounterpartyName:physicalSupplierCounterpartyName
       }
     });
 
@@ -1130,12 +1139,33 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   updatePhysicalSupplier() {
+    let RequestGroupId = 0;
+    let currentRequestLocation = { id: '0', locationId: '0' };
+    let sellerCounterpartyId=0;
+    let physicalSupplierCounterpartyName=''
+
+    if (this.currentRequestInfo) {
+      RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
+
+      if (this.currentRequestInfo.requestLocations
+        && this.currentRequestInfo.requestLocations.length > 0) {
+        currentRequestLocation = this.currentRequestInfo.requestLocations[0];
+      }
+    }
+    if (this.params.data.requestOffers) {
+      sellerCounterpartyId= this.params.data.sellerCounterpartyId,
+      physicalSupplierCounterpartyName=this.params.data.sellerCounterpartyName
+      }
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
     let payload = {
-      RequestLocationSellerId: this.params.data.id,
-      PhySupplierId: this.phySupplierId
+      requestGroupId:RequestGroupId,
+      requestLocationId:currentRequestLocation.id,
+      sellerCounterpartyId:sellerCounterpartyId,
+      requestLocationSellerId: this.params.data.id,
+      phySupplierId: this.phySupplierId,
+      physicalSupplierCounterpartyName:physicalSupplierCounterpartyName
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {

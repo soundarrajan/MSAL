@@ -234,8 +234,12 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     if(this.data.isPhysicalSupplier){
       if(selectedCounterparties.length==1){
         let reqPayload={
-          "RequestLocationSellerId":this.data.requestLocationSellerId,
-          "phySupplierId": selectedCounterparties[0].sellerCounterpartyId
+          "requestGroupId":this.data.RequestGroupId,
+          "requestLocationId":this.data.RequestLocationId,
+          "requestLocationSellerId":this.data.requestLocationSellerId,
+          "phySupplierId": selectedCounterparties[0].sellerCounterpartyId,
+          "sellerCounterpartyId":this.data.SellerCounterpartyId,
+          "physicalSupplierCounterpartyName":this.data.PhysicalSupplierCounterpartyName
       }
 
     const response = this._spotNegotiationService.updatePhySupplier(reqPayload);
