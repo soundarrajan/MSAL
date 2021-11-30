@@ -12,7 +12,7 @@ export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
   tenantConfiguration: `Groups/getTenantConfiguration`,
   staticLists: `api/infrastructure/static/lists`,
-  counterpartyLists: `api/masters/counterparties/list`,
+  counterpartyLists: `api/masters/counterparties/listbyTypes`, 
   addCounterparties: `groups/addSellers`,
   saveTargetPrice: `Groups/saveTargetPrice`,
   updatePhySupplier:`RFQ/updatePhysicalSupplier`,
