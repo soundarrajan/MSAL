@@ -1,11 +1,11 @@
-﻿commit f4b146d34a9c108fd4578a77f4fa9c85d8c77ffe
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Nov 26 15:47:46 2021 +0000
+﻿commit 4ed2c83f86f432ea45ba081a760dc01e88eebaf9
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Wed Dec 1 15:17:31 2021 +0000
 
-    Merged PR 14961: Removed time for Surveyor date column
+    Merged PR 15006: 36612, 36971 - changes
     
-    Removed time for Surveyor date column
+    36612, 36971 - changes
     
-    Related work items: #37196
+    Related work items: #36612, #36971
 
 branch: master

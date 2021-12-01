@@ -3298,7 +3298,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   setPaybleTo(data) {
     this.formValues.counterpartyDetails.payableTo = {
       id: data.id,
-      name: data.name
+      name: this.htmlDecode(data.name)
     };
     // console.log(this.formValues.counterpartyDetails.payableTo);
     this.formValues.counterpartyDetails.counterpartyBankAccount = null;
