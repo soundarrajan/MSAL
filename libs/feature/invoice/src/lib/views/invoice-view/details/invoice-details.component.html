@@ -42,9 +42,9 @@
               <div class="badge-header-v2">
                 <span
                   class="label_text"
-                  matTooltip="{{ formValues.createdByUser?.displayName }}"
+                  matTooltip="{{ formValues.createdByUser?.displayName | htmlDecodeReadonly }}"
                   >Created by:
-                  <b>{{ formValues.createdByUser?.displayName }}</b></span
+                  <b>{{ formValues.createdByUser?.displayName | htmlDecodeReadonly }}</b></span
                 >
                 <span class="border_line"></span>
                 <span class="label_text" matTooltip="{{ formValues.createdAt }}"
@@ -1105,7 +1105,7 @@
                         "
                         [ngModelOptions]="{ standalone: true }"
                         [matTooltip]="
-                          this.formValues.counterpartyDetails.payableTo?.name
+                          this.formValues.counterpartyDetails.payableTo?.name | htmlDecodeReadonly
                         "
                         [matTooltipPosition]="'above'"
                         matTooltipClass="custom-tooltip"

@@ -555,7 +555,7 @@
                         )
                       "
                       [matTooltip]="
-                        productDetail.value?.physicalSupplierCounterparty?.name
+                        productDetail.value?.physicalSupplierCounterparty?.name | htmlDecodeReadonly
                       "
                       [matTooltipPosition]="'above'"
                       matTooltipClass="custom-tooltip"
