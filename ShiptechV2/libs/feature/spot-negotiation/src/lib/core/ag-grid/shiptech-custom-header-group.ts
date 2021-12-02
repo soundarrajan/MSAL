@@ -170,7 +170,7 @@ import moment from 'moment';
             >
           </div>
           <div class="arrow" (click)="pricinghistorypopup()">
-            <span class="title"  title = "{{ params.product.indexName }}">{{ params.product.indexCode }}</span>
+            <span class="title"  title = "{{ params.product.indexName }}">{{ params.product.indexCode == null ? '--' : params.product.indexCode }}</span>
             <span class="image" ></span>
           </div>
           <div class="offer" (click)="offerpricehistorypopup()">
