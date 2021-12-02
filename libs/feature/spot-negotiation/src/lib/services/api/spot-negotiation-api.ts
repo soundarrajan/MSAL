@@ -417,7 +417,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   OtherDetails(payload: any): Observable<any> {
     return this.http
       .put<any>(
-        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.otherDetails}`,
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.otherDetails}`,
         payload
       )
       .pipe(
