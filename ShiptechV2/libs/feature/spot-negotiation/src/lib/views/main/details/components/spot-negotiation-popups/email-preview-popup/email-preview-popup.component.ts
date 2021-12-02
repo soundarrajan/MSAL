@@ -312,7 +312,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     response.subscribe((res: any) => {
       this.spinner.hide();
       if(res)
-      this.dialogRef.close();
+      {
+        this.toaster.success('Changes reverted successfully.');
+        this.dialogRef.close();
+      }      
     });
  }
  }
