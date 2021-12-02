@@ -740,7 +740,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.locations = spotNegotiation.locations;
       setTimeout(() => {
         if (this.locationsRows.length > 0) {
-          debugger;
           this.locationsRows.forEach(element => {
             if (element.requestOffers?.length > 0) {
               let val = 'EnabledPhySup' + element.id;

@@ -14,11 +14,15 @@ import { ToastrService } from 'ngx-toastr';
 import moment from 'moment';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 
 @Component({
   selector: 'app-spotnego-otherdetails2',
   templateUrl: './spotnego-otherdetails2.component.html',
-  styleUrls: ['./spotnego-otherdetails2.component.css']
+  styleUrls: ['./spotnego-otherdetails2.component.css'],
+  providers: [
+    OrderListGridViewModel
+  ]
 })
 export class SpotnegoOtherdetails2Component implements OnInit {
   uomList: any;
@@ -44,16 +48,33 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   SupplyDeliveryDate: '';
   dateFormat_rel_SupplyDate: any;
   autocompleteProducts: knownMastersAutocomplete;
+  _entityId: number;
+  _entityName: string;
   private _autocompleteType: any;
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
   ngOnInit() {
 
   }
+  get entityId(): number {
+    return this._entityId;
+  }
 
+  get entityName(): string {
+    return this._entityName;
+  }
+  @Input() set autocompleteType(value: string) {
+    this._autocompleteType = value;
+  }
+
+  @Input() set entityName(value: string) {
+    this._entityName = value;
+    this.gridViewModel.entityName = this.entityName;
+  }
   constructor(
     public dialogRef: MatDialogRef<SpotnegoOtherdetails2Component>,
     private store: Store,
+    public gridViewModel: OrderListGridViewModel,
     protected changeDetectorRef: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
     private toastr: ToastrService,
@@ -225,13 +246,13 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   selectorProductSelectionChange(selection: IDisplayLookupDto): void {
     if (selection === null || selection === undefined) {
-      this.otherDetailsItems[this.productIndex] = '';
+      this.otherDetailsItems[this.productIndex].product = '';
     } else {
       const obj = {
-        QuotedProductId: selection.id,
+        id: selection.id,
         name: selection.name
       };
-      this.otherDetailsItems[this.productIndex] = obj;
+      this.otherDetailsItems[this.productIndex].product = obj;
       this.changeDetectorRef.detectChanges();
     }
   }
