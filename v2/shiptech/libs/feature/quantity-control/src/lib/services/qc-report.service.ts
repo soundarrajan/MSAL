@@ -430,6 +430,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
             logBookRobQtyBeforeDelivery: s.robBeforeDeliveryLogBookROB,
             measuredRobQtyBeforeDelivery: s.robBeforeDeliveryMeasuredROB,
             beforeDeliveryQtyUomId: reportDetailsState.robBeforeDeliveryUom?.id,
+            bdnQuantity: s.deliveredQuantityBdnQty,
             measuredRobDeliveredQty: s.measuredDeliveredQty,
             deliveredQtyUomId: reportDetailsState.deliveredQtyUom?.id,
             logBookRobQtyAfterDelivery: s.robAfterDeliveryLogBookROB,

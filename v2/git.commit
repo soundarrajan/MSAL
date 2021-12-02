@@ -1,11 +1,11 @@
-﻿commit a3dbf42157a743787e48d3f27e5bc4d32ceccae6
+﻿commit 2fb811ce4e0be8632de0516e7a6d3fe4f4691223
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Dec 2 09:29:30 2021 +0000
+Date:   Thu Dec 2 14:27:21 2021 +0000
 
-    Merged PR 15015: 36612 delivery recon percent calc fix
+    Merged PR 15022: 36314-Quantity Control: Made BDN Quantity field as an editable field
     
-    36612 delivery recon percent calc fix
+    36314-Quantity Control: Made BDN Quantity field as an editable field
     
-    Related work items: #36612
+    Related work items: #36314
 
 branch: master

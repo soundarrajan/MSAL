@@ -14,14 +14,6 @@
 </div>
 
 
-<ng-template [columnDef]="viewModel.gridViewModel.bdnDeliveredQuantityCol"
-             appAgCellTemplate
-             let-model="data.model" let-value="valueFormatted">
-  <ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center" style="color:#1FBBE6">{{value}}</div>
-  </ng-container>
-</ng-template>
-
 <ng-template [columnDef]="[
               viewModel.gridViewModel.robBeforeDeliveryColGroup,
               viewModel.gridViewModel.robAfterDeliveryColGroup,
@@ -49,7 +41,8 @@
               viewModel.gridViewModel.measuredRobBeforeDeliveryCol,
               viewModel.gridViewModel.measuredDeliveredQuantityCol,
               viewModel.gridViewModel.logBookAfterDeliveryCol,
-              viewModel.gridViewModel.measuredRobAfterDeliveryCol]"
+              viewModel.gridViewModel.measuredRobAfterDeliveryCol,
+              viewModel.gridViewModel.bdnDeliveredQuantityCol]"
              appAgCellTemplate let-column="column" let-model="data" let-value="valueFormatted">
   <div fxLayout="row" fxLayoutAlign="center center"
        *ngIf="!((column.colId === viewModel.gridViewModel.logBookAfterDeliveryCol.colId || column.colId === viewModel.gridViewModel.measuredRobAfterDeliveryCol.colId) && model.isSludge)">
