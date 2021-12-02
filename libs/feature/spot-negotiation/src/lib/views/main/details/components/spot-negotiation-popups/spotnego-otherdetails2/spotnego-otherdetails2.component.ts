@@ -194,7 +194,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   ConstructOtherDetailsPayload(requestOffers, etaDate) {
     let QtyUomId;
     if (requestOffers.supplyQuantityUomId == null) {
-      QtyUomId = this.tenantConfiguration.uomId;
+      QtyUomId = requestOffers.priceQuantityUomId??this.tenantConfiguration.uomId;
     } else {
       QtyUomId = requestOffers.supplyQuantityUomId;
     }
@@ -210,8 +210,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           name: this.productList.find(x => x.id == requestOffers.quotedProductId).name,
         },
         uom: {
-          id: requestOffers.supplyQuantityUomId ? requestOffers.supplyQuantityUomId : this.tenantConfiguration.uomId,
-          name: this.uomList.find(x => x.id == requestOffers.supplyQuantityUomId ? requestOffers.supplyQuantityUomId : this.tenantConfiguration.uomId).name,  //Default Uom is Id:5
+          id: QtyUomId,
+          name: this.uomList.find(x => x.id == QtyUomId).name,  //Default Uom is Id:5
         }
       }]
   }
