@@ -20,7 +20,7 @@ import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
-import { AddCounterpartyToLocations, SetLocations } from '../../../../../store/actions/ag-grid-row.action';
+import { AddCounterpartyToLocations, SetLocations, SetLocationsRows } from '../../../../../store/actions/ag-grid-row.action';
 import { SetCurrentRequestSmallInfo } from '../../../../../store/actions/request-group-actions';
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
@@ -64,6 +64,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     { request: 'Demo Req 100008', vessel: 'Al Mashrab', selected: false }
   ];
   isLoadpage: boolean = false;
+  locationsRows: any;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -83,6 +84,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
+        this.locationsRows=spotNegotiation.locationsRows;
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations = spotNegotiation.currentRequestSmallInfo.requestLocations;
@@ -279,6 +281,22 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.inputSearch.nativeElement.focus();
     }, 0);
+  }
+
+  searchCounterparty(userInput: string): void {
+    if(userInput!==''){
+      let result = this.locationsRows
+      .filter(e => {
+        if (e.sellerCounterpartyName.toLowerCase().includes(userInput.toLowerCase())) {
+          return true;
+        }
+        return false;
+      });
+      this.store.dispatch(new SetLocationsRows(result));
+    }
+   else{
+        return;
+   }
   }
 
   scrollPort1(el: HTMLElement) {
