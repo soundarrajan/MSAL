@@ -22,6 +22,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   public LocationId: number;
   public selectedRows: any = [];
   currentRequest: any;
+  rowSelection: string;
   constructor(
     private router: Router,
     private store: Store,
@@ -30,6 +31,12 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     public dialogRef: MatDialogRef<SpotnegoSearchCtpyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    if(data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
+      this.rowSelection = 'single';
+    }
+    else{
+      this.rowSelection = 'multiple';
+    }
     this.AddCounterpartiesAcrossLocations =
       data.AddCounterpartiesAcrossLocations;
     this.RequestGroupId = data.RequestGroupId;
@@ -49,7 +56,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       suppressRowClickSelection: true,
       headerHeight: 30,
       rowHeight: 30,
-      rowSelection: 'multiple',
+      rowSelection: this.rowSelection,
       // groupIncludeTotalFooter: true,
       onGridReady: params => {
         this.dialog_gridOptions.api = params.api;
@@ -232,7 +239,6 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     const selectedCounterparties = this.toBeAddedCounterparties();
     if (selectedCounterparties.length == 0) return;
     if(this.data.isPhysicalSupplier){
-      if(selectedCounterparties.length==1){
         let reqPayload={
           "requestGroupId":this.data.RequestGroupId,
           "requestLocationId":this.data.RequestLocationId,
@@ -251,9 +257,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         return;
       }
     });
-      }else{
-        this.toastr.error("Please select single counterparty to proceed");
-      }
+   
       
     this.dialogRef.close({
       sellerName: selectedCounterparties[0].sellerCounterpartyName
