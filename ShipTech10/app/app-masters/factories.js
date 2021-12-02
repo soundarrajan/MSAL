@@ -217,6 +217,46 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 }
             });
         },
+        get_benchmark_file: function(payload, callback) {
+            // var url = `${API.BASE_URL_DATA_NEGOTIATION }/Benchmark/downloadTemplateBenchmark?apiRequest=PerformanceBenchmarkTemplate.xlsx`;
+            var url = `${API.BASE_URL_DATA_NEGOTIATION }/Benchmark/downloadTemplateBenchmarkBlob?apiRequest=PerformanceBenchmarkTemplate.xlsx`;
+            $http({
+                method: 'POST',
+                url: url,
+                // data: payload,
+                responseType: 'arraybuffer',
+                headers: {
+                    'Origin': 'http://localhost:9015',
+                    // 'Content-Type': undefined
+                    'Content-Type': 'application/json',
+                    // 'Content-Type': 'application/Excel',
+                    // 'Content-Type': 'application/octet-stream',
+                }
+            }).then((response) => {
+                if (response) {
+                    let mime = response.headers('content-type');
+                    callback(response, mime);
+                }
+            }, (response) => {
+                if (response) {
+                    callback(response, false);
+                }
+            });
+        },
+        // get_benchmark_auth: function(payload, callback) {
+        //     var url = `${API.BASE_URL_DATA_NEGOTIATION }/Benchmark/getUserAuthorization`;
+        //     $http({
+        //         method: 'POST',
+        //         url: url,
+        //         data: payload,
+        //         responseType: 'arraybuffer',
+        //         headers: {
+        //             'Origin': 'http://localhost:9015',
+        //             // 'Content-Type': undefined
+        //             'Content-Type': 'application/json',
+        //         }
+        //     })
+        // },
         generateTemplate: function(payload, callback) {
             var url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/generate`;
             $http({
@@ -1053,6 +1093,24 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
         },
         uploadInvoicePrice: function(fd, callback) {
             let uploadUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/prices/import`;
+            $http.post(uploadUrl, fd, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).then((response) => {
+                if (response) {
+                    callback(response);
+                } else {
+                    callback(false);
+                }
+            }, (response) => {
+                console.log('HTTP ERROR');
+                callback(false);
+            });
+        },
+        uploadBenchmark: function(fd, callback) {
+            let uploadUrl = `${API.BASE_URL_DATA_NEGOTIATION }/Benchmark/importBenchmark`;
             $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {

@@ -5113,3 +5113,6 @@ table.energyCalculationBlade tr.border-green-jungle {
     color: red;
     text-decoration: line-through;	
 }
+.custom-hardcoded-table.benchmark-upload-log .table-body td {
+    padding: 8px 10px !important;
+}
