@@ -678,11 +678,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       } else {
         const minValue =
           (conversionInfo.minToleranceLimit *
-            Number(Confirm.val)) /
+            Number(sellerConvertedValue)) /
           100;
         const maxValue =
           (conversionInfo.maxToleranceLimit *
-            Number(Confirm.val)) /
+            Number(sellerConvertedValue)) /
           100;
         if(variance < 0) { // negative
           if (Math.abs(variance) <= maxValue) {

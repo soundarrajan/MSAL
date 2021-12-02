@@ -1,11 +1,11 @@
-﻿commit 4ed2c83f86f432ea45ba081a760dc01e88eebaf9
+﻿commit a3dbf42157a743787e48d3f27e5bc4d32ceccae6
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Dec 1 15:17:31 2021 +0000
+Date:   Thu Dec 2 09:29:30 2021 +0000
 
-    Merged PR 15006: 36612, 36971 - changes
+    Merged PR 15015: 36612 delivery recon percent calc fix
     
-    36612, 36971 - changes
+    36612 delivery recon percent calc fix
     
-    Related work items: #36612, #36971
+    Related work items: #36612
 
 branch: master
