@@ -40,8 +40,7 @@
         $scope.vm = this;
         $scope.preferredContacts = [];
         $rootScope.isSaveAction = false;
-        
-        $scope.benchMarkErrorLogs = [];
+
 
         $controller('ScreenLayout_Controller', {
             $scope: $scope
@@ -5074,51 +5073,6 @@
                 angular.element('#FTPFileUpload').trigger('click');
             }, 1);
         };
-        $scope.downloadBenchmarkTemplate = function() {
-            console.log("downloadBenchmarkTemplate");
-            let docName = "PerformanceBenchmarkTemplate.xlsx";
-            // var payload = "PerformanceBenchmarkTemplate.xlsx";
-            // Factory_Master.get_benchmark_auth(
-            //     {
-            //         Payload: {
-            //             "Screen": "UploadPerformanceBenchmark",
-            //             "Action": "FullAccess"
-            //         }
-                
-            //     }
-            // )
-
-
-
-            Factory_Master.get_benchmark_file(
-                {
-                    Payload: {}
-                },
-                (file, mime) => {
-                    if (file.data) {
-                        let blob = new Blob([ file.data ], {
-                            type: mime
-                        });
-                        if (blob.type == "application/pdf") {
-                            $scope.openPDFViewer(blob);
-                            return;
-                        }
-
-                        let a = document.createElement('a');
-                        a.style = 'display: none';
-                        document.body.appendChild(a);
-                        // Create a DOMString representing the blob and point the link element towards it
-                        let url = window.URL.createObjectURL(blob);
-                        a.href = url;
-                        a.download = docName;
-                        // programatically click the link to trigger the download
-                        a.click();
-                        // release the reference to the file by revoking the Object URL
-                        window.URL.revokeObjectURL(url);
-                    }
-                }
-            );
-        };
         $scope.uploadFiles = function(file) {
             if ($state.params.entity_id > 0) {
                 var file;
@@ -5164,7 +5118,7 @@
         $scope.dropDocument = function(file) {
             $rootScope.droppedDoc = file;
             $scope.droppedDoc = $rootScope.droppedDoc;
-            if (window.location.href.indexOf("masters/price") != -1 || window.location.href.indexOf("masters/performance-benchmark-upload") != -1) { return; }
+            if (window.location.href.indexOf("masters/price") != -1 ) { return; }
             if ($scope.formValues.documentType) {
                 if ($scope.formValues.documentType.name != '') {
                     $rootScope.formValues.documentType = $scope.formValues.documentType;
@@ -7711,7 +7665,7 @@
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(() => {
 	            	$(document).on('change', 'input.inputfile', function() {
-                        if ((window.location.href.indexOf("masters/price") != -1) || (window.location.href.indexOf("masters/performance-benchmark-upload") != -1)) {
+                        if (window.location.href.indexOf("masters/price") != -1 ) {
                             var fileScope = angular.element($('.dropzone-file-area')).scope();
                             var currentFile = this.files[0];
                             fileScope.$apply(() => {
@@ -8941,148 +8895,6 @@
             }
         };
 
-        $scope.uploadBenchmarkImport = function() {
-            $scope.benchmarkDisabledUpload = true;
-
-            let availableFile = false;
-            let fileLocation = '';
-
-            // check if file is uploaded
-            if($('#fileUpload')[0].files.length > 0) {
-                availableFile = true;
-                fileLocation = 'input';
-            }else if($scope.droppedDoc) {
-                availableFile = true;
-                fileLocation = 'dropped';
-            }
-
-            if(availableFile) {
-                // form payload
-                let formData = new FormData();
-                let payload = {
-                    Payload: {
-                        name: 'File2',
-                        documentType: {
-                            transactionTypeId: 0,
-                            id: 0,
-                            name: '',
-                            displayName: null,
-                            code: '',
-                            collectionName: null,
-                            customNonMandatoryAttribute1: ''
-                        },
-                        size: 100,
-                        fileType: 'FileType',
-                        transactionType: {
-                            id: 0,
-                            name: '',
-                            code: '',
-                            collectionName: null
-                        },
-                        fileId: 1,
-                        uploadedBy: {
-                            id: 0,
-                            name: '',
-                            code: '',
-                            collectionName: null
-                        },
-                        uploadedOn: '2017-01-11T14:21:37.96',
-                        notes: '',
-                        isVerified: false,
-                        referenceNo: '314',
-                        createdBy: {
-                            id: 1,
-                            name: 'Admin',
-                            code: '',
-                            collectionName: null
-                        },
-                        createdOn: '2017-01-11T14:21:37.96',
-                        lastModifiedByUser: null,
-                        lastModifiedOn: null,
-                        id: 0,
-                        isDeleted: false
-                    }
-                };
-                formData.append('request', JSON.stringify(payload));
-
-                // append file
-                let invalidFile = false;
-                if(fileLocation == 'input') {
-                    if($('#fileUpload')[0].files) {
-                        $.each($('#fileUpload')[0].files, (i, file) => {
-                            if(file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                                formData.append('formFile', file);
-                            }else{
-                                invalidFile = true;
-                            }
-                        });
-                    }
-                }
-                if(fileLocation == 'dropped') {
-                    if($scope.droppedDoc.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                        formData.append('formFile', $scope.droppedDoc);
-                    }else{
-                        invalidFile = true;
-                    }
-                }
-                if(invalidFile) {
-                    toastr.error('File type not supported. Please add xls/xlsx.');
-
-                    delete $scope.droppedDoc;
-                    delete $rootScope.droppedDoc;
-                    $('#fileUpload').val('');
-                    $('.fileUploadName span').text('');
-                    $scope.benchmarkDisabledUpload = false;
-                    return;
-                }
-
-                // make call to upload file
-                toastr.info('Uploading...');
-                Factory_Master.uploadBenchmark(formData, (callback) => {
-                    if (callback && callback.status == 200 && (callback?.data?.status)) {
-                        toastr.success('Benchmark uploaded successfully.');
-
-                        // if(callback.data) {
-                        //     if(callback.data.message != '') {
-                        //         toastr.warning(callback.data.message);
-                        //     }
-                        // }
-                        
-                        $state.reload();
-
-                        // $scope.droppedDoc = null;
-                        // $rootScope.droppedDoc = null;
-                        // delete $scope.uploadedFile;
-                        // delete $rootScope.uploadedFile;
-                        //                                 delete $scope.droppedDoc;
-                        //                                 delete $rootScope.droppedDoc;
-                        //                                 $('#fileUpload').val('');
-                        //                                 $(".fileUploadName span").text("");
-                        //                                 $scope.benchmarkDisabledUpload = false;
-                        //                                 $scope.apply();
-                    } else {
-                        // $scope.droppedDoc = null;
-                        // $rootScope.droppedDoc = null;
-                        // delete $scope.uploadedFile;
-                        // delete $rootScope.uploadedFile;
-                        if((callback?.data?.status == false) && callback?.data?.benchmarkErrorLog?.length) {
-                            $scope.benchMarkErrorLogs = callback.data.benchmarkErrorLog;
-                        }
-
-                        delete $scope.droppedDoc;
-                        delete $rootScope.droppedDoc;
-                        $('#fileUpload').val('');
-                        $('.fileUploadName span').text('');
-                        $scope.benchmarkDisabledUpload = false;
-                        $scope.apply();
-                    }
-                });
-            }else{
-                toastr.error('Please add file to import!');
-                $scope.benchmarkDisabledUpload = false;
-                return;
-            }
-        };
 
         vm.openEmailPreview = function(url, entity_id) {
             let previewUrl = `${url }/${ entity_id}`;
