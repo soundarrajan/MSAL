@@ -39,8 +39,7 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
                 users: 'User',
                 role: 'Roles',
                 sellerrating: 'Seller Rating',
-                configuration: 'Configuration',
-                'performance-benchmark-upload': 'Performance Benchmark Upload'
+                configuration: 'Configuration'
 
             };
 
