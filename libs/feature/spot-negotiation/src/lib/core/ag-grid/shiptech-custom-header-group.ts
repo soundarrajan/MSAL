@@ -551,6 +551,7 @@ export class ShiptechCustomHeaderGroup {
 
   calculateTargetPrice() {
     this.livePrice= this.priceFormatValue(this.livePrice);
+    this.livePrice = (this.livePrice == null ? 0 : this.livePrice);
     this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
     this.closureValue=parseInt(this.livePrice);
     let payload = {
