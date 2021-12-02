@@ -47,6 +47,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   dateFormat;
   SupplyDeliveryDate: '';
   dateFormat_rel_SupplyDate: any;
+  tenantConfiguration:any;
   autocompleteProducts: knownMastersAutocomplete;
   _entityId: number;
   _entityName: string;
@@ -144,6 +145,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       this.locationsRows = spotNegotiation.locationsRows;
       this.staticLists = spotNegotiation.staticLists;
       this.locations = spotNegotiation.locations;
+      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
     });
     var otherDetailsPayload = [];
     this.locations.forEach(ele => {
@@ -192,7 +194,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   ConstructOtherDetailsPayload(requestOffers, etaDate) {
     let QtyUomId;
     if (requestOffers.supplyQuantityUomId == null) {
-      QtyUomId = 5;
+      QtyUomId = this.tenantConfiguration.uomId;
     } else {
       QtyUomId = requestOffers.supplyQuantityUomId;
     }
@@ -208,8 +210,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           name: this.productList.find(x => x.id == requestOffers.quotedProductId).name,
         },
         uom: {
-          id: requestOffers.supplyQuantityUomId ? requestOffers.supplyQuantityUomId : 5,
-          name: this.uomList.find(x => x.id == QtyUomId).name,  //Default Uom is Id:5
+          id: requestOffers.supplyQuantityUomId ? requestOffers.supplyQuantityUomId : this.tenantConfiguration.uomId,
+          name: this.uomList.find(x => x.id == requestOffers.supplyQuantityUomId ? requestOffers.supplyQuantityUomId : this.tenantConfiguration.uomId).name,  //Default Uom is Id:5
         }
       }]
   }
