@@ -1,0 +1,125 @@
+<span ng-controller="Controller_Admin as CA" ng-init="setPageTitle()"></span>
+<div ng-controller="Controller_Configurable_List_Control as CLC">
+
+    <!-- <general-header actions="{
+        primary: [
+
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: true,
+        icons: [
+            {class: 'fa fa-save', action: 'save_layout'},
+            {class: 'fa fa-trash', action: 'delete_layout'},
+            {class: 'export-xls', action: 'export_xls'},
+            {class: 'export-csv', action: 'export_csv'},
+            {class: 'export-pdf', action: 'export_pdf'},
+
+            {class: 'print', action: 'print'},
+        ],
+    }"></general-header> -->
+ 
+    <div class="row" ng-controller="Controller_Master as CM">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject  bold uppercase">
+                        Benchmark Upload
+                    </span>
+                </div>
+                <div style="float: right; padding-top: 10px;">
+                    <button ng-click="downloadBenchmarkTemplate()">Download template</button>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form-group  form-inline row ">
+                    <div class="col-sm-4" ng-click="clickUpload()">
+                        <div class="dropzone-file-area" id="{{ field.Name }}" imagedrop  on-image-drop="dropDocument(uploadedFile )">
+                            <h3 class="sbold">
+                                Drop files here or click to upload
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type='file' id="fileUpload" class="inputfile" ng-model="droppedDoc" style="opacity: 0"/>
+                        <label for="fileUpload" class="fileUploadName">
+                            <div class="col-sm-9">
+                                <span></span>
+                                <span ng-bind="droppedDoc.name"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-md-4 priceUploadBtn" ng-init="benchmarkDisabledUpload = false">
+                        <a type="submit" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope float-right" ng-click="uploadBenchmarkImport()" ng-disabled="benchmarkDisabledUpload">
+                            <span>Upload</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <clc-table-list id="'masters_pricelist'" app="'masters'" screen="'pricelist'" controls="'[entries, columns, info, pager]'"></clc-table-list> -->
+
+        <div class="col-md-12 no-padding-left">
+            <div class="portlet light stretch-vertical">
+            <div class="portlet-title">
+                <div class="caption">
+                    <div class="caption-subject" style="color: black !important; position: relative; left: 15px; text-transform: initial;">
+                        Benchmark Upload Log
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div  class="custom-hardcoded-table benchmark-upload-log ng-scope">
+                    <table class="table-body" style="width:50%; position: relative; left: 15px;">
+                        <thead>
+                            <tr>
+                                <td class="padding"><b>S.No.</b></td>
+                                <td class="padding"><b>Line no</b></td>
+                                <td class="padding"><b>Error Message</b></td>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        <tr ng-if="benchMarkErrorLogs.length!=0" ng-repeat="(key, errorLog) in benchMarkErrorLogs">
+                            <td style="width:50px;">
+                                {{errorLog.sNo}}
+                            </td>
+                            <td style="width:100px;">
+                                <b>{{errorLog.lineNo}}</b>
+                            </td>
+                            <td>
+                                <span ng-bind-html="vm.trustAsHtml(errorLog.errorMessage)"></span>
+                            </td>
+                        </tr>
+                        <tr ng-if="benchMarkErrorLogs.length==0">
+                            <td colspan="3" class="text-center">
+                                No records to view
+                            </td>
+                        </tr>
+                    </tbody>
+            </table>
+            <!-- <div class="col-sm-12">
+                Showing {{(currentPage * entries) - entries + 1}} to {{ currentPage == maxPages ?  matchedCount : (currentPage * entries)}}  of {{ matchedCount }}
+                <div class="notification-pagination" ng-init="currentPage = 1">
+                Page
+                    <span class="prevPage" ng-disabled="currentPage <= 1" ng-click="currentPage <= 1 ? '' : loadByPagination(currentPage, 'prev')"> < </span>
+                    <span class="currentPage">{{currentPage}}</span>
+                    <span class="nextPage" ng-disabled="currentPage >= maxPages" ng-click="currentPage >= maxPages ? '' : loadByPagination(currentPage, 'next')"> > </span>
+                    of {{maxPages}}
+                </div>
+            </div> -->
+            <div class="clearfix"></div>
+        </div>
+        </div>
+    </div>
+
+    <!-- <general-header class="footer-general-header" actions="{
+        primary: [
+
+            {label: 'New Entity', type: 'goto', url: 'edit/'},
+        ],
+        secondary: [],
+        search: false,
+    }" color="'white'"></general-header> -->
+
+</div>
