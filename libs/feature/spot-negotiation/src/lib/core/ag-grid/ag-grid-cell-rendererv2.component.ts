@@ -461,18 +461,18 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
     </div>
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
-      <span *ngIf="!params.value">-</span>
+      <span *ngIf="!params.value && params.value != 0">-</span>
       <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
     <div *ngIf="params.type == 'amt'" class="addTpr">
-      <span *ngIf="!params.value">-</span>
+      <span *ngIf="!params.value && params.value != 0">-</span>
       <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
     </div>
 
     <div *ngIf="params.type == 'diff'" class="addTpr">
-      <span *ngIf="!params.value">-</span>
+      <span *ngIf="!params.value && params.value != 0">-</span>
       <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
