@@ -325,8 +325,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       return;
     }
     const payload = {
-      RequestLocationId : updatedRow.requestLocationId,
-      SellerCounterPartyId : updatedRow.sellerCounterpartyId,
+      RequestLocationSellerId : updatedRow.id,
       Offers: [
         {
           id: productDetails.offerId,
