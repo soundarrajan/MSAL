@@ -349,7 +349,17 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
         [matTooltip]="(editSeller && params.data.physicalSupplierCounterpartyName)? params.data.physicalSupplierCounterpartyName : 'Add physical supplier'"
         matTooltipClass="lightTooltip"
       >
-        <span
+
+      <span *ngIf="params.data.isEditable"
+        >
+         <span
+            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            >{{ params.data.physicalSupplierCounterpartyName }}</span
+          >
+          <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
+      </span>
+      
+        <span *ngIf="!params.data.isEditable"
           contentEditable="true"
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"

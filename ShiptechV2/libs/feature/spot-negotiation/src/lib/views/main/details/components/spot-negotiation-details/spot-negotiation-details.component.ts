@@ -735,48 +735,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return null;
       }
 
-      this.locationsRows = spotNegotiation.locationsRows;
+     this.locationsRows = spotNegotiation.locationsRows;
       this.locations = spotNegotiation.locations;
-      setTimeout(() => {
-        if (this.locationsRows.length > 0) {
-          this.locationsRows.forEach(element => {
-            if (element.requestOffers?.length > 0) {
-              let val = 'EnabledPhySup' + element.id;
-              element.requestOffers.forEach(element1 => {
-                if (
-                  element1.requestProductId != undefined &&
-                  element1.requestProductId != null &&
-                  this.locations?.length > 0
-                ) {
-                  var FilterLocation: any = [];
-                  FilterLocation = this.locations.filter(
-                    col => col.locationId == element.locationId
-                  );
-                  if (
-                    FilterLocation.length > 0 &&
-                    FilterLocation[0].requestProducts.length > 0
-                  ) {
-                    let FilterProdut = FilterLocation[0].requestProducts.filter(
-                      col => col.id == element1.requestProductId
-                    );
-                    if (
-                      FilterProdut.length > 0 &&
-                      FilterProdut[0].status != undefined &&
-                      FilterProdut[0].status == 'Stemmed'
-                    ) {
-                      if (document.getElementById(val) != null) {
-                        document
-                          .getElementById(val)
-                          .classList.add('physupplierdisabled');
-                      }
-                    }
-                  }
-                }
-              });
-            }
-          });
-        }
-      }, 500);
+      // setTimeout(() => {
+      //   if(spotNegotiation.locationsRows.length > 0){
+      //     this. locationsRows = this.EnabledPhysupplier(spotNegotiation.locationsRows);
+      //   }
+      // }, 500);
 
       // Set rows inside ag grid
       this.rowData_aggrid = spotNegotiation.locationsRows;
