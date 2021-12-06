@@ -142,8 +142,8 @@ export class AgColumnPreferencesService implements OnDestroy {
         if (!preferences) {
           if (
             gridName == 'control-tower-quantity-claims-list-grid-10' ||
-            gridName == 'control-tower-quality-claims-list-grid-7' ||
-            gridName == 'control-tower-quality-labs-list-grid-7'
+            gridName == 'control-tower-quality-claims-list-grid-8' ||
+            gridName == 'control-tower-quality-labs-list-grid-8'
           ) {
             options.api.setSortModel([
               {
@@ -165,13 +165,6 @@ export class AgColumnPreferencesService implements OnDestroy {
             options.api.setSortModel([
               {
                 colId: 'surveyorDate',
-                sort: 'desc'
-              }
-            ]);
-          } else if (gridName == 'control-tower-quality-labs-list-grid-7') {
-            options.api.setSortModel([
-              {
-                colId: 'createdDate',
                 sort: 'desc'
               }
             ]);
@@ -211,7 +204,9 @@ export class AgColumnPreferencesService implements OnDestroy {
 
           // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
           if (
-            gridName == 'control-tower-quantity-claims-list-grid-10' &&
+            (gridName == 'control-tower-quantity-claims-list-grid-10' ||
+              gridName == 'control-tower-quality-claims-list-grid-8' ||
+              gridName == 'control-tower-quality-labs-list-grid-8') &&
             !sortModels.length
           ) {
             options.api.setSortModel([
