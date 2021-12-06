@@ -92,7 +92,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
-    enableColResize: true,
+    // enableColResize: true,
     suppressRowClickSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
@@ -139,7 +139,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value?.portCallId : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };
 
@@ -152,7 +152,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     colId: ControlTowerQuantitySupplyDifferenceListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.port,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -166,7 +166,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     field: model('vessel'),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.vessel,
     valueFormatter: params => params.value?.name,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -178,7 +178,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
     width: 150
   };
 
@@ -196,7 +196,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateOnly(params.value),
-    tooltip: params => (params.value ? this.format.dateOnly(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.dateOnly(params.value) : ''),
     width: 150
   };
 
@@ -218,7 +218,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       return a;
     },
     cellClass: 'cell-background',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         return params.value ? 'Yes' : 'No';
       }
@@ -249,7 +249,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       return a;
     },
     cellClass: 'cell-background',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         return params.value ? 'Yes' : 'No';
       }
@@ -284,7 +284,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
         return mergedValues.join('<br>');
       }
     },
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.productType?.name ?? '-'
@@ -318,7 +318,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.bdnQuantity) ?? '-'
@@ -352,7 +352,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     autoHeight: true,
     wrapText: true,
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.measuredDeliveredQuantity) ?? '-'
@@ -386,7 +386,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.differenceInSupplyQuantity) ?? '-'
@@ -419,7 +419,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.sumOfOrderQuantity) ?? '-'
@@ -449,7 +449,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
         return mergedValues.join('<br>');
       }
     },
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.supplyUom?.name ?? '-'
@@ -498,7 +498,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltip: params => (params.value ? params.value?.displayName : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.displayName : ''),
     width: 150
   };
 
@@ -682,7 +682,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           "startDate": moment()
             .subtract(6, "days")
             .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,
       };
       this.controlTowerService.getSupplyDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))

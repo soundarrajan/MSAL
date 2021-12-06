@@ -3425,7 +3425,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   setupGrid_related_invoice() {
     this.gridOptions_rel_invoice = <GridOptions>{
-      enableColResize: true,
+      // enableColResize: true,
       defaultColDef: {
         resizable: true,
         filtering: false,

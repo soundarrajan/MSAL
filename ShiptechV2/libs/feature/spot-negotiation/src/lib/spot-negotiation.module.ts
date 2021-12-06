@@ -8,7 +8,8 @@ import { RelatedLinksModule } from './../../../../core/src/lib/ui/components/rel
 import { MessageBoxModule } from './../../../../core/src/lib/ui/components/message-box/message-box.module';
 import { MasterAutocompleteModule } from './../../../../core/src/lib/ui/components/master-autocomplete/master-autocomplete.module';
 import { SearchBoxModule } from './../../../../core/src/lib/ui/components/search-box/search-box.module';
-import { AuthenticationModule } from './../../../../core/src/lib/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { LoggingModule } from './../../../../core/src/lib/logging/logging.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
@@ -100,7 +101,9 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     SpotNegotiationRoutingModule,
     LoggingModule,
     PortalModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
     UIModule,
 

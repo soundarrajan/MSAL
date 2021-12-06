@@ -63,7 +63,7 @@ export class RelatedInvoiceComponent implements OnInit {
 
   setupGrid(){
     this.gridOptions_data = <GridOptions>{
-      enableColResize: true,
+      // enableColResize: true,
       defaultColDef: {
         resizable: true,
         filtering: false,

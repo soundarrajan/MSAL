@@ -69,7 +69,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
-    enableColResize: true,
+    // enableColResize: true,
     suppressRowClickSelection: true,
     // suppressCellSelection: true,
     animateRows: true,
@@ -116,7 +116,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value?.id : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.id : ''),
     width: 150
   };
 
@@ -136,7 +136,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value?.id : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.id : ''),
     width: 150
   };
 
@@ -156,7 +156,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -166,7 +166,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     colId: ControlTowerQualityClaimsListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.port,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -176,7 +176,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     colId: ControlTowerQualityClaimsListColumns.vessel,
     field: model('vessel'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.vessel,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -188,7 +188,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
     width: 200
   };
 
@@ -198,7 +198,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     colId: ControlTowerQualityClaimsListColumns.product,
     field: model('product'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.product,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -209,7 +209,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('seller'),
     valueFormatter: params => this.format.htmlDecode(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.seller,
-    tooltip: params =>
+    tooltipValueGetter: params =>
       params.value ? this.format.htmlDecode(params.value) : '',
     width: 200
   };
@@ -221,7 +221,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('claimSubtypes'),
     valueFormatter: params => this.format.htmlDecode(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.claimSubType,
-    tooltip: params =>
+    tooltipValueGetter: params =>
       params.value ? this.format.htmlDecode(params.value) : '',
     width: 150
   };
@@ -240,7 +240,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     valueFormatter: params => this.format.amount(params.value),
     dtoForExport:
       ControlTowerQualityClaimsListExportColumns.estimatedSettlementAmount,
-    tooltip: params => this.format.amount(params.value),
+    tooltipValueGetter: params => this.format.amount(params.value),
     width: 150
   };
 
@@ -252,7 +252,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.createdDate,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
     width: 200
   };
 
@@ -263,7 +263,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     field: model('createdBy'),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.createdBy,
     valueFormatter: params => params.value?.name,
-    tooltip: params => (params.value ? params.value?.name : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.name : ''),
     width: 200
   };
 
@@ -300,7 +300,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       };
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.value < 7) {
         return 'New';
       } else if (params.value >= 7 && params.value <= 14) {

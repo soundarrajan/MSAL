@@ -79,7 +79,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
-    enableColResize: true,
+    // enableColResize: true,
     suppressRowClickSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
@@ -124,7 +124,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value?.portCallId : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };
 
@@ -134,7 +134,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     colId: ControlTowerQuantityRobDifferenceListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.port,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -148,7 +148,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     field: model('vessel'),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.vessel,
     valueFormatter: params => params.value,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -160,7 +160,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
     width: 150
   };
 
@@ -177,7 +177,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       ControlTowerQuantityRobDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateOnly(params.value),
-    tooltip: params => (params.value ? this.format.dateOnly(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.dateOnly(params.value) : ''),
     width: 150
   };
 
@@ -201,7 +201,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         return params.value ? 'Yes' : 'No';
       }
@@ -234,7 +234,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         return params.value ? 'Yes' : 'No';
       }
@@ -266,7 +266,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
         return mergedValues.join('<br>');
       }
     },
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.productType?.name ?? '-'
@@ -299,7 +299,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
     },
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.logBookRobQtyBeforeDelivery) ?? '-'
@@ -332,7 +332,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     },
     field: model('measuredRobQtyBeforeDelivery'),
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.measuredRobQtyBeforeDelivery) ?? '-'
@@ -366,7 +366,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
     },
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.differenceInRobQuantity) ?? '-'
@@ -394,7 +394,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
         return mergedValues.join('<br>');
       }
     },
-    tooltip: function(params) {
+    tooltipValueGetter: function(params) {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.robUom?.name ?? '-'
@@ -439,7 +439,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltip: params => (params.value ? params.value?.displayName : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.displayName : ''),
     width: 150
   };
 
@@ -622,7 +622,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           "startDate": moment()
             .subtract(6, "days")
             .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,
       };
       this.controlTowerService.getRobDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
