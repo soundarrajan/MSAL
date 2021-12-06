@@ -159,7 +159,9 @@ export class FilterPreferencesComponent implements OnDestroy {
     this.activePresetChange$.next(this.filterPresets);
 
     // reset SystemFilters
-    this.currentSystemFilters.map( o => o.isActive = false);
+    if (this.currentSystemFilters) {
+      this.currentSystemFilters.map( o => o.isActive = false);
+    }
     
     this.changeDetector.markForCheck();
   }
