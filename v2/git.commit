@@ -1,9 +1,11 @@
-﻿commit 6db1740e2af0c2e51bb2e93d6ad79a8214d93f66
+﻿commit 0f6587f4c03d0991e1a5cc67d4c987e8cf03c87c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Dec 6 08:33:26 2021 +0000
+Date:   Mon Dec 6 09:27:14 2021 +0000
 
-    Merged PR 15051: Fixed export in control tower views
+    Merged PR 15055: Fixed 37200
     
-    Fixed export in control tower views
+    Fixed 37200
+    
+    Related work items: #37200
 
 branch: master
