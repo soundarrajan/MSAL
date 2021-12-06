@@ -1,0 +1,17 @@
+.row {
+  margin: 0px;
+}
+
+.statusChange .save-popup[disabled='true'] {
+  opacity: 0.6;
+}
+
+.log-container {
+  padding-left: 0px !important;
+}
+
+.comments-container {
+  margin-top: 5px;
+  padding-left: 0px;
+  margin-left: 15px;
+}

@@ -22,11 +22,13 @@ import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { SelectItem } from 'primeng/api';
 import { Observable, Subject } from 'rxjs';
-import { QcReportService } from '../../../../../services/qc-report.service';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 
 import { formatDate } from '@angular/common';
-import { DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  NativeDateAdapter
+} from '@angular/material/core';
 import { Platform } from '@angular/cdk/platform';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 
@@ -35,7 +37,7 @@ export const PICK_FORMATS = {
     dateInput: 'DD MMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
 
@@ -53,15 +55,15 @@ export class PickDateAdapter extends NativeDateAdapter {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [
-    {provide: DateAdapter, useClass: PickDateAdapter},
-    {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS}
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS }
   ]
 })
 export class DatePickerComponent {
-  @Input('model') set _selectedOption(model) {  
+  @Input('model') set _selectedOption(model) {
     this.inputModel = model;
   }
-  @Input('label') set setLabel(label) {  
+  @Input('label') set setLabel(label) {
     this.inputLabel = label;
   }
   public options: SelectItem[];
@@ -71,9 +73,10 @@ export class DatePickerComponent {
   @Output() changeInput = new EventEmitter<any>();
   @Input() public disabled = false;
 
-
-  constructor(@Inject(MAT_DATE_FORMATS) private dateFormats,
-              private format: TenantFormattingService) {
+  constructor(
+    @Inject(MAT_DATE_FORMATS) private dateFormats,
+    private format: TenantFormattingService
+  ) {
     this.dateFormats.display.dateInput = this.format.dateFormat;
   }
 

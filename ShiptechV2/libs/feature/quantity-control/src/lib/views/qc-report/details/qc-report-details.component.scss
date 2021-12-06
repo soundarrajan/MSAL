@@ -50,3 +50,10 @@
 .textarea-only-vertical {
   resize: vertical;
 }
+
+p-spinner.sludge-red input[type="text"]{
+  background-color: rgb(238, 69, 53);
+}
+p-spinner.sludge-green input[type="text"]{
+  background-color: rgb(169, 211, 114);
+}

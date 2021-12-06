@@ -1,37 +1,122 @@
 <!--Main Component Body-->
 <mat-chip-list>
   <ng-container *ngFor="let filter of filterPresets">
-    <mat-chip *ngIf="filter.isPinned" [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']" (click)="applyFilter(filter.id)" [matTooltip]="filter.name">
+    <mat-chip
+      *ngIf="filter.isPinned"
+      class="{{filter.name == 'Default' ? 'is-default system-preference ' : ''}}"
+      [ngClass]="[filter.isActive ? 'active-chip text-center' : 'inactive-chip text-center']"
+      (click)="applyFilter(filter.id)"
+      [matTooltip]="filter.name"
+      matTooltipClass="custom-tooltip-filter"
+    >
       <!-- NOTE: Add track by -->
-      <div class="truncate-f85 text-center">{{ filter.name }}{{ filter.hasChanges ? '*' : '' }}</div>
-      <div matSuffix class="chip-circle" [ngStyle]="{ pointerEvents: filter.isClear ? 'none' : 'auto' }" z (click)="setPinned(filter.id)" [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'">
-        <i id="pin" class="fas fa-thumbtack aggrid-rotate-45"></i>
+      <div
+        matPrefix
+        class="count-circle"
+        *ngIf="filter.name == 'Default' && noOfDefault !== undefined"
+      >
+        <span>{{ noOfDefault }}</span>
+      </div>
+      <div class="truncate-f85 text-center">
+        {{ filter.name }}{{ filter.hasChanges ? '*' : '' }}
+      </div>
+      <div
+        matSuffix
+        class="chip-circle"
+        [ngStyle]="{ pointerEvents: filter.isClear ? 'none' : 'auto' }"
+        z
+        (click)="setPinned(filter.id)"
+        [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'"
+        matTooltipClass="custom-tooltip-filter"
+      >
+        <i *ngIf="filter.name !== 'Default'" id="pin" class="fas fa-thumbtack aggrid-rotate-45 pin"></i>
+        <span *ngIf="filter.name == 'Default'" class="fas fa-circle pin"></span>
       </div>
     </mat-chip>
+    <!-- Insert system preferences after Default-->
+    <ng-container *ngIf="filter.name == 'Default'"  >
+      <ng-container *ngFor="let filter of currentSystemFilters"  >
+          <mat-chip
+            [ngClass]="[
+              filter.isActive
+                ? 'active-chip text-center'
+                : 'inactive-chip text-center'
+            ]"
+            class="system-preference"
+            (click)="systemFilterUpdate(filter)"
+            [matTooltip]="filter.label"
+            matTooltipClass="custom-tooltip-filter"
+          >
+            <!-- NOTE: Add track by -->
+            <div matPrefix class="count-circle">
+              <span>{{ filter.count }}</span>
+            </div>
+            <div class="text-center">{{ filter.label }}</div>
+            <div matSuffix class="chip-circle">
+              <span class="fas fa-circle pin"></span>
+            </div>
+          </mat-chip>
+      </ng-container>    
+    </ng-container> 
+    <!-- END Insert system preferences after Default-->
+
   </ng-container>
-  <mat-chip class="icon-chip text-center" matTooltip="Expand Filters" [matTooltipShowDelay]="500" *ngIf="hasActiveFilterPresets" (click)="openAvailablePresetsDialog()">
+  
+  <mat-chip
+    class="icon-chip text-center"
+    matTooltip="Expand Filters"
+    [matTooltipPosition]="'above'"
+    matTooltipClass="custom-tooltip-filter"
+    [matTooltipShowDelay]="500"
+    *ngIf="hasActiveFilterPresets"
+    (click)="openAvailablePresetsDialog()"
+  >
     <div class="mx-auto d-block">
       <i class="fas fa-ellipsis-h"></i>
-<!--      <div class="more-white"></div>-->
+      <!--      <div class="more-white"></div>-->
     </div>
   </mat-chip>
 </mat-chip-list>
 
-<mat-progress-spinner *ngIf="isLoading" class="mt-2" [mode]="'indeterminate'" [diameter]="20"> </mat-progress-spinner>
+<mat-progress-spinner
+  *ngIf="isLoading"
+  class="mt-2"
+  [mode]="'indeterminate'"
+  [diameter]="20"
+>
+</mat-progress-spinner>
 
 <!--Create New Filter Dialog Body -->
 <ng-template #createPreset>
   <div id="saveFilterPrefsPopup">
     <h2 mat-dialog-title>
       Name Your Preference
-      <mat-icon matSuffix id="dialogCloseButton" class="float-right" (click)="presetsDialog.close()">close </mat-icon>
+      <mat-icon
+        matSuffix
+        id="dialogCloseButton"
+        class="float-right"
+        (click)="presetsDialog.close()"
+        >close
+      </mat-icon>
     </h2>
     <hr />
     <mat-dialog-content>
       <div>Preference Name</div>
       <mat-form-field appearance="outline">
-        <input id="name" required name="preferenceName" [formControl]="preferenceNameFormControl" matInput placeholder="Preference Name" />
-        <mat-error *ngIf="preferenceNameFormControl.touched && preferenceNameFormControl.errors?.required">
+        <input
+          id="name"
+          required
+          name="preferenceName"
+          [formControl]="preferenceNameFormControl"
+          matInput
+          placeholder="Preference Name"
+        />
+        <mat-error
+          *ngIf="
+            preferenceNameFormControl.touched &&
+            preferenceNameFormControl.errors?.required
+          "
+        >
           Enter Filter Name
         </mat-error>
         <mat-error *ngIf="preferenceNameFormControl.errors?.pattern">
@@ -41,7 +126,14 @@
     </mat-dialog-content>
     <mat-dialog-actions class="float-right">
       <button mat-button [mat-dialog-close]="true">CANCEL</button>
-      <button mat-button class="blue-button" style="width: 150px" (click)="createNewFilter()">SAVE</button>
+      <button
+        mat-button
+        class="blue-button"
+        style="width: 150px"
+        (click)="createNewFilter()"
+      >
+        SAVE
+      </button>
     </mat-dialog-actions>
   </div>
 </ng-template>

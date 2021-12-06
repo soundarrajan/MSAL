@@ -757,7 +757,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     } else {
       const obj = {
         id: selection.id,
-        name: selection.name
+        name: this.htmlDecode(selection.name)
       };
       this.formValues.productDetails[line].physicalSupplierCounterparty = obj;
       console.log(this.formValues.productDetails[line]);
@@ -793,6 +793,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   selectorPhysicalSupplierSelectionChange(value, line) {
+    value.name = this.htmlDecode(value.name);
     this.formValues.productDetails[line].physicalSupplierCounterparty = value;
     this.changeDetectorRef.detectChanges();
   }
@@ -1240,8 +1241,28 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       } else {
         this.toastr.error('Selected product already exists');
       }
+      if(rowData.delivery.physicalSupplierCounterparty && rowData.delivery.physicalSupplierCounterparty.name) {
+        rowData.delivery.physicalSupplierCounterparty.name = this.htmlDecode(rowData.delivery.physicalSupplierCounterparty.name);
+      }
     }
     this.selectedProductLine = null;
     this.changeDetectorRef.detectChanges();
+  }
+  
+  htmlDecode(str: string): string {
+    const decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+
+    return decode(_.unescape(str));
+  }
+
+  physicalSupplierCounterpartyChange(value, line) {
+    this.formValues.productDetails[line].physicalSupplierCounterparty = this.htmlDecode(value);
+    if (!value) {
+      this.formValues.productDetails[line].physicalSupplierCounterparty = null;
+    }
   }
 }

@@ -26,12 +26,12 @@ export interface IDeliveryNotesDetailsDto {
   createdBy: IDisplayLookupDto;
   note: string;
   id: number;
-  DeliveryId: number;
+  orderId: number;
   isDeleted: boolean;
 }
 
 
-    
+
 
 
 export interface IQcReportProductTypeDto {

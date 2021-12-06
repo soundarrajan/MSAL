@@ -81,8 +81,10 @@ import {
 } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DecimalPipe } from '@angular/common';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
     dateInput: 'YYYY-MM-DD HH:mm'
@@ -126,7 +128,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     }
     return formattedDate;
   }
-  
+
   parse(value) {
     // We have no way using the native JS Date to set the parse format or locale, so we ignore these
     // parameters.
@@ -139,7 +141,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment.utc(value, currentFormat);
+    const elem = moment.utc(value, currentFormat);
     return value ? elem : null;
   }
 }

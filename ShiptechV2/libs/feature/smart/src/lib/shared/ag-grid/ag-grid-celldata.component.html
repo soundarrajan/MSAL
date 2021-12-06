@@ -77,17 +77,34 @@
     <div *ngIf="params?.data?.is_alt_port == 'Y' && requestAvailable(params); else content" matTooltip="Alt.port" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>  
     </div> -->
-    <div *ngIf="checkAltPort(params) == 'D'" matTooltip="{{params.value}}" [ngClass]="params.cellClass">
+    <!-- <div *ngIf="checkAltPort(params) == 'D'" matTooltip="{{params.value}}" [ngClass]="params.cellClass" -->
+    <div *ngIf="checkAltPort(params) == 'D'" 
+    #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverPlanLift" 
+    (mouseenter)="requestAvailable(params) && toggleMenuInfo($event);" (mouseleave)="toggleMenu2Info();" 
+    [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">{{params.value}}</a>
     </div>
     
     <div *ngIf="checkAltPort(params) == 'N'" matTooltip="0" [ngClass]="params.cellClass" style="color: white;">0 </div>
       
-    <div *ngIf="checkAltPort(params) == 'Y' && requestAvailable(params); else content" matTooltip="Alt.port" [ngClass]="params.cellClass">
+    <div *ngIf="checkAltPort(params) == 'Y' && requestAvailable(params); else content" 
+    #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverPlanLift" 
+    (mouseenter)="requestAvailable(params) && toggleMenuInfo($event);" (mouseleave)="toggleMenu2Info();" 
+    [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>  
     </div>
     <ng-template #content><div *ngIf="checkAltPort(params) == 'Y' && !requestAvailable(params); "matTooltip="{{params.value}}" [ngClass]="params.cellClass" style="color: white;">{{params.value}}</div></ng-template>
-
+    
+      <mat-menu class="port-future-req-popup" #hoverPlanLift="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
+        <ng-template matMenuContent let-PortReqData="ref">
+        <div class="port-future-req" [ngClass]="{'dark-theme':theme,'light-theme':!theme}" style="font-size: 14px;">
+          <div class="row col-12" *ngFor="let PortData of showProductRequestInfo(PortReqData)">
+            <strong>Request &nbsp;</strong> {{PortData?.request_id}} {{PortData?.request_product}} {{PortData?.estimated_lift}} MT
+            <!-- <strong>Request &nbsp;</strong> {{PortData?.request_id_vlsfo}} {{PortData?.request_product_vlsfo}} {{PortData?.vlsfo_estimated_lift}} MT -->
+          </div> 
+        </div>
+        </ng-template>
+      </mat-menu>
   </div>
   <div *ngIf="params.type=='request-link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
@@ -230,8 +247,9 @@
       <div class="input">
         <div>{{params.column.colDef.headerName}}</div>
         <mat-form-field appearance="fill">
-          <input matInput #inpt id="inputValue" [value]="params.value" (keyup)="onEditCell(inpt.value,cmnt.value)"
-            (click)="$event.stopPropagation();">
+          <input type="number" class="BPInNumField" matInput #inpt id="inputValue" [value]="params.value" onkeydown="javascript: return event.keyCode === 8 ||
+          event.keyCode === 46 ? true : !isNaN(Number(event.key))" (keyup)="onEditCell(inpt.value,cmnt.value)"
+            (click)="$event.stopPropagation();" placeholder="Please enter a numeric value">
         </mat-form-field>
       </div>
       <div class="comments">
@@ -244,7 +262,7 @@
       <div class="actions">
         <button mat-button class="cancel" (click)="cancel()">CANCEL</button>
         <button mat-raised-button [disabled]="!enableSave" [ngClass]="{'active':enableSave}" class="save"
-          (click)="saveUserComment(cmnt.value);saveInput(inpt.value,params,params.colDef?.field)">Save</button>
+          (click)="saveUserComment(cmnt.value);saveInput(inpt, inpt.value,params,params.colDef?.field)">Save</button>
       </div>
       </div>
     </ng-template>
@@ -410,20 +428,22 @@
           </div>
           <div>
             <ul style="padding-left: 14px;vertical-align: middle; margin: 6px 0px 0px;">
-              <li *ngIf= "this.params.data.eta_date != '0001-01-01 05:53'"><span class="sub-content-title">ETA: </span>
+              <!-- <li *ngIf= "this.params.data.eta_date != '0001-01-01 05:53'"><span class="sub-content-title">ETA: </span>
                   <span  class="sub-content-value">{{params.data.eta_date}}</span>
                   <span  style="padding:7px;"> | </span>
-                  <span  class="sub-content-title">{{etaDays}} Days</span>
+                  <span  class="sub-content-title">{{params.data.eta_days}} Days</span>
               </li>
               <li *ngIf= "this.params.data.etd_date  != '0001-01-01 05:53'"><span class="sub-content-title">ETD: </span>
                   <span class="sub-content-value">{{params.data.etd_date}}</span>
                   <span style="padding:7px;"> | </span>
-                  <span class="sub-content-title">{{etdDays}} Days</span>
+                  <span class="sub-content-title">{{params.data.etd_days}} Days</span>
               </li>
               <li *ngIf= "this.params.data.eta_date  == '0001-01-01 05:53'"><span class="sub-content-title" style="padding-right:50px;">ETA : </span><span style="padding:7px;"> - </span>
               </li>
               <li *ngIf= "this.params.data.etd_date  == '0001-01-01 05:53'"><span class="sub-content-title" style="padding-right:50px;">ETD : </span><span style="padding:7px;"> - </span>
-              </li>
+              </li> -->
+              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value">{{params.data.eta_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{params.data.eta_days}} Days</span></li>
+              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value">{{params.data.etd_date}}</span><span style="padding:7px;"> | </span><span class="sub-content-title">{{params.data.etd_days}} Days</span></li>
             </ul>
           </div>
         </div>

@@ -25,7 +25,7 @@
             [disableOptionCentering]="true"
             panelClass="price-precision-select-container"
             [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed'
+            formValues.status && formValues.status.name == 'Delivered'
             "
             (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)"
         >

@@ -69,7 +69,13 @@
           </div>
           <div class="border_line"></div>
           <div class="col-md-2 p-lr-5">
-            <div class="minInputFocus" style="width:100%;padding: 0px 10px 0; border-radius: 2px;" [ngClass]="{ 'required-field': !contractDetail.value.minContractQuantity }">
+            <div
+              class="minInputFocus"
+              style="width:100%;padding: 0px 10px 0; border-radius: 2px;"
+              [ngClass]="{
+                'required-field': !contractDetail.value.minContractQuantity
+              }"
+            >
               <span class="label quantity-label"
                 >Min
                 <span
@@ -118,7 +124,13 @@
           </div>
           <div class="border_line"></div>
           <div class="col-md-2 p-lr-5">
-            <div class="maxInputFocus" style="width:100%;padding: 0px 10px 0;border-radius: 2px;" [ngClass]="{ 'required-field': !contractDetail.value.maxContractQuantity }">
+            <div
+              class="maxInputFocus"
+              style="width:100%;padding: 0px 10px 0;border-radius: 2px;"
+              [ngClass]="{
+                'required-field': !contractDetail.value.maxContractQuantity
+              }"
+            >
               <span class="label quantity-label"
                 >Max
                 <span

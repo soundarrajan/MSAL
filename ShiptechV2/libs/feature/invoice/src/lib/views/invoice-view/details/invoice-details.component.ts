@@ -66,7 +66,10 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { InvoiceTypeSelectionComponent } from './component/invoice-type-selection/invoice-type-selection.component';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 // import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
@@ -104,7 +107,6 @@ const isEmpty = object => {
   }
   !Object.values(object).some(x => x !== null && x !== '');
 };
-
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
     dateInput: 'YYYY-MM-DD HH:mm'
@@ -129,10 +131,11 @@ export const PICK_FORMATS = {
   }
 };
 
-export class PickDateAdapter extends NativeDateAdapter {
-  format(value: Date, displayFormat: string): string {
+@Injectable()
+export class CustomDateAdapter extends MomentDateAdapter {
+  public format(value: moment.Moment, displayFormat: string): string {
     if (value === null || value === undefined) return '';
-    let currentFormat = displayFormat;
+    let currentFormat = PICK_FORMATS.display.dateInput;
     let hasDayOfWeek;
     if (currentFormat.startsWith('DDD ')) {
       hasDayOfWeek = true;
@@ -141,9 +144,9 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment(value).format(currentFormat);
+    let formattedDate = moment.utc(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -160,21 +163,19 @@ export class PickDateAdapter extends NativeDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    const elem = moment(value, currentFormat);
-    const date = elem.toDate();
-    return value ? date : null;
+    const elem = moment.utc(value, currentFormat);
+    return value ? elem : null;
   }
 }
-
 export interface NgxMatMomentDateAdapterOptions {
   strict?: boolean;
 
   useUtc?: boolean;
 }
 
-export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS_1 = new InjectionToken<
   NgxMatMomentDateAdapterOptions
->('MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+>('MAT_MOMENT_DATE_ADAPTER_OPTIONS_1', {
   providedIn: 'root',
   factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
 });
@@ -208,7 +209,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   constructor(
     @Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
     @Optional()
-    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+    @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS_1)
     private _options?: NgxMatMomentDateAdapterOptions
   ) {
     super();
@@ -380,7 +381,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       const newVal = moment(elem).format(currentFormat);
-      // console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -441,20 +441,15 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./invoice-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE]
-    },
-
-    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     {
       provide: NgxMatDateAdapter,
       useClass: CustomNgxDatetimeAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS_1]
     },
-    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ]
 })
 export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
@@ -498,7 +493,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             'order-number': element.orderId,
             type: element.invoiceType.name,
             date: element.invoiceDate
-              ? moment(element.invoiceDate).format(this.dateFormat_rel_invoice)
+              ? this.formatDateOnly(element.invoiceDate)
               : '',
             amount: this.format.amount(element.invoiceAmount),
             deductions: this.format.amount(element.deductions),
@@ -544,8 +539,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           IInvoiceDetailsItemBaseInfo
         >{};
       }
-      this.parseProductDetailData(this.formValues.productDetails);
-      //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
       this.setChipDatas();
@@ -576,8 +569,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
   //Default Values - strats
   orderId: number;
-  gotDefaultValues: boolean = false; 
-  isNewFromDelivery: boolean = false; 
+  gotDefaultValues: boolean = false;
+  isNewFromDelivery: boolean = false;
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public gridOptions_claims: GridOptions;
@@ -778,6 +771,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     documentType: <IInvoiceDetailsItemBaseInfo>{
       internalName: 'FinalInvoice'
     },
+    previousDocumentType: null,
     canCreateFinalInvoice: false,
     receivedDate: '',
     dueDate: '',
@@ -1267,7 +1261,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.getPaybleToList();
 
     this.getBankAccountNumber();
-    this.buildProductDetilsGrid();
 
     this.legacyLookupsDatabase.getsInvoiceType().then(list => {
       // avoid preclaim credit/debit note invoice type selection
@@ -1400,6 +1393,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       error = true;
       errorMessage += 'Invoice date is required. \n';
       this.formErrors.invoiceDate = errorMessage;
+    }
+
+    // Document number
+    if (this.formValues.documentNo && isNaN(this.formValues.documentNo)) {
+      error = true;
+      errorMessage += 'Document no should accept only numbers.';
+      this.formErrors.documentNo = errorMessage;
     }
 
     // Recived date
@@ -1896,7 +1896,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   getBankAccountNumber() {
-    if (!this.formValues.counterpartyDetails.payableTo || (!this.gotDefaultValues && (<any>window).isNewFromDelivery && !this.formValues.id)) {
+    if (
+      !this.formValues.counterpartyDetails.payableTo ||
+      (!this.gotDefaultValues &&
+        (<any>window).isNewFromDelivery &&
+        !this.formValues.id)
+    ) {
       (<any>window).isNewFromDelivery = false;
       return;
     }
@@ -2163,71 +2168,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     });
   }
 
-  buildProductDetilsGrid() {
-    this.gridOptions_data = <GridOptions>{
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef_aggrid_pd,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 45,
-      animateRows: false,
-      masterDetail: true,
-
-      onGridReady: params => {
-        this.gridOptions_data.api = params.api;
-        this.gridOptions_data.columnApi = params.columnApi;
-        this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
-        // this.addCustomHeaderEventListener(params);
-      },
-
-      onColumnResized: function(params) {
-        if (
-          params.columnApi.getAllDisplayedColumns().length <= 9 &&
-          params.type === 'columnResized' &&
-          params.finished === true &&
-          params.source === 'uiColumnDragged'
-        ) {
-          params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function(params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-          params.api.sizeColumnsToFit();
-        }
-      }
-    };
-  }
-
-  parseProductDetailData(productDetails: IInvoiceDetailsItemProductDetails[]) {
-    for (const value of productDetails) {
-      const productdetail = {
-        del_no: {
-          no: value.deliveryId,
-          order_prod: value.invoicedProduct.name
-        },
-        del_product: value.product.name,
-        del_qty: value.deliveryQuantity + ' ' + value.deliveryQuantityUom.name,
-        est_rate: value.estimatedRate + ' ' + value.estimatedRateCurrency.code,
-        amount1: value.estimatedAmount + ' ' + value.estimatedRateCurrency.code,
-        inv_product: value.invoicedProduct.name,
-        inv_qty: value.invoiceQuantity + ' ' + value.invoiceQuantityUom.name,
-        inv_rate: value.invoiceRate + ' ' + value.invoiceRateCurrency.code,
-        amount2:
-          value.invoiceComputedAmount + ' ' + value.invoiceRateCurrency.code,
-        recon_status: value.reconStatus ? value.reconStatus.name : '',
-        sulpher_content: value.sulphurContent,
-        phy_supplier: value.physicalSupplierCounterparty.name
-      };
-      this.rowData_aggrid_pd.push(productdetail);
-    }
-  }
-
   setOrderDetailsLables(orderDetails) {
     this.orderDetails.contents[0].value = orderDetails?.vesselName
       ? orderDetails?.vesselName
@@ -2322,7 +2262,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      const beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment
+        .utc(value)
+        .format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
@@ -2370,35 +2312,43 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       !parseFloat(this.formValues?.id?.toString()) ||
       this.formValues.id == 0
     ) {
-        (<any>window).startCreateInvoiceTime = Date.now();
-        // this.spinner.show();
-        this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
-            if (typeof result == 'string') {
-                console.log('Format Additional costs');
-                this.formatAdditionalCosts();
-            }
-            this.entityId = result;
-            this.handleServiceResponse(result, 'Invoice saved successfully.');
-            this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateInvoiceTime, (<any>window).location.href);
-            if (callback) {
-                callback(result);
-            }
-            });
-        } else {
-            (<any>window).startUpdateInvoiceTime = Date.now();
-            // this.spinner.show();
-            this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
-                if (typeof result == 'string') {
-                    console.log('Format Additional costs');
-                    this.formatAdditionalCosts();
-                }
-                this.handleServiceResponse(result, 'Invoice updated successfully.');
-                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateInvoiceTime, (<any>window).location.href);
-                if (callback) {
-                    callback(result);
-                }
-            });
+      (<any>window).startCreateInvoiceTime = Date.now();
+      // this.spinner.show();
+      this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
+        if (typeof result == 'string') {
+          console.log('Format Additional costs');
+          this.formatAdditionalCosts();
         }
+        this.entityId = result;
+        this.handleServiceResponse(result, 'Invoice saved successfully.');
+        this.myMonitoringService.logMetric(
+          'Create ' + (<any>window).location.href,
+          Date.now() - (<any>window).startCreateInvoiceTime,
+          (<any>window).location.href
+        );
+        if (callback) {
+          callback(result);
+        }
+      });
+    } else {
+      (<any>window).startUpdateInvoiceTime = Date.now();
+      // this.spinner.show();
+      this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
+        if (typeof result == 'string') {
+          console.log('Format Additional costs');
+          this.formatAdditionalCosts();
+        }
+        this.handleServiceResponse(result, 'Invoice updated successfully.');
+        this.myMonitoringService.logMetric(
+          'Update ' + (<any>window).location.href,
+          Date.now() - (<any>window).startUpdateInvoiceTime,
+          (<any>window).location.href
+        );
+        if (callback) {
+          callback(result);
+        }
+      });
+    }
   }
 
   formatAdditionalCosts() {
@@ -2473,7 +2423,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.spinner.hide();
     this.formSubmitted = false;
     if (typeof result == 'string') {
-      this.toastrService.error(result);
+      if (result) {
+        this.toastrService.error(result);
+      }
     } else {
       this.toastrService.success(successMsg);
       this.router
@@ -2606,12 +2558,22 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           return;
         }
       }
-      if (this.formValues.documentType.name == 'Pre-claim Credit Note' ||
-        this.formValues.documentType.name == 'Pre-claim Debit Note')
-      {
-        if(!this.formValues.relatedInvoices.some(el => el.invoiceType.name == 'Final Invoice' &&
-          el.isDeleted == false && el.invoiceStatus.name == 'Approved')) {
-          let invType = this.formValues.documentType.name == 'Pre-claim Credit Note' ? "CN": "DN";
+      if (
+        this.formValues.documentType.name == 'Pre-claim Credit Note' ||
+        this.formValues.documentType.name == 'Pre-claim Debit Note'
+      ) {
+        if (
+          !this.formValues.relatedInvoices.some(
+            el =>
+              el.invoiceType.name == 'Final Invoice' &&
+              el.isDeleted == false &&
+              el.invoiceStatus.name == 'Approved'
+          )
+        ) {
+          const invType =
+            this.formValues.documentType.name == 'Pre-claim Credit Note'
+              ? 'CN'
+              : 'DN';
           this.spinner.hide();
           this.formSubmitted = false;
           this.toastr.error(
@@ -2620,10 +2582,15 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           return;
         }
       }
-      if (this.formValues.documentType.name == 'Pre-claim Debit Note')
-      {
-        if(!this.formValues.relatedInvoices.some(el => el.invoiceType.name == 'Pre-claim Credit Note' &&
-          el.isDeleted == false && el.invoiceStatus.name == 'Approved')) {
+      if (this.formValues.documentType.name == 'Pre-claim Debit Note') {
+        if (
+          !this.formValues.relatedInvoices.some(
+            el =>
+              el.invoiceType.name == 'Pre-claim Credit Note' &&
+              el.isDeleted == false &&
+              el.invoiceStatus.name == 'Approved'
+          )
+        ) {
           this.spinner.hide();
           this.formSubmitted = false;
           this.toastr.error(
@@ -2634,11 +2601,15 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       }
       (<any>window).startApproveInvoiceTime = Date.now();
       this.invoiceService
-      .approveInvoiceItem(valuesForm)
-      .subscribe((result: any) => {
+        .approveInvoiceItem(valuesForm)
+        .subscribe((result: any) => {
           this.handleServiceResponse(result, 'Invoice approved successfully.');
-          this.myMonitoringService.logMetric('Approve ' + (<any>window).location.href, Date.now() - (<any>window).startApproveInvoiceTime, (<any>window).location.href);
-      });
+          this.myMonitoringService.logMetric(
+            'Approve ' + (<any>window).location.href,
+            Date.now() - (<any>window).startApproveInvoiceTime,
+            (<any>window).location.href
+          );
+        });
     } else if (option == 'create') {
       this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
@@ -2658,6 +2629,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             x => x.id === result
           );
           this.entityId = 0;
+          this.formValues.previousDocumentType = _.cloneDeep(
+            this.formValues.documentType
+          );
           this.formValues.documentType.id = createinvoice[0].id;
           this.formValues.documentType.name = createinvoice[0].name;
 
@@ -3320,23 +3294,23 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.getBankAccountNumber();
     }
   }
-  
+
   setPaybleTo(data) {
-      this.formValues.counterpartyDetails.payableTo = {
-          id: data.id,
-          name: data.name
-        };
+    this.formValues.counterpartyDetails.payableTo = {
+      id: data.id,
+      name: this.htmlDecode(data.name)
+    };
     // console.log(this.formValues.counterpartyDetails.payableTo);
     this.formValues.counterpartyDetails.counterpartyBankAccount = null;
     this.changeDetectorRef.detectChanges();
     this.getBankAccountNumber();
-}
-verifyPayableToIsNull(data) {
-    if(!data) {
-        this.formValues.counterpartyDetails.payableTo = null;
-        this.formValues.counterpartyDetails.counterpartyBankAccount = null;
-        this.bankAccountNumbers = [];
-        this.changeDetectorRef.detectChanges();
+  }
+  verifyPayableToIsNull(data) {
+    if (!data) {
+      this.formValues.counterpartyDetails.payableTo = null;
+      this.formValues.counterpartyDetails.counterpartyBankAccount = null;
+      this.bankAccountNumbers = [];
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -3379,17 +3353,17 @@ verifyPayableToIsNull(data) {
           .getWorkingDueDate(dueDate)
           .pipe(finalize(() => {}))
           .subscribe((response: any) => {
-            if (typeof response == 'string') {
-              this.toastr.error(response);
-            } else {
-              this.formValues.workingDueDate = response;
-              if (!this.initialHasManualPaymentDate) {
-                this.formValues.hasManualPaymentDate = false;
-                this.formValues.paymentDate = response;
-                this.manualPaymentDateReference = this.formValues.paymentDate;
-              }
-              this.changeDetectorRef.detectChanges();
+            // if (typeof response == 'string') {
+            //   this.toastr.error(response);
+            // } else {
+            this.formValues.workingDueDate = response;
+            if (!this.initialHasManualPaymentDate) {
+              this.formValues.hasManualPaymentDate = false;
+              this.formValues.paymentDate = response;
+              this.manualPaymentDateReference = this.formValues.paymentDate;
             }
+            this.changeDetectorRef.detectChanges();
+            // }
           });
         break;
       case 'PaymentDate':
@@ -3535,6 +3509,30 @@ verifyPayableToIsNull(data) {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       const elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
+  }
+
+  formatDateOnly(date?: any) {
+    if (date) {
+      let currentFormat = this.format.dateFormat;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      const elem = moment(date, 'YYYY-MM-DD');
+      let formattedDate = moment(elem).format(currentFormat);
+      if (formattedDate) {
+        if (formattedDate.split(' ')[1] === '00:00') {
+          formattedDate = formattedDate.split(' ')[0];
+        }
+      }
       if (hasDayOfWeek) {
         formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
       }

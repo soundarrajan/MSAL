@@ -101,10 +101,10 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getSpecGroupsGetByProduct(payload): Observable<unknown> {
     return this.contractApi.getSpecGroupsGetByProduct(payload);
   }
-     
+
   /**
- * @param payload 
- */
+   * @param payload
+   */
   @ObservableException()
   getSpecForProcurement(payload): Observable<unknown> {
     return this.contractApi.getSpecForProcurement(payload);
@@ -252,6 +252,22 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   getAdditionalCostsPerPort(payload): Observable<unknown> {
     return this.contractApi.getAdditionalCostsPerPort(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  getProductById(payload): Observable<unknown> {
+    return this.contractApi.getProductById(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  listProductTypeGroupsDefaults(payload): Observable<unknown> {
+    return this.contractApi.listProductTypeGroupsDefaults(payload);
   }
 
   ngOnDestroy(): void {

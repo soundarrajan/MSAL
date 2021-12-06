@@ -33,8 +33,8 @@ export class ProductTypeListItemViewModelFactory {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return new ProductTypeListItemViewModel(
       itemState,
-      this.deliverySettings.qcMinToleranceLimit,
-      this.deliverySettings.qcMaxToleranceLimit,
+      this.deliverySettings.robTolerance,
+      this.deliverySettings.maxToleranceLimit,
       this.quantityPrecision,
       this.reconStatusLookups
     );
@@ -62,8 +62,8 @@ export class ProductTypeListItemViewModel {
 
   constructor(
     item: QcProductTypeListItemStateModel,
-    minToleranceLimit: number,
-    maxToleranceLimit: number,
+    robTolerance: number,
+    bdnTolerance: number,
     private quantityPrecision: number,
     reconStatusLookups: ReconStatusLookup
   ) {
@@ -97,43 +97,40 @@ export class ProductTypeListItemViewModel {
     );
 
     this.robBeforeDiffStatus = reconStatusLookups.toReconStatus(
-      QcReportState.getMatchStatus(
-        this.robBeforeDeliveryLogBookROB,
+      QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         this.robBeforeDeliveryMeasuredROB,
-        minToleranceLimit,
-        maxToleranceLimit
+        this.robBeforeDeliveryLogBookROB,
+        robTolerance
       )
     );
     this.deliveredDiffStatus = reconStatusLookups.toReconStatus(
-      QcReportState.getMatchStatus(
-        this.deliveredQuantityBdnQty,
+      QcReportState.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
         this.measuredDeliveredQty,
-        minToleranceLimit,
-        maxToleranceLimit
+        this.deliveredQuantityBdnQty,
+        bdnTolerance
       )
     );
     this.robAfterDiffStatus = reconStatusLookups.toReconStatus(
       !this.isSludge
-        ? QcReportState.getMatchStatus(
-            this.robAfterDeliveryLogBookROB,
+        ? QcReportState.getMatchStatusForRobAfterDiff(
             this.robAfterDeliveryMeasuredROB,
-            minToleranceLimit,
-            maxToleranceLimit
+            this.robAfterDeliveryLogBookROB,
+            0
           )
         : undefined
     );
 
     this.robBeforeDiff = this.safeDiff(
-      this.robBeforeDeliveryLogBookROB,
-      this.robBeforeDeliveryMeasuredROB
+      this.robBeforeDeliveryMeasuredROB,
+      this.robBeforeDeliveryLogBookROB
     );
     this.deliveredDiff = this.safeDiff(
-      this.deliveredQuantityBdnQty,
-      this.measuredDeliveredQty
+      this.measuredDeliveredQty,
+      this.deliveredQuantityBdnQty
     );
     this.robAfterDiff = this.safeDiff(
-      this.robAfterDeliveryLogBookROB,
-      this.robAfterDeliveryMeasuredROB
+      this.robAfterDeliveryMeasuredROB,
+      this.robAfterDeliveryLogBookROB
     );
   }
 

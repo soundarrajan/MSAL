@@ -6,7 +6,6 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { QcReportService } from '../../../services/qc-report.service';
 import { KnownDeliverylRoutes } from '../../../known-delivery.routes';
 import { catchError, finalize, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
@@ -22,16 +21,11 @@ export class PumpingRateUomRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
-    private legacyLookupsDatabase: LegacyLookupsDatabase,
-
+    private legacyLookupsDatabase: LegacyLookupsDatabase
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): any{
-    const DeliveryIdParam =
-      route.params[KnownDeliverylRoutes.DeliveryIdParam];
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    const DeliveryIdParam = route.params[KnownDeliverylRoutes.DeliveryIdParam];
     const deliveryId = Number(DeliveryIdParam ?? 0);
 
     if (!Number.isInteger(deliveryId)) {
@@ -40,8 +34,6 @@ export class PumpingRateUomRouteResolver implements Resolve<any> {
         KnownDeliverylRoutes.DeliveryList
       ]);
     }
-    return  this.legacyLookupsDatabase.getPumpingRateUom();
-
+    return this.legacyLookupsDatabase.getPumpingRateUom();
   }
-
 }

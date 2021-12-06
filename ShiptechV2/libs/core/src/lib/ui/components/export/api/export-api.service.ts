@@ -20,6 +20,7 @@ export class ExportApiService implements IExportApiService {
         payload: { ...request }
       },
       {
+        observe: 'response',
         responseType: 'blob'
       }
     );

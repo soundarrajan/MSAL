@@ -199,7 +199,10 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyle(params.data?.diffRobBeforeDelivery),
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
+        params.data?.diffRobBeforeDelivery,
+        this.robTolerance
+      ),
     width: 140
   };
 
@@ -241,7 +244,11 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffDeliveredQty)
+    cellStyle: params =>
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
+        params.data?.diffDeliveredQty,
+        this.bdnTolerance
+      )
   };
 
   qtyDeliveredUomCol: ITypedColDef<
@@ -289,7 +296,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyle(params.data?.diffRobAfterDelivery)
+      this.getMatchStatusForRobAfterDiff(params.data?.diffRobAfterDelivery, 0)
   };
 
   qtyAfterDeliveryUomCol: ITypedColDef<
@@ -341,7 +348,10 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyle(params.data?.diffSludgeRobBeforeDischarge)
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
+        params.data?.diffSludgeRobBeforeDischarge,
+        this.robTolerance
+      )
   };
 
   sludgeDischargedQtyCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -393,6 +403,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
   private readonly minToleranceLimit;
   private readonly maxToleranceLimit;
+  private readonly robTolerance;
+  private readonly bdnTolerance;
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -418,6 +430,8 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     this.minToleranceLimit = deliveryTenantSettings.qcMinToleranceLimit;
     this.maxToleranceLimit = deliveryTenantSettings.qcMaxToleranceLimit;
 
+    this.robTolerance = deliveryTenantSettings.robTolerance;
+    this.bdnTolerance = deliveryTenantSettings.maxToleranceLimit;
     // Note: When portCall changes we need to reload the grid,
     combineLatest(
       this.gridReady$,
@@ -518,7 +532,10 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     };
   }
 
-  private toleranceMatchStyle(value: number): Partial<CSSStyleDeclaration> {
+  private getMatchStatusForRobBeforeDiffAndDeliveredDiff(
+    value: number,
+    tolerance: number
+  ): Partial<CSSStyleDeclaration> {
     if (value === null || value === undefined)
       return {
         backgroundColor: 'inherit',
@@ -527,19 +544,35 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
 
     let status = this.reconStatusLookups.matched;
 
-    if (Math.abs(value) >= this.maxToleranceLimit)
+    if (Math.abs(value) > tolerance)
       status = this.reconStatusLookups.notMatched;
-
-    if (
-      Math.abs(value) > this.minToleranceLimit &&
-      Math.abs(value) < this.maxToleranceLimit
-    )
-      status = this.reconStatusLookups.withinLimit;
+    if (Math.abs(value) <= tolerance) status = this.reconStatusLookups.matched;
 
     return {
-      backgroundColor:
-        status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
-      color: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
+      backgroundColor: status.code,
+      color: '#fff'
+    };
+  }
+
+  public getMatchStatusForRobAfterDiff(
+    value: number,
+    tolerance: number
+  ): Partial<CSSStyleDeclaration> {
+    if (value === null || value === undefined)
+      return {
+        backgroundColor: 'inherit',
+        color: 'inherit'
+      };
+
+    let status = this.reconStatusLookups.matched;
+
+    if (Math.abs(value) != 0) status = this.reconStatusLookups.notMatched;
+
+    if (Math.abs(value) == tolerance) status = this.reconStatusLookups.matched;
+
+    return {
+      backgroundColor: status.code,
+      color: '#fff'
     };
   }
 }

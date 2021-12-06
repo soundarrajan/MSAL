@@ -1,0 +1,34 @@
+<div class="smart-filter-V2">
+    <span class="smartfiltertitle"> Filtered By :</span>
+    <div *ngFor="let data of smartFilterArray">
+        <div class="smartfilterchips" *ngIf="data.checked">
+            <div class="chip" [title]="data.name">{{ data.name }} <div *ngIf="enableRemoveFilter" class="filterClose"
+                    (click)="removeChip(data)"></div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="enableAddNew==true" class="addfilterchips" (click)="openAddFilter($event)"
+        [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger">
+        <div class="addNewChip" title="Add New">Add New <div class="addFilter"></div>
+        </div>
+    </div>
+
+    <mat-menu #clickmenu="matMenu" class="add-filter-menu-panel" xPosition="before"
+        style="position: relative;bottom: 15px;">
+        <div>
+            <div class="smart-filter-menu" (click)="$event.stopPropagation()">
+                <div class="add-filter-menu no-border">
+                    <div *ngFor="let item of selectedArrayList">
+                        <mat-checkbox class="filter-checkebox" (change)="changeSelection(item)"
+                            [checked]="item.checked"><span class="filter-name">{{item.name}}</span></mat-checkbox>
+                    </div>
+                </div>
+                <div class="applyBtn">
+                    <button class="blue-button" (click)="addFilter()">
+                        <span>Apply</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-menu>
+</div>

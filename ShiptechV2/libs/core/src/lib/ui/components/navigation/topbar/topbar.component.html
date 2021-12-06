@@ -27,11 +27,11 @@
 
   <div style="float:right;padding: 5px;">
     <span class="mr-2"
-      >{{ username$ | async }} | {{ displayName$ | async }}</span
+      >{{ username$ | async }} | {{ displayName$ | async | htmlDecodeReadonly }}</span
     >
     <button
       pButton
-      *ngIf="authService.userInfo.authenticated"
+      *ngIf="authService.getLoggedUser()"
       (click)="authService.logout()"
       type="button"
       class="ui-button-danger"

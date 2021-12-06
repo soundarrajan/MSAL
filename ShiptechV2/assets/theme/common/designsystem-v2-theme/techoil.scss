@@ -2345,6 +2345,8 @@
       height: 8px!important;
     }
     .inv-recon-tabs{
+      overflow: scroll;
+      height: calc(100vh - 56px);
       #custom-tabs-v2{
         .mat-tab-header{
         position: absolute;

@@ -1,0 +1,80 @@
+<div
+  class="controlTower-content"
+  [ngClass]="theme ? 'dark-theme' : 'light-theme'"
+>
+  <div class="header-content">
+    <div class="title">
+      <div class="head">Claims List</div>
+      <!-- <div class="count">2</div>
+            <div class="description">Within last 24hours</div> -->
+    </div>
+    <div class="filters">
+      <div class="by-datePicker">
+        <div
+          id="custom-form-field"
+          [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+        >
+          <mat-form-field class="without-search datePicker" appearance="legacy">
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
+              </mat-icon>
+            </mat-datepicker-toggle>
+            <span class="from">From</span>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [formControl]="today"
+              (focus)="picker.open()"
+            />
+            <mat-datepicker
+              #picker
+              [panelClass]="switchTheme ? 'datepicker-darktheme' : ''"
+            ></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="today">
+          <span>-</span>
+          <p>To Today</p>
+        </div>
+      </div>
+      <div class="by-action">
+        <div class="action">
+          <span>New</span>
+          <div class="count">4</div>
+        </div>
+        <div class="action">
+          <span>Marked as seen</span>
+          <div class="count">4</div>
+        </div>
+      </div>
+      <!-- <div class="splitter"></div>
+            <div class="by-nonResponseDays">
+                <div class="text">Filter by Non-Response days:</div>
+                <div class="action"><span>7 Days</span><div class="count">4</div></div>
+                <div class="action"><span>15 Days</span><div class="count">4</div></div>
+            </div> -->
+    </div>
+  </div>
+  <div class="grid-container">
+    <div class="agGrid-v2" style="margin: 0">
+      <div style="width:100%;height: 100%;">
+        <ag-grid-angular
+          style="width: 100%;height: calc( 100vh - 182px );;"
+          [gridOptions]="gridOptions_data"
+          domLayout="normal"
+          class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+        ></ag-grid-angular>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <app-footer-v2
+      [id]="'controlTower-residueClaims'"
+      [singleGrid]="true"
+      [doublePagination]="true"
+      [rowCount]="rowCount"
+      [maxSize]="7"
+    ></app-footer-v2>
+  </div>
+</div>
+<div class="mainFooterWhiteSpace"></div>

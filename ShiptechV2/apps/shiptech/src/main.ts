@@ -8,6 +8,23 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+export function getLegacySettings(): string {
+  var hostName = window.location.hostname;
+  var config = '/config/' + hostName + '.json';
+  if (['localhost'].indexOf(hostName) != -1) {
+    config = '/config/config.json';
+  }
+  return config;
+}
+
+fetch(getLegacySettings())
+  .then(response => response.json())
+  .then(config => {
+    console.log('config ');
+    localStorage.setItem('config', JSON.stringify(config));
+    (<any>window).config = config;
+    console.log((<any>window).config);
+    platformBrowserDynamic()
+      .bootstrapModule(AppModule)
+      .catch(err => console.error(err));
+  });

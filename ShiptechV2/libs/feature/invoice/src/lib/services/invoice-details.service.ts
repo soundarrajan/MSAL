@@ -267,6 +267,14 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.getDueDateWithoutSave(payload);
   }
 
+    /**
+   * @param orderId
+   */
+  @ObservableException()
+  getOrderNotes(orderId: number): Observable<any> {
+    return this.api.getOrderNotes(orderId);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

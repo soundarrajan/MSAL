@@ -73,6 +73,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   eventsSubject3: Subject<any> = new Subject<any>();
   eventsSubject4: Subject<any> = new Subject<any>();
   eventsSubject5: Subject<any> = new Subject<any>();
+  eventsSubject6: Subject<any> = new Subject<any>();
+
   anyChanges: boolean;
   deliverySettings: IDeliveryTenantSettings;
   finalQuantityRules: any[];
@@ -1002,25 +1004,20 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.toastr.error(result);
         } else {
           this.toastr.success('Contract confirmed!');
-          this.contractService
-            .loadContractDetails(this.formValues.id)
-            .pipe(
-              finalize(() => {
-                this.spinner.hide();
-              })
-            )
-            .subscribe((data: any) => {
-              this.formValues = _.cloneDeep(data);
-              this.eventsSubject3.next(0);
-              if (typeof this.formValues.status != 'undefined') {
-                if (this.formValues.status.name) {
-                  this.statusColorCode = this.getColorCodeFromLabels(
-                    this.formValues.status,
-                    this.scheduleDashboardLabelConfiguration
-                  );
-                }
-              }
-            });
+          this.spinner.hide();
+          this.formValues = _.cloneDeep(result);
+          this.eventsSubject3.next(0);
+          if (typeof this.formValues.status != 'undefined') {
+            if (this.formValues.status.name) {
+              this.statusColorCode = this.getColorCodeFromLabels(
+                this.formValues.status,
+                this.scheduleDashboardLabelConfiguration
+              );
+            }
+          }
+
+          this.changeDetectorRef.detectChanges();
+          this.changeDetectorRef.markForCheck();
         }
       });
   }
@@ -1101,7 +1098,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
-          this.toastr.error(result);
+          if (result) {
+            this.toastr.error(result);
+          }
         } else {
           this.toastr.success('Contract cancelled!');
           this.contractService
@@ -1156,6 +1155,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       .then(() => {
         console.log('copy contract');
       });
+  }
+
+  public changeFormData(formValues: any): void {
+    console.log('Picked form values: ', formValues);
+    this.formValues = formValues;
+    this.eventsSubject5.next(formValues);
+    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
   }
 
   ngOnDestroy(): void {}

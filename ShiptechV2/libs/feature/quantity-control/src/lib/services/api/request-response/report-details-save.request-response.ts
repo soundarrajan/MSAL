@@ -16,6 +16,7 @@ export interface IQcReportSaveProductDetailsDto {
   logBookRobQtyBeforeDelivery: number;
   measuredRobQtyBeforeDelivery: number;
   beforeDeliveryQtyUomId: number;
+  bdnQuantity: number;
   measuredRobDeliveredQty: number;
   deliveredQtyUomId: number;
   logBookRobQtyAfterDelivery: number;

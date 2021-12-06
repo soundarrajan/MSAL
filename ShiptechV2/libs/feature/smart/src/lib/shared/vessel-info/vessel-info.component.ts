@@ -123,10 +123,10 @@ export class VesselInfoComponent implements OnInit {
     // console.log('Vessel Data11111111111111 ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
     
-    this.checkVesselHasNewPlan(this.vesselData); 
-   // this.getDefaultView();
-    this.loadBunkerPlanHeader(this.vesselData);  
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    this.checkVesselHasNewPlan(vesseldata.vesselRef); 
+   // this.getDefaultView();
+    this.loadBunkerPlanHeader(vesseldata.vesselRef);  
     this.loadBunkerPlanDetails(vesseldata.vesselRef);   
     //trigger unsubscribe to avoid memory leakage
     window.onbeforeunload = () => this.ngOnDestroy();
