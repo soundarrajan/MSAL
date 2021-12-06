@@ -192,7 +192,7 @@ import moment from 'moment';
              $ {{ priceFormatValue(closureValue) }}
             </div>
           </div>
-          <div class="label-element red">
+          <div class="label-element" [ngClass]="{'red': params.product?.requestGroupProducts?.benchmark>0, 'green': params.product?.requestGroupProducts?.benchmark<0, 'black': params.product?.requestGroupProducts?.benchmark==0}">
             <div class="title">Perf/BM</div>
             <div
               class="value"
