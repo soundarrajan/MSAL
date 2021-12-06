@@ -290,7 +290,9 @@ export class MyNotesComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
           if (parseFloat(this.timeView)) {
             if (
-              selectedPeriodLine.displayName != this.notesContent[0].displayName
+              selectedPeriodLine.displayName !=
+              this.notesContent[this.findIndexNoteByDisplayName('Today')]
+                .displayName
             ) {
               if (!noteLine.isDeleted) {
                 this.selectCurrentDate(noteLine, selectedPeriodLine);
@@ -301,6 +303,15 @@ export class MyNotesComponent implements OnInit {
       });
   }
 
+  findIndexNoteByDisplayName(name) {
+    let index = _.findIndex(this.notesContent, function(note: any) {
+      return note.displayName === name;
+    });
+    if (index != -1) {
+      return index;
+    }
+  }
+
   selectCurrentDate(noteLine, selectedPeriodLine) {
     let findNoteIndex = _.findIndex(selectedPeriodLine.notes, function(
       note: any
@@ -309,9 +320,15 @@ export class MyNotesComponent implements OnInit {
     });
     if (findNoteIndex != -1) {
       selectedPeriodLine?.notes.splice(findNoteIndex, 1);
-      let firstDate = this.notesContent[0];
-      const newContentForNotes = [noteLine].concat(this.notesContent[0].notes);
-      this.notesContent[0].notes = _.cloneDeep(newContentForNotes);
+      let firstDate = this.notesContent[
+        this.findIndexNoteByDisplayName('Today')
+      ];
+      const newContentForNotes = [noteLine].concat(
+        this.notesContent[this.findIndexNoteByDisplayName('Today')].notes
+      );
+      this.notesContent[
+        this.findIndexNoteByDisplayName('Today')
+      ].notes = _.cloneDeep(newContentForNotes);
       this.selectedTitleIndex = 0;
       this.selectDate(firstDate);
       this.changeDetectorRef.detectChanges();
