@@ -1880,12 +1880,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
 
                     if (heightElement > $(currentElem).offset().top && $('.contextmenu').offset().top < $(currentElem).offset().top) {
-                        // console.log($('.contextmenu').offset().top);
-                        // console.log('set max-height');
                         $('.contextmenu').css('margin-top', heightElement - $(currentElem).offset().top);
                         $('.contextmenu').css('max-height', $(currentElem).offset().top);
                         $('.contextmenu').css('overflow', 'auto !important');
                     }
+
+                    let spaceBelow = $(window).height() - $('.contextmenu')[0].getBoundingClientRect().bottom;
+                    if (spaceBelow < 0) {
+                        console.log(spaceBelow);
+                        $('.contextmenu').css('transform', 'translateY(' + spaceBelow + 'px )');
+                    }
+
 
                     let offsetLeft = $('.contextmenu').offset().left;
                     if (offsetLeft <= 0) {
