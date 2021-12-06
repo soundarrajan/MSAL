@@ -241,7 +241,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       mappedKey: ControlTowerQuantityClaimsListColumns.createdDate,
       systemDefaultFilters: this.ClaimsSystemDefaultFilters
     },
-    'control-tower-quality-claims-list-grid-7': {
+    'control-tower-quality-claims-list-grid-8': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'month',
       mappedKey: ControlTowerQualityClaimsListColumns.createdDate,
@@ -253,7 +253,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate,
       systemDefaultFilters: this.SystemDefaultFilters
     },
-    'control-tower-quality-labs-list-grid-7': {
+    'control-tower-quality-labs-list-grid-8': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerQualityLabsListColumns.createdDate,

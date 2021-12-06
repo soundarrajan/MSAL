@@ -328,7 +328,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     private databaseManipulation: DatabaseManipulation
   ) {
     super(
-      'control-tower-quality-claims-list-grid-7',
+      'control-tower-quality-claims-list-grid-8',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(
