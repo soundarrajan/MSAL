@@ -13,29 +13,22 @@ import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/messa
 import { MainDeliveryComponent } from './views/main-delivery.component';
 import { DeliveryGridModule } from './delivery-grid.module';
 import { NgxsModule } from '@ngxs/store';
-import { QuantityControlState } from './store/quantity-control.state';
-import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportState } from './store/report/qc-report.state';
 import { DeliveryRoutingModule } from './delivery-routing.module';
-import { DeliveryListComponent } from './views/delivery-list/delivery-list.component';
 import { DeliveryDetailsComponent } from './views/delivery/details/delivery-details.component';
 import { QuantityControlApiMock } from './services/api/quantity-control-api.mock';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
-import { QcReportService } from './services/qc-report.service';
 import { NotesService } from './services/notes.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { DeliveryModuleResolver } from './delivery-route.resolver';
-import { EventsLogComponent } from './views/delivery/details/components/events-log/events-log.component';
 import { NotesLogComponent } from './views/delivery/details/components/notes-log/notes-log.component';
-import { ProductDetailsComponent } from './views/delivery/details/components/port-call-grid/product-details.component';
 import { DeliveryDetailsRouteResolver } from './views/delivery/details/delivery-details-route.resolver';
 import { DeliveryRouteResolver } from './views/delivery/details/delivery-route.resolver';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { DeliveryDetailsToolbarComponent } from './views/delivery/toolbar/delivery-details-toolbar.component';
 import { UomSelectorComponent } from './views/delivery/details/components/uom-selector/uom-selector.component';
-import { RaiseClaimComponent } from './views/delivery/details/components/raise-claim/raise-claim.component';
 import { DeliveryDetailsUnsavedChangesGuard } from './guards/delivery-details-unsaved-changes-guard.service';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
@@ -151,7 +144,7 @@ import { StaticListsRouteResolver } from './views/delivery/details/static-lists-
 import { TextareaAutoresizeDirective } from './views/delivery/details/directives/textarea-autoresize.directive';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
 import { RemoveDeliveryModalComponent } from './views/delivery/details/components/remove-delivery-modal/remove-delivery-modal.component';
-import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
+import { SharedModule } from '@shiptech/core/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -159,7 +152,9 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
     DeliveryGridModule,
     DeliveryRoutingModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,
@@ -170,11 +165,7 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
     EntityStatusModule,
     DynamicDialogModule,
     ExportModule,
-    NgxsModule.forFeature([
-      QuantityControlState,
-      QcReportsListState,
-      QcReportState
-    ]),
+    NgxsModule.forFeature([]),
     FormsModule,
     ReactiveFormsModule,
     NgxsResetPluginModule.forRoot(),
@@ -246,26 +237,22 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
     NgxSpinnerModule,
     MatFormFieldModule,
     MatSelectInfiniteScrollModule,
-    BreadcrumbsModule
+    BreadcrumbsModule,
+    SharedModule
   ],
   declarations: [
-    HtmlDecode,
     MainDeliveryComponent,
-    DeliveryListComponent,
     DeliveryDetailsComponent,
-    EventsLogComponent,
     NotesLogComponent,
     BdnInformationComponent,
     InputComponent,
     DropdownComponent,
     DatePickerComponent,
     AutocompleteInputComponent,
-    ProductDetailsComponent,
     DeliveryDetailsToolbarComponent,
     DeliveryDetailsEmailLogsComponent,
     DeliveryDetailsDocumentsComponent,
     UomSelectorComponent,
-    RaiseClaimComponent,
     DeliveryProductsGroupComponent,
     DeliveryProductComponent,
     ProductQualityComponent,
@@ -281,7 +268,6 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
     //PSpinnerTenantFormatDirective
   ],
   entryComponents: [
-    RaiseClaimComponent,
     RaiseClaimModalComponent,
     SplitDeliveryModalComponent,
     RemoveDeliveryModalComponent
@@ -323,7 +309,6 @@ import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
       useClass: environment.production ? DeliveryApi : QuantityControlApiMock
     },
     DeliveryDetailsUnsavedChangesGuard,
-    QcReportService,
     NotesService,
     DeliveryService,
     DialogService,

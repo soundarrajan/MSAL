@@ -42,9 +42,9 @@
               <div class="badge-header-v2">
                 <span
                   class="label_text"
-                  matTooltip="{{ formValues.createdByUser?.displayName }}"
+                  matTooltip="{{ formValues.createdByUser?.displayName | htmlDecodeReadonly }}"
                   >Created by:
-                  <b>{{ formValues.createdByUser?.displayName }}</b></span
+                  <b>{{ formValues.createdByUser?.displayName | htmlDecodeReadonly }}</b></span
                 >
                 <span class="border_line"></span>
                 <span class="label_text" matTooltip="{{ formValues.createdAt }}"
@@ -86,7 +86,8 @@
                     placeholder="Seller Invoice No"
                     (blur)="isFormValid({ useToaster: false })"
                     [disabled]="
-                      formValues.documentType.name == 'Pre-claim Credit Note' || formValues.documentType.name == 'Pre-claim Debit Note'
+                      formValues.documentType.name == 'Pre-claim Credit Note' ||
+                      formValues.documentType.name == 'Pre-claim Debit Note'
                     "
                   />
                   <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
@@ -367,13 +368,15 @@
                 class="custom-form-field"
                 class="lightTheme"
               >
-                <mat-form-field class="without-search" appearance="legacy">
-                  <mat-label>Document No.</mat-label>
-                  <input
-                    matInput
-                    name="documentNo"
-                    [(ngModel)]="formValues.documentNo"
-                  />
+              <mat-form-field class="without-search" appearance="legacy" [ngClass]="{ 'invalid-field': formErrors.documentNo }">
+                <mat-label>Document No.</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  (blur)="isFormValid({ useToaster: false })"
+                  name="documentNo"
+                  [(ngModel)]="formValues.documentNo"
+                />
                 </mat-form-field>
               </div>
             </div>
@@ -626,16 +629,17 @@
             <div class="header-data">
               Order Date:
               <span>{{
-                formValues.orderDetails?.orderDate | date: this.dateFormat
+                formatDateOnly(formValues.orderDetails?.orderDate)
               }}</span>
             </div>
           </div>
           <div class="section-content order-details">
             <div style="display: flex;">
-              <readonly-details [options]="orderDetails"></readonly-details>
+              <readonly-details style="flex-basis:50%" [options]="orderDetails"></readonly-details>
+              <span style="flex-basis:10px"></span>
               <readonly-details
+                style="flex-basis:50%"
                 [options]="orderDetails2"
-                style="margin: 0px 15px;"
               ></readonly-details>
             </div>
             <div class="row">
@@ -903,7 +907,8 @@
                 [disabled]="true"
                 placeholder="Type Front office comments here"
                 name="frontOfficeComments"
-                [(ngModel)]="formValues.orderDetails.frontOfficeComments"
+                [ngModel]="formValues.orderDetails.frontOfficeComments | htmlDecodeReadonly"
+                (ngModelChange)="formValues.orderDetails.frontOfficeComments = $event"
               ></textarea>
             </div>
           </div>
@@ -949,7 +954,10 @@
                           formValues.counterpartyDetails.counterpartyBankAccount
                         "
                       >
-                        <mat-option *ngFor="let bank of bankAccountNumbers" [value]="bank" >
+                        <mat-option
+                          *ngFor="let bank of bankAccountNumbers"
+                          [value]="bank"
+                        >
                           {{ bank.accountnumber }}
                         </mat-option>
                       </mat-select>
@@ -1071,7 +1079,8 @@
                     cols="50"
                     placeholder="Type back office comments here"
                     name="backOfficeComments"
-                    [(ngModel)]="formValues.backOfficeComments"
+                    [ngModel]="formValues.backOfficeComments | htmlDecodeReadonly"
+                    (ngModelChange)="formValues.backOfficeComments = $event"
                   ></textarea>
                 </div>
               </div>
@@ -1096,13 +1105,17 @@
                         "
                         [ngModelOptions]="{ standalone: true }"
                         [matTooltip]="
-                          this.formValues.counterpartyDetails.payableTo?.name
+                          this.formValues.counterpartyDetails.payableTo?.name | htmlDecodeReadonly
                         "
                         [matTooltipPosition]="'above'"
                         matTooltipClass="custom-tooltip"
                         [matAutocomplete]="auto"
                         autocomplete="off"
-                        (blur)="verifyPayableToIsNull(this.formValues.counterpartyDetails.payableTo)"
+                        (blur)="
+                          verifyPayableToIsNull(
+                            this.formValues.counterpartyDetails.payableTo
+                          )
+                        "
                         placeholder="Payble to"
                       />
                       <mat-autocomplete
@@ -1193,7 +1206,8 @@
                     placeholder="Payment Proof comments"
                     name="paymentDetailscomments"
                     [disabled]="!formValues.paymentDetails.paymentProofReceived"
-                    [(ngModel)]="formValues.paymentDetails.comments"
+                    [ngModel]="formValues.paymentDetails.comments | htmlDecodeReadonly"
+                    (ngModelChange)="formValues.paymentDetails.comments = $event"
                   ></textarea>
                 </div>
               </div>

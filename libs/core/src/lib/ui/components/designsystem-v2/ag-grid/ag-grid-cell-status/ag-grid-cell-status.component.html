@@ -1,0 +1,7 @@
+<div
+  *ngIf="params.type === 'no-response' || params.type == 'progress'"
+  class="ag-async-background"
+  [ngClass]="params.cellClass"
+>
+  {{ params.valueFormatted }}
+</div>

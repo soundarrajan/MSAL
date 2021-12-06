@@ -1,7 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule, Type } from '@angular/core';
 import { MainDeliveryComponent } from './views/main-delivery.component';
-import { DeliveryListComponent } from './views/delivery-list/delivery-list.component';
 import { DeliveryDetailsComponent } from './views/delivery/details/delivery-details.component';
 import { EntityStatusComponent } from '@shiptech/core/ui/components/entity-status/entity-status.component';
 import { KnownNamedRouterOutlets } from '@shiptech/core/enums/known-named-router-outlets';
@@ -27,9 +26,7 @@ import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-ra
 import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
 
 interface IDeliveryDetailsRouteData {
-  [KnownDeliverylRoutes.DeliveryIdParam]: Type<
-  DeliveryDetailsRouteResolver
-  >;
+  [KnownDeliverylRoutes.DeliveryIdParam]: Type<DeliveryDetailsRouteResolver>;
 }
 
 const routes: Routes = [
@@ -47,11 +44,6 @@ const routes: Routes = [
             pathMatch: 'full'
           },
           {
-            path: KnownDeliverylRoutes.DeliveryList,
-            component: DeliveryListComponent,
-            data: { title: 'Delivery List' }
-          },
-          {
             path: `${KnownDeliverylRoutes.Delivery}/:${KnownDeliverylRoutes.DeliveryIdParam}`,
             children: [
               {
@@ -63,9 +55,9 @@ const routes: Routes = [
                 path: KnownDeliverylRoutes.DeliveryDetails,
                 canDeactivate: [DeliveryDetailsUnsavedChangesGuard],
                 component: DeliveryDetailsComponent,
-                resolve:{
+                resolve: {
                   // Note: ReportId is expected in child routes in the data.
-                  orderNumbers : DeliveryDetailsRouteResolver,
+                  orderNumbers: DeliveryDetailsRouteResolver,
                   delivery: DeliveryRouteResolver,
                   navBar: NavBarResolver,
                   uoms: UomsRouteResolver,

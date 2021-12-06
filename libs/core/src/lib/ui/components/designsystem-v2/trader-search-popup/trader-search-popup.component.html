@@ -1,0 +1,69 @@
+<div class="traderSearchPopup-v2">
+     <div class="search-block">
+        <div class="title">Search Trader</div>
+        <div class="search-bar">
+          <div class="search-text" spellcheck="false" contentEditable=true data-text="Search trader here"></div>
+          <div class="search-img"></div>
+        </div>
+        <div class="float-right close-icon close" data-dismiss="modal" [mat-dialog-close]="true">           
+        </div>
+      </div>
+    <hr>
+    
+    <mat-dialog-content class="trade-search-dialog">
+      <ag-grid-angular id="tradelistgrid" domLayout='autoHeight'
+      [gridOptions]="gridOptions"  
+      class="ag-theme-material ag-trader-search angular-v9">
+      </ag-grid-angular>        
+      <div class="bottom-pagination">
+            <div id="show-rows" class="float-right pr-4">
+              <span>Show</span>
+              <span>
+                <mat-form-field>
+                  <mat-select>
+                    <mat-option [value]="10">
+                      10
+                    </mat-option>
+                    <mat-option [value]="20">
+                      20
+                    </mat-option>
+                    <mat-option [value]="30">
+                      30
+                    </mat-option>
+                    <mat-option [value]="40">
+                      40
+                    </mat-option>
+                    <mat-option [value]="50">
+                      50
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </span>
+              <span>Rows</span>
+            </div>
+
+            <div class="go-to-page float-right" id="right-column">
+                <div id="goto-page" class="float-right goto-page-block">
+                    Go to page
+                    <mat-form-field>
+                      <input matInput>
+                    </mat-form-field>
+                    <button mat-button class="page-btn">
+                      <span class="go-btn-text">Go</span>
+                    </button>
+                </div>         
+            </div>
+      </div>
+    </mat-dialog-content>
+    
+    
+    <mat-dialog-actions class="float-right">
+      <button class="cancel-btn" mat-button [mat-dialog-close]="true">
+        <span class="btn-text">Cancel</span>
+      </button>
+      <button class="select-btn" mat-button [mat-dialog-close]="true">
+        <span class="btn-text">Select</span>
+      </button>
+    </mat-dialog-actions>
+    </div>
+    

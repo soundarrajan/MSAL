@@ -16,9 +16,7 @@ import {
   Injectable
 } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, pipe, Subject, Subscription } from 'rxjs';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -86,11 +84,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { throws } from 'assert';
 
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import {
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MomentDateAdapter
-} from '@angular/material-moment-adapter';
-
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -122,7 +116,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     }
     return formattedDate;
   }
-  
+
   parse(value) {
     // We have no way using the native JS Date to set the parse format or locale, so we ignore these
     // parameters.
@@ -135,7 +129,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment.utc(value, currentFormat);
+    const elem = moment.utc(value, currentFormat);
     return value ? elem : null;
   }
 }
@@ -580,11 +574,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       this.deliveryProductIndex
     ].product.name
       ? this.formValues.deliveryProducts[
-          this.deliveryProductIndex
-        ].product.name.toLowerCase()
+        this.deliveryProductIndex
+      ].product.name.toLowerCase()
       : this.formValues.deliveryProducts[
-          this.deliveryProductIndex
-        ].product.toLowerCase();
+        this.deliveryProductIndex
+      ].product.toLowerCase();
     if (this.productList) {
       return this.productList
         .filter(
@@ -605,11 +599,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         this.deliveryProductIndex
       ].physicalSupplier.name
         ? this.formValues.deliveryProducts[
-            this.deliveryProductIndex
-          ].physicalSupplier.name.toLowerCase()
+          this.deliveryProductIndex
+        ].physicalSupplier.name.toLowerCase()
         : this.formValues.deliveryProducts[
-            this.deliveryProductIndex
-          ].physicalSupplier.toLowerCase();
+          this.deliveryProductIndex
+        ].physicalSupplier.toLowerCase();
 
       if (this.physicalSupplierList) {
         return this.physicalSupplierList
@@ -827,13 +821,13 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       const rule = this.finalQuantityRules[i];
       if (
         typeof this.formValues.deliveryProducts[productIdx][
-          `${rule.deliveryMapping}Uom`
+        `${rule.deliveryMapping}Uom`
         ] != 'undefined' &&
         this.formValues.deliveryProducts[productIdx][
-          `${rule.deliveryMapping}Amount`
+        `${rule.deliveryMapping}Amount`
         ] != '' &&
         this.formValues.deliveryProducts[productIdx][
-          `${rule.deliveryMapping}Amount`
+        `${rule.deliveryMapping}Amount`
         ] != null
       ) {
         // quantity exists, set it
@@ -841,12 +835,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
           productIdx
         ].finalQuantityUom = this.formValues.deliveryProducts[productIdx][
           `${rule.deliveryMapping}Uom`
-        ];
+          ];
         this.formValues.deliveryProducts[
           productIdx
         ].finalQuantityAmount = this.quantityFormatValue(
           this.formValues.deliveryProducts[productIdx][
-            `${rule.deliveryMapping}Amount`
+          `${rule.deliveryMapping}Amount`
           ]
         );
         dataSet = true;
@@ -891,7 +885,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     activeProduct.vesselFlowMeterQuantityUom == null
       ? (vesselFlowMeterQuantityUom = null)
       : (vesselFlowMeterQuantityUom =
-          activeProduct.vesselFlowMeterQuantityUom.name);
+        activeProduct.vesselFlowMeterQuantityUom.name);
     // activeProduct.bargeFlowMeterQuantityUom == null ? bargeFlowMeterQuantityUom = null : bargeFlowMeterQuantityUom = activeProduct.bargeFlowMeterQuantityUom.name;
     activeProduct.surveyorQuantityUom == null
       ? (surveyorQuantityUom = null)
@@ -955,7 +949,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     ) {
       const uomObjId =
         fieldUoms[
-          this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
+        this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
         ];
       baseUom = this.formValues.deliveryProducts[productIdx][uomObjId];
     }
@@ -1032,7 +1026,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     if (!sellerConvertedValue || !buyerConvertedValue) {
       variance = null;
       this.formValues.temp.variances[`product_${productIdx}`] = variance;
-      this.setVarianceColor(productIdx);
     } else {
       // this is where variance is calculated. rn it's buyer - seler (15/08)
       variance = buyerConvertedValue - sellerConvertedValue;
@@ -1043,49 +1036,46 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         `product_${productIdx}`
       ] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
       this.formValues.temp.variances[`uom_${productIdx}`] = baseUom.name;
-      this.setVarianceColor(productIdx);
     }
     if (typeof this.formValues.temp.reconStatus == 'undefined') {
       this.formValues.temp.reconStatus = [];
     }
     if (variance != null) {
       if (conversionInfo.quantityReconciliation.name == 'Flat') {
-        if (variance < conversionInfo.minToleranceLimit) {
+        if(variance < 0) { // negative
+          if (Math.abs(variance) <= conversionInfo.maxToleranceLimit) {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
+          }
+          else {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
+          }
+        } else {
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
-        }
-        if (
-          variance > conversionInfo.minToleranceLimit &&
-          variance < conversionInfo.maxToleranceLimit
-        ) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-        }
-        if (variance > conversionInfo.maxToleranceLimit) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       } else {
         const minValue =
           (conversionInfo.minToleranceLimit *
-            this.formValues.deliveryProducts[productIdx]
-              .confirmedQuantityAmount) /
+            Number(sellerConvertedValue)) /
           100;
         const maxValue =
           (conversionInfo.maxToleranceLimit *
-            this.formValues.deliveryProducts[productIdx]
-              .confirmedQuantityAmount) /
+            Number(sellerConvertedValue)) /
           100;
-        if (variance < minValue) {
+        if(variance < 0) { // negative
+          if (Math.abs(variance) <= maxValue) {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
+          }
+          else {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
+          }
+        } else {
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
-        }
-        if (variance > minValue && variance < maxValue) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-        }
-        if (variance > maxValue) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       }
     } else {
       this.formValues.temp.reconStatus[`product_${productIdx}`] = null;
     }
+    this.setVarianceColor(productIdx);
 
     // Update buyer & seller amount and uom
     this.setBuyerSellerQuantityAndUom('buyer');
@@ -1103,54 +1093,24 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       this.formValues.temp.variances[`mfm_color_${idx}`] = '';
     }
     // ckeck product_{{idx}}
-
-    if (this.formValues.temp.variances[`product_${idx}`] != null) {
-      /*
-      // old color code
-      // 1. Variance < Min Tolerance  => Green
-        if(parseFloat(this.formValues.temp.variances["product_" + idx]) < parseFloat(this.toleranceLimits.minToleranceLimit))
-            this.formValues.temp.variances['color_' + idx] = "green";
-
-        // 2. Max Tolerance > Variance > Min Tolerance => Amber
-        if((parseFloat(this.formValues.temp.variances["product_" + idx]) >= parseFloat(this.toleranceLimits.minToleranceLimit)) &&
-            (parseFloat(this.formValues.temp.variances["product_" + idx]) <= parseFloat(this.toleranceLimits.maxToleranceLimit))){
-            this.formValues.temp.variances['color_' + idx] = "amber";
-        }
-
-        // 3. Variance > Max Tolerance => Red
-        if((parseFloat(this.formValues.temp.variances["product_" + idx]) > parseFloat(this.toleranceLimits.maxToleranceLimit))){
-            this.formValues.temp.variances['color_' + idx] = "red";
-        }
-        */
-
       // new color code
       // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
       // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
       // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
-      if (parseFloat(this.formValues.temp.variances[`product_${idx}`]) < 0) {
-        // 1 or 2
-        if (
-          Math.abs(
-            parseFloat(this.formValues.temp.variances[`product_${idx}`])
-          ) < parseFloat(this.toleranceLimits.maxToleranceLimit)
-        ) {
-          this.formValues.temp.variances[`color_${idx}`] = 'amber';
-        }
-
-        if (
-          Math.abs(
-            parseFloat(this.formValues.temp.variances[`product_${idx}`])
-          ) >= parseFloat(this.toleranceLimits.maxToleranceLimit)
-        ) {
-          this.formValues.temp.variances[`color_${idx}`] = 'red';
-        }
-      } else {
+    switch (this.formValues.temp.reconStatus[`product_${idx}`]) {
+      case 1: // 1 - green, 2 - Amber, 3 - Red
         this.formValues.temp.variances[`color_${idx}`] = 'green';
-      }
-    } else {
-      // if variance is null, set color to white
-      this.formValues.temp.variances[`color_${idx}`] = 'white';
+        break;
+      case 2:
+        this.formValues.temp.variances[`color_${idx}`] = 'amber';
+        break;
+      case 3:
+        this.formValues.temp.variances[`color_${idx}`] = 'red';
+        break;
+      default:
+        this.formValues.temp.variances[`color_${idx}`] = 'white';
+        break;
     }
 
     if (this.formValues.temp.variances[`mfm_product_${idx}`] != null) {
@@ -1227,7 +1187,9 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   formatDateForBe(value) {
     if (value) {
-      const beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      const beValue = `${moment
+        .utc(value)
+        .format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
       return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
     } else {
       return null;
@@ -1263,7 +1225,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
     if (
       typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom ==
-        'undefined' ||
+      'undefined' ||
       this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null ||
       this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null
     ) {

@@ -8,9 +8,7 @@ import {
 } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { Select, Store } from '@ngxs/store';
-import { QcReportState } from '../../../store/report/qc-report.state';
 import { BehaviorSubject, empty, Observable, Subject } from 'rxjs';
-import { QcReportService } from '../../../services/qc-report.service';
 import { NotesService } from '../../../services/notes.service';
 import {
   catchError,
@@ -23,23 +21,12 @@ import {
   takeUntil,
   tap
 } from 'rxjs/operators';
-import {
-  SwitchActiveBunkerResponseAction,
-  SwitchActiveSludgeResponseAction
-} from '../../../store/report/details/actions/qc-vessel-response.actions';
-import { RaiseClaimComponent } from './components/raise-claim/raise-claim.component';
-import { ResetQcReportDetailsStateAction } from '../../../store/report/qc-report-details.actions';
 import { ToastrService } from 'ngx-toastr';
-import {
-  QcVesselResponseBunkerStateModel,
-  QcVesselResponseSludgeStateModel
-} from '../../../store/report/details/qc-vessel-responses.state';
 import {
   IDisplayLookupDto,
   IVesselToWatchLookupDto
 } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
-import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
 import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
@@ -56,7 +43,6 @@ import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status
 import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { VesselToWatchModel } from '../../../store/report/models/vessel-to-watch.model';
 import { MyMonitoringService } from '../../service/logging.service';
 import {
   FormArray,
@@ -157,7 +143,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     private store: Store,
     private router: Router,
     private location: Location,
-    private reportService: QcReportService,
     private NotesService: NotesService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
@@ -360,12 +345,14 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         savedProdForCheck: {}
       },
       deliveryProducts: [],
-      feedback: {}
+      feedback: {},
+      deliveryNotes: {}
     };
     const data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
     localStorage.removeItem('parentSplitDelivery');
     this.formValues.order = data.order;
     this.formValues.info = data.info;
+    this.formValues.deliveryNotes = data.deliveryNotes;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
     }
@@ -662,7 +649,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (!sellerConvertedValue || !buyerConvertedValue) {
       variance = null;
       this.formValues.temp.variances[`product_${productIdx}`] = variance;
-      this.setVarianceColor(productIdx);
     } else {
       // this is where variance is calculated. rn it's buyer - seler (15/08)
       variance = buyerConvertedValue - sellerConvertedValue;
@@ -673,49 +659,46 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         `product_${productIdx}`
       ] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
       this.formValues.temp.variances[`uom_${productIdx}`] = baseUom.name;
-      this.setVarianceColor(productIdx);
     }
     if (typeof this.formValues.temp.reconStatus == 'undefined') {
       this.formValues.temp.reconStatus = [];
     }
     if (variance != null) {
       if (conversionInfo.quantityReconciliation.name == 'Flat') {
-        if (variance < conversionInfo.minToleranceLimit) {
+        if(variance < 0) { // negative
+          if (Math.abs(variance) <= conversionInfo.maxToleranceLimit) {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
+          }
+          else {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
+          }
+        } else {
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
-        }
-        if (
-          variance > conversionInfo.minToleranceLimit &&
-          variance < conversionInfo.maxToleranceLimit
-        ) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-        }
-        if (variance > conversionInfo.maxToleranceLimit) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       } else {
         const minValue =
           (conversionInfo.minToleranceLimit *
-            this.formValues.deliveryProducts[productIdx]
-              .confirmedQuantityAmount) /
+            Number(sellerConvertedValue)) /
           100;
         const maxValue =
           (conversionInfo.maxToleranceLimit *
-            this.formValues.deliveryProducts[productIdx]
-              .confirmedQuantityAmount) /
+            Number(sellerConvertedValue)) /
           100;
-        if (variance < minValue) {
+        if(variance < 0) { // negative
+          if (Math.abs(variance) <= maxValue) {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
+          }
+          else {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
+          }
+        } else {
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
-        }
-        if (variance > minValue && variance < maxValue) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-        }
-        if (variance > maxValue) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       }
     } else {
       this.formValues.temp.reconStatus[`product_${productIdx}`] = null;
     }
+    this.setVarianceColor(productIdx);
 
     // Update buyer & seller amount and uom
     this.setBuyerSellerQuantityAndUom('buyer');
@@ -933,36 +916,24 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     ) {
       this.formValues.temp.variances[`mfm_color_${idx}`] = '';
     }
-
-    if (this.formValues.temp.variances[`product_${idx}`] != null) {
       // new color code
       // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
       // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
       // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
-      if (parseFloat(this.formValues.temp.variances[`product_${idx}`]) < 0) {
-        // 1 or 2
-        if (
-          Math.abs(
-            parseFloat(this.formValues.temp.variances[`product_${idx}`])
-          ) < parseFloat(this.toleranceLimits.maxToleranceLimit)
-        ) {
-          this.formValues.temp.variances[`color_${idx}`] = 'amber';
-        }
-
-        if (
-          Math.abs(
-            parseFloat(this.formValues.temp.variances[`product_${idx}`])
-          ) >= parseFloat(this.toleranceLimits.maxToleranceLimit)
-        ) {
-          this.formValues.temp.variances[`color_${idx}`] = 'red';
-        }
-      } else {
+    switch (this.formValues.temp.reconStatus[`product_${idx}`]) {
+      case 1: // 1 - green, 2 - Amber, 3 - Red
         this.formValues.temp.variances[`color_${idx}`] = 'green';
-      }
-    } else {
-      // if variance is null, set color to white
-      this.formValues.temp.variances[`color_${idx}`] = 'white';
+        break;
+      case 2:
+        this.formValues.temp.variances[`color_${idx}`] = 'amber';
+        break;
+      case 3:
+        this.formValues.temp.variances[`color_${idx}`] = 'red';
+        break;
+      default:
+        this.formValues.temp.variances[`color_${idx}`] = 'white';
+        break;
     }
 
     if (this.formValues.temp.variances[`mfm_product_${idx}`] != null) {
@@ -1085,6 +1056,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
     }
+
     data.forEach((delivery, key) => {
       this.formValues.deliveryProducts.push({
         orderedProduct: delivery.product,
@@ -1644,12 +1616,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       (<any>window).startCreateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
-      .saveDeliveryInfo(this.formValues)
-      .pipe(
-        finalize(() => {
-          this.buttonClicked = false;
-          this.eventsSubject2.next(this.buttonClicked);
-        })
+        .saveDeliveryInfo(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
+          })
         )
         .subscribe((result: any) => {
           if (typeof result == 'string') {
@@ -1668,26 +1640,26 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
               KnownDeliverylRoutes.DeliveryDetails
             ])
             .then(() => {
-              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);        
+              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);
             });
           }
         });
-      } else {
-        (<any>window).startUpdateDeliveryTime = Date.now();
+    } else {
+      (<any>window).startUpdateDeliveryTime = Date.now();
       this.spinner.show();
       this.deliveryService
-			.updateDeliveryInfo(this.formValues)
-			.pipe(
-        finalize(() => {
-          this.buttonClicked = false;
-					this.eventsSubject2.next(this.buttonClicked);
-				})
+        .updateDeliveryInfo(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
+          })
         )
         .subscribe((result: any) => {
-					if (typeof result == 'string') {
+          if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
-            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
+            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
           } else {
             this.toastrService.success('Delivery saved successfully');
             this.deliveryService
@@ -1695,15 +1667,15 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 						.pipe(
               finalize(() => {
                 this.spinner.hide();
-                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);        
+                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
 							})
               )
               .subscribe((data: any) => {
-								this.formValues.sampleSources = data.sampleSources;
+                this.formValues.sampleSources = data.sampleSources;
                 this.formValues = _.merge(this.formValues, data);
                 if (typeof this.formValues.deliveryStatus != 'undefined') {
                   if (this.formValues.deliveryStatus.name) {
-										this.statusColorCode = this.getColorCodeFromLabels(
+                    this.statusColorCode = this.getColorCodeFromLabels(
                       this.formValues.deliveryStatus,
                       this.scheduleDashboardLabelConfiguration
                     );
@@ -2063,4 +2035,5 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       console.log(result);
     });
   }
+
 }

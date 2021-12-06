@@ -380,12 +380,12 @@ export const BASE_MENU: KeyedMenuItems = {
         items: {
           service_list: {
             label: 'TO BE OVERRIDDEN',
-            url: '/#/service',
+            url: '/#/masters/service',
             target: '_blank'
           },
           new_service: {
             label: 'TO BE OVERRIDDEN',
-            url: 'service/edit',
+            url: '/#/masters/service/edit/',
             target: '_blank'
           }
         }
@@ -622,6 +622,11 @@ export const BASE_MENU: KeyedMenuItems = {
       }
     }
   },
+  control_tower: {
+    label: 'Control Tower',
+    url: '/v2/control-tower/control-tower-list-view',
+    target: '_blank'
+  },
   labs: {
     label: 'Labs',
     items: {
@@ -771,8 +776,5 @@ export const BASE_MENU: KeyedMenuItems = {
     label: 'Reports',
     url: '/#/reports',
     target: '_blank'
-  },
-  integrations: {
-    label: 'Integrations'
   }
 };

@@ -548,8 +548,14 @@
                       [(ngModel)]="
                         productDetail.value.physicalSupplierCounterparty
                       "
+                      (ngModelChange)="
+                        physicalSupplierCounterpartyChange(
+                          $event,
+                          productDetail.key
+                        )
+                      "
                       [matTooltip]="
-                        productDetail.value?.physicalSupplierCounterparty?.name
+                        productDetail.value?.physicalSupplierCounterparty?.name | htmlDecodeReadonly
                       "
                       [matTooltipPosition]="'above'"
                       matTooltipClass="custom-tooltip"
@@ -849,7 +855,8 @@
                           >
                             <input
                               matInput
-                              [(ngModel)]="productDetail.value.description"
+                              [ngModel]="productDetail.value.description | htmlDecodeReadonly"
+                              (ngModelChange)="productDetail.value.description = $event"
                             />
                           </mat-form-field>
                         </div>

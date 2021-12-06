@@ -8,13 +8,11 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
 import { ContractGridModule } from './contract-grid.module';
 import { NgxsModule } from '@ngxs/store';
-import { QuantityControlState } from './store/quantity-control.state';
-import { QcReportsListState } from './store/reports-list/qc-reports-list.state';
-import { QcReportState } from './store/report/qc-report.state';
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
@@ -149,7 +147,9 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     ContractGridModule,
     ContractRoutingModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     SearchBoxModule,
     UIModule,
     FilterPresetsModule,
@@ -160,11 +160,7 @@ import { FormulaHistoryModalComponent } from './views/contract/details/component
     EntityStatusModule,
     DynamicDialogModule,
     ExportModule,
-    NgxsModule.forFeature([
-      QuantityControlState,
-      QcReportsListState,
-      QcReportState
-    ]),
+    NgxsModule.forFeature([]),
     FormsModule,
     ReactiveFormsModule,
     NgxsResetPluginModule.forRoot(),

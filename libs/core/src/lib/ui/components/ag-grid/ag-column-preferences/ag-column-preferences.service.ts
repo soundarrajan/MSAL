@@ -61,13 +61,14 @@ export class AgColumnPreferencesService implements OnDestroy {
     // Note: Aligned grids will each try to save it's preferences when a column state changes.
     // Note: We only want to save one of them.
     // if ((<any>window).savePreferenceCall) {
-      this._savePreferences
+    this._savePreferences
       .pipe(
         groupBy(request => request.gridName),
         mergeMap(group =>
           group.pipe(
             throttleTime(1000),
-            switchMap((request) =>  this._storage.set(this._storageKey(request.gridName), request)
+            switchMap(request =>
+              this._storage.set(this._storageKey(request.gridName), request)
             )
           )
         )
@@ -76,7 +77,6 @@ export class AgColumnPreferencesService implements OnDestroy {
     // } else {
     //   (<any>window).savePreferenceCall = true;
     // }
-   
   }
 
   registerWatch(gridName: string, gridOptions: GridOptions): void {
@@ -98,13 +98,13 @@ export class AgColumnPreferencesService implements OnDestroy {
         debounceTime(100),
         // Note: gridOptions may already by uninitializing
         filter(() => !!gridOptions.columnApi),
-        tap(() =>
+        tap(() => {
           this._savePreferences.next({
             gridName,
             columnState: gridOptions.columnApi.getColumnState(),
             sortState: gridOptions.api.getSortModel()
-          })
-        )
+          });
+        })
       )
       .subscribe();
 
@@ -137,42 +137,109 @@ export class AgColumnPreferencesService implements OnDestroy {
 
   restoreToGrid(gridName: string, options: GridOptions): Observable<any> {
     return this._storage.get<IGridPreferences>(this._storageKey(gridName)).pipe(
-      filter(p => !!p),
+      // filter(p => !!p),
       tap(preferences => {
-        const columnsState = preferences.columnState;
-        const sortState = preferences.sortState;
+        if (!preferences) {
+          if (
+            gridName == 'control-tower-quantity-claims-list-grid-10' ||
+            gridName == 'control-tower-quality-claims-list-grid-8' ||
+            gridName == 'control-tower-quality-labs-list-grid-8'
+          ) {
+            options.api.setSortModel([
+              {
+                colId: 'createdDate',
+                sort: 'desc'
+              }
+            ]);
+          } else if (gridName == 'control-tower-residue-sludge-list-grid-7') {
+            options.api.setSortModel([
+              {
+                colId: 'differenceInRobQuantity',
+                sort: 'desc'
+              }
+            ]);
+          } else if (
+            gridName == 'control-tower-quantity-rob-list-grid-9' ||
+            gridName == 'control-tower-quantity-supply-list-grid-5'
+          ) {
+            options.api.setSortModel([
+              {
+                colId: 'surveyorDate',
+                sort: 'desc'
+              }
+            ]);
+          }
+        } else {
+          const columnsState = preferences.columnState;
+          const sortState = preferences.sortState;
 
-        if (!Array.isArray(columnsState) || columnsState.length === 0) {
-          this._storage.remove(this._storageKey(gridName));
+          if (!Array.isArray(columnsState) || columnsState.length === 0) {
+            this._storage.remove(this._storageKey(gridName));
 
-          throw Error('Invalid grid state json.');
+            throw Error('Invalid grid state json.');
+          }
+
+          const allColumnsSet = new Set<string>(
+            options.columnApi.getAllColumns().map(column => column.getColId())
+          );
+
+          // Note: Restore only existing columns.
+          const columns = columnsState.filter(columnState =>
+            allColumnsSet.has(columnState.colId)
+          );
+
+          if (columns.length === 0) {
+            throw Error('Preferences contains no valid columns.');
+          }
+
+          if (columns && columns.length > 0 && columns.some(c => !c.hide)) {
+            options.columnApi.setColumnState(columns);
+          }
+
+          // Note: Restore Sort
+          // Note: Restore sort only existing columns.
+          const sortModels = sortState.filter(sortModel =>
+            allColumnsSet.has(sortModel.colId)
+          );
+
+          // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
+          if (
+            (gridName == 'control-tower-quantity-claims-list-grid-10' ||
+              gridName == 'control-tower-quality-claims-list-grid-8' ||
+              gridName == 'control-tower-quality-labs-list-grid-8') &&
+            !sortModels.length
+          ) {
+            options.api.setSortModel([
+              {
+                colId: 'createdDate',
+                sort: 'desc'
+              }
+            ]);
+          } else if (
+            gridName == 'control-tower-residue-sludge-list-grid-7' &&
+            !sortModels.length
+          ) {
+            options.api.setSortModel([
+              {
+                colId: 'differenceInRobQuantity',
+                sort: 'desc'
+              }
+            ]);
+          } else if (
+            (gridName == 'control-tower-quantity-rob-list-grid-9' ||
+              gridName == 'control-tower-quantity-supply-list-grid-5') &&
+            !sortModels.length
+          ) {
+            options.api.setSortModel([
+              {
+                colId: 'surveyorDate',
+                sort: 'desc'
+              }
+            ]);
+          } else {
+            options.api.setSortModel(sortModels);
+          }
         }
-
-        const allColumnsSet = new Set<string>(
-          options.columnApi.getAllColumns().map(column => column.getColId())
-        );
-
-        // Note: Restore only existing columns.
-        const columns = columnsState.filter(columnState =>
-          allColumnsSet.has(columnState.colId)
-        );
-
-        if (columns.length === 0) {
-          throw Error('Preferences contains no valid columns.');
-        }
-
-        if (columns && columns.length > 0 && columns.some(c => !c.hide)) {
-          options.columnApi.setColumnState(columns);
-        }
-
-        // Note: Restore Sort
-        // Note: Restore sort only existing columns.
-        const sortModels = sortState.filter(sortModel =>
-          allColumnsSet.has(sortModel.colId)
-        );
-
-        // Note: This will trigger a new data-source update, meaning your grid will load multiple times.
-        options.api.setSortModel(sortModels);
       })
     );
   }

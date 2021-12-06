@@ -29,7 +29,18 @@ $red: red;
   font-size: 0.7rem;
   cursor: pointer;
   text-align: center;
-
+  margin-left: 16px;
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 25px;
+    background-color: #364150;
+    position: absolute;
+    left: -10px;
+    top: -3px;
+  }
   .fa-thumbtack {
     color: $dark;
     font-size: 0.7rem;
@@ -50,11 +61,12 @@ $red: red;
 .active-chip {
   background-color: #364150 !important;
   color:white !important;
-
   .chip-circle {
     border: 1px solid $darker;
     background-color: white;
-
+    &:before {
+      background-color: #fff;
+    }
     i {
       color: #364150 !important;
       font-size: 0.7rem;
@@ -67,7 +79,8 @@ $red: red;
   background-color: white !important;
   color:#364150 !important;
   border: 1px solid #364150;
-
+  width: auto;
+  
   .chip-circle {
     border: 1px solid #364150;
     background-color: white;
@@ -84,7 +97,57 @@ $red: red;
   background-color: #c6c6c6;
   color: rgba(0, 0, 0, .87);
 }
-
+.mat-chip {
+  border-radius: 5px !important;
+  &.system-preference {
+    .chip-circle {
+      border : none;
+      background-color: transparent;
+      &:before {
+        left: 0px;
+      }
+    }
+    .count-circle {
+      background-color: #364150;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 9999px;
+      color: #fff;
+      line-height: 20px;
+      text-align: center;
+      width: auto;
+      margin-right: 5px;
+      padding: 0 5px;
+    }
+    .pin {
+      top: 6px !important;
+      color: #364150;
+      position: absolute;
+    }
+    &.active-chip {
+      width: auto;
+      .chip-circle {
+        span.fas {
+          color: #fff;
+        }
+      }
+      .count-circle {
+        background-color: #fff;
+        color: #364150;
+      }
+    }
+  }
+  .count-circle {
+    background-color: #364150;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    margin-right: 5px;
+  }
+}
 .icon-chip{
   width: 55px;
   background-color: #364150 !important;

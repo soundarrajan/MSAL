@@ -152,7 +152,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let elem = moment.utc(value, currentFormat);
+    const elem = moment.utc(value, currentFormat);
     return value ? elem : null;
   }
 }

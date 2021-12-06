@@ -5,9 +5,9 @@ import {
 import { AgGridKnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/type.definition';
 
 export interface ServerGridFilter {
-  columnType: AgGridKnownFilterTypes;
-  conditionValue: ServerGridConditionFilterEnum;
-  filterOperator?: ShiptechGridFilterOperators;
+  columnType: any;
+  conditionValue: any;
+  filterOperator?: any;
   values: any[];
   columnValue: string;
   isComputedColumn?: boolean;

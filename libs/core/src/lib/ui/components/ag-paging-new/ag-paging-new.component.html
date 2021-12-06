@@ -1,0 +1,7 @@
+<div class="goto-page" style="display: flex;align-items: center;">
+  <div style="width: 60px">Go to page</div>
+  <mat-form-field>
+    <input matInput autocomplete="off" [formControl]="formControl" />
+  </mat-form-field>
+  <div class="go-icon" (click)="selectPage(formControl.value)"></div>
+</div>

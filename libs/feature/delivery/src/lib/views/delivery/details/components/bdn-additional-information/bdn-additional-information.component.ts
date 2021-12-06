@@ -17,9 +17,7 @@ import {
   InjectionToken
 } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -594,10 +592,10 @@ export class BdnAdditionalInformationComponent
       this.toastr.error('Please enter the correct format');
     }
 
-    let bargePumpingRateEndTime = this.formatDateForBe(
+    let bargePumpingRateEndTime = this.formatDateForBeForDateWithTime(
       this.formValues.bargePumpingRateEndTime
     );
-    let bargePumpingRateStartTime = this.formatDateForBe(
+    let bargePumpingRateStartTime = this.formatDateForBeForDateWithTime(
       this.formValues.bargePumpingRateStartTime
     );
 
@@ -763,8 +761,20 @@ export class BdnAdditionalInformationComponent
     }
   }
 
+  formatDateForBeForDateWithTime(value) {
+    if (typeof value == 'string') {
+      return value;
+    }
+    if (value) {
+      const beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+    } else {
+      return null;
+    }
+  }
 
   ngAfterViewInit(): void {
     this.addSampleSources();
   }
+
 }

@@ -10,12 +10,14 @@ export class QcVesselResponseSludgeStateModel {
   activeCategory: IDisplayLookupDto;
   description: string;
   sludge?: number;
+  tolerance?: number;
   sludgeVerified?: boolean;
 
   constructor(sludge?: IQcVesselSludgeResponseDto) {
     this.activeCategory = sludge?.activeCategory;
     this.description = sludge?.description;
     this.sludge = sludge?.sludge;
+    this.tolerance = sludge?.tolerance;
     this.sludgeVerified = sludge?.sludgeVerified;
   }
 }

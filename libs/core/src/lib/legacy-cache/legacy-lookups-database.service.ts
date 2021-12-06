@@ -56,6 +56,11 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly quantityCategory: Dexie.Table<IDisplayLookupDto, number>;
   readonly pumpingRateUom: Dexie.Table<IDisplayLookupDto, number>;
   readonly sampleSource: Dexie.Table<IDisplayLookupDto, number>;
+  readonly robDifferenceType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly controlTowerActionStatus: Dexie.Table<IDisplayLookupDto, number>;
+  readonly screen: Dexie.Table<IDisplayLookupDto, number>;
+  readonly controlTowerNotesViewType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly controlTowerLogStatus: Dexie.Table<IDisplayLookupDto, number>;
 
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
@@ -81,27 +86,24 @@ export class LegacyLookupsDatabase extends Dexie {
     [nameof<LegacyLookupsDatabase>('paymentStatus')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
-    [nameof<LegacyLookupsDatabase>('invoiceType')]: (
-      dto: ColorDisplayLookup
-    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('invoiceType')]: (dto: ColorDisplayLookup) =>
+      <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('orderedStatus')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('additionalCost')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
-    [nameof<LegacyLookupsDatabase>('portRemarks')]: (
-      dto: ColorDisplayLookup
-    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('portRemarks')]: (dto: ColorDisplayLookup) =>
+      <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('portSeverities')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('portStatuses')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
-    [nameof<LegacyLookupsDatabase>('portType')]: (
-      dto: ColorDisplayLookup
-    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code }
+    [nameof<LegacyLookupsDatabase>('portType')]: (dto: ColorDisplayLookup) =>
+      <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code }
   };
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
@@ -159,7 +161,14 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('portRemarks')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('portSeverities')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('portStatuses')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('portType')]: lookupSchema
+      [nameof<LegacyLookupsDatabase>('portType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('robDifferenceType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('controlTowerActionStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('screen')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>(
+        'controlTowerNotesViewType'
+      )]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('controlTowerLogStatus')]: lookupSchema
     };
   }
 
@@ -177,10 +186,16 @@ export class LegacyLookupsDatabase extends Dexie {
     });
   }
 
-  async getScheduleDashboardLabelConfiguration(){
+  async getScheduleDashboardLabelConfiguration() {
     const db = this.table('scheduleDashboardLabelConfiguration');
     let getScheduleDashboardLabelConfigurationList = await db.toArray();
     return getScheduleDashboardLabelConfigurationList;
+  }
+
+  public async getTableByName(name: string) {
+    const db = this.table(name);
+    let tableData = await db.toArray();
+    return tableData;
   }
 
   async getTable(statusName: string): Promise<number[]> {
@@ -192,58 +207,55 @@ export class LegacyLookupsDatabase extends Dexie {
       .toArray();
   }
 
-  async getBargeTable(){
+  async getBargeTable() {
     const db = this.table('barge');
     let bargeList = await db.toArray();
     return bargeList;
   }
 
-
-  async getClaimTypeTable(){
+  async getClaimTypeTable() {
     const db = this.table('claimType');
     let claimTypeList = await db.toArray();
     return claimTypeList;
   }
 
-  async getUomTable(){
+  async getUomTable() {
     const db = this.table('uom');
     let uomList = await db.toArray();
     return uomList;
   }
 
-  async getQuantityCategory(){
+  async getQuantityCategory() {
     const db = this.table('quantityCategory');
     let quantityCategoryList = await db.toArray();
     return quantityCategoryList;
   }
 
-
-  async getProductList(){
+  async getProductList() {
     const db = this.table('product');
     let productList = await db.toArray();
     return productList;
   }
 
-  async getPhysicalSupplierList(){
+  async getPhysicalSupplierList() {
     const db = this.table('supplier');
     let physicalSupplierList = await db.toArray();
     return physicalSupplierList;
   }
 
-  async getQualityMatchList(){
+  async getQualityMatchList() {
     const db = this.table('qualityMatch');
     let qualityMatchList = await db.toArray();
     return qualityMatchList;
   }
 
-
-  async getDeliveryFeedbackList(){
+  async getDeliveryFeedbackList() {
     const db = this.table('deliveryFeedback');
     let deliveryFeedbackList = await db.toArray();
     return deliveryFeedbackList;
   }
 
-  async getSatisfactionLevelList(){
+  async getSatisfactionLevelList() {
     const db = this.table('satisfactionLevel');
     let satisfactionLevelList = await db.toArray();
     return satisfactionLevelList;
@@ -273,47 +285,47 @@ export class LegacyLookupsDatabase extends Dexie {
     return sampleSource;
   }
 
-  async getInvoiceCustomStatus(){
+  async getInvoiceCustomStatus() {
     const db = this.table('invoiceCustomStatus');
     let InvoiceCustomStatus = await db.toArray();
     return InvoiceCustomStatus;
   }
-  async getPaymentStatus(){
+  async getPaymentStatus() {
     const db = this.table('paymentStatus');
     let PaymentStatus = await db.toArray();
     return PaymentStatus;
   }
-  async getsInvoiceType(){
+  async getsInvoiceType() {
     const db = this.table('invoiceType');
     let InvoiceType = await db.toArray();
     return InvoiceType;
   }
-  async getAdditionalCost(){
+  async getAdditionalCost() {
     const db = this.table('additionalCost');
     let AdditionalCost = await db.toArray();
     return AdditionalCost;
   }
-  async getPortRemarks(){
+  async getPortRemarks() {
     const db = this.table('portRemarks');
     let PortRemarks = await db.toArray();
     return PortRemarks;
   }
-  async getPortSeverities(){
+  async getPortSeverities() {
     const db = this.table('portSeverities');
     let portSeverities = await db.toArray();
     return portSeverities;
   }
-  async getPortStatuses(){
+  async getPortStatuses() {
     const db = this.table('portStatuses');
     let PortStatuses = await db.toArray();
     return PortStatuses;
   }
-  async getPortType(){
+  async getPortType() {
     const db = this.table('portType');
     let PortType = await db.toArray();
     return PortType;
   }
-  async getCurrencyTable(){
+  async getCurrencyTable() {
     const db = this.table('currency');
     let currencyList = await db.toArray();
     return currencyList;

@@ -1,0 +1,17 @@
+<!-- Tabs Header Start-->
+<div class="custom-header-tabs-v2">
+    <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex">
+        <mat-tab #tab *ngFor="let item of data" [disabled]="item.disabled">
+            <ng-template mat-tab-label>
+                <div class="custom-label-holder">
+                    <div class="custom-tab-ui"></div>
+                    <div class="custom-label">{{item.name}}</div>
+                </div>
+            </ng-template>
+            <ng-container>
+                <div class="custom-tab-container"> Tab container</div>
+            </ng-container>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+<!-- Tabs Header End-->

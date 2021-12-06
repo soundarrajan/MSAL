@@ -55,6 +55,11 @@ export class TenantSettingsState {
     return state[TenantSettingsModuleName.General];
   }
 
+  @Selector([TenantSettingsState])
+  static delivery(state: ITenantSettingsState): IGeneralTenantSettings {
+    return state[TenantSettingsModuleName.Delivery];
+  }
+
   @Action(LoadTenantSettingsAction)
   loadTenantState(
     { getState, patchState }: StateContext<ITenantSettingsState>,

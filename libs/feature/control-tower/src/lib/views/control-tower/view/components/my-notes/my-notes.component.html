@@ -1,0 +1,238 @@
+<div
+  class="controlTower-Noteswrapper"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+>
+  <div
+    class="date-section"
+    [ngStyle]="isFiltered ? { opacity: '0.2' } : { opacity: '1' }"
+  >
+    <div class="header-section" [ngClass]="newScreen ? 'new' : ''">
+      <div
+        id="custom-form-field"
+        [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+      >
+        <mat-form-field class="without-search" appearance="none">
+          <mat-label>Select Field </mat-label>
+          <mat-select
+            disableOptionCentering
+            [(ngModel)]="timeView"
+            [(value)]="defaultTimeView"
+            [panelClass]="{ darkPanelBg: switchTheme }"
+            (selectionChange)="getMyNotes()"
+          >
+            <mat-option
+              *ngFor="let value of controlTowerNotesViewType"
+              value="{{ value.id }}"
+              >{{ value.displayName }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div id="dateContainer">
+      <ng-container *ngFor="let content of notesContent">
+        <div
+          class="dateBlock"
+          [ngClass]="content.selected ? 'select' : ''"
+          (click)="selectDate(content)"
+          *ngIf="content.notes.length"
+        >
+          {{ content?.displayName }}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="title-section" *ngIf="!isFiltered">
+    <div class="header-section" [ngClass]="newScreen ? 'new' : ''">
+      Titles
+      <div class="edit-icon" (click)="addNotes()"></div>
+    </div>
+    <ng-container
+      *ngFor="
+        let line of notesContent;
+        let lineIndex = index;
+        trackBy: customTrackBy
+      "
+    >
+      <ng-container *ngIf="line.selected">
+        <div
+          class="titleBlock"
+          *ngFor="
+            let noteLine of line.notes;
+            let noteIndex = index;
+            trackBy: customTrackBy
+          "
+          [ngClass]="selectedTitleIndex === noteIndex ? 'select' : ''"
+          (click)="selectTitle(noteLine.title, noteIndex)"
+        >
+          <p>{{ noteLine.title | htmlDecodeReadonly }}</p>
+          <div
+            class="delete-menu"
+            [matMenuTriggerFor]="deleteTitle"
+            (menuOpened)="clickDelete(noteIndex)"
+            (menuClosed)="closeDelete()"
+          ></div>
+          <div
+            class="delete-menu-clicked"
+            *ngIf="selectedDeleteTitleIndex === noteIndex && deletingTitle"
+          ></div>
+        </div>
+        <mat-menu #deleteTitle="matMenu" class="darkPanel-delete">
+          <div class="delete-block" (click)="deleteTitles(line, lineIndex)">
+            <div></div>
+            <span>Delete Note</span>
+          </div>
+        </mat-menu>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div *ngIf="newScreen" class="search-notes-new">
+    <span class="icon"></span>
+    <input
+      placeholder="Search Notes"
+      type="text"
+      name="search"
+      spellcheck="false"
+      autocomplete="off"
+      [(ngModel)]="searchText"
+      (keyup)="filteringNotes()"
+    />
+    <span
+      *ngIf="searchText"
+      class="search-close-icon"
+      (click)="searchText = ''; closeFilter()"
+    ></span>
+  </div>
+
+  <div class="title-section" *ngIf="isFiltered">
+    <div class="header-section">
+      Results
+      <div class="close-icon" (click)="searchText = ''; closeFilter()"></div>
+    </div>
+
+    <div class="filter-data">
+      <div
+        class="titleBlockx"
+        *ngFor="let content of filteredNotes; let i = index"
+        [ngClass]="selectedSearchIndex === i ? 'select' : ''"
+        (click)="selectFilterTitle(i)"
+      >
+        <div [innerHTML]="content.displayName | highlight: searchText"></div>
+        <span [innerHTML]="content.title | highlight: searchText"></span>
+        <p [innerHTML]="content.message | highlight: searchText"></p>
+      </div>
+    </div>
+  </div>
+  <div class="notes-section" *ngIf="!isFiltered">
+    <div class="notesBlock">
+      <ng-container
+        *ngFor="
+          let line of notesContent;
+          let lineIndex = index;
+          trackBy: customTrackBy
+        "
+      >
+        <ng-container *ngIf="line.selected">
+          <div
+            *ngFor="
+              let noteLine of line.notes;
+              let noteIndex = index;
+              trackBy: customTrackBy
+            "
+          >
+            <div
+              class="header-section"
+              *ngIf="selectedTitleIndex === noteIndex"
+            >
+              Last updated on:
+              {{ formatDate(line.notes[noteIndex].lastModifiedOn) }}
+            </div>
+
+            <input
+              #titleSection
+              placeholder="Title"
+              *ngIf="selectedTitleIndex === noteIndex"
+              spellcheck="false"
+              type="text"
+              name="sameName{{ noteIndex }}"
+              [ngModel]="line.notes[noteIndex].title | htmlDecodeReadonly"
+              (ngModelChange)="line.notes[noteIndex].title = $event"
+              (blur)="autoSaveNotes(noteLine, line, lineIndex, noteIndex)"
+              [disabled]="detectCurrentUser(noteLine)"
+              maxlength="100"
+            />
+          </div>
+          <div
+            class="m-t-10"
+            *ngFor="
+              let noteLine of line.notes;
+              let noteIndex = index;
+              trackBy: customTrackBy
+            "
+          >
+            <textarea
+              #notesSection
+              placeholder="Body"
+              *ngIf="selectedTitleIndex === noteIndex"
+              spellcheck="false"
+              type="text"
+              name="sameName{{ noteIndex }}"
+              [ngModel]="line.notes[noteIndex].message | htmlDecodeReadonly"
+              (ngModelChange)="line.notes[noteIndex].message = $event"
+              (blur)="autoSaveNotes(noteLine, line, lineIndex, noteIndex)"
+              [disabled]="detectCurrentUser(noteLine)"
+              maxlength="1000"
+            ></textarea>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="notes-section" *ngIf="isFiltered">
+    <div class="notesBlock">
+      <div
+        *ngFor="let filterNote of filteredNotes;let i = index;;trackBy: customTrackBy"
+      >
+        <div class="header-section" *ngIf="selectedSearchIndex == i">
+          Last updated on: {{ formatDate(filterNote.lastModifiedOn) }}
+        </div>
+        <input
+          #titleSection
+          placeholder="Title"
+          spellcheck="false"
+          type="text"
+          *ngIf="selectedSearchIndex == i"
+          name="sameName{{ i }}"
+          [(ngModel)]="filterNote.title"
+          (keyup)="handle($event)"
+        />
+        <textarea
+          #notesSection
+          spellcheck="false"
+          *ngIf="selectedSearchIndex == i"
+          type="text"
+          name="sameName{{ i }}"
+          [(ngModel)]="filterNote.message"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="mainFooterWhiteSpace"
+  [ngClass]="newScreen ? 'new' : ''"
+  style="padding:0 25px;"
+>
+  <div
+    style="border: 0px solid #527292;border-top: none;border-bottom: none;width: 100%;
+  height: 10px;"
+  ></div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>

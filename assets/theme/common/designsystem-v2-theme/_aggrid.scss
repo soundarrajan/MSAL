@@ -1,12 +1,12 @@
-@import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-material.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
+// @import '~ag-grid-community/dist/styles/ag-grid.css';
+// @import '~ag-grid-community/dist/styles/ag-theme-material.css';
+// @import '~ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 
 .aggrid-dd-low-v2 {
   ::-webkit-scrollbar-track {
     background-color: transparent;
   }
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   .aggrid-whitebox {
     height: 33px;
   }
@@ -107,7 +107,7 @@
       color: black;
     }
 
-    &.na-data{
+    &.na-data {
       color: #333333 !important;
     }
     input {
@@ -415,7 +415,7 @@
 .ag-cell{
   &.row-separator{
     border-right: 2px solid  #F1F1F2 !important;
-  
-  
+
+
 }
 }

@@ -15,9 +15,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -219,7 +217,6 @@ export class DeliveryProductsGroupComponent
   @Output() onProductSelected = new EventEmitter<any>();
   @Output() onConversionSelected = new EventEmitter<any>();
   constructor(
-    public qcReportService: QcReportService,
     public gridViewModel: OrderListGridViewModel,
     public bdnInformationService: BdnInformationApiService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
@@ -278,7 +275,10 @@ export class DeliveryProductsGroupComponent
       return;
     }
     this.formValues = form;
-    if (this.formValues.temp.deliverysummary && this.formValues.temp.deliverysummary.products) {
+    if (
+      this.formValues.temp.deliverysummary &&
+      this.formValues.temp.deliverysummary.products
+    ) {
       this.formValues.temp.deliverySummaryProducts = [
         ...this.formValues.temp.deliverysummary.products
       ];
@@ -311,7 +311,7 @@ export class DeliveryProductsGroupComponent
       }
     });
     if (productAlreadyExist) {
-        this.selectedProductToAddInDelivery = null;
+      this.selectedProductToAddInDelivery = null;
       return this.toastr.error(
         'The selected product is already added to delivery'
       );
@@ -650,7 +650,6 @@ export class DeliveryProductsGroupComponent
     if (!sellerConvertedValue || !buyerConvertedValue) {
       variance = null;
       this.formValues.temp.variances[`product_${productIdx}`] = variance;
-      this.setVarianceColor(productIdx);
     } else {
       // this is where variance is calculated. rn it's buyer - seler (15/08)
       variance = buyerConvertedValue - sellerConvertedValue;
@@ -661,44 +660,40 @@ export class DeliveryProductsGroupComponent
         `product_${productIdx}`
       ] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
       this.formValues.temp.variances[`uom_${productIdx}`] = baseUom.name;
-      this.setVarianceColor(productIdx);
     }
     if (typeof this.formValues.temp.reconStatus == 'undefined') {
       this.formValues.temp.reconStatus = [];
     }
     if (variance != null) {
       if (conversionInfo.quantityReconciliation.name == 'Flat') {
-        if (variance < conversionInfo.minToleranceLimit) {
+        if(variance < 0) { // negative
+          if (Math.abs(variance) <= conversionInfo.maxToleranceLimit) {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
+          }
+          else {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
+          }
+        } else {
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
-        }
-        if (
-          variance > conversionInfo.minToleranceLimit &&
-          variance < conversionInfo.maxToleranceLimit
-        ) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-        }
-        if (variance > conversionInfo.maxToleranceLimit) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       } else {
-        var minValue =
+        const minValue =
           (conversionInfo.minToleranceLimit *
-            this.formValues.deliveryProducts[productIdx]
-              .confirmedQuantityAmount) /
+            Number(sellerConvertedValue)) /
           100;
-        var maxValue =
+        const maxValue =
           (conversionInfo.maxToleranceLimit *
-            this.formValues.deliveryProducts[productIdx]
-              .confirmedQuantityAmount) /
+            Number(sellerConvertedValue)) /
           100;
-        if (variance < minValue) {
+        if(variance < 0) { // negative
+          if (Math.abs(variance) <= maxValue) {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
+          }
+          else {
+            this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
+          }
+        } else {
           this.formValues.temp.reconStatus[`product_${productIdx}`] = 1; // Matched Green
-        }
-        if (variance > minValue && variance < maxValue) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-        }
-        if (variance > maxValue) {
-          this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
         }
       }
     } else {
@@ -769,35 +764,24 @@ export class DeliveryProductsGroupComponent
       this.formValues.temp.variances[`mfm_color_${idx}`] = '';
     }
 
-    if (this.formValues.temp.variances[`product_${idx}`] != null) {
-      // new color code
-      // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
-      // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
-      // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
+    // new color code
+    // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
+    // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
+    // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
-      if (parseFloat(this.formValues.temp.variances[`product_${idx}`]) < 0) {
-        // 1 or 2
-        if (
-          Math.abs(
-            parseFloat(this.formValues.temp.variances[`product_${idx}`])
-          ) < parseFloat(this.toleranceLimits.maxToleranceLimit)
-        ) {
-          this.formValues.temp.variances[`color_${idx}`] = 'amber';
-        }
-
-        if (
-          Math.abs(
-            parseFloat(this.formValues.temp.variances[`product_${idx}`])
-          ) >= parseFloat(this.toleranceLimits.maxToleranceLimit)
-        ) {
-          this.formValues.temp.variances[`color_${idx}`] = 'red';
-        }
-      } else {
+    switch (this.formValues.temp.reconStatus[`product_${idx}`]) {
+      case 1: // 1 - green, 2 - Amber, 3 - Red
         this.formValues.temp.variances[`color_${idx}`] = 'green';
-      }
-    } else {
-      // if variance is null, set color to white
-      this.formValues.temp.variances[`color_${idx}`] = 'white';
+        break;
+      case 2:
+        this.formValues.temp.variances[`color_${idx}`] = 'amber';
+        break;
+      case 3:
+        this.formValues.temp.variances[`color_${idx}`] = 'red';
+        break;
+      default:
+        this.formValues.temp.variances[`color_${idx}`] = 'white';
+        break;
     }
 
     if (this.formValues.temp.variances[`mfm_product_${idx}`] != null) {
@@ -1001,7 +985,6 @@ export class DeliveryProductsGroupComponent
   }
 
   selectProduct(key) {
-    this.qcReportService.selectedProduct = key;
     this.selectedProduct = key;
     this.onProductSelected.emit(this.selectedProduct);
     this.onConversionSelected.emit(this.conversionInfoData);
@@ -1074,7 +1057,10 @@ export class DeliveryProductsGroupComponent
 
   openAddProductSelect() {
     this.searchProductInput = null;
-    if (this.formValues.temp.deliverysummary && this.formValues.temp.deliverysummary.products) {
+    if (
+      this.formValues.temp.deliverysummary &&
+      this.formValues.temp.deliverysummary.products
+    ) {
       this.formValues.temp.deliverySummaryProducts = [
         ...this.formValues.temp.deliverysummary.products
       ];

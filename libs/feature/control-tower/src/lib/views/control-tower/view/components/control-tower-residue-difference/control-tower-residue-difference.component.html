@@ -1,0 +1,60 @@
+<div
+  class="controlTower-content"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+  style="position: relative;"
+>
+  <div id="custom-tabs-v2" class="level-2 custom-residue-difference">
+    <mat-tab-group
+      mat-align-tabs="end"
+      (selectedTabChange)="selectedTabChange($event)"
+    >
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="custom-label-holder">
+            <div
+              [ngClass]="newScreen ? 'custom-tab-ui-new' : 'custom-tab-ui'"
+              class="sludge-difference"
+            ></div>
+            <div class="custom-label">Sludge Difference</div>
+          </div>
+        </ng-template>
+        <ng-container>
+          <shiptech-control-tower-general-view-list
+            *ngIf="gridTitle === 'Sludge Difference'"
+            [selectorType]="'Residue Sludge Difference'"
+            [groupId]="
+              'control-tower-residue-sludge-difference-v2-list-filter-presets-7'
+            "
+            [gridId]="'control-tower-residue-sludge-list-grid-7'"
+            [theme]="theme"
+            [newScreen]="newScreen"
+          ></shiptech-control-tower-general-view-list>
+        </ng-container>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="custom-label-holder">
+            <div
+              [ngClass]="newScreen ? 'custom-tab-ui-new' : 'custom-tab-ui'"
+              class="product-difference"
+            ></div>
+            <div class="custom-label">EGCS Product Difference</div>
+          </div>
+        </ng-template>
+        <ng-container>
+          <!-- <shiptech-control-tower-general-view-list
+            *ngIf="gridTitle === 'EGCS Product Difference'"
+            [selectorType]="'Residue EGCS Product Difference'"
+            [groupId]="
+              'control-tower-residue-sludge-difference-v2-list-filter-presets-1'
+            "
+            [gridId]="'control-tower-residue-sludge-list-grid-1'"
+            [theme]="theme"
+            [newScreen]="newScreen"
+          ></shiptech-control-tower-general-view-list> -->
+        </ng-container>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>

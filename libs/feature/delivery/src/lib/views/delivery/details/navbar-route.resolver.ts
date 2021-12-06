@@ -6,7 +6,6 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { QcReportService } from '../../../services/qc-report.service';
 import { KnownDeliverylRoutes } from '../../../known-delivery.routes';
 import { catchError, finalize, mapTo } from 'rxjs/operators';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
@@ -24,15 +23,10 @@ export class NavBarResolver implements Resolve<any> {
     private router: Router,
     private appErrorHandler: AppErrorHandler,
     private navBarService: NavBarApiService
-
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): any{
-    const DeliveryIdParam =
-      route.params[KnownDeliverylRoutes.DeliveryIdParam];
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    const DeliveryIdParam = route.params[KnownDeliverylRoutes.DeliveryIdParam];
     const deliveryId = Number(DeliveryIdParam ?? 0);
 
     if (!Number.isInteger(deliveryId)) {
@@ -42,10 +36,8 @@ export class NavBarResolver implements Resolve<any> {
       ]);
     }
     let navBar = {
-      'deliveryId': deliveryId
+      deliveryId: deliveryId
     };
-    return  this.navBarService.getNavBarIdsList(navBar);
-
+    return this.navBarService.getNavBarIdsList(navBar);
   }
-
 }

@@ -2,13 +2,13 @@
   class="readonly-details-component"
   [ngClass]="{ 'section2-details': data?.hasSeparator }"
 >
-  <div class="details-content-holder" *ngFor="let item of data?.contents">
+  <div class="details-content-holder" *ngFor="let item of data?.contents" [ngStyle]="data?.hasSeparator && { 'justify-content': 'space-between' }">
     <div [ngClass]="{ 'show-full-value': item.label === 'Vessel' || item.label === 'Seller' }">
       <div class="label" Class="customLabelClass">{{ item.label }}</div>
       <div
         class="value label_text"
         Class="customValueClass"
-        matTooltip="{{ item.value }}"
+        matTooltip="{{ item.value | htmlDecodeReadonly }}"
       >
         {{ item.value | htmlDecodeReadonly }}
       </div>

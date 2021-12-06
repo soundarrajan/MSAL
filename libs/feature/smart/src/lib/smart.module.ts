@@ -11,20 +11,26 @@ import { map, catchError } from 'rxjs/operators';
 import { LoginViewComponent } from './login-view/login-view.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
-import { SaveBunkeringPlanState, SaveCurrentROBState, UpdateBplanTypeState, GeneratePlanState} from '../lib/store/bunker-plan/bunkering-plan.state'
+import {
+  SaveBunkeringPlanState,
+  SaveCurrentROBState,
+  UpdateBplanTypeState,
+  GeneratePlanState
+} from '../lib/store/bunker-plan/bunkering-plan.state';
+import { environment } from '@shiptech/environment';
 
 @NgModule({
-  declarations: [
-    SmartComponent,
-    LoginViewComponent
-  ],
+  declarations: [SmartComponent, LoginViewComponent],
   imports: [
     SmartRoutingModule,
     LoggingModule,
-    AuthenticationModule.forFeature(),
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     // HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -45,16 +51,20 @@ import { SaveBunkeringPlanState, SaveCurrentROBState, UpdateBplanTypeState, Gene
       useFactory: loadConfig,
       deps: [HttpClient, ConfigService],
       multi: true
-    },
+    }
   ],
   bootstrap: [SmartComponent]
 })
-export class SmartModule { }
+export class SmartModule {}
 
-export function loadConfig(http: HttpClient, config: ConfigService): (() => Promise<boolean>) {
+export function loadConfig(
+  http: HttpClient,
+  config: ConfigService
+): () => Promise<boolean> {
   return (): Promise<boolean> => {
     return new Promise<boolean>(resolve => {
-      http.get('../assets/data/config.json')
+      http
+        .get('../assets/data/config.json')
         .pipe(
           map((c: ConfigService) => {
             config.loggingLevel = c.loggingLevel;
@@ -65,7 +75,8 @@ export function loadConfig(http: HttpClient, config: ConfigService): (() => Prom
             resolve(true);
             return of({});
           })
-        ).subscribe();
+        )
+        .subscribe();
     });
   };
 }

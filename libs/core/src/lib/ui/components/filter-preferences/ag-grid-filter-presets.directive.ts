@@ -2,6 +2,7 @@ import {
   Attribute,
   Directive,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Optional,
@@ -30,6 +31,12 @@ import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definiti
 import { SKIP$ } from '@shiptech/core/utils/rxjs-operators';
 import { AgGridAngular } from '@ag-grid-community/angular';
 import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
+import moment from 'moment';
+import { ControlTowerQuantityRobDifferenceListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-rob-difference-list.columns';
+import { ControlTowerQuantityClaimsListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list//list-columns/control-tower-quantity-claims-list.columns';
+import { ControlTowerQualityClaimsListColumns } from '../../../../../../feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list/list-columns/control-tower-quality-claims-list.columns';
+
+// import { timeEnd } from 'console';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -38,13 +45,31 @@ import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings
     'app-filter-preferences[appAgGridFilterPresets], ag-grid-angular[appAgGridFilterPresets]'
 })
 export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
+  @Output() public eventName = new EventEmitter();
   @Output() presetsLoaded = new EventEmitter();
   private _destroy$: Subject<any> = new Subject();
+  activeFilter: boolean;
+  autoSaveInterval: any;
+  @Input() groupId: string;
+  @Input() gridId: string;
+  @Input() gridIds: any;
+  
+  
+  @Input() _groupedCountValues: any;
+  get groupedCountValues(): any {
+    return this._groupedCountValues;
+  }
+  @Input() set groupedCountValues(value: any) {
+    this._groupedCountValues = value;
+    if(this._groupedCountValues) {
+      this.filterComponent.updateSystemPreferencesCount(this._groupedCountValues);
+    }  
+    console.log(value);
+  }
 
+  @Input() id: string;
   constructor(
     private filterPresetsService: AgGridFilterPresetsService,
-    @Attribute('id') private elementId: string,
-    @Attribute('groupId') private groupId: string,
     @Optional() private agGrid: AgGridAngular,
     @Optional() private filterComponent: FilterPreferencesComponent
   ) {}
@@ -58,7 +83,98 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     }
   }
 
+  addedFilterByFromAndToByDefault() {
+    // let loadNewStatusOfDataGridIds = [
+    //   // 'control-tower-quality-claims-list-grid-7'
+    // ];
+    if (this.gridIds && this.gridIds[this.id]) {
+      this.setRangeUntilNow(
+        this.gridIds[this.id].timeDeltaValue,
+        this.gridIds[this.id].timeDeltaUnit,
+        this.gridIds[this.id].mappedKey
+      );
+    }
+
+    // if (loadNewStatusOfDataGridIds.indexOf(this.id) != -1) {
+    //   this.filterByStatus();
+    // }
+  }
+
+  setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string) {
+    for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
+      if (this.filterComponent.filterPresets[i].filterModels) {
+        let filters = this.filterComponent.filterPresets[i].filterModels[
+          this.id
+        ];
+
+        if (filters) {
+          for (let [key, value] of Object.entries(filters)) {
+            if (key == mappingKey) {
+              return;
+            }
+          }
+          this.filterComponent.filterPresets[i].filterModels[this.id][
+            mappingKey
+          ] = {
+            dateFrom: moment()
+              .subtract(timeDeltaValue, timeDeltaUnit)
+              .format('YYYY-MM-DD'),
+            dateTo: moment().format('YYYY-MM-DD'),
+            type: 'inRange',
+            filterType: 'date'
+          };
+        } else {
+          this.filterComponent.filterPresets[i].filterModels[this.id] = {
+            [mappingKey]: {
+              dateFrom: moment()
+                .subtract(timeDeltaValue, timeDeltaUnit)
+                .format('YYYY-MM-DD'),
+              dateTo: moment().format('YYYY-MM-DD'),
+              type: 'inRange',
+              filterType: 'date'
+            }
+          };
+        }
+      }
+    }
+  }
+
+  // filterByStatus() {
+  //   for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
+  //     if (this.filterComponent.filterPresets[i].filterModels) {
+  //       let filters = this.filterComponent.filterPresets[i].filterModels[
+  //         this.id
+  //       ];
+  //       if (filters) {
+  //         for (let [key, value] of Object.entries(filters)) {
+  //           if (key == 'noResponse') {
+  //             return;
+  //           }
+  //         }
+  //         this.filterComponent.filterPresets[i].filterModels[this.id][
+  //           'noResponse'
+  //         ] = {
+  //           filterType: 'number',
+  //           type: 'lessThan',
+  //           filter: 7,
+  //           filterTo: null
+  //         };
+  //       } else {
+  //         this.filterComponent.filterPresets[i].filterModels[this.id] = {
+  //           noResponse: {
+  //             filterType: 'number',
+  //             type: 'lessThan',
+  //             filter: 7,
+  //             filterTo: null
+  //           }
+  //         };
+  //       }
+  //     }
+  //   }
+  // }
+
   processFilterComponentEvents(groupId: string): void {
+    this.filterPresetsService.setActiveFilter(false);
     this.filterComponent.isLoading = true;
     this.filterComponent.refresh();
     // NOTE: Loading the saved filter presets and setting the value to the filter component
@@ -71,11 +187,21 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           this.filterComponent.hasActiveFilterPresets = filterPresets.some(
             item => !item.isDefault && !item.isClear
           );
+          this.addedFilterByFromAndToByDefault();
         }),
         finalize(() => {
           this.filterComponent.isLoading = false;
           this.filterComponent.refresh();
-          this.presetsLoaded.next();
+          this.autoSaveInterval = setInterval(
+            function() {
+              if (this.filterPresetsService.getActiveFilter()) {
+                this.filterPresetsService.setActiveFilter(false);
+                clearInterval(this.autoSaveInterval);
+                this.presetsLoaded.next();
+              }
+            }.bind(this),
+            100
+          );
         }),
         takeUntil(this._destroy$)
       )
@@ -154,7 +280,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         mergeMap(presets => {
           if (
             !this.filterPresetsService.gridApis[groupId] &&
-            !this.filterPresetsService.gridApis[groupId][this.elementId]
+            !this.filterPresetsService.gridApis[groupId][this.id]
           ) {
             return throwError('The gridApi is not loaded yet');
           }
@@ -184,13 +310,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     const setSavedPreset$ = this.filterPresetsService.filterPresets$.pipe(
       // TODO: MAJOR hack/workaround, filters arrive before grid is ready and columns are set, which will fail when trying to apply the filter on an empty set of columns
       // TODO: These filter presets need no love, but hell fire. If they have not already laid eggs, should definitely be re-written completely.
-      switchMap(presets =>
-        of(presets).pipe(
-          delay(
-            (this.agGrid.columnApi.getAllColumns()?.length ?? 0) === 0 ? 200 : 0
-          )
-        )
-      ),
+      switchMap(presets => of(presets).pipe(delay(200))),
       map(presets => !!presets[this.groupId]),
       // Note: If the user has already changed the grid filters while presets are loading
       // Note: Do not set the default or last active filter, so we don't override the user's currently set filters.
@@ -227,13 +347,13 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
             : SKIP$
         ),
         // Note: We are registering the the grid apis so we can use them in the service to get the filter model or set the filter model
-        tap(() =>
+        tap(() => {
           this.filterPresetsService.registerGrid(
             this.groupId,
-            this.elementId,
+            this.id,
             () => this.agGrid.api
-          )
-        ),
+          );
+        }),
         // Note: Using common stream to process initial filter set events and filter change events a
         mergeMap(() => merge(setSavedPreset$, processFilterChange$)),
         takeUntil(this._destroy$)
@@ -246,11 +366,13 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
+    
+
   // NOTE: This gets called when FilterChangedEvent gets fired by the grid and updates tells the service that the current preset has changes
   private onGridFilterChanged(event: FilterChangedEvent): void {
     this.filterPresetsService.emitFiltersChanged({
       groupId: this.groupId,
-      gridId: this.elementId,
+      gridId: this.id,
       filterPreset: <FilterPreferenceViewModel>event.api.getFilterModel()
     });
   }

@@ -282,11 +282,11 @@
 }
 
 .expand-icon::before {
-  content: url(../../../../../../../../../../assets/layout/images/pages/expand.svg);
+  content: url(../../../../../../../../../../assets/layout/images/pages/expand.svg) !important;
 }
 
 .collapse-icon::before {
-  content: url(../../../../../../../../../../assets/layout/images/pages/collapse.svg);
+  content: url(../../../../../../../../../../assets/layout/images/pages/collapse.svg) !important;
 }
 
 .notes-section {

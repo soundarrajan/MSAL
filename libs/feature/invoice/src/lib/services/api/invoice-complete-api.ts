@@ -56,7 +56,7 @@ export namespace InvoiceApiPaths {
     `/api/invoice/getAccountNumberCounterpartylist`;
   export const getTenantConfiguration = () =>
     `api/admin/tenantConfiguration/get`;
-  export const notesAutoSave = () => `api/invoice/autosave`;
+  // export const notesAutoSave = () => `api/invoice/autosave`;
   export const createCreditNoteInvoiceFromClaim = () =>
     `api/invoice/newFromClaim`;
   export const createPreClaimCreditNote = () => `api/invoice/newPreclaimCN`;
@@ -70,6 +70,9 @@ export namespace InvoiceApiPaths {
   export const getPaybleToList = () => `api/masters/counterparties/listByTypes`;
   export const getWorkingDueDate = () => `api/invoice/workingDueDate`;
   export const getDueDateWithoutSave = () => `api/invoice/dueDateWithoutSave`;
+  export const notesAutoSave = () => `api/procurement/order/autosave`;
+  export const getOrderNotes = () => `api/procurement/order/getNotes`;
+
 }
 
 @Injectable({
@@ -197,9 +200,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -233,9 +236,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -251,9 +254,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -269,9 +272,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -287,9 +290,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -305,9 +308,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -323,9 +326,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -341,9 +344,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
         map((body: any) => body.payload),
         catchError((body: any) =>
           of(
-            body.error.ErrorMessage && body.error.Reference
+            body.error  ? (body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
+              : body.error.errorMessage + ' ' + body.error.reference ) : ""
           )
         )
       );
@@ -578,7 +581,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ObservableException()
   notesAutoSave(request: any): Observable<any> {
     return this.http
-      .post<any>(`${this._apiUrl}/${InvoiceApiPaths.notesAutoSave()}`, {
+      .post<any>(`${this._procurementApiUrl}/${InvoiceApiPaths.notesAutoSave()}`, {
         payload: request
       })
       .pipe(
@@ -737,6 +740,27 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       .post<any>(`${this._apiUrl}/${InvoiceApiPaths.getDueDateWithoutSave()}`, {
         payload: request
       })
+      .pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getOrderNotes(
+    request: any
+  ): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._procurementApiUrl}/${InvoiceApiPaths.getOrderNotes()}`,
+        { payload: request }
+      )
       .pipe(
         map((body: any) => body.payload),
         catchError((body: any) =>
