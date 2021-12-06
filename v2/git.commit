@@ -1,11 +1,11 @@
-﻿commit 3cc6032c6a9aee8af7f08b52601d0757d6da4641
+﻿commit e77952450989deda164154ffc2eca9b1a9ffef60
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Dec 6 11:18:36 2021 +0000
+Date:   Mon Dec 6 12:13:44 2021 +0000
 
-    Merged PR 15059: Changed Update Preference behaviour
+    Merged PR 15061: Removed confirmation popup when deleting preference
     
-    Changed Update Preference behaviour
+    Removed confirmation popup when deleting preference
     
-    Related work items: #37296
+    Related work items: #37199
 
 branch: master
