@@ -380,12 +380,12 @@ export const BASE_MENU: KeyedMenuItems = {
         items: {
           service_list: {
             label: 'TO BE OVERRIDDEN',
-            url: '/#/service',
+            url: '/#/masters/service',
             target: '_blank'
           },
           new_service: {
             label: 'TO BE OVERRIDDEN',
-            url: 'service/edit',
+            url: '/#/masters/service/edit/',
             target: '_blank'
           }
         }

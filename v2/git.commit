@@ -1,11 +1,11 @@
-﻿commit 2fb811ce4e0be8632de0516e7a6d3fe4f4691223
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Dec 2 14:27:21 2021 +0000
+﻿commit 6cbe06f1d6aa804bcd27c9eab401ec3d22f95da9
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Dec 6 07:12:14 2021 +0000
 
-    Merged PR 15022: 36314-Quantity Control: Made BDN Quantity field as an editable field
+    Merged PR 15047: Fixed  Service List URL in v2 pages. Fixed default sorting in Control Tower(q...
     
-    36314-Quantity Control: Made BDN Quantity field as an editable field
+    Fixed  Service List URL in v2 pages. Fixed default sorting in Control Tower(quality view claims/Labs). Fixed displaying status and comments in the alert pop-up in all screens
     
-    Related work items: #36314
+    Related work items: #37085, #37271, #37352
 
 branch: master

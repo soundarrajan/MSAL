@@ -74,9 +74,16 @@ export class SidebarComponent implements OnInit, AfterContentInit {
       'New Company'
     );
 
-    if(!this.appConfig.v1.tenantConfigs.showCalenderView){
-      const dashBoardItems = jp.query(BASE_MENU, 'procurement.items.schedule_dashboard.items[?(!@.schedule_dashboard_calendar)]');
-      jp.value(BASE_MENU, 'procurement.items.schedule_dashboard.items', dashBoardItems.splice(1));
+    if (!this.appConfig.v1.tenantConfigs.showCalenderView) {
+      const dashBoardItems = jp.query(
+        BASE_MENU,
+        'procurement.items.schedule_dashboard.items[?(!@.schedule_dashboard_calendar)]'
+      );
+      jp.value(
+        BASE_MENU,
+        'procurement.items.schedule_dashboard.items',
+        dashBoardItems.splice(1)
+      );
     }
 
     this.model = transformMenu(BASE_MENU, {
@@ -88,7 +95,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
               service_list: {
                 label: 'Service List'
               },
-              'new-service': {
+              new_service: {
                 label: 'New Service'
               }
             }
