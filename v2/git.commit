@@ -1,11 +1,9 @@
-﻿commit 76bc7ee2df68e9dbabc924c5f418504e0ebbf0e1
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Mon Dec 6 12:48:06 2021 +0000
+﻿commit c889776b1a1dbbc4f86862570c599528a12d6dcb
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Dec 6 15:13:50 2021 +0000
 
-    Merged PR 15064: Quantity Control List : New columns for Bilge and EGCS Products
+    Merged PR 15066: fix console error in QC
     
-    36411 - Quantity Control List : New columns for Bilge and EGCS Products
-    
-    Related work items: #36411
+    fix console error in QC
 
 branch: master
