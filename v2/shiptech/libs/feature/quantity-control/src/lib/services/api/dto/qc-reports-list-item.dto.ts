@@ -34,6 +34,16 @@ export interface IQcReportsListItemDto {
   diffSludgeRobBeforeDischarge: number;
   sludgeDischargedQty: number;
   qtySludgeDischargedUom: IToleranceUomDto;
+  logBookBilgeRobBeforeDischarge: number;
+  measuredBilgeRobBeforeDischarge: number;
+  diffBilgeRobBeforeDischarge: number;
+  bilgeDischargedQty: number;
+  qtyBilgeDischargedUom: IToleranceUomDto;
+  logBookEGCSRobBeforeDischarge: number;
+  measuredEGCSRobBeforeDischarge: number;
+  diffEGCSRobBeforeDischarge: number;
+  egcsDischargedQty: number;
+  qtyEGCSDischargedUom: IToleranceUomDto;
   comment: string;
   isVerifiedSludgeQty: boolean;
   totalCount: number;

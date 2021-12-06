@@ -368,6 +368,128 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => params.value?.name
   };
 
+  logBookBilgeRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
+    headerName: QcReportsListColumnsLabels.logBookBilgeRobBeforeDischarge,
+    colId: QcReportsListColumns.logBookBilgeRobBeforeDischarge,
+    field: model('logBookBilgeRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value)
+  };
+
+  measuredBilgeRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
+    headerName: QcReportsListColumnsLabels.measuredBilgeRobBeforeDischarge,
+    colId: QcReportsListColumns.measuredBilgeRobBeforeDischarge,
+    field: model('measuredBilgeRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value)
+  };
+
+  diffBilgeRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
+    headerName: QcReportsListColumnsLabels.diffBilgeRobBeforeDischarge,
+    colId: QcReportsListColumns.diffBilgeRobBeforeDischarge,
+    field: model('diffBilgeRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value),
+    cellStyle: params =>
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
+        params.data?.diffBilgeRobBeforeDischarge,
+        this.robTolerance
+      )
+  };
+
+  bilgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
+    headerName: QcReportsListColumnsLabels.bilgeDischargedQty,
+    colId: QcReportsListColumns.bilgeDischargedQty,
+    field: model('bilgeDischargedQty'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value)
+  };
+
+  qtyBilgeDischargedUomCol: ITypedColDef<
+    IQcReportsListItemDto,
+    IToleranceUomDto
+  > = {
+    headerName: QcReportsListColumnsLabels.qtyBilgeDischargedUom,
+    colId: QcReportsListColumns.qtyBilgeDischargedUom,
+    field: model('qtyBilgeDischargedUom'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
+    valueFormatter: params => params.value?.name
+  };
+
+  logBookEGCSRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
+    headerName: QcReportsListColumnsLabels.logBookEGCSRobBeforeDischarge,
+    colId: QcReportsListColumns.logBookEGCSRobBeforeDischarge,
+    field: model('logBookEGCSRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value)
+  };
+
+  measuredEGCSRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
+    headerName: QcReportsListColumnsLabels.measuredEGCSRobBeforeDischarge,
+    colId: QcReportsListColumns.measuredEGCSRobBeforeDischarge,
+    field: model('measuredEGCSRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value)
+  };
+
+  diffEGCSRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
+    headerName: QcReportsListColumnsLabels.diffEGCSRobBeforeDischarge,
+    colId: QcReportsListColumns.diffEGCSRobBeforeDischarge,
+    field: model('diffEGCSRobBeforeDischarge'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value),
+    cellStyle: params =>
+      this.getMatchStatusForRobBeforeDiffAndDeliveredDiff(
+        params.data?.diffEGCSRobBeforeDischarge,
+        this.robTolerance
+      )
+  };
+
+  egcsDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
+    headerName: QcReportsListColumnsLabels.egcsDischargedQty,
+    colId: QcReportsListColumns.egcsDischargedQty,
+    field: model('egcsDischargedQty'),
+    filter: 'agNumberColumnFilter',
+    valueFormatter: params => this.format.quantity(params.value)
+  };
+
+  qtyEGCSDischargedUomCol: ITypedColDef<
+    IQcReportsListItemDto,
+    IToleranceUomDto
+  > = {
+    headerName: QcReportsListColumnsLabels.qtyEGCSDischargedUom,
+    colId: QcReportsListColumns.qtyEGCSDischargedUom,
+    field: model('qtyEGCSDischargedUom'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
+    valueFormatter: params => params.value?.name
+  };
+
   commentCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.comment,
     colId: QcReportsListColumns.comment,
@@ -448,6 +570,16 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       this.diffSludgeRobBeforeDischargeCol,
       this.sludgeDischargedQtyCol,
       this.qtySludgeDischargedUomCol,
+      this.logBookBilgeRobBeforeDischargeCol,
+      this.measuredBilgeRobBeforeDischargeCol,
+      this.diffBilgeRobBeforeDischargeCol,
+      this.bilgeDischargedQtyCol,
+      this.qtyBilgeDischargedUomCol,
+      this.logBookEGCSRobBeforeDischargeCol,
+      this.measuredEGCSRobBeforeDischargeCol,
+      this.diffEGCSRobBeforeDischargeCol,
+      this.egcsDischargedQtyCol,
+      this.qtyEGCSDischargedUomCol,
       this.commentCol,
       this.isVerifiedSludgeQtyCol
     ];

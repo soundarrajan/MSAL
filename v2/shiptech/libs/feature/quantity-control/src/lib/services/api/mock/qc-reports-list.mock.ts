@@ -65,6 +65,28 @@ export function getMockQcReportsListItem(id: number): IQcReportsListItemDto {
       minTolerance: 2,
       maxTolerance: 10
     },
+    logBookBilgeRobBeforeDischarge: rob * 1.1,
+    measuredBilgeRobBeforeDischarge: sludge * 0.96,
+    diffBilgeRobBeforeDischarge: chance.integer({ max: 500 }),
+    bilgeDischargedQty: chance.integer({ max: 500 }),
+    qtyBilgeDischargedUom: {
+      id: 1,
+      name: 'MT',
+      displayName: 'MT',
+      minTolerance: 2,
+      maxTolerance: 10
+    },
+    logBookEGCSRobBeforeDischarge: rob * 1.1,
+    measuredEGCSRobBeforeDischarge: sludge * 0.96,
+    diffEGCSRobBeforeDischarge: chance.integer({ max: 500 }),
+    egcsDischargedQty: chance.integer({ max: 500 }),
+    qtyEGCSDischargedUom: {
+      id: 1,
+      name: 'MT',
+      displayName: 'MT',
+      minTolerance: 2,
+      maxTolerance: 10
+    },
     comment: chance.word(),
     isVerifiedSludgeQty: chance.bool(),
     totalCount: chance.integer({ max: 20 }),

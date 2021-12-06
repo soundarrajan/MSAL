@@ -1,11 +1,11 @@
-﻿commit e77952450989deda164154ffc2eca9b1a9ffef60
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Dec 6 12:13:44 2021 +0000
+﻿commit 76bc7ee2df68e9dbabc924c5f418504e0ebbf0e1
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Mon Dec 6 12:48:06 2021 +0000
 
-    Merged PR 15061: Removed confirmation popup when deleting preference
+    Merged PR 15064: Quantity Control List : New columns for Bilge and EGCS Products
     
-    Removed confirmation popup when deleting preference
+    36411 - Quantity Control List : New columns for Bilge and EGCS Products
     
-    Related work items: #37199
+    Related work items: #36411
 
 branch: master
