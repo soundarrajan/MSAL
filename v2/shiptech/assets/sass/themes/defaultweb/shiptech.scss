@@ -23642,3 +23642,8 @@ mat-form-field {
   font-weight: 500 !important;
   font-size: 14px !important;
 }
+
+[col-id="progress"] .ag-async-background {
+    height: 30px;
+    line-height: 25px;
+}

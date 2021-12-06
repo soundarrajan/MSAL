@@ -1,11 +1,9 @@
-﻿commit 6cbe06f1d6aa804bcd27c9eab401ec3d22f95da9
+﻿commit 6db1740e2af0c2e51bb2e93d6ad79a8214d93f66
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Dec 6 07:12:14 2021 +0000
+Date:   Mon Dec 6 08:33:26 2021 +0000
 
-    Merged PR 15047: Fixed  Service List URL in v2 pages. Fixed default sorting in Control Tower(q...
+    Merged PR 15051: Fixed export in control tower views
     
-    Fixed  Service List URL in v2 pages. Fixed default sorting in Control Tower(quality view claims/Labs). Fixed displaying status and comments in the alert pop-up in all screens
-    
-    Related work items: #37085, #37271, #37352
+    Fixed export in control tower views
 
 branch: master

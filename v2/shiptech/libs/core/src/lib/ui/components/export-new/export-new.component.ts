@@ -31,6 +31,7 @@ import { ToastrService } from 'ngx-toastr';
 import { QcReportService } from '../../../../../../feature/quantity-control/src/lib/services/qc-report.service';
 import { Column } from '@ag-grid-enterprise/all-modules';
 import jstz from 'jstz';
+import moment from 'moment';
 
 @Component({
   selector: 'shiptech-export-new[gridModel][serverKeys][gridId]',
@@ -112,7 +113,16 @@ export class ExportNewComponent implements OnInit, OnDestroy {
       this.gridModel.searchText
     );
 
-    const timezone = jstz.determine();
+    var timeZoneException = [{ old: 'Europe/Bucharest', new: 'Europe/Minsk' }];
+    let timeZone1 = jstz.determine().name();
+    let findTimezoneException = timeZoneException.find(function(object) {
+      return object.old == timeZone1;
+    });
+    let timezone = jstz.determine().name();
+    if (findTimezoneException) {
+      timezone = findTimezoneException.new;
+    }
+
     const dOffset = new Date().getTimezoneOffset();
 
     const requestToSend = {
@@ -121,7 +131,7 @@ export class ExportNewComponent implements OnInit, OnDestroy {
       Pagination: serverParams.pagination,
       columns: this.mapVisibleColumns(this.gridModel.getColumnsDefs()),
       dateTimeOffset: dOffset,
-      timezone: timezone.name(),
+      timezone: timezone,
       PageFilters: serverParams.pageFilters,
       SortList: serverParams.sortList
     };
