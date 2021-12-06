@@ -125,6 +125,7 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
   }
 
   removeFilter(id: string): void {
+    this.filterToBeDeleted = this.filterItems.find(filter => filter.id === id);
     if (this.filterToBeDeleted.isActive) {
       this.filterItems.find(filter => filter.isClear).isActive = true;
     }
@@ -133,7 +134,6 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
       item => !item.isDefault && !item.isClear
     );
 
-    this.deleteFilterDialog.close();
     this.changeDetector.markForCheck();
   }
 
