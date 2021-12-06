@@ -1,11 +1,11 @@
-﻿commit 0f6587f4c03d0991e1a5cc67d4c987e8cf03c87c
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Dec 6 09:27:14 2021 +0000
+﻿commit 3cc6032c6a9aee8af7f08b52601d0757d6da4641
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Dec 6 11:18:36 2021 +0000
 
-    Merged PR 15055: Fixed 37200
+    Merged PR 15059: Changed Update Preference behaviour
     
-    Fixed 37200
+    Changed Update Preference behaviour
     
-    Related work items: #37200
+    Related work items: #37296
 
 branch: master

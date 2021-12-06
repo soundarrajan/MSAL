@@ -44,6 +44,7 @@ export class PresetsMenuDropdownComponent implements OnInit {
 
   updateFilter(): void {
     this.filterPresetsService.emitUpdateFilterPreset();
+    this.toastr.success("Preference was succesfully updated");
   }
 
   exportExcel(): void {
