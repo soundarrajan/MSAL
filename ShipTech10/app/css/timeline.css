@@ -583,8 +583,7 @@ timeline-right-click-popover .contextmenu {
     color: #252A32;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    vertical-align: middle !important;
 }
 
 .right-popup-table th {
