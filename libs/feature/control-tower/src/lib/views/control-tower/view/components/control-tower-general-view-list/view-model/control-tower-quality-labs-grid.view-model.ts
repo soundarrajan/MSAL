@@ -69,7 +69,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
-    enableColResize: true,
+    // enableColResize: true,
     suppressRowClickSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
@@ -110,7 +110,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         }
         return null;
     },
-    tooltip: params => (params.value ? params.value?.id : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.id : ''),
     width: 150
   };
 
@@ -130,7 +130,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         }
         return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -141,7 +141,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('counterparty'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.labcounterparty,
     valueFormatter: params => this.format.htmlDecode(params.value?.name),
-    tooltip: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
+    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
     width: 150
   };
 
@@ -161,7 +161,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         }
         return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -172,7 +172,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('vessel'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.vessel,
     valueFormatter: params => this.format.htmlDecode(params.value?.name),
-    tooltip: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
+    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
     width: 200
   };
 
@@ -182,7 +182,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     colId: ControlTowerQualityLabsListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.port,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -194,7 +194,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQualityLabsListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
     width: 200
   };
 
@@ -205,7 +205,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('product'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.product,
     valueFormatter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
-    tooltip: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
+    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
     width: 200
   };
 
@@ -216,7 +216,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('status'),
     valueFormatter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
     dtoForExport: ControlTowerQualityLabsListExportColumns.labStatus,
-    tooltip: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
+    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
     width: 200
   };
 
@@ -227,7 +227,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('claimsRaised'),
     valueFormatter: params => (params.value)? 'Yes': 'No',
     dtoForExport: ControlTowerQualityLabsListExportColumns.claimRaised,
-    tooltip: params => (params.value)? 'Yes': 'No',
+    tooltipValueGetter: params => (params.value)? 'Yes': 'No',
     width: 150
   };
 
@@ -239,7 +239,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQualityLabsListExportColumns.createdDate,
-    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 200
   };
 
@@ -250,7 +250,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('createdBy'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.createdBy,
     valueFormatter: params => this.format.htmlDecode(params.value?.name),
-    tooltip: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
+    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
     width: 200
   };
 
@@ -284,7 +284,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltip: params => {
+    tooltipValueGetter: params => {
         return params.value?.name;
     },
     width: 150
@@ -301,7 +301,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     resizable: false,
     suppressMovable: false,
     suppressMenu: true,
-    suppressSorting: true,
+    // suppressSorting: true,
+    sortable: false,
     width: 110
   };
   groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; noOfDefault: number};
@@ -328,7 +329,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public systemFilterUpdate(value) {
-    let currentFilter = value.filter(o => o.isActive); 
+    let currentFilter = value.filter(o => o.isActive);
     switch (currentFilter[0].id) {
       case "new":
         this.filterGridNew(currentFilter[0].label);
@@ -338,7 +339,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         break;
       case "resolved":
         this.filterGridResolved(currentFilter[0].label);
-        break;                
+        break;
     }
   }
 
@@ -461,7 +462,7 @@ public checkStatusAvailable(): void {
     };
     this.gridApi.setFilterModel(grid);
   }
-  
+
   public formatFilterModel(params) {
     let {filterModel} = params?.request;
     // claimsRaised column filter value format
@@ -477,7 +478,7 @@ public checkStatusAvailable(): void {
         } else if(filterModel.claimsRaised?.type == 'endsWith') {
             filterClaimCondition = ('no'.endsWith(claimRaisedFilterVal))? '0': (('yes'.endsWith(claimRaisedFilterVal))? '1': '2');
         } else {
-            filterClaimCondition = (claimRaisedFilterVal)=='no' || (['n','o'].indexOf(claimRaisedFilterVal)!=-1)? '0': 
+            filterClaimCondition = (claimRaisedFilterVal)=='no' || (['n','o'].indexOf(claimRaisedFilterVal)!=-1)? '0':
         ((claimRaisedFilterVal)=='yes' || (['y','e', 's', 'ye', 'es'].indexOf(claimRaisedFilterVal)!=-1)? '1': '2');
         }
         var updatedFilter = {
@@ -490,7 +491,7 @@ public checkStatusAvailable(): void {
         params['request']['filterModel'] = updatedFilter;
     }
     console.log(params);
-    
+
   }
 
   public getFiltersCount() {
@@ -501,7 +502,7 @@ public checkStatusAvailable(): void {
           "startDate": moment()
             .subtract(6, "days")
             .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`         
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`
       };
       this.controlTowerService.getqualityLabCounts(payload)
       .pipe(takeUntil(this.destroy$))
@@ -524,7 +525,7 @@ public checkStatusAvailable(): void {
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );
         }
-      );    
+      );
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -546,7 +547,7 @@ public checkStatusAvailable(): void {
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {    
+        response => {
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {

@@ -22,7 +22,7 @@ export class ResidueClaimsComponent implements OnInit {
   }
   constructor() {
     this.gridOptions_data = <GridOptions>{
-      enableColResize: true,
+      // enableColResize: true,
       defaultColDef: {
         resizable: true,
         filtering: false,

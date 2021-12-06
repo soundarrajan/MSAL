@@ -12,7 +12,7 @@ export class TraderSearchPopupComponent implements OnInit {
   public isdisplaydensityhigh: boolean = false;
   public gridOptions: GridOptions;
   public columnSelection: any;
-  
+
   ngOnInit() {
   }
 
@@ -27,7 +27,7 @@ export class TraderSearchPopupComponent implements OnInit {
         },
         //suppressRowTransform: true,
         columnDefs: this.columnDefs,
-        enableColResize: true,
+        // enableColResize: true,
         enableSorting: true,
         filter: true,
         animateRows: true,
@@ -109,7 +109,7 @@ export class TraderSearchPopupComponent implements OnInit {
           this.gridOptions.api.setRowData(this.rowData);
         }
       };
-  
+
      }
 
      public columnDefs = [
@@ -120,7 +120,7 @@ export class TraderSearchPopupComponent implements OnInit {
         width: 140,
         cellRenderer: "agGroupCellRenderer"
       },
-  
+
       {
         headerName: "Status",
         field: "status",
@@ -143,7 +143,7 @@ export class TraderSearchPopupComponent implements OnInit {
                 </div>
             </div>`;
           }
-        } 
+        }
       },
       {
         headerName: "Default company",
@@ -153,9 +153,9 @@ export class TraderSearchPopupComponent implements OnInit {
         //cellRendererFramework: AGGridCellRendererComponent
       }
     ];
-  
-  
-    private rowData = [ 
+
+
+    private rowData = [
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -166,7 +166,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -177,7 +177,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -188,7 +188,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -199,7 +199,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -210,7 +210,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -221,7 +221,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -232,7 +232,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -243,7 +243,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -254,7 +254,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -265,7 +265,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -276,7 +276,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -287,7 +287,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -298,7 +298,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -309,7 +309,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      },  
+      },
       {
         trader: "Santiago.labos@company.com",
         status: "Active",
@@ -320,7 +320,7 @@ export class TraderSearchPopupComponent implements OnInit {
           status: 'Active',
           defaultcompany: 'ABC Oil Co.'
         }]
-      }  
+      }
     ];
 
 }

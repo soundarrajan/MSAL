@@ -51,10 +51,10 @@ export class VesselPopupComponent implements OnInit {
     this.shiptechUrl = new URL(window.location.href).origin;
   }
   @Input() status: string = "standard-view";
-  @Input('vesselData') 
+  @Input('vesselData')
   public set vesselData(v : any){
     this.popup_data = v;
-  } 
+  }
   @Output() showBPlan = new EventEmitter();
   @Output() showRoutes = new EventEmitter();
   @Output() closePopup = new EventEmitter();
@@ -85,7 +85,7 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.vessel = 1;
     this.vesselService.myDefaultViewPayload.port = 0;
     this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
-     
+
     }
 
     this.route.data.subscribe(data => {
@@ -162,7 +162,7 @@ export class VesselPopupComponent implements OnInit {
 
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
-      enableColResize: false,
+      // enableColResize: false,
       enableSorting: false,
       enableFilter: false,
       animateRows: false,
@@ -193,7 +193,7 @@ export class VesselPopupComponent implements OnInit {
   }
 
 
- 
+
 
   loadVesselBasicInfo(vesselId) {
     if (vesselId != null) {
@@ -272,9 +272,9 @@ export class VesselPopupComponent implements OnInit {
     // this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
   }
 
-  
+
   public changeDefault(expandRef?: any) {
-    
+
     if (this.second?.expanded || expandRef == 'second') {
       this.loadVesselAlertList();
     }
@@ -912,7 +912,7 @@ export class VesselPopupComponent implements OnInit {
     {
       headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'productName', width: 70,
       cellRendererFramework: AGGridCellDataComponent,
-      cellRendererParams: { type: 'popup-multiple-values' }, 
+      cellRendererParams: { type: 'popup-multiple-values' },
       // cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' },
       cellClass: ['aggrid-content-center fs-10'],
       valueGetter: function (params) {
@@ -974,8 +974,8 @@ export class VesselPopupComponent implements OnInit {
     } else {
       return 2;
     }
-  
-  
+
+
   }
 }
 

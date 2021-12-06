@@ -68,7 +68,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
-    enableColResize: true,
+    // enableColResize: true,
     suppressRowClickSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
@@ -110,7 +110,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value?.id : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.id : ''),
     width: 150
   };
 
@@ -130,7 +130,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value?.id : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.id : ''),
     width: 150
   };
 
@@ -150,7 +150,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -160,7 +160,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.port,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -170,7 +170,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.vessel,
     field: model('vessel'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.vessel,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -182,7 +182,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
     width: 200
   };
 
@@ -192,7 +192,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.product,
     field: model('product'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.product,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -202,7 +202,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     colId: ControlTowerQuantityClaimsListColumns.seller,
     field: model('seller'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.seller,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
   };
 
@@ -217,7 +217,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityShortage,
-    tooltip: params => (params.value ? this.format.quantity(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.quantity(params.value) : ''),
     width: 150
   };
 
@@ -231,7 +231,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     field: model('quantityUom'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.quantityUom,
     valueFormatter: params => params.value?.name,
-    tooltip: params => (params.value ? params.value?.name : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.name : ''),
     width: 150
   };
 
@@ -249,7 +249,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     valueFormatter: params => this.format.amount(params.value),
     dtoForExport:
       ControlTowerQuantityClaimsListExportColumns.estimatedSettlementAmount,
-    tooltip: params => (params.value ? this.format.amount(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.amount(params.value) : ''),
     width: 150
   };
 
@@ -261,7 +261,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.price(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.orderPrice,
-    tooltip: params => (params.value ? this.format.price(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.price(params.value) : ''),
     width: 150
   };
 
@@ -272,7 +272,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     field: model('currency'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.currency,
     valueFormatter: params => params.value?.name,
-    tooltip: params => (params.value ? params.value?.name : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.name : ''),
     width: 150
   };
 
@@ -284,7 +284,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.createdDate,
-    tooltip: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 200
   };
 
@@ -295,7 +295,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     field: model('createdBy'),
     dtoForExport: ControlTowerQuantityClaimsListExportColumns.createdBy,
     valueFormatter: params => params.value?.name,
-    tooltip: params => (params.value ? params.value?.name : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.name : ''),
     width: 200
   };
 
@@ -332,7 +332,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       };
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.value < 7) {
         return 'New';
       } else if (params.value >= 7 && params.value <= 14) {
@@ -366,7 +366,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public systemFilterUpdate(value) {
-    let currentFilter = value.filter(o => o.isActive); 
+    let currentFilter = value.filter(o => o.isActive);
     switch (currentFilter[0].id) {
       case "new":
         this.filterGridNew(currentFilter[0].label);
@@ -376,7 +376,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
         break;
       case "resolved":
         this.filterGridGreaterThan15Days(currentFilter[0].label);
-        break;                
+        break;
     }
   }
 
@@ -516,7 +516,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
           "startDate": moment()
             .subtract(6, "months")
             .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`         
+          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`
       };
       this.controlTowerService.getQuantityClaimCounts(payload)
       .pipe(takeUntil(this.destroy$))
@@ -531,7 +531,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
             noOfNew : this.noOfNew,
             noOf15 : this.noOf15,
             noOf714 : this.noOf714,
-          } 
+          }
           this.changeDetector.detectChanges();
         },
         () => {
@@ -539,7 +539,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );
         }
-      );    
+      );
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -559,7 +559,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {     
+        response => {
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {

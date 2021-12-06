@@ -79,7 +79,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
-    enableColResize: true,
+    // enableColResize: true,
     suppressRowClickSelection: true,
     animateRows: true,
     groupHeaderHeight: 20,
@@ -123,7 +123,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => (params.value ? params.value?.portCallId : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };
 
@@ -133,7 +133,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     colId: ControlTowerResidueSludgeDifferenceListColumns.port,
     field: model('port'),
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.port,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -147,7 +147,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     field: model('vessel'),
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.vessel,
     valueFormatter: params => params.value,
-    tooltip: params => (params.value ? params.value : ''),
+    tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
@@ -159,7 +159,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.eta,
-    tooltip: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
     width: 150
   };
 
@@ -177,7 +177,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       ControlTowerResidueSludgeDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateOnly(params.value),
-    tooltip: params => (params.value ? this.format.dateOnly(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.dateOnly(params.value) : ''),
     width: 150
   };
 
@@ -201,7 +201,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         return params.value ? 'Yes' : 'No';
       }
@@ -234,7 +234,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         return params.value ? 'Yes' : 'No';
       }
@@ -260,7 +260,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     valueFormatter: params => this.format.quantity(params.value),
     dtoForExport:
       ControlTowerResidueSludgeDifferenceListExportColumns.sludgePercentage,
-    tooltip: params => (params.value ? this.format.quantity(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.quantity(params.value) : ''),
     filter: 'agNumberColumnFilter',
     width: 150
   };
@@ -287,7 +287,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
     },
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.logBookRobQtyBeforeDelivery) ?? '-'
@@ -320,7 +320,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     },
     field: model('measuredRobQtyBeforeDelivery'),
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.measuredRobQtyBeforeDelivery) ?? '-'
@@ -355,7 +355,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
     },
     filter: 'agNumberColumnFilter',
-    tooltip: params => {
+    tooltipValueGetter: params => {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => this.format.quantity(a.differenceInRobQuantity) ?? '-'
@@ -383,7 +383,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         return mergedValues.join('<br>');
       }
     },
-    tooltip: function(params) {
+    tooltipValueGetter: function(params) {
       if (params.data) {
         let mergedValues = params.data.quantityReportDetails.map(
           a => a.robUom?.name ?? '-'
@@ -429,7 +429,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltip: params => (params.value ? params.value?.displayName : ''),
+    tooltipValueGetter: params => (params.value ? params.value?.displayName : ''),
     width: 150
   };
 
