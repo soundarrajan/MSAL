@@ -470,7 +470,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   egcsDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.egcsDischargedQty,
     colId: QcReportsListColumns.egcsDischargedQty,
-    field: model('sludgeDischargedQty'),
+    field: model('egcsDischargedQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
