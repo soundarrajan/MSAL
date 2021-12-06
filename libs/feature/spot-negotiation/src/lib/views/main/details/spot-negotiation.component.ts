@@ -116,9 +116,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           let val = "checkProd" + indx;
           const status = currentLocProd[0].requestProducts[index].status;
           row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : row.isSelected;
-
-          // row[val] = row.isSelected;
-          //row.isSelected = true;
+         row.isEditable = false;
         }
       }
 
@@ -129,6 +127,30 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         priceDetailsArray[index].requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers.forEach(element1 => {
+          if (
+            element1.requestProductId != undefined &&
+            element1.requestProductId != null &&
+            this.currentRequestData?.length > 0
+          ) {
+            if (
+              currentLocProd.length > 0 &&
+              currentLocProd[0].requestProducts.length > 0
+            ) {
+              let FilterProdut = currentLocProd[0].requestProducts.filter(
+                col => col.id == element1.requestProductId
+              );
+              if (
+                FilterProdut.length > 0 &&
+                FilterProdut[0].status != undefined &&
+                FilterProdut[0].status == 'Stemmed'
+              ) {
+                row.isEditable = true;
+              }
+            }
+  
+          }
+        });
         row.totalOffer = priceDetailsArray[index].totalOffer;
         return row;
       }
@@ -141,6 +163,29 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // We found something
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
+        row.requestOffers.forEach(element1 => {
+          if (
+            element1.requestProductId != undefined &&
+            element1.requestProductId != null &&
+            this.currentRequestData?.length > 0
+          ) {
+            if (
+              currentLocProd.length > 0 &&
+              currentLocProd[0].requestProducts.length > 0
+            ) {
+              let FilterProdut = currentLocProd[0].requestProducts.filter(
+                col => col.id == element1.requestProductId
+              );
+              if (
+                FilterProdut.length > 0 &&
+                FilterProdut[0].status != undefined &&
+                FilterProdut[0].status == 'Stemmed'
+              ) {
+                row.isEditable = true;
+              }
+            }
+          }
+        });
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
       }
 
