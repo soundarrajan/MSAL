@@ -431,7 +431,10 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     this.dateTimeFormats.display.dateInput = this.tenantFormat.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.tenantFormat.dateFormat;
     PICK_FORMATS.display.dateInput = this.tenantFormat.dateFormat;
-    this.dateFormat_rel_SupplyDate=this.tenantFormat.dateFormat;
+    // this.dateFormat_rel_SupplyDate=this.tenantFormat.dateFormat
+    // .replace('DDD', 'ddd')
+    // .replace('dd/', 'DD/')
+    // .replace('dd-', 'DD-');
 
     this.store.subscribe(({ spotNegotiation }) => {
       this.staticLists = spotNegotiation.staticLists;
