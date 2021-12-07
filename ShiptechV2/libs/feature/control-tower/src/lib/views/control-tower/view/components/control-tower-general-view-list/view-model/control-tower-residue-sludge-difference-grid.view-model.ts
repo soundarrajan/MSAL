@@ -638,7 +638,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
         }
       );
@@ -692,7 +692,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
           params.failCallback();
         }
