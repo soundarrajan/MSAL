@@ -78,10 +78,10 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
     });
     if(this.selected){
-    this.getPreviewTemplate();}
+    this.getPreviewTemplate(true);}
   }
 
-  getPreviewTemplate(){
+  getPreviewTemplate(OnErrorClosePopup){
     // let requestProducts: any;
     // if(this.SelectedSellerWithProds.requestOffers?.length > 0){
     //   requestProducts = this.SelectedSellerWithProds.requestOffers?.filter(row => row.isRfqskipped === false)
@@ -125,6 +125,8 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.filesList = this.previewTemplate.AttachmentsList;}
     else{
       this.toaster.error(res);
+      if(OnErrorClosePopup)
+        this.dialogRef.close();
     }
   });
 }
@@ -256,7 +258,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
         }
         this.UpdateProductsSelection(currentLocProd,row);
-
+        
         return row;
       }
 

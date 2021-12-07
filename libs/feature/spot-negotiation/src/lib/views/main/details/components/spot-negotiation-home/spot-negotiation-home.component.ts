@@ -216,7 +216,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
         }
         this.UpdateProductsSelection(requestLocations,row);
-
+        //row.totalOffer = priceDetailsArray[index].totalOffer;
         return row;
       }
 
