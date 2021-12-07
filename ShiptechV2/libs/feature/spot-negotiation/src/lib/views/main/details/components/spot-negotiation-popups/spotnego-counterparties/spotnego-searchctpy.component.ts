@@ -229,11 +229,13 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
             if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
               return true;
             }
-            return false;
+            else{
+              return false;
+            }
           });
-          this.dialog_gridOptions.api.setRowData(this.rowData);
       }
     });
+    this.dialog_gridOptions.api.setRowData(this.rowData);
   }
   AddCounterparties() {
     const selectedCounterparties = this.toBeAddedCounterparties();
