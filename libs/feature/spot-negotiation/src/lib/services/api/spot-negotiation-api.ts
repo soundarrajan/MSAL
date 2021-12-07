@@ -12,7 +12,7 @@ export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
   tenantConfiguration: `Groups/getTenantConfiguration`,
   staticLists: `api/infrastructure/static/lists`,
-  counterpartyLists: `api/masters/counterparties/listbyTypes`, 
+  counterpartyLists: `api/masters/counterparties/listbyTypes`,
   addCounterparties: `groups/addSellers`,
   saveTargetPrice: `Groups/saveTargetPrice`,
   updatePhySupplier:`RFQ/updatePhysicalSupplier`,
@@ -27,7 +27,9 @@ export const SpotNegotiationApiPaths = {
   getExistingOrders:`api/procurement/order/getExistingOrders`,
   confirmRfq:`api/procurement/rfq/confirm`,
   removeCounterparty:`Groups/removeSeller`,
-  otherDetails:`RFQ/otherDetails/requestChange`
+  otherDetails:`RFQ/otherDetails/requestChange`,
+  getSellerContacts: `counterparty/viewContacts`,
+  addNewSellerContact: `counterparty/addContact`
 };
 
 @Injectable({
@@ -197,6 +199,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
+
   @ObservableException()
   getPriceDetails(groupId: any): Observable<any> {
     return this.http
@@ -320,9 +323,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage 
-            ? body.error.ErrorMessage 
-            : body.error.errorMessage 
+          body.error.ErrorMessage
+            ? body.error.ErrorMessage
+            : body.error.errorMessage
         )
       )
     );
@@ -336,7 +339,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         payload
       )
       .pipe(
-        map((body: any) => body),        
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
@@ -344,7 +347,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
-  
+
 
   @ObservableException()
   SaveAndSendRFQ(payload: any): Observable<any> {
@@ -354,7 +357,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         payload
       )
       .pipe(
-        map((body: any) => body),        
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
@@ -370,7 +373,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.removeCounterparty}/${request}`
       )
       .pipe(
-        map((body: any) => body),        
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
@@ -387,7 +390,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         payload
       )
       .pipe(
-        map((body: any) => body),        
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
@@ -405,9 +408,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage 
-            ? body.error.ErrorMessage 
-            : body.error.errorMessage 
+          body.error.ErrorMessage
+            ? body.error.ErrorMessage
+            : body.error.errorMessage
         )
       )
     );
@@ -425,6 +428,35 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         catchError((body: any) =>
           of(
             body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getSellerContacts(sellerId: number): Observable<any> {
+    return this.http
+    .get<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getSellerContacts}/${sellerId}`).pipe(
+      map((body: any) => body),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+        )
+      )
+    );
+  }
+
+  @ObservableException()
+  addNewSellerContact(contact: any): Observable<any> {
+    return this.http
+      .post<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.addNewSellerContact}`, contact)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
           )
         )
       );

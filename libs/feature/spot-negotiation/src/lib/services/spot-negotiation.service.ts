@@ -200,17 +200,17 @@ export class SpotNegotiationService extends BaseStoreService
 
    /**
    * Skip RFQ
-   * @param payload = 
+   * @param payload =
    */
   @ObservableException()
   SkipRFQ(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.SkipRFQ(payload);
   }
 
- 
+
   /**
  * Save and Send RFQ
- * @param payload = 
+ * @param payload =
  */
   @ObservableException()
   SaveAndSendRFQ(payload: any): Observable<unknown> {
@@ -221,27 +221,35 @@ export class SpotNegotiationService extends BaseStoreService
   RemoveCounterparty(counterpartyId: any): Observable<unknown> {
     return this.spotNegotiationApi.RemoveCounterparty(counterpartyId);
   }
-   
+
 
     /**
  * Revoke RFQ
- * @param payload = 
+ * @param payload =
  */
   @ObservableException()
   RevokeFQ(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.RevokeRFQ(payload);
   }
 
-  
  /**
  * Discard saved mail
- * @param payload = 
+ * @param payload =
  */
-     @ObservableException()
-     RevertSavedComments(payload: any): Observable<unknown> {
-       return this.spotNegotiationApi.RevertSavedComments(payload);
-     }
-   
+  @ObservableException()
+  RevertSavedComments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.RevertSavedComments(payload);
+  }
+
+  @ObservableException()
+  getSellerContacts(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getSellerContacts(payload);
+  }
+
+  @ObservableException()
+  addNewSellerContact(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.addNewSellerContact(payload);
+  }
 
   /**
    * Fake populate rows

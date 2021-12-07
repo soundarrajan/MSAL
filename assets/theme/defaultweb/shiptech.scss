@@ -14827,15 +14827,14 @@ font-size:14px;
     }
     .mat-focused .mat-form-field-underline .mat-form-field-ripple {
       background-color: #ffffff !important;
- }
+    }
     .mat-form-field-appearance-fill .mat-form-field-underline::before {
-
       background: #ffffff;
-  }
+    }
 
-  .mat-input-element {
-    caret-color: #ffffff !important;
-  }
+    .mat-input-element {
+      caret-color: #ffffff !important;
+    }
   .mat-select:focus .mat-select-trigger .mat-select-arrow {
     color: #ffffff;
 }
@@ -14859,8 +14858,8 @@ font-size:14px;
 .mat-form-field{
   height: 20px;
 }
-.w-70{
-  width: 70px;
+.w-75{
+  width: 75px;
 }
 .operations-details-block table tr th:last-child {
   text-align: right;
