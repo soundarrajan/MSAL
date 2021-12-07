@@ -95,7 +95,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     locations.forEach(element => {
       locationsRows.forEach(element1 => {
         if (element.locationId == element1.locationId && element1.requestOffers != undefined) { //&& element1.locationId==locationId
-          if (element1.checkProd1 && element1.requestOffers[0].quotedProductId == element.requestProducts[0].productId) {
+          if (element1.checkProd1 ) {
             requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
               element1,
               element1.requestOffers[0],
@@ -107,7 +107,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               this.requestOfferItems.push(requestOfferItemPayload[0]);
             }
           }
-          if (element1.checkProd2 && element1.requestOffers[1].quotedProductId == element.requestProducts[1].productId) {
+          if (element1.checkProd2 ) {
             requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
               element1,
               element1.requestOffers[1],
@@ -119,7 +119,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               this.requestOfferItems.push(requestOfferItemPayload[0]);
             }
           }
-          if (element1.checkProd3 && element1.requestOffers[2].quotedProductId == element.requestProducts[2].productId) {
+          if (element1.checkProd3 ) {
             requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
               element1,
               element1.requestOffers[2],
@@ -131,7 +131,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               this.requestOfferItems.push(requestOfferItemPayload[0]);
             }
           }
-          if (element1.checkProd4 && element1.requestOffers[3].quotedProductId == element.requestProducts[3].productId) {
+          if (element1.checkProd4 ) {
             requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
               element1,
               element1.requestOffers[3],
@@ -143,7 +143,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               this.requestOfferItems.push(requestOfferItemPayload[0]);
             }
           }
-          if (element1.checkProd5 && element1.requestOffers[4].quotedProductId == element.requestProducts[4].productId) {
+          if (element1.checkProd5 ) {
             requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
               element1,
               element1.requestOffers[4],
