@@ -64,7 +64,7 @@ export class ContactinformationpopupComponent implements OnInit {
           this.dialogRef.close();
         }
         else{
-          this.toaster.error(res.Message);
+          this.toaster.error(res.message);
         }
       });
 

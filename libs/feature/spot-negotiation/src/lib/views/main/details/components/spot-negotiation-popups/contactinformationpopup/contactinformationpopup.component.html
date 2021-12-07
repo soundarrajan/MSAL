@@ -30,7 +30,7 @@
     </div>
   </div>
 </div>
-<div class="contact-information" *ngIf="seller">
+<div class="contact-information" *ngIf="seller" style="max-height:620px; overflow-y: scroll;">
   <div class="row">
     <div class="col-3" *ngFor="let contact of seller?.counterpartyContacts; let i = index">
       <div class="product-terms p-b-5 add-new-contact">
@@ -55,6 +55,7 @@
                           cdkFocusInitial
                           (click)="$event.stopPropagation()"
                           required
+                          [matTooltip]="contact.name"
                         />
                       </mat-form-field>
                     </div>
@@ -100,21 +101,21 @@
             <table>
               <tbody>
                 <tr>
-                  <td class="p-r-10 w-75 tabledata-fieldname">Email:</td>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Email: *</td>
                   <td class="text-left tabledata-value">
-                    <span *ngIf="!contact.isEditable"> {{ contact.email }}</span>
+                    <span *ngIf="!contact.isEditable" [matTooltip]="contact.email"> {{ contact.email }}</span>
                     <mat-form-field
                       class="example-full-width"
                       *ngIf="contact.isEditable"
                     >
-                      <input matInput [(ngModel)]="contact.email" required/>
+                      <input matInput [(ngModel)]="contact.email" required [email]="true"/>
                     </mat-form-field>
                   </td>
                 </tr>
                 <tr>
                   <td class="p-r-10 w-75 tabledata-fieldname">Address:</td>
                   <td class="text-left tabledata-value">
-                    <span *ngIf="!contact.isEditable"> {{ contact.address }}</span>
+                    <span *ngIf="!contact.isEditable" [matTooltip]="contact.address"> {{ contact.address }}</span>
                     <mat-form-field
                       class="example-full-width"
                       *ngIf="contact.isEditable"
