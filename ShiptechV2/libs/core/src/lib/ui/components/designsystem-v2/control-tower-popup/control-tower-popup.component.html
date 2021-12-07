@@ -53,7 +53,8 @@
     *ngIf="
       data.popupType == 'rob' ||
       data.popupType == 'supply' ||
-      data.popupType == 'sludge'
+      data.popupType == 'sludge' ||
+      data.popupType == 'egcs'
     "
   >
     <div class="header-title mg-b-5 plr-0 col-6">
@@ -81,7 +82,10 @@
             {{ value.productType }}
           </div>
         </div>
-        <div class=" w-20p plr-0" *ngIf="data.popupType == 'sludge'">
+        <div
+          class=" w-20p plr-0"
+          *ngIf="data.popupType == 'sludge' || data.popupType == 'egcs'"
+        >
           <div class="col-header">Sludge %</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
             {{ format.quantity(value.sludgePercentage) }}
@@ -89,7 +93,11 @@
         </div>
         <div
           class="w-24p plr-0"
-          *ngIf="data.popupType == 'rob' || data.popupType == 'sludge'"
+          *ngIf="
+            data.popupType == 'rob' ||
+            data.popupType == 'sludge' ||
+            data.popupType == 'egcs'
+          "
         >
           <div class="col-header">Log Book ROB</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
@@ -106,7 +114,9 @@
           <div class="col-header">{{ data.measuredQuantityLabel }}</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
             {{
-              data.popupType == 'rob' || data.popupType == 'sludge'
+              data.popupType == 'rob' ||
+              data.popupType == 'sludge' ||
+              data.popupType == 'egcs'
                 ? format.quantity(value.measuredRobQtyBeforeDelivery)
                 : format.quantity(value.measuredQuantity)
             }}
@@ -116,7 +126,9 @@
           <div class="col-header">{{ data.differenceQuantityLabel }}</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
             {{
-              data.popupType == 'rob' || data.popupType == 'sludge'
+              data.popupType == 'rob' ||
+              data.popupType == 'sludge' ||
+              data.popupType == 'egcs'
                 ? format.quantity(value.differenceInRobQuantity)
                 : format.quantity(value.differenceQuantity)
             }}

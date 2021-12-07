@@ -599,9 +599,6 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   }
 
   public getFiltersCount() {
-    if (this.groupedCounts) {
-      return false;
-    }
     let payload = {
       differenceType: {
         name: 'Egcs'
