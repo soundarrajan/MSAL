@@ -708,7 +708,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQuantitySupplyDifferenceCountFailed
           );
         }
       );

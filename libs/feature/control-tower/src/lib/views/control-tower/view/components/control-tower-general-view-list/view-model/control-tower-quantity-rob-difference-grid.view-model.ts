@@ -648,7 +648,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQuantityRobDifferenceCountFailed
           );
         }
       );

@@ -543,7 +543,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQualityLabsCountFailed
           );
         }
       );

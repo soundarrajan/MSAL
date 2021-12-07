@@ -635,7 +635,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueEGCSDifferenceCountFailed
           );
         }
       );
@@ -689,7 +689,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueEGCSDifferenceFailed
           );
           params.failCallback();
         }
