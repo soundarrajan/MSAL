@@ -196,10 +196,9 @@ import moment from 'moment';
             <div class="title">Perf/BM</div>
             <div
               class="value"
-              contenteditable="true"
-              (keydown)="editQty($event)"
+              contenteditable="false"
             >
-             $ {{ priceFormatValue(params.product.requestGroupProducts.benchmark) }}
+             $ {{ priceFormatValue(params.product.requestGroupProducts.benchmark, 'benchmark') }}
             </div>
           </div>
           <div class="label-element dashed">
@@ -516,13 +515,13 @@ export class ShiptechCustomHeaderGroup {
 
 
 
-  priceFormatValue(value) {
+  priceFormatValue(value, type?:any) {
     if (typeof value == 'undefined' || value == null) {
-      return null;
+      return (type=='benchmark')? '--': null;
     }
 
     if (value == 0) {
-      return '--';
+      return (type=='benchmark')? value: '--';
     }
 
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
