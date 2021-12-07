@@ -27,6 +27,8 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -700,17 +702,17 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
   }
-  getPriceRowData(row, params) {
-    let productrow;
-    if (params.value) {
-      productrow = {
-        RequestProductId: params.column.userProvidedColDef.product.id,
-        RequestLocationSellerId: row.id,
-        LocationId:row.locationId
-      };
-    }
-    return productrow;
-  }
+  // getPriceRowData(row, params) {
+  //   let productrow;
+  //   if (params.value) {
+  //     productrow = {
+  //       RequestProductId: parseInt(params.column.userProvidedColDef.product.id),
+  //       RequestLocationSellerId: parseInt(row.id),
+  //       LocationId:parseInt(row.locationId)
+  //     };
+  //   }
+  //   return productrow;
+  // }
   isCheckOfferPriceAvailable(param): boolean {
     let object = { ...param.data };
     this.locations = [];
@@ -1021,24 +1023,20 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.showFormula = true;
     });
   }
-  otherdetailspopup(e, params) {
-    let updatedRow = { ...params.data };
-    updatedRow = this.getPriceRowData(updatedRow, params);
+  otherdetailspopup(e, params){
     const dialogRef = this.dialog.open(SpotnegoOtherdetails2Component, {
       width: '1164px',
       height: 'auto',
       maxHeight: '536px',
-      panelClass: ['additional-cost-popup'],
-      data: updatedRow
+      panelClass: 'additional-cost-popup',
+      data: params
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
       if (result) {
         this.ispriceCalculated = false;
         this.showFormula = true;
       }
-      // this.savePopupChanges(ev, result);
     });
   }
   onRightClickMenuOpened(e) {
@@ -1121,9 +1119,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          let sellerCounterpartyId = this.params.data.sellerCounterpartyId;
+          let sellerId = this.params.data.id;
           const response = this._spotNegotiationService.RemoveCounterparty(
-            sellerCounterpartyId
+            sellerId
           );
           response.subscribe((res: any) => {
             if (res.status && !res.isRequestStemmed) {

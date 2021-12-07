@@ -196,10 +196,9 @@ import moment from 'moment';
             <div class="title">Perf/BM</div>
             <div
               class="value"
-              contenteditable="true"
-              (keydown)="editQty($event)"
+              contenteditable="false"
             >
-             $ {{ priceFormatValue(params.product.requestGroupProducts.benchmark) }}
+             $ {{ priceFormatValue(params.product.requestGroupProducts.benchmark, 'benchmark') }}
             </div>
           </div>
           <div class="label-element dashed">
@@ -516,13 +515,13 @@ export class ShiptechCustomHeaderGroup {
 
 
 
-  priceFormatValue(value) {
+  priceFormatValue(value, type?:any) {
     if (typeof value == 'undefined' || value == null) {
-      return null;
+      return (type=='benchmark')? '--': null;
     }
 
     if (value == 0) {
-      return '--';
+      return (type=='benchmark')? value: '--';
     }
 
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -552,8 +551,9 @@ export class ShiptechCustomHeaderGroup {
   calculateTargetPrice() {
     this.livePrice= this.priceFormatValue(this.livePrice);
     this.livePrice = (this.livePrice == null ? 0 : this.livePrice);
+    this.benchmark = (this.benchmark == null ? 0 : this.benchmark);
     this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
-    this.closureValue=parseInt(this.livePrice);
+    //this.closureValue=parseInt(this.livePrice);
     let payload = {
       "productPrice": {
       "requestLocationId": this.requestLocationId,
