@@ -23643,7 +23643,9 @@ mat-form-field {
   font-size: 14px !important;
 }
 
-[col-id="progress"] .ag-async-background {
+[col-id="progress"] .ag-async-background,
+[col-id="noResponse"] .ag-async-background
+{
     height: 30px;
     line-height: 25px;
 }

@@ -1,11 +1,11 @@
-﻿commit d6675f4b9aee1010c31e3fe7c16820e79641b968
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Dec 7 07:55:30 2021 +0000
+﻿commit c2a812abc75a48912f4de5516a8b583f40e2bf26
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Dec 7 09:38:11 2021 +0000
 
-    Merged PR 15074: Worked on Residue View: EGCS Product Difference
+    Merged PR 15077: Fix no response  column padding
     
-    Worked on Residue View: EGCS Product Difference
+    Fix no response  column padding
     
-    Related work items: #33666
+    Related work items: #37051
 
 branch: master
