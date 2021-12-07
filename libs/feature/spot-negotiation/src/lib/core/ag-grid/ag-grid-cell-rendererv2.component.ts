@@ -318,15 +318,15 @@ import { of } from 'rxjs';
             style="display:inline" [matTooltip]="priceFormatValue(params.value)"
             [disabled] = "params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
           />
-          <!--TODO isCheckOfferPriceAvailable(params) -->
-          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="params.value>0 && isCheckOfferPriceAvailable(params)==true && !this.showFormula "></div>
+
+          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="params.value>0 && params.data.requestOffers[params.index].supplyQuantity==null"></div>
           <div
             class="formulaButton"
             style="display:inline; position:absolute; left:78px;"
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
-            *ngIf="showFormula"
+            *ngIf="params.value>0 && params.data.requestOffers[params.index].supplyQuantity!=null"
           ></div>
         </div>
       </div>
@@ -702,33 +702,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
   }
-  // getPriceRowData(row, params) {
-  //   let productrow;
-  //   if (params.value) {
-  //     productrow = {
-  //       RequestProductId: parseInt(params.column.userProvidedColDef.product.id),
-  //       RequestLocationSellerId: parseInt(row.id),
-  //       LocationId:parseInt(row.locationId)
-  //     };
-  //   }
-  //   return productrow;
-  // }
-  isCheckOfferPriceAvailable(param): boolean {
-    let object = { ...param.data };
-    this.locations = [];
-    this.locations.push(object);
-    this.locations.forEach(element1 => {
-      if (element1.requestOffers != undefined) {
-        element1.requestOffers.forEach(reqOff => {
-          if (reqOff.supplyQuantity != null) {
-            this.showFormula = true;
-            return false;
-          }
-        });
-      }
-    });
-    return true;
-  }
   selectCounterParties(params) {
     let updatedRow = { ...params.data };
     // if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
@@ -1032,11 +1005,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       data: params
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-      if (result) {
-        this.ispriceCalculated = false;
-        this.showFormula = true;
-      }
     });
   }
   onRightClickMenuOpened(e) {

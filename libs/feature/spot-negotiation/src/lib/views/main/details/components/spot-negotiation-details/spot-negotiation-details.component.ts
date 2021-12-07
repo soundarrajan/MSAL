@@ -543,6 +543,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererParams: {
             label: 'price-calc',
             type: 'price-calc',
+            index:index,
             product: product,
             cellClass: ''
           },
