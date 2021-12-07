@@ -317,9 +317,9 @@
                           <input
                             [(ngModel)]="otherDetailsItems[productIndex].SupplyDeliveryDate"
                             matInput
-                            [ngxMatDatetimePicker]="SupplyDeliveryDate"
-                            (focus)="SupplyDeliveryDate.open()"
-                            (onInput)="onChange($event, 'SupplyDeliveryDate')"
+                            [ngxMatDatetimePicker]="supplyDeliveryDate"
+                            (focus)="supplyDeliveryDate.open()"
+                            (onInput)="onChange($event, 'supplyDeliveryDate')"
                             (dateChange)="
                             otherDetailsItems[productIndex].SupplyDeliveryDate = formatDateForBe(otherDetailsItems[productIndex].SupplyDeliveryDate)
                             "
@@ -329,11 +329,11 @@
                           <button
                           mat-icon-button
                           matSuffix
-                          (click)="SupplyDeliveryDate.open(); $event.stopPropagation()"
+                          (click)="supplyDeliveryDate.open(); $event.stopPropagation()"
                         >
-                          <mat-icon class="icon-date"> </mat-icon>
-                        </button>
-                        <ngx-mat-datetime-picker #SupplyDeliveryDate></ngx-mat-datetime-picker>
+                        <mat-icon class="icon-date"> </mat-icon>
+                      </button>
+                      <ngx-mat-datetime-picker #supplyDeliveryDate></ngx-mat-datetime-picker>
                         </mat-form-field>
                       </div>
                         <!-- <div id="custom-form-field" class="lightTheme supply-date m-l-0">
