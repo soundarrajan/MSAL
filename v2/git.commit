@@ -1,9 +1,11 @@
-﻿commit c889776b1a1dbbc4f86862570c599528a12d6dcb
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Dec 6 15:13:50 2021 +0000
+﻿commit d6675f4b9aee1010c31e3fe7c16820e79641b968
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Dec 7 07:55:30 2021 +0000
 
-    Merged PR 15066: fix console error in QC
+    Merged PR 15074: Worked on Residue View: EGCS Product Difference
     
-    fix console error in QC
+    Worked on Residue View: EGCS Product Difference
+    
+    Related work items: #33666
 
 branch: master

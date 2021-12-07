@@ -66,6 +66,11 @@ import {
   ControlTowerResidueSludgeDifferenceListColumnServerKeys
 } from './list-columns/control-tower-residue-sludge-difference-list.columns';
 import { ControlTowerPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/control-tower-popup/control-tower-popup.component';
+import { ControlTowerResidueEGCSDifferenceListGridViewModel } from './view-model/control-tower-residue-egcs-difference-grid.view-model';
+import {
+  ControlTowerResidueEGCSDifferenceListColumns,
+  ControlTowerResidueEGCSDifferenceListColumnServerKeys
+} from './list-columns/control-tower-residue-egcs-difference-list.columns';
 
 export const PICK_FORMATS = {
   display: {
@@ -126,6 +131,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     ControlTowerQualityClaimsListGridViewModel,
     ControlTowerQualityLabsListGridViewModel,
     ControlTowerResidueDifferenceListGridViewModel,
+    ControlTowerResidueEGCSDifferenceListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
@@ -258,6 +264,12 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerQualityLabsListColumns.createdDate,
       systemDefaultFilters: this.SystemDefaultFilters
+    },
+    'control-tower-residue-egcs-list-grid-1': {
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'days',
+      mappedKey: ControlTowerResidueEGCSDifferenceListColumns.surveyorDate,
+      systemDefaultFilters: this.SystemDefaultFilters
     }
   };
   constructor(
@@ -338,6 +350,19 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             this.differenceType = response.filter(
               obj => obj.name == 'Sludge'
             )[0];
+          });
+        break;
+      }
+
+      case 'Residue EGCS Product Difference': {
+        this.gridViewModel = this.injector.get(
+          ControlTowerResidueEGCSDifferenceListGridViewModel
+        );
+        this.controlTowerListServerKeys = ControlTowerResidueEGCSDifferenceListColumnServerKeys;
+        this.legacyLookupsDatabase
+          .getTableByName('robDifferenceType')
+          .then(response => {
+            this.differenceType = response.filter(obj => obj.name == 'Egcs')[0];
           });
         break;
       }

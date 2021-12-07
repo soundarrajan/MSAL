@@ -17,7 +17,8 @@ import {
   IGetControlTowerQualityLabsListResponse,
   IControlTowerSaveNotesItemDto,
   IControlTowerGetMyNotesDto,
-  IControlTowerGetFilteredNotesDto
+  IControlTowerGetFilteredNotesDto,
+  IGetControlTowerResidueEGCSDifferenceListResponse
 } from './dto/control-tower-list-item.dto';
 
 export namespace ControlTowerApiPaths {
@@ -49,6 +50,10 @@ export namespace ControlTowerApiPaths {
     `api/controlTower/sludgeDifferenceList`;
   export const getControlTowerResidueSludgeDifferenceListExportUrl = () =>
     `api/controlTower/exportSludgeDifferenceList`;
+  export const getControlTowerResidueEGCSDifferenceList = () =>
+    `api/controlTower/egcsDifferenceList`;
+  export const getControlTowerResidueEGCSDifferenceListExportUrl = () =>
+    `api/controlTower/exportEgcsDifferenceList`;
   export const getResiduePopUpUrl = () => `api/controlTower/ResiduePopUp`;
   export const saveResiduePopUpUrl = () => `api/controlTower/SaveResiduePopUp`;
   export const getQualityLabsPopUpUrl = () =>
@@ -65,14 +70,19 @@ export namespace ControlTowerApiPaths {
   export const getQualityNotesUrl = () => `api/controlTower/getQualityNotes`;
   export const getResidueNotesUrl = () => `api/controlTower/getResidueNotes`;
   export const getFilteredQuantityNotesUrl = () =>
-  `api/controlTower/getFilteredQuantityNotes`;
+    `api/controlTower/getFilteredQuantityNotes`;
   export const getFilteredQualityNotesUrl = () =>
-  `api/controlTower/getFilteredQualityNotes`;
+    `api/controlTower/getFilteredQualityNotes`;
   export const getFilteredResidueNotesUrl = () =>
-  `api/controlTower/getFilteredResidueNotes`;
-  export const getRobDifferenceFiltersCount = () => `api/controlTower/robDifferenceCounts`;
-  export const getSupplyDifferenceFiltersCount = () => `api/controlTower/supplyDifferenceCounts`;
-  export const getSludgeDifferenceFiltersCount = () => `api/controlTower/sludgeDifferenceCounts`;
+    `api/controlTower/getFilteredResidueNotes`;
+  export const getRobDifferenceFiltersCount = () =>
+    `api/controlTower/robDifferenceCounts`;
+  export const getSupplyDifferenceFiltersCount = () =>
+    `api/controlTower/supplyDifferenceCounts`;
+  export const getSludgeDifferenceFiltersCount = () =>
+    `api/controlTower/sludgeDifferenceCounts`;
+  export const getEGCSDifferenceFiltersCount = () =>
+    `api/controlTower/egcsDifferenceCounts`;
 }
 
 @Injectable({
@@ -213,6 +223,24 @@ export class ControlTowerApi implements IControlTowerApiService {
   }
 
   @ObservableException()
+  getControlTowerResidueEGCSDifferenceList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerResidueEGCSDifferenceListResponse> {
+    return this.http.post<IGetControlTowerResidueEGCSDifferenceListResponse>(
+      `${
+        this._apiUrl
+      }/${ControlTowerApiPaths.getControlTowerResidueEGCSDifferenceList()}`,
+      { payload: request }
+    );
+  }
+
+  getControlTowerResidueEGCSDifferenceListExportUrl(): string {
+    return `${
+      this._apiUrl
+    }/${ControlTowerApiPaths.getControlTowerResidueEGCSDifferenceListExportUrl()}`;
+  }
+
+  @ObservableException()
   getResiduePopUp(request): any {
     return this.http.post(
       `${this._apiUrl}/${ControlTowerApiPaths.getResiduePopUpUrl()}`,
@@ -317,6 +345,7 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+
   @ObservableException()
   getSupplyDifferenceFiltersCount(request): any {
     return this.http.post(
@@ -324,6 +353,7 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+
   @ObservableException()
   getSludgeDifferenceFiltersCount(request): any {
     return this.http.post(
@@ -331,6 +361,15 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+
+  @ObservableException()
+  getEGCSDifferenceFiltersCount(request): any {
+    return this.http.post(
+      `${this._apiUrl}/${ControlTowerApiPaths.getEGCSDifferenceFiltersCount()}`,
+      { payload: request }
+    );
+  }
+
   @ObservableException()
   getQuantityClaimCounts(request): any {
     return this.http.post(
@@ -338,6 +377,7 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+
   @ObservableException()
   getQualityClaimCounts(request): any {
     return this.http.post(
@@ -345,6 +385,7 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+
   @ObservableException()
   getqualityLabCounts(request): any {
     return this.http.post(
@@ -352,28 +393,30 @@ export class ControlTowerApi implements IControlTowerApiService {
       { payload: request }
     );
   }
+
   @ObservableException()
   getQualityViewCounts(request): any {
     return this.http.post(
       `${this._apiUrl}/api/controlTower/getQualityViewCounts`,
-      { }
+      {}
     );
   }
+
   @ObservableException()
   getQuantityViewCounts(request): any {
     return this.http.post(
       `${this._apiUrl}/api/controlTower/getQuantityViewCounts`,
-      { }
+      {}
     );
-  } 
+  }
+
   @ObservableException()
   getResidueViewCounts(request): any {
     return this.http.post(
       `${this._apiUrl}/api/controlTower/getResidueViewCounts`,
-      { }
+      {}
     );
-  } 
-
+  }
 }
 
 export const CONTROL_TOWER_API_SERVICE = new InjectionToken<

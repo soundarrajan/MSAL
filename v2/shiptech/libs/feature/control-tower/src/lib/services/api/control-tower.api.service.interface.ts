@@ -10,7 +10,8 @@ import {
   IGetControlTowerQualityLabsListResponse,
   IControlTowerSaveNotesItemDto,
   IControlTowerGetMyNotesDto,
-  IControlTowerGetFilteredNotesDto
+  IControlTowerGetFilteredNotesDto,
+  IGetControlTowerResidueEGCSDifferenceListResponse
 } from './dto/control-tower-list-item.dto';
 
 export interface IControlTowerApiService {
@@ -35,6 +36,12 @@ export interface IControlTowerApiService {
   ): Observable<IGetControlTowerResidueSludgeDifferenceListResponse>;
 
   getControlTowerResidueSludgeDifferenceListExportUrl(): string;
+
+  getControlTowerResidueEGCSDifferenceList(
+    request: IGetControlTowerListRequest
+  ): Observable<IGetControlTowerResidueEGCSDifferenceListResponse>;
+
+  getControlTowerResidueEGCSDifferenceListExportUrl(): string;
 
   getResiduePopUp(request: any);
 
@@ -63,21 +70,24 @@ export interface IControlTowerApiService {
   getControlTowerQualityLabsListExportUrl(): string;
 
   getNotes(request: IControlTowerGetMyNotesDto, view: any): any;
-  
+
   getFilteredNotes(request: IControlTowerGetFilteredNotesDto, view: any): any;
-  
+
   saveControlTowerNote(request: IControlTowerSaveNotesItemDto, view: any): any;
-  
+
   /* Default Filters counts */
-  getRobDifferenceFiltersCount(request: any): any;
-  getSupplyDifferenceFiltersCount(request: any): any;
-  getSludgeDifferenceFiltersCount(request: any): any;
-  getQuantityClaimCounts(request: any): any;
   getQualityClaimCounts(request: any): any;
   getqualityLabCounts(request: any): any;
+
+  getRobDifferenceFiltersCount(request: any): any;
+  getSupplyDifferenceFiltersCount(request: any): any;
+  getQuantityClaimCounts(request: any): any;
+
+  getSludgeDifferenceFiltersCount(request: any): any;
+  getEGCSDifferenceFiltersCount(request: any): any;
+
   getQualityViewCounts(request: any): any;
   getQuantityViewCounts(request: any): any;
   getResidueViewCounts(request: any): any;
   /* END Default Filters counts */
-  
 }
