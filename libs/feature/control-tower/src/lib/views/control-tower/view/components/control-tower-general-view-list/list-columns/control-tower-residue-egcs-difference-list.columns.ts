@@ -40,7 +40,7 @@ export enum ControlTowerResidueEGCSDifferenceListColumnsLabels {
   surveyorDate = 'Surveyor Date',
   emailToVessel = 'Email To Vessel',
   vesselToWatch = 'Vessel To Watch',
-  sludgePercentage = 'EGCS %',
+  sludgePercentage = 'Sludge %',
   logBookRobQtyBeforeDelivery = 'Log Book ROB',
   measuredRobQtyBeforeDelivery = 'Measured ROB',
   differenceInRobQuantity = 'Difference in Qty',
@@ -65,7 +65,7 @@ export const ControlTowerResidueEGCSDifferenceListColumnServerKeys: Record<
   [ControlTowerResidueEGCSDifferenceListColumns.emailToVessel]: 'VesselEmail',
   [ControlTowerResidueEGCSDifferenceListColumns.vesselToWatch]: 'VesselToWatch',
   [ControlTowerResidueEGCSDifferenceListColumns.progress]:
-    'SludgeProgress_DisplayName',
+    'EgcsProgress_DisplayName',
   [ControlTowerResidueEGCSDifferenceListColumns.sludgePercentage]:
     'SludgePercentage',
   [ControlTowerResidueEGCSDifferenceListColumns.logBookRobQtyBeforeDelivery]:

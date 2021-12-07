@@ -441,7 +441,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         return;
       }
       this.actionCellClicked(ev);
-    } else if (this.selectorType == 'Residue Sludge Difference') {
+    } else if (
+      this.selectorType == 'Residue Sludge Difference' ||
+      this.selectorType == 'Residue EGCS Product Difference'
+    ) {
       if (ev.event.target.nodeName == 'A') {
         return;
       }
@@ -611,8 +614,11 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       quantityControlReport: {
         id: ev.data.quantityControlReport.id
       },
-      popupType: 'sludge',
-      title: 'Residue Sludge Difference',
+      popupType: type == 'Egcs' ? 'egcs' : 'sludge',
+      title:
+        type == 'Egcs'
+          ? 'EGCS Scrubber Difference'
+          : 'Residue Sludge Difference',
       measuredQuantityLabel: 'Measured ROB',
       differenceQuantityLabel: 'Difference in Qty',
       vessel: rowData.vessel,
