@@ -515,6 +515,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   }
 
   public updateValues(ev, values): void {
+    this.getCountForDefultFilters();
     this.gridApi.purgeServerSideCache();
   }
 
@@ -605,6 +606,10 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     if (this.groupedCounts) {
       return false;
     }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       differenceType: {
         name: 'Sludge'

@@ -525,6 +525,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public updateValues(): void {
+    this.getCountForDefultFilters();
     this.gridApi.purgeServerSideCache();
   }
 
@@ -612,19 +613,24 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-        "differenceType" : {
-          "name" : "Rob"
-          },
-          "startDate": moment()
-            .subtract(6, "days")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
-      };
-      this.controlTowerService.getRobDifferenceFiltersCount(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
+    let payload = {
+      differenceType: {
+        name: 'Rob'
+      },
+      startDate: moment()
+        .subtract(6, 'days')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getRobDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
@@ -647,6 +653,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
         }
       );
   }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.getFiltersCount();
     this.checkStatusAvailable();

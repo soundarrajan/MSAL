@@ -585,6 +585,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public updateValues(): void {
+    this.getCountForDefultFilters();
     this.gridApi.purgeServerSideCache();
   }
 
@@ -672,19 +673,24 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-        "differenceType" : {
-          "name" : "Supply"
-          },
-          "startDate": moment()
-            .subtract(6, "days")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
-      };
-      this.controlTowerService.getSupplyDifferenceFiltersCount(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
+    let payload = {
+      differenceType: {
+        name: 'Supply'
+      },
+      startDate: moment()
+        .subtract(6, 'days')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getSupplyDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
