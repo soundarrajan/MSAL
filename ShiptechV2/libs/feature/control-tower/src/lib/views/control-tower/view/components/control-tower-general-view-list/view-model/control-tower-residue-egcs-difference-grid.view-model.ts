@@ -512,6 +512,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   }
 
   public updateValues(ev, values): void {
+    this.getCountForDefultFilters();
     this.gridApi.purgeServerSideCache();
   }
 
@@ -599,6 +600,13 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   }
 
   public getFiltersCount() {
+    if (this.groupedCounts) {
+      return false;
+    }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       differenceType: {
         name: 'Egcs'
