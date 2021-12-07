@@ -194,7 +194,7 @@ import { of } from 'rxjs';
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
-        (click)="contactinformationpopup()"
+        (click)="openSellerContactPopup(params)"
       >
         <span><div class="id-icon"></div></span>
         <span class="fs-12">Supplier Contact</span>
@@ -799,11 +799,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     dialogRef.afterClosed().subscribe(result => { });
   }
 
-  contactinformationpopup() {
+  openSellerContactPopup(params) {
     const dialogRef = this.dialog.open(ContactinformationpopupComponent, {
       width: '1194px',
       minHeight: '446px',
-      panelClass: ['additional-cost-popup', 'supplier-contact-popup']
+      panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
+      data: { sellerId: params.data.sellerCounterpartyId, sellerName: params.data.sellerCounterpartyName }
     });
 
     dialogRef.afterClosed().subscribe(result => { });
