@@ -45,7 +45,7 @@
               viewModel.gridViewModel.bdnDeliveredQuantityCol]"
              appAgCellTemplate let-column="column" let-model="data" let-value="valueFormatted">
   <div fxLayout="row" fxLayoutAlign="center center"
-       *ngIf="!((column.colId === viewModel.gridViewModel.logBookAfterDeliveryCol.colId || column.colId === viewModel.gridViewModel.measuredRobAfterDeliveryCol.colId) && model.isSludge)">
+       *ngIf="!((column.colId === viewModel.gridViewModel.logBookAfterDeliveryCol.colId || column.colId === viewModel.gridViewModel.measuredRobAfterDeliveryCol.colId) && (model.productType.name == 'Sludge' || model.productType.name == 'Bilge' || model.productType.name == 'EGCS'))">
     <p-spinner (ngModelChange)="viewModel.updateProductType(column, model, $event)"
                disable-keys-spin
                [inputStyle]="{width:'100%' }"

@@ -259,7 +259,8 @@ export class QcReportState {
         item.deliveredQuantityBdnQty,
         bdnTolerance
       );
-      const robAfterDiff = !item.isSludge
+      const robAfterDiff = !(item.productType.name == 'Sludge'
+          || item.productType.name == 'Bilge' || item.productType.name == 'EGCS')
         ? QcReportState.getMatchStatusForRobAfterDiff(
             item.robAfterDeliveryMeasuredROB,
             item.robAfterDeliveryLogBookROB,
