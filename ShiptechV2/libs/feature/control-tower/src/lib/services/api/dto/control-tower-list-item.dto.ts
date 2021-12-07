@@ -88,6 +88,25 @@ export interface IControlTowerResidueSludgeDifferenceItemDto {
   status: IDisplayLookupDto;
 }
 
+export interface IControlTowerResidueEGCSDifferenceItemDto {
+  portCall: IDisplayLookupDto;
+  port: IDisplayLookupDto;
+  vessel: IDisplayLookupDto;
+  eta: string;
+  surveyorDate: string;
+  emailToVessel: boolean;
+  vesselToWatch: boolean;
+  sludgePercentage: number;
+  progress: IDisplayLookupDto;
+  id: number;
+  logBookRobQtyBeforeDelivery: number;
+  measuredRobQtyBeforeDelivery: number;
+  differenceInRobQuantity: number;
+  totalCount: number;
+  robUom: IDisplayLookupDto;
+  status: IDisplayLookupDto;
+}
+
 export interface IControlTowerQualityClaimsItemDto {
   order: IDisplayLookupDto;
   lab: IDisplayLookupDto;
@@ -133,6 +152,11 @@ export interface IGetControlTowerQuantitySupplyDifferenceListResponse {
 }
 
 export interface IGetControlTowerResidueSludgeDifferenceListResponse {
+  payload: IControlTowerResidueSludgeDifferenceItemDto[];
+  matchedCount: number;
+}
+
+export interface IGetControlTowerResidueEGCSDifferenceListResponse {
   payload: IControlTowerResidueSludgeDifferenceItemDto[];
   matchedCount: number;
 }
