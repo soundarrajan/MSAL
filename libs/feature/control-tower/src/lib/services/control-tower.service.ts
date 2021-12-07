@@ -16,7 +16,8 @@ import {
   IGetControlTowerQualityLabsListResponse,
   IControlTowerSaveNotesItemDto,
   IControlTowerGetMyNotesDto,
-  IControlTowerGetFilteredNotesDto
+  IControlTowerGetFilteredNotesDto,
+  IGetControlTowerResidueEGCSDifferenceListResponse
 } from './api/dto/control-tower-list-item.dto';
 
 import { ModuleError } from '../core/error-handling/module-error';
@@ -262,6 +263,31 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
+  getControlTowerResidueEGCSDifferenceList$(
+    gridRequest: IServerGridInfo
+  ): Observable<IGetControlTowerResidueEGCSDifferenceListResponse> {
+    return this.apiDispatch(
+      () =>
+        this.api.getControlTowerResidueEGCSDifferenceList({ ...gridRequest }),
+      new LoadControlTowerListAction(gridRequest),
+      response =>
+        new LoadControlTowerListSuccessfulAction(
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount,
+          response.matchedCount
+        ),
+      LoadControlTowerListFailedAction,
+      ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+    );
+  }
+
+  @ObservableException()
+  getControlTowerResidueEGCSDifferenceListExportUrl(): string {
+    return this.api.getControlTowerResidueEGCSDifferenceListExportUrl();
+  }
+
+  @ObservableException()
   getResiduePopUp(data, response) {
     return this.api.getResiduePopUp(data).pipe(
       map((body: any) => body.payload),
@@ -378,6 +404,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
   getSupplyDifferenceFiltersCount(data: any) {
     return this.api.getSupplyDifferenceFiltersCount(data).pipe(
@@ -391,6 +418,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
   getSludgeDifferenceFiltersCount(data: any) {
     return this.api.getSludgeDifferenceFiltersCount(data).pipe(
@@ -404,6 +432,21 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
+  @ObservableException()
+  getEGCSDifferenceFiltersCount(data: any) {
+    return this.api.getEGCSDifferenceFiltersCount(data).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error.ErrorMessage && body.error.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
+  }
+
   @ObservableException()
   getQuantityClaimCounts(data: any) {
     return this.api.getQuantityClaimCounts(data).pipe(
@@ -417,6 +460,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
   getQualityClaimCounts(data: any) {
     return this.api.getQualityClaimCounts(data).pipe(
@@ -430,6 +474,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
   getqualityLabCounts(data: any) {
     return this.api.getqualityLabCounts(data).pipe(
@@ -443,6 +488,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
   getQualityViewCounts(data: any) {
     return this.api.getQualityViewCounts(data).pipe(
@@ -456,6 +502,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
   getQuantityViewCounts(data: any) {
     return this.api.getQuantityViewCounts(data).pipe(
@@ -469,6 +516,7 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       )
     );
   }
+
   @ObservableException()
   getResidueViewCounts(data: any) {
     return this.api.getResidueViewCounts(data).pipe(
