@@ -13,6 +13,7 @@ import moment from 'moment';
 export class MarketpricehistorypopupComponent implements OnInit {
   public ProductId : number;
   public LocationId : number;
+  public RequestId : number;
   public tabledata = [];
   public priceHistoryData : any = {};
   Highcharts: typeof Highcharts = Highcharts;
@@ -57,7 +58,7 @@ export class MarketpricehistorypopupComponent implements OnInit {
   ngOnInit(): void {
   }
   constructor(public format: TenantFormattingService, private _spotNegotiationService: SpotNegotiationService, public dialogRef: MatDialogRef<MarketpricehistorypopupComponent>,    @Inject(MAT_DIALOG_DATA) public data: any) {
-     let payload = {LocationId : this.data.LocationId, ProductId : this.data.ProductId };
+     let payload = {LocationId : this.data.LocationId, ProductId : this.data.ProductId, RequestId: this.data.RequestId };
      const response = this._spotNegotiationService.getMarketPriceHistory(payload);
      response.subscribe((res: any) => {
       // this.priceHistoryData =  {date : res.marketPriceHistory.map(item => item.date), price : res.marketPriceHistory.map(item => item.price)};

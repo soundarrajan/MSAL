@@ -436,7 +436,7 @@ export class ShiptechCustomHeaderGroup {
       width: '500vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
-      data: { LocationId : this.currentRequestInfo.requestLocations[0].locationId, ProductId : this.params.product.productId }
+      data: { LocationId : this.currentRequestInfo.requestLocations[0].locationId, ProductId : this.params.product.productId, RequestId : this.currentRequestInfo.id }
     });
 
     dialogRef.afterClosed().subscribe(result => {
