@@ -1119,9 +1119,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          let sellerCounterpartyId = this.params.data.sellerCounterpartyId;
+          let sellerId = this.params.data.id;
           const response = this._spotNegotiationService.RemoveCounterparty(
-            sellerCounterpartyId
+            sellerId
           );
           response.subscribe((res: any) => {
             if (res.status && !res.isRequestStemmed) {
