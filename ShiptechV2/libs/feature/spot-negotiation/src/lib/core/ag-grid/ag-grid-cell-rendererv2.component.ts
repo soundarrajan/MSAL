@@ -363,7 +363,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
           contentEditable="true"
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
-          (click)="editSeller = false"
+          (click)="setValuefun(params.data)"
         >
           <span
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
@@ -645,6 +645,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
 
     return false;
+  }
+  setValuefun(params){
+    if(params.physicalSupplierCounterpartyName != undefined && params.physicalSupplierCounterpartyName != null){
+      this.editedSeller = params.physicalSupplierCounterpartyName;
+    }else
+    {
+      this.editedSeller = 'Add P. Supplier';
+    }
+    this.editSeller =  false;
   }
   isOfferRequestAvailable(): boolean {
     // Array of requestoffers
