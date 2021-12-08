@@ -1,9 +1,11 @@
-﻿commit 7285d9b0ea8ead2882c0be4d1869f4986423c3f0
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Dec 8 11:19:29 2021 +0000
+﻿commit fa32230210d5be2058588b4245efcdd5967c6e9b
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Dec 8 11:53:38 2021 +0000
 
-    Merged PR 15102: Fixed change log in the lab alert popup
+    Merged PR 15104: Added system filters in available filters popup
     
-    Fixed change log in the lab alert popup
+    Added system filters in available filters popup
+    
+    Related work items: #37198
 
 branch: master

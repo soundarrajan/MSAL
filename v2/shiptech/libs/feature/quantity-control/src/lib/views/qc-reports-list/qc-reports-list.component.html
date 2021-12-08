@@ -1,6 +1,6 @@
 <shiptech-wunderbar>
   <div class="row" style="margin: 5px 0;">
-    <div class="col-3 d-flex">
+    <div class="col-6 d-flex">
       <shiptech-presets-menu-dropdown
         [gridModelColumnApi]="gridViewModel.gridColumnApi"
       ></shiptech-presets-menu-dropdown>
@@ -11,7 +11,7 @@
         (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"
       ></app-filter-preferences>
     </div>
-    <div class="col-9 p-r-20">
+    <div class="col-6 p-r-20">
       <div style="float:right">
         <shiptech-search-box
           appExternalSearch
