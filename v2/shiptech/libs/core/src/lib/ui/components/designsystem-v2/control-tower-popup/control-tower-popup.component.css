@@ -15,3 +15,7 @@
   padding-left: 0px;
   margin-left: 15px;
 }
+
+.w-30p {
+  width: 30% !important;
+}

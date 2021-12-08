@@ -1,11 +1,11 @@
-﻿commit fa32230210d5be2058588b4245efcdd5967c6e9b
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Dec 8 11:53:38 2021 +0000
+﻿commit e02006ab02b478d08bc43c8e6c3a76d5dc4de681
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Dec 8 14:41:48 2021 +0000
 
-    Merged PR 15104: Added system filters in available filters popup
+    Merged PR 15108: Fixed 37298
     
-    Added system filters in available filters popup
+    Fixed 37298
     
-    Related work items: #37198
+    Related work items: #37298
 
 branch: master

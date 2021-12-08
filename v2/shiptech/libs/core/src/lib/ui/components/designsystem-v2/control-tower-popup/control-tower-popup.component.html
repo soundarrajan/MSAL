@@ -73,7 +73,7 @@
     <div class="row info-section">
       <ng-container *ngIf="data.popupType != 'qualityLabs'; else qualityLabs">
         <div
-          class=" w-20p plr-0"
+          class="w-30p plr-0"
           *ngIf="data.popupType == 'rob' || data.popupType == 'supply'"
         >
           <div class="col-header">Product Type</div>
@@ -81,14 +81,14 @@
             {{ value.productType }}
           </div>
         </div>
-        <div class=" w-20p plr-0" *ngIf="data.popupType == 'sludge'">
+        <div class=" w-30p plr-0" *ngIf="data.popupType == 'sludge'">
           <div class="col-header">Sludge %</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
             {{ format.quantity(value.sludgePercentage) }}
           </div>
         </div>
         <div
-          class="w-24p plr-0"
+          class="w-20p plr-0"
           *ngIf="data.popupType == 'rob' || data.popupType == 'sludge'"
         >
           <div class="col-header">Log Book ROB</div>
@@ -96,13 +96,13 @@
             {{ format.quantity(value.logBookRobQtyBeforeDelivery) }}
           </div>
         </div>
-        <div class="w-24p plr-0" *ngIf="data.popupType == 'supply'">
+        <div class="w-20p plr-0" *ngIf="data.popupType == 'supply'">
           <div class="col-header">BDN Quantity</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
             {{ format.quantity(value.bdnQuantity) }}
           </div>
         </div>
-        <div class=" w-24p plr-0">
+        <div class=" w-20p plr-0">
           <div class="col-header">{{ data.measuredQuantityLabel }}</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
             {{
