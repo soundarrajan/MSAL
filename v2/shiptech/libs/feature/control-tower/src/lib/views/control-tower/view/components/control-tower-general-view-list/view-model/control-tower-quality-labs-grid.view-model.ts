@@ -36,6 +36,7 @@ import {
 } from '../list-columns/control-tower-quality-labs-list.columns';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ToastrService } from 'ngx-toastr';
+import _ from 'lodash';
 
 function model(
   prop: keyof IControlTowerQualityLabsItemDto
@@ -381,27 +382,12 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public updateValues(ev, values): void {
-    if (values) {
-      let payloadData = {
-        controlTowerActionStatusId: values?.status,
-        comments: values?.comments,
-        labResultId: ev.data?.id
-      };
-
-      this.controlTowerService
-        .saveQualityLabsPopUp(payloadData, payloadData => {
-          console.log('labs changes updated..');
-        })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((response: any) => {
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            this.gridApi.purgeServerSideCache();
-          }
-        });
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
     }
-    return;
   }
 
   public filterGridNew(statusName: string): void {

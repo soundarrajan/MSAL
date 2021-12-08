@@ -265,7 +265,19 @@ export class ControlTowerPopupComponent implements OnInit {
     }
   }
   closeDialog() {
-    this.dialogRef.close();
+    let statusId = parseFloat(this.status);
+    let findStatusIndex = _.findIndex(this.controlTowerActionStatus, function(
+      object: any
+    ) {
+      return object.id == statusId;
+    });
+    if (findStatusIndex != -1) {
+      this.dialogRef.close({
+        status: this.controlTowerActionStatus[findStatusIndex]
+      });
+    } else {
+      this.dialogRef.close();
+    }
   }
 
   formatDate(date?: any) {

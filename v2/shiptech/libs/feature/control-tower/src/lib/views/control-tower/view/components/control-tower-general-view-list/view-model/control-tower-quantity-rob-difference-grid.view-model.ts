@@ -527,8 +527,13 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     ];
   }
 
-  public updateValues(): void {
-    this.gridApi.purgeServerSideCache();
+  public updateValues(ev, values): void {
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
+    }
   }
 
   public filterGridNew(statusName: string): void {
