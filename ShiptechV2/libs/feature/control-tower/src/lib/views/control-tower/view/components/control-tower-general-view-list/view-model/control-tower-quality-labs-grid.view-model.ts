@@ -36,6 +36,7 @@ import {
 } from '../list-columns/control-tower-quality-labs-list.columns';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ToastrService } from 'ngx-toastr';
+import _ from 'lodash';
 
 function model(
   prop: keyof IControlTowerQualityLabsItemDto
@@ -381,8 +382,12 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public updateValues(ev, values): void {
-    this.getCountForDefultFilters();
-    this.gridApi.purgeServerSideCache();
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
+    }
   }
 
   public filterGridNew(statusName: string): void {
