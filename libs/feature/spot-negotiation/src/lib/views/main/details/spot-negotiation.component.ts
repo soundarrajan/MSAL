@@ -148,7 +148,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
                 row.isEditable = true;
               }
             }
-  
           }
         });
         row.totalOffer = priceDetailsArray[index].totalOffer;
@@ -247,7 +246,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       SortList: { SortList: [] },
       Filters: [{"ColumnName":"CounterpartyTypes","Value":"1,2,3,11"}],
       SearchText: null,
-      Pagination: { Skip: 0, Take: 1000 }
+      Pagination: { Skip: 0, Take: 2000 }
     };
 
     const response = this.spotNegotiationService.getCounterpartyList(payload);
