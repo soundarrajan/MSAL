@@ -543,7 +543,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogData.changeLog = response.changeLog;
             dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
+              width: '600px',
               height: 'auto',
               maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
@@ -643,7 +643,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogData.changeLog = response.changeLog;
             dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
+              width: '600px',
               height: 'auto',
               maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
@@ -739,7 +739,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
               dialogData.comments = response[0]?.comments;
             }
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
+              width: '600px',
               height: 'auto',
               maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
