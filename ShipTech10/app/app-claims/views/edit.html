@@ -37,7 +37,7 @@
         label: '...',
         type: 'button-group',
         url: '',
-        Conditional:'formValues.claimDetails.status.name == \'Invoiced\'',
+        Conditional:'formValues.claimDetails.status.name != \'Invoiced\'',
         children: [ {
             label: 'Reset',
             url: '#',
@@ -143,7 +143,7 @@
         label: '...',
         type: 'button-group',
         url: '',
-        Conditional:'formValues.claimDetails.status.name == \'Invoiced\'',
+        Conditional:'formValues.claimDetails.status.name != \'Invoiced\'',
         children: [ {
             label: 'Reset',
             url: '#',
