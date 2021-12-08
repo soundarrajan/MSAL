@@ -589,19 +589,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     this.gridApi.purgeServerSideCache();
   }
 
-<<<<<<< HEAD
-  public updateValues(): void {
-    this.getCountForDefultFilters();
-    this.gridApi.purgeServerSideCache();
-=======
   public updateValues(ev, values): void {
     console.log(values);
     const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
       rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
->>>>>>> 7dba115e3f6b1d497a55a767dd567da18c8966ec
   }
 
   public filterGridNew(statusName: string): void {

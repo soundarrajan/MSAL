@@ -387,6 +387,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
       rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
   }
 
