@@ -52,6 +52,7 @@ import { __values } from 'tslib';
 import { ToastrService } from 'ngx-toastr';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
+import _ from 'lodash';
 
 function model(
   prop: keyof IControlTowerQuantitySupplyDifferenceItemDto
@@ -588,9 +589,19 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     this.gridApi.purgeServerSideCache();
   }
 
+<<<<<<< HEAD
   public updateValues(): void {
     this.getCountForDefultFilters();
     this.gridApi.purgeServerSideCache();
+=======
+  public updateValues(ev, values): void {
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
+    }
+>>>>>>> 7dba115e3f6b1d497a55a767dd567da18c8966ec
   }
 
   public filterGridNew(statusName: string): void {

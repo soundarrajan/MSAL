@@ -516,8 +516,17 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   }
 
   public updateValues(ev, values): void {
+<<<<<<< HEAD
     this.getCountForDefultFilters();
     this.gridApi.purgeServerSideCache();
+=======
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
+    }
+>>>>>>> 7dba115e3f6b1d497a55a767dd567da18c8966ec
   }
 
   public filterGridNew(statusName: string): void {
