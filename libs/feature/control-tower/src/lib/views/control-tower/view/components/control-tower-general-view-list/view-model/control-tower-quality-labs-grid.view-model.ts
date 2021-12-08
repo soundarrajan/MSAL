@@ -266,6 +266,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
 
   progressCol: ITypedColDef<IControlTowerQualityLabsItemDto, number> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.progress,
+    headerClass: 'aggrid-text-align-c',
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.progress,
     colId: ControlTowerQualityLabsListColumns.progress,
     field: model('progress'),
@@ -302,9 +303,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
 
   actionCol: ITypedColDef<IControlTowerQualityLabsItemDto> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.action,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.action,
     colId: ControlTowerQualityLabsListColumnsLabels.action,
-    headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },

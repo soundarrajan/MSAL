@@ -283,6 +283,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
     colId:
@@ -316,6 +317,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
     colId:
@@ -349,6 +351,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
     colId: ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity,
@@ -410,10 +413,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantityRobDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
@@ -445,9 +448,9 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   actionsCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
     colId: ControlTowerQuantityRobDifferenceListColumns.actions,
-    headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
