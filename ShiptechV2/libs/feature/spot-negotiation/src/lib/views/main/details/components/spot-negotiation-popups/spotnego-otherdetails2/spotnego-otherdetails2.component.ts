@@ -686,6 +686,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
             reqOff.supplyQuantityUomId = requestChangeData.SupplyQuantityUomId;
             reqOff.quotedProductId = requestChangeData.QuotedProductId;
             reqOff.isSupplyQuantityEdited=true;
+            reqOff.priceQuantityUomId= requestChangeData.SupplyQuantityUomId;
           }
         });
       }
