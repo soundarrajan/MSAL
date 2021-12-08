@@ -1,11 +1,9 @@
-﻿commit 5dac94987e9bdff058955956a1c5a947b75a4cb0
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Dec 8 10:26:50 2021 +0000
+﻿commit 132fac213f9f1a015891b022797e9c208530d1ea
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Dec 8 10:34:10 2021 +0000
 
-    Merged PR 15099: Fixed alignment for table column headers(37417)
+    Merged PR 15100: #37275 - logout and help menu alignment issue has fixed
     
-    Fixed alignment for table column headers(37417)
-    
-    Related work items: #37417
+    Related work items: #37275
 
 branch: master
