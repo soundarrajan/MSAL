@@ -1,9 +1,9 @@
-﻿commit 132fac213f9f1a015891b022797e9c208530d1ea
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Dec 8 10:34:10 2021 +0000
+﻿commit 7285d9b0ea8ead2882c0be4d1869f4986423c3f0
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Dec 8 11:19:29 2021 +0000
 
-    Merged PR 15100: #37275 - logout and help menu alignment issue has fixed
+    Merged PR 15102: Fixed change log in the lab alert popup
     
-    Related work items: #37275
+    Fixed change log in the lab alert popup
 
 branch: master
