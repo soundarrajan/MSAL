@@ -211,6 +211,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     number
   > = {
     headerName: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
     colId: ControlTowerQuantityClaimsListColumns.quantityShortage,
     field: model('quantityShortage'),
@@ -241,6 +242,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   > = {
     headerName:
       ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
     colId: ControlTowerQuantityClaimsListColumns.estimatedSettlementAmount,
@@ -255,6 +257,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   orderPriceCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
     headerName: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
     colId: ControlTowerQuantityClaimsListColumns.orderPrice,
     field: model('orderPrice'),
@@ -301,6 +304,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   noResponseCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
     headerName: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
     colId: ControlTowerQuantityClaimsListColumns.noResponse,
     field: model('noResponse'),
