@@ -211,6 +211,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     number
   > = {
     headerName: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.quantityShortage,
     colId: ControlTowerQuantityClaimsListColumns.quantityShortage,
     field: model('quantityShortage'),
@@ -241,6 +242,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   > = {
     headerName:
       ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityClaimsListColumnsLabels.estimatedSettlementAmount,
     colId: ControlTowerQuantityClaimsListColumns.estimatedSettlementAmount,
@@ -255,6 +257,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   orderPriceCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
     headerName: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.orderPrice,
     colId: ControlTowerQuantityClaimsListColumns.orderPrice,
     field: model('orderPrice'),
@@ -301,6 +304,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
 
   noResponseCol: ITypedColDef<IControlTowerQuantityClaimsItemDto, number> = {
     headerName: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQuantityClaimsListColumnsLabels.noResponse,
     colId: ControlTowerQuantityClaimsListColumns.noResponse,
     field: model('noResponse'),
@@ -343,7 +347,12 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
     },
     width: 150
   };
-  groupedCounts: { noOfNew: number; noOf15: number; noOf714: number; noOfDefault: number};
+  groupedCounts: {
+    noOfNew: number;
+    noOf15: number;
+    noOf714: number;
+    noOfDefault: number;
+  };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -366,17 +375,17 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public systemFilterUpdate(value) {
-    let currentFilter = value.filter(o => o.isActive); 
+    let currentFilter = value.filter(o => o.isActive);
     switch (currentFilter[0].id) {
-      case "new":
+      case 'new':
         this.filterGridNew(currentFilter[0].label);
         break;
-      case "marked-as-seen":
+      case 'marked-as-seen':
         this.filterGrid714Days(currentFilter[0].label);
         break;
-      case "resolved":
+      case 'resolved':
         this.filterGridGreaterThan15Days(currentFilter[0].label);
-        break;                
+        break;
     }
   }
 
@@ -509,16 +518,17 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-          "startDate": moment()
-            .subtract(6, "months")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`         
-      };
-      this.controlTowerService.getQuantityClaimCounts(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    let payload = {
+      startDate: moment()
+        .subtract(6, 'months')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getQuantityClaimCounts(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
@@ -527,11 +537,11 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
           this.noOf714 = response.noOf714;
           this.noOfNew = response.noOfNew;
           this.groupedCounts = {
-            noOfDefault : this.noOfDefault,
-            noOfNew : this.noOfNew,
-            noOf15 : this.noOf15,
-            noOf714 : this.noOf714,
-          } 
+            noOfDefault: this.noOfDefault,
+            noOfNew: this.noOfNew,
+            noOf15: this.noOf15,
+            noOf714: this.noOf714
+          };
           this.changeDetector.detectChanges();
         },
         () => {
@@ -539,7 +549,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );
         }
-      );    
+      );
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
@@ -559,7 +569,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => {     
+        response => {
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {
