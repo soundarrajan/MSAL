@@ -13,6 +13,33 @@
 <mat-dialog-content [ngClass]="isEditing ? 'isEditing' : '' ">
   <div id="available-filter-content">
     <mat-chip-list>
+      <!-- start system filters -->      
+      <div *ngFor="let filter of systemFilters" class="system-filter">
+        <!-- NOTE: Add track by -->
+        <div
+          *ngIf="!filter.isDefault && !filter.isClear"
+          [matTooltip]="filter.label"
+          [ngClass]="[filter.isActive && !isEditing ? 'chip-look-alike text-center' : ' chip-look-alike inactive-chip text-center']"
+        >
+          <div class="truncate-f85 text-center chip-label">
+            {{filter.label}}
+            <!-- <input
+              matInput
+              required
+              type="text"
+              [(ngModel)]="filter.label"
+              [readonly]="true"
+              placeholder="{{ filter.label }}"
+            /> -->
+          </div>
+
+          <div matSuffix class="chip-circle chip-icon">
+            <i class="fas fa-circle"></i>
+          </div>
+        </div>
+      </div>
+      <!-- end system filters -->      
+
       <div *ngFor="let filter of filterItems">
         <!-- NOTE: Add track by -->
         <div
