@@ -25,7 +25,7 @@
   </span>
   <router-outlet name="topbar"></router-outlet>
 
-  <div style="float:right;padding: 5px;">
+  <div style="float:right;">
     <span class="mr-2"
       >{{ username$ | async }} | {{ displayName$ | async | htmlDecodeReadonly }}</span
     >
@@ -37,5 +37,10 @@
       class="ui-button-danger"
       label="Log out"
     ></button>
+    <div class="topbar-help-menu">
+      <a href="https://demohelpshiptech.inatech.com/" target="_blank" class="dropdown-toggle user-menu">
+        <i class="fa fa-question"></i>
+      </a>
+    </div>
   </div>
 </div>
