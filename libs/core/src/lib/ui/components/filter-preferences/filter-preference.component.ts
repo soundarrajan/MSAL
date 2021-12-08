@@ -267,6 +267,7 @@ export class FilterPreferencesComponent implements OnDestroy {
       width: '700px',
       data: {
         filterPresets: this.filterPresets,
+        systemFilters: this.currentSystemFilters,
         maxPinnedItems: this.maxPinnedItems
       }
     });
