@@ -1,11 +1,11 @@
-﻿commit d0edbd4a1ac7b7573cd1234a4664f031859a05c2
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Dec 8 08:50:19 2021 +0000
+﻿commit 1de72af17bf35274b41368da8ed15a1bb44a0818
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Dec 8 09:12:57 2021 +0000
 
-    Merged PR 15093: #37275: Help Document Link to be available in all the Shiptech Pages has done
+    Merged PR 15094: Fixed change log  the alert action pop up
     
-    #37275: Help Document Link to be available in all the Shiptech Pages has done
+    Fixed change log  the alert action pop up
     
-    Related work items: #37275
+    Related work items: #37085
 
 branch: master
