@@ -1,11 +1,11 @@
-﻿commit b0be0fe7de5160587d1b9ea808dc81e54a6bb660
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Tue Dec 7 11:12:18 2021 +0000
+﻿commit d0edbd4a1ac7b7573cd1234a4664f031859a05c2
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Dec 8 08:50:19 2021 +0000
 
-    Merged PR 15085: 36258 - To remove input fields for bilge & egcs after delivery
+    Merged PR 15093: #37275: Help Document Link to be available in all the Shiptech Pages has done
     
-    36258 - To remove input fields for bilge & egcs after delivery
+    #37275: Help Document Link to be available in all the Shiptech Pages has done
     
-    Related work items: #36258
+    Related work items: #37275
 
 branch: master

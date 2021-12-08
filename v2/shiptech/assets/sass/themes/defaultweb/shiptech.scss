@@ -23649,3 +23649,27 @@ mat-form-field {
     height: 30px;
     line-height: 25px;
 }
+
+/* custom help icon menu style start here */
+.topbar-help-menu {
+  border-left: 1px solid #364150;
+  display: inline-block;
+  padding: 5px;
+  margin-left: 7px;
+  .dropdown-toggle.user-menu {
+    color: #364150;
+    display: inline-block;
+    border: 1px solid #364150;
+    border-radius: 50% !important;
+    padding: 6px 10px;
+  }
+  &:hover {
+    color: #bfbfbf;
+    background-color: #364150;
+    .dropdown-toggle.user-menu {
+      border: 1px solid #bfbfbf;
+      color: #bfbfbf;
+    }
+  }
+}
+/* custom help icon menu style end here */
