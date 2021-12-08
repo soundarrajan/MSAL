@@ -241,7 +241,9 @@
           <div
             class="col-md-12"
             *ngIf="
-              value.newStatus?.displayName && value?.logStatus?.name == 'Status'
+              value.newStatus?.displayName &&
+              (value?.logStatus?.name == 'Status' ||
+                value?.logStatus?.name == 'Both')
             "
           >
             Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by
@@ -256,14 +258,12 @@
             "
           >
             <ng-container
-              *ngIf="value.logStatus && value?.logStatus?.name == 'Comments'"
+              *ngIf="
+                value.logStatus &&
+                (value?.logStatus?.name == 'Comments' ||
+                  value?.logStatus?.name == 'Both')
+              "
             >
-              {{ value.user.displayName | htmlDecodeReadonly }}:
-            </ng-container>
-            <ng-container
-              *ngIf="value.logStatus && value?.logStatus?.name == 'Both'"
-            >
-              Issue {{ value.newStatus.displayName | htmlDecodeReadonly }} by
               {{ value.user.displayName | htmlDecodeReadonly }}:
             </ng-container>
             {{ value.newComments | htmlDecodeReadonly }}
