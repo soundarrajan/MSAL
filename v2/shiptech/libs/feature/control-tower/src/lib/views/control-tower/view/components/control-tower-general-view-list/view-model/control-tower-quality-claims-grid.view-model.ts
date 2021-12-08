@@ -232,6 +232,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   > = {
     headerName:
       ControlTowerQualityClaimsListColumnsLabels.estimatedSettlementAmount,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQualityClaimsListColumnsLabels.estimatedSettlementAmount,
     colId: ControlTowerQualityClaimsListColumns.estimatedSettlementAmount,
@@ -270,6 +271,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   noResponseCol: ITypedColDef<IControlTowerQualityClaimsItemDto, number> = {
     headerName: ControlTowerQualityClaimsListColumnsLabels.noResponse,
     headerTooltip: ControlTowerQualityClaimsListColumnsLabels.noResponse,
+    headerClass: ['aggrid-text-align-c'],
     colId: ControlTowerQualityClaimsListColumns.noResponse,
     field: model('noResponse'),
     filter: 'agNumberColumnFilter',

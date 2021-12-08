@@ -301,6 +301,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   > = {
     headerName:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.bdnQuantity,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.bdnQuantity,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.bdnQuantity,
@@ -335,6 +336,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   > = {
     headerName:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveredQty,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.measuredDeliveredQty,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.measuredDeliveredQty,
@@ -369,6 +371,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   > = {
     headerName:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.differenceInQty,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.differenceInQty,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.differenceInQty,
@@ -402,6 +405,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   > = {
     headerName:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.sumOfOrderQtyCol,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.sumOfOrderQtyCol,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.sumOfOrderQtyCol,
@@ -465,13 +469,13 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.progress,
     field: model('progress'),
     autoHeight: true,
     wrapText: true,
-    headerClass: 'aggrid-text-align-c',
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
@@ -504,10 +508,10 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
 
   actionsCol: ITypedColDef<IControlTowerQuantitySupplyDifferenceItemDto> = {
     headerName: ControlTowerQuantitySupplyDifferenceListColumnsLabels.actions,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip:
       ControlTowerQuantitySupplyDifferenceListColumnsLabels.actions,
     colId: ControlTowerQuantitySupplyDifferenceListColumns.actions,
-    headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
@@ -672,19 +676,20 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-        "differenceType" : {
-          "name" : "Supply"
-          },
-          "startDate": moment()
-            .subtract(6, "days")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,          
-      };
-      this.controlTowerService.getSupplyDifferenceFiltersCount(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    let payload = {
+      differenceType: {
+        name: 'Supply'
+      },
+      startDate: moment()
+        .subtract(6, 'days')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getSupplyDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {

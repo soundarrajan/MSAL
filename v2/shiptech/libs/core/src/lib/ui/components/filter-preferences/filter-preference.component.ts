@@ -221,7 +221,9 @@ export class FilterPreferencesComponent implements OnDestroy {
 
     // NOTE: Adds the created preset to the presets list which will be sent to the directive
     this.filterPresets.push(newFilter);
-
+    if (this.currentSystemFilters) {
+      this.currentSystemFilters.map( o => o.isActive = false);
+    }
     // NOTE: Displaying the toast message when creating a new preset
     this.toastr.info(
       `Grid Preference - ${newFilter.name} Has Been Saved Successfully`,

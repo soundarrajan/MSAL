@@ -252,6 +252,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.sludgePercentage,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.sludgePercentage,
     colId: ControlTowerResidueEGCSDifferenceListColumns.sludgePercentage,
@@ -270,6 +271,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
     colId:
@@ -303,6 +305,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
     colId:
@@ -336,6 +339,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.differenceInRobQuantity,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueEGCSDifferenceListColumnsLabels.differenceInRobQuantity,
     colId: ControlTowerResidueEGCSDifferenceListColumns.differenceInRobQuantity,
@@ -397,10 +401,10 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerResidueEGCSDifferenceListColumnsLabels.progress,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerResidueEGCSDifferenceListColumnsLabels.progress,
     colId: ControlTowerResidueEGCSDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerResidueEGCSDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
@@ -432,9 +436,9 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
 
   actionsCol: ITypedColDef<IControlTowerResidueEGCSDifferenceItemDto> = {
     headerName: ControlTowerResidueEGCSDifferenceListColumnsLabels.actions,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerResidueEGCSDifferenceListColumnsLabels.actions,
     colId: ControlTowerResidueEGCSDifferenceListColumns.actions,
-    headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },

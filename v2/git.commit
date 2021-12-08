@@ -1,11 +1,11 @@
-﻿commit 1de72af17bf35274b41368da8ed15a1bb44a0818
+﻿commit 5dac94987e9bdff058955956a1c5a947b75a4cb0
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Dec 8 09:12:57 2021 +0000
+Date:   Wed Dec 8 10:26:50 2021 +0000
 
-    Merged PR 15094: Fixed change log  the alert action pop up
+    Merged PR 15099: Fixed alignment for table column headers(37417)
     
-    Fixed change log  the alert action pop up
+    Fixed alignment for table column headers(37417)
     
-    Related work items: #37085
+    Related work items: #37417
 
 branch: master
