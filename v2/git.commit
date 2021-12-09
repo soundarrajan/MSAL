@@ -1,11 +1,11 @@
-﻿commit 97d42e08c565bdc71b832a9fdc2d46ace961bd32
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Dec 9 10:36:03 2021 +0000
+﻿commit 17c0d4b42936b5c15c24ff8b00fde76555aaf492
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Dec 9 11:43:03 2021 +0000
 
-    Merged PR 15125: Css Fixes
+    Merged PR 15128: Made options to create Provisional / Final Invoice  greyed out based on canCr...
     
-    Css Fixes
+    Made options to create Provisional / Final Invoice  greyed out based on canCreateProvisionalOrFinalInvoice and canCreateDebunkerProvisionalOrFinalInvoice flag
     
-    Related work items: #37421
+    Related work items: #35557
 
 branch: master
