@@ -18,7 +18,7 @@ export class ContactinformationpopupComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ContactinformationpopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     , private spinner: NgxSpinnerService
-    , private toaster: ToastrService
+    , private toastr: ToastrService
     , private changeDetector: ChangeDetectorRef
     , private spotNegotiationService: SpotNegotiationService) { }
 
@@ -28,7 +28,8 @@ export class ContactinformationpopupComponent implements OnInit {
 
   getCounterpartyContacts(){
     this.spinner.show();
-    this.spotNegotiationService.getSellerContacts(this.data.sellerId).subscribe((res: any) => {
+    this.spotNegotiationService.getSellerContacts(this.data.sellerId, this.data.locationId)
+    .subscribe((res: any) => {
       this.spinner.hide();
       if (res) {
         this.seller = res;
@@ -49,22 +50,31 @@ export class ContactinformationpopupComponent implements OnInit {
 
   saveNewContact() {
     if(this.seller.counterpartyContacts){
-      const newContact = this.seller.counterpartyContacts.slice(-1)[0];
+      let newContact = this.seller.counterpartyContacts.slice(-1)[0];
+
       if(!newContact.name || !newContact.email){
-        this.toaster.error('Please enter a valid contact name or email to save.')
+        this.toastr.error('Please enter a valid contact name or email to save.')
         return;
       }
+
+      const regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+      if(regexp.test(newContact.email) === false){
+        this.toastr.error('\"'+ newContact.email +'\" is not a valid email address.', '', { timeOut: 5000 });
+        newContact.email = '';
+        return;
+      }
+
       // add the new contact to counterparty
       newContact.counterpartyId = this.seller.counterpartyId;
       this.spinner.show();
       this.spotNegotiationService.addNewSellerContact(newContact).subscribe((res:any) => {
         this.spinner.hide();
         if(res && res.status){
-          this.toaster.success('Counterparty contact added successully.');
+          this.toastr.success('Counterparty contact added successully.');
           this.dialogRef.close();
         }
         else{
-          this.toaster.error(res.message);
+          this.toastr.error(res.message);
         }
       });
 
