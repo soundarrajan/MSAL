@@ -1,11 +1,11 @@
-﻿commit 209860cdae6b39cd66cd68ed2911cec90354187f
+﻿commit 97d42e08c565bdc71b832a9fdc2d46ace961bd32
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Dec 9 10:09:09 2021 +0000
+Date:   Thu Dec 9 10:36:03 2021 +0000
 
-    Merged PR 15124: Css fix
+    Merged PR 15125: Css Fixes
     
-    Css fix
+    Css Fixes
     
-    Related work items: #37418
+    Related work items: #37421
 
 branch: master

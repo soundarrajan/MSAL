@@ -84,7 +84,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
-    rowHeight: 40,
+    rowHeight: 35,
     rowModelType: RowModelType.ServerSide,
     pagination: true,
     rowSelection: RowSelection.Single,
