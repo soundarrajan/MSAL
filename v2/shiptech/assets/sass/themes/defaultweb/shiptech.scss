@@ -23495,6 +23495,9 @@ mat-form-field {
     display: flex;
     justify-content: center;
     align-items: center;
+    &.ag-row-stub {
+      display:none;
+    }
     .ag-cell {
       height: auto !important;
     }
