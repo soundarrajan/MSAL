@@ -242,8 +242,8 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   @ObservableException()
-  getSellerContacts(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.getSellerContacts(payload);
+  getSellerContacts(sellerId: number, locationId: number): Observable<unknown> {
+    return this.spotNegotiationApi.getSellerContacts(sellerId, locationId);
   }
 
   @ObservableException()

@@ -434,11 +434,11 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
-  getSellerContacts(sellerId: number): Observable<any> {
+  getSellerContacts(sellerId: number, locationId: number): Observable<any> {
     return this.http
-    .get<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getSellerContacts}/${sellerId}`).pipe(
-      map((body: any) => body),
-      catchError((body: any) =>
+    .get<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getSellerContacts}/${locationId}/${sellerId}`)
+      .pipe(map((body: any) => body),
+        catchError((body: any) =>
         of(
           body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
         )

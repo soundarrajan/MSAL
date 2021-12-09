@@ -360,7 +360,7 @@ import { of } from 'rxjs';
           >
           <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
       </span>
-      
+
         <span *ngIf="!params.data.isEditable"
           contentEditable="true"
           [matMenuTriggerFor]="clickmenu"
@@ -804,7 +804,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       width: '1194px',
       minHeight: '446px',
       panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
-      data: { sellerId: params.data.sellerCounterpartyId, sellerName: params.data.sellerCounterpartyName }
+      data: {
+        sellerId: params.data.sellerCounterpartyId,
+        sellerName: params.data.sellerCounterpartyName,
+        locationId: params.data.locationId
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => { });
