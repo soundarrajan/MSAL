@@ -1,9 +1,11 @@
-﻿commit 7dba115e3f6b1d497a55a767dd567da18c8966ec
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Dec 8 15:15:16 2021 +0000
+﻿commit 209860cdae6b39cd66cd68ed2911cec90354187f
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Dec 9 10:09:09 2021 +0000
 
-    Merged PR 15109: Removed reloading grid when user close the alert pop-up (changed only the spe...
+    Merged PR 15124: Css fix
     
-    Removed reloading grid when user close the alert pop-up (changed only the specific line status)
+    Css fix
+    
+    Related work items: #37418
 
 branch: master
