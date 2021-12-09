@@ -8136,9 +8136,7 @@ tr.title {
               }
               .ag-header-row {
                 background: #ffffff;
-
                 border: 1px solid #e0e1e4;
-
                 .ag-header-cell-text {
                   color: #8f9bab;
                 }
@@ -8909,9 +8907,9 @@ tr.title {
               }
               .ag-header-row {
                 background: #ffffff;
-
                 border: 1px solid #e0e1e4;
-
+                height: 30px !important;
+                margin-bottom: 4px;
                 .ag-header-cell-text {
                   color: #333333;
                 }
@@ -9462,6 +9460,8 @@ tr.title {
           .ag-header {
             height: 30px !important;
             min-height: 30px !important;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, .25);            
+            margin-bottom: 4px;
           }
           .ag-header-row {
             border-radius: 0 !important;
@@ -23646,8 +23646,9 @@ mat-form-field {
 [col-id="progress"] .ag-async-background,
 [col-id="noResponse"] .ag-async-background
 {
-    height: 30px;
-    line-height: 25px;
+    height: 23px;
+    line-height: 18px;
+    font-size: 10px;
 }
 
 /* custom help icon menu style start here */
