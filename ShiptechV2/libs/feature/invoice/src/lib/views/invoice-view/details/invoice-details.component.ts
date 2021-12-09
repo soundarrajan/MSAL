@@ -2612,13 +2612,36 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         });
     } else if (option == 'create') {
       this.spinner.hide();
+      let canCreateProvisionalOrFinalInvoice = true;
+      let canCreateDebunkerProvisionalOrFinalInvoice = true;
+      let isDebunker = false;
+      let canCreateFinalOrProvisionalInvoiceFlag = true;
+      if (this.formValues.invoiceClaimDetails.length) {
+        isDebunker = this.formValues.invoiceClaimDetails[0]?.isDebunker;
+        if (this.formValues.invoiceClaimDetails[0]?.claimPossibleActions) {
+          canCreateProvisionalOrFinalInvoice = this.formValues
+            .invoiceClaimDetails[0]?.claimPossibleActions
+            ?.canCreateProvisionalOrFinalInvoice;
+          canCreateDebunkerProvisionalOrFinalInvoice = this.formValues
+            .invoiceClaimDetails[0]?.claimPossibleActions
+            ?.canCreateDebunkerProvisionalOrFinalInvoice;
+        }
+
+        if (
+          (isDebunker && !canCreateDebunkerProvisionalOrFinalInvoice) ||
+          (!isDebunker && !canCreateProvisionalOrFinalInvoice)
+        ) {
+          canCreateFinalOrProvisionalInvoiceFlag = false;
+        }
+      }
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
         height: '230px',
         panelClass: 'popup-grid',
         data: {
           orderId: this.formValues.orderDetails?.order?.id,
-          lists: this.invoiceTypeList
+          lists: this.invoiceTypeList,
+          canCreateFinalOrProvisionalInvoiceFlag: canCreateFinalOrProvisionalInvoiceFlag
         }
       });
 
