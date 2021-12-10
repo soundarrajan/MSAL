@@ -125,11 +125,15 @@
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions class="float-right">
-      <button mat-button [mat-dialog-close]="true">CANCEL</button>
+      <button
+         mat-button 
+         [mat-dialog-close]="true"
+         style="width: 150px; height: 40px;"
+         >CANCEL</button>
       <button
         mat-button
         class="blue-button"
-        style="width: 150px"
+        style="width: 150px; height: 40px;"
         (click)="createNewFilter()"
       >
         SAVE
