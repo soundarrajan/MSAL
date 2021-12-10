@@ -8366,7 +8366,7 @@ tr.title {
     }
     .view-control-new {
       background: #fcfdff;
-      height: 50px;
+      height: 48px;
       border: 1px solid #e0e1e4;
       .label {
         color: #252a32;
@@ -8398,9 +8398,10 @@ tr.title {
     }
     .toggle-tabs {
       float: left;
-      left: 510px;
+      left: 457px;
       top: 7px;
       position: relative;
+      margin-left: -160px!important;
       .custom-label {
         text-transform: capitalize;
         span {
@@ -23680,4 +23681,8 @@ mat-form-field {
 
 .aggrid-text-align-right {
   text-align: right;
+}
+
+.controlTower-wrapper.light-theme .controlTower-content.light-theme {
+  border: 2px solid #e0e1e4;
 }
