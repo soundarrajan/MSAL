@@ -87,4 +87,9 @@ textarea.ct-comments {
   .col-value {
     font-size : 12px;
   }
+  .product-type {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
