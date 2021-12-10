@@ -1,11 +1,11 @@
-﻿commit 4d2ae320c1132b7f4ea8e8da5b1381c17b7caa31
+﻿commit 19d32a6a0d50554b515580361e67b2923f3d92d3
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Dec 10 14:03:31 2021 +0000
+Date:   Fri Dec 10 14:46:43 2021 +0000
 
-    Merged PR 15152: Disable Formula based on flag
+    Merged PR 15153: Fix productType column ellipsis
     
-    Disable Formula based on flag
+    Fix productType column ellipsis
     
-    Related work items: #32807
+    Related work items: #37298
 
 branch: master
