@@ -1,11 +1,11 @@
-﻿commit 3d808f094a9a8c0a48c96a8c24eb1e59d144c1a7
+﻿commit 4d2ae320c1132b7f4ea8e8da5b1381c17b7caa31
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Dec 10 13:25:27 2021 +0000
+Date:   Fri Dec 10 14:03:31 2021 +0000
 
-    Merged PR 15151: control tower popup css fixes
+    Merged PR 15152: Disable Formula based on flag
     
-    control tower popup css fixes
+    Disable Formula based on flag
     
-    Related work items: #37424
+    Related work items: #32807
 
 branch: master
