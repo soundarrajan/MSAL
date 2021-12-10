@@ -1,11 +1,7 @@
-﻿commit 19d32a6a0d50554b515580361e67b2923f3d92d3
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Dec 10 14:46:43 2021 +0000
+﻿commit 165ddfdfd19daaac60beace27e7a59071ff40143
+Author: Anurag Dwivedi <anurag.d@Inatech.com>
+Date:   Fri Dec 10 15:19:37 2021 +0000
 
-    Merged PR 15153: Fix productType column ellipsis
-    
-    Fix productType column ellipsis
-    
-    Related work items: #37298
+    Merged PR 15154: Fix #37429 (Filter popup UI (ag grid options popup) needs to be updated )
 
 branch: master
