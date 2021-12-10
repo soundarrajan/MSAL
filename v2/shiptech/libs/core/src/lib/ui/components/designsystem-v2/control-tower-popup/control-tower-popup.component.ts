@@ -240,7 +240,10 @@ export class ControlTowerPopupComponent implements OnInit {
               this.getQuantityResiduePopUp(payload);
             }
           });
-      } else if (this.data.differenceType.name == 'Sludge') {
+      } else if (
+        this.data.differenceType.name == 'Sludge' ||
+        this.data.differenceType.name == 'Egcs'
+      ) {
         this.controlTowerService
           .saveResiduePopUp(payloadData, payloadData => {
             console.log('Residue changes updated!');

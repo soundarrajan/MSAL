@@ -521,6 +521,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
       rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
   }
 
@@ -611,6 +612,10 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
     if (this.groupedCounts) {
       return false;
     }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       differenceType: {
         name: 'Egcs'
@@ -639,7 +644,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueEGCSDifferenceCountFailed
           );
         }
       );
@@ -693,7 +698,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueEGCSDifferenceFailed
           );
           params.failCallback();
         }

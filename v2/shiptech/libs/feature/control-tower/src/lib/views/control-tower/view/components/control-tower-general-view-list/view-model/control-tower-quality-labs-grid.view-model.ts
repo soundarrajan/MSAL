@@ -387,6 +387,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
       rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
   }
 
@@ -520,6 +521,10 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     if (this.groupedCounts) {
       return false;
     }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       startDate: moment()
         .subtract(6, 'days')
@@ -545,7 +550,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQualityLabsCountFailed
           );
         }
       );

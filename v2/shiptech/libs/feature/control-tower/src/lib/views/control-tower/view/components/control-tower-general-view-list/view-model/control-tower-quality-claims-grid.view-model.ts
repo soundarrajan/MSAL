@@ -505,7 +505,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQualityClaimsCountFailed
           );
         }
       );

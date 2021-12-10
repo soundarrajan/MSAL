@@ -595,6 +595,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
       rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
   }
 
@@ -685,6 +686,10 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     if (this.groupedCounts) {
       return false;
     }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       differenceType: {
         name: 'Supply'
@@ -713,7 +718,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQuantitySupplyDifferenceCountFailed
           );
         }
       );

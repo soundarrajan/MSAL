@@ -524,6 +524,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
       rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
   }
 
@@ -614,6 +615,10 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     if (this.groupedCounts) {
       return false;
     }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       differenceType: {
         name: 'Sludge'
@@ -642,7 +647,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
         }
       );
@@ -696,7 +701,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
           params.failCallback();
         }

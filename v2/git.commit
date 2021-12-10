@@ -1,11 +1,9 @@
-﻿commit 42df1c2f847c0e1258ad690999da1c15b43c48a0
-Author: Anurag Dwivedi <anurag.d@Inatech.com>
-Date:   Fri Dec 10 07:20:57 2021 +0000
+﻿commit 94eb46ec76198dd84c8943c9f84ad85a90be22e3
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Dec 10 12:40:44 2021 +0000
 
-    Merged PR 15137: Fix #37425 Popup for screen Action
+    Merged PR 15147: Mapped columns for egcs Product Difference screen, and added excel export
     
-    Fix #37425 Popup for screen Action
-    
-    Related work items: #37425
+    Related work items: #33666
 
 branch: master
