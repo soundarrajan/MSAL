@@ -533,6 +533,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
       rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
   }
 
@@ -623,6 +624,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     if (this.groupedCounts) {
       return false;
     }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       differenceType: {
         name: 'Rob'
@@ -651,11 +656,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQuantityRobDifferenceCountFailed
           );
         }
       );
   }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.getFiltersCount();
     this.checkStatusAvailable();
