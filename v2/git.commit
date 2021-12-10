@@ -1,9 +1,9 @@
-﻿commit b503f9bd044514ae28e9ef1110765fea9e2f0b18
+﻿commit 932d22421fd9af14d8c30a8ed4bd68814f0e862d
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Dec 10 04:53:54 2021 +0000
+Date:   Fri Dec 10 05:04:59 2021 +0000
 
-    Merged PR 15133: #37426: The padding for the labs/claims/notes section has to have same padding to top and bottom has fixed
+    Merged PR 15134: #37414: There is a lot of padding to the top of the filter description has fixed
     
-    Related work items: #37426
+    Related work items: #37414
 
 branch: master
