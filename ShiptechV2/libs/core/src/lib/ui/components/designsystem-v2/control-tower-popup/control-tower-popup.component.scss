@@ -1,0 +1,90 @@
+.row {
+  margin: 0px;
+}
+
+.statusChange .save-popup {
+background-color: #1f96ff !important;
+}
+.statusChange .save-popup[disabled='true'] {
+  opacity: 0.6;
+}
+
+.log-container {
+  padding-left: 0px !important;
+}
+
+.comments-container {
+  margin-top: 5px;
+  padding-left: 0px;
+  margin-left: 15px;
+}
+
+.w-30p {
+  width: 30% !important;
+}
+
+.header-title {
+  opacity: 1 !important;
+  color: #333;
+  font-size: 14px;
+  margin: 15px 0 6px;
+  .subheader {
+    color: #595959 !important;
+    font-size: 12px;
+  }
+}
+
+.close-popup {
+  cursor: pointer;
+  opacity: 0.5;
+  content: url("data:image/svg+xml;charset=utf-8,%3Csvg width='19' height='19' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg filter='url(%23filter0_i)'%3E%3Cpath d='M.955 8.001A7.992 7.992 0 018.963.015l1.997.003a8.008 8.008 0 017.992 8.014l-.002 2a7.992 7.992 0 01-8.008 7.986l-1.997-.003A8.008 8.008 0 01.953 10l.002-2z' fill='%23fff'/%3E%3C/g%3E%3Cpath d='M13.574 5.107a.806.806 0 00-1.14 0L9.79 7.75 7.186 5.145a.806.806 0 00-1.14 1.14L8.65 8.89l-2.566 2.566a.806.806 0 001.14 1.14L9.79 10.03l2.605 2.605a.804.804 0 001.14 0 .806.806 0 000-1.14L10.931 8.89l2.643-2.643a.806.806 0 000-1.14z' fill='%23455064'/%3E%3Cdefs%3E%3Cfilter id='filter0_i' x='.953' y='.015' width='17.999' height='20.004' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeBlend in='SourceGraphic' in2='BackgroundImageFix' result='shape'/%3E%3CfeColorMatrix in='SourceAlpha' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/%3E%3CfeOffset dy='2'/%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3CfeComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'/%3E%3CfeBlend in2='shape' result='effect1_innerShadow'/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E");
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.col-header {
+  line-height: 14px;
+}
+
+textarea.ct-comments {
+  padding: 10px;
+}
+
+.statusChange .action-status .link {
+  span {
+    font-size: 12px;
+    color: #595959;
+    margin: 3px;
+  }
+  a {
+    font-size: 12px;
+    color: #4a71c2 !important;
+    font-weight: normal;
+    text-decoration: none;
+    span {
+      color: #4a71c2 !important;
+    }
+  }
+}
+
+.statusChange {
+  .more-info {
+    margin-bottom: 0px !important;
+  }
+  .action-status {
+    border-bottom: none;
+  }
+  .list-section {
+    height: initial !important;
+    max-height: 91px;
+    overflow-y: scroll;
+    padding-top: 5px;
+  }
+  .change-log {
+      border-top: 1px solid #c4c4ce;
+  }
+  .col-value {
+    font-size : 12px;
+  }
+}
