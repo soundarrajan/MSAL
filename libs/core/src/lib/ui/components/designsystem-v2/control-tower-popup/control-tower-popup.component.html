@@ -73,7 +73,10 @@
             {{ value.productType }}
           </div>
         </div>
-        <div class=" w-30p plr-0" *ngIf="data.popupType == 'sludge'">
+        <div
+          class=" w-30p plr-0"
+          *ngIf="data.popupType == 'sludge' || data.popupType == 'egcs'"
+        >
           <div class="col-header">Sludge %</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
             {{ format.quantity(value.sludgePercentage) }}
@@ -81,7 +84,11 @@
         </div>
         <div
           class="w-20p plr-0"
-          *ngIf="data.popupType == 'rob' || data.popupType == 'sludge'"
+          *ngIf="
+            data.popupType == 'rob' ||
+            data.popupType == 'sludge' ||
+            data.popupType == 'egcs'
+          "
         >
           <div class="col-header">Log Book ROB</div>
           <div *ngFor="let value of data.productTypeList" class="col-value">
