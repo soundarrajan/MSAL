@@ -550,10 +550,10 @@ export class ShiptechCustomHeaderGroup {
 
   calculateTargetPrice() {
     this.livePrice= this.priceFormatValue(this.livePrice);
-    this.livePrice = (this.livePrice == null ? 0 : this.livePrice);
-    this.benchmark = (this.benchmark == null ? 0 : this.benchmark);
+    this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
+    this.benchmark = (this.benchmark == null || this.benchmark == '--'? 0 : this.benchmark);
     this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
-    //this.closureValue=parseInt(this.livePrice);
+    //this.closureValue=parseInt(this.livePrice); 
     let payload = {
       "productPrice": {
       "requestLocationId": this.requestLocationId,
