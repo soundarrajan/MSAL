@@ -1,9 +1,9 @@
-﻿commit 94eb46ec76198dd84c8943c9f84ad85a90be22e3
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Dec 10 12:40:44 2021 +0000
+﻿commit 35241111176e4ef74b0deb2506386e4838a82e42
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Dec 10 13:17:59 2021 +0000
 
-    Merged PR 15147: Mapped columns for egcs Product Difference screen, and added excel export
+    Merged PR 15150: #37414: There is a lot of padding to the top and bottom of the filter description has fixed
     
-    Related work items: #33666
+    Related work items: #37414
 
 branch: master
