@@ -1,9 +1,11 @@
-﻿commit 932d22421fd9af14d8c30a8ed4bd68814f0e862d
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Dec 10 05:04:59 2021 +0000
+﻿commit 42df1c2f847c0e1258ad690999da1c15b43c48a0
+Author: Anurag Dwivedi <anurag.d@Inatech.com>
+Date:   Fri Dec 10 07:20:57 2021 +0000
 
-    Merged PR 15134: #37414: There is a lot of padding to the top of the filter description has fixed
+    Merged PR 15137: Fix #37425 Popup for screen Action
     
-    Related work items: #37414
+    Fix #37425 Popup for screen Action
+    
+    Related work items: #37425
 
 branch: master
