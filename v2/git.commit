@@ -1,11 +1,9 @@
-﻿commit 5e3dc8eb27d10f26fabdbbdb94dc77a28abf62c6
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Dec 9 13:46:28 2021 +0000
+﻿commit b503f9bd044514ae28e9ef1110765fea9e2f0b18
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Dec 10 04:53:54 2021 +0000
 
-    Merged PR 15132: Changed ag grid loading behaviour for controil tower
+    Merged PR 15133: #37426: The padding for the labs/claims/notes section has to have same padding to top and bottom has fixed
     
-    Changed ag grid loading behaviour for controil tower
-    
-    Related work items: #37423
+    Related work items: #37426
 
 branch: master
