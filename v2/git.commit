@@ -1,7 +1,11 @@
-﻿commit 165ddfdfd19daaac60beace27e7a59071ff40143
-Author: Anurag Dwivedi <anurag.d@Inatech.com>
-Date:   Fri Dec 10 15:19:37 2021 +0000
+﻿commit 8c280a585f56bdd4ddd2f88193979a156cd5487f
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Dec 10 15:59:57 2021 +0000
 
-    Merged PR 15154: Fix #37429 (Filter popup UI (ag grid options popup) needs to be updated )
+    Merged PR 15155: Disabled View Formula based on flag
+    
+    Disabled View Formula based on flag
+    
+    Related work items: #32807
 
 branch: master
