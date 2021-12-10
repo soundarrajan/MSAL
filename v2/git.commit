@@ -1,9 +1,11 @@
-﻿commit 35241111176e4ef74b0deb2506386e4838a82e42
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Dec 10 13:17:59 2021 +0000
+﻿commit 3d808f094a9a8c0a48c96a8c24eb1e59d144c1a7
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Dec 10 13:25:27 2021 +0000
 
-    Merged PR 15150: #37414: There is a lot of padding to the top and bottom of the filter description has fixed
+    Merged PR 15151: control tower popup css fixes
     
-    Related work items: #37414
+    control tower popup css fixes
+    
+    Related work items: #37424
 
 branch: master
