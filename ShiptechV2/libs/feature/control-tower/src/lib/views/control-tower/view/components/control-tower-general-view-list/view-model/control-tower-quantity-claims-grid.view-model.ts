@@ -546,7 +546,7 @@ export class ControlTowerQuantityClaimsListGridViewModel extends BaseGridViewMod
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQuantityClaimsCountFailed
           );
         }
       );
