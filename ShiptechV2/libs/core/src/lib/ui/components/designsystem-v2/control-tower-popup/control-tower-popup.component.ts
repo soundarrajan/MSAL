@@ -13,7 +13,7 @@ import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services
 @Component({
   selector: 'control-tower-popup',
   templateUrl: './control-tower-popup.component.html',
-  styleUrls: ['./control-tower-popup.component.css']
+  styleUrls: ['./control-tower-popup.component.scss']
 })
 export class ControlTowerPopupComponent implements OnInit {
   public switchTheme: boolean = true;
