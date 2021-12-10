@@ -69,7 +69,7 @@
           *ngIf="data.popupType == 'rob' || data.popupType == 'supply'"
         >
           <div class="col-header">Product Type</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value">
+          <div *ngFor="let value of data.productTypeList" class="col-value product-type" matTooltip="{{ value.productType }}">
             {{ value.productType }}
           </div>
         </div>
