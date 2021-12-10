@@ -409,6 +409,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           console.log(result);
           this.formValues = _.cloneDeep(result);
           this.formValues.lastModifiedBy = null;
+          this.formValues.hasBeenExtended = null;
           this.formValues.lastModifiedByUser = null;
           this.formValues.lastModifiedOn = null;
           this.formValues.id = 0;
@@ -1135,6 +1136,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       if (result) {
         console.log('close extend pop-up');
         this.formValues = result;
+        this.formValues.hasBeenExtended = true;
         this.changeDetectorRef.detectChanges();
       }
     });
