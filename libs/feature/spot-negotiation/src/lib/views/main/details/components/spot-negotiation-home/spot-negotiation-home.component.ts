@@ -460,10 +460,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return;
     }
     else{
-    var FinalAPIPayload =  this.selectedSellerList;
+    var FinalAPIdata = {
+      RequestGroupId: this.currentRequestInfo.requestGroupId,
+      selectedSellers: this.selectedSellerList
+    };
     this.spinner.show();
     // Get response from server
-    const response = this.spotNegotiationService.RevokeFQ(FinalAPIPayload);
+    const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
     response.subscribe((res: any) => {
       this.spinner.hide();
       if(res instanceof Object && res['sellerOffers'].length > 0 ){
