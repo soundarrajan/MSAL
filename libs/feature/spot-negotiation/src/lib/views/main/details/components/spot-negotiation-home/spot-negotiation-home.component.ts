@@ -69,33 +69,31 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let isallow=false;
     locationsRows.forEach((element,lkey) => {
       if (element.requestOffers!=undefined ){
-        element.requestOffers.forEach((reqOff,rkey)=>{
-          if(element.checkProd1 && reqOff!=undefined){
-            if(reqOff.price < 0 || reqOff.price == null){
-              isallow=true;         
-            }
-          } 
-          if(element.checkProd2 && reqOff!=undefined){
-            if(reqOff.price < 0 || reqOff.price == null){
-              isallow=true;
-            }
+        if(element.checkProd1 && element.requestOffers[0]!=undefined){
+          if(element.requestOffers[0].price < 0 || element.requestOffers[0].price == null){
+            isallow=true;         
           }
-          if(element.checkProd3 && reqOff!=undefined ){
-            if(reqOff.price < 0 || reqOff.price == null){
-              isallow=true;
-            }
+        } 
+        if(element.checkProd2 && element.requestOffers[1]!=undefined){
+          if(element.requestOffers[1].price < 0 || element.requestOffers[1].price == null){
+            isallow=true;
           }
-          if(element.checkProd4 && reqOff!=undefined){
-            if(reqOff.price < 0 || reqOff.price == null){
-              isallow=true;
-            }
+        }
+        if(element.checkProd3 && element.requestOffers[2]!=undefined ){
+          if(element.requestOffers[2].price < 0 || element.requestOffers[2].price == null){
+            isallow=true;
           }
-          if(element.checkProd5 && reqOff!=undefined ){
-            if( reqOff.price < 0 || reqOff.price == null){
-              isallow=true;
-            }
+        }
+        if(element.checkProd4 && element.requestOffers[3]!=undefined){
+          if(element.requestOffers[3].price < 0 || element.requestOffers[3].price == null){
+            isallow=true;
           }
-        });
+        }
+        if(element.checkProd5 && element.requestOffers[4]!=undefined ){
+          if( element.requestOffers[4].price < 0 || element.requestOffers[4].price == null){
+            isallow=true;
+          }
+        }
       }
     });
     if(!isallow){
