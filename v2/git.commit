@@ -1,9 +1,11 @@
-﻿commit d5a260edee0865ae735b0b26dc478268f2745a1d
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Dec 13 11:49:55 2021 +0000
+﻿commit f59be568e861f6ab70d6190f1b38dace9d608cc4
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Dec 13 13:29:29 2021 +0000
 
-    Merged PR 15169: Mapped value to egcs pop-up and added ednpioint for saving details
+    Merged PR 15173: Fix Grid after active filter deletion
     
-    Related work items: #33666
+    Fix Grid after active filter deletion
+    
+    Related work items: #37509
 
 branch: master
