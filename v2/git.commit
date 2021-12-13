@@ -1,9 +1,9 @@
-﻿commit 51d06258c67dbce95655b9c6b78a40e34c019579
+﻿commit c877f123797ca26f1f5fc3afc317affb175f7797
 Author: Anurag Dwivedi <anurag.d@Inatech.com>
-Date:   Sat Dec 11 15:36:43 2021 +0000
+Date:   Mon Dec 13 10:40:13 2021 +0000
 
-    Merged PR 15156: Fix #37429 (Filter popup UI (ag grid options popup) needs to be updated )
+    Merged PR 15165: Fix #37512 - Control Tower-Description name for Email to vessel and vessel to watch is displaying incorrectly.
     
-    Related work items: #37425, #37429
+    Related work items: #37425, #37429, #37512
 
 branch: master
