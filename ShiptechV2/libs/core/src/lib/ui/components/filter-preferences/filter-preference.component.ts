@@ -284,6 +284,10 @@ export class FilterPreferencesComponent implements OnDestroy {
           this.hasActiveFilterPresets = updatedPresetsList.some(
             item => !item.isDefault && !item.isClear
           );
+          let activeFilter = this.filterPresets.filter(item => item.isActive);
+          if (activeFilter.length) {
+            this.applyFilter(activeFilter[0].id);
+          }           
           this.filterPresetsUpdate$.next(this.filterPresets);
 
           this.changeDetector.markForCheck();
