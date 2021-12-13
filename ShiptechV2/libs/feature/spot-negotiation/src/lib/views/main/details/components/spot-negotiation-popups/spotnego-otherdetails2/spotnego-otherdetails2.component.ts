@@ -630,7 +630,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   /// save request Change
   saveOtherDetails() {
     if (this.otherDetailsItems[this.productIndex].product=='' || this.otherDetailsItems[this.productIndex].product == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity=='' || this.otherDetailsItems[this.productIndex].SupplyDeliveryDate=='') {
-      this.toastr.warning('Fill the quotedProduct ,supplyQuantity & supplyDeliveryDate are required..');
+      this.toastr.warning('Fill the required fields quotedProduct ,supplyQuantity & supplyDeliveryDate');
       return;
     }
     let isAllow = false;
