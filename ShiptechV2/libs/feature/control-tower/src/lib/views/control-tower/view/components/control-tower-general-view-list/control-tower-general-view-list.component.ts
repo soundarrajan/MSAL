@@ -290,6 +290,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
   }
 
+  onFirstDataRendered(params){
+    params.api.sizeColumnsToFit();
+  }
+
   setGridModelType() {
     switch (this.selectorType) {
       case 'Quantity ROB Difference': {
