@@ -65,25 +65,33 @@
     <div class="row info-section">
       <ng-container *ngIf="data.popupType != 'qualityLabs'; else qualityLabs">
         <div
-          class="w-30p plr-0"
+          class="w-20p plr-0"
           *ngIf="data.popupType == 'rob' || data.popupType == 'supply'"
         >
           <div class="col-header">Product Type</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value product-type" matTooltip="{{ value.productType }}">
+          <div
+            *ngFor="let value of data.productTypeList"
+            class="col-value product-type"
+            matTooltip="{{ value.productType }}"
+          >
             {{ value.productType }}
           </div>
         </div>
         <div
-          class=" w-30p plr-0"
+          class="w-20p plr-0"
           *ngIf="data.popupType == 'sludge' || data.popupType == 'egcs'"
         >
           <div class="col-header">Sludge %</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value">
+          <div
+            *ngFor="let value of data.productTypeList"
+            class="col-value tooltip-container"
+            matTooltip="{{ format.quantity(value.sludgePercentage) }}"
+          >
             {{ format.quantity(value.sludgePercentage) }}
           </div>
         </div>
         <div
-          class="w-20p plr-0"
+          class="w-24p plr-0"
           *ngIf="
             data.popupType == 'rob' ||
             data.popupType == 'sludge' ||
@@ -91,19 +99,39 @@
           "
         >
           <div class="col-header">Log Book ROB</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value">
+          <div
+            *ngFor="let value of data.productTypeList"
+            class="col-value tooltip-container"
+            matTooltip="{{
+              format.quantity(value.logBookRobQtyBeforeDelivery)
+            }}"
+          >
             {{ format.quantity(value.logBookRobQtyBeforeDelivery) }}
           </div>
         </div>
-        <div class="w-20p plr-0" *ngIf="data.popupType == 'supply'">
+        <div class="w-24p plr-0" *ngIf="data.popupType == 'supply'">
           <div class="col-header">BDN Quantity</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value">
+          <div
+            *ngFor="let value of data.productTypeList"
+            class="col-value tooltip-container"
+            matTooltip="{{ format.quantity(value.bdnQuantity) }}"
+          >
             {{ format.quantity(value.bdnQuantity) }}
           </div>
         </div>
-        <div class=" w-20p plr-0">
+        <div class="w-24p plr-0">
           <div class="col-header">{{ data.measuredQuantityLabel }}</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value">
+          <div
+            *ngFor="let value of data.productTypeList"
+            class="col-value tooltip-container"
+            matTooltip="{{
+              data.popupType == 'rob' ||
+              data.popupType == 'sludge' ||
+              data.popupType == 'egcs'
+                ? format.quantity(value.measuredRobQtyBeforeDelivery)
+                : format.quantity(value.measuredQuantity)
+            }}"
+          >
             {{
               data.popupType == 'rob' ||
               data.popupType == 'sludge' ||
@@ -113,9 +141,19 @@
             }}
           </div>
         </div>
-        <div class=" w-20p plr-0">
+        <div class="w-20p plr-0">
           <div class="col-header">{{ data.differenceQuantityLabel }}</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value">
+          <div
+            *ngFor="let value of data.productTypeList"
+            class="col-value tooltip-container"
+            matTooltip=" {{
+              data.popupType == 'rob' ||
+              data.popupType == 'sludge' ||
+              data.popupType == 'egcs'
+                ? format.quantity(value.differenceInRobQuantity)
+                : format.quantity(value.differenceQuantity)
+            }}"
+          >
             {{
               data.popupType == 'rob' ||
               data.popupType == 'sludge' ||
@@ -127,7 +165,11 @@
         </div>
         <div class=" w-10p plr-0">
           <div class="col-header">UOM</div>
-          <div *ngFor="let value of data.productTypeList" class="col-value">
+          <div
+            *ngFor="let value of data.productTypeList"
+            class="col-value tooltip-container"
+            matTooltip="{{ value.uom }}"
+          >
             {{ value.uom }}
           </div>
         </div>
@@ -136,25 +178,41 @@
     <ng-template #qualityLabs>
       <div class=" w-28 plr-0">
         <div class="col-header">Lab Counterparty</div>
-        <div *ngFor="let value of data.productTypeList" class="col-value">
+        <div
+          *ngFor="let value of data.productTypeList"
+          class="col-value tooltip-container"
+          matTooltip=" {{ this.format.htmlDecode(value.labCounterParty) }}"
+        >
           {{ this.format.htmlDecode(value.labCounterParty) }}
         </div>
       </div>
       <div class=" w-28 plr-0">
         <div class="col-header">Product</div>
-        <div *ngFor="let value of data.productTypeList" class="col-value">
+        <div
+          *ngFor="let value of data.productTypeList"
+          class="col-value tooltip-container"
+          matTooltip=" {{ this.format.htmlDecode(value.product) }}"
+        >
           {{ this.format.htmlDecode(value.product) }}
         </div>
       </div>
       <div class=" w-24p plr-0">
         <div class="col-header">Lab Status</div>
-        <div *ngFor="let value of data.productTypeList" class="col-value">
+        <div
+          *ngFor="let value of data.productTypeList"
+          class="col-value tooltip-container"
+          matTooltip="{{ value.labStatus }}"
+        >
           {{ value.labStatus }}
         </div>
       </div>
       <div class=" w-20p plr-0">
         <div class="col-header">Claim Raised</div>
-        <div *ngFor="let value of data.productTypeList" class="col-value">
+        <div
+          *ngFor="let value of data.productTypeList"
+          class="col-value tooltip-container"
+          matTooltip="{{ value.claimRaised }}"
+        >
           {{ value.claimRaised }}
         </div>
       </div>
