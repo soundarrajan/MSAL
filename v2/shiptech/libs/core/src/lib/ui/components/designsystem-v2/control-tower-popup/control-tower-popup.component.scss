@@ -3,7 +3,7 @@
 }
 
 .statusChange .save-popup {
-background-color: #1f96ff !important;
+  background-color: #1f96ff !important;
 }
 .statusChange .save-popup[disabled='true'] {
   opacity: 0.6;
@@ -82,12 +82,19 @@ textarea.ct-comments {
     padding-top: 5px;
   }
   .change-log {
-      border-top: 1px solid #c4c4ce;
+    border-top: 1px solid #c4c4ce;
   }
   .col-value {
-    font-size : 12px;
+    font-size: 12px;
   }
+
   .product-type {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .tooltip-container {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
