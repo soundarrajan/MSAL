@@ -544,6 +544,11 @@ export class ShiptechCustomHeaderGroup {
         plainNumber = Math.trunc(plainNumber);
       }
 
+      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
+      if(type && type=='benchmark') {
+        plainNumber = Math.abs(plainNumber);
+      }
+
       return this._decimalPipe.transform(plainNumber, this.priceFormat);
     }
   }
