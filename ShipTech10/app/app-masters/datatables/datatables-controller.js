@@ -2508,6 +2508,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'Product',
                             Type: 'lookup',
                             masterSource: 'Product',
+                            customChangeAction: 'validateSystemInstrument(rowRenderIndex, grid.appScope.fVal().formValues, col.colDef.name)',
                             clc_id: 'masters_productlist'
                         },
                         required: true,
@@ -2521,6 +2522,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'SystemInstrument',
                             Type: 'lookup',
                             masterSource: 'SystemInstrument',
+                            customChangeAction: 'validateSystemInstrument(rowRenderIndex, grid.appScope.fVal().formValues, col.colDef.name)',
                             clc_id: 'masters_systeminstrument'
                         },
                         required: true,
@@ -2566,6 +2568,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplate: $scope.dataTableTemplates.checkbox,
                         category: '2',
                         cellCondition: 'false',
+                        cellAction: 'validateSystemInstrument(rowRenderIndex, grid.appScope.fVal().formValues, col.colDef.name)',
                         cellConditionType: 'ng-disabled'
                     },
                     {
@@ -2574,6 +2577,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplate: $scope.dataTableTemplates.checkbox,
                         category: '2',
                         cellCondition: 'false',
+                        cellAction: 'validateSystemInstrument(rowRenderIndex, grid.appScope.fVal().formValues, col.colDef.name)',
                         cellConditionType: 'ng-disabled'
                     }
                 ],
@@ -3983,6 +3987,27 @@ APP_MASTERS.controller('Controller_Datatables', [
                     $scope.formValues.specGroupParameters[rowIndex].uom = response.uom;
                 }
             });
+        };
+        $scope.validateSystemInstrument = function(rowIndex, fval, model) {
+            let errors = "";
+            fval.productsSystemInstruments.map( (v,k) => {
+                v.productSystemGrouped = v.product.name + "-" + v.systemInstrument.name
+            } )
+            
+            let uniqueValues = new Set(fval.productsSystemInstruments.map(v => v.productSystemGrouped));
+            if (uniqueValues.size < fval.productsSystemInstruments.length) {
+                errors += `Product and System Instrument mapping should be unique <br>`;
+                fval.productsSystemInstruments[rowIndex][model] = null;
+            }            
+            if (model == "isBunkerwireDefault" || model == "isCargoDefault") {
+                if (fval.productsSystemInstruments[rowIndex].isBunkerwireDefault && fval.productsSystemInstruments[rowIndex].isCargoDefault) {
+                    errors += `Only one reference price can be marked for a given product <br>`;
+                    fval.productsSystemInstruments[rowIndex][model] = false;
+                }
+            }
+            if (errors) {
+                toastr.error(errors);
+            }
         };
 
         $scope.getRowNumbers = function(rowIdx, item, fVal) {
