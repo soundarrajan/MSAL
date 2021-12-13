@@ -37,6 +37,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   tenantConfiguration: any;
   responseOrderData: any;
   currencyList: any;
+  productList:any;
+  uomList:any;
   totalPriceValue: number;
   errorMessages: string;
   staticLists: any;
@@ -81,6 +83,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       this.staticLists = spotNegotiation.staticLists;
     });
     this.currencyList = this.setListFromStaticLists('Currency');
+    this.productList = this.setListFromStaticLists('Product');
+    this.uomList = this.setListFromStaticLists('Uom');
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows
     });
@@ -174,12 +178,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         PhysicalSupplierCounterpartyId: seller.physicalSupplierCounterpartyId,
         PhysicalSupplierName: seller.physicalSupplierCounterpartyName,
         RequestProductId: requestProducts.id,
-        ProductId: requestProducts.productId,
-        ProductName: requestProducts.productName,
+        ProductId:requestOffers.quotedProductId??requestProducts.productId,
+        ProductName:this.productList.find(x => x.id == requestOffers.quotedProductId?requestOffers.quotedProductId:requestProducts.productId).name,
         minQuantity: requestProducts.minQuantity,
-        MaxQuantity: requestProducts.maxQuantity,
-        ConfirmedQuantity: this.format.quantity(requestProducts.maxQuantity),
-        UomId: requestProducts.uomId?requestProducts.uomId:this.tenantConfiguration.uomId,
+        MaxQuantity: this.format.quantity(requestProducts.maxQuantity), //this.format.quantity(requestOffers.supplyQuantity)?? 
+        ConfirmedQuantity: this.format.quantity(requestOffers.supplyQuantity)?? this.format.quantity(requestProducts.maxQuantity),
+        UomId: requestProducts.uomId,
         WorkflowId: requestProducts.workflowId,
         productStatus: {
           id: requestProducts.statusId,
@@ -189,12 +193,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         RequestStatus: requestInfo[0].status,
         VesselId: requestInfo[0].vesselId,
         VesselVoyageDetailId: null,
-        UomName: requestProducts.uomName,
+        UomName:this.uomList.find(x => x.id == requestProducts.uomId).name,
         OfferPrice: requestOffers.price,
         ContactCounterpartyId: requestOffers.contactCounterpartyId,
         BrokerCounterpartyId: requestOffers.brokerCounterpartyId,
-        currencyId: requestOffers.currencyId ?requestOffers.currencyId:this.tenantConfiguration.currencyId,
-        currencyName: this.currencyList.find(x => x.id == requestOffers.currencyId ?requestOffers.currencyId:this.tenantConfiguration.currencyId).code,
+        currencyId: requestOffers.currencyId ??this.tenantConfiguration.currencyId,
+        currencyName: this.currencyList.find(x => x.id == requestOffers.currencyId ??this.tenantConfiguration.currencyId).code,
         PricingTypeId: requestProducts.uomId,
         QuoteByDate: requestOffers.quoteByDate,
         QuoteByTimeZoneId: requestOffers.quoteByTimeZoneId,
@@ -213,11 +217,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         QuotedProductGroupId: 1,
         isCheckBox: false,
         //End
-        TotalPrice: requestOffers.price * requestProducts.maxQuantity,
+        TotalPrice: requestOffers.price * requestOffers.supplyQuantity??requestProducts.maxQuantity,
         RequestOfferId: requestOffers.id,
         RfqId: requestOffers.rfqId,
         OrderFields: {
-          ConfirmedQuantity: requestProducts.maxQuantity
+          ConfirmedQuantity: requestOffers.supplyQuantity??requestProducts.maxQuantity
         }
       }
     ];
@@ -406,7 +410,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           if (res instanceof Object && res.payload.length > 0) {
             //this.openEditOrder(receivedOffers.payload);
             const baseOrigin = new URL(window.location.href).origin;
-            window.open(`${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`, '_self');
+            window.open(`https://dev.shiptech.com/#/edit-order/${receivedOffers.payload[0]}`, '_self');
             this.toaster.success('order created successfully.')
           }
           else if (res instanceof Object) {
