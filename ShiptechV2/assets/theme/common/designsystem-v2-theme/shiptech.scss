@@ -1047,6 +1047,9 @@
     .ngx-pagination {
       margin: 0 !important;
       padding-left: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       li {
         margin-right: 0 !important;
         padding: 1px;
@@ -1065,6 +1068,7 @@
         border-radius: 20px;
         background: #1d9fff !important;
         text-align: center;
+        line-height: 19px;
         span {
           position: relative;
           top: 1px;
@@ -1556,4 +1560,9 @@
 
 .ag-theme-material .ag-cell:nth-of-type(1) {
   border: 1px solid #e0e1e4 !important;
+}
+
+
+ag-grid-angular .ag-body-horizontal-scroll-viewport {
+  top: -5px !important;
 }
