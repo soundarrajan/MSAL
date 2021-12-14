@@ -201,7 +201,7 @@ import moment from 'moment';
              $ {{ priceFormatValue(params.product.requestGroupProducts.benchmark, 'benchmark') }}
             </div>
           </div>
-          <div class="label-element dashed">
+          <div class="label-element dashed" *ngIf="params.product.status !== 'Stemmed'">
             <div class="title">Live price</div>
             $<input
               class="value"
