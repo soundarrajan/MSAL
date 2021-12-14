@@ -467,14 +467,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
     response.subscribe((res: any) => {
       this.spinner.hide();
-      if(res instanceof Object && res['sellerOffers'].length > 0 ){
+      if(res instanceof Object){
         this.toaster.success('RFQ(s) revoked successfully.')
         if(res['message'].length>3)
           this.toaster.warning(res['message']);
+        // else
+        //   this.toaster.success('RFQ(s) revoked successfully.');
+
       }
-      else if(res instanceof Object){
-        this.toaster.warning(res.Message);
-      }
+      // else if(res instanceof Object){
+      //   this.toaster.warning(res.Message);
+      // }
       else{
         this.toaster.error(res);
         return;
