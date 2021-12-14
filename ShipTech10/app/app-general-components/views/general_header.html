@@ -282,25 +282,9 @@
                                     </a>
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li ng-repeat="field in action.children">
-                                            <a ng-if="!(GH.app_id == 'claims' && GH.screen_id == 'claim')" id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
+                                            <a id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
                                                 {{ GH.translateLabel(field.label) }}
                                             </a>
-                                            <a ng-if="(GH.app_id == 'claims' && GH.screen_id == 'claim') && GH.translateLabel(field.label) == 'Reset'" id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="reset_form()" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
-                                            {{ GH.translateLabel(field.label) }}
-                                            </a>
-                                            <a ng-if="(GH.app_id == 'claims' && GH.screen_id == 'claim') && GH.translateLabel(field.label) == 'Create Credit Note'" id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="claims_create_credit_note(0)" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
-                                                {{ GH.translateLabel(field.label) }}
-                                            </a>
-                                            <a ng-if="(GH.app_id == 'claims' && GH.screen_id == 'claim') && GH.translateLabel(field.label) == 'Create Resale Credit Note'" id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="claims_create_credit_note(1)" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
-                                                {{ GH.translateLabel(field.label) }}
-                                            </a>
-                                            <a ng-if="(GH.app_id == 'claims' && GH.screen_id == 'claim') && GH.translateLabel(field.label) == 'Debunker Credit Note'" id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="claims_create_credit_note(2)" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
-                                                {{ GH.translateLabel(field.label) }}
-                                            </a>
-                                            <a ng-if="(GH.app_id == 'claims' && GH.screen_id == 'claim') && GH.translateLabel(field.label) == 'Cancel'" id="general_action_{{ $index }}" data-compiled='0' data-method-param="{{ field.param }}" data-method="{{ field.method }}"  ng-click="cancel_claim()" data-group="extern"  dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}">
-                                                {{ GH.translateLabel(field.label) }}
-                                            </a>
-                                         
                                         </li>
                                     </ul>
                                 </span>
