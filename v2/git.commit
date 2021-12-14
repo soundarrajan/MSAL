@@ -1,11 +1,11 @@
-﻿commit 6d4a08f67feee36a8743f73fe82ca1f60e581607
+﻿commit f83fb7349b08a082ace2eef4a5454fbb6a19a78c
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Dec 14 09:07:29 2021 +0000
+Date:   Tue Dec 14 14:11:18 2021 +0000
 
-    Merged PR 15176: Fix Physical Supplier in delivery screen
+    Merged PR 15182: css fixes control tower
     
-    Fix Physical Supplier in delivery screen
+    css fixes control tower
     
-    Related work items: #37158
+    Related work items: #37411
 
 branch: master

@@ -42,6 +42,16 @@ body {
   .mat-ripple-element {
     background: rgba(27, 142, 241, 0.4) !important;
   }
+  &[class*="-control-tower"] {
+    overflow:hidden;
+    layout-main .layout-footer,
+    .mainFooterWhiteSpace {
+      display:none;
+    }
+    ag-grid-angular {
+      height: calc( 100vh - 245px ) !important;
+    }
+  }
 }
 
 .img-circle {
