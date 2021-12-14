@@ -1,11 +1,11 @@
-﻿commit f59be568e861f6ab70d6190f1b38dace9d608cc4
+﻿commit 6d4a08f67feee36a8743f73fe82ca1f60e581607
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Dec 13 13:29:29 2021 +0000
+Date:   Tue Dec 14 09:07:29 2021 +0000
 
-    Merged PR 15173: Fix Grid after active filter deletion
+    Merged PR 15176: Fix Physical Supplier in delivery screen
     
-    Fix Grid after active filter deletion
+    Fix Physical Supplier in delivery screen
     
-    Related work items: #37509
+    Related work items: #37158
 
 branch: master

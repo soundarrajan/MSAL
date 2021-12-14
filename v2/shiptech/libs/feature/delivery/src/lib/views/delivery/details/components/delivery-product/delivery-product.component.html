@@ -999,7 +999,7 @@
               type="text"
               matInput
               [disabled]="formValues.deliveryStatus.name == 'Verified'"
-              [ngModel]="formValues.deliveryProducts[deliveryProductIndex].physicalSupplier | htmlDecodeReadonly"
+              [ngModel]="formValues.deliveryProducts[deliveryProductIndex].physicalSupplier | htmlDecodeReadonly:'name'"
               (ngModelChange)="formValues.deliveryProducts[deliveryProductIndex].physicalSupplier = $event"
               [matAutocomplete]="auto1"
               placeholder="Physical supplier"
