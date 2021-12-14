@@ -479,25 +479,25 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.toaster.error(res);
         return;
       }
+      // window.location.reload();
+      // const locationsRows = this.store.selectSnapshot<string>(
+      //   (state: any) => {
+      //     return state.spotNegotiation.locationsRows;
+      //   }
+      // );
 
-      const locationsRows = this.store.selectSnapshot<string>(
-        (state: any) => {
-          return state.spotNegotiation.locationsRows;
-        }
-      );
-
-      const requestGroupID = this.store.selectSnapshot<string>(
-        (state: any) => {
-          return state.spotNegotiation.groupOfRequestsId;
-        }
-      );
+      // const requestGroupID = this.store.selectSnapshot<string>(
+      //   (state: any) => {
+      //     return state.spotNegotiation.groupOfRequestsId;
+      //   }
+      // );
 
         this.store.dispatch(
           new SetLocationsRowsPriceDetails(res['sellerOffers'])
         );
 
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-          JSON.parse(JSON.stringify(locationsRows)),
+          res['requestLocationSellers'],
           res['sellerOffers']
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
