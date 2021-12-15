@@ -1,11 +1,11 @@
-﻿commit 63e4a89d2ea8e7d468e743066dc2c3f1ab1238f9
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Dec 15 10:59:06 2021 +0000
+﻿commit df435e13d5b117bf38aede0ba4ab894691cb6683
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Dec 15 11:58:30 2021 +0000
 
-    Merged PR 15207: Fixed copy contract from old contracts
+    Merged PR 15208: Fixed default sorting for difference column in EGCS Difference
     
-    Fixed copy contract from old contracts
+    Fixed default sorting for difference column in EGCS Difference
     
-    Related work items: #37525
+    Related work items: #37559
 
 branch: master
