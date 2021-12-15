@@ -48,42 +48,43 @@ export class FilterPreferencesComponent implements OnDestroy {
   @Input() groupedCountValues: any;
   // NOTE: This is the current active preset and is set when a filter preset is clicked from the list
   @Input() activePreset: FilterPreferenceViewModel;
-  
+
   @Input() isLoading: boolean = false;
-  
+
   @Input() maxPinnedItems: number = 3;
   // NOTE: Emits when a change occurs on the presets
   @Output() filterPresetsUpdate$ = new EventEmitter<
     FilterPreferenceViewModel[]
-    >();
-    // NOTE: This event occurs when any modification occurs on the filters
-    @Output() savePresets$ = new EventEmitter<any>();
-    // NOTE: This event occurs when the active filter is changed by selecting a different preset
+  >();
+  // NOTE: This event occurs when any modification occurs on the filters
+  @Output() savePresets$ = new EventEmitter<any>();
+  // NOTE: This event occurs when the active filter is changed by selecting a different preset
   @Output() activePresetChange$ = new EventEmitter<
-  FilterPreferenceViewModel[]
+    FilterPreferenceViewModel[]
   >();
   @Output() systemFilterUpdate$ = new EventEmitter<any>();
   // NOTE: This is used to get the template for creating a new preset
   @ViewChild('createPreset', { static: false })
   createFilterTemplate: TemplateRef<any>;
   private _destroy$: Subject<any> = new Subject();
-  public currentSystemFilters : [
+  public currentSystemFilters: [
     {
-      id: string,
-      label : string,
-      countId : string,
-      count: number,
-      isActive: boolean
+      id: string;
+      label: string;
+      countId: string;
+      count: number;
+      isActive: boolean;
     }
-  ]
+  ];
   public noOfDefault: number;
-  
+  public excludeDefaultCount: boolean = false;
+
   constructor(
     public matDialog: MatDialog,
     private toastr: ToastrService,
     private changeDetector: ChangeDetectorRef
-    ) {}
-    
+  ) {}
+
   // NOTE: This occurs when a modification occurs on a filter item to set the has changes property true
   isDirty(isDirty: boolean): void {
     const currentFilter = this.filterPresets.find(preset => preset.isActive);
@@ -92,35 +93,40 @@ export class FilterPreferencesComponent implements OnDestroy {
       this.changeDetector.markForCheck();
     }
   }
-  
+
   ngOnInit() {
+    if (window.location.pathname.includes('v2/quantity-control/reports-list')) {
+      this.excludeDefaultCount = true;
+    }
     this.noOfDefault = 0;
-    if (this.gridIds)  {
+    if (this.gridIds) {
       if (this.gridIds[this.gridId]?.systemDefaultFilters) {
-        this.currentSystemFilters = this.gridIds[this.gridId].systemDefaultFilters;
-      }  
+        this.currentSystemFilters = this.gridIds[
+          this.gridId
+        ].systemDefaultFilters;
+      }
     }
     // this.countOfDefault = this.currentSystemFilters.filter( o => o.name == "noOfDefault")
   }
   // NOTE: Setting a preset as pinned when it's pin icon is pressed
-  
+
   // NOTE: Setting a preset as pinned displays it on the list above the grid
   public setPinned(id: string): void {
     this.filterPresets.find(
       preset => preset.id === id
     ).isPinned = !this.filterPresets.find(preset => preset.id === id).isPinned;
   }
-  
+
   public updateSystemPreferencesCount(values) {
-    if(typeof values.noOfDefault !== "undefined" ) {
+    if (typeof values.noOfDefault !== 'undefined') {
       this.noOfDefault = values.noOfDefault;
     }
     for (const countId in values) {
       let countValue = values[countId];
       this.currentSystemFilters.forEach(systemFilter => {
-        if(systemFilter.countId == countId) {
-          systemFilter.count = countValue
-        }        
+        if (systemFilter.countId == countId) {
+          systemFilter.count = countValue;
+        }
       });
     }
   }
@@ -160,15 +166,15 @@ export class FilterPreferencesComponent implements OnDestroy {
 
     // reset SystemFilters
     if (this.currentSystemFilters) {
-      this.currentSystemFilters.map( o => o.isActive = false);
+      this.currentSystemFilters.map(o => (o.isActive = false));
     }
-    
+
     this.changeDetector.markForCheck();
   }
-  
-  public systemFilterUpdate(filter):void {
-    this.currentSystemFilters.map( o => o.isActive = false);
-    this.filterPresets.map( o => o.isActive = false);
+
+  public systemFilterUpdate(filter): void {
+    this.currentSystemFilters.map(o => (o.isActive = false));
+    this.filterPresets.map(o => (o.isActive = false));
     filter.isActive = true;
     this.systemFilterUpdate$.next(this.currentSystemFilters);
   }
@@ -222,7 +228,7 @@ export class FilterPreferencesComponent implements OnDestroy {
     // NOTE: Adds the created preset to the presets list which will be sent to the directive
     this.filterPresets.push(newFilter);
     if (this.currentSystemFilters) {
-      this.currentSystemFilters.map( o => o.isActive = false);
+      this.currentSystemFilters.map(o => (o.isActive = false));
     }
     // NOTE: Displaying the toast message when creating a new preset
     this.toastr.info(
@@ -287,7 +293,7 @@ export class FilterPreferencesComponent implements OnDestroy {
           let activeFilter = this.filterPresets.filter(item => item.isActive);
           if (activeFilter.length) {
             this.applyFilter(activeFilter[0].id);
-          }           
+          }
           this.filterPresetsUpdate$.next(this.filterPresets);
 
           this.changeDetector.markForCheck();
