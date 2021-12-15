@@ -3650,7 +3650,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     },
                     {
                         name: 'exchangeRateValue',
-                        displayName: 'Exchangez Rate',
+                        displayName: 'Exchange Rate',
                         format: 'number:4',
                         cellTemplate: $scope.dataTableTemplates.text,
                         required: true

@@ -4826,7 +4826,9 @@ div[uib-modal-window] .btn.export_xls, div[uib-modal-window] .btn.export_csv, di
 .newStatusColoured.contextmenu .content .voyageDetailSection .action-btn{
     float: right;
     padding: 2px 5px;
-    margin: 10px 0;
+    margin: 3px 0;
+    display: flex;
+    align-items: center;
 }
 .newStatusColoured.contextmenu .content .cancelBunkerStrategy {
 	display: none;

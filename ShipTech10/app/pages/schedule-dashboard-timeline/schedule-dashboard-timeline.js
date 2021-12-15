@@ -1857,68 +1857,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // }
                 $('.contextmenu').css("left", "initial");
                 $('.contextmenu').css("right", "initial");
-                if (window.innerWidth / 2 > $(currentElem).offset().left) {
-                    $('.contextmenu').css("left", $(currentElem).offset().left);
-                } else {
-                    $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
-                }
 
-               $('.contextmenu').css("top", "-400px");
                 setTimeout(function() {
-                    var heightElement = $('.contextmenu').height();
-                    var scrollTop  = $(window).scrollTop();
-                    var timelineScrollTop = $(".vis-vertical-scroll").scrollTop();
-                    elementOffset = $(currentElem).offset().top;
-                    distance  = (elementOffset - scrollTop - timelineScrollTop);
-
-                    // console.log(heightElement);
-
-                    if ($(currentElem).offset().top - $("#timeline").height() < 0){
-                        $('.contextmenu').css("top", $(currentElem).offset().top - 15);
-                    } else {
-                        $('.contextmenu').css("top", $(currentElem).offset().top - heightElement - 36);
-                    }
-
-                    if (heightElement > $(currentElem).offset().top && $('.contextmenu').offset().top < $(currentElem).offset().top) {
-                        $('.contextmenu').css('margin-top', heightElement - $(currentElem).offset().top);
-                        $('.contextmenu').css('max-height', $(currentElem).offset().top);
-                        $('.contextmenu').css('overflow', 'auto !important');
-                    }
-
-                    let spaceBelow = $(window).height() - $('.contextmenu')[0].getBoundingClientRect().bottom;
-                    if (spaceBelow < 0) {
-                        console.log(spaceBelow);
-                        $('.contextmenu').css('transform', 'translateY(' + spaceBelow + 'px )');
-                    }
-
-
-                    let offsetLeft = $('.contextmenu').offset().left;
-                    if (offsetLeft <= 0) {
-                        let value = offsetLeft * (-1)  + 25;
-                        $('.contextmenu').css('transform', 'translate(' + value + 'px )');
-                    } else if (offsetLeft <= 25) {
-                        let value = offsetLeft + 25;
-                        $('.contextmenu').css('transform', 'translate(' + value + 'px )');
-                    }
-                    let offsetRight =  $(window).width() - ($('.contextmenu').offset().left + $('.contextmenu').outerWidth(true));
-                    if (offsetRight < 0) {
-                        $('.contextmenu').offset({top: $('.contextmenu').offset().top, left: $('.contextmenu').offset().left + offsetRight});
-                    } 
-                    // console.log($('.contextmenu'));
-                    // console.log(offsetRight);
-                    setTimeout(function() {
-                        $('.contextmenu').css("visibility", "visible");
-
-                    });
-
-                    let  elements = $('.first-col-with-request-id');
-                    let containers = $('.right-click-pop-up-table-container');
-                    for (let i = 0; i < containers.length; i++) {
-                        $(elements[i]).css('position', 'absolute');
-                        $(elements[i]).css('height', parseFloat($(containers[i]).height()) + 'px');
-                    }
-
-               }, 50)
+                    $('.contextmenu').css("visibility", "visible");
+                });
 
 
                 $('.contextmenu').removeClass("hidden");
@@ -1936,6 +1878,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
 
                 $('.contextmenu .close').click(function (e) {
+                    $('timeline-right-click-popover').hide();
                     e.preventDefault();
                     removePopups();
                 });

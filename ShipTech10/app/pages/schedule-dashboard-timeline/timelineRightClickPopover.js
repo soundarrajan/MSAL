@@ -647,7 +647,7 @@ angular.module('shiptech.components')
 
             ctrl.removePopup = function() {
                 $("schedule-dashboard-timeline .contextmenu").remove();
-
+                $('timeline-right-click-popover').hide();
             }
         }
 
