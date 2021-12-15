@@ -1,9 +1,7 @@
-﻿commit e37577625264e294cd62e318940319b33d042c56
+﻿commit af298f3b5ebe72bfb53e93fdc0b93865061460d0
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Dec 15 12:49:15 2021 +0000
+Date:   Wed Dec 15 14:45:43 2021 +0000
 
-    Merged PR 15209: Fixed updating of status after user close the alert pop-up in control tower s...
-    
-    Fixed updating of status after user close the alert pop-up in control tower screens
+    Merged PR 15213: Fixed displaying of createdAt date when user create invoice from claim
 
 branch: master
