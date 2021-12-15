@@ -1,11 +1,11 @@
-﻿commit 3264cdaba6aae14df74c3eb30fd438a7c3bdd126
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Dec 15 09:33:47 2021 +0000
+﻿commit 63e4a89d2ea8e7d468e743066dc2c3f1ab1238f9
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Dec 15 10:59:06 2021 +0000
 
-    Merged PR 15200: 36971 spcl char fix in UI
+    Merged PR 15207: Fixed copy contract from old contracts
     
-    36971 spcl char fix in UI
+    Fixed copy contract from old contracts
     
-    Related work items: #36971
+    Related work items: #37525
 
 branch: master

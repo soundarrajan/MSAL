@@ -12,25 +12,31 @@
   </div>
 </div>
 
-
-
-<mat-menu class="hideshow no-boxshadow mat-menu-position Preference-menu" #togglecolumn yPosition="below" xPosition="before" [overlapTrigger]="false">
+<mat-menu
+  class="hideshow no-boxshadow mat-menu-position Preference-menu"
+  #togglecolumn
+  yPosition="below"
+  xPosition="before"
+  [overlapTrigger]="false"
+>
   <div class="tbl-context no-border">
-    <div class="p-tb-10" (click)="resetColumns()" *ngIf="gridModelColumnApi">
-      <span>
-<!--        <img class="p-r-10" src="../../../../../assets/customicons/context-save-as.svg" alt="Save icon" />-->
-      </span>
-      <span>Reset Columns</span>
-    </div>
     <div class="p-tb-10" (click)="createFilter()">
       <span>
-       <img class="p-r-10" src="/v2/assets/customicons/context-save-as-new.svg" alt="Save icon" />
+        <img
+          class="p-r-10"
+          src="/v2/assets/customicons/context-save-as-new.svg"
+          alt="Save icon"
+        />
       </span>
       <span><i class="fas fa-downlaod"></i> Save New Preference</span>
     </div>
     <div class="p-tb-10" (click)="updateFilter()">
       <span>
-       <img class="p-r-10" src="/v2/assets/customicons/context-update.svg" alt="Save As icon" />
+        <img
+          class="p-r-10"
+          src="/v2/assets/customicons/context-update.svg"
+          alt="Save As icon"
+        />
       </span>
       <span>Update Preference</span>
     </div>
