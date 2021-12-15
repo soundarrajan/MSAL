@@ -241,6 +241,14 @@ export class AgColumnPreferencesService implements OnDestroy {
               }
             ]);
           } else {
+            if (gridName == 'control-tower-residue-egcs-list-grid-1') {
+              console.log(sortModels);
+              for (let i = 0; i < sortModels.length; i++) {
+                if (sortModels[i].colId == 'differenceInRobQuantity') {
+                  sortModels[i].sort = 'desc';
+                }
+              }
+            }
             options.api.setSortModel(sortModels);
           }
         }
