@@ -37,7 +37,6 @@ export class EmailPreviewPopupComponent implements OnInit {
   subject: any;
   content: any;
   previewTemplate: any;
-  previousSelected : any;
   //rfqTemplate: any;
   items: Items[]; 
   public Editor = ClassicEditor;
@@ -51,19 +50,19 @@ export class EmailPreviewPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.SelectedSellerWithProds =  data;
       this.selected = 'MultipleRfqNewRFQEmailTemplate';
-      this.previousSelected = 'MultipleRfqNewRFQEmailTemplate';
-      // if(this.SelectedSellerWithProds.requestOffers?.length > 0){
-      //     if(this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
-      //     this.items =  [
-      //       {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ'},
-      //       {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ'},
-      //     ];
-      //     this.selected = 'MultipleRfqAmendRFQEmailTemplate';
-      //   }
-      //   else{
-      //     this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
-      //     this.dialogRef.close();
-      //   }
+      //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
+          //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
+          // this.items =  [
+          //   {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'RFQ', disabled: false},
+          //   {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ', disabled: true},
+          //   {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ', disabled: true},            
+          // ];
+          // this.selected = 'MultipleRfqAmendRFQEmailTemplate';
+        // }
+        // else{
+        //   this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
+        //   this.dialogRef.close();
+        // }
       // }
       // else{
       //   this.items =  [
@@ -85,18 +84,20 @@ export class EmailPreviewPopupComponent implements OnInit {
 
   getPreviewTemplate(){
     if(this.selected != 'MultipleRfqNewRFQEmailTemplate'){
-      if(this.SelectedSellerWithProds.requestOffers?.find(x=>x.RfqId===0)){
-        if(this.selected != 'MultipleRfqAmendRFQEmailTemplate')
+      if(this.SelectedSellerWithProds.requestOffers == undefined || this.SelectedSellerWithProds.requestOffers?.find(x=>x.RfqId===0)){
+        if(this.selected == 'MultipleRfqAmendRFQEmailTemplate')
         this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
-        else if(this.selected != 'MultipleRfqRevokeRFQEmailTemplate')
+        else if(this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
         this.toaster.error('Revoke RFQ cannot be sent as RFQ was not communicated.');
+        this.clearData();
         return;
       }
       else if(this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length === 0){
-        if(this.selected != 'MultipleRfqAmendRFQEmailTemplate')
+        if(this.selected == 'MultipleRfqAmendRFQEmailTemplate')
         this.toaster.error('Amend RFQ cannot be sent as RFQ was skipped.');
-        else if(this.selected != 'MultipleRfqRevokeRFQEmailTemplate')
+        else if(this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
         this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
+        this.clearData();
         return;
       }
     }
@@ -142,18 +143,21 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.from = this.previewTemplate.From;
     this.filesList = this.previewTemplate.AttachmentsList;}
     else{
-      this.to = [];
-      this.cc = [];
-      this.subject = '';
-      this.content = '';
-      this.from = [];
-      this.filesList = [];
+      this.clearData();
       this.toaster.error(res);
 
     }
   });
 }
-
+ clearData(){
+  this.to = [];
+  this.cc = [];
+  this.subject = '';
+  this.content = '';
+  this.from = [];
+  this.filesList = [];
+  this.previewTemplate=null;
+ }
   addTo(item){
 
     this.to.push(item);
@@ -175,6 +179,12 @@ export class EmailPreviewPopupComponent implements OnInit {
 
 
   saveAndSendRFQ(isSendEmail) {
+
+    if(this.previewTemplate == null){
+      this.toaster.error("Template does not exists.");
+      return;
+     }
+     
     var selectedSellers = [{
       RequestLocationSellerId: this.SelectedSellerWithProds.id,
       RequestLocationID: this.SelectedSellerWithProds.requestLocationId,
@@ -319,8 +329,15 @@ export class EmailPreviewPopupComponent implements OnInit {
  }
 
  revertChanges(){
+   if(this.previewTemplate == null){
+    this.toaster.error("Template does not exists.");
+    return;
+   }
+
+
    if(this.previewTemplate.comment.id === 0){
     this.toaster.error("No saved template.");
+    return;
    }
    else{
   let requestPayload = {

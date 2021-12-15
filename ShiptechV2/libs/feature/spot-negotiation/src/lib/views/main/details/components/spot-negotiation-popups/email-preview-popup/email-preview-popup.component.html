@@ -6,7 +6,7 @@
             <div id="custom-form-field" style="width: 100px !important; margin: 0px 7px;">
                 <mat-form-field class="without-search" appearance="none">
                     <mat-select [(value)]="selected" disableOptionCentering (selectionChange)="getPreviewTemplate()">
-                        <!-- <mat-option *ngFor="let item of items" [value]="item.value">
+                        <!-- <mat-option *ngFor="let item of items" [value]="item.value" [disabled] = "item.disabled" >
                             {{item.viewValue}}
                           </mat-option> -->
                         <mat-option value="MultipleRfqNewRFQEmailTemplate">RFQ</mat-option>
