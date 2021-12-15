@@ -7,6 +7,7 @@ import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/li
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AddCounterpartyToLocations } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { ToastrService } from 'ngx-toastr';
+import _, { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-spotnego-searchctpy',
@@ -70,6 +71,11 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
             this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
           }
         });
+        if(data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
+          this.dialog_gridOptions.api.forEachNode(function (node) {
+            node.setSelected(node.data.id === data?.physicalSupplierCounterpartyId);
+          }); 
+        }
       },
       getRowStyle: function(params) {
         if (params.node.rowPinned) {
@@ -233,9 +239,16 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
               return false;
             }
           });
+        this.dialog_gridOptions.api.setRowData(this.rowData);
+        if(this.rowData.length > 0){
+          let physicalSupplierCounterpartyId = this.data.physicalSupplierCounterpartyId;
+          this.dialog_gridOptions.api.forEachNode(function (node) {
+            node.setSelected(node.data.id === physicalSupplierCounterpartyId);
+          }); 
+        }
       }
     });
-    this.dialog_gridOptions.api.setRowData(this.rowData);
+
   }
   AddCounterparties() {
     const selectedCounterparties = this.toBeAddedCounterparties();

@@ -9,6 +9,11 @@ export class SetCounterpartyList {
 
   constructor(public payload: any) {}
 }
+export class EditCounterpartyList{
+  static readonly type = '[CounterpartyList] Edit';
+
+  constructor(public payload: any) {}
+}
 
 export class SetLocations {
   static readonly type = '[Locations] Set';

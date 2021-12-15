@@ -9,7 +9,8 @@ import {
   SetLocationsRowsPriceDetails,
   SelectSeller,
   DeleteSeller,
-  SetLocations
+  SetLocations,
+  EditCounterpartyList
 } from './actions/ag-grid-row.action';
 
 import {
@@ -171,6 +172,21 @@ export class SpotNegotiationStore {
   ): void {
     patchState({
       counterpartyList: payload
+    });
+  }
+
+  @Action(EditCounterpartyList)
+  EditCounterpartyList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: EditCounterpartyList
+  ) {
+    patchState({
+      counterpartyList: getState().counterpartyList.map(row => {
+        if (row.id === payload.id) {
+          return payload;
+        }
+        return row;
+      })
     });
   }
 

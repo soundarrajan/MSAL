@@ -21,8 +21,11 @@ import { SpotnegoPricingDetailsComponent } from '../../views/main/details/compon
 import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
-
-import { EditLocationRow, SetLocationsRows } from '../../store/actions/ag-grid-row.action';
+import _, { cloneDeep } from 'lodash';
+import { EditLocationRow,SetLocations,
+  SetLocationsRows,
+  SetCounterpartyList,
+  SetLocationsRowsPriceDetails, EditCounterpartyList } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
@@ -399,7 +402,7 @@ import { of } from 'rxjs';
                 matInput
                 placeholder="Search and select counterparty"
                 class="search-product-input"
-                (input)="search($event.target.value)"
+                (input)="search($event.target.value,params)"
               />
             </div>
             <div class="col-md-2">
@@ -421,7 +424,8 @@ import { of } from 'rxjs';
                 <mat-option [value]="element">
                   <mat-radio-button
                     [value]="element.name"
-                    (click)="selectSupplier(element.name, element.id)"
+                    [checked]="element.isSelected"
+                    (click)="selectSupplier(element)"
                   >
                     {{ element.name }}
                   </mat-radio-button>
@@ -600,6 +604,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currentRequestInfo: any;
   tenantService: any;
   currentRequestData: any[];
+  locationsRows: any[];
 
   constructor(
     @Inject(DecimalPipe)
@@ -649,6 +654,22 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
   setValuefun(params){
+    let counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterpartyList.slice(0, 7);;
+     });
+    let SelectedCounterpartyList = cloneDeep(counterpartyList);
+     
+    if(SelectedCounterpartyList?.length > 0){
+      SelectedCounterpartyList.forEach(element => {
+        if(params.physicalSupplierCounterpartyId != null && element.id == params.physicalSupplierCounterpartyId){
+          element.isSelected =  true;
+        }
+        else{
+          element.isSelected =  false;
+        }
+      });
+      this.visibleCounterpartyList = SelectedCounterpartyList;
+    }
     if(params.physicalSupplierCounterpartyName != undefined && params.physicalSupplierCounterpartyName != null){
       this.editedSeller = params.physicalSupplierCounterpartyName;
     }else
@@ -688,8 +709,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.params = params;
   }
 
-  search(userInput: string): void {
-    this.visibleCounterpartyList = this.counterpartyList
+  search(userInput: string, params:any): void {
+    let selectedCounterpartyList = this.counterpartyList
       .filter(e => {
         if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
           return true;
@@ -697,6 +718,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return false;
       })
       .slice(0, 7);
+      selectedCounterpartyList
+      let SelectedCounterpartyList1 = cloneDeep(selectedCounterpartyList);
+    if(SelectedCounterpartyList1?.length > 0){
+      SelectedCounterpartyList1.forEach(element => {
+        if(params?.data?.physicalSupplierCounterpartyId != null && element.id == params?.data?.physicalSupplierCounterpartyId){
+          element.isSelected =  true;
+        }
+        else{
+          element.isSelected =  false;
+        }
+      });
+      this.visibleCounterpartyList = SelectedCounterpartyList1;
+    }
   }
   hoverMenu(event) {
     event.target.classList.add('selectedIcon');
@@ -819,6 +853,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let currentRequestLocation = { id: '0', locationId: '0' };
     let sellerCounterpartyId=0;
     let physicalSupplierCounterpartyName='';
+    let physicalSupplierCounterpartyId = '';
 
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
@@ -831,6 +866,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
     if (this.params.data.requestOffers) {
       sellerCounterpartyId= this.params.data.sellerCounterpartyId,
+      physicalSupplierCounterpartyId = this.params.data.physicalSupplierCounterpartyId
       physicalSupplierCounterpartyName=this.params.data.sellerCounterpartyName
       }
 
@@ -847,7 +883,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         isPhysicalSupplier: true,
         requestLocationSellerId: this.params.data.id,
         SellerCounterpartyId:sellerCounterpartyId,
-        PhysicalSupplierCounterpartyName:physicalSupplierCounterpartyName
+        PhysicalSupplierCounterpartyName:physicalSupplierCounterpartyName,
+        physicalSupplierCounterpartyId:physicalSupplierCounterpartyId
       }
     });
 
@@ -1122,10 +1159,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       });
     }
   }
-  selectSupplier(text, id) {
-   // this.selectedRowCount=this.
-    this.editedSeller = text;
-    this.phySupplierId = id;
+  selectSupplier(element) {
+
+    this.editedSeller = element.name;
+    this.phySupplierId = element.id;
   }
 
   updatePhysicalSupplier() {
@@ -1141,6 +1178,41 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         && this.currentRequestInfo.requestLocations.length > 0) {
         currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
+    }
+    let valid = false;
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.locationsRows.length > 0){
+        const selectItems = state.spotNegotiation.locationsRows.filter(item=> item.locationId === this.params.data.locationId && item.sellerCounterpartyId === this.params.data.sellerCounterpartyId && item.physicalSupplierCounterpartyId === this.phySupplierId && item.id !== this.params.data.id );
+        if(selectItems.length != 0){
+          this.locationsRows = state.spotNegotiation.locationsRows;
+          this.locationsRows.forEach(element => {
+            let updatedRow = { ...element };
+            if(element.locationId == this.params.data.locationId &&  element.id == this.params.data.id){
+              const PreviousPhySupplier = state.spotNegotiation.counterpartyList.filter(item=> item.name === this.params.value);
+              if(PreviousPhySupplier.length !=0){
+                updatedRow.physicalSupplierCounterpartyId =  PreviousPhySupplier[0].id;
+                updatedRow.physicalSupplierCounterpartyName = PreviousPhySupplier[0].name;
+                this.store.dispatch(new EditLocationRow(updatedRow));
+
+                //this.store.dispatch(new EditCounterpartyList(updatedRow));
+                return valid = true
+              }
+            }
+          });
+          
+        }
+        else{
+          return valid = false
+        }
+        
+      }
+     
+    });
+    if(valid){
+      this.toastr.error('Physical supplier already available against the given the Seller.');
+      return;
+    }
+    else{
     }
     if (this.params.data.requestOffers) {
       sellerCounterpartyId= this.params.data.sellerCounterpartyId,
@@ -1160,12 +1232,52 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
       if (res.status) {
-        const futureLocationsRows = this.getLocationRowsAddPhySupplier(
-          JSON.parse(JSON.stringify(locationsRows))
-        );
+          const futureLocationsRows = this.getLocationRowsAddPhySupplier(
+            JSON.parse(JSON.stringify(locationsRows))
+          );
+
+        if(this.phySupplierId && this.params?.value){
+            const counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+            return state.spotNegotiation.counterpartyList;
+           });
+          if(counterpartyList?.length > 0){
+            counterpartyList.forEach(element => {
+              if(element.id == this.phySupplierId){
+                let updatedRow1 = { ...element };
+                updatedRow1.isSelected =  true;
+                this.store.dispatch(new EditCounterpartyList(updatedRow1));
+              }
+              else if( element.name == this.params?.value){
+                let updatedRow1 = { ...element };
+                updatedRow1.isSelected =  false;
+                this.store.dispatch(new EditCounterpartyList(updatedRow1));
+              }
+            });
+          }
+        }
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         this.toastr.success('Phy. Supplier added successfully');
       } else {
+
+        if(this.phySupplierId && this.params?.value){
+          const counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.counterpartyList;
+         });
+        if(counterpartyList?.length > 0){
+          counterpartyList.forEach(element => {
+            if(element.id == this.phySupplierId){
+              let updatedRow1 = { ...element };
+              updatedRow1.isSelected =  false;
+              this.store.dispatch(new EditCounterpartyList(updatedRow1));
+            }
+            else if( element.name == this.params?.value){
+              let updatedRow1 = { ...element };
+              updatedRow1.isSelected =  true;
+              this.store.dispatch(new EditCounterpartyList(updatedRow1));
+            }
+          });
+        }
+      }
         this.toastr.error(res.message);
         return;
       }

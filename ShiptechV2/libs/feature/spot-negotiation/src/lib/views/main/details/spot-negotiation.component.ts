@@ -122,9 +122,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
-        index < priceDetailsArray.length &&
+        index < priceDetailsArray?.length &&
         row.id ===
-        priceDetailsArray[index].requestLocationSellerId
+        priceDetailsArray[index]?.requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.requestOffers.forEach(element1 => {
@@ -155,6 +155,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
 
       // Else if not in the same index
+  if(priceDetailsArray != undefined && priceDetailsArray.length >0){
       const detailsForCurrentRow = priceDetailsArray.filter(
         e => e.requestLocationSellerId === row.id
       );
@@ -187,6 +188,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         });
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
       }
+  }
 
 
       return row;
@@ -256,6 +258,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         alert('Handle Error');
         return;
       } else {
+        if(res?.payload?.length > 0){
+          res.payload.forEach(element => {
+            element.isSelected = false;
+            
+          });
+
+        }
         // Populate Store
         this.store.dispatch(new SetCounterpartyList(res.payload));
       }
