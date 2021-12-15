@@ -37,6 +37,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   subject: any;
   content: any;
   previewTemplate: any;
+  previousSelected : any;
   //rfqTemplate: any;
   items: Items[]; 
   public Editor = ClassicEditor;
@@ -49,26 +50,27 @@ export class EmailPreviewPopupComponent implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.SelectedSellerWithProds =  data;
-
-      if(this.SelectedSellerWithProds.requestOffers?.length > 0){
-          if(this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
-          this.items =  [
-            {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ'},
-            {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ'},
-          ];
-          this.selected = 'MultipleRfqAmendRFQEmailTemplate';
-        }
-        else{
-          this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
-          this.dialogRef.close();
-        }
-      }
-      else{
-        this.items =  [
-          {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'New RFQ'},
-        ];
-        this.selected = 'MultipleRfqNewRFQEmailTemplate';
-      }
+      this.selected = 'MultipleRfqNewRFQEmailTemplate';
+      this.previousSelected = 'MultipleRfqNewRFQEmailTemplate';
+      // if(this.SelectedSellerWithProds.requestOffers?.length > 0){
+      //     if(this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
+      //     this.items =  [
+      //       {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ'},
+      //       {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ'},
+      //     ];
+      //     this.selected = 'MultipleRfqAmendRFQEmailTemplate';
+      //   }
+      //   else{
+      //     this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
+      //     this.dialogRef.close();
+      //   }
+      // }
+      // else{
+      //   this.items =  [
+      //     {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'New RFQ'},
+      //   ];
+      //   this.selected = 'MultipleRfqNewRFQEmailTemplate';
+      // }
       this.content = "";
      }
 
@@ -78,10 +80,26 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
     });
     if(this.selected){
-    this.getPreviewTemplate(true);}
+    this.getPreviewTemplate();}
   }
 
-  getPreviewTemplate(OnErrorClosePopup){
+  getPreviewTemplate(){
+    if(this.selected != 'MultipleRfqNewRFQEmailTemplate'){
+      if(this.SelectedSellerWithProds.requestOffers?.find(x=>x.RfqId===0)){
+        if(this.selected != 'MultipleRfqAmendRFQEmailTemplate')
+        this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
+        else if(this.selected != 'MultipleRfqRevokeRFQEmailTemplate')
+        this.toaster.error('Revoke RFQ cannot be sent as RFQ was not communicated.');
+        return;
+      }
+      else if(this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length === 0){
+        if(this.selected != 'MultipleRfqAmendRFQEmailTemplate')
+        this.toaster.error('Amend RFQ cannot be sent as RFQ was skipped.');
+        else if(this.selected != 'MultipleRfqRevokeRFQEmailTemplate')
+        this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
+        return;
+      }
+    }
     // let requestProducts: any;
     // if(this.SelectedSellerWithProds.requestOffers?.length > 0){
     //   requestProducts = this.SelectedSellerWithProds.requestOffers?.filter(row => row.isRfqskipped === false)
@@ -124,9 +142,14 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.from = this.previewTemplate.From;
     this.filesList = this.previewTemplate.AttachmentsList;}
     else{
+      this.to = [];
+      this.cc = [];
+      this.subject = '';
+      this.content = '';
+      this.from = [];
+      this.filesList = [];
       this.toaster.error(res);
-      if(OnErrorClosePopup)
-        this.dialogRef.close();
+
     }
   });
 }
