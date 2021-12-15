@@ -545,9 +545,7 @@
                       class="free-text-field"
                       type="text"
                       matInput
-                      [(ngModel)]="
-                        productDetail.value.physicalSupplierCounterparty
-                      "
+                      [ngModel]="productDetail.value.physicalSupplierCounterparty | htmlDecodeReadonly"
                       (ngModelChange)="
                         physicalSupplierCounterpartyChange(
                           $event,

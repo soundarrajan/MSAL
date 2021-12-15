@@ -1,11 +1,11 @@
-﻿commit f83fb7349b08a082ace2eef4a5454fbb6a19a78c
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Dec 14 14:11:18 2021 +0000
+﻿commit 3264cdaba6aae14df74c3eb30fd438a7c3bdd126
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Wed Dec 15 09:33:47 2021 +0000
 
-    Merged PR 15182: css fixes control tower
+    Merged PR 15200: 36971 spcl char fix in UI
     
-    css fixes control tower
+    36971 spcl char fix in UI
     
-    Related work items: #37411
+    Related work items: #36971
 
 branch: master

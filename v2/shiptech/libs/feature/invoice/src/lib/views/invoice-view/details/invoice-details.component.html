@@ -1100,9 +1100,8 @@
                         class="free-text-field"
                         type="text"
                         matInput
-                        [(ngModel)]="
-                          this.formValues.counterpartyDetails.payableTo
-                        "
+                        [ngModel]="formValues.counterpartyDetails.payableTo | htmlDecodeReadonly"
+                        (ngModelChange)="formValues.counterpartyDetails.payableTo = $event"
                         [ngModelOptions]="{ standalone: true }"
                         [matTooltip]="
                           this.formValues.counterpartyDetails.payableTo?.name | htmlDecodeReadonly
