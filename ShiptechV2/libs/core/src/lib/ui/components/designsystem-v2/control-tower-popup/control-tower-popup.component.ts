@@ -26,6 +26,7 @@ export class ControlTowerPopupComponent implements OnInit {
   initialDefaultStatus: string;
   initialComments: string;
   controlTowerLogStatus: any[];
+
   constructor(
     private toastr: ToastrService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -268,7 +269,7 @@ export class ControlTowerPopupComponent implements OnInit {
     }
   }
   closeDialog() {
-    let statusId = parseFloat(this.status);
+    let statusId = parseFloat(this.initialDefaultStatus);
     let findStatusIndex = _.findIndex(this.controlTowerActionStatus, function(
       object: any
     ) {
