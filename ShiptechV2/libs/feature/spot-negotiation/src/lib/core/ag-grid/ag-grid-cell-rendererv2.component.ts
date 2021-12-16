@@ -1091,19 +1091,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   updatePhysicalSupplier() {
-    let RequestGroupId = 0;
-    let currentRequestLocation = { id: '0', locationId: '0' };
-    let sellerCounterpartyId=0;
-    let physicalSupplierCounterpartyName=''
-
-    if (this.currentRequestInfo) {
-      RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
-
-      if (this.currentRequestInfo.requestLocations
-        && this.currentRequestInfo.requestLocations.length > 0) {
-        currentRequestLocation = this.currentRequestInfo.requestLocations[0];
-      }
-    }
     let valid = false;
     this.store.selectSnapshot<any>((state: any) => {
       if(state.spotNegotiation.locationsRows.length > 0){
@@ -1139,20 +1126,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
     else{
     }
-    if (this.params.data.requestOffers) {
-      sellerCounterpartyId= this.params.data.sellerCounterpartyId,
-      physicalSupplierCounterpartyName=this.params.data.sellerCounterpartyName
-      }
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
     let payload = {
-      requestGroupId:RequestGroupId,
-      requestLocationId:currentRequestLocation.id,
-      sellerCounterpartyId:sellerCounterpartyId,
+      requestGroupId:this.params.data.requestGroupId,
+      requestLocationId: this.params.data.requestLocationId,
+      sellerCounterpartyId:this.params.data.sellerCounterpartyId,
       requestLocationSellerId: this.params.data.id,
       phySupplierId: this.phySupplierId,
-      physicalSupplierCounterpartyName:physicalSupplierCounterpartyName
+      physicalSupplierCounterpartyName:this.params.data.sellerCounterpartyName
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {

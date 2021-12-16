@@ -266,8 +266,8 @@ export class ShiptechCustomHeaderGroup {
   isExpand: boolean;
   public resizeIconss: any;
   public expandState: string;
-  closureValue:any;
-  quoteDate:any;
+  closureValue: any;
+  quoteDate: any;
   targetValue: any;
   livePrice: any;
   benchmark: any;
@@ -279,7 +279,8 @@ export class ShiptechCustomHeaderGroup {
   counterpartyList = [];
   visibleCounterpartyList = [];
   selectedCounterparty = [];
-  currentRequestInfo:any;
+  currentRequestData: any[];
+  currentRequestInfo: any;
   sellersCount$: Observable<number>;
 
   ngOnInit(): any {
@@ -311,7 +312,7 @@ export class ShiptechCustomHeaderGroup {
   }
 
   onCounterpartyCheckboxChange(checkbox: any, element: any): void {
-   if (checkbox.checked) {
+    if (checkbox.checked) {
       // Add to selected counterparty list
       this.selectedCounterparty.push(element);
     }
@@ -342,9 +343,9 @@ export class ShiptechCustomHeaderGroup {
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      if(this.currentRequestInfo.requestLocations &&
-          this.currentRequestInfo.requestLocations.length > 0){
-            currentRequestLocation = this.currentRequestInfo.requestLocations[0];
+      if (this.currentRequestInfo.requestLocations &&
+        this.currentRequestInfo.requestLocations.length > 0) {
+        currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
     }
 
@@ -361,7 +362,7 @@ export class ShiptechCustomHeaderGroup {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   limitStrLength = (text, max_length) => {
@@ -375,11 +376,11 @@ export class ShiptechCustomHeaderGroup {
   agInit(params: any): void {
     this.params = params;
     if (this.params.product) {
-      let formattedLivePrice= this.priceFormatValue(this.params.product.requestGroupProducts.livePrice);
+      let formattedLivePrice = this.priceFormatValue(this.params.product.requestGroupProducts.livePrice);
       this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
-      this.closureValue=this.params.product.requestGroupProducts.closure;
-      this.quoteDate=this.params.product.requestGroupProducts.quoteDate;
+      this.closureValue = this.params.product.requestGroupProducts.closure;
+      this.quoteDate = this.params.product.requestGroupProducts.quoteDate;
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
@@ -435,7 +436,7 @@ export class ShiptechCustomHeaderGroup {
       width: '500vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
-      data: { LocationId : this.currentRequestInfo.requestLocations[0].locationId, ProductId : this.params.product.productId, RequestId : this.currentRequestInfo.id }
+      data: { LocationId: this.currentRequestInfo.requestLocations[0].locationId, ProductId: this.params.product.productId, RequestId: this.currentRequestInfo.id }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -465,28 +466,28 @@ export class ShiptechCustomHeaderGroup {
       let RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
       return this.selectedCounterparty.map(val =>
-          <SpnegoAddCounterpartyModel>{
-            requestGroupId: RequestGroupId,
-            requestId: this.currentRequestInfo.id,
-            requestLocationId: parseInt(reqLocation.id),
-            locationId: parseInt(reqLocation.locationId),
-            id: 0,
-            name: '',
-            counterpartytypeId: 0,
-            counterpartyTypeName: (val.seller)? 'Seller': (val.supplier)? 'Supplier' : (val.broker)? 'Broker' : (val.sludge)? 'Sludge' : '',
-            genPrice: '',
-            genRating: '',
-            isDeleted: false,
-            isSelected: true,
-            mail: '',
-            portPrice: '',
-            portRating: '',
-            prefferedProductIds: '',
-            sellerComments: '',
-            sellerCounterpartyId: val.id,
-            sellerCounterpartyName: val.name,
-            senRating: ''
-          }
+        <SpnegoAddCounterpartyModel>{
+          requestGroupId: RequestGroupId,
+          requestId: this.currentRequestInfo.id,
+          requestLocationId: parseInt(reqLocation.id),
+          locationId: parseInt(reqLocation.locationId),
+          id: 0,
+          name: '',
+          counterpartytypeId: 0,
+          counterpartyTypeName: (val.seller) ? 'Seller' : (val.supplier) ? 'Supplier' : (val.broker) ? 'Broker' : (val.sludge) ? 'Sludge' : '',
+          genPrice: '',
+          genRating: '',
+          isDeleted: false,
+          isSelected: true,
+          mail: '',
+          portPrice: '',
+          portRating: '',
+          prefferedProductIds: '',
+          sellerComments: '',
+          sellerCounterpartyId: val.id,
+          sellerCounterpartyName: val.name,
+          senRating: ''
+        }
       );
     } else {
       return Array<SpnegoAddCounterpartyModel>();
@@ -515,13 +516,13 @@ export class ShiptechCustomHeaderGroup {
 
 
 
-  priceFormatValue(value, type?:any) {
+  priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
-      return (type=='benchmark')? '--': null;
+      return (type == 'benchmark') ? '--' : null;
     }
 
     if (value == 0) {
-      return (type=='benchmark')? value: '--';
+      return (type == 'benchmark') ? value : '--';
     }
 
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -545,7 +546,7 @@ export class ShiptechCustomHeaderGroup {
       }
 
       //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
-      if(type && type=='benchmark') {
+      if (type && type == 'benchmark') {
         plainNumber = Math.abs(plainNumber);
       }
 
@@ -555,18 +556,18 @@ export class ShiptechCustomHeaderGroup {
 
   calculateTargetPrice() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    this.livePrice= this.priceFormatValue(this.livePrice);
+    this.livePrice = this.priceFormatValue(this.livePrice);
     this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
-    this.benchmark = (this.benchmark == null || this.benchmark == '--'? 0 : this.benchmark);
+    this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
     this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
     //this.closureValue=parseInt(this.livePrice); 
     let payload = {
       "productPrice": {
-      "requestGroupId":parseInt(RequestGroupId),
-      "requestLocationId": this.requestLocationId,
-      "requestProductId": this.requestProductId,
-      "livePrice": parseInt(this.livePrice),
-      "targetPrice": parseInt(this.targetValue)
+        "requestGroupId": parseInt(RequestGroupId),
+        "requestLocationId": this.requestLocationId,
+        "requestProductId": this.requestProductId,
+        "livePrice": parseInt(this.livePrice),
+        "targetPrice": parseInt(this.targetValue)
       }
     };
     const response = this._spotNegotiationService.saveTargetPrice(payload);
@@ -597,14 +598,136 @@ export class ShiptechCustomHeaderGroup {
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
       if (res.status) {
+        debugger;
         this.toastr.success(res.message);
         // Add in Store
-        this.store.dispatch(new AddCounterpartyToLocations(res.counterparties));
+        // this.store.dispatch(new AddCounterpartyToLocations(res.counterparties));
+        // let Counterparties = clone(res.counterparties)
+        //if(res.sellerOffers?.length>0){
+        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+          res.counterparties,
+          res.sellerOffers
+        );
+        //this.store.dispatch(new AddCounterpartyToLocationsWithOffers(futureLocationsRows));
+        // }
+        // else
+         this.store.dispatch(new AddCounterpartyToLocations(futureLocationsRows));
         this.changeDetector.markForCheck();
       } else {
         this.toastr.error(res.message);
         return;
       }
     });
+  }
+
+  UpdateProductsSelection(requestLocations, row) {
+    if (requestLocations.length != 0) {
+      let currentLocProdCount = requestLocations[0].requestProducts.length;
+      for (let index = 0; index < currentLocProdCount; index++) {
+        let indx = index + 1;
+        let val = "checkProd" + indx;
+        const status = requestLocations[0].requestProducts[index].status;
+        row[val] = status === 'Stemmed' || status === 'Confirmed' ? false : row.isSelected;
+        //row[val] = row.isSelected;
+      }
+    }
+  }
+
+  getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+    let counterpartyList: any;
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestData = spotNegotiation.locations;
+      counterpartyList = spotNegotiation.counterpartyList;
+    });
+
+    rowsArray.forEach((row, index) => {
+      //let row = { ... reqLocSeller };
+      let currentLocProd = this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
+      this.UpdateProductsSelection(currentLocProd, row);
+      // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
+      if (
+        index < priceDetailsArray?.length &&
+        row.id ===
+        priceDetailsArray[index]?.requestLocationSellerId
+      ) {
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers.forEach(element1 => {
+          if (
+            element1.requestProductId != undefined &&
+            element1.requestProductId != null &&
+            this.currentRequestData?.length > 0
+          ) {
+            if (
+              currentLocProd.length > 0 &&
+              currentLocProd[0].requestProducts.length > 0
+            ) {
+              let FilterProdut = currentLocProd[0].requestProducts.filter(
+                col => col.id == element1.requestProductId
+              );
+              if (
+                FilterProdut.length > 0 &&
+                FilterProdut[0].status != undefined &&
+                FilterProdut[0].status == 'Stemmed'
+              ) {
+                row.isEditable = true;
+              }
+            }
+          }
+        });
+        row.isSelected = priceDetailsArray[index].isSelected;
+        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
+        if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
+          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+        }
+        row.totalOffer = priceDetailsArray[index].totalOffer;
+        return row;
+      }
+
+      // Else if not in the same index
+      if (priceDetailsArray != undefined && priceDetailsArray?.length > 0) {
+        const detailsForCurrentRow = priceDetailsArray?.filter(
+          e => e?.requestLocationSellerId === row.id
+        );
+
+        // We found something
+        if (detailsForCurrentRow.length > 0) {
+          row.requestOffers = detailsForCurrentRow[0].requestOffers;
+          row.requestOffers.forEach(element1 => {
+            if (
+              element1.requestProductId != undefined &&
+              element1.requestProductId != null &&
+              this.currentRequestData?.length > 0
+            ) {
+              if (
+                currentLocProd.length > 0 &&
+                currentLocProd[0].requestProducts.length > 0
+              ) {
+                let FilterProdut = currentLocProd[0].requestProducts.filter(
+                  col => col.id == element1.requestProductId
+                );
+                if (
+                  FilterProdut.length > 0 &&
+                  FilterProdut[0].status != undefined &&
+                  FilterProdut[0].status == 'Stemmed'
+                ) {
+                  row.isEditable = true;
+                }
+              }
+            }
+          });
+          row.isSelected = detailsForCurrentRow[0].isSelected;
+          row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+          if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
+            row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
+          }
+          row.totalOffer = detailsForCurrentRow[0].totalOffer;
+        }
+      }
+
+
+      return row;
+    });
+
+    return rowsArray;
   }
 }
