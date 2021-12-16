@@ -176,7 +176,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
       if (res.status) {
-        debugger;
         this.toastr.success(res.message);
         // Add in Store
         // this.store.dispatch(
