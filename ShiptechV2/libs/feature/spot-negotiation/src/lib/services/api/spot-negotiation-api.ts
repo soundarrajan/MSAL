@@ -29,7 +29,8 @@ export const SpotNegotiationApiPaths = {
   removeCounterparty:`Groups/removeSeller`,
   otherDetails:`RFQ/otherDetails/requestChange`,
   getSellerContacts: `counterparty/viewContacts`,
-  addNewSellerContact: `counterparty/addContact`
+  addNewSellerContact: `counterparty/addContact`,
+  getEmailLogs : `api/masters/emaillogs/list`,
 };
 
 @Injectable({
@@ -70,6 +71,22 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
           )
         )
       );
+  }
+
+  @ObservableException()
+  getEmailLogs(payload: any): Observable<any>{
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.getEmailLogs}`,
+      {Payload: payload}
+    )
+    .pipe(
+      map((body:any)=> body),
+      catchError((body: any)=>
+       of(
+         body.error.ErrorMessage ? body.error.ErrorMessage: body.error.errorMessage
+       )
+      )
+    );
   }
 
   @ObservableException()
