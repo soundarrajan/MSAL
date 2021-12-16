@@ -45,7 +45,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public frameworkComponents;
   rowData_aggrid: any = [];
   locationsRows: any = [];
-  private skipAgGridRowUpdate : boolean = false;
   currentRequestSmallInfo = {};
   highlightedCells = {};
   uomsMap: any;
@@ -726,8 +725,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     this.store.subscribe(({ spotNegotiation, ...props }) => {
 
-      if (!this.shouldUpdate({ spotNegotiation }) || this.skipAgGridRowUpdate) {
-        this.skipAgGridRowUpdate = false;
+      if (!this.shouldUpdate({ spotNegotiation })) {
         return null;
       }
 
@@ -891,7 +889,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             dataRows = dataRows.splice(rowIndex, 1);
             gridApi.applyTransaction({ remove: dataRows });
             this.toastr.success('Counterparty has been removed from negotiation succesfully.');
-            this.skipAgGridRowUpdate = true;
             this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
           } else{
             if(res.isRequestStemmed){

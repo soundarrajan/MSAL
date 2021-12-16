@@ -354,21 +354,21 @@ import { of } from 'rxjs';
         matTooltipClass="lightTooltip"
       >
 
-      <span *ngIf="params.data.isEditable"
-        >
-         <span
-            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
-            >{{ params.data.physicalSupplierCounterpartyName }}</span
-          >
-          <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
-      </span>
+            <span *ngIf="params.data.isEditable"
+              >
+              <span
+                  *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+                  >{{ params.data.physicalSupplierCounterpartyName }}</span
+                >
+                <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
+            </span>
 
-        <span *ngIf="!params.data.isEditable"
-          contentEditable="true"
-          [matMenuTriggerFor]="clickmenu"
-          #menuTrigger="matMenuTrigger"
-          (click)="setValuefun(params.data)"
-        >
+            <span *ngIf="!params.data.isEditable"
+              contentEditable="true"
+              [matMenuTriggerFor]="clickmenu"
+              #menuTrigger="matMenuTrigger"
+              (click)="setValuefun(params.data)"
+            >
           <span
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
             >{{ params.data.physicalSupplierCounterpartyName }}</span
