@@ -285,7 +285,7 @@ export const BASE_MENU: KeyedMenuItems = {
           },
           upload_performance_benchmark: {
             label: 'Upload Performance Benchmark',
-            url: '/#/masters/performance-benchmark-upload/',
+            url: '/#/masters/performance-benchmark-upload',
             target: '_blank'
           }
         }
