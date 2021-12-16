@@ -495,9 +495,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       //   }
       // );
 
-        this.store.dispatch(
-          new SetLocationsRowsPriceDetails(res['sellerOffers'])
-        );
+        // this.store.dispatch(
+        //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
+        // );
 
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
           res['requestLocationSellers'],

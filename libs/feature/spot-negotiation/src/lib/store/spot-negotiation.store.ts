@@ -263,12 +263,15 @@ export class SpotNegotiationStore {
     { payload }: AddCounterpartyToLocations
   ) {
     const state = getState();
-    payload.map(c=> {
-      var reqLocation = state.locations.find(x=> x.id === c.requestLocationId);
-      for(let index = 0; index < reqLocation.requestProducts.length; index++) {
-        let indx = index +1;
-        let val = "checkProd" + indx;
-        c[val] = c.isSelected;
+    payload.map(c=> 
+      {
+        if(c.requestOffers == undefined){
+          var reqLocation = state.locations.find(x=> x.id === c.requestLocationId);
+          for(let index = 0; index < reqLocation.requestProducts.length; index++) {
+            let indx = index +1;
+            let val = "checkProd" + indx;
+            c[val] = c.isSelected;
+        }
       }
     });
     var ctpys = [...state.locationsRows, ...payload];
