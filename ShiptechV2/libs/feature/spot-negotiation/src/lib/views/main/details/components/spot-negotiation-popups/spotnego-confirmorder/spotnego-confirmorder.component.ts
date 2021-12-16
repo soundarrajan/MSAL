@@ -162,6 +162,15 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         }
       });
     });
+    let productValid;
+    locations.forEach((ele,key)=>{
+      productValid=this.requestOfferItems.filter(e=>e.LocationId===ele.locationId && e.RequestProductId==ele. requestProducts[key].id);
+      if(productValid.length>1){
+        this.requestOfferItems=[];
+        this.toaster.error('For a single product, offer cannot be confirmed by more than one seller.');
+        this.closeDialog();
+      }
+    });
     return this.requestOfferItems;
   }
   //Construct UI Value's to bind the popup grid
