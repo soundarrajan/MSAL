@@ -1,11 +1,11 @@
-﻿commit c5f1f5e7aa9bce4ac5075ad4cae0d426b71751f8
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Dec 16 07:15:16 2021 +0000
+﻿commit 3756ac47ce9ba0ac93cf1c5670a5743bf3fcccdf
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Dec 16 08:06:14 2021 +0000
 
-    Merged PR 15219: Added the  default sorting when user refresh the EGCS Difference screen
+    Merged PR 15220: 36971-spcl char fixes in lookup fields
     
-    Added the  default sorting when user refresh the EGCS Difference screen
+    36971-spcl char fixes in lookup fields
     
-    Related work items: #37559
+    Related work items: #36971
 
 branch: master
