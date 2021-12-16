@@ -554,6 +554,7 @@ export class ShiptechCustomHeaderGroup {
   }
 
   calculateTargetPrice() {
+    const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice= this.priceFormatValue(this.livePrice);
     this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
     this.benchmark = (this.benchmark == null || this.benchmark == '--'? 0 : this.benchmark);
@@ -561,6 +562,7 @@ export class ShiptechCustomHeaderGroup {
     //this.closureValue=parseInt(this.livePrice); 
     let payload = {
       "productPrice": {
+      "requestGroupId":parseInt(RequestGroupId),
       "requestLocationId": this.requestLocationId,
       "requestProductId": this.requestProductId,
       "livePrice": parseInt(this.livePrice),
