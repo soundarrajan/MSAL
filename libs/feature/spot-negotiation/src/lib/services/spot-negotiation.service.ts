@@ -25,6 +25,14 @@ export class SpotNegotiationService extends BaseStoreService
     super(store, loggerFactory.createLogger(SpotNegotiationService.name));
   }
 
+  /* Get Email Logs
+   * @param payload =
+   */
+  @ObservableException()
+  getEmailLogs(payload :any): Observable<unknown>{
+    return this.spotNegotiationApi.getEmailLogs(payload);
+  }
+
   /**
    * @param payload = False
    */
@@ -189,6 +197,7 @@ export class SpotNegotiationService extends BaseStoreService
    GetExistingOrders(payload: any): Observable<unknown> {
      return this.spotNegotiationApi.GetExistingOrders(payload);
    }
+
   /**
    * Get Confirm Offer's
    * @param payload =
@@ -206,7 +215,6 @@ export class SpotNegotiationService extends BaseStoreService
   SkipRFQ(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.SkipRFQ(payload);
   }
-
 
   /**
  * Save and Send RFQ
@@ -250,7 +258,6 @@ export class SpotNegotiationService extends BaseStoreService
   addNewSellerContact(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.addNewSellerContact(payload);
   }
-
   /**
    * Fake populate rows
    */
