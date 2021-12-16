@@ -454,7 +454,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return;
     }
     else if(this.selectedSellerList.find(x=>x.RfqId !==0 && x.RequestOffers?.find(x=>x.isRfqskipped === true))){
-      this.toaster.error('Revoke RFQ mail cannot be sent as RFQ was not communicated to the counterparty.');
+      this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
       return;
     }
     else{
