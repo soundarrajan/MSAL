@@ -113,7 +113,6 @@ export class SpotnegoemaillogComponent implements OnInit {
 
   public onrowClicked (ev){
     console.log(ev);
-    debugger;
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent,{
       data : ev.data,
       width: '80vw',

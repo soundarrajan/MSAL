@@ -38,7 +38,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   content: any;
   previewTemplate: any;
   //rfqTemplate: any;
-  items: Items[]; 
+  items: Items[];
   public Editor = ClassicEditor;
 
   constructor(public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
@@ -48,55 +48,56 @@ export class EmailPreviewPopupComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.SelectedSellerWithProds =  data;
-      this.selected = 'MultipleRfqNewRFQEmailTemplate';
-      //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
-          //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
-          // this.items =  [
-          //   {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'RFQ', disabled: false},
-          //   {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ', disabled: true},
-          //   {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ', disabled: true},            
-          // ];
-          // this.selected = 'MultipleRfqAmendRFQEmailTemplate';
-        // }
-        // else{
-        //   this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
-        //   this.dialogRef.close();
-        // }
-      // }
-      // else{
-      //   this.items =  [
-      //     {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'New RFQ'},
-      //   ];
-      //   this.selected = 'MultipleRfqNewRFQEmailTemplate';
-      // }
-      this.content = "";
-     }
+    this.SelectedSellerWithProds = data;
+    this.selected = 'MultipleRfqNewRFQEmailTemplate';
+    //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
+    //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
+    // this.items =  [
+    //   {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'RFQ', disabled: false},
+    //   {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ', disabled: true},
+    //   {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ', disabled: true},            
+    // ];
+    // this.selected = 'MultipleRfqAmendRFQEmailTemplate';
+    // }
+    // else{
+    //   this.toaster.error('Amended RFQ cannot be sent as RFQ was skipped.');
+    //   this.dialogRef.close();
+    // }
+    // }
+    // else{
+    //   this.items =  [
+    //     {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'New RFQ'},
+    //   ];
+    //   this.selected = 'MultipleRfqNewRFQEmailTemplate';
+    // }
+    this.content = "";
+  }
 
 
   ngOnInit(): void {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
     });
-    if(this.selected){
-    this.getPreviewTemplate();}
+    if (this.selected) {
+      this.getPreviewTemplate();
+    }
   }
 
-  getPreviewTemplate(){
-    if(this.selected != 'MultipleRfqNewRFQEmailTemplate'){
-      if(this.SelectedSellerWithProds.requestOffers == undefined || this.SelectedSellerWithProds.requestOffers?.find(x=>x.RfqId===0)){
-        if(this.selected == 'MultipleRfqAmendRFQEmailTemplate')
-        this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
-        else if(this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
-        this.toaster.error('Revoke RFQ cannot be sent as RFQ was not communicated.');
+  getPreviewTemplate() {
+    if (this.selected != 'MultipleRfqNewRFQEmailTemplate') {
+      if (this.SelectedSellerWithProds.requestOffers == undefined || this.SelectedSellerWithProds.requestOffers?.find(x => x.RfqId === 0)) {
+        if (this.selected == 'MultipleRfqAmendRFQEmailTemplate')
+          this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
+        else if (this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
+          this.toaster.error('Revoke RFQ cannot be sent as RFQ was not communicated.');
         this.clearData();
         return;
       }
-      else if(this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length === 0){
-        if(this.selected == 'MultipleRfqAmendRFQEmailTemplate')
-        this.toaster.error('Amend RFQ cannot be sent as RFQ was skipped.');
-        else if(this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
-        this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
+      else if (this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length === 0) {
+        if (this.selected == 'MultipleRfqAmendRFQEmailTemplate')
+          this.toaster.error('Amend RFQ cannot be sent as RFQ was skipped.');
+        else if (this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
+          this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
         this.clearData();
         return;
       }
@@ -114,64 +115,65 @@ export class EmailPreviewPopupComponent implements OnInit {
     //       prod.requestProducts.map(i =>i.id)
     //     )[0];
     // }
-    
-    var FinalAPIdata = {
-    RequestLocationSellerId: this.SelectedSellerWithProds.id,
-    RequestId: this.SelectedSellerWithProds.requestId,
-    CounterpartyId: this.SelectedSellerWithProds.sellerCounterpartyId,
-    CounterpartyName: this.SelectedSellerWithProds.sellerCounterpartyName,
-    RequestProductIds: this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
-          ).map(prod =>
-            prod.requestProducts.map(i =>i.id)
-          )[0],
-    RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId:0,
-    TemplateName: this.selected,
-    QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
-  };
-  this.spinner.show();
-  // Get response from server
-  const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
-  response.subscribe((res: any) => {
-    this.spinner.hide();
-    if(res["previewResponse"]){
-    this.previewTemplate = res["previewResponse"];
-    //this.rfqTemplate = this.previewTemplate
-    this.to =(this.previewTemplate.to.map(to => to.idEmailAddress));
-    this.cc =(this.previewTemplate.cc.map(cc => cc.idEmailAddress));
-    this.subject =  this.previewTemplate.subject;
-    this.content =  this.previewTemplate.content;
-    this.from = this.previewTemplate.From;
-    this.filesList = this.previewTemplate.AttachmentsList;}
-    else{
-      this.clearData();
-      this.toaster.error(res);
 
-    }
-  });
-}
- clearData(){
-  this.to = [];
-  this.cc = [];
-  this.subject = '';
-  this.content = '';
-  this.from = [];
-  this.filesList = [];
-  this.previewTemplate=null;
- }
-  addTo(item){
+    var FinalAPIdata = {
+      RequestLocationSellerId: this.SelectedSellerWithProds.id,
+      RequestId: this.SelectedSellerWithProds.requestId,
+      CounterpartyId: this.SelectedSellerWithProds.sellerCounterpartyId,
+      CounterpartyName: this.SelectedSellerWithProds.sellerCounterpartyName,
+      RequestProductIds: this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
+      ).map(prod =>
+        prod.requestProducts.map(i => i.id)
+      )[0],
+      RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId : 0,
+      TemplateName: this.selected,
+      QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
+    };
+    this.spinner.show();
+    // Get response from server
+    const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
+    response.subscribe((res: any) => {
+      this.spinner.hide();
+      if (res["previewResponse"]) {
+        this.previewTemplate = res["previewResponse"];
+        //this.rfqTemplate = this.previewTemplate
+        this.to = (this.previewTemplate.to.map(to => to.idEmailAddress));
+        this.cc = (this.previewTemplate.cc.map(cc => cc.idEmailAddress));
+        this.subject = this.previewTemplate.subject;
+        this.content = this.previewTemplate.content;
+        this.from = this.previewTemplate.From;
+        this.filesList = this.previewTemplate.AttachmentsList;
+      }
+      else {
+        this.clearData();
+        this.toaster.error(res);
+
+      }
+    });
+  }
+  clearData() {
+    this.to = [];
+    this.cc = [];
+    this.subject = '';
+    this.content = '';
+    this.from = [];
+    this.filesList = [];
+    this.previewTemplate = null;
+  }
+  addTo(item) {
 
     this.to.push(item);
-    this.previewTemplate.to.push({IdEmailAddress: item});
+    this.previewTemplate.to.push({ IdEmailAddress: item });
     this.toEmail = '';
   }
 
-  addCc(item){
+  addCc(item) {
     this.cc.push(item);
-    this.previewTemplate.cc.push({IdEmailAddress: item});
+    this.previewTemplate.cc.push({ IdEmailAddress: item });
     this.ccEmail = '';
   }
 
-  fileBrowseHandler(files){
+  fileBrowseHandler(files) {
     for (const item of files) {
       this.filesList.push(item.name);
     }
@@ -180,23 +182,23 @@ export class EmailPreviewPopupComponent implements OnInit {
 
   saveAndSendRFQ(isSendEmail) {
 
-    if(this.previewTemplate == null){
+    if (this.previewTemplate == null) {
       this.toaster.error("Template does not exists.");
       return;
-     }
-     
+    }
+
     var selectedSellers = [{
       RequestLocationSellerId: this.SelectedSellerWithProds.id,
       RequestLocationID: this.SelectedSellerWithProds.requestLocationId,
       LocationID: this.SelectedSellerWithProds.locationId,
       SellerId: this.SelectedSellerWithProds.sellerCounterpartyId,
-      RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId:0,
+      RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId : 0,
       RequestId: this.SelectedSellerWithProds.requestId,
       PhysicalSupplierCounterpartyId: this.SelectedSellerWithProds.physicalSupplierCounterpartyId,
       RequestProductIds: this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
-        ).map(prod =>
-          prod.requestProducts.map(i =>i.id)
-        )[0]
+      ).map(prod =>
+        prod.requestProducts.map(i => i.id)
+      )[0]
     }];
 
     this.previewTemplate.subject = this.subject;
@@ -205,10 +207,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.previewTemplate.AttachmentsList = this.filesList;
 
     var saveAndSendRfqAPIPayload = {
-      SelectedSellers:selectedSellers,
-      RequestGroupId:this.currentRequestInfo.requestGroupId,
+      SelectedSellers: selectedSellers,
+      RequestGroupId: this.currentRequestInfo.requestGroupId,
       IsSendMail: isSendEmail,
-      PreviewResponse:this.previewTemplate,
+      PreviewResponse: this.previewTemplate,
       QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
     };
 
@@ -218,61 +220,68 @@ export class EmailPreviewPopupComponent implements OnInit {
     response.subscribe((res: any) => {
       this.spinner.hide();
 
-      if(res instanceof Object && res['validationMessage'].length > 0 ){
+      if (res instanceof Object && res['validationMessage'].length > 0) {
         // this.toaster.success('RFQ(s) skipped successfully.')
         // if(res['message'].length>5)
-          this.toaster.warning(res['validationMessage']);
+        this.toaster.warning(res['validationMessage']);
       }
-      else if(res instanceof Object && isSendEmail && res['validationMessage'].length == 0 ){
-         this.toaster.success('RFQ(s) sent successfully.');
-         this.dialogRef.close();
+      else if (res instanceof Object && isSendEmail && res['validationMessage'].length == 0) {
+        this.toaster.success('RFQ(s) sent successfully.');
+        this.dialogRef.close();
       }
-      else if(res instanceof Object && !isSendEmail &&  res['validationMessage'].length == 0 ){
+      else if (res instanceof Object && !isSendEmail && res['validationMessage'].length == 0) {
         this.toaster.success('Template saved successfully.');
         this.previewTemplate = res["previewResponse"];
-     }
-      else if(res instanceof Object){
+      }
+      else if (res instanceof Object) {
         this.toaster.warning(res.Message);
       }
-      else{
+      else {
         this.toaster.error(res);
         return;
       }
-    if(res['sellerOffers'] && res['sellerOffers'].length>0){
-      const locationsRows = this.store.selectSnapshot<string>(
-        (state: any) => {
-          return state.spotNegotiation.locationsRows;
-        }
-      );
-
-      const requestGroupID = this.store.selectSnapshot<string>(
-        (state: any) => {
-          return state.spotNegotiation.groupOfRequestsId;
-        }
-      );
-
-        this.store.dispatch(
-          new SetLocationsRowsPriceDetails(res['sellerOffers'])
+      if (res['sellerOffers'] && res['sellerOffers'].length > 0) {
+        let locationsRows;
+        const requestGroupID = this.store.selectSnapshot<string>(
+          (state: any) => {
+            return state.spotNegotiation.groupOfRequestsId;
+          }
         );
 
+        if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) {
+          locationsRows = res['requestLocationSellers'];
+        }
+        else {
+          const storeLocationsRows = this.store.selectSnapshot<string>(
+            (state: any) => {
+              return state.spotNegotiation.locationsRows;
+            }
+          );
+          locationsRows = JSON.parse(JSON.stringify(storeLocationsRows))
+        }
+
+        // this.store.dispatch(
+        //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
+        // );
+
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-          JSON.parse(JSON.stringify(locationsRows)),
+          locationsRows,
           res['sellerOffers']
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
 
-      this.changeDetector.detectChanges();
-        }
+        this.changeDetector.detectChanges();
+      }
     });
     //}
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
 
     let currentRequestData: any;
-    let counterpartyList : any;
+    let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
-     currentRequestData = spotNegotiation.locations;
-     counterpartyList = spotNegotiation.counterpartyList;
+      currentRequestData = spotNegotiation.locations;
+      counterpartyList = spotNegotiation.counterpartyList;
     });
 
     rowsArray.forEach((row, index) => {
@@ -282,16 +291,16 @@ export class EmailPreviewPopupComponent implements OnInit {
       if (
         index < priceDetailsArray.length &&
         row.id ===
-        priceDetailsArray[index].requestLocationSellerId
+        priceDetailsArray[index]?.requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId =  priceDetailsArray[index].physicalSupplierCounterpartyId;
-        if(priceDetailsArray[index].physicalSupplierCounterpartyId){
-        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
+        if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
+          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
         }
-        this.UpdateProductsSelection(currentLocProd,row);
-        
+        this.UpdateProductsSelection(currentLocProd, row);
+
         return row;
       }
 
@@ -304,10 +313,11 @@ export class EmailPreviewPopupComponent implements OnInit {
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.isSelected = detailsForCurrentRow[0].isSelected;
-        row.physicalSupplierCounterpartyId =  detailsForCurrentRow[0].physicalSupplierCounterpartyId;
-        if(detailsForCurrentRow[0].physicalSupplierCounterpartyId){
-        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;}
-        this.UpdateProductsSelection(currentLocProd,row);
+        row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
+          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
+        }
+        this.UpdateProductsSelection(currentLocProd, row);
       }
       return row;
     });
@@ -315,50 +325,49 @@ export class EmailPreviewPopupComponent implements OnInit {
     return rowsArray;
   }
 
- UpdateProductsSelection(currentLocProd,row){
-  if(currentLocProd.length != 0){
-    let currentLocProdCount = currentLocProd[0].requestProducts.length;
-    for (let index = 0; index < currentLocProdCount; index++) {
-      let indx = index +1;
-      let val = "checkProd" + indx;
-      const status = currentLocProd[0].requestProducts[index].status;
-      row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : row.isSelected;
-      //row[val] = row.isSelected;
+  UpdateProductsSelection(currentLocProd, row) {
+    if (currentLocProd.length != 0) {
+      let currentLocProdCount = currentLocProd[0].requestProducts.length;
+      for (let index = 0; index < currentLocProdCount; index++) {
+        let indx = index + 1;
+        let val = "checkProd" + indx;
+        const status = currentLocProd[0].requestProducts[index].status;
+        row[val] = status === 'Stemmed' || status === 'Confirmed' ? false : row.isSelected;
+        //row[val] = row.isSelected;
+      }
     }
   }
- }
 
- revertChanges(){
-   if(this.previewTemplate == null){
-    this.toaster.error("Template does not exists.");
-    return;
-   }
-
-
-   if(this.previewTemplate.comment.id === 0){
-    this.toaster.error("No saved template.");
-    return;
-   }
-   else{
-  let requestPayload = {
-    Id: this.previewTemplate.comment.id,
-    EmailTemplateId: this.previewTemplate.comment.emailTemplate.id,
-    // BusinessId: this.previewTemplate.comment.businessId,
-    // SecondBusinessId: this.previewTemplate.comment.secondBusinessId,
-    // ThirdBusinessId: this.previewTemplate.comment.thirdBusinessId,
-    AttachmentsList: this.previewTemplate.comment.attachmentsList  
-  };
+  revertChanges() {
+    if (this.previewTemplate == null) {
+      this.toaster.error("Template does not exists.");
+      return;
+    }
 
 
-  const response = this.spotNegotiationService.RevertSavedComments(requestPayload);
-    response.subscribe((res: any) => {
-      this.spinner.hide();
-      if(res)
-      {
-        this.toaster.success('Changes reverted successfully.');
-        this.dialogRef.close();
-      }      
-    });
- }
- }
+    if (this.previewTemplate.comment.id === 0) {
+      this.toaster.error("No saved template.");
+      return;
+    }
+    else {
+      let requestPayload = {
+        Id: this.previewTemplate.comment.id,
+        EmailTemplateId: this.previewTemplate.comment.emailTemplate.id,
+        // BusinessId: this.previewTemplate.comment.businessId,
+        // SecondBusinessId: this.previewTemplate.comment.secondBusinessId,
+        // ThirdBusinessId: this.previewTemplate.comment.thirdBusinessId,
+        AttachmentsList: this.previewTemplate.comment.attachmentsList
+      };
+
+
+      const response = this.spotNegotiationService.RevertSavedComments(requestPayload);
+      response.subscribe((res: any) => {
+        this.spinner.hide();
+        if (res) {
+          this.toaster.success('Changes reverted successfully.');
+          this.dialogRef.close();
+        }
+      });
+    }
+  }
 }
