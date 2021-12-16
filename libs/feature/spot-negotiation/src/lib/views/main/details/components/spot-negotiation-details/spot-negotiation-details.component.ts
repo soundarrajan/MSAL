@@ -18,11 +18,14 @@ import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-gr
 import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-custom-header-group';
 import { SpotNegotiationService } from '../../../../../services/spot-negotiation.service';
 import {
+  DeleteSeller,
   EditLocationRow,
+  RemoveCounterparty,
   SetCounterpartyList,
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
+import { RemoveCounterpartyComponent } from '../remove-counterparty-confirmation/remove-counterparty-confirmation';
 
 @Component({
   selector: 'app-spot-negotiation-details',
@@ -42,6 +45,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public frameworkComponents;
   rowData_aggrid: any = [];
   locationsRows: any = [];
+  private skipAgGridRowUpdate : boolean = false;
   currentRequestSmallInfo = {};
   highlightedCells = {};
   uomsMap: any;
@@ -722,7 +726,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     this.store.subscribe(({ spotNegotiation, ...props }) => {
 
-      if (!this.shouldUpdate({ spotNegotiation })) {
+      if (!this.shouldUpdate({ spotNegotiation }) || this.skipAgGridRowUpdate) {
+        this.skipAgGridRowUpdate = false;
         return null;
       }
 
@@ -866,6 +871,38 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       row.checkProd5 =true;
     }
     return row;
+  }
+
+  removeCounterpartyRowClicked(rowData: any, rowIndex: number, gridApi: any) {
+    const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+      width: '600px',
+      data: {
+        sellerName: rowData.sellerCounterpartyName,
+        isRFQSent: rowData.requestOffers ? true : false
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.spotNegotiationService.RemoveCounterparty(rowData.id)
+        .subscribe((res: any) => {
+          if (res.status) {
+            let dataRows = [];
+            gridApi.forEachNode(node => dataRows.push(node.data));
+            dataRows = dataRows.splice(rowIndex, 1);
+            gridApi.applyTransaction({ remove: dataRows });
+            this.toastr.success('Counterparty has been removed from negotiation succesfully.');
+            this.skipAgGridRowUpdate = true;
+            this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
+          } else{
+            if(res.isRequestStemmed){
+              this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
+            } else{
+              this.toastr.warning(res.message);
+            }
+          }
+        });
+      }
+    });
   }
 
 }

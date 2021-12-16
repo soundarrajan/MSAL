@@ -41,15 +41,21 @@ export class AddCounterpartyToLocations{
 
   constructor(public payload: any) {}
 }
-export class SelectSeller {  
-  static readonly type = '[SelectedSellerList] Add';  
+export class RemoveCounterparty {
+  static readonly type = '[Counterparty] Remove';
 
-  constructor(public payload: any ) {  
-  }  
-}  
-export class DeleteSeller {  
-  static readonly type = '[SelectedSellerList] Delete';  
+  constructor(public payload: any) {
+  }
+}
+export class SelectSeller {
+  static readonly type = '[SelectedSellerList] Add';
 
-  constructor(public RequestLocationSellerId: number) {  
-  }  
-}   
+  constructor(public payload: any ) {
+  }
+}
+export class DeleteSeller {
+  static readonly type = '[SelectedSellerList] Delete';
+
+  constructor(public RequestLocationSellerId: number) {
+  }
+}
