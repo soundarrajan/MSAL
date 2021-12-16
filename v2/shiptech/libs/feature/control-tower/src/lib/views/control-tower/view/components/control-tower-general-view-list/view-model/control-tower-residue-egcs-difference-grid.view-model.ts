@@ -674,10 +674,6 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
     this.paramsServerSide = params;
-    params.request.sortModel = this.setDefaultSorting(
-      params.request.sortModel,
-      'differenceInRobQuantity'
-    );
     this.exportUrl = this.controlTowerService.getControlTowerResidueEGCSDifferenceListExportUrl();
     this.controlTowerService
       .getControlTowerResidueEGCSDifferenceList$(

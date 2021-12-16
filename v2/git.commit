@@ -1,11 +1,11 @@
-﻿commit 3756ac47ce9ba0ac93cf1c5670a5743bf3fcccdf
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Dec 16 08:06:14 2021 +0000
+﻿commit a82e58505952233ef8a638434a8f27edae9152ed
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Dec 16 14:03:53 2021 +0000
 
-    Merged PR 15220: 36971-spcl char fixes in lookup fields
+    Merged PR 15227: Fixed EGCS Difference Sorting
     
-    36971-spcl char fixes in lookup fields
+    Fixed EGCS Difference Sorting
     
-    Related work items: #36971
+    Related work items: #37578
 
 branch: master

@@ -677,10 +677,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
     this.paramsServerSide = params;
-    params.request.sortModel = this.setDefaultSorting(
-      params.request.sortModel,
-      'differenceInRobQuantity'
-    );
     this.exportUrl = this.controlTowerService.getControlTowerResidueSludgeDifferenceListExportUrl();
     this.controlTowerService
       .getControlTowerResidueSludgeDifferenceList$(
