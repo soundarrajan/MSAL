@@ -248,6 +248,11 @@ export class AgColumnPreferencesService implements OnDestroy {
                   sortModels[i].sort = 'desc';
                 }
               }
+
+              if (sortModels.length == 1) {
+                sortModels[0].colId = 'differenceInRobQuantity';
+                sortModels[0].sort = 'desc';
+              }
             }
             options.api.setSortModel(sortModels);
           }
