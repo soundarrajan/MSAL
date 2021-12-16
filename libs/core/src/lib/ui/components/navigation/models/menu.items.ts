@@ -282,6 +282,11 @@ export const BASE_MENU: KeyedMenuItems = {
             label: 'New Location',
             url: '/#/masters/location/edit/',
             target: '_blank'
+          },
+          upload_performance_benchmark: {
+            label: 'Upload Performance Benchmark',
+            url: '/#/masters/performance-benchmark-upload/',
+            target: '_blank'
           }
         }
       },
