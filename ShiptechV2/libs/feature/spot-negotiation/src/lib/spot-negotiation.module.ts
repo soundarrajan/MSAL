@@ -76,7 +76,6 @@ import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-ne
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
-import { RemoveCounterpartyNoRFQComponent } from './views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -171,7 +170,6 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     SpotnegoRequestChangesComponent,
     NegotiationDetailsToolbarComponent,
     RemoveCounterpartyComponent,
-    RemoveCounterpartyNoRFQComponent,
     // QuantityTenantFormatDirective,
     // AmountTenantFormatDirective,
     // PriceTenantFormatDirective,
@@ -198,8 +196,7 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
-    RemoveCounterpartyComponent,
-    RemoveCounterpartyNoRFQComponent
+    RemoveCounterpartyComponent
   ],
   exports: [],
   providers: [

@@ -28,7 +28,6 @@ import { EditLocationRow,SetLocations,
   SetLocationsRowsPriceDetails, EditCounterpartyList } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
-import { RemoveCounterpartyNoRFQComponent } from '../../views/main/details/components/remove-counterparty-confirmation-noRFQ/remove-counterparty-confirmation-noRFQ';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -237,7 +236,7 @@ import { of } from 'rxjs';
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="remove-icon"></div></span>
-        <span class="fs-12" (click)="deleteRow()">Remove counterparty</span>
+        <span class="fs-12" (click)="removeCounterparty()">Remove counterparty</span>
       </div>
     </mat-menu>
     <div
@@ -658,7 +657,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return state.spotNegotiation.counterpartyList.slice(0, 7);;
      });
     let SelectedCounterpartyList = cloneDeep(counterpartyList);
-     
+
     if(SelectedCounterpartyList?.length > 0){
       SelectedCounterpartyList.forEach(element => {
         if(params.physicalSupplierCounterpartyId != null && element.id == params.physicalSupplierCounterpartyId){
@@ -1080,84 +1079,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
 
-  deleteRow() {
-    if (this.params.data.requestOffers) {
-      const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-        width: '600px',
-        data: {
-          counterpartyId: this.params.data.sellerCounterpartyId
-        }
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          let sellerId = this.params.data.id;
-          const response = this._spotNegotiationService.RemoveCounterparty(
-            sellerId
-          );
-          response.subscribe((res: any) => {
-            if (res.status && !res.isRequestStemmed) {
-              let rowData = [];
-              this.params.api.forEachNode(node => rowData.push(node.data));
-              let index = this.params.node.rowIndex;
-              let newData = [];
-              newData = rowData.splice(index, 1);
-              this.params.api.applyTransaction({ remove: newData });
-              this.toastr.success(
-                'Counterparty has been removed from negotiation succesfully.'
-              );
-            } else if (res.status && res.isRequestStemmed) {
-              this.toastr.warning(
-                'Counterparty has a stemmed order and cannot be removed from negotiation.'
-              );
-              return;
-            } else {
-              return;
-            }
-          });
-        } else {
-          return;
-        }
-      });
-    } else {
-      const dialogRef = this.dialog.open(RemoveCounterpartyNoRFQComponent, {
-        width: '600px',
-        data: {
-          counterpartyId: this.params.data.sellerCounterpartyId
-        }
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          let sellerId = this.params.data.id;
-          const response = this._spotNegotiationService.RemoveCounterparty(
-            sellerId
-          );
-          response.subscribe((res: any) => {
-            if (res.status && !res.isRequestStemmed) {
-              let rowData = [];
-              this.params.api.forEachNode(node => rowData.push(node.data));
-              let index = this.params.node.rowIndex;
-              let newData = [];
-              newData = rowData.splice(index, 1);
-              this.params.api.applyTransaction({ remove: newData });
-              this.toastr.success(
-                'Counterparty has been removed from negotiation succesfully.'
-              );
-            } else if (res.status && res.isRequestStemmed) {
-              this.toastr.warning(
-                'Counterparty has a stemmed order and cannot be removed from negotiation.'
-              );
-              return;
-            } else {
-              return;
-            }
-          });
-        } else {
-          return;
-        }
-      });
-    }
+  removeCounterparty() {
+    // remove counterparty row clicked
+    this.params.context.componentParent
+        .removeCounterpartyRowClicked(this.params.data, this.params.node.rowIndex, this.params.api);
   }
   selectSupplier(element) {
 
@@ -1199,14 +1124,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               }
             }
           });
-          
+
         }
         else{
           return valid = false
         }
-        
+
       }
-     
+
     });
     if(valid){
       this.toastr.error('Physical supplier already available against the given the Seller.');

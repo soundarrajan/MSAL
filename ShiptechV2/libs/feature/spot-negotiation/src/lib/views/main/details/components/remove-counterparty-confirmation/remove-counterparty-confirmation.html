@@ -13,8 +13,11 @@
 </div>
 <div mat-dialog-content>
   <div class="row">
-    <div class="col-md-12">
-      Removing the counterparty will revoke the RFQ. Do you want to continue?
+    <div class="col-md-12" *ngIf="!data.isRFQSent">
+      You are trying to remove the counterparty '{{data.sellerName}}' from the negotiation. Are you sure you want to continue?
+    </div>
+    <div class="col-md-12" *ngIf="data.isRFQSent">
+      Removing the counterparty '{{data.sellerName}}' will revoke the RFQ. Do you want to continue?
     </div>
   </div>
   <div class="row">

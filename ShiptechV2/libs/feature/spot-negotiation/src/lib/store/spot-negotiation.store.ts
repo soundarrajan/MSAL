@@ -10,7 +10,8 @@ import {
   SelectSeller,
   DeleteSeller,
   SetLocations,
-  EditCounterpartyList
+  EditCounterpartyList,
+  RemoveCounterparty
 } from './actions/ag-grid-row.action';
 
 import {
@@ -88,7 +89,7 @@ export class SpotNegotiationStoreModel {
     sellerComments: [],
     marketPriceHistory: {},
     staticLists: [],
-    counterpartyList: []
+    counterpartyList: [],
   }
 })
 export class SpotNegotiationStore {
@@ -228,26 +229,32 @@ export class SpotNegotiationStore {
   }
 
   @Action(SelectSeller)
-    addUser({getState, patchState}: StateContext<SpotNegotiationStoreModel>, {payload}: SelectSeller) {
-        const state = getState();
-        const selectedSellerList = [...state.selectedSellerList];
-        patchState({
-          selectedSellerList: [...state.selectedSellerList, payload]
-        });
-        return;
-    }
+  addUser({ getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SelectSeller) {
+    const state = getState();
+    const selectedSellerList = [...state.selectedSellerList];
+    patchState({
+      selectedSellerList: [...state.selectedSellerList, payload]
+    });
+  }
 
-    @Action(DeleteSeller)
-    deleteUser({getState, setState}: StateContext<SpotNegotiationStoreModel>, {RequestLocationSellerId}: DeleteSeller) {
-        const state = getState();
-        const filteredArray = state.selectedSellerList.filter(item => item.RequestLocationSellerId !== RequestLocationSellerId);
-        setState({
-            ...state,
-            selectedSellerList: filteredArray,
-        });
-        return;
-    }
+  @Action(DeleteSeller)
+  deleteUser({ getState, setState }: StateContext<SpotNegotiationStoreModel>, { RequestLocationSellerId }: DeleteSeller) {
+    const state = getState();
+    const filteredArray = state.selectedSellerList.filter(item => item.RequestLocationSellerId !== RequestLocationSellerId);
+    setState({
+      ...state,
+      selectedSellerList: filteredArray,
+    });
+  }
 
+  @Action(RemoveCounterparty)
+  removeCounterparty({ getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: RemoveCounterparty) {
+    patchState({
+      locationsRows: getState().locationsRows.filter(row => row.id !== payload.rowId)
+    });
+  }
 
   // Rows lists
   @Action(AddCounterpartyToLocations)
