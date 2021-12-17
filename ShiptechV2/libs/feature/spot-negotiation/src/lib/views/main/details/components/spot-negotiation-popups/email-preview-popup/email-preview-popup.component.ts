@@ -240,7 +240,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.toaster.error(res);
         return;
       }
-      if (res['sellerOffers'] && res['sellerOffers'].length > 0) {
+      if (res['sellerOffers']) {
         let locationsRows;
         const requestGroupID = this.store.selectSnapshot<string>(
           (state: any) => {
@@ -248,7 +248,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           }
         );
 
-        if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) {
+        if (res['requestLocationSellers']) {
           locationsRows = res['requestLocationSellers'];
         }
         else {
