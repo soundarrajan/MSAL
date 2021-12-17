@@ -989,8 +989,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 // $state.go(STATE.GROUP_OF_REQUESTS, {
                 //     groupId: ctrl.request.requestGroup.id
                 // });
-                 let groupId = ctrl.request.requestGroup.id;
-                 let url = $state.href(STATE.GROUP_OF_REQUESTS) + groupId;
+                let groupId = ctrl.request.requestGroup.id;
+                let url = $state.href(STATE.GROUP_OF_REQUESTS) + groupId;
 
                 $location.path(url.replace('#', ''));
             } else {
@@ -1000,10 +1000,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.buttonsDisabled = false;
                         var requestGroup = data.payload;
                         ctrl.request.requestGroup = angular.copy(requestGroup[0].requestGroup);
-                        $state.go(STATE.GROUP_OF_REQUESTS, {
-                            // group: requestGroup,
-                            groupId: requestGroup[0].requestGroup.id
-                        });
+                        // $state.go(STATE.GROUP_OF_REQUESTS, {
+                        //     // group: requestGroup,
+                        //     groupId: requestGroup[0].requestGroup.id
+                        // });
+                        let groupId = ctrl.request.requestGroup.id;
+                        let url = $state.href(STATE.GROUP_OF_REQUESTS) + groupId;
+
+                        $location.path(url.replace('#', ''));
                     },
                     () => {
                         ctrl.buttonsDisabled = false;

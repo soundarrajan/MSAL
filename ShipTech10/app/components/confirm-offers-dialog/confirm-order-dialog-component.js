@@ -247,9 +247,11 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                             $rootScope.tempFilterOrdersFromConfirm = [];
                             // if (receivedOffers.length == 1) {
                             $rootScope.tempFilterOrdersFromConfirm = receivedOffers[0];
-                            $state.go(STATE.EDIT_ORDER, {
-                                orderId: receivedOffers[0]
-                            });
+
+                            window.location.href = `/#/edit-order/${ receivedOffers[0]}`;
+                            // $state.go(STATE.EDIT_ORDER, {
+                            //     orderId: receivedOffers[0]
+                            // });
                             // } else if (receivedOffers.length > 1) {
                             //     $rootScope.tempFilterOrdersFromConfirm[0] = changedConfirmationProductOrders.requestId;
                             //     localStorage.setItem("tempFilterOrdersFromConfirm", JSON.stringify($rootScope.tempFilterOrdersFromConfirm));
