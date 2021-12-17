@@ -83,6 +83,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.options = [];
         ctrl.emailTransactionTypeId = 10;
         window.confirmRequestLeave = false;
+        window.isGoSpotAction = false;
         if ($stateParams.requestId) {
             $state.params.title = 'Edit Request';
         } else {
@@ -984,15 +985,38 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             }
             ctrl.buttonsDisabled = true;
+            let detectChanges = ctrl.detectIfExistChangesInRequest();
+            if (detectChanges) {
+                ctrl.buttonsDisabled = false;
+                window.confirmRequestLeave = true;
+                $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
+                    if(response == true) {
+                        ctrl.goSpotAction();
+                        setTimeout(() => {
+                            window.confirmRequestLeave = false;
+                        });
+                    } else {
+                        setTimeout(() => {
+                            window.confirmRequestLeave = false;
+                        });
+                    }
+
+                });
+            } else {
+                ctrl.goSpotAction();
+            }
+
+          
+        };
+
+        ctrl.goSpotAction = function() {
+            $scope.forms.detailsFromRequest.$setPristine(); 
+            console.log($scope.forms.detailsFromRequest);
             if (ctrl.request.requestGroup !== null) {
                 screenLoader.showLoader();
-                // $state.go(STATE.GROUP_OF_REQUESTS, {
-                //     groupId: ctrl.request.requestGroup.id
-                // });
-                let groupId = ctrl.request.requestGroup.id;
-                let url = $state.href(STATE.GROUP_OF_REQUESTS) + groupId;
-
-                $location.path(url.replace('#', ''));
+                $state.go(STATE.GROUP_OF_REQUESTS, {
+                    groupId: ctrl.request.requestGroup.id
+                });
             } else {
                 screenLoader.showLoader();
                 groupOfRequestsModel.groupRequests([ ctrl.request.id ]).then(
@@ -1000,14 +1024,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.buttonsDisabled = false;
                         var requestGroup = data.payload;
                         ctrl.request.requestGroup = angular.copy(requestGroup[0].requestGroup);
-                        // $state.go(STATE.GROUP_OF_REQUESTS, {
-                        //     // group: requestGroup,
-                        //     groupId: requestGroup[0].requestGroup.id
-                        // });
-                        let groupId = ctrl.request.requestGroup.id;
-                        let url = $state.href(STATE.GROUP_OF_REQUESTS) + groupId;
-
-                        $location.path(url.replace('#', ''));
+                        $state.go(STATE.GROUP_OF_REQUESTS, {
+                            // group: requestGroup,
+                            groupId: requestGroup[0].requestGroup.id
+                        });
+                        
                     },
                     () => {
                         ctrl.buttonsDisabled = false;
@@ -1016,7 +1037,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     screenLoader.hideLoader();
                 });
             }
-        };
+        }
 
         ctrl.goEmail = function() {
             // screenLoader.showLoader();
@@ -1265,7 +1286,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         (responseData) => {
                             let data = responseData.payload;
                             ctrl.buttonsDisabled = false;
-                            ctrl.contractHasProduct = false;
                             if (data.requirementsToAmend !== null && data.requirementsToAmend.length > 0) {
                                 ctrl.requirementsToAmend = data.requirementsToAmend;
                                 $('amend-dialog').modal('show');
@@ -2543,6 +2563,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             });
         };
+
         ctrl.confirmContractSelection = function() {
             var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
             if (validActiveSpecGroupMessage != true) {
@@ -2567,7 +2588,36 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
             });
             if (errors == 0) {
-                orderModel.getExistingOrders(requestProductIds.join(',')).then(
+               let detectChanges = ctrl.detectIfExistChangesInRequest();
+               if (detectChanges) {
+                    ctrl.buttonsDisabled = false;
+                    window.confirmRequestLeave = true;
+                    $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
+                        if(response == true) {
+                            ctrl.confirmContractSelectionRequest(requestProductIds, contractProductIds, contractIds);
+                            setTimeout(() => {
+                                window.confirmRequestLeave = false;
+                            });
+                        } else {
+                            setTimeout(() => {
+                                window.confirmRequestLeave = false;
+                            });
+                        }
+
+                    });
+
+               } else {
+                    ctrl.confirmContractSelectionRequest(requestProductIds, contractProductIds, contractIds);
+               }
+            } else {
+                ctrl.buttonsDisabled = false;
+            }
+        };
+
+        ctrl.confirmContractSelectionRequest = function(requestProductIds, contractProductIds, contractIds) {
+            $scope.forms.detailsFromRequest.$setPristine(); 
+            console.log($scope.forms.detailsFromRequest);
+            orderModel.getExistingOrders(requestProductIds.join(',')).then(
                     (responseData) => {
                         ctrl.buttonsDisabled = false;
                         var responseOrderData = responseData.payload;
@@ -2659,10 +2709,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.buttonsDisabled = false;
                     }
                 );
-            } else {
-                ctrl.buttonsDisabled = false;
-            }
-        };
+        }
         // $scope.$on('selectedContract', function(ev, obj) {
         //     ctrl.selectedContract = obj;
         // })
@@ -5041,6 +5088,24 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         } 
 
     });
+
+    ctrl.detectIfExistChangesInRequest = function() {
+        let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
+        let requestId = parseFloat($state.params.requestId);
+        let status = $state.params.status;
+        let validStatus = false;
+        if (status && statusesList.includes(status.name)) {
+            validStatus = true;
+        }
+        if(validStatus && requestId && 
+            window.location.href.includes('edit-request') && 
+            !window.confirmRequestLeave 
+        ) {
+            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0;
+            return detectChanges;
+           
+        } 
+    }
 
 
 
