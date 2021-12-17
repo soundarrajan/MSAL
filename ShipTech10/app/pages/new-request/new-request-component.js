@@ -5069,11 +5069,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             console.log(detectChanges);
             if(detectChanges) {
                 event.preventDefault();
-                window.confirmRequestLeaveDestinationUrl = window.location.href;
+                window.confirmRequestLeaveDestinationUrl = angular.copy(window.location.href);
                 window.confirmRequestLeave = true;
-                $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
+                $scope.sweetConfirmRequest('The changes made in the request are not saved. Do you still want to continue?', (response) => {
                     if(response == true) {
-                        window.location.href = window.confirmRequestLeaveDestinationUrl;
+                        window.location.href = angular.copy(window.confirmRequestLeaveDestinationUrl);
                         setTimeout(() => {
                             window.confirmRequestLeave = false;
                         });
@@ -5127,27 +5127,25 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         });
     };
 
-    $scope.sweetConfirmModal = function(message, callback) {
+
+    $scope.sweetConfirmRequest = function(message, callback) {
         if (!message) {
             return false;
         }
         var sweetConfirmResponse = {};
-        $('.sweetConfirmModal').modal();
-        $('.sweetConfirmModal').removeClass('hide fade');
-        $('.sweetConfirmModal').css('transform', 'translateY(100px)');
-        $('.sweetConfirmModal .modal-body').text(message);
+        $('.sweetConfirmModalRequest').modal();
+        $('.sweetConfirmModalRequest').removeClass('hide fade');
+        $('.sweetConfirmModalRequest').css('transform', 'translateY(100px)');
+        $('.sweetConfirmModalRequest .modal-body').text(message);
 
-        $('.sweetConfirmModal .sweetConfirmModalYes').on('click', () => {
+        $('.sweetConfirmModalRequest .sweetConfirmModalYes').on('click', () => {
             callback(true);
-        $('.sweetConfirmModal .sweetConfirmModalYes').off('click');
-        $('.sweetConfirmModal .sweetConfirmModalNo').off('click');
         });
-        $('.sweetConfirmModal .sweetConfirmModalNo').on('click', () => {
+        $('.sweetConfirmModalRequest .sweetConfirmModalNo').on('click', () => {
             callback(false);
-            $('.sweetConfirmModal .sweetConfirmModalNo').off('click');
-            $('.sweetConfirmModal .sweetConfirmModalYes').off('click');
         });
     };
+  
 
 
     }
