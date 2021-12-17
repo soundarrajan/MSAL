@@ -155,7 +155,7 @@ export class InvoiceDetailsService extends BaseStoreService
   getFinalInvoiceDueDates(payload: any): Observable<unknown> {
     return this.api.getFinalInvoiceDueDates(payload);
   }
-  
+
   @ObservableException()
   getDefaultValues(payload: any): Observable<unknown> {
     return this.api.getDefaultValues(payload);
@@ -267,12 +267,20 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.getDueDateWithoutSave(payload);
   }
 
-    /**
+  /**
    * @param orderId
    */
   @ObservableException()
   getOrderNotes(orderId: number): Observable<any> {
     return this.api.getOrderNotes(orderId);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  exchangeRatesConvert(payload): Observable<any> {
+    return this.api.exchangeRatesConvert(payload);
   }
 
   ngOnDestroy(): void {

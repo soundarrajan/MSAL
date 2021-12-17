@@ -1,11 +1,9 @@
-﻿commit a82e58505952233ef8a638434a8f27edae9152ed
+﻿commit 9c9d17805259d5d2a315feef57bc6a31baf83e21
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Dec 16 14:03:53 2021 +0000
+Date:   Fri Dec 17 11:20:58 2021 +0000
 
-    Merged PR 15227: Fixed EGCS Difference Sorting
+    Merged PR 15233: Commit 1a183992: Added 'api/masters/exchangeRates/convert' endpoint for changing of Amount in order currency  while  user modifying the invoice amount
     
-    Fixed EGCS Difference Sorting
-    
-    Related work items: #37578
+    Related work items: #37564
 
 branch: master
