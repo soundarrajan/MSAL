@@ -110,11 +110,11 @@ import moment from 'moment';
           class="counterpartytype-icon type-seller"
           ><i class="fas fa-circle"></i> <span class="text">Seller</span></span
         >
-        <span
+        <!-- <span
           style="margin-left: 10px;"
           class="counterpartytype-icon type-broker"
           ><i class="fas fa-circle"></i> <span class="text">Broker</span></span
-        >
+        > -->
         <span
           style="margin-left: 10px;"
           class="counterpartytype-icon type-physicalsupplier"
