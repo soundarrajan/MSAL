@@ -126,6 +126,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         row.id ===
         priceDetailsArray[index]?.requestLocationSellerId
       ) {
+        let checkstatus = false;
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.requestOffers.forEach(element1 => {
           if (
@@ -145,11 +146,16 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
                 FilterProdut[0].status != undefined &&
                 FilterProdut[0].status == 'Stemmed'
               ) {
-                row.isEditable = true;
+               // row.isEditable = true;
+                return checkstatus = false
               }
             }
           }
+          return checkstatus = true
         });
+        if(!checkstatus){
+          row.isEditable = true;
+        }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         return row;
       }
@@ -162,6 +168,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
+        let checkstatus = false;
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.requestOffers.forEach(element1 => {
           if (
@@ -181,16 +188,20 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
                 FilterProdut[0].status != undefined &&
                 FilterProdut[0].status == 'Stemmed'
               ) {
-                row.isEditable = true;
+                return checkstatus = false
               }
             }
           }
+          return checkstatus = true
         });
+        if(!checkstatus){
+          row.isEditable = true;
+        }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
       }
   }
 
-
+  
       return row;
     });
 
