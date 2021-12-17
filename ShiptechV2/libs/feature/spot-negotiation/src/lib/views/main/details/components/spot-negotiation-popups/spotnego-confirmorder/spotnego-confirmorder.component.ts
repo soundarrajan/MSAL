@@ -188,7 +188,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         PhysicalSupplierName: seller.physicalSupplierCounterpartyName,
         RequestProductId: requestProducts.id,
         ProductId:requestOffers.quotedProductId??requestProducts.productId,
-        ProductName:this.productList.find(x => x.id == requestOffers.quotedProductId?requestOffers.quotedProductId:requestProducts.productId).name,
+        ProductName:this.productList.find(x => x.id == requestOffers.quotedProductId??requestProducts.productId).name,
         minQuantity: requestProducts.minQuantity,
         MaxQuantity: this.format.quantity(requestProducts.maxQuantity), //this.format.quantity(requestOffers.supplyQuantity)?? 
         ConfirmedQuantity: this.format.quantity(requestOffers.supplyQuantity)?? this.format.quantity(requestProducts.maxQuantity),
