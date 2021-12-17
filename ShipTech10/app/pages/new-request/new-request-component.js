@@ -987,16 +987,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.buttonsDisabled = true;
             let detectChanges = ctrl.detectIfExistChangesInRequest();
             if (detectChanges) {
-                ctrl.buttonsDisabled = false;
                 window.confirmRequestLeave = true;
                 $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
                     if(response == true) {
-                        ctrl.goSpotAction();
                         setTimeout(() => {
                             window.confirmRequestLeave = false;
+                            ctrl.goSpotAction();
                         });
                     } else {
                         setTimeout(() => {
+                            ctrl.buttonsDisabled = false;
                             window.confirmRequestLeave = false;
                         });
                     }
@@ -1010,6 +1010,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
 
         ctrl.goSpotAction = function() {
+            console.log('GO SPOT');
             $scope.forms.detailsFromRequest.$setPristine(); 
             console.log($scope.forms.detailsFromRequest);
             if (ctrl.request.requestGroup !== null) {
@@ -1018,6 +1019,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     groupId: ctrl.request.requestGroup.id
                 });
             } else {
+                console.log('GO SPOT ENDPOINT');
                 screenLoader.showLoader();
                 groupOfRequestsModel.groupRequests([ ctrl.request.id ]).then(
                     (data) => {
@@ -2590,7 +2592,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if (errors == 0) {
                let detectChanges = ctrl.detectIfExistChangesInRequest();
                if (detectChanges) {
-                    ctrl.buttonsDisabled = false;
                     window.confirmRequestLeave = true;
                     $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
                         if(response == true) {
@@ -2599,7 +2600,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 window.confirmRequestLeave = false;
                             });
                         } else {
+                            ctrl.buttonsDisabled = false;
                             setTimeout(() => {
+                                ctrl.buttonsDisabled = false;
                                 window.confirmRequestLeave = false;
                             });
                         }
@@ -5071,7 +5074,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 event.preventDefault();
                 window.confirmRequestLeaveDestinationUrl = angular.copy(window.location.href);
                 window.confirmRequestLeave = true;
-                $scope.sweetConfirmRequest('The changes made in the request are not saved. Do you still want to continue?', (response) => {
+                $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
                     if(response == true) {
                         window.location.href = angular.copy(window.confirmRequestLeaveDestinationUrl);
                         setTimeout(() => {
@@ -5119,33 +5122,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $('.sweetConfirmModal').css('transform', 'translateY(100px)');
         $('.sweetConfirmModal .modal-body').text(message);
 
-        $('.sweetConfirmModal .sweetConfirmModalYes').on('click', () => {
+        $('.sweetConfirmModal .sweetConfirmModalYes').unbind().on('click', () => {
             callback(true);
         });
-        $('.sweetConfirmModal .sweetConfirmModalNo').on('click', () => {
+        $('.sweetConfirmModal .sweetConfirmModalNo').unbind().on('click', () => {
             callback(false);
         });
     };
 
-
-    $scope.sweetConfirmRequest = function(message, callback) {
-        if (!message) {
-            return false;
-        }
-        var sweetConfirmResponse = {};
-        $('.sweetConfirmModalRequest').modal();
-        $('.sweetConfirmModalRequest').removeClass('hide fade');
-        $('.sweetConfirmModalRequest').css('transform', 'translateY(100px)');
-        $('.sweetConfirmModalRequest .modal-body').text(message);
-
-        $('.sweetConfirmModalRequest .sweetConfirmModalYes').on('click', () => {
-            callback(true);
-        });
-        $('.sweetConfirmModalRequest .sweetConfirmModalNo').on('click', () => {
-            callback(false);
-        });
-    };
-  
 
 
     }
