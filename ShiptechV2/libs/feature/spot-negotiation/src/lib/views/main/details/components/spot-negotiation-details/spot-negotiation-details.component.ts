@@ -1,6 +1,7 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
 import { map, filter } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 import {
   ChangeDetectorRef,
   Component,
@@ -223,7 +224,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private store: Store,
     private spotNegotiationService: SpotNegotiationService,
     private changeDetector: ChangeDetectorRef,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {
     this.context = { componentParent: this };
     this.gridOptions_counterparty = <GridOptions>{
@@ -881,8 +883,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.spinner.show();
         this.spotNegotiationService.RemoveCounterparty(rowData.id)
         .subscribe((res: any) => {
+          this.spinner.hide();
           if (res.status) {
             let dataRows = [];
             gridApi.forEachNode(node => dataRows.push(node.data));
@@ -893,8 +897,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           } else{
             if(res.isRequestStemmed){
               this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
-            } else{
+            } else if(res.message && res.message.length >0){
               this.toastr.warning(res.message);
+            }
+            else{
+              this.toastr.error(res);
             }
           }
         });
