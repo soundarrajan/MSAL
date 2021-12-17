@@ -7282,6 +7282,9 @@
                 !window.confirmVesselMasterLeave && 
                 !$rootScope.isSaveAction
             ) {
+                let elem = $('form[name="CM.editInstance"]').find(".ng-dirty:not(.ng-untouched)").length;
+                console.log(elem);
+                console.log($('form[name="CM.editInstance"]').find(".ng-dirty").length);
                 if( $('form[name="CM.editInstance"]').find(".ng-dirty:not(.ng-untouched)").length > 0 ) {
                     event.preventDefault();
                     window.confirmVesselMasterLeaveDestinationUrl = window.location.href.split('/edit/')[0];
@@ -7304,6 +7307,22 @@
 
         });
 
+        $scope.detectChangesInRequest = function() {
+            let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
+            let requestId = parseFloat($state.params.requestId);
+            let status = $state.params.status;
+            let validStatus = false;
+            if (status && statusesList.includes(status.name)) {
+                validStatus = true;
+            }
+            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0;
+            console.log(validStatus);
+            console.log(detectChanges);
+            if(validStatus && requestId && detectChanges)  {
+                return "Are you sure?";
+            }
+        }
+
 
         window.onbeforeunload = function () {
             if( 
@@ -7312,8 +7331,10 @@
                 vm.entity_id &&
                 window.location.href.includes("/edit/")
             ) {
-                return "Are you sure?"
-            } 
+                return "Are you sure?";
+            } else if (window.location.href.includes("/edit-request/")) {
+               return $scope.detectChangesInRequest();
+            }
         };
 
         vm.getAdditionalCostsComponentTypes = function(callback) {
