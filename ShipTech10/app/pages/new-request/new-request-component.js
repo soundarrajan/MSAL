@@ -82,6 +82,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.requiredQty = false;
         ctrl.options = [];
         ctrl.emailTransactionTypeId = 10;
+        window.confirmRequestLeave = false;
         if ($stateParams.requestId) {
             $state.params.title = 'Edit Request';
         } else {
@@ -985,15 +986,20 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.buttonsDisabled = true;
             if (ctrl.request.requestGroup !== null) {
                 screenLoader.showLoader();
-                $state.go(STATE.GROUP_OF_REQUESTS, {
-                    groupId: ctrl.request.requestGroup.id
-                });
+                // $state.go(STATE.GROUP_OF_REQUESTS, {
+                //     groupId: ctrl.request.requestGroup.id
+                // });
+                 let groupId = ctrl.request.requestGroup.id;
+                 let url = $state.href(STATE.GROUP_OF_REQUESTS) + groupId;
+
+                $location.path(url.replace('#', ''));
             } else {
                 screenLoader.showLoader();
                 groupOfRequestsModel.groupRequests([ ctrl.request.id ]).then(
                     (data) => {
                         ctrl.buttonsDisabled = false;
                         var requestGroup = data.payload;
+                        ctrl.request.requestGroup = angular.copy(requestGroup[0].requestGroup);
                         $state.go(STATE.GROUP_OF_REQUESTS, {
                             // group: requestGroup,
                             groupId: requestGroup[0].requestGroup.id
@@ -4990,6 +4996,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
     $rootScope.$on('$stateChangeStart',
         (event, toState, toParams, fromState, fromParams) => {
+        ctrl.buttonsDisabled = false;
+        console.log("**Buttons disabled");
+        console.log(ctrl.buttonsDisabled);
         let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
         let requestId = parseFloat($state.params.requestId);
         let status = $state.params.status;
@@ -5012,12 +5021,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
                     if(response == true) {
                         window.location.href = window.confirmRequestLeaveDestinationUrl;
-                        ctrl.buttonsDisabled = false;
                         setTimeout(() => {
                             window.confirmRequestLeave = false;
                         });
                     } else {
-                        ctrl.buttonsDisabled = false;
                         setTimeout(() => {
                             window.confirmRequestLeave = false;
                         });
