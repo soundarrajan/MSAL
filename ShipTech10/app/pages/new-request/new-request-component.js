@@ -1265,12 +1265,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         (responseData) => {
                             let data = responseData.payload;
                             ctrl.buttonsDisabled = false;
+                            ctrl.contractHasProduct = false;
                             if (data.requirementsToAmend !== null && data.requirementsToAmend.length > 0) {
                                 ctrl.requirementsToAmend = data.requirementsToAmend;
                                 $('amend-dialog').modal('show');
                             } else {
                                 ctrl.requirementsToAmend = null;
                             }
+
                             screenLoader.hideLoader();
                             ctrl.getResponse();
                             $scope.forms.detailsFromRequest.$setPristine(); 
