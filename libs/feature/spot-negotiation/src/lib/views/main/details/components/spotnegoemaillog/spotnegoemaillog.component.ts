@@ -20,7 +20,8 @@ import { EmailPreviewPopupComponent } from '../spot-negotiation-popups/email-pre
 export class SpotnegoemaillogComponent implements OnInit {
   public gridOptions_data: GridOptions;
   EmailLogs: any = [];
-  transationIds$ : Observable<any>  = this.store.select((state)=>{return { transaction: state.spotNegotiation.groupOfRequestsId}});
+  SelectedSellerWithProds: any;
+  requestId: number;
 
   constructor(public dialog: MatDialog,
               private spotNegotiationService : SpotNegotiationService,
@@ -59,11 +60,9 @@ export class SpotnegoemaillogComponent implements OnInit {
     }
    }
 
-
-
  public cellClassRules = {
   'bg-failed-grid': params => params.value == 'Failed',
-  'bg-success-grid': params => params.value == 'Success',
+  'bg-success-grid': params => params.value == 'Sent',
   'bg-pending-grid': params => params.value == 'Pending'
  };
 
@@ -78,43 +77,64 @@ export class SpotnegoemaillogComponent implements OnInit {
   ];
 
   public rowData_grid = [];
-  transaction: any ;
+
   ngOnInit() {
-    // this.transationIds$.subscribe(x=>{
-    //   this.transaction = x.transaction;
-    //   console.log(this.transaction);
-    // } );
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.SelectedSellerWithProds = spotNegotiation.locationsRows;
+    });
   }
 
   getEmailLogs() {
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.requestId = spotNegotiation.requests[0].id;
+    });
+    if(this.requestId){
     let reqpayload = {
          Order: null,
          Filters: [
-                     {ColumnName: "TransactionTypeId", Value: ""},
-                     {ColumnName: "TransactionIds", Value: ""}
+                     {ColumnName: "TransactionTypeId", Value: "1,10,11,12,13,21"},
+                     {ColumnName: "TransactionIds", Value : this.requestId}
                   ],
          PageFilters: {Filters: []},
          Pagination: {Skip: 0, Take: 25},
          SortList: {SortList: []}
     }
     this.spinner.show();
-    const emailLogs = this.spotNegotiationService.getEmailLogs(reqpayload);
-    emailLogs.subscribe((res:any)=>{
-      this.spinner.hide();
-        if(res.payload){
-            this.rowData_grid = res.payload;
-            this.changeDetector.detectChanges();
-        }
-        else{
-          this.toaster.error(res);
-        }
-    });
+      const emailLogs = this.spotNegotiationService.getEmailLogs(reqpayload);
+      emailLogs.subscribe((res:any)=>{
+        this.spinner.hide();
+          if(res.payload){
+              this.rowData_grid = res.payload;
+              this.changeDetector.detectChanges();
+          }
+          else{
+            this.toaster.error(res);
+          }
+      });
+    }
+    else{
+      this.toaster.error("An error occured");
+      return;
+    }
+
   }
 
   public onrowClicked (ev){
     console.log(ev);
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent,{
-      data : ev.data,
+      data :{
+                // from:  ev.data.from,
+                // cc:  ev.data.cc,
+                // to:  ev.data.to,
+                // subject: ev.data.subject,
+                // content : ev.data.body,
+                id: this.SelectedSellerWithProds[0].id,
+                requestId: this.SelectedSellerWithProds[0].requestId,
+                sellerCounterpartyId: this.SelectedSellerWithProds[0].sellerCounterpartyId,
+                sellerCounterpartyName: this.SelectedSellerWithProds[0].sellerCounterpartyName,
+                requestLocationId : this.SelectedSellerWithProds[0].requestLocationId,
+                requestOffers : this.SelectedSellerWithProds[0].requestOffers,
+            }  ,
       width: '80vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
