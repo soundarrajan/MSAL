@@ -23,6 +23,16 @@ export enum QcReportsListColumns {
   diffSludgeRobBeforeDischarge = 'diffSludgeRobBeforeDischarge',
   sludgeDischargedQty = 'sludgeDischargedQty',
   qtySludgeDischargedUom = 'qtySludgeDischargedUom',
+  logBookBilgeRobBeforeDischarge = 'logBookBilgeRobBeforeDischarge',
+  measuredBilgeRobBeforeDischarge = 'measuredBilgeRobBeforeDischarge',
+  diffBilgeRobBeforeDischarge = 'diffBilgeRobBeforeDischarge',
+  bilgeDischargedQty = 'bilgeDischargedQty',
+  qtyBilgeDischargedUom = 'qtyBilgeDischargedUom',
+  logBookEGCSRobBeforeDischarge = 'logBookEGCSRobBeforeDischarge',
+  measuredEGCSRobBeforeDischarge = 'measuredEGCSRobBeforeDischarge',
+  diffEGCSRobBeforeDischarge = 'diffEGCSRobBeforeDischarge',
+  egcsDischargedQty = 'egcsDischargedQty',
+  qtyEGCSDischargedUom = 'qtyEGCSDischargedUom',
   comment = 'comment',
   isVerifiedSludgeQty = 'isVerifiedSludgeQty'
 }
@@ -51,6 +61,16 @@ export enum QcReportsListColumnsLabels {
   diffSludgeRobBeforeDischarge = 'ROB before discharge diff',
   sludgeDischargedQty = 'Discharged Qty',
   qtySludgeDischargedUom = 'Qty UOM',
+  logBookBilgeRobBeforeDischarge = 'Log Book Bilge ROB (Before discharge) Qty',
+  measuredBilgeRobBeforeDischarge = 'Measured Bilge ROB (Before discharge) Qty',
+  diffBilgeRobBeforeDischarge = 'ROB before discharge diff',
+  bilgeDischargedQty = 'Discharged Qty',
+  qtyBilgeDischargedUom = 'Qty UOM',
+  logBookEGCSRobBeforeDischarge = 'Log Book EGCS Residue ROB (Before discharge) Qty',
+  measuredEGCSRobBeforeDischarge = 'Measured EGCS Residue ROB (Before discharge) Qty',
+  diffEGCSRobBeforeDischarge = 'ROB before discharge diff',
+  egcsDischargedQty = 'Discharged Qty',
+  qtyEGCSDischargedUom = 'Qty UOM',
   comment = 'Comment',
   isVerifiedSludgeQty = 'Verify Sludge Qty'
 }
@@ -89,6 +109,22 @@ export const QcReportsListColumnServerKeys: Record<
     'diffSludgeRobBeforeDischarge',
   [QcReportsListColumns.sludgeDischargedQty]: 'sludgeDischargedQty',
   [QcReportsListColumns.qtySludgeDischargedUom]: 'QtySludgeDischargedUom_Name',
+  [QcReportsListColumns.logBookBilgeRobBeforeDischarge]:
+    'logBookBilgeRobBeforeDischarge',
+  [QcReportsListColumns.measuredBilgeRobBeforeDischarge]:
+    'measuredBilgeRobBeforeDischarge',
+  [QcReportsListColumns.diffBilgeRobBeforeDischarge]:
+    'diffBilgeRobBeforeDischarge',
+  [QcReportsListColumns.bilgeDischargedQty]: 'bilgeDischargedQty',
+  [QcReportsListColumns.qtyBilgeDischargedUom]: 'QtyBilgeDischargedUom_Name',
+  [QcReportsListColumns.logBookEGCSRobBeforeDischarge]:
+    'logBookEGCSRobBeforeDischarge',
+  [QcReportsListColumns.measuredEGCSRobBeforeDischarge]:
+    'measuredEGCSRobBeforeDischarge',
+  [QcReportsListColumns.diffEGCSRobBeforeDischarge]:
+    'diffEGCSRobBeforeDischarge',
+  [QcReportsListColumns.egcsDischargedQty]: 'egcsDischargedQty',
+  [QcReportsListColumns.qtyEGCSDischargedUom]: 'QtyEGCSDischargedUom_Name',
   [QcReportsListColumns.comment]: 'comment',
   [QcReportsListColumns.isVerifiedSludgeQty]: 'isVerifiedSludgeQty'
 };

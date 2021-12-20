@@ -42,6 +42,7 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
   hasAvailableFilterItems: boolean;
 
   filterItems: FilterPreferenceViewModel[];
+  systemFilters: any;
   maxPinnedItems: number;
   filterToBeDeleted: FilterPreferenceViewModel;
 
@@ -125,24 +126,33 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
   }
 
   removeFilter(id: string): void {
+    this.filterToBeDeleted = this.filterItems.find(filter => filter.id === id);
     if (this.filterToBeDeleted.isActive) {
       this.filterItems.find(filter => filter.isClear).isActive = true;
     }
     this.filterItems = this.filterItems.filter(filter => filter.id !== id);
     this.hasAvailableFilterItems = !this.filterItems.some(
       item => !item.isDefault && !item.isClear
-    );
+    ) && !this.systemFilters;
 
-    this.deleteFilterDialog.close();
     this.changeDetector.markForCheck();
   }
 
   ngOnInit(): void {
     if (this.data) {
       this.filterItems = _.cloneDeep(this.data.filterPresets); // .sort((x, y) => (x.isPinned !== y.isPinned) ? 0 : x ? -1 : 1);
+      this.systemFilters = _.cloneDeep(this.data.systemFilters); 
+      if(!this.systemFilters) {
+        this.systemFilters = [];
+      }
+      this.systemFilters.unshift(
+        {
+          label: "Default"
+        }
+      )
       this.hasAvailableFilterItems = !this.filterItems.some(
         item => !item.isDefault && !item.isClear
-      );
+      ) && !this.systemFilters;
       this.maxPinnedItems = this.data.maxPinnedItems;
     }
   }

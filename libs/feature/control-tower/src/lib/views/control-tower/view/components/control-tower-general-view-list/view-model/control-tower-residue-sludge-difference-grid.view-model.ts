@@ -84,7 +84,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
-    rowHeight: 40,
+    rowHeight: 35,
     rowModelType: RowModelType.ServerSide,
     pagination: true,
     rowSelection: RowSelection.Single,
@@ -253,6 +253,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   > = {
     headerName:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.sludgePercentage,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.sludgePercentage,
     colId: ControlTowerResidueSludgeDifferenceListColumns.sludgePercentage,
@@ -271,6 +272,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   > = {
     headerName:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
     colId:
@@ -304,6 +306,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   > = {
     headerName:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
     colId:
@@ -337,6 +340,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   > = {
     headerName:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.differenceInRobQuantity,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.differenceInRobQuantity,
     colId:
@@ -399,11 +403,11 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerResidueSludgeDifferenceListColumnsLabels.progress,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip:
       ControlTowerResidueSludgeDifferenceListColumnsLabels.progress,
     colId: ControlTowerResidueSludgeDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
@@ -435,9 +439,9 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
 
   actionsCol: ITypedColDef<IControlTowerResidueSludgeDifferenceItemDto> = {
     headerName: ControlTowerResidueSludgeDifferenceListColumnsLabels.actions,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerResidueSludgeDifferenceListColumnsLabels.actions,
     colId: ControlTowerResidueSludgeDifferenceListColumns.actions,
-    headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
@@ -515,7 +519,13 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   }
 
   public updateValues(ev, values): void {
-    this.gridApi.purgeServerSideCache();
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
+    }
   }
 
   public filterGridNew(statusName: string): void {
@@ -605,6 +615,10 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     if (this.groupedCounts) {
       return false;
     }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
     let payload = {
       differenceType: {
         name: 'Sludge'
@@ -633,7 +647,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
         }
       );
@@ -663,10 +677,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     this.checkStatusAvailable();
     this.checkFromAndToAvailable();
     this.paramsServerSide = params;
-    params.request.sortModel = this.setDefaultSorting(
-      params.request.sortModel,
-      'differenceInRobQuantity'
-    );
     this.exportUrl = this.controlTowerService.getControlTowerResidueSludgeDifferenceListExportUrl();
     this.controlTowerService
       .getControlTowerResidueSludgeDifferenceList$(
@@ -687,7 +697,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
           params.failCallback();
         }

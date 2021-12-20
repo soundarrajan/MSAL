@@ -84,7 +84,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
-    rowHeight: 40,
+    rowHeight: 35,
     rowModelType: RowModelType.ServerSide,
     pagination: true,
     rowSelection: RowSelection.Single,
@@ -283,6 +283,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.logBookRobQtyBeforeDelivery,
     colId:
@@ -316,6 +317,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.measuredRobQtyBeforeDelivery,
     colId:
@@ -349,6 +351,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   > = {
     headerName:
       ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQuantityRobDifferenceListColumnsLabels.differenceInRobQuantity,
     colId: ControlTowerQuantityRobDifferenceListColumns.differenceInRobQuantity,
@@ -410,10 +413,10 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.progress,
     colId: ControlTowerQuantityRobDifferenceListColumns.progress,
     field: model('progress'),
-    headerClass: 'aggrid-text-align-c',
     dtoForExport: ControlTowerQuantityRobDifferenceListExportColumns.progress,
     valueFormatter: params => params.value?.displayName,
     cellRendererParams: function(params) {
@@ -445,9 +448,9 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   actionsCol: ITypedColDef<IControlTowerQuantityRobDifferenceItemDto> = {
     headerName: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQuantityRobDifferenceListColumnsLabels.actions,
     colId: ControlTowerQuantityRobDifferenceListColumns.actions,
-    headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
@@ -524,8 +527,14 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
     ];
   }
 
-  public updateValues(): void {
-    this.gridApi.purgeServerSideCache();
+  public updateValues(ev, values): void {
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
+    }
   }
 
   public filterGridNew(statusName: string): void {
@@ -612,19 +621,24 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-        "differenceType" : {
-          "name" : "Rob"
-          },
-          "startDate": moment()
-            .subtract(6, "days")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`,
-      };
-      this.controlTowerService.getRobDifferenceFiltersCount(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
+    let payload = {
+      differenceType: {
+        name: 'Rob'
+      },
+      startDate: moment()
+        .subtract(6, 'days')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getRobDifferenceFiltersCount(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
@@ -642,11 +656,12 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQuantityRobDifferenceCountFailed
           );
         }
       );
   }
+
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.getFiltersCount();
     this.checkStatusAvailable();

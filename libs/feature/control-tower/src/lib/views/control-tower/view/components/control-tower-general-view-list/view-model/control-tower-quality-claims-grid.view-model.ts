@@ -75,7 +75,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
-    rowHeight: 40,
+    rowHeight: 35,
 
     rowModelType: RowModelType.ServerSide,
     pagination: true,
@@ -232,6 +232,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   > = {
     headerName:
       ControlTowerQualityClaimsListColumnsLabels.estimatedSettlementAmount,
+    headerClass: ['aggrid-text-align-right'],
     headerTooltip:
       ControlTowerQualityClaimsListColumnsLabels.estimatedSettlementAmount,
     colId: ControlTowerQualityClaimsListColumns.estimatedSettlementAmount,
@@ -250,9 +251,9 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     colId: ControlTowerQualityClaimsListColumns.createdDate,
     field: model('createdDate'),
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value),
+    valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.createdDate,
-    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params => (params.value ? this.format.dateUtc(params.value) : ''),
     width: 200
   };
 
@@ -270,6 +271,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   noResponseCol: ITypedColDef<IControlTowerQualityClaimsItemDto, number> = {
     headerName: ControlTowerQualityClaimsListColumnsLabels.noResponse,
     headerTooltip: ControlTowerQualityClaimsListColumnsLabels.noResponse,
+    headerClass: ['aggrid-text-align-c'],
     colId: ControlTowerQualityClaimsListColumns.noResponse,
     field: model('noResponse'),
     filter: 'agNumberColumnFilter',
@@ -503,7 +505,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQualityClaimsCountFailed
           );
         }
       );
