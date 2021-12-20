@@ -1,11 +1,11 @@
-﻿commit 3ca8d4da10ef9e9fafef5f5bf85bd94d3e5d76f2
+﻿commit b152abae816bdddf3ff690a3fea2a8a5295e9f34
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Dec 20 10:45:20 2021 +0000
+Date:   Mon Dec 20 11:03:18 2021 +0000
 
-    Merged PR 15239: Added help and user profile icon in Header for the control screens
+    Merged PR 15240: Changed color of ag-grid scroll in control tower screen
     
-    Added help and user profile icon in Header for the control screens
+    Changed color of ag-grid scroll in control tower screen
     
-    Related work items: #37407
+    Related work items: #37428
 
 branch: master
