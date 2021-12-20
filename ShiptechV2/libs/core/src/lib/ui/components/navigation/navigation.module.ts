@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TopbarAdalComponent } from './topbar-adal/topbar-adal.component';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,14 @@ import { SharedModule } from '@shiptech/core/shared/shared.module';
     BlankComponent,
     AccessDeniedComponent
   ],
-  imports: [CommonModule, RouterModule, ButtonModule, ScrollPanelModule, SharedModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ButtonModule,
+    ScrollPanelModule,
+    SharedModule,
+    MatMenuModule
+  ],
   exports: [
     SidebarComponent,
     AppSubMenuComponent,
