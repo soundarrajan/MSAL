@@ -36,7 +36,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   cc: any;
   subject: any;
   content: any;
-  previewTemplate: any;
+  previewTemplate: any = [];
   //rfqTemplate: any;
   items: Items[];
   public Editor = ClassicEditor;
@@ -163,13 +163,48 @@ export class EmailPreviewPopupComponent implements OnInit {
   addTo(item) {
 
     this.to.push(item);
-    this.previewTemplate.to.push({ IdEmailAddress: item });
+    if(this.previewTemplate == null){
+      this.previewTemplate = []
+    }
+    if(this.previewTemplate.to == undefined || this.previewTemplate.to == null){
+      this.previewTemplate.to = [];
+      this.previewTemplate.to.push({ IdEmailAddress: item });
+    }
+    else{
+      this.previewTemplate.to.push({ IdEmailAddress: item });
+    }
     this.toEmail = '';
   }
 
-  addCc(item) {
+  RemoveEmailId(item, val){
+    if(val == 'toEmail'){
+      if(this.to && this.to.length > 0 && item != null){
+        let index = this.to.findIndex(x => x ===item);
+        this.to.splice(index,1);
+        this.previewTemplate.to.splice(index,1);
+      }
+    }else{
+      if(this.cc && this.cc.length > 0 && item != null){
+        let index = this.cc.findIndex(x => x ===item);
+        this.cc.splice(index,1);
+        this.previewTemplate.cc.splice(index,1);
+      }
+    }
+    
+  }
+
+  addCc(item){
     this.cc.push(item);
-    this.previewTemplate.cc.push({ IdEmailAddress: item });
+    if(this.previewTemplate == null){
+      this.previewTemplate = []
+    }
+    if(this.previewTemplate.cc == undefined || this.previewTemplate.cc == null){
+      this.previewTemplate.cc = [];
+      this.previewTemplate.cc.push({ IdEmailAddress: item });
+    }
+    else{
+      this.previewTemplate.cc.push({ IdEmailAddress: item });
+    }
     this.ccEmail = '';
   }
 

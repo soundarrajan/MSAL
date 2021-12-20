@@ -1,0 +1,10 @@
+.email-preview-popup .email-container .ccClass:hover .close-icon, .email-preview-popup .email-container .recipientClass:hover .close-icon {
+    display: block;
+    cursor: pointer;
+    padding-right: 5px;
+    content: url("data:image/svg+xml;charset=utf-8,%3Csvg width='12' height='12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12A6 6 0 106 0a6 6 0 000 12z' fill='%23F48484'/%3E%3Cpath d='M11.959 6.688L8.622 3.352 3.52 8.64l3.303 3.303a6.001 6.001 0 005.136-5.256z' fill='%23F48484'/%3E%3Cpath d='M8.305 8.708a.468.468 0 01-.332-.137L3.431 4.028a.468.468 0 11.662-.663l4.543 4.543a.468.468 0 01-.331.8z' fill='%23fff'/%3E%3Cpath d='M3.761 8.707a.468.468 0 01-.331-.8l4.543-4.543a.468.468 0 11.662.663L4.093 8.57a.467.467 0 01-.332.137z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+.email-preview-popup .email-container .ccClass .close-icon, .email-preview-popup .email-container .recipientClass .close-icon{
+    display: none;
+}
