@@ -9,6 +9,8 @@
             ? 'is empty'
             : filterPart.condition == 'is not null'
             ? 'is not empty '
+            : filterPart.condition == 'is true'? 'Yes'
+            : filterPart.condition == 'is false'? 'No'
             : filterPart.condition
         }}
         <span *ngIf="filterPart.value" class="filter-value"

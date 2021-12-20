@@ -545,9 +545,7 @@
                       class="free-text-field"
                       type="text"
                       matInput
-                      [(ngModel)]="
-                        productDetail.value.physicalSupplierCounterparty
-                      "
+                      [ngModel]="productDetail.value.physicalSupplierCounterparty | htmlDecodeReadonly: 'name'"
                       (ngModelChange)="
                         physicalSupplierCounterpartyChange(
                           $event,
@@ -574,21 +572,21 @@
                         )
                       "
                     >
-                      <mat-option
-                        *ngFor="
-                          let option of filterPhysicalSupplierLine(
-                            productDetail.value.physicalSupplierCounterparty &&
-                              productDetail.value.physicalSupplierCounterparty
+                    <mat-option
+                      *ngFor="
+                        let option of filterPhysicalSupplierLine(
+                          productDetail.value.physicalSupplierCounterparty &&
+                            productDetail.value.physicalSupplierCounterparty
+                              .name
+                            ? productDetail.value.physicalSupplierCounterparty
                                 .name
-                              ? productDetail.value.physicalSupplierCounterparty
-                                  .name
-                              : productDetail.value.physicalSupplierCounterparty
-                          )
-                        "
-                        [value]="option"
-                      >
-                        {{ option.name }}
-                      </mat-option>
+                            : productDetail.value.physicalSupplierCounterparty
+                        )
+                      "
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
                   <div class="ui-inputgroup shiptech-searchbox">

@@ -151,7 +151,10 @@ export class AgColumnPreferencesService implements OnDestroy {
                 sort: 'desc'
               }
             ]);
-          } else if (gridName == 'control-tower-residue-sludge-list-grid-7') {
+          } else if (
+            gridName == 'control-tower-residue-sludge-list-grid-7' ||
+            gridName == 'control-tower-residue-egcs-list-grid-1'
+          ) {
             options.api.setSortModel([
               {
                 colId: 'differenceInRobQuantity',
@@ -216,7 +219,8 @@ export class AgColumnPreferencesService implements OnDestroy {
               }
             ]);
           } else if (
-            gridName == 'control-tower-residue-sludge-list-grid-7' &&
+            (gridName == 'control-tower-residue-sludge-list-grid-7' ||
+              gridName == 'control-tower-residue-egcs-list-grid-1') &&
             !sortModels.length
           ) {
             options.api.setSortModel([
@@ -237,6 +241,22 @@ export class AgColumnPreferencesService implements OnDestroy {
               }
             ]);
           } else {
+            if (
+              gridName == 'control-tower-residue-egcs-list-grid-1' ||
+              gridName == 'control-tower-residue-sludge-list-grid-7'
+            ) {
+              console.log(sortModels);
+              for (let i = 0; i < sortModels.length; i++) {
+                if (sortModels[i].colId == 'differenceInRobQuantity') {
+                  sortModels[i].sort = 'desc';
+                }
+              }
+
+              if (sortModels.length == 1) {
+                sortModels[0].colId = 'differenceInRobQuantity';
+                sortModels[0].sort = 'desc';
+              }
+            }
             options.api.setSortModel(sortModels);
           }
         }

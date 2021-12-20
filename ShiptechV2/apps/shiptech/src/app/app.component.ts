@@ -54,6 +54,7 @@ import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { DOCUMENT } from '@angular/common';
 @Component({
   selector: 'shiptech-root',
   templateUrl: './app.component.html',
@@ -84,6 +85,7 @@ export class AppComponent implements OnInit {
     private myMonitoringService: MyMonitoringService,
     private loaderService: LoaderService,
     private elementRef: ElementRef,
+    @Inject(DOCUMENT) private document: any,
     @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
   ) {
     router.events.subscribe((event: RouterEvent): void => {
@@ -93,6 +95,7 @@ export class AppComponent implements OnInit {
         event instanceof NavigationError
       ) {
         this.isLoading = false;
+        this.document.body.classList = [event.url.replace(/\//g, '-')];
         setTimeout(() => {
           if (!this.loggedBootTime) {
             this.loggedBootTime = true;

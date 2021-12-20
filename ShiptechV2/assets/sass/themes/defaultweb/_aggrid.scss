@@ -91,7 +91,7 @@
   text-align: center;
   padding-left: 18px;
   .ag-header-cell-text {
-    margin-left: 18px;
+    // margin-left: 18px;
   }
 }
 .aggridtextalign-center {
@@ -454,7 +454,7 @@
 
   .ag-header-cell-label .ag-header-cell-text {
     width: 100%;
-    padding-left: 10px;
+    // padding-left: 10px;
     font-size: 1.214rem;
     font-weight: 300;
     font-style: normal;
@@ -466,6 +466,29 @@
     border-bottom: 2px solid #1cabe0;
     outline: none;
     padding-bottom: 7px;
+  }
+  .ag-filter button[ref='eApplyButton']{
+    color: #1cabe0;
+  }
+
+  .ag-filter button[ref='eResetButton']{
+    color: #1cabe0;
+    margin-right:  18px;
+    margin-right: 4ex;
+  }
+
+  .ag-filter select  {
+    border-radius: 5px;
+    color: black;
+    height: 27px;
+    border-color:rgb(229, 231, 233) ;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+   background-position-x: 100%;
+    padding: 5px;
   }
 
   .ag-tab.ag-tab-selected {

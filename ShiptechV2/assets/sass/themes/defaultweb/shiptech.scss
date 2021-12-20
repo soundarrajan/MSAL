@@ -42,6 +42,16 @@ body {
   .mat-ripple-element {
     background: rgba(27, 142, 241, 0.4) !important;
   }
+  &[class*="-control-tower"] {
+    overflow:hidden;
+    layout-main .layout-footer,
+    .mainFooterWhiteSpace {
+      display:none;
+    }
+    ag-grid-angular {
+      height: calc( 100vh - 245px ) !important;
+    }
+  }
 }
 
 .img-circle {
@@ -6785,7 +6795,8 @@ tr.title {
   /* TOP NAVIGATION COMPONENT */
 
   #wunderbar {
-    margin: -5px -5px 8px -5px !important;
+    // margin: -5px -5px 8px -5px !important;
+    margin: -5px -5px -3px 0!important;
     border-bottom: 2px solid #d8d8dc !important;
   }
   .st-main-content-menu {
@@ -8136,9 +8147,7 @@ tr.title {
               }
               .ag-header-row {
                 background: #ffffff;
-
                 border: 1px solid #e0e1e4;
-
                 .ag-header-cell-text {
                   color: #8f9bab;
                 }
@@ -8368,7 +8377,7 @@ tr.title {
     }
     .view-control-new {
       background: #fcfdff;
-      height: 50px;
+      height: 48px;
       border: 1px solid #e0e1e4;
       .label {
         color: #252a32;
@@ -8400,9 +8409,10 @@ tr.title {
     }
     .toggle-tabs {
       float: left;
-      left: 510px;
+      left: 457px;
       top: 7px;
       position: relative;
+      margin-left: -160px!important;
       .custom-label {
         text-transform: capitalize;
         span {
@@ -8909,9 +8919,9 @@ tr.title {
               }
               .ag-header-row {
                 background: #ffffff;
-
                 border: 1px solid #e0e1e4;
-
+                height: 30px !important;
+                margin-bottom: 4px;
                 .ag-header-cell-text {
                   color: #333333;
                 }
@@ -9462,6 +9472,8 @@ tr.title {
           .ag-header {
             height: 30px !important;
             min-height: 30px !important;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, .25);
+            margin-bottom: 4px;
           }
           .ag-header-row {
             border-radius: 0 !important;
@@ -23500,6 +23512,9 @@ mat-form-field {
     display: flex;
     justify-content: center;
     align-items: center;
+    &.ag-row-stub {
+      display:none;
+    }
     .ag-cell {
       height: auto !important;
     }
@@ -23647,6 +23662,15 @@ mat-form-field {
   font-weight: 500 !important;
   font-size: 14px !important;
 }
+
+[col-id="progress"] .ag-async-background,
+[col-id="noResponse"] .ag-async-background
+{
+    height: 23px;
+    line-height: 18px;
+    font-size: 10px;
+}
+
 /* custom help icon menu style start here */
 .topbar-help-menu {
   border-left: 1px solid #364150;
@@ -23670,3 +23694,11 @@ mat-form-field {
   }
 }
 /* custom help icon menu style end here */
+
+.aggrid-text-align-right {
+  text-align: right;
+}
+
+.controlTower-wrapper.light-theme .controlTower-content.light-theme {
+  border: 2px solid #e0e1e4;
+}

@@ -13,7 +13,7 @@ import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services
 @Component({
   selector: 'control-tower-popup',
   templateUrl: './control-tower-popup.component.html',
-  styleUrls: ['./control-tower-popup.component.css']
+  styleUrls: ['./control-tower-popup.component.scss']
 })
 export class ControlTowerPopupComponent implements OnInit {
   public switchTheme: boolean = true;
@@ -26,6 +26,7 @@ export class ControlTowerPopupComponent implements OnInit {
   initialDefaultStatus: string;
   initialComments: string;
   controlTowerLogStatus: any[];
+
   constructor(
     private toastr: ToastrService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -96,6 +97,10 @@ export class ControlTowerPopupComponent implements OnInit {
               this.data.comments = this.transform(response[0]?.comments);
               this.data.status = response[0]?.controlTowerActionStatusId;
               this.data.progressId = response[0]?.controlTowerActionStatusId;
+              this.initialComments = _.cloneDeep(response[0].comments);
+              this.initialDefaultStatus = _.cloneDeep(
+                response[0]?.controlTowerActionStatusId.toString()
+              );
               this.logStatus = null;
             }
           }
@@ -145,7 +150,9 @@ export class ControlTowerPopupComponent implements OnInit {
   }
 
   checkChangedFields() {
-    this.logStatus = null;
+    this.logStatus = this.controlTowerLogStatus.filter(
+      obj => obj.name == 'Status'
+    )[0];
     if (
       parseFloat(this.initialDefaultStatus) != parseFloat(this.status) &&
       this.transform(this.initialComments) != this.transform(this.comments)
@@ -234,7 +241,10 @@ export class ControlTowerPopupComponent implements OnInit {
               this.getQuantityResiduePopUp(payload);
             }
           });
-      } else if (this.data.differenceType.name == 'Sludge') {
+      } else if (
+        this.data.differenceType.name == 'Sludge' ||
+        this.data.differenceType.name == 'Egcs'
+      ) {
         this.controlTowerService
           .saveResiduePopUp(payloadData, payloadData => {
             console.log('Residue changes updated!');
@@ -259,7 +269,19 @@ export class ControlTowerPopupComponent implements OnInit {
     }
   }
   closeDialog() {
-    this.dialogRef.close();
+    let statusId = parseFloat(this.initialDefaultStatus);
+    let findStatusIndex = _.findIndex(this.controlTowerActionStatus, function(
+      object: any
+    ) {
+      return object.id == statusId;
+    });
+    if (findStatusIndex != -1) {
+      this.dialogRef.close({
+        status: this.controlTowerActionStatus[findStatusIndex]
+      });
+    } else {
+      this.dialogRef.close();
+    }
   }
 
   formatDate(date?: any) {

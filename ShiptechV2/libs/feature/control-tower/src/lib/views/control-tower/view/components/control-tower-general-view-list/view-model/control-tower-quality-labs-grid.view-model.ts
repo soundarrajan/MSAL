@@ -29,13 +29,14 @@ import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { IControlTowerQualityLabsItemDto } from 'libs/feature/control-tower/src/lib/services/api/dto/control-tower-list-item.dto';
 import {
-    ControlTowerQualityLabsListColumns,
-    ControlTowerQualityLabsListColumnsLabels,
-    ControlTowerQualityLabsListColumnServerKeys,
-    ControlTowerQualityLabsListExportColumns
+  ControlTowerQualityLabsListColumns,
+  ControlTowerQualityLabsListColumnsLabels,
+  ControlTowerQualityLabsListColumnServerKeys,
+  ControlTowerQualityLabsListExportColumns
 } from '../list-columns/control-tower-quality-labs-list.columns';
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ToastrService } from 'ngx-toastr';
+import _ from 'lodash';
 
 function model(
   prop: keyof IControlTowerQualityLabsItemDto
@@ -74,7 +75,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     animateRows: true,
     groupHeaderHeight: 20,
     headerHeight: 40,
-    rowHeight: 40,
+    rowHeight: 35,
     rowModelType: RowModelType.ServerSide,
     pagination: true,
     rowSelection: RowSelection.Single,
@@ -101,14 +102,14 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('order'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.order,
     cellRenderer: params => {
-        if (params.value) {
-            const a = document.createElement('a');
-            a.innerHTML = params.value?.id;
-            a.href = `/#/edit-order/${params.value?.id}`;
-            a.setAttribute('target', '_blank');
-            return a;
-        }
-        return null;
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value?.id;
+        a.href = `/#/edit-order/${params.value?.id}`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     tooltipValueGetter: params => (params.value ? params.value?.id : ''),
     width: 150
@@ -121,20 +122,23 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('id'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.lab,
     cellRenderer: params => {
-        if (params.value) {
-            const a = document.createElement('a');
-            a.innerHTML = params.value;
-            a.href = `/#/labs/labresult/edit/${params.value}`;
-            a.setAttribute('target', '_blank');
-            return a;
-        }
-        return null;
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value;
+        a.href = `/#/labs/labresult/edit/${params.value}`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 150
   };
 
-  labcounterpartyCol: ITypedColDef<IControlTowerQualityLabsItemDto, ILookupDto> = {
+  labcounterpartyCol: ITypedColDef<
+    IControlTowerQualityLabsItemDto,
+    ILookupDto
+  > = {
     headerName: ControlTowerQualityLabsListColumnsLabels.labcounterparty,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.labcounterparty,
     colId: ControlTowerQualityLabsListColumns.labcounterparty,
@@ -152,14 +156,14 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('deliveryId'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.deliveryNo,
     cellRenderer: params => {
-        if (params.value) {
-            const a = document.createElement('a');
-            a.innerHTML = params.value;
-            a.href = `/v2/delivery/delivery/${params.value}/details`;
-            a.setAttribute('target', '_blank');
-            return a;
-        }
-        return null;
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value;
+        a.href = `/v2/delivery/delivery/${params.value}/details`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
     },
     tooltipValueGetter: params => (params.value ? params.value : ''),
     width: 200
@@ -214,7 +218,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.labStatus,
     colId: ControlTowerQualityLabsListColumns.labStatus,
     field: model('status'),
-    valueFormatter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
+    valueFormatter: params =>
+      params.value?.name ? this.format.htmlDecode(params.value.name) : '',
     dtoForExport: ControlTowerQualityLabsListExportColumns.labStatus,
     tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
     width: 200
@@ -225,7 +230,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     colId: ControlTowerQualityLabsListColumns.claimRaised,
     field: model('claimsRaised'),
-    valueFormatter: params => (params.value)? 'Yes': 'No',
+    valueFormatter: params => (params.value ? 'Yes' : 'No'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.claimRaised,
     tooltipValueGetter: params => (params.value)? 'Yes': 'No',
     width: 150
@@ -256,32 +261,33 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
 
   progressCol: ITypedColDef<IControlTowerQualityLabsItemDto, number> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.progress,
+    headerClass: 'aggrid-text-align-c',
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.progress,
     colId: ControlTowerQualityLabsListColumns.progress,
     field: model('progress'),
     valueFormatter: params => params.value?.displayName,
     dtoForExport: ControlTowerQualityLabsListExportColumns.progress,
     cellRendererParams: function(params) {
-        if (params.value) {
-          var classArray: string[] = [];
-          let newClass = '';
-          switch (params?.value.displayName) {
-            case 'New':
-              newClass = 'medium-blue';
-              break;
-            case 'Marked as Seen':
-              newClass = 'medium-yellow';
-              break;
-            case 'Resolved':
-              newClass = 'light-green';
-              break;
-          }
-          classArray.push(newClass);
-          return {
-            cellClass: classArray.length > 0 ? classArray : null,
-            type: 'progress'
-          };
+      if (params.value) {
+        var classArray: string[] = [];
+        let newClass = '';
+        switch (params?.value.displayName) {
+          case 'New':
+            newClass = 'medium-blue';
+            break;
+          case 'Marked as Seen':
+            newClass = 'medium-yellow';
+            break;
+          case 'Resolved':
+            newClass = 'light-green';
+            break;
         }
+        classArray.push(newClass);
+        return {
+          cellClass: classArray.length > 0 ? classArray : null,
+          type: 'progress'
+        };
+      }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
     tooltipValueGetter: params => {
@@ -292,9 +298,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
 
   actionCol: ITypedColDef<IControlTowerQualityLabsItemDto> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.action,
+    headerClass: ['aggrid-text-align-c'],
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.action,
     colId: ControlTowerQualityLabsListColumnsLabels.action,
-    headerClass: ['aggrid-text-align-c'],
     cellClass: ['aggridtextalign-center'],
     cellRendererFramework: AGGridCellActionsComponent,
     cellRendererParams: { type: 'actions' },
@@ -305,7 +311,12 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     sortable: false,
     width: 110
   };
-  groupedCounts: { noOfNew: number; noOfMarkedAsSeen: number; noOfResolved: number; noOfDefault: number};
+  groupedCounts: {
+    noOfNew: number;
+    noOfMarkedAsSeen: number;
+    noOfResolved: number;
+    noOfDefault: number;
+  };
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -321,9 +332,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       'control-tower-quality-labs-list-grid-8',
       columnPreferences,
       changeDetector,
-      loggerFactory.createLogger(
-        ControlTowerQualityLabsListGridViewModel.name
-      )
+      loggerFactory.createLogger(ControlTowerQualityLabsListGridViewModel.name)
     );
     this.init(this.gridOptions, true);
   }
@@ -331,13 +340,13 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   public systemFilterUpdate(value) {
     let currentFilter = value.filter(o => o.isActive);
     switch (currentFilter[0].id) {
-      case "new":
+      case 'new':
         this.filterGridNew(currentFilter[0].label);
         break;
-      case "marked-as-seen":
+      case 'marked-as-seen':
         this.filterGridMAS(currentFilter[0].label);
         break;
-      case "resolved":
+      case 'resolved':
         this.filterGridResolved(currentFilter[0].label);
         break;
     }
@@ -345,20 +354,20 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
 
   getColumnsDefs(): any[] {
     return [
-        this.labIdCol,
-        this.labcounterpartyCol,
-        this.deliveryNoCol,
-        this.orderNoCol,
-        this.vesselCol,
-        this.portCol,
-        this.etaCol,
-        this.productCol,
-        this.labStatusCol,
-        this.claimRaisedCol,
-        this.createdByCol,
-        this.createdDateCol,
-        this.progressCol,
-        this.actionCol
+      this.labIdCol,
+      this.labcounterpartyCol,
+      this.deliveryNoCol,
+      this.orderNoCol,
+      this.vesselCol,
+      this.portCol,
+      this.etaCol,
+      this.productCol,
+      this.labStatusCol,
+      this.claimRaisedCol,
+      this.createdByCol,
+      this.createdDateCol,
+      this.progressCol,
+      this.actionCol
     ];
   }
 
@@ -368,27 +377,13 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public updateValues(ev, values): void {
-    if (values) {
-      let payloadData = {
-        "controlTowerActionStatusId": values?.status,
-        "comments": values?.comments,
-        "labResultId": ev.data?.id
-      };
-
-      this.controlTowerService
-        .saveQualityLabsPopUp(payloadData, payloadData => {
-          console.log('labs changes updated..');
-        })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((response: any) => {
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            this.gridApi.purgeServerSideCache();
-          }
-        });
+    console.log(values);
+    const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
+    if (values?.status) {
+      const newStatus = _.cloneDeep(values.status);
+      rowNode.setDataValue('progress', newStatus);
+      this.getCountForDefultFilters();
     }
-    return;
   }
 
   public filterGridNew(statusName: string): void {
@@ -401,7 +396,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
 
   public filterGridMAS(statusName: string): void {
     if (this.toggleMASFilter) {
-        //MarkedAsSeen hard coded to avoid other screen MAS filter impact
+      //MarkedAsSeen hard coded to avoid other screen MAS filter impact
       this.filterByStatus('MarkedAsSeen');
     } else {
       this.filterByStatus('');
@@ -416,7 +411,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     }
   }
 
-public filterByStatus(statusName: string): void {
+  public filterByStatus(statusName: string): void {
     const grid = [];
     grid['progress'] = {
       filterType: 'text',
@@ -424,9 +419,9 @@ public filterByStatus(statusName: string): void {
       filter: statusName
     };
     this.gridApi.setFilterModel(grid);
-}
+  }
 
-public checkStatusAvailable(): void {
+  public checkStatusAvailable(): void {
     this.toggleNewFilter = true;
     this.toggleMASFilter = true;
     this.toggleResolvedFilter = true;
@@ -464,47 +459,75 @@ public checkStatusAvailable(): void {
   }
 
   public formatFilterModel(params) {
-    let {filterModel} = params?.request;
+    let { filterModel } = params?.request;
     // claimsRaised column filter value format
     if (Object.keys(filterModel).indexOf('claimsRaised') !== -1) {
-        let claimRaisedFilterVal = filterModel.claimsRaised?.filter;
-        if(!claimRaisedFilterVal || !(claimRaisedFilterVal.trim())) { return; }
-        claimRaisedFilterVal = claimRaisedFilterVal.trim().toLowerCase();
-        let filterClaimCondition = '';
-        if(filterModel.claimsRaised?.type == 'equals' || filterModel.claimsRaised?.type == 'notEqual') {
-            filterClaimCondition = (claimRaisedFilterVal=='no')? '0': ((claimRaisedFilterVal=='yes')? '1': '2');
-        } else if(filterModel.claimsRaised?.type == 'startsWith') {
-            filterClaimCondition = ('no'.startsWith(claimRaisedFilterVal))? '0': (('yes'.startsWith(claimRaisedFilterVal))? '1': '2');
-        } else if(filterModel.claimsRaised?.type == 'endsWith') {
-            filterClaimCondition = ('no'.endsWith(claimRaisedFilterVal))? '0': (('yes'.endsWith(claimRaisedFilterVal))? '1': '2');
-        } else {
-            filterClaimCondition = (claimRaisedFilterVal)=='no' || (['n','o'].indexOf(claimRaisedFilterVal)!=-1)? '0':
-        ((claimRaisedFilterVal)=='yes' || (['y','e', 's', 'ye', 'es'].indexOf(claimRaisedFilterVal)!=-1)? '1': '2');
+      let claimRaisedFilterVal = filterModel.claimsRaised?.filter;
+      if (!claimRaisedFilterVal || !claimRaisedFilterVal.trim()) {
+        return;
+      }
+      claimRaisedFilterVal = claimRaisedFilterVal.trim().toLowerCase();
+      let filterClaimCondition = '';
+      if (
+        filterModel.claimsRaised?.type == 'equals' ||
+        filterModel.claimsRaised?.type == 'notEqual'
+      ) {
+        filterClaimCondition =
+          claimRaisedFilterVal == 'no'
+            ? '0'
+            : claimRaisedFilterVal == 'yes'
+            ? '1'
+            : '2';
+      } else if (filterModel.claimsRaised?.type == 'startsWith') {
+        filterClaimCondition = 'no'.startsWith(claimRaisedFilterVal)
+          ? '0'
+          : 'yes'.startsWith(claimRaisedFilterVal)
+          ? '1'
+          : '2';
+      } else if (filterModel.claimsRaised?.type == 'endsWith') {
+        filterClaimCondition = 'no'.endsWith(claimRaisedFilterVal)
+          ? '0'
+          : 'yes'.endsWith(claimRaisedFilterVal)
+          ? '1'
+          : '2';
+      } else {
+        filterClaimCondition =
+          claimRaisedFilterVal == 'no' ||
+          ['n', 'o'].indexOf(claimRaisedFilterVal) != -1
+            ? '0'
+            : claimRaisedFilterVal == 'yes' ||
+              ['y', 'e', 's', 'ye', 'es'].indexOf(claimRaisedFilterVal) != -1
+            ? '1'
+            : '2';
+      }
+      var updatedFilter = {
+        ...filterModel,
+        claimsRaised: {
+          ...filterModel.claimsRaised,
+          filter: filterClaimCondition
         }
-        var updatedFilter = {
-            ...filterModel,
-            claimsRaised: {
-                ...filterModel.claimsRaised,
-                filter: filterClaimCondition
-            }
-        }
-        params['request']['filterModel'] = updatedFilter;
+      };
+      params['request']['filterModel'] = updatedFilter;
     }
     console.log(params);
-
   }
 
   public getFiltersCount() {
-      if(this.groupedCounts) {
-        return false;
-      }
-      let payload = {
-          "startDate": moment()
-            .subtract(6, "days")
-            .format('YYYY-MM-DD'),
-          "endDate": `${moment().format('YYYY-MM-DD')}T23:59:59`
-      };
-      this.controlTowerService.getqualityLabCounts(payload)
+    if (this.groupedCounts) {
+      return false;
+    }
+    this.getCountForDefultFilters();
+  }
+
+  public getCountForDefultFilters() {
+    let payload = {
+      startDate: moment()
+        .subtract(6, 'days')
+        .format('YYYY-MM-DD'),
+      endDate: `${moment().format('YYYY-MM-DD')}T23:59:59`
+    };
+    this.controlTowerService
+      .getqualityLabCounts(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
@@ -514,15 +537,15 @@ public checkStatusAvailable(): void {
           this.noOfResolved = response.noOfResolved;
           this.groupedCounts = {
             noOfDefault: this.noOfDefault,
-            noOfNew : this.noOfNew,
-            noOfMarkedAsSeen : this.noOfMarkedAsSeen,
-            noOfResolved : this.noOfResolved,
-          }
+            noOfNew: this.noOfNew,
+            noOfMarkedAsSeen: this.noOfMarkedAsSeen,
+            noOfResolved: this.noOfResolved
+          };
           this.changeDetector.detectChanges();
         },
         () => {
           this.appErrorHandler.handleError(
-            ModuleError.LoadControlTowerQuantityRobDifferenceFailed
+            ModuleError.LoadControlTowerQualityLabsCountFailed
           );
         }
       );

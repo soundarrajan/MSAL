@@ -66,6 +66,11 @@ import {
   ControlTowerResidueSludgeDifferenceListColumnServerKeys
 } from './list-columns/control-tower-residue-sludge-difference-list.columns';
 import { ControlTowerPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/control-tower-popup/control-tower-popup.component';
+import { ControlTowerResidueEGCSDifferenceListGridViewModel } from './view-model/control-tower-residue-egcs-difference-grid.view-model';
+import {
+  ControlTowerResidueEGCSDifferenceListColumns,
+  ControlTowerResidueEGCSDifferenceListColumnServerKeys
+} from './list-columns/control-tower-residue-egcs-difference-list.columns';
 
 export const PICK_FORMATS = {
   display: {
@@ -126,6 +131,7 @@ export class CustomDateAdapter extends MomentDateAdapter {
     ControlTowerQualityClaimsListGridViewModel,
     ControlTowerQualityLabsListGridViewModel,
     ControlTowerResidueDifferenceListGridViewModel,
+    ControlTowerResidueEGCSDifferenceListGridViewModel,
     { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
@@ -258,6 +264,12 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerQualityLabsListColumns.createdDate,
       systemDefaultFilters: this.SystemDefaultFilters
+    },
+    'control-tower-residue-egcs-list-grid-1': {
+      timeDeltaValue: 6,
+      timeDeltaUnit: 'days',
+      mappedKey: ControlTowerResidueEGCSDifferenceListColumns.surveyorDate,
+      systemDefaultFilters: this.SystemDefaultFilters
     }
   };
   constructor(
@@ -276,6 +288,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
+  }
+
+  onFirstDataRendered(params){
+    params.api.sizeColumnsToFit();
   }
 
   setGridModelType() {
@@ -338,6 +354,19 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             this.differenceType = response.filter(
               obj => obj.name == 'Sludge'
             )[0];
+          });
+        break;
+      }
+
+      case 'Residue EGCS Product Difference': {
+        this.gridViewModel = this.injector.get(
+          ControlTowerResidueEGCSDifferenceListGridViewModel
+        );
+        this.controlTowerListServerKeys = ControlTowerResidueEGCSDifferenceListColumnServerKeys;
+        this.legacyLookupsDatabase
+          .getTableByName('robDifferenceType')
+          .then(response => {
+            this.differenceType = response.filter(obj => obj.name == 'Egcs')[0];
           });
         break;
       }
@@ -416,7 +445,10 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         return;
       }
       this.actionCellClicked(ev);
-    } else if (this.selectorType == 'Residue Sludge Difference') {
+    } else if (
+      this.selectorType == 'Residue Sludge Difference' ||
+      this.selectorType == 'Residue EGCS Product Difference'
+    ) {
       if (ev.event.target.nodeName == 'A') {
         return;
       }
@@ -518,9 +550,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogData.changeLog = response.changeLog;
             dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
+              width: '422px',
               height: 'auto',
-              maxHeight: '536px',
+              // maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
               panelClass: 'light-theme',
               data: dialogData
@@ -586,8 +618,11 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       quantityControlReport: {
         id: ev.data.quantityControlReport.id
       },
-      popupType: 'sludge',
-      title: 'Residue Sludge Difference',
+      popupType: type == 'Egcs' ? 'egcs' : 'sludge',
+      title:
+        type == 'Egcs'
+          ? 'EGCS Scrubber Difference'
+          : 'Residue Sludge Difference',
       measuredQuantityLabel: 'Measured ROB',
       differenceQuantityLabel: 'Difference in Qty',
       vessel: rowData.vessel,
@@ -618,9 +653,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogData.changeLog = response.changeLog;
             dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
+              width: '422px',
               height: 'auto',
-              maxHeight: '536px',
+              // maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
               panelClass: 'light-theme',
               data: dialogData
@@ -714,9 +749,9 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
               dialogData.comments = response[0]?.comments;
             }
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '540px',
+              width: '422px',
               height: 'auto',
-              maxHeight: '536px',
+              // maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
               panelClass: 'light-theme',
               data: dialogData
