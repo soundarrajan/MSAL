@@ -1,28 +1,36 @@
+<div class="header">
+  <div class="title">Filters and Preferences</div>
+  <div class="header-btn">
+    <button class="blue-button" (click)="enableEditing()">Edit</button
+    ><button
+      class="blue-button"
+      [disabled]="!isEditing"
+      (click)="updateAllFilters()"
+    >
+      Save
+    </button>
+    <div class="mat-divider"></div>
 
-<div class="d-flex justify-content-between header-wrapper">
-  <h2 mat-dialog-title class="m-b-0">
-    Filters and Preferences
-  </h2>
-  <div class="right-actions">
-    <button *ngIf="isEditing" class="action-button-blue" mat-button (click)="isEditing = false">Done</button>
-    <button class="action-button-blue" mat-button *ngIf="!isEditing" (click)="enableEditing()">Edit</button>
-    <button class="action-button-blue" mat-button (click)="updateAllFilters()">Save</button>
-    <mat-icon matSuffix id="dialogCloseButton" class="float-right" (click)="cancelEditing()">close </mat-icon>
+    <span id="dialogCloseButton" class="close" (click)="cancelEditing()"></span>
   </div>
 </div>
-<mat-dialog-content [ngClass]="isEditing ? 'isEditing' : '' ">
+<mat-dialog-content [ngClass]="isEditing ? 'isEditing' : ''">
   <div id="available-filter-content">
     <mat-chip-list>
-      <!-- start system filters -->      
+      <!-- start system filters -->
       <div *ngFor="let filter of systemFilters" class="system-filter">
         <!-- NOTE: Add track by -->
         <div
           *ngIf="!filter.isDefault && !filter.isClear"
           [matTooltip]="filter.label"
-          [ngClass]="[filter.isActive && !isEditing ? 'chip-look-alike text-center' : ' chip-look-alike inactive-chip text-center']"
+          [ngClass]="[
+            filter.isActive && !isEditing
+              ? 'chip-look-alike text-center'
+              : ' chip-look-alike inactive-chip text-center'
+          ]"
         >
           <div class="truncate-f85 text-center chip-label">
-            {{filter.label}}
+            {{ filter.label }}
             <!-- <input
               matInput
               required
@@ -38,14 +46,18 @@
           </div>
         </div>
       </div>
-      <!-- end system filters -->      
+      <!-- end system filters -->
 
       <div *ngFor="let filter of filterItems">
         <!-- NOTE: Add track by -->
         <div
           *ngIf="!filter.isDefault && !filter.isClear"
           [matTooltip]="filter.name"
-          [ngClass]="[filter.isActive && !isEditing ? 'chip-look-alike text-center' : ' chip-look-alike inactive-chip text-center']"
+          [ngClass]="[
+            filter.isActive && !isEditing
+              ? 'chip-look-alike text-center'
+              : ' chip-look-alike inactive-chip text-center'
+          ]"
         >
           <div class="truncate-f85 text-center">
             <input
@@ -53,17 +65,33 @@
               required
               type="text"
               class=""
-              [ngClass]="{ 'text-ellipsis': !isEditing, 'text-underline': isEditing }"
+              [ngClass]="{
+                'text-ellipsis': !isEditing,
+                'text-underline': isEditing
+              }"
               [(ngModel)]="filter.name"
               [readonly]="!isEditing"
               placeholder="{{ filter.name }}{{ filter.hasChanges ? '*' : '' }}"
             />
           </div>
 
-          <div matSuffix *ngIf="!isEditing" class="chip-circle chip-icon" (click)="setPinned(filter.id)">
-            <i *ngIf="filter.isPinned" class="fas fa-thumbtack aggrid-rotate-45"></i>
+          <div
+            matSuffix
+            *ngIf="!isEditing"
+            class="chip-circle chip-icon"
+            (click)="setPinned(filter.id)"
+          >
+            <i
+              *ngIf="filter.isPinned"
+              class="fas fa-thumbtack aggrid-rotate-45"
+            ></i>
           </div>
-          <div matSuffix *ngIf="isEditing" (click)="removeFilter(filter.id)" class="chip-circle chip-icon">
+          <div
+            matSuffix
+            *ngIf="isEditing"
+            (click)="removeFilter(filter.id)"
+            class="chip-circle chip-icon"
+          >
             <span class="delete-chip"></span>
           </div>
         </div>
@@ -79,7 +107,13 @@
   <div id="deleteFilterPopup">
     <h2 mat-dialog-title class="m-b-0">
       Are you sure want to delete
-      <mat-icon matSuffix id="dialogCloseButtonDl" (click)="deleteFilterDialog.close()" class="float-right cursor-pointer">close </mat-icon>
+      <mat-icon
+        matSuffix
+        id="dialogCloseButtonDl"
+        (click)="deleteFilterDialog.close()"
+        class="float-right cursor-pointer"
+        >close
+      </mat-icon>
     </h2>
     <hr />
     <mat-dialog-content>
@@ -95,15 +129,32 @@
               {{ filterToBeDeleted.name }}
             </div>
             <div matSuffix class="chip-circle">
-              <i *ngIf="filterToBeDeleted.isPinned" class="fas fa-thumbtack aggrid-rotate-45"></i>
+              <i
+                *ngIf="filterToBeDeleted.isPinned"
+                class="fas fa-thumbtack aggrid-rotate-45"
+              ></i>
             </div>
           </mat-chip>
         </mat-chip-list>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button class="red-button" mat-button cdkFocusInitial (click)="removeFilter(filterToBeDeleted.id)">DELETE</button>
-      <button class="blue-button" mat-button cdkFocusInitial (click)="deleteFilterDialog.close()">CANCEL</button>
+      <button
+        class="red-button"
+        mat-button
+        cdkFocusInitial
+        (click)="removeFilter(filterToBeDeleted.id)"
+      >
+        DELETE
+      </button>
+      <button
+        class="blue-button"
+        mat-button
+        cdkFocusInitial
+        (click)="deleteFilterDialog.close()"
+      >
+        CANCEL
+      </button>
     </mat-dialog-actions>
   </div>
 </ng-template>

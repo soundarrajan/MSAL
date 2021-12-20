@@ -1,11 +1,11 @@
-﻿commit b152abae816bdddf3ff690a3fea2a8a5295e9f34
+﻿commit ba0d21834bc061532ede235f74578533213454bc
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Dec 20 11:03:18 2021 +0000
+Date:   Mon Dec 20 13:35:21 2021 +0000
 
-    Merged PR 15240: Changed color of ag-grid scroll in control tower screen
+    Merged PR 15244: Fixed Available filter popup view from control tower screens
     
-    Changed color of ag-grid scroll in control tower screen
+    Fixed Available filter popup view from control tower screens
     
-    Related work items: #37428
+    Related work items: #37413
 
 branch: master

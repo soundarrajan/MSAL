@@ -131,9 +131,9 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
       this.filterItems.find(filter => filter.isClear).isActive = true;
     }
     this.filterItems = this.filterItems.filter(filter => filter.id !== id);
-    this.hasAvailableFilterItems = !this.filterItems.some(
-      item => !item.isDefault && !item.isClear
-    ) && !this.systemFilters;
+    this.hasAvailableFilterItems =
+      !this.filterItems.some(item => !item.isDefault && !item.isClear) &&
+      !this.systemFilters;
 
     this.changeDetector.markForCheck();
   }
@@ -141,18 +141,16 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.data) {
       this.filterItems = _.cloneDeep(this.data.filterPresets); // .sort((x, y) => (x.isPinned !== y.isPinned) ? 0 : x ? -1 : 1);
-      this.systemFilters = _.cloneDeep(this.data.systemFilters); 
-      if(!this.systemFilters) {
+      this.systemFilters = _.cloneDeep(this.data.systemFilters);
+      if (!this.systemFilters) {
         this.systemFilters = [];
       }
-      this.systemFilters.unshift(
-        {
-          label: "Default"
-        }
-      )
-      this.hasAvailableFilterItems = !this.filterItems.some(
-        item => !item.isDefault && !item.isClear
-      ) && !this.systemFilters;
+      this.systemFilters.unshift({
+        label: 'Default'
+      });
+      this.hasAvailableFilterItems =
+        !this.filterItems.some(item => !item.isDefault && !item.isClear) &&
+        !this.systemFilters;
       this.maxPinnedItems = this.data.maxPinnedItems;
     }
   }
