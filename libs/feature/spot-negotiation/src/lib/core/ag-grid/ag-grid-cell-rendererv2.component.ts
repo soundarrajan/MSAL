@@ -1100,6 +1100,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           this.locationsRows.forEach(element => {
             let updatedRow = { ...element };
             if(element.locationId == this.params.data.locationId &&  element.id == this.params.data.id){
+            if(this.params?.value && this.params?.value != null){
               const PreviousPhySupplier = state.spotNegotiation.counterpartyList.filter(item=> item.name === this.params.value);
               if(PreviousPhySupplier.length !=0){
                 updatedRow.physicalSupplierCounterpartyId =  PreviousPhySupplier[0].id;
@@ -1109,6 +1110,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                 //this.store.dispatch(new EditCounterpartyList(updatedRow));
                 return valid = true
               }
+            }else{
+              updatedRow.physicalSupplierCounterpartyId =  null;
+                updatedRow.physicalSupplierCounterpartyName = null;
+                this.store.dispatch(new EditLocationRow(updatedRow));
+            }
             }
           });
 
