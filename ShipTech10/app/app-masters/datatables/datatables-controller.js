@@ -3989,22 +3989,35 @@ APP_MASTERS.controller('Controller_Datatables', [
             });
         };
         $scope.validateSystemInstrument = function(rowIndex, fval, model) {
+            scope = angular.element($('#grid_productsSystemInstruments')).scope()
+            if (!fval) {
+                fval = scope.formValues;
+            }
             let errors = "";
             fval.productsSystemInstruments.map( (v,k) => {
-                v.productSystemGrouped = v.product.name + "-" + v.systemInstrument.name
+                v.productSystemGrouped = (v.product ? v.product.name : "") + "-" + (v.systemInstrument ? v.systemInstrument.name : "");
+                v.productBunkerGrouped = (v.product ? v.product.name : "") + "-" + v.isBunkerwireDefault;
             } )
             
             let uniqueValues = new Set(fval.productsSystemInstruments.map(v => v.productSystemGrouped));
             if (uniqueValues.size < fval.productsSystemInstruments.length) {
                 errors += `Product and System Instrument mapping should be unique <br>`;
                 fval.productsSystemInstruments[rowIndex][model] = null;
+                
             }            
-            if (model == "isBunkerwireDefault" || model == "isCargoDefault") {
-                if (fval.productsSystemInstruments[rowIndex].isBunkerwireDefault && fval.productsSystemInstruments[rowIndex].isCargoDefault) {
-                    errors += `Only one reference price can be marked for a given product <br>`;
-                    fval.productsSystemInstruments[rowIndex][model] = false;
-                }
-            }
+            let uniqueValuesProdBunker = new Set(fval.productsSystemInstruments.map(v => v.productBunkerGrouped));
+            if (uniqueValuesProdBunker.size < fval.productsSystemInstruments.length) {
+                errors += `Only one reference price can be marked for a given product <br>`;
+                fval.productsSystemInstruments[rowIndex][model] = null;
+                fval.productsSystemInstruments[rowIndex][model] = null;
+            } 
+            
+            // if (model == "isBunkerwireDefault") {
+            //     if (fval.productsSystemInstruments[rowIndex].isBunkerwireDefault) {
+            //         errors += `Only one reference price can be marked for a given product <br>`;
+            //         fval.productsSystemInstruments[rowIndex][model] = false;
+            //     }
+            // }
             if (errors) {
                 toastr.error(errors);
             }

@@ -5692,10 +5692,16 @@
                 }
                 $rootScope.$broadcast('dataListModal', { val: $scope.selected_value, elem: elements });
             } else if ($scope.grid) {
-	                $scope.assignObjValue($scope.grid.appScope.fVal(), elements, $scope.selected_value);
-            	} else {
-	                $scope.assignObjValue($scope, elements, $scope.selected_value);
-            	}
+                $scope.assignObjValue($scope.grid.appScope.fVal(), elements, $scope.selected_value);
+            } else {
+                $scope.assignObjValue($scope, elements, $scope.selected_value);
+            }
+            if($scope.CM.app_id == "masters" && $scope.CM.screen_id == "location") {
+                if(element.formvalue == "formValues.productsSystemInstruments" || element.formvalue == "formValues.product") {
+                    let formValues = angular.element(`[unique-id="name"]`).scope().formValues;
+                    $scope.validateSystemInstrument(element.idx, false, element.source );
+                }
+            }
             if (transaction_type == 'delivery' || transaction_type == 'cost') {
                 toastr.success(toastr_msg);
             }
