@@ -86,9 +86,9 @@ export class SpotnegoemaillogComponent implements OnInit {
 
   getEmailLogs() {
     this.store.subscribe(({ spotNegotiation }) => {
-      this.requestId = spotNegotiation.requests[0].id;
+      this.requestId = spotNegotiation.requests[0]?.id;
     });
-    if(this.requestId){
+    if(this.requestId != null){
     let reqpayload = {
          Order: null,
          Filters: [
@@ -111,10 +111,6 @@ export class SpotnegoemaillogComponent implements OnInit {
             this.toaster.error(res);
           }
       });
-    }
-    else{
-      this.toaster.error("An error occured");
-      return;
     }
 
   }
