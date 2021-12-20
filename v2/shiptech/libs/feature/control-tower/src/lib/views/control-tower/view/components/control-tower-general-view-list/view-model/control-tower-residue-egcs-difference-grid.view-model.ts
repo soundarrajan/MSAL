@@ -401,7 +401,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
     IScheduleDashboardLabelConfigurationDto
   > = {
     headerName: ControlTowerResidueEGCSDifferenceListColumnsLabels.progress,
-    headerClass: ['aggrid-text-align-c'],
+    headerClass: ['aggrid-text-align-c', 'status-col'],
     headerTooltip: ControlTowerResidueEGCSDifferenceListColumnsLabels.progress,
     colId: ControlTowerResidueEGCSDifferenceListColumns.progress,
     field: model('progress'),

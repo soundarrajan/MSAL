@@ -1,9 +1,11 @@
-﻿commit 9c9d17805259d5d2a315feef57bc6a31baf83e21
+﻿commit 6f566118a6f43bc7e1033f08ad12b7df686def4d
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Dec 17 11:20:58 2021 +0000
+Date:   Mon Dec 20 09:03:10 2021 +0000
 
-    Merged PR 15233: Commit 1a183992: Added 'api/masters/exchangeRates/convert' endpoint for changing of Amount in order currency  while  user modifying the invoice amount
+    Merged PR 15238: Fixed alignment of filter button in the progress column in EGCS Difference
     
-    Related work items: #37564
+    Fixed alignment of filter button in the progress column in EGCS Difference
+    
+    Related work items: #37579
 
 branch: master
