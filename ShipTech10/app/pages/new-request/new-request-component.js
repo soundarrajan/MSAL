@@ -2965,6 +2965,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.selectVesselSchedules = function(locations) {
             // console.log(ctrl.scheduleVoyageID );
+            ctrl.notesExpanded = false;
             angular.forEach(locations, (location, key) => {
                 addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
                     setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd, location.recentETA);
@@ -5129,6 +5130,39 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             callback(false);
         });
     };
+
+
+    ctrl.getNotes = () => {
+        if (!ctrl.request.id) {
+            // return false;
+        }
+        if(ctrl.notesExpanded) {
+            ctrl.notesExpanded = false;
+            return;
+        }
+        let vesselVoyageDetailIdList = [];
+        $.each(ctrl.request.locations, (k,v) => {
+            if (v.vesselVoyageDetailId) {
+                vesselVoyageDetailIdList.push(v.vesselVoyageDetailId); 
+            }
+        })
+        
+        ctrl.notesExpanded = true;
+        payload = {
+            "payload" : {
+                "VesselVoyageDetailIdList":vesselVoyageDetailIdList,
+                "RequestIdList":[ctrl.request.id],
+                "isVesselManagable": ctrl.request.isVesselManagable
+            }
+        }
+        $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/getRequestNotes`, payload).then((response) => {
+            if (response) {
+                if (response.data) {
+                    ctrl.request.requestNotes = response.data.payload;
+                }
+            }
+        });        
+    }
 
 
 

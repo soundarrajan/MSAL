@@ -1272,7 +1272,7 @@
     <div class="portlet light" ng-if="$ctrl.request">
         <div class="portlet-title">
             <div class="tools">
-                <a class="collapse" data-original-title="" title=""></a>
+                <a class="{{$ctrl.notesExpanded ? 'collapse' : 'expand' }}" ng-click="$ctrl.getNotes()" data-original-title="" title=""></a>
             </div>
             <div class="caption">
                 <span class="caption-subject">
@@ -1280,7 +1280,7 @@
                 </span>
             </div>
         </div>
-        <div class="portlet-body" ng-controller="Controller_Master as CM">
+        <div class="notes-portlet-body" ng-if="$ctrl.notesExpanded" ng-controller="Controller_Master as CM">
             <div>
                 <div ui-grid="gridOptions.generalNotes" id="grid_generalNotes" class="dataGrid grid_generalNotes">
                     <div class="clearfix"></div>
