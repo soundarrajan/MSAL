@@ -18,6 +18,7 @@ import {
   SetLocationsRows,
   SetLocationsRowsPriceDetails,
 } from '../../../../../store/actions/ag-grid-row.action';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -247,6 +248,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
 
     return rowsArray;
+  }
+///Report tab view
+  onReport(){
+    if(this.tenantConfiguration.IsNegotiationReport){
+      const baseOrigin = new URL(window.location.href).origin;
+      window.open(`${baseOrigin}/#/view-group-of-requests-report/${this.currentRequestInfo.requestGroupId}`, '_self');
+    }
   }
 
  UpdateProductsSelection(requestLocations, row){
