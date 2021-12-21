@@ -290,7 +290,10 @@ const routes: Routes = environment.useAdal
             loadChildren: () =>
               import('@shiptech/feature/spot-negotiation').then(
                 m => m.SpotNegotiationModule
-              )
+              ),
+              resolve: {
+                data: BootstrapResolver
+              }
           }
         ]
       },
