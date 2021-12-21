@@ -382,20 +382,20 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         }
       });
       // if capture conf qty == "Offer", confirmed qty is visible & required..Id-1 means offer
-      if (this.tenantConfiguration.captureConfirmedQuantityId == 1) {
-        let errorConf = false;
-        this.selectedOffers.forEach((val, key) => {
-          if (!val.ConfirmedQuantity) {
-            this.selectedOffers[`confirmedQuantity_${key}`].$setValidity('required', false);
-            errorConf = true;
-          }
-        });
-        if (errorConf) {
-          this.toaster.error('Confirmed Quantity is required!');
-          this.buttonsDisabled = false;
-          return;
-        }
-      }
+      // if (this.tenantConfiguration.captureConfirmedQuantityId == 1) {
+      //   let errorConf = false;
+      //   this.selectedOffers.forEach((val, key) => {
+      //     if (!val.ConfirmedQuantity) {
+      //       this.selectedOffers[`confirmedQuantity_${key}`].$setValidity('required', false);
+      //       errorConf = true;
+      //     }
+      //   });
+      //   if (errorConf) {
+      //     this.toaster.error('Confirmed Quantity is required!');
+      //     this.buttonsDisabled = false;
+      //     return;
+      //   }
+      // }
       this.errorMessages = errorMessages.join('\n\n');
       if (errorMessages.length > 0) {
         this.toaster.error(this.errorMessages);
