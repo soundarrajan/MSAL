@@ -376,7 +376,7 @@ export class ShiptechCustomHeaderGroup {
   agInit(params: any): void {
     this.params = params;
     if (this.params.product) {
-      let formattedLivePrice = this.priceFormatValue(this.params.product.requestGroupProducts.livePrice);
+      let formattedLivePrice = this.priceFormatValue(this.params.product.requestGroupProducts.livePrice,'livePrice');
       this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.closureValue = this.params.product.requestGroupProducts.closure;
@@ -535,8 +535,14 @@ export class ShiptechCustomHeaderGroup {
 
     let productPricePrecision = this.tenantService.pricePrecision;
 
-    this.priceFormat =
-      '1.' + productPricePrecision + '-' + productPricePrecision;
+    let num = plainNumber.split(".", 2);
+    //Live Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
+    if (plainNumber == num && type=='livePrice') {
+      this.priceFormat = '';
+    } else {
+      this.priceFormat =
+        '1.' + productPricePrecision + '-' + productPricePrecision;
+    }
 
     if (plainNumber) {
       if (productPricePrecision) {
@@ -556,7 +562,7 @@ export class ShiptechCustomHeaderGroup {
 
   calculateTargetPrice() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    this.livePrice = this.priceFormatValue(this.livePrice);
+    this.livePrice = this.priceFormatValue(this.livePrice,'livePrice');
     this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
     this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
     this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
