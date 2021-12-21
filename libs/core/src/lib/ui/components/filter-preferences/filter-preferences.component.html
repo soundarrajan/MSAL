@@ -39,15 +39,18 @@
         (click)="setPinned(filter.id)"
         [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'"
         matTooltipClass="custom-tooltip-filter"
+        [ngClass]="{ 'pin-container': filter.name !== 'Default' }"
       >
-        <i
+        <div
           *ngIf="filter.name !== 'Default'"
           id="pin"
-          class="fas fa-thumbtack aggrid-rotate-45 pin"
-        ></i>
+          class="filter-pin-icon"
+        ></div>
+
         <span *ngIf="filter.name == 'Default'" class="fas fa-circle pin"></span>
       </div>
     </mat-chip>
+
     <!-- Insert system preferences after Default-->
     <ng-container *ngIf="filter.name == 'Default'">
       <ng-container *ngFor="let filter of currentSystemFilters">
@@ -76,20 +79,21 @@
     <!-- END Insert system preferences after Default-->
   </ng-container>
 
-  <mat-chip
-    class="icon-chip text-center"
-    matTooltip="Expand Filters"
-    [matTooltipPosition]="'above'"
-    matTooltipClass="custom-tooltip-filter"
-    [matTooltipShowDelay]="500"
-    *ngIf="hasActiveFilterPresets"
-    (click)="openAvailablePresetsDialog()"
-  >
-    <div class="mx-auto d-block">
-      <i class="fas fa-ellipsis-h"></i>
-      <!--      <div class="more-white"></div>-->
-    </div>
-  </mat-chip>
+  <div class="more-filter-chipV2">
+    <mat-chip-list class="mat-chip-list">
+      <div class="mat-chip-list-wrapper">
+        <mat-chip
+          matTooltip="Expand Filters"
+          [matTooltipPosition]="'below'"
+          matTooltipClass="custom-tooltip-filter"
+          [matTooltipShowDelay]="500"
+          *ngIf="hasActiveFilterPresets"
+          (click)="openAvailablePresetsDialog()"
+          ><div class="mat-chip-ripple"></div>
+          <div class="more-icon"></div
+        ></mat-chip></div
+    ></mat-chip-list>
+  </div>
 </mat-chip-list>
 
 <mat-progress-spinner
