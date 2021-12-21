@@ -1,11 +1,11 @@
-﻿commit ba0d21834bc061532ede235f74578533213454bc
+﻿commit 7964e60cc1fabf35c4336ad63501f54c36e904b5
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Dec 20 13:35:21 2021 +0000
+Date:   Tue Dec 21 10:29:53 2021 +0000
 
-    Merged PR 15244: Fixed Available filter popup view from control tower screens
+    Merged PR 15254: Added css fixes for save preference
     
-    Fixed Available filter popup view from control tower screens
+    Added css fixes for save preference
     
-    Related work items: #37413
+    Related work items: #37408
 
 branch: master

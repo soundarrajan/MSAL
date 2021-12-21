@@ -81,10 +81,7 @@
             class="chip-circle chip-icon"
             (click)="setPinned(filter.id)"
           >
-            <i
-              *ngIf="filter.isPinned"
-              class="fas fa-thumbtack aggrid-rotate-45"
-            ></i>
+            <i *ngIf="filter.isPinned" class="filter-pin-icon"></i>
           </div>
           <div
             matSuffix
@@ -129,10 +126,7 @@
               {{ filterToBeDeleted.name }}
             </div>
             <div matSuffix class="chip-circle">
-              <i
-                *ngIf="filterToBeDeleted.isPinned"
-                class="fas fa-thumbtack aggrid-rotate-45"
-              ></i>
+              <i *ngIf="filterToBeDeleted.isPinned" class="filter-pin-icon"></i>
             </div>
           </mat-chip>
         </mat-chip-list>

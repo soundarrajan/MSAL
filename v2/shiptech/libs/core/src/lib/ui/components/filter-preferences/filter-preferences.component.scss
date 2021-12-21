@@ -18,9 +18,9 @@ $white: white;
 $red: red;
 
 .chip-circle {
-  border: 1px solid $dark;
+  // border: 1px solid $dark;
   //background: $white;
-  border-radius: 50%;
+  // border-radius: 50%;
   height: 19px;
   width: 19px;
   padding: 2px;
@@ -32,7 +32,7 @@ $red: red;
   margin-left: 16px;
   position: relative;
   &:before {
-    content: "";
+    content: '';
     display: block;
     width: 1px;
     height: 25px;
@@ -57,13 +57,12 @@ $red: red;
   }
 }
 
-
 .active-chip {
   background-color: #364150 !important;
-  color:white !important;
+  color: white !important;
   .chip-circle {
-    border: 1px solid $darker;
-    background-color: white;
+    // border: 1px solid $darker;
+    // background-color: white;
     &:before {
       background-color: #fff;
     }
@@ -72,36 +71,38 @@ $red: red;
       font-size: 0.7rem;
     }
   }
-  
 }
 
-.inactive-chip{
+.inactive-chip {
   background-color: white !important;
-  color:#364150 !important;
+  color: #364150 !important;
   border: 1px solid #364150;
   width: auto;
-  
+
   .chip-circle {
-    border: 1px solid #364150;
-    background-color: white;
+    // border: 1px solid #364150;
+    // background-color: white;
 
     i {
       color: #364150 !important;
       font-size: 0.7rem;
     }
   }
-
 }
 
 .mat-chip.mat-standard-chip {
-  background-color: #c6c6c6;
-  color: rgba(0, 0, 0, .87);
+  color: rgba(0, 0, 0, 0.87);
 }
+
+.mat-chip:focus {
+  outline: none !important;
+}
+
 .mat-chip {
   border-radius: 5px !important;
   &.system-preference {
     .chip-circle {
-      border : none;
+      border: none;
       background-color: transparent;
       &:before {
         left: 0px;
@@ -148,16 +149,77 @@ $red: red;
     margin-right: 5px;
   }
 }
-.icon-chip{
+.icon-chip {
   width: 55px;
   background-color: #364150 !important;
   color: $white !important;
- 
 }
 
-.truncate-f85{
+.truncate-f85 {
   width: 85px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.pin-container {
+  display: flex;
+  align-items: center;
+}
+
+.active-chip {
+  color: #ffffff;
+  background: #37414f;
+  border-left: solid 1px white;
+  .filter-pin-icon {
+    content: url("data:image/svg+xml,%3Csvg width='11' height='11' viewBox='0 0 11 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.597 2.70791L8.61617 0.728334C8.31805 0.430399 7.83492 0.430399 7.53653 0.728334C7.39337 0.871344 7.31298 1.06503 7.31298 1.26735C7.31298 1.41542 7.3569 1.55912 7.43633 1.68172L4.78974 3.95686C4.51721 3.83085 4.21909 3.76139 3.91281 3.76139C3.35914 3.76139 2.82798 3.98102 2.43585 4.37294C2.14996 4.65894 2.14996 5.12205 2.43585 5.40805L3.62626 6.59805L0.814453 10.5048L4.72366 7.69478L5.91408 8.88448C6.1999 9.17017 6.66395 9.17017 6.95016 8.88448C7.34163 8.4929 7.56167 7.96211 7.56167 7.40845C7.56167 7.10268 7.49256 6.80477 7.36647 6.5327L9.64338 3.88709C9.76571 3.96639 9.90914 4.01036 10.0573 4.01036C10.2597 4.01036 10.454 3.93 10.597 3.78664C10.8951 3.48868 10.8951 3.00584 10.597 2.70791Z' fill='white'/%3E%3C/svg%3E%0A");
+    height: 13px;
+    width: 13px;
+  }
+}
+
+.inactive-chip {
+  color: #37414f;
+  background: #ffffff;
+  border: 1px solid #37414f;
+  .filter-pin-icon {
+    content: url("data:image/svg+xml,%3Csvg width='11' height='11' viewBox='0 0 11 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.0428 2.26723L8.06197 0.287661C7.76386 -0.0102749 7.28072 -0.0102749 6.98233 0.287661C6.83917 0.43067 6.75879 0.624353 6.75879 0.826672C6.75879 0.974747 6.8027 1.11844 6.88213 1.24105L4.23554 3.51619C3.96301 3.39018 3.66489 3.32072 3.35861 3.32072C2.80494 3.32072 2.27378 3.54035 1.88165 3.93226C1.59576 4.21826 1.59576 4.68138 1.88165 4.96738L3.07206 6.15738L0.260254 10.0642L4.16946 7.2541L5.35988 8.44381C5.6457 8.7295 6.10975 8.7295 6.39596 8.44381C6.78743 8.05223 7.00747 7.52144 7.00747 6.96777C7.00747 6.66201 6.93836 6.3641 6.81227 6.09203L9.08919 3.44642C9.21151 3.52572 9.35494 3.56968 9.50315 3.56968C9.70553 3.56968 9.89979 3.48933 10.0428 3.34596C10.3409 3.04801 10.3409 2.56517 10.0428 2.26723Z' fill='%2337414F'/%3E%3C/svg%3E%0A");
+    height: 13px;
+    width: 13px;
+  }
+  &:hover {
+    outline: none !important;
+    background-color: #37414f !important;
+    color: #ffffff !important;
+
+    .filter-pin-icon {
+      content: url("data:image/svg+xml,%3Csvg width='11' height='11' viewBox='0 0 11 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.597 2.70791L8.61617 0.728334C8.31805 0.430399 7.83492 0.430399 7.53653 0.728334C7.39337 0.871344 7.31298 1.06503 7.31298 1.26735C7.31298 1.41542 7.3569 1.55912 7.43633 1.68172L4.78974 3.95686C4.51721 3.83085 4.21909 3.76139 3.91281 3.76139C3.35914 3.76139 2.82798 3.98102 2.43585 4.37294C2.14996 4.65894 2.14996 5.12205 2.43585 5.40805L3.62626 6.59805L0.814453 10.5048L4.72366 7.69478L5.91408 8.88448C6.1999 9.17017 6.66395 9.17017 6.95016 8.88448C7.34163 8.4929 7.56167 7.96211 7.56167 7.40845C7.56167 7.10268 7.49256 6.80477 7.36647 6.5327L9.64338 3.88709C9.76571 3.96639 9.90914 4.01036 10.0573 4.01036C10.2597 4.01036 10.454 3.93 10.597 3.78664C10.8951 3.48868 10.8951 3.00584 10.597 2.70791Z' fill='white'/%3E%3C/svg%3E%0A");
+      height: 13px;
+      width: 13px;
+    }
+    .filter-default-icon {
+      background-color: #ffffff;
+    }
+
+    .truncate-f85 {
+      color: white;
+    }
+
+    .chip-circle:before {
+      background-color: white;
+    }
+
+    .count-circle {
+      background-color: white;
+      color: #37414f;
+    }
+
+    .pin {
+      color: white;
+    }
+  }
+}
+
+.more-filter-chipV2 {
+  margin-left: 15px;
 }
