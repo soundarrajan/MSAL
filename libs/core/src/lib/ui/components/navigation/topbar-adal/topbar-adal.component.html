@@ -25,20 +25,31 @@
   </span>
   <router-outlet name="topbar"></router-outlet>
 
-  <div style="float:right;">
-    <span class="mr-2"
-      >{{ username$ | async }} | {{ displayName$ | async | htmlDecodeReadonly }}</span
-    >
-    <button
-      pButton
-      *ngIf="authService.userInfo.authenticated"
-      (click)="authService.logout()"
-      type="button"
-      class="ui-button-danger"
-      label="Log out"
-    ></button>
+  <div style="float:right; display: inline-flex;">
+    <div class="topbar-user-menu">
+      <span
+        >{{ username$ | async }} |
+        {{ displayName$ | async | htmlDecodeReadonly }}</span
+      >
+      <a class="dropdown-toggle user-menu" [matMenuTriggerFor]="appMenu">
+        <i class="fa fa-user"></i>
+      </a>
+      <mat-menu #appMenu="matMenu">
+        <button
+          mat-menu-item
+          *ngIf="authService.userInfo.authenticated"
+          (click)="authService.logout()"
+        >
+          Log out
+        </button>
+      </mat-menu>
+    </div>
     <div class="topbar-help-menu">
-      <a href="https://demohelpshiptech.inatech.com/" target="_blank" class="dropdown-toggle user-menu">
+      <a
+        href="https://demohelpshiptech.inatech.com/"
+        target="_blank"
+        class="dropdown-toggle user-menu"
+      >
         <i class="fa fa-question"></i>
       </a>
     </div>
