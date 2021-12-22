@@ -251,7 +251,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 ///Report tab view
   onReport(){
-    if(this.tenantConfiguration.IsNegotiationReport){
+    if(this.tenantConfiguration.isNegotiationReport){
       const baseOrigin = new URL(window.location.href).origin;
       window.open(`${baseOrigin}/#/view-group-of-requests-report/${this.currentRequestInfo.requestGroupId}`, '_self');
     }
