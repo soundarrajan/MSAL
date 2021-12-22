@@ -9,6 +9,152 @@
 /*---- #region COMMON STYLES ----*/
 
 /*** SHIPTECH UI COMPONENTS - START ***/
+
+/* Invoice screen - start */
+.pd-0 {
+  padding: 0px !important;
+}
+.invoice-main-container {
+  //background-color: red;
+  .mat-tab-body {
+    height: auto;
+    .mat-tab-body-content {
+      overflow: visible;
+    }
+    .details {
+      .section1 {
+        padding-top: 10px;
+        margin: 0px 15px;
+        border-top: solid 2px #dce3eb;
+
+        &:first-child {
+          border-top: none;
+        }
+      }
+    }
+  }
+}
+
+.invoice-details-component {
+  .custom-form-field.lightTheme
+    .mat-form-field.mat-form-field-disabled
+    .mat-form-field-label
+    mat-label,
+  .custom-form-field.lightTheme
+    .mat-form-field.mat-form-field-disabled
+    .mat-form-field-label
+    .mat-placeholder-required {
+    background: #eeeeee !important;
+  }
+  #custom-form-field.lightTheme
+    .mat-form-field.mat-form-field-disabled
+    .mat-form-field-label
+    mat-label,
+  #custom-form-field.lightTheme
+    .mat-form-field.mat-form-field-disabled
+    .mat-form-field-label
+    .mat-placeholder-required {
+    background: #eeeeee !important;
+  }
+  .custom-form-field-with-search.lightTheme
+    .mat-form-field.mat-form-field-disabled
+    .mat-form-field-label
+    mat-label,
+  .custom-form-field-with-search.lightTheme
+    .mat-form-field.mat-form-field-disabled
+    .mat-form-field-label
+    .mat-placeholder-required {
+    background: #eeeeee !important;
+  }
+}
+
+.chip-container {
+  width: 100%;
+  min-height: 100px;
+  background-color: #e0e1e4;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+// Order and Counterparty Details
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  .header-label {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #252a32;
+  }
+  .header-data {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+    color: #252a32;
+  }
+  .order-id {
+    font-size: 14px;
+    color: #00aae2;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+.section-content {
+  // background: #FCFCFC;
+  border: 1px solid #e0e1e4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 10px;
+  &.order-details {
+    .form-fields {
+      display: flex;
+      //justify-content: space-between;
+      //margin: 12px 0px;
+      flex-wrap: wrap;
+      #custom-form-field {
+        margin: 15px;
+      }
+    }
+    .field-textarea {
+      textarea {
+        border: 1px solid #252a32;
+        box-sizing: border-box;
+        border-radius: 4px;
+        width: 100%;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        color: #252a32;
+        resize: none;
+        font-family: 'Roboto';
+      }
+      textarea::placeholder {
+        font-size: 14px;
+        line-height: 16px;
+        color: #c3c6cc;
+      }
+      &.sizing {
+        margin-top: 10px;
+      }
+    }
+    .seperator-line {
+      height: 180px;
+      border-left: 2px solid #e0e1e4;
+      margin: 0px 15px;
+    }
+  }
+}
+
+/* Invoice screen - end */
+
 .custom-form-field-with-search {
     margin: 15px 0px;
     border-radius: 4px;
