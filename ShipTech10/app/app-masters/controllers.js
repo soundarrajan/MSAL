@@ -5716,8 +5716,6 @@
         };
 
 
-
-
         $scope.assignObjValue = function(obj, keyPath, value) {
             var lastKeyIndex = keyPath.length - 1;
             for (let i = 0; i < lastKeyIndex; ++i) {
@@ -5736,7 +5734,25 @@
                 obj = obj[key];
             }
             obj[keyPath[lastKeyIndex]] = angular.copy(value);
+            $scope.detectChangesInRequestFromLookup();
         };
+
+        $scope.detectChangesInRequestFromLookup = function() {
+            let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
+            let requestId = parseFloat($state.params.requestId);
+            let status = $state.params.status;
+            let validStatus = false;
+            if (status && statusesList.includes(status.name)) {
+                validStatus = true;
+            }
+            if(validStatus && requestId && 
+                window.location.href.includes('edit-request') ) {
+                console.log('changed from lookup');
+                window.requestDetailsIsChangedFromLookup = true;
+            }
+        }
+
+
 
         $scope.assignObjValue_tankproduct = function(idx,value){
             $scope.formValues.vesselProducts[idx].product = value;
@@ -7321,7 +7337,7 @@
             if (status && statusesList.includes(status.name)) {
                 validStatus = true;
             }
-            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0;
+            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0 || window.requestDetailsIsChangedFromLookup;
             console.log(validStatus);
             console.log(detectChanges);
             if(validStatus && requestId && detectChanges)  {

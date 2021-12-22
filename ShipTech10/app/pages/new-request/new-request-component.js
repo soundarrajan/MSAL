@@ -82,8 +82,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.requiredQty = false;
         ctrl.options = [];
         ctrl.emailTransactionTypeId = 10;
+
         window.confirmRequestLeave = false;
-        window.isGoSpotAction = false;
+        $rootScope.isGoSpotAction = false;
+        window.requestDetailsIsChangedFromLookup = false;
+
         if ($stateParams.requestId) {
             $state.params.title = 'Edit Request';
         } else {
@@ -952,10 +955,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return obj;
         }
 
+
         /** ***************************************************************************************************/
         /* END "REQUEST COPY" FUNCTIONALITY.
         /*****************************************************************************************************/
         ctrl.goSpot = function(verifyContracts) {
+            console.log('go spot button');
             var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
             if (validActiveSpecGroupMessage != true) {
                 toastr.error(validActiveSpecGroupMessage);
@@ -985,8 +990,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             }
             ctrl.buttonsDisabled = true;
-            let detectChanges = ctrl.detectIfExistChangesInRequest();
+            let detectChanges = ctrl.detectIfExistChangesInRequest() || window.requestDetailsIsChangedFromLookup;
             if (detectChanges) {
+                $rootScope.isGoSpotAction = true;
                 window.confirmRequestLeave = true;
                 $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
                     if(response == true) {
@@ -998,6 +1004,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         setTimeout(() => {
                             ctrl.buttonsDisabled = false;
                             window.confirmRequestLeave = false;
+                            $rootScope.isGoSpotAction = false;
                         });
                     }
 
@@ -1011,6 +1018,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         ctrl.goSpotAction = function() {
             console.log('GO SPOT');
+            window.requestDetailsIsChangedFromLookup = false;
             $scope.forms.detailsFromRequest.$setPristine(); 
             console.log($scope.forms.detailsFromRequest);
             if (ctrl.request.requestGroup !== null) {
@@ -1142,6 +1150,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
 
         ctrl.saveRequest = function() {
+            $scope.forms.detailsFromRequest.$setPristine(); 
+            window.requestDetailsIsChangedFromLookup = false;
             ctrl.request.requestNotes = $rootScope.notes;
             ctrl.buttonsDisabled = true;
             var valid;
@@ -1297,7 +1307,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
                             screenLoader.hideLoader();
                             ctrl.getResponse();
-                            $scope.forms.detailsFromRequest.$setPristine(); 
                             console.log($scope.forms.detailsFromRequest);
                         },
                         () => {
@@ -2590,7 +2599,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
             });
             if (errors == 0) {
-               let detectChanges = ctrl.detectIfExistChangesInRequest();
+               let detectChanges = ctrl.detectIfExistChangesInRequest() || window.requestDetailsIsChangedFromLookup;
                if (detectChanges) {
                     window.confirmRequestLeave = true;
                     $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
@@ -2619,6 +2628,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         ctrl.confirmContractSelectionRequest = function(requestProductIds, contractProductIds, contractIds) {
             $scope.forms.detailsFromRequest.$setPristine(); 
+            window.requestDetailsIsChangedFromLookup = false;
             console.log($scope.forms.detailsFromRequest);
             orderModel.getExistingOrders(requestProductIds.join(',')).then(
                     (responseData) => {
@@ -2966,6 +2976,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.selectVesselSchedules = function(locations) {
             // console.log(ctrl.scheduleVoyageID );
             ctrl.notesExpanded = false;
+            window.requestDetailsIsChangedFromLookup = true;
             angular.forEach(locations, (location, key) => {
                 addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
                     setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd, location.recentETA);
@@ -2975,6 +2986,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.selectedPortCall = function(locations) {
             // ctrl.request.portCall = locations;
+            window.requestDetailsIsChangedFromLookup = true;
             $scope.portCall[locations.locationId] = locations;
             // angular.forEach(locations, (location, key) => {
             //     addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
@@ -5065,11 +5077,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         }
         if(validStatus && requestId && 
             fromState.url.includes('edit-request') && 
-            !window.confirmRequestLeave 
+            !window.confirmRequestLeave  && !$rootScope.isGoSpotAction
         ) {
-            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0;
+            console.log($scope.forms);
+            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0 || window.requestDetailsIsChangedFromLookup;
             console.log(requestId);
             console.log(validStatus);
+            console.log($scope.forms);
             console.log(detectChanges);
             if(detectChanges) {
                 event.preventDefault();
@@ -5105,7 +5119,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             window.location.href.includes('edit-request') && 
             !window.confirmRequestLeave 
         ) {
-            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0;
+            let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0 || window.requestDetailsIsChangedFromLookup;
             return detectChanges;
            
         } 
