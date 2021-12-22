@@ -31,6 +31,7 @@ import { RemoveCounterpartyComponent } from '../../views/main/details/components
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -133,8 +134,8 @@ import { of } from 'rxjs';
           matTooltip="Temporary suspended counterparty"
           matTooltipClass="lightTooltip"
         ></span>
-        <span class="m-l-7" matTooltip="{{ params.value }}">{{
-          params.value
+        <span class="m-l-7" matTooltip="{{this.format.htmlDecode(params.value) }}">{{
+         this.format.htmlDecode( params.value)
         }}</span>
         <span class="sticky-icon">
           <!--span class="hover-lookup-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger"></span>-->
@@ -613,6 +614,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public store: Store,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
+    public format: TenantFormattingService,
     private changeDetector: ChangeDetectorRef
   ) {
 
@@ -1206,4 +1208,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
     return locationrow;
   }
+
+ 
 }
