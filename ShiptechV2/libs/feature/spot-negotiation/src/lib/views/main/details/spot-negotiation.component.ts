@@ -26,6 +26,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SelectSeller, EditLocationRow } from '../../../store/actions/ag-grid-row.action';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -53,6 +54,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
+    public format: TenantFormattingService,
     public dialog: MatDialog,
     private spinner: NgxSpinnerService
   ) {
@@ -272,6 +274,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         if(res?.payload?.length > 0){
           res.payload.forEach(element => {
             element.isSelected = false;
+            element.name=this.format.htmlDecode(element.name);
             
           });
 
@@ -288,7 +291,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if (res.error) {
         alert('Handle Error');
         return;
-      } else {
+      } else { 
         // Populate Store
         this.store.dispatch(new SetTenantConfigurations(res.tenantConfiguration));
       }
