@@ -18,6 +18,7 @@ export const SpotNegotiationApiPaths = {
   updatePhySupplier:`RFQ/updatePhysicalSupplier`,
   sendRFQ:`RFQ/createRFQ`,
   amendRFQ: `RFQ/amendRfq`,
+  requoteRFQ: `RFQ/requoteRfq`,
   skipRFQ: `RFQ/skipRFQ`,
   revokeRFQ: `RFQ/revokeRFQ`,
   saveAndSendRFQ: `RFQ/saveAndSendRFQ`,
@@ -388,6 +389,23 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .delete<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.removeCounterparty}/${request}`
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+  
+  @ObservableException()
+  RequoteRFQ(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.requoteRFQ}`,
+        payload
       )
       .pipe(
         map((body: any) => body),
