@@ -566,15 +566,15 @@ export class ShiptechCustomHeaderGroup {
     this.livePrice = this.priceFormatValue(this.livePrice,'livePrice');
     this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
     this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
-    this.targetValue = parseInt(this.livePrice) + parseInt(this.benchmark);
+    this.targetValue = parseInt(this.livePrice.replace(',','')) + parseInt(this.benchmark);
     //this.closureValue=parseInt(this.livePrice);
     let payload = {
       "productPrice": {
         "requestGroupId": parseInt(RequestGroupId),
         "requestLocationId": this.requestLocationId,
         "requestProductId": this.requestProductId,
-        "livePrice": parseInt(this.livePrice),
-        "targetPrice": parseInt(this.targetValue)
+        "livePrice": this.livePrice.replace(',',''),
+        "targetPrice":this.targetValue
       }
     };
     const response = this._spotNegotiationService.saveTargetPrice(payload);
