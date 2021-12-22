@@ -5079,11 +5079,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             fromState.url.includes('edit-request') && 
             !window.confirmRequestLeave  && !$rootScope.isGoSpotAction
         ) {
-            console.log($scope.forms);
             let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0 || window.requestDetailsIsChangedFromLookup;
             console.log(requestId);
             console.log(validStatus);
-            console.log($scope.forms);
             console.log(detectChanges);
             if(detectChanges) {
                 event.preventDefault();
@@ -5141,6 +5139,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             callback(true);
         });
         $('.sweetConfirmModal .sweetConfirmModalNo').unbind().on('click', () => {
+            callback(false);
+        });
+        $('.sweetConfirmModal .close').unbind().on('click', () => {
             callback(false);
         });
     };
