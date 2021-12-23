@@ -90,6 +90,8 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
         else if (this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
           this.toaster.error('Revoke RFQ cannot be sent as RFQ was not communicated.');
+        else if (this.selected == 'RequoteRFQEmailTemplate')
+          this.toaster.error('Requote RFQ cannot be sent as RFQ was not communicated.');
         this.clearData();
         return;
       }
@@ -98,6 +100,13 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.toaster.error('Amend RFQ cannot be sent as RFQ was skipped.');
         else if (this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
           this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
+        else if (this.selected == 'RequoteRFQEmailTemplate')
+          this.toaster.error('Requote RFQ cannot be sent as RFQ was skipped.');
+        this.clearData();
+        return;
+      }
+      else if(this.selected == 'RequoteRFQEmailTemplate' && !this.SelectedSellerWithProds.requestOffers?.some(x => x.price != null)){
+        this.toaster.error('Atleast 1 offer price should be captured in order to requote.');
         this.clearData();
         return;
       }
@@ -218,7 +227,15 @@ export class EmailPreviewPopupComponent implements OnInit {
   saveAndSendRFQ(isSendEmail) {
 
     if (this.previewTemplate == null) {
-      this.toaster.error("Template does not exists.");
+      this.toaster.error("The Email Template is empty.");
+      return;
+    }
+    if (this.subject === null || this.subject.match(/^ *$/) !== null) {
+      this.toaster.error("Please add a subject to save / send the email.");
+      return;
+    }
+    if (this.previewTemplate?.to?.length == 0){
+      this.toaster.error("Please enter atleast 1 email id.");
       return;
     }
 
