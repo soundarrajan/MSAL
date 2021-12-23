@@ -874,101 +874,39 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   removeCounterpartyRowClicked(rowData: any, rowIndex: number, gridApi: any) {
-
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.locationsRows = spotNegotiation.locationsRows;
-      this.locations = spotNegotiation.locations;
-      if(rowData.requestOffers && rowData.requestOffers.length > 0){
-        let CheckStatus;
-        rowData.requestOffers.forEach(element => {
-          let currentLocProd= this.locations.filter(row1 => row1.locationId == rowData.locationId);
-          let FilterProdut = currentLocProd[0].requestProducts.filter(
-            col => col.id == element.requestProductId
-          );
-          if (
-            FilterProdut.length > 0 &&
-            FilterProdut[0].status != undefined &&
-            FilterProdut[0].status == 'Stemmed'
-          ) {
-            return CheckStatus = false;
-          }
-          return CheckStatus = true;
-        });
-        if(!CheckStatus){
-          this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
-          return;
-         }else{
-           const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-             width: '600px',
-             data: {
-               sellerName: rowData.sellerCounterpartyName,
-               isRFQSent: rowData.requestOffers ? true : false
-             }
-           });
-           dialogRef.afterClosed().subscribe(result => {
-             if (result) {
-               this.spinner.show();
-               this.spotNegotiationService.RemoveCounterparty(rowData.id)
-               .subscribe((res: any) => {
-                 this.spinner.hide();
-                 if (res.status) {
-                   let dataRows = [];
-                   gridApi.forEachNode(node => dataRows.push(node.data));
-                   dataRows = dataRows.splice(rowIndex, 1);
-                   gridApi.applyTransaction({ remove: dataRows });
-                   this.toastr.success('Counterparty has been removed from negotiation succesfully.');
-                   this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
-                 } 
-                   else{
-                   if(res.isRequestStemmed){
-                     this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
-                   } else if(res.message && res.message.length >0){
-                     this.toastr.warning(res.message);
-                   }
-                   else{
-                     this.toastr.error(res);
-                   }
-                 }
-               });
-             }
-           });
-         }
-      }else{
-        const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-          width: '600px',
-          data: {
-            sellerName: rowData.sellerCounterpartyName,
-            isRFQSent: rowData.requestOffers ? true : false
+    const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+      width: '600px',
+      data: {
+        sellerName: rowData.sellerCounterpartyName,
+        isRFQSent: rowData.requestOffers ? true : false
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.spinner.show();
+        this.spotNegotiationService.RemoveCounterparty(rowData.id)
+        .subscribe((res: any) => {
+          this.spinner.hide();
+          if (res.status) {
+            let dataRows = [];
+            gridApi.forEachNode(node => dataRows.push(node.data));
+            dataRows = dataRows.splice(rowIndex, 1);
+            gridApi.applyTransaction({ remove: dataRows });
+            this.toastr.success('Counterparty has been removed from negotiation succesfully.');
+            this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
+          } else{
+            if(res.isRequestStemmed){
+              this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
+            } else if(res.message && res.message.length >0){
+              this.toastr.warning(res.message);
+            }
+            else{
+              this.toastr.error(res);
+            }
           }
         });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.spinner.show();
-            this.spotNegotiationService.RemoveCounterparty(rowData.id)
-            .subscribe((res: any) => {
-              this.spinner.hide();
-              if (res.status) {
-                let dataRows = [];
-                gridApi.forEachNode(node => dataRows.push(node.data));
-                dataRows = dataRows.splice(rowIndex, 1);
-                gridApi.applyTransaction({ remove: dataRows });
-                this.toastr.success('Counterparty has been removed from negotiation succesfully.');
-                this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
-              } else{
-                if(res.isRequestStemmed){
-                  this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
-                } else if(res.message && res.message.length >0){
-                  this.toastr.warning(res.message);
-                }
-                else{
-                  this.toastr.error(res);
-                }
-              }
-            });
-          }
-        });        
       }
     });
   }
-  
+
 }
