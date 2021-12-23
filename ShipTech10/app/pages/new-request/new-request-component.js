@@ -3341,13 +3341,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             new_request.locations = new_locations;
 
             $.each(new_request.locations, (k, v) => {
-                $.each(ctrl.lists.Location, (lk, lv) => {
-                    if (v.destination) {
-                        if (lv.id == v.destination.id) {
-                            v.destination = lv;
-                        }
-                    }
-                });
+                v.destination = null;
+                // $.each(ctrl.lists.Location, (lk, lv) => {
+                //     if (v.destination) {
+                //         if (lv.id == v.destination.id) {
+                //             v.destination = lv;
+                //         }
+                //     }
+                // });
             });
             $state.go(STATE.COPY_REQUEST, {
                 copyFrom: new_request
