@@ -288,6 +288,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             ctrl.request = angular.copy($stateParams.copyFrom);
                             ctrl.request.requestCompleted = false;// fields enabled at copy, send this to be
                             ctrl.request.hasBestContract = false;
+                            ctrl.request.originalRequestId = ctrl.request.id;
                             ctrl.request = traverseObject(ctrl.request, nullifyId);
                             ctrl.request.requestStatus = null;
                             ctrl.request.requestDate = new Date().toJSON();
@@ -5152,6 +5153,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         if (!ctrl.request.id) {
             // return false;
         }
+        console.log(ctrl.request.originalRequestId);
         if(ctrl.notesExpanded) {
             ctrl.notesExpanded = false;
             return;
@@ -5167,7 +5169,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         payload = {
             "payload" : {
                 "VesselVoyageDetailIdList":vesselVoyageDetailIdList,
-                "RequestIdList":[ctrl.request.id],
+                "RequestIdList":[ctrl.request.originalRequestId ? ctrl.request.originalRequestId : ctrl.request.id],
                 "isVesselManagable": ctrl.request.isVesselManagable
             }
         }
