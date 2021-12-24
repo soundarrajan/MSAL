@@ -547,7 +547,7 @@ export class ShiptechCustomHeaderGroup {
 
     if (plainNumber) {
       if (productPricePrecision) {
-        plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
+        plainNumber = this.roundDown(plainNumber, productPricePrecision );
       } else {
         plainNumber = Math.trunc(plainNumber);
       }
