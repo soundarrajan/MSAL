@@ -2,13 +2,13 @@
     <div class="header">
         <div class="title">Search Request</div>
         <div style="display:flex">
-            <input type="text" placeholder="Search request here" class="search-box">
+            <input type="text" placeholder="Search request here" (input)="search($event.target.value)" class="search-box">
             <button class="searchButton" type="submit">
                 <i class="fa fa-search"></i>
             </button>
         </div>
         <div class="header-btn">
-            <button class="blue-button h-25" [mat-dialog-close]="true">Proceed</button>
+            <button class="blue-button h-25" [mat-dialog-close]="true" (click)="addToRequestList()">Proceed</button>
             <span class="seperator-line"></span>
             <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
         </div>

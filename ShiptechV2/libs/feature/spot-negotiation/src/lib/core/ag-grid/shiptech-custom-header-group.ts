@@ -556,17 +556,26 @@ export class ShiptechCustomHeaderGroup {
       if (type && type == 'benchmark') {
         plainNumber = Math.abs(plainNumber);
       }
-
-      return this._decimalPipe.transform(plainNumber, this.priceFormat);
+      var FinalplainNumber = this.RoundoffCalc(plainNumber,productPricePrecision);
+      return FinalplainNumber;
     }
   }
-
+  RoundoffCalc(val,priceFormat){
+    const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + priceFormat + "})?", "g")
+    const a = val.toString().match(reg)[0];
+    const dot = a.indexOf(".");
+    if (dot === -1) {
+        return a;
+    }
+    const b = priceFormat - (a.length - dot) + 1;
+    return b > 0 ? (a + "0".repeat(b)) : a;
+  }
   calculateTargetPrice() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice = this.priceFormatValue(this.livePrice,'livePrice');
     this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
     this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
-    this.targetValue = parseInt(this.livePrice.replace(',','')) + parseInt(this.benchmark);
+    this.targetValue = this.livePrice.replace(',','') - this.benchmark;
     //this.closureValue=parseInt(this.livePrice);
     let payload = {
       "productPrice": {

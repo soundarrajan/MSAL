@@ -14,6 +14,7 @@ export const SpotNegotiationApiPaths = {
   staticLists: `api/infrastructure/static/lists`,
   counterpartyLists: `api/masters/counterparties/listbyTypes`,
   addCounterparties: `groups/addSellers`,
+  addRequesttoGroup: `groups/linkRequest`,
   saveTargetPrice: `Groups/saveTargetPrice`,
   updatePhySupplier:`RFQ/updatePhysicalSupplier`,
   sendRFQ:`RFQ/createRFQ`,
@@ -32,6 +33,7 @@ export const SpotNegotiationApiPaths = {
   getSellerContacts: `counterparty/viewContacts`,
   addNewSellerContact: `counterparty/addContact`,
   getEmailLogs : `api/masters/emaillogs/list`,
+  getRequestList: `api/procurement/rfq/selectRequest`
 };
 
 @Injectable({
@@ -96,6 +98,40 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .post<any>(
         `${this._infrastructureApiUrl}/${SpotNegotiationApiPaths.staticLists}`,
         { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  addRequesttoGroup(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.addRequesttoGroup}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getRequestList(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getRequestList}`,
+        { Payload: payload }
       )
       .pipe(
         map((body: any) => body),
