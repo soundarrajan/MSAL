@@ -20,8 +20,9 @@ import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
-import { AddCounterpartyToLocations, SetLocations, SetLocationsRows } from '../../../../../store/actions/ag-grid-row.action';
-import { SetCurrentRequestSmallInfo } from '../../../../../store/actions/request-group-actions';
+import {AddCounterpartyToLocations, SetLocations, SetLocationsRows} from '../../../../../store/actions/ag-grid-row.action';
+import {SetCurrentRequestSmallInfo,AddRequest } from '../../../../../store/actions/request-group-actions';
+
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 @Component({
@@ -51,18 +52,22 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   counterpartyList: any = [];
   visibleCounterpartyList: any = [];
   selectedCounterparty: any = [];
+  selectedRequestList:any = [];
   currentRequestInfo:any;
+  requestsAndVessels: any = [];
+  visibleRequestList: any = [];
 
-  requestsAndVessels = [
-    { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
-    { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
-    { request: 'Demo Req 100003', vessel: 'Al Mashrab', selected: false },
-    { request: 'Demo Req 100004', vessel: 'Afif', selected: false },
-    { request: 'Demo Req 100005', vessel: 'MerinLion', selected: false },
-    { request: 'Demo Req 100006', vessel: 'Afif', selected: false },
-    { request: 'Demo Req 100007', vessel: 'MerinLion', selected: false },
-    { request: 'Demo Req 100008', vessel: 'Al Mashrab', selected: false }
-  ];
+
+  // requestsAndVessels = [
+  //   { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
+  //   { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
+  //   { request: 'Demo Req 100003', vessel: 'Al Mashrab', selected: false },
+  //   { request: 'Demo Req 100004', vessel: 'Afif', selected: false },
+  //   { request: 'Demo Req 100005', vessel: 'MerinLion', selected: false },
+  //   { request: 'Demo Req 100006', vessel: 'Afif', selected: false },
+  //   { request: 'Demo Req 100007', vessel: 'MerinLion', selected: false },
+  //   { request: 'Demo Req 100008', vessel: 'Al Mashrab', selected: false }
+  // ];
   isLoadpage: boolean = false;
   locationsRows: any;
   currentRequestData: any[];
@@ -86,6 +91,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
+        this.requestsAndVessels = spotNegotiation.RequestList;
+        this.visibleRequestList = spotNegotiation.RequestList.slice(0, 7);
         this.locationsRows=spotNegotiation.locationsRows;
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
@@ -118,7 +125,17 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       );
     }
   }
+  onRequestListCheckboxChange(checkbox: any, element: any) {
+    if (checkbox.checked) {
+      this.selectedRequestList.push(element);
+    }
 
+    if (!checkbox.checked) {
+      this.selectedRequestList = this.selectedRequestList.filter(
+        e => e.id !== element.id
+      );
+    }
+  }
   toBeAddedCounterparties(): SpnegoAddCounterpartyModel[] {
     if (this.requestOptions) {
       let selectedCounterparties = [];
@@ -308,30 +325,42 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
 
-  addToCheckboxOptions() {
-    var selectedVessel = this.requestsAndVessels.filter(
-      item => item.selected == true
-    );
-    for (var val of selectedVessel) {
-      this.locations.push({
-        'location-name': 'ROTTERDAM',
-        'location-id': '1234',
-        'port-id': '1'
+  addToRequestListCheckboxOptions() {
+    if(this.selectedRequestList.length > 0){
+      let selectedreqId = [];
+      const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+      this.selectedRequestList.forEach(element => {
+        selectedreqId.push(element.requestId);
       });
-      const arrayIndex = this.requestsAndVessels.indexOf(val);
-      this.requestsAndVessels.splice(arrayIndex, 1);
+        if(this.selectedRequestList.length > 0)
+        {
+            let payload = {
+            groupId: parseInt(RequestGroupId),
+            requestIds: selectedreqId
+            };
+            const response = this._spotNegotiationService.addRequesttoGroup(payload);
+            response.subscribe((res: any) => {
+              if (res.error) {
+                alert('Handle Error');
+                return;
+              } else {
+                  if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
+                  {
+                      this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
+                  }
+                  if (res['requests'] && res['requests'].length > 0) 
+                  {
+                      this.store.dispatch(new AddRequest(res['requests']));
+                  }
+              }
+            });
+           }
     }
-    setTimeout(() => {
-      var headerWidth = this.container.nativeElement.offsetWidth;
-      var reqWidth = this.requestcontainer.nativeElement.offsetWidth;
-      this.availWidth = headerWidth - reqWidth;
-      if (this.availWidth < 150) {
-        this.displayVessel = true;
-      } else {
-      }
-    }, 0);
-    this.selectedRequest = '';
-  }
+    else{
+      this.toastr.error("Select atlease one Request");
+      return;
+    }
+}
 
   selectRequest(event, i, selected) {
     event.preventDefault();
@@ -351,11 +380,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   openRequestPopup() {
+    const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     const dialogRef = this.dialog.open(SearchRequestPopupComponent, {
       width: '100vw',
       height: '95vh',
       maxWidth: '95vw',
-      panelClass: 'search-request-popup'
+      panelClass: 'search-request-popup',
+      data: {
+        RequestGroupId: parseInt(RequestGroupId)
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {});
@@ -384,6 +417,18 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     this.visibleCounterpartyList = this.counterpartyList
       .filter(e => {
         if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+          return true;
+        }
+        return false;
+      })
+      .slice(0, 7);
+  }
+  searchRequest(userInput: string): void {
+    this.expandedSearch = false;
+
+    this.visibleRequestList = this.requestsAndVessels
+      .filter(e => {
+        if (e.requestName.toLowerCase().includes(userInput.toLowerCase())) {
           return true;
         }
         return false;
