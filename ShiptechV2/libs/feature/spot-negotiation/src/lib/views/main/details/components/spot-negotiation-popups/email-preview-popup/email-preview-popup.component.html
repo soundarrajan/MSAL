@@ -36,7 +36,7 @@
                         <span class="text">To:</span>
                     </div>
                     <div style="display:  flex; flex: 0 0 95%">
-                        <div class="recipientClass" style="margin: 0px 5px; display:  flex;" *ngFor="let item of to">
+                        <div class="recipientClass" style="margin: 0px 5px; display:  flex;height:25px;" *ngFor="let item of to">
                             <input class="cust-input-field" matInput value="{{item}}">
                             <div class="close-icon" (click)="RemoveEmailId(item,'toEmail')"></div>
                         </div>
@@ -50,7 +50,7 @@
                         <span class="text">Cc:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%">
-                        <div class="recipientClass" style="margin: 0px 5px; display: flex;" *ngFor="let item of cc">
+                        <div class="recipientClass" style="margin: 0px 5px; display: flex;height:25px;" *ngFor="let item of cc">
                             <input class="cust-input-field" matInput value="{{item}}">
                             <div class="close-icon flex-shrink-1" (click)="RemoveEmailId(item,'ccEmail')"></div>
                         </div>
