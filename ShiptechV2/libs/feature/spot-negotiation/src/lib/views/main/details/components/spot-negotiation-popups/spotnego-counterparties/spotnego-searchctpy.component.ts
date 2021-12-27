@@ -5,9 +5,11 @@ import { Store } from '@ngxs/store';
 import { GridOptions } from 'ag-grid-community';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { AddCounterpartyToLocations } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { ToastrService } from 'ngx-toastr';
 import _, { cloneDeep } from 'lodash';
+import { AGGridCellRendererV2Component } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-rendererv2.component';
 
 @Component({
   selector: 'app-spotnego-searchctpy',
@@ -25,6 +27,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   currentRequest: any;
   rowSelection: string;
   constructor(
+    public format: TenantFormattingService,
     private router: Router,
     private store: Store,
     private toastr: ToastrService,
@@ -119,7 +122,12 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerName: 'Parent',
       headerTooltip: 'Parent',
       field: 'parent.name',
-      cellClass: ['aggridtextalign-left']
+      width: 175,
+      cellClass: ['suppress-movable-col'],
+      cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: {
+            type: 'searchbox-parent',
+          }
     },
     {
       headerName: 'Created By',

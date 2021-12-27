@@ -44,6 +44,11 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
         <div class="truncate-125">{{ params.value }}</div>
       </div>
     </div>
+    <div *ngIf="params.type == 'searchbox-parent'">
+      <div  [ngClass]="params.cellClass">
+        <div class="truncate-125">{{ this.format.htmlDecode(params.value)}}</div>
+      </div>
+    </div>
     <div *ngIf="params.type == 'multirow'">
       <div *ngIf="params.data.data">
         <div
@@ -351,7 +356,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
       <div
         *ngIf="params.data.requestOffers?.length > 0" id="EnabledPhySup{{params.data.id}}"
         class="phySupplier edit"
-        [matTooltip]="(editSeller && params.data.physicalSupplierCounterpartyName)? params.data.physicalSupplierCounterpartyName : 'Add physical supplier'"
+        [matTooltip]="(editSeller && params.data.physicalSupplierCounterpartyName)? this.format.htmlDecode(params.data.physicalSupplierCounterpartyName) : 'Add physical supplier'"
         matTooltipClass="lightTooltip"
       >
 
@@ -372,7 +377,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             >
           <span
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
-            >{{ params.data.physicalSupplierCounterpartyName }}</span
+            >{{ this.format.htmlDecode(params.data.physicalSupplierCounterpartyName) }}</span
           >
           <span
             *ngIf="
