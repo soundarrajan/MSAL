@@ -312,6 +312,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     }
                     // item.quantityUomName = pv.quantityUomm.name;
                     // item.contractId = v.contract.id;
+                    item.actualConfirmedQuantity = pv.confirmedQuantity; // #35871
                     console.log(pv);
                     offerData.push(item);
                 });

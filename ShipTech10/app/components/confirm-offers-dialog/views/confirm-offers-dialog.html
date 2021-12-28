@@ -59,7 +59,7 @@
                         {{ $ctrl.priceFormat(item.offerPrice, item.pricePrecision) }}
                     </td>
                     <td>
-                        {{ item.confirmedQuantity * (item.conversionFactorToUomOfPriceFromContract ? item.conversionFactorToUomOfPriceFromContract * item.offerPrice : item.offerPrice)| number:3 }}
+                        {{ item.actualConfirmedQuantity * (item.conversionFactorToUomOfPriceFromContract ? item.conversionFactorToUomOfPriceFromContract * item.offerPrice : item.offerPrice)| number:3 }}
 
                     </td>
                     <td>

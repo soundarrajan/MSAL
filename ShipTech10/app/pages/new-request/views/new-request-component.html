@@ -1054,7 +1054,7 @@
                                                             class="form-control input-sm" 
                                                             ng-model="product.minQuantity" 
                                                             max="{{ product.maxQuantity }}"
-                                                            ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" 
+                                                            ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed') && (!product.suggestedLift || product.suggestedLift == 0 || product.quantitiesChanged)"
                                                             ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']; $ctrl.minQtyBlur(product); $ctrl.captureReasonModal(locationIdx, productIdx, 'REQUEST_PRODUCT_MINQTY', 'minQuantity')"
                                                             data-original-title="{{ product.minQuantity }}" 
                                                             ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" >
@@ -1066,7 +1066,7 @@
                                                             id="product_MaxQuantity_{{$index}}" 
                                                             class="form-control input-sm" 
                                                             ng-model="product.maxQuantity" 
-                                                            ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" 
+                                                            ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed') && (!product.suggestedLift || product.suggestedLift == 0 || product.quantitiesChanged)"
                                                             ng-min="{{ product.minQuantity }}" 
                                                             data-original-title="{{ product.maxQuantity }}" 
                                                             ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" 
