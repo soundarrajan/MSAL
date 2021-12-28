@@ -57,6 +57,13 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getCounterpartyList(payload);
   }
 
+   /**
+   * @param payload = False
+   */
+    @ObservableException()
+    getRequestList(payload: any): Observable<unknown> {
+      return this.spotNegotiationApi.getRequestList(payload);
+    }
   /**
    * @param payload = False
    */
@@ -81,6 +88,13 @@ export class SpotNegotiationService extends BaseStoreService
      return this.spotNegotiationApi.AddCounterparties(payload);
    }
 
+    /**
+   * @param payload = False
+   */
+     @ObservableException()
+     addRequesttoGroup(payload: any): Observable<unknown> {
+       return this.spotNegotiationApi.addRequesttoGroup(payload);
+     }
   /**
    * Send RFQ
    * @param payload = int

@@ -6,10 +6,10 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
   template: `
     <div
       [ngClass]="params.cellClass"
-      matTooltip="{{ params.value }}"
+      matTooltip="{{ params.value.name }}"
       style="margin:0px"
     >
-      <div class="truncate-125">{{ params.value }}</div>
+      <div class="truncate-125">{{ params.value.name }}</div>
     </div>
   `
 })

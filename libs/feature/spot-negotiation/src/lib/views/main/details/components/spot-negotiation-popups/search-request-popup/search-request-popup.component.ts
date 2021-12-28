@@ -2,7 +2,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GridOptions } from 'ag-grid-community';
+import { Store } from '@ngxs/store';
 import { AGGridCellRendererComponent } from '../../../../../../core/ag-grid/ag-grid-cell-renderer.component';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { AddRequest } from '../../../../../../store/actions/request-group-actions';
+import { AddCounterpartyToLocations } from '../../../../../../store/actions/ag-grid-row.action';
 
 @Component({
   selector: 'app-search-request-popup',
@@ -24,12 +30,19 @@ export class SearchRequestPopupComponent implements OnInit {
     { label: 'Adj Out', value: '0 MT' },
     { label: 'Day Closing Balance', value: '1020 MT' }
   ];
+  selectedRequestList: any[];
+  RequestGroupId: any;
   ngOnInit() {}
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private store: Store,
+    private _spotNegotiationService: SpotNegotiationService,
     public dialogRef: MatDialogRef<SearchRequestPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.RequestGroupId = data.RequestGroupId;
     this.dialog_gridOptions = <GridOptions>{
       defaultColDef: {
         filter: true,
@@ -46,8 +59,13 @@ export class SearchRequestPopupComponent implements OnInit {
         this.dialog_gridOptions.api = params.api;
         this.dialog_gridOptions.columnApi = params.columnApi;
         this.dialog_gridOptions.api.sizeColumnsToFit();
-        this.dialog_gridOptions.api.setRowData(this.rowData);
-        this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+        this.store.subscribe(({ spotNegotiation }) => {
+          if (spotNegotiation.RequestList && this.dialog_gridOptions.api) {
+            this.rowData = spotNegotiation.RequestList;
+            this.dialog_gridOptions.api.setRowData(this.rowData);
+            this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+          }
+        });
       },
       getRowStyle: function(params) {
         if (params.node.rowPinned) {
@@ -65,6 +83,61 @@ export class SearchRequestPopupComponent implements OnInit {
         }
       }
     };
+  }
+
+  
+  addToRequestList() {
+    this.selectedRequestList = this.dialog_gridOptions.api.getSelectedRows();
+    if(this.selectedRequestList.length > 0){
+      let selectedreqId = [];
+      this.selectedRequestList.forEach(element => {
+        selectedreqId.push(element.requestId);
+      });
+      if(this.selectedRequestList.length > 0){
+        let payload = {
+        groupId: parseInt(this.RequestGroupId),
+        requestIds: selectedreqId
+      };
+      const response = this._spotNegotiationService.addRequesttoGroup(payload);
+      response.subscribe((res: any) => {
+        if (res.error) {
+          alert('Handle Error');
+          return;
+        } else {
+            if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
+            {
+                this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
+            }
+            if (res['requests'] && res['requests'].length > 0) 
+            {
+                this.store.dispatch(new AddRequest(res['requests']));
+            }
+        }
+      });
+      }
+    }
+    else{
+      this.toastr.error("Select atlease one Request");
+      return;
+    }
+  }
+  search(userInput: string): void {
+    this.store.subscribe(({ spotNegotiation }) => {
+      if (spotNegotiation.RequestList) {
+        this.rowData = spotNegotiation.RequestList
+          .filter(e => {
+            if (e.requestName.toLowerCase().includes(userInput.toLowerCase()) || e.vesselName.toLowerCase().includes(userInput.toLowerCase())) {
+              return true;
+            }
+            else{
+              return false;
+            }
+          });
+          if(this.rowData.length > 0){
+            this.dialog_gridOptions.api.setRowData(this.rowData);
+          }
+      }
+    });
   }
   tankSummary() {
     //this.dialogRef.close();
@@ -87,34 +160,34 @@ export class SearchRequestPopupComponent implements OnInit {
       cellClass: 'p-1 checkbox-center ag-checkbox-v2'
     },
     {
-      headerName: 'ID',
+      headerName: 'Request ID',
       headerTooltip: 'ID',
-      field: 'id',
+      field: 'requestId',
       width: 175,
       cellClass: ['aggridtextalign-left']
     },
     {
       headerName: 'Date',
       headerTooltip: 'Date',
-      field: 'date',
+      field: 'requestDate',
       cellClass: ['aggridtextalign-center']
     },
     {
       headerName: 'Service',
       headerTooltip: 'Service',
-      field: 'service',
+      field: 'serviceName',
       cellClass: ['aggridtextalign-left']
     },
     {
       headerName: 'Buyer',
       headerTooltip: 'Buyer',
-      field: 'buyer',
+      field: 'buyerName',
       cellClass: ['aggridtextalign-left']
     },
     {
       headerName: 'Vessel',
       headerTooltip: 'Vessel',
-      field: 'vessel',
+      field: 'vesselName',
       cellClass: ['aggridtextalign-left']
     },
     {
@@ -132,13 +205,13 @@ export class SearchRequestPopupComponent implements OnInit {
     {
       headerName: 'Location',
       headerTooltip: 'Location',
-      field: 'location',
+      field: 'locationName',
       cellClass: ['aggridtextalign-left']
     },
     {
       headerName: 'Request Status',
       headerTooltip: 'Request Status',
-      field: 'request_status',
+      field: 'requestStatus',
       suppressMenu: true,
       cellRendererFramework: AGGridCellRendererComponent,
       cellClass: ['aggridtextalign-center'],
@@ -156,7 +229,7 @@ export class SearchRequestPopupComponent implements OnInit {
     {
       headerName: 'OPS Validation',
       headerTooltip: 'OPS Validation',
-      field: 'ops_validation',
+      field: 'requestStatus',
       suppressMenu: true,
       cellRendererFramework: AGGridCellRendererComponent,
       cellClass: ['aggridtextalign-center'],
@@ -172,7 +245,7 @@ export class SearchRequestPopupComponent implements OnInit {
     {
       headerName: 'Product',
       headerTooltip: 'Product',
-      field: 'product',
+      field: 'productName',
       cellClass: ['aggridtextalign-left']
     }
   ];
