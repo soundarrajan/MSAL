@@ -21,6 +21,7 @@ import {
   SetLocations,
   SetLocationsRows,
   SetCounterpartyList,
+  SetRequestList,
   SetLocationsRowsPriceDetails
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
@@ -65,6 +66,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.getRequestGroup();
     this.getGroupOfSellers();
     this.getCounterpartyList();
+    this.getRequestList();
     this.getTenantConfugurations();
     this.getStaticLists();
   }
@@ -243,6 +245,30 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
 
+  getRequestList(): void {
+    let payload = {
+      Order: null,
+      PageFilters: { Filters: [] },
+      SortList: { SortList: [{"columnValue":"eta","sortIndex":0,"sortParameter":2}] },
+      Filters: [],
+      SearchText: null,
+      Pagination: { Skip: 0, Take: 2000 }
+    };
+    const response = this.spotNegotiationService.getRequestList(payload);
+    response.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      } else {
+        if(res?.payload?.length > 0){
+          res.payload.forEach(element => {
+            element.isSelected = false;
+          });
+       this.store.dispatch(new SetRequestList(res.payload));
+       }}
+    });
+  }
+  
   getCounterpartyList(): void {
     let payload = {
       Order: null,

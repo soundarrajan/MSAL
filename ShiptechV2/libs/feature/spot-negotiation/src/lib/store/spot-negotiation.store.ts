@@ -5,13 +5,15 @@ import {
   SetCounterpartyList,
   SetLocationsRows,
   AddCounterpartyToLocations,
+  AddRequest,
   EditLocationRow,
   SetLocationsRowsPriceDetails,
   SelectSeller,
   DeleteSeller,
   SetLocations,
   EditCounterpartyList,
-  RemoveCounterparty
+  RemoveCounterparty,
+  SetRequestList
 } from './actions/ag-grid-row.action';
 
 import {
@@ -25,6 +27,7 @@ import {
 export class SpotNegotiationStoreModel {
   staticLists: any;
   counterpartyList: any;
+  RequestList:any;
   // Until here
   groupOfRequestsId: number | null;
   locations: Array<any>;
@@ -48,6 +51,7 @@ export class SpotNegotiationStoreModel {
     // Initialization inside the constructor
     this.staticLists = {};
     this.counterpartyList = {};
+    this.RequestList = {};
     this.locations = [];
     this.selectedSellerList = [];
     this.locationsRows = [];
@@ -90,6 +94,7 @@ export class SpotNegotiationStoreModel {
     marketPriceHistory: {},
     staticLists: [],
     counterpartyList: [],
+    RequestList:[]
   }
 })
 export class SpotNegotiationStore {
@@ -176,6 +181,15 @@ export class SpotNegotiationStore {
     });
   }
 
+  @Action(SetRequestList)
+  SetRequestList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetRequestList
+  ): void {
+    patchState({
+      RequestList: payload
+    });
+  }
   @Action(EditCounterpartyList)
   EditCounterpartyList(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
@@ -257,6 +271,18 @@ export class SpotNegotiationStore {
   }
 
   // Rows lists
+  @Action(AddRequest)
+  AddRequest(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AddRequest
+  ) {
+    const state = getState();
+    var ctpys = [...state.requests, ...payload];
+    patchState({
+      requests: ctpys
+    });
+  }
+  // Rows lists
   @Action(AddCounterpartyToLocations)
   AddCounterpartyToLocations(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
@@ -267,10 +293,13 @@ export class SpotNegotiationStore {
       {
         if(c.requestOffers == undefined){
           var reqLocation = state.locations.find(x=> x.id === c.requestLocationId);
-          for(let index = 0; index < reqLocation.requestProducts.length; index++) {
+          if(reqLocation && reqLocation.requestProducts){
+          for(let index = 0; index < reqLocation.requestProducts.length; index++) 
+{
             let indx = index +1;
             let val = "checkProd" + indx;
             c[val] = c.isSelected;
+           }
         }
       }
     });

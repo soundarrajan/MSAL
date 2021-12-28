@@ -29,6 +29,16 @@ export class SetCounterpartyList {
 
   constructor(public payload: any) {}
 }
+export class SetRequestList {
+  static readonly type = '[Request List] Set';
+
+  constructor(public payload: any) {}
+}
+export class AddRequest{
+  static readonly type = '[AddRequest] Add';
+
+  constructor(public payload: any) {}
+}
 export class AddCounterpartyToLocations{
   static readonly type = '[Add Counterparty] Add';
 
