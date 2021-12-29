@@ -297,7 +297,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     item.productName = pv.product ? pv.product.name : null;
                     item.minQuantity = pv.minQuantity;
                     item.maxQuantity = pv.maxQuantity;
-                    item.confirmedQuantity = pv.maxQuantity;
+                    item.confirmedQuantity = pv.confirmedQuantity ?? pv.maxQuantity; // #35871
                     item.offerPrice = pv.price;
                     item.totalPrice = pv.price;
                     item.productId = pv.id;
@@ -312,7 +312,6 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     }
                     // item.quantityUomName = pv.quantityUomm.name;
                     // item.contractId = v.contract.id;
-                    item.actualConfirmedQuantity = pv.confirmedQuantity; // #35871
                     console.log(pv);
                     offerData.push(item);
                 });
