@@ -8,3 +8,8 @@
 .email-preview-popup .email-container .ccClass .close-icon, .email-preview-popup .email-container .recipientClass .close-icon{
     display: none;
 }
+:host ::ng-deep .ck-editor__editable_inline {
+
+   max-height: 250px !important;
+  
+  }
