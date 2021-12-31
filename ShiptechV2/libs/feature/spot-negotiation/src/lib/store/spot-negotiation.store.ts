@@ -11,6 +11,7 @@ import {
   SelectSeller,
   DeleteSeller,
   SetLocations,
+  EditLocations,
   EditCounterpartyList,
   RemoveCounterparty,
   SetRequestList
@@ -150,6 +151,20 @@ export class SpotNegotiationStore {
     });
   }
 
+  @Action(EditLocations)
+  EditLocations(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: EditLocations
+  ) {
+    patchState({
+      locations: getState().locations.map(row => {
+        if (row.id === payload.id) {
+          return payload;
+        }
+        return row;
+      })
+    });
+  }
   // Group Of Requests Id
   @Action(SetRequestGroupId)
   setRequestGroupId(
