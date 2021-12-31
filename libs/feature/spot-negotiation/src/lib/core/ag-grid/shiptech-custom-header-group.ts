@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
-import { AddCounterpartyToLocations } from '../../store/actions/ag-grid-row.action';
+import { AddCounterpartyToLocations,EditLocations } from '../../store/actions/ag-grid-row.action';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 
@@ -496,26 +496,18 @@ export class ShiptechCustomHeaderGroup {
   }
 
   roundDown(value, pricePrecision) {
-    let precisionFactor = 1;
-    let response = 0;
     const intvalue = parseFloat(value);
-    if (pricePrecision === 1) {
-      precisionFactor = 10;
+    const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + pricePrecision + "})?", "g")
+    const a = intvalue.toString().match(reg)[0];
+    const dot = a.indexOf(".");
+    const b = pricePrecision - (a.length - dot) + 1;
+    if (dot === -1) {
+        return a;
+    } 
+    else{
+      return b > 0 ? (a + "0".repeat(b)) : a;
     }
-    if (pricePrecision === 2) {
-      precisionFactor = 100;
-    }
-    if (pricePrecision === 3) {
-      precisionFactor = 1000;
-    }
-    if (pricePrecision === 4) {
-      precisionFactor = 10000;
-    }
-    response = Math.floor(intvalue * precisionFactor) / precisionFactor;
-    return response.toString();
   }
-
-
 
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
@@ -556,26 +548,16 @@ export class ShiptechCustomHeaderGroup {
       if (type && type == 'benchmark') {
         plainNumber = Math.abs(plainNumber);
       }
-      var FinalplainNumber = this.RoundoffCalc(plainNumber,productPricePrecision);
-      return FinalplainNumber;
+      return plainNumber;
     }
-  }
-  RoundoffCalc(val,priceFormat){
-    const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + priceFormat + "})?", "g")
-    const a = val.toString().match(reg)[0];
-    const dot = a.indexOf(".");
-    if (dot === -1) {
-        return a;
-    }
-    const b = priceFormat - (a.length - dot) + 1;
-    return b > 0 ? (a + "0".repeat(b)) : a;
   }
   calculateTargetPrice() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice = this.priceFormatValue(this.livePrice,'livePrice');
     this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
     this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
-    this.targetValue = this.livePrice.replace(',','') - this.benchmark;
+    const targetval = this.livePrice.replace(',','') - this.benchmark;
+    this.targetValue = parseFloat(targetval.toString()) ;
     //this.closureValue=parseInt(this.livePrice);
     let payload = {
       "productPrice": {
@@ -589,13 +571,45 @@ export class ShiptechCustomHeaderGroup {
     const response = this._spotNegotiationService.saveTargetPrice(payload);
     response.subscribe((res: any) => {
       if (res.status) {
-        //this.toastr.success(res.message);
+        let locations = [];
+         this.store.subscribe(({ spotNegotiation, ...props }) => {
+          locations = spotNegotiation.locations;
+          JSON.parse(JSON.stringify(locations))
+        });
+         if(locations.length > 0){
+          locations.forEach(element => {
+            if(element.id == this.requestLocationId && element.requestProducts){
+              element.requestProducts.forEach((element1,index) => {
+                if(element1.id == this.requestProductId && element1.requestGroupProducts){
+                  debugger;
+                  if(this.livePrice && this.livePrice != null){
+                   let updatedRow1 = Object.assign({}, element);
+                    updatedRow1 = this.updateprice(JSON.parse(JSON.stringify(updatedRow1)),index)
+                  this.store.dispatch(
+                    new EditLocations(updatedRow1)
+                  );
+                  }
+                  
+                }
+              });
+            }
+          });
+         }
       } else {
         this.toastr.error(res.message);
         return;
       }
     });
   }
+
+    updateprice(updaterow, index){
+      updaterow.requestProducts[index].requestGroupProducts.livePrice = this.livePrice;
+      if(this.targetValue && this.targetValue != null){
+        updaterow.requestProducts[index].requestGroupProducts.targetPrice = this.targetValue; 
+      }
+      return updaterow;
+      
+    }
 
   addCounterpartiesToLocation(reqLocationId: number) {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;

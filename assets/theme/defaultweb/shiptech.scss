@@ -15012,7 +15012,7 @@ font-size:14px;
       float: right;
       .blue-button{
         background-color: #1F96FF !important;
-        width: 170px !important;
+        width: 115px !important;
         height: 28px !important;
       }
     }
@@ -15040,16 +15040,19 @@ font-size:14px;
       border-bottom: 2px solid #E0E1E4;
       padding: 15px;
       .cust-input-field{
-        padding: 5px 8px;
-        border: 1px solid #E0E1E4;
-        box-sizing: border-box;
-        border-radius: 3px;
+        padding: 5px 7px;
+        width: 156px;
+        // border: 1px solid #E0E1E4;
+        // box-sizing: border-box;
+        // border-radius: 3px;
         font-family: Roboto;
         font-style: normal;
         font-weight: 500;
         font-size: 13px;
         line-height: 15px;
         color: #333333;
+        display: flex;
+        text-overflow: ellipsis;
       }
       .add-new{
         width: 85px;
@@ -15083,11 +15086,28 @@ font-size:14px;
         display: none;
       }
       .file-list{
+        display: flex;
+        align-items: center;
         border: 1px solid #E0E1E4;
         border-radius: 2px;
         color: #4A71C2;
         margin: 0px 5px;
-        padding: 5px 15px 5px 12px;
+        padding: 5px;
+        width: 154px;
+        &:hover{
+          .attachment-name{
+            width: 120px;
+          }
+          .close-icon{
+            display: block;
+            cursor: pointer;
+            content: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z' fill='%23F48484'/%3E%3Cpath d='M11.9586 6.68831L8.62182 3.35156L3.52032 8.64075L6.82332 11.9438C9.52276 11.5725 11.6486 9.40669 11.9586 6.68831Z' fill='%23F48484'/%3E%3Cpath d='M8.30479 8.70786C8.18479 8.70786 8.06498 8.66211 7.97329 8.57061L3.43054 4.02767C3.24735 3.84448 3.24735 3.54786 3.43054 3.36486C3.61373 3.18186 3.91035 3.18167 4.09335 3.36486L8.63629 7.9078C8.81948 8.09098 8.81948 8.38761 8.63629 8.57061C8.5446 8.66211 8.42479 8.70786 8.30479 8.70786Z' fill='white'/%3E%3Cpath d='M3.76107 8.70695C3.64107 8.70695 3.52125 8.6612 3.42957 8.5697C3.24638 8.38652 3.24638 8.08989 3.42957 7.90689L7.9725 3.36395C8.15569 3.18077 8.45232 3.18077 8.63532 3.36395C8.81832 3.54714 8.8185 3.84377 8.63532 4.02677L4.09257 8.5697C4.00107 8.6612 3.88107 8.70695 3.76107 8.70695Z' fill='white'/%3E%3C/svg%3E%0A");
+          }
+        }
+        .close-icon{
+          display: none;
+        }
+  
       }
       .add-doc{
         margin: 0px 10px;
@@ -15114,9 +15134,34 @@ font-size:14px;
         color: #333333;
       }
     }
+    .recipientClass,.ccClass{
+      display: flex;
+      align-items: center;
+      border:1px solid #E0E1E4;
+      box-sizing: border-box;
+      border-radius: 3px;
+      &:hover{
+        .cust-input-field{
+          width: 139px;
+        }
+        .close-icon{
+          display: block;
+          cursor: pointer;
+          padding-right: 5px;
+          content: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z' fill='%23F48484'/%3E%3Cpath d='M11.9586 6.68831L8.62182 3.35156L3.52032 8.64075L6.82332 11.9438C9.52276 11.5725 11.6486 9.40669 11.9586 6.68831Z' fill='%23F48484'/%3E%3Cpath d='M8.30479 8.70786C8.18479 8.70786 8.06498 8.66211 7.97329 8.57061L3.43054 4.02767C3.24735 3.84448 3.24735 3.54786 3.43054 3.36486C3.61373 3.18186 3.91035 3.18167 4.09335 3.36486L8.63629 7.9078C8.81948 8.09098 8.81948 8.38761 8.63629 8.57061C8.5446 8.66211 8.42479 8.70786 8.30479 8.70786Z' fill='white'/%3E%3Cpath d='M3.76107 8.70695C3.64107 8.70695 3.52125 8.6612 3.42957 8.5697C3.24638 8.38652 3.24638 8.08989 3.42957 7.90689L7.9725 3.36395C8.15569 3.18077 8.45232 3.18077 8.63532 3.36395C8.81832 3.54714 8.8185 3.84377 8.63532 4.02677L4.09257 8.5697C4.00107 8.6612 3.88107 8.70695 3.76107 8.70695Z' fill='white'/%3E%3C/svg%3E%0A");
+        }
+      }
+      .close-icon{
+        display: none;
+      }
+
+    }
   }
 }
-
+.emailAddressPanelClass{
+  left: -16px;
+  min-width: 149px !important;
+}
 /*** Spot Negotiation - Email Preview Popup - End ***/
 
 /** Document - Drag & Drop Upload - Start **/
