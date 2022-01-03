@@ -30,6 +30,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
   requestOptions: any;
+  isOpen: boolean = false;
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
@@ -61,6 +62,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.spotNegotiationService.QuoteByDate = this.child.getValue();
+  }
+
+  showEmailLogs(){
+    this.isOpen = true;
   }
 
   confirmorderpopup() {

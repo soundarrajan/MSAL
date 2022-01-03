@@ -5,7 +5,9 @@
             [gridOptions]="gridOptions_data"
             class="ag-theme-material ag-grid-v2 angular-v9 spot-nego-emaillog "
             [rowData]="rowData_grid"
-            (rowClicked)="onrowClicked($event)">
+            (rowClicked)="onrowClicked($event)"
+            (gridReady)="getEmailLogs()"
+            >
         </ag-grid-angular>
     </div>
 </div>
