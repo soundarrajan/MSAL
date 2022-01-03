@@ -10,6 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   Optional
 } from '@ag-grid-enterprise/all-modules';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'remove-counterparty-confirmation',
@@ -20,6 +21,7 @@ import {
 })
 export class RemoveCounterpartyComponent{
   constructor(
+    public format: TenantFormattingService,
     public dialogRef: MatDialogRef<RemoveCounterpartyComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
