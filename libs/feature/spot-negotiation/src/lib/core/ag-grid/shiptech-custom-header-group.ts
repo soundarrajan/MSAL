@@ -501,12 +501,7 @@ export class ShiptechCustomHeaderGroup {
     const a = intvalue.toString().match(reg)[0];
     const dot = a.indexOf(".");
     const b = pricePrecision - (a.length - dot) + 1;
-    if (dot === -1) {
-        return a;
-    } 
-    else{
-      return b > 0 ? (a + "0".repeat(b)) : a;
-    }
+    return a;
   }
 
   priceFormatValue(value, type?: any) {
