@@ -106,7 +106,7 @@
               </div>
             </div>
           </mat-tab>
-          <mat-tab label="Report">      
+          <mat-tab label="Report">
             <ng-template mat-tab-label>
             <div class="custom-label-holder">
               <div class="custom-tab-ui"></div>
@@ -128,7 +128,7 @@
             <ng-template mat-tab-label>
               <div class="custom-label-holder">
                 <div class="custom-tab-ui"></div>
-                <div class="custom-label">Email Log</div>
+                <div class="custom-label" (click)="showEmailLogs()" >Email Log</div>
               </div>
             </ng-template>
             <ng-container *ngTemplateOutlet="emaillog"></ng-container>
@@ -154,5 +154,7 @@
   </div>
 </ng-template>
 <ng-template #emaillog>
-  <app-spotnegoemaillog></app-spotnegoemaillog>
+  <div *ngIf="isOpen">
+    <app-spotnegoemaillog></app-spotnegoemaillog>
+  </div>
 </ng-template>
