@@ -468,7 +468,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
      const locationsRowsOriData = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
       return state['spotNegotiation'].LocationsOriData;
      });
-     this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
+     this.store.dispatch(new SetLocationsRows(locationsRowsOriData)); 
    }
   }
 
