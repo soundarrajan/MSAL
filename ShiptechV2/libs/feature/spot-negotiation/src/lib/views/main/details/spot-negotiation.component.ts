@@ -22,6 +22,7 @@ import {
   SetLocationsRows,
   SetCounterpartyList,
   SetRequestList,
+  SetLocationsRowsOriData,
   SetLocationsRowsPriceDetails
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
@@ -236,7 +237,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             priceDetailsRes['sellerOffers']
           );
           // Demo format data
-
+          this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
           this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         });
 
