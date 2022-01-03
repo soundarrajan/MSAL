@@ -22,6 +22,7 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import { ToastrService } from 'ngx-toastr';
 import {AddCounterpartyToLocations, SetLocations, SetLocationsRows} from '../../../../../store/actions/ag-grid-row.action';
 import {SetCurrentRequestSmallInfo,AddRequest } from '../../../../../store/actions/request-group-actions';
+import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
@@ -71,6 +72,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   isLoadpage: boolean = false;
   locationsRows: any;
   currentRequestData: any[];
+  locationsRowsOriData: any[];
 
   constructor(
     private store: Store,
@@ -452,7 +454,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   searchCounterparty(userInput: string): void {
     if(userInput!==''){
-      let result = this.locationsRows
+      let result = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].LocationsOriData; })
       .filter(e => {
         if (e.sellerCounterpartyName.toLowerCase().includes(userInput.toLowerCase())) {
           return true;
@@ -462,7 +465,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new SetLocationsRows(result));
     }
    else{
-        return;
+     const locationsRowsOriData = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+      return state['spotNegotiation'].LocationsOriData;
+     });
+     this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
    }
   }
 

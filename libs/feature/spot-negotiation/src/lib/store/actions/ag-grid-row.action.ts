@@ -40,6 +40,11 @@ export class SetLocationsRows{
 
   constructor(public payload: any) {}
 }
+export class SetLocationsRowsOriData{
+  static readonly type = '[LocationsRowsOriData] Set';
+
+  constructor(public payload: any) {}
+}
 export class SetLocationsRowsPriceDetails{
   static readonly type = '[LocationsRowsPriceDetails] Set';
 
