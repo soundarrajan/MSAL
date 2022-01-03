@@ -4,6 +4,7 @@ import { Component, OnInit, Inject, ViewChild, ElementRef, ChangeDetectorRef,  }
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SellerContactModel, SellerViewModel } from './seller-contact-model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'app-contactinformationpopup',
   templateUrl: './contactinformationpopup.component.html',
@@ -20,6 +21,7 @@ export class ContactinformationpopupComponent implements OnInit {
     , private spinner: NgxSpinnerService
     , private toastr: ToastrService
     , private changeDetector: ChangeDetectorRef
+    , public format: TenantFormattingService
     , private spotNegotiationService: SpotNegotiationService) { }
 
   ngOnInit(): void {
