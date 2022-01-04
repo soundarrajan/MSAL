@@ -1,11 +1,11 @@
-﻿commit 22020fb416e02702469d77af479e66e8e5d912aa
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Jan 4 10:13:19 2022 +0000
+﻿commit 7925e81b36d347471a560da700c65301547e3caf
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Jan 4 11:25:19 2022 +0000
 
-    Merged PR 15342: Fixed export excel ,csv, pdf in  quantity control list
+    Merged PR 15348: css fixes
     
-    Fixed export excel ,csv, pdf in  quantity control list
+    css fixes
     
-    Related work items: #37531
+    Related work items: #37411, #37420
 
 branch: master

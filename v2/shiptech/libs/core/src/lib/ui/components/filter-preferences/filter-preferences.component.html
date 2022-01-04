@@ -117,10 +117,9 @@
         >close
       </mat-icon>
     </h2>
-    <hr />
     <mat-dialog-content>
       <div>Preference Name</div>
-      <mat-form-field appearance="outline">
+      <mat-form-field class="preference-mat-field" appearance="outline">
         <input
           id="name"
           required
@@ -153,7 +152,7 @@
       <button
         mat-button
         class="blue-button"
-        style="width: 150px; height: 40px;"
+        style="width: 150px; height: 40px; margin-right: 0 !important;"
         (click)="createNewFilter()"
       >
         SAVE
