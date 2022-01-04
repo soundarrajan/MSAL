@@ -118,8 +118,17 @@ export class SpotnegoemaillogComponent implements OnInit {
     console.log(ev);
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       data: {
-        id: ev.data.id,
-        ReadOnly: true
+        // from:  ev.data.from,
+        // cc:  ev.data.cc,
+        // to:  ev.data.to,
+        // subject: ev.data.subject,
+        // content : ev.data.body,
+        id: this.SelectedSellerWithProds[0].id,
+        requestId: this.SelectedSellerWithProds[0].requestId,
+        sellerCounterpartyId: this.SelectedSellerWithProds[0].sellerCounterpartyId,
+        sellerCounterpartyName: this.SelectedSellerWithProds[0].sellerCounterpartyName,
+        requestLocationId: this.SelectedSellerWithProds[0].requestLocationId,
+        requestOffers: this.SelectedSellerWithProds[0].requestOffers,
       },
       width: '80vw',
       height: '90vh',
