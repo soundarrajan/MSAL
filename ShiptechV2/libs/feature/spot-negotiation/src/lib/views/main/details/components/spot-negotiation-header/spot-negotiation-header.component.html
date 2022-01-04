@@ -81,7 +81,7 @@
                     <th mat-header-cell *matHeaderCellDef>Requests</th>
                     <td mat-cell *matCellDef="let element">
                       <mat-option [value]="element">
-                        <mat-checkbox [value]="element" (change)="onRequestListCheckboxChange($event,element)">
+                        <mat-checkbox [value]="element" [checked]="element.isSelected" (change)="onRequestListCheckboxChange($event,element)">
                           {{ element.requestName }}
                         </mat-checkbox>
                       </mat-option>

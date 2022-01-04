@@ -93,8 +93,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
-        this.requestsAndVessels = spotNegotiation.RequestList;
-        this.visibleRequestList = spotNegotiation.RequestList.slice(0, 7);
+        if(spotNegotiation.RequestList.length > 0){
+          this.requestsAndVessels = this.removeDuplicatesRequest(spotNegotiation.RequestList, 'requestName');
+        }
+        this.visibleRequestList = this.requestsAndVessels.slice(0, 7);
         this.locationsRows=spotNegotiation.locationsRows;
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
@@ -114,6 +116,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     alert('asd');
   }
 
+  removeDuplicatesRequest(array, key) {
+    return array.reduce((arr, item) => {
+      const removed = arr.filter(i => i[key] !== item[key]);
+      return [...removed, item];
+    }, []);
+  };
   onCounterpartyCheckboxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
       // Add to selected counterparty list
@@ -353,6 +361,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                   if (res['requests'] && res['requests'].length > 0) 
                   {
                       this.store.dispatch(new AddRequest(res['requests']));
+                        res['requests'].forEach(element => {
+                        let SuccessMessage =  element.name + ' - ' + element.vesselName + ' has been linked successfully.';
+                        this.toastr.success(SuccessMessage);
+                        });
                   }
               }
             });
