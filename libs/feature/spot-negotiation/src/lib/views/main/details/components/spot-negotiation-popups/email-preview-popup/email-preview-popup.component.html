@@ -2,13 +2,10 @@
     <div class="header">
         <div class="title">Email Preview</div>
         <div style="display: flex; margin: 7px -10px 0px -10px;">
-            <span style="margin-top: 16px; color: #c4c4c4;">Template:</span>
+            <span [hidden] = "readonly" style="margin-top: 16px; color: #c4c4c4;">Template:</span>
             <div id="custom-form-field" style="width: 100px !important; margin: 0px 7px;">
-                <mat-form-field class="without-search" appearance="none">
+                <mat-form-field [style.visibility] ="readonly? 'hidden': 'visible'" class="without-search" appearance="none">
                     <mat-select [(value)]="selected" disableOptionCentering (selectionChange)="getPreviewTemplate()">
-                        <!-- <mat-option *ngFor="let item of items" [value]="item.value" [disabled] = "item.disabled" >
-                            {{item.viewValue}}
-                          </mat-option> -->
                         <mat-option value="MultipleRfqNewRFQEmailTemplate">RFQ</mat-option>
                         <mat-option value="MultipleRfqAmendRFQEmailTemplate">Amend RFQ</mat-option>
                         <mat-option value="RequoteRFQEmailTemplate">Requote</mat-option>
@@ -18,12 +15,12 @@
             </div>
             <div class="header-btn">
                 
-                <span class="seperator-line"></span>
-                <button class="custome-border blue-button h-25" (click)="revertChanges()">Revert Changes</button>
-                <button class="custome-border blue-button h-25" (click)="saveAndSendRFQ(false)">Save</button>
-                <button class="custome-border blue-button h-25" (click)="saveAndSendRFQ(true)">Save & Send</button>
-                <span class="seperator-line"></span>
-                <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+                <span [hidden]="readonly" class="seperator-line"></span>
+                <button [hidden]="readonly" style="border: none; border-radius: 5px;" class="blue-button h-25" (click)="revertChanges()">Discard saved preview</button>
+                <button [hidden]="readonly" style="border: none; border-radius: 5px;" class="blue-button h-25" (click)="saveAndSendRFQ(false)">Save</button>
+                <button [hidden]="readonly" style="border: none; border-radius: 5px;" class="blue-button h-25" (click)="saveAndSendRFQ(true)">Save & Send</button>
+                <span [hidden]="readonly" class="seperator-line"></span>
+                <span  class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
             </div>
         </div>
     </div>
@@ -37,11 +34,11 @@
                     </div>
                     <div style="display:  flex; flex: 0 0 95%">
                         <div class="recipientClass" style="margin: 0px 5px; display:  flex;height:25px;" *ngFor="let item of to">
-                            <input class="cust-input-field" matInput value="{{item}}">
-                            <div class="close-icon" (click)="RemoveEmailId(item,'toEmail')"></div>
+                            <input [readonly]="readonly" class="cust-input-field" matInput value="{{item}}">
+                            <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon" (click)="RemoveEmailId(item,'toEmail')"></div>
                         </div>
-                        <div class="add-new">
-                            <input #toemail matInput placeholder="+Add New" [(ngModel)]="toEmail" (change)="addTo(toemail.value)">
+                        <div [style.visibility] ="readonly? 'hidden': 'visible'" class="add-new">
+                            <input #toemail matInput placeholder="+Add New" [hidden]="readonly" [(ngModel)]="toEmail" (change)="addTo(toemail.value)">
                         </div>
                     </div>                 
                 </div>
@@ -51,11 +48,11 @@
                     </div>
                     <div style="display: flex; flex: 0 0 95%">
                         <div class="recipientClass" style="margin: 0px 5px; display: flex;height:25px;" *ngFor="let item of cc">
-                            <input class="cust-input-field" matInput value="{{item}}">
-                            <div class="close-icon flex-shrink-1" (click)="RemoveEmailId(item,'ccEmail')"></div>
+                            <input [readonly]="readonly"  class="cust-input-field" matInput value="{{item}}">
+                            <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon flex-shrink-1" (click)="RemoveEmailId(item,'ccEmail')"></div>
                         </div>
-                        <div class="add-new">
-                            <input #ccemail matInput placeholder="+Add New" [(ngModel)]="ccEmail" (change)="addCc(ccemail.value)">
+                        <div [style.visibility] ="readonly? 'hidden': 'visible'"  class="add-new">
+                            <input  #ccemail matInput placeholder="+Add New" [(ngModel)]="ccEmail" (change)="addCc(ccemail.value)">
                         </div>
                     </div>                 
                 </div>
@@ -65,7 +62,7 @@
                     </div>
                     <div style="display: flex; flex: 0 0 95%">                        
                         <!-- <span class="subject">{{subject}}</span> -->
-                        <input matInput class="subject" [(ngModel)]="subject">
+                        <input [readonly]="readonly" matInput  class="subject" [(ngModel)]="subject">
                     </div>                 
                 </div>
             </div>
@@ -73,7 +70,7 @@
                 <div style="display: flex; margin: 15px; align-items: center;">
                     <span class="text">Attachments:</span>
                     <label class="add-doc" for="getFile">
-                        <span class="add-doc-plus"></span>
+                        <span [hidden]="readonly" class="add-doc-plus"></span>
                     </label>
                     <input type="file" id="getFile" class="get-file" multiple
                         (change)="fileBrowseHandler($event.target.files)" />
