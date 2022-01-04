@@ -85,7 +85,7 @@ export class EmailPreviewPopupComponent implements OnInit {
 
   getPreviewTemplate() {
     if (this.selected != 'MultipleRfqNewRFQEmailTemplate') {
-      if (this.SelectedSellerWithProds.requestOffers == undefined || this.SelectedSellerWithProds.requestOffers?.find(x => x.RfqId === 0)) {
+      if (this.SelectedSellerWithProds.requestOffers == undefined || this.SelectedSellerWithProds.requestOffers?.length === 0) {
         if (this.selected == 'MultipleRfqAmendRFQEmailTemplate')
           this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated.');
         else if (this.selected == 'MultipleRfqRevokeRFQEmailTemplate')
