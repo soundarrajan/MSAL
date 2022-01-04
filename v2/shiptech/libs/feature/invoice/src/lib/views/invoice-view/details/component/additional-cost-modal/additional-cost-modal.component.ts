@@ -1097,7 +1097,7 @@ export class AdditionalCostModalComponent implements OnInit {
     }
     const filterCostList = this.additionalCostForLocationFilter[
       locationId
-    ].filter(option => option.name.toLowerCase().includes(value));
+    ].filter(option => option.name.toLowerCase().includes(value.toLowerCase()));
     this.additionalCostForLocation[locationId] = _.cloneDeep(filterCostList);
     this.changeDetectorRef.detectChanges();
   }

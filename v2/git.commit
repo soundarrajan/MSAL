@@ -1,11 +1,11 @@
-﻿commit 7925e81b36d347471a560da700c65301547e3caf
+﻿commit 44570ade7708885f7b5f9a573b4d652a5fe27ca7
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Jan 4 11:25:19 2022 +0000
+Date:   Tue Jan 4 11:46:00 2022 +0000
 
-    Merged PR 15348: css fixes
+    Merged PR 15349: Fix additional cost autocomplete
     
-    css fixes
+    Fix additional cost autocomplete
     
-    Related work items: #37411, #37420
+    Related work items: #37786
 
 branch: master
