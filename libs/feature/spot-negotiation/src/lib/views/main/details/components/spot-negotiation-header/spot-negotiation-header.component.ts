@@ -339,8 +339,20 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     if(this.selectedRequestList.length > 0){
       let selectedreqId = [];
       const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+      const requests = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].requests;
+       });
       this.selectedRequestList.forEach(element => {
-        selectedreqId.push(element.requestId);
+        let filterduplicaterequest = requests.filter(
+          e => e.id == element.requestId
+        );
+        if(filterduplicaterequest.length > 0){
+          let ErrorMessage =  filterduplicaterequest[0].name + ' - ' + filterduplicaterequest[0].vesselName + ' already linked to the request.';
+          this.toastr.error(ErrorMessage);
+
+        }else{
+          selectedreqId.push(element.requestId);
+        }
       });
         if(this.selectedRequestList.length > 0)
         {

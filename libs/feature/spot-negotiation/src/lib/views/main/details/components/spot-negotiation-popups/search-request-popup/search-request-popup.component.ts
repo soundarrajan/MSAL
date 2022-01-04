@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AddRequest } from '../../../../../../store/actions/request-group-actions';
 import { AddCounterpartyToLocations } from '../../../../../../store/actions/ag-grid-row.action';
+import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 @Component({
   selector: 'app-search-request-popup',
@@ -89,9 +90,21 @@ export class SearchRequestPopupComponent implements OnInit {
   addToRequestList() {
     this.selectedRequestList = this.dialog_gridOptions.api.getSelectedRows();
     if(this.selectedRequestList.length > 0){
+      const requests = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].requests;
+       });
       let selectedreqId = [];
       this.selectedRequestList.forEach(element => {
-        selectedreqId.push(element.requestId);
+        let filterduplicaterequest = requests.filter(
+          e => e.id == element.requestId
+        );
+        if(filterduplicaterequest.length > 0){
+          let ErrorMessage =  filterduplicaterequest[0].name + ' - ' + filterduplicaterequest[0].vesselName + ' already linked to the request.';
+          this.toastr.error(ErrorMessage);
+
+        }else{
+          selectedreqId.push(element.requestId);
+        }
       });
       if(this.selectedRequestList.length > 0){
         let payload = {
