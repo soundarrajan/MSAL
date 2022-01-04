@@ -1,11 +1,11 @@
-﻿commit 7964e60cc1fabf35c4336ad63501f54c36e904b5
+﻿commit 22020fb416e02702469d77af479e66e8e5d912aa
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Dec 21 10:29:53 2021 +0000
+Date:   Tue Jan 4 10:13:19 2022 +0000
 
-    Merged PR 15254: Added css fixes for save preference
+    Merged PR 15342: Fixed export excel ,csv, pdf in  quantity control list
     
-    Added css fixes for save preference
+    Fixed export excel ,csv, pdf in  quantity control list
     
-    Related work items: #37408
+    Related work items: #37531
 
 branch: master

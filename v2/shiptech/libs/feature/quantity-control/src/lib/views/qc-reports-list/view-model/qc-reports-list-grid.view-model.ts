@@ -11,7 +11,8 @@ import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import {
   QcReportsListColumns,
   QcReportsListColumnServerKeys,
-  QcReportsListColumnsLabels
+  QcReportsListColumnsLabels,
+  QcReportsListExportColumns
 } from './qc-reports-list.columns';
 import {
   IQcReportsListItemDto,
@@ -110,6 +111,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   portCallId: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.portCallId,
     colId: QcReportsListColumns.portCallId,
+    dtoForExport: QcReportsListExportColumns.portCallId,
     field: model('portCallId'),
     cellRendererFramework: AgCellTemplateComponent,
     width: 200
@@ -118,6 +120,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   portNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.portName,
     colId: QcReportsListColumns.portName,
+    dtoForExport: QcReportsListExportColumns.portName,
     field: model('portName'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -130,6 +133,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   vesselNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
+    dtoForExport: QcReportsListExportColumns.vesselName,
     field: model('vesselName'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -142,6 +146,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   surveyDateCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.surveyDate,
     colId: QcReportsListColumns.surveyDate,
+    dtoForExport: QcReportsListExportColumns.surveyDate,
     field: model('surveyDate'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
@@ -151,6 +156,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   surveyStatusCol: ITypedColDef<IQcReportsListItemDto, IStatusLookupDto> = {
     headerName: QcReportsListColumnsLabels.surveyStatus,
     colId: QcReportsListColumns.surveyStatus,
+    dtoForExport: QcReportsListExportColumns.surveyStatus,
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
@@ -169,6 +175,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.qtyMatchedStatus,
     colId: QcReportsListColumns.qtyMatchedStatus,
+    dtoForExport: QcReportsListExportColumns.qtyMatchedStatus,
     field: model('qtyMatchedStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
@@ -181,6 +188,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   logBookRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.logBookRobBeforeDelivery,
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
+    dtoForExport: QcReportsListExportColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
     width: 170,
     valueFormatter: params => this.format.quantity(params.value),
@@ -190,6 +198,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   measuredRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredRobBeforeDelivery,
     colId: QcReportsListColumns.measuredRobBeforeDelivery,
+    dtoForExport: QcReportsListExportColumns.measuredRobBeforeDelivery,
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -199,6 +208,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   diffRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffRobBeforeDelivery,
     colId: QcReportsListColumns.diffRobBeforeDelivery,
+    dtoForExport: QcReportsListExportColumns.diffRobBeforeDelivery,
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -216,6 +226,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
+    dtoForExport: QcReportsListExportColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -228,6 +239,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   bdnQuantityCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.bdnQuantity,
     colId: QcReportsListColumns.bdnQuantity,
+    dtoForExport: QcReportsListExportColumns.bdnQuantity,
     field: model('bdnQuantity'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -236,6 +248,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   measuredDeliveredQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredDeliveredQty,
     colId: QcReportsListColumns.measuredDeliveredQty,
+    dtoForExport: QcReportsListExportColumns.measuredDeliveredQty,
     field: model('measuredDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -244,6 +257,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   diffDeliveredQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffDeliveredQty,
     colId: QcReportsListColumns.diffDeliveredQty,
+    dtoForExport: QcReportsListExportColumns.diffDeliveredQty,
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -257,6 +271,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
+    dtoForExport: QcReportsListExportColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -269,6 +284,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   logBookRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.logBookRobAfterDelivery,
     colId: QcReportsListColumns.logBookRobAfterDelivery,
+    dtoForExport: QcReportsListExportColumns.logBookRobAfterDelivery,
     field: model('logBookRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -277,6 +293,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   measuredRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.measuredRobAfterDelivery,
     colId: QcReportsListColumns.measuredRobAfterDelivery,
+    dtoForExport: QcReportsListExportColumns.measuredRobAfterDelivery,
     field: model('measuredRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -285,6 +302,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   diffRobAfterDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffRobAfterDelivery,
     colId: QcReportsListColumns.diffRobAfterDelivery,
+    dtoForExport: QcReportsListExportColumns.diffRobAfterDelivery,
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -298,6 +316,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcReportsListColumns.qtyAfterDeliveryUom,
+    dtoForExport: QcReportsListExportColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -313,6 +332,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.logBookSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.logBookSludgeRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.logBookSludgeRobBeforeDischarge,
     field: model('logBookSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -324,6 +344,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.measuredSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -335,6 +356,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.diffSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.diffSludgeRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.diffSludgeRobBeforeDischarge,
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -348,6 +370,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   sludgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.sludgeDischargedQty,
     colId: QcReportsListColumns.sludgeDischargedQty,
+    dtoForExport: QcReportsListExportColumns.sludgeDischargedQty,
     field: model('sludgeDischargedQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -359,6 +382,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
     colId: QcReportsListColumns.qtySludgeDischargedUom,
+    dtoForExport: QcReportsListExportColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -374,6 +398,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.logBookBilgeRobBeforeDischarge,
     colId: QcReportsListColumns.logBookBilgeRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.logBookBilgeRobBeforeDischarge,
     field: model('logBookBilgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -385,6 +410,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.measuredBilgeRobBeforeDischarge,
     colId: QcReportsListColumns.measuredBilgeRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.measuredBilgeRobBeforeDischarge,
     field: model('measuredBilgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -396,6 +422,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.diffBilgeRobBeforeDischarge,
     colId: QcReportsListColumns.diffBilgeRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.diffBilgeRobBeforeDischarge,
     field: model('diffBilgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -409,6 +436,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   bilgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.bilgeDischargedQty,
     colId: QcReportsListColumns.bilgeDischargedQty,
+    dtoForExport: QcReportsListExportColumns.bilgeDischargedQty,
     field: model('bilgeDischargedQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -420,6 +448,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.qtyBilgeDischargedUom,
     colId: QcReportsListColumns.qtyBilgeDischargedUom,
+    dtoForExport: QcReportsListExportColumns.qtyBilgeDischargedUom,
     field: model('qtyBilgeDischargedUom'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -435,6 +464,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.logBookEGCSRobBeforeDischarge,
     colId: QcReportsListColumns.logBookEGCSRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.logBookEGCSRobBeforeDischarge,
     field: model('logBookEGCSRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -446,17 +476,16 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.measuredEGCSRobBeforeDischarge,
     colId: QcReportsListColumns.measuredEGCSRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.measuredEGCSRobBeforeDischarge,
     field: model('measuredEGCSRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  diffEGCSRobBeforeDischargeCol: ITypedColDef<
-    IQcReportsListItemDto,
-    number
-  > = {
+  diffEGCSRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.diffEGCSRobBeforeDischarge,
     colId: QcReportsListColumns.diffEGCSRobBeforeDischarge,
+    dtoForExport: QcReportsListExportColumns.diffEGCSRobBeforeDischarge,
     field: model('diffEGCSRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
@@ -470,6 +499,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   egcsDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
     headerName: QcReportsListColumnsLabels.egcsDischargedQty,
     colId: QcReportsListColumns.egcsDischargedQty,
+    dtoForExport: QcReportsListExportColumns.egcsDischargedQty,
     field: model('egcsDischargedQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value)
@@ -481,6 +511,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   > = {
     headerName: QcReportsListColumnsLabels.qtyEGCSDischargedUom,
     colId: QcReportsListColumns.qtyEGCSDischargedUom,
+    dtoForExport: QcReportsListExportColumns.qtyEGCSDischargedUom,
     field: model('qtyEGCSDischargedUom'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -493,6 +524,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   commentCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.comment,
     colId: QcReportsListColumns.comment,
+    dtoForExport: QcReportsListExportColumns.comment,
     field: model('comment'),
     cellRenderer: params => {
       var a = document.createElement('div');
@@ -505,6 +537,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   isVerifiedSludgeQtyCol: ITypedColDef<IQcReportsListItemDto, string> = {
     headerName: QcReportsListColumnsLabels.isVerifiedSludgeQty,
     colId: QcReportsListColumns.isVerifiedSludgeQty,
+    dtoForExport: QcReportsListExportColumns.isVerifiedSludgeQty,
     field: model('isVerifiedSludgeQty'),
     cellRendererFramework: AgCellTemplateComponent,
     filter: 'agNumberColumnFilter',
