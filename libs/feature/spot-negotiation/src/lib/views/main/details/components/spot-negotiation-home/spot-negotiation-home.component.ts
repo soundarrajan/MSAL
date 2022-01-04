@@ -64,7 +64,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.spotNegotiationService.QuoteByDate = this.child.getValue();
   }
 
-  showEmailLogs(){
+  showEmailLogs() {
     this.isOpen = true;
   }
 
@@ -120,7 +120,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   sendRFQpopup() {
     this.selectedSellerList = [];
-    var Selectedfinaldata = this.FilterselectedRow();
+    var Selectedfinaldata = this.FilterselectedRowForSendRFQ();
     if (Selectedfinaldata.length == 0) {
       let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
@@ -275,8 +275,31 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
+  FilterselectedRowForSendRFQ() {
+    this.store.subscribe(({ spotNegotiation }) => {
+      spotNegotiation.requests.forEach(req => {
+        req.requestLocations.forEach(element => {
+          spotNegotiation.locationsRows.forEach(element1 => {
+            if (element.id == element1.requestLocationId) {
+              if (element1['checkProd1'] || element1['checkProd2'] || element1['checkProd3'] || element1['checkProd4'] || element1['checkProd5']) {
+                var Sellectedsellerdata = this.ConstuctSellerPayload(
+                  element1,
+                  element.requestProducts,
+                  spotNegotiation.currentRequestSmallInfo
+                );
+                if (Sellectedsellerdata) {
+                  this.selectedSellerList.push(Sellectedsellerdata);
+                }
+              }
+            }
+          });
+        });
+      });
+    });
+    return this.selectedSellerList;
+  }
+
   FilterselectedRow() {
-    var Sellectedsellerdata = [];
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.locations.forEach(element => {
         spotNegotiation.locationsRows.forEach(element1 => {
@@ -297,6 +320,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     return this.selectedSellerList;
   }
+
 
   ConstuctSellerPayload(Seller, requestProducts, Request) {
     let selectedproducts = [];
