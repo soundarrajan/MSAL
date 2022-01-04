@@ -112,7 +112,16 @@ export class ExportComponent implements OnInit, OnDestroy {
       this.gridModel.searchText
     );
 
-    const timezone = jstz.determine();
+    var timeZoneException = [{ old: 'Europe/Bucharest', new: 'Europe/Minsk' }];
+    let timeZone1 = jstz.determine().name();
+    let findTimezoneException = timeZoneException.find(function(object) {
+      return object.old == timeZone1;
+    });
+    let timezone = jstz.determine().name();
+    if (findTimezoneException) {
+      timezone = findTimezoneException.new;
+    }
+
     const dOffset = new Date().getTimezoneOffset();
 
     const requestToSend = {
@@ -121,7 +130,7 @@ export class ExportComponent implements OnInit, OnDestroy {
       Pagination: serverParams.pagination,
       columns: this.mapVisibleColumns(this.gridModel.getColumnsDefs()),
       dateTimeOffset: dOffset,
-      timezone: timezone.name(),
+      timezone: timezone,
       PageFilters: serverParams.pageFilters,
       SortList: serverParams.sortList
     };
@@ -129,14 +138,16 @@ export class ExportComponent implements OnInit, OnDestroy {
       .exportDocument(this.gridModel.exportUrl, requestToSend)
       .subscribe(
         result => {
-          this._FileSaverService.save(result);
+          this._FileSaverService.save(
+            result.body,
+            result.headers.get('Filename')
+          );
         },
         () => {
           this.appErrorHandler.handleError(this.getModuleError(type));
         }
       );
   }
-
   print(): void {
     document.getElementById(this.gridId).style.width = '';
     document.getElementById(this.gridId).style.height = '';
