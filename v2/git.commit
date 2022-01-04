@@ -1,11 +1,11 @@
-﻿commit 7e625db143acfb876548ccc9fa0f1e469f6f47ec
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Jan 4 14:25:50 2022 +0000
+﻿commit 26e626321d025cf75e51dc2138a8d322a9654a19
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Jan 4 15:10:35 2022 +0000
 
-    Merged PR 15356: Fixed placement of search bar in the notes page  (37783)
+    Merged PR 15357: css fixes control tower
     
-    Fixed placement of search bar in the notes page  (37783)
+    css fixes control tower
     
-    Related work items: #37783
+    Related work items: #37425, #37788
 
 branch: master
