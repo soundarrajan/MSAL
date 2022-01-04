@@ -33,21 +33,17 @@ export const SpotNegotiationApiPaths = {
   getSellerContacts: `counterparty/viewContacts`,
   addNewSellerContact: `counterparty/addContact`,
   getEmailLogs : `api/masters/emaillogs/list`,
-  getRequestList: `api/procurement/rfq/selectRequest`
+  getRequestList: `api/procurement/rfq/selectRequest`,
+  getAdditionalCosts: `price/getOfferAdditionalCosts`
 };
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpotNegotiationApi implements ISpotNegotiationApiService {
-  @ApiCallUrl()
-  private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_CONTRACTS;
 
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
-
-  @ApiCallUrl()
-  private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
   @ApiCallUrl()
   private _infrastructureApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
@@ -435,7 +431,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
-  
+
   @ObservableException()
   RequoteRFQ(payload: any): Observable<any> {
     return this.http
@@ -521,6 +517,22 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   addNewSellerContact(contact: any): Observable<any> {
     return this.http
       .post<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.addNewSellerContact}`, contact)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getAdditionalCosts(request: any): Observable<any> {
+    return this.http
+      .post<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getAdditionalCosts}`, request)
       .pipe(
         map((body: any) => body),
         catchError((body: any) =>

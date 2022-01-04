@@ -506,11 +506,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
       [matMenuTriggerFor]="totalOfferMenupopup"
       #totalOfferPopupTrigger="matMenuTrigger"
       (click)="totalOfferPopupTrigger.closeMenu()"
-      (contextmenu)="
-        $event.preventDefault();
-        $event.stopPropagation();
-        totalOfferPopupTrigger.openMenu()
-      "
+      (contextmenu)="openCostMenu($event, params.value);"
     >
       <span *ngIf="params.value" (click)="additionalcostpopup()">{{
         priceCalFormatValue(params.value)
@@ -587,6 +583,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   @ViewChild('inputSection') inputSection: ElementRef;
   @ViewChild('menuTriggerHover') menuTriggerHover: MatMenuTrigger;
+  @ViewChild('totalOfferPopupTrigger') totalOfferPopupTrigger: MatMenuTrigger;
 
   public showDollar: boolean = false;
   locations: any;
@@ -812,7 +809,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
       width: '1170px',
       height: '450px',
-      panelClass: 'additional-cost-popup'
+      panelClass: 'additional-cost-popup',
+      data: this.params.data
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1214,5 +1212,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return locationrow;
   }
 
- 
+  openCostMenu(event: any, totalOfferValue : any)
+  {
+    event.preventDefault();
+    event.stopPropagation();
+    if(totalOfferValue){
+      this.totalOfferPopupTrigger.openMenu();
+    }
+  }
 }
