@@ -5738,7 +5738,7 @@
         };
 
         $scope.detectChangesInRequestFromLookup = function() {
-            let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
+            let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted', 'PartiallyStemmed'];
             let requestId = parseFloat($state.params.requestId);
             let status = $state.params.status;
             let validStatus = false;
@@ -7330,7 +7330,7 @@
         });
 
         $scope.detectChangesInRequest = function() {
-            let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
+            let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted', 'PartiallyStemmed'];
             let requestId = parseFloat($state.params.requestId);
             let status = $state.params.status;
             let validStatus = false;

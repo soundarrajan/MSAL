@@ -85,6 +85,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         window.confirmRequestLeave = false;
         $rootScope.isGoSpotAction = false;
+        $rootScope.isCopyAction = false;
         window.requestDetailsIsChangedFromLookup = false;
 
         if ($stateParams.requestId) {
@@ -3351,9 +3352,33 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 //     }
                 // });
             });
-            $state.go(STATE.COPY_REQUEST, {
-                copyFrom: new_request
-            });
+            let detectChanges = ctrl.detectIfExistChangesInRequest() || window.requestDetailsIsChangedFromLookup;
+            if (detectChanges) {
+                window.confirmRequestLeave = true;
+                $rootScope.isCopyAction = true;
+                $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
+                    if(response == true) {
+                        setTimeout(() => {
+                            window.confirmRequestLeave = false;
+                            $state.go(STATE.COPY_REQUEST, {
+                                copyFrom: new_request
+                            });
+                        });
+                    } else {
+                        setTimeout(() => {
+                            ctrl.buttonsDisabled = false;
+                            window.confirmRequestLeave = false;
+                            $rootScope.isCopyAction = false;
+                        });
+                    }
+
+                });
+            } else {
+                $state.go(STATE.COPY_REQUEST, {
+                    copyFrom: new_request
+                });
+            }
+           
         };
         ctrl.validatePreRequest = function() {
             ctrl.buttonsDisabled = true;
@@ -5070,7 +5095,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.buttonsDisabled = false;
         console.log("**Buttons disabled");
         console.log(ctrl.buttonsDisabled);
-        let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
+        let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted', 'PartiallyStemmed'];
         let requestId = parseFloat($state.params.requestId);
         let status = $state.params.status;
         let validStatus = false;
@@ -5079,7 +5104,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         }
         if(validStatus && requestId && 
             fromState.url.includes('edit-request') && 
-            !window.confirmRequestLeave  && !$rootScope.isGoSpotAction
+            !window.confirmRequestLeave  && !$rootScope.isGoSpotAction && !$rootScope.isCopyAction
         ) {
             let detectChanges = $('form[name="forms.detailsFromRequest"]').find(".ng-dirty:not(.ng-untouched)").length > 0 || window.requestDetailsIsChangedFromLookup;
             console.log(requestId);
@@ -5108,7 +5133,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
     });
 
     ctrl.detectIfExistChangesInRequest = function() {
-        let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted'];
+        let statusesList = ['Validated', 'PartiallyInquired', 'Inquired', 'PartiallyQuoted', 'Quoted', 'PartiallyStemmed'];
         let requestId = parseFloat($state.params.requestId);
         let status = $state.params.status;
         let validStatus = false;
