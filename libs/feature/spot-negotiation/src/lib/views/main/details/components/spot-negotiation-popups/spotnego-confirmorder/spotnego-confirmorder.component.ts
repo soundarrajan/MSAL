@@ -37,8 +37,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   tenantConfiguration: any;
   responseOrderData: any;
   currencyList: any;
-  productList:any;
-  uomList:any;
+  productList: any;
+  uomList: any;
   totalPriceValue: number;
   errorMessages: string;
   staticLists: any;
@@ -96,77 +96,79 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     }
 
     var requestOfferItemPayload = [];
-    locations.forEach(element => {
-      locationsRows.forEach(element1 => {
-        if (element.id == element1.requestLocationId && element1.requestOffers != undefined) { //&& element1.locationId==locationId
-          if (element1.checkProd1 ) {
-            requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-              element1,
-              element1.requestOffers[0],
-              element.requestProducts[0],
-              element.eta,
-              this.currentRequestInfo
-            );
-            if (requestOfferItemPayload.length > 0) {
-              this.requestOfferItems.push(requestOfferItemPayload[0]);
+    this.requests.forEach(req => {
+      req.requestLocations.forEach(element => {
+        locationsRows.forEach(element1 => {
+          if (element.id == element1.requestLocationId && element1.requestOffers != undefined) { //&& element1.locationId==locationId
+            if (element1.checkProd1) {
+              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                element1,
+                element1.requestOffers[0],
+                element.requestProducts[0],
+                element.eta,
+                req
+              );
+              if (requestOfferItemPayload.length > 0) {
+                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              }
+            }
+            if (element1.checkProd2) {
+              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                element1,
+                element1.requestOffers[1],
+                element.requestProducts[1],
+                element.eta,
+                req
+              );
+              if (requestOfferItemPayload.length > 0) {
+                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              }
+            }
+            if (element1.checkProd3) {
+              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                element1,
+                element1.requestOffers[2],
+                element.requestProducts[2],
+                element.eta,
+                req
+              );
+              if (requestOfferItemPayload.length > 0) {
+                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              }
+            }
+            if (element1.checkProd4) {
+              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                element1,
+                element1.requestOffers[3],
+                element.requestProducts[3],
+                element.eta,
+                req
+              );
+              if (requestOfferItemPayload.length > 0) {
+                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              }
+            }
+            if (element1.checkProd5) {
+              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                element1,
+                element1.requestOffers[4],
+                element.requestProducts[4],
+                element.eta,
+                req
+              );
+              if (requestOfferItemPayload.length > 0) {
+                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              }
             }
           }
-          if (element1.checkProd2 ) {
-            requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-              element1,
-              element1.requestOffers[1],
-              element.requestProducts[1],
-              element.eta,
-              this.currentRequestInfo
-            );
-            if (requestOfferItemPayload.length > 0) {
-              this.requestOfferItems.push(requestOfferItemPayload[0]);
-            }
-          }
-          if (element1.checkProd3 ) {
-            requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-              element1,
-              element1.requestOffers[2],
-              element.requestProducts[2],
-              element.eta,
-              this.currentRequestInfo
-            );
-            if (requestOfferItemPayload.length > 0) {
-              this.requestOfferItems.push(requestOfferItemPayload[0]);
-            }
-          }
-          if (element1.checkProd4 ) {
-            requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-              element1,
-              element1.requestOffers[3],
-              element.requestProducts[3],
-              element.eta,
-              this.currentRequestInfo
-            );
-            if (requestOfferItemPayload.length > 0) {
-              this.requestOfferItems.push(requestOfferItemPayload[0]);
-            }
-          }
-          if (element1.checkProd5 ) {
-            requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-              element1,
-              element1.requestOffers[4],
-              element.requestProducts[4],
-              element.eta,
-              this.currentRequestInfo
-            );
-            if (requestOfferItemPayload.length > 0) {
-              this.requestOfferItems.push(requestOfferItemPayload[0]);
-            }
-          }
-        }
+        });
       });
     });
     let productValid;
-    locations.forEach((ele,key)=>{
-      productValid=this.requestOfferItems.filter(e=>e.RequestLocationId===ele.id && e.RequestProductId==ele. requestProducts[key].id);
-      if(productValid.length>1){
-        this.requestOfferItems=[];
+    locations.forEach((ele, key) => {
+      productValid = this.requestOfferItems.filter(e => e.RequestLocationId === ele.id && e.RequestProductId == ele.requestProducts[key].id);
+      if (productValid.length > 1) {
+        this.requestOfferItems = [];
         this.toaster.error('For a single product, offer cannot be confirmed by more than one seller.');
         this.closeDialog();
       }
@@ -177,7 +179,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   ConstructRequestOfferItemPayload(seller, requestOffers, requestProducts, etaDate, requestInfo) {
     return [
       {
-        RequestId: requestInfo[0].id,//Single request pass
+        RequestId: requestInfo.id,//Single request pass
         RequestGroupId: seller.requestGroupId,
         RequestSellerId: seller.id,
         SellerId: seller.sellerCounterpartyId,
@@ -187,11 +189,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         PhysicalSupplierCounterpartyId: seller.physicalSupplierCounterpartyId,
         PhysicalSupplierName: seller.physicalSupplierCounterpartyName,
         RequestProductId: requestProducts.id,
-        ProductId:requestOffers.quotedProductId??requestProducts.productId,
-        ProductName:this.productList.find(x => x.id == requestOffers.quotedProductId??requestProducts.productId).name,
+        ProductId: requestOffers.quotedProductId ?? requestProducts.productId,
+        ProductName: this.productList.find(x => x.id == requestOffers.quotedProductId ?? requestProducts.productId).name,
         minQuantity: requestProducts.minQuantity,
         MaxQuantity: this.format.quantity(requestProducts.maxQuantity), //this.format.quantity(requestOffers.supplyQuantity)?? 
-        ConfirmedQuantity: this.format.quantity(requestOffers.supplyQuantity)?? this.format.quantity(requestProducts.maxQuantity),
+        ConfirmedQuantity: this.format.quantity(requestOffers.supplyQuantity) ?? this.format.quantity(requestProducts.maxQuantity),
         UomId: requestProducts.uomId,
         WorkflowId: requestProducts.workflowId,
         productStatus: {
@@ -199,15 +201,15 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           name: requestProducts.status
         },
         vesselETA: etaDate,
-        RequestStatus: requestInfo[0].status,
-        VesselId: requestInfo[0].vesselId,
+        RequestStatus: requestInfo.status,
+        VesselId: requestInfo.vesselId,
         VesselVoyageDetailId: null,
-        UomName:this.uomList.find(x => x.id == requestProducts.uomId).name,
+        UomName: this.uomList.find(x => x.id == requestProducts.uomId).name,
         OfferPrice: requestOffers.price,
         ContactCounterpartyId: requestOffers.contactCounterpartyId,
         BrokerCounterpartyId: requestOffers.brokerCounterpartyId,
-        currencyId: requestOffers.currencyId ??this.tenantConfiguration.currencyId,
-        currencyName: this.currencyList.find(x => x.id == requestOffers.currencyId ??this.tenantConfiguration.currencyId).code,
+        currencyId: requestOffers.currencyId ?? this.tenantConfiguration.currencyId,
+        currencyName: this.currencyList.find(x => x.id == requestOffers.currencyId ?? this.tenantConfiguration.currencyId).code,
         PricingTypeId: requestProducts.uomId,
         QuoteByDate: requestOffers.quoteByDate,
         QuoteByTimeZoneId: requestOffers.quoteByTimeZoneId,
@@ -226,11 +228,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         QuotedProductGroupId: 1,
         isCheckBox: false,
         //End
-        TotalPrice: requestOffers.price * requestOffers.supplyQuantity??requestProducts.maxQuantity,
+        TotalPrice: requestOffers.price * requestOffers.supplyQuantity ?? requestProducts.maxQuantity,
         RequestOfferId: requestOffers.id,
         RfqId: requestOffers.rfqId,
         OrderFields: {
-          ConfirmedQuantity: requestOffers.supplyQuantity??requestProducts.maxQuantity
+          ConfirmedQuantity: requestOffers.supplyQuantity ?? requestProducts.maxQuantity
         }
       }
     ];
@@ -343,7 +345,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           this.responseOrderData.forEach((rodV, rodK) => {
             hasError = false;
             rodV.products.forEach((rodProdV, rodProdK) => {
-              if (rodV.requestLocationId == rqV.RequestLocationId ) {  //&& rodProdV.requestProductId == rqV.RequestProductId
+              if (rodV.requestLocationId == rqV.RequestLocationId) {  //&& rodProdV.requestProductId == rqV.RequestProductId
                 hasOrder = true;
                 let errorType = [];
                 if (rodV.seller.id != rqV.SellerId) {
