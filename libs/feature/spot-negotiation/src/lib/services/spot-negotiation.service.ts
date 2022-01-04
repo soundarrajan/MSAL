@@ -25,20 +25,12 @@ export class SpotNegotiationService extends BaseStoreService
     super(store, loggerFactory.createLogger(SpotNegotiationService.name));
   }
 
-  /* Gets the list of Email Logs
+  /* Get Email Logs
    * @param payload =
    */
   @ObservableException()
   getEmailLogs(payload :any): Observable<unknown>{
     return this.spotNegotiationApi.getEmailLogs(payload);
-  }
-
-  /* Gets the Email Logs based on Id
-   * @param payload =
-   */
-  @ObservableException()
-  getEmailLogsPreview(payload :any): Observable<unknown>{
-    return this.spotNegotiationApi.getEmailLogsPreview(payload);
   }
 
   /**

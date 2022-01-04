@@ -36,7 +36,6 @@ export class EmailPreviewPopupComponent implements OnInit {
   cc: any;
   subject: any;
   content: any;
-  readonly:boolean = false;
   previewTemplate: any = [];
   //rfqTemplate: any;
   items: Items[];
@@ -51,7 +50,6 @@ export class EmailPreviewPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.SelectedSellerWithProds = data;
     this.selected = 'MultipleRfqNewRFQEmailTemplate';
-    this.readonly = this.SelectedSellerWithProds.ReadOnly;
     //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
     //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
     // this.items =  [
@@ -126,7 +124,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     //       prod.requestProducts.map(i =>i.id)
     //     )[0];
     // }
-if(!this.readonly){
+
     var FinalAPIdata = {
       RequestLocationSellerId: this.SelectedSellerWithProds.id,
       RequestId: this.SelectedSellerWithProds.requestId,
@@ -161,20 +159,6 @@ if(!this.readonly){
 
       }
     });
-  }
-  else{
-     const payload = this.SelectedSellerWithProds.id;
-      const emailLogsPreview = this.spotNegotiationService.getEmailLogsPreview(payload);
-      emailLogsPreview.subscribe((res:any) =>{
-        if (res.payload){
-          this.to = res.payload.to.split(',');
-          this.cc = res.payload.cc.split(',');
-          this.subject = res.payload.subject;
-          this.content = res.payload.body;
-          this.from = res.payload.from
-        }
-      });
-  }
   }
   clearData() {
     this.to = [];
