@@ -8466,13 +8466,19 @@ tr.title {
         border: none;
         .custom-count {
           background: #364150;
-          width: 18px;
-          height: 18px;
-          border-radius: 18px;
-          color: #ffffff;
+          width: 22px;
+          height: 22px;
+          border-radius: 22px;
+          color: #fff;
           font-size: 11px;
-          padding: 3px;
+          padding: 5px 2px!important;
+          display: inline-block;
           font-weight: 500;
+          span {
+            margin-left: -1px;
+            margin-top: -10px;
+            display: block;
+          }
         }
         &.mat-button-toggle-checked {
           border-radius: 4px !important;
@@ -8485,14 +8491,16 @@ tr.title {
           width: 50%;
           z-index: 1;
           .custom-count {
-            background: #ffffff;
-            width: 18px;
-            height: 18px;
-            border-radius: 18px;
+            background: #fff;
+            width: 22px;
+            height: 22px;
+            border-radius: 22px;
             color: #364150;
             font-size: 11px;
-            padding: 3px;
+            padding: 5px 2px !important;
+            display: inline-block;
             font-weight: 500;
+        
           }
         }
       }
