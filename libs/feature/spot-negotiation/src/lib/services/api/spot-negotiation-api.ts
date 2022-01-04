@@ -33,6 +33,7 @@ export const SpotNegotiationApiPaths = {
   getSellerContacts: `counterparty/viewContacts`,
   addNewSellerContact: `counterparty/addContact`,
   getEmailLogs : `api/masters/emaillogs/list`,
+  getEmailLogsPreview : `api/masters/emaillogs/get`,
   getRequestList: `api/procurement/rfq/selectRequest`
 };
 
@@ -80,6 +81,22 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   getEmailLogs(payload: any): Observable<any>{
     return this.http.post<any>(
       `${this._masterApiUrl}/${SpotNegotiationApiPaths.getEmailLogs}`,
+      {Payload: payload}
+    )
+    .pipe(
+      map((body:any)=> body),
+      catchError((body: any)=>
+       of(
+         body.error.ErrorMessage ? body.error.ErrorMessage: body.error.errorMessage
+       )
+      )
+    );
+  }
+
+  @ObservableException()
+  getEmailLogsPreview(payload: any): Observable<any>{
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.getEmailLogsPreview}`,
       {Payload: payload}
     )
     .pipe(
