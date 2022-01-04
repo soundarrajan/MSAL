@@ -98,7 +98,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     var requestOfferItemPayload = [];
     locations.forEach(element => {
       locationsRows.forEach(element1 => {
-        if (element.locationId == element1.locationId && element1.requestOffers != undefined) { //&& element1.locationId==locationId
+        if (element.id == element1.requestLocationId && element1.requestOffers != undefined) { //&& element1.locationId==locationId
           if (element1.checkProd1 ) {
             requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
               element1,
@@ -164,7 +164,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     });
     let productValid;
     locations.forEach((ele,key)=>{
-      productValid=this.requestOfferItems.filter(e=>e.LocationId===ele.locationId && e.RequestProductId==ele. requestProducts[key].id);
+      productValid=this.requestOfferItems.filter(e=>e.RequestLocationId===ele.id && e.RequestProductId==ele. requestProducts[key].id);
       if(productValid.length>1){
         this.requestOfferItems=[];
         this.toaster.error('For a single product, offer cannot be confirmed by more than one seller.');
@@ -177,7 +177,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   ConstructRequestOfferItemPayload(seller, requestOffers, requestProducts, etaDate, requestInfo) {
     return [
       {
-        RequestId: this.requests[0].id,//Single request pass
+        RequestId: requestInfo[0].id,//Single request pass
         RequestGroupId: seller.requestGroupId,
         RequestSellerId: seller.id,
         SellerId: seller.sellerCounterpartyId,
