@@ -25,8 +25,7 @@
       ],
       "cacheLocation": "localStorage",
       "endpoints": {
-          "https://devapi.shiptech.com": "5f43a587-da5f-487e-9cbf-daa1844a1921",
-          "https://localhost:44310": "5f43a587-da5f-487e-9cbf-daa1844a1921"
+          "https://devapi.shiptech.com": "5f43a587-da5f-487e-9cbf-daa1844a1921"
       },
       "anonymousEndpoints": [
           "https://devsp.shiptech.com"
@@ -85,7 +84,7 @@
   },
   "API": {
       "BASE_URL_DATA_PROCUREMENT": "https://devapi.shiptech.com/Shiptech10.Api.Procurement",
-      "BASE_URL_DATA_NEGOTIATION": "https://localhost:44310",
+      "BASE_URL_DATA_NEGOTIATION": "https://devapi.shiptech.com/Shiptech.Negotiation.Api",
       "BASE_URL_DATA_EMAIL": "https://devapi.shiptech.com/Shiptech10.Api.Mail",
       "BASE_URL_DATA_MASTERS": "https://devapi.shiptech.com/Shiptech10.Api.Masters",
       "BASE_URL_DATA_ADMIN": "https://devapi.shiptech.com/Shiptech10.Api.Admin",

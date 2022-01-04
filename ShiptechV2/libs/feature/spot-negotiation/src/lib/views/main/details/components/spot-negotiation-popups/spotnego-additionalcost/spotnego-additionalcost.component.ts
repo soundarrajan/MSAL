@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef, } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { AdditionalCostViewModel } from './additional-costs-model';
 
 @Component({
   selector: 'app-spotnego-additionalcost',
@@ -26,12 +28,32 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   iscontentEditable = false;
   public myFormGroup;
   public select = "$";
+  offerLevelCosts: AdditionalCostViewModel[];
+
+  constructor(public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+    , public spotNegotiationService: SpotNegotiationService) {
+
+  }
 
   ngOnInit() {
     // this.scrollToBottom();
     this.myFormGroup = new FormGroup({
       frequency: new FormControl('')
     });
+
+    if (this.data?.requestOffers?.length > 0) {
+      const firstOffer = this.data.requestOffers[0];
+      const payload = {
+        offerId: firstOffer.offerId, uomId: firstOffer.priceQuantityUomId,
+        isLocationBased: false
+      };
+      this.spotNegotiationService.getAdditionalCosts(payload).subscribe((res: any) => {
+          if(res){
+            this.offerLevelCosts = res;
+          }
+      });
+    }
   }
 
   frequencyArr = [
@@ -40,8 +62,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     { key: '£', abbriviation: 'GBP' }
   ];
 
-  constructor(public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
-
   closeDialog() {
     this.dialogRef.close();
 
@@ -49,7 +69,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
   tabledatalocation = [{}];
   tabledataslocation1 = [{}];
-  additionalcoast=[{costname: 'Surveyor Fee',
+  additionalcosts=[{costname: 'Surveyor Fee',
   costtype: 'Flat',
   maxqty: '1500  MT',
   price: '5000',
@@ -99,7 +119,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.tabledatas2.splice(i, 1);
   }
   delete1(i){
-    this.additionalcoast.splice(i, 1);
+    this.additionalcosts.splice(i, 1);
   }
   delete2(j) {
     this.tabledataslocation.splice(j, 1);

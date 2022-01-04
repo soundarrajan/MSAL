@@ -139,36 +139,6 @@ export class SpotNegotiationService extends BaseStoreService
   /**
    * @param payload = True
    */
-  //  {
-  //   Offers: [
-  //     {
-  //       id: 19, <- row id,
-  //       totalOffer: 1500,
-  //       requestOffers: [
-  //         {
-  //           Id: 14, <- product id
-  //           totalPrice: 150,
-  //           amount: 15000,
-  //           targetDifference: 15,
-  //           price: 145
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       id: 20,
-  //       totalOffer: 1250,
-  //       requestOffers: [
-  //         {
-  //           Id: 15,
-  //           totalPrice: 120,
-  //           amount: 12000,
-  //           targetDifference: 15,
-  //           price: 125
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // };
    @ObservableException()
    updatePrices(payload: any): Observable<unknown> {
      return this.spotNegotiationApi.updatePrices(payload);
@@ -281,6 +251,17 @@ export class SpotNegotiationService extends BaseStoreService
   addNewSellerContact(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.addNewSellerContact(payload);
   }
+
+  /**
+   * get offer and location based costs
+   * @param payload
+   * @returns
+   */
+  @ObservableException()
+  getAdditionalCosts(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getAdditionalCosts(payload);
+  }
+
   /**
    * Fake populate rows
    */
