@@ -285,7 +285,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 var Sellectedsellerdata = this.ConstuctSellerPayload(
                   element1,
                   element.requestProducts,
-                  spotNegotiation.currentRequestSmallInfo
+                  req
                 );
                 if (Sellectedsellerdata) {
                   this.selectedSellerList.push(Sellectedsellerdata);
