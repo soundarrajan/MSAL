@@ -17,7 +17,7 @@
     <mat-dialog-content style="overflow: hidden;">
         <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 156px);"
             [gridOptions]="dialog_gridOptions"
-            class="ag-theme-material angular-v9">
+            class="ag-theme-material angular-v9" [pagination]="true">
         </ag-grid-angular>
         <!-- <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>   -->
     </mat-dialog-content>
