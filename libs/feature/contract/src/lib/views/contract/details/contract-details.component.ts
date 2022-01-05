@@ -159,6 +159,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   private quantityPrecision: number;
+  hasApprovedInvoice: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -821,7 +822,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (notValidConversionFactor) {
       return;
     }
-
+    
+    this.formValues.hasApprovedInvoice = false;
+    this.formValues.products.forEach((val, key) => {
+      if(val.hasApprovedInvoice) {
+        this.formValues.hasApprovedInvoice = true;
+      }
+    });
     // check for product location to be obj
     let notValidLocation = false;
     this.formValues.products.forEach((val, key) => {
