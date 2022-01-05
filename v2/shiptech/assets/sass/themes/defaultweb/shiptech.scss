@@ -7477,6 +7477,7 @@ tr.title {
       }
       &.light-theme {
         // border: 2px solid #e0e1e4;
+        border: 2px solid #e0e1e4;
         background: #fcfdff;
         .header-content {
           .title {
@@ -7981,7 +7982,7 @@ tr.title {
       box-shadow: none;
       border: none;
       position: absolute;
-      top: 2px;
+      top: -1px;
       // width: 100%;
       left: calc(100% - 270px);
     }
@@ -22420,4 +22421,13 @@ mat-form-field {
 .light-theme .mat-dialog-container .statusChange .aggridlink-darktheme:hover {
   text-decoration: underline;
   text-decoration-color: #4a71c2 !important;
+}
+
+
+.filter-tooltip {
+  border: unset !important;
+  border-radius: 5px;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
 }

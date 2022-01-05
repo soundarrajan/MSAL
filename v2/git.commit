@@ -1,9 +1,9 @@
-﻿commit 049e4a76d8cc7a43d0b16a826ca5569002ec7017
+﻿commit 26ad2c51c8ce37592edb96a937533a06bc1da329
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jan 5 13:56:42 2022 +0000
+Date:   Wed Jan 5 14:19:01 2022 +0000
 
-    Merged PR 15374: Fixed wunderbar in control tower screen
+    Merged PR 15377: Fixed tooltip for control tower preferences
     
-    Fixed wunderbar in control tower screen
+    Fixed tooltip for control tower preferences
 
 branch: master
