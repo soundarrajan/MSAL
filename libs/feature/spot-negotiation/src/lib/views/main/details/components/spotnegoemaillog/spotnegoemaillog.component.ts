@@ -100,7 +100,7 @@ export class SpotnegoemaillogComponent implements OnInit {
         SortList: { SortList: [] }
       }
       this.spinner.show();
-      const emailLogs = this.spotNegotiationService.getEmailLogs(reqpayload);
+      const emailLogs = this.spotNegotiationService.getEmailLogsList(reqpayload);
       emailLogs.subscribe((res: any) => {
         this.spinner.hide();
         if (res.payload) {
@@ -125,7 +125,6 @@ export class SpotnegoemaillogComponent implements OnInit {
       height: '90vh',
       panelClass: 'additional-cost-popup',
     });
-
     dialogRef.afterClosed().subscribe(result => {
     });
   }

@@ -164,14 +164,15 @@ if(!this.readonly){
   }
   else{
      const payload = this.SelectedSellerWithProds.id;
+     this.spinner.show();
       const emailLogsPreview = this.spotNegotiationService.getEmailLogsPreview(payload);
       emailLogsPreview.subscribe((res:any) =>{
+        this.spinner.hide();
         if (res.payload){
           this.to = res.payload.to.split(',');
           this.cc = res.payload.cc.split(',');
           this.subject = res.payload.subject;
           this.content = res.payload.body;
-          this.from = res.payload.from
         }
       });
   }

@@ -74,7 +74,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
-  getEmailLogs(payload: any): Observable<any>{
+  getEmailLogsList(payload: any): Observable<any>{
     return this.http.post<any>(
       `${this._masterApiUrl}/${SpotNegotiationApiPaths.getEmailLogs}`,
       {Payload: payload}
