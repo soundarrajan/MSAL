@@ -13,7 +13,7 @@
       ]"
       (click)="applyFilter(filter.id)"
       [matTooltip]="filter.name"
-      matTooltipClass="custom-tooltip-filter"
+      matTooltipClass="filter-tooltip"
     >
       <!-- NOTE: Add track by -->
       <div
@@ -38,7 +38,7 @@
         z
         (click)="setPinned(filter.id)"
         [matTooltip]="filter.isPinned ? 'Unpin' : 'Pin'"
-        matTooltipClass="custom-tooltip-filter"
+        matTooltipClass="filter-tooltip"
         [ngClass]="{ 'pin-container': filter.name !== 'Default' }"
       >
         <div
@@ -63,7 +63,7 @@
           class="system-preference"
           (click)="systemFilterUpdate(filter)"
           [matTooltip]="filter.label"
-          matTooltipClass="custom-tooltip-filter"
+          matTooltipClass="filter-tooltip"
         >
           <!-- NOTE: Add track by -->
           <div matPrefix class="count-circle">
@@ -85,7 +85,7 @@
         <mat-chip
           matTooltip="Expand Filters"
           [matTooltipPosition]="'below'"
-          matTooltipClass="custom-tooltip-filter"
+          matTooltipClass="filter-tooltip"
           [matTooltipShowDelay]="500"
           *ngIf="hasActiveFilterPresets"
           (click)="openAvailablePresetsDialog()"
