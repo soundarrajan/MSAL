@@ -126,6 +126,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };
