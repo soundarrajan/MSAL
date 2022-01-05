@@ -73,6 +73,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   public noOfDefault: number;
 
   public differenceType: ILookupDto;
+  public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -693,6 +694,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
           );
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerResidueEGCSDifferenceFailed
           );
