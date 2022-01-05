@@ -7213,6 +7213,7 @@ tr.title {
       float: left;
       clear: both;
       box-shadow: 1px 3px #e0e1e4 !important;
+      margin-top: -4px !important;
       width: 100%;
       background: none !important;
       .custom-tab-ui {
@@ -7977,7 +7978,7 @@ tr.title {
       box-shadow: none;
       border: none;
       position: absolute;
-      top: 0;
+      top: -1px !important;
       // width: 100%;
       left: calc(100% - 270px);
     }
