@@ -7213,6 +7213,7 @@ tr.title {
       float: left;
       clear: both;
       box-shadow: 1px 3px #e0e1e4 !important;
+      margin-top: -4px !important;
       width: 100%;
       background: none !important;
       .custom-tab-ui {
@@ -7977,7 +7978,7 @@ tr.title {
       box-shadow: none;
       border: none;
       position: absolute;
-      top: 0;
+      top: -1px !important;
       // width: 100%;
       left: calc(100% - 270px);
     }
@@ -8641,7 +8642,7 @@ tr.title {
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
-        color: #9d9fa2;
+        color: #595959;
         margin-right: 2px;
       }
       .subheader-value {
@@ -8649,7 +8650,7 @@ tr.title {
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
-        color: #ffffff;
+        color: #364150;
       }
       .col-header {
         font-family: Roboto;
@@ -8685,12 +8686,13 @@ tr.title {
         border-bottom: 0.7px solid #54617a;
         textarea {
           height: 70px;
-          background: #364150;
+          background: #f8f8f8;
           border-radius: 10px;
           border: none;
           width: 100%;
           resize: none;
-          color: #ffffff;
+          font-size: 12px;
+          padding: 10px;
           &:focus-visible {
             outline: none !important;
           }
@@ -8846,6 +8848,10 @@ tr.title {
       .aggridlink-darktheme {
         color: #4a71c2 !important;
       }
+      .aggridlink-darktheme:hover {
+        text-decoration: underline;
+        text-decoration-color: #4a71c2 !important;
+      }
       .header-title {
         font-weight: 500;
         font-size: 14px;
@@ -8979,7 +8985,8 @@ tr.title {
           border: none;
           width: 100%;
           resize: none;
-          color: #000;
+          font-size: 12px;
+          padding: 10px;
           &:focus-visible {
             outline: none !important;
           }
@@ -22399,4 +22406,19 @@ mat-form-field {
 .aggridlink a:active {
   color: #4a71c2 !important;
   cursor: pointer;
+}
+
+#custom-form-field {
+  border-radius: 4px !important;
+}
+
+#custom-form-field.darkTheme .mat-form-field.without-search {
+  width: 181px;
+  border-radius: 4px;
+  border: 1px solid #f1f1f2;
+}
+
+.light-theme .mat-dialog-container .statusChange .aggridlink-darktheme:hover {
+  text-decoration: underline;
+  text-decoration-color: #4a71c2 !important;
 }

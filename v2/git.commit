@@ -1,11 +1,11 @@
-﻿commit e7c995c348cf637384cd1c2d91f4e6c0e75cac08
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jan 5 12:17:57 2022 +0000
+﻿commit 3b94cacfdc43a30d054b203f3ff15c6ce1a3eba1
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jan 5 13:24:03 2022 +0000
 
-    Merged PR 15367: Enable certain fields based on invoice flag
+    Merged PR 15370: Fixed UI of control tower pop-up(37790)
     
-    Enable certain fields based on invoice flag
+    Fixed UI of control tower pop-up(37790)
     
-    Related work items: #34555
+    Related work items: #37790
 
 branch: master

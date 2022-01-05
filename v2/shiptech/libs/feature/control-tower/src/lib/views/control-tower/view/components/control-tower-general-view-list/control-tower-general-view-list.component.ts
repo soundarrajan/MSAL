@@ -290,7 +290,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
   }
 
-  onFirstDataRendered(params){
+  onFirstDataRendered(params) {
     params.api.sizeColumnsToFit();
   }
 
@@ -550,7 +550,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogData.changeLog = response.changeLog;
             dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '422px',
+              width: '430px',
               height: 'auto',
               // maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
@@ -653,7 +653,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogData.changeLog = response.changeLog;
             dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '422px',
+              width: '430px',
               height: 'auto',
               // maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
@@ -749,7 +749,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
               dialogData.comments = response[0]?.comments;
             }
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '422px',
+              width: '430px',
               height: 'auto',
               // maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
