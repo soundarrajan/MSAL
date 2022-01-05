@@ -1,11 +1,9 @@
-﻿commit 09e83f82e44b9a965ef981b832546e88143f2e55
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Jan 5 04:07:53 2022 +0000
+﻿commit e0378c538b289e5c3fe1bf1a4c6d9e49b13cb102
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jan 5 08:56:24 2022 +0000
 
-    Merged PR 15327: SO UI issues fix - 37274
+    Merged PR 15361: Css fixes 37785
     
-    SO UI issues fix - 37274: Removed duplicate selector styles from smart-operator.scss, shiptech.scss. Also fixed many UI issue related to AG Grid.
-    
-    Related work items: #37274
+    Css fixes 37785
 
 branch: master

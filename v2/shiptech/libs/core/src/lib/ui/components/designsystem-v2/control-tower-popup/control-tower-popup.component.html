@@ -73,6 +73,7 @@
             *ngFor="let value of data.productTypeList"
             class="col-value product-type"
             matTooltip="{{ value.productType }}"
+            matTooltipClass="custom-tooltip-dark"
           >
             {{ value.productType }}
           </div>
@@ -86,6 +87,7 @@
             *ngFor="let value of data.productTypeList"
             class="col-value tooltip-container"
             matTooltip="{{ format.quantity(value.sludgePercentage) }}"
+            matTooltipClass="custom-tooltip-dark"
           >
             {{ format.quantity(value.sludgePercentage) }}
           </div>
@@ -105,6 +107,7 @@
             matTooltip="{{
               format.quantity(value.logBookRobQtyBeforeDelivery)
             }}"
+            matTooltipClass="custom-tooltip-dark"
           >
             {{ format.quantity(value.logBookRobQtyBeforeDelivery) }}
           </div>
@@ -115,6 +118,7 @@
             *ngFor="let value of data.productTypeList"
             class="col-value tooltip-container"
             matTooltip="{{ format.quantity(value.bdnQuantity) }}"
+            matTooltipClass="custom-tooltip-dark"
           >
             {{ format.quantity(value.bdnQuantity) }}
           </div>
@@ -131,6 +135,7 @@
                 ? format.quantity(value.measuredRobQtyBeforeDelivery)
                 : format.quantity(value.measuredQuantity)
             }}"
+            matTooltipClass="custom-tooltip-dark"
           >
             {{
               data.popupType == 'rob' ||
@@ -153,6 +158,7 @@
                 ? format.quantity(value.differenceInRobQuantity)
                 : format.quantity(value.differenceQuantity)
             }}"
+            matTooltipClass="custom-tooltip-dark"
           >
             {{
               data.popupType == 'rob' ||
@@ -169,6 +175,7 @@
             *ngFor="let value of data.productTypeList"
             class="col-value tooltip-container"
             matTooltip="{{ value.uom }}"
+            matTooltipClass="custom-tooltip-dark"
           >
             {{ value.uom }}
           </div>
@@ -176,42 +183,52 @@
       </ng-container>
     </div>
     <ng-template #qualityLabs>
-      <div class=" w-28 plr-0">
-        <div class="col-header">Lab Counterparty</div>
+      <div class="w-15 plr-0">
+        <div
+          class="col-header tooltip-container"
+          matTooltip="Lab Counterparty"
+          matTooltipClass="custom-tooltip-dark"
+        >
+          Lab Counterparty
+        </div>
         <div
           *ngFor="let value of data.productTypeList"
           class="col-value tooltip-container"
           matTooltip=" {{ this.format.htmlDecode(value.labCounterParty) }}"
+          matTooltipClass="custom-tooltip-dark"
         >
           {{ this.format.htmlDecode(value.labCounterParty) }}
         </div>
       </div>
-      <div class=" w-28 plr-0">
+      <div class="w-30 plr-0">
         <div class="col-header">Product</div>
         <div
           *ngFor="let value of data.productTypeList"
           class="col-value tooltip-container"
           matTooltip=" {{ this.format.htmlDecode(value.product) }}"
+          matTooltipClass="custom-tooltip-dark"
         >
           {{ this.format.htmlDecode(value.product) }}
         </div>
       </div>
-      <div class=" w-24p plr-0">
+      <div class="w-30 plr-0">
         <div class="col-header">Lab Status</div>
         <div
           *ngFor="let value of data.productTypeList"
           class="col-value tooltip-container"
           matTooltip="{{ value.labStatus }}"
+          matTooltipClass="custom-tooltip-dark"
         >
           {{ value.labStatus }}
         </div>
       </div>
-      <div class=" w-20p plr-0">
+      <div class="w-25 plr-0">
         <div class="col-header">Claim Raised</div>
         <div
           *ngFor="let value of data.productTypeList"
           class="col-value tooltip-container"
           matTooltip="{{ value.claimRaised }}"
+          matTooltipClass="custom-tooltip-dark"
         >
           {{ value.claimRaised }}
         </div>

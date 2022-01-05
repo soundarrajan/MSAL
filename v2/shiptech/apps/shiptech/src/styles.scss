@@ -210,3 +210,10 @@ input.BPInNumField::-webkit-input-placeholder {
   margin-left: unset !important;
   padding-right: 8px;
 }
+
+mat-tooltip-component .mat-tooltip.custom-tooltip-dark {
+  color: white !important;
+  background: #364150 !important;
+  font-weight: 500;
+  font-size: 12px;
+}
