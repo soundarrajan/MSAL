@@ -86,6 +86,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     noOfResolved: number;
     noOfDefault: number;
   };
+  public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -749,6 +750,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           );
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerQuantitySupplyDifferenceFailed
           );

@@ -18,7 +18,9 @@
               [gridIds]="gridIds"
               [groupedCountValues]="gridViewModel.groupedCounts"
               (systemFilterUpdate$)="systemFilterUpdate($event)"
-              (presetsLoaded)="this.gridViewModel.markServerSideDataSourceReady()"
+              (presetsLoaded)="
+                this.gridViewModel.markServerSideDataSourceReady()
+              "
             ></app-filter-preferences>
           </div>
         </div>
@@ -59,7 +61,7 @@
             [gridViewModel]="gridViewModel"
             [page]="gridViewModel.page"
             [size]="gridViewModel.pageSize"
-            [count]="gridViewModel.totalItems"
+            [count]="gridViewModel.loadingFailed ? 0 : gridViewModel.totalItems"
             [singleGrid]="true"
             [doublePagination]="true"
             [maxSize]="765"
