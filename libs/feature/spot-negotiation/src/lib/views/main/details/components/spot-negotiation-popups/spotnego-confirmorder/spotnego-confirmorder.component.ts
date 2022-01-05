@@ -169,7 +169,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       productValid = this.requestOfferItems.filter(e => e.RequestLocationId === ele.id && e.RequestProductId == ele.requestProducts[key].id);
       if (productValid.length > 1) {
         this.requestOfferItems = [];
-        this.toaster.error('For a single product, offer cannot be confirmed by more than one seller.');
+        this.toaster.error('Only 1 offer price can be confirmed for a requested product.');
         this.closeDialog();
       }
     });
