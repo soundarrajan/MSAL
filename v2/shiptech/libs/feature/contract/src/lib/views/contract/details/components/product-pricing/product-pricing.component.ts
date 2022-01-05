@@ -1179,7 +1179,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   addNewAdditionalCostLine() {
-    if (this.formValues.status && this.formValues.status.name == 'Confirmed') {
+    if (this.formValues.status && this.formValues.status.name == 'Confirmed' && this.formValues.hasApprovedInvoice ) {
       return;
     }
     if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
@@ -1192,7 +1192,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   removeAdditionalCostLine(key) {
-    if (this.formValues.status && this.formValues.status.name == 'Confirmed') {
+    if (this.formValues.status && this.formValues.status.name == 'Confirmed' && this.formValues.hasApprovedInvoice) {
       return;
     }
     if (
@@ -1355,7 +1355,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   recomputeProductPricePrecision(productKey) {
-    if (this.formValues.products[productKey].price) {
+    let priceInput = (<HTMLInputElement>(
+      document.getElementById('price_' + productKey)
+    ));
+    if (this.formValues.products[productKey].price && priceInput) {
       (<HTMLInputElement>(
         document.getElementById('price_' + productKey)
       )).value = this.priceFormatValue(
