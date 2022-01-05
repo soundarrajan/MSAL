@@ -1,9 +1,9 @@
-﻿commit 26ad2c51c8ce37592edb96a937533a06bc1da329
+﻿commit c72966df4364325f30d77f6feb3ece083c6e6cb2
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jan 5 14:19:01 2022 +0000
+Date:   Wed Jan 5 14:42:30 2022 +0000
 
-    Merged PR 15377: Fixed tooltip for control tower preferences
+    Merged PR 15379: Changed width for control-tower-pop-up
     
-    Fixed tooltip for control tower preferences
+    Changed width for control-tower-pop-up
 
 branch: master
