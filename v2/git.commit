@@ -1,11 +1,11 @@
-﻿commit 3b94cacfdc43a30d054b203f3ff15c6ce1a3eba1
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jan 5 13:24:03 2022 +0000
+﻿commit 0edbc79c29e5bc11d3735669df8920d593879948
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Jan 5 13:50:47 2022 +0000
 
-    Merged PR 15370: Fixed UI of control tower pop-up(37790)
+    Merged PR 15372: css fixes control tower
     
-    Fixed UI of control tower pop-up(37790)
+    css fixes control tower
     
-    Related work items: #37790
+    Related work items: #37424, #37811
 
 branch: master
