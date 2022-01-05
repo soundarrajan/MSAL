@@ -72,6 +72,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   public noOfDefault: number;
 
   public differenceType: ILookupDto;
+  public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -696,6 +697,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
           );
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
