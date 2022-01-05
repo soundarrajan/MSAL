@@ -551,7 +551,7 @@ export class ShiptechCustomHeaderGroup {
     this.livePrice = this.priceFormatValue(this.livePrice,'livePrice');
     this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
     this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
-    const targetval = this.livePrice.replace(',','') - this.benchmark;
+    const targetval = this.livePrice.toString().replace(',','') - this.benchmark;
     this.targetValue = parseFloat(targetval.toString()) ;
     //this.closureValue=parseInt(this.livePrice);
     let payload = {
@@ -559,7 +559,7 @@ export class ShiptechCustomHeaderGroup {
         "requestGroupId": parseInt(RequestGroupId),
         "requestLocationId": this.requestLocationId,
         "requestProductId": this.requestProductId,
-        "livePrice": this.livePrice.replace(',',''),
+        "livePrice": this.livePrice.toString().replace(',',''),
         "targetPrice":this.targetValue
       }
     };
