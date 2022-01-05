@@ -114,6 +114,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value?.id : ''),
     width: 150
   };
@@ -134,6 +135,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
