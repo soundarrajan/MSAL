@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +10,6 @@ import { Router } from '@angular/router';
 export class WunderBarComponent implements OnInit {
   isQcScreen: boolean = false;
   isCtScreen: boolean = false;
-  @Input() controlTower: boolean;
   constructor(private router: Router) {
     if (
       this.router.url.includes('quantity-control') ||
