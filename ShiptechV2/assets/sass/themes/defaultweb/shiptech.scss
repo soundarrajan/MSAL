@@ -9872,10 +9872,9 @@ tr.title {
         margin: 10px 0;
       }
       .info-section {
-        background-color: #364150;
+        background-color: #f8f8f8;
         border-radius: 4px;
-        padding: 2px;
-        padding-left: 5px;
+        padding: 2px 2px 2px 5px;
         width: 100%;
         .col3 {
           flex: 0 0 27%;
@@ -10152,8 +10151,7 @@ tr.title {
       .info-section {
         background-color: #f8f8f8;
         border-radius: 4px;
-        padding: 2px;
-        padding-left: 5px;
+        padding: 2px 2px 2px 5px;
         width: 100%;
         .col3 {
           flex: 0 0 27%;
@@ -10187,6 +10185,18 @@ tr.title {
       }
       .w-24p {
         width: 24%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .w-15 {
+        width: 15%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .w-30 {
+        width: 30%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -23732,3 +23742,4 @@ mat-form-field {
   }
 }
 /* custom help icon menu style end here */
+
