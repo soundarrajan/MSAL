@@ -8844,7 +8844,7 @@ tr.title {
         }
       }
       .aggridlink-darktheme {
-        color: #4a71c2;
+        color: #4a71c2 !important;
       }
       .header-title {
         font-weight: 500;
@@ -22389,3 +22389,14 @@ mat-form-field {
 }
 /* custom help icon menu style end here */
 
+.aggridlink a {
+  color: #4a71c2 !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.aggridlink a:hover,
+.aggridlink a:active {
+  color: #4a71c2 !important;
+  cursor: pointer;
+}

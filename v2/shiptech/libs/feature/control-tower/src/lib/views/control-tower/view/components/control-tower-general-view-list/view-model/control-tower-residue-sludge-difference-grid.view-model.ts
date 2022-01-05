@@ -124,6 +124,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };

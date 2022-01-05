@@ -1,11 +1,11 @@
-﻿commit 3480a49aa53ae0e6c67dfa45ffdf0f3f24518b4d
+﻿commit 459e2736293c625ab6c7c107406191ed68abf3af
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jan 5 09:57:53 2022 +0000
+Date:   Wed Jan 5 11:48:34 2022 +0000
 
-    Merged PR 15363: Removed loading icon when  user does not have access to a particular screen i...
+    Merged PR 15366: Added Hyperlink color  to be as per Design system
     
-    Removed loading icon when  user does not have access to a particular screen in control tower list
+    Added Hyperlink color  to be as per Design system
     
-    Related work items: #37169
+    Related work items: #37784
 
 branch: master

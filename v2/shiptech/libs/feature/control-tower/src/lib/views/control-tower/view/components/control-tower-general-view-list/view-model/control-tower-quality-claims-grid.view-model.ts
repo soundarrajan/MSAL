@@ -117,6 +117,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value?.id : ''),
     width: 150
   };
@@ -137,6 +138,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value?.id : ''),
     width: 150
   };
@@ -157,6 +159,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value : ''),
     width: 150
   };
