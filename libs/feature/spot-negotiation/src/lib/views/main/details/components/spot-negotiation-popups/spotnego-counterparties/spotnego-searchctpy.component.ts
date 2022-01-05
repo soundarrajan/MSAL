@@ -274,7 +274,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     const response = this._spotNegotiationService.updatePhySupplier(reqPayload);
     response.subscribe((res: any) => {
       if (res.status) {
-        this.toastr.success(res.message);
+        this.toastr.success('Phy. Supplier added successfully');
       } else {
         this.toastr.error(res.message);
         return;
