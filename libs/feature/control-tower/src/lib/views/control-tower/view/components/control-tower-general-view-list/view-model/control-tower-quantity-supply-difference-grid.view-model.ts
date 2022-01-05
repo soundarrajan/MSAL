@@ -141,6 +141,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
       return null;
     },
+    cellClass: ['aggridlink'],
     tooltip: params => (params.value ? params.value?.portCallId : ''),
     width: 200
   };
