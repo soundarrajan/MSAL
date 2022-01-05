@@ -29,8 +29,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload =
    */
   @ObservableException()
-  getEmailLogs(payload :any): Observable<unknown>{
-    return this.spotNegotiationApi.getEmailLogs(payload);
+  getEmailLogsList(payload :any): Observable<unknown>{
+    return this.spotNegotiationApi.getEmailLogsList(payload);
   }
 
   /* Gets the Email Logs based on Id

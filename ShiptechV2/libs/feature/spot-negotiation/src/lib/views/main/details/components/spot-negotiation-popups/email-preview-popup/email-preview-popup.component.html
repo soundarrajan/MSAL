@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="section2">
-                <div style="display: flex; margin: 15px; align-items: center;">
+                <div [style.visibility] ="readonly? 'hidden': 'visible'" style="display: flex; margin: 15px; align-items: center;">
                     <span class="text">Attachments:</span>
                     <label class="add-doc" for="getFile">
                         <span [hidden]="readonly" class="add-doc-plus"></span>
@@ -80,7 +80,7 @@
                     </div>    
                 </div>
                 <div class="email-draft">    
-                    <ckeditor [editor]="Editor" [(ngModel)]="content"></ckeditor>
+                    <ckeditor [disabled] ="readonly" [editor]="Editor" [(ngModel)]="content"></ckeditor>
                 </div>
             </div>
         </div>
