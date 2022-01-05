@@ -73,6 +73,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   public differenceType: ILookupDto;
 
+  public loadingFailed: boolean = false;
+
   public defaultColFilterParams = {
     resetButton: true,
     applyButton: true,
@@ -686,6 +688,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           );
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );

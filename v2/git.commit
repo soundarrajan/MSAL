@@ -1,9 +1,11 @@
-﻿commit e0378c538b289e5c3fe1bf1a4c6d9e49b13cb102
+﻿commit 3480a49aa53ae0e6c67dfa45ffdf0f3f24518b4d
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jan 5 08:56:24 2022 +0000
+Date:   Wed Jan 5 09:57:53 2022 +0000
 
-    Merged PR 15361: Css fixes 37785
+    Merged PR 15363: Removed loading icon when  user does not have access to a particular screen i...
     
-    Css fixes 37785
+    Removed loading icon when  user does not have access to a particular screen in control tower list
+    
+    Related work items: #37169
 
 branch: master

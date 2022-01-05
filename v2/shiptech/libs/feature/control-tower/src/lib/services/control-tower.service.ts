@@ -495,8 +495,10 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
+          body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.status == 401
+            ? { message: 'Unauthorized' }
             : body.error.errorMessage + ' ' + body.error.reference
         )
       )
@@ -509,8 +511,10 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
+          body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.status == 401
+            ? { message: 'Unauthorized' }
             : body.error.errorMessage + ' ' + body.error.reference
         )
       )
@@ -523,8 +527,10 @@ export class ControlTowerService extends BaseStoreService implements OnDestroy {
       map((body: any) => body.payload),
       catchError((body: any) =>
         of(
-          body.error.ErrorMessage && body.error.Reference
+          body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.status == 401
+            ? { message: 'Unauthorized' }
             : body.error.errorMessage + ' ' + body.error.reference
         )
       )
