@@ -554,7 +554,7 @@ export class ShiptechCustomHeaderGroup {
     const targetval = this.livePrice.toString().replace(',','') - this.benchmark;
     this.targetValue = parseFloat(targetval.toString()) ;
     //this.closureValue=parseInt(this.livePrice);
-    let payload = {
+    let  payload = {
       "productPrice": {
         "requestGroupId": parseInt(RequestGroupId),
         "requestLocationId": this.requestLocationId,
@@ -563,38 +563,39 @@ export class ShiptechCustomHeaderGroup {
         "targetPrice":this.targetValue
       }
     };
-    const response = this._spotNegotiationService.saveTargetPrice(payload);
-    response.subscribe((res: any) => {
-      if (res.status) {
-        let locations = [];
-         this.store.subscribe(({ spotNegotiation, ...props }) => {
-          locations = spotNegotiation.locations;
-          JSON.parse(JSON.stringify(locations))
-        });
-         if(locations.length > 0){
-          locations.forEach(element => {
-            if(element.id == this.requestLocationId && element.requestProducts){
-              element.requestProducts.forEach((element1,index) => {
-                if(element1.id == this.requestProductId && element1.requestGroupProducts){
-                  debugger;
-                  if(this.livePrice && this.livePrice != null){
-                   let updatedRow1 = Object.assign({}, element);
-                    updatedRow1 = this.updateprice(JSON.parse(JSON.stringify(updatedRow1)),index)
-                  this.store.dispatch(
-                    new EditLocations(updatedRow1)
-                  );
-                  }
-                  
-                }
-              });
-            }
+    if(this.livePrice!="--"){
+      const response = this._spotNegotiationService.saveTargetPrice(payload);
+      response.subscribe((res: any) => {
+        if (res.status) {
+          let locations = [];
+           this.store.subscribe(({ spotNegotiation, ...props }) => {
+            locations = spotNegotiation.locations;
+            JSON.parse(JSON.stringify(locations))
           });
-         }
-      } else {
-        this.toastr.error(res.message);
-        return;
-      }
-    });
+           if(locations.length > 0){
+            locations.forEach(element => {
+              if(element.id == this.requestLocationId && element.requestProducts){
+                element.requestProducts.forEach((element1,index) => {
+                  if(element1.id == this.requestProductId && element1.requestGroupProducts){
+                    if(this.livePrice && this.livePrice != null){
+                     let updatedRow1 = Object.assign({}, element);
+                      updatedRow1 = this.updateprice(JSON.parse(JSON.stringify(updatedRow1)),index)
+                    this.store.dispatch(
+                      new EditLocations(updatedRow1)
+                    );
+                    }
+                    
+                  }
+                });
+              }
+            });
+           }
+        } else {
+          this.toastr.error(res.message);
+          return;
+        }
+      });
+    }
   }
 
     updateprice(updaterow, index){
