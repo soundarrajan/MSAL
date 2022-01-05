@@ -1,9 +1,11 @@
-﻿commit c72966df4364325f30d77f6feb3ece083c6e6cb2
+﻿commit 37b9b275b2ac222e6fbcb4fd405a25be3afa215a
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jan 5 14:42:30 2022 +0000
+Date:   Wed Jan 5 14:56:12 2022 +0000
 
-    Merged PR 15379: Changed width for control-tower-pop-up
+    Merged PR 15380: Fixed UI of control tower pop-up(37790)
     
-    Changed width for control-tower-pop-up
+    Fixed UI of control tower pop-up(37790)
+    
+    Related work items: #37790
 
 branch: master
