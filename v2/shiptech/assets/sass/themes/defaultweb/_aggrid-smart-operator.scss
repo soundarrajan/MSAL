@@ -1,0 +1,538 @@
+@import "@ag-grid-community/all-modules/dist/styles/ag-grid.css";
+@import "@ag-grid-community/all-modules/dist/styles/ag-theme-material.css";
+@import "@ag-grid-community/all-modules/dist/styles/ag-theme-balham-dark.css";
+@import 'smart-operator-mixins';
+@import 'smart-operator-variables';
+
+.smart-operator {
+    ag-grid-angular {
+        font-family: Roboto !important;
+        // ::-webkit-scrollbar {
+        //   width: 10px;
+        //   height: 10px;
+        // }
+
+        // ::-webkit-scrollbar-track {
+        //   background-color: transparent;
+        // }
+
+        ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: $grey;
+        }
+        ::-webkit-scrollbar-corner
+        {background-color: transparent;}
+
+        .ag-body-horizontal-scroll-viewport {
+            top: -11px;
+            height: 15px !important;
+            min-height: 15px !important;
+            max-height: 15px !important
+        }
+        font-family: Roboto;
+    }
+    .aggrid-basefont{
+        color: $chipfont;
+        font-weight: 100;
+
+    }
+    .aggrid-custom-chip {
+    min-width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 16px !important;
+    &.chipbase {
+        @extend .aggrid-basefont;
+        background: $chipbase;
+    }
+    &.darkgreen {
+        @extend .aggrid-basefont;
+        background: $chipprimary;
+    }
+    &.amber {
+        @extend .aggrid-basefont;
+        background: $chipsecondary;
+    }
+    &.lightgreen {
+        @extend .aggrid-basefont;
+        background: $chiplight;
+    }
+    &.red {
+        @extend .aggrid-basefont;
+        background: $chipcritical;
+    }
+    }
+    .ag-theme-balham-dark {
+        .ag-body-viewport {
+            background-color: $dark;
+        }
+        .aggrid-columgroup-splitter {
+            // box-shadow: 1px 0px 0px 0px $dark, 3px 0px 0px 0px $dark !important;
+            border-right: solid 2px $dark !important;
+            z-index: 10;
+        }
+        .aggrid-columgroup-splitter-right {
+            box-shadow: 4px 0px 1px -1px #37414F !important;
+            z-index: 10;
+        }
+        .aggrid-columgroup-dark-splitter {
+            box-shadow: 1px 0px 0px 0px $dark, 3px 0px 0px 0px $dark4 !important;
+            z-index: 10;
+        }
+        .input {
+            background-color: $dark4;
+        }
+        .ag-root {
+            border: none;
+        }
+        .ag-cell-focus {
+            border: none !important;
+            // border-top: 1px solid $dark !important;
+            // border-bottom: 1px solid $dark !important;
+            // border-right: 1px solid $dark !important;
+            // border-left: 1px solid $dark !important;
+        }
+        .ag-floating-bottom {
+            border-top: none;
+            background: #28323F;
+            .ag-floating-bottom-container,
+            .ag-pinned-right-floating-bottom {
+                .ag-row {
+                    border: none;
+                }
+                .ag-cell {
+                    background: #28323F;
+                    //box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                }
+                .dark-shadow {
+                    border: none;
+                }
+                .dark-shadow-left {
+                    border: none;
+                    box-shadow: none;
+                }
+                .dark-shadow-box {
+                    //margin-left: 0;
+                    border-left: none;
+                    border-right: none;
+                    box-shadow: none;
+                }
+                .dark-shadow-box-left,
+                .dark-shadow-box-right {
+                    border: none;
+                    box-shadow: none;
+                }
+            }
+        }
+        .ag-header {
+            background-color: $dark4;
+        }
+
+        .ag-row {
+            background-color: $dark4 !important;
+            border-bottom: 1px solid $dark !important;
+        }
+        .ag-row-even {
+            background-color: $dark4;
+        }
+        .ag-tab-header {
+            background-color: $dark;
+            .ag-tab.ag-tab-selected {
+                background-color: $dark4;
+            }
+        }
+        .ag-tab-body,
+        .ag-menu {
+            background: $dark4;
+            color: #8F9BAB;
+            .ag-menu-option-active {
+                background: $dark;
+            }
+            .ag-menu-option-text {
+                color: #8F9BAB;
+            }
+            .ag-filter-filter,
+            .ag-primary-cols-filter {
+                color: #8F9BAB;
+                border: 1px solid #8F9BAB;
+            }
+        }
+        // .ag-root ::-webkit-scrollbar {
+        //     width: 4px;
+        //     height: 4px;
+        // }
+        // .ag-root ::-webkit-scrollbar-thumb {
+        //     background: #5B6674;
+        // }
+        .ag-root .ag-body-horizontal-scroll-viewport {
+            top: -7px;
+            height: 10px !important;
+            min-height: 10px !important;
+            max-height: 10px !important;
+        }
+        .ag-root .ag-body-horizontal-scroll-container {
+            height: 10px;
+            max-height: 10px;
+            min-height: 10px;
+        }
+        .ag-ltr .ag-has-focus .ag-cell-focus,
+        .ag-rtl .ag-has-focus .ag-cell-focus {
+            border-color: transparent;
+        }
+        .mat-checkbox-inner-container {
+            background-color: #54617A !important;
+            border-radius: 3px;
+        }
+        .ag-pinned-right-cols-container {
+            box-shadow: none !important;
+        }
+        .ag-pinned-right-cols-container .ag-row {
+            box-shadow: none !important;
+            border: none;
+            .ag-cell {
+                margin-left: 0px;
+            }
+        }
+        .ag-pinned-left-cols-container .ag-row,
+        .ag-pinned-right-cols-container .ag-row {
+            background-color: $dark4 !important;
+            &:nth-child(even) {
+                background-color: $dark4 !important;
+            }
+        }
+        .ag-status-bar {
+            border: none;
+        }
+        .ag-center-cols-viewport {
+            overflow-x: hidden !important;
+        }
+
+    .aggrid-columgroup-splitter-left{
+
+        // box-shadow: 3px 0px 0px 0px $dark, -3px 0px 0px 0px $dark !important;
+        border-right: solid 2px $dark !important;
+        border-left: solid 2px $dark !important;
+        border-right:none;
+        z-index: 10;
+    }
+
+    }
+    .aggrid-cell-bg-color{
+        &.mediumgreen {
+        @include aggrid-cell-bgcolor(#5EB591);
+        }
+        &.darkblue {
+        @include aggrid-cell-bgcolor(#1F70BB);
+        }
+        &.darkgreen {
+        @include aggrid-cell-bgcolor(#27AE60);
+        }
+        &.yellow {
+        @include aggrid-cell-bgcolor(#FDBF2D);
+        }
+        &.red {
+        @include aggrid-cell-bgcolor(#E92B2F);
+        }
+        &.mediumred {
+        @include aggrid-cell-bgcolor(#E9585B);
+        }
+        &.lightred {
+        @include  aggrid-cell-bgcolor(#EB5757);
+        }
+        &.mediumpurple {
+        @include  aggrid-cell-bgcolor(#8B6CAD);
+        }
+        &.purple {
+        @include  aggrid-cell-bgcolor(#6638B6);
+        }
+        &.skyblue {
+        @include  aggrid-cell-bgcolor(#76BBE3);
+        }
+        &.mediumblue {
+        @include  aggrid-cell-bgcolor(#4498D4);
+        }
+        &.amber {
+        @include  aggrid-cell-bgcolor(#E98B46);
+        }
+        &.lightamber {
+        @include aggrid-cell-bgcolor(#F2994A);
+        }
+        &.blue {
+        @include  aggrid-cell-bgcolor(#43CED8);
+        }
+        &.lightgreen {
+        @include  aggrid-cell-bgcolor(#96CF55);
+        }
+        &.teal {
+        @include  aggrid-cell-bgcolor(#73BCAC);
+        }
+        &.grey {
+        @include  aggrid-cell-bgcolor(#828282);
+        }
+        &.dark {
+        @include  aggrid-cell-bgcolor(#37414F);
+        }
+        &.lightblue {
+        @include  aggrid-cell-bgcolor(#1CABE0);
+        }
+        &.persian {
+        @include  aggrid-cell-bgcolor(#00B09B);
+        }
+        &.dblue{
+        @include  aggrid-cell-bgcolor(#1C4D91);
+        }
+    }
+
+    .aggrid-cell-color{
+        &.white {
+            @include aggrid-cell-color($white);
+        }
+        &.mediumgreen {
+        @include aggrid-cell-color(#5EB591);
+        }
+        &.darkblue {
+        @include aggrid-cell-color(#1F70BB);
+        }
+        &.darkgreen {
+        @include aggrid-cell-color(#27AE60);
+        }
+        &.yellow {
+        @include aggrid-cell-color(#FDBF2D);
+        }
+        &.red {
+        @include aggrid-cell-color(#E92B2F);
+        }
+        // &.mediumred {
+        //  @include aggrid-cell-color(#E9585B);
+        // }
+        &.mediumred {
+            @include aggrid-cell-color(#c35fc6);
+        }
+        &.lightred {
+        @include  aggrid-cell-color(#EB5757);
+        }
+        &.mediumpurple {
+        @include  aggrid-cell-color(#8B6CAD);
+        }
+        &.purple {
+        @include  aggrid-cell-color(#6638B6);
+        }
+        &.skyblue {
+        @include  aggrid-cell-color(#76BBE3);
+        }
+        &.mediumblue {
+        @include  aggrid-cell-color(#4498D4);
+        }
+        &.amber {
+        @include  aggrid-cell-color(#E98B46);
+        }
+        &.lightamber {
+        @include aggrid-cell-color(#F2994A);
+        }
+        &.blue {
+        @include  aggrid-cell-color(#43CED8);
+        }
+        &.lightgreen {
+        @include  aggrid-cell-color(#5FB760);
+        }
+        &.teal {
+        @include  aggrid-cell-color(#73BCAC);
+        }
+        &.grey {
+        @include  aggrid-cell-color(#828282);
+        }
+        &.dark {
+        @include  aggrid-cell-color(#37414F);
+        }
+        &.lightblue {
+        @include  aggrid-cell-color(#1CABE0);
+        }
+        &.persian {
+        @include  aggrid-cell-color(#00B09B);
+        }
+        &.dblue{
+        @include  aggrid-cell-color(#1C4D91);
+        }
+        &.magenta{
+            @include aggrid-cell-color(#c202c2)
+        }
+        &.brown{
+            @include aggrid-cell-color(#5f0404)
+        }
+    }
+
+    .aggrid-left-ribbon{
+        &.mediumred1{
+            @include aggrid-rowribbon(#FF7362);
+        }
+        &.mediumamber{
+            @include aggrid-rowribbon(#E8AC55);
+        }
+        &.mediumblue1{
+            @include aggrid-rowribbon(#66B0D6);
+        }
+        &.mediumred1{
+            @include aggrid-rowribbon(#FF7362);
+        }
+        &.mediumgreen {
+        @include aggrid-rowribbon(#5EB591);
+        }
+        &.darkblue {
+        @include aggrid-rowribbon(#1F70BB);
+        }
+        &.darkgreen {
+        @include aggrid-rowribbon(#27AE60);
+        }
+        &.yellow {
+        @include aggrid-rowribbon(#FDBF2D);
+        }
+        &.red {
+        @include aggrid-rowribbon(#E92B2F);
+        }
+        &.mediumred {
+        @include aggrid-rowribbon(#E9585B);
+        }
+        &.lightred {
+        @include aggrid-rowribbon(#EB5757);
+        }
+        &.mediumpurple {
+        @include aggrid-rowribbon(#8B6CAD);
+        }
+        &.purple {
+        @include aggrid-rowribbon(#6638B6);
+        }
+        &.skyblue {
+        @include aggrid-rowribbon(#76BBE3);
+        }
+        &.mediumblue {
+        @include aggrid-rowribbon(#4498D4);
+        }
+        &.amber {
+        @include aggrid-rowribbon(#E98B46);
+        }
+        &.lightamber {
+        @include aggrid-rowribbon(#F2994A);
+        }
+        &.blue {
+        @include aggrid-rowribbon(#43CED8);
+        }
+        &.lightgreen {
+        @include aggrid-rowribbon(#5FB760);
+        }
+        &.teal {
+        @include aggrid-rowribbon(#73BCAC);
+        }
+        &.grey {
+        @include aggrid-rowribbon(#828282);
+        }
+        &.dark {
+        @include aggrid-rowribbon(#37414F);
+        }
+        &.dark3 {
+        @include aggrid-rowribbon-darktheme(#54617A);
+        }
+        &.denim {
+        @include aggrid-rowribbon-darktheme(#5780A6);
+        }
+        &.dark4 {
+        @include aggrid-rowribbon-darktheme(#28323F);
+        }
+        &.lightblue {
+        @include aggrid-rowribbon(#1CABE0);
+        }
+
+        &.darkgray{
+        @include aggrid-rowribbon($dark-grey3);
+        }
+    }
+
+    .aggrid-left-ribbon-imp{
+    &.skyblue {
+        @include aggrid-rowribbon-imp(#76BBE3);
+    }
+
+    &.lightamber {
+        @include aggrid-rowribbon-imp(#F2994A);
+    }
+
+    &.dark {
+        @include aggrid-rowribbon-imp(#37414F);
+        }
+    }
+    .aggrid-space{
+        word-spacing: 6px;
+    }
+    .aggrid-text-align-r{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .aggrid-text-align-l{
+        text-align: left;
+    }
+    .aggrid-content-right{
+        justify-content: flex-end !important;
+    }
+    .aggrid-text-align-c{
+        text-align: center;
+        .ag-header-cell-label{
+            justify-content: center;
+        }
+    }
+    .aggrid-content-center{
+        display: flex;
+        align-content: center;
+        justify-content: center !important;
+        align-items: center;
+    }
+    .aggrid-content-c{
+        display: flex;
+        align-content: center;
+        align-items: center;
+    }
+    .aggridlink{
+        color: #4A71C2 !important;
+        cursor: pointer;
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+
+    .aggrid-link {
+        color: #4A71C2 !important;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .aggrid-link-bplan{//lineheight=rowheight
+        color: #4A71C2 !important;
+        cursor: pointer;
+        text-decoration: underline;
+        text-align: right;
+        line-height: 30px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 50px;
+        padding: 0px 2px;
+    }
+    .aggrid-vertical-center{
+    display:flex;
+    align-items: center;
+    }
+    .ag-table-view{
+        font-family: Roboto;
+        font-size: 14px;
+        .ag-header-cell-text{
+        font-style: normal;
+        font-weight: 300;
+
+        color: #8F9BAB;
+        }
+        // .ag-cell{
+        //     font-weight: 100;
+        // }
+    }
+}

@@ -1,11 +1,11 @@
-﻿commit 26e626321d025cf75e51dc2138a8d322a9654a19
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Jan 4 15:10:35 2022 +0000
+﻿commit 09e83f82e44b9a965ef981b832546e88143f2e55
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Wed Jan 5 04:07:53 2022 +0000
 
-    Merged PR 15357: css fixes control tower
+    Merged PR 15327: SO UI issues fix - 37274
     
-    css fixes control tower
+    SO UI issues fix - 37274: Removed duplicate selector styles from smart-operator.scss, shiptech.scss. Also fixed many UI issue related to AG Grid.
     
-    Related work items: #37425, #37788
+    Related work items: #37274
 
 branch: master
