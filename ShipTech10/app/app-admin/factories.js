@@ -30,7 +30,7 @@ APP_ADMIN.factory('Factory_Admin', [ '$window', '$http', '$Api_Service', 'API', 
             });
             return false;
         },
-        getTabData: function(tabType, callback) {
+        getTabData: function(tabType, userId, callback) {
             if (tabType == 'vessel_access') {
                 var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/listVesselTypeVessel`;
             } else if (tabType == 'buyer_access') {
@@ -44,6 +44,12 @@ APP_ADMIN.factory('Factory_Admin', [ '$window', '$http', '$Api_Service', 'API', 
                 url: url,
                 data: {
                     Payload: {
+                        Filters: [
+                            {
+                                ColumnName: 'UserId',
+                                Value: userId
+                            }
+                        ],
                         pagination: {}
                     }
                 }
