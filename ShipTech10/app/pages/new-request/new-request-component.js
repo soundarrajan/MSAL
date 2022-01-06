@@ -1933,6 +1933,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let location, productList,locationTerminal;
             let agent = null;
             let deferred = $q.defer();
+            ctrl.notesExpanded = false;
             lookupModel.getForRequest(LOOKUP_TYPE.LOCATIONS, locationId).then(
                 (server_data) => {
 
