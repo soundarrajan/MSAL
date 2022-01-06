@@ -1,11 +1,11 @@
-﻿commit 0e9865ef724661a12880bb186b60b564f5cef74c
+﻿commit bd8542b5f778ee8858e132f00710d40727e7c512
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jan 6 10:10:33 2022 +0000
+Date:   Thu Jan 6 15:17:10 2022 +0000
 
-    Merged PR 15393: Added new condition for price precision
+    Merged PR 15395: Css fixes in filters
     
-    Added new condition for price precision
+    Css fixes in filters
     
-    Related work items: #34555
+    Related work items: #37408
 
 branch: master
