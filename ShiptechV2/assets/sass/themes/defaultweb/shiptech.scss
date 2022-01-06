@@ -25,7 +25,11 @@
 //   background-color: lighten($color: #434C58, $amount: 5%);
 // }
 
-.light-theme .mat-dialog-container .statusChange #custom-form-field .mat-form-field.without-search {
+.light-theme
+  .mat-dialog-container
+  .statusChange
+  #custom-form-field
+  .mat-form-field.without-search {
   border-radius: 5px;
 }
 :root {
@@ -49,7 +53,7 @@ body {
     overflow: hidden;
     layout-main .layout-footer,
     .mainFooterWhiteSpace {
-      display: none;
+      // display: none;
     }
     ag-grid-angular {
       height: calc(100vh - 245px) !important;
