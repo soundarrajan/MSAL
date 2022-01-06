@@ -164,14 +164,16 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         });
       });
     });
-    let productValid;
     locations.forEach((ele, key) => {
-      productValid = this.requestOfferItems.filter(e => e.RequestLocationId === ele.id && e.RequestProductId == ele.requestProducts[key].id);
-      if (productValid.length > 1) {
-        this.requestOfferItems = [];
-        this.toaster.error('Only 1 offer price can be confirmed for a requested product.');
-        this.closeDialog();
-      }
+      ele.requestProducts.forEach(product => {
+        const offerProducts = this.requestOfferItems.filter(e => e.RequestLocationId === ele.id && e.RequestProductId == product.id);
+        if (offerProducts.length > 1) {
+          this.requestOfferItems = [];
+          this.toaster.error('Only 1 offer price can be confirmed for a requested product.');
+          this.closeDialog();
+          return;
+        }
+      });
     });
     return this.requestOfferItems;
   }
@@ -290,6 +292,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     this.dialogRef.close();
   }
   confirmOffers(shouldValidate) {
+    debugger;
     let RequestProductIds = [];
     let errorMessages = [];
     let filters: ServerQueryFilter[] = [];
@@ -330,6 +333,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     // $.each(ctrl.requirements, function(rqK, rqV) {
     //     requestProductIdsForOrder.push(rqV.RequestProductId);
     // })
+    debugger;
     let foundRelatedOrder;
     this.buttonsDisabled = true;
     const response = this.spotNegotiationService.GetExistingOrders(payload);
@@ -346,6 +350,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
             hasError = false;
             rodV.products.forEach((rodProdV, rodProdK) => {
               if (rodV.requestLocationId == rqV.RequestLocationId) {  //&& rodProdV.requestProductId == rqV.RequestProductId
+                debugger;
                 hasOrder = true;
                 let errorType = [];
                 if (rodV.seller.id != rqV.SellerId) {
@@ -373,6 +378,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                 if (!hasError) {
                   foundRelatedOrder = rodV.id;
                 } else {
+                  debugger;
                   errorMessages.push(this.createOrderErrorMessage(rqV.RequestProductId, errorType));
                 }
               }
