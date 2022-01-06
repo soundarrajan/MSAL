@@ -1,9 +1,11 @@
-﻿commit 8b53f6da31edcb3cd85e0e4e4bf99eb5fd87ff06
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Jan 6 07:26:54 2022 +0000
+﻿commit 0e9865ef724661a12880bb186b60b564f5cef74c
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Jan 6 10:10:33 2022 +0000
 
-    Merged PR 15387: Dispalyed only footer When the user does not have access to a particular scre...
+    Merged PR 15393: Added new condition for price precision
     
-    Dispalyed only footer When the user does not have access to a particular screen in control tower screen
+    Added new condition for price precision
+    
+    Related work items: #34555
 
 branch: master
