@@ -1,11 +1,9 @@
-﻿commit 37b9b275b2ac222e6fbcb4fd405a25be3afa215a
+﻿commit 8b53f6da31edcb3cd85e0e4e4bf99eb5fd87ff06
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jan 5 14:56:12 2022 +0000
+Date:   Thu Jan 6 07:26:54 2022 +0000
 
-    Merged PR 15380: Fixed UI of control tower pop-up(37790)
+    Merged PR 15387: Dispalyed only footer When the user does not have access to a particular scre...
     
-    Fixed UI of control tower pop-up(37790)
-    
-    Related work items: #37790
+    Dispalyed only footer When the user does not have access to a particular screen in control tower screen
 
 branch: master
