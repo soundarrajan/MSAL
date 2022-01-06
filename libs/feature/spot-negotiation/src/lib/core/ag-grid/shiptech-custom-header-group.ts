@@ -549,7 +549,7 @@ export class ShiptechCustomHeaderGroup {
   calculateTargetPrice() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice = this.priceFormatValue(this.livePrice,'livePrice');
-    this.livePrice = (this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice);
+    this.livePrice = (this.livePrice == null || this.livePrice == '--' ? '--' : this.livePrice);
     this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
     const targetval = this.livePrice.toString().replace(',','') - this.benchmark;
     this.targetValue = parseFloat(targetval.toString()) ;
