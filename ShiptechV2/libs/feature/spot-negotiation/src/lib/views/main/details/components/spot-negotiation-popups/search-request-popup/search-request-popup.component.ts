@@ -144,7 +144,11 @@ export class SearchRequestPopupComponent implements OnInit {
       if (spotNegotiation.RequestList) {
         this.rowData = spotNegotiation.RequestList
           .filter(e => {
-            if (e.requestName.toLowerCase().includes(userInput.toLowerCase()) || e.vesselName.toLowerCase().includes(userInput.toLowerCase())) {
+            if (e.requestName.toLowerCase().includes(userInput.toLowerCase()) || e.vesselName.toLowerCase().includes(userInput.toLowerCase()) 
+            // || e.serviceName?.toLowerCase().includes(userInput.toLowerCase())
+            // || e.buyerName.toLowerCase().includes(userInput.toLowerCase()) || e.locationName.toLowerCase().includes(userInput.toLowerCase())
+            // || e.productName.toLowerCase().includes(userInput.toLowerCase()) 
+            ) {
               return true;
             }
             else{
@@ -179,8 +183,8 @@ export class SearchRequestPopupComponent implements OnInit {
     },
     {
       headerName: 'Request ID',
-      headerTooltip: 'ID',
-      field: 'requestId',
+      headerTooltip: 'Request ID',
+      field: 'requestName',
       width: 175,
       cellClass: ['aggridtextalign-left']
     },
