@@ -3,7 +3,10 @@
     <div class="head">{{ gridTitle }}</div>
   </div>
 </div>
-<div class="grid-container" *ngIf="groupId && gridId">
+<div
+  class="grid-container"
+  *ngIf="groupId && gridId && !gridViewModel.loadingFailed"
+>
   <div class="agGrid-v2" style="margin: 0">
     <div style="width:100%;height: 100%;">
       <div
@@ -62,7 +65,7 @@
             [gridViewModel]="gridViewModel"
             [page]="gridViewModel.page"
             [size]="gridViewModel.pageSize"
-            [count]="gridViewModel.loadingFailed ? 0 : gridViewModel.totalItems"
+            [count]="gridViewModel.totalItems"
             [singleGrid]="true"
             [doublePagination]="true"
             [maxSize]="765"
@@ -75,17 +78,17 @@
       </div>
     </div>
   </div>
-</div>
-<ng-template
-  *ngIf="gridViewModel.portCallCol"
-  [columnDef]="[gridViewModel.portCallCol]"
-  appAgCellTemplate
-  let-data="data"
-  let-value="value"
->
-  <a
-    *ngIf="data && data?.quantityControlReport?.id"
-    (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
-    >{{ data?.portCall?.portCallId }}</a
+  <ng-template
+    *ngIf="gridViewModel.portCallCol"
+    [columnDef]="[gridViewModel.portCallCol]"
+    appAgCellTemplate
+    let-data="data"
+    let-value="value"
   >
-</ng-template>
+    <a
+      *ngIf="data && data?.quantityControlReport?.id"
+      (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
+      >{{ data?.portCall?.portCallId }}</a
+    >
+  </ng-template>
+</div>
