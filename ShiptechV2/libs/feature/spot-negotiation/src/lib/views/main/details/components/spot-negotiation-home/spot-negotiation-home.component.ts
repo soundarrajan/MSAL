@@ -74,6 +74,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     let isallow = false;
     locationsRows.forEach((element, lkey) => {
+      if (element.requestOffers == undefined && element.isSelected){
+        isallow = true;
+      }
       if (element.requestOffers != undefined) {
         if (element.checkProd1 && element.requestOffers[0] != undefined) {
           if (element.requestOffers[0].price < 0 || element.requestOffers[0].price == null) {
