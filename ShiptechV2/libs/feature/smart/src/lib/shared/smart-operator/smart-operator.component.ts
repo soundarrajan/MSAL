@@ -37,8 +37,8 @@ export class SmartOperatorComponent implements OnInit {
   BdnReportsData: any = [];
   public date = new FormControl(new Date());
   currentDate = new Date();
-  selectedFromDate: Date = new Date();
-  selectedToDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())+1));
+  selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
+  selectedToDate: Date = new Date();
   public vesselList = [];
   @Output() showTableViewEmit = new EventEmitter();
   @Output() clickEvent = new EventEmitter();
@@ -411,7 +411,13 @@ export class SmartOperatorComponent implements OnInit {
 
   onDateChange(event) {
     console.log('selected date  !!!!!!!!!!!!!!', event);
-  this.getBdnReport(event.fromDate, event.toDate);
+    this.selectedFromDate = event.fromDate;
+    this.selectedToDate = event.toDate;
+    if(this.Enabledbdnreports) {
+      this.getBdnReport(this.selectedFromDate, this.selectedToDate);
+    } else {
+      this.getOrderDetails(1, 25, this.selectedFromDate, this.selectedToDate);
+    }
   }
 
   onBtExport() {
@@ -892,9 +898,9 @@ export class SmartOperatorComponent implements OnInit {
   }
 
   gettabvalue(event){
-     
-    console.log("event.index",event.selectedIndex)
-    if(event.selectedIndex == 0){
+    console.log("event selectedIndex:: ", event);
+    // console.log("event.index", event.selectedIndex);
+    if(event == 0){
       this.Enabledbdnreports = true;
       this.getBdnReport(this.selectedFromDate, this.selectedToDate);
     }
@@ -902,9 +908,8 @@ export class SmartOperatorComponent implements OnInit {
       this.Enabledbdnreports = false;
       this.getOrderDetails(1, 25, this.selectedFromDate, this.selectedToDate);
     }
-    
-
   }
+  
   activeSubTabChange(tabIndex){
     this.tab1 = false;
     this.tab2 = false;
