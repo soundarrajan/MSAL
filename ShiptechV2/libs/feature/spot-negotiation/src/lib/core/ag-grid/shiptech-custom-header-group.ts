@@ -110,11 +110,11 @@ import moment from 'moment';
           class="counterpartytype-icon type-seller"
           ><i class="fas fa-circle"></i> <span class="text">Seller</span></span
         >
-        <!-- <span
+        <span
           style="margin-left: 10px;"
           class="counterpartytype-icon type-broker"
           ><i class="fas fa-circle"></i> <span class="text">Broker</span></span
-        > -->
+        >
         <span
           style="margin-left: 10px;"
           class="counterpartytype-icon type-physicalsupplier"
@@ -584,7 +584,7 @@ export class ShiptechCustomHeaderGroup {
                       new EditLocations(updatedRow1)
                     );
                     }
-                    
+
                   }
                 });
               }
@@ -601,10 +601,10 @@ export class ShiptechCustomHeaderGroup {
     updateprice(updaterow, index){
       updaterow.requestProducts[index].requestGroupProducts.livePrice = this.livePrice;
       if(this.targetValue && this.targetValue != null){
-        updaterow.requestProducts[index].requestGroupProducts.targetPrice = this.targetValue; 
+        updaterow.requestProducts[index].requestGroupProducts.targetPrice = this.targetValue;
       }
       return updaterow;
-      
+
     }
 
   addCounterpartiesToLocation(reqLocationId: number) {
