@@ -35,7 +35,7 @@ $red: red;
     content: '';
     display: block;
     width: 1px;
-    height: 25px;
+    height: 27px;
     background-color: #364150;
     position: absolute;
     left: -10px;
@@ -92,6 +92,7 @@ $red: red;
 
 .mat-chip.mat-standard-chip {
   color: rgba(0, 0, 0, 0.87);
+  min-height: 28px;
 }
 
 .mat-chip:focus {
@@ -124,6 +125,7 @@ $red: red;
       top: 6px !important;
       color: #364150;
       position: absolute;
+      margin-left: 1px;
     }
     &.active-chip {
       width: auto;
