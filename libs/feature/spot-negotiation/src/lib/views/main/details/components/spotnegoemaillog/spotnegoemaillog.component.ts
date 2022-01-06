@@ -21,7 +21,7 @@ export class SpotnegoemaillogComponent implements OnInit {
   public gridOptions_data: GridOptions;
   EmailLogs: any = [];
   SelectedSellerWithProds: any;
-  currentRequestInfo: any;
+  listOfRequests: any;
 
   constructor(public dialog: MatDialog,
     private spotNegotiationService: SpotNegotiationService,
@@ -86,17 +86,18 @@ export class SpotnegoemaillogComponent implements OnInit {
 
   getEmailLogs() {
     this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+      this.listOfRequests = spotNegotiation.requests
     });
-    if (this.currentRequestInfo != null) {
+
+    if (this.listOfRequests != null) {
       let reqpayload = {
         Order: null,
         Filters: [
           { ColumnName: "TransactionTypeId", Value: "1,10,11,12,13,21" },
-          { ColumnName: "TransactionIds", Value: this.currentRequestInfo.id }
+          { ColumnName: "TransactionIds", Value: this.listOfRequests.map(req =>req.id).join(',') }
         ],
         PageFilters: { Filters: [] },
-        Pagination: { Skip: 0, Take: 25 },
+        Pagination: { Skip: 0, Take: 1000 },
         SortList: { SortList: [] }
       }
       this.spinner.show();
