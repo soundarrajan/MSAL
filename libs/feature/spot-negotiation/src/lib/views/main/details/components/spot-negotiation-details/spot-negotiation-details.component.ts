@@ -602,7 +602,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 94,
           valueGetter: params => {
             const details = this.getRowProductDetails(params.data, product.id);
-            return details.targetDifference;
+            return product.requestGroupProducts.targetPrice == 0 ? 0 : details.targetDifference;
           },
           headerClass: 'border-right',
           cellClass: 'line-seperator grey-opacity-cell pad-lr-0',
