@@ -1,11 +1,11 @@
-﻿commit bd8542b5f778ee8858e132f00710d40727e7c512
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jan 6 15:17:10 2022 +0000
+﻿commit 5474f3fd2381b1cd3dd7669eca048812eb95bd5a
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Jan 6 16:17:32 2022 +0000
 
-    Merged PR 15395: Css fixes in filters
+    Merged PR 15396: 37274-SO-UI-Reports-fix
     
-    Css fixes in filters
+    37274-SO-UI-Reports-fix: Reports tab issue fixes 1. order details fetch. 2. Past 1 month data fetch  fix.
     
-    Related work items: #37408
+    Related work items: #37274
 
 branch: master
