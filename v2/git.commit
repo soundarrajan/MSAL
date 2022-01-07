@@ -1,11 +1,11 @@
-﻿commit 5474f3fd2381b1cd3dd7669eca048812eb95bd5a
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Jan 6 16:17:32 2022 +0000
+﻿commit f5100a82972f1d5753cafc137f18bfaf3b75fcd2
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Fri Jan 7 13:35:12 2022 +0000
 
-    Merged PR 15396: 37274-SO-UI-Reports-fix
+    Merged PR 15407: applied filters redesign
     
-    37274-SO-UI-Reports-fix: Reports tab issue fixes 1. order details fetch. 2. Past 1 month data fetch  fix.
+    applied filters redesign
     
-    Related work items: #37274
+    Related work items: #37414
 
 branch: master

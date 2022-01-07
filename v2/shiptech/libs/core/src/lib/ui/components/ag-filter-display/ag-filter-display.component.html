@@ -1,9 +1,10 @@
 <div>
-  <ng-container *ngIf="filterParts?.length > 0">Filter: </ng-container>
+  <ng-container *ngIf="filterParts?.length > 0">Filtered by: </ng-container>
   <ng-container *ngFor="let filterPart of filterParts">
     <span [ngSwitch]="filterPart.type">
-      <span *ngSwitchCase="filterPartType"
-        >{{ filterPart.column }}
+      <span class="filter-item-wrap" *ngSwitchCase="filterPartType"
+        >
+        {{ filterPart.column }}
         {{
           filterPart.condition == 'is null'
             ? 'is empty'
