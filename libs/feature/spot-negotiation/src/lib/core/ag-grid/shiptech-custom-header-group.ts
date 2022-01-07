@@ -185,7 +185,7 @@ import moment from 'moment';
             <div class="title">Closure</div>
             <div
               class="value"
-              [matTooltip]="'Pricing published on: ' + (quoteDate.indexOf('0001')>-1 ? '--' : quoteDate) "
+              [matTooltip]="'Pricing published on: ' + (this.quoteDate == 'Invalid date' ? '--': this.quoteDate) "
               contenteditable="false"
               (keydown)="editQty($event)"
             >
