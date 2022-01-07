@@ -271,6 +271,28 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
+   * Get additional costs defined in location master
+   * @param {*} payload
+   * @return {*}  {Observable<unknown>}
+   * @memberof SpotNegotiationService
+   */
+  @ObservableException()
+  getLocationCosts(locationId: number): Observable<unknown> {
+    return this.spotNegotiationApi.getLocationCosts(locationId);
+  }
+
+  /**
+   * save additional costs in requestadditionalcosts
+   * @param {*} payload
+   * @return {*}  {Observable<unknown>}
+   * @memberof SpotNegotiationService
+   */
+    @ObservableException()
+    saveOfferAdditionalCosts(payload: any): Observable<unknown> {
+      return this.spotNegotiationApi.saveOfferAdditionalCosts(payload);
+    }
+
+  /**
    * Fake populate rows
    */
   public getSpotDataJSON(): any {
