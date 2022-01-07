@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild, ElementRef, } from '@angular/core
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
-import { AdditionalCostViewModel } from './additional-costs-model';
+import { AdditionalCostViewModel } from '../../../../../../core/models/additional-costs-model';
 
 @Component({
   selector: 'app-spotnego-additionalcost',
@@ -50,7 +50,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       };
       this.spotNegotiationService.getAdditionalCosts(payload).subscribe((res: any) => {
           if(res){
-            this.offerLevelCosts = res;
+            this.offerLevelCosts = res.offerAdditionalCosts;
           }
       });
     }

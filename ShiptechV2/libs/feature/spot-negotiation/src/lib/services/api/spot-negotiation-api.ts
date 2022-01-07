@@ -32,10 +32,12 @@ export const SpotNegotiationApiPaths = {
   otherDetails:`RFQ/otherDetails/requestChange`,
   getSellerContacts: `counterparty/viewContacts`,
   addNewSellerContact: `counterparty/addContact`,
-  getEmailLogs : `api/masters/emaillogs/list`,  
+  getEmailLogs : `api/masters/emaillogs/list`,
   getAdditionalCosts: `price/getOfferAdditionalCosts`,
   getEmailLogsPreview : `api/masters/emaillogs/get`,
-  getRequestList: `api/procurement/rfq/selectRequest`
+  getRequestList: `api/procurement/rfq/selectRequest`,
+  getLocationCosts: `price/locationCosts`,
+  saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`
 };
 
 @Injectable({
@@ -560,6 +562,46 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
           )
         )
       );
+  }
+
+  /**
+   * Get additional costs defined in location master
+   * @param {*} request
+   * @return {*}  {Observable<any>}
+   * @memberof SpotNegotiationApi
+   */
+  @ObservableException()
+  getLocationCosts(locationId: number): Observable<any> {
+    return this.http
+      .get<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getLocationCosts}/${locationId}`)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any)=> this.handleErrorMessage(body))
+      );
+  }
+
+  /**
+   * save location based or offer additional into requestadditionalcosts
+   * @param {*} payload
+   * @return {*}  {Observable<any>}
+   * @memberof SpotNegotiationApi
+   */
+  @ObservableException()
+  saveOfferAdditionalCosts(payload: any): Observable<any> {
+    return this.http
+      .post<any>(`${this._negotiationApiUrl}/${SpotNegotiationApiPaths.saveOfferAdditionalCosts}`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any)=> this.handleErrorMessage(body))
+      );
+  }
+
+  handleErrorMessage(body: any) {
+    return of(
+      body.error.ErrorMessage
+        ? body.error.ErrorMessage
+        : body.error.errorMessage
+    )
   }
 }
 

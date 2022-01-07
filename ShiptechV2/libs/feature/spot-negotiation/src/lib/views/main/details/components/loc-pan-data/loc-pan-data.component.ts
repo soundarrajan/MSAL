@@ -19,7 +19,6 @@ export class LocPanDataComponent implements OnInit {
   ETBdatetime = new FormControl(new Date());
   ETDdatetime = new FormControl(new Date());
 
-
   @Input() reqLocation: any;
 
   title: string;
@@ -67,7 +66,9 @@ export class LocPanDataComponent implements OnInit {
     const dialogRef = this.dialog.open(ApplicablecostpopupComponent, {
       width: '1170px',
       height: '211px',
-      panelClass: 'additional-cost-popup'
+      panelClass: 'additional-cost-popup',
+      data: this.reqLocation,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {

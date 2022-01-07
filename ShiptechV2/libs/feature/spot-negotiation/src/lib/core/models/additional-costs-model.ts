@@ -1,6 +1,8 @@
 export interface AdditionalCostViewModel {
-  offerId: number;
+  id: number;
+  offerId?: number | null;
   requestOfferId?: number | null;
+  requestLocationId?: number | null;
   costType: string;
   costTypeId: number;
   additionalCostId: number;
@@ -8,14 +10,19 @@ export interface AdditionalCostViewModel {
   currency: string;
   currencyId: number;
   priceUomId?: number;
-  maxQty: number;
+  maxQuantity: number;
+  maxQuantityUom: string;
   price: number;
   ratePerUom?: number;
-  extrasPercentage: number;
+  amount: number;
+  extras: number;
   extraAmount? : number;
   totalAmount: number;
   comment: string;
-  isAllProductCost: boolean;
+  isAllProductsCost: boolean;
+  requestProductId?: number | null;
   isLocationBased: boolean;
   isDeleted: boolean;
+  selectedApplicableForId: number | 0;
+  locationAdditionalCostId: number | null;
 }
