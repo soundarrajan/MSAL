@@ -1,7 +1,15 @@
 .filter-value {
-  background: #536881;
-  padding: 3px 8px;
-  border-radius: 10px!important;
-  position: relative;
-  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.filter-item-wrap:before {
+  content : "";
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  background-color: #364150;
+  border-radius: 100%;
+  margin-right: 10px;
+  margin-left: 10px;
 }
