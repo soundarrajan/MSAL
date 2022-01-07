@@ -292,7 +292,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     this.dialogRef.close();
   }
   confirmOffers(shouldValidate) {
-    debugger;
     let RequestProductIds = [];
     let errorMessages = [];
     let filters: ServerQueryFilter[] = [];
@@ -333,7 +332,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     // $.each(ctrl.requirements, function(rqK, rqV) {
     //     requestProductIdsForOrder.push(rqV.RequestProductId);
     // })
-    debugger;
     let foundRelatedOrder;
     this.buttonsDisabled = true;
     const response = this.spotNegotiationService.GetExistingOrders(payload);
@@ -350,7 +348,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
             hasError = false;
             rodV.products.forEach((rodProdV, rodProdK) => {
               if (rodV.requestLocationId == rqV.RequestLocationId) {  //&& rodProdV.requestProductId == rqV.RequestProductId
-                debugger;
                 hasOrder = true;
                 let errorType = [];
                 if (rodV.seller.id != rqV.SellerId) {
@@ -378,8 +375,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                 if (!hasError) {
                   foundRelatedOrder = rodV.id;
                 } else {
-                  debugger;
-                  errorMessages.push(this.createOrderErrorMessage(rqV.RequestProductId, errorType));
+                errorMessages.push(this.createOrderErrorMessage(rqV.RequestProductId, errorType));
                 }
               }
             })
