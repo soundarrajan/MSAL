@@ -106,7 +106,7 @@
               </div>
             </div>
           </mat-tab>
-          <mat-tab label="Report">
+          <mat-tab label="Report" [disabled]="!tenantConfiguration.isNegotiationReport" >
             <ng-template mat-tab-label>
             <div class="custom-label-holder">
               <div class="custom-tab-ui"></div>
