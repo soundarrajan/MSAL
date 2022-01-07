@@ -1,10 +1,10 @@
-﻿commit f5100a82972f1d5753cafc137f18bfaf3b75fcd2
+﻿commit e9f9443fb6d2a99e7ebf59aab72ec5a80970fda0
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Jan 7 13:35:12 2022 +0000
+Date:   Fri Jan 7 14:27:06 2022 +0000
 
-    Merged PR 15407: applied filters redesign
+    Merged PR 15409: small css tweaks
     
-    applied filters redesign
+    small css tweaks
     
     Related work items: #37414
 

@@ -221,7 +221,13 @@ mat-tooltip-component .mat-tooltip.custom-tooltip-dark {
 .control-tower-wunderbar-container {
   margin-bottom: unset !important;
   background: #fcfdff;
-  height: 40px;
+  height: 33px;
   line-height: 38.5px;
   clear: both;
+}
+
+app-ag-filter-display {
+  width: 100%;
+  border-top: 1px solid #e0e1e4;
+  padding-top: 5px;
 }
