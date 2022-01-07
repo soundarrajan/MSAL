@@ -295,7 +295,7 @@ if(!this.readonly){
         this.toaster.warning(res['validationMessage']);
       }
       else if (res instanceof Object && isSendEmail && res['validationMessage'].length == 0) {
-        this.toaster.success('RFQ(s) sent successfully.');
+        this.toaster.success('Mail sent successfully.');
         this.dialogRef.close();
       }
       else if (res instanceof Object && !isSendEmail && res['validationMessage'].length == 0) {
