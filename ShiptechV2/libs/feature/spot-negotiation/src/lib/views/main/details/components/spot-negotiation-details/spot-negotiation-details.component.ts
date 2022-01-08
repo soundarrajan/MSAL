@@ -878,7 +878,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       width: '600px',
       data: {
         sellerName: rowData.sellerCounterpartyName,
-        isRFQSent: rowData.requestOffers ? true : false
+        isRFQSent: rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0 ? true : false
       }
     });
     dialogRef.afterClosed().subscribe(result => {
