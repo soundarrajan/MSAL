@@ -93,6 +93,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
+        if(this.requestOptions.length > 6){
+          this.displayVessel = true;
+        }
         if(spotNegotiation.RequestList.length > 0){
           this.requestsAndVessels = this.removeDuplicatesRequest(spotNegotiation.RequestList, 'requestName');
         }
@@ -366,10 +369,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 alert('Handle Error');
                 return;
               } else {
-                  if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
-                  {
-                      this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
-                  }
                   if (res['requests'] && res['requests'].length > 0) 
                   {
                       this.store.dispatch(new AddRequest(res['requests']));
@@ -378,14 +377,25 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                         this.toastr.success(SuccessMessage);
                         });
                   }
+                  setTimeout(() => {
+                    if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
+                  {
+                      this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
+                  }
+                  const requests = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+                    return state['spotNegotiation'].requests;
+                   });
+                   if(requests.length > 6){
+                     this.displayVessel = true;
+                   }
+                  }, 500);
               }
             });
            }
     }
-    else{
-      this.toastr.error("Select atlease one Request");
-      return;
-    }
+    //   this.toastr.error("Select atlease one Request");
+    //   return;
+    // }
 }
 
   selectRequest(event, i, selected) {
@@ -470,10 +480,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     return text;
   };
 
-  showSearch() {
-    setTimeout(() => {
-      this.inputSearch.nativeElement.focus();
-    }, 0);
+  showSearch(expandedSearch) {
+    if(expandedSearch){
+      this.expandedSearch = false;
+    }else
+    {
+      this.expandedSearch = true;
+    }
+    return this.expandedSearch
   }
 
   searchCounterparty(userInput: string): void {
