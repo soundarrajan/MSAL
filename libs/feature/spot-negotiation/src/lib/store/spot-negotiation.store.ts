@@ -320,14 +320,17 @@ export class SpotNegotiationStore {
     payload.map(c=> 
       {
         if(c.requestOffers == undefined){
-          var reqLocation = state.locations.find(x=> x.id === c.requestLocationId);
+          var payloadReq = state.requests.find(x=> x.id === c.requestId);
+          if(payloadReq && payloadReq.requestLocations ){
+            var reqLocation = payloadReq.requestLocations.find(y=> y.locationId === c.locationId);
+          }
           if(reqLocation && reqLocation.requestProducts){
           for(let index = 0; index < reqLocation.requestProducts.length; index++) 
-{
+          {
             let indx = index +1;
             let val = "checkProd" + indx;
             c[val] = c.isSelected;
-           }
+          }
         }
       }
     });

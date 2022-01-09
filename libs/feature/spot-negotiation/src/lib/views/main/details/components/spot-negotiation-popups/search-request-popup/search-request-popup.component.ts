@@ -253,6 +253,30 @@ export class SearchRequestPopupComponent implements OnInit {
       headerTooltip: 'Product',
       field: 'productName',
       cellClass: ['aggridtextalign-left']
+    },
+    {
+      headerName: 'Product Status',
+      headerTooltip: 'Product Status',
+      field: 'productStatus',
+      suppressMenu: true,
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellClass: ['aggridtextalign-center'],
+      cellRendererParams: function(params) {
+        var classArray: string[] = [];
+        classArray.push('aggridtextalign-center');
+        let newClass =
+          params.value === 'Validated'
+            ? 'custom-chip medium-amber'
+            : 'custom-chip dark';
+        classArray.push(newClass);
+        return { cellClass: classArray.length > 0 ? classArray : null };
+      }
+    },
+    {
+      headerName: 'Terminal',
+      headerTooltip: 'Terminal',
+      field: 'userAction',
+      cellClass: ['aggridtextalign-left']
     }
   ];
 

@@ -47,19 +47,19 @@
 
         <span class="info-text" [ngClass]="{ 'with-ellipsis': expandedSearch }">All Location Counterparties</span>
         <span *ngIf="!expandedSearch" class="search-icon" matTooltip="Search a counterparty"
-          matTooltipClass="lightTooltip" (click)="expandedSearch = !expandedSearch; showSearch()"></span>
+          matTooltipClass="lightTooltip" (click)="expandedSearch = showSearch(expandedSearch)"></span>
         <div *ngIf="expandedSearch" style="display:flex" class="search-input">
           <input type="search" name="inputSearch"  #inputSearch (input)="searchCounterparty($event.target.value)" placeholder="Search counterparty" class="search-box light"/>
           <div style="border-right: 1px solid gray; height: 12px; margin-top: 8px;"></div>
           <button class="searchButton"  type="submit">
-            <i class="fa fa-search" (click)="searchCounterparty(inputSearch.value)"></i>
+            <i class="fa fa-search" (click)="expandedSearch = showSearch(expandedSearch)"></i>
            </button>
         </div>
       </div>
 
     <div class="section2" #headerContainer>
-      <div class="row">
-        <div style="margin: 4px 0px;display: flex;align-items: center;">
+      <div class="d-flex">
+        <div style="margin: 8px 0px;display: flex;align-items: flex-start;">
           <span class="add-icon" matTooltip="Add a request" matTooltipClass="lightTooltip"
             [matMenuTriggerFor]="clickmenu1" #menuTrigger="matMenuTrigger"></span>
           <mat-menu #clickmenu1="matMenu" class="add-new-request-menu">
@@ -119,7 +119,7 @@
                 <span style="padding-right: 5px;" *ngIf="!displayVessel">{{ item.name }} - {{ item.vesselName }}
                 </span>
                 <span style="padding-right: 5px;" *ngIf="displayVessel">{{
-                  item.vessel
+                  item.name
                   }}</span>
                 <div class="requestTooltip" (click)="openRequestTab($event, item)">
                   <span class="white-space"></span>

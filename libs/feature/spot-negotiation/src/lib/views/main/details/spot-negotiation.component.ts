@@ -64,6 +64,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.getRequestGroup();
     this.getGroupOfSellers();
     this.getCounterpartyList();
@@ -73,7 +74,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   getRequestGroup(): void {
-    this.spinner.show();
+    
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
@@ -112,6 +113,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
 
     rowsArray.forEach((row, index) => {
+      row.isSelected = true;
       let currentLocProd= this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
       if(currentLocProd.length != 0){
         let currentLocProdCount = currentLocProd[0].requestProducts.length;
@@ -265,7 +267,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           res.payload.forEach(element => {
             element.isSelected = false;
           });
-       this.store.dispatch(new SetRequestList(res.payload));
+        this.store.dispatch(new SetRequestList(res.payload));
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 1000);
        }}
     });
   }
