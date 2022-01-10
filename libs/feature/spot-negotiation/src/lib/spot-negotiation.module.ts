@@ -83,7 +83,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { DeliveryModule } from '@shiptech/feature/delivery';
 import { DeliveryRoutingModule } from 'libs/feature/delivery/src/lib/delivery-routing.module';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
-
+import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
 
 @NgModule({
   imports: [
@@ -170,9 +170,9 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     SpotnegoRequestChangesComponent,
     NegotiationDetailsToolbarComponent,
     RemoveCounterpartyComponent,
+    PriceTenantFormatDirective
     // QuantityTenantFormatDirective,
     // AmountTenantFormatDirective,
-    // PriceTenantFormatDirective,
     // NumberOnlyDirective,
   ],
   entryComponents: [

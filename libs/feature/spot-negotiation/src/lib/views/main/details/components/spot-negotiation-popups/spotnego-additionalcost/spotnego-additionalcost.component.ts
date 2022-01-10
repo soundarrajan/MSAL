@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -9,6 +10,9 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -56,6 +60,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   offerAdditionalCostList: AdditionalCostViewModel[] = [];
   locationAdditionalCostsList: AdditionalCostViewModel[] = [];
   rowData: any;
+  generalTenantSettings: any;
+  quantityPrecision: any;
+  quantityFormat: string;
+  amountFormat: string;
+  currency: IDisplayLookupDto;
+  uomList: any[];
+  currencyList: any[];
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
@@ -63,8 +74,25 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private spotNegotiationService: SpotNegotiationService,
-    private legacyLookupsDatabase: LegacyLookupsDatabase
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private tenantSettingsService: TenantSettingsService,
+
+    private tenantService: TenantFormattingService,
+    @Inject(DecimalPipe) private _decimalPipe
   ) {
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
+    this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
+    this.currency = this.generalTenantSettings.tenantFormats.currency;
+    this.quantityFormat =
+      '1.' +
+      this.tenantService.quantityPrecision +
+      '-' +
+      this.tenantService.quantityPrecision;
+    this.amountFormat =
+      '1.' +
+      this.tenantService.amountPrecision +
+      '-' +
+      this.tenantService.amountPrecision;
     this.requestLocation = data.requestLocation;
     this.rowData = data.rowData;
   }
@@ -81,6 +109,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.legacyLookupsDatabase.getTableByName('product').then(response => {
       console.log(response);
       this.productList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      console.log(response);
+      this.uomList = response;
+    });
+
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      console.log(response);
+      this.currencyList = response;
     });
 
     this.spotNegotiationService
@@ -201,7 +238,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
   addNew() {
     const additionalCost = {
-      selectedApplicableForId: 0
+      selectedApplicableForId: 0,
+      currency: this.currency
     } as AdditionalCostViewModel;
     this.offerAdditionalCostList.push(additionalCost);
   }
@@ -261,5 +299,35 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       return this.additionalCostList[additionalCost.additionalCost.id].costType;
     }
     return false;
+  }
+
+  /**
+   * Determines whether the Additional Cost's Price UOM field should be enabled.
+   * It should only be enabled when the Additional Cost's costType is "Unit" (business rule).
+   */
+  additionalCostPriceUomEnabled(additionalCost) {
+    return (
+      additionalCost.costType &&
+      additionalCost.costType.id === 2 &&
+      additionalCost.costType.name == 'Unit'
+    );
+  }
+
+  quantityFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if (this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
   }
 }
