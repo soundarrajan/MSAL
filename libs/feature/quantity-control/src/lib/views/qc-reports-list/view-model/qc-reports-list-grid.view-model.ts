@@ -190,7 +190,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.logBookRobBeforeDelivery,
     dtoForExport: QcReportsListExportColumns.logBookRobBeforeDelivery,
     field: model('logBookRobBeforeDelivery'),
-    width: 170,
+    width: 200,
     valueFormatter: params => this.format.quantity(params.value),
     filter: 'agNumberColumnFilter'
   };
@@ -202,7 +202,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('measuredRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    width: 195
+    width: 210
   };
 
   diffRobBeforeDeliveryCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -347,6 +347,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     dtoForExport: QcReportsListExportColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
+    width: 230,
     valueFormatter: params => this.format.quantity(params.value)
   };
 
@@ -467,6 +468,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     dtoForExport: QcReportsListExportColumns.logBookEGCSRobBeforeDischarge,
     field: model('logBookEGCSRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
+    width: 210,
     valueFormatter: params => this.format.quantity(params.value)
   };
 
@@ -479,6 +481,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     dtoForExport: QcReportsListExportColumns.measuredEGCSRobBeforeDischarge,
     field: model('measuredEGCSRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
+    width: 210,
     valueFormatter: params => this.format.quantity(params.value)
   };
 
