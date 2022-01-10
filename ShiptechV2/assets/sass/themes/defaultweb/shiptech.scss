@@ -22408,6 +22408,33 @@ mat-form-field {
 }
 /* custom help icon menu style end here */
 
+.mat-select-panel.spot-select-panel-container {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important;
+  position: relative;
+  top: 26px;
+}
+
+.spot-dropdown-component .mat-select-arrow {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 6px solid;
+  margin: 0 4px;
+  color: #364150 !important;
+}
+
+.spot-dropdown-component .mat-select-value-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252a32;
+  margin-right: 20px;
+}
+
+.additional-cost-popup .increment-circle-button .increment-circle .plus {
+  top: 45% !important;
 .aggridlink a {
   color: #4a71c2 !important;
   cursor: pointer;

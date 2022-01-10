@@ -29,7 +29,7 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload =
    */
   @ObservableException()
-  getEmailLogsList(payload :any): Observable<unknown>{
+  getEmailLogsList(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getEmailLogsList(payload);
   }
 
@@ -37,7 +37,7 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload =
    */
   @ObservableException()
-  getEmailLogsPreview(payload :any): Observable<unknown>{
+  getEmailLogsPreview(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getEmailLogsPreview(payload);
   }
 
@@ -65,13 +65,13 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getCounterpartyList(payload);
   }
 
-   /**
+  /**
    * @param payload = False
    */
-    @ObservableException()
-    getRequestList(payload: any): Observable<unknown> {
-      return this.spotNegotiationApi.getRequestList(payload);
-    }
+  @ObservableException()
+  getRequestList(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getRequestList(payload);
+  }
   /**
    * @param payload = False
    */
@@ -80,29 +80,29 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getPriceDetails(payload);
   }
 
-    /**
+  /**
    * @param payload = int
    */
-     @ObservableException()
-     getMarketPriceHistory(payload: any): Observable<unknown> {
-       return this.spotNegotiationApi.getMarketPriceHistory(payload);
-     }
+  @ObservableException()
+  getMarketPriceHistory(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getMarketPriceHistory(payload);
+  }
 
   /**
    * @param payload = False
    */
-   @ObservableException()
-   addCounterparties(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.AddCounterparties(payload);
-   }
+  @ObservableException()
+  addCounterparties(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.AddCounterparties(payload);
+  }
 
-    /**
+  /**
    * @param payload = False
    */
-     @ObservableException()
-     addRequesttoGroup(payload: any): Observable<unknown> {
-       return this.spotNegotiationApi.addRequesttoGroup(payload);
-     }
+  @ObservableException()
+  addRequesttoGroup(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.addRequesttoGroup(payload);
+  }
   /**
    * Send RFQ
    * @param payload = int
@@ -116,19 +116,19 @@ export class SpotNegotiationService extends BaseStoreService
    * Updated Selected Seller
    * @param payload = int
    */
-   @ObservableException()
-   UpdateSelectSeller(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.UpdateSelectSeller(payload);
-   }
+  @ObservableException()
+  UpdateSelectSeller(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.UpdateSelectSeller(payload);
+  }
 
-     /**
+  /**
    * Updated supply qty,product & date
    * @param payload = False
    */
-    @ObservableException()
-    OtherDetails(payload: any): Observable<unknown> {
-      return this.spotNegotiationApi.OtherDetails(payload);
-    }
+  @ObservableException()
+  OtherDetails(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.OtherDetails(payload);
+  }
 
   /**
    * Get group of request when window loads.
@@ -147,59 +147,59 @@ export class SpotNegotiationService extends BaseStoreService
   /**
    * @param payload = True
    */
-   @ObservableException()
-   updatePrices(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.updatePrices(payload);
-   }
+  @ObservableException()
+  updatePrices(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.updatePrices(payload);
+  }
 
   /**
    * @param payload = False
    */
-   @ObservableException()
-   saveTargetPrice(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.SaveTargetPrice(payload);
-   }
+  @ObservableException()
+  saveTargetPrice(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.SaveTargetPrice(payload);
+  }
 
-   @ObservableException()
-   updatePhySupplier(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.UpdatePhySupplier(payload);
-   }
+  @ObservableException()
+  updatePhySupplier(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.UpdatePhySupplier(payload);
+  }
   /**
    * Amend RFQ
    * @param payload =
    */
- @ObservableException()
- AmendRFQ(payload: any): Observable<unknown> {
-   return this.spotNegotiationApi.AmendRFQ(payload);
- }
+  @ObservableException()
+  AmendRFQ(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.AmendRFQ(payload);
+  }
 
   /**
- * Preview RFQ email
- * @param payload =
- */
+   * Preview RFQ email
+   * @param payload =
+   */
   @ObservableException()
   PreviewRfqMail(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.PreviewRfqMail(payload);
   }
 
-   /* Get Existing Order's
+  /* Get Existing Order's
    * @param payload =
    */
-   @ObservableException()
-   GetExistingOrders(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.GetExistingOrders(payload);
-   }
+  @ObservableException()
+  GetExistingOrders(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.GetExistingOrders(payload);
+  }
 
   /**
    * Get Confirm Offer's
    * @param payload =
    */
-   @ObservableException()
-   ConfirmRfq(payload: any): Observable<unknown> {
-     return this.spotNegotiationApi.ConfirmRfq(payload);
-   }
+  @ObservableException()
+  ConfirmRfq(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.ConfirmRfq(payload);
+  }
 
-   /**
+  /**
    * Skip RFQ
    * @param payload =
    */
@@ -209,9 +209,9 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
- * Save and Send RFQ
- * @param payload =
- */
+   * Save and Send RFQ
+   * @param payload =
+   */
   @ObservableException()
   SaveAndSendRFQ(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.SaveAndSendRFQ(payload);
@@ -222,29 +222,28 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.RemoveCounterparty(counterpartyId);
   }
 
-
-    /**
- * Revoke RFQ
- * @param payload =
- */
+  /**
+   * Revoke RFQ
+   * @param payload =
+   */
   @ObservableException()
   RevokeFQ(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.RevokeRFQ(payload);
   }
 
-/**
- * Requote RFQ
- * @param payload =
- */
- @ObservableException()
- RequoteRFQ(payload: any): Observable<unknown> {
-   return this.spotNegotiationApi.RequoteRFQ(payload);
- }
+  /**
+   * Requote RFQ
+   * @param payload =
+   */
+  @ObservableException()
+  RequoteRFQ(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.RequoteRFQ(payload);
+  }
 
- /**
- * Discard saved mail
- * @param payload =
- */
+  /**
+   * Discard saved mail
+   * @param payload =
+   */
   @ObservableException()
   RevertSavedComments(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.RevertSavedComments(payload);
@@ -287,10 +286,10 @@ export class SpotNegotiationService extends BaseStoreService
    * @return {*}  {Observable<unknown>}
    * @memberof SpotNegotiationService
    */
-    @ObservableException()
-    saveOfferAdditionalCosts(payload: any): Observable<unknown> {
-      return this.spotNegotiationApi.saveOfferAdditionalCosts(payload);
-    }
+  @ObservableException()
+  saveOfferAdditionalCosts(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.saveOfferAdditionalCosts(payload);
+  }
 
   /**
    * Fake populate rows
@@ -303,6 +302,16 @@ export class SpotNegotiationService extends BaseStoreService
 
   public getFutureSettlementTabChange(): Observable<any> {
     return this.futureSetTabIndex.asObservable();
+  }
+
+  /**
+   * get additional costs list
+   * @param payload
+   * @returns
+   */
+  @ObservableException()
+  getMasterAdditionalCosts(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getMasterAdditionalCosts(payload);
   }
 
   ngOnDestroy(): void {
