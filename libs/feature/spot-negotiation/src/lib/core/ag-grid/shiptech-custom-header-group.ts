@@ -379,8 +379,7 @@ export class ShiptechCustomHeaderGroup {
     if (this.params.product) {
       let formattedLivePrice = this.priceFormatValue(this.params.product.requestGroupProducts.livePrice,'livePrice');
       this.livePrice = formattedLivePrice;
-      this.targetValue = this.livePrice - this.params.product.requestGroupProducts.benchmark;
-      if(this.params.product.requestGroupProducts.targetPrice != this.targetValue) { this.calculateTargetPrice(); }
+      this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.closureValue = this.params.product.requestGroupProducts.closure;
       this.quoteDate = this.params.product.requestGroupProducts.quoteDate;
       this.benchmark = this.params.product.requestGroupProducts.benchmark;
