@@ -69,6 +69,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
+
+  public loadingFailed: boolean = false;
+
   gridOptions: GridOptions = {
     // enableColResize: true,
     suppressRowClickSelection: true,
@@ -112,6 +115,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value?.id : ''),
+    cellClass: ['aggridlink'],
     width: 150
   };
 
@@ -132,6 +136,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value : ''),
+    cellClass: ['aggridlink'],
     width: 150
   };
 
@@ -574,6 +579,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerQualityLabsFailed
           );

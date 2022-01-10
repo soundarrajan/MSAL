@@ -211,3 +211,24 @@ input.BPInNumField::-webkit-input-placeholder {
   margin-left: unset !important;
   padding-right: 8px;
 }
+
+mat-tooltip-component .mat-tooltip.custom-tooltip-dark {
+  color: white !important;
+  background: #364150 !important;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.control-tower-wunderbar-container {
+  margin-bottom: unset !important;
+  background: #fcfdff;
+  height: 33px;
+  line-height: 38.5px;
+  clear: both;
+}
+
+app-ag-filter-display {
+  width: 100%;
+  border-top: 1px solid #e0e1e4;
+  padding-top: 5px;
+}

@@ -44,33 +44,40 @@ export enum QcReportsListColumnsLabels {
   surveyDate = 'Survey Date',
   surveyStatus = 'Survey Status',
   qtyMatchedStatus = 'Qty Matched',
+
   logBookRobBeforeDelivery = 'Log Book ROB (before delivery) Qty',
   measuredRobBeforeDelivery = 'Measured ROB surveyor (before delivery) Qty',
-  diffRobBeforeDelivery = 'ROB before the delivery diff',
-  qtyBeforeDeliveryUom = 'Qty UOM',
+  diffRobBeforeDelivery = 'ROB before Delivery diff',
+  qtyBeforeDeliveryUom = 'ROB before Delivery Qty UOM',
+
   bdnQuantity = 'BDN Quantity (SUM)',
   measuredDeliveredQty = 'Measured Delivered Qty',
   diffDeliveredQty = 'Delivered Qty (diff)',
-  qtyDeliveredUom = 'Qty UOM',
+  qtyDeliveredUom = 'Delivered Qty Qty UOM',
+
   logBookRobAfterDelivery = 'Log Book ROB (after delivery) Qty',
   measuredRobAfterDelivery = 'Measured ROB surveyor (after delivery) Qty',
-  diffRobAfterDelivery = 'ROB after the delivery diff',
-  qtyAfterDeliveryUom = 'Qty UOM',
+  diffRobAfterDelivery = 'ROB after Delivery diff',
+  qtyAfterDeliveryUom = 'ROB after Delivery Qty UOM',
+
   logBookSludgeRobBeforeDischarge = 'Log Book Sludge ROB (before discharge) Qty',
   measuredSludgeRobBeforeDischarge = 'Measured Sludge ROB Surveyor (before discharge) Qty',
-  diffSludgeRobBeforeDischarge = 'ROB before discharge diff',
-  sludgeDischargedQty = 'Discharged Qty',
-  qtySludgeDischargedUom = 'Qty UOM',
+  diffSludgeRobBeforeDischarge = 'Sludge ROB before discharge diff',
+  sludgeDischargedQty = 'Sludge Discharged Qty',
+  qtySludgeDischargedUom = 'Sludge Discharged Qty UOM',
+
   logBookBilgeRobBeforeDischarge = 'Log Book Bilge ROB (Before discharge) Qty',
   measuredBilgeRobBeforeDischarge = 'Measured Bilge ROB (Before discharge) Qty',
-  diffBilgeRobBeforeDischarge = 'ROB before discharge diff',
-  bilgeDischargedQty = 'Discharged Qty',
-  qtyBilgeDischargedUom = 'Qty UOM',
+  diffBilgeRobBeforeDischarge = 'Bilge ROB before discharge diff',
+  bilgeDischargedQty = 'Bilge Discharged Qty',
+  qtyBilgeDischargedUom = 'Bilge Discharged Qty UOM',
+
   logBookEGCSRobBeforeDischarge = 'Log Book EGCS Residue ROB (Before discharge) Qty',
   measuredEGCSRobBeforeDischarge = 'Measured EGCS Residue ROB (Before discharge) Qty',
-  diffEGCSRobBeforeDischarge = 'ROB before discharge diff',
-  egcsDischargedQty = 'Discharged Qty',
-  qtyEGCSDischargedUom = 'Qty UOM',
+  diffEGCSRobBeforeDischarge = 'EGCS ROB before discharge diff',
+  egcsDischargedQty = 'EGCS Discharged Qty',
+  qtyEGCSDischargedUom = 'EGCS Discharged Qty UOM',
+
   comment = 'Comment',
   isVerifiedSludgeQty = 'Verify Sludge Qty'
 }
@@ -128,3 +135,48 @@ export const QcReportsListColumnServerKeys: Record<
   [QcReportsListColumns.comment]: 'comment',
   [QcReportsListColumns.isVerifiedSludgeQty]: 'isVerifiedSludgeQty'
 };
+
+export enum QcReportsListExportColumns {
+  portCallId = 'portCallId',
+  portName = 'portName',
+  vesselName = 'vesselName',
+  surveyDate = 'surveyDate',
+  surveyStatus = 'surveyStatus.name',
+  qtyMatchedStatus = 'qtyMatchedStatus.name',
+
+  logBookRobBeforeDelivery = 'logBookRobBeforeDelivery',
+  measuredRobBeforeDelivery = 'measuredRobBeforeDelivery',
+  diffRobBeforeDelivery = 'diffRobBeforeDelivery',
+  qtyBeforeDeliveryUom = 'qtyBeforeDeliveryUom.name',
+
+  bdnQuantity = 'bdnQuantity',
+  measuredDeliveredQty = 'measuredDeliveredQty',
+  diffDeliveredQty = 'diffDeliveredQty',
+  qtyDeliveredUom = 'qtyDeliveredUom.name',
+
+  logBookRobAfterDelivery = 'logBookRobAfterDelivery',
+  measuredRobAfterDelivery = 'measuredRobAfterDelivery',
+  diffRobAfterDelivery = 'diffRobAfterDelivery',
+  qtyAfterDeliveryUom = 'qtyAfterDeliveryUom.name',
+
+  logBookSludgeRobBeforeDischarge = 'logBookSludgeRobBeforeDischarge',
+  measuredSludgeRobBeforeDischarge = 'measuredSludgeRobBeforeDischarge',
+  diffSludgeRobBeforeDischarge = 'diffSludgeRobBeforeDischarge',
+  sludgeDischargedQty = 'sludgeDischargedQty',
+  qtySludgeDischargedUom = 'qtySludgeDischargedUom.name',
+
+  logBookBilgeRobBeforeDischarge = 'logBookBilgeRobBeforeDischarge',
+  measuredBilgeRobBeforeDischarge = 'measuredBilgeRobBeforeDischarge',
+  diffBilgeRobBeforeDischarge = 'diffBilgeRobBeforeDischarge',
+  bilgeDischargedQty = 'bilgeDischargedQty',
+  qtyBilgeDischargedUom = 'qtyBilgeDischargedUom.name',
+
+  logBookEGCSRobBeforeDischarge = 'logBookEGCSRobBeforeDischarge',
+  measuredEGCSRobBeforeDischarge = 'measuredEGCSRobBeforeDischarge',
+  diffEGCSRobBeforeDischarge = 'diffEGCSRobBeforeDischarge',
+  egcsDischargedQty = 'egcsDischargedQty',
+  qtyEGCSDischargedUom = 'qtyEGCSDischargedUom.name',
+
+  comment = 'comment',
+  isVerifiedSludgeQty = 'isVerifiedSludgeQty'
+}

@@ -73,6 +73,8 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
 
   public differenceType: ILookupDto;
 
+  public loadingFailed: boolean = false;
+
   public defaultColFilterParams = {
     resetButton: true,
     applyButton: true,
@@ -125,6 +127,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
+    cellClass: ['aggridlink'],
     width: 200
   };
 
@@ -686,6 +689,7 @@ export class ControlTowerQuantityRobDifferenceListGridViewModel extends BaseGrid
           );
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerQuantityRobDifferenceFailed
           );

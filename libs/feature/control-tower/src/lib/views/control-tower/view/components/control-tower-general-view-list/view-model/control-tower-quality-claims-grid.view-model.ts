@@ -62,6 +62,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   public toggleNewFilter: boolean = true;
   public toggle714DaysFilter: boolean = true;
   public toggleGreaterThan15DaysFilter: boolean = true;
+  public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -117,6 +118,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value?.id : ''),
+    cellClass: ['aggridlink'],
     width: 150
   };
 
@@ -137,6 +139,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value?.id : ''),
+    cellClass: ['aggridlink'],
     width: 150
   };
 
@@ -157,6 +160,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value : ''),
+    cellClass: ['aggridlink'],
     width: 150
   };
 
@@ -533,6 +537,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
           params.successCallback(response.payload, response.matchedCount);
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerQualityClaimsFailed
           );
