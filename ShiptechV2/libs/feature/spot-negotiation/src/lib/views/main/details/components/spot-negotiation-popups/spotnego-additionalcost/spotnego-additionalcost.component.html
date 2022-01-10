@@ -1,7 +1,7 @@
 <div class="spot-popup-header-container applicable-cost-popup-header">
   <div class="spot-nego-title">Additional Costs</div>
   <div class="spot-dialog-title-right popup-header-form">
-    <button class="save-btn" mat-button>
+    <button class="save-btn" mat-button (click)="saveAdditionalCosts()">
       Save
     </button>
     <div class="title-divider">|</div>
@@ -22,7 +22,7 @@
   Offer Additional Costs
 </div>
 <div class="product-terms p-b-5 p-r-15 p-l-15">
-  <div class="operations-details-block">
+  <div class="operations-details-block additional-cost-table-container">
     <table>
       <thead>
         <tr>
@@ -76,18 +76,17 @@
                   appearance="none"
                 >
                   <mat-select
-                    [(ngModel)]="offerAdditionalCost.additionalCost"
+                    [(ngModel)]="offerAdditionalCost.additionalCostId"
                     (ngModelChange)="
                       additionalCostNameChanged(offerAdditionalCost);
                       onCostSelectionChange($event, j)
                     "
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
-                    [compareWith]="compareObjects"
                   >
                     <mat-option
                       *ngFor="let option of additionalCostList"
-                      [value]="option"
+                      [value]="option.id"
                     >
                       {{ option.name }}
                     </mat-option>
@@ -102,7 +101,7 @@
                   appearance="none"
                 >
                   <mat-select
-                    [(ngModel)]="offerAdditionalCost.costType"
+                    [(ngModel)]="offerAdditionalCost.costTypeId"
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
                     [compareWith]="compareObjects"
@@ -111,7 +110,7 @@
                       *ngFor="
                         let option of offerAdditionalCost.allowedCostTypes
                       "
-                      [value]="option"
+                      [value]="option.id"
                     >
                       {{ option.name }}
                     </mat-option>
@@ -171,6 +170,9 @@
                         autocomplete="off"
                         priceFormat
                         [(ngModel)]="offerAdditionalCost.price"
+                        (ngModelChange)="
+                          calculateAdditionalCostAmounts(offerAdditionalCost)
+                        "
                       />
                     </mat-form-field>
                     <mat-form-field
@@ -182,15 +184,14 @@
                         disableRipple
                         [disableOptionCentering]="true"
                         panelClass="spot-select-panel-container"
-                        [(ngModel)]="offerAdditionalCost.priceUom"
-                        [compareWith]="compareObjects"
+                        [(ngModel)]="offerAdditionalCost.priceUomId"
                         [disabled]="
                           !additionalCostPriceUomEnabled(offerAdditionalCost)
                         "
                       >
                         <mat-option
                           *ngFor="let option of uomList"
-                          [value]="option"
+                          [value]="option.id"
                           >{{ option.name }}</mat-option
                         >
                       </mat-select>
@@ -199,14 +200,20 @@
                 </div>
               </div>
             </td>
-            <td class="text-left cell-dashed-border" contenteditable="true">
-              <mat-form-field appearance="none">
+            <td class="text-left cell-dashed-border">
+              <mat-form-field
+                appearance="none"
+                class="without-search spot-dropdown-component"
+              >
                 <mat-select
                   [ngModel]="offerAdditionalCost.selectedApplicableForId"
                   (ngModelChange)="
                     offerAdditionalCost.selectedApplicableForId = $event;
                     onApplicableForChange($event, j)
                   "
+                  disableRipple
+                  [disableOptionCentering]="true"
+                  panelClass="spot-select-panel-container"
                 >
                   <mat-option
                     *ngFor="let applicableFor of applicableForItems"
@@ -217,10 +224,50 @@
                 </mat-select>
               </mat-form-field>
             </td>
-            <td class="text-left ">{{ offerAdditionalCost.extras }}</td>
-            <td class="text-left ">{{ offerAdditionalCost.extraAmount }}</td>
-            <td class="text-left">{{ offerAdditionalCost.totalAmount }}</td>
-            <td class="text-left">{{ offerAdditionalCost.ratePerUom }}</td>
+            <td class="text-left cell-dashed-border">
+              <div class="custom-form-field">
+                <mat-form-field class="without-search" appearance="none">
+                  <input
+                    matInput
+                    autocomplete="off"
+                    priceFormat
+                    [(ngModel)]="offerAdditionalCost.extras"
+                    (ngModelChange)="
+                      calculateAdditionalCostAmounts(offerAdditionalCost)
+                    "
+                  />
+                </mat-form-field>
+              </div>
+            </td>
+            <td class="text-left cell-dashed-border">
+              <div class="non-editable-container-text-left">
+                {{ amountFormatValue(offerAdditionalCost.extraAmount) }}
+              </div>
+              <div class="non-editable-container-text-right">
+                {{
+                  offerAdditionalCost.currency
+                    ? offerAdditionalCost.currency.code
+                    : ''
+                }}
+              </div>
+            </td>
+            <td class="text-left cell-dashed-border">
+              <div class="non-editable-container-text-left">
+                {{ amountFormatValue(offerAdditionalCost.totalAmount) }}
+              </div>
+              <div class="non-editable-container-text-right">
+                {{
+                  offerAdditionalCost.currency
+                    ? offerAdditionalCost.currency.code
+                    : ''
+                }}
+              </div>
+            </td>
+            <td class="text-left cell-dashed-border">
+              <div class="non-editable-container-text-left">
+                {{ priceFormatValue(offerAdditionalCost.rate) }}
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
