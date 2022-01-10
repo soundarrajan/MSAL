@@ -23,6 +23,7 @@ import {
   EditLocationRow,
   RemoveCounterparty,
   SetCounterpartyList,
+  SetLocationsRows,
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
@@ -894,6 +895,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             gridApi.applyTransaction({ remove: dataRows });
             this.toastr.success('Counterparty has been removed from negotiation succesfully.');
             this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
+            if( res['requestLocationSellers'] && res['sellerOffers']){
+              const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+                res['requestLocationSellers'],
+                res['sellerOffers']
+              );
+              this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+            }
+            if(res.isGroupDeleted){
+              const baseOrigin = new URL(window.location.href).origin;
+                window.open(`${baseOrigin}/#/edit-request/${rowData.requestId}`, '_self');
+            }
           } else{
             if(res.isRequestStemmed){
               this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
@@ -907,6 +919,69 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         });
       }
     });
+  }
+
+  getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+
+    let currentRequestData: any;
+    let counterpartyList: any;
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      currentRequestData = spotNegotiation.locations;
+      counterpartyList = spotNegotiation.counterpartyList;
+    });
+
+    rowsArray.forEach((row, index) => {
+      let currentLocProd = currentRequestData.filter(row1 => row1.locationId == row.locationId);
+
+      // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
+      if (
+        index < priceDetailsArray.length &&
+        row.id ===
+        priceDetailsArray[index]?.requestLocationSellerId
+      ) {
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.isSelected = priceDetailsArray[index].isSelected;
+        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
+        if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
+          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+        }
+        this.UpdateProductsSelection(currentLocProd, row);
+
+        return row;
+      }
+
+      // Else if not in the same index
+      const detailsForCurrentRow = priceDetailsArray.filter(
+        e => e.requestLocationSellerId === row.id
+      );
+
+      // We found something
+      if (detailsForCurrentRow.length > 0) {
+        row.requestOffers = detailsForCurrentRow[0].requestOffers;
+        row.isSelected = detailsForCurrentRow[0].isSelected;
+        row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
+          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
+        }
+        this.UpdateProductsSelection(currentLocProd, row);
+      }
+      return row;
+    });
+
+    return rowsArray;
+  }
+
+  UpdateProductsSelection(currentLocProd, row) {
+    if (currentLocProd.length != 0) {
+      let currentLocProdCount = currentLocProd[0].requestProducts.length;
+      for (let index = 0; index < currentLocProdCount; index++) {
+        let indx = index + 1;
+        let val = "checkProd" + indx;
+        const status = currentLocProd[0].requestProducts[index].status;
+        row[val] = status === 'Stemmed' || status === 'Confirmed' ? false : row.isSelected;
+        //row[val] = row.isSelected;
+      }
+    }
   }
 
 }

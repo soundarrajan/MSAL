@@ -547,6 +547,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
 
         this.changeDetector.detectChanges();
+
+        if(res.isGroupDeleted){
+          const baseOrigin = new URL(window.location.href).origin;
+            window.open(`${baseOrigin}/#/edit-request/${this.currentRequestInfo.id}`, '_self');
+            //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
+        }
       });
     }
   }
