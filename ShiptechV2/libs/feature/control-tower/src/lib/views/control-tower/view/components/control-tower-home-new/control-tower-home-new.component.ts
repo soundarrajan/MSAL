@@ -12,6 +12,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { KnownControlTowerRoutes } from 'libs/feature/control-tower/src/lib/control-tower.routes';
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -39,6 +40,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   residueCounts: any;
 
   constructor(
+    private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
     private controlTowerService: ControlTowerService,
@@ -152,32 +154,56 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
     }
   }
   getGlobalCount(view) {
-    console.log("************",view);
+    console.log('************', view);
     switch (view) {
-      case "quality":
-        this.controlTowerService.getQualityViewCounts({})
-        .subscribe(
-          response => {
-            this.qualityCounts = response;
-          }
-        );
+      case 'quality':
+        this.controlTowerService
+          .getQualityViewCounts({})
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else if (response?.message === 'Unauthorized') {
+              this.qualityCounts = {
+                noOfLabs: 0,
+                noOfClaims: 0
+              };
+            } else {
+              this.qualityCounts = response;
+            }
+          });
         break;
-      case "quantity":
-        this.controlTowerService.getQuantityViewCounts({})
-        .subscribe(
-          response => {
-            this.quantityCounts = response;
-          }
-        );
-        
+      case 'quantity':
+        this.controlTowerService
+          .getQuantityViewCounts({})
+          .pipe()
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else if (response?.message === 'Unauthorized') {
+              this.quantityCounts = {
+                noOfDifferences: 0,
+                noOfClaims: 0
+              };
+            } else {
+              this.quantityCounts = response;
+            }
+          });
+
         break;
-      case "residue":
-        this.controlTowerService.getResidueViewCounts({})
-        .subscribe(
-          response => {
-            this.residueCounts = response;
-          }
-        );
+      case 'residue':
+        this.controlTowerService
+          .getResidueViewCounts({})
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else if (response?.message === 'Unauthorized') {
+              this.residueCounts = {
+                noOfDifferences: 0
+              };
+            } else {
+              this.residueCounts = response;
+            }
+          });
 
         break;
     }

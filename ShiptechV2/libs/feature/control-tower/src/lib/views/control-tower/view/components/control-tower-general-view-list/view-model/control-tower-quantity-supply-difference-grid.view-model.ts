@@ -86,6 +86,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     noOfResolved: number;
     noOfDefault: number;
   };
+  public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -141,6 +142,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
+    cellClass: ['aggridlink'],
     width: 200
   };
 
@@ -749,6 +751,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
           );
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerQuantitySupplyDifferenceFailed
           );

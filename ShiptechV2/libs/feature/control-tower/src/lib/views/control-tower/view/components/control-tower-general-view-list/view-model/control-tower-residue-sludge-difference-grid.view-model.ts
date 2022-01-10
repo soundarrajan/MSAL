@@ -72,6 +72,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   public noOfDefault: number;
 
   public differenceType: ILookupDto;
+  public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
     resetButton: true,
@@ -124,6 +125,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       return null;
     },
     tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
+    cellClass: ['aggridlink'],
     width: 200
   };
 
@@ -696,6 +698,7 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
           );
         },
         () => {
+          this.loadingFailed = true;
           this.appErrorHandler.handleError(
             ModuleError.LoadControlTowerResidueSludgeDifferenceFailed
           );
