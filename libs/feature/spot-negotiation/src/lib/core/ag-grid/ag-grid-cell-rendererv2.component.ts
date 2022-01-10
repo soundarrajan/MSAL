@@ -22,10 +22,14 @@ import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import _, { cloneDeep } from 'lodash';
-import { EditLocationRow,SetLocations,
+import {
+  EditLocationRow,
+  SetLocations,
   SetLocationsRows,
   SetCounterpartyList,
-  SetLocationsRowsPriceDetails, EditCounterpartyList } from '../../store/actions/ag-grid-row.action';
+  SetLocationsRowsPriceDetails,
+  EditCounterpartyList
+} from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
@@ -45,8 +49,10 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
       </div>
     </div>
     <div *ngIf="params.type == 'searchbox-parent'">
-      <div  [ngClass]="params.cellClass">
-        <div class="truncate-125">{{ this.format.htmlDecode(params.value)}}</div>
+      <div [ngClass]="params.cellClass">
+        <div class="truncate-125">
+          {{ this.format.htmlDecode(params.value) }}
+        </div>
       </div>
     </div>
     <div *ngIf="params.type == 'multirow'">
@@ -139,9 +145,11 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
           matTooltip="Temporary suspended counterparty"
           matTooltipClass="lightTooltip"
         ></span>
-        <span class="m-l-7" matTooltip="{{this.format.htmlDecode(params.value) }}">{{
-         this.format.htmlDecode( params.value)
-        }}</span>
+        <span
+          class="m-l-7"
+          matTooltip="{{ this.format.htmlDecode(params.value) }}"
+          >{{ this.format.htmlDecode(params.value) }}</span
+        >
         <span class="sticky-icon">
           <!--span class="hover-lookup-icon" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger"></span>-->
           <span
@@ -242,7 +250,9 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="remove-icon"></div></span>
-        <span class="fs-12" (click)="removeCounterparty()">Remove counterparty</span>
+        <span class="fs-12" (click)="removeCounterparty()"
+          >Remove counterparty</span
+        >
       </div>
     </mat-menu>
     <div
@@ -260,8 +270,15 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
     >
       <!-- TODO check this code... -->
       <span *ngIf="!isOfferRequestAvailable()">-</span>
-      <div *ngIf="isOfferRequestAvailable()"
-        [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'input-disabled-new' : ''">
+      <div
+        *ngIf="isOfferRequestAvailable()"
+        [ngClass]="
+          params.product.status === 'Stemmed' ||
+          params.product.status === 'Confirmed'
+            ? 'input-disabled-new'
+            : ''
+        "
+      >
         <div class="price-calc static-data" *ngIf="params.value === '100.00'">
           <span class="duplicate-icon"></span>
           $ {{ params.value }}
@@ -323,18 +340,32 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             name="inputField"
             spellcheck="false"
             type="text"
-            style="display:inline" [matTooltip]="priceFormatValue(params.value)"
-            [disabled] = "params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
+            style="display:inline"
+            [matTooltip]="priceFormatValue(params.value)"
+            [disabled]="
+              params.product.status === 'Stemmed' ||
+              params.product.status === 'Confirmed'
+            "
           />
 
-          <div class="addButton" (click)="otherdetailspopup($event,params)" *ngIf="params.value>0 && params.data.requestOffers[params.index].supplyQuantity==null"></div>
+          <div
+            class="addButton"
+            (click)="otherdetailspopup($event, params)"
+            *ngIf="
+              params.value > 0 &&
+              params.data.requestOffers[params.index].supplyQuantity == null
+            "
+          ></div>
           <div
             class="formulaButton"
             style="display:inline; position:absolute; left:78px;"
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
-            *ngIf="params.value>0 && params.data.requestOffers[params.index].supplyQuantity!=null"
+            *ngIf="
+              params.value > 0 &&
+              params.data.requestOffers[params.index].supplyQuantity != null
+            "
           ></div>
         </div>
       </div>
@@ -354,30 +385,40 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
     </mat-menu>
     <div *ngIf="params.type == 'phy-supplier'">
       <div
-        *ngIf="params.data.requestOffers?.length > 0" id="EnabledPhySup{{params.data.id}}"
+        *ngIf="params.data.requestOffers?.length > 0"
+        id="EnabledPhySup{{ params.data.id }}"
         class="phySupplier edit"
-        [matTooltip]="(editSeller && params.data.physicalSupplierCounterpartyName)? this.format.htmlDecode(params.data.physicalSupplierCounterpartyName) : 'Add physical supplier'"
+        [matTooltip]="
+          editSeller && params.data.physicalSupplierCounterpartyName
+            ? this.format.htmlDecode(
+                params.data.physicalSupplierCounterpartyName
+              )
+            : 'Add physical supplier'
+        "
         matTooltipClass="lightTooltip"
       >
-
-            <span *ngIf="params.data.isEditable"
-              >
-              <span
-                  *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
-                  >{{ params.data.physicalSupplierCounterpartyName }}</span
-                >
-                <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
-            </span>
-
-            <span *ngIf="!params.data.isEditable"
-              contentEditable="true"
-              [matMenuTriggerFor]="clickmenu"
-              #menuTrigger="matMenuTrigger"
-              (click)="setValuefun(params.data)"
-            >
+        <span *ngIf="params.data.isEditable">
           <span
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
-            >{{ this.format.htmlDecode(params.data.physicalSupplierCounterpartyName) }}</span
+            >{{ params.data.physicalSupplierCounterpartyName }}</span
+          >
+          <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
+        </span>
+
+        <span
+          *ngIf="!params.data.isEditable"
+          contentEditable="true"
+          [matMenuTriggerFor]="clickmenu"
+          #menuTrigger="matMenuTrigger"
+          (click)="setValuefun(params.data)"
+        >
+          <span
+            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            >{{
+              this.format.htmlDecode(
+                params.data.physicalSupplierCounterpartyName
+              )
+            }}</span
           >
           <span
             *ngIf="
@@ -407,7 +448,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
                 matInput
                 placeholder="Search and select counterparty"
                 class="search-product-input"
-                (input)="search($event.target.value,params)"
+                (input)="search($event.target.value, params)"
               />
             </div>
             <div class="col-md-2">
@@ -459,7 +500,11 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
     </mat-menu>
 
     <div
-      *ngIf="params.type == 'mat-check-box' && params.status !== 'Stemmed' && params.status !== 'Confirmed'"
+      *ngIf="
+        params.type == 'mat-check-box' &&
+        params.status !== 'Stemmed' &&
+        params.status !== 'Confirmed'
+      "
       style="height:100%;display:flex;align-items:center;justify-content:center"
       [matTooltip]="
         params.data.preferredProducts?.includes(params.productId)
@@ -483,38 +528,42 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 
     <div *ngIf="params.type == 'addTpr'" class="addTpr">
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
+      <span [matTooltip]="params.value">{{
+        priceCalFormatValue(params.value)
+      }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
     <div *ngIf="params.type == 'amt'" class="addTpr">
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
+      <span [matTooltip]="params.value">{{
+        priceCalFormatValue(params.value)
+      }}</span>
     </div>
 
     <div *ngIf="params.type == 'diff'" class="addTpr">
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value">{{ priceCalFormatValue(params.value) }}</span>
+      <span [matTooltip]="params.value">{{
+        priceCalFormatValue(params.value)
+      }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
     <div
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
-      [matTooltip]="params.value? params.value : null"
+      [matTooltip]="params.value ? params.value : null"
       matTooltipClass="lightTooltip"
-      [matMenuTriggerFor]="totalOfferMenupopup"
-      #totalOfferPopupTrigger="matMenuTrigger"
-      (click)="totalOfferPopupTrigger.closeMenu()"
-      (contextmenu)="openCostMenu($event, params.value);"
+      [matMenuTriggerFor]="addAdditionalCostMenuPopUp"
+      #addAdditionalCostPopUpTrigger="matMenuTrigger"
+      (click)="addAdditionalCostPopUpTrigger.closeMenu()"
+      (contextmenu)="openCostMenu($event, params.value)"
     >
-      <span *ngIf="params.value" (click)="additionalcostpopup()">{{
-        priceCalFormatValue(params.value)
-      }}</span>
+      <span *ngIf="params.value">{{ priceCalFormatValue(params.value) }}</span>
       <span *ngIf="!params.value">-</span>
       <div class="dollarButton" *ngIf="params.value == '500.00'"></div>
     </div>
-    <mat-menu #totalOfferMenupopup="matMenu" class="darkPanel-add big">
+    <mat-menu #addAdditionalCostMenuPopUp="matMenu" class="darkPanel-add big">
       <div class="add-block" (click)="additionalcostpopup()">
         <div></div>
         <span>Add additional cost</span>
@@ -583,7 +632,8 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   @ViewChild('inputSection') inputSection: ElementRef;
   @ViewChild('menuTriggerHover') menuTriggerHover: MatMenuTrigger;
-  @ViewChild('totalOfferPopupTrigger') totalOfferPopupTrigger: MatMenuTrigger;
+  @ViewChild('addAdditionalCostPopUpTrigger')
+  addAdditionalCostPopUpTrigger: MatMenuTrigger;
 
   public showDollar: boolean = false;
   locations: any;
@@ -607,6 +657,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   tenantService: any;
   currentRequestData: any[];
   locationsRows: any[];
+  currentRequestSmallInfo: any;
 
   constructor(
     @Inject(DecimalPipe)
@@ -618,9 +669,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private _spotNegotiationService: SpotNegotiationService,
     public format: TenantFormattingService,
     private changeDetector: ChangeDetectorRef
-  ) {
-
-  }
+  ) {}
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
@@ -639,16 +688,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
 
-  isRfqSendForAnyProduct():boolean{
+  isRfqSendForAnyProduct(): boolean {
     const { requestOffers } = this.params.data || {};
 
     if (!requestOffers) {
       return false;
     }
 
-    const isRfqSend = requestOffers?.find(
-      off => off.isRfqskipped === false
-    );
+    const isRfqSend = requestOffers?.find(off => off.isRfqskipped === false);
 
     if (isRfqSend) {
       return true;
@@ -656,30 +703,34 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
     return false;
   }
-  setValuefun(params){
+  setValuefun(params) {
     let counterpartyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.counterpartyList.slice(0, 7);;
-     });
+      return state.spotNegotiation.counterpartyList.slice(0, 7);
+    });
     let SelectedCounterpartyList = cloneDeep(counterpartyList);
 
-    if(SelectedCounterpartyList?.length > 0){
+    if (SelectedCounterpartyList?.length > 0) {
       SelectedCounterpartyList.forEach(element => {
-        if(params.physicalSupplierCounterpartyId != null && element.id == params.physicalSupplierCounterpartyId){
-          element.isSelected =  true;
-        }
-        else{
-          element.isSelected =  false;
+        if (
+          params.physicalSupplierCounterpartyId != null &&
+          element.id == params.physicalSupplierCounterpartyId
+        ) {
+          element.isSelected = true;
+        } else {
+          element.isSelected = false;
         }
       });
       this.visibleCounterpartyList = SelectedCounterpartyList;
     }
-    if(params.physicalSupplierCounterpartyName != undefined && params.physicalSupplierCounterpartyName != null){
+    if (
+      params.physicalSupplierCounterpartyName != undefined &&
+      params.physicalSupplierCounterpartyName != null
+    ) {
       this.editedSeller = params.physicalSupplierCounterpartyName;
-    }else
-    {
+    } else {
       this.editedSeller = 'Add P. Supplier';
     }
-    this.editSeller =  false;
+    this.editSeller = false;
   }
   isOfferRequestAvailable(): boolean {
     // Array of requestoffers
@@ -712,7 +763,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.params = params;
   }
 
-  search(userInput: string, params:any): void {
+  search(userInput: string, params: any): void {
     let selectedCounterpartyList = this.counterpartyList
       .filter(e => {
         if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
@@ -721,15 +772,17 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return false;
       })
       .slice(0, 7);
-      selectedCounterpartyList
-      let SelectedCounterpartyList1 = cloneDeep(selectedCounterpartyList);
-    if(SelectedCounterpartyList1?.length > 0){
+    selectedCounterpartyList;
+    let SelectedCounterpartyList1 = cloneDeep(selectedCounterpartyList);
+    if (SelectedCounterpartyList1?.length > 0) {
       SelectedCounterpartyList1.forEach(element => {
-        if(params?.data?.physicalSupplierCounterpartyId != null && element.id == params?.data?.physicalSupplierCounterpartyId){
-          element.isSelected =  true;
-        }
-        else{
-          element.isSelected =  false;
+        if (
+          params?.data?.physicalSupplierCounterpartyId != null &&
+          element.id == params?.data?.physicalSupplierCounterpartyId
+        ) {
+          element.isSelected = true;
+        } else {
+          element.isSelected = false;
         }
       });
       this.visibleCounterpartyList = SelectedCounterpartyList1;
@@ -797,25 +850,50 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       let currentLocProdCount = currentLocProd[0].requestProducts.length;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
-        let val = "checkProd" + indx;
+        let val = 'checkProd' + indx;
         if (!row[val] && val != params.column.colId) {
-          return true
+          return true;
         }
       }
     }
-    return false
+    return false;
   }
   additionalcostpopup() {
-    const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
-      width: '1170px',
-      height: '450px',
-      panelClass: 'additional-cost-popup',
-      data: this.params.data
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
     });
+    let requestLocationId = this.params.data.requestLocationId;
+    let findRequestLocationIndex = _.findIndex(
+      this.currentRequestSmallInfo?.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation = this.currentRequestSmallInfo?.requestLocations[
+        findRequestLocationIndex
+      ];
+      console.log('CurrentLocation');
+      console.log(requestLocation);
+      const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
+        width: '1170px',
+        height: '450px',
+        panelClass: 'additional-cost-popup',
+        data: {
+          requestLocation: requestLocation,
+          rowData: this.params.data
+        }
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.showDollar = true;
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        this.showDollar = true;
+        // let updatedRow = { ...this.params.data };
+        // updatedRow.totalOffer = 1000;
+        // // Update the store
+        // this.store.dispatch(new EditLocationRow(updatedRow));
+        // this.params.node.setData(updatedRow);
+      });
+    }
   }
   sellerratingpopup() {
     const dialogRef = this.dialog.open(SellerratingpopupComponent, {
@@ -823,7 +901,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       height: '562px',
       panelClass: 'additional-cost-popup'
     });
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   openEmailPreview(params) {
@@ -834,7 +912,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       data: params.data
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   openSellerContactPopup(params) {
@@ -849,30 +927,34 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   openCounterpartyPopup(locationId) {
     let RequestGroupId = 0;
     let currentRequestLocation = { id: '0', locationId: '0' };
-    let sellerCounterpartyId=0;
-    let physicalSupplierCounterpartyName='';
+    let sellerCounterpartyId = 0;
+    let physicalSupplierCounterpartyName = '';
     let physicalSupplierCounterpartyId = '';
 
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      if (this.currentRequestInfo.requestLocations
-        && this.currentRequestInfo.requestLocations.length > 0) {
+      if (
+        this.currentRequestInfo.requestLocations &&
+        this.currentRequestInfo.requestLocations.length > 0
+      ) {
         currentRequestLocation = this.currentRequestInfo.requestLocations[0];
       }
     }
 
     if (this.params.data.requestOffers) {
-      sellerCounterpartyId= this.params.data.sellerCounterpartyId,
-      physicalSupplierCounterpartyId = this.params.data.physicalSupplierCounterpartyId
-      physicalSupplierCounterpartyName=this.params.data.sellerCounterpartyName
-      }
+      (sellerCounterpartyId = this.params.data.sellerCounterpartyId),
+        (physicalSupplierCounterpartyId = this.params.data
+          .physicalSupplierCounterpartyId);
+      physicalSupplierCounterpartyName = this.params.data
+        .sellerCounterpartyName;
+    }
 
     const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
       width: '100vw',
@@ -886,9 +968,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         LocationId: locationId,
         isPhysicalSupplier: true,
         requestLocationSellerId: this.params.data.id,
-        SellerCounterpartyId:sellerCounterpartyId,
-        PhysicalSupplierCounterpartyName:physicalSupplierCounterpartyName,
-        physicalSupplierCounterpartyId:physicalSupplierCounterpartyId
+        SellerCounterpartyId: sellerCounterpartyId,
+        PhysicalSupplierCounterpartyName: physicalSupplierCounterpartyName,
+        physicalSupplierCounterpartyId: physicalSupplierCounterpartyId
       }
     });
 
@@ -905,7 +987,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   requestChange(e, params) {
@@ -920,7 +1002,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -959,7 +1041,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   priceFormatValue(value) {
-
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
@@ -969,13 +1050,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return null;
     }
     let productPricePrecision = this.tenantService.pricePrecision;
-    let num = plainNumber.split(".", 2);
+    let num = plainNumber.split('.', 2);
     //Offer Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
     if (plainNumber == num) {
       this.priceFormat = '';
     } else {
-      this.priceFormat =
-        '1.' + 0 + '-' + productPricePrecision;
+      this.priceFormat = '1.' + 0 + '-' + productPricePrecision;
     }
     if (plainNumber) {
       if (productPricePrecision) {
@@ -988,7 +1068,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
   priceCalFormatValue(value) {
-
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
@@ -1012,7 +1091,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-
   pricingdetailspopup(e, params) {
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
@@ -1025,7 +1103,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -1042,7 +1120,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.showFormula = true;
     });
   }
-  otherdetailspopup(e, params){
+  otherdetailspopup(e, params) {
     const dialogRef = this.dialog.open(SpotnegoOtherdetails2Component, {
       width: '1164px',
       height: 'auto',
@@ -1050,8 +1128,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: 'additional-cost-popup',
       data: params
     });
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
   onRightClickMenuOpened(e) {
     e.target.parentElement.classList.add('active');
@@ -1086,11 +1163,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   removeCounterparty() {
     // remove counterparty row clicked
-    this.params.context.componentParent
-        .removeCounterpartyRowClicked(this.params.data, this.params.node.rowIndex, this.params.api);
+    this.params.context.componentParent.removeCounterpartyRowClicked(
+      this.params.data,
+      this.params.node.rowIndex,
+      this.params.api
+    );
   }
   selectSupplier(element) {
-
     this.editedSeller = element.name;
     this.phySupplierId = element.id;
   }
@@ -1098,77 +1177,89 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   updatePhysicalSupplier() {
     let valid = false;
     this.store.selectSnapshot<any>((state: any) => {
-      if(state.spotNegotiation.locationsRows.length > 0){
-        const selectItems = state.spotNegotiation.locationsRows.filter(item=> item.locationId === this.params.data.locationId && item.sellerCounterpartyId === this.params.data.sellerCounterpartyId && item.physicalSupplierCounterpartyId === this.phySupplierId && item.id !== this.params.data.id );
-        if(selectItems.length != 0){
+      if (state.spotNegotiation.locationsRows.length > 0) {
+        const selectItems = state.spotNegotiation.locationsRows.filter(
+          item =>
+            item.locationId === this.params.data.locationId &&
+            item.sellerCounterpartyId ===
+              this.params.data.sellerCounterpartyId &&
+            item.physicalSupplierCounterpartyId === this.phySupplierId &&
+            item.id !== this.params.data.id
+        );
+        if (selectItems.length != 0) {
           this.locationsRows = state.spotNegotiation.locationsRows;
           this.locationsRows.forEach(element => {
             let updatedRow = { ...element };
-            if(element.locationId == this.params.data.locationId &&  element.id == this.params.data.id){
-            if(this.params?.value && this.params?.value != null){
-              const PreviousPhySupplier = state.spotNegotiation.counterpartyList.filter(item=> item.name === this.params.value);
-              if(PreviousPhySupplier.length !=0){
-                updatedRow.physicalSupplierCounterpartyId =  PreviousPhySupplier[0].id;
-                updatedRow.physicalSupplierCounterpartyName = PreviousPhySupplier[0].name;
-                this.store.dispatch(new EditLocationRow(updatedRow));
+            if (
+              element.locationId == this.params.data.locationId &&
+              element.id == this.params.data.id
+            ) {
+              if (this.params?.value && this.params?.value != null) {
+                const PreviousPhySupplier = state.spotNegotiation.counterpartyList.filter(
+                  item => item.name === this.params.value
+                );
+                if (PreviousPhySupplier.length != 0) {
+                  updatedRow.physicalSupplierCounterpartyId =
+                    PreviousPhySupplier[0].id;
+                  updatedRow.physicalSupplierCounterpartyName =
+                    PreviousPhySupplier[0].name;
+                  this.store.dispatch(new EditLocationRow(updatedRow));
 
-                //this.store.dispatch(new EditCounterpartyList(updatedRow));
-                return valid = true
-              }
-            }else{
-              updatedRow.physicalSupplierCounterpartyId =  null;
+                  //this.store.dispatch(new EditCounterpartyList(updatedRow));
+                  return (valid = true);
+                }
+              } else {
+                updatedRow.physicalSupplierCounterpartyId = null;
                 updatedRow.physicalSupplierCounterpartyName = null;
                 this.store.dispatch(new EditLocationRow(updatedRow));
-            }
+              }
             }
           });
-
+        } else {
+          return (valid = false);
         }
-        else{
-          return valid = false
-        }
-
       }
-
     });
-    if(valid){
-      this.toastr.error('Physical supplier already available against the given the Seller.');
+    if (valid) {
+      this.toastr.error(
+        'Physical supplier already available against the given the Seller.'
+      );
       return;
-    }
-    else{
+    } else {
     }
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
     let payload = {
-      requestGroupId:this.params.data.requestGroupId,
+      requestGroupId: this.params.data.requestGroupId,
       requestLocationId: this.params.data.requestLocationId,
-      sellerCounterpartyId:this.params.data.sellerCounterpartyId,
+      sellerCounterpartyId: this.params.data.sellerCounterpartyId,
       requestLocationSellerId: this.params.data.id,
       phySupplierId: this.phySupplierId,
-      physicalSupplierCounterpartyName:this.params.data.sellerCounterpartyName
+      physicalSupplierCounterpartyName: this.params.data.sellerCounterpartyName
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
       if (res.status) {
-          const futureLocationsRows = this.getLocationRowsAddPhySupplier(
-            JSON.parse(JSON.stringify(locationsRows))
-          );
+        const futureLocationsRows = this.getLocationRowsAddPhySupplier(
+          JSON.parse(JSON.stringify(locationsRows))
+        );
 
-        if(this.phySupplierId && this.params?.value){
-            const counterpartyList = this.store.selectSnapshot<any>((state: any) => {
-            return state.spotNegotiation.counterpartyList;
-           });
-          if(counterpartyList?.length > 0){
+        if (this.phySupplierId && this.params?.value) {
+          const counterpartyList = this.store.selectSnapshot<any>(
+            (state: any) => {
+              return state.spotNegotiation.counterpartyList;
+            }
+          );
+          if (counterpartyList?.length > 0) {
             counterpartyList.forEach(element => {
-              if(element.id == this.phySupplierId){
+              if (element.id == this.phySupplierId) {
                 let updatedRow1 = { ...element };
-                updatedRow1.isSelected =  true;
+                updatedRow1.isSelected = true;
                 this.store.dispatch(new EditCounterpartyList(updatedRow1));
-              }
-              else if( element.name == this.params?.value){
+              } else if (element.name == this.params?.value) {
                 let updatedRow1 = { ...element };
-                updatedRow1.isSelected =  false;
+                updatedRow1.isSelected = false;
                 this.store.dispatch(new EditCounterpartyList(updatedRow1));
               }
             });
@@ -1177,26 +1268,26 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         this.toastr.success('Phy. Supplier added successfully');
       } else {
-
-        if(this.phySupplierId && this.params?.value){
-          const counterpartyList = this.store.selectSnapshot<any>((state: any) => {
-          return state.spotNegotiation.counterpartyList;
-         });
-        if(counterpartyList?.length > 0){
-          counterpartyList.forEach(element => {
-            if(element.id == this.phySupplierId){
-              let updatedRow1 = { ...element };
-              updatedRow1.isSelected =  false;
-              this.store.dispatch(new EditCounterpartyList(updatedRow1));
+        if (this.phySupplierId && this.params?.value) {
+          const counterpartyList = this.store.selectSnapshot<any>(
+            (state: any) => {
+              return state.spotNegotiation.counterpartyList;
             }
-            else if( element.name == this.params?.value){
-              let updatedRow1 = { ...element };
-              updatedRow1.isSelected =  true;
-              this.store.dispatch(new EditCounterpartyList(updatedRow1));
-            }
-          });
+          );
+          if (counterpartyList?.length > 0) {
+            counterpartyList.forEach(element => {
+              if (element.id == this.phySupplierId) {
+                let updatedRow1 = { ...element };
+                updatedRow1.isSelected = false;
+                this.store.dispatch(new EditCounterpartyList(updatedRow1));
+              } else if (element.name == this.params?.value) {
+                let updatedRow1 = { ...element };
+                updatedRow1.isSelected = true;
+                this.store.dispatch(new EditCounterpartyList(updatedRow1));
+              }
+            });
+          }
         }
-      }
         this.toastr.error(res.message);
         return;
       }
@@ -1212,12 +1303,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return locationrow;
   }
 
-  openCostMenu(event: any, totalOfferValue : any)
-  {
+  openCostMenu(event: any, totalOfferValue: any) {
     event.preventDefault();
     event.stopPropagation();
-    if(totalOfferValue){
-      this.totalOfferPopupTrigger.openMenu();
+    if (totalOfferValue) {
+      this.addAdditionalCostPopUpTrigger.openMenu();
     }
   }
 }
