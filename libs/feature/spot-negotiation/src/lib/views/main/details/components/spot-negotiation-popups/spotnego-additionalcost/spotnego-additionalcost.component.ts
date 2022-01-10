@@ -19,6 +19,19 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AdditionalCostViewModel } from '../../../../../../core/models/additional-costs-model';
 
+export const COMPONENT_TYPE_IDS = {
+  TAX_COMPONENT: 1,
+  PRODUCT_COMPONENT: 2
+};
+
+export const COST_TYPE_IDS = {
+  FLAT: 1,
+  UNIT: 2,
+  PERCENT: 3,
+  RANGE: 4,
+  TOTAL: 5
+};
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-spotnego-additionalcost',
@@ -67,6 +80,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   currency: IDisplayLookupDto;
   uomList: any[];
   currencyList: any[];
+  priceFormat: string;
+  offerId: number;
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
@@ -93,6 +108,11 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       this.tenantService.amountPrecision +
       '-' +
       this.tenantService.amountPrecision;
+    this.priceFormat =
+      '1.' +
+      this.tenantService.pricePrecision +
+      '-' +
+      this.tenantService.pricePrecision;
     this.requestLocation = data.requestLocation;
     this.rowData = data.rowData;
   }
@@ -134,6 +154,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
     if (this.rowData?.requestOffers?.length > 0) {
       const firstOffer = this.rowData.requestOffers[0];
+      this.offerId = firstOffer.offerId;
       const payload = {
         offerId: firstOffer.offerId,
         requestLocationId: this.rowData.requestLocationId,
@@ -187,7 +208,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
     cost.priceUomId = maxQtyDetails.maxQtyUomId;
-    this.calculateCostAmount(cost);
+    this.calculateAdditionalCostAmounts(cost);
     this.enableSave = true;
   }
 
@@ -224,22 +245,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
     cost.priceUomId = maxQtyDetails.maxQtyUomId;
-    this.calculateCostAmount(cost);
+    this.calculateAdditionalCostAmounts(cost);
     this.enableSave = true;
-  }
-
-  calculateCostAmount(cost: any) {
-    cost.amount =
-      cost.costType === 'Flat' ? cost.price : cost.maxQuantity * cost.price;
-    cost.extraAmount = cost.extras ? (cost.amount * cost.extras) / 100 : 0;
-    cost.totalAmount = cost.amount + cost.extraAmount;
-    cost.ratePerUom = cost.totalAmount / cost.maxQuantity;
   }
 
   addNew() {
     const additionalCost = {
       selectedApplicableForId: 0,
-      currency: this.currency
+      currency: this.currency,
+      offerId: this.offerId
     } as AdditionalCostViewModel;
     this.offerAdditionalCostList.push(additionalCost);
   }
@@ -262,42 +276,59 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    */
   additionalCostNameChanged(additionalCost) {
     console.log(additionalCost);
-    additionalCost.costType = this.getAdditionalCostDefaultCostType(
+    additionalCost.costTypeId = this.getAdditionalCostDefaultCostType(
       additionalCost
-    );
+    ).id;
   }
 
   /**
    * Get the corresponding component type ID for a given additional cost.
    */
   getAdditionalCostDefaultCostType(additionalCost) {
-    if (!additionalCost.additionalCost) {
+    if (!additionalCost.additionalCostId) {
       return false;
     }
-    if (this.additionalCostList[additionalCost.additionalCost.id].costType) {
-      if (
-        this.additionalCostList[additionalCost.additionalCost.id].costType.id ==
-          1 ||
-        this.additionalCostList[additionalCost.additionalCost.id].costType.id ==
-          2
-      ) {
-        additionalCost.allowedCostTypes = [];
-        this.costTypeList.forEach(v => {
-          if (v.id == 1 || v.id == 2) {
-            additionalCost.allowedCostTypes.push(v);
-          }
-        });
-      } else {
-        additionalCost.allowedCostTypes = [];
-        this.costTypeList.forEach(v => {
-          if (v.id == 3) {
-            additionalCost.allowedCostTypes.push(v);
-          }
-        });
+    let index = _.findIndex(this.additionalCostList, function(object: any) {
+      return object.id == additionalCost.additionalCostId;
+    });
+    if (index != -1) {
+      if (this.additionalCostList[index].costType) {
+        if (
+          this.additionalCostList[index].costType.id == 1 ||
+          this.additionalCostList[index].costType.id == 2
+        ) {
+          additionalCost.allowedCostTypes = [];
+          this.costTypeList.forEach(v => {
+            if (v.id == 1 || v.id == 2) {
+              additionalCost.allowedCostTypes.push(v);
+            }
+          });
+        } else if (this.additionalCostList[index].costType.id == 3) {
+          additionalCost.allowedCostTypes = [];
+          this.costTypeList.forEach(v => {
+            if (v.id == 3) {
+              additionalCost.allowedCostTypes.push(v);
+            }
+          });
+        } else if (this.additionalCostList[index].costType.id == 4) {
+          additionalCost.allowedCostTypes = [];
+          this.costTypeList.forEach(v => {
+            if (v.id == 4) {
+              additionalCost.allowedCostTypes.push(v);
+            }
+          });
+        } else if (this.additionalCostList[index].costType.id == 5) {
+          additionalCost.allowedCostTypes = [];
+          this.costTypeList.forEach(v => {
+            if (v.id == 5) {
+              additionalCost.allowedCostTypes.push(v);
+            }
+          });
+        }
+        return this.additionalCostList[index].costType;
       }
-
-      return this.additionalCostList[additionalCost.additionalCost.id].costType;
     }
+
     return false;
   }
 
@@ -306,11 +337,133 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    * It should only be enabled when the Additional Cost's costType is "Unit" (business rule).
    */
   additionalCostPriceUomEnabled(additionalCost) {
-    return (
-      additionalCost.costType &&
-      additionalCost.costType.id === 2 &&
-      additionalCost.costType.name == 'Unit'
-    );
+    return additionalCost.costTypeId == 2;
+  }
+
+  /**
+   * Calculates the amount-related fields of an additional cost, as per FSD p. 139: Amount, Extras Amount, Total Amount.
+   */
+  calculateAdditionalCostAmounts(additionalCost) {
+    let totalAmount, productComponent;
+    if (!additionalCost.costType) {
+      return additionalCost;
+    }
+    switch (additionalCost.costType.id) {
+      case COST_TYPE_IDS.FLAT:
+        additionalCost.amount = parseFloat(additionalCost.price);
+        productComponent = this.isProductComponent(additionalCost);
+        break;
+    }
+
+    if (isNaN(additionalCost.amount)) {
+      additionalCost.amount = null;
+    }
+
+    additionalCost.extraAmount =
+      (additionalCost.extras / 100) * additionalCost.amount;
+
+    if (isNaN(additionalCost.extraAmount)) {
+      additionalCost.extraAmount = null;
+    }
+
+    additionalCost.totalAmount =
+      additionalCost.amount + additionalCost.extraAmount || 0;
+    if (isNaN(additionalCost.totalAmount)) {
+      additionalCost.totalAmount = null;
+    }
+
+    additionalCost.rate =
+      additionalCost.totalAmount / additionalCost.maxQuantity;
+    if (isNaN(additionalCost.rate)) {
+      additionalCost.rate = null;
+    }
+    console.log(additionalCost);
+  }
+
+  /**
+   * Checks if the given additional cost belongs
+   * to the ProductComponent category.
+   */
+  isProductComponent(additionalCost) {
+    if (!additionalCost.additionalCost) {
+      return false;
+    }
+    additionalCost.isTaxComponent = false;
+    if (
+      this.additionalCostList[additionalCost.additionalCost.id].componentType
+    ) {
+      additionalCost.isTaxComponent = !(
+        this.additionalCostList[additionalCost.additionalCost.id].componentType
+          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+      );
+      if (additionalCost.isTaxComponent) {
+        // console.log("Tax:" + additionalCost.additionalCost.name)
+      } else {
+        additionalCost.isTaxComponent = false;
+      }
+      return (
+        this.additionalCostList[additionalCost.additionalCost.id].componentType
+          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+      );
+    }
+
+    return null;
+  }
+
+  saveAdditionalCosts() {
+    if (!this.enableSave) {
+      this.toastr.warning('No changes are made to perform save.');
+      return;
+    }
+    let offerAdditionalCostArray = [];
+    for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
+      if (this.rowData?.requestOffers?.length > 0) {
+        const firstOffer = this.rowData.requestOffers[0];
+        let elem = {
+          offerId: firstOffer.offerId,
+          additionalCostId: this.offerAdditionalCostList[i].additionalCost
+        };
+      }
+    }
+    console.log(this.offerAdditionalCostList);
+    let payload = {
+      offerAdditionalCosts: [
+        {
+          offerId: 169525,
+          additionalCostId: 1,
+          costTypeId: 1,
+          currencyId: 1,
+          price: 1200,
+          extraAmount: 0,
+          totalAmount: 12000,
+          ratePerUom: 0,
+          maxQuantity: 0,
+          priceUomId: null,
+          maxQtyUomId: null,
+          extras: 6,
+          comment: '',
+          isAllProductsCost: true,
+          isDeleted: false,
+          IsLocationBased: false
+        }
+      ]
+    };
+
+    // const payload = { additionalCosts: this.locationBasedCosts };
+    // this.spotNegotiationService
+    //   .saveOfferAdditionalCosts(payload)
+    //   .subscribe((res: any) => {
+    //     if (res.status) {
+    //       // let locationAdditionalCosts = res?.costs?.locationAdditionalCosts;
+    //       // locationAdditionalCosts.forEach((cost: any) => {
+    //       //   cost.selectedApplicableForId = cost.requestProductId ?? 0;
+    //       // });
+    //       // this.locationBasedCosts = locationAdditionalCosts;
+    //       this.toastr.success('Additional cost saved successfully.');
+    //     } else this.toastr.error('Please try again later.');
+    //   });
+
+    this.enableSave = false;
   }
 
   quantityFormatValue(value) {
@@ -327,6 +480,42 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
+  }
+
+  amountFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if (this.tenantService.amountPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.amountFormat);
+      }
+    }
+  }
+
+  priceFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if (this.tenantService.pricePrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.priceFormat);
       }
     }
   }
