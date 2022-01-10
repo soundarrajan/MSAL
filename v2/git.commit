@@ -1,11 +1,11 @@
-﻿commit e9f9443fb6d2a99e7ebf59aab72ec5a80970fda0
+﻿commit 27aacf9584d75aaa0fee4ce07e2dc43a13d5bf8f
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Jan 7 14:27:06 2022 +0000
+Date:   Mon Jan 10 11:05:20 2022 +0000
 
-    Merged PR 15409: small css tweaks
+    Merged PR 15429: Increased column widths for longer names
     
-    small css tweaks
+    Increased column widths for longer names
     
-    Related work items: #37414
+    Related work items: #37933
 
 branch: master
