@@ -309,6 +309,13 @@ if(!this.readonly){
         this.toaster.error(res);
         return;
       }
+      
+      if(res.isGroupDeleted){
+        const baseOrigin = new URL(window.location.href).origin;
+          window.open(`${baseOrigin}/#/edit-request/${this.currentRequestInfo.id}`, '_self');
+          //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
+      }
+
       if (res['sellerOffers']) {
         let locationsRows;
         const requestGroupID = this.store.selectSnapshot<string>(
