@@ -8,6 +8,7 @@
         class="cust-btn small"
         *ngIf="
           !formValues.status ||
+          !formValues.hasApprovedInvoice ||
           (formValues.status &&
             formValues.status.name != 'Confirmed' &&
             formValues.status.name != 'Delivered')

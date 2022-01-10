@@ -3,11 +3,16 @@
     <div class="head">{{ gridTitle }}</div>
   </div>
 </div>
-<div class="grid-container" *ngIf="groupId && gridId">
+<div
+  class="grid-container"
+  *ngIf="groupId && gridId && !gridViewModel.loadingFailed"
+>
   <div class="agGrid-v2" style="margin: 0">
     <div style="width:100%;height: 100%;">
-      <shiptech-wunderbar>
-        <div class="row" style="margin: 5px 0;">
+      <div
+        class="w-100 st-main-content-menu no-print control-tower-wunderbar-container"
+      >
+        <div class="row">
           <div class="col-12 d-flex">
             <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
             <app-filter-preferences
@@ -18,15 +23,16 @@
               [gridIds]="gridIds"
               [groupedCountValues]="gridViewModel.groupedCounts"
               (systemFilterUpdate$)="systemFilterUpdate($event)"
-              (presetsLoaded)="this.gridViewModel.markServerSideDataSourceReady()"
+              (presetsLoaded)="
+                this.gridViewModel.markServerSideDataSourceReady()
+              "
             ></app-filter-preferences>
           </div>
         </div>
-      </shiptech-wunderbar>
-
+      </div>
       <p-messages></p-messages>
 
-      <div class="w-100 m-r-5" style="background: white;">
+      <div class="w-100" style="background: white; padding-right: 5px;">
         <div class="row mb-2" style="margin-bottom: 10px;">
           <div class="col-12 d-flex p-t-4">
             <app-ag-filter-display
@@ -71,17 +77,17 @@
       </div>
     </div>
   </div>
-</div>
-<ng-template
-  *ngIf="gridViewModel.portCallCol"
-  [columnDef]="[gridViewModel.portCallCol]"
-  appAgCellTemplate
-  let-data="data"
-  let-value="value"
->
-  <a
-    *ngIf="data && data?.quantityControlReport?.id"
-    (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
-    >{{ data?.portCall?.portCallId }}</a
+  <ng-template
+    *ngIf="gridViewModel.portCallCol"
+    [columnDef]="[gridViewModel.portCallCol]"
+    appAgCellTemplate
+    let-data="data"
+    let-value="value"
   >
-</ng-template>
+    <a
+      *ngIf="data && data?.quantityControlReport?.id"
+      (click)="openEditQuantityControlReport(data?.quantityControlReport?.id)"
+      >{{ data?.portCall?.portCallId }}</a
+    >
+  </ng-template>
+</div>
