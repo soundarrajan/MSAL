@@ -3988,36 +3988,53 @@ APP_MASTERS.controller('Controller_Datatables', [
                 }
             });
         };
-        $scope.validateSystemInstrument = function(rowIndex, fval, model) {
+        $scope.validateSystemInstrument = function(rowIndex, fval, model) { 
             scope = angular.element($('#grid_productsSystemInstruments')).scope()
             if (!fval) {
                 fval = scope.formValues;
             }
-            let errors = "";
-            fval.productsSystemInstruments.map( (v,k) => {
-                v.productSystemGrouped = (v.product ? v.product.name : "") + "-" + (v.systemInstrument ? v.systemInstrument.name : "");
-                v.productBunkerGrouped = (v.product ? v.product.name : "") + "-" + v.isBunkerwireDefault;
-            } )
+
+            checkIfproductSystemInstrumentExists = (product, systemInstrument) => {
+                var combinationCount = 0;
+                if(product && systemInstrument) {
+                    fval.productsSystemInstruments.forEach(element => {
+                        if(element.product && element.systemInstrument ) {
+                            if(element.product.name == product.name && element.systemInstrument.name == systemInstrument.name && !element.isDeleted) {
+                                combinationCount++;
+                            }
+                        }
+                    });
+                }
+                return combinationCount > 1;
+            }    
+            checkIfproductReferenceExists = (product, reference) => {
+                var combinationCount = 0;
+                if(product && reference) {
+                    fval.productsSystemInstruments.forEach(element => {
+                        if(element.product && element.isBunkerwireDefault ) {
+                            if(element.product.name == product.name && element.isBunkerwireDefault && !element.isDeleted) {
+                                combinationCount++;
+                            }
+                        }
+                    });
+                }
+                return combinationCount > 1;
+            }             
             
-            let uniqueValues = new Set(fval.productsSystemInstruments.map(v => v.productSystemGrouped));
-            if (uniqueValues.size < fval.productsSystemInstruments.length) {
+            let errors = "";
+
+            productSystemInstrumentExists = checkIfproductSystemInstrumentExists(fval.productsSystemInstruments[rowIndex].product, fval.productsSystemInstruments[rowIndex].systemInstrument);
+            if(productSystemInstrumentExists) {
                 errors += `Product and System Instrument mapping should be unique <br>`;
                 fval.productsSystemInstruments[rowIndex][model] = null;
-                
-            }            
-            let uniqueValuesProdBunker = new Set(fval.productsSystemInstruments.map(v => v.productBunkerGrouped));
-            if (uniqueValuesProdBunker.size < fval.productsSystemInstruments.length) {
+            }
+            
+            productReferenceExists = checkIfproductReferenceExists(fval.productsSystemInstruments[rowIndex].product, fval.productsSystemInstruments[rowIndex].isBunkerwireDefault);
+            if(productReferenceExists) {
                 errors += `Only one reference price can be marked for a given product <br>`;
                 fval.productsSystemInstruments[rowIndex][model] = null;
-                fval.productsSystemInstruments[rowIndex][model] = null;
-            } 
-            
-            // if (model == "isBunkerwireDefault") {
-            //     if (fval.productsSystemInstruments[rowIndex].isBunkerwireDefault) {
-            //         errors += `Only one reference price can be marked for a given product <br>`;
-            //         fval.productsSystemInstruments[rowIndex][model] = false;
-            //     }
-            // }
+            }
+
             if (errors) {
                 toastr.error(errors);
             }
