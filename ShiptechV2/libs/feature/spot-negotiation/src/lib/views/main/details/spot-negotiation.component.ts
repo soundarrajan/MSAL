@@ -113,7 +113,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
 
     rowsArray.forEach((row, index) => {
-      row.isSelected = true;
       let currentLocProd= this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
       if(currentLocProd.length != 0){
         let currentLocProdCount = currentLocProd[0].requestProducts.length;
