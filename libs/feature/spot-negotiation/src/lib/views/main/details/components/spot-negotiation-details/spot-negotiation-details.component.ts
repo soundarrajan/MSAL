@@ -892,7 +892,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             let dataRows = [];
             gridApi.forEachNode(node => dataRows.push(node.data));
             dataRows = dataRows.splice(rowIndex, 1);
-            gridApi.applyTransaction({ remove: dataRows });
+            //gridApi.applyTransaction({ remove: dataRows });
+            gridApi.updateRowData({ remove: dataRows });
             this.toastr.success('Counterparty has been removed from negotiation succesfully.');
             this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
             if( res['requestLocationSellers'] && res['sellerOffers']){
