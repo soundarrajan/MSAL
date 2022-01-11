@@ -111,8 +111,9 @@
         </div>
         <div style="display: flex; margin-left: 10px;">
           <div style="float:left;" #requestContainer>
-            <div class="addRemoveRequest" [matMenuTriggerFor]="requestDeleteMenu" #deleteRequestTrigger="matMenuTrigger"
-              (contextmenu)="$event.preventDefault(); deleteRequestTrigger.openMenu()"
+
+            <div class="addRemoveRequest" [matMenuTriggerFor]="requestDeleteMenu" #deleteRequestTrigger="matMenuTrigger" (click)="deleteRequestTrigger.closeMenu()"
+             (contextmenu)="$event.preventDefault(); $event.stopPropagation(); deleteRequestTrigger.openMenu()"
               *ngFor="let item of requestOptions; let i = index">
               <div #requestTooltip class="checkboxOptions" [ngClass]="selReqIndex == i ? 'selected-request' : ''"
                 (click)="selectRequest($event, i, item)">
