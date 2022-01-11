@@ -365,7 +365,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (!additionalCost.priceUomId) {
       return;
     }
-    additionalCost.prodConv = [];
     for (let i = 0; i < this.productList.length; i++) {
       let prod = this.productList[i];
       this.setConvertedAddCost(prod, additionalCost, i);
@@ -392,6 +391,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         ToUomId: toUomId
       }
     };
+
+    additionalCost.prodConv = _.cloneDeep([]);
 
     if (toUomId == fromUomId) {
       additionalCost.prodConv[i] = 1;

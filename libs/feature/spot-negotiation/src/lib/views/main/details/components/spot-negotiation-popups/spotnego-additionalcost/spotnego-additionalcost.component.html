@@ -255,8 +255,11 @@
                       (keypress)="keyPressNumber($event)"
                       [(ngModel)]="offerAdditionalCost.extras"
                       (ngModelChange)="
-                        enableSave = true;
-                        calculateAdditionalCostAmounts(offerAdditionalCost)
+                        additionalCostNameChanged(
+                          offerAdditionalCost,
+                          true,
+                          true
+                        )
                       "
                     />
                   </mat-form-field>
