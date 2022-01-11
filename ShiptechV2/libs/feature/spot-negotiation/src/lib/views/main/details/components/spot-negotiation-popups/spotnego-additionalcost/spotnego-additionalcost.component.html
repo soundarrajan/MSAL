@@ -59,10 +59,7 @@
               let j = index
             "
           >
-            <tr
-              class="border-bottom"
-              *ngIf="!offerAdditionalCostList.isDeleted"
-            >
+            <tr class="border-bottom" *ngIf="!offerAdditionalCost.isDeleted">
               <td
                 class="decrement-circle-button"
                 (click)="removeAdditionalCost(j)"
