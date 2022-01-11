@@ -147,11 +147,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.spinner.hide();
           this.toastr.error(response);
         } else {
-          console.log(response);
           this.spinner.hide();
           this.additionalCostList = _.cloneDeep(response.payload);
           this.createAdditionalCostTypes();
-          console.log(this.additionalCostList);
         }
       });
     if (this.rowData?.requestOffers?.length > 0) {
@@ -169,7 +167,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           if (typeof response === 'string') {
             this.toastr.error(response);
           } else {
-            console.log(response);
             this.offerAdditionalCostList = _.cloneDeep(
               response.offerAdditionalCosts
             );
@@ -290,6 +287,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       selectedApplicableForId: this.applicableForItems[0].id,
       currency: this.currency,
       offerId: this.offerId,
+      requestLocationId: this.rowData.requestLocationId,
       isDeleted: false,
       id: 0
     } as AdditionalCostViewModel;
@@ -659,6 +657,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         let elem = {
           id: this.offerAdditionalCostList[i].id,
           offerId: this.offerAdditionalCostList[i].offerId,
+          requestLocationId: this.offerAdditionalCostList[i].requestLocationId,
           additionalCostId: this.offerAdditionalCostList[i].additionalCostId,
           costTypeId: this.offerAdditionalCostList[i].costTypeId,
           maxQuantity: this.offerAdditionalCostList[i].maxQuantity,
