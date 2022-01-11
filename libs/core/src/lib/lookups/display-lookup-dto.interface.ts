@@ -8,7 +8,6 @@ export interface IDisplayLookupDto<TId = number, TName = string>
   displayName: string;
 }
 
-
 export interface IVesselToWatchLookupDto extends IDisplayLookupDto {
   vesselToWatchFlag: boolean;
 }

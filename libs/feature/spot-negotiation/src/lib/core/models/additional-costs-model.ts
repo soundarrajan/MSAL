@@ -11,11 +11,12 @@ export interface AdditionalCostViewModel {
   additionalCost: IDisplayLookupDto;
   additionalCostId: number;
   costName: string;
-  currency: string;
+  currency: any;
   currencyId: number;
   priceUomId?: number;
   maxQuantity: number;
   maxQuantityUom: string;
+  maxQtyUomId?: number;
   price: number;
   ratePerUom?: number;
   amount: number;
@@ -26,7 +27,7 @@ export interface AdditionalCostViewModel {
   isAllProductsCost: boolean;
   requestProductId?: number | null;
   isLocationBased: boolean;
-  isDeleted: boolean;
+  isDeleted?: boolean;
   selectedApplicableForId: number | 0;
   locationAdditionalCostId: number | null;
 }

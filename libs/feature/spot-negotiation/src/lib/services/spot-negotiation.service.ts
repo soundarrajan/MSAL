@@ -314,6 +314,14 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getMasterAdditionalCosts(payload);
   }
 
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  getUomConversionFactor(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getUomConversionFactor(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
