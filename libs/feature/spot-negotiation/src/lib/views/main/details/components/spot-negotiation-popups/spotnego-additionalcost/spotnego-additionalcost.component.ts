@@ -85,6 +85,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   priceFormat: string;
   offerId: number;
   additionalCostTypes: any = {};
+  saveButtonClicked: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
@@ -244,7 +245,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
     cost.maxQtyUomId = maxQtyDetails.maxQtyUomId;
-    this.enableSave = true;
   }
 
   getMaxQuantityByApplicableFor(requestProductId: any) {
@@ -279,12 +279,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     );
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
-    this.enableSave = true;
   }
 
   addNewAdditionalCostLine() {
     const additionalCost = {
+      additionalCostId: null,
+      costTypeId: null,
+      price: null,
       selectedApplicableForId: this.applicableForItems[0].id,
+      currencyId: this.currency.id,
       currency: this.currency,
       offerId: this.offerId,
       requestLocationId: this.rowData.requestLocationId,
@@ -292,6 +295,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       id: 0
     } as AdditionalCostViewModel;
     this.offerAdditionalCostList.push(additionalCost);
+    this.onApplicableForChange(
+      additionalCost.selectedApplicableForId,
+      this.offerAdditionalCostList.length - 1
+    );
   }
 
   removeAdditionalCost(key: number) {
@@ -315,6 +322,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    * Change the cost type to the default for the respective additional cost.
    */
   additionalCostNameChanged(additionalCost, skipDefault, skipDefaultPriceUom) {
+    this.enableSave = true;
     console.log(additionalCost);
     if (!skipDefault) {
       additionalCost.costTypeId = this.getAdditionalCostDefaultCostType(
@@ -324,7 +332,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
     if (!skipDefaultPriceUom) {
       if (additionalCost.costTypeId != 2) {
-        additionalCost.priceUomId = 0;
+        additionalCost.priceUomId = null;
       } else {
         const maxQtyDetails = this.getMaxQuantityByApplicableFor(
           additionalCost.selectedApplicableForId
@@ -645,9 +653,41 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     return null;
   }
 
+  checkRequiredFields(): string {
+    let additionalCostRequired = [];
+    for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
+      if (!this.offerAdditionalCostList[i].additionalCostId) {
+        additionalCostRequired.push(
+          'Cost name for line ' + (i + 1) + ' is required!'
+        );
+      }
+      if (!this.offerAdditionalCostList[i].price) {
+        additionalCostRequired.push(
+          'Price for line ' + (i + 1) + ' is required!'
+        );
+      }
+    }
+    let additionalCostRequiredString = '';
+    for (let i = 0; i < additionalCostRequired.length; i++) {
+      additionalCostRequiredString += additionalCostRequired[i] + ',';
+    }
+    if (
+      additionalCostRequiredString[additionalCostRequiredString.length - 1] ==
+      ','
+    ) {
+      additionalCostRequiredString = additionalCostRequiredString.substring(
+        0,
+        additionalCostRequiredString.length - 1
+      );
+    }
+    return additionalCostRequiredString;
+  }
+
   saveAdditionalCosts() {
-    if (!this.enableSave) {
-      this.toastr.warning('No changes are made to perform save.');
+    this.saveButtonClicked = true;
+    let additionalCostRequiredString = this.checkRequiredFields();
+    if (additionalCostRequiredString != '') {
+      this.toastr.error(additionalCostRequiredString);
       return;
     }
     let offerAdditionalCostArray = [];
@@ -658,8 +698,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           id: this.offerAdditionalCostList[i].id,
           offerId: this.offerAdditionalCostList[i].offerId,
           requestLocationId: this.offerAdditionalCostList[i].requestLocationId,
-          additionalCostId: this.offerAdditionalCostList[i].additionalCostId,
-          costTypeId: this.offerAdditionalCostList[i].costTypeId,
+          additionalCostId: this.offerAdditionalCostList[i].additionalCostId
+            ? this.offerAdditionalCostList[i].additionalCostId
+            : null,
+          costTypeId: this.offerAdditionalCostList[i].costTypeId
+            ? this.offerAdditionalCostList[i].costTypeId
+            : null,
           maxQuantity: this.offerAdditionalCostList[i].maxQuantity,
           maxQuantityUom: this.offerAdditionalCostList[i].maxQuantityUom,
           currencyId: this.offerAdditionalCostList[i].currencyId,
@@ -674,7 +718,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           isAllProductsCost: this.offerAdditionalCostList[i].isAllProductsCost,
           requestProductId: this.offerAdditionalCostList[i].requestProductId
             ? this.offerAdditionalCostList[i].requestLocationId
-            : 0,
+            : null,
           isDeleted: this.offerAdditionalCostList[i].isDeleted,
           isLocationBased: false
         };
@@ -783,6 +827,20 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       } else {
         return this._decimalPipe.transform(plainNumber, this.priceFormat);
       }
+    }
+  }
+
+  // Only Number
+  keyPressNumber(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
   }
 }
