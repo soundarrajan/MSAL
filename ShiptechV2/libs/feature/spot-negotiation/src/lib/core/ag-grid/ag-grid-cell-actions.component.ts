@@ -173,7 +173,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     var FinalAPIdata = {
       reqLocSellers: [{
         requestLocationSellerId: updatedRow.id,
-        isSelected: params.value
+        isSelected: params.value === false? true : false
       }]
 
     };
