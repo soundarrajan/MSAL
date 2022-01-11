@@ -11,7 +11,7 @@ export interface AdditionalCostViewModel {
   additionalCost: IDisplayLookupDto;
   additionalCostId: number;
   costName: string;
-  currency: IDisplayLookupDto;
+  currency: any;
   currencyId: number;
   priceUomId?: number;
   maxQuantity: number;

@@ -1,9 +1,17 @@
 <div class="spot-popup-header-container applicable-cost-popup-header">
   <div class="spot-nego-title">Additional Costs</div>
   <div class="spot-dialog-title-right popup-header-form">
-    <button class="save-btn" mat-button (click)="saveAdditionalCosts()">
+    <button
+      [ngClass]="{
+        'save-btn': !enableSave,
+        'mid-blue-button': enableSave
+      }"
+      mat-button
+      (click)="saveAdditionalCosts()"
+    >
       Save
     </button>
+
     <div class="title-divider">|</div>
     <div class="close-circle" style="padding:0px;">
       <mat-icon
@@ -38,7 +46,7 @@
           <th class="text-left">Cost Name</th>
           <th class="text-left">Cost Type</th>
           <th class="text-left ">Max Qty</th>
-          <th class="text-left" style="width: 275px;">
+          <th class="text-left" style="width: 215px;">
             Price
           </th>
           <th class="text-left">Applicable for</th>
@@ -69,7 +77,14 @@
                   <div class="minus">-</div>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td
+                class="text-left"
+                [ngClass]="{
+                  'required-field':
+                    saveButtonClicked && !offerAdditionalCost.additionalCostId,
+                  'cell-dashed-border': !saveButtonClicked
+                }"
+              >
                 <div class="custom-form-field">
                   <mat-form-field
                     class="without-search spot-dropdown-component"
@@ -146,37 +161,22 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 275px" class="text-left cell-dashed-border ">
+              <td style="width: 215px" class="text-left cell-dashed-border ">
                 <div class="dotted-container">
-                  <div style="width: 250px;">
+                  <div style="width: 200px;">
                     <div class="split-field">
                       <mat-form-field
-                        style="width: 33%"
-                        class="without-search spot-dropdown-component"
-                        appearance="none"
-                      >
-                        <mat-select
-                          [(ngModel)]="offerAdditionalCost.currency"
-                          [compareWith]="compareObjects"
-                          disableRipple
-                          [disableOptionCentering]="true"
-                          [disabled]="true"
-                          panelClass="spot-select-panel-container"
-                        >
-                          <mat-option
-                            *ngFor="let option of currencyList"
-                            [value]="option"
-                            >{{ option.name }}</mat-option
-                          >
-                        </mat-select>
-                      </mat-form-field>
-                      <mat-form-field
                         class="without-search"
-                        style="width: 33%;border: none;"
+                        style="width: 50%;border: none;"
                         appearance="none"
+                        [ngClass]="{
+                          'required-field':
+                            saveButtonClicked && !offerAdditionalCost.price
+                        }"
                       >
                         <input
                           matInput
+                          (keypress)="keyPressNumber($event)"
                           autocomplete="off"
                           priceFormat
                           [(ngModel)]="offerAdditionalCost.price"
@@ -192,7 +192,7 @@
                       <mat-form-field
                         class="without-search spot-dropdown-component"
                         appearance="none"
-                        style="width: 33%"
+                        style="width: 50%"
                       >
                         <mat-select
                           disableRipple
@@ -252,8 +252,10 @@
                       matInput
                       autocomplete="off"
                       priceFormat
+                      (keypress)="keyPressNumber($event)"
                       [(ngModel)]="offerAdditionalCost.extras"
                       (ngModelChange)="
+                        enableSave = true;
                         calculateAdditionalCostAmounts(offerAdditionalCost)
                       "
                     />

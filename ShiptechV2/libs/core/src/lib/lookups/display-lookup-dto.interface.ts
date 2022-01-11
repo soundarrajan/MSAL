@@ -6,7 +6,6 @@ export interface IDisplayLookupDto<TId = number, TName = string>
   id: TId;
   name: TName;
   displayName: string;
-  code?: string;
 }
 
 export interface IVesselToWatchLookupDto extends IDisplayLookupDto {
