@@ -7228,3 +7228,25 @@ label {
     box-shadow: none;
   }
 }
+
+.smart-operator {
+  .green {
+    color: $green;
+  }
+  .brown {
+    color: $brown;
+  }
+  .magenta {
+    color: $magenta
+  }
+
+  &.green {
+    color: $green;
+  }
+  &.brown {
+    color: $brown;
+  }
+  &.magenta {
+    color: $magenta;
+  }
+}
