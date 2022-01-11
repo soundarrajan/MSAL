@@ -5,7 +5,8 @@ import {
   Inject,
   ViewChild,
   ElementRef,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -17,6 +18,7 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
 import { AdditionalCostViewModel } from '../../../../../../core/models/additional-costs-model';
 
 export const COMPONENT_TYPE_IDS = {
@@ -68,7 +70,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   enableSave: boolean = false;
   requestLocation: any;
   costTypeList: any[];
-  productList: any[];
+  productList: any[] = [];
   additionalCostList: any;
   offerAdditionalCostList: AdditionalCostViewModel[] = [];
   locationAdditionalCostsList: AdditionalCostViewModel[] = [];
@@ -82,6 +84,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   currencyList: any[];
   priceFormat: string;
   offerId: number;
+  additionalCostTypes: any = {};
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
@@ -91,6 +94,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private tenantSettingsService: TenantSettingsService,
+    private changeDetectorRef: ChangeDetectorRef,
 
     private tenantService: TenantFormattingService,
     @Inject(DecimalPipe) private _decimalPipe
@@ -118,17 +122,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.buildApplicableForItems();
     this.getAdditionalCosts();
   }
 
   getAdditionalCosts() {
     this.legacyLookupsDatabase.getTableByName('costType').then(response => {
       this.costTypeList = response;
-    });
-    this.legacyLookupsDatabase.getTableByName('product').then(response => {
-      console.log(response);
-      this.productList = response;
     });
     this.legacyLookupsDatabase.getTableByName('uom').then(response => {
       console.log(response);
@@ -140,20 +139,24 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       this.currencyList = response;
     });
 
+    this.spinner.show();
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
       .subscribe((response: any) => {
         if (typeof response === 'string') {
+          this.spinner.hide();
           this.toastr.error(response);
         } else {
           console.log(response);
+          this.spinner.hide();
           this.additionalCostList = _.cloneDeep(response.payload);
+          this.createAdditionalCostTypes();
           console.log(this.additionalCostList);
         }
       });
-
     if (this.rowData?.requestOffers?.length > 0) {
       const firstOffer = this.rowData.requestOffers[0];
+      this.buildApplicableForItems(this.rowData);
       this.offerId = firstOffer.offerId;
       const payload = {
         offerId: firstOffer.offerId,
@@ -178,37 +181,72 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
   }
 
+  createAdditionalCostTypes() {
+    for (let i = 0; i < this.additionalCostList.length; i++) {
+      if (
+        typeof this.additionalCostTypes[this.additionalCostList[i].id] ==
+        'undefined'
+      ) {
+        this.additionalCostTypes[this.additionalCostList[i].id] = [];
+      }
+      this.additionalCostTypes[
+        this.additionalCostList[i].id
+      ] = this.additionalCostList[i];
+    }
+  }
+
   /**
    * Create Applicable For dropdown values
    */
 
-  buildApplicableForItems() {
-    this.applicableForItems.push({ id: 0, name: 'All' });
-    this.requestLocation.requestProducts.forEach((product: any) => {
-      if (product.status !== 'Stemmed') {
-        this.applicableForItems.push({
-          id: product.id,
-          name: product.productName
+  buildApplicableForItems(rowData) {
+    let applicableForItemsArray = [];
+    this.requestLocation.requestProducts.forEach((product: any, index) => {
+      if (product.status != 'Stemmed') {
+        let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function(
+          object: any
+        ) {
+          return object.requestProductId == product.id;
         });
-        this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
-        this.maxQuantityUomId = product.uomId;
-        this.maxQuantityUom = product.uomName;
+        if (findRowDataOfferIndex != -1) {
+          applicableForItemsArray.push({
+            id: product.id,
+            name: product.productName,
+            productId: product.productId
+          });
+          this.maxQuantityUomId = product.uomId;
+          this.maxQuantityUom = product.uomName;
+
+          this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
+
+          this.productList.push(product);
+        }
       }
     });
+    if (applicableForItemsArray.length > 1) {
+      const allElement = { id: 0, name: 'All' };
+      this.applicableForItems = _.cloneDeep(
+        [allElement].concat(applicableForItemsArray)
+      );
+      console.log(this.applicableForItems);
+    } else {
+      this.applicableForItems = _.cloneDeep(applicableForItemsArray);
+    }
   }
 
-  onCostSelectionChange(additionalCost: any, selectedIndex: number) {
+  onCostSelectionChange(additionalCostId: number, selectedIndex: number) {
     let cost = this.offerAdditionalCostList[selectedIndex];
-    cost.requestLocationId = this.requestLocation.id;
+    cost.requestProductId =
+      cost.selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
+    cost.isAllProductsCost = cost.requestProductId ? false : true;
     cost.isLocationBased = false;
-    cost.additionalCostId = additionalCost.id;
+    cost.additionalCostId = additionalCostId;
     const maxQtyDetails = this.getMaxQuantityByApplicableFor(
       cost.selectedApplicableForId
     );
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
-    cost.priceUomId = maxQtyDetails.maxQtyUomId;
-    this.calculateAdditionalCostAmounts(cost);
+    cost.maxQtyUomId = maxQtyDetails.maxQtyUomId;
     this.enableSave = true;
   }
 
@@ -244,23 +282,27 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     );
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
-    cost.priceUomId = maxQtyDetails.maxQtyUomId;
-    this.calculateAdditionalCostAmounts(cost);
     this.enableSave = true;
   }
 
-  addNew() {
+  addNewAdditionalCostLine() {
     const additionalCost = {
-      selectedApplicableForId: 0,
+      selectedApplicableForId: this.applicableForItems[0].id,
       currency: this.currency,
-      offerId: this.offerId
+      offerId: this.offerId,
+      isDeleted: false,
+      id: 0
     } as AdditionalCostViewModel;
     this.offerAdditionalCostList.push(additionalCost);
   }
 
-  removeCost(j: number, cost: any) {
-    this.offerAdditionalCostList.splice(j, 1);
-    cost.isDeleted = true;
+  removeAdditionalCost(key: number) {
+    if (this.offerAdditionalCostList[key].id) {
+      this.offerAdditionalCostList[key].isDeleted = true;
+    } else {
+      this.offerAdditionalCostList.splice(key, 1);
+    }
+    this.recalculatePercentAdditionalCosts();
   }
 
   closeDialog() {
@@ -274,11 +316,108 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   /**
    * Change the cost type to the default for the respective additional cost.
    */
-  additionalCostNameChanged(additionalCost) {
+  additionalCostNameChanged(additionalCost, skipDefault, skipDefaultPriceUom) {
     console.log(additionalCost);
-    additionalCost.costTypeId = this.getAdditionalCostDefaultCostType(
-      additionalCost
-    ).id;
+    if (!skipDefault) {
+      additionalCost.costTypeId = this.getAdditionalCostDefaultCostType(
+        additionalCost
+      ).id;
+    }
+
+    if (!skipDefaultPriceUom) {
+      if (additionalCost.costTypeId != 2) {
+        additionalCost.priceUomId = 0;
+      } else {
+        const maxQtyDetails = this.getMaxQuantityByApplicableFor(
+          additionalCost.selectedApplicableForId
+        );
+        additionalCost.priceUomId = maxQtyDetails.maxQtyUomId;
+      }
+    }
+
+    if (additionalCost.costTypeId == 2) {
+      this.addPriceUomChanged(additionalCost);
+    } else {
+      this.calculateAdditionalCostAmounts(additionalCost);
+      this.recalculatePercentAdditionalCosts();
+    }
+  }
+
+  recalculatePercentAdditionalCosts() {
+    for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
+      if (!this.offerAdditionalCostList[i].isDeleted) {
+        if (
+          this.offerAdditionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT
+        ) {
+          this.calculateAdditionalCostAmounts(this.offerAdditionalCostList[i]);
+        }
+      }
+    }
+  }
+
+  addPriceUomChanged(additionalCost) {
+    if (!additionalCost.priceUomId) {
+      return;
+    }
+    additionalCost.prodConv = [];
+    for (let i = 0; i < this.productList.length; i++) {
+      let prod = this.productList[i];
+      this.setConvertedAddCost(prod, additionalCost, i);
+    }
+  }
+
+  setConvertedAddCost(prod, additionalCost, i) {
+    this.getConvertedUOM(
+      prod.productId,
+      1,
+      prod.uomId,
+      additionalCost.priceUomId,
+      additionalCost,
+      i
+    );
+  }
+
+  getConvertedUOM(productId, quantity, fromUomId, toUomId, additionalCost, i) {
+    let payload = {
+      Payload: {
+        ProductId: productId,
+        Quantity: quantity,
+        FromUomId: fromUomId,
+        ToUomId: toUomId
+      }
+    };
+
+    if (toUomId == fromUomId) {
+      additionalCost.prodConv[i] = 1;
+      if (
+        additionalCost.priceUomId &&
+        additionalCost.prodConv &&
+        additionalCost.prodConv.length == this.productList.length
+      ) {
+        this.calculateAdditionalCostAmounts(additionalCost);
+        this.recalculatePercentAdditionalCosts();
+      }
+    } else {
+      this.spotNegotiationService
+        .getUomConversionFactor(payload)
+        .pipe(finalize(() => {}))
+        .subscribe((result: any) => {
+          if (typeof result == 'string') {
+            this.toastr.error(result);
+          } else {
+            console.log(result);
+            additionalCost.prodConv[i] = _.cloneDeep(result);
+            if (
+              additionalCost.priceUomId &&
+              additionalCost.prodConv &&
+              additionalCost.prodConv.length == this.productList.length
+            ) {
+              this.calculateAdditionalCostAmounts(additionalCost);
+              this.recalculatePercentAdditionalCosts();
+            }
+          }
+        });
+    }
   }
 
   /**
@@ -288,45 +427,52 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (!additionalCost.additionalCostId) {
       return false;
     }
-    let index = _.findIndex(this.additionalCostList, function(object: any) {
-      return object.id == additionalCost.additionalCostId;
-    });
-    if (index != -1) {
-      if (this.additionalCostList[index].costType) {
-        if (
-          this.additionalCostList[index].costType.id == 1 ||
-          this.additionalCostList[index].costType.id == 2
-        ) {
-          additionalCost.allowedCostTypes = [];
-          this.costTypeList.forEach(v => {
-            if (v.id == 1 || v.id == 2) {
-              additionalCost.allowedCostTypes.push(v);
-            }
-          });
-        } else if (this.additionalCostList[index].costType.id == 3) {
-          additionalCost.allowedCostTypes = [];
-          this.costTypeList.forEach(v => {
-            if (v.id == 3) {
-              additionalCost.allowedCostTypes.push(v);
-            }
-          });
-        } else if (this.additionalCostList[index].costType.id == 4) {
-          additionalCost.allowedCostTypes = [];
-          this.costTypeList.forEach(v => {
-            if (v.id == 4) {
-              additionalCost.allowedCostTypes.push(v);
-            }
-          });
-        } else if (this.additionalCostList[index].costType.id == 5) {
-          additionalCost.allowedCostTypes = [];
-          this.costTypeList.forEach(v => {
-            if (v.id == 5) {
-              additionalCost.allowedCostTypes.push(v);
-            }
-          });
-        }
-        return this.additionalCostList[index].costType;
+
+    if (this.additionalCostTypes[additionalCost.additionalCostId].costType) {
+      if (
+        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
+          1 ||
+        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
+          2
+      ) {
+        additionalCost.allowedCostTypes = [];
+        this.costTypeList.forEach(v => {
+          if (v.id == 1 || v.id == 2) {
+            additionalCost.allowedCostTypes.push(v);
+          }
+        });
+      } else if (
+        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
+        3
+      ) {
+        additionalCost.allowedCostTypes = [];
+        this.costTypeList.forEach(v => {
+          if (v.id == 3) {
+            additionalCost.allowedCostTypes.push(v);
+          }
+        });
+      } else if (
+        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
+        4
+      ) {
+        additionalCost.allowedCostTypes = [];
+        this.costTypeList.forEach(v => {
+          if (v.id == 4) {
+            additionalCost.allowedCostTypes.push(v);
+          }
+        });
+      } else if (
+        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
+        5
+      ) {
+        additionalCost.allowedCostTypes = [];
+        this.costTypeList.forEach(v => {
+          if (v.id == 5) {
+            additionalCost.allowedCostTypes.push(v);
+          }
+        });
       }
+      return this.additionalCostTypes[additionalCost.additionalCostId].costType;
     }
 
     return false;
@@ -345,13 +491,69 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    */
   calculateAdditionalCostAmounts(additionalCost) {
     let totalAmount, productComponent;
-    if (!additionalCost.costType) {
+    if (!additionalCost.costTypeId) {
       return additionalCost;
     }
-    switch (additionalCost.costType.id) {
+    switch (additionalCost.costTypeId) {
       case COST_TYPE_IDS.FLAT:
         additionalCost.amount = parseFloat(additionalCost.price);
         productComponent = this.isProductComponent(additionalCost);
+        break;
+
+      case COST_TYPE_IDS.UNIT:
+        additionalCost.amount = 0;
+        productComponent = this.isProductComponent(additionalCost);
+        if (
+          additionalCost.priceUomId &&
+          additionalCost.prodConv &&
+          additionalCost.prodConv.length == this.productList.length
+        ) {
+          for (let i = 0; i < this.productList.length; i++) {
+            let product = this.productList[i];
+            if (
+              additionalCost.isAllProductsCost ||
+              product.id == additionalCost.requestProductId
+            ) {
+              additionalCost.amount =
+                additionalCost.amount +
+                product.maxQuantity *
+                  additionalCost.prodConv[i] *
+                  parseFloat(additionalCost.price);
+            }
+          }
+        }
+        break;
+
+      case COST_TYPE_IDS.PERCENT:
+        productComponent = this.isProductComponent(additionalCost);
+        if (additionalCost.isAllProductsCost || !productComponent) {
+          totalAmount = this.sumProductAmounts(this.rowData.requestOffers);
+        } else {
+          let findProductIndex = _.findIndex(
+            this.rowData.requestOffers,
+            function(object: any) {
+              return object.requestProductId == additionalCost.requestProductId;
+            }
+          );
+          if (findProductIndex != -1) {
+            let product = this.rowData.requestOffers[findProductIndex];
+            totalAmount = product.amount;
+          }
+        }
+        console.log(productComponent);
+        console.log(totalAmount);
+        if (productComponent) {
+          additionalCost.amount = (totalAmount * additionalCost.price) / 100;
+        } else {
+          totalAmount =
+            totalAmount + this.sumProductComponentAdditionalCostAmounts();
+          additionalCost.amount =
+            (totalAmount * parseFloat(additionalCost.price)) / 100;
+        }
+        break;
+      case COST_TYPE_IDS.RANGE:
+      case COST_TYPE_IDS.TOTAL:
+        additionalCost.amount = parseFloat(additionalCost.price) || 0;
         break;
     }
 
@@ -372,12 +574,47 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       additionalCost.totalAmount = null;
     }
 
-    additionalCost.rate =
+    additionalCost.ratePerUom =
       additionalCost.totalAmount / additionalCost.maxQuantity;
-    if (isNaN(additionalCost.rate)) {
-      additionalCost.rate = null;
+    if (isNaN(additionalCost.ratePerUom)) {
+      additionalCost.ratePerUom = null;
     }
     console.log(additionalCost);
+    console.log(additionalCost.amount);
+    console.log(additionalCost.extraAmount);
+    console.log(additionalCost.totalAmount);
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  /**
+   * Sum the Amount field of all products.
+   */
+  sumProductAmounts(products) {
+    let result = 0;
+    for (let i = 0; i < products.length; i++) {
+      result = result + Number(products[i].amount);
+    }
+    return result;
+  }
+
+  /**
+   * Sum the amounts of all additional costs that are NOT tax component additional costs.
+   */
+  sumProductComponentAdditionalCostAmounts() {
+    let result = 0;
+    if (!this.offerAdditionalCostList.length) {
+      return;
+    }
+    for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
+      if (
+        this.isProductComponent(this.offerAdditionalCostList[i]) ||
+        this.offerAdditionalCostList[i].costTypeId !== COST_TYPE_IDS.PERCENT
+      ) {
+        result = result + this.offerAdditionalCostList[i].totalAmount;
+      }
+    }
+    return result;
   }
 
   /**
@@ -385,15 +622,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    * to the ProductComponent category.
    */
   isProductComponent(additionalCost) {
-    if (!additionalCost.additionalCost) {
+    if (!additionalCost.additionalCostId) {
       return false;
     }
     additionalCost.isTaxComponent = false;
     if (
-      this.additionalCostList[additionalCost.additionalCost.id].componentType
+      this.additionalCostTypes[additionalCost.additionalCostId].componentType
     ) {
       additionalCost.isTaxComponent = !(
-        this.additionalCostList[additionalCost.additionalCost.id].componentType
+        this.additionalCostTypes[additionalCost.additionalCostId].componentType
           .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
       if (additionalCost.isTaxComponent) {
@@ -402,7 +639,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         additionalCost.isTaxComponent = false;
       }
       return (
-        this.additionalCostList[additionalCost.additionalCost.id].componentType
+        this.additionalCostTypes[additionalCost.additionalCostId].componentType
           .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
     }
@@ -420,48 +657,78 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       if (this.rowData?.requestOffers?.length > 0) {
         const firstOffer = this.rowData.requestOffers[0];
         let elem = {
-          offerId: firstOffer.offerId,
-          additionalCostId: this.offerAdditionalCostList[i].additionalCost
+          id: this.offerAdditionalCostList[i].id,
+          offerId: this.offerAdditionalCostList[i].offerId,
+          additionalCostId: this.offerAdditionalCostList[i].additionalCostId,
+          costTypeId: this.offerAdditionalCostList[i].costTypeId,
+          maxQuantity: this.offerAdditionalCostList[i].maxQuantity,
+          maxQuantityUom: this.offerAdditionalCostList[i].maxQuantityUom,
+          currencyId: this.offerAdditionalCostList[i].currencyId,
+          currency: this.offerAdditionalCostList[i].currency.name,
+          price: this.offerAdditionalCostList[i].price,
+          priceUomId: this.offerAdditionalCostList[i].priceUomId,
+          amount: this.offerAdditionalCostList[i].amount,
+          extras: this.offerAdditionalCostList[i].extras,
+          extraAmount: this.offerAdditionalCostList[i].extraAmount,
+          totalAmount: this.offerAdditionalCostList[i].totalAmount,
+          ratePerUom: this.offerAdditionalCostList[i].ratePerUom,
+          isAllProductsCost: this.offerAdditionalCostList[i].isAllProductsCost,
+          requestProductId: this.offerAdditionalCostList[i].requestProductId
+            ? this.offerAdditionalCostList[i].requestLocationId
+            : 0,
+          isDeleted: this.offerAdditionalCostList[i].isDeleted,
+          isLocationBased: false
         };
+        offerAdditionalCostArray.push(elem);
       }
     }
     console.log(this.offerAdditionalCostList);
-    let payload = {
-      offerAdditionalCosts: [
-        {
-          offerId: 169525,
-          additionalCostId: 1,
-          costTypeId: 1,
-          currencyId: 1,
-          price: 1200,
-          extraAmount: 0,
-          totalAmount: 12000,
-          ratePerUom: 0,
-          maxQuantity: 0,
-          priceUomId: null,
-          maxQtyUomId: null,
-          extras: 6,
-          comment: '',
-          isAllProductsCost: true,
-          isDeleted: false,
-          IsLocationBased: false
-        }
-      ]
-    };
+    console.log(offerAdditionalCostArray);
+    // let payload = {
+    //   additionalCosts: [
+    //     {
+    //       id: 0,
+    //       name: 'string',
+    //       offerId: 0,
+    //       requestOfferId: 0,
+    //       requestLocationId: 0,
+    //       additionalCostId: 0,
+    //       costTypeId: 0,
+    //       costType: 'string',
+    //       costName: 'string',
+    //       currencyId: 0,
+    //       currency: 'string',
+    //       price: 0,
+    //       amount: 0,
+    //       extraAmount: 0,
+    //       totalAmount: 0,
+    //       ratePerUom: 0,
+    //       maxQuantity: 0,
+    //       maxQuantityUom: 'string',
+    //       priceUomId: 0,
+    //       extras: 0,
+    //       comment: 'string',
+    //       isAllProductsCost: true,
+    //       requestProductId: 0,
+    //       isDeleted: true,
+    //       isLocationBased: true
+    //     }
+    //   ]
+    // };
+    let payload = { additionalCosts: offerAdditionalCostArray };
 
-    // const payload = { additionalCosts: this.locationBasedCosts };
-    // this.spotNegotiationService
-    //   .saveOfferAdditionalCosts(payload)
-    //   .subscribe((res: any) => {
-    //     if (res.status) {
-    //       // let locationAdditionalCosts = res?.costs?.locationAdditionalCosts;
-    //       // locationAdditionalCosts.forEach((cost: any) => {
-    //       //   cost.selectedApplicableForId = cost.requestProductId ?? 0;
-    //       // });
-    //       // this.locationBasedCosts = locationAdditionalCosts;
-    //       this.toastr.success('Additional cost saved successfully.');
-    //     } else this.toastr.error('Please try again later.');
-    //   });
+    this.spotNegotiationService
+      .saveOfferAdditionalCosts(payload)
+      .subscribe((res: any) => {
+        if (res.status) {
+          // let locationAdditionalCosts = res?.costs?.locationAdditionalCosts;
+          // locationAdditionalCosts.forEach((cost: any) => {
+          //   cost.selectedApplicableForId = cost.requestProductId ?? 0;
+          // });
+          // this.locationBasedCosts = locationAdditionalCosts;
+          this.toastr.success('Additional cost saved successfully.');
+        } else this.toastr.error('Please try again later.');
+      });
 
     this.enableSave = false;
   }

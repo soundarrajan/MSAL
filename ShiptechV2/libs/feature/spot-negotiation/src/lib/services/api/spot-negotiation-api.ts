@@ -38,7 +38,8 @@ export const SpotNegotiationApiPaths = {
   getRequestList: `api/procurement/rfq/selectRequest`,
   getLocationCosts: `price/locationCosts`,
   saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
-  getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`
+  getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
+  getUomConversionFactor: `api/masters/uoms/convertQuantity`
 };
 
 @Injectable({
@@ -684,6 +685,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
             body.error.ErrorMessage
               ? body.error.ErrorMessage
               : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getUomConversionFactor(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getUomConversionFactor}`,
+        request
+      )
+      .pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
           )
         )
       );
