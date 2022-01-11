@@ -806,48 +806,30 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   formatRowData(row, params) {
-    if (params.value) {
-      row.isSelected = false;
-      if (params.column.colId == 'checkProd1') {
-        row.checkProd1 = false;
-      } else if (params.column.colId == 'checkProd2') {
-        row.checkProd2 = false;
-      } else if (params.column.colId == 'checkProd3') {
-        row.checkProd3 = false;
-      } else if (params.column.colId == 'checkProd4') {
-        row.checkProd4 = false;
-      } else if (params.column.colId == 'checkProd5') {
-        row.checkProd5 = false;
-      }
-    } else {
-      var checkallprod = this.checkallProd(row, params);
-      if (!checkallprod) {
-        row.isSelected = true;
-      }
-      if (params.column.colId == 'checkProd1') {
-        row.checkProd1 = true;
-      } else if (params.column.colId == 'checkProd2') {
-        row.checkProd2 = true;
-      } else if (params.column.colId == 'checkProd3') {
-        row.checkProd3 = true;
-      } else if (params.column.colId == 'checkProd4') {
-        row.checkProd4 = true;
-      } else if (params.column.colId == 'checkProd5') {
-        row.checkProd5 = true;
-      }
-    }
-    return row;
-  }
-
-  checkallProd(row, params) {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
     });
     let currentLocProd = this.currentRequestData.filter(
       loc => loc.id == row.requestLocationId
     );
-    if (currentLocProd.length != 0) {
+    if(currentLocProd.length > 0){
       let currentLocProdCount = currentLocProd[0].requestProducts.length;
+      if (params.value) {
+        row.isSelected = false;
+        row[params.column.colId] = false;
+      } else {
+        var checkallprod = this.checkallProd(row, params,currentLocProdCount);
+        if (!checkallprod) {
+          row.isSelected = true;
+        }
+        row[params.column.colId] = true;
+      }
+    }
+    return row;
+  }
+
+  checkallProd(row, params, currentLocProdCount) {
+    if (currentLocProdCount) {
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
