@@ -1,11 +1,11 @@
-﻿commit 27aacf9584d75aaa0fee4ce07e2dc43a13d5bf8f
+﻿commit d42c564096a8655f0e98eaa5d214ac582d7fcd3b
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Jan 10 11:05:20 2022 +0000
+Date:   Tue Jan 11 13:26:58 2022 +0000
 
-    Merged PR 15429: Increased column widths for longer names
+    Merged PR 15454: Changed tooltip design
     
-    Increased column widths for longer names
+    Changed tooltip design
     
-    Related work items: #37933
+    Related work items: #37419
 
 branch: master
