@@ -19,6 +19,7 @@ import {
   SetLocationsRowsPriceDetails,
 } from '../../../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -34,6 +35,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
+
+  @ViewChild(SpotnegoemaillogComponent) spotEmailComp:SpotnegoemaillogComponent; 
 
   selectedSellerList: any[];
   currentRequestInfo: any;
@@ -65,7 +68,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   showEmailLogs() {
-    this.isOpen = true;
+    if(this.isOpen == false){
+      this.isOpen = true;
+    }
+     else{
+       this.spotEmailComp.getEmailLogs();
+     }
   }
 
   confirmorderpopup() {

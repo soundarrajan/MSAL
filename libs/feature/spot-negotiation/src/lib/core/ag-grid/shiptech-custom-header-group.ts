@@ -346,7 +346,7 @@ export class ShiptechCustomHeaderGroup {
 
       if (this.currentRequestInfo.requestLocations &&
         this.currentRequestInfo.requestLocations.length > 0) {
-        currentRequestLocation = this.currentRequestInfo.requestLocations[0];
+        currentRequestLocation = this.currentRequestInfo.requestLocations.filter(x=> x.id == reqLocationId);
       }
     }
 
@@ -358,12 +358,12 @@ export class ShiptechCustomHeaderGroup {
       data: {
         AddCounterpartiesAcrossLocations: false,
         RequestGroupId: RequestGroupId,
-        RequestLocationId: parseInt(currentRequestLocation.id),
-        LocationId: parseInt(currentRequestLocation.locationId),
+        RequestLocationId: currentRequestLocation[0].id,
+        LocationId: currentRequestLocation[0].locationId,
       }
     });
-
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {
+     });
   }
 
   limitStrLength = (text, max_length) => {
