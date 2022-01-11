@@ -1,9 +1,8 @@
 import { AdditionalCostViewModel } from './../../../../../../core/models/additional-costs-model';
-import { filter } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpotNegotiationService } from './../../../../../../services/spot-negotiation.service';
-import { Component, OnInit, Inject, ViewChild, ElementRef, } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-applicablecostpopup',
@@ -30,6 +29,7 @@ export class ApplicablecostpopupComponent implements OnInit {
 
   locationCosts: any = []; // location specific costs from location master
   locationBasedCosts: AdditionalCostViewModel[] = []; // saved location based costs
+  deletedCosts: AdditionalCostViewModel[] = []; // deleted costs
   applicableForItems: any = [];
   totalMaxQuantity: number = 0;
   maxQuantityUomId: number;
@@ -53,10 +53,19 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.spinner.show();
     this.spotNegotiationService.getLocationCosts(this.requestLocation.locationId)
     .subscribe((res: any)=>{
-      this.spinner.hide();
+      // this.spinner.hide();
       if(res){
         this.locationCosts = res;
       }
+      const payload = {
+        requestLocationId: this.requestLocation.id,
+        isLocationBased: true
+      };
+      this.spotNegotiationService.getAdditionalCosts(payload)
+        .subscribe((response: any) => {
+          this.spinner.hide();
+          this.locationBasedCosts = response.locationAdditionalCosts;
+         });
     });
   }
 
@@ -66,7 +75,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       return;
     }
 
-    const payload = { additionalCosts: this.locationBasedCosts }
+    const payload = { additionalCosts: this.locationBasedCosts.concat(this.deletedCosts) }
     this.spotNegotiationService.saveOfferAdditionalCosts(payload)
     .subscribe((res:any) => {
         if(res.status){
@@ -76,6 +85,7 @@ export class ApplicablecostpopupComponent implements OnInit {
           })
           this.locationBasedCosts = locationAdditionalCosts;
           this.toastr.success('Additional cost saved successfully.');
+          this.deletedCosts = [];
         }
         else
           this.toastr.error('Please try again later.')
@@ -88,7 +98,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.applicableForItems.push({ id: 0, name: 'All' });
     this.requestLocation.requestProducts.forEach((product: any) => {
       if (product.status !== 'Stemmed') {
-        this.applicableForItems.push({ id: product.id, name: product.productName });
+        this.applicableForItems.push({ id: product.id, name: product.productName, productId: product.productId });
         this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
         this.maxQuantityUomId = product.uomId;
         this.maxQuantityUom = product.uomName;
@@ -113,6 +123,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     const maxQtyDetails = this.getMaxQuantityByApplicableFor(cost.selectedApplicableForId);
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
+    cost.maxQtyUomId = maxQtyDetails.maxQtyUomId;
     cost.priceUomId = maxQtyDetails.maxQtyUomId;
     cost.price = selectedCost.price;
     cost.currency = selectedCost.currencyCode;
@@ -139,16 +150,92 @@ export class ApplicablecostpopupComponent implements OnInit {
     const maxQtyDetails = this.getMaxQuantityByApplicableFor(selectedApplicableForId);
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
+    cost.maxQtyUomId = maxQtyDetails.maxQtyUomId;
     cost.priceUomId = maxQtyDetails.maxQtyUomId;
     this.calculateCostAmount(cost);
     this.enableSave = true;
   }
 
   calculateCostAmount(cost: any){
-    cost.amount = cost.costType === 'Flat'? cost.price : cost.maxQuantity * cost.price;
-    cost.extraAmount = cost.extras? cost.amount * cost.extras/100: 0;
+    cost.amount = this.getCostAmountByType(cost);
+    cost.extraAmount = cost.extras? cost.amount * (cost.extras/100): 0;
     cost.totalAmount = cost.amount + cost.extraAmount;
     cost.ratePerUom = cost.totalAmount / cost.maxQuantity;
+  }
+
+  getCostAmountByType(cost: any){
+    var costAmount = 0;
+    switch(cost.costType){
+      case 'Flat':
+        costAmount = cost.price;
+        break;
+      case 'Unit':
+        costAmount = cost.maxQuantity * cost.price;
+        break;
+      case 'Percent':
+        costAmount = cost.price;
+        break;
+      case 'Range':
+      case 'Total':
+        this.getRangeTotalAdditionalCosts(cost);
+        break;
+    }
+    return costAmount;
+  }
+
+  getRangeTotalAdditionalCosts(cost: any){
+    let productId = cost.requestProductId?
+      this.applicableForItems.find((item: any) => item.id == cost.requestProductId)?.productId : 1;
+    const payload = {
+      Payload: {
+        Filters: [
+          {
+            ColumnName: 'ProductId',
+            Value: productId?? 1
+          },
+          {
+            ColumnName: 'LocationId',
+            Value: this.requestLocation.locationId
+          },
+          {
+            ColumnName: 'AdditionalCostId',
+            Value: cost.locationAdditionalCostId
+          },
+          {
+            ColumnName: 'Qty',
+            Value: cost.maxQuantity
+          },
+          {
+            ColumnName: 'QtyUomId',
+            Value: cost.maxQuantityUomId
+          }
+        ],
+        Pagination: {
+          Skip: 0,
+          Take: 25
+        },
+        SearchText: null
+      }
+    };
+
+    this.spinner.show();
+    this.spotNegotiationService.getRangeTotalAdditionalCosts(payload)
+      .subscribe((response: any) => {
+        this.spinner.hide();
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          cost.price = response.price;
+          cost.amount = response.price;
+
+          cost.extraAmount = cost.extras ? cost.amount * (cost.extras / 100) : 0;
+          cost.totalAmount = cost.amount + cost.extraAmount;
+          cost.ratePerUom = cost.totalAmount / cost.maxQuantity;
+
+          let locationBasedCost = this.locationBasedCosts.find((c: any) => c.id == cost.id);
+          locationBasedCost = cost;
+        }
+      });
   }
 
   addNew() {
@@ -163,6 +250,10 @@ export class ApplicablecostpopupComponent implements OnInit {
   removeCost(j: number, cost: any) {
     this.locationBasedCosts.splice(j, 1);
     cost.isDeleted = true;
+    if(cost.id){
+      this.deletedCosts.push(cost);
+      this.enableSave = true;
+    }
   }
 
   closeDialog() {

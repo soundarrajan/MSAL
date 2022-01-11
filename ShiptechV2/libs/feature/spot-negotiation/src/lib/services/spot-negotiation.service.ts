@@ -292,6 +292,14 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
+ * @param payload
+ */
+  @ObservableException()
+  getRangeTotalAdditionalCosts(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getRangeTotalAdditionalCosts(payload);
+  }
+
+  /**
    * Fake populate rows
    */
   public getSpotDataJSON(): any {
