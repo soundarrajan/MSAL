@@ -663,7 +663,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           maxQuantity: this.offerAdditionalCostList[i].maxQuantity,
           maxQuantityUom: this.offerAdditionalCostList[i].maxQuantityUom,
           currencyId: this.offerAdditionalCostList[i].currencyId,
-          currency: this.offerAdditionalCostList[i].currency.name,
+          currency: this.offerAdditionalCostList[i].currency.code,
           price: this.offerAdditionalCostList[i].price,
           priceUomId: this.offerAdditionalCostList[i].priceUomId,
           amount: this.offerAdditionalCostList[i].amount,
