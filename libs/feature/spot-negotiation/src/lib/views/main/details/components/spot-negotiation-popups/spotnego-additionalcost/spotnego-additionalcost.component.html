@@ -29,7 +29,7 @@
           <th
             class="increment-circle-button"
             style="width: 30px;"
-            (click)="addNew()"
+            (click)="addNewAdditionalCostLine()"
           >
             <div class="increment-circle">
               <div class="plus">+</div>
@@ -53,222 +53,247 @@
     <div style="height: 107px; overflow-y: scroll;">
       <table>
         <tbody>
-          <tr
-            class="border-bottom"
+          <ng-container
             *ngFor="
               let offerAdditionalCost of offerAdditionalCostList;
               let j = index
             "
           >
-            <td
-              class="decrement-circle-button"
-              (click)="removeCost(j, offerAdditionalCost)"
-              style="width: 30px;"
+            <tr
+              class="border-bottom"
+              *ngIf="!offerAdditionalCostList.isDeleted"
             >
-              <div class="decrement-circle">
-                <div class="minus">-</div>
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border">
-              <div class="custom-form-field">
-                <mat-form-field
-                  class="without-search spot-dropdown-component"
-                  appearance="none"
-                >
-                  <mat-select
-                    [(ngModel)]="offerAdditionalCost.additionalCostId"
-                    (ngModelChange)="
-                      additionalCostNameChanged(offerAdditionalCost);
-                      onCostSelectionChange($event, j)
-                    "
-                    [disableOptionCentering]="true"
-                    panelClass="spot-select-panel-container"
+              <td
+                class="decrement-circle-button"
+                (click)="removeAdditionalCost(j)"
+                style="width: 30px;"
+              >
+                <div class="decrement-circle">
+                  <div class="minus">-</div>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="custom-form-field">
+                  <mat-form-field
+                    class="without-search spot-dropdown-component"
+                    appearance="none"
                   >
-                    <mat-option
-                      *ngFor="let option of additionalCostList"
-                      [value]="option.id"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border ">
-              <div class="custom-form-field">
-                <mat-form-field
-                  class="without-search spot-dropdown-component"
-                  appearance="none"
-                >
-                  <mat-select
-                    [(ngModel)]="offerAdditionalCost.costTypeId"
-                    [disableOptionCentering]="true"
-                    panelClass="spot-select-panel-container"
-                    [compareWith]="compareObjects"
-                  >
-                    <mat-option
-                      *ngFor="
-                        let option of offerAdditionalCost.allowedCostTypes
+                    <mat-select
+                      [(ngModel)]="offerAdditionalCost.additionalCostId"
+                      (ngModelChange)="
+                        onCostSelectionChange($event, j);
+                        additionalCostNameChanged(
+                          offerAdditionalCost,
+                          false,
+                          false
+                        )
                       "
-                      [value]="option.id"
+                      [disableOptionCentering]="true"
+                      panelClass="spot-select-panel-container"
                     >
-                      {{ option.name }}
+                      <mat-option
+                        *ngFor="let option of additionalCostList"
+                        [value]="option.id"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border ">
+                <div class="custom-form-field">
+                  <mat-form-field
+                    class="without-search spot-dropdown-component"
+                    appearance="none"
+                  >
+                    <mat-select
+                      [(ngModel)]="offerAdditionalCost.costTypeId"
+                      (ngModelChange)="
+                        additionalCostNameChanged(
+                          offerAdditionalCost,
+                          true,
+                          false
+                        )
+                      "
+                      [disableOptionCentering]="true"
+                      panelClass="spot-select-panel-container"
+                    >
+                      <mat-option
+                        *ngFor="
+                          let option of offerAdditionalCost.allowedCostTypes
+                        "
+                        [value]="option.id"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      offerAdditionalCost.maxQuantity
+                        ? quantityFormatValue(offerAdditionalCost.maxQuantity)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      offerAdditionalCost.maxQuantityUom
+                        ? offerAdditionalCost.maxQuantityUom
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td style="width: 275px" class="text-left cell-dashed-border ">
+                <div class="dotted-container">
+                  <div style="width: 250px;">
+                    <div class="split-field">
+                      <mat-form-field
+                        style="width: 33%"
+                        class="without-search spot-dropdown-component"
+                        appearance="none"
+                      >
+                        <mat-select
+                          [(ngModel)]="offerAdditionalCost.currency"
+                          [compareWith]="compareObjects"
+                          disableRipple
+                          [disableOptionCentering]="true"
+                          [disabled]="true"
+                          panelClass="spot-select-panel-container"
+                        >
+                          <mat-option
+                            *ngFor="let option of currencyList"
+                            [value]="option"
+                            >{{ option.name }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field
+                        class="without-search"
+                        style="width: 33%;border: none;"
+                        appearance="none"
+                      >
+                        <input
+                          matInput
+                          autocomplete="off"
+                          priceFormat
+                          [(ngModel)]="offerAdditionalCost.price"
+                          (ngModelChange)="
+                            additionalCostNameChanged(
+                              offerAdditionalCost,
+                              true,
+                              true
+                            )
+                          "
+                        />
+                      </mat-form-field>
+                      <mat-form-field
+                        class="without-search spot-dropdown-component"
+                        appearance="none"
+                        style="width: 33%"
+                      >
+                        <mat-select
+                          disableRipple
+                          [disableOptionCentering]="true"
+                          panelClass="spot-select-panel-container"
+                          [(ngModel)]="offerAdditionalCost.priceUomId"
+                          (ngModelChange)="
+                            additionalCostNameChanged(
+                              offerAdditionalCost,
+                              true,
+                              true
+                            )
+                          "
+                          [disabled]="
+                            !additionalCostPriceUomEnabled(offerAdditionalCost)
+                          "
+                        >
+                          <mat-option
+                            *ngFor="let option of uomList"
+                            [value]="option.id"
+                            >{{ option.name }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <mat-form-field
+                  appearance="none"
+                  class="without-search spot-dropdown-component"
+                >
+                  <mat-select
+                    [(ngModel)]="offerAdditionalCost.selectedApplicableForId"
+                    (ngModelChange)="
+                      onApplicableForChange($event, j);
+                      additionalCostNameChanged(offerAdditionalCost, true, true)
+                    "
+                    disableRipple
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container"
+                  >
+                    <mat-option
+                      *ngFor="let applicableFor of applicableForItems"
+                      [value]="applicableFor.id"
+                    >
+                      {{ applicableFor.name }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-              </div>
-            </td>
-            <td>
-              <div class="non-editable-container">
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="custom-form-field">
+                  <mat-form-field class="without-search" appearance="none">
+                    <input
+                      matInput
+                      autocomplete="off"
+                      priceFormat
+                      [(ngModel)]="offerAdditionalCost.extras"
+                      (ngModelChange)="
+                        calculateAdditionalCostAmounts(offerAdditionalCost)
+                      "
+                    />
+                  </mat-form-field>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
                 <div class="non-editable-container-text-left">
-                  {{
-                    offerAdditionalCost.maxQuantity
-                      ? quantityFormatValue(offerAdditionalCost.maxQuantity)
-                      : ' '
-                  }}
+                  {{ amountFormatValue(offerAdditionalCost.extraAmount) }}
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    offerAdditionalCost.maxQuantityUom
-                      ? offerAdditionalCost.maxQuantityUom
+                    offerAdditionalCost.currency
+                      ? offerAdditionalCost.currency.code
                       : ''
                   }}
                 </div>
-              </div>
-            </td>
-            <td style="width: 275px" class="text-left cell-dashed-border ">
-              <div class="dotted-container">
-                <div style="width: 250px;">
-                  <div class="split-field">
-                    <mat-form-field
-                      style="width: 33%"
-                      class="without-search spot-dropdown-component"
-                      appearance="none"
-                    >
-                      <mat-select
-                        [(ngModel)]="offerAdditionalCost.currency"
-                        [compareWith]="compareObjects"
-                        disableRipple
-                        [disableOptionCentering]="true"
-                        [disabled]="true"
-                        panelClass="spot-select-panel-container"
-                      >
-                        <mat-option
-                          *ngFor="let option of currencyList"
-                          [value]="option"
-                          >{{ option.name }}</mat-option
-                        >
-                      </mat-select>
-                    </mat-form-field>
-                    <mat-form-field
-                      class="without-search"
-                      style="width: 33%;border: none;"
-                      appearance="none"
-                    >
-                      <input
-                        matInput
-                        autocomplete="off"
-                        priceFormat
-                        [(ngModel)]="offerAdditionalCost.price"
-                        (ngModelChange)="
-                          calculateAdditionalCostAmounts(offerAdditionalCost)
-                        "
-                      />
-                    </mat-form-field>
-                    <mat-form-field
-                      class="without-search spot-dropdown-component"
-                      appearance="none"
-                      style="width: 33%"
-                    >
-                      <mat-select
-                        disableRipple
-                        [disableOptionCentering]="true"
-                        panelClass="spot-select-panel-container"
-                        [(ngModel)]="offerAdditionalCost.priceUomId"
-                        [disabled]="
-                          !additionalCostPriceUomEnabled(offerAdditionalCost)
-                        "
-                      >
-                        <mat-option
-                          *ngFor="let option of uomList"
-                          [value]="option.id"
-                          >{{ option.name }}</mat-option
-                        >
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="non-editable-container-text-left">
+                  {{ amountFormatValue(offerAdditionalCost.totalAmount) }}
                 </div>
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border">
-              <mat-form-field
-                appearance="none"
-                class="without-search spot-dropdown-component"
-              >
-                <mat-select
-                  [ngModel]="offerAdditionalCost.selectedApplicableForId"
-                  (ngModelChange)="
-                    offerAdditionalCost.selectedApplicableForId = $event;
-                    onApplicableForChange($event, j)
-                  "
-                  disableRipple
-                  [disableOptionCentering]="true"
-                  panelClass="spot-select-panel-container"
-                >
-                  <mat-option
-                    *ngFor="let applicableFor of applicableForItems"
-                    [value]="applicableFor.id"
-                  >
-                    {{ applicableFor.name }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-            <td class="text-left cell-dashed-border">
-              <div class="custom-form-field">
-                <mat-form-field class="without-search" appearance="none">
-                  <input
-                    matInput
-                    autocomplete="off"
-                    priceFormat
-                    [(ngModel)]="offerAdditionalCost.extras"
-                    (ngModelChange)="
-                      calculateAdditionalCostAmounts(offerAdditionalCost)
-                    "
-                  />
-                </mat-form-field>
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border">
-              <div class="non-editable-container-text-left">
-                {{ amountFormatValue(offerAdditionalCost.extraAmount) }}
-              </div>
-              <div class="non-editable-container-text-right">
-                {{
-                  offerAdditionalCost.currency
-                    ? offerAdditionalCost.currency.code
-                    : ''
-                }}
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border">
-              <div class="non-editable-container-text-left">
-                {{ amountFormatValue(offerAdditionalCost.totalAmount) }}
-              </div>
-              <div class="non-editable-container-text-right">
-                {{
-                  offerAdditionalCost.currency
-                    ? offerAdditionalCost.currency.code
-                    : ''
-                }}
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border">
-              <div class="non-editable-container-text-left">
-                {{ priceFormatValue(offerAdditionalCost.rate) }}
-              </div>
-            </td>
-          </tr>
+                <div class="non-editable-container-text-right">
+                  {{
+                    offerAdditionalCost.currency
+                      ? offerAdditionalCost.currency.code
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="non-editable-container-text-left">
+                  {{ priceFormatValue(offerAdditionalCost.ratePerUom) }}
+                </div>
+              </td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>
