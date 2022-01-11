@@ -275,8 +275,10 @@ export class SearchRequestPopupComponent implements OnInit {
     {
       headerName: 'Terminal',
       headerTooltip: 'Terminal',
-      field: 'userAction',
-      cellClass: ['aggridtextalign-left']
+      field: 'terminal',
+      suppressMenu: true,
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellClass: ['aggridtextalign-center'],
     }
   ];
 
