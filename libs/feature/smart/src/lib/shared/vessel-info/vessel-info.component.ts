@@ -90,6 +90,11 @@ export class VesselInfoComponent implements OnInit {
   checkAutoPlanGenInProgress : boolean = false
   BPlanGenTrigger = [];
   observableRef$;
+  public hsfoRobClasses: any;
+  public hsfo05RobClasses: any;
+  public ulsfoRobClasses: any;
+  public lsdisRobClasses: any;
+  public hsdisRobClasses: any;
 
   constructor(private store: Store, iconRegistry: MatIconRegistry,public vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
@@ -378,11 +383,27 @@ export class VesselInfoComponent implements OnInit {
         let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].planId: null;
         this.localService.loadROBArbitrage(bunkerPlanId).subscribe((data)=> {
           this.ROBArbitrageData = (data?.payload && data?.payload.length)? data.payload[0]: {};
+          /* ROB Color classes - Start */
+          this.hsfoRobClasses = this.getCurrentROBClasses('hsfoRobColor');
+          this.hsfo05RobClasses = this.getCurrentROBClasses('vlsfoRobColor');
+          this.ulsfoRobClasses = this.getCurrentROBClasses('ulsfoRobColor');
+          this.lsdisRobClasses = this.getCurrentROBClasses('lsdisRobColor');
+          this.hsdisRobClasses = this.getCurrentROBClasses('hsdisRobColor');
+          /* ROB Color classes - End */
           let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
           titleEle.click();
           this.saveCurrentROB(this.ROBArbitrageData);
         })
       })
+  }
+
+  getCurrentROBClasses(productTypeColorKey) {
+    return {
+      "smart-operator": true,
+      "green": this.ROBArbitrageData && this.ROBArbitrageData[productTypeColorKey] == "G",
+      "brown": this.ROBArbitrageData && this.ROBArbitrageData[productTypeColorKey] == "B",
+      "magenta": this.ROBArbitrageData && this.ROBArbitrageData[productTypeColorKey] == "M"
+    }
   }
 
   triggerTitleToBind() {
