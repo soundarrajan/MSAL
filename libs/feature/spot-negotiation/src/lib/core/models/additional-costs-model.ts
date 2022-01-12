@@ -17,6 +17,7 @@ export interface AdditionalCostViewModel {
   maxQuantity: number;
   maxQuantityUom: string;
   maxQtyUomId?: number;
+  maxQuantityUomId?: number;
   price: number;
   ratePerUom?: number;
   amount: number;

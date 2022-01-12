@@ -167,11 +167,17 @@
                     <div class="split-field">
                       <mat-form-field
                         class="without-search"
-                        style="width: 50%;border: none;"
+                        style="border: none;"
                         appearance="none"
                         [ngClass]="{
                           'required-field':
-                            saveButtonClicked && !offerAdditionalCost.price
+                            saveButtonClicked && !offerAdditionalCost.price,
+                          'not-unit-container': !additionalCostPriceUomEnabled(
+                            offerAdditionalCost
+                          ),
+                          'unit-container': additionalCostPriceUomEnabled(
+                            offerAdditionalCost
+                          )
                         }"
                       >
                         <input
@@ -193,6 +199,9 @@
                         class="without-search spot-dropdown-component"
                         appearance="none"
                         style="width: 50%"
+                        *ngIf="
+                          additionalCostPriceUomEnabled(offerAdditionalCost)
+                        "
                       >
                         <mat-select
                           disableRipple
@@ -336,7 +345,7 @@
           >
             <tr class="border-bottom" *ngIf="!locationAdditionalCost.isDeleted">
               <td style="width: 30px;"></td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="custom-form-field">
                   <mat-form-field
                     class="without-search spot-dropdown-component"
@@ -358,7 +367,7 @@
                   </mat-form-field>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border ">
+              <td class="text-left ">
                 <div class="custom-form-field">
                   <mat-form-field
                     class="without-search spot-dropdown-component"
@@ -402,13 +411,20 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 215px" class="text-left cell-dashed-border ">
+              <td style="width: 215px" class="text-left">
                 <div class="dotted-container">
                   <div style="width: 200px;">
                     <div class="split-field">
                       <mat-form-field
                         class="without-search"
-                        style="width: 50%;border: none;"
+                        [ngClass]="{
+                          'not-unit-container': !additionalCostPriceUomEnabled(
+                            locationAdditionalCost
+                          ),
+                          'unit-container': additionalCostPriceUomEnabled(
+                            locationAdditionalCost
+                          )
+                        }"
                         appearance="none"
                       >
                         <input
@@ -423,6 +439,9 @@
                         class="without-search spot-dropdown-component"
                         appearance="none"
                         style="width: 50%"
+                        *ngIf="
+                          additionalCostPriceUomEnabled(locationAdditionalCost)
+                        "
                       >
                         <mat-select
                           disableRipple
@@ -463,7 +482,7 @@
                   </mat-select>
                 </mat-form-field>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="custom-form-field">
                   <mat-form-field class="without-search" appearance="none">
                     <input
@@ -476,19 +495,19 @@
                   </mat-form-field>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="non-editable-container-text-left">
                   {{ amountFormatValue(locationAdditionalCost.extraAmount) }}
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
                     locationAdditionalCost.currency
-                      ? locationAdditionalCost.currency.name
+                      ? locationAdditionalCost.currency.code
                       : ''
                   }}
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="non-editable-container-text-left">
                   {{ amountFormatValue(locationAdditionalCost.totalAmount) }}
                 </div>
@@ -500,7 +519,7 @@
                   }}
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="non-editable-container-text-left">
                   {{ priceFormatValue(locationAdditionalCost.ratePerUom) }}
                 </div>
