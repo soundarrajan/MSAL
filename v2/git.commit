@@ -1,11 +1,9 @@
-﻿commit 8055b0c76e84149e49e7f45d30c91a696c3198c6
+﻿commit d896d3990a1e5623ac9bb970a96c3e0878d72c28
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Tue Jan 11 14:37:58 2022 +0000
+Date:   Wed Jan 12 11:05:55 2022 +0000
 
-    Merged PR 15455: current ROB Color changes
+    Merged PR 15467: delivery screen red error fix
     
-    35218 - current ROB Color changes
-    
-    Related work items: #35218
+    delivery screen red error fix. Priority fix for 20220112.1 release.
 
 branch: master
