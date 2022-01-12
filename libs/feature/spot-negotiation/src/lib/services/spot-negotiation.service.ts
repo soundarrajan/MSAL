@@ -292,8 +292,8 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
- * @param payload
- */
+   * @param payload
+   */
   @ObservableException()
   getRangeTotalAdditionalCosts(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getRangeTotalAdditionalCosts(payload);
@@ -328,14 +328,6 @@ export class SpotNegotiationService extends BaseStoreService
   @ObservableException()
   getUomConversionFactor(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getUomConversionFactor(payload);
-  }
-
-  /**
-   * @param payload
-   */
-  @ObservableException()
-  getRangeTotalAdditionalCosts(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.getRangeTotalAdditionalCosts(payload);
   }
 
   ngOnDestroy(): void {

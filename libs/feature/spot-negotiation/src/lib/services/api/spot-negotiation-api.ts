@@ -689,7 +689,8 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   getRangeTotalAdditionalCosts(request: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getRangeTotalAdditionalCosts}`, request
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getRangeTotalAdditionalCosts}`,
+        request
       )
       .pipe(
         map((body: any) => body.payload),
@@ -702,25 +703,6 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .post<any>(
         `${this._masterApiUrl}/${SpotNegotiationApiPaths.getUomConversionFactor}`,
-        request
-      )
-      .pipe(
-        map((body: any) => body.payload),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
-      );
-  }
-
-  @ObservableException()
-  getRangeTotalAdditionalCosts(request: any): Observable<any> {
-    return this.http
-      .post<any>(
-        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getRangeTotalAdditionalCosts}`,
         request
       )
       .pipe(
