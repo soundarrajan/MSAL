@@ -77,6 +77,7 @@
                   <div class="minus">-</div>
                 </div>
               </td>
+
               <td
                 class="text-left"
                 [ngClass]="{
@@ -246,12 +247,29 @@
                     disableRipple
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
+                    [disabled]="
+                      !offerAdditionalCost.selectedApplicableForId &&
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        offerAdditionalCost.selectedApplicableForId
+                      )
+                    "
                   >
                     <mat-option
                       *ngFor="let applicableFor of applicableForItems"
                       [value]="applicableFor.id"
                     >
                       {{ applicableFor.name }}
+                    </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !offerAdditionalCost.selectedApplicableForId &&
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost.selectedApplicableForId
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -467,7 +485,7 @@
                   </div>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <mat-form-field
                   appearance="none"
                   class="without-search spot-dropdown-component"
@@ -485,6 +503,17 @@
                       [value]="applicableFor.id"
                     >
                       {{ applicableFor.name }}
+                    </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !locationAdditionalCost.selectedApplicableForId &&
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          locationAdditionalCost.selectedApplicableForId
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
