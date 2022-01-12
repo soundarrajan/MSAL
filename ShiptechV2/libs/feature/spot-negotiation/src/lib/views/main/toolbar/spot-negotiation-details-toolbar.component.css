@@ -9,7 +9,7 @@
 }
 .st-breadcrumbs-progress-bar .page-breadcrumb {
   /* width: 100%; */
-  padding: 0;
+   padding: 0; 
 }
 
 .page-bar .page-breadcrumb {
@@ -209,9 +209,9 @@ table-layout: fixed;*/
 }
 
 .st-breadcrumbs-progress-bar .page-breadcrumb {
-  /*    display: table;
-    table-layout: fixed;*/
-  /* width: 100%; */
+     display: table;
+    table-layout: relative;
+   width: 103%; 
   padding: 0;
 }
 
