@@ -211,9 +211,25 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           findMaxQuantityUomIndex
         ]?.name;
       }
+      this.checkIfLineIsApplicableToStemmedProduct(additionalCostList[i]);
 
       this.getAdditionalCostDefaultCostType(additionalCostList[i]);
     }
+  }
+
+  checkIfLineIsApplicableToStemmedProduct(additionalCost) {
+    this.requestLocation.requestProducts.forEach((product: any, index) => {
+      if (
+        product.id == additionalCost.requestProductId &&
+        product.status == 'Stemmed'
+      ) {
+        additionalCost.hasStemmedProduct = true;
+        additionalCost.product = {
+          name: product.productName,
+          id: product.productId
+        };
+      }
+    });
   }
 
   createAdditionalCostTypes() {
