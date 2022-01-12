@@ -251,6 +251,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    */
 
   buildApplicableForItems(rowData) {
+    if (this.applicableForItems.length > 0) {
+      return this.applicableForItems;
+    }
     let applicableForItemsArray = [];
     this.requestLocation.requestProducts.forEach((product: any, index) => {
       if (product.status != 'Stemmed') {
