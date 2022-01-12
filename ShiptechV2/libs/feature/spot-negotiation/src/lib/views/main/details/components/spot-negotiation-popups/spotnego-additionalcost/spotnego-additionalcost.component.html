@@ -301,6 +301,217 @@
     </div>
   </div>
 </div>
+<div class="p-r-15 p-l-15 additional-cost-subheading1">
+  Location Based Costs
+</div>
+<div class="product-terms p-b-5 p-r-15 p-l-15">
+  <div class="operations-details-block additional-cost-table-container">
+    <table>
+      <thead>
+        <tr>
+          <th class="increment-circle-button" style="width: 30px;"></th>
+          <th class="text-left">Cost Name</th>
+          <th class="text-left">Cost Type</th>
+          <th class="text-left ">Max Qty</th>
+          <th class="text-left" style="width: 215px;">
+            Price
+          </th>
+          <th class="text-left">Applicable for</th>
+          <th class="text-left">Extra(%)</th>
+          <th class="text-left">Extra Amt</th>
+          <th class="text-left">Total Amt</th>
+          <th class="text-left">Rate/MT</th>
+          <!-- <th class=" text-left">Comments</th> -->
+        </tr>
+      </thead>
+    </table>
+    <div style="height: 107px; overflow-y: scroll;">
+      <table>
+        <tbody>
+          <ng-container
+            *ngFor="
+              let locationAdditionalCost of locationAdditionalCostsList;
+              let j = index
+            "
+          >
+            <tr class="border-bottom" *ngIf="!locationAdditionalCost.isDeleted">
+              <td style="width: 30px;"></td>
+              <td class="text-left cell-dashed-border">
+                <div class="custom-form-field">
+                  <mat-form-field
+                    class="without-search spot-dropdown-component"
+                    appearance="none"
+                  >
+                    <mat-select
+                      [(ngModel)]="locationAdditionalCost.additionalCostId"
+                      [disabled]="true"
+                      [disableOptionCentering]="true"
+                      panelClass="spot-select-panel-container"
+                    >
+                      <mat-option
+                        *ngFor="let option of additionalCostList"
+                        [value]="option.id"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border ">
+                <div class="custom-form-field">
+                  <mat-form-field
+                    class="without-search spot-dropdown-component"
+                    appearance="none"
+                  >
+                    <mat-select
+                      [(ngModel)]="locationAdditionalCost.costTypeId"
+                      [disableOptionCentering]="true"
+                      panelClass="spot-select-panel-container"
+                      [disabled]="true"
+                    >
+                      <mat-option
+                        *ngFor="
+                          let option of locationAdditionalCost.allowedCostTypes
+                        "
+                        [value]="option.id"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationAdditionalCost.maxQuantity
+                        ? quantityFormatValue(
+                            locationAdditionalCost.maxQuantity
+                          )
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      locationAdditionalCost.maxQuantityUom
+                        ? locationAdditionalCost.maxQuantityUom
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td style="width: 215px" class="text-left cell-dashed-border ">
+                <div class="dotted-container">
+                  <div style="width: 200px;">
+                    <div class="split-field">
+                      <mat-form-field
+                        class="without-search"
+                        style="width: 50%;border: none;"
+                        appearance="none"
+                      >
+                        <input
+                          matInput
+                          autocomplete="off"
+                          priceFormat
+                          [(ngModel)]="locationAdditionalCost.price"
+                          [disabled]="true"
+                        />
+                      </mat-form-field>
+                      <mat-form-field
+                        class="without-search spot-dropdown-component"
+                        appearance="none"
+                        style="width: 50%"
+                      >
+                        <mat-select
+                          disableRipple
+                          [disableOptionCentering]="true"
+                          panelClass="spot-select-panel-container"
+                          [(ngModel)]="locationAdditionalCost.priceUomId"
+                          [disabled]="true"
+                        >
+                          <mat-option
+                            *ngFor="let option of uomList"
+                            [value]="option.id"
+                            >{{ option.name }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <mat-form-field
+                  appearance="none"
+                  class="without-search spot-dropdown-component"
+                >
+                  <mat-select
+                    [(ngModel)]="locationAdditionalCost.selectedApplicableForId"
+                    disableRipple
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container"
+                    [disabled]="true"
+                  >
+                    <mat-option
+                      *ngFor="let applicableFor of applicableForItems"
+                      [value]="applicableFor.id"
+                    >
+                      {{ applicableFor.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="custom-form-field">
+                  <mat-form-field class="without-search" appearance="none">
+                    <input
+                      matInput
+                      autocomplete="off"
+                      priceFormat
+                      [(ngModel)]="locationAdditionalCost.extras"
+                      [disabled]="true"
+                    />
+                  </mat-form-field>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="non-editable-container-text-left">
+                  {{ amountFormatValue(locationAdditionalCost.extraAmount) }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{
+                    locationAdditionalCost.currency
+                      ? locationAdditionalCost.currency.name
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="non-editable-container-text-left">
+                  {{ amountFormatValue(locationAdditionalCost.totalAmount) }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{
+                    locationAdditionalCost.currency
+                      ? locationAdditionalCost.currency.code
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <div class="non-editable-container-text-left">
+                  {{ priceFormatValue(locationAdditionalCost.ratePerUom) }}
+                </div>
+              </td>
+            </tr></ng-container
+          >
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"

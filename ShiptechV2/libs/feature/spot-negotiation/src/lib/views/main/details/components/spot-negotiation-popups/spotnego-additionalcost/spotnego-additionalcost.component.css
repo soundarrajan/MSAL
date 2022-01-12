@@ -10,3 +10,7 @@
   color: white;
   line-height: 26px;
 }
+
+.mat-input-element:disabled {
+  color: #37414f !important;
+}

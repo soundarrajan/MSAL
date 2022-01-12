@@ -148,34 +148,58 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.spinner.hide();
           this.toastr.error(response);
         } else {
-          this.spinner.hide();
           this.additionalCostList = _.cloneDeep(response.payload);
           this.createAdditionalCostTypes();
+          if (this.rowData?.requestOffers?.length > 0) {
+            const firstOffer = this.rowData.requestOffers[0];
+            this.buildApplicableForItems(this.rowData);
+            this.offerId = firstOffer.offerId;
+            const payload = {
+              offerId: firstOffer.offerId,
+              requestLocationId: this.rowData.requestLocationId,
+              isLocationBased: false
+            };
+            this.spotNegotiationService
+              .getAdditionalCosts(payload)
+              .subscribe((response: any) => {
+                if (typeof response === 'string') {
+                  this.spinner.hide();
+                  this.toastr.error(response);
+                } else {
+                  this.spinner.hide();
+                  this.offerAdditionalCostList = _.cloneDeep(
+                    response.offerAdditionalCosts
+                  );
+                  this.formatAdditionalCostList(this.offerAdditionalCostList);
+                  this.locationAdditionalCostsList = _.cloneDeep(
+                    response.locationAdditionalCosts
+                  );
+                  this.formatAdditionalCostList(
+                    this.locationAdditionalCostsList
+                  );
+                  console.log(this.offerAdditionalCostList);
+                  console.log(this.locationAdditionalCostsList);
+                }
+              });
+          }
         }
       });
-    if (this.rowData?.requestOffers?.length > 0) {
-      const firstOffer = this.rowData.requestOffers[0];
-      this.buildApplicableForItems(this.rowData);
-      this.offerId = firstOffer.offerId;
-      const payload = {
-        offerId: firstOffer.offerId,
-        requestLocationId: this.rowData.requestLocationId,
-        isLocationBased: false
-      };
-      this.spotNegotiationService
-        .getAdditionalCosts(payload)
-        .subscribe((response: any) => {
-          if (typeof response === 'string') {
-            this.toastr.error(response);
-          } else {
-            this.offerAdditionalCostList = _.cloneDeep(
-              response.offerAdditionalCosts
-            );
-            this.locationAdditionalCostsList = _.cloneDeep(
-              response.locationAdditionalCostsList
-            );
-          }
-        });
+  }
+
+  formatAdditionalCostList(additionalCostList) {
+    for (let i = 0; i < additionalCostList.length; i++) {
+      additionalCostList[i].selectedApplicableForId = additionalCostList[i]
+        .requestProductId
+        ? additionalCostList[i].requestProductId
+        : 0;
+      let findCurrencyIndex = _.findIndex(this.currencyList, function(object) {
+        return object.id == additionalCostList[i].currencyId;
+      });
+      if (findCurrencyIndex !== -1) {
+        additionalCostList[i].currency = this.currencyList[findCurrencyIndex];
+      }
+
+      this.getAdditionalCostDefaultCostType(additionalCostList[i]);
     }
   }
 
@@ -365,6 +389,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (!additionalCost.priceUomId) {
       return;
     }
+    additionalCost.prodConv = _.cloneDeep([]);
+
     for (let i = 0; i < this.productList.length; i++) {
       let prod = this.productList[i];
       this.setConvertedAddCost(prod, additionalCost, i);
@@ -391,8 +417,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         ToUomId: toUomId
       }
     };
-
-    additionalCost.prodConv = _.cloneDeep([]);
 
     if (toUomId == fromUomId) {
       additionalCost.prodConv[i] = 1;
@@ -708,7 +732,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           maxQuantity: this.offerAdditionalCostList[i].maxQuantity,
           maxQuantityUom: this.offerAdditionalCostList[i].maxQuantityUom,
           currencyId: this.offerAdditionalCostList[i].currencyId,
-          currency: this.offerAdditionalCostList[i].currency.code,
+          currency: this.offerAdditionalCostList[i].currency?.code,
           price: this.offerAdditionalCostList[i].price,
           priceUomId: this.offerAdditionalCostList[i].priceUomId,
           amount: this.offerAdditionalCostList[i].amount,
@@ -718,7 +742,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           ratePerUom: this.offerAdditionalCostList[i].ratePerUom,
           isAllProductsCost: this.offerAdditionalCostList[i].isAllProductsCost,
           requestProductId: this.offerAdditionalCostList[i].requestProductId
-            ? this.offerAdditionalCostList[i].requestLocationId
+            ? this.offerAdditionalCostList[i].requestProductId
             : null,
           isDeleted: this.offerAdditionalCostList[i].isDeleted,
           isLocationBased: false
@@ -728,37 +752,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
     console.log(this.offerAdditionalCostList);
     console.log(offerAdditionalCostArray);
-    // let payload = {
-    //   additionalCosts: [
-    //     {
-    //       id: 0,
-    //       name: 'string',
-    //       offerId: 0,
-    //       requestOfferId: 0,
-    //       requestLocationId: 0,
-    //       additionalCostId: 0,
-    //       costTypeId: 0,
-    //       costType: 'string',
-    //       costName: 'string',
-    //       currencyId: 0,
-    //       currency: 'string',
-    //       price: 0,
-    //       amount: 0,
-    //       extraAmount: 0,
-    //       totalAmount: 0,
-    //       ratePerUom: 0,
-    //       maxQuantity: 0,
-    //       maxQuantityUom: 'string',
-    //       priceUomId: 0,
-    //       extras: 0,
-    //       comment: 'string',
-    //       isAllProductsCost: true,
-    //       requestProductId: 0,
-    //       isDeleted: true,
-    //       isLocationBased: true
-    //     }
-    //   ]
-    // };
+
     let payload = { additionalCosts: offerAdditionalCostArray };
 
     this.spotNegotiationService
