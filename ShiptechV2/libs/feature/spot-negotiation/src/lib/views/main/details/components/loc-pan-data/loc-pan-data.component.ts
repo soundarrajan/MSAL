@@ -65,7 +65,7 @@ export class LocPanDataComponent implements OnInit {
   additionalcostpopup() {
     const dialogRef = this.dialog.open(ApplicablecostpopupComponent, {
       width: '1170px',
-      height: '211px',
+      height: '235px',
       panelClass: 'additional-cost-popup',
       data: this.reqLocation,
       disableClose: true
