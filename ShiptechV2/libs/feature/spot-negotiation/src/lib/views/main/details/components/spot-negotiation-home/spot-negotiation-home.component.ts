@@ -147,10 +147,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           if (result && result instanceof Array) {
             var sellers = []
-            result.forEach(element => {
-              const selectItems = this.selectedSellerList.filter(item => item.RequestId === element.id);
-              if (selectItems.length > 0) {
-                sellers.push(...selectItems);
+            result.forEach(element =>  { 
+              if(element.selected===true){
+                const selectItems = this.selectedSellerList.filter(item => item.RequestId === element.id );
+                if (selectItems.length > 0) {
+                  sellers.push(...selectItems);
+                }
               }
             });
             this.selectedSellerList = sellers;
