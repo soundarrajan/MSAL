@@ -50,7 +50,7 @@
         </tr>
       </thead>
     </table>
-    <div style="height: 107px; overflow-y: scroll;">
+    <div style="height: 125px; overflow-y: scroll;">
       <table>
         <tbody>
           <tr class="border-bottom" *ngFor="let cost of locationBasedCosts; let j = index">
@@ -59,8 +59,8 @@
                 <div class="minus">-</div>
               </div>
             </td>
-            <td *ngIf="cost.id">{{cost.costName}}</td>
-            <td *ngIf="!cost.id" class="text-left cell-dashed-border" contenteditable="true">
+            <!-- <td *ngIf="cost.id">{{cost.costName}}</td> -->
+            <td class="text-left cell-dashed-border" contenteditable="true">
               <mat-form-field appearance="none">
                 <mat-select [ngModel]="cost.locationAdditionalCostId"
                   (ngModelChange)="cost.locationAdditionalCostId = $event; onCostSelectionChange($event, j)">
