@@ -1,11 +1,11 @@
-﻿commit f44f0cd1fd9ac0afd3347a107327cce684b64ea7
+﻿commit 6446caba86a3ffb4080ad140f0ed67ae43e6e30d
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jan 12 12:11:59 2022 +0000
+Date:   Wed Jan 12 15:14:41 2022 +0000
 
-    Merged PR 15470: Css fixes control tower
+    Merged PR 15472: UI changes in delivery screen
     
-    Css fixes control tower
+    UI changes in delivery screen
     
-    Related work items: #37790
+    Related work items: #37964
 
 branch: master
