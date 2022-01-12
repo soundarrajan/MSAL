@@ -37,7 +37,7 @@
                             <input [readonly]="readonly" class="cust-input-field" matInput value="{{item}}" style="border: none;">
                             <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon" (click)="RemoveEmailId(item,'toEmail')"></div>
                         </div>
-                        <div [style.visibility] ="readonly? 'hidden': 'visible'" class="add-new">
+                        <div [style.visibility] ="readonly? 'hidden': 'visible'" class="add-new" style="padding-top:3px;">
                             <input #toemail matInput placeholder="+Add New" [hidden]="readonly" [(ngModel)]="toEmail" (change)="addTo(toemail.value)">
                         </div>
                     </div>                 
@@ -51,7 +51,7 @@
                             <input [readonly]="readonly"  class="cust-input-field" matInput value="{{item}}" style="border: none;">
                             <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon flex-shrink-1" (click)="RemoveEmailId(item,'ccEmail')"></div>
                         </div>
-                        <div [style.visibility] ="readonly? 'hidden': 'visible'"  class="add-new">
+                        <div [style.visibility] ="readonly? 'hidden': 'visible'"  class="add-new" style="padding-top:3px;">
                             <input  #ccemail matInput placeholder="+Add New" [(ngModel)]="ccEmail" (change)="addCc(ccemail.value)">
                         </div>
                     </div>                 
