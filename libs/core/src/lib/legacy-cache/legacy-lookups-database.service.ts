@@ -4,7 +4,10 @@ import { nameof } from '../utils/type-definitions';
 import { ILegacyLookupVersion } from './legacy-lookup-version.interface';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  IDisplayLookupCurrencyDto,
+  IDisplayLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
@@ -23,7 +26,7 @@ type ColorDisplayMappingLookup = ColorDisplayLookup & {
   providedIn: 'root'
 })
 export class LegacyLookupsDatabase extends Dexie {
-  readonly currency: Dexie.Table<IDisplayLookupDto, number>;
+  readonly currency: Dexie.Table<IStatusLookupDto, number>;
   readonly uom: Dexie.Table<IDisplayLookupDto, number>;
   readonly uomVolume: Dexie.Table<IDisplayLookupDto, number>;
   readonly uomMass: Dexie.Table<IDisplayLookupDto, number>;
@@ -81,6 +84,8 @@ export class LegacyLookupsDatabase extends Dexie {
         transactionTypeId: dto.transactionTypeId,
         index: dto.index
       },
+    [nameof<LegacyLookupsDatabase>('currency')]: (dto: ColorDisplayLookup) =>
+      <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
@@ -128,7 +133,6 @@ export class LegacyLookupsDatabase extends Dexie {
 
     // Note: Never change versions, always make changes by incrementing the version, the key of the following object.
     this.schema = {
-      [nameof<LegacyLookupsDatabase>('currency')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('uom')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('lookupVersions')]: `++${nameof<
         ILegacyLookupVersion
@@ -155,6 +159,7 @@ export class LegacyLookupsDatabase extends Dexie {
       )]: lookupDashboardSchema,
       [nameof<LegacyLookupsDatabase>('transactionType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('currency')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('paymentStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('invoiceType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema,
