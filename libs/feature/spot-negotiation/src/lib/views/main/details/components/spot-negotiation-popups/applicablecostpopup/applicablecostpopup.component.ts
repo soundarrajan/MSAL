@@ -1,9 +1,12 @@
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { MatSelect } from '@angular/material/select';
 import { AdditionalCostViewModel } from './../../../../../../core/models/additional-costs-model';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpotNegotiationService } from './../../../../../../services/spot-negotiation.service';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import _ from 'lodash';
 @Component({
   selector: 'app-applicablecostpopup',
   templateUrl: './applicablecostpopup.component.html',
@@ -35,12 +38,16 @@ export class ApplicablecostpopupComponent implements OnInit {
   maxQuantityUomId: number;
   maxQuantityUom: string;
   enableSave: boolean = false;
+  costTypeList: any[];
+  uomList: any[];
+  currencyList: any[];
 
   constructor(public dialogRef: MatDialogRef<ApplicablecostpopupComponent>
     , private spinner: NgxSpinnerService
     , private toastr: ToastrService
     , @Inject(MAT_DIALOG_DATA) public requestLocation: any
-    , private spotNegotiationService: SpotNegotiationService) {
+    , private spotNegotiationService: SpotNegotiationService
+    , private legacyLookupsDatabase: LegacyLookupsDatabase,) {
 
   }
 
@@ -64,7 +71,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.spotNegotiationService.getAdditionalCosts(payload)
         .subscribe((response: any) => {
           this.spinner.hide();
-          this.locationBasedCosts = response.locationAdditionalCosts;
+          this.locationBasedCosts = this.formatCostItemForDisplay(response.locationAdditionalCosts)
          });
     });
   }
@@ -79,11 +86,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.spotNegotiationService.saveOfferAdditionalCosts(payload)
     .subscribe((res:any) => {
         if(res.status){
-          let locationAdditionalCosts = res?.costs?.locationAdditionalCosts;
-          locationAdditionalCosts.forEach((cost : any)=> {
-            cost.selectedApplicableForId = cost.requestProductId?? 0;
-          })
-          this.locationBasedCosts = locationAdditionalCosts;
+          this.locationBasedCosts = this.formatCostItemForDisplay(res?.costs?.locationAdditionalCosts)
           this.toastr.success('Additional cost saved successfully.');
           this.deletedCosts = [];
         }
@@ -92,6 +95,18 @@ export class ApplicablecostpopupComponent implements OnInit {
     });
 
     this.enableSave = false;
+  }
+
+  formatCostItemForDisplay(locationAdditionalCosts: any){
+    locationAdditionalCosts.forEach((cost : any)=> {
+      cost.selectedApplicableForId = cost.isAllProductsCost? 0 : cost.requestProductId;
+      cost.costType = this.costTypeList.find(c=> c.id === cost.costTypeId)?.name;
+      cost.maxQuantityUom = this.uomList.find(c=> c.id === cost.maxQuantityUomId)?.name;
+      cost.currency = this.currencyList.find(c=> c.id === cost.currencyId)?.code;
+      cost.locationAdditionalCostId = cost.id;
+    });
+
+    return locationAdditionalCosts;
   }
 
   buildApplicableForItems() {
@@ -103,6 +118,16 @@ export class ApplicablecostpopupComponent implements OnInit {
         this.maxQuantityUomId = product.uomId;
         this.maxQuantityUom = product.uomName;
       }
+    });
+
+    this.legacyLookupsDatabase.getTableByName('costType').then(response => {
+      this.costTypeList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      this.uomList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyList = response;
     });
   }
 
@@ -185,7 +210,7 @@ export class ApplicablecostpopupComponent implements OnInit {
 
   getRangeTotalAdditionalCosts(cost: any){
     let productId = cost.requestProductId?
-      this.applicableForItems.find((item: any) => item.id == cost.requestProductId)?.productId : 1;
+        this.applicableForItems.find((item: any) => item.id == cost.requestProductId)?.productId : 1;
     const payload = {
       Payload: {
         Filters: [
