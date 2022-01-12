@@ -681,13 +681,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getRangeTotalAdditionalCosts(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getRangeTotalAdditionalCosts}`, request
+      )
+      .pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 

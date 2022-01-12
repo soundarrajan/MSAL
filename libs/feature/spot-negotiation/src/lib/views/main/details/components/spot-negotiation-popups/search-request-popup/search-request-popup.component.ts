@@ -118,17 +118,19 @@ export class SearchRequestPopupComponent implements OnInit {
           alert('Handle Error');
           return;
         } else {
-            if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
-            {
-                this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
-            }
-            if (res['requests'] && res['requests'].length > 0) 
+
+
+          if (res['requests'] && res['requests'].length > 0)
             {
                 this.store.dispatch(new AddRequest(res['requests']));
                 res['requests'].forEach(element => {
                   let SuccessMessage =  element.name + ' - ' + element.vesselName + ' has been linked successfully.';
                   this.toastr.success(SuccessMessage);
                   });
+            }
+            if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
+            {
+                this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
             }
         }
       });
