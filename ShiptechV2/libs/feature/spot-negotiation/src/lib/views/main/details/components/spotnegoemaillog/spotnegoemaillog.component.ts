@@ -1,4 +1,3 @@
-import { getNumberOfCurrencyDigits } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +8,6 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { EmailPreviewPopupComponent } from '../spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
 
 @Component({
@@ -22,6 +20,8 @@ export class SpotnegoemaillogComponent implements OnInit {
   EmailLogs: any = [];
   SelectedSellerWithProds: any;
   listOfRequests: any;
+  dateFormat:string;
+  date: string;
 
   constructor(public dialog: MatDialog,
     private spotNegotiationService: SpotNegotiationService,
@@ -30,8 +30,8 @@ export class SpotnegoemaillogComponent implements OnInit {
     private toaster: ToastrService,
     private store: Store
   ) {
-    this.gridOptions_data = <GridOptions>{
-      defaultColDef: {
+      this.gridOptions_data = <GridOptions>{
+       defaultColDef: {
         resizable: true,
         filter: true,
         sortable: true
@@ -45,6 +45,7 @@ export class SpotnegoemaillogComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
+        params.api.sizeColumnsToFit();
       },
       onColumnResized: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
@@ -72,13 +73,21 @@ export class SpotnegoemaillogComponent implements OnInit {
     { headerName: 'Status', headerTooltip: 'Status', field: 'status.name', width: 345, suppressSizeToFit: false, headerClass: ['aggrid-text-align-c'], cellClassRules: this.cellClassRules, cellClass: ['aggridtextalign-center'], },
     { headerName: 'Sender', headerTooltip: 'Sender', field: 'from', width: 345, suppressSizeToFit: false },
     { headerName: 'Subject', headerTooltip: 'Subject', field: 'subject', width: 345, suppressSizeToFit: false },
-    { headerName: 'Mail Date', headerTooltip: 'Mail Date', field: 'sentAt', cellRenderer: (params) => { return moment(params.value).format('MM/DD/YYYY HH:mm') }, suppressSizeToFit: false },
+    { headerName: 'Mail Date', headerTooltip: 'Mail Date', field: 'sentAt', cellRenderer: (params) => { return moment(params.value).format(this.date)  }, suppressSizeToFit: false },
 
   ];
-
   public rowData_grid = [];
 
   ngOnInit() {
+    this.store.subscribe(({tenantSettings}) =>{
+      this.dateFormat = tenantSettings.general.tenantFormats.emailDateFormat.name;
+      if(this.dateFormat.includes('dd/')){
+         this.date = this.dateFormat.replace('DDD', 'ddd').replace('dd/','DD/');
+      }
+      else{
+        this.date = this.dateFormat.replace('DDD', 'ddd').replace('dd','DD');
+      }
+    });
     this.store.subscribe(({ spotNegotiation }) => {
       this.SelectedSellerWithProds = spotNegotiation.locationsRows;
     });

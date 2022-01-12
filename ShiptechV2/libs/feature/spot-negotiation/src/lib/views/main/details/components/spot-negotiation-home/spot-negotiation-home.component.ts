@@ -131,7 +131,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   sendRFQpopup() {
     this.selectedSellerList = [];
-    var Selectedfinaldata = this.FilterselectedRowForSendRFQ();
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
     if (Selectedfinaldata.length == 0) {
       let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
@@ -286,7 +286,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
-  FilterselectedRowForSendRFQ() {
+  FilterselectedRowForRFQ() {
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.requests.forEach(req => {
         req.requestLocations.forEach(element => {
@@ -309,29 +309,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     return this.selectedSellerList;
   }
-
-  FilterselectedRow() {
-    this.store.subscribe(({ spotNegotiation }) => {
-      spotNegotiation.locations.forEach(element => {
-        spotNegotiation.locationsRows.forEach(element1 => {
-          if (element.locationId == element1.locationId) {
-            if (element1['checkProd1'] || element1['checkProd2'] || element1['checkProd3'] || element1['checkProd4'] || element1['checkProd5']) {
-              var Sellectedsellerdata = this.ConstuctSellerPayload(
-                element1,
-                element.requestProducts,
-                spotNegotiation.currentRequestSmallInfo
-              );
-              if (Sellectedsellerdata) {
-                this.selectedSellerList.push(Sellectedsellerdata);
-              }
-            }
-          }
-        });
-      });
-    });
-    return this.selectedSellerList;
-  }
-
 
   ConstuctSellerPayload(Seller, requestProducts, Request) {
     let selectedproducts = [];
@@ -390,7 +367,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   amendRFQ() {
     this.selectedSellerList = [];
-    var Selectedfinaldata = this.FilterselectedRow();
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
     if (Selectedfinaldata.length == 0) {
       this.toaster.error('Atleast 1 product should be selected');
       return;
@@ -429,7 +406,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   skipRFQ() {
     this.selectedSellerList = [];
-    var Selectedfinaldata = this.FilterselectedRow();
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
     if (Selectedfinaldata.length == 0) {
       let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
@@ -492,7 +469,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   revokeRFQ() {
     this.selectedSellerList = [];
-    var Selectedfinaldata = this.FilterselectedRow();
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
     if (Selectedfinaldata.length == 0) {
       let errormessage = 'Atleast 1 counterparty should be selected in ' + this.currentRequestInfo.name + ' - ' + this.currentRequestInfo.vesselName;
       this.toaster.error(errormessage);
@@ -567,7 +544,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   requoteRFQ() {
     this.selectedSellerList = [];
-    var Selectedfinaldata = this.FilterselectedRow();
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
     if (Selectedfinaldata.length == 0) {
       this.toaster.error('Atleast 1 product should be selected');
       return;
