@@ -14,3 +14,11 @@
 .mat-input-element:disabled {
   color: #37414f !important;
 }
+
+.not-unit-container {
+  width: 100%;
+}
+
+.unit-container {
+  width: 50%;
+}

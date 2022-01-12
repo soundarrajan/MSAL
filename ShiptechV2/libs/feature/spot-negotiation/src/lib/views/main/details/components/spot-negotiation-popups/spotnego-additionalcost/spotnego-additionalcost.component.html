@@ -77,6 +77,7 @@
                   <div class="minus">-</div>
                 </div>
               </td>
+
               <td
                 class="text-left"
                 [ngClass]="{
@@ -102,6 +103,7 @@
                       "
                       [disableOptionCentering]="true"
                       panelClass="spot-select-panel-container"
+                      [disabled]="offerAdditionalCost.hasStemmedProduct"
                     >
                       <mat-option
                         *ngFor="let option of additionalCostList"
@@ -130,6 +132,7 @@
                       "
                       [disableOptionCentering]="true"
                       panelClass="spot-select-panel-container"
+                      [disabled]="offerAdditionalCost.hasStemmedProduct"
                     >
                       <mat-option
                         *ngFor="
@@ -167,11 +170,17 @@
                     <div class="split-field">
                       <mat-form-field
                         class="without-search"
-                        style="width: 50%;border: none;"
+                        style="border: none;"
                         appearance="none"
                         [ngClass]="{
                           'required-field':
-                            saveButtonClicked && !offerAdditionalCost.price
+                            saveButtonClicked && !offerAdditionalCost.price,
+                          'not-unit-container': !additionalCostPriceUomEnabled(
+                            offerAdditionalCost
+                          ),
+                          'unit-container': additionalCostPriceUomEnabled(
+                            offerAdditionalCost
+                          )
                         }"
                       >
                         <input
@@ -187,12 +196,16 @@
                               true
                             )
                           "
+                          [disabled]="offerAdditionalCost.hasStemmedProduct"
                         />
                       </mat-form-field>
                       <mat-form-field
                         class="without-search spot-dropdown-component"
                         appearance="none"
                         style="width: 50%"
+                        *ngIf="
+                          additionalCostPriceUomEnabled(offerAdditionalCost)
+                        "
                       >
                         <mat-select
                           disableRipple
@@ -206,9 +219,7 @@
                               true
                             )
                           "
-                          [disabled]="
-                            !additionalCostPriceUomEnabled(offerAdditionalCost)
-                          "
+                          [disabled]="offerAdditionalCost.hasStemmedProduct"
                         >
                           <mat-option
                             *ngFor="let option of uomList"
@@ -225,6 +236,7 @@
                 <mat-form-field
                   appearance="none"
                   class="without-search spot-dropdown-component"
+                  *ngIf="!offerAdditionalCost.hasStemmedProduct"
                 >
                   <mat-select
                     [(ngModel)]="offerAdditionalCost.selectedApplicableForId"
@@ -235,6 +247,12 @@
                     disableRipple
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
+                    [disabled]="
+                      !offerAdditionalCost.selectedApplicableForId &&
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        offerAdditionalCost.selectedApplicableForId
+                      )
+                    "
                   >
                     <mat-option
                       *ngFor="let applicableFor of applicableForItems"
@@ -242,8 +260,22 @@
                     >
                       {{ applicableFor.name }}
                     </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !offerAdditionalCost.selectedApplicableForId &&
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost.selectedApplicableForId
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
+                <div *ngIf="offerAdditionalCost.hasStemmedProduct">
+                  {{ offerAdditionalCost.product?.name }}
+                </div>
               </td>
               <td class="text-left cell-dashed-border">
                 <div class="custom-form-field">
@@ -261,6 +293,7 @@
                           true
                         )
                       "
+                      [disabled]="offerAdditionalCost.hasStemmedProduct"
                     />
                   </mat-form-field>
                 </div>
@@ -336,7 +369,7 @@
           >
             <tr class="border-bottom" *ngIf="!locationAdditionalCost.isDeleted">
               <td style="width: 30px;"></td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="custom-form-field">
                   <mat-form-field
                     class="without-search spot-dropdown-component"
@@ -358,7 +391,7 @@
                   </mat-form-field>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border ">
+              <td class="text-left ">
                 <div class="custom-form-field">
                   <mat-form-field
                     class="without-search spot-dropdown-component"
@@ -402,13 +435,20 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 215px" class="text-left cell-dashed-border ">
+              <td style="width: 215px" class="text-left">
                 <div class="dotted-container">
                   <div style="width: 200px;">
                     <div class="split-field">
                       <mat-form-field
                         class="without-search"
-                        style="width: 50%;border: none;"
+                        [ngClass]="{
+                          'not-unit-container': !additionalCostPriceUomEnabled(
+                            locationAdditionalCost
+                          ),
+                          'unit-container': additionalCostPriceUomEnabled(
+                            locationAdditionalCost
+                          )
+                        }"
                         appearance="none"
                       >
                         <input
@@ -423,6 +463,9 @@
                         class="without-search spot-dropdown-component"
                         appearance="none"
                         style="width: 50%"
+                        *ngIf="
+                          additionalCostPriceUomEnabled(locationAdditionalCost)
+                        "
                       >
                         <mat-select
                           disableRipple
@@ -442,10 +485,11 @@
                   </div>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <mat-form-field
                   appearance="none"
                   class="without-search spot-dropdown-component"
+                  *ngIf="!locationAdditionalCost.hasStemmedProduct"
                 >
                   <mat-select
                     [(ngModel)]="locationAdditionalCost.selectedApplicableForId"
@@ -460,10 +504,24 @@
                     >
                       {{ applicableFor.name }}
                     </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !locationAdditionalCost.selectedApplicableForId &&
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          locationAdditionalCost.selectedApplicableForId
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
+                <div *ngIf="locationAdditionalCost.hasStemmedProduct">
+                  {{ locationAdditionalCost.product?.name }}
+                </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="custom-form-field">
                   <mat-form-field class="without-search" appearance="none">
                     <input
@@ -476,19 +534,19 @@
                   </mat-form-field>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="non-editable-container-text-left">
                   {{ amountFormatValue(locationAdditionalCost.extraAmount) }}
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
                     locationAdditionalCost.currency
-                      ? locationAdditionalCost.currency.name
+                      ? locationAdditionalCost.currency.code
                       : ''
                   }}
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="non-editable-container-text-left">
                   {{ amountFormatValue(locationAdditionalCost.totalAmount) }}
                 </div>
@@ -500,7 +558,7 @@
                   }}
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left">
                 <div class="non-editable-container-text-left">
                   {{ priceFormatValue(locationAdditionalCost.ratePerUom) }}
                 </div>

@@ -17,6 +17,7 @@ export interface AdditionalCostViewModel {
   maxQuantity: number;
   maxQuantityUom: string;
   maxQtyUomId?: number;
+  maxQuantityUomId?: number;
   price: number;
   ratePerUom?: number;
   amount: number;
@@ -30,6 +31,8 @@ export interface AdditionalCostViewModel {
   isDeleted?: boolean;
   selectedApplicableForId: number | 0;
   locationAdditionalCostId: number | null;
+  requestOfferIds?: any;
+  requestProductIds?: any;
 }
 
 export interface MasterAdditionalCostViewModel {
