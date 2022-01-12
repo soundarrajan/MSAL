@@ -887,14 +887,28 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     };
 
     console.log(payload);
-
+    this.saveButtonClicked = false;
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
         if (res.status) {
-          this.offerAdditionalCostList = _.cloneDeep(
-            res.costs.offerAdditionalCosts
+          this.saveButtonClicked = false;
+          let rowsAdded = _.cloneDeep(res.costs.offerAdditionalCosts);
+          this.formatAdditionalCostList(rowsAdded);
+          console.log(rowsAdded);
+          let filterOfferAdditionalCostArray = _.filter(
+            this.offerAdditionalCostList,
+            function(offerAdditionalCost) {
+              return offerAdditionalCost.id;
+            }
           );
+          const newOfferAdditionalCostList = filterOfferAdditionalCostArray.concat(
+            rowsAdded
+          ) as AdditionalCostViewModel[];
+          this.offerAdditionalCostList = _.cloneDeep(
+            newOfferAdditionalCostList
+          );
+
           this.changeDetectorRef.detectChanges();
           this.toastr.success('Offer Additional Cost saved successfully.');
         } else this.toastr.error('Please try again later.');
