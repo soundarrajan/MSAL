@@ -179,6 +179,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   );
                   console.log(this.offerAdditionalCostList);
                   console.log(this.locationAdditionalCostsList);
+                  this.recalculatePercentAdditionalCosts(
+                    this.locationAdditionalCostsList,
+                    true
+                  );
                 }
               });
           }
@@ -197,6 +201,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       });
       if (findCurrencyIndex !== -1) {
         additionalCostList[i].currency = this.currencyList[findCurrencyIndex];
+      }
+
+      let findMaxQuantityUomIndex = _.findIndex(this.uomList, function(object) {
+        return object.id == additionalCostList[i].maxQuantityUomId;
+      });
+      if (findMaxQuantityUomIndex !== -1) {
+        additionalCostList[i].maxQuantityUom = this.uomList[
+          findMaxQuantityUomIndex
+        ]?.name;
       }
 
       this.getAdditionalCostDefaultCostType(additionalCostList[i]);
@@ -268,7 +281,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     );
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
-    cost.maxQtyUomId = maxQtyDetails.maxQtyUomId;
+    cost.maxQuantityUomId = maxQtyDetails.maxQuantityUomId;
   }
 
   getMaxQuantityByApplicableFor(requestProductId: any) {
@@ -278,13 +291,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       );
       return {
         maxQty: product.maxQuantity,
-        maxQtyUomId: product.uomId,
+        maxQuantityUomId: product.uomId,
         maxQtyUom: product.uomName
       };
     } else
       return {
         maxQty: this.totalMaxQuantity,
-        maxQtyUomId: this.maxQuantityUomId,
+        maxQuantityUomId: this.maxQuantityUomId,
         maxQtyUom: this.maxQuantityUom
       };
   }
@@ -331,7 +344,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     } else {
       this.offerAdditionalCostList.splice(key, 1);
     }
-    this.recalculatePercentAdditionalCosts();
+    this.recalculatePercentAdditionalCosts(this.offerAdditionalCostList, false);
   }
 
   closeDialog() {
@@ -361,25 +374,33 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         const maxQtyDetails = this.getMaxQuantityByApplicableFor(
           additionalCost.selectedApplicableForId
         );
-        additionalCost.priceUomId = maxQtyDetails.maxQtyUomId;
+        additionalCost.priceUomId = maxQtyDetails.maxQuantityUomId;
       }
     }
 
     if (additionalCost.costTypeId == 2) {
       this.addPriceUomChanged(additionalCost);
     } else {
-      this.calculateAdditionalCostAmounts(additionalCost);
-      this.recalculatePercentAdditionalCosts();
+      this.calculateAdditionalCostAmounts(additionalCost, false);
+      this.recalculatePercentAdditionalCosts(
+        this.offerAdditionalCostList,
+        false
+      );
     }
   }
 
-  recalculatePercentAdditionalCosts() {
-    for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
-      if (!this.offerAdditionalCostList[i].isDeleted) {
-        if (
-          this.offerAdditionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT
-        ) {
-          this.calculateAdditionalCostAmounts(this.offerAdditionalCostList[i]);
+  recalculatePercentAdditionalCosts(
+    additionalCostList,
+    locationAdditionalCostFlag
+  ) {
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if (!additionalCostList[i].isDeleted) {
+        if (additionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT) {
+          additionalCostList[i].totalAmount = 0;
+          this.calculateAdditionalCostAmounts(
+            additionalCostList[i],
+            locationAdditionalCostFlag
+          );
         }
       }
     }
@@ -425,8 +446,11 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         additionalCost.prodConv &&
         additionalCost.prodConv.length == this.productList.length
       ) {
-        this.calculateAdditionalCostAmounts(additionalCost);
-        this.recalculatePercentAdditionalCosts();
+        this.calculateAdditionalCostAmounts(additionalCost, false);
+        this.recalculatePercentAdditionalCosts(
+          this.offerAdditionalCostList,
+          false
+        );
       }
     } else {
       this.spotNegotiationService
@@ -443,8 +467,11 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               additionalCost.prodConv &&
               additionalCost.prodConv.length == this.productList.length
             ) {
-              this.calculateAdditionalCostAmounts(additionalCost);
-              this.recalculatePercentAdditionalCosts();
+              this.calculateAdditionalCostAmounts(additionalCost, false);
+              this.recalculatePercentAdditionalCosts(
+                this.offerAdditionalCostList,
+                false
+              );
             }
           }
         });
@@ -520,7 +547,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   /**
    * Calculates the amount-related fields of an additional cost, as per FSD p. 139: Amount, Extras Amount, Total Amount.
    */
-  calculateAdditionalCostAmounts(additionalCost) {
+  calculateAdditionalCostAmounts(additionalCost, locationAdditionalCostFlag) {
     let totalAmount, productComponent;
     if (!additionalCost.costTypeId) {
       return additionalCost;
@@ -576,8 +603,20 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         if (productComponent) {
           additionalCost.amount = (totalAmount * additionalCost.price) / 100;
         } else {
-          totalAmount =
-            totalAmount + this.sumProductComponentAdditionalCostAmounts();
+          if (!locationAdditionalCostFlag) {
+            totalAmount =
+              totalAmount +
+              this.sumProductComponentAdditionalCostAmounts(
+                this.offerAdditionalCostList
+              );
+          } else {
+            totalAmount =
+              totalAmount +
+              this.sumProductComponentAdditionalCostAmounts(
+                this.locationAdditionalCostsList
+              );
+          }
+
           additionalCost.amount =
             (totalAmount * parseFloat(additionalCost.price)) / 100;
         }
@@ -611,9 +650,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       additionalCost.ratePerUom = null;
     }
     console.log(additionalCost);
-    console.log(additionalCost.amount);
-    console.log(additionalCost.extraAmount);
-    console.log(additionalCost.totalAmount);
 
     this.changeDetectorRef.detectChanges();
   }
@@ -632,17 +668,19 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   /**
    * Sum the amounts of all additional costs that are NOT tax component additional costs.
    */
-  sumProductComponentAdditionalCostAmounts() {
+  sumProductComponentAdditionalCostAmounts(additionalCostList) {
     let result = 0;
-    if (!this.offerAdditionalCostList.length) {
+    if (!additionalCostList.length) {
       return;
     }
-    for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
-      if (
-        this.isProductComponent(this.offerAdditionalCostList[i]) ||
-        this.offerAdditionalCostList[i].costTypeId !== COST_TYPE_IDS.PERCENT
-      ) {
-        result = result + this.offerAdditionalCostList[i].totalAmount;
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if (!additionalCostList[i].isDeleted) {
+        if (
+          this.isProductComponent(additionalCostList[i]) ||
+          additionalCostList[i].costTypeId !== COST_TYPE_IDS.PERCENT
+        ) {
+          result = result + additionalCostList[i].totalAmount;
+        }
       }
     }
     return result;
@@ -730,7 +768,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             ? this.offerAdditionalCostList[i].costTypeId
             : null,
           maxQuantity: this.offerAdditionalCostList[i].maxQuantity,
-          maxQuantityUom: this.offerAdditionalCostList[i].maxQuantityUom,
+          maxQuantityUomId: this.offerAdditionalCostList[i].maxQuantityUomId,
           currencyId: this.offerAdditionalCostList[i].currencyId,
           currency: this.offerAdditionalCostList[i].currency?.code,
           price: this.offerAdditionalCostList[i].price,
@@ -750,7 +788,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         offerAdditionalCostArray.push(elem);
       }
     }
-    console.log(this.offerAdditionalCostList);
     console.log(offerAdditionalCostArray);
 
     let payload = { additionalCosts: offerAdditionalCostArray };
@@ -759,12 +796,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
         if (res.status) {
-          // let locationAdditionalCosts = res?.costs?.locationAdditionalCosts;
-          // locationAdditionalCosts.forEach((cost: any) => {
-          //   cost.selectedApplicableForId = cost.requestProductId ?? 0;
-          // });
-          // this.locationBasedCosts = locationAdditionalCosts;
-          this.toastr.success('Additional cost saved successfully.');
+          this.toastr.success('Offer Additional Cost saved successfully.');
         } else this.toastr.error('Please try again later.');
       });
 
