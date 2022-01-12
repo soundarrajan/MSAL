@@ -1,4 +1,3 @@
-import { getNumberOfCurrencyDigits } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +8,6 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { EmailPreviewPopupComponent } from '../spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
 
 @Component({
@@ -74,7 +72,7 @@ export class SpotnegoemaillogComponent implements OnInit {
     { headerName: 'Status', headerTooltip: 'Status', field: 'status.name', width: 345, suppressSizeToFit: false, headerClass: ['aggrid-text-align-c'], cellClassRules: this.cellClassRules, cellClass: ['aggridtextalign-center'], },
     { headerName: 'Sender', headerTooltip: 'Sender', field: 'from', width: 345, suppressSizeToFit: false },
     { headerName: 'Subject', headerTooltip: 'Subject', field: 'subject', width: 345, suppressSizeToFit: false },
-    { headerName: 'Mail Date', headerTooltip: 'Mail Date', field: 'sentAt', cellRenderer: (params) => { return moment(params.value).format(this.dateFormat) }, suppressSizeToFit: false },
+    { headerName: 'Mail Date', headerTooltip: 'Mail Date', field: 'sentAt', cellRenderer: (params) => { return moment(params.value).format(this.dateFormat.replace('DDD', 'ddd').replace('dd', 'DD')) }, suppressSizeToFit: false },
 
   ];
 
