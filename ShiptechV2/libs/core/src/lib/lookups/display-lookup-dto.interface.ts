@@ -8,6 +8,14 @@ export interface IDisplayLookupDto<TId = number, TName = string>
   displayName: string;
 }
 
+export interface IDisplayLookupCurrencyDto<TId = number, TName = string>
+  extends ILookupDto<TId, TName> {
+  id: TId;
+  name: TName;
+  displayName: string;
+  code: string;
+}
+
 export interface IVesselToWatchLookupDto extends IDisplayLookupDto {
   vesselToWatchFlag: boolean;
 }

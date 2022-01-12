@@ -239,3 +239,11 @@ app-ag-filter-display {
     color: #e73d4a !important;
   }
 }
+
+.spot-dropdown-component
+  .mat-select-disabled
+  > .mat-select-trigger
+  > .mat-select-arrow-wrapper
+  > .mat-select-arrow {
+  visibility: hidden;
+}
