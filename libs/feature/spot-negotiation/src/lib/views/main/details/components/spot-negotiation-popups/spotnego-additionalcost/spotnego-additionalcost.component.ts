@@ -899,7 +899,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           let filterOfferAdditionalCostArray = _.filter(
             this.offerAdditionalCostList,
             function(offerAdditionalCost) {
-              return offerAdditionalCost.id;
+              return offerAdditionalCost.id && !offerAdditionalCost.isDeleted;
             }
           );
           const newOfferAdditionalCostList = filterOfferAdditionalCostArray.concat(
