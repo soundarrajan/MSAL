@@ -20,8 +20,15 @@ import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
-import {AddCounterpartyToLocations, SetLocations, SetLocationsRows} from '../../../../../store/actions/ag-grid-row.action';
-import {SetCurrentRequestSmallInfo,AddRequest } from '../../../../../store/actions/request-group-actions';
+import {
+  AddCounterpartyToLocations,
+  SetLocations,
+  SetLocationsRows
+} from '../../../../../store/actions/ag-grid-row.action';
+import {
+  SetCurrentRequestSmallInfo,
+  AddRequest
+} from '../../../../../store/actions/request-group-actions';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
@@ -53,11 +60,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   counterpartyList: any = [];
   visibleCounterpartyList: any = [];
   selectedCounterparty: any = [];
-  selectedRequestList:any = [];
-  currentRequestInfo:any;
+  selectedRequestList: any = [];
+  currentRequestInfo: any;
   requestsAndVessels: any = [];
   visibleRequestList: any = [];
-
 
   // requestsAndVessels = [
   //   { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
@@ -93,18 +99,25 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
-        if(this.requestOptions.length > 6){
+        if (this.requestOptions.length > 6) {
           this.displayVessel = true;
         }
-        if(spotNegotiation.RequestList.length > 0){
-          this.requestsAndVessels = this.removeDuplicatesRequest(spotNegotiation.RequestList, 'requestName');
+        if (spotNegotiation.RequestList.length > 0) {
+          this.requestsAndVessels = this.removeDuplicatesRequest(
+            spotNegotiation.RequestList,
+            'requestName'
+          );
         }
         this.visibleRequestList = this.requestsAndVessels.slice(0, 7);
-        this.locationsRows=spotNegotiation.locationsRows;
+        this.locationsRows = spotNegotiation.locationsRows;
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
-          this.locations = spotNegotiation.currentRequestSmallInfo.requestLocations;
-          if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
+          this.locations =
+            spotNegotiation.currentRequestSmallInfo.requestLocations;
+          if (
+            this.counterpartyList.length === 0 &&
+            spotNegotiation.counterpartyList
+          ) {
             this.counterpartyList = spotNegotiation.counterpartyList;
             this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
           }
@@ -112,8 +125,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       });
     }, 100);
   }
-
-
 
   removeRequest(i) {
     alert('asd');
@@ -124,7 +135,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       const removed = arr.filter(i => i[key] !== item[key]);
       return [...removed, item];
     }, []);
-  };
+  }
   onCounterpartyCheckboxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
       // Add to selected counterparty list
@@ -167,7 +178,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               id: 0,
               name: '',
               counterpartytypeId: 0,
-              counterpartyTypeName: (val.seller)? 'Seller': (val.supplier)? 'Supplier' : (val.broker)? 'Broker' : (val.sludge)? 'Sludge' : '',
+              counterpartyTypeName: val.seller
+                ? 'Seller'
+                : val.supplier
+                ? 'Supplier'
+                : val.broker
+                ? 'Broker'
+                : val.sludge
+                ? 'Sludge'
+                : '',
               genPrice: '',
               genRating: '',
               isDeleted: false,
@@ -215,11 +234,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
           res.counterparties,
           res.sellerOffers
-         );
+        );
         // this.store.dispatch(new AddCounterpartyToLocationsWithOffers(futureLocationsRows));
         // }
         // else
-        this.store.dispatch(new AddCounterpartyToLocations(futureLocationsRows));
+        this.store.dispatch(
+          new AddCounterpartyToLocations(futureLocationsRows)
+        );
       } else {
         this.toastr.error(res.message);
         return;
@@ -227,21 +248,24 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     });
   }
 
-  UpdateProductsSelection(requestLocations, row){
-    if(requestLocations.length != 0){
+  UpdateProductsSelection(requestLocations, row) {
+    if (requestLocations.length != 0) {
       let currentLocProdCount = requestLocations[0].requestProducts.length;
       for (let index = 0; index < currentLocProdCount; index++) {
-        let indx = index +1;
-        let val = "checkProd" + indx;
+        let indx = index + 1;
+        let val = 'checkProd' + indx;
         const status = requestLocations[0].requestProducts[index].status;
-        row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : row.isSelected;
+        row[val] =
+          status === 'Stemmed' || status === 'Confirmed'
+            ? false
+            : row.isSelected;
         //row[val] = row.isSelected;
       }
     }
-   }
+  }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-    let counterpartyList : any;
+    let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
       counterpartyList = spotNegotiation.counterpartyList;
@@ -249,13 +273,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
     rowsArray.forEach((row, index) => {
       //let row = { ... reqLocSeller };
-      let currentLocProd= this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
-      this.UpdateProductsSelection(currentLocProd,row);
+      let currentLocProd = this.currentRequestData.filter(
+        row1 => row1.locationId == row.locationId
+      );
+      this.UpdateProductsSelection(currentLocProd, row);
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray?.length &&
-        row.id ===
-        priceDetailsArray[index]?.requestLocationSellerId
+        row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.requestOffers.forEach(element1 => {
@@ -282,54 +307,63 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           }
         });
         row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId =  priceDetailsArray[index].physicalSupplierCounterpartyId;
-        if(priceDetailsArray[index].physicalSupplierCounterpartyId){
-            row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+        row.physicalSupplierCounterpartyId =
+          priceDetailsArray[index].physicalSupplierCounterpartyId;
+        if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
+          row.physicalSupplierCounterpartyName = counterpartyList.find(
+            x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
+          ).displayName;
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
+        row.totalCost = priceDetailsArray[index].totalCost;
+
         return row;
       }
 
       // Else if not in the same index
-  if(priceDetailsArray != undefined && priceDetailsArray?.length >0){
-      const detailsForCurrentRow = priceDetailsArray?.filter(
-        e => e?.requestLocationSellerId === row.id
-      );
+      if (priceDetailsArray != undefined && priceDetailsArray?.length > 0) {
+        const detailsForCurrentRow = priceDetailsArray?.filter(
+          e => e?.requestLocationSellerId === row.id
+        );
 
-      // We found something
-      if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers;
-        row.requestOffers.forEach(element1 => {
-          if (
-            element1.requestProductId != undefined &&
-            element1.requestProductId != null &&
-            this.currentRequestData?.length > 0
-          ) {
+        // We found something
+        if (detailsForCurrentRow.length > 0) {
+          row.requestOffers = detailsForCurrentRow[0].requestOffers;
+          row.requestOffers.forEach(element1 => {
             if (
-              currentLocProd.length > 0 &&
-              currentLocProd[0].requestProducts.length > 0
+              element1.requestProductId != undefined &&
+              element1.requestProductId != null &&
+              this.currentRequestData?.length > 0
             ) {
-              let FilterProdut = currentLocProd[0].requestProducts.filter(
-                col => col.id == element1.requestProductId
-              );
               if (
-                FilterProdut.length > 0 &&
-                FilterProdut[0].status != undefined &&
-                FilterProdut[0].status == 'Stemmed'
+                currentLocProd.length > 0 &&
+                currentLocProd[0].requestProducts.length > 0
               ) {
-                row.isEditable = true;
+                let FilterProdut = currentLocProd[0].requestProducts.filter(
+                  col => col.id == element1.requestProductId
+                );
+                if (
+                  FilterProdut.length > 0 &&
+                  FilterProdut[0].status != undefined &&
+                  FilterProdut[0].status == 'Stemmed'
+                ) {
+                  row.isEditable = true;
+                }
               }
             }
+          });
+          row.isSelected = detailsForCurrentRow[0].isSelected;
+          row.physicalSupplierCounterpartyId =
+            detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+          if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
+            row.physicalSupplierCounterpartyName = counterpartyList.find(
+              x =>
+                x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
+            ).displayName;
           }
-        });
-        row.isSelected = detailsForCurrentRow[0].isSelected;
-        row.physicalSupplierCounterpartyId =  detailsForCurrentRow[0].physicalSupplierCounterpartyId;
-        if(detailsForCurrentRow[0].physicalSupplierCounterpartyId){
-        row.physicalSupplierCounterpartyName = counterpartyList.find(x=>x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;}
-        row.totalOffer = detailsForCurrentRow[0].totalOffer;
+          row.totalOffer = detailsForCurrentRow[0].totalOffer;
+        }
       }
-  }
-
 
       return row;
     });
@@ -337,66 +371,80 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     return rowsArray;
   }
 
-
   addToRequestListCheckboxOptions() {
-    if(this.selectedRequestList.length > 0){
+    if (this.selectedRequestList.length > 0) {
       let selectedreqId = [];
       const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-      const requests = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-        return state['spotNegotiation'].requests;
-       });
+      const requests = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].requests;
+        }
+      );
       this.selectedRequestList.forEach(element => {
         let filterduplicaterequest = requests.filter(
           e => e.id == element.requestId
         );
-        if(filterduplicaterequest.length > 0){
-          let ErrorMessage =  filterduplicaterequest[0].name + ' - ' + filterduplicaterequest[0].vesselName + ' already linked to the request.';
+        if (filterduplicaterequest.length > 0) {
+          let ErrorMessage =
+            filterduplicaterequest[0].name +
+            ' - ' +
+            filterduplicaterequest[0].vesselName +
+            ' already linked to the request.';
           this.toastr.error(ErrorMessage);
-
-        }else{
+        } else {
           selectedreqId.push(element.requestId);
         }
       });
-        if(this.selectedRequestList.length > 0)
-        {
-            let payload = {
-            groupId: parseInt(RequestGroupId),
-            requestIds: selectedreqId
-            };
-            const response = this._spotNegotiationService.addRequesttoGroup(payload);
-            response.subscribe((res: any) => {
-              if (res.error) {
-                alert('Handle Error');
-                return;
-              } else {
-                  if (res['requests'] && res['requests'].length > 0) 
-                  {
-                      this.store.dispatch(new AddRequest(res['requests']));
-                        res['requests'].forEach(element => {
-                        let SuccessMessage =  element.name + ' - ' + element.vesselName + ' has been linked successfully.';
-                        this.toastr.success(SuccessMessage);
-                        });
-                  }
-                  setTimeout(() => {
-                    if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
-                  {
-                      this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
-                  }
-                  const requests = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-                    return state['spotNegotiation'].requests;
-                   });
-                   if(requests.length > 6){
-                     this.displayVessel = true;
-                   }
-                  }, 500);
+      if (this.selectedRequestList.length > 0) {
+        let payload = {
+          groupId: parseInt(RequestGroupId),
+          requestIds: selectedreqId
+        };
+        const response = this._spotNegotiationService.addRequesttoGroup(
+          payload
+        );
+        response.subscribe((res: any) => {
+          if (res.error) {
+            alert('Handle Error');
+            return;
+          } else {
+            if (res['requests'] && res['requests'].length > 0) {
+              this.store.dispatch(new AddRequest(res['requests']));
+              res['requests'].forEach(element => {
+                let SuccessMessage =
+                  element.name +
+                  ' - ' +
+                  element.vesselName +
+                  ' has been linked successfully.';
+                this.toastr.success(SuccessMessage);
+              });
+            }
+            setTimeout(() => {
+              if (
+                res['requestLocationSellers'] &&
+                res['requestLocationSellers'].length > 0
+              ) {
+                this.store.dispatch(
+                  new AddCounterpartyToLocations(res['requestLocationSellers'])
+                );
               }
-            });
-           }
+              const requests = this.store.selectSnapshot(
+                (state: SpotNegotiationStoreModel) => {
+                  return state['spotNegotiation'].requests;
+                }
+              );
+              if (requests.length > 6) {
+                this.displayVessel = true;
+              }
+            }, 500);
+          }
+        });
+      }
     }
     //   this.toastr.error("Select atlease one Request");
     //   return;
     // }
-}
+  }
 
   selectRequest(event, i, selected) {
     event.preventDefault();
@@ -408,7 +456,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
     // Set current request
     this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
-    this.store.dispatch(new SetLocations(selected.requestLocations))
+    this.store.dispatch(new SetLocations(selected.requestLocations));
     var obj = {
       selReqIndex: i
     };
@@ -481,33 +529,39 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   };
 
   showSearch(expandedSearch) {
-    if(expandedSearch){
+    if (expandedSearch) {
       this.expandedSearch = false;
-    }else
-    {
+    } else {
       this.expandedSearch = true;
     }
-    return this.expandedSearch
+    return this.expandedSearch;
   }
 
   searchCounterparty(userInput: string): void {
-    if(userInput!==''){
-      let result = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-        return state['spotNegotiation'].LocationsOriData; })
-      .filter(e => {
-        if (e.sellerCounterpartyName.toLowerCase().includes(userInput.toLowerCase())) {
-          return true;
-        }
-        return false;
-      });
+    if (userInput !== '') {
+      let result = this.store
+        .selectSnapshot((state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].LocationsOriData;
+        })
+        .filter(e => {
+          if (
+            e.sellerCounterpartyName
+              .toLowerCase()
+              .includes(userInput.toLowerCase())
+          ) {
+            return true;
+          }
+          return false;
+        });
       this.store.dispatch(new SetLocationsRows(result));
+    } else {
+      const locationsRowsOriData = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].LocationsOriData;
+        }
+      );
+      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
     }
-   else{
-     const locationsRowsOriData = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-      return state['spotNegotiation'].LocationsOriData;
-     });
-     this.store.dispatch(new SetLocationsRows(locationsRowsOriData)); 
-   }
   }
 
   scrollPort1(el: HTMLElement) {

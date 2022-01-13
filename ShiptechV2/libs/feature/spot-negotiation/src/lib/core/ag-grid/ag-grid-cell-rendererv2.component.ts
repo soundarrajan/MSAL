@@ -552,7 +552,9 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
     <div
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
-      [matTooltip]="params.value ? params.value : null"
+      [matTooltip]="
+        params.data.totalCost ? 'Includes additional costs' : params.value
+      "
       matTooltipClass="lightTooltip"
       [matMenuTriggerFor]="addAdditionalCostMenuPopUp"
       #addAdditionalCostPopUpTrigger="matMenuTrigger"
@@ -561,7 +563,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
     >
       <span *ngIf="params.value">{{ priceCalFormatValue(params.value) }}</span>
       <span *ngIf="!params.value">-</span>
-      <div class="dollarButton" *ngIf="params.data.checkProd1"></div>
+      <div class="dollarButton" *ngIf="params.data.totalCost"></div>
     </div>
     <mat-menu #addAdditionalCostMenuPopUp="matMenu" class="darkPanel-add big">
       <div class="add-block" (click)="additionalcostpopup()">
@@ -841,6 +843,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
     return false;
   }
+
   additionalcostpopup() {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
@@ -878,14 +881,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this._spotNegotiationService
           .getPriceDetailsById(groupId, requestLocationSellerId)
           .subscribe((priceDetailsRes: any) => {
-            console.log(priceDetailsRes);
+            let updatedRow = { ...this.params.data };
+            updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
+            updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+            updatedRow.requestOffers =
+              priceDetailsRes.sellerOffers[0].requestOffers;
+            console.log(updatedRow);
+            // Update the store
+            this.store.dispatch(new EditLocationRow(updatedRow));
+            this.params.node.setData(updatedRow);
           });
-
-        // let updatedRow = { ...this.params.data };
-        // updatedRow.totalOffer = 1000;
-        // // Update the store
-        // this.store.dispatch(new EditLocationRow(updatedRow));
-        // this.params.node.setData(updatedRow);
       });
     }
   }
