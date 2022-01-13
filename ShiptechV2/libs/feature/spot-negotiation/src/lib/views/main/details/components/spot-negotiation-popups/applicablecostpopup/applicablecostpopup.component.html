@@ -18,11 +18,12 @@
         </div>
       </div>
     </mat-menu>
-    <button class="save-btn" mat-button (click)="saveLocationAdditionalCosts();">Save</button>
+    <button mat-button [ngClass]="{'save-btn': !enableSave, 'mid-blue-button': enableSave }"
+        (click)="saveLocationAdditionalCosts();">Save</button>
     <div class="title-divider">|</div>
     <div class="close-circle" style="padding:0px;">
       <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
-        style="font-size: 14px; display: inline; ">close</mat-icon>
+        style="font-size: 14px; display: inline;">close</mat-icon>
     </div>
   </div>
 </div>
