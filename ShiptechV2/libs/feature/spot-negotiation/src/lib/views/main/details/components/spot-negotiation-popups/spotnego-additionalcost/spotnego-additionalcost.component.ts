@@ -300,7 +300,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       selectedApplicableForId
     );
     cost.maxQuantity = maxQtyDetails.maxQty;
-    cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
+    cost.maxQuantityUomId = maxQtyDetails.maxQuantityUomId;
   }
 
   getRequestOfferIds(selectedApplicableForId) {
