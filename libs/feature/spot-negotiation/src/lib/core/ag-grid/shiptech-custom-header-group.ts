@@ -7,7 +7,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
-import { AddCounterpartyToLocations,EditLocations } from '../../store/actions/ag-grid-row.action';
+import {
+  AddCounterpartyToLocations,
+  EditLocations
+} from '../../store/actions/ag-grid-row.action';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 
@@ -16,7 +19,10 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
 import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
-import { SpotNegotiationStore, SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
+import {
+  SpotNegotiationStore,
+  SpotNegotiationStoreModel
+} from '../../store/spot-negotiation.store';
 import { count, filter, map } from 'rxjs/operators';
 import moment from 'moment';
 
@@ -124,8 +130,7 @@ import moment from 'moment';
         <span
           style="margin-left: 10px;"
           class="counterpartytype-icon type-sludge"
-          ><i class="fas fa-circle"></i>
-          <span class="text">Sludge</span></span
+          ><i class="fas fa-circle"></i> <span class="text">Sludge</span></span
         >
       </div>
     </div>
@@ -142,16 +147,16 @@ import moment from 'moment';
       </div>
       <div class="label" matTooltip="No. of Products">
         <div class="label-content" style="width:95%;">
-        <div class="label-element w-100" style="width:100%;">
-        <div class="title">No. of Products</div>
-        <div class="value">{{ params.noOfProducts }}</div>
+          <div class="label-element w-100" style="width:100%;">
+            <div class="title">No. of Products</div>
+            <div class="value">{{ params.noOfProducts }}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="resize-grid-header" *ngIf="params.type == 'bg-header'">
       <div class="options">
-        <div class="checkBox" matTooltip="{{params.product.productName}}">
+        <div class="checkBox" matTooltip="{{ params.product.productName }}">
           <mat-checkbox class="noborder" [checked]="true">{{
             params.product.productName
           }}</mat-checkbox>
@@ -170,8 +175,10 @@ import moment from 'moment';
             >
           </div>
           <div class="arrow" (click)="pricinghistorypopup()">
-            <span class="title"  title = "{{ params.product.indexName }}">{{ params.product.indexCode == null ? '--' : params.product.indexCode }}</span>
-            <span class="image" ></span>
+            <span class="title" title="{{ params.product.indexName }}">{{
+              params.product.indexCode == null ? '--' : params.product.indexCode
+            }}</span>
+            <span class="image"></span>
           </div>
           <div class="offer" (click)="offerpricehistorypopup()">
             <span class="title">Offer</span>
@@ -185,20 +192,33 @@ import moment from 'moment';
             <div class="title">Closure</div>
             <div
               class="value"
-              [matTooltip]="'Pricing published on: ' + (this.quoteDate == 'Invalid date' ? '--': this.quoteDate) "
+              [matTooltip]="
+                'Pricing published on: ' +
+                (this.quoteDate == 'Invalid date' ? '--' : this.quoteDate)
+              "
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-             $ {{ priceFormatValue(closureValue) }}
+              $ {{ priceFormatValue(closureValue) }}
             </div>
           </div>
-          <div class="label-element" [ngClass]="{'red': params.product?.requestGroupProducts?.benchmark>0, 'green': params.product?.requestGroupProducts?.benchmark<0, 'black': params.product?.requestGroupProducts?.benchmark==0}">
+          <div
+            class="label-element"
+            [ngClass]="{
+              red: params.product?.requestGroupProducts?.benchmark > 0,
+              green: params.product?.requestGroupProducts?.benchmark < 0,
+              black: params.product?.requestGroupProducts?.benchmark == 0
+            }"
+          >
             <div class="title">Perf/BM</div>
-            <div
-              class="value"
-              contenteditable="false"
-            >
-             $ {{ priceFormatValue(params.product.requestGroupProducts.benchmark, 'benchmark') }}
+            <div class="value" contenteditable="false">
+              $
+              {{
+                priceFormatValue(
+                  params.product.requestGroupProducts.benchmark,
+                  'benchmark'
+                )
+              }}
             </div>
           </div>
           <div class="label-element dashed">
@@ -208,7 +228,10 @@ import moment from 'moment';
               contenteditable="true"
               [(ngModel)]="livePrice"
               (focusout)="calculateTargetPrice()"
-              [disabled]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
+              [disabled]="
+                params.product.status === 'Stemmed' ||
+                params.product.status === 'Confirmed'
+              "
             />
           </div>
           <div class="label-element green">
@@ -218,7 +241,7 @@ import moment from 'moment';
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-             $ {{ priceFormatValue(targetValue) }}
+              $ {{ priceFormatValue(targetValue) }}
             </div>
           </div>
           <div
@@ -289,7 +312,10 @@ export class ShiptechCustomHeaderGroup {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
 
       // Fetching counterparty list
-      if (this.counterpartyList.length === 0 && spotNegotiation.counterpartyList) {
+      if (
+        this.counterpartyList.length === 0 &&
+        spotNegotiation.counterpartyList
+      ) {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
@@ -344,9 +370,13 @@ export class ShiptechCustomHeaderGroup {
     if (this.currentRequestInfo) {
       RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      if (this.currentRequestInfo.requestLocations &&
-        this.currentRequestInfo.requestLocations.length > 0) {
-        currentRequestLocation = this.currentRequestInfo.requestLocations.filter(x=> x.id == reqLocationId);
+      if (
+        this.currentRequestInfo.requestLocations &&
+        this.currentRequestInfo.requestLocations.length > 0
+      ) {
+        currentRequestLocation = this.currentRequestInfo.requestLocations.filter(
+          x => x.id == reqLocationId
+        );
       }
     }
 
@@ -359,11 +389,10 @@ export class ShiptechCustomHeaderGroup {
         AddCounterpartiesAcrossLocations: false,
         RequestGroupId: RequestGroupId,
         RequestLocationId: currentRequestLocation[0].id,
-        LocationId: currentRequestLocation[0].locationId,
+        LocationId: currentRequestLocation[0].locationId
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-     });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   limitStrLength = (text, max_length) => {
@@ -377,7 +406,10 @@ export class ShiptechCustomHeaderGroup {
   agInit(params: any): void {
     this.params = params;
     if (this.params.product) {
-      let formattedLivePrice = this.priceFormatValue(this.params.product.requestGroupProducts.livePrice,'livePrice');
+      let formattedLivePrice = this.priceFormatValue(
+        this.params.product.requestGroupProducts.livePrice,
+        'livePrice'
+      );
       this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.closureValue = this.params.product.requestGroupProducts.closure;
@@ -437,7 +469,11 @@ export class ShiptechCustomHeaderGroup {
       width: '500vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
-      data: { LocationId: this.currentRequestInfo.requestLocations[0].locationId, ProductId: this.params.product.productId, RequestId: this.currentRequestInfo.id }
+      data: {
+        LocationId: this.currentRequestInfo.requestLocations[0].locationId,
+        ProductId: this.params.product.productId,
+        RequestId: this.currentRequestInfo.id
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -466,29 +502,38 @@ export class ShiptechCustomHeaderGroup {
     if (this.currentRequestInfo) {
       let RequestGroupId = parseInt(this.currentRequestInfo.requestGroupId);
 
-      return this.selectedCounterparty.map(val =>
-        <SpnegoAddCounterpartyModel>{
-          requestGroupId: RequestGroupId,
-          requestId: this.currentRequestInfo.id,
-          requestLocationId: parseInt(reqLocation.id),
-          locationId: parseInt(reqLocation.locationId),
-          id: 0,
-          name: '',
-          counterpartytypeId: 0,
-          counterpartyTypeName: (val.seller) ? 'Seller' : (val.supplier) ? 'Supplier' : (val.broker) ? 'Broker' : (val.sludge) ? 'Sludge' : '',
-          genPrice: '',
-          genRating: '',
-          isDeleted: false,
-          isSelected: true,
-          mail: '',
-          portPrice: '',
-          portRating: '',
-          prefferedProductIds: '',
-          sellerComments: '',
-          sellerCounterpartyId: val.id,
-          sellerCounterpartyName: val.name,
-          senRating: ''
-        }
+      return this.selectedCounterparty.map(
+        val =>
+          <SpnegoAddCounterpartyModel>{
+            requestGroupId: RequestGroupId,
+            requestId: this.currentRequestInfo.id,
+            requestLocationId: parseInt(reqLocation.id),
+            locationId: parseInt(reqLocation.locationId),
+            id: 0,
+            name: '',
+            counterpartytypeId: 0,
+            counterpartyTypeName: val.seller
+              ? 'Seller'
+              : val.supplier
+              ? 'Supplier'
+              : val.broker
+              ? 'Broker'
+              : val.sludge
+              ? 'Sludge'
+              : '',
+            genPrice: '',
+            genRating: '',
+            isDeleted: false,
+            isSelected: true,
+            mail: '',
+            portPrice: '',
+            portRating: '',
+            prefferedProductIds: '',
+            sellerComments: '',
+            sellerCounterpartyId: val.id,
+            sellerCounterpartyName: val.name,
+            senRating: ''
+          }
       );
     } else {
       return Array<SpnegoAddCounterpartyModel>();
@@ -497,20 +542,20 @@ export class ShiptechCustomHeaderGroup {
 
   roundDown(value, pricePrecision) {
     const intvalue = parseFloat(value);
-    const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + pricePrecision + "})?", "g")
+    const reg = new RegExp('^-?\\d+(?:\\.\\d{0,' + pricePrecision + '})?', 'g');
     const a = intvalue.toString().match(reg)[0];
-    const dot = a.indexOf(".");
+    const dot = a.indexOf('.');
     const b = pricePrecision - (a.length - dot) + 1;
     return a;
   }
 
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
-      return (type == 'benchmark') ? '--' : null;
+      return type == 'benchmark' ? '--' : null;
     }
 
     if (value == 0) {
-      return (type == 'benchmark') ? value : '--';
+      return type == 'benchmark' ? value : '--';
     }
 
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -523,9 +568,9 @@ export class ShiptechCustomHeaderGroup {
 
     let productPricePrecision = this.tenantService.pricePrecision;
 
-    let num = plainNumber.split(".", 2);
+    let num = plainNumber.split('.', 2);
     //Live Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
-    if (plainNumber == num && type=='livePrice') {
+    if (plainNumber == num && type == 'livePrice') {
       this.priceFormat = '';
     } else {
       this.priceFormat =
@@ -534,7 +579,7 @@ export class ShiptechCustomHeaderGroup {
 
     if (plainNumber) {
       if (productPricePrecision) {
-        plainNumber = this.roundDown(plainNumber, productPricePrecision );
+        plainNumber = this.roundDown(plainNumber, productPricePrecision);
       } else {
         plainNumber = Math.trunc(plainNumber);
       }
@@ -548,48 +593,57 @@ export class ShiptechCustomHeaderGroup {
   }
   calculateTargetPrice() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    this.livePrice = this.priceFormatValue(this.livePrice,'livePrice');
-    this.livePrice = (this.livePrice == null || this.livePrice == '--' ? '--' : this.livePrice);
-    this.benchmark = (this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark);
-    const targetval = this.livePrice.toString().replace(',','') - this.benchmark;
-    this.targetValue = parseFloat(targetval.toString()) ;
+    this.livePrice = this.priceFormatValue(this.livePrice, 'livePrice');
+    this.livePrice =
+      this.livePrice == null || this.livePrice == '--' ? '--' : this.livePrice;
+    this.benchmark =
+      this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark;
+    const targetval =
+      this.livePrice.toString().replace(',', '') - this.benchmark;
+    this.targetValue = parseFloat(targetval.toString());
     //this.closureValue=parseInt(this.livePrice);
-    let  payload = {
-      "productPrice": {
-        "requestGroupId": parseInt(RequestGroupId),
-        "requestLocationId": this.requestLocationId,
-        "requestProductId": this.requestProductId,
-        "livePrice": this.livePrice.toString().replace(',',''),
-        "targetPrice":this.targetValue
+    let payload = {
+      productPrice: {
+        requestGroupId: parseInt(RequestGroupId),
+        requestLocationId: this.requestLocationId,
+        requestProductId: this.requestProductId,
+        livePrice: this.livePrice.toString().replace(',', ''),
+        targetPrice: this.targetValue
       }
     };
-    if(this.livePrice!="--"){
+    if (this.livePrice != '--') {
       const response = this._spotNegotiationService.saveTargetPrice(payload);
       response.subscribe((res: any) => {
         if (res.status) {
           let locations = [];
-           this.store.subscribe(({ spotNegotiation, ...props }) => {
+          this.store.subscribe(({ spotNegotiation, ...props }) => {
             locations = spotNegotiation.locations;
-            JSON.parse(JSON.stringify(locations))
+            JSON.parse(JSON.stringify(locations));
           });
-           if(locations.length > 0){
+          if (locations.length > 0) {
             locations.forEach(element => {
-              if(element.id == this.requestLocationId && element.requestProducts){
-                element.requestProducts.forEach((element1,index) => {
-                  if(element1.id == this.requestProductId && element1.requestGroupProducts){
-                    if(this.livePrice && this.livePrice != null){
-                     let updatedRow1 = Object.assign({}, element);
-                      updatedRow1 = this.updateprice(JSON.parse(JSON.stringify(updatedRow1)),index)
-                    this.store.dispatch(
-                      new EditLocations(updatedRow1)
-                    );
+              if (
+                element.id == this.requestLocationId &&
+                element.requestProducts
+              ) {
+                element.requestProducts.forEach((element1, index) => {
+                  if (
+                    element1.id == this.requestProductId &&
+                    element1.requestGroupProducts
+                  ) {
+                    if (this.livePrice && this.livePrice != null) {
+                      let updatedRow1 = Object.assign({}, element);
+                      updatedRow1 = this.updateprice(
+                        JSON.parse(JSON.stringify(updatedRow1)),
+                        index
+                      );
+                      this.store.dispatch(new EditLocations(updatedRow1));
                     }
-
                   }
                 });
               }
             });
-           }
+          }
         } else {
           this.toastr.error(res.message);
           return;
@@ -598,20 +652,27 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-    updateprice(updaterow, index){
-      updaterow.requestProducts[index].requestGroupProducts.livePrice = this.livePrice;
-      if(this.targetValue && this.targetValue != null){
-        updaterow.requestProducts[index].requestGroupProducts.targetPrice = this.targetValue;
-      }
-      return updaterow;
-
+  updateprice(updaterow, index) {
+    updaterow.requestProducts[
+      index
+    ].requestGroupProducts.livePrice = this.livePrice;
+    if (this.targetValue && this.targetValue != null) {
+      updaterow.requestProducts[
+        index
+      ].requestGroupProducts.targetPrice = this.targetValue;
     }
+    return updaterow;
+  }
 
   addCounterpartiesToLocation(reqLocationId: number) {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    let requestLocation = this.currentRequestInfo.requestLocations.filter(x => x.id === reqLocationId)[0];
+    let requestLocation = this.currentRequestInfo.requestLocations.filter(
+      x => x.id === reqLocationId
+    )[0];
 
-    const selectedCounterparties = this.toBeAddedCounterparties(requestLocation);
+    const selectedCounterparties = this.toBeAddedCounterparties(
+      requestLocation
+    );
     if (selectedCounterparties.length == 0) return;
 
     let payload = {
@@ -636,7 +697,9 @@ export class ShiptechCustomHeaderGroup {
         //this.store.dispatch(new AddCounterpartyToLocationsWithOffers(futureLocationsRows));
         // }
         // else
-         this.store.dispatch(new AddCounterpartyToLocations(futureLocationsRows));
+        this.store.dispatch(
+          new AddCounterpartyToLocations(futureLocationsRows)
+        );
         this.changeDetector.markForCheck();
       } else {
         this.toastr.error(res.message);
@@ -650,9 +713,12 @@ export class ShiptechCustomHeaderGroup {
       let currentLocProdCount = requestLocations[0].requestProducts.length;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
-        let val = "checkProd" + indx;
+        let val = 'checkProd' + indx;
         const status = requestLocations[0].requestProducts[index].status;
-        row[val] = status === 'Stemmed' || status === 'Confirmed' ? false : row.isSelected;
+        row[val] =
+          status === 'Stemmed' || status === 'Confirmed'
+            ? false
+            : row.isSelected;
         //row[val] = row.isSelected;
       }
     }
@@ -667,13 +733,14 @@ export class ShiptechCustomHeaderGroup {
 
     rowsArray.forEach((row, index) => {
       //let row = { ... reqLocSeller };
-      let currentLocProd = this.currentRequestData.filter(row1 => row1.locationId == row.locationId);
+      let currentLocProd = this.currentRequestData.filter(
+        row1 => row1.locationId == row.locationId
+      );
       this.UpdateProductsSelection(currentLocProd, row);
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray?.length &&
-        row.id ===
-        priceDetailsArray[index]?.requestLocationSellerId
+        row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.requestOffers.forEach(element1 => {
@@ -700,11 +767,16 @@ export class ShiptechCustomHeaderGroup {
           }
         });
         row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId =
+          priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
-          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+          row.physicalSupplierCounterpartyName = counterpartyList.find(
+            x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
+          ).displayName;
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
+        row.totalCost = priceDetailsArray[index].totalCost;
+
         return row;
       }
 
@@ -741,14 +813,17 @@ export class ShiptechCustomHeaderGroup {
             }
           });
           row.isSelected = detailsForCurrentRow[0].isSelected;
-          row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+          row.physicalSupplierCounterpartyId =
+            detailsForCurrentRow[0].physicalSupplierCounterpartyId;
           if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
-            row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
+            row.physicalSupplierCounterpartyName = counterpartyList.find(
+              x =>
+                x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
+            ).displayName;
           }
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
         }
       }
-
 
       return row;
     });
