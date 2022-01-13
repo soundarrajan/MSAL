@@ -235,16 +235,18 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
   }
 
-  checkIfSelectedApplicableIdExistsInapplicableForItems(
-    selectedApplicableForId
-  ) {
+  checkIfSelectedApplicableIdExistsInapplicableForItems(additionalCost) {
     let findIndex = _.findIndex(this.applicableForItems, function(object: any) {
-      object.id == selectedApplicableForId;
+      return object.id == additionalCost.selectedApplicableForId;
     });
-    if (findIndex != -1) {
-      return true;
+    if (
+      findIndex == -1 &&
+      additionalCost.id &&
+      !additionalCost.selectedApplicableForId
+    ) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   createAdditionalCostTypes() {
@@ -388,6 +390,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   }
 
   addNewAdditionalCostLine() {
+    if (this.applicableForItems.length == 0) {
+      this.toastr.error('No quoted products!');
+    }
     const additionalCost = {
       additionalCostId: null,
       costTypeId: null,
