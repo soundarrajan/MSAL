@@ -593,7 +593,7 @@ button:focus {
   color: $white !important;
   font-weight: normal;
   font-size: 0.857rem;
-  width: 140px;
+  // width: 140px;
   height: 33px;
   border: 1px solid $white;
   text-align: center;
@@ -7803,11 +7803,14 @@ tr.title {
       background: none !important;
       border: none !important;
       .ag-tooltip {
-        border: unset !important;
         border-radius: 5px;
-        color: white;
         font-weight: 500;
-        font-size: 14px;
+        border: 1px solid #b3b4b7 !important;
+        background-color: #fff !important;
+        border-radius: 3px !important;
+        font-size: 13px !important;
+        color: #364150 !important;
+        @include box-shadow;        
       }
     }
 
@@ -8992,7 +8995,7 @@ tr.title {
         textarea {
           height: 70px;
           background: #f8f8f8;
-          border-radius: 10px;
+          border-radius: 5px;
           border: none;
           width: 100%;
           resize: none;
@@ -22469,7 +22472,13 @@ mat-form-field {
   border-radius: 5px;
   color: white;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
+  border: 1px solid #b3b4b7 !important;
+  background-color: #fff !important;
+  border-radius: 3px !important;
+  font-size: 13px !important;
+  color: #364150 !important;  
+  @include box-shadow;
 }
 
 .non-editable-container-text-left {
