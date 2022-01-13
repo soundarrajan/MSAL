@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Select, Store } from '@ngxs/store';
@@ -561,7 +561,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
     >
       <span *ngIf="params.value">{{ priceCalFormatValue(params.value) }}</span>
       <span *ngIf="!params.value">-</span>
-      <div class="dollarButton" *ngIf="params.value == '500.00'"></div>
+      <div class="dollarButton" *ngIf="params.data.checkProd1"></div>
     </div>
     <mat-menu #addAdditionalCostMenuPopUp="matMenu" class="darkPanel-add big">
       <div class="add-block" (click)="additionalcostpopup()">
@@ -668,7 +668,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
     public format: TenantFormattingService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -812,13 +813,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let currentLocProd = this.currentRequestData.filter(
       loc => loc.id == row.requestLocationId
     );
-    if(currentLocProd.length > 0){
+    if (currentLocProd.length > 0) {
       let currentLocProdCount = currentLocProd[0].requestProducts.length;
       if (params.value) {
         row.isSelected = false;
         row[params.column.colId] = false;
       } else {
-        var checkallprod = this.checkallProd(row, params,currentLocProdCount);
+        var checkallprod = this.checkallProd(row, params, currentLocProdCount);
         if (!checkallprod) {
           row.isSelected = true;
         }
@@ -868,7 +869,18 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        this.showDollar = true;
+        const groupId = parseFloat(
+          this.route.snapshot.params.spotNegotiationId
+        );
+        const requestLocationSellerId = this.params.data.id;
+        console.log(groupId);
+        console.log(requestLocationSellerId);
+        this._spotNegotiationService
+          .getPriceDetailsById(groupId, requestLocationSellerId)
+          .subscribe((priceDetailsRes: any) => {
+            console.log(priceDetailsRes);
+          });
+
         // let updatedRow = { ...this.params.data };
         // updatedRow.totalOffer = 1000;
         // // Update the store

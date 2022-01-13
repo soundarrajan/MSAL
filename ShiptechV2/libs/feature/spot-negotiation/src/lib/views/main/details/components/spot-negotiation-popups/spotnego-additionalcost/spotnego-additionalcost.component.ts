@@ -123,6 +123,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buildApplicableForItems(this.rowData);
     this.getAdditionalCosts();
   }
 
@@ -150,7 +151,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.createAdditionalCostTypes();
           if (this.rowData?.requestOffers?.length > 0) {
             const firstOffer = this.rowData.requestOffers[0];
-            this.buildApplicableForItems(this.rowData);
             this.offerId = firstOffer.offerId;
             const payload = {
               offerId: firstOffer.offerId,
@@ -891,6 +891,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
+        this.enableSave = false;
         if (res.status) {
           this.saveButtonClicked = false;
           let rowsAdded = _.cloneDeep(res.costs.offerAdditionalCosts);
@@ -913,8 +914,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.toastr.success('Offer Additional Cost saved successfully.');
         } else this.toastr.error('Please try again later.');
       });
-
-    this.enableSave = false;
   }
 
   quantityFormatValue(value) {
