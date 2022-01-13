@@ -82,7 +82,10 @@ export class ApplicablecostpopupComponent implements OnInit {
       return;
     }
 
-    const payload = { additionalCosts: this.locationBasedCosts.concat(this.deletedCosts) }
+    const payload = {
+      additionalCosts: this.locationBasedCosts.concat(this.deletedCosts),
+      skipTotalCostUpdate: true
+    };
     this.spotNegotiationService.saveOfferAdditionalCosts(payload)
     .subscribe((res:any) => {
         if(res.status){
@@ -103,7 +106,6 @@ export class ApplicablecostpopupComponent implements OnInit {
       cost.costType = this.costTypeList.find(c=> c.id === cost.costTypeId)?.name;
       cost.maxQuantityUom = this.uomList.find(c=> c.id === cost.maxQuantityUomId)?.name;
       cost.currency = this.currencyList.find(c=> c.id === cost.currencyId)?.code;
-      cost.locationAdditionalCostId = cost.id;
     });
 
     return locationAdditionalCosts;
@@ -148,7 +150,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     const maxQtyDetails = this.getMaxQuantityByApplicableFor(cost.selectedApplicableForId);
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
-    cost.maxQtyUomId = maxQtyDetails.maxQtyUomId;
+    cost.maxQuantityUomId = maxQtyDetails.maxQtyUomId;
     cost.priceUomId = maxQtyDetails.maxQtyUomId;
     cost.price = selectedCost.price;
     cost.currency = selectedCost.currencyCode;
@@ -175,7 +177,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     const maxQtyDetails = this.getMaxQuantityByApplicableFor(selectedApplicableForId);
     cost.maxQuantity = maxQtyDetails.maxQty;
     cost.maxQuantityUom = maxQtyDetails.maxQtyUom;
-    cost.maxQtyUomId = maxQtyDetails.maxQtyUomId;
+    cost.maxQuantityUomId = maxQtyDetails.maxQtyUomId;
     cost.priceUomId = maxQtyDetails.maxQtyUomId;
     this.calculateCostAmount(cost);
     this.enableSave = true;
