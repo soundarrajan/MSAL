@@ -247,6 +247,11 @@
                     disableRipple
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
+                    [disabled]="
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        offerAdditionalCost
+                      )
+                    "
                   >
                     <mat-option
                       *ngFor="let applicableFor of applicableForItems"
@@ -254,17 +259,16 @@
                     >
                       {{ applicableFor.name }}
                     </mat-option>
-                    <!-- <mat-option
+                    <mat-option
                       *ngIf="
-                        !offerAdditionalCost.selectedApplicableForId &&
                         !checkIfSelectedApplicableIdExistsInapplicableForItems(
-                          offerAdditionalCost.selectedApplicableForId
+                          offerAdditionalCost
                         )
                       "
                       [value]="0"
                     >
                       All
-                    </mat-option> -->
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <div *ngIf="offerAdditionalCost.hasStemmedProduct">
@@ -500,9 +504,8 @@
                     </mat-option>
                     <mat-option
                       *ngIf="
-                        !locationAdditionalCost.selectedApplicableForId &&
                         !checkIfSelectedApplicableIdExistsInapplicableForItems(
-                          locationAdditionalCost.selectedApplicableForId
+                          locationAdditionalCost
                         )
                       "
                       [value]="0"
