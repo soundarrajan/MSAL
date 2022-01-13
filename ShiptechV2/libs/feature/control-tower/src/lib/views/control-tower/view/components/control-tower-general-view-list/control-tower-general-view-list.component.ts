@@ -653,7 +653,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
             dialogData.changeLog = response.changeLog;
             dialogData.comments = response.comments;
             const dialogRef = this.dialog.open(ControlTowerPopupComponent, {
-              width: '400px',
+              width: '430px',
               height: 'auto',
               // maxHeight: '536px',
               backdropClass: 'dark-popupBackdropClass',
