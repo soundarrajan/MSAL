@@ -5191,7 +5191,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
         })
         
-        ctrl.notesExpanded = true;
         payload = {
             "payload" : {
                 "VesselVoyageDetailIdList":vesselVoyageDetailIdList,
@@ -5203,6 +5202,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if (response) {
                 if (response.data) {
                     ctrl.request.requestNotes = response.data.payload;
+                    ctrl.notesExpanded = true;
                 }
             }
         });        
