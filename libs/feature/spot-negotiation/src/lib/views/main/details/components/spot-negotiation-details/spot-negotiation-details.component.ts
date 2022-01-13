@@ -342,7 +342,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               targetDifference: productDetails.targetDifference,
               price: productDetails.price,
               maxQuantity: product.maxQuantity,
-              uomId: product.uomId,
+              maxQuantityUomId: product.uomId,
               targetPrice: product.requestGroupProducts?.targetPrice
             }
           ]
