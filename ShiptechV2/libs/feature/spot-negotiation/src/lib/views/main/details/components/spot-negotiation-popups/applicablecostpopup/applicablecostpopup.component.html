@@ -60,33 +60,74 @@
                 <div class="minus">-</div>
               </div>
             </td>
-            <!-- <td *ngIf="cost.id">{{cost.costName}}</td> -->
             <td class="text-left cell-dashed-border" contenteditable="true">
-              <mat-form-field appearance="none">
+              <mat-form-field class="without-search spot-dropdown-component" appearance="none">
                 <mat-select [ngModel]="cost.locationAdditionalCostId"
-                  (ngModelChange)="cost.locationAdditionalCostId = $event; onCostSelectionChange($event, j)">
+                  (ngModelChange)="cost.locationAdditionalCostId = $event;
+                      onCostSelectionChange($event, j)"
+                  [disableOptionCentering]="true"
+                  panelClass="spot-select-panel-container">
                   <mat-option *ngFor="let locationCost of locationCosts" [value]="locationCost.id">
-                    {{ locationCost.costName }}
+                    {{ locationCost.costDescription }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </td>
             <td class="">{{cost.costType}}</td>
-            <td class="text-left "> {{cost.maxQuantity? cost.maxQuantity + ' ' + cost.maxQuantityUom : ''}}</td>
-            <td class="text-left ">{{cost.price? cost.price + ' ' + cost.currency : '' }}</td>
+            <td>
+              <div class="non-editable-container">
+                <div class="non-editable-container-text-left">
+                  {{ cost.maxQuantity? cost.maxQuantity : ' ' }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{ cost.maxQuantityUom ? cost.maxQuantityUom : '' }}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="non-editable-container">
+                <div class="non-editable-container-text-left">
+                  {{ cost.price? cost.price : ' ' }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{ cost.currency? cost.currency : '' }}
+                </div>
+              </div>
+            </td>
             <td class="text-left cell-dashed-border" contenteditable="true">
-              <mat-form-field appearance="none">
+              <mat-form-field class="without-search spot-dropdown-component" appearance="none">
                 <mat-select [ngModel]="cost.selectedApplicableForId"
-                  (ngModelChange)="cost.selectedApplicableForId = $event; onApplicableForChange($event, j)">
+                  (ngModelChange)="cost.selectedApplicableForId = $event;
+                    onApplicableForChange($event, j)"
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container">
                   <mat-option *ngFor="let applicableFor of applicableForItems" [value]="applicableFor.id">
                     {{ applicableFor.name }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </td>
-            <td class="text-left "> {{cost.extras}}</td>
-            <td class="text-left ">{{cost.extraAmount}} </td>
-            <td class="text-left">{{cost.totalAmount}} </td>
+            <td class="text-left"> {{cost.extras}}</td>
+            <td>
+              <div class="non-editable-container">
+                <div class="non-editable-container-text-left">
+                  {{ cost.extraAmount? cost.extraAmount : ' ' }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{ cost.currency? cost.currency : '' }}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="non-editable-container">
+                <div class="non-editable-container-text-left">
+                  {{ cost.totalAmount? cost.totalAmount : ' ' }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{ cost.currency? cost.currency : '' }}
+                </div>
+              </div>
+            </td>
             <td class="text-left">{{cost.ratePerUom}} </td>
           </tr>
         </tbody>
