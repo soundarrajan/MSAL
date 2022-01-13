@@ -769,6 +769,13 @@ export class DeliveryProductsGroupComponent
     // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
     // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
+    if (typeof this.formValues.temp.reconStatus == 'undefined') {
+      this.formValues.temp.reconStatus = [];
+      this.formValues.temp.reconStatus[`product_${idx}`] = undefined;
+    }
+    if (typeof this.formValues.temp.variances == 'undefined') {
+      this.formValues.temp.variances = [];
+    }
     switch (this.formValues.temp.reconStatus[`product_${idx}`]) {
       case 1: // 1 - green, 2 - Amber, 3 - Red
         this.formValues.temp.variances[`color_${idx}`] = 'green';
