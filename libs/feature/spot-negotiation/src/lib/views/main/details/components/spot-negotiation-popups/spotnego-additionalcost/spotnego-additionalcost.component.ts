@@ -912,21 +912,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         this.enableSave = false;
         if (res.status) {
           this.saveButtonClicked = false;
-          let rowsAdded = _.cloneDeep(res.costs.offerAdditionalCosts);
-          this.formatAdditionalCostList(rowsAdded);
-          console.log(rowsAdded);
-          let filterOfferAdditionalCostArray = _.filter(
-            this.offerAdditionalCostList,
-            function(offerAdditionalCost) {
-              return offerAdditionalCost.id && !offerAdditionalCost.isDeleted;
-            }
-          );
-          const newOfferAdditionalCostList = filterOfferAdditionalCostArray.concat(
-            rowsAdded
-          ) as AdditionalCostViewModel[];
+
           this.offerAdditionalCostList = _.cloneDeep(
-            newOfferAdditionalCostList
+            res.costs.offerAdditionalCosts
           );
+
+          this.formatAdditionalCostList(this.offerAdditionalCostList);
 
           this.changeDetectorRef.detectChanges();
           this.toastr.success('Offer Additional Cost saved successfully.');
