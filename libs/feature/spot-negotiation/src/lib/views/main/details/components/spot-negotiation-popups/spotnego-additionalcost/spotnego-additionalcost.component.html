@@ -94,7 +94,6 @@
                     <mat-select
                       [(ngModel)]="offerAdditionalCost.additionalCostId"
                       (ngModelChange)="
-                        onCostSelectionChange($event, j);
                         additionalCostNameChanged(
                           offerAdditionalCost,
                           false,
@@ -157,8 +156,8 @@
                   </div>
                   <div class="non-editable-container-text-right">
                     {{
-                      offerAdditionalCost.maxQuantityUom
-                        ? offerAdditionalCost.maxQuantityUom
+                      offerAdditionalCost.maxQuantityUomId
+                        ? getUomName(offerAdditionalCost.maxQuantityUomId)
                         : ''
                     }}
                   </div>
@@ -302,8 +301,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    offerAdditionalCost.currency
-                      ? offerAdditionalCost.currency.code
+                    offerAdditionalCost.currencyId
+                      ? getCurrencyCode(offerAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>
@@ -314,8 +313,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    offerAdditionalCost.currency
-                      ? offerAdditionalCost.currency.code
+                    offerAdditionalCost.currencyId
+                      ? getCurrencyCode(offerAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>
@@ -426,8 +425,8 @@
                   </div>
                   <div class="non-editable-container-text-right">
                     {{
-                      locationAdditionalCost.maxQuantityUom
-                        ? locationAdditionalCost.maxQuantityUom
+                      locationAdditionalCost.maxQuantityUomId
+                        ? getUomName(locationAdditionalCost.maxQuantityUomId)
                         : ''
                     }}
                   </div>
@@ -537,8 +536,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    locationAdditionalCost.currency
-                      ? locationAdditionalCost.currency.code
+                    locationAdditionalCost.currencyId
+                      ? getCurrencyCode(locationAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>
@@ -549,8 +548,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    locationAdditionalCost.currency
-                      ? locationAdditionalCost.currency.code
+                    locationAdditionalCost.currencyId
+                      ? getCurrencyCode(locationAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>
