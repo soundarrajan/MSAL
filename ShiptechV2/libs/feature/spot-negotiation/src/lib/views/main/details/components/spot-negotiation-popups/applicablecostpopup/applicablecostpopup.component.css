@@ -1,3 +1,12 @@
 .operations-details-block{
   height: 162px !important;
 }
+
+.mid-blue-button {
+  width: 90px;
+  height: 26px;
+  background: #1d9fff;
+  border-radius: 3px;
+  color: white;
+  line-height: 26px;
+}
