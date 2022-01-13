@@ -330,6 +330,21 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getUomConversionFactor(payload);
   }
 
+  /**
+   * @param groupId
+   *
+   */
+  @ObservableException()
+  getPriceDetailsById(
+    groupId: any,
+    requestLocationSellerId: any
+  ): Observable<unknown> {
+    return this.spotNegotiationApi.getPriceDetailsById(
+      groupId,
+      requestLocationSellerId
+    );
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
