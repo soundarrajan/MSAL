@@ -717,6 +717,28 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       );
   }
 
+  @ObservableException()
+  getPriceDetailsById(
+    groupId: any,
+    requestLocationSellerId: any
+  ): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this._negotiationApiUrl}/Price/${groupId}/${requestLocationSellerId}/getSellerPrices`,
+        {}
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
   handleErrorMessage(body: any) {
     return of(
       body.error.ErrorMessage
