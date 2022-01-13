@@ -392,6 +392,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   addNewAdditionalCostLine() {
     if (this.applicableForItems.length == 0) {
       this.toastr.error('No quoted products!');
+      return;
     }
     const additionalCost = {
       additionalCostId: null,
