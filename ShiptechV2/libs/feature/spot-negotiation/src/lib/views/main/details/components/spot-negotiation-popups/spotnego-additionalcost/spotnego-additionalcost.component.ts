@@ -797,16 +797,16 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
 
     for (let i = 0; i < this.locationAdditionalCostsList.length; i++) {
-      // this.locationAdditionalCostsList[
-      //   i
-      // ].requestOfferIds = this.getRequestOfferIds(
-      //   this.locationAdditionalCostsList[i].selectedApplicableForId
-      // );
       this.locationAdditionalCostsList[
         i
-      ].requestProductIds = this.getRequestProductIds(
+      ].requestOfferIds = this.getRequestOfferIds(
         this.locationAdditionalCostsList[i].selectedApplicableForId
       );
+      // this.locationAdditionalCostsList[
+      //   i
+      // ].requestProductIds = this.getRequestProductIds(
+      //   this.locationAdditionalCostsList[i].selectedApplicableForId
+      // );
     }
 
     let payload = {
