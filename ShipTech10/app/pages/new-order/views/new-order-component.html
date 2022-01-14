@@ -1448,7 +1448,7 @@
                                                    ng-change="$ctrl.productPriceChanged(product)"
                                                    ng-blur="$ctrl.prodPriceChanged('input', product); $ctrl.captureReasonModal($index, 'ORDER_PRODUCT_PRICE', 'price')"
                                                    ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id]"
-                                                   ng-model="product.price"
+                                                   ng-model="product.originalPrice"
                                                    ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
                                                    style="min-width:80px" type="text" />
 
@@ -1849,7 +1849,6 @@
                                         <div class="input-group">
 
                                             <!--  cost value -->
-
                                             <input class="form-control"
                                                 format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
                                                 id="additional_cost_price_{{ $index }}"
@@ -1859,17 +1858,10 @@
                                                 ng-class="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost, additionalCost.additionalCostList) ? 'ng-valid' : 'additional_cost_invalid'"
                                                 ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0)) ||
                                                     $ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id))"
-                                                ng-model="additionalCost.price"
+                                                ng-model="additionalCost.originalPrice"
                                                 ng-required="additionalCost.additionalCost && !(additionalCost.costType.name == 'Range' && additionalCost.costType.name == 'Total')" type="text" />
+                                                
                                             <!-- cost qty uom -->
-
-
-
-
-
-
-
-
                                             <div class="input-group-btn">
                                                 <span
                                                     ng-if="!(!$ctrl.additionalCostPriceUomEnabled(additionalCost) || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id) && !additionalCost.priceUom.id"

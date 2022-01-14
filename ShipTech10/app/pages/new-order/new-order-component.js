@@ -1069,7 +1069,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!product.confirmedQuantity) {
                 confirmedQuantityOrMaxQuantity = product.maxQuantity;
             }
-            return (Number(confirmedQuantityOrMaxQuantity) || 0) * (Number(product.confirmedQtyPrice) || 0) * (Number(product.price) || 0);
+            return (Number(confirmedQuantityOrMaxQuantity) || 0) * (Number(product.confirmedQtyPrice) || 0) * (Number(product.originalPrice) || 0);
         }
 
         /**
@@ -1117,17 +1117,17 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                             if (additionalCost.isAllProductsCost) {
                                 additionalCost.amount = convertDecimalSeparatorStringToNumber(additionalCost.amount) + 
                                     confirmedQuantityOrMaxQuantity * convertDecimalSeparatorStringToNumber(additionalCost.prodConv[i]) *
-                                    convertDecimalSeparatorStringToNumber(additionalCost.price);
+                                    convertDecimalSeparatorStringToNumber(additionalCost.originalPrice);
                             } else if (product === prod) {
                                 additionalCost.amount = confirmedQuantityOrMaxQuantity * convertDecimalSeparatorStringToNumber(additionalCost.prodConv[i]) *
-                                    convertDecimalSeparatorStringToNumber(additionalCost.price);
+                                    convertDecimalSeparatorStringToNumber(additionalCost.originalPrice);
                             }
                         }
                     }
                 }
                 break;
             case COST_TYPE_IDS.FLAT:
-                additionalCost.amount = convertDecimalSeparatorStringToNumber(additionalCost.price) || 0;
+                additionalCost.amount = convertDecimalSeparatorStringToNumber(additionalCost.originalPrice) || 0;
                 additionalCost.priceUom = null;
                 break;
             case COST_TYPE_IDS.PERCENT:
@@ -1139,15 +1139,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 if (productComponent) {
                     additionalCost.amount = convertDecimalSeparatorStringToNumber(totalAmount) *
-                        convertDecimalSeparatorStringToNumber(additionalCost.price) / 100 || 0;
+                        convertDecimalSeparatorStringToNumber(additionalCost.originalPrice) / 100 || 0;
                 } else {
                     totalAmount = convertDecimalSeparatorStringToNumber(totalAmount) + sumProductComponentAdditionalCostAmounts();
-                    additionalCost.amount = totalAmount * convertDecimalSeparatorStringToNumber(additionalCost.price) / 100 || 0;
+                    additionalCost.amount = totalAmount * convertDecimalSeparatorStringToNumber(additionalCost.originalPrice) / 100 || 0;
                 }
                 additionalCost.priceUom = null;
                 break;
             case COST_TYPE_IDS.RANGE : case COST_TYPE_IDS.TOTAL :
-                additionalCost.amount = additionalCost.price || 0;
+                additionalCost.amount = additionalCost.originalPrice || 0;
                 additionalCost.priceUom = null;
                 break;
             }
@@ -2275,6 +2275,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.additionalCostRowPriceChanged = function(additionalCost, initiatorName) {
             if(initiatorName == 'input') {
+                additionalCost.price = $filter("number")(additionalCost.originalPrice, ctrl.pricePrecision);
                 let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
                 additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                 ctrl.evaluateAdditionalCostList();
@@ -3586,8 +3587,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          */
         ctrl.productPriceChanged = function(product) {
 			if (product.contractProductId) { 
-				product.referencePrice = parseInt(product.price);
+				product.referencePrice = parseInt(product.originalPrice);
 			}
+            product.price = $filter("number")(product.originalPrice, product.pricePrecision);
             product.amount = calculateProductAmount(product);
             updateOrderSummary();
         };
@@ -4252,7 +4254,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[idx].pricePrecision = selection.pricePrecision;
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
                 if ((changeContract || changeContractAutocomplete) && !isQuantityUom) { 
-                    ctrl.data.products[idx].price = angular.copy(selection.price);
+                    ctrl.data.products[idx].originalPrice = angular.copy(selection.price);
                     ctrl.productPriceChanged(ctrl.data.products[idx]);
                 }
                 ctrl.recomputeProductPricePrecision(idx);
