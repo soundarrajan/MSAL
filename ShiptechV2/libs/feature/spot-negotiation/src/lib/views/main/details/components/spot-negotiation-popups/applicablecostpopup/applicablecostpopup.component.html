@@ -25,7 +25,7 @@
 </div>
 <hr class="hr-line" />
 <div class="product-terms p-b-5 p-r-15 p-l-15">
-  <div class="operations-details-block">
+  <div class="operations-details-block location-based-cost-table-container">
     <table>
       <thead>
         <tr>
@@ -67,7 +67,14 @@
                   <div class="minus">-</div>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td
+                class="text-left "
+                [ngClass]="{
+                  'required-field':
+                    saveButtonClicked && !locationCost.additionalCostId,
+                  'cell-dashed-border': !saveButtonClicked
+                }"
+              >
                 <mat-form-field
                   class="without-search spot-dropdown-component"
                   appearance="none"
@@ -80,6 +87,12 @@
                     "
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
+                    [disabled]="
+                      locationCost.hasStemmedProduct ||
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        locationCost
+                      )
+                    "
                   >
                     <mat-option
                       *ngFor="let locationCost of locationCosts"
@@ -119,7 +132,11 @@
                     }}
                   </div>
                   <div class="non-editable-container-text-right">
-                    {{ locationCost.currency ? locationCost.currency : '' }}
+                    {{
+                      locationCost.costTypeId == 2 && locationCost.priceUomId
+                        ? getUomName(locationCost.priceUomId)
+                        : ''
+                    }}
                   </div>
                 </div>
               </td>
@@ -127,6 +144,7 @@
                 <mat-form-field
                   class="without-search spot-dropdown-component"
                   appearance="none"
+                  *ngIf="!locationCost.hasStemmedProduct"
                 >
                   <mat-select
                     [ngModel]="locationCost.selectedApplicableForId"
@@ -136,6 +154,11 @@
                     "
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
+                    [disabled]="
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        locationCost
+                      )
+                    "
                   >
                     <mat-option
                       *ngFor="let applicableFor of applicableForItems"
@@ -143,8 +166,21 @@
                     >
                       {{ applicableFor.name }}
                     </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          locationCost
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
+                <div *ngIf="locationCost.hasStemmedProduct">
+                  {{ locationCost.product?.name }}
+                </div>
               </td>
               <td class="text-left">
                 {{
