@@ -63,6 +63,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   offerId: number;
   additionalCostTypes: any = {};
   saveButtonClicked: boolean = false;
+  totalMaxQuantity: number = 0;
+  maxQuantityUomId: number = 0;
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
@@ -249,6 +251,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             productId: product.productId
           });
 
+          this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
+          this.maxQuantityUomId = product.uomId;
+
           this.productList.push(product);
         }
       }
@@ -271,14 +276,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       );
       return {
         maxQty: product.maxQuantity,
-        maxQuantityUomId: product.uomId,
-        maxQtyUom: product.uomName
+        maxQuantityUomId: product.uomId
       };
     } else
       return {
-        maxQty: this.requestLocation.requestProducts[0]?.maxQuantity,
-        maxQuantityUomId: this.requestLocation.requestProducts[0]?.uomId,
-        maxQtyUom: this.requestLocation.requestProducts[0].uomName
+        maxQty: this.totalMaxQuantity,
+        maxQuantityUomId: this.maxQuantityUomId
       };
   }
 
@@ -293,7 +296,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     cost.isLocationBased = false;
 
     cost.requestOfferIds = this.getRequestOfferIds(selectedApplicableForId);
-    cost.requestProductIds = this.getRequestProductIds(selectedApplicableForId);
+    // cost.requestProductIds = this.getRequestProductIds(selectedApplicableForId);
     cost.currencyId = this.getCurrencyId(selectedApplicableForId);
 
     const maxQtyDetails = this.getMaxQuantityByApplicableFor(
@@ -791,11 +794,11 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
 
     for (let i = 0; i < this.locationAdditionalCostsList.length; i++) {
-      this.locationAdditionalCostsList[
-        i
-      ].requestOfferIds = this.getRequestOfferIds(
-        this.locationAdditionalCostsList[i].selectedApplicableForId
-      );
+      // this.locationAdditionalCostsList[
+      //   i
+      // ].requestOfferIds = this.getRequestOfferIds(
+      //   this.locationAdditionalCostsList[i].selectedApplicableForId
+      // );
       this.locationAdditionalCostsList[
         i
       ].requestProductIds = this.getRequestProductIds(
