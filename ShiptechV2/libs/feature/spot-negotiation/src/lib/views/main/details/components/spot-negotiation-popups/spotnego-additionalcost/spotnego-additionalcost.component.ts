@@ -758,15 +758,18 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   checkRequiredFields(): string {
     let additionalCostRequired = [];
     for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
-      if (!this.offerAdditionalCostList[i].additionalCostId) {
-        additionalCostRequired.push(
-          'Cost name for line ' + (i + 1) + ' is required!'
-        );
-      }
-      if (!this.offerAdditionalCostList[i].price) {
-        additionalCostRequired.push(
-          'Price for line ' + (i + 1) + ' is required!'
-        );
+      if (!this.offerAdditionalCostList[i].isDeleted) {
+        if (!this.offerAdditionalCostList[i].additionalCostId) {
+          additionalCostRequired.push('Cost name is required!');
+        }
+        if (!this.offerAdditionalCostList[i].price) {
+          let costName = this.offerAdditionalCostList[i].additionalCostId
+            ? this.additionalCostTypes[
+                this.offerAdditionalCostList[i].additionalCostId
+              ].name
+            : 'from line ' + i;
+          additionalCostRequired.push('Price is required for cost ' + costName);
+        }
       }
     }
     let additionalCostRequiredString = '';

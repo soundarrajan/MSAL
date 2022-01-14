@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
+import _ from 'lodash';
 import moment from 'moment';
 import { TenantFormattingService } from '../../../../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { ApplicablecostpopupComponent } from '../spot-negotiation-popups/applicablecostpopup/applicablecostpopup.component';
@@ -25,14 +27,17 @@ export class LocPanDataComponent implements OnInit {
   deliveryFrom: string;
   deliveryTo: string;
   terminal: string;
+  currentRequestSmallInfo: any;
+  locationsRows: any;
 
   constructor(
     public dialog: MatDialog,
-    private format: TenantFormattingService
+    private format: TenantFormattingService,
+    public store: Store
   ) {}
 
   ngOnInit(): void {
-    if(this.reqLocation.eta){
+    if (this.reqLocation.eta) {
       this.ETAdatetime = new FormControl(new Date(this.reqLocation.eta));
       this.ETBdatetime = new FormControl(new Date(this.reqLocation.etb));
       this.ETDdatetime = new FormControl(new Date(this.reqLocation.etd));
@@ -63,11 +68,24 @@ export class LocPanDataComponent implements OnInit {
   }
 
   additionalcostpopup() {
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.locationsRows = spotNegotiation.locationsRows;
+    });
+
+    let currentLocationId = this.reqLocation.id;
+
+    let filterLocationRows = _.filter(this.locationsRows, function(object) {
+      return object.requestLocationId == currentLocationId;
+    });
+    console.log(filterLocationRows);
     const dialogRef = this.dialog.open(ApplicablecostpopupComponent, {
       width: '1170px',
       height: '235px',
       panelClass: 'additional-cost-popup',
-      data: this.reqLocation,
+      data: {
+        reqLocation: this.reqLocation,
+        sellers: filterLocationRows
+      },
       disableClose: true
     });
 

@@ -79,11 +79,10 @@
               </td>
 
               <td
-                class="text-left"
+                class="text-left cell-dashed-border"
                 [ngClass]="{
                   'required-field':
-                    saveButtonClicked && !offerAdditionalCost.additionalCostId,
-                  'cell-dashed-border': !saveButtonClicked
+                    saveButtonClicked && !offerAdditionalCost.additionalCostId
                 }"
               >
                 <div class="custom-form-field">
@@ -102,7 +101,12 @@
                       "
                       [disableOptionCentering]="true"
                       panelClass="spot-select-panel-container"
-                      [disabled]="offerAdditionalCost.hasStemmedProduct"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
                     >
                       <mat-option
                         *ngFor="let option of additionalCostList"
@@ -131,7 +135,12 @@
                       "
                       [disableOptionCentering]="true"
                       panelClass="spot-select-panel-container"
-                      [disabled]="offerAdditionalCost.hasStemmedProduct"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
                     >
                       <mat-option
                         *ngFor="
@@ -195,7 +204,12 @@
                               true
                             )
                           "
-                          [disabled]="offerAdditionalCost.hasStemmedProduct"
+                          [disabled]="
+                            offerAdditionalCost.hasStemmedProduct ||
+                            !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                              offerAdditionalCost
+                            )
+                          "
                         />
                       </mat-form-field>
                       <mat-form-field
@@ -218,7 +232,12 @@
                               true
                             )
                           "
-                          [disabled]="offerAdditionalCost.hasStemmedProduct"
+                          [disabled]="
+                            offerAdditionalCost.hasStemmedProduct ||
+                            !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                              offerAdditionalCost
+                            )
+                          "
                         >
                           <mat-option
                             *ngFor="let option of uomList"
@@ -290,7 +309,12 @@
                           true
                         )
                       "
-                      [disabled]="offerAdditionalCost.hasStemmedProduct"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
                     />
                   </mat-form-field>
                 </div>

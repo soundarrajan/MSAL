@@ -1,39 +1,39 @@
 <div class="spot-popup-header-container applicable-cost-popup-header">
-  <div class="spot-nego-title">Applicable Location Costs- Rotterdam </div>
+  <div class="spot-nego-title">
+    Applicable Location Costs - {{ requestLocation.locationName }}
+  </div>
   <div class="spot-dialog-title-right popup-header-form">
-    <mat-checkbox class="checkbox-alignment"></mat-checkbox>
-
-    <div class="check-text">Duplicate Costs to: </div>
-    <div [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger" class="vessels_req">
-      All Vessels <span class="down-arrow"></span>
-    </div>
-    <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-requestOptions" xPosition="after"
-      style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;">
-      <div (click)="$event.stopPropagation()">
-        <div class="more-options-menu-inv no-border p-lr-0">
-          <div class="checkboxOptions" *ngFor="let item of requestOptions">
-            <mat-checkbox [disabled]="item.selected==false" [checked]="item.selected">{{item.request}} - {{item.vessel}}
-            </mat-checkbox>
-          </div>
-        </div>
-      </div>
-    </mat-menu>
-    <button mat-button [ngClass]="{'save-btn': !enableSave, 'mid-blue-button': enableSave }"
-        (click)="saveLocationAdditionalCosts();">Save</button>
+    <button
+      mat-button
+      [ngClass]="{ 'save-btn': !enableSave, 'mid-blue-button': enableSave }"
+      (click)="saveLocationAdditionalCosts()"
+    >
+      Save
+    </button>
     <div class="title-divider">|</div>
     <div class="close-circle" style="padding:0px;">
-      <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
-        style="font-size: 14px; display: inline;">close</mat-icon>
+      <mat-icon
+        id="dialogCloseButton"
+        matSuffix
+        class=""
+        (click)="closeDialog()"
+        style="font-size: 14px; display: inline;"
+        >close</mat-icon
+      >
     </div>
   </div>
 </div>
-<hr class="hr-line">
+<hr class="hr-line" />
 <div class="product-terms p-b-5 p-r-15 p-l-15">
-  <div class="operations-details-block">
+  <div class="operations-details-block location-based-cost-table-container">
     <table>
       <thead>
         <tr>
-          <th class="increment-circle-button" style="width: 30px;" (click)="addNew()">
+          <th
+            class="increment-circle-button"
+            style="width: 30px;"
+            (click)="addNewLocationCost()"
+          >
             <div class="increment-circle">
               <div class="plus">+</div>
             </div>
@@ -54,82 +54,186 @@
     <div style="height: 125px; overflow-y: scroll;">
       <table>
         <tbody>
-          <tr class="border-bottom" *ngFor="let cost of locationBasedCosts; let j = index">
-            <td class="decrement-circle-button" (click)="removeCost(j, cost)" style="width: 30px;">
-              <div class="decrement-circle">
-                <div class="minus">-</div>
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border" contenteditable="true">
-              <mat-form-field class="without-search spot-dropdown-component" appearance="none">
-                <mat-select [ngModel]="cost.locationAdditionalCostId"
-                  (ngModelChange)="cost.locationAdditionalCostId = $event;
-                      onCostSelectionChange($event, j)"
-                  [disableOptionCentering]="true"
-                  panelClass="spot-select-panel-container">
-                  <mat-option *ngFor="let locationCost of locationCosts" [value]="locationCost.id">
-                    {{ locationCost.costDescription }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-            <td class="">{{cost.costType}}</td>
-            <td>
-              <div class="non-editable-container">
-                <div class="non-editable-container-text-left">
-                  {{ cost.maxQuantity? cost.maxQuantity : ' ' }}
+          <ng-container
+            *ngFor="let locationCost of locationBasedCosts; let j = index"
+          >
+            <tr class="border-bottom" *ngIf="!locationCost.isDeleted">
+              <td
+                class="decrement-circle-button"
+                (click)="removeLocationCost(j)"
+                style="width: 30px;"
+              >
+                <div class="decrement-circle">
+                  <div class="minus">-</div>
                 </div>
-                <div class="non-editable-container-text-right">
-                  {{ cost.maxQuantityUom ? cost.maxQuantityUom : '' }}
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="non-editable-container">
-                <div class="non-editable-container-text-left">
-                  {{ cost.price? cost.price : ' ' }}
-                </div>
-                <div class="non-editable-container-text-right">
-                  {{ cost.currency? cost.currency : '' }}
-                </div>
-              </div>
-            </td>
-            <td class="text-left cell-dashed-border" contenteditable="true">
-              <mat-form-field class="without-search spot-dropdown-component" appearance="none">
-                <mat-select [ngModel]="cost.selectedApplicableForId"
-                  (ngModelChange)="cost.selectedApplicableForId = $event;
-                    onApplicableForChange($event, j)"
+              </td>
+              <td
+                class="text-left "
+                [ngClass]="{
+                  'required-field':
+                    saveButtonClicked && !locationCost.additionalCostId,
+                  'cell-dashed-border': !saveButtonClicked
+                }"
+              >
+                <mat-form-field
+                  class="without-search spot-dropdown-component"
+                  appearance="none"
+                >
+                  <mat-select
+                    [ngModel]="locationCost.locationAdditionalCostId"
+                    (ngModelChange)="
+                      locationCost.locationAdditionalCostId = $event;
+                      onCostSelectionChange($event, j)
+                    "
                     [disableOptionCentering]="true"
-                    panelClass="spot-select-panel-container">
-                  <mat-option *ngFor="let applicableFor of applicableForItems" [value]="applicableFor.id">
-                    {{ applicableFor.name }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-            <td class="text-left"> {{cost.extras}}</td>
-            <td>
-              <div class="non-editable-container">
-                <div class="non-editable-container-text-left">
-                  {{ cost.extraAmount? cost.extraAmount : ' ' }}
+                    panelClass="spot-select-panel-container"
+                    [disabled]="
+                      locationCost.hasStemmedProduct ||
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        locationCost
+                      )
+                    "
+                  >
+                    <mat-option
+                      *ngFor="let locationCost of locationCosts"
+                      [value]="locationCost.id"
+                    >
+                      {{ locationCost.costDescription }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td class="">{{ locationCost.costType }}</td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationCost.maxQuantity
+                        ? quantityFormatValue(locationCost.maxQuantity)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      locationCost.maxQuantityUomId
+                        ? getUomName(locationCost.maxQuantityUomId)
+                        : ''
+                    }}
+                  </div>
                 </div>
-                <div class="non-editable-container-text-right">
-                  {{ cost.currency? cost.currency : '' }}
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationCost.price
+                        ? priceFormatValue(locationCost.price)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      locationCost.costTypeId == 2 && locationCost.priceUomId
+                        ? getUomName(locationCost.priceUomId)
+                        : ''
+                    }}
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              <div class="non-editable-container">
-                <div class="non-editable-container-text-left">
-                  {{ cost.totalAmount? cost.totalAmount : ' ' }}
+              </td>
+              <td class="text-left cell-dashed-border">
+                <mat-form-field
+                  class="without-search spot-dropdown-component"
+                  appearance="none"
+                  *ngIf="!locationCost.hasStemmedProduct"
+                >
+                  <mat-select
+                    [ngModel]="locationCost.selectedApplicableForId"
+                    (ngModelChange)="
+                      locationCost.selectedApplicableForId = $event;
+                      onApplicableForChange($event, j)
+                    "
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container"
+                    [disabled]="
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        locationCost
+                      )
+                    "
+                  >
+                    <mat-option
+                      *ngFor="let applicableFor of applicableForItems"
+                      [value]="applicableFor.id"
+                    >
+                      {{ applicableFor.name }}
+                    </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          locationCost
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="locationCost.hasStemmedProduct">
+                  {{ locationCost.product?.name }}
                 </div>
-                <div class="non-editable-container-text-right">
-                  {{ cost.currency? cost.currency : '' }}
+              </td>
+              <td class="text-left">
+                {{
+                  locationCost.extras
+                    ? priceFormatValue(locationCost.extras)
+                    : ' '
+                }}
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationCost.extraAmount
+                        ? amountFormatValue(locationCost.extraAmount)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      locationCost.currencyId
+                        ? getCurrencyCode(locationCost.currencyId)
+                        : ''
+                    }}
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td class="text-left">{{cost.ratePerUom}} </td>
-          </tr>
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationCost.totalAmount
+                        ? amountFormatValue(locationCost.totalAmount)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      locationCost.currencyId
+                        ? getCurrencyCode(locationCost.currencyId)
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td class="text-left">
+                {{
+                  locationCost.ratePerUom
+                    ? priceFormatValue(locationCost.ratePerUom)
+                    : ''
+                }}
+              </td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>
