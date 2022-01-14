@@ -561,7 +561,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
       (click)="addAdditionalCostPopUpTrigger.closeMenu()"
       (contextmenu)="openCostMenu($event, params.value)"
     >
-      <span *ngIf="params.value">{{ priceCalFormatValue(params.value) }}</span>
+      <span *ngIf="params.value">{{ priceCalFormatValue(params.value) }} </span>
       <span *ngIf="!params.value">-</span>
       <div class="dollarButton" *ngIf="params.data.totalCost"></div>
     </div>

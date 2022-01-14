@@ -340,10 +340,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               totalPrice: productDetails.totalPrice,
               amount: productDetails.amount,
               targetDifference: productDetails.targetDifference,
-              price: productDetails.price,
-              maxQuantity: product.maxQuantity,
-              maxQuantityUomId: product.uomId,
-              targetPrice: product.requestGroupProducts?.targetPrice
+              price: productDetails.price
             }
           ]
         }
@@ -375,7 +372,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
 
     // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
-    productDetails.totalPrice = Number(productDetails.price) + 0;
+    productDetails.totalPrice =
+      Number(productDetails.price) + productDetails.cost;
     // Amount = Total Price * Max. Quantity
     productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
