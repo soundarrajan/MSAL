@@ -24,9 +24,7 @@
             placeholder="Price Precision"
             [disableOptionCentering]="true"
             panelClass="price-precision-select-container"
-            [disabled]="
-            formValues.status && formValues.status.name == 'Delivered' && formValues.hasApprovedInvoice
-            "
+            [disabled]="formValues.hasInvoicedOrder"
             (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)"
         >
             <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
@@ -40,9 +38,7 @@
     <div class="col-md-6 no-padding-left">
       <div id="custom-contract-btn-toggle-v2">
         <mat-button-toggle-group
-          [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed' && formValues.hasApprovedInvoice
-          "
+          [disabled]="formValues.hasInvoicedOrder"
           #group="matButtonToggleGroup"
           [value]="selectedVal"
           (change)="onValChange(group.value)"
@@ -153,9 +149,7 @@
         <mat-label>Price</mat-label>
         <input
           [(ngModel)]="formValues.products[selectedTabIndex].price"
-          [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed'
-          "
+          [disabled]="formValues.hasInvoicedOrder"
           (keypress)="keyPressNumber($event)"
           matInput
           autocomplete="off"
@@ -181,9 +175,7 @@
           [disableOptionCentering]="true"
           panelClass="general-info-select-container"
           [compareWith]="compareUomObjects"
-          [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed'
-          "
+          [disabled]="formValues.hasInvoicedOrder"
         >
           <mat-option *ngFor="let option of currencyList" [value]="option">
             {{ option.name }}
@@ -203,9 +195,7 @@
           [disableOptionCentering]="true"
           panelClass="general-info-select-container"
           [compareWith]="compareUomObjects"
-          [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed'
-          "
+          [disabled]="formValues.hasInvoicedOrder"
         >
           <mat-option *ngFor="let option of uomList" [value]="option">
             {{ option.name }}
@@ -236,10 +226,8 @@
             <span style="margin-right: 5px;">
               <a
                 class="remove-formula-icon"
-                (click)="
-                  formValues.status && formValues.status.name == 'Confirmed' && formValues.hasApprovedInvoice
-                    ? ''
-                    : removeFormula(selectedTabIndex)
+                (click)="formValues.hasInvoicedOrder ||
+                  removeFormula(selectedTabIndex)
                 "
               >
               </a>
@@ -285,7 +273,7 @@
             [matAutocomplete]="auto1"
             placeholder="Type formula name"
             [disabled]="
-              (formValues.status && formValues.status.name == 'Confirmed' || formValues.hasBeenExtended) && formValues.hasApprovedInvoice
+              formValues.hasInvoicedOrder || formValues.hasBeenExtended
             "
           />
           <mat-autocomplete
@@ -304,8 +292,7 @@
         </mat-form-field>
         <button
           class="search-icon"
-          [disabled]="
-            (formValues.status && formValues.status.name == 'Confirmed' || formValues.hasBeenExtended) && formValues.hasApprovedInvoice
+          [disabled]="formValues.hasInvoicedOrder || formValues.hasBeenExtended
           "
           [ngClass]="{
             'search-icon-disabled':
@@ -435,11 +422,8 @@
                       [disableOptionCentering]="true"
                       panelClass="general-info-select-container"
                       [compareWith]="compareAdditionalCostObjects"
-                      [disabled]="
-                        ( additionalCost.value.locationAdditionalCostId ||
-                        (formValues.status &&
-                          formValues.status.name == 'Confirmed') )
-                          && formValues.hasApprovedInvoice
+                      [disabled]="formValues.hasInvoicedOrder ||
+                        additionalCost.value.locationAdditionalCostId
                       "
                     >
                       <ng-container
@@ -488,11 +472,8 @@
                       [disableOptionCentering]="true"
                       panelClass="general-info-select-container"
                       [compareWith]="compareUomObjects"
-                      [disabled]="
-                        (additionalCost.value.locationAdditionalCostId ||
-                          (formValues.status && formValues.status.name == 'Confirmed')
-                        )
-                        && formValues.hasApprovedInvoice
+                      [disabled]="formValues.hasInvoicedOrder ||
+                        additionalCost.value.locationAdditionalCostId
                       "
                     >
                       <mat-option
@@ -538,15 +519,12 @@
                       amountFormat
                       autocomplete="off"
                       (keypress)="keyPressNumber($event)"
-                      [disabled]="
+                      [disabled]="formValues.hasInvoicedOrder ||
                         (additionalCost.value.locationAdditionalCostId ||
                           (additionalCost.value.costType &&
                             (additionalCost.value.costType.id == 4 ||
-                              additionalCost.value.costType.id == 5)) ||
-                          (formValues.status &&
-                            formValues.status.name == 'Confirmed')
+                              additionalCost.value.costType.id == 5))
                         )
-                        && formValues.hasApprovedInvoice
                       "
                     />
                   </mat-form-field>
@@ -569,15 +547,12 @@
                       [disableOptionCentering]="true"
                       panelClass="general-info-select-container"
                       [compareWith]="compareUomObjects"
-                      [disabled]="
+                      [disabled]="formValues.hasInvoicedOrder ||
                         (
                           additionalCost.value.locationAdditionalCostId ||
                           (additionalCost.value.costType &&
-                            additionalCost.value.costType.name != 'Unit') ||
-                          (formValues.status &&
-                            formValues.status.name == 'Confirmed')
+                            additionalCost.value.costType.name != 'Unit')
                         ) 
-                        && formValues.hasApprovedInvoice
                       "
                     >
                       <mat-option
@@ -603,11 +578,8 @@
                       [(ngModel)]="additionalCost.value.extras"
                       matInput
                       autocomplete="off"
-                      [disabled]="
-                        (additionalCost.value.locationAdditionalCostId ||
-                          (formValues.status && formValues.status.name == 'Confirmed')
-                        )
-                        && formValues.hasApprovedInvoice
+                      [disabled]="formValues.hasInvoicedOrder ||
+                        additionalCost.value.locationAdditionalCostId
                       "
                     />
                   </mat-form-field>
@@ -630,11 +602,8 @@
                       [disableOptionCentering]="true"
                       panelClass="general-info-select-container"
                       [compareWith]="compareUomObjects"
-                      [disabled]="
-                        (additionalCost.value.locationAdditionalCostId ||
-                          (formValues.status && formValues.status.name == 'Confirmed')
-                        )
-                        && formValues.hasApprovedInvoice
+                      [disabled]="formValues.hasInvoicedOrder ||
+                        additionalCost.value.locationAdditionalCostId
                       "
                     >
                       <mat-option
@@ -659,11 +628,8 @@
                     <input
                       [(ngModel)]="additionalCost.value.comments"
                       matInput
-                      [disabled]="
-                        (additionalCost.value.locationAdditionalCostId ||
-                          (formValues.status && formValues.status.name == 'Confirmed')
-                        )
-                        && formValues.hasApprovedInvoice
+                      [disabled]="formValues.hasInvoicedOrder ||
+                        additionalCost.value.locationAdditionalCostId
                       "
                       autocomplete="off"
                     />
