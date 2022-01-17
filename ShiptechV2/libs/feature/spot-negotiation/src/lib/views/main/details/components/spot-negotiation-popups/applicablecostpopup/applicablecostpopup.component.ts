@@ -106,6 +106,15 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.legacyLookupsDatabase.getTableByName('costType').then(response => {
+      this.costTypeList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      this.uomList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyList = response;
+    });
     this.buildApplicableForItems();
     this.getLocationCosts();
   }
@@ -268,16 +277,6 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
 
     console.log(this.applicableForItems);
-
-    this.legacyLookupsDatabase.getTableByName('costType').then(response => {
-      this.costTypeList = response;
-    });
-    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
-      this.uomList = response;
-    });
-    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
-      this.currencyList = response;
-    });
   }
 
   onCostSelectionChange(selectedCostId: number, selectedIndex: number) {
@@ -318,6 +317,19 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.enableSave = true;
   }
 
+  getRequestProductIds(selectedApplicableForId) {
+    let requestProductsIds = [];
+
+    if (selectedApplicableForId > 0) {
+      requestProductsIds.push(selectedApplicableForId);
+    } else {
+      for (let i = 0; i < this.requestLocation.requestProducts.length; i++) {
+        requestProductsIds.push(this.requestLocation.requestProducts[i].id);
+      }
+    }
+    return requestProductsIds;
+  }
+
   getMaxQuantityByApplicableFor(requestProductId: any) {
     if (requestProductId > 0) {
       const product = this.requestLocation.requestProducts.find(
@@ -343,6 +355,10 @@ export class ApplicablecostpopupComponent implements OnInit {
     let cost = this.locationBasedCosts[selectedIndex];
     cost.requestProductId =
       selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
+    cost.requestProductIds = this.getRequestProductIds(
+      cost.selectedApplicableForId
+    );
+
     cost.isAllProductsCost = cost.requestProductId ? false : true;
 
     const maxQtyDetails = this.getMaxQuantityByApplicableFor(
@@ -679,9 +695,13 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('No location specific additional cost is available.');
     else {
       const additionalCost = {
-        selectedApplicableForId: 0
+        selectedApplicableForId: this.applicableForItems[0]?.id
       } as AdditionalCostViewModel;
       this.locationBasedCosts.push(additionalCost);
+      this.onApplicableForChange(
+        additionalCost.selectedApplicableForId,
+        this.locationBasedCosts.length - 1
+      );
     }
     this.enableSave = true;
   }
