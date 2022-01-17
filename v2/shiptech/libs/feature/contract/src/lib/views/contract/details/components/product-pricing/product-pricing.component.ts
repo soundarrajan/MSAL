@@ -1179,7 +1179,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   addNewAdditionalCostLine() {
-    if (this.formValues.hasInvoicedOrder) {
+    if (this.formValues.status && this.formValues.status.name == 'Confirmed' && this.formValues.hasApprovedInvoice ) {
       return;
     }
     if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
@@ -1192,7 +1192,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   removeAdditionalCostLine(key) {
-    if (this.formValues.hasInvoicedOrder) {
+    if (this.formValues.status && this.formValues.status.name == 'Confirmed' && this.formValues.hasApprovedInvoice) {
       return;
     }
     if (
