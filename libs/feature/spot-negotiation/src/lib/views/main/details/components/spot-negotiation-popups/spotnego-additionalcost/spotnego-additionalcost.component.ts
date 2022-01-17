@@ -323,7 +323,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         requestOfferIds.push(this.rowData.requestOffers[i].id);
       }
     }
-    return requestOfferIds;
+    return requestOfferIds.join(',');
   }
 
   getRequestProductIds(selectedApplicableForId) {
