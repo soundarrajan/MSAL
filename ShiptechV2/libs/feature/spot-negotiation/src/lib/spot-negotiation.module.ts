@@ -84,6 +84,9 @@ import { DeliveryModule } from '@shiptech/feature/delivery';
 import { DeliveryRoutingModule } from 'libs/feature/delivery/src/lib/delivery-routing.module';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
+import { NegotiationToolbarComponent } from './views/main/details/components/toolbar/negotiation-toolbar.component';
+import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
+import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
 
 @NgModule({
   imports: [
@@ -125,7 +128,8 @@ import { PriceTenantFormatDirective } from './views/main/details/directives/pric
     NgxSpinnerModule,
     CKEditorModule,
     DeliveryModule,
-    DeliveryRoutingModule
+    DeliveryRoutingModule,
+    WunderBarModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
@@ -151,6 +155,7 @@ import { PriceTenantFormatDirective } from './views/main/details/directives/pric
     LocPanDataComponent,
     ApplicablecostpopupComponent,
     SpotNegotiationNewCommentsComponent,
+    NegotiationToolbarComponent,
 
     AGGridCellActionsComponent,
     AGGridCellRendererComponent,
@@ -170,6 +175,7 @@ import { PriceTenantFormatDirective } from './views/main/details/directives/pric
     SpotnegoRequestChangesComponent,
     NegotiationDetailsToolbarComponent,
     RemoveCounterpartyComponent,
+    NegotiationDocumentsComponent,
     PriceTenantFormatDirective
     // QuantityTenantFormatDirective,
     // AmountTenantFormatDirective,
