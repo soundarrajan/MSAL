@@ -1,10 +1,14 @@
 .mid-blue-button {
   background: #1d9fff;
   height: 27px;
-  line-height: 21px!important;
-  border-radius: 5px!important;
+  line-height: 21px !important;
+  border-radius: 5px !important;
   font-weight: 400;
   font-size: 14px;
-  color: #fff!important;
+  color: #fff !important;
   border: none;
+}
+
+.active-tab {
+  border-bottom: 4px solid #1d9fff !important;
 }
