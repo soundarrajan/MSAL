@@ -7602,7 +7602,7 @@ label {
 .mat-menu-panel .edit-input-menu .input .mat-select-placeholder {
   color: #eff3f9;
 }
-.mat-menu-panel .edit-input-menu .comments {
+.mat-menu-panel .edit-input-menu .sod-comments {
   font-style: normal;
   font-weight: 400;
   font-size: 9px;
@@ -7610,29 +7610,29 @@ label {
   color: #c4c4c4;
   padding: 0 10px;
 }
-.mat-menu-panel .edit-input-menu .comments .value,
-.mat-menu-panel .edit-input-menu .comments textarea {
+.mat-menu-panel .edit-input-menu .sod-comments .value,
+.mat-menu-panel .edit-input-menu .sod-comments textarea {
   font-size: 11px;
   line-height: 16px;
   height: 46px;
   color: #eff3f9;
 }
-.mat-menu-panel .edit-input-menu .comments textarea {
+.mat-menu-panel .edit-input-menu .sod-comments textarea {
   resize: none;
   font-style: normal;
   font-weight: 400;
 }
-.mat-menu-panel .edit-input-menu .comments .mat-form-field {
+.mat-menu-panel .edit-input-menu .sod-comments .mat-form-field {
   width: 100%;
 }
-.mat-menu-panel .edit-input-menu .comments .mat-form-field-underline {
+.mat-menu-panel .edit-input-menu .sod-comments .mat-form-field-underline {
   display: none;
 }
-.mat-menu-panel .edit-input-menu .comments .mat-form-field-flex {
+.mat-menu-panel .edit-input-menu .sod-comments .mat-form-field-flex {
   background: #37414f;
   padding: 0 5px;
 }
-.mat-menu-panel .edit-input-menu .comments .mat-form-field-placeholder {
+.mat-menu-panel .edit-input-menu .sod-comments .mat-form-field-placeholder {
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -7689,20 +7689,20 @@ label {
 .mat-menu-panel .edit-input-menu.light-theme .input .mat-select-value {
   color: #000;
 }
-.mat-menu-panel .edit-input-menu.light-theme .comments {
+.mat-menu-panel .edit-input-menu.light-theme .sod-comments {
   font-weight: 500;
   color: #333;
 }
-.mat-menu-panel .edit-input-menu.light-theme .comments textarea {
+.mat-menu-panel .edit-input-menu.light-theme .sod-comments textarea {
   color: #37414f;
 }
-.mat-menu-panel .edit-input-menu.light-theme .comments .mat-form-field-flex {
+.mat-menu-panel .edit-input-menu.light-theme .sod-comments .mat-form-field-flex {
   background: #fff;
   border: 1px solid #f2f2f2;
 }
 .mat-menu-panel
   .edit-input-menu.light-theme
-  .comments
+  .sod-comments
   .mat-form-field-placeholder {
   color: #37414f;
 }
@@ -7778,7 +7778,7 @@ label {
   border-width: 0 !important;
   background: #37414f !important;
 }
-.mat-menu-panel #edit-checkbox-menu .comments {
+.mat-menu-panel #edit-checkbox-menu .sod-comments {
   font-style: normal;
   font-weight: 400;
   font-size: 9px;
@@ -7786,7 +7786,7 @@ label {
   color: #c4c4c4;
   padding: 0 10px;
 }
-.mat-menu-panel #edit-checkbox-menu .comments textarea {
+.mat-menu-panel #edit-checkbox-menu .sod-comments textarea {
   resize: none;
   font-style: normal;
   font-weight: 400;
@@ -7795,13 +7795,13 @@ label {
   height: 46px;
   color: #eff3f9;
 }
-.mat-menu-panel #edit-checkbox-menu .comments .mat-form-field {
+.mat-menu-panel #edit-checkbox-menu .sod-comments .mat-form-field {
   width: 100%;
 }
-.mat-menu-panel #edit-checkbox-menu .comments .mat-form-field-underline {
+.mat-menu-panel #edit-checkbox-menu .sod-comments .mat-form-field-underline {
   display: none;
 }
-.mat-menu-panel #edit-checkbox-menu .comments .mat-form-field-flex {
+.mat-menu-panel #edit-checkbox-menu .sod-comments .mat-form-field-flex {
   background: #37414f;
   padding: 0 5px;
 }
@@ -7868,20 +7868,20 @@ label {
 .mat-menu-panel #edit-checkbox-menu.light-theme .checkbox .mat-checkbox-frame {
   background: #fff !important;
 }
-.mat-menu-panel #edit-checkbox-menu.light-theme .comments {
+.mat-menu-panel #edit-checkbox-menu.light-theme .sod-comments {
   font-weight: 500;
   color: #333;
 }
-.mat-menu-panel #edit-checkbox-menu.light-theme .comments textarea {
+.mat-menu-panel #edit-checkbox-menu.light-theme .sod-comments textarea {
   color: #37414f;
 }
-.mat-menu-panel #edit-checkbox-menu.light-theme .comments .mat-form-field-flex {
+.mat-menu-panel #edit-checkbox-menu.light-theme .sod-comments .mat-form-field-flex {
   background: #fff;
   border: 1px solid #f2f2f2;
 }
 .mat-menu-panel
   #edit-checkbox-menu.light-theme
-  .comments
+  .sod-comments
   .mat-form-field-placeholder {
   color: #37414f;
 }
@@ -8374,5 +8374,8 @@ label {
 }
 .mat-menu-panel.outstanding-req-menu .hover-tooltip.light-theme .hover-value {
   color: #000;
+}
+input.BPInNumField {
+  color: $white
 }
 /*mat-menu-panel end*/
