@@ -708,7 +708,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   setValuefun(params) {
     let counterpartyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.counterpartyList.slice(0, 7);
+      if(params.physicalSupplierCounterpartyId != null || params.physicalSupplierCounterpartyName == null ){
+        return state.spotNegotiation.counterpartyList.filter(x => x.supplier == true).slice(0, 7)
+      }
+      else{
+        return state.spotNegotiation.counterpartyList.slice(0, 7);
+      }
     });
     let SelectedCounterpartyList = cloneDeep(counterpartyList);
 
@@ -974,8 +979,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.editedSeller = result.sellerName;
+      if (result && result.sellerName) {
+          this.editedSeller = result.sellerName;
       }
     });
   }
