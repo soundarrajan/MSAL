@@ -69,7 +69,12 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
 
         this.store.subscribe(({ spotNegotiation }) => {
           if (spotNegotiation.counterpartyList && this.dialog_gridOptions.api) {
-            this.rowData = spotNegotiation.counterpartyList;
+            if (data.isPhysicalSupplier != undefined && data.isPhysicalSupplier) {
+              this.rowData = spotNegotiation.counterpartyList.filter(x => x.supplier == true);
+            }
+            else {
+              this.rowData = spotNegotiation.counterpartyList;
+            }
             this.dialog_gridOptions.api.setRowData(this.rowData);
             this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
           }
@@ -77,7 +82,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         if(data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
           this.dialog_gridOptions.api.forEachNode(function (node) {
             node.setSelected(node.data.id === data?.physicalSupplierCounterpartyId);
-          }); 
+          });
         }
       },
       getRowStyle: function(params) {
@@ -252,7 +257,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
           let physicalSupplierCounterpartyId = this.data.physicalSupplierCounterpartyId;
           this.dialog_gridOptions.api.forEachNode(function (node) {
             node.setSelected(node.data.id === physicalSupplierCounterpartyId);
-          }); 
+          });
         }
       }
     });
@@ -280,8 +285,8 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         return;
       }
     });
-   
-      
+
+
     this.dialogRef.close({
       sellerName: selectedCounterparties[0].sellerCounterpartyName
     }
