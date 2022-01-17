@@ -87,6 +87,7 @@ import { PriceTenantFormatDirective } from './views/main/details/directives/pric
 import { NegotiationToolbarComponent } from './views/main/details/components/toolbar/negotiation-toolbar.component';
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
 import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
+import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
 
 @NgModule({
   imports: [
@@ -176,6 +177,7 @@ import { NegotiationDocumentsComponent } from './views/main/details/components/n
     NegotiationDetailsToolbarComponent,
     RemoveCounterpartyComponent,
     NegotiationDocumentsComponent,
+    NegotiationReportComponent,
     PriceTenantFormatDirective
     // QuantityTenantFormatDirective,
     // AmountTenantFormatDirective,

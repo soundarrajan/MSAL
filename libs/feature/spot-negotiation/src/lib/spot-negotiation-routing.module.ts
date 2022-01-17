@@ -9,6 +9,7 @@ import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { SpotnegoemaillogComponent } from './views/main/details/components/spotnegoemaillog/spotnegoemaillog.component';
 import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
+import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
 
 const routes: Routes = [
   {
@@ -62,6 +63,14 @@ const routes: Routes = [
                 data: {
                   title: 'Negotiation - Documents',
                   breadcrumb: 'Documents'
+                }
+              },
+              {
+                path: KnownSpotNegotiationRoutes.reportPath,
+                component: NegotiationReportComponent,
+                data: {
+                  title: 'Negotiation - Report',
+                  breadcrumb: 'Report'
                 }
               }
               // Note: Left here just for reference, QC does not have related links.
