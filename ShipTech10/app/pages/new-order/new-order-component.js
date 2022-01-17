@@ -4860,7 +4860,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 Factory_Master.getRangeTotalAdditionalCosts(apiJSON, function(response) {
                     if(response && response.data && response.data.payload) {
                         let addCostIdx = product.additionalCosts.indexOf(additionalCost);
-                        additionalCost.price = response.data.payload.price || 0;
+                        additionalCost.originalPrice = response.data.payload.price || 0;
+                        additionalCost.price = $filter("number")(additionalCost.originalPrice, ctrl.pricePrecision);
+                        additionalCost.price = convertDecimalSeparatorStringToNumber(additionalCost.price);
                         additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                         product.additionalCosts[addCostIdx] = additionalCost;
                         ctrl.evaluateAdditionalCostList();
