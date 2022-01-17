@@ -1,10 +1,10 @@
-﻿commit 13056f01ed5a317cef6f1c4818af75bc8e9c8ae9
+﻿commit 137d05ddaf86ade8122578d1fb3e4c27bb301e8c
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Sun Jan 16 05:40:49 2022 +0000
+Date:   Mon Jan 17 06:35:44 2022 +0000
 
-    Merged PR 15500: SmartOp-SOD popup field issue fix
+    Merged PR 15502: popup comments fix and input color fix
     
-    SmartOp-SOD popup field issue fix
+    popup comments fix and input color fix
     
     Related work items: #37975
 
