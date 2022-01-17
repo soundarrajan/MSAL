@@ -1,0 +1,7 @@
+.active-tab {
+  border-bottom: 4px solid #1d9fff !important;
+}
+
+.inactive-tab {
+  border-bottom: 4px solid #eee !important;
+}
