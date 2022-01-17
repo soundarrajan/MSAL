@@ -1090,6 +1090,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          */
         function calculateAdditionalCostAmounts(additionalCost, product) {
             let totalAmount, productComponent;
+            if(!additionalCost) {
+                return false;
+            }
             if (!additionalCost.costType) {
                 return additionalCost;
             }
@@ -3595,6 +3598,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             product.price = $filter("number")(product.originalPrice, product.pricePrecision);
             product.amount = calculateProductAmount(product);
             updateOrderSummary();
+            ctrl.evaluateAdditionalCostList();
+            calculateAdditionalCostAmounts();
         };
         ctrl.additionalCostPriceChanged = function() {
             updateOrderSummary();
