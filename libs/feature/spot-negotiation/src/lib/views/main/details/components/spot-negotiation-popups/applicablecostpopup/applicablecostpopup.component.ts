@@ -327,7 +327,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         requestProductsIds.push(this.requestLocation.requestProducts[i].id);
       }
     }
-    return requestProductsIds;
+    return requestProductsIds.join(',');
   }
 
   getMaxQuantityByApplicableFor(requestProductId: any) {
