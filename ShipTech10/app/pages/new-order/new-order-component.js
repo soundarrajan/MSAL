@@ -1549,6 +1549,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                   ctrl.data.status.name == 'Invoiced')) {
                    additionalCost.disabled = true;
                 }
+                if(additionalCost.isContract) {
+                    additionalCost.disabled = true;
+                }
                 ctrl.costTypeChanged(additionalCost);
 			}
 
