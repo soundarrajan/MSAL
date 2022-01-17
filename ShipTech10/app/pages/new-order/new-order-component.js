@@ -1069,7 +1069,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!product.confirmedQuantity) {
                 confirmedQuantityOrMaxQuantity = product.maxQuantity;
             }
-            return (Number(confirmedQuantityOrMaxQuantity) || 0) * (Number(product.confirmedQtyPrice) || 0) * (Number(product.originalPrice) || 0);
+            return (Number(confirmedQuantityOrMaxQuantity) || 0) * (Number(product.confirmedQtyPrice) || 0) * (Number($filter("number")(product.originalPrice, product.pricePrecision)) || 0);
         }
 
         /**
