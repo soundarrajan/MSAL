@@ -8,6 +8,7 @@ import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { SpotnegoemaillogComponent } from './views/main/details/components/spotnegoemaillog/spotnegoemaillog.component';
+import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,14 @@ const routes: Routes = [
                 data: {
                   title: 'Negotiation - Email Log',
                   breadcrumb: 'Email Log'
+                }
+              },
+              {
+                path: KnownSpotNegotiationRoutes.documentsPath,
+                component: NegotiationDocumentsComponent,
+                data: {
+                  title: 'Negotiation - Documents',
+                  breadcrumb: 'Documents'
                 }
               }
               // Note: Left here just for reference, QC does not have related links.
