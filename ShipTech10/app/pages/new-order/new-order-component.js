@@ -1069,7 +1069,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!product.confirmedQuantity) {
                 confirmedQuantityOrMaxQuantity = product.maxQuantity;
             }
-            return (Number(confirmedQuantityOrMaxQuantity) || 0) * (Number(product.confirmedQtyPrice) || 0) * (Number(product.price) || 0);
+            return (Number(confirmedQuantityOrMaxQuantity) || 0) * (Number(product.confirmedQtyPrice) || 0) * (Number(convertDecimalSeparatorStringToNumber(product.price)) || 0);
         }
 
         /**
@@ -3595,7 +3595,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 			if (product.contractProductId) { 
 				product.referencePrice = parseInt(product.originalPrice);
 			}
-            product.price = $filter("number")(product.originalPrice, product.pricePrecision);
+            product.price = $filter("number")(convertDecimalSeparatorStringToNumber(product.originalPrice), product.pricePrecision);
             product.amount = calculateProductAmount(product);
             updateOrderSummary();
             ctrl.evaluateAdditionalCostList();
