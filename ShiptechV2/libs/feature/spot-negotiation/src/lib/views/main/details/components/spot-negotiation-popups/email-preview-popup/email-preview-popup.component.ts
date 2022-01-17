@@ -169,8 +169,8 @@ if(!this.readonly){
       emailLogsPreview.subscribe((res:any) =>{
         this.spinner.hide();
         if (res.payload){
-          this.to = res.payload.to.split(',');
-          this.cc = res.payload.cc.split(',');
+          this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
+          this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
           this.subject = res.payload.subject;
           this.content = res.payload.body;
         }
