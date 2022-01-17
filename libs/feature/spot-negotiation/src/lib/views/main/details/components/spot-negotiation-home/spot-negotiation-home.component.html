@@ -1,78 +1,172 @@
 <shiptech-negotiation-details-toolbar [navBar]="navBar">
 </shiptech-negotiation-details-toolbar>
 <div class="shiptech-layout-content" id="spot-nego-home">
-  <div class="w-100 st-main-content-menu no-print" id="wunderbar"
-    style="height:40px;margin-bottom: 0 !important; position: fixed; width: 100%; top: 90px;">
+  <div
+    class="w-100 st-main-content-menu no-print"
+    id="wunderbar"
+    style="height:40px;margin-bottom: 0 !important; position: fixed; width: 100%; top: 90px;"
+  >
     <div>
-      <div style="height:40px">
-        <mat-tab-group class="shiptech-tab-bar">
-          <mat-tab label="Main Page">
-            <div class="col-md-12"
-              style="margin: 0px 15px;z-index: 9999;padding: 0px 0px 0px 0px;position: fixed; top:125px; width: 100%;">
-              <app-spot-negotiation-header></app-spot-negotiation-header>
+      <div style="height:40px" class="shiptech-tab-bar">
+        <div
+          class="col-md-12"
+          style="margin: 0px 15px;z-index: 9999;padding: 0px 0px 0px 0px;position: fixed; top:125px; width: 100%;"
+        >
+          <app-spot-negotiation-header></app-spot-negotiation-header>
+        </div>
+        <div class="row" style="margin: 0px;">
+          <div class="col-6 d-flex">
+            <div
+              class="shiptech-tab ui-tabmenu ui-widget ui-widget-content ui-corner-all"
+            >
+              <ul
+                class="ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"
+                role="tablist"
+              >
+                <ng-container *ngFor="let menuItem of menuItems">
+                  <li
+                    role="tab"
+                    class="ui-tabmenuitem ui-state-default ui-corner-top"
+                    [ngClass]="{ 'active-tab': menuItem.activeTab }"
+                  >
+                    <a
+                      *ngIf="menuItem.url"
+                      class="ui-menuitem-link ui-corner-all"
+                      href="{{ menuItem.url }}"
+                    >
+                      <span class="ui-menuitem-text">{{ menuItem.label }}</span>
+                    </a>
+                    <a
+                      *ngIf="!menuItem.url"
+                      class="ui-menuitem-link ui-corner-all"
+                    >
+                      <span class="ui-menuitem-text">{{ menuItem.label }}</span>
+                    </a>
+                  </li>
+                </ng-container>
+              </ul>
             </div>
-            <div style="margin-top: -40px;">
-              <div class="header-buttons">
-                <div style="position: fixed;right: 295px;">
-                  <span class="seperator-line left-line"></span>
-                  <span class="duplicate-price" [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger"
-                    matTooltip="Duplicate Price" matTooltipClass="lightTooltip"></span>
-                  <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-requestOptionsDuplicate">
-                    <div class="duplicate-price-menu">
-                      <div class="text">
-                        <span>Duplicate To</span>
-                      </div>
-                      <div class="divider-line"></div>
-                      <div class="more-options-menu-inv no-border p-lr-0" (click)="$event.stopPropagation()"
-                        style="margin: 7px 5px;">
-                        <div class="checkboxOptions" *ngFor="let item of requestOptions">
-                          <mat-checkbox [disabled]="item.selected == false" [checked]="item.selected">
-                            {{ item.name }} - {{ item.vesselName }}</mat-checkbox>
-                        </div>
-                      </div>
-                      <div class="proceed-div">
-                        <button mat-button (click)="displaySuccessMsg()" class="mid-blue-button proceed-btn">
-                          Proceed
-                        </button>
+          </div>
+          <div>
+            <div class="header-buttons">
+              <div style="position: fixed;right: 295px;">
+                <span class="seperator-line left-line"></span>
+                <span
+                  class="duplicate-price"
+                  [matMenuTriggerFor]="clickmenu"
+                  #menuTrigger="matMenuTrigger"
+                  matTooltip="Duplicate Price"
+                  matTooltipClass="lightTooltip"
+                ></span>
+                <mat-menu
+                  #clickmenu="matMenu"
+                  class="more-options-menu-panel menu-panel-requestOptionsDuplicate"
+                >
+                  <div class="duplicate-price-menu">
+                    <div class="text">
+                      <span>Duplicate To</span>
+                    </div>
+                    <div class="divider-line"></div>
+                    <div
+                      class="more-options-menu-inv no-border p-lr-0"
+                      (click)="$event.stopPropagation()"
+                      style="margin: 7px 5px;"
+                    >
+                      <div
+                        class="checkboxOptions"
+                        *ngFor="let item of requestOptions"
+                      >
+                        <mat-checkbox
+                          [disabled]="item.selected == false"
+                          [checked]="item.selected"
+                        >
+                          {{ item.name }} - {{ item.vesselName }}</mat-checkbox
+                        >
                       </div>
                     </div>
-                  </mat-menu>
-                  <!-- <span class="duplicate-cost" matTooltip="Duplicate Cost" matTooltipClass="blueTooltip"></span>-->
-                  <span class="seperator-line"></span>
-                </div>
-                <div style="position: fixed;right: 35px;">
-                  <button matTooltip="Send RFQ" matTooltipShowDelay="500" mat-button
-                    class="mid-blue-button cust-header-btn" (click)="sendRFQpopup()">
-                    Send RFQ
-                  </button>
-                  <button matTooltip="Confirm Offer" *ngIf="!tenantConfiguration.isSkipOfferConfirmation" matTooltipShowDelay="500" mat-button
-                    class="mid-blue-button cust-header-btn" (click)="confirmorderpopup()">
-                    Confirm Offer
-                  </button>
-                  <button matTooltip="Confirm Order" *ngIf="tenantConfiguration.isSkipOfferConfirmation" matTooltipShowDelay="500" mat-button
-                    class="mid-blue-button cust-header-btn" (click)="confirmorderpopup()">
-                    Confirm Order
-                  </button>
-                </div>
-                <span class="menu-icon" matTooltip="View more options" matTooltipClass="lightTooltip"
-                  [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
+                    <div class="proceed-div">
+                      <button
+                        mat-button
+                        (click)="displaySuccessMsg()"
+                        class="mid-blue-button proceed-btn"
+                      >
+                        Proceed
+                      </button>
+                    </div>
+                  </div>
+                </mat-menu>
+                <!-- <span class="duplicate-cost" matTooltip="Duplicate Cost" matTooltipClass="blueTooltip"></span>-->
+                <span class="seperator-line"></span>
+              </div>
+              <div style="position: fixed;right: 35px;">
+                <button
+                  matTooltip="Send RFQ"
+                  matTooltipShowDelay="500"
+                  mat-button
+                  class="mid-blue-button cust-header-btn"
+                  (click)="sendRFQpopup()"
+                >
+                  Send RFQ
+                </button>
+                <button
+                  matTooltip="Confirm Offer"
+                  *ngIf="!tenantConfiguration.isSkipOfferConfirmation"
+                  matTooltipShowDelay="500"
+                  mat-button
+                  class="mid-blue-button cust-header-btn"
+                  (click)="confirmorderpopup()"
+                >
+                  Confirm Offer
+                </button>
+                <button
+                  matTooltip="Confirm Order"
+                  *ngIf="tenantConfiguration.isSkipOfferConfirmation"
+                  matTooltipShowDelay="500"
+                  mat-button
+                  class="mid-blue-button cust-header-btn"
+                  (click)="confirmorderpopup()"
+                >
+                  Confirm Order
+                </button>
+                <span
+                  class="menu-icon"
+                  matTooltip="View more options"
+                  matTooltipClass="lightTooltip"
+                  [matMenuTriggerFor]="clickmenupopup"
+                  #menuTrigger="matMenuTrigger"
+                >
                 </span>
-                <mat-menu #clickmenupopup="matMenu" class="menu-panel-datetime small-menu darkPanel">
-                  <div class="p-tb-5" style="display:flex;align-items:center;" (click)="amendRFQ()">
+                <mat-menu
+                  #clickmenupopup="matMenu"
+                  class="menu-panel-datetime small-menu darkPanel"
+                >
+                  <div
+                    class="p-tb-5"
+                    style="display:flex;align-items:center;"
+                    (click)="amendRFQ()"
+                  >
                     <span>
                       <div class="amend-icon"></div>
                     </span>
                     <span class="fs-12">Amend RFQ</span>
                   </div>
 
-                  <div class="p-tb-5" style="display:flex;align-items:center;"  (click)="skipRFQ()">
+                  <div
+                    class="p-tb-5"
+                    style="display:flex;align-items:center;"
+                    (click)="skipRFQ()"
+                  >
                     <span>
                       <div class="skiprfq-icon"></div>
                     </span>
                     <span class="fs-12">Skip RFQ</span>
                   </div>
 
-                  <div class="p-tb-5" style="display:flex;align-items:center;" (click)="revokeRFQ()">
+                  <div
+                    class="p-tb-5"
+                    style="display:flex;align-items:center;"
+                    (click)="revokeRFQ()"
+                  >
                     <span>
                       <div class="revoke-icon"></div>
                     </span>
@@ -86,7 +180,11 @@
                     <span class="fs-12">Enable quote</span>
                   </div>
 
-                  <div class="p-tb-5" style="display:flex;align-items:center;" (click)="requoteRFQ()">
+                  <div
+                    class="p-tb-5"
+                    style="display:flex;align-items:center;"
+                    (click)="requoteRFQ()"
+                  >
                     <span>
                       <div class="requote-icon"></div>
                     </span>
@@ -98,63 +196,38 @@
                     <span class="title" style="width: 48px;">Quote by:</span>
                     <div class="by-datePicker">
                       <div id="custom-form-field">
-                        <app-date-time-toggle [dark]="true"></app-date-time-toggle>
+                        <app-date-time-toggle
+                          [dark]="true"
+                        ></app-date-time-toggle>
                       </div>
                     </div>
                   </div>
                 </mat-menu>
               </div>
             </div>
-          </mat-tab>
-          <mat-tab label="Report" [disabled]="!tenantConfiguration.isNegotiationReport" >
-            <ng-template mat-tab-label>
-            <div class="custom-label-holder">
-              <div class="custom-tab-ui"></div>
-              <div class="custom-label" (click)="onReport()">
-                Report</div>
-            </div>
-          </ng-template>
-        </mat-tab>
-          <mat-tab label="Documents">
-            <ng-template mat-tab-label>
-              <div class="custom-label-holder">
-                <div class="custom-tab-ui"></div>
-                <div class="custom-label">Documents</div>
-              </div>
-            </ng-template>
-            <ng-container *ngTemplateOutlet="documents"></ng-container>
-          </mat-tab>
-          <mat-tab label="Email Log">
-            <ng-template mat-tab-label>
-              <div class="custom-label-holder">
-                <div class="custom-tab-ui"></div>
-                <div class="custom-label" (click)="showEmailLogs()" >Email Log</div>
-              </div>
-            </ng-template>
-            <ng-container *ngTemplateOutlet="emaillog"></ng-container>
-          </mat-tab>
-        </mat-tab-group>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<ng-template #documents>
-  <div style="margin-top: -40px;">
-    <div class="header-buttons">
-      <div style="position: fixed;right: 35px;">
-        <button matTooltip="Verify" matTooltipShowDelay="500" mat-button class="mid-blue-button cust-header-btn">
-          Verify
-        </button>
+  <ng-template #documents>
+    <div style="margin-top: -40px;">
+      <div class="header-buttons">
+        <div style="position: fixed;right: 35px;">
+          <button
+            matTooltip="Verify"
+            matTooltipShowDelay="500"
+            mat-button
+            class="mid-blue-button cust-header-btn"
+          >
+            Verify
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div style="margin-top: 60px;">
-    <app-doc-drag-drop-upload></app-doc-drag-drop-upload>
-  </div>
-</ng-template>
-<ng-template #emaillog>
-  <div *ngIf="isOpen">
-    <app-spotnegoemaillog></app-spotnegoemaillog>
-  </div>
-</ng-template>
+    <div style="margin-top: 60px;">
+      <app-negotiation-documents></app-negotiation-documents>
+    </div>
+  </ng-template>
+</div>

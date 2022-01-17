@@ -2,7 +2,13 @@ import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiati
 import { map, filter } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit
+} from '@angular/core';
 import _, { cloneDeep } from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -27,7 +33,8 @@ import { RemoveCounterpartyComponent } from '../remove-counterparty-confirmation
 @Component({
   selector: 'app-spot-negotiation-details',
   templateUrl: './spot-negotiation-details.component.html',
-  styleUrls: ['./spot-negotiation-details.component.css']
+  styleUrls: ['./spot-negotiation-details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotNegotiationDetailsComponent implements OnInit {
   locations = [];
