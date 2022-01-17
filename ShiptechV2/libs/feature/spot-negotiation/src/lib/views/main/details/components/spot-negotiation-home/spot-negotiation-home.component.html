@@ -27,12 +27,18 @@
                   <li
                     role="tab"
                     class="ui-tabmenuitem ui-state-default ui-corner-top"
-                    [ngClass]="{ 'active-tab': menuItem.activeTab }"
+                    [ngClass]="{
+                      'active-tab': menuItem.activeTab,
+                      'disabled-tab': menuItem.disabled
+                    }"
                   >
                     <a
                       *ngIf="menuItem.url"
                       class="ui-menuitem-link ui-corner-all"
                       href="{{ menuItem.url }}"
+                      [ngClass]="{
+                        'disabled-tab': menuItem.disabled
+                      }"
                     >
                       <span class="ui-menuitem-text">{{ menuItem.label }}</span>
                     </a>
@@ -210,24 +216,4 @@
       </div>
     </div>
   </div>
-
-  <ng-template #documents>
-    <div style="margin-top: -40px;">
-      <div class="header-buttons">
-        <div style="position: fixed;right: 35px;">
-          <button
-            matTooltip="Verify"
-            matTooltipShowDelay="500"
-            mat-button
-            class="mid-blue-button cust-header-btn"
-          >
-            Verify
-          </button>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top: 60px;">
-      <app-negotiation-documents></app-negotiation-documents>
-    </div>
-  </ng-template>
 </div>

@@ -66,54 +66,60 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.navBar = data.navBar;
     });
-    this.route.params.pipe().subscribe(params => {
-      this.negotiationId = params.spotNegotiationId;
-      this.menuItems = [
-        {
-          label: 'Main Page',
-          url: parseFloat(this.negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          styleClass: 'tab',
-          activeTab: true
-        },
-        {
-          label: 'Report',
-          url: parseFloat(this.negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/report`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          styleClass: 'tab'
-        },
-        {
-          label: 'Documents',
-          url: parseFloat(this.negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/documents`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          styleClass: 'tab'
-        },
-
-        {
-          label: 'Email Log',
-          url: parseFloat(this.negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/email-log`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          styleClass: 'tab'
-        }
-      ];
-    });
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.requestOptions = spotNegotiation.requests;
       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
+      this.setTabItems();
+    });
+
+    this.route.params.pipe().subscribe(params => {
+      this.negotiationId = params.spotNegotiationId;
     });
   }
 
   ngAfterViewInit(): void {
     this.spotNegotiationService.QuoteByDate = this.child.getValue();
+  }
+
+  setTabItems() {
+    this.menuItems = [
+      {
+        label: 'Main Page',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab',
+        activeTab: true
+      },
+      {
+        label: 'Report',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/report`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab',
+        disabled: !this.tenantConfiguration.isNegotiationReport
+      },
+      {
+        label: 'Documents',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/documents`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab'
+      },
+
+      {
+        label: 'Email Log',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/email-log`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab'
+      }
+    ];
   }
 
   goToEmailLog() {

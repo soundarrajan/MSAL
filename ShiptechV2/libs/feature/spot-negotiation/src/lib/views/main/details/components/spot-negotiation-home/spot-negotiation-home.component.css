@@ -12,3 +12,8 @@
 .active-tab {
   border-bottom: 4px solid #1d9fff !important;
 }
+
+.disabled-tab {
+  color: rgba(0, 0, 0, 0.38);
+  cursor: default;
+}

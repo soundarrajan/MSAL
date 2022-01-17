@@ -13,7 +13,8 @@ export class WunderBarComponent implements OnInit {
   constructor(private router: Router) {
     if (
       this.router.url.includes('quantity-control') ||
-      this.router.url.includes('control-tower')
+      this.router.url.includes('control-tower') ||
+      this.router.url.includes('group-of-requests')
     ) {
       this.isQcScreen = true;
     }
