@@ -435,13 +435,13 @@ if(!this.readonly){
         AttachmentsList: this.previewTemplate.comment.attachmentsList
       };
 
-
+      this.spinner.show();
       const response = this.spotNegotiationService.RevertSavedComments(requestPayload);
       response.subscribe((res: any) => {
         this.spinner.hide();
         if (res) {
+          this.getPreviewTemplate();
           this.toaster.success('Changes reverted successfully.');
-          this.dialogRef.close();
         }
       });
     }
