@@ -409,9 +409,9 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     {
       headerName: 'Add Views/Notes',
       headerTooltip: 'Add Views/Notes',
-      field: 'add_views',
+      field: 'notes',
       width: 200,
-      cellRendererFramework: AGGridCellRendererV2Component,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'dashed-border-notes' }
     },
     {

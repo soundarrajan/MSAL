@@ -21,6 +21,10 @@ import {
   IDocumentsUpdateIsVerifiedResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 import { IDocumentsListResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
+import {
+  IDocumentsUpdateNotesRequest,
+  IDocumentsUpdateNotesResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 
 export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
@@ -60,7 +64,8 @@ export const SpotNegotiationApiPaths = {
   getDocuments: `api/masters/documentupload/list`,
   deleteDocument: `api/masters/documentupload/delete`,
   downloadDocument: `api/masters/documentupload/download`,
-  updateIsVerifiedDocument: `api/masters/documentupload/update`
+  updateIsVerifiedDocument: `api/masters/documentupload/update`,
+  updateNotes: `api/masters/documentupload/notes`
 };
 
 @Injectable({
@@ -804,6 +809,16 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   ): Observable<IDocumentsUpdateIsVerifiedResponse> {
     return this.http.post<IDocumentsListResponse>(
       `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateIsVerifiedDocument}`,
+      { payload: { ...request } }
+    );
+  }
+
+  @ObservableException()
+  updateNotes(
+    request: IDocumentsUpdateNotesRequest
+  ): Observable<IDocumentsUpdateNotesResponse> {
+    return this.http.post<IDocumentsUpdateNotesResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateNotes}`,
       { payload: { ...request } }
     );
   }
