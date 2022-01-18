@@ -1253,9 +1253,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     PayloadLocations.map((location, index)=>{
                         let locationID = (location?.locationId)? (location.locationId): (location?.location?.id);
                         let selectedPortCallObj = selectedPortCall.find(portCallItem=>portCallItem?.locationId == locationID);
-                        location.portCallId = selectedPortCallObj?.locationId;
-                        location.vesselVoyageId = selectedPortCallObj?.voyageId;
-                        location.vesselVoyageDetailId = selectedPortCallObj?.vesselVoyageDetailId;
+                        // Null check - Because when creating request from SmartOperator resets portcall, voyage, vesselVoyageDetail (#37974)
+                        if(selectedPortCallObj) {
+                            location.portCallId = selectedPortCallObj?.locationId;
+                            location.vesselVoyageId = selectedPortCallObj?.voyageId;
+                            location.vesselVoyageDetailId = selectedPortCallObj?.vesselVoyageDetailId;
+                        }
                         return true;
                     });
 
@@ -1291,9 +1294,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     PayloadLocations.map((location, index)=>{
                         let locationID = (location?.locationId)? (location.locationId): (location?.location?.id);
                         let selectedPortCallObj = selectedPortCall.find(portCallItem=>portCallItem?.locationId == locationID);
-                        location.portCallId = selectedPortCallObj?.locationId;
-                        location.vesselVoyageId = selectedPortCallObj?.voyageId;
-                        location.vesselVoyageDetailId = selectedPortCallObj?.vesselVoyageDetailId;
+                        // Null check - Because when creating request from SmartOperator resets portcall, voyage, vesselVoyageDetail (#37974)
+                        if(selectedPortCallObj) {
+                            location.portCallId = selectedPortCallObj?.locationId;
+                            location.vesselVoyageId = selectedPortCallObj?.voyageId;
+                            location.vesselVoyageDetailId = selectedPortCallObj?.vesselVoyageDetailId;
+                        }
                         return true;
                     });
                     newRequestModel.updateRequest(ctrl.request).then(
