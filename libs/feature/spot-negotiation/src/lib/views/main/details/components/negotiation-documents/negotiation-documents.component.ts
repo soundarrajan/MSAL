@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -6,6 +6,15 @@ import { map, startWith } from 'rxjs/operators';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererComponent } from '../../../../../core/ag-grid/ag-grid-cell-renderer.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngxs/store';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import _ from 'lodash';
+import { MatRadioChange } from '@angular/material/radio';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -18,7 +27,117 @@ export class NegotiationDocumentsComponent implements OnInit {
   options: string[] = ['Additional Document', 'Contract Document'];
   placeholder: string = '';
   filteredOptions: Observable<string[]>;
-  constructor() {
+  negotiationId: any;
+  documentTypeList: any;
+  documentType: any = null;
+  expandDocumentTypePopUp: boolean = false;
+  searchDocumentTypeModel: any = null;
+  selectedDocumentType: any = null;
+  documentTypeListForSearch: any;
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private changeDetector: ChangeDetectorRef,
+    private store: Store,
+    private spinner: NgxSpinnerService,
+    private spotNegotiationService: SpotNegotiationService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
+    this.route.params.pipe().subscribe(params => {
+      this.negotiationId = params.spotNegotiationId;
+    });
+
+    this.getDocumentTypeList();
+    this.setupAgGrid();
+  }
+
+  getDocumentTypeList() {
+    const payload = {
+      Order: null,
+      PageFilters: {
+        Filters: []
+      },
+      SortList: {
+        SortList: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ReferenceNo',
+          Value: this.negotiationId.toString()
+        },
+        {
+          ColumnName: 'TransactionTypeId',
+          Value: 2
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    this.spinner.show();
+    this.spotNegotiationService
+      .getDocumentTypeList(payload)
+      .subscribe((response: any) => {
+        if (typeof response === 'string') {
+          this.spinner.hide();
+          this.toastr.error(response);
+        } else {
+          this.spinner.hide();
+          console.log(response);
+          this.documentTypeListForSearch = _.cloneDeep(response);
+          this.documentTypeList = _.cloneDeep(response);
+        }
+      });
+  }
+
+  displayFn(documentType): string {
+    return documentType && documentType.name ? documentType.name : '';
+  }
+
+  radioDocumentTypeChange($event: MatRadioChange) {
+    if ($event.value) {
+      this.documentType = $event.value;
+      console.log(this.documentType);
+    }
+  }
+
+  searchDocumentTypeList(value: string): void {
+    let filterDocumentType = this.documentTypeList.filter(documentType =>
+      documentType.name.toLowerCase().includes(value.trim().toLowerCase())
+    );
+    console.log(filterDocumentType);
+    this.documentTypeListForSearch = [...filterDocumentType];
+  }
+
+  selectDocumentType(event: MatAutocompleteSelectedEvent) {
+    this.documentType = event.option.value;
+    console.log(this.documentType);
+  }
+
+  public filterDocumentTypeList() {
+    if (this.documentType) {
+      const filterValue = this.documentType.name
+        ? this.documentType.name
+        : this.documentType;
+      if (this.documentTypeList) {
+        const list = this.documentTypeList
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.trim().toLowerCase())
+          )
+          .splice(0, 10);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  setupAgGrid() {
     this.gridOptions_data = <GridOptions>{
       defaultColDef: {
         resizable: true,

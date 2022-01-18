@@ -36,22 +36,23 @@
                     <input
                       class="free-text-field"
                       type="text"
-                      placeholder="{{ placeholder }}"
+                      placeholder="Document Type"
                       aria-label="name"
                       matInput
-                      [formControl]="myControl"
+                      [(ngModel)]="documentType"
                       [matAutocomplete]="auto"
+                      name="document-type"
                     />
                     <mat-autocomplete
-                      autoActiveFirstOption
                       #auto="matAutocomplete"
-                      class=""
+                      [displayWith]="displayFn"
+                      (optionSelected)="selectDocumentType($event)"
                     >
                       <mat-option
-                        *ngFor="let option of filteredOptions | async"
+                        *ngFor="let option of filterDocumentTypeList()"
                         [value]="option"
                       >
-                        {{ option }}
+                        {{ option.name }}
                       </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
@@ -59,9 +60,77 @@
                     [disabled]="false"
                     [ngClass]="{ 'search-icon-disabled': false }"
                     class="search-icon search-icon-bg"
+                    [matMenuTriggerFor]="menu"
                   >
                     <div class="img"></div>
                   </button>
+                  <mat-menu #menu="matMenu" class="document-type-modal">
+                    <div
+                      [ngClass]="{
+                        'container-modal': !expandDocumentTypePopUp,
+                        'container-modal-expand': expandDocumentTypePopUp
+                      }"
+                    >
+                      <div class="col-md-12 header-container">
+                        <div class="select-container col-md-10">
+                          <span class="search-lookup"> </span>
+                          <input
+                            type="text"
+                            matInput
+                            placeholder="Document Type"
+                            name="document-type-search"
+                            class="search-input"
+                            autocomplete="off"
+                            [(ngModel)]="searchDocumentTypeModel"
+                            (click)="
+                              $event.stopPropagation(); $event.preventDefault()
+                            "
+                            (input)="
+                              searchDocumentTypeList($event.target.value)
+                            "
+                          />
+                        </div>
+                        <div
+                          class="col-md-2"
+                          (click)="
+                            $event.stopPropagation(); $event.preventDefault()
+                          "
+                        >
+                          <img
+                            [ngClass]="{
+                              'expand-img': expandDocumentTypePopUp
+                            }"
+                            (click)="
+                              expandDocumentTypePopUp = !expandDocumentTypePopUp
+                            "
+                            alt="Shiptech"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-12 row document-type-container-header">
+                        Document Type
+                      </div>
+                      <mat-radio-group
+                        class="document-type-container"
+                        [(ngModel)]="selectedDocumentType"
+                        name="selected-document-type"
+                        (change)="
+                          radioDocumentTypeChange($event);
+                          selectedDocumentType = null;
+                          searchDocumentTypeModel = null
+                        "
+                      >
+                        <mat-radio-button
+                          class="document-type-container-radio-button"
+                          *ngFor="let documentType of documentTypeListForSearch"
+                          [value]="documentType"
+                        >
+                          {{ documentType.name }}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </mat-menu>
                 </div>
               </form>
             </div>
@@ -100,3 +169,11 @@
     </div>
   </div>
 </div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>

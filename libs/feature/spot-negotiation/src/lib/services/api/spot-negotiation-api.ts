@@ -40,7 +40,8 @@ export const SpotNegotiationApiPaths = {
   saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
   getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
   getUomConversionFactor: `api/masters/uoms/convertQuantity`,
-  getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`
+  getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
+  getDocumentTypeList: `/api/masters/documenttype/list`
 };
 
 @Injectable({
@@ -734,6 +735,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
             body.error.ErrorMessage
               ? body.error.ErrorMessage
               : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getDocumentTypeList(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getDocumentTypeList}`,
+        { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
           )
         )
       );

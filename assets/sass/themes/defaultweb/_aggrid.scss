@@ -467,27 +467,27 @@
     outline: none;
     padding-bottom: 7px;
   }
-  .ag-filter button[ref='eApplyButton']{
+  .ag-filter button[ref='eApplyButton'] {
     color: #1cabe0;
   }
 
-  .ag-filter button[ref='eResetButton']{
+  .ag-filter button[ref='eResetButton'] {
     color: #1cabe0;
-    margin-right:  18px;
+    margin-right: 18px;
     margin-right: 4ex;
   }
 
-  .ag-filter select  {
+  .ag-filter select {
     border-radius: 5px;
     color: black;
     height: 27px;
-    border-color:rgb(229, 231, 233) ;
+    border-color: rgb(229, 231, 233);
     -webkit-appearance: none;
     -moz-appearance: none;
     background: transparent;
     background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
     background-repeat: no-repeat;
-   background-position-x: 100%;
+    background-position-x: 100%;
     padding: 5px;
   }
 
@@ -1090,8 +1090,13 @@ ag-grid-cell-renderer {
   color: #4a71c2;
 }
 
+.document-type-modal {
+  max-width: 50vw !important;
+  max-height: 50vh;
+}
+
 .mat-menu-panel {
-  max-width: 550px !important;
+  max-width: 550px;
 }
 
 .aggridpopmenu {
