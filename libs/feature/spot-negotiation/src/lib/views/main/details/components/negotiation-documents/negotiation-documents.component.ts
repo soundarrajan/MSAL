@@ -27,6 +27,7 @@ import { ModuleError } from './error-handling/module-error';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
 import { AGGridCellActionsDocumentsComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-actions-documents.component';
+import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -153,6 +154,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
               : 'Unverified';
           }
           this.rowData_grid = _.cloneDeep(this.responseList);
+          this.changeDetector.detectChanges();
         }
       });
   }
@@ -238,7 +240,6 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
           () => {
             this.toastr.success('Document saved !');
             this.getDocumentsList();
-            this.changeDetector.detectChanges();
           },
           () => {
             this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
@@ -250,6 +251,29 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         this.file = null;
       }
     });
+  }
+
+  updateIsVerifiedDocument(): void {
+    let selectedNodes = this.gridOptions_data.api.getSelectedNodes();
+    let selectedData = selectedNodes.map(node => node.data);
+    let selectedRow = selectedData[0];
+    console.log(selectedData);
+    const request: IDocumentsUpdateIsVerifiedRequest = {
+      id: selectedRow.id,
+      isVerified: true
+    };
+    this.spotNegotiationService.updateIsVerifiedDocument(request).subscribe(
+      () => {},
+      () => {
+        this.appErrorHandler.handleError(
+          ModuleError.UpdateIsVerifiedDocumentFailed
+        );
+      },
+      () => {
+        this.toastr.success('Document verified !');
+        this.getDocumentsList();
+      }
+    );
   }
 
   setupAgGrid() {

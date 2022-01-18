@@ -15,6 +15,12 @@ import {
   IDocumentsDeleteRequest,
   IDocumentsDeleteResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
+import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
+import {
+  IDocumentsUpdateIsVerifiedRequest,
+  IDocumentsUpdateIsVerifiedResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import { IDocumentsListResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
 
 export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
@@ -52,7 +58,9 @@ export const SpotNegotiationApiPaths = {
   getDocumentTypeList: `/api/masters/documenttype/list`,
   uploadDocument: `api/masters/documentupload/create`,
   getDocuments: `api/masters/documentupload/list`,
-  deleteDocument: `api/masters/documentupload/delete`
+  deleteDocument: `api/masters/documentupload/delete`,
+  downloadDocument: `api/masters/documentupload/download`,
+  updateIsVerifiedDocument: `api/masters/documentupload/update`
 };
 
 @Injectable({
@@ -787,6 +795,27 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http.post<IDocumentsDeleteResponse>(
       `${this._masterApiUrl}/${SpotNegotiationApiPaths.deleteDocument}`,
       { payload: { ...request } }
+    );
+  }
+
+  @ObservableException()
+  updateIsVerifiedDocument(
+    request: IDocumentsUpdateIsVerifiedRequest
+  ): Observable<IDocumentsUpdateIsVerifiedResponse> {
+    return this.http.post<IDocumentsListResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateIsVerifiedDocument}`,
+      { payload: { ...request } }
+    );
+  }
+
+  @ObservableException()
+  downloadDocument(request: IDocumentsDownloadRequest): Observable<Blob> {
+    return this.http.post(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.downloadDocument}`,
+      request,
+      {
+        responseType: 'blob'
+      }
     );
   }
 

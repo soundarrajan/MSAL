@@ -16,6 +16,11 @@ import {
   IDocumentsDeleteRequest,
   IDocumentsDeleteResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
+import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
+import {
+  IDocumentsUpdateIsVerifiedRequest,
+  IDocumentsUpdateIsVerifiedResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
@@ -385,8 +390,25 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload
    */
   @ObservableException()
+  updateIsVerifiedDocument(
+    payload: IDocumentsUpdateIsVerifiedRequest
+  ): Observable<IDocumentsUpdateIsVerifiedResponse> {
+    return this.spotNegotiationApi.updateIsVerifiedDocument(payload);
+  }
+  /**
+   * @param payload
+   */
+  @ObservableException()
   getDocuments(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getDocuments(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  downloadDocument(payload: IDocumentsDownloadRequest): Observable<Blob> {
+    return this.spotNegotiationApi.downloadDocument(payload);
   }
 
   ngOnDestroy(): void {
