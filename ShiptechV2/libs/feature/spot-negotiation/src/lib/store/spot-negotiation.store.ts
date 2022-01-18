@@ -22,6 +22,7 @@ import {
   SetRequestGroupId,
   SetCurrentRequest,
   SetCurrentRequestSmallInfo,
+  SetAvailableContracts,
   SetRequests,
   SetTenantConfigurations
 } from './actions/request-group-actions';
@@ -44,6 +45,7 @@ export class SpotNegotiationStoreModel {
   sellerComments: Array<any>;
   currentRequest: object | null;
   currentRequestSmallInfo: object | null;
+  availableContracts: object | null;
   requests: Array<any>;
   formulaPricingDetails: object | null;
   tenantConfigurations:object|null;
@@ -81,6 +83,7 @@ export class SpotNegotiationStoreModel {
   defaults: {
     groupOfRequestsId: null,
     currentRequestSmallInfo: null,
+    availableContracts: null,
     locations: [],
     requests:[],
     commentsForCurrentRequest: [],
@@ -111,6 +114,16 @@ export class SpotNegotiationStore {
   ): any {
     patchState({
       currentRequestSmallInfo: payload
+    });
+  }
+
+  @Action(SetAvailableContracts)
+  SetAvailableContracts(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetAvailableContracts
+  ): any {
+    patchState({
+      availableContracts: payload
     });
   }
 

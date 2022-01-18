@@ -1,0 +1,57 @@
+<div class="spot-popup-header-container">
+  <div class="spot-nego-title">Available Term Contracts</div>
+  <div class="spot-dialog-title-right">
+    <div><span class="field-name">Location:</span><span class="field-value">{{data.info.locationName}}</span> </div>
+    <div><span class="field-name">Product:</span><span class="field-value">{{data.info.productName}}</span> </div>
+    <div class="close-circle">
+      <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() " style="font-size: 14px; display: inline; position:relative; top:-1px; ">close</mat-icon>
+    </div>
+  </div>
+  
+</div>
+<hr class="hr-line">
+
+<div class="product-terms p-b-5 p-r-15 p-l-15">
+  <div class="best-contract-table-header">
+    <table class="">
+      <thead>
+        <tr>
+          <th style="width: 20%" class="text-left">Seller</th>
+          <th style="width: 18%" class="text-left">Contract Name</th>
+          <th style="width: 14%" class=" text-left">Contract Formula</th>
+          <th style="width: 12%" class=" text-left">Schedule</th>
+          <th style="width: 14%" class=" text-left">Contractual Quantity</th>
+          <th style="width: 12%" class=" text-left">Available Quantity</th>
+          <th style="width: 10%" class=" text-left">Price</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div class="bestContract-table-wrapper" style="height: auto;">
+    <table>
+      <tbody>     
+        
+        <tr id="contractsList" *ngFor="let contract of bestContracts ;let i = index">
+          <td style="width: 20%" class="border-bottom-1">{{contract.seller.name}}</td>
+          <td style="width: 18%" class="border-bottom-1">{{contract.contract.name}}</td>
+          <td style="width: 14%" class="border-bottom-1">{{contract.formulaDescription}}</td>
+          <td style="width: 12%" class="border-bottom-1">??schedule??</td>
+          <td style="width: 14%" class="border-bottom-1">{{quantityFormatValue(contract.contractedQuantity)}}</td>
+          <td style="width: 12%" class="border-bottom-1">{{quantityFormatValue(contract.availableQuantity)}}</td>
+          <td style="width: 10%" class="border-bottom-1">{{priceFormatValue(contract.fixedPrice)}}</td>
+        </tr>      
+        
+      </tbody>
+
+    </table>
+  </div>
+</div>
+  
+  
+
+
+
+  
+  <!-- </mat-dialog-content> -->
+  
