@@ -90,6 +90,7 @@ import { NegotiationDocumentsComponent } from './views/main/details/components/n
 import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-renderer-v2.component';
+import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell-actions-documents.component';
 
 @NgModule({
   imports: [
@@ -166,6 +167,7 @@ import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-rende
     AGGridCellRendererV2Component,
     ShiptechCustomHeaderGroup,
     AGGridCellV2RendererComponent,
+    AGGridCellActionsDocumentsComponent,
 
     CustomHeaderGroupNotify,
     CustomHeaderGroup,
@@ -191,6 +193,7 @@ import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-rende
     MainSpotNegotiationComponent,
     AGGridCellRendererComponent,
     AGGridCellV2RendererComponent,
+    AGGridCellActionsDocumentsComponent,
     AGGridCellRendererV2Component,
     AGGridCellActionsComponent,
     ShiptechCustomHeaderGroup,
