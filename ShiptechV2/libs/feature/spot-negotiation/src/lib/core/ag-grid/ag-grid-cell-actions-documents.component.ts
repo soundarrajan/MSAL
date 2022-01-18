@@ -9,10 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { Select, Store } from '@ngxs/store';
-import {
-  SelectSeller,
-  EditLocationRow
-} from '../../store/actions/ag-grid-row.action';
+
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -21,6 +18,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { ModuleError } from '../../views/main/details/components/negotiation-documents/error-handling/module-error';
+import { FileSaverService } from 'ngx-filesaver';
+import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 // import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
 
 // Not found
@@ -33,14 +32,7 @@ import { ModuleError } from '../../views/main/details/components/negotiation-doc
       <div class="remove-icon-with-checkbox" (click)="deleteDocument()"></div>
     </div>
     <div *ngIf="params.type === 'download'">
-      <div class="download-icon"></div>
-    </div>
-    <div *ngIf="params.type === 'checkbox-selection'">
-      <mat-checkbox
-        class="grid-checkbox test22"
-        [checked]="params.value"
-        (click)="selectCounterParties(params)"
-      ></mat-checkbox>
+      <div class="download-icon" (click)="downloadDocument()"></div>
     </div>
   `
 })
@@ -49,6 +41,7 @@ export class AGGridCellActionsDocumentsComponent
   public params: any;
   public popupOpen: boolean;
   constructor(
+    private _FileSaverService: FileSaverService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     public router: Router,
@@ -85,6 +78,7 @@ export class AGGridCellActionsDocumentsComponent
           () => {
             this.toastr.success('Delete done');
             this.params.api.applyTransaction({ remove: newData });
+            // this.params.api.setRowData([]);
           },
           () => {
             this.appErrorHandler.handleError(ModuleError.DeleteDocumentFailed);
@@ -92,6 +86,25 @@ export class AGGridCellActionsDocumentsComponent
         );
       }
     });
+  }
+
+  downloadDocument(): void {
+    let id = this.params.node.data.id;
+    let name = this.params.node.data.name;
+    const request = {
+      Payload: { Id: id }
+    };
+    this.spinner.show();
+    this.spotNegotiationService.downloadDocument(request).subscribe(
+      response => {
+        this.spinner.hide();
+        this._FileSaverService.save(response, name);
+      },
+      () => {
+        this.spinner.hide();
+        this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
+      }
+    );
   }
 
   navigateTo(e) {
