@@ -199,6 +199,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             }
           });
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
+          row.totalCost = detailsForCurrentRow[0].totalCost;
         }
       }
 

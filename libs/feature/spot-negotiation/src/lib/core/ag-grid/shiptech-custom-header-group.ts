@@ -871,6 +871,7 @@ export class ShiptechCustomHeaderGroup {
             ).displayName;
           }
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
+          row.totalCost = detailsForCurrentRow[0].totalCost;
         }
       }
 

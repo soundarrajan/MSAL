@@ -79,11 +79,10 @@
               </td>
 
               <td
-                class="text-left"
+                class="text-left cell-dashed-border"
                 [ngClass]="{
                   'required-field':
-                    saveButtonClicked && !offerAdditionalCost.additionalCostId,
-                  'cell-dashed-border': !saveButtonClicked
+                    saveButtonClicked && !offerAdditionalCost.additionalCostId
                 }"
               >
                 <div class="custom-form-field">
@@ -94,7 +93,6 @@
                     <mat-select
                       [(ngModel)]="offerAdditionalCost.additionalCostId"
                       (ngModelChange)="
-                        onCostSelectionChange($event, j);
                         additionalCostNameChanged(
                           offerAdditionalCost,
                           false,
@@ -103,7 +101,12 @@
                       "
                       [disableOptionCentering]="true"
                       panelClass="spot-select-panel-container"
-                      [disabled]="offerAdditionalCost.hasStemmedProduct"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
                     >
                       <mat-option
                         *ngFor="let option of additionalCostList"
@@ -132,7 +135,12 @@
                       "
                       [disableOptionCentering]="true"
                       panelClass="spot-select-panel-container"
-                      [disabled]="offerAdditionalCost.hasStemmedProduct"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
                     >
                       <mat-option
                         *ngFor="
@@ -157,8 +165,8 @@
                   </div>
                   <div class="non-editable-container-text-right">
                     {{
-                      offerAdditionalCost.maxQuantityUom
-                        ? offerAdditionalCost.maxQuantityUom
+                      offerAdditionalCost.maxQuantityUomId
+                        ? getUomName(offerAdditionalCost.maxQuantityUomId)
                         : ''
                     }}
                   </div>
@@ -196,7 +204,12 @@
                               true
                             )
                           "
-                          [disabled]="offerAdditionalCost.hasStemmedProduct"
+                          [disabled]="
+                            offerAdditionalCost.hasStemmedProduct ||
+                            !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                              offerAdditionalCost
+                            )
+                          "
                         />
                       </mat-form-field>
                       <mat-form-field
@@ -219,7 +232,12 @@
                               true
                             )
                           "
-                          [disabled]="offerAdditionalCost.hasStemmedProduct"
+                          [disabled]="
+                            offerAdditionalCost.hasStemmedProduct ||
+                            !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                              offerAdditionalCost
+                            )
+                          "
                         >
                           <mat-option
                             *ngFor="let option of uomList"
@@ -291,7 +309,12 @@
                           true
                         )
                       "
-                      [disabled]="offerAdditionalCost.hasStemmedProduct"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
                     />
                   </mat-form-field>
                 </div>
@@ -302,8 +325,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    offerAdditionalCost.currency
-                      ? offerAdditionalCost.currency.code
+                    offerAdditionalCost.currencyId
+                      ? getCurrencyCode(offerAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>
@@ -314,8 +337,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    offerAdditionalCost.currency
-                      ? offerAdditionalCost.currency.code
+                    offerAdditionalCost.currencyId
+                      ? getCurrencyCode(offerAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>
@@ -426,8 +449,8 @@
                   </div>
                   <div class="non-editable-container-text-right">
                     {{
-                      locationAdditionalCost.maxQuantityUom
-                        ? locationAdditionalCost.maxQuantityUom
+                      locationAdditionalCost.maxQuantityUomId
+                        ? getUomName(locationAdditionalCost.maxQuantityUomId)
                         : ''
                     }}
                   </div>
@@ -537,8 +560,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    locationAdditionalCost.currency
-                      ? locationAdditionalCost.currency.code
+                    locationAdditionalCost.currencyId
+                      ? getCurrencyCode(locationAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>
@@ -549,8 +572,8 @@
                 </div>
                 <div class="non-editable-container-text-right">
                   {{
-                    locationAdditionalCost.currency
-                      ? locationAdditionalCost.currency.code
+                    locationAdditionalCost.currencyId
+                      ? getCurrencyCode(locationAdditionalCost.currencyId)
                       : ''
                   }}
                 </div>

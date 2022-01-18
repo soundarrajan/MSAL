@@ -1,16 +1,20 @@
-<div class="agGrid-v2" style="margin: 0px;">
-    <div style="width:100%;height:100%">
-        <ag-grid-angular
-            style="width: 100%;height: calc( 100vh - 154px );"
-            [gridOptions]="gridOptions_data"
-            class="ag-theme-material ag-grid-v2 angular-v9 spot-nego-emaillog "
-            [rowData]="rowData_grid"
-            (rowClicked)="onrowClicked($event)"
-            [pagination]="true"
-            [paginationPageSize]="25"
-            (gridReady)="getEmailLogs()"
-            >
-        </ag-grid-angular>
-    </div>
+<shiptech-breadcrumbs> </shiptech-breadcrumbs>
+<shiptech-negotiation-toolbar
+  [activeTab]="'email'"
+></shiptech-negotiation-toolbar>
+<div class="agGrid-v2" style="margin: 0">
+  <div style="width:100%;height:100%">
+    <ag-grid-angular
+      style="width: 100%;height: calc( 100vh - 154px );"
+      [gridOptions]="gridOptions_data"
+      class="ag-theme-material ag-grid-v2 angular-v9 spot-nego-emaillog "
+      [rowData]="rowData_grid"
+      (rowClicked)="onrowClicked($event)"
+      [pagination]="true"
+      [paginationPageSize]="25"
+      (gridReady)="getEmailLogs()"
+    >
+    </ag-grid-angular>
+  </div>
 </div>
 <!-- <app-footer-v2 [id]="'spot-email-log'" [singleGrid]="true" [doublePagination]="true" [rowCount]="500"] [maxSize]="7"></app-footer-v2> -->

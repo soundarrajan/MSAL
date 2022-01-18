@@ -4,7 +4,7 @@
       <mat-expansion-panel [expanded]="i == 0 ? true : false" style="margin-top: 1px;">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <app-loc-pan-data [reqLocation]="loc"></app-loc-pan-data>
+            <app-loc-pan-data [reqLocation]="loc" (costChanged)="onCostChanged($event)"></app-loc-pan-data>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
