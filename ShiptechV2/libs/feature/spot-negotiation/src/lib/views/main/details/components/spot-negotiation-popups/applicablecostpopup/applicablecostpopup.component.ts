@@ -182,8 +182,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
 
     const payload = {
-      additionalCosts: this.locationBasedCosts.concat(this.deletedCosts),
-      skipTotalCostUpdate: true
+      additionalCosts: this.locationBasedCosts.concat(this.deletedCosts)
     };
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
