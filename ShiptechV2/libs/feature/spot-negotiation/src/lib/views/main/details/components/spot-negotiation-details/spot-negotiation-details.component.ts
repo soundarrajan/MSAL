@@ -3,10 +3,11 @@ import { map, filter } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Inject,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import _, { cloneDeep } from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +24,7 @@ import {
   EditLocationRow,
   RemoveCounterparty,
   SetCounterpartyList,
-  SetLocationsRows,
+  SetLocationsRows
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
@@ -32,9 +33,9 @@ import { RemoveCounterpartyComponent } from '../remove-counterparty-confirmation
 @Component({
   selector: 'app-spot-negotiation-details',
   templateUrl: './spot-negotiation-details.component.html',
-  styleUrls: ['./spot-negotiation-details.component.css']
+  styleUrls: ['./spot-negotiation-details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class SpotNegotiationDetailsComponent implements OnInit {
   locations = [];
 
@@ -47,7 +48,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public frameworkComponents;
   rowData_aggrid: any = [];
   locationsRows: any = [];
-  currentRequestSmallInfo = {};
+  currentRequestSmallInfo: any;
   highlightedCells = {};
   uomsMap: any;
 
@@ -57,7 +58,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   isEnabledView: boolean = false;
   currentRequestData: any[];
   columnDef_aggridObj: any[];
-  @Select(SpotNegotiationStore.locationRows) rowData_aggridObj: Observable<any[]>;
+  @Select(SpotNegotiationStore.locationRows) rowData_aggridObj: Observable<
+    any[]
+  >;
 
   public rowClassRules = {
     customRowClass: function(params) {
@@ -193,21 +196,24 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Total Offer($)',
           headerTooltip: 'Total Offer($)',
           field: 'totalOffer',
-          flex:1,
-          width:100,
+          flex: 1,
+          width: 100,
           minWidth: 90,
           headerClass: 'border-right',
           cellClass: 'line-seperator',
           cellStyle: params => {
-            if (this.highlightedCells['lowestTotalOfferRowId'] &&
-            params.data.id == this.highlightedCells['lowestTotalOfferRowId']) {
-                return { background: '#C5DCCF' };
+            if (
+              this.highlightedCells['lowestTotalOfferRowId'] &&
+              params.data.id == this.highlightedCells['lowestTotalOfferRowId']
+            ) {
+              return { background: '#C5DCCF' };
             }
             return null;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
-          suppressNavigable: true, lockPosition: true
+          suppressNavigable: true,
+          lockPosition: true
           //, pinned:'left',
         }
       ]
@@ -265,7 +271,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           params.api.sizeColumnsToFit();
         }
         //this.gridOptions_counterparty.api.sizeColumnsToFit();
-      //  this.gridOptions_counterparty.api.selectAll();
+        //  this.gridOptions_counterparty.api.selectAll();
         // this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
         this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         this.totalOfferHeaderWidth = params.columnApi
@@ -294,55 +300,56 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         customHeaderGroupComponent: ShiptechCustomHeaderGroup
       }
     };
-
   }
-  isselectedrowfun(row , isSelected){
-    if(isSelected){
+  isselectedrowfun(row, isSelected) {
+    if (isSelected) {
       row.isSelected = true;
       row.checkProd1 = true;
       row.checkProd2 = true;
       row.checkProd3 = true;
-    }else{
+    } else {
       row.isSelected = false;
       row.checkProd1 = false;
       row.checkProd2 = false;
       row.checkProd3 = false;
     }
-    return row
+    return row;
   }
 
-  rowSelected(event){
-      let displayRowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
-      let selectedNodes = this.gridOptions_counterparty.api.getSelectedNodes();
-      let Selecteddata = selectedNodes.map(node => node.data);
-      if(Selecteddata.length !=0 && Selecteddata.length != displayRowCount){
-          let rowdata = Object.assign({}, event.data)
-          let updatedRow = { ...rowdata };
-          updatedRow = this.isselectedrowfun(updatedRow, event.node.selected);
-          this.store.dispatch(new EditLocationRow(updatedRow));
-          event.node.setData(updatedRow);
-      }
+  rowSelected(event) {
+    let displayRowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
+    let selectedNodes = this.gridOptions_counterparty.api.getSelectedNodes();
+    let Selecteddata = selectedNodes.map(node => node.data);
+    if (Selecteddata.length != 0 && Selecteddata.length != displayRowCount) {
+      let rowdata = Object.assign({}, event.data);
+      let updatedRow = { ...rowdata };
+      updatedRow = this.isselectedrowfun(updatedRow, event.node.selected);
+      this.store.dispatch(new EditLocationRow(updatedRow));
+      event.node.setData(updatedRow);
+    }
   }
 
   saveRowToCloud(updatedRow, product) {
-
     const productDetails = this.getRowProductDetails(updatedRow, product.id);
+
     if (productDetails.id == null || productDetails.price == null) {
       return;
     }
     const payload = {
-      RequestLocationSellerId : updatedRow.id,
+      RequestLocationSellerId: updatedRow.id,
       Offers: [
         {
           id: productDetails.offerId,
           totalOffer: updatedRow.totalOffer,
+          totalCost: updatedRow.totalCost,
           requestOffers: [
             {
               id: productDetails.id,
               totalPrice: productDetails.totalPrice,
               amount: productDetails.amount,
               targetDifference: productDetails.targetDifference,
-              price: productDetails.price
+              price: productDetails.price,
+              cost: productDetails.cost
             }
           ]
         }
@@ -357,7 +364,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.toastr.error(res.message);
         return;
       }
-     });
+    });
   }
   // Calculate row fields and return new row;
   formatRowData(row, product, field, newValue) {
@@ -365,8 +372,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     //Change with new value
     switch (field) {
-      case "offPrice":
-        productDetails.price = Number(newValue.toString().replace(/,/g, ""))
+      case 'offPrice':
+        productDetails.price = Number(newValue.toString().replace(/,/g, ''));
         break;
 
       default:
@@ -374,8 +381,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
 
     // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
-    productDetails.totalPrice = Number(productDetails.price) + 0;
-    // Amount = Total Price * Max. Quantity
+    productDetails.totalPrice =
+      Number(productDetails.price) + productDetails.cost; // Amount = Total Price * Max. Quantity
     productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
     // Target Difference = Total Price - Target Price
@@ -384,7 +391,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       (product.requestGroupProducts
         ? product.requestGroupProducts.targetPrice
         : 0);
-        productDetails.targetDifference = product.requestGroupProducts.targetPrice == 0 ? 0 : productDetails.targetDifference;
+    productDetails.targetDifference =
+      product.requestGroupProducts.targetPrice == 0
+        ? 0
+        : productDetails.targetDifference;
 
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
     const currentLocation = this.locations.filter(
@@ -398,15 +408,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     let calcTotalOffer = 0;
     currentLocationAllProductsIds.map(id => {
-      calcTotalOffer += Number(this.getRowProductDetails(futureRow, id).amount)
+      calcTotalOffer += Number(this.getRowProductDetails(futureRow, id).amount);
     });
     futureRow.totalOffer = calcTotalOffer;
 
     return futureRow;
   }
 
-  selectAllRenderer(params){
-  }
+  selectAllRenderer(params) {}
   getRowNodeId(data) {
     return data.id;
   }
@@ -492,10 +501,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           // checkboxSelection: true,
           resizable: false,
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
-          cellClass: 'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
+          cellClass:
+            'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'mat-check-box',
-            productId: product.productId, status: product.status },
+          cellRendererParams: {
+            type: 'mat-check-box',
+            productId: product.productId,
+            status: product.status
+          },
           lockPosition: true
         },
         {
@@ -514,19 +527,31 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             let _this = this;
 
             //avoid calculation based on physical supplier mandatory configurations.
-            const tenantConfig = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-              return state['spotNegotiation'].tenantConfigurations;
-            });
+            const tenantConfig = this.store.selectSnapshot(
+              (state: SpotNegotiationStoreModel) => {
+                return state['spotNegotiation'].tenantConfigurations;
+              }
+            );
 
-            if (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && !updatedRow.physicalSupplierCounterpartyId) {
-              this.toastr.error('Physical supplier is mandatory for quoting the price.');
+            if (
+              tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+              !updatedRow.physicalSupplierCounterpartyId
+            ) {
+              this.toastr.error(
+                'Physical supplier is mandatory for quoting the price.'
+              );
               event.target.value = '';
               event.target.focus();
               return false;
             }
 
             // Do calculation here;
-            updatedRow = this.formatRowData(updatedRow, colDef['product'], colDef.field, newValue);
+            updatedRow = this.formatRowData(
+              updatedRow,
+              colDef['product'],
+              colDef.field,
+              newValue
+            );
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
             // Save to the cloud
@@ -549,7 +574,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererParams: {
             label: 'price-calc',
             type: 'price-calc',
-            index:index,
+            index: index,
             product: product,
             cellClass: ''
           },
@@ -568,9 +593,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 95,
           cellClass: 'grey-opacity-cell pad-lr-0',
           cellStyle: params => {
-            if (this.highlightedCells[product.productId] &&
-               params.data.id === this.highlightedCells[product.productId].rowId &&
-               product.id === this.highlightedCells[product.productId].requestProductId) {
+            if (
+              this.highlightedCells[product.productId] &&
+              params.data.id ===
+                this.highlightedCells[product.productId].rowId &&
+              product.id ===
+                this.highlightedCells[product.productId].requestProductId
+            ) {
               return { background: '#C5DCCF' };
             }
 
@@ -588,7 +617,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             const details = this.getRowProductDetails(params.data, product.id);
             return details.amount;
           },
-          flex:4,
+          flex: 4,
           minWidth: 95,
           cellClass: 'grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
@@ -599,11 +628,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Tar. diff',
           headerTooltip: 'Tar. diff',
           field: `diff`,
-          flex:5,
+          flex: 5,
           minWidth: 94,
           valueGetter: params => {
             const details = this.getRowProductDetails(params.data, product.id);
-            return product.requestGroupProducts.targetPrice == null || 0 ? 0 : details.targetDifference;
+            return product.requestGroupProducts.targetPrice == null || 0
+              ? 0
+              : details.targetDifference;
           },
           headerClass: 'border-right',
           cellClass: 'line-seperator grey-opacity-cell pad-lr-0',
@@ -646,14 +677,23 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     if (this.locationsRows && this.locationsRows.length > 0) {
       if (this.highlightedCells[product.productId]) {
-        const smallestRow = this.locationsRows.find(x => x.id === this.highlightedCells[product.productId].rowId);
-        const offerDetails = smallestRow?.requestOffers?.find(x => x.requestProductId === this.highlightedCells[product.productId].requestProductId);
-        if(offerDetails) smallestTotalPrice = offerDetails.totalPrice;
+        const smallestRow = this.locationsRows.find(
+          x => x.id === this.highlightedCells[product.productId].rowId
+        );
+        const offerDetails = smallestRow?.requestOffers?.find(
+          x =>
+            x.requestProductId ===
+            this.highlightedCells[product.productId].requestProductId
+        );
+        if (offerDetails) smallestTotalPrice = offerDetails.totalPrice;
       }
 
-      if(this.highlightedCells['lowestTotalOfferRowId']){
-        const lowestTotalOfferRow = this.locationsRows.find(x => x.id === this.highlightedCells['lowestTotalOfferRowId']);
-        if(lowestTotalOfferRow.totalOffer) smallestOffer = lowestTotalOfferRow.totalOffer;
+      if (this.highlightedCells['lowestTotalOfferRowId']) {
+        const lowestTotalOfferRow = this.locationsRows.find(
+          x => x.id === this.highlightedCells['lowestTotalOfferRowId']
+        );
+        if (lowestTotalOfferRow.totalOffer)
+          smallestOffer = lowestTotalOfferRow.totalOffer;
       }
 
       this.locationsRows.map(row => {
@@ -663,19 +703,29 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
 
         // Set smallest total price
-        const productDetails = this.getRowProductDetails(row, product.id)
+        const productDetails = this.getRowProductDetails(row, product.id);
 
-        if (productDetails.totalPrice && Number(productDetails.totalPrice) > 0 && Number(smallestTotalPrice) > Number(productDetails.totalPrice)) {
+        if (
+          productDetails.totalPrice &&
+          Number(productDetails.totalPrice) > 0 &&
+          Number(smallestTotalPrice) > Number(productDetails.totalPrice)
+        ) {
           smallestTotalPrice = productDetails.totalPrice;
           this.highlightedCells[product.productId].rowId = row.id;
-          this.highlightedCells[product.productId].requestProductId = product.id;
+          this.highlightedCells[product.productId].requestProductId =
+            product.id;
         }
 
         // Set smallest offer price
-        const quotedProductsLength = row.requestOffers?.filter(x => x.price).length;
-        if (row.totalOffer && quotedProductsLength === requestProductsLength &&
-          Number(smallestOffer) > Number(row.totalOffer) && Number(row.totalOffer) > 0) {
-            smallestOffer = row.totalOffer;
+        const quotedProductsLength = row.requestOffers?.filter(x => x.price)
+          .length;
+        if (
+          row.totalOffer &&
+          quotedProductsLength === requestProductsLength &&
+          Number(smallestOffer) > Number(row.totalOffer) &&
+          Number(row.totalOffer) > 0
+        ) {
+          smallestOffer = row.totalOffer;
           // Create key with id if dosen't exists;
 
           this.highlightedCells['lowestTotalOfferRowId'] = row.id;
@@ -727,7 +777,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
     this.store.subscribe(({ spotNegotiation, ...props }) => {
-
       if (!this.shouldUpdate({ spotNegotiation })) {
         return null;
       }
@@ -737,12 +786,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
 
       // Set locations;
-      if (!spotNegotiation.locations.length) // || !spotNegotiation.locationsRows.length
-      {
+      if (!spotNegotiation.locations.length) {
+        // || !spotNegotiation.locationsRows.length
         return null;
       }
 
-     this.locationsRows = spotNegotiation.locationsRows;
+      this.locationsRows = spotNegotiation.locationsRows;
       this.locations = spotNegotiation.locations;
       // setTimeout(() => {
       //   if(spotNegotiation.locationsRows.length > 0){
@@ -759,9 +808,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return null;
       }
 
-      if(spotNegotiation.tenantConfigurations && spotNegotiation.tenantConfigurations['isDisplaySellerRating'] === false){
-        this.columnDef_aggrid[0].children = this.columnDef_aggrid[0].children.filter(col=> col.field != 'genRating'
-          && col.field != 'portRating');
+      if (
+        spotNegotiation.tenantConfigurations &&
+        spotNegotiation.tenantConfigurations['isDisplaySellerRating'] === false
+      ) {
+        this.columnDef_aggrid[0].children = this.columnDef_aggrid[0].children.filter(
+          col => col.field != 'genRating' && col.field != 'portRating'
+        );
       }
       // Set headers of products;
       this.columnDef_aggridObj = [];
@@ -771,24 +824,33 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Separate rows for each location;
         // Sord data
 
-        const filterobj = this.rowData_aggrid.filter(row => row.requestLocationId === reqLocation.id);
+        const filterobj = this.rowData_aggrid.filter(
+          row => row.requestLocationId === reqLocation.id
+        );
         this.rowData_aggridObj[i] = filterobj;
 
         // Assign ColumnDef_aggrid with dynamic location id
         this.columnDef_aggridObj.push(_.cloneDeep(this.columnDef_aggrid)); //;
 
-        this.columnDef_aggridObj[i][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
-        this.columnDef_aggridObj[i][0].headerGroupComponentParams.selectedSellersCount = filterobj.filter(row=> row.isSelected).length;
-        this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts = reqLocation.requestProducts.length;
+        this.columnDef_aggridObj[
+          i
+        ][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
+        this.columnDef_aggridObj[
+          i
+        ][0].headerGroupComponentParams.selectedSellersCount = filterobj.filter(
+          row => row.isSelected
+        ).length;
+        this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts =
+          reqLocation.requestProducts.length;
 
         // These are locations!!
         const requestProductsLength = reqLocation.requestProducts.length;
         reqLocation.requestProducts.map((reqProduct, index) => {
           this.checkHighlight({ product: reqProduct }, requestProductsLength);
-          this.columnDef_aggridObj[i].push(this.createProductHeader(reqProduct, reqLocation.id, index));
+          this.columnDef_aggridObj[i].push(
+            this.createProductHeader(reqProduct, reqLocation.id, index)
+          );
         });
-
-
       });
 
       // Detect change and update the ui
@@ -856,20 +918,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   formatRowselected(row, value) {
-    if(value){
+    if (value) {
       row.isSelected = false;
-      row.checkProd1 =false;
+      row.checkProd1 = false;
       row.checkProd2 = false;
-      row.checkProd3 =false;
+      row.checkProd3 = false;
       row.checkProd4 = false;
-      row.checkProd5 =false;
-    }else{
+      row.checkProd5 = false;
+    } else {
       row.isSelected = true;
-      row.checkProd1 =true;
+      row.checkProd1 = true;
       row.checkProd2 = true;
-      row.checkProd3 =true;
+      row.checkProd3 = true;
       row.checkProd4 = true;
-      row.checkProd5 =true;
+      row.checkProd5 = true;
     }
     return row;
   }
@@ -879,51 +941,77 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       width: '600px',
       data: {
         sellerName: rowData.sellerCounterpartyName,
-        isRFQSent: rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0 ? true : false
+        isRFQSent:
+          rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0
+            ? true
+            : false
       }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.spinner.show();
-        this.spotNegotiationService.RemoveCounterparty(rowData.id)
-        .subscribe((res: any) => {
-          this.spinner.hide();
-          if (res.status) {
-            let dataRows = [];
-            gridApi.forEachNode(node => dataRows.push(node.data));
-            dataRows = dataRows.splice(rowIndex, 1);
-            //gridApi.applyTransaction({ remove: dataRows });
-            gridApi.updateRowData({ remove: dataRows });
-            this.toastr.success('Counterparty has been removed from negotiation succesfully.');
-            this.store.dispatch(new RemoveCounterparty({rowId: rowData.id }));
-            if( res['requestLocationSellers'] && res['sellerOffers']){
-              const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-                res['requestLocationSellers'],
-                res['sellerOffers']
+        this.spotNegotiationService
+          .RemoveCounterparty(rowData.id)
+          .subscribe((res: any) => {
+            this.spinner.hide();
+            if (res.status) {
+              let dataRows = [];
+              gridApi.forEachNode(node => dataRows.push(node.data));
+              dataRows = dataRows.splice(rowIndex, 1);
+              //gridApi.applyTransaction({ remove: dataRows });
+              gridApi.updateRowData({ remove: dataRows });
+              this.toastr.success(
+                'Counterparty has been removed from negotiation succesfully.'
               );
-              this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+              this.store.dispatch(
+                new RemoveCounterparty({ rowId: rowData.id })
+              );
+              if (res['requestLocationSellers'] && res['sellerOffers']) {
+                const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+                  res['requestLocationSellers'],
+                  res['sellerOffers']
+                );
+                this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+              }
+              if (res.isGroupDeleted) {
+                const baseOrigin = new URL(window.location.href).origin;
+                window.open(
+                  `${baseOrigin}/#/edit-request/${rowData.requestId}`,
+                  '_self'
+                );
+              }
+            } else {
+              if (res.isRequestStemmed) {
+                this.toastr.warning(
+                  'Counterparty has a stemmed order and cannot be removed from negotiation.'
+                );
+              } else if (res.message && res.message.length > 0) {
+                this.toastr.warning(res.message);
+              } else {
+                this.toastr.error(res);
+              }
             }
-            if(res.isGroupDeleted){
-              const baseOrigin = new URL(window.location.href).origin;
-                window.open(`${baseOrigin}/#/edit-request/${rowData.requestId}`, '_self');
-            }
-          } else{
-            if(res.isRequestStemmed){
-              this.toastr.warning('Counterparty has a stemmed order and cannot be removed from negotiation.');
-            } else if(res.message && res.message.length >0){
-              this.toastr.warning(res.message);
-            }
-            else{
-              this.toastr.error(res);
-            }
-          }
-        });
+          });
+      }
+    });
+  }
+
+  onCostChanged(locationRows: any){
+    // Get current id from url and make a request with that data.
+    const groupId = this.route.snapshot.params.spotNegotiationId;
+    let rows = _.cloneDeep(locationRows);
+    this.spotNegotiationService.getPriceDetails(groupId).subscribe((res:any) => {
+      if (res['sellerOffers']) {
+        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+          rows,
+          res['sellerOffers']
+        );
+        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
       }
     });
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-
     let currentRequestData: any;
     let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
@@ -932,19 +1020,23 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
     rowsArray.forEach((row, index) => {
-      let currentLocProd = currentRequestData.filter(row1 => row1.locationId == row.locationId);
+      let currentLocProd = currentRequestData.filter(
+        row1 => row1.locationId == row.locationId
+      );
 
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray.length &&
-        row.id ===
-        priceDetailsArray[index]?.requestLocationSellerId
+        row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId =
+          priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
-          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
+          row.physicalSupplierCounterpartyName = counterpartyList.find(
+            x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
+          ).displayName;
         }
         this.UpdateProductsSelection(currentLocProd, row);
 
@@ -960,9 +1052,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.isSelected = detailsForCurrentRow[0].isSelected;
-        row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId =
+          detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
-          row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
+          row.physicalSupplierCounterpartyName = counterpartyList.find(
+            x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
+          ).displayName;
         }
         this.UpdateProductsSelection(currentLocProd, row);
       }
@@ -977,12 +1072,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       let currentLocProdCount = currentLocProd[0].requestProducts.length;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
-        let val = "checkProd" + indx;
+        let val = 'checkProd' + indx;
         const status = currentLocProd[0].requestProducts[index].status;
-        row[val] = status === 'Stemmed' || status === 'Confirmed' ? false : row.isSelected;
+        row[val] =
+          status === 'Stemmed' || status === 'Confirmed'
+            ? false
+            : row.isSelected;
         //row[val] = row.isSelected;
       }
     }
   }
-
 }

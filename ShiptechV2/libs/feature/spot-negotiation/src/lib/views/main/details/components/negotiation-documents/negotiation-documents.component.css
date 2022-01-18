@@ -1,3 +1,12 @@
+.documents-container {
+  background-color: white;
+}
+
+.drag-drop-upload-v2 {
+  margin: 0px;
+  padding: 15px !important;
+}
+
 .mid-blue-button {
   background: #1d9fff;
   height: 27px;
@@ -9,11 +18,9 @@
   border: none;
 }
 
-.active-tab {
-  border-bottom: 4px solid #1d9fff !important;
-}
-
-.disabled-tab {
-  color: rgba(0, 0, 0, 0.38);
-  cursor: default;
+.cust-header-btn {
+  cursor: pointer;
+  width: 115px;
+  height: 30px;
+  margin: 0 5px;
 }

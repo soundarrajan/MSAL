@@ -7,6 +7,9 @@ import { KnownSpotNegotiationRoutes } from './known-spot-negotiation.routes';
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
+import { SpotnegoemaillogComponent } from './views/main/details/components/spotnegoemaillog/spotnegoemaillog.component';
+import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
+import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
 
 const routes: Routes = [
   {
@@ -36,10 +39,38 @@ const routes: Routes = [
               {
                 path: KnownSpotNegotiationRoutes.details,
                 component: SpotNegotiationComponent,
-                resolve: { staticLists: StaticListsRouteResolver, navBar: NavBarResolver, uoms: UomsRouteResolver },
+                resolve: {
+                  staticLists: StaticListsRouteResolver,
+                  navBar: NavBarResolver,
+                  uoms: UomsRouteResolver
+                },
                 data: {
                   title: 'Negotiation',
                   breadcrumb: 'Negotiation'
+                }
+              },
+              {
+                path: KnownSpotNegotiationRoutes.emailLog,
+                component: SpotnegoemaillogComponent,
+                data: {
+                  title: 'Negotiation - Email Log',
+                  breadcrumb: 'Email Log'
+                }
+              },
+              {
+                path: KnownSpotNegotiationRoutes.documentsPath,
+                component: NegotiationDocumentsComponent,
+                data: {
+                  title: 'Negotiation - Documents',
+                  breadcrumb: 'Documents'
+                }
+              },
+              {
+                path: KnownSpotNegotiationRoutes.reportPath,
+                component: NegotiationReportComponent,
+                data: {
+                  title: 'Negotiation - Report',
+                  breadcrumb: 'Report'
                 }
               }
               // Note: Left here just for reference, QC does not have related links.

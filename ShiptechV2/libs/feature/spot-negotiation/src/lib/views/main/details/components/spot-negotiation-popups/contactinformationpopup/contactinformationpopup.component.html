@@ -35,7 +35,7 @@
     <div class="col-3" *ngFor="let contact of seller?.counterpartyContacts; let i = index">
       <div class="product-terms p-b-5 add-new-contact">
         <div class="operations-details-block" [ngClass] ="!contact.id? 'dashed-border-overlay': ''" style="height:294px">
-          <table>
+          <table style="border-spacing: 0px;">
             <thead>
               <tr>
                 <th class=" text-left w-147 contact-editable-header">
