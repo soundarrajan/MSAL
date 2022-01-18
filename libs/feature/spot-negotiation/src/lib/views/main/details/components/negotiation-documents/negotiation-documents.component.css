@@ -93,3 +93,7 @@ input.search-input::placeholder {
   max-width: max-content !important;
   max-height: 50vh;
 }
+
+.file-name {
+  margin-top: 10px;
+}

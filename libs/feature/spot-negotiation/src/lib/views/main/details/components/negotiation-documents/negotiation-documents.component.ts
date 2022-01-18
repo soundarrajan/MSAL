@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -15,25 +21,32 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import _ from 'lodash';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { FileUpload } from 'primeng/fileupload';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { ModuleError } from './error-handling/module-error';
 
 @Component({
   selector: 'app-negotiation-documents',
   templateUrl: './negotiation-documents.component.html',
   styleUrls: ['./negotiation-documents.component.css']
 })
-export class NegotiationDocumentsComponent implements OnInit {
+export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
+  @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
+
   public gridOptions_data: GridOptions;
-  myControl = new FormControl();
-  options: string[] = ['Additional Document', 'Contract Document'];
-  placeholder: string = '';
-  filteredOptions: Observable<string[]>;
-  negotiationId: any;
-  documentTypeList: any;
+  documentTypeList: any[];
   documentType: any = null;
   expandDocumentTypePopUp: boolean = false;
   searchDocumentTypeModel: any = null;
   selectedDocumentType: any = null;
-  documentTypeListForSearch: any;
+  documentTypeListForSearch: any[];
+  file: File;
+  entityName: string = 'Negotiation';
+  entityId: string;
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -42,10 +55,11 @@ export class NegotiationDocumentsComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private appErrorHandler: AppErrorHandler
   ) {
     this.route.params.pipe().subscribe(params => {
-      this.negotiationId = params.spotNegotiationId;
+      this.entityId = params.spotNegotiationId;
     });
 
     this.getDocumentTypeList();
@@ -64,7 +78,7 @@ export class NegotiationDocumentsComponent implements OnInit {
       Filters: [
         {
           ColumnName: 'ReferenceNo',
-          Value: this.negotiationId.toString()
+          Value: this.entityId.toString()
         },
         {
           ColumnName: 'TransactionTypeId',
@@ -99,8 +113,8 @@ export class NegotiationDocumentsComponent implements OnInit {
 
   radioDocumentTypeChange($event: MatRadioChange) {
     if ($event.value) {
-      this.documentType = $event.value;
-      console.log(this.documentType);
+      this.selectedDocumentType = $event.value;
+      console.log(this.selectedDocumentType);
     }
   }
 
@@ -113,15 +127,15 @@ export class NegotiationDocumentsComponent implements OnInit {
   }
 
   selectDocumentType(event: MatAutocompleteSelectedEvent) {
-    this.documentType = event.option.value;
-    console.log(this.documentType);
+    this.selectedDocumentType = event.option.value;
+    console.log(this.selectedDocumentType);
   }
 
   public filterDocumentTypeList() {
-    if (this.documentType) {
-      const filterValue = this.documentType.name
-        ? this.documentType.name
-        : this.documentType;
+    if (this.selectedDocumentType) {
+      const filterValue = this.selectedDocumentType.name
+        ? this.selectedDocumentType.name
+        : this.selectedDocumentType;
       if (this.documentTypeList) {
         const list = this.documentTypeList
           .filter((item: any) =>
@@ -135,6 +149,54 @@ export class NegotiationDocumentsComponent implements OnInit {
     } else {
       return [];
     }
+  }
+
+  clearUploadedFiles(): void {
+    this.uploadedFiles.clear();
+  }
+
+  ngAfterViewInit(): void {
+    this.uploadedFiles.uploadHandler.subscribe((event: FileUpload) => {
+      console.log(this.selectedDocumentType);
+      if (!this.selectedDocumentType) {
+        this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
+        this.clearUploadedFiles();
+      } else {
+        this.file = event.files[0];
+        console.log(this.file);
+        const requestPayload: IDocumentsCreateUploadDto = {
+          Payload: <IDocumentsCreateUploadDetailsDto>{
+            name: event.files[0].name,
+            documentType: {
+              id: this.selectedDocumentType.id,
+              name: this.selectedDocumentType.name
+            },
+            size: event.files[0].size,
+            fileType: event.files[0].type,
+            referenceNo: parseFloat(this.entityId),
+            transactionType: {
+              id: 2,
+              name: 'Offer'
+            }
+          }
+        };
+        const formRequest: FormData = new FormData();
+        formRequest.append('file', event.files[0]);
+        formRequest.append('request', JSON.stringify(requestPayload));
+
+        this.spotNegotiationService.uploadFile(formRequest).subscribe(
+          () => {
+            this.toastr.success('Document saved !');
+          },
+          () => {
+            this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
+          }
+        );
+
+        this.clearUploadedFiles();
+        this.selectedDocumentType = undefined;
+      }
+    });
   }
 
   setupAgGrid() {
@@ -174,64 +236,7 @@ export class NegotiationDocumentsComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-  }
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
-  }
-
-  files: any[] = [];
-  public doc_type;
-
-  public enableFileUpload: boolean = false;
-  public enableDrag: boolean = false;
-  enableUpload(e) {
-    this.doc_type = e.value;
-    this.enableFileUpload = true;
-    this.enableDrag = true;
-  }
-
-  /**
-   * on file drop handler
-   */
-  onFileDropped($event) {
-    this.prepareFilesList($event);
-  }
-
-  /**
-   * handle file from browsing
-   */
-  fileBrowseHandler(files) {
-    this.prepareFilesList(files);
-  }
-
-  /**
-   * Delete file from files list
-   * @param index (File index)
-   */
-  deleteFile(index: number) {
-    this.files.splice(index, 1);
-  }
-
-  /**
-   * Convert Files list to normal array list
-   * @param files (Files List)
-   */
-  prepareFilesList(files: Array<any>) {
-    for (const item of files) {
-      item.progress = 0;
-      this.files.push(item);
-      this.uploadDocument(this.files, this.doc_type);
-    }
-  }
+  ngOnInit() {}
 
   uploadDocument(doc, doctype) {
     var lastfile = doc[doc.length - 1];

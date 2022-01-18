@@ -7,6 +7,10 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 import { catchError, map } from 'rxjs/operators';
 import { ISpotNegotiationApiService } from './spot-negotiation.api.service.interface';
+import {
+  IDocumentsCreateUploadRequest,
+  IDocumentsCreateUploadResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 
 export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
@@ -41,7 +45,8 @@ export const SpotNegotiationApiPaths = {
   getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
   getUomConversionFactor: `api/masters/uoms/convertQuantity`,
   getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
-  getDocumentTypeList: `/api/masters/documenttype/list`
+  getDocumentTypeList: `/api/masters/documenttype/list`,
+  uploadDocument: `api/masters/documentupload/create`
 };
 
 @Injectable({
@@ -757,6 +762,16 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
           )
         )
       );
+  }
+
+  @ObservableException()
+  uploadFile(
+    request: IDocumentsCreateUploadRequest
+  ): Observable<IDocumentsCreateUploadResponse> {
+    return this.http.post<IDocumentsCreateUploadResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.uploadDocument}`,
+      request
+    );
   }
 
   handleErrorMessage(body: any) {
