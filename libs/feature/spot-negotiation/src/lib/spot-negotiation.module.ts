@@ -89,6 +89,7 @@ import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-
 import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
 import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
 import { FileUploadModule } from 'primeng/fileupload';
+import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-renderer-v2.component';
 
 @NgModule({
   imports: [
@@ -164,6 +165,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     AGGridCellRendererComponent,
     AGGridCellRendererV2Component,
     ShiptechCustomHeaderGroup,
+    AGGridCellV2RendererComponent,
 
     CustomHeaderGroupNotify,
     CustomHeaderGroup,
@@ -188,6 +190,7 @@ import { FileUploadModule } from 'primeng/fileupload';
   entryComponents: [
     MainSpotNegotiationComponent,
     AGGridCellRendererComponent,
+    AGGridCellV2RendererComponent,
     AGGridCellRendererV2Component,
     AGGridCellActionsComponent,
     ShiptechCustomHeaderGroup,

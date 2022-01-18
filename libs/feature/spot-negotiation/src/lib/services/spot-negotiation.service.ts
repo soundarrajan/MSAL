@@ -367,6 +367,14 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.uploadFile(payload);
   }
 
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  getDocuments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getDocuments(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
