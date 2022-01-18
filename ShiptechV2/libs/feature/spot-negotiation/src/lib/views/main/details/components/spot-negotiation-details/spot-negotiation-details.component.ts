@@ -996,6 +996,21 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
   }
 
+  onCostChanged(locationRows: any){
+    // Get current id from url and make a request with that data.
+    const groupId = this.route.snapshot.params.spotNegotiationId;
+    let rows = _.cloneDeep(locationRows);
+    this.spotNegotiationService.getPriceDetails(groupId).subscribe((res:any) => {
+      if (res['sellerOffers']) {
+        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+          rows,
+          res['sellerOffers']
+        );
+        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+      }
+    });
+  }
+
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
     let counterpartyList: any;
