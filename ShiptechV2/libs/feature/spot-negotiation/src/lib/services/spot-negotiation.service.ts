@@ -345,6 +345,14 @@ export class SpotNegotiationService extends BaseStoreService
     );
   }
 
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  getDocumentTypeList(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getDocumentTypeList(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

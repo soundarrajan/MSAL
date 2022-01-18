@@ -247,3 +247,23 @@ app-ag-filter-display {
   > .mat-select-arrow {
   visibility: hidden;
 }
+
+.document-type-container {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.document-type-container-radio-button {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #fff;
+  .mat-radio-outer-circle {
+    border-color: white !important;
+  }
+}
