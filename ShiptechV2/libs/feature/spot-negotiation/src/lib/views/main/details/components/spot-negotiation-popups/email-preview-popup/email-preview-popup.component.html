@@ -32,7 +32,7 @@
                     <div style="flex: 0 0 5%">
                         <span class="text">To:</span>
                     </div>
-                    <div style="display:  flex; flex: 0 0 95%">
+                    <div style="display: flex; flex: 0 0 95%; align-items: center; flex-wrap: wrap;">
                         <div class="recipientClass" style="margin: 0px 5px; display:  flex;height:25px;" *ngFor="let item of to">
                             <input [readonly]="readonly" class="cust-input-field" matInput value="{{item}}" style="border: none;">
                             <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon" (click)="RemoveEmailId(item,'toEmail')"></div>
@@ -46,7 +46,7 @@
                     <div style="flex: 0 0 5%">
                         <span class="text">Cc:</span>
                     </div>
-                    <div style="display: flex; flex: 0 0 95%">
+                    <div style="display: flex; flex: 0 0 95%; align-items: center; flex-wrap: wrap;">
                         <div class="recipientClass" style="margin: 0px 5px; display: flex;height:25px;" *ngFor="let item of cc">
                             <input [readonly]="readonly"  class="cust-input-field" matInput value="{{item}}" style="border: none;">
                             <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon flex-shrink-1" (click)="RemoveEmailId(item,'ccEmail')"></div>
