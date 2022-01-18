@@ -159,21 +159,6 @@
         </div>
       </div>
     </div>
-    <div class="col-md-8">
-      <div class="col-sm-6">
-        <div class="file-upload-zone">
-          <p-fileUpload
-            #uploadComponent
-            name="file2"
-            customUpload="true"
-            [auto]="true"
-            [disabled]="isReadOnly"
-          >
-          </p-fileUpload>
-          <h3>Drop files here or click to upload</h3>
-        </div>
-      </div>
-    </div>
     <div class="title">Documents List</div>
     <div class="uploaded-files-grid">
       <div class="agGrid-v2" style="margin: 0px;">
@@ -181,7 +166,9 @@
           <ag-grid-angular
             style="width: 100%; height: calc( 100vh - 390px );"
             [gridOptions]="gridOptions_data"
-            class="ag-theme-material ag-grid-v2 angular-v9 "
+            [rowData]="rowData_grid"
+            (gridReady)="getDocumentsList()"
+            class="ag-theme-material ag-grid-v2 angular-v9 documents-list"
           ></ag-grid-angular>
         </div>
       </div>

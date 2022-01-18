@@ -28,6 +28,8 @@ import {
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { ModuleError } from './error-handling/module-error';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -47,6 +49,8 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
   file: File;
   entityName: string = 'Negotiation';
   entityId: string;
+  isReadOnly: boolean = false;
+  responseList: any;
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -56,14 +60,14 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     private spotNegotiationService: SpotNegotiationService,
     private router: Router,
     private toastr: ToastrService,
-    private appErrorHandler: AppErrorHandler
+    private appErrorHandler: AppErrorHandler,
+    private format: TenantFormattingService
   ) {
     this.route.params.pipe().subscribe(params => {
       this.entityId = params.spotNegotiationId;
     });
-
-    this.getDocumentTypeList();
     this.setupAgGrid();
+    this.getDocumentTypeList();
   }
 
   getDocumentTypeList() {
@@ -91,9 +95,47 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         Take: 9999
       }
     };
-    this.spinner.show();
     this.spotNegotiationService
       .getDocumentTypeList(payload)
+      .subscribe((response: any) => {
+        if (typeof response === 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          this.documentTypeListForSearch = _.cloneDeep(response);
+          this.documentTypeList = _.cloneDeep(response);
+        }
+      });
+  }
+
+  getDocumentsList() {
+    const payload = {
+      Order: null,
+      PageFilters: {
+        Filters: []
+      },
+      SortList: {
+        SortList: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ReferenceNo',
+          Value: this.entityId.toString()
+        },
+        {
+          ColumnName: 'TransactionTypeId',
+          Value: 2
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    this.spinner.show();
+    this.spotNegotiationService
+      .getDocuments(payload)
       .subscribe((response: any) => {
         if (typeof response === 'string') {
           this.spinner.hide();
@@ -101,8 +143,19 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         } else {
           this.spinner.hide();
           console.log(response);
-          this.documentTypeListForSearch = _.cloneDeep(response);
-          this.documentTypeList = _.cloneDeep(response);
+          this.responseList = _.cloneDeep(response);
+          for (let i = 0; i < this.responseList.length; i++) {
+            this.responseList[i].uploadedOn = this.format.date(
+              this.responseList[i].uploadedOn
+            );
+            this.responseList[i].verifiedOn = this.format.date(
+              this.responseList[i].verifiedOn
+            );
+            this.responseList[i].status = this.responseList[i].isVerified
+              ? 'Verified'
+              : 'Unverified';
+          }
+          this.rowData_grid = _.cloneDeep(this.responseList);
         }
       });
   }
@@ -187,6 +240,8 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         this.spotNegotiationService.uploadFile(formRequest).subscribe(
           () => {
             this.toastr.success('Document saved !');
+            this.rowData_grid = [];
+            this.changeDetector.detectChanges();
           },
           () => {
             this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
@@ -194,7 +249,8 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         );
 
         this.clearUploadedFiles();
-        this.selectedDocumentType = undefined;
+        this.selectedDocumentType = null;
+        this.file = null;
       }
     });
   }
@@ -238,47 +294,13 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {}
 
-  uploadDocument(doc, doctype) {
-    var lastfile = doc[doc.length - 1];
-    var file = lastfile.name.split('.');
-    let filename = file[0];
-    let fileformat = file[1].toUpperCase();
-    this.gridOptions_data.api.applyTransaction({
-      add: [
-        {
-          doc_name: filename,
-          size: '199KB',
-          doc_type: 'Contract',
-          file_type: doctype,
-          entity: 'Contract',
-          ref_no: '123678',
-          uploaded_by: 'Alexander',
-          uploaded_on: '12/11/20',
-          status: 'Verified',
-          verified_by: 'Yusuf',
-          add_views: 'Document uploaded',
-          download: ''
-        }
-      ]
-    });
-  }
-
   private columnDef_grid = [
-    /* {
-      resizable: false,
-      width: 20,
-      suppressMenu: true,
-      headerClass: ['aggridtextalign-center'],
-      headerName: "",
-      cellClass: ['aggridtextalign-left'],
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
-    }, */
     {
       headerName: '',
       field: 'check',
       filter: true,
       suppressMenu: true,
-      width: 20,
+      width: 50,
       checkboxSelection: true,
       resizable: false,
       suppressMovable: true,
@@ -291,53 +313,53 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     {
       headerName: 'Document Name',
       headerTooltip: 'Document Name',
-      field: 'doc_name',
-      width: 150
+      field: 'name',
+      width: 250
     },
     { headerName: 'Size', headerTooltip: 'Size', field: 'size', width: 100 },
     {
       headerName: 'Document Type',
       headerTooltip: 'Document Type',
-      field: 'doc_type',
-      width: 100
+      field: 'documentType.name',
+      width: 200
     },
     {
       headerName: 'File Type',
       headerTooltip: 'File Type',
-      field: 'file_type',
+      field: 'fileType',
       width: 100
     },
     {
       headerName: 'Entity',
       headerTooltip: 'Entity',
-      field: 'entity',
+      field: 'transactionType.name',
       width: 100
     },
     {
       headerName: 'Reference No.',
       headerTooltip: 'Reference No.',
-      field: 'ref_no',
+      field: 'referenceNo',
       width: 125
     },
     {
       headerName: 'Uploaded by',
       headerTooltip: 'Uploaded By',
-      field: 'uploaded_by',
+      field: 'uploadedBy.name',
       width: 150
     },
     {
       headerName: 'Uploaded On',
       headerTooltip: 'Uploaded On',
-      field: 'uploaded_on',
-      width: 120
+      field: 'uploadedOn',
+      width: 150
     },
     {
       headerName: 'Status',
       headerTooltip: 'Status',
       field: 'status',
       width: 150,
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellClass: ['aggridtextalign-center'],
+      cellRendererFramework: AGGridCellV2RendererComponent,
+      cellClass: ['aggridtextalign-center', 'document-status'],
       cellRendererParams: function(params) {
         var classArray: string[] = [];
         classArray.push('aggridtextalign-center');
@@ -354,13 +376,13 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     {
       headerName: 'Verified By',
       headerTooltip: 'Verified By',
-      field: 'verified_by',
+      field: 'verifiedBy.name',
       width: 100
     },
     {
       headerName: 'Verified On',
       headerTooltip: 'Verified On',
-      field: 'verified_on',
+      field: 'verifiedOn',
       width: 120
     },
     {
@@ -385,51 +407,5 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  private rowData_grid = [
-    {
-      doc_name: 'Sept contract',
-      size: '199KB',
-      doc_type: 'Contract',
-      file_type: 'PDF',
-      entity: 'Contract',
-      ref_no: '123678',
-      uploaded_by: 'Alexander',
-      uploaded_on: '12/11/20',
-      status: 'Verified',
-      verified_by: 'Yusuf',
-      verified_on: '12/11/20',
-      add_views: 'Document uploaded',
-      download: ''
-    },
-    {
-      doc_name: 'Demo contract',
-      size: '199KB',
-      doc_type: 'BDN',
-      file_type: 'PDF',
-      entity: 'Contract',
-      ref_no: '123678',
-      uploaded_by: 'Reshma',
-      uploaded_on: '12/11/20',
-      status: 'Verified',
-      verified_by: 'Yusuf',
-      verified_on: '12/11/20',
-      add_views: 'Document uploaded',
-      download: ''
-    },
-    {
-      doc_name: 'Demo contract',
-      size: '199KB',
-      doc_type: 'Invoice',
-      file_type: 'PDF',
-      entity: 'Contract',
-      ref_no: '123678',
-      uploaded_by: 'Reshma',
-      uploaded_on: '12/11/20',
-      status: 'Unverified',
-      verified_by: 'Yusuf',
-      verified_on: '12/11/20',
-      add_views: 'Document uploaded',
-      download: ''
-    }
-  ];
+  private rowData_grid = [];
 }

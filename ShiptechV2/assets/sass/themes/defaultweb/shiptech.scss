@@ -7810,7 +7810,7 @@ tr.title {
         border-radius: 3px !important;
         font-size: 13px !important;
         color: #364150 !important;
-        @include box-shadow;        
+        @include box-shadow;
       }
     }
 
@@ -22477,7 +22477,7 @@ mat-form-field {
   background-color: #fff !important;
   border-radius: 3px !important;
   font-size: 13px !important;
-  color: #364150 !important;  
+  color: #364150 !important;
   @include box-shadow;
 }
 
@@ -22487,4 +22487,15 @@ mat-form-field {
 
 .non-editable-container-text-right {
   float: right;
+}
+
+.ag-theme-material.documents-list .ag-row {
+  border-bottom-style: solid !important;
+}
+.ag-theme-material.documents-list .ag-cell:nth-of-type(1) {
+  border-top: unset !important;
+}
+
+.document-status {
+  top: 5px !important;
 }
