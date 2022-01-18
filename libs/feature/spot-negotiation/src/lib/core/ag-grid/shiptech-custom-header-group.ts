@@ -25,6 +25,7 @@ import {
 } from '../../store/spot-negotiation.store';
 import { count, filter, map } from 'rxjs/operators';
 import moment from 'moment';
+import { BestcontractpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -246,7 +247,7 @@ import moment from 'moment';
           </div>
           <div
             class="label-element bestcontract"
-            (click)="availabletermcontractpopup()"
+            (click)="bestcontractpopup(params)"
           >
             <div class="title">
               Best Contract
@@ -254,10 +255,9 @@ import moment from 'moment';
             </div>
             <div
               class="value"
-              contenteditable="true"
               (keydown)="editQty($event)"
             >
-              $559.00
+              {{getBestContractPrice(params)}}
             </div>
           </div>
         </div>
@@ -306,11 +306,13 @@ export class ShiptechCustomHeaderGroup {
   currentRequestData: any[];
   currentRequestInfo: any;
   sellersCount$: Observable<number>;
+  availableContracts = [];
 
   ngOnInit(): any {
-    return this.store.selectSnapshot(({ spotNegotiation }) => {
+    this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-
+      this.availableContracts = spotNegotiation.availableContracts;
+      
       // Fetching counterparty list
       if (
         this.counterpartyList.length === 0 &&
@@ -319,7 +321,7 @@ export class ShiptechCustomHeaderGroup {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
-    });
+    });   
   }
 
   constructor(
@@ -492,6 +494,53 @@ export class ShiptechCustomHeaderGroup {
       console.log(`Dialog result: ${result}`);
     });
   }
+
+  bestcontractpopup(params): void {
+    console.log(params.requestLocationId);
+    console.log(params.product.id);
+    console.log(this.availableContracts);
+    if(!this.availableContracts) {
+      return;
+    }
+    let currentCellContracts = this.availableContracts.filter((el) => {
+      return el.requestProductId == params.product.id && el.requestLocationId == params.requestLocationId;
+    })
+    if(currentCellContracts.length == 0) {
+      this.toastr.info("No Contracts available");
+      return;
+    }
+    const dialogRef = this.dialog.open(BestcontractpopupComponent, {
+      width: '1164px',
+      panelClass: 'best-contract-popup',
+      data: {
+        data : currentCellContracts,
+        info : {
+          locationName : params.product.productName,
+          productName : params.product.productName
+        }
+      }
+    });
+  }
+
+  getBestContractPrice(params) : any {
+    console.log(params.requestLocationId);
+    console.log(params.product.id);   
+    console.log(this.availableContracts); 
+    if(this.availableContracts) {
+      let currentCellContracts = this.availableContracts.filter((el) => {
+        return el.requestProductId == params.product.id && el.requestLocationId == params.requestLocationId;
+      })
+      let prices = Object.keys( currentCellContracts ).map(function ( key ) { return currentCellContracts[key].fixedPrice; });
+      let min = Math.min.apply( null, prices );
+      console.log(currentCellContracts);
+      console.log(min);
+      if(min && min != "Infinity") {
+        return `$ ${this.priceFormatValue(min)}`;
+      }
+    }
+    return "--";
+  }
+
   editQty(e: any): any {
     if (e.keyCode === 37 || e.keyCode === 39) {
       e.stopPropagation();

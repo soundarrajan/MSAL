@@ -36,6 +36,7 @@ export const SpotNegotiationApiPaths = {
   getAdditionalCosts: `price/getOfferAdditionalCosts`,
   getEmailLogsPreview: `api/masters/emaillogs/get`,
   getRequestList: `api/procurement/rfq/selectRequest`,
+  getBestContract: `api/procurement/request/bestContract`,
   getLocationCosts: `price/locationCosts`,
   saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
   getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
@@ -161,6 +162,45 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .post<any>(
         `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getRequestList}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getBestContract(request: any): Observable<any> {
+    let payload = {
+                    Order: null,
+                    PageFilters: {
+                        Filters: []
+                    },
+                    SortList: {
+                        SortList: []
+                    },
+                    Filters : [
+                      {
+                      ColumnName: "RequestId",
+                      Value: request
+                      }
+                    ],
+                    SearchText: null,
+                    Pagination: {
+                        Skip: 0,
+                        Take: 99999
+                    }                
+                };    
+    return this.http
+      .post<any>(
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getBestContract}`,
         { Payload: payload }
       )
       .pipe(
