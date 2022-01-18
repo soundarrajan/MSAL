@@ -18,11 +18,7 @@
           </button>
         </div>
       </div>
-      <div
-        appDragNDrop
-        class="file-drop-container"
-        (fileDropped)="onFileDropped($event)"
-      >
+      <div class="file-drop-container">
         <div id="custom-form-field" class="lightTheme select-doc">
           <div class="form-fields" style="padding: 0px 20px;">
             <div class="custom-form-field-with-search lightTheme">
@@ -39,7 +35,7 @@
                       placeholder="Document Type"
                       aria-label="name"
                       matInput
-                      [(ngModel)]="documentType"
+                      [(ngModel)]="selectedDocumentType"
                       [matAutocomplete]="auto"
                       name="document-type"
                     />
@@ -113,7 +109,7 @@
                       </div>
                       <mat-radio-group
                         class="document-type-container"
-                        [(ngModel)]="selectedDocumentType"
+                        [(ngModel)]="documentType"
                         name="selected-document-type"
                         (change)="
                           radioDocumentTypeChange($event);
@@ -136,22 +132,45 @@
             </div>
           </div>
         </div>
-        <div
-          class="upload-options"
-          [ngClass]="enableFileUpload ? 'active' : ''"
-        >
-          <div class="text">Drag and Drop files here</div>
-          <div class="light-text">or</div>
-          <label class="add-doc" for="getFile"
-            ><span class="add-doc-plus">+</span>Add doc</label
+
+        <div class="upload-options">
+          <div class="col-sm-12">
+            <div class="file-upload-zone">
+              <p-fileUpload
+                #uploadComponent
+                name="file2"
+                customUpload="true"
+                [auto]="true"
+                [disabled]="isReadOnly"
+              >
+              </p-fileUpload>
+              <div class="text">
+                Drag and Drop files here
+              </div>
+              <div class="light-text">or</div>
+              <label class="add-doc" for="getFile"
+                ><span class="add-doc-plus">+</span>Add doc</label
+              >
+            </div>
+          </div>
+          <div class="text file-name">
+            {{ file && file.name ? file.name : '' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="col-sm-6">
+        <div class="file-upload-zone">
+          <p-fileUpload
+            #uploadComponent
+            name="file2"
+            customUpload="true"
+            [auto]="true"
+            [disabled]="isReadOnly"
           >
-          <input
-            type="file"
-            id="getFile"
-            class="get-file"
-            multiple
-            (change)="fileBrowseHandler($event.target.files)"
-          />
+          </p-fileUpload>
+          <h3>Drop files here or click to upload</h3>
         </div>
       </div>
     </div>

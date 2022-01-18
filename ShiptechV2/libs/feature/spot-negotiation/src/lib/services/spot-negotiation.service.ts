@@ -8,6 +8,10 @@ import { ObservableException } from '@shiptech/core/utils/decorators/observable-
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { Router } from '@angular/router';
 import { SpotNegotiationApi } from './api/spot-negotiation-api';
+import {
+  IDocumentsCreateUploadRequest,
+  IDocumentsCreateUploadResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
@@ -351,6 +355,16 @@ export class SpotNegotiationService extends BaseStoreService
   @ObservableException()
   getDocumentTypeList(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getDocumentTypeList(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  uploadFile(
+    payload: IDocumentsCreateUploadRequest
+  ): Observable<IDocumentsCreateUploadResponse> {
+    return this.spotNegotiationApi.uploadFile(payload);
   }
 
   ngOnDestroy(): void {
