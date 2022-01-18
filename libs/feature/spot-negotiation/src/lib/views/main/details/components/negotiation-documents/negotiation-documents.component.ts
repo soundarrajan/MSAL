@@ -235,13 +235,16 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         const formRequest: FormData = new FormData();
         formRequest.append('file', event.files[0]);
         formRequest.append('request', JSON.stringify(requestPayload));
+        this.spinner.show();
 
         this.spotNegotiationService.uploadFile(formRequest).subscribe(
           () => {
+            this.spinner.hide();
             this.toastr.success('Document saved !');
             this.getDocumentsList();
           },
           () => {
+            this.spinner.hide();
             this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
           }
         );
