@@ -12,6 +12,10 @@ import {
   IDocumentsCreateUploadRequest,
   IDocumentsCreateUploadResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsDeleteRequest,
+  IDocumentsDeleteResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
@@ -365,6 +369,16 @@ export class SpotNegotiationService extends BaseStoreService
     payload: IDocumentsCreateUploadRequest
   ): Observable<IDocumentsCreateUploadResponse> {
     return this.spotNegotiationApi.uploadFile(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  deleteDocument(
+    payload: IDocumentsDeleteRequest
+  ): Observable<IDocumentsDeleteResponse> {
+    return this.spotNegotiationApi.deleteDocument(payload);
   }
 
   /**

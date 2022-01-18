@@ -6,12 +6,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
-import { AGGridCellRendererComponent } from '../../../../../core/ag-grid/ag-grid-cell-renderer.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -30,6 +26,7 @@ import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler
 import { ModuleError } from './error-handling/module-error';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
+import { AGGridCellActionsDocumentsComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-actions-documents.component';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -38,7 +35,7 @@ import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src
 })
 export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
   @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
-
+  public rowData_grid = [];
   public gridOptions_data: GridOptions;
   documentTypeList: any[];
   documentType: any = null;
@@ -240,7 +237,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         this.spotNegotiationService.uploadFile(formRequest).subscribe(
           () => {
             this.toastr.success('Document saved !');
-            this.rowData_grid = [];
+            this.getDocumentsList();
             this.changeDetector.detectChanges();
           },
           () => {
@@ -304,7 +301,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       checkboxSelection: true,
       resizable: false,
       suppressMovable: true,
-      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'row-remove-icon-with-checkbox' },
       headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
       cellClass:
@@ -402,10 +399,8 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       field: 'download',
       headerClass: ['pd-0'],
       cellClass: ['aggridtextalign-left'],
-      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'download' }
     }
   ];
-
-  private rowData_grid = [];
 }

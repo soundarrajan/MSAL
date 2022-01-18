@@ -11,6 +11,10 @@ import {
   IDocumentsCreateUploadRequest,
   IDocumentsCreateUploadResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsDeleteRequest,
+  IDocumentsDeleteResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 
 export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
@@ -47,7 +51,8 @@ export const SpotNegotiationApiPaths = {
   getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
   getDocumentTypeList: `/api/masters/documenttype/list`,
   uploadDocument: `api/masters/documentupload/create`,
-  getDocuments: `api/masters/documentupload/list`
+  getDocuments: `api/masters/documentupload/list`,
+  deleteDocument: `api/masters/documentupload/delete`
 };
 
 @Injectable({
@@ -772,6 +777,16 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http.post<IDocumentsCreateUploadResponse>(
       `${this._masterApiUrl}/${SpotNegotiationApiPaths.uploadDocument}`,
       request
+    );
+  }
+
+  @ObservableException()
+  deleteDocument(
+    request: IDocumentsDeleteRequest
+  ): Observable<IDocumentsDeleteResponse> {
+    return this.http.post<IDocumentsDeleteResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.deleteDocument}`,
+      { payload: { ...request } }
     );
   }
 
