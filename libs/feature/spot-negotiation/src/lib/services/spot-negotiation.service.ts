@@ -21,6 +21,10 @@ import {
   IDocumentsUpdateIsVerifiedRequest,
   IDocumentsUpdateIsVerifiedResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import {
+  IDocumentsUpdateNotesRequest,
+  IDocumentsUpdateNotesResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
@@ -395,6 +399,17 @@ export class SpotNegotiationService extends BaseStoreService
   ): Observable<IDocumentsUpdateIsVerifiedResponse> {
     return this.spotNegotiationApi.updateIsVerifiedDocument(payload);
   }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  updateNotes(
+    payload: IDocumentsUpdateNotesRequest
+  ): Observable<IDocumentsUpdateNotesResponse> {
+    return this.spotNegotiationApi.updateNotes(payload);
+  }
+
   /**
    * @param payload
    */

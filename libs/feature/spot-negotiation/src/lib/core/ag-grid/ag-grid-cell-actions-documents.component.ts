@@ -20,6 +20,7 @@ import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler
 import { ModuleError } from '../../views/main/details/components/negotiation-documents/error-handling/module-error';
 import { FileSaverService } from 'ngx-filesaver';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import { IDocumentsUpdateNotesRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 // import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
 
 // Not found
@@ -34,10 +35,24 @@ import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/maste
     <div *ngIf="params.type === 'download'">
       <div class="download-icon" (click)="downloadDocument()"></div>
     </div>
+    <div
+      *ngIf="params.type === 'dashed-border-notes'"
+      class="dashed-border-note"
+    >
+      <div class="dashed-border-notes">
+        <input
+          matInput
+          [(ngModel)]="docNotes"
+          matTooltip="{{ docNotes }}"
+          (blur)="updateNotes()"
+        />
+      </div>
+    </div>
   `
 })
 export class AGGridCellActionsDocumentsComponent
   implements ICellRendererAngularComp {
+  docNotes: string;
   public params: any;
   public popupOpen: boolean;
   constructor(
@@ -56,6 +71,9 @@ export class AGGridCellActionsDocumentsComponent
 
   agInit(params: any): void {
     this.params = params;
+    if (this.params.type === 'dashed-border-notes') {
+      this.docNotes = this.params.data?.notes;
+    }
   }
 
   refresh(): boolean {
@@ -105,6 +123,37 @@ export class AGGridCellActionsDocumentsComponent
         this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
       }
     );
+  }
+
+  updateNotes(): void {
+    if (this.params.node.data.notes !== this.docNotes) {
+      let id = this.params.node.data.id;
+      const request: IDocumentsUpdateNotesRequest = {
+        id: id,
+        notes: this.docNotes
+      };
+      console.log(request);
+      let rowData = [];
+      this.params.api.forEachNode(node => rowData.push(node.data));
+      const index = this.params.node.rowIndex;
+      let newData = [];
+      newData = rowData.splice(index, 1);
+      newData[0].notes = this.docNotes;
+      this.spinner.show();
+      this.spotNegotiationService.updateNotes(request).subscribe(
+        response => {
+          this.spinner.hide();
+          this.params.api.applyTransaction({ update: newData });
+          this.toastr.success('Successfully updated note');
+        },
+        () => {
+          this.spinner.hide();
+          this.appErrorHandler.handleError(
+            ModuleError.UpdateNotesDocumentFailed
+          );
+        }
+      );
+    }
   }
 
   navigateTo(e) {
