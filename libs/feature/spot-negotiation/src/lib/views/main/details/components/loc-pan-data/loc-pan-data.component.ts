@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
@@ -22,6 +22,7 @@ export class LocPanDataComponent implements OnInit {
   ETDdatetime = new FormControl(new Date());
 
   @Input() reqLocation: any;
+  @Output() costChanged = new EventEmitter();
 
   title: string;
   deliveryFrom: string;
@@ -91,6 +92,9 @@ export class LocPanDataComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if(result){
+        this.costChanged.emit(filterLocationRows);
+      }
     });
   }
 
