@@ -1,11 +1,11 @@
-﻿commit 137d05ddaf86ade8122578d1fb3e4c27bb301e8c
+﻿commit d8f7d969acb61d508fa1c947380d9e05110e34bd
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Mon Jan 17 06:35:44 2022 +0000
+Date:   Tue Jan 18 06:31:40 2022 +0000
 
-    Merged PR 15502: popup comments fix and input color fix
+    Merged PR 15518: Request comments arrangement issue fix
     
-    popup comments fix and input color fix
+    Request comments arrangement issue fix
     
-    Related work items: #37975
+    Related work items: #37946
 
 branch: master
