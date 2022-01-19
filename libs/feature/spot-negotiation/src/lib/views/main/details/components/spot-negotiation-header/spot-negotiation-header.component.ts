@@ -123,7 +123,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
             }
           }
-          if(!this.initAvailableContracts) {
+          if(!this.initAvailableContracts && this.currentRequestInfo) {
             this.initAvailableContracts = true;
             this.getBestContractForCurrentRequest(this.currentRequestInfo.id)
           }
@@ -469,21 +469,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     this.selectionChange.emit(obj);
     this.getBestContractForCurrentRequest(selected.id);
   }
-  
+
   getBestContractForCurrentRequest(selectedRequestId) : void {
     console.log(selectedRequestId);
     let payload = this.currentRequestInfo.id;
     if(!this.availableContracts[`request_${selectedRequestId}`] ) {
       this.availableContracts[`request_${selectedRequestId}`] = [];
       const response = this._spotNegotiationService.getBestContract(payload);
-      response.subscribe((res: any) => {    
+      response.subscribe((res: any) => {
         if (res.payload) {
           this.availableContracts[`request_${selectedRequestId}`] = res.payload;
           this.store.dispatch(new SetAvailableContracts(res.payload));
         } else {
           this.toastr.error(res.message);
           return;
-        }      
+        }
       });
     } else {
       this.store.dispatch(new SetAvailableContracts(this.availableContracts[`request_${this.currentRequestInfo.id}`]));
