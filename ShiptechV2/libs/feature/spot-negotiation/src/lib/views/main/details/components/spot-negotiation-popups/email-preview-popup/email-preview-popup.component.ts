@@ -57,7 +57,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     // this.items =  [
     //   {value: 'MultipleRfqNewRFQEmailTemplate', viewValue: 'RFQ', disabled: false},
     //   {value: 'MultipleRfqAmendRFQEmailTemplate', viewValue: 'Amend RFQ', disabled: true},
-    //   {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ', disabled: true},            
+    //   {value: 'MultipleRfqRevokeRFQEmailTemplate', viewValue: 'Revoke RFQ', disabled: true},
     // ];
     // this.selected = 'MultipleRfqAmendRFQEmailTemplate';
     // }
@@ -134,7 +134,7 @@ if(!this.readonly){
       CounterpartyName: this.SelectedSellerWithProds.sellerCounterpartyName,
       RequestProductIds: this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
       ).map(prod =>
-        prod.requestProducts.map(i => i.id)
+        prod.requestProducts.map((e, i) => this.SelectedSellerWithProds['checkProd'+(i+1)]? e.id : undefined).filter(x=> x)
       )[0],
       RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId : 0,
       TemplateName: this.selected,
@@ -216,7 +216,7 @@ if(!this.readonly){
         this.previewTemplate.cc.splice(index,1);
       }
     }
-    
+
   }
 
   addCc(item){
@@ -309,7 +309,7 @@ if(!this.readonly){
         this.toaster.error(res);
         return;
       }
-      
+
       if(res.isGroupDeleted){
         const baseOrigin = new URL(window.location.href).origin;
           window.open(`${baseOrigin}/#/edit-request/${this.currentRequestInfo.id}`, '_self');
