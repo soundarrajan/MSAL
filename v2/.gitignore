@@ -204,3 +204,4 @@ node_modules/
 /backend/deployment/24S.Techoil/pkg
 /backend/deployment/CustomIntegrations/PDI.CustomIntegrations/pkg/Debug
 shiptech/.vscode/settings.json
+shiptech/package-lock.json

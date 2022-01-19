@@ -47,6 +47,10 @@ export class PresetsMenuDropdownComponent implements OnInit {
     this.toastr.success("Preference was succesfully updated");
   }
 
+  showFilters(): void {
+    document.querySelector<HTMLElement>("app-ag-filter-display").hidden = false;
+  }  
+
   exportExcel(): void {
     alert('Wait for it...');
   }

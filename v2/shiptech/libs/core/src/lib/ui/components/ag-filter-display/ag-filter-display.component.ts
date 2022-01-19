@@ -25,12 +25,14 @@ import { AgGridAngular } from '@ag-grid-community/angular';
 
 enum ConditionType {
   and = 'and',
-  or = 'or'
+  or = 'or',
+  bullet = 'bullet',
 }
 
 enum PartType {
   filter,
-  logicalOp
+  logicalOp,
+  bullet
 }
 
 interface IPart {
@@ -48,6 +50,11 @@ interface IConditionPart extends IPart {
   value: ConditionType;
 }
 
+interface IBulletPart extends IPart {
+  type: PartType.bullet;
+  value: ConditionType.bullet;
+}
+
 const AndConditionPart: IConditionPart = {
   type: PartType.logicalOp,
   value: ConditionType.and
@@ -56,8 +63,12 @@ const OrConditionPart: IConditionPart = {
   type: PartType.logicalOp,
   value: ConditionType.or
 };
+const BulletConditionPart: IConditionPart = {
+  type: PartType.logicalOp,
+  value: ConditionType.bullet
+};
 
-type FilterPart = IFilterPart | IConditionPart;
+type FilterPart = IFilterPart | IConditionPart | IBulletPart;
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -94,7 +105,7 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
             ) => {
               const column = this.grid.columnApi.getColumn(columnId);
 
-              if (result.length > 0) result.push(AndConditionPart);
+              if (result.length > 0) result.push(BulletConditionPart);
 
               if (
                 filterModel.operator !== undefined &&
@@ -150,6 +161,10 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
         takeUntil(this._destroy$)
       )
       .subscribe();
+  }
+
+  hideFilters() : void {
+    document.querySelector<HTMLElement>("app-ag-filter-display").hidden = true;
   }
 
   ngOnDestroy(): void {

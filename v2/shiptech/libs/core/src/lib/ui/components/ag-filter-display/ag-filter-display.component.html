@@ -1,4 +1,4 @@
-<div>
+<div class="filters-wrapper">
   <ng-container *ngIf="filterParts?.length > 0">Filtered by: </ng-container>
   <ng-container *ngFor="let filterPart of filterParts">
     <span [ngSwitch]="filterPart.type">
@@ -22,8 +22,10 @@
         ></span
       >
       <span *ngSwitchCase="logicalOpPartType">
-        &nbsp;{{ filterPart.value }} &nbsp;</span
-      >
+        <span class="bullet-separator" *ngIf="filterPart.value == 'bullet'"></span>
+        <span *ngIf="filterPart.value != 'bullet'">&nbsp;{{ filterPart.value }} &nbsp;</span>        
+      </span>
     </span>
   </ng-container>
+  <span class="close-icon" (click)="hideFilters()">close</span>
 </div>

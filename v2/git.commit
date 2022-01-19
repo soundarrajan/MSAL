@@ -1,11 +1,11 @@
-﻿commit 771dd4b6135b8d1f5b0ca29396817e1223e9e923
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Jan 19 11:32:19 2022 +0000
+﻿commit 58e0416442e8d1af24ef0662a614b1a60d0ebdc7
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Jan 19 11:52:26 2022 +0000
 
-    Merged PR 15537: BPlan Request Grid Component - FormattedDoc
+    Merged PR 15538: Applied filters UI changes
     
-    BPlan Request Grid Component - FormattedDoc
+    Applied filters UI changes
     
-    Related work items: #36696
+    Related work items: #37414
 
 branch: master
