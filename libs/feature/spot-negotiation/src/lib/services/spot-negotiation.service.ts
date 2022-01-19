@@ -363,6 +363,15 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
+   * @param requestId
+   *
+   */
+  @ObservableException()
+  getBestContract(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getBestContract(payload);
+  }
+
+  /**
    * @param payload
    */
   @ObservableException()

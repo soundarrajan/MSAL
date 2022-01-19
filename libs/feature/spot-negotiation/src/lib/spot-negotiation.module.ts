@@ -54,6 +54,7 @@ import { SpotnegoOfferpricehistoryComponent } from './views/main/details/compone
 import { MarketpricehistorypopupComponent } from './views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 import { LocPanDataComponent } from './views/main/details/components/loc-pan-data/loc-pan-data.component';
 import { ApplicablecostpopupComponent } from './views/main/details/components/spot-negotiation-popups/applicablecostpopup/applicablecostpopup.component';
+import { BestcontractpopupComponent } from './views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
@@ -159,6 +160,7 @@ import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell
     MarketpricehistorypopupComponent,
     LocPanDataComponent,
     ApplicablecostpopupComponent,
+    BestcontractpopupComponent,
     SpotNegotiationNewCommentsComponent,
     NegotiationToolbarComponent,
 
@@ -199,6 +201,7 @@ import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell
     ShiptechCustomHeaderGroup,
     SellerratingpopupComponent,
     ApplicablecostpopupComponent,
+    BestcontractpopupComponent,
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
     AvailabletermcontractspopupComponent,
