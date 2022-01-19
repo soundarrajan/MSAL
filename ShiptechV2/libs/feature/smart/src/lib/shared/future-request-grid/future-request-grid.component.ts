@@ -84,12 +84,24 @@ export class FutureRequestGridComponent implements OnInit {
         // this.gridOptions.api.setRowData(this.rowData);
         // this.rowCount = this.gridOptions.api.getDisplayedRowCount();
 
+        if(!this.ETAFromTo) {
+          let currentDate = new Date();
+          let todayDate = new Date();
+          let futureDate = new Date(todayDate.setMonth(todayDate.getMonth() + 3));
+          this.ETAFromTo = { fromDate: currentDate, toDate: futureDate }
+        }
         var hardcodedFilter = {
           // country: {
           //   type: 'set',
           //   values: ['United States'],
           // },
           'requestStatus.displayName': { type: 'notEqual', filter: 'CANCELLED' }
+          , 'eta': {
+            dateFrom: moment(this.ETAFromTo?.fromDate).format("YYYY-MM-DD"),
+            dateTo: moment(this.ETAFromTo?.toDate).format("YYYY-MM-DD"),
+            type: 'inRange',
+            filterType: 'date'
+          }
           // date: { type: 'lessThan', dateFrom: '2010-01-01' },
         };
       
@@ -314,11 +326,11 @@ export class FutureRequestGridComponent implements OnInit {
         this.columnFilter = [];
         if(this.ETAFromTo) {
           this.loadOutstandRequestData(this.ETAFromTo);
-        } else if(Object.keys(filterModel).indexOf("eta")==-1){
-          //set Eta From, To date as 1 month from current date by default
+        } else if(!filterModel || Object.keys(filterModel).indexOf("eta")==-1) {
+          //set Eta From, To date as 3 month from current date by default
           let currentDate = new Date();
           let todayDate = new Date();
-          let futureDate = new Date(todayDate.setMonth(todayDate.getMonth() + 1));
+          let futureDate = new Date(todayDate.setMonth(todayDate.getMonth() + 3));
           this.loadOutstandRequestData({fromDate: currentDate, toDate: futureDate});
         }
         this.columnFilter = this.columnFilter.filter(EtaItem=>EtaItem.columnValue=="Eta")
@@ -412,70 +424,70 @@ export class FutureRequestGridComponent implements OnInit {
     }
   }
   loadOutstandRequestData(param?:any) {
-    let currentDate = new Date();
-    let prevMonthDate = (new Date(currentDate.setMonth(currentDate.getMonth() - 1))).toISOString();
-    prevMonthDate = prevMonthDate.substring(0, 16);
-    // let fromDate = new Date().toISOString();
-    let fromDate:any = moment(new Date()).format("YYYY-MM-DD");
-    let toDate = null;
-        // fromDate = fromDate.substring(0, 16);
-        // fromDate = fromDate.split("T")[0]+"T00:00";
-        fromDate = fromDate+"T00:00";
-        if(param) {
-          // fromDate = param.fromDate.toISOString();
-          // fromDate = fromDate.substring(0, 16);
-          // fromDate = fromDate.split("T")[0]+"T00:00";
-          fromDate = moment(param.fromDate).format("YYYY-MM-DD");
-          fromDate = fromDate+"T00:00";
+    // let currentDate = new Date();
+    // let prevMonthDate = (new Date(currentDate.setMonth(currentDate.getMonth() - 1))).toISOString();
+    // prevMonthDate = prevMonthDate.substring(0, 16);
+    // // let fromDate = new Date().toISOString();
+    // let fromDate:any = moment(new Date()).format("YYYY-MM-DD");
+    // let toDate = null;
+    // // fromDate = fromDate.substring(0, 16);
+    // // fromDate = fromDate.split("T")[0]+"T00:00";
+    // fromDate = fromDate+"T00:00";
+    // if(param) {
+    //   // fromDate = param.fromDate.toISOString();
+    //   // fromDate = fromDate.substring(0, 16);
+    //   // fromDate = fromDate.split("T")[0]+"T00:00";
+    //   fromDate = moment(param.fromDate).format("YYYY-MM-DD");
+    //   fromDate = fromDate+"T00:00";
 
-      let condFromDate = new Date(param.fromDate);
-      let condToDate = new Date(param.toDate);
-      if(param?.toDate && condFromDate<=condToDate) {
-        toDate = moment(param.toDate).format("YYYY-MM-DD");
-        // toDate = toDate.substring(0, 16);
-        toDate = toDate+"T00:00";
+    //   let condFromDate = new Date(param.fromDate);
+    //   let condToDate = new Date(param.toDate);
+    //   if(param?.toDate && condFromDate<=condToDate) {
+    //     toDate = moment(param.toDate).format("YYYY-MM-DD");
+    //     // toDate = toDate.substring(0, 16);
+    //     toDate = toDate+"T00:00";
         
-      let isExist = this.columnFilter.findIndex((item)=> item.columnValue=='Eta' && item.ConditionValue== "<=");
-      if(isExist>-1) this.columnFilter.splice(isExist,1);
+    //   let isExist = this.columnFilter.findIndex((item)=> item.columnValue=='Eta' && item.ConditionValue== "<=");
+    //   if(isExist>-1) this.columnFilter.splice(isExist,1);
 
-        this.columnFilter.push({
-          "columnValue": "Eta",
-          "ColumnType": "Date",
-          "isComputedColumn": false,
-          "ConditionValue": "<=",
-          "Values": [
-            toDate
-          ],
-          "FilterOperator": 0
-        })
-      }
-    }
+    //     this.columnFilter.push({
+    //       "columnValue": "Eta",
+    //       "ColumnType": "Date",
+    //       "isComputedColumn": false,
+    //       "ConditionValue": "<=",
+    //       "Values": [
+    //         toDate
+    //       ],
+    //       "FilterOperator": 0
+    //     })
+    //   }
+    // }
     
-    let isExist = this.columnFilter.findIndex((item)=> item.columnValue=='Eta' && item.ConditionValue== ">=");
-    if(isExist>-1) this.columnFilter.splice(isExist,1);
+    // let isExist = this.columnFilter.findIndex((item)=> item.columnValue=='Eta' && item.ConditionValue== ">=");
+    // if(isExist>-1) this.columnFilter.splice(isExist,1);
 
-    this.columnFilter.push({
-      "columnValue": "Eta",
-      "ColumnType": "Date",
-      "isComputedColumn": false,
-      "ConditionValue": ">=",
-      "Values": [
-        fromDate
-      ],
-      "FilterOperator": 1
-    });
+    // this.columnFilter.push({
+    //   "columnValue": "Eta",
+    //   "ColumnType": "Date",
+    //   "isComputedColumn": false,
+    //   "ConditionValue": ">=",
+    //   "Values": [
+    //     fromDate
+    //   ],
+    //   "FilterOperator": 1
+    // });
 
-    // filter cancel request on load
-    this.columnFilter.push({      
-      "columnValue": "RequestStatus_DisplayName",
-      "ColumnType": "Text",
-      "isComputedColumn": false,
-      "ConditionValue": "!=",
-      "Values": [
-        "CANCELLED"
-      ],
-      "FilterOperator": 0
-    });
+    // // filter cancel request on load
+    // this.columnFilter.push({      
+    //   "columnValue": "RequestStatus_DisplayName",
+    //   "ColumnType": "Text",
+    //   "isComputedColumn": false,
+    //   "ConditionValue": "!=",
+    //   "Values": [
+    //     "CANCELLED"
+    //   ],
+    //   "FilterOperator": 0
+    // });
     // this.columnFilter.push({        
     //   "columnValue": "RequestDate",
     //   "ColumnType": "Date",
@@ -486,7 +498,6 @@ export class FutureRequestGridComponent implements OnInit {
     //   ],
     //   "FilterOperator": 1
     // })
- 
   }
 
   onDateChange(event) {
