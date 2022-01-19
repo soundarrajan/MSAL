@@ -1,11 +1,11 @@
-﻿commit d8f7d969acb61d508fa1c947380d9e05110e34bd
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Tue Jan 18 06:31:40 2022 +0000
+﻿commit df72d6e5e439eafec22977fc9cb3a51f7683e8e0
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Jan 19 09:04:32 2022 +0000
 
-    Merged PR 15518: Request comments arrangement issue fix
+    Merged PR 15530: Force default column widths over user preference
     
-    Request comments arrangement issue fix
+    Force default column widths over user preference
     
-    Related work items: #37946
+    Related work items: #37933
 
 branch: master

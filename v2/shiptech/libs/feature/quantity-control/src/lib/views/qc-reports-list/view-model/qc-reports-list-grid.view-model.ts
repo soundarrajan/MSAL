@@ -481,7 +481,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     dtoForExport: QcReportsListExportColumns.measuredEGCSRobBeforeDischarge,
     field: model('measuredEGCSRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
-    width: 210,
+    width: 240,
     valueFormatter: params => this.format.quantity(params.value)
   };
 
@@ -564,7 +564,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     tenantSettings: TenantSettingsService
   ) {
     super(
-      'quantity-control-grid',
+      'quantity-control-grid-2',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(QcReportsListGridViewModel.name)
