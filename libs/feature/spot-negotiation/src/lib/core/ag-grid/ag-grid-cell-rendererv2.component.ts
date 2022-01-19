@@ -449,6 +449,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
                 placeholder="Search and select counterparty"
                 class="search-product-input"
                 (input)="search($event.target.value, params)"
+                [(ngModel)]="searchValue"
               />
             </div>
             <div class="col-md-2">
@@ -490,8 +491,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             <button
               mat-button
               class="mid-blue-button proceed-btn"
-              (click)="updatePhysicalSupplier()"
-            >
+              (click)="updatePhysicalSupplier()">
               Proceed
             </button>
           </div>
@@ -660,6 +660,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currentRequestData: any[];
   locationsRows: any[];
   currentRequestSmallInfo: any;
+  searchValue: string;
 
   constructor(
     @Inject(DecimalPipe)
@@ -707,6 +708,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
   setValuefun(params) {
+    this.searchValue = '';
     let counterpartyList = this.store.selectSnapshot<any>((state: any) => {
       if(params.physicalSupplierCounterpartyId != null || params.physicalSupplierCounterpartyName == null ){
         return state.spotNegotiation.counterpartyList.filter(x => x.supplier == true).slice(0, 7)
@@ -724,6 +726,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           element.id == params.physicalSupplierCounterpartyId
         ) {
           element.isSelected = true;
+          this.phySupplierId = element.id;
         } else {
           element.isSelected = false;
         }
@@ -1180,6 +1183,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   updatePhysicalSupplier() {
     let valid = false;
+    if(!this.phySupplierId){
+      this.toastr.warning('Invalid or same physical supplier selected, Please try selecting it again.');
+      return;
+    }
+
     this.store.selectSnapshot<any>((state: any) => {
       if (state.spotNegotiation.locationsRows.length > 0) {
         const selectItems = state.spotNegotiation.locationsRows.filter(
@@ -1225,9 +1233,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
     if (valid) {
-      this.toastr.error(
-        'Physical supplier already available against the given the Seller.'
-      );
+      this.toastr.error('Physical supplier already available against the given the Seller.');
       return;
     } else {
     }
