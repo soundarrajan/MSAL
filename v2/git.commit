@@ -1,11 +1,11 @@
-﻿commit df72d6e5e439eafec22977fc9cb3a51f7683e8e0
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jan 19 09:04:32 2022 +0000
+﻿commit 153926507288570250accd91e11b941126b50d07
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Wed Jan 19 10:48:40 2022 +0000
 
-    Merged PR 15530: Force default column widths over user preference
+    Merged PR 15533: 36696 - ETA filter icon issue fix
     
-    Force default column widths over user preference
+    36696 - ETA filter icon issue fix
     
-    Related work items: #37933
+    Related work items: #36696
 
 branch: master
