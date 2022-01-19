@@ -27,6 +27,7 @@ import {
 } from '../../../../../store/actions/ag-grid-row.action';
 import {
   SetCurrentRequestSmallInfo,
+  SetAvailableContracts,
   AddRequest
 } from '../../../../../store/actions/request-group-actions';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
@@ -79,7 +80,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   locationsRows: any;
   currentRequestData: any[];
   locationsRowsOriData: any[];
-
+  availableContracts = {};
+  initAvailableContracts : any;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -95,7 +97,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
   ngOnInit(): void {
     // Get data from store;
-
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
@@ -114,15 +115,19 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
             spotNegotiation.currentRequestSmallInfo.requestLocations;
-          if (
+            if (
             this.counterpartyList.length === 0 &&
             spotNegotiation.counterpartyList
-          ) {
-            this.counterpartyList = spotNegotiation.counterpartyList;
-            this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+            ) {
+              this.counterpartyList = spotNegotiation.counterpartyList;
+              this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+            }
           }
-        }
-      });
+          if(!this.initAvailableContracts && this.currentRequestInfo) {
+            this.initAvailableContracts = true;
+            this.getBestContractForCurrentRequest(this.currentRequestInfo.id)
+          }
+        });
     }, 100);
   }
 
@@ -462,6 +467,27 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       selReqIndex: i
     };
     this.selectionChange.emit(obj);
+    this.getBestContractForCurrentRequest(selected.id);
+  }
+
+  getBestContractForCurrentRequest(selectedRequestId) : void {
+    console.log(selectedRequestId);
+    let payload = this.currentRequestInfo.id;
+    if(!this.availableContracts[`request_${selectedRequestId}`] ) {
+      this.availableContracts[`request_${selectedRequestId}`] = [];
+      const response = this._spotNegotiationService.getBestContract(payload);
+      response.subscribe((res: any) => {
+        if (res.payload) {
+          this.availableContracts[`request_${selectedRequestId}`] = res.payload;
+          this.store.dispatch(new SetAvailableContracts(res.payload));
+        } else {
+          this.toastr.error(res.message);
+          return;
+        }
+      });
+    } else {
+      this.store.dispatch(new SetAvailableContracts(this.availableContracts[`request_${this.currentRequestInfo.id}`]));
+    }
   }
 
   openRequestPopup() {

@@ -8,6 +8,11 @@ export class SetCurrentRequestSmallInfo {
 
   constructor(public payload: any) {}
 }
+export class SetAvailableContracts {
+  static readonly type = '[Availbale Contracts] Set';
+
+  constructor(public payload: any) {}
+}
 export class SetCurrentRequest {
   static readonly type = '[Current Request] Set';
 
