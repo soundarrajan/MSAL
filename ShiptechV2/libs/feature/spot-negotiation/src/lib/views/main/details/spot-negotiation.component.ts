@@ -118,6 +118,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       let rowrelatedrequest = this.allRequest.filter(
         row1 => row1.id == row.requestId
       );
+      if(rowrelatedrequest.length > 0 && rowrelatedrequest[0]["requestLocations"]){
         let currentLocProd = rowrelatedrequest[0]["requestLocations"].filter(
           row1 => row1.locationId == row.locationId
         );
@@ -206,7 +207,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           row.totalCost = detailsForCurrentRow[0].totalCost;
         }
       }
-
+    }
       return row;
     });
 
