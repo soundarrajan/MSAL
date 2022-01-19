@@ -661,7 +661,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   locationsRows: any[];
   currentRequestSmallInfo: any;
   searchValue: string;
-
+ @ViewChild('clickmenu') trigger;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -1183,6 +1183,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   updatePhysicalSupplier() {
     let valid = false;
+    this.trigger.closeMenu();
     if(!this.phySupplierId){
       this.toastr.warning('Invalid or same physical supplier selected, Please try selecting it again.');
       return;
