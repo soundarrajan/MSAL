@@ -1,10 +1,10 @@
-﻿commit 153926507288570250accd91e11b941126b50d07
+﻿commit 771dd4b6135b8d1f5b0ca29396817e1223e9e923
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Jan 19 10:48:40 2022 +0000
+Date:   Wed Jan 19 11:32:19 2022 +0000
 
-    Merged PR 15533: 36696 - ETA filter icon issue fix
+    Merged PR 15537: BPlan Request Grid Component - FormattedDoc
     
-    36696 - ETA filter icon issue fix
+    BPlan Request Grid Component - FormattedDoc
     
     Related work items: #36696
 
