@@ -52,6 +52,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   CurrentProductLength: any;
   CurrentLocationprduct: any[];
   currentRequestData: any[];
+  allRequest: any[];
 
   constructor(
     private http: HttpClient,
@@ -111,12 +112,16 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
+      this.allRequest = spotNegotiation.requests;
     });
-
     rowsArray.forEach((row, index) => {
-      let currentLocProd = this.currentRequestData.filter(
-        row1 => row1.locationId == row.locationId
+      let rowrelatedrequest = this.allRequest.filter(
+        row1 => row1.id == row.requestId
       );
+      if(rowrelatedrequest.length > 0 && rowrelatedrequest[0]["requestLocations"]){
+        let currentLocProd = rowrelatedrequest[0]["requestLocations"].filter(
+          row1 => row1.locationId == row.locationId
+        );
       if (currentLocProd.length != 0) {
         let currentLocProdCount = currentLocProd[0].requestProducts.length;
         for (let index = 0; index < currentLocProdCount; index++) {
@@ -202,7 +207,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           row.totalCost = detailsForCurrentRow[0].totalCost;
         }
       }
-
+    }
       return row;
     });
 
