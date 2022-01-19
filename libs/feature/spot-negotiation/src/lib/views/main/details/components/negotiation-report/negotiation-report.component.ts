@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
@@ -19,18 +20,28 @@ import { EmailPreviewPopupComponent } from '../spot-negotiation-popups/email-pre
 })
 export class NegotiationReportComponent implements OnInit {
   generalTenantSettings: any;
+  reportUrl: any = '';
+  tenantConfiguration: any;
 
   constructor(
     public dialog: MatDialog,
     private spotNegotiationService: SpotNegotiationService,
-    private changeDetector: ChangeDetectorRef,
     private spinner: NgxSpinnerService,
-    private toaster: ToastrService,
+    private toastr: ToastrService,
+    private sanitizer: DomSanitizer,
     private store: Store,
-    private route: ActivatedRoute,
-    private tenantSettingsService: TenantSettingsService
-  ) {
-    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+  ngOnInit(): void {
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
+      console.log(this.tenantConfiguration);
+      this.reportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.tenantConfiguration.reportUrl
+      );
+      this.changeDetectorRef.detectChanges();
+    });
   }
-  ngOnInit(): void {}
+
+  transform() {}
 }

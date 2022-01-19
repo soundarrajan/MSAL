@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -16,21 +17,27 @@ import {
   Router
 } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { KnownSpotNegotiationRoutes } from 'libs/feature/spot-negotiation/src/lib/known-spot-negotiation.routes';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { SetTenantConfigurations } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 
 @Component({
   selector: 'shiptech-negotiation-toolbar',
   templateUrl: './negotiation-toolbar.component.html',
   styleUrls: ['./negotiation-toolbar.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NegotiationToolbarComponent
   implements OnInit, OnDestroy, AfterViewInit {
   public menuItems: any[];
   activeTab: any;
+  negotiationId: any;
+  disabled: boolean;
 
   @Input('activeTab') set _setActiveTab(activeTab) {
     this.activeTab = activeTab;
@@ -40,57 +47,94 @@ export class NegotiationToolbarComponent
   private _destroy$ = new Subject();
   baseOrigin: string;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private spotNegotiationService: SpotNegotiationService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+    private store: Store,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
     this.baseOrigin = new URL(window.location.href).origin;
   }
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
-      const negotiationId = params.spotNegotiationId;
-      const disabled = negotiationId === '0';
-      this.menuItems = [
-        {
-          label: 'Negotiation',
-          url: parseFloat(negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${negotiationId}`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          disabled,
-          styleClass: 'tab',
-          activeTab: false
-        },
-        {
-          label: 'Report',
-          url: parseFloat(negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${negotiationId}/report`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          disabled,
-          styleClass: 'tab',
-          activeTab: this.activeTab == 'report' ? true : false
-        },
-        {
-          label: 'Documents',
-          url: parseFloat(negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${negotiationId}/documents`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          disabled,
-          styleClass: 'tab',
-          activeTab: this.activeTab == 'documents' ? true : false
-        },
-        {
-          label: 'Email Log',
-          url: parseFloat(negotiationId)
-            ? `${this.baseOrigin}/v2/group-of-requests/${negotiationId}/email-log`
-            : null,
-          routerLinkActiveOptions: { exact: true },
-          disabled,
-          styleClass: 'tab',
-          activeTab: this.activeTab == 'email' ? true : false
-        }
-      ];
+      this.negotiationId = params.spotNegotiationId;
+      this.disabled = this.negotiationId === '0';
+      this.createMenuItems();
     });
+    this.getTenantConfiguration();
+  }
+
+  getTenantConfiguration(): void {
+    const response = this.spotNegotiationService.getTenantConfiguration();
+    response.subscribe((res: any) => {
+      if (res.error) {
+        this.toastr.error(res.error);
+        return;
+      } else {
+        console.log(res);
+        // Populate Store
+        res.tenantConfiguration.reportUrl =
+          'https://reports.shiptech.com/Home/EmbedReportWorkspace?groupid=a8810a15-07b0-4693-9087-ddc50ebac9e5&id=Vessel Schedule Report';
+
+        this.store.dispatch(
+          new SetTenantConfigurations(res.tenantConfiguration)
+        );
+        if (!res.tenantConfiguration.isNegotiationReport) {
+          this.menuItems[1].disabled = true;
+        }
+      }
+    });
+  }
+
+  createMenuItems() {
+    this.menuItems = [
+      {
+        label: 'Negotiation',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab',
+        activeTab: false,
+        disabled: false
+      },
+      {
+        label: 'Report',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/report`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab',
+        activeTab: this.activeTab == 'report' ? true : false,
+        disabled: false
+      },
+      {
+        label: 'Documents',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/documents`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab',
+        activeTab: this.activeTab == 'documents' ? true : false,
+        disabled: false
+      },
+      {
+        label: 'Email Log',
+        url: parseFloat(this.negotiationId)
+          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/email-log`
+          : null,
+        routerLinkActiveOptions: { exact: true },
+        styleClass: 'tab',
+        activeTab: this.activeTab == 'email' ? true : false,
+        disabled: false
+      }
+    ];
+
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
