@@ -271,3 +271,6 @@ app-ag-filter-display {
 .mat-menu-panel {
   max-width: 310px !important;
 }
+body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem:not(.ui-state-active) {
+  border-bottom: 4px solid #eee !important;
+}

@@ -1,5 +1,10 @@
 import { HttpParams } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -15,7 +20,8 @@ import { EmailPreviewPopupComponent } from '../spot-negotiation-popups/email-pre
 @Component({
   selector: 'app-spotnegoemaillog',
   templateUrl: './spotnegoemaillog.component.html',
-  styleUrls: ['./spotnegoemaillog.component.css']
+  styleUrls: ['./spotnegoemaillog.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotnegoemaillogComponent implements OnInit {
   public gridOptions_data: GridOptions;
@@ -162,7 +168,9 @@ export class SpotnegoemaillogComponent implements OnInit {
             this.spinner.hide();
             if (res.payload) {
               this.rowData_grid = res.payload;
-              this.changeDetector.detectChanges();
+              if (!this.changeDetector['destroyed']) {
+                this.changeDetector.detectChanges();
+              }
             } else {
               this.toaster.error(res);
             }
