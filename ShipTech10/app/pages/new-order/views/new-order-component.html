@@ -1800,7 +1800,7 @@
                                             id="additional_cost_additional_cost_{{ $index }}"
                                             name="{{ $ctrl.additionalCostColumns.name.name }}"
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost, 'input'); $ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); additionalCost.costLineChanged = true"
-                                            ng-disabled="(additionalCost.disabled && additionalCost.id > 0)  || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
+                                            ng-disabled="additionalCost.isContract || (additionalCost.disabled && additionalCost.id > 0)  || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.additionalCost"
                                             ng-options="addCost as addCost.name for addCost in additionalCost.additionalCostList | decodeReadOnly track by (addCost.id + '-' + (addCost.locationid || 0))">
                                         </select>
@@ -1813,7 +1813,7 @@
                                                 ng-change="$ctrl.costTypeChanged(additionalCost, 'input'); additionalCost.costLineChanged = true"
                                                 ng-model="additionalCost.costType"
                                                 ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) | decodeReadOnly track by costType.id"
-                                                ng-disabled="((additionalCost.disabled && additionalCost.id > 0) ||
+                                                ng-disabled="additionalCost.isContract || ((additionalCost.disabled && additionalCost.id > 0) ||
                                                     ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))) ||
                                                     (additionalCost.locationAdditionalCostId > 0 || (additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0))"
                                                 ng-required="additionalCost.additionalCost"></select>
