@@ -22,6 +22,8 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
 import { KnownSpotNegotiationRoutes } from 'libs/feature/spot-negotiation/src/lib/known-spot-negotiation.routes';
 import { takeUntil } from 'rxjs/operators';
+import { MenuItem } from 'primeng/api';
+import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -48,7 +50,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   negotiationId: any;
   emailLogUrl: string;
   baseOrigin: string;
-  menuItems: any[];
+  public menuItems: MenuItem[];
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -83,41 +85,45 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   setTabItems() {
+    const routeLinkToNegotiationDetails = [
+      '/',
+      KnownPrimaryRoutes.SpotNegotiation,
+      this.negotiationId
+    ];
+    let disabled = !this.tenantConfiguration.isNegotiationReport;
     this.menuItems = [
       {
         label: 'Main Page',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}`
-          : null,
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab',
-        activeTab: true
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.details
+        ],
+        routerLinkActiveOptions: { exact: true }
       },
       {
         label: 'Report',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/report`
-          : null,
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.reportPath
+        ],
         routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab',
-        disabled: !this.tenantConfiguration.isNegotiationReport
+        disabled
       },
       {
         label: 'Documents',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/documents`
-          : null,
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab'
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.documentsPath
+        ],
+        routerLinkActiveOptions: { exact: true }
       },
-
       {
         label: 'Email Log',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/email-log`
-          : null,
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab'
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.emailLog
+        ],
+        routerLinkActiveOptions: { exact: true }
       }
     ];
   }
@@ -308,8 +314,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
-        row[val]=false;
-        row.isSelected=false;
+        row[val] = false;
+        row.isSelected = false;
       }
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (

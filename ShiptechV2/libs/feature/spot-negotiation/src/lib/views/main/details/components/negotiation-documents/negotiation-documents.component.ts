@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -10,7 +15,8 @@ import { AGGridCellRendererComponent } from '../../../../../core/ag-grid/ag-grid
 @Component({
   selector: 'app-negotiation-documents',
   templateUrl: './negotiation-documents.component.html',
-  styleUrls: ['./negotiation-documents.component.css']
+  styleUrls: ['./negotiation-documents.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NegotiationDocumentsComponent implements OnInit {
   public gridOptions_data: GridOptions;
