@@ -1,7 +1,11 @@
-﻿commit 6d48349033a56856863c06af95768b8901dcf2c4
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Jan 20 09:42:10 2022 +0200
+﻿commit 81e8bd1898b2a06754eb432f54bfbaba67392a6c
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Jan 20 08:23:22 2022 +0000
 
-    Added Referrer Policy: strict-origin-when-cross-origin  in v2 app
+    Merged PR 15567: fix column widths when filter is applied
+    
+    fix column widths when filter is applied
+    
+    Related work items: #37933
 
 branch: master
