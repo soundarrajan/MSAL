@@ -299,21 +299,23 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 }
                             }, 100);
                             for (let i = 0; i < ctrl.request.locations.length; i++) {
-                                ctrl.request.locations[i].eta = '';
-                                ctrl.request.locations[i].recentEta = '';
-                                ctrl.request.locations[i].etb = '';
-                                ctrl.request.locations[i].etd = '';
-                                ctrl.request.locations[i].vesselVoyageDetailId = null;
-                                ctrl.request.locations[i].vesselVoyageId = null;
+                                if(ctrl.request.locations[i].vesselVoyageDetailId == undefined || ctrl.request.locations[i].vesselVoyageDetailId == null || ctrl.request.locations[i].vesselVoyageDetailId <= 0) {
+                                    ctrl.request.locations[i].eta = '';
+                                    ctrl.request.locations[i].recentEta = '';
+                                    ctrl.request.locations[i].etb = '';
+                                    ctrl.request.locations[i].etd = '';
+                                    ctrl.request.locations[i].vesselVoyageDetailId = null;
+                                    ctrl.request.locations[i].vesselVoyageId = null;
+                                    ctrl.request.locations[i].voyageCode = null;
+                                    ctrl.request.locations[i].portCallId = null;
+                                    ctrl.request.locations[i].destination = $stateParams.copyFrom.locations[i].destination;
+                                    ctrl.request.locations[i].destinationVesselVoyageDetailId = null;
+                                    ctrl.request.locations[i].destinationEta = null;
+                                }
                                 ctrl.request.locations[i].buyer = data.payload;
                                 ctrl.request.locations[i].agentCounterpartyFreeText = null;
                                 ctrl.request.locations[i].deliveryFrom = null;
                                 ctrl.request.locations[i].deliveryTo = null;
-                                ctrl.request.locations[i].voyageCode = null;
-                                ctrl.request.locations[i].portCallId = null;
-                                ctrl.request.locations[i].destination = $stateParams.copyFrom.locations[i].destination;
-                                ctrl.request.locations[i].destinationVesselVoyageDetailId = null;
-                                ctrl.request.locations[i].destinationEta = null;
                                 // ctrl.request.locations[i].destination = null;
                                 ctrl.request.locations[i].requestId = null;
                                 if(ctrl.request.locations[i].terminal){
