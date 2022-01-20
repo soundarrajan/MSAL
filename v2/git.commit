@@ -1,7 +1,7 @@
-﻿commit 2d8b694aca41afb730e5087bf3e5963ffb60c82e
+﻿commit 6d48349033a56856863c06af95768b8901dcf2c4
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Jan 20 09:25:43 2022 +0200
+Date:   Thu Jan 20 09:42:10 2022 +0200
 
-    Fixed 37169
+    Added Referrer Policy: strict-origin-when-cross-origin  in v2 app
 
 branch: master
