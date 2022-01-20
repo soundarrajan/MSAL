@@ -304,7 +304,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
       let requestLocations = currentRequestData.filter(
         row1 => row1.id == row.requestLocationId
       );
-
+      let currentLocProdCount = currentRequestData[0].requestProducts.length;
+      for (let index = 0; index < currentLocProdCount; index++) {
+        let indx = index + 1;
+        let val = 'checkProd' + indx;
+        row[val]=false;
+        row.isSelected=false;
+      }
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray.length &&
@@ -312,23 +318,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
-        if (!row.isSelected) {
-          if(row.checkProd1!=undefined){
-            row.checkProd1 = false;
-          }
-          if(row.checkProd2!=undefined){
-            row.checkProd2 = false;
-          }
-          if(row.checkProd3!=undefined){
-            row.checkProd3 = false;
-          }
-          if(row.checkProd4!=undefined){
-            row.checkProd4 = false;
-          }
-          if(row.checkProd5!=undefined){
-            row.checkProd5 = false;
-          }
-        } 
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
@@ -350,23 +339,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.isSelected = detailsForCurrentRow[0].isSelected;
-        if (!row.isSelected) { //TODO
-          if(row.checkProd1!=undefined){
-            row.checkProd1 = false;
-          }
-          if(row.checkProd2!=undefined){
-            row.checkProd2 = false;
-          }
-          if(row.checkProd3!=undefined){
-            row.checkProd3 = false;
-          }
-          if(row.checkProd4!=undefined){
-            row.checkProd4 = false;
-          }
-          if(row.checkProd5!=undefined){
-            row.checkProd5 = false;
-          }
-        } 
         row.physicalSupplierCounterpartyId =
           detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
