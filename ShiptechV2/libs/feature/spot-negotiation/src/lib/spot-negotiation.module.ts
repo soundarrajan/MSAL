@@ -92,10 +92,12 @@ import { NegotiationReportComponent } from './views/main/details/components/nego
 import { FileUploadModule } from 'primeng/fileupload';
 import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-renderer-v2.component';
 import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell-actions-documents.component';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   imports: [
     CommonModule,
+    TabMenuModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

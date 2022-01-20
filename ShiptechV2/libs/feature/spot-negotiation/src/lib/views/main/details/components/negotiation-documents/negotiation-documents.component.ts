@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   OnInit,
   ViewChild
@@ -32,7 +33,8 @@ import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/maste
 @Component({
   selector: 'app-negotiation-documents',
   templateUrl: './negotiation-documents.component.html',
-  styleUrls: ['./negotiation-documents.component.css']
+  styleUrls: ['./negotiation-documents.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
   @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;

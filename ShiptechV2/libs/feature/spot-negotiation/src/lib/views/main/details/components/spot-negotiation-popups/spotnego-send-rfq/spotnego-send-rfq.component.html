@@ -15,7 +15,7 @@
       <span class="msg">You are about to sent RFQ for below requests. Are you sure you want to
         proceed?</span>
       <div class="checkboxOptions" *ngFor="let item of requests">
-        <mat-checkbox [ngClass]="item.sellerSelection ? 'checked' : 'unchecked'" [disabled]="!item.sellerSelection" [checked]="item.selected"
+        <mat-checkbox [ngClass]="item.sellerSelection ? 'checked' : 'unchecked'" [disabled]="!item.sellerSelection" [checked]="item.sellerSelection"
           (change)="toggleCheckbox($event, item)">{{ item.name }} - {{ item.vesselName }}</mat-checkbox>
       </div>
     </div>
