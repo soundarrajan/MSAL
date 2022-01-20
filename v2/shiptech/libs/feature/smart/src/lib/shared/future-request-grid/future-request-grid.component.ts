@@ -84,8 +84,8 @@ export class FutureRequestGridComponent implements OnInit {
         if(!this.ETAFromTo) {
           let currentDate = new Date();
           let todayDate = new Date();
-          let futureDate = new Date(todayDate.setMonth(todayDate.getMonth() + 3));
-          this.ETAFromTo = { fromDate: currentDate, toDate: futureDate }
+          let pastDate = new Date(todayDate.setMonth(todayDate.getMonth() - 3));
+          this.ETAFromTo = { fromDate: pastDate, toDate: currentDate }
         }
         var hardcodedFilter = {
           // country: {

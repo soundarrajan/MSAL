@@ -1,11 +1,11 @@
-﻿commit 81e8bd1898b2a06754eb432f54bfbaba67392a6c
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Jan 20 08:23:22 2022 +0000
+﻿commit 54e9db1f5d6dc6240acbbb488f87584b9471fb42
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Jan 20 11:39:45 2022 +0000
 
-    Merged PR 15567: fix column widths when filter is applied
+    Merged PR 15571: ETA default filter from future to past
     
-    fix column widths when filter is applied
+    Based on revised _Acceptance Criteria_ - ETA Default filter changed from future to past
     
-    Related work items: #37933
+    Related work items: #36696
 
 branch: master
