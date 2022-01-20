@@ -1,5 +1,10 @@
 import { HttpParams } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +21,8 @@ import { EmailPreviewPopupComponent } from '../spot-negotiation-popups/email-pre
 @Component({
   selector: 'app-negotiation-report',
   templateUrl: './negotiation-report.component.html',
-  styleUrls: ['./negotiation-report.component.css']
+  styleUrls: ['./negotiation-report.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NegotiationReportComponent implements OnInit {
   generalTenantSettings: any;
@@ -39,7 +45,6 @@ export class NegotiationReportComponent implements OnInit {
       this.reportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.tenantConfiguration.reportUrl
       );
-      this.changeDetectorRef.detectChanges();
     });
   }
 
