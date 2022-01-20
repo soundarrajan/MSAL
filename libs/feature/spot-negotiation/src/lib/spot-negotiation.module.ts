@@ -89,10 +89,12 @@ import { NegotiationToolbarComponent } from './views/main/details/components/too
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
 import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
 import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   imports: [
     CommonModule,
+    TabMenuModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
