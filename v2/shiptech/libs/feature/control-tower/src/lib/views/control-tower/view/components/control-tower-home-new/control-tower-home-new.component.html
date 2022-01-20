@@ -103,73 +103,87 @@
       </div>
     </div>
   </div>
-
-  <div class="display-tab-content" *ngIf="showQuality">
-    <div *ngIf="selectedVal == 'labs'">
-      <app-quality-labs
-        [theme]="theme"
-        [newScreen]="newScreen"
-      ></app-quality-labs>
+  <div
+    [ngClass]="{
+      'control-tower-visible': countDone,
+      'control-tower-unvisible': !countDone
+    }"
+  >
+    <div class="display-tab-content" *ngIf="showQuality">
+      <div *ngIf="selectedVal == 'labs'">
+        <app-quality-labs
+          [theme]="theme"
+          [newScreen]="newScreen"
+        ></app-quality-labs>
+      </div>
+      <div *ngIf="selectedVal == 'claims'">
+        <app-quality-claims
+          [theme]="theme"
+          [newScreen]="newScreen"
+        ></app-quality-claims>
+      </div>
+      <div *ngIf="selectedVal == 'notes'">
+        <app-my-notes
+          [theme]="theme"
+          [newScreen]="newScreen"
+          [controlTowerNotesViewType]="controlTowerNotesViewType"
+          [screenList]="screenList"
+          [screenType]="screenType"
+        ></app-my-notes>
+      </div>
     </div>
-    <div *ngIf="selectedVal == 'claims'">
-      <app-quality-claims
-        [theme]="theme"
-        [newScreen]="newScreen"
-      ></app-quality-claims>
+    <div class="display-tab-content" *ngIf="showQuantity">
+      <div *ngIf="selectedVal2 == 'differences'">
+        <!-- <app-quantity-difference
+          [theme]="theme"
+          [newScreen]="newScreen"
+        ></app-quantity-difference> -->
+        <control-tower-quantity-difference
+          [theme]="theme"
+          [newScreen]="newScreen"
+        >
+        </control-tower-quantity-difference>
+      </div>
+      <div *ngIf="selectedVal2 == 'claims'">
+        <app-control-tower-quantity-claims
+          [theme]="theme"
+          [newScreen]="newScreen"
+        ></app-control-tower-quantity-claims>
+      </div>
+      <div *ngIf="selectedVal2 == 'notes'">
+        <app-my-notes
+          [theme]="theme"
+          [newScreen]="newScreen"
+          [controlTowerNotesViewType]="controlTowerNotesViewType"
+          [screenList]="screenList"
+          [screenType]="screenType"
+        ></app-my-notes>
+      </div>
     </div>
-    <div *ngIf="selectedVal == 'notes'">
-      <app-my-notes
-        [theme]="theme"
-        [newScreen]="newScreen"
-        [controlTowerNotesViewType]="controlTowerNotesViewType"
-        [screenList]="screenList"
-        [screenType]="screenType"
-      ></app-my-notes>
-    </div>
-  </div>
-  <div class="display-tab-content" *ngIf="showQuantity">
-    <div *ngIf="selectedVal2 == 'differences'">
-      <!-- <app-quantity-difference
-        [theme]="theme"
-        [newScreen]="newScreen"
-      ></app-quantity-difference> -->
-      <control-tower-quantity-difference
-        [theme]="theme"
-        [newScreen]="newScreen"
-      >
-      </control-tower-quantity-difference>
-    </div>
-    <div *ngIf="selectedVal2 == 'claims'">
-      <app-control-tower-quantity-claims
-        [theme]="theme"
-        [newScreen]="newScreen"
-      ></app-control-tower-quantity-claims>
-    </div>
-    <div *ngIf="selectedVal2 == 'notes'">
-      <app-my-notes
-        [theme]="theme"
-        [newScreen]="newScreen"
-        [controlTowerNotesViewType]="controlTowerNotesViewType"
-        [screenList]="screenList"
-        [screenType]="screenType"
-      ></app-my-notes>
-    </div>
-  </div>
-  <div class="display-tab-content" *ngIf="showResidue">
-    <div *ngIf="selectedVal3 == 'differences'">
-      <app-residue-difference
-        [theme]="theme"
-        [newScreen]="newScreen"
-      ></app-residue-difference>
-    </div>
-    <div *ngIf="selectedVal3 == 'notes'">
-      <app-my-notes
-        [theme]="theme"
-        [newScreen]="newScreen"
-        [controlTowerNotesViewType]="controlTowerNotesViewType"
-        [screenList]="screenList"
-        [screenType]="screenType"
-      ></app-my-notes>
+    <div class="display-tab-content" *ngIf="showResidue">
+      <div *ngIf="selectedVal3 == 'differences'">
+        <app-residue-difference
+          [theme]="theme"
+          [newScreen]="newScreen"
+        ></app-residue-difference>
+      </div>
+      <div *ngIf="selectedVal3 == 'notes'">
+        <app-my-notes
+          [theme]="theme"
+          [newScreen]="newScreen"
+          [controlTowerNotesViewType]="controlTowerNotesViewType"
+          [screenList]="screenList"
+          [screenType]="screenType"
+        ></app-my-notes>
+      </div>
     </div>
   </div>
 </div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>

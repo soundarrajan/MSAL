@@ -1,11 +1,7 @@
-﻿commit 58e0416442e8d1af24ef0662a614b1a60d0ebdc7
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Jan 19 11:52:26 2022 +0000
+﻿commit 2d8b694aca41afb730e5087bf3e5963ffb60c82e
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Thu Jan 20 09:25:43 2022 +0200
 
-    Merged PR 15538: Applied filters UI changes
-    
-    Applied filters UI changes
-    
-    Related work items: #37414
+    Fixed 37169
 
 branch: master

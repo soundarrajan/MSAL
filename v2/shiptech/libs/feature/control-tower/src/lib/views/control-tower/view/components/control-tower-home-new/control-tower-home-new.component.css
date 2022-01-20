@@ -1,3 +1,10 @@
 .mat-select-panel .mat-option.mat-selected.mat-active {
   color: white !important;
 }
+.control-tower-unvisible {
+  display: none;
+}
+
+.control-tower-visible {
+  display: block;
+}

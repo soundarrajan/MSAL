@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
@@ -12,6 +13,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { KnownControlTowerRoutes } from 'libs/feature/control-tower/src/lib/control-tower.routes';
 import { ControlTowerService } from 'libs/feature/control-tower/src/lib/services/control-tower.service';
 import _ from 'lodash';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 
@@ -28,6 +30,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   public theme;
   public newScreen = true;
   selected: string;
+  public countDone = false;
 
   selectedVal: string = 'labs';
   selectedVal2: string = 'differences';
@@ -44,7 +47,9 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private controlTowerService: ControlTowerService,
-    private legacyLookupsDatabase: LegacyLookupsDatabase
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private changeDetectorRef: ChangeDetectorRef,
+    private spinner: NgxSpinnerService
   ) {
     this.legacyLookupsDatabase
       .getTableByName('controlTowerNotesViewType')
@@ -61,6 +66,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     /* this.localService.themeChange.subscribe(data => {
       this.theme  = data;
     }) */
@@ -113,6 +119,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
           5
         ])
         .then(() => {
+          this.countDone = false;
           this.selectedVal = 'labs';
           this.getGlobalCount($event.value);
         });
@@ -128,6 +135,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
           6
         ])
         .then(() => {
+          this.countDone = false;
           this.selectedVal2 = 'differences';
           this.getGlobalCount($event.value);
         });
@@ -143,6 +151,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
           7
         ])
         .then(() => {
+          this.countDone = false;
           this.selectedVal3 = 'differences';
           this.getGlobalCount($event.value);
         });
@@ -157,9 +166,11 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
     console.log('************', view);
     switch (view) {
       case 'quality':
+        this.spinner.show();
         this.controlTowerService
           .getQualityViewCounts({})
           .subscribe((response: any) => {
+            this.spinner.hide();
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else if (response?.message === 'Unauthorized') {
@@ -168,15 +179,19 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
                 noOfClaims: 0
               };
             } else {
+              this.countDone = true;
               this.qualityCounts = response;
+              this.changeDetectorRef.detectChanges();
             }
           });
         break;
       case 'quantity':
+        this.spinner.show();
         this.controlTowerService
           .getQuantityViewCounts({})
           .pipe()
           .subscribe((response: any) => {
+            this.spinner.hide();
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else if (response?.message === 'Unauthorized') {
@@ -185,15 +200,19 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
                 noOfClaims: 0
               };
             } else {
+              this.countDone = true;
               this.quantityCounts = response;
+              this.changeDetectorRef.detectChanges();
             }
           });
 
         break;
       case 'residue':
+        this.spinner.show();
         this.controlTowerService
           .getResidueViewCounts({})
           .subscribe((response: any) => {
+            this.spinner.hide();
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else if (response?.message === 'Unauthorized') {
@@ -201,7 +220,9 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
                 noOfDifferences: 0
               };
             } else {
+              this.countDone = true;
               this.residueCounts = response;
+              this.changeDetectorRef.detectChanges();
             }
           });
 
