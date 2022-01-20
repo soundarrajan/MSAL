@@ -4780,7 +4780,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 let addCostIdx = product.additionalCosts.indexOf(additionalCost);
                 additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
-                additionalCost.price = locAddCost.price || additionalCost.price || 0;
+                //additionalCost.price = locAddCost.price || additionalCost.price || 0;
+                additionalCost.originalPrice = locAddCost.price || additionalCost.price || 0;
+                additionalCost.price =$filter("number")(additionalCost.originalPrice, ctrl.pricePrecision)
                 additionalCost.amount = locAddCost.amount || additionalCost.amount || 0;
                 additionalCost.priceUom = locAddCost.priceUom || additionalCost.priceUom || null;
                 additionalCost.costType = locAddCost.costType || additionalCost.costType || 0;
