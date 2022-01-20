@@ -247,3 +247,7 @@ app-ag-filter-display {
   > .mat-select-arrow {
   visibility: hidden;
 }
+
+body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem:not(.ui-state-active) {
+  border-bottom: 4px solid #eee !important;
+}
