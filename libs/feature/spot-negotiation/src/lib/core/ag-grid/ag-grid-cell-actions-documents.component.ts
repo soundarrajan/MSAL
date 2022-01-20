@@ -35,6 +35,11 @@ import { IDocumentsUpdateNotesRequest } from '@shiptech/core/services/masters-ap
     <div *ngIf="params.type === 'download'">
       <div class="download-icon" (click)="downloadDocument()"></div>
     </div>
+    <div *ngIf="params.type === 'document-name-download'">
+      <div (click)="downloadDocument()" matTooltip="{{ params.value }}">
+        {{ params.value }}
+      </div>
+    </div>
     <div
       *ngIf="params.type === 'dashed-border-notes'"
       class="dashed-border-note"

@@ -338,7 +338,9 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       headerName: 'Document Name',
       headerTooltip: 'Document Name',
       field: 'name',
-      width: 250
+      width: 250,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
+      cellRendererParams: { type: 'document-name-download' }
     },
     { headerName: 'Size', headerTooltip: 'Size', field: 'size', width: 100 },
     {
