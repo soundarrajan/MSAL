@@ -2,5 +2,14 @@
 <shiptech-negotiation-toolbar
   [activeTab]="'report'"
 ></shiptech-negotiation-toolbar>
-
-<!-- <app-footer-v2 [id]="'spot-email-log'" [singleGrid]="true" [doublePagination]="true" [rowCount]="500"] [maxSize]="7"></app-footer-v2> -->
+<div class="col_selected_report">
+  <div class="row negotiation-report">
+    <div class="col-xs-12 ">
+      <div>
+        <iframe [src]="reportUrl" class="iframes">
+          <p>Your browser does not support iframes.</p>
+        </iframe>
+      </div>
+    </div>
+  </div>
+</div>

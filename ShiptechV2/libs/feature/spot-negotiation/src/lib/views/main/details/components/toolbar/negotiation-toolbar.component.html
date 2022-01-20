@@ -15,25 +15,29 @@
               class="ui-tabmenuitem ui-state-default ui-corner-top"
               [ngClass]="{
                 'active-tab': menuItem.activeTab,
-                'inactive-tab': !menuItem.activeTab
+                'inactive-tab': !menuItem.activeTab,
+                'ui-state-disabled': menuItem.disabled
               }"
             >
-              <a
-                *ngIf="menuItem.url"
-                class="ui-menuitem-link ui-corner-all"
-                href="{{ menuItem.url }}"
-              >
-                <span class="ui-menuitem-text">{{ menuItem.label }}</span>
-              </a>
-              <a *ngIf="!menuItem.url" class="ui-menuitem-link ui-corner-all">
-                <span class="ui-menuitem-text">{{ menuItem.label }}</span>
-              </a>
+              <ng-container *ngIf="!menuItem.disabled">
+                <a
+                  *ngIf="menuItem.url"
+                  class="ui-menuitem-link ui-corner-all"
+                  href="{{ menuItem.url }}"
+                >
+                  <span class="ui-menuitem-text">{{ menuItem.label }}</span>
+                </a>
+              </ng-container>
+
+              <ng-container *ngIf="menuItem.disabled">
+                <a *ngIf="menuItem.url" class="ui-menuitem-link ui-corner-all">
+                  <span class="ui-menuitem-text">{{ menuItem.label }}</span>
+                </a>
+              </ng-container>
             </li>
           </ng-container>
         </ul>
       </div>
     </div>
-
-    <ng-content></ng-content>
   </div>
 </shiptech-wunderbar>
