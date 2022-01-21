@@ -109,11 +109,14 @@ export class NegotiationToolbarComponent
       },
       {
         label: 'Report',
-        routerLink: [
-          ...routeLinkToNegotiationDetails,
-          KnownSpotNegotiationRoutes.reportPath
-        ],
-        routerLinkActiveOptions: { exact: true }
+        routerLink: disabled
+          ? null
+          : [
+              ...routeLinkToNegotiationDetails,
+              KnownSpotNegotiationRoutes.reportPath
+            ],
+        routerLinkActiveOptions: { exact: true },
+        disabled
       },
       {
         label: 'Documents',
