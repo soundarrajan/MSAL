@@ -62,6 +62,7 @@ export class AdditionalCostModalComponent implements OnInit {
   filterCostNames: any[];
   additionalCostForLocation: any = [];
   additionalCostForLocationFilter: any = [];
+  priceFormat: string;
   @Input('formValues') set _formValues(val) {
     this.formValues = val;
     this.getApplyForList();
@@ -227,6 +228,11 @@ export class AdditionalCostModalComponent implements OnInit {
       this.tenantService.amountPrecision +
       '-' +
       this.tenantService.amountPrecision;
+    this.priceFormat =
+      '1.' +
+      this.tenantService.pricePrecision +
+      '-' +
+      this.tenantService.pricePrecision;
   }
 
   ngOnInit(): void {
@@ -1028,16 +1034,79 @@ export class AdditionalCostModalComponent implements OnInit {
     }
   }
 
-  amountFormatValue(value) {
-    if (typeof value == 'undefined' || !value) {
+  roundDown(value, pricePrecision) {
+    let precisionFactor = 1;
+    let response = 0;
+    const intvalue = parseFloat(value);
+    if (pricePrecision == 1) {
+      precisionFactor = 10;
+    }
+    if (pricePrecision == 2) {
+      precisionFactor = 100;
+    }
+    if (pricePrecision == 3) {
+      precisionFactor = 1000;
+    }
+    if (pricePrecision == 4) {
+      precisionFactor = 10000;
+    }
+    if (pricePrecision == 5) {
+      precisionFactor = 100000;
+    }
+    response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+    return response.toString();
+  }
+
+  priceFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
       return null;
     }
-    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
     if (plainNumber) {
+      if (this.tenantService.pricePrecision) {
+        plainNumber = this.roundDown(
+          plainNumber,
+          this.tenantService.pricePrecision + 1
+        );
+      } else {
+        plainNumber = Math.trunc(plainNumber);
+      }
+      console.log(plainNumber);
+      if (this.tenantService.pricePrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+      }
+    }
+  }
+  /**
+   * truncate to decimal place.
+   */
+  truncateToDecimals(num, dec) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
+  amountFormatValue(value) {
+    if (typeof value == 'undefined' || !value) {
+      return null;
+    }
+    let amountPrecision = this.tenantService.amountPrecision;
+
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if (amountPrecision) {
+        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
+      }
+      console.log(plainNumber);
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
