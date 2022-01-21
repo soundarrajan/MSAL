@@ -36,7 +36,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   cc: any;
   subject: any;
   content: any;
-  readonly:boolean = false;
+  readonly: boolean = false;
   previewTemplate: any = [];
   //rfqTemplate: any;
   items: Items[];
@@ -107,7 +107,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.clearData();
         return;
       }
-      else if(this.selected == 'RequoteRFQEmailTemplate' && !this.SelectedSellerWithProds.requestOffers?.some(x => x.price != null)){
+      else if (this.selected == 'RequoteRFQEmailTemplate' && !this.SelectedSellerWithProds.requestOffers?.some(x => x.price != null)) {
         this.toaster.error('Atleast 1 offer price should be captured in order to requote.');
         this.clearData();
         return;
@@ -126,56 +126,57 @@ export class EmailPreviewPopupComponent implements OnInit {
     //       prod.requestProducts.map(i =>i.id)
     //     )[0];
     // }
-if(!this.readonly){
-    var FinalAPIdata = {
-      RequestLocationSellerId: this.SelectedSellerWithProds.id,
-      RequestId: this.SelectedSellerWithProds.requestId,
-      CounterpartyId: this.SelectedSellerWithProds.sellerCounterpartyId,
-      CounterpartyName: this.SelectedSellerWithProds.sellerCounterpartyName,
-      RequestProductIds: this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
-      ).map(prod =>
-        prod.requestProducts.map((e, i) => this.SelectedSellerWithProds['checkProd'+(i+1)]? e.id : undefined).filter(x=> x)
-      )[0],
-      RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId : 0,
-      TemplateName: this.selected,
-      QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
-    };
-    this.spinner.show();
-    // Get response from server
-    const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
-    response.subscribe((res: any) => {
-      this.spinner.hide();
-      if (res["previewResponse"]) {
-        this.previewTemplate = res["previewResponse"];
-        //this.rfqTemplate = this.previewTemplate
-        this.to = (this.previewTemplate.to.map(to => to.idEmailAddress));
-        this.cc = (this.previewTemplate.cc.map(cc => cc.idEmailAddress));
-        this.subject = this.previewTemplate.subject;
-        this.content = this.previewTemplate.content;
-        this.from = this.previewTemplate.From;
-        this.filesList = this.previewTemplate.AttachmentsList;
-      }
-      else {
-        this.clearData();
-        this.toaster.error(res);
+    if (!this.readonly) {
+      var FinalAPIdata = {
+        RequestLocationSellerId: this.SelectedSellerWithProds.id,
+        RequestId: this.SelectedSellerWithProds.requestId,
+        CounterpartyId: this.SelectedSellerWithProds.sellerCounterpartyId,
+        CounterpartyName: this.SelectedSellerWithProds.sellerCounterpartyName,
+        RequestProductIds: this.currentRequestInfo.requestLocations.filter(loc => loc.id === this.SelectedSellerWithProds.requestLocationId
+        ).map(prod =>
+          prod.requestProducts.map((e, i) => this.SelectedSellerWithProds['checkProd' + (i + 1)] && (!this.SelectedSellerWithProds.requestOffers || this.SelectedSellerWithProds.requestOffers?.find(x => (x.requestProductId == e.id && !x.isRfqskipped && !x.isDeleted) || x.requestProductId != e.id)) ? e.id : undefined).filter(x => x)
+        )[0],
+        RfqId: this.SelectedSellerWithProds.requestOffers?.length > 0 ? this.SelectedSellerWithProds.requestOffers[0].rfqId : 0,
+        TemplateName: this.selected,
+        QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
+      };
 
-      }
-    });
-  }
-  else{
-     const payload = this.SelectedSellerWithProds.id;
-     this.spinner.show();
-      const emailLogsPreview = this.spotNegotiationService.getEmailLogsPreview(payload);
-      emailLogsPreview.subscribe((res:any) =>{
+      this.spinner.show();
+      // Get response from server
+      const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
+      response.subscribe((res: any) => {
         this.spinner.hide();
-        if (res.payload){
+        if (res["previewResponse"]) {
+          this.previewTemplate = res["previewResponse"];
+          //this.rfqTemplate = this.previewTemplate
+          this.to = (this.previewTemplate.to.map(to => to.idEmailAddress));
+          this.cc = (this.previewTemplate.cc.map(cc => cc.idEmailAddress));
+          this.subject = this.previewTemplate.subject;
+          this.content = this.previewTemplate.content;
+          this.from = this.previewTemplate.From;
+          this.filesList = this.previewTemplate.AttachmentsList;
+        }
+        else {
+          this.clearData();
+          this.toaster.error(res);
+
+        }
+      });
+    }
+    else {
+      const payload = this.SelectedSellerWithProds.id;
+      this.spinner.show();
+      const emailLogsPreview = this.spotNegotiationService.getEmailLogsPreview(payload);
+      emailLogsPreview.subscribe((res: any) => {
+        this.spinner.hide();
+        if (res.payload) {
           this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
           this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
           this.subject = res.payload.subject;
           this.content = res.payload.body;
         }
       });
-  }
+    }
   }
   clearData() {
     this.to = [];
@@ -189,46 +190,46 @@ if(!this.readonly){
   addTo(item) {
 
     this.to.push(item);
-    if(this.previewTemplate == null){
+    if (this.previewTemplate == null) {
       this.previewTemplate = []
     }
-    if(this.previewTemplate.to == undefined || this.previewTemplate.to == null){
+    if (this.previewTemplate.to == undefined || this.previewTemplate.to == null) {
       this.previewTemplate.to = [];
       this.previewTemplate.to.push({ IdEmailAddress: item });
     }
-    else{
+    else {
       this.previewTemplate.to.push({ IdEmailAddress: item });
     }
     this.toEmail = '';
   }
 
-  RemoveEmailId(item, val){
-    if(val == 'toEmail'){
-      if(this.to && this.to.length > 0 && item != null){
-        let index = this.to.findIndex(x => x ===item);
-        this.to.splice(index,1);
-        this.previewTemplate.to.splice(index,1);
+  RemoveEmailId(item, val) {
+    if (val == 'toEmail') {
+      if (this.to && this.to.length > 0 && item != null) {
+        let index = this.to.findIndex(x => x === item);
+        this.to.splice(index, 1);
+        this.previewTemplate.to.splice(index, 1);
       }
-    }else{
-      if(this.cc && this.cc.length > 0 && item != null){
-        let index = this.cc.findIndex(x => x ===item);
-        this.cc.splice(index,1);
-        this.previewTemplate.cc.splice(index,1);
+    } else {
+      if (this.cc && this.cc.length > 0 && item != null) {
+        let index = this.cc.findIndex(x => x === item);
+        this.cc.splice(index, 1);
+        this.previewTemplate.cc.splice(index, 1);
       }
     }
 
   }
 
-  addCc(item){
+  addCc(item) {
     this.cc.push(item);
-    if(this.previewTemplate == null){
+    if (this.previewTemplate == null) {
       this.previewTemplate = []
     }
-    if(this.previewTemplate.cc == undefined || this.previewTemplate.cc == null){
+    if (this.previewTemplate.cc == undefined || this.previewTemplate.cc == null) {
       this.previewTemplate.cc = [];
       this.previewTemplate.cc.push({ IdEmailAddress: item });
     }
-    else{
+    else {
       this.previewTemplate.cc.push({ IdEmailAddress: item });
     }
     this.ccEmail = '';
@@ -251,7 +252,7 @@ if(!this.readonly){
       this.toaster.error("Please add a subject to save / send the email.");
       return;
     }
-    if (this.previewTemplate?.to?.length == 0){
+    if (this.previewTemplate?.to?.length == 0) {
       this.toaster.error("Please enter atleast 1 email id.");
       return;
     }
@@ -310,10 +311,10 @@ if(!this.readonly){
         return;
       }
 
-      if(res.isGroupDeleted){
+      if (res.isGroupDeleted) {
         const baseOrigin = new URL(window.location.href).origin;
-          window.open(`${baseOrigin}/#/edit-request/${this.currentRequestInfo.id}`, '_self');
-          //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
+        window.open(`${baseOrigin}/#/edit-request/${this.currentRequestInfo.id}`, '_self');
+        //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
       }
 
       if (res['sellerOffers']) {
