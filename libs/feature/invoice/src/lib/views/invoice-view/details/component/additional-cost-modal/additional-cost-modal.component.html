@@ -435,7 +435,7 @@
                       autocomplete="off"
                       [(ngModel)]="additionalCost.value.invoiceRate"
                       (keypress)="keyPressNumber($event)"
-                      quantityFormat
+                      priceFormat
                       (ngModelChange)="
                         invoiceConvertUom('cost', additionalCost.key)
                       "
