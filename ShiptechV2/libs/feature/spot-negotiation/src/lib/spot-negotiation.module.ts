@@ -55,6 +55,7 @@ import { MarketpricehistorypopupComponent } from './views/main/details/component
 import { LocPanDataComponent } from './views/main/details/components/loc-pan-data/loc-pan-data.component';
 import { ApplicablecostpopupComponent } from './views/main/details/components/spot-negotiation-popups/applicablecostpopup/applicablecostpopup.component';
 import { BestcontractpopupComponent } from './views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
+import { ConfirmdialogComponent } from './views/main/details/components/spot-negotiation-popups/confirmdialog/confirmdialog.component';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
@@ -157,6 +158,7 @@ import { NegotiationReportComponent } from './views/main/details/components/nego
     LocPanDataComponent,
     ApplicablecostpopupComponent,
     BestcontractpopupComponent,
+    ConfirmdialogComponent,
     SpotNegotiationNewCommentsComponent,
     NegotiationToolbarComponent,
 
@@ -194,6 +196,7 @@ import { NegotiationReportComponent } from './views/main/details/components/nego
     SellerratingpopupComponent,
     ApplicablecostpopupComponent,
     BestcontractpopupComponent,
+    ConfirmdialogComponent,
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
     AvailabletermcontractspopupComponent,

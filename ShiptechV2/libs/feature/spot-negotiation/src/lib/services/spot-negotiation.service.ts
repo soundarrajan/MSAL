@@ -354,6 +354,15 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getBestContract(payload);
   }
 
+   /**
+   * @param requestId
+   *
+   */
+  @ObservableException()
+  delinkRequest(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.delinkRequest(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
