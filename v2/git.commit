@@ -1,7 +1,7 @@
-﻿commit 92d59242643658716a5fc486063c74b8389ace7a
+﻿commit 9d5ed564a34b5bc6033198dbb9fe6dd2b4d4dcd6
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jan 21 11:17:06 2022 +0200
+Date:   Fri Jan 21 11:49:30 2022 +0200
 
-    Replaced config.json
+    Added  rounding off based on the configuration for Invoice rate from additional cost
 
 branch: master
