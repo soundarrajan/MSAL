@@ -12,7 +12,9 @@ import { Select, Store } from '@ngxs/store';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { GridOptions } from 'ag-grid-community';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { SetTenantConfigurations } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import _ from 'lodash';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -28,6 +30,7 @@ export class NegotiationReportComponent implements OnInit {
   generalTenantSettings: any;
   reportUrl: any = '';
   tenantConfiguration: any;
+  negotiationReportUrl: any;
 
   constructor(
     public dialog: MatDialog,
@@ -39,12 +42,27 @@ export class NegotiationReportComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
-      console.log(this.tenantConfiguration);
-      this.reportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.tenantConfiguration.reportUrl
-      );
+    this.getTenantConfiguration();
+  }
+
+  getTenantConfiguration(): void {
+    const response = this.spotNegotiationService.getTenantConfiguration();
+    response.subscribe((res: any) => {
+      if (res.error) {
+        this.toastr.error(res.error);
+        return;
+      } else {
+        console.log(res);
+        // Populate Store
+
+        this.store.dispatch(
+          new SetTenantConfigurations(res.tenantConfiguration)
+        );
+        this.tenantConfiguration = _.cloneDeep(res.tenantConfiguration);
+        this.negotiationReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+          this.tenantConfiguration.negotiationReportUrl
+        );
+      }
     });
   }
 
